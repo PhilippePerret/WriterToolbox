@@ -8,6 +8,11 @@ class SiteHtml
   #   Propriétés configurables
   #  ---------------------------------------------------------------------
 
+  # Nom du site (ou son titre) pour affichage
+  # Note : le "title", affiché dans la page, sera calculé selon
+  # ce nom, capitalisé
+  attr_accessor :name
+
   # Désignation officielle du site, pour les factures et mails
   # officiels
   attr_accessor :official_designation
