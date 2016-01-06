@@ -1,0 +1,66 @@
+<%
+# Page d'accueil de l'utilisateur dans Un An Un Script
+%>
+<%= Unan::titre_h1 %>
+
+<%
+  # LES OUTILS SI L'UTILISATEUR EST L'ADMINISTRATEUR
+  if user.admin? %>
+  <div>
+  <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
+  </div>
+  <% end %>
+<%
+
+
+if user.identified?
+
+  # Un user identifié
+  # Il peut avoir ou non commencé le programme un an un script, on le
+  # sait grâce à unanunscript?
+
+%>
+<%
+
+  if user.unanunscript?
+
+      # Un user qui suit le programme
+%>
+  <p>Vous suivez le programme Un An Un Script.</p>
+<%
+
+  else
+
+      # Un user identifié mais qui ne suit pas le programme
+      # un an un script
+%>
+  <p>Vous ne suivez pas le programme “Un An Un Script”. Que désirez-vous faire ?</p>
+  <ul>
+    <li><%= "Découvrir le programme".in_a(href:'overview/home?in=unan') %></li>
+    <li><%= "S'inscrire au programme".in_a(href:"user/signup?in=unan") %> </li>
+  </ul>
+<%
+
+  end # if unanunscript?
+
+%>
+
+<%
+
+
+else
+
+  # Un visiteur qui n'est pas identifié
+  # On lui présente simplement le panneau explicatif
+
+%>
+<p>
+  Le pari de ce programme est simple : que vous soyez ou non expérimenté, vous pouvez parvenir à écrire le script (le scénario) d'un film en un an, tout en suivant une formation complète à la dramaturgie.
+</p>
+<%
+
+
+end
+
+
+%>

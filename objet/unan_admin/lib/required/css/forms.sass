@@ -1,0 +1,66 @@
+// Pour les sujets-cibles
+// C'est un menu à double profondeur
+span.conteneur_menu_sujets
+  position      : relative
+  width         : 100%
+  height        : 2.8em // pour la valeur humaine + le menu (en position absolue)
+  display       : inline-block
+  span.sujet_human_value
+    position          : absolute
+    top               : 1.4em
+    left              : 0
+  ul.sujets_cibles
+    position          : absolute
+    top               : 0
+    left              : 0
+    font-family       : Tahoma
+    font-size         : 15pt
+    margin            : 0
+    padding           : 0
+    list-style        : none
+    height            : 1.4em
+    overflow          : hidden
+    &:hover
+      height            : auto
+      z-index           : 50
+    li.item
+      position            : relative
+      // overflow            : hidden
+      height              : 1.4em
+      width               : 400px
+      z-index             : 1
+      ul.sub_sujets_cibles
+        position          : absolute
+        left              : -999em
+        top               : 0
+        margin            : 0
+        padding           : 0
+        list-style        : none
+        background-color  : #EEE
+        border            : 1px solid #BBB
+        border-radius     : 0.5em
+        padding           : 4px
+      &:hover
+        z-index             : 10
+        ul.sub_sujets_cibles
+          left              : 180px
+          z-index           : 10
+      span.item_name
+        color             : black
+        padding           : 0 0 2px 10px
+        display           : inline-block
+        width             : 170px
+        background-color  : #DDD
+        &:hover
+          color             : white
+          background-color  : teal
+          ul.sub_sujets_cibles
+            left              : 180px
+      ul.sub_sujets_cibles
+        li.subitem
+          color             : black
+          padding           : 4px
+          &:hover
+            background-color    : teal
+            color               : white
+        

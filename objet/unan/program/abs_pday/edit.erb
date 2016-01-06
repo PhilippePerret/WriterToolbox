@@ -1,0 +1,40 @@
+<%
+# Formulaire d'édition d'un "jour-programme"
+%>
+
+<%
+# ---------------------------------------------------------------------
+#   Barre de boutons généraux
+#   Par exemple pour éditer le jour programme suivant ou précédent
+# ---------------------------------------------------------------------
+%>
+<div class="pdays_tools right">
+ [jour précédent] [---] [jour suivant]
+</div>
+<%
+# ---------------------------------------------------------------------
+#   Formulaire d'édition du jour-programme
+# ---------------------------------------------------------------------
+%>
+<%
+  site.require 'form_tools'
+  form.prefix = "abspday"
+%>
+<form id="form_absolute_pday" class="form2080" action="" method="POST">
+
+  <%= form.field_text("Index", 'id', "", {class:'short'}) %>
+  <%= form.field_description("L'index (ID) du jour-programme est un nombre de 1 à 365 correspondant au jour réel de l'année lorsque le rythme est normal (5). Il permet d'avoir 365 jours, quel que soit le rythme.") %>
+
+  <%= form.field_textarea("Description", 'description', "") %>
+  <%= form.field_description("Description générale du jour-programme.") %>
+  <%= form.submit_button("Enregistrer") %>
+</form>
+
+<%
+# ---------------------------------------------------------------------
+#   La présentation des 365 jours sous forme de tableau continu
+#   365 = 14 x 26 + 1
+#   365 =  7 x 52 + 1
+# ---------------------------------------------------------------------
+%>
+<%= Vue::new("unan/program/abs_pday/cal").output %>

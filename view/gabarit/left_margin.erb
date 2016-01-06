@@ -1,0 +1,22 @@
+<%
+# Marge gauche
+#
+# Note : Elle n'est visible que lorsque l'utilisateur est identifié
+%>
+<%
+if user.identified?
+  # Lorsque l'user est identifié
+%>
+<section id="left_margin">
+  <%= "Accueil".in_a(href: '') %>
+  <a href="user/<%= user.id %>/profil">Profil</a>
+  <a href="user/home?in=unan" id="link_uaus">UN AN<br>UN SCRIPT</a>
+  <a href="user/<%= user.id %>/deconnexion">Déconnexion</a>
+  <a href="tool/list">Outils</a>
+  <hr />
+  <% if user.admin? %>
+    <a href="site/console">Console</a>
+  <% end %>
+</section>
+
+<% end %>

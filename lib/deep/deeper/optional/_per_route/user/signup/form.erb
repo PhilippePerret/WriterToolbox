@@ -1,0 +1,36 @@
+<%
+#
+# NOTE Cette vue sert aussi bien à l'inscription au site qu'à
+#      l'inscription au programme UN AN UN SCRIPT.
+#
+signup_for_unanunscript = site.current_route.route == "unan/signup"
+%>
+<%
+# Formulaire d'inscription par défaut
+
+# Fabrication de la rangée de formulaire
+def row libelle, property, field_type, values = nil
+  field_name  = "user[#{property}]"
+  field_id    = "user_#{property}"
+  c = ""
+  c << libelle.in_span(class: 'libelle')
+  c << case field_type
+  when :text
+    (self.send(property)||"").in_input_text(name:field_name, id:field_id)
+  when :select
+    values.in_select(name:field_name, id: field_id, selected: user.send(property))
+  end.in_span(class: 'value')
+  c.in_div(class:'form_row')
+end
+
+%>
+<form id="form_user_signup" class="form3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
+  <%= row("Pseudo", :pseudo, :text) %>
+  <%= row("Patronyme", :patronyme, :text) %>
+  <%= row("Vous êtes…", :sexe, :select, [["F", "une femme"], ["H", "un homme"]]) %>
+  <%= row("Mail", :mail, :text) %>
+  <%= row("Confirmation mail", :mail_confirmation, :text) %>
+  <%= row("Mot de passe", :password, :text) %>
+  <%= row("Confirmation mot de passe", :password_confirmation, :text) %>
+  <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons') %>
+</form>

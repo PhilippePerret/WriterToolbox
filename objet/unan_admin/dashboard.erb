@@ -1,0 +1,27 @@
+<%
+# Vue du tableau de bord de l'administration du programme
+# “Un an Un Script”
+%>
+<h1>Tableau de bord UAUS</h1>
+<p>
+  Bienvenue sur le tableau de bord du programme “Un An Un Script”. Que voulez-vous faire ?
+</p>
+<%
+http = "http://localhost/WriterToolbox"
+%>
+<ul>
+  <li><%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %></li>
+  <li><a href="abs_etape/create?in=unan_admin">Créer une étape</a></li>
+  <li><a href="abs_etape/edit?in=unan_admin">Éditer une étape</a></li>
+  <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
+  <li><a href="<%= http %>/abs_work/edit?in=unan/program">Données absolues d'un travail (AbsWork)</a></li>
+  <li><a href="<%= http %>/abs_pday/edit?in=unan/program">Données absolues d'un P-Day (AbsPDay)</a></li>
+  <li>Agencer les étapes</li>
+  <li>Gérer une inscription</li>
+  <li>Créer un questionnaire</li>
+  <li>Éditer un questionnaire</li>
+  <li>Créer une question QCM</li>
+  <li>Éditer une question QCM</li>
+  <li>Créer un exemple</li>
+  <li>Éditer un exemple</li>
+</ul>

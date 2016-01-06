@@ -1,0 +1,26 @@
+<%
+# Page d'inscription de l'user
+%>
+<%
+#
+# NOTE Cette vue sert aussi bien à l'inscription au site qu'à
+#      l'inscription au programme UN AN UN SCRIPT.
+#
+signup_for_unanunscript = site.current_route.route == "unan/signup"
+%>
+<% unless signup_for_unanunscript %>
+  <h2>Inscription</h2>
+<% end %>
+<% if user.identified? %>
+  <p>Voyons, vous êtes déjà inscrit<%= user.f_e %>, <%= user.pseudo %> ! :-;</p>
+<% else %>
+  <%
+  # ---------------------------------------------------------------------
+  #   Le formulaire d'inscription
+  #   ---------------------------
+  #   Il n'y a que les styles à changer pour lui donner une forme
+  #   convenable et adaptée au site.
+  # ---------------------------------------------------------------------
+  %>
+  <%= page.user_signup_form %>
+<% end %>

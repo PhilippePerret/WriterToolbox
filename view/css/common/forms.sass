@@ -1,0 +1,121 @@
+form
+
+  // Les différentes tailles entre libellé et value s'obtiennent en
+  // pourcentage dans la classe donnée au formulaire
+  // La classe est 'form<pourcentage libellé><pourcentage value>'
+  &.form5050
+    div.form_row
+      span.libelle
+        width : 45%
+      span.value
+        width : 50%
+  
+  &.form4060
+    div.form_row
+      span.libelle
+        width : 40%
+      span.value
+        width : 55%
+  &.form3070
+    div.form_row
+      span.libelle
+        width : 30%
+      span.value
+        width : 65%
+
+  &.form2080
+    div.form_row
+      width: 100%
+      span.libelle
+        width : 20%
+      span.value
+        width : 75%
+  
+  select, select option
+    font-family         : inherit
+    font-size           : inherit
+    padding             : 0 16px
+    &.small
+      font-size           : 13.5pt
+      padding             : 0 8px
+    &.exergue
+      background-color    : #3F7E3F
+      color               : white
+      
+  input[type="submit"].btn
+    font-family         : Arial
+    font-size           : inherit
+    background-color    : green
+    color               : white
+    padding             : 0.4em 2em
+    letter-spacing      : 2.2px
+    &.small
+      font-size : 13.2pt
+    &.medium
+      font-size : inherit
+    &.big
+      font-size : 17.8pt
+
+  // Form de class 'small
+  &.small
+    input[type="submit"]
+      padding             : 0.2em 0.9em
+  
+  
+  div.buttons
+    margin-top          : 1em
+    text-align          : right
+    padding             : 0 1.7em
+    
+    input[type="submit"]
+      font-size           : inherit
+    
+  div.form_row
+    margin-top        : 0.7em
+    &.description
+      margin-top        : 0
+      
+    select
+      padding           : 0 0.6em
+      
+    span.libelle
+      display           : inline-block
+      font-size         : 14.8pt
+      text-align        : right
+      padding-right     : 20px
+      vertical-align    : top
+
+    span.value
+      display           : inline-block
+      
+      input[type="text"], input[type="password"], textarea, select, select option
+        font-size         : inherit
+        font-family       : inherit
+
+      input[type="text"], input[type="password"], textarea
+        width             : 95%
+      
+      textarea
+        min-height        : 160px
+
+      &.descfield
+        font-size         : 13.2pt
+        font-style        : italic
+        opacity           : 0.4
+        &:hover
+          opacity            : 1
+        
+input[type="text"]
+  &.short
+    width           : 60px !important
+    text-align      : center !important
+  &.medium
+    width           : 120px !important
+    text-align      : center !important
+    
+  + span
+    margin-left       : 0.5em
+
+span 
+  + input[type="text"], + select
+    margin-right      : 0.5em

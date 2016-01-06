@@ -1,0 +1,18 @@
+<%
+# Liste des sujets du forum
+%>
+<h1>Forum (sujets)</h1>
+
+<ul id="forum_topics">
+  <%= forum.sujets.as_list %>
+</section>
+
+<%
+if user.grade >= 5
+  # Il peut initier un sujet
+%>
+<div class="right">
+  <%= forum.formulaire_new_topic %>
+</div>
+
+<% end %>

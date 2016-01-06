@@ -1,0 +1,18 @@
+<%
+# Vue affichée lorsque l'user vient de se logguer avec succès
+%>
+<h1>Bienvenue <%= user.pseudo %> !</h1>
+<p>
+  Ici, vous pouvez trouver un petit état des lieux de votre travail.
+</p>
+<p>
+  Vous êtes l'utilisateur #<%= user.id %>.
+</p>
+<% if user.admin? %>
+  <p>Rejoindre le <a href="unan_admin/dashboard">tableau de bord du programme Un An Un Script</a>.</p>
+<% end %>
+<% if user.paiements_ok? %>
+  <p>Vous êtes à jour de vos paiements</p>
+<% else %>
+  <p>Vous n'êtes pas à jour de vos paiements. Vous pouvez régulariser votre situtation en rejoignant la <a href="user/paiement">section de paiment</a>.</p>
+<% end %>

@@ -1,0 +1,24 @@
+<%
+# Formulaire d'inscription au programme Un AN UN SCRIPT
+#
+# Noter que deux solutions sont possibles : soit le visiteur est
+# déjà inscrit et il a juste à payer son inscription, soit le visiteur
+# est totalement inconnu et il faut alors lui proposer le formulaire
+# d'inscription du site en général, plus l'inscription au programme.
+%>
+<%= Unan::titre_h1 %>
+
+<% if user.unanunscript? %>
+  <p>Vous êtes déjà inscrit<%= f_e %> à ce programme…</p>
+<% else %>
+  <h2>Inscription</h2>
+  <% if user.identified? %>
+    <p>Vous êtes déjà inscrit sur le site des outils de l'auteur, il vous suffit donc de vous inscrire au programme “Un An Un Script” pour le suivre.</p>
+  <% else %>
+    <%
+    app.require_optional '_per_route/user/signup'
+    %>
+    <p class='small'>L'inscription au programme “Un An Un Script” vous donne également accès à tous les outils du site des Outils d'auteurs. Merci de bien vouloir remplir le formulaire ci-dessous.</p>
+    <%= page.view('user/signup') %>
+  <% end %>
+<% end %>

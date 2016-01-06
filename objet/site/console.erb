@@ -1,0 +1,21 @@
+<%
+# Console administrateur
+#
+# Seulement pour l'administrateur
+raise "Vous n'avez rien à faire ici" unless user.admin?
+%>
+<% debug "-> console.erb" %>
+<h1>Console</h1>
+<form action="site/console" method="POST" charset="UTF-8">
+<textarea id="console" name="console" onreturn="this.form.submit()"><%= param(:console) %></textarea>
+</form>
+
+<%= console.output %>
+
+<div class="right">
+  <%= "Aide".in_a(onclick:"$('div#console_aide').toggle()") %>
+</div>
+<div id="console_aide" style="display:none">
+  <%= console.help %>
+</div>
+<% debug "<- console.erb" %>

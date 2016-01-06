@@ -1,0 +1,58 @@
+# encoding: UTF-8
+=begin
+Le code total de sortie de la page
+=end
+require 'erb'
+class PrivateSectionError < StandardError; end
+
+class SiteHtml
+
+  # Objet bindé à la vue.
+  # Ça peut être trois choses, dans l'ordre :
+  #   1. L'instance de la classe définie par la route (if any)
+  #   2. La classe définie par la route (if any)
+  #   3. Le site
+  def objet_binded
+    @objet_binded ||= begin
+      bindee = nil
+      bindee = current_route.sujet unless current_route.nil?
+      bindee || site
+    end
+  end
+
+
+  def output
+    execute_route
+    page.preload
+    page.output
+  rescue PrivateSectionError => e
+    error "Section privée - Vous n'êtes pas autorisé à rejoindre cette partie du site."
+    set_params_route # ré-initialisera tous les paramètres
+    retry
+  rescue Exception => e
+    # ERREUR FATALE
+    m = "<html><head><meta content='text/html; charset=utf-8' http-equiv='Content-type' /></head><body>" +
+    "<div style='color:red;padding:2em;font-size:17.2pt'>" +
+    "<div>Houps !… Une erreur est malheureusement survenue…</div>" +
+    "<div>ERREUR : #{e.message.gsub(/</,'&lt;')}</div>" +
+    e.backtrace.collect { |m| "<div>#{m.gsub(/</,'&lt;')}</div>" }.join +
+    "</div></body></html>"
+    STDOUT.write "Content-type: text/html; charset: utf-8;\n\n"
+    STDOUT.write m
+    begin
+      # On essaie de récupérer le debug
+      dbg_file = File.join('.', 'debug.log')
+      if File.exist?(dbg_file)
+        dbg = File.open(dbg_file, 'r'){|f| f.read.force_encoding('utf-8')}
+        STDOUT.write "<pre style='white-space:pre-wrap;font-size:15pt;'>\n\n=== DEBUG.LOG ===\n#{dbg}\n</pre>"
+      end
+    rescue Exception => e2
+      if OFFLINE
+        STDOUT.write "<div>Malheureusement, je n'ai pas pu récupérer le fichier debug : #{e2.message}</div>"
+      end
+    end
+  end
+
+  def bind; binding() end
+
+end

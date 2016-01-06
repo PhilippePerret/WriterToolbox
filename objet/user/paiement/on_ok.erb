@@ -1,0 +1,23 @@
+<%
+# Vue partielle à afficher lorsque le paiement a été effectué avec succès
+%>
+<div class="grand_cadre_rond">
+
+  <h1>Super, <%= user.pseudo %> ! :-D</h1>
+  <p>Votre paiement a été enregistré avec succès, et nous vous en remercions autant que nous vous en félicitons. ;-)</p>
+  <p>
+    À présent que vous êtes abonné<%= f_e %> pour un an aux outils du site, vous pouvez :
+    <ul>
+      <li>Consulter l'intégralité des cours de la collection Narration ;</li>
+      <li>Consulter l'intégralité des analyses de films ;</li>
+      <li>Utiliser le calculateur de structure ;</li>
+      <li>Participer activement au forum de discussion ;</li>
+      <li>Vous inscrire au programme “Un An Un Script” ;</li>
+      <li>… et bien plus encore !</li>
+    </ul>
+  </p>
+  <p>Une facture vous a été expédiée à votre adresse mail : </p>
+  <div style="background-color:#CCC">
+    <%= site.paiement.facture %>
+  </div>
+</div>

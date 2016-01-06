@@ -1,0 +1,9 @@
+.sass-cache/
+
+data/secret/
+
+database/data/
+
+database/data/users.db
+
+debug.log

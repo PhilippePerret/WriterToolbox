@@ -1,0 +1,51 @@
+<%
+# Accueil du forum
+
+if user.admin? && user.grade != 9
+  user.set_grade(9)
+  debug "J'ai mis le grade de l'administrateur à 9"
+end
+
+%>
+<h1>Forum d'écriture</h1>
+<p>
+  Bienvenue dans le forum d'écriture.
+</p>
+<%
+
+# ---------------------------------------------------------------------
+# Si identifié
+if user.identified?
+
+
+%>
+<p>
+  Votre grade sur le forum est : <%= user.grade_humain %>.
+</p>
+<p class='small'>
+  En tant que <%= user.grade_humain %>, vous pouvez <%= user.privileges_forum %>.
+</p>
+
+<%
+if user.grade >= 5
+%>
+<%
+#
+# Formulaire pour initier un nouveau sujet
+#
+%>
+<%= forum.formulaire_new_topic.in_div(class:'right') %>
+<%
+end # si grade >= 5
+%>
+<p class='right'>
+  <a href="sujet/list?in=forum">Les sujets</a><span> | </span><a href="message/list?in=forum">Les messages</a>
+</p>
+<%
+
+
+end
+# / Si identifié
+# ---------------------------------------------------------------------
+
+%>

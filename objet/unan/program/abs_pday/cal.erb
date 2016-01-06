@@ -1,0 +1,33 @@
+<%
+#
+# PLAN GÉNÉRAL DU PROGRAMME UN AN UN SCRIPT
+#
+%>
+<%= Unan::titre_h1 %>
+<h2>Plan général du programme</h2>
+
+<form class="" action="<%= site.current_route.route %>" method="POST">
+<p class='small'>
+  Vous pouvez vous faire, grâce à cette visualisation de l'intégralité du programme “Un An Un Script”, une idée plus précise du travail au cours de ce programme de développement d'histoire unique en son genre.
+  <p class="small"><%= Unan::Program::PDayMap::menu_echelle %>
+  En réglant ce <strong>menu d'échelle</strong>, vous pouvez visualiser ce plan plus ou moins précisément.</p>
+  <p class='small'><%= Unan::Program::PDayMap::menu_content %>
+  Ce <strong>menu de contenu</strong> vous permet de déterminer de choisir entre les différents contenus à afficher. “Titres des étapes” affiche seulement les titres, “Description” donne un aperçu plus précis du contenu de ces étapes et “Aspect pédagogique” précise le contenu des connaissances qui sont acquises en parallèle ou au cours de chaque étape de travail.</p>
+  <p class='small'><%= Unan::Program::PDayMap::menu_rythme %>
+  Les indications de durées sont fonctions du <strong>rythme général</strong> que vous avez adopté ou celui choisi dans le menu ci-dessous. Utilisez ce menu si vosu voulez avoir une vision juste de la durée des étapes en fonction du rythme choisi. Noter que ce rythme n'affecte pas les cases des “jours-programme” numérotées de 1 à 364.</p>
+</p>
+</form>
+
+<%
+  content_type = param(:content_type) || 'titre'
+  style = case content_type
+  when 'titre'
+    "height:#{Unan::Program::PDayMap::DAY_HEIGHT * 26}px;width:#{Unan::Program::PDayMap::DAY_WIDTH * 14}px"
+  else
+    ""
+  end
+%>
+
+<div id="calendrier_abspday" class="<%= content_type %>" style="<%= style %>">
+  <%= Unan::Program::PDayMap::trace_whole_map(param(:niveau).to_i_inn || 1) %>
+</div>
