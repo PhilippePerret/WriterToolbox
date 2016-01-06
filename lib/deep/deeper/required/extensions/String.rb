@@ -18,6 +18,17 @@ class String
 
   # ---------------------------------------------------------------------
 
+  # Pour upcaser vraiment tous les caractères, même les accents et
+  # les diacritiques
+  DATA_MIN_TO_MAJ = {
+    from: "àäéèêëîïùôöç",
+    to:   "ÀÄÉÈÊËÎÏÙÔÖÇ"
+  }
+  alias :old_upcase :upcase
+  def upcase
+    self.old_upcase.tr(DATA_MIN_TO_MAJ[:from], DATA_MIN_TO_MAJ[:to])
+  end
+
   def nil_if_empty strip = true
     checked = strip ? self.strip : self
     checked == "" ? nil : checked
