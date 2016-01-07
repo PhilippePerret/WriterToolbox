@@ -212,13 +212,15 @@ class SiteHtml
     # La route reconstituée
     def route
       @route ||= begin
-        r = File.join(*[objet,objet_id_s,method_s].compact)
-        r << "?in=#{context}" unless context.nil?
-        r
+        route_sans_context.to_s + (context.nil? ? "" : "?in=#{context}")
       end
     end
     # Pour obtenir la route en faisant route.current_route
     alias :to_str :route
+
+    def route_sans_context
+      @route_sans_context ||= File.join(*[objet,objet_id_s,method_s].compact)
+    end
 
     # La vue, mais seulement si elle existe
     # Noter que des fichiers attachés à la vue (ruby, css, js) peuvent
