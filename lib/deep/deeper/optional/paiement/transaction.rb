@@ -9,9 +9,15 @@ class Paiement
   # @usage
   #   Définir la propriété :context dans le hash envoyé
   #   à la méthode make_transaction :
-  #     site.paiement.make_transaction(montant: 120, context: "unan")
+  #     site.paiement.make_transaction(montant: 120, context: "unan", ...)
   #
   attr_reader :context
+
+  # Pour connaitre l'objet du paiement dans la table de données
+  # des paiements, propriété de même nom.
+  # Il faut transmettre cette donnée dans le Hash qui est donné
+  # en argument de make_transaction.
+  attr_reader :objet_id
 
   # Dossier de base du paiement. Par défaut, c'est le dossier './objet'
   # et il s'agit du paiement pour le site lui-même.
@@ -31,8 +37,9 @@ class Paiement
   #
   def make_transaction data_transaction
 
-    @context = data_transaction.delete(:context)
-    @objet   = data_transaction.delete(:objet)
+    @context  = data_transaction.delete(:context)
+    @objet    = data_transaction.delete(:objet)
+    @objet_id = data_transaction.delete(:objet_id)
 
     case param(:pres)
     when '1'
@@ -88,6 +95,7 @@ class Paiement
   def data_paiement
     @data_paiement ||= {
       user_id:    user.id,
+      objet_id:   objet_id,
       montant:    montant,
       facture:    token,
       created_at: Time.now.to_i
