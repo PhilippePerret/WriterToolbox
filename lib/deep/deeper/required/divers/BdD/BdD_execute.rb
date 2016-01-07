@@ -108,10 +108,7 @@ class BdD
       # Retourne le résultat
       execute_requete db, template_sql, values, params
 
-    rescue AIError => e
-      AIError::new( e.message )
     rescue Exception => e
-      debug e
       raise e
     end
 
