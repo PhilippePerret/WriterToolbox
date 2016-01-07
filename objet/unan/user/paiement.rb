@@ -18,14 +18,21 @@ class User
 
 end #/User
 
-app.require_optional 'paiement'
+# Pour passer par là, l'user doit être identifié (donc
+# inscrit) et ne doit pas déjà suivre le programme
+# UN AN UN SCRIPT
+if false == user.unanunscript? && user.identified?
 
-# Instancier un paiement et le traiter en fonction de
-# param(:pres)
-site.paiement.make_transaction(
-  montant:      user.tarif_unanunscript,
-  objet:        "Inscription au programme “Un An Un Script”",
-  objet_id:     "1AN1SCRIPT", # Pour la table
-  context:      "unan",
-  description:  "règlement de l'inscription au programme “1 An 1 Script”"
-)
+  app.require_optional 'paiement'
+
+  # Instancier un paiement et le traiter en fonction de
+  # param(:pres)
+  site.paiement.make_transaction(
+    montant:      user.tarif_unanunscript,
+    objet:        "Inscription au programme “Un An Un Script”",
+    objet_id:     "1AN1SCRIPT", # Pour la table
+    context:      "unan",
+    description:  "règlement de l'inscription au programme “1 An 1 Script”"
+  )
+
+end
