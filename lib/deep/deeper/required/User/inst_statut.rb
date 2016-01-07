@@ -20,7 +20,7 @@ class User
   # Pour qu'il soit à jour, il faut qu'il est un paiement qui
   # remonte à moins d'un an.
   def paiements_ok?
-    raise "ID devrait être défini pour checker le paiement" if @id.nil?
+    return false if @id.nil? # Un simple visiteur
     now = Time.now
     anprev = Time.new(now.year - 1, now.month, now.day).to_i
     where = "user_id = #{id} AND created_at > #{anprev}"
