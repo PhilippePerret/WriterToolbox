@@ -16,7 +16,22 @@ if user.identified?
   <hr />
   <% if user.admin? %>
     <a href="site/console">Console</a>
+  <%
+    elsif user.subscribed?
+      # Quand l'user est abonné au site, on lui présente un lien
+      # vers tous les outils
+  %>
+    <%= "Analyses".in_a(href:'analyse/home') %>
+    <%= "Narration".in_a(href:'cnarration/home') %>
+    <%= "Forum".in_a(href:'forum/home') %>
+    <%= "Calculateur".in_a(href: 'calculateur/home') %>
+    <%= "Scénodico".in_a(href:'scenodico/home') %>
+    <%= "Filmodico".in_a(href:'filmodico/home') %>
+
   <% end %>
+
+
 </section>
+
 
 <% end %>
