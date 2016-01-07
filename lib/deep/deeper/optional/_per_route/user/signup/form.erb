@@ -3,7 +3,7 @@
 # NOTE Cette vue sert aussi bien à l'inscription au site qu'à
 #      l'inscription au programme UN AN UN SCRIPT.
 #
-signup_for_unanunscript = site.current_route.route == "unan/signup"
+signup_for_unanunscript = site.current_route.context == "unan"
 %>
 <%
 # Formulaire d'inscription par défaut
