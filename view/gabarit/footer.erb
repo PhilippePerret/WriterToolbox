@@ -1,5 +1,9 @@
 <section id="footer">
   <%= "Accueil".in_a(href:"") %>
-  <%= "Inscription".in_a(href:'user/signup') %>
+  <% if user.identified? %>
+    <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
+  <% else %>
+    <%= "Inscription".in_a(href:'user/signup') %>
+  <% end %>
   <%= "Contact".in_a(href:'site/contact') %>
 </section>
