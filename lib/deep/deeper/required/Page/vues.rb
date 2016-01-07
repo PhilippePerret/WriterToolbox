@@ -13,6 +13,7 @@ class Page
   # Cette méthode prédéfinit donc `header` et `content`
   def preload
     header
+    footer
     content
     left_margin
   end
@@ -24,6 +25,17 @@ class Page
     @header ||= begin
       vue = Vue::new('header', site.folder_custom_gabarit)
       vue.output
+    end
+  end
+
+  def footer
+    @footer ||= begin
+      vue = Vue::new('footer', site.folder_custom_gabarit)
+      if vue.exist?
+        vue.output
+      else
+        ""
+      end
     end
   end
 

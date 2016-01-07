@@ -38,6 +38,7 @@ class Page
       page.header         +
       page.left_margin    +
       page.content        +
+      page.footer         +
       app.div_flash       +
       page.section_debug
     end
