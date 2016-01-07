@@ -14,3 +14,7 @@ site.local_host   = 'localhost/WriterToolbox'
 site.distant_host = 'www.atelier-icare.net/writertools'
 
 site.tarif = 9.90
+
+# # Si on est en anglais :
+# site.separateur_decimal = "."
+# site.devise = "$"

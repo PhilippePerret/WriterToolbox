@@ -11,7 +11,7 @@ Méthode d'helper pour le site
 class SiteHtml
 
   def tarif_humain
-    @tarif_humain ||= "9,90€"
+    @tarif_humain ||= tarif.as_tarif
   end
 
 end

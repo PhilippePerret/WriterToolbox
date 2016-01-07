@@ -7,14 +7,15 @@ Gestion du programme Un An Un Script
 La classe gère le programme dans sa globalité
 
 =end
+
 class Unan
   class << self
 
     def tarif_humain
-      @tarif_humain ||= "29,90€"
+      @tarif_humain ||= tarif.as_tarif
     end
     def tarif
-      @tarif ||= 29.90
+      @tarif ||= 29.80
     end
 
     def titre_h1

@@ -32,6 +32,22 @@ class SiteHtml
   # Prix de l'abonnement au site, s'il est unique
   attr_accessor :tarif
 
+  # Séparateur des unités avec les décimales, particulièrement
+  # dans un tarif
+  def separateur_decimal; @separateur_decimal ||= "," end
+  def separateur_decimal= value
+    @separateur_decimal = value
+    ::Float::separateur_decimal= value
+  end
+
+  # Devise de la monnaie
+  # def devise; self.devise || "€" end
+  def devise; @devise ||= "€" end
+  def devise= value
+    @devise = value
+    ::Float::devise= value
+  end
+
   # ---------------------------------------------------------------------
   #   Méthode de chargement des configurations
   # ---------------------------------------------------------------------

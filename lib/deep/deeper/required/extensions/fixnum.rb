@@ -24,6 +24,10 @@ class ::Fixnum
     self.to_s.in_hidden attrs
   end
 
+  def as_tarif
+    self.to_f.as_tarif
+  end
+
   # Retourne la date correspondant au fixnum (quand c'est un timestamp)
   def as_date format = :dd_mm_yyyy
     format_str =
