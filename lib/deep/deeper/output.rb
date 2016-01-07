@@ -3,7 +3,6 @@
 Le code total de sortie de la page
 =end
 require 'erb'
-class PrivateSectionError < StandardError; end
 
 class SiteHtml
 
@@ -33,10 +32,6 @@ class SiteHtml
     # Barrière raise_unless_admin
     page.content= page.error_unless_admin
     page.ouput
-  rescue PrivateSectionError => e
-    error "Section privée - Vous n'êtes pas autorisé à rejoindre cette partie du site."
-    set_params_route # ré-initialisera tous les paramètres pour reconduire à l'accueil
-    retry
   rescue Exception => e
     # ERREUR FATALE
     m = "<html><head><meta content='text/html; charset=utf-8' http-equiv='Content-type' /></head><body>" +
