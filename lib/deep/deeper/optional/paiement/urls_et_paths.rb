@@ -23,14 +23,14 @@ class SiteHtml
     def url_retour_ok
       @url_retour_ok ||= begin
         url = "#{base_url}?pres=1"
-        url << "-#{context}" unless context.nil?
+        # url << "-#{context}" unless context.nil?
         url
       end
     end
     def url_retour_cancel
       @url_retour_cancel ||= begin
         url = "#{base_url}?pres=0"
-        url << "-#{context}" unless context.nil?
+        # url << "-#{context}" unless context.nil?
         url
       end
     end

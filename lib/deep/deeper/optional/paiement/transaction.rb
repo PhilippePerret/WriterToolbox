@@ -29,6 +29,10 @@ class Paiement
   #
   def make_transaction data_transaction
 
+    debug "-> SiteHtml::Paiement#make_transaction(data_transaction :"
+    debug data_transaction.pretty_inspect
+    debug ")"
+
     @context      = data_transaction.delete(:context)
     @objet        = data_transaction.delete(:objet)
     @objet_id     = data_transaction.delete(:objet_id)
@@ -47,7 +51,7 @@ class Paiement
     unless param(:pres).nil?
       pres, tcontext = param(:pres).split('-')
       param(pres: pres)
-      @context = tcontext unless tcontext.nil?
+      # @context = tcontext unless tcontext.nil?
     end
 
     # debug "[make_transaction] param(:pres) = #{param(:pres).inspect} / @context = #{@context}"

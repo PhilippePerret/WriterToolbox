@@ -8,18 +8,52 @@
 <%= Unan::titre_h1 %>
 
 
-<% if user.unanunscript? %>
-  <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p>
-<% else %>
+<%
+
+# Si l'utilisateur est INSCRIT AU PROGRAMME 1 AN 1 SCRIPT
+if user.unanunscript?
+
+  # Si l'utilisateur vient juste de souscrire au programme
+  # UN AN UN SCRIPT, on lui fait un accueil chaleureux
+  # NOTE C'est celui qui est est contenu dans on_ok.erb, qu'on
+  # peut obtenir par site.paiement.output
+  if user.just_subscribe_unanunscript?
+
+    %><%= site.paiement.output %><%
+
+  else
+    # Si l'user en vient pas juste de s'inscrire au programme, mais
+    # est inscrit depuis un bon bout de temps
+    %>
+    <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p>
+
+  <% end
+
+# Si l'user N'EST PAS ENCORE INSCRIT au programme 1 an 1 script
+else
+  %>
   <h2>Inscription</h2>
-  <% if user.subscribed? %>
-    <%= user.check_abonnement %>
-    <%= site.paiement.output %>
-  <% elsif user.identified? %>
-    <p class='small'>Vous êtes enregistré<%= f_e %> sur le site, mais vous n'avez pas d'abonnement courant. En conséquence, notez que l'inscription au programme “Un An Un Script” offre automatiquement <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
-    <%= site.paiement.output%>
-  <% else %>
-    <%
+  <%
+  # Si l'user est ABONNÉ au site
+  if user.subscribed?
+
+    # On va vérifier le message et le coût de son inscription au
+    # programme UN AN UN SCRIT, en sachant que s'il a payé il y a
+    # moins de 6 mois, son abonnement au site est déduit de son
+    # inscription au programme.
+
+    %><%= user.check_abonnement %>
+    <%= site.paiement.output %><%
+
+  # Si l'user est seulement INSCRIT AU SITE
+  elsif user.identified?
+
+    %><p class='small'>Vous êtes enregistré<%= f_e %> sur le site, mais vous n'avez pas d'abonnement courant. En conséquence, notez que l'inscription au programme “Un An Un Script” offre automatiquement <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
+    <%= site.paiement.output %><%
+
+  # Si l'user n'est NI INSCRIT, NI ABONNÉ
+  else
+
       # Dans le cas où l'user n'est pas encore inscrit sur le site,
       # c'est une inscription complète, avec paiement de l'inscription
       # entière au programme.
@@ -32,6 +66,9 @@
     <%=
       app.require_optional '_per_route/user/signup'
       page.view('user/signup')
-    %>
-  <% end %>
-<% end %>
+
+  end
+  %>
+<%
+end
+%>

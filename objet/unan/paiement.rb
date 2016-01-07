@@ -17,12 +17,25 @@ class User
     end.in_p(class:'small')
   end
 
+  # Return TRUE si l'user peut accéder au paiement du
+  # programme Un AN UN SCRIPT
+  def can_subscribe_to_1an1script?
+    @can_subscribe_to_1an1script ||= identified? && !unanunscript?
+  end
+
+  # Return TRUE si l'user vient juste de s'inscrire au programme
+  # un an un script (dans les cinq minutes qui précèdent)
+  def just_subscribe_unanunscript?
+    raise "Doit être implémentée"
+    @has_just_subscribe_unanunscript ||= false
+  end
+
 end #/User
 
 # Pour passer par là, l'user doit être identifié (donc
 # inscrit) et ne doit pas déjà suivre le programme
 # UN AN UN SCRIPT
-if false == user.unanunscript? && user.identified?
+if user.can_subscribe_to_1an1script?
 
   app.require_optional 'paiement'
 
