@@ -22,6 +22,9 @@ class SiteHtml
   # configuration
   attr_accessor :mail
 
+  # À ajouter au sujet du mail
+  attr_accessor :mail_before_subject
+
   # HOST local et distant qui permettront de déterminer les propriétés
   # méthodes `local_url` et `distant_url`
   # {String} Host Local (par exemple 'localhost/AlwaysData/Icare_AD')

@@ -7,7 +7,8 @@ site.name         = "La Boite à outils de l'auteur (The Writer's Toolbox)"
 
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site
-site.mail         = "phil@atelier-icare.net"
+site.mail                 = "phil@atelier-icare.net"
+site.mail_before_subject  = "[WRITER'S TOOLBOX]"
 
 # Host local
 site.local_host   = 'localhost/WriterToolbox'
