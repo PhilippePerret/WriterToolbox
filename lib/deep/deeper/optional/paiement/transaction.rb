@@ -40,6 +40,7 @@ class Paiement
     @context  = data_transaction.delete(:context)
     @objet    = data_transaction.delete(:objet)
     @objet_id = data_transaction.delete(:objet_id)
+    @montant  = data_transaction.delete(:montant)
 
     case param(:pres)
     when '1'
@@ -62,7 +63,7 @@ class Paiement
       # pour pouvoir payer (note : ce formulaire est défini dans la
       # page paiement.erb mais c'est une méthode d'helper qui fourni
       # le code du formulaire : site.paiement.form).
-      init( data_transaction )
+      init
       self.output = Vue::new('user/paiement/form', base_folder, self).output
     end
   end
@@ -117,8 +118,8 @@ class Paiement
     @facture ||= begin
       <<-HTML
 <p>Bonjour #{user.pseudo},</p>
-<p>Veuillez trouver ci-dessous votre facture pour votre paiement.</p>
-<table type="fixed">
+<p>Veuillez trouver ci-dessous votre facture pour votre dernier paiement.</p>
+<table type="fixed" style="border:1px solid" padding="4">
   <colsgroup>
     <col width="200" />
     <col width="600" />

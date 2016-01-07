@@ -54,7 +54,7 @@ class SiteHtml
     end
 
     # {String} Le montant en version Paypal
-    # C'est une version avec les centimes
+    # C'est une version avec les centimes mais sans devise
     def montant_paypal
       @montant_paypal ||= begin
         case montant
@@ -83,13 +83,9 @@ class SiteHtml
     # SetExpressCheckout pour définir le paiement, afin de définir l'action
     # du formulaire du bouton PayPal. Note : L'icarien n'est pas encore sur la
     # page de paiement, elle lui sera affichée à la fin de ce processus.
-    #
-    # +data+ {Hash} Doit contenir au minimum :montant, le montant du
-    # paiement.
-    def init data
+    def init
 
-      raise "Il faut fournir le montant du paiement en argument (:montant)" if data[:montant].nil?
-      @montant = data.delete(:montant)
+      raise "Il faut fournir le montant du paiement (:montant)" if montant.nil?
 
       command = Command::new(self, "Initialisation du paiement")
       # On ajoute les "données clés" que sont la devise, les

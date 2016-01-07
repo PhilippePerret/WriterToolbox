@@ -5,14 +5,26 @@
 # pas au programme 1an1script.
 #
 %>
-<%
-# Barrière non identifié
-raise "Je ne vous connais pas, vous n'avez donc peut-être rien à faire ici." unless user.identified?
-%>
+<% raise_unless_identified %>
+
 <% if user.paiements_ok? %>
   <h1>Section des paiements</h1>
-  <p><%= user.pseudo %>, vous êtes à jour de vos paiements, vous n'avez donc rien à payer.</p>
-  <p>Si vous décidez de poursuivre l'aventure sur le site, votre prochain paiement devra se faire le <%= user.next_paiement.as_human_date %>.</p>
+  <%
+    # Si le paiement vient tout juste d'être effectué
+    if user.last_abonnement && user.last_abonnement > (NOW.to_i - 3600)
+      # ---------------------------------------------------------------------
+      # L'user passe ici lorsqu'il vient d'effectuer le paiement
+      # de son abonnement au site (dans l'heure)
+      # ---------------------------------------------------------------------
+  %>
+    <p><%= user.pseudo %>, heureux de vous compter parmi les heureux abonnés du site.</p>
+  <%
+    else
+      # Si l'user est déjà abonné
+  %>
+    <p><%= user.pseudo %>, vous êtes à jour de vos paiements, vous n'avez donc rien à payer.</p>
+    <p class="small">Votre prochain paiement devra s'effectuer le <%= user.next_paiement.as_human_date %>.</p>
+  <% end %>
 <% else %>
   <%= site.paiement.output %>
 <% end %>
