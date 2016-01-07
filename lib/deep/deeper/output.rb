@@ -25,9 +25,17 @@ class SiteHtml
     execute_route
     page.preload
     page.output
+  rescue ErrorUnidentified => e
+    # Barrière raise_unless_identified
+    page.content= page.error_unless_identified
+    page.output
+  rescue ErrorNoAdmin => e
+    # Barrière raise_unless_admin
+    page.content= page.error_unless_admin
+    page.ouput
   rescue PrivateSectionError => e
     error "Section privée - Vous n'êtes pas autorisé à rejoindre cette partie du site."
-    set_params_route # ré-initialisera tous les paramètres
+    set_params_route # ré-initialisera tous les paramètres pour reconduire à l'accueil
     retry
   rescue Exception => e
     # ERREUR FATALE

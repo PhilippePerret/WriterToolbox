@@ -30,6 +30,14 @@ class Page
   def content
     @content ||= (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
   end
+  # Définir le contenu à l'aide de `page.content = ...`
+  # Pour le moment, seulement utilisé pour les protections de sections
+  # et de modules
+  # Noter que c'est @content_route qui est défini (cf. plus bas) pour
+  # garder le code d'affichage dans un section#content
+  def content= value
+    @content_route = value
+  end
 
   def left_margin
     @left_margin ||= begin
@@ -54,7 +62,7 @@ class Page
   end
 
   def login_box_unless_identified
-    return "" if user.identified? || (site.current_route && ['user/signup','unan/signup'].include?(site.current_route.route))
+    return "" if user.identified? || (site.current_route && ['user/signup','unan/signup', 'user/signin'].include?(site.current_route.route))
     login_box
   end
   # {StringHTML} Return la boite d'identification
