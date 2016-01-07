@@ -26,6 +26,10 @@ class Console
 
         vide_table_paiements
 
+      when "remove table paiements"
+
+        remove_table_paiements
+
       else
         # Dans le cas où la ligne n'a pas pu être interprétée avant,
         # on essaie de l'exécuter telle quelle
@@ -59,6 +63,15 @@ class Console
       "Impossible de vider la table des paiements en ONLINE"
     end
 
+  end
+
+  def remove_table_paiements
+    if OFFLINE
+      User::table_paiements.remove
+      "Table des paiements détruite avec succès."
+    else
+      "Impossible de détruire la table des paiements en ONLINE. On perdrait toutes les données."
+    end
   end
 
   def montre_table table_ref

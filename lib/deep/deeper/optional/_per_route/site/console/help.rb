@@ -38,6 +38,10 @@ class Console
   <dt>`vide table paiements`</dt>
   <dd>Vider la table des paiements, c'est-à-dire les supprime tous. À utiliser seulement en offline…</dd>
 
+  <dt>`remove table paiements`</dt>
+  <dd>ATTENTION : Détruit complètement la table.</dd>
+  <dd>La méthode étant "dangereuse", elle n'est possible qu'en OFFLINE.</dd>
+
   <dt>`montre table &lt;database&gt;.&lt;table&gt;`</dt>
   <dd>Pour afficher le contenu d'une table. NON IMPLÉMENTÉE.</dd>
   <dd>Variante : `montre` peut être remplacé par `affiche`.</dd>
