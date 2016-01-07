@@ -14,10 +14,10 @@ class ErrorNoAdmin < StandardError; end
 # Barrière anti non-identifié
 # Cf. RefBook > Protection.md
 def raise_unless_identified
-  raise ErrorUnidentified
+  raise ErrorUnidentified unless user.identified?
 end
 # Barrière anti non-administrateur
 # Cf. RefBook > Protection.md
 def raise_unless_admin
-  raise ErrorNoAdmin
+  raise ErrorNoAdmin unless user.admin?
 end
