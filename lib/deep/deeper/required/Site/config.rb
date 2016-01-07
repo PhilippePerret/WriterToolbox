@@ -17,6 +17,11 @@ class SiteHtml
   # officiels
   attr_accessor :official_designation
 
+  # Mail de l'administrateur du site.
+  # Définir `site.mail = "adresse@chez.moi"` dans le fichier de
+  # configuration
+  attr_accessor :mail
+
   # HOST local et distant qui permettront de déterminer les propriétés
   # méthodes `local_url` et `distant_url`
   # {String} Host Local (par exemple 'localhost/AlwaysData/Icare_AD')
