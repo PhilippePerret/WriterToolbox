@@ -11,7 +11,7 @@ class SiteHtml
     class << self
 
       # Pour savoir si c'est un test ou en live
-      # TODO À DÉFINIR
+      # TODO À DÉFINIR (COMMENT ? Simplement ONLINE/OFFLINE ?)
       def sandbox?
         true
       end

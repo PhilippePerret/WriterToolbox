@@ -7,11 +7,13 @@
     <input type="text" id="login_mail" name="login[mail]" placeholder="Votre mail" value="" />
     <input type="password" id="login_password" name="login[password]" placeholder="Votre code secret" value="" />
     <div class='submit'>
-      <span>&nbsp;</span>
-      <span class='ulink'><a href="user/signup">S'inscrire</a></span>
-      <span> </span>
-      <span class='ulink'><a href="user/lost_password">Code oublié</a></span>
-      <span> </span>
+      <div id="login_ulinks">
+        <span>&nbsp;</span>
+        <span class='ulink'><a href="user/signup">S'inscrire</a></span>
+        <span> </span>
+        <span class='ulink'><a href="user/lost_password">Code oublié</a></span>
+        <span> </span>
+      </div>
       <input type="submit" value="OK" onclick="return $.proxy(User,'check_login')()" />
       <span>&nbsp;</span>
     </div>

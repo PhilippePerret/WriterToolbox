@@ -7,11 +7,11 @@
 <h1>Outils d'écriture</h1>
 <p class='small italic'>
   <% if user.paiements_ok? %>
-      <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>cliquer sur le nom de l'outil</strong> pour l'afficher.
+      <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>rejoindre tous les outils</strong>.
   <% elsif user.identified? %>
-    <%= user.pseudo %>, vous êtes inscrit<%= f_e %> mais votre paiement n'est pas à jour, donc vous ne pouvez pas utiliser certains outils présentés ici. Vous pouvez y remedier en payant l'<a href="user/paiement">abonnement annuel de <%= site.tarif_humain %></a>.
+    <%= user.pseudo %>, vous êtes inscrit<%= f_e %> mais votre <a href="user/paiement">abonnement</a> n'est pas à jour (<%= site.tarif_humain %>/an), donc vous ne pouvez pas utiliser certains outils présentés ici.
   <% else %>
-    Veuillez noter que sans être inscrit et sans abonnement aux outils, vous ne pouvez pas les afficher en cliquant sur leur nom. <strong>Pour y remédier</strong>, vous pouvez <a href="user/signup">vous inscrire</a> et <a href="user/paiement">payer votre abonnement annuel</a> de <%= site.tarif_humain %>.
+    Veuillez noter que sans <a href="user/signin">vous identifier</a> (si vous êtes déjà inscrit), sans <a href="user/signup">vous inscrire</a> et sans <a href="user/paiement">s'abonner aux outils</a> (<%= site.tarif_humain %>/an), vous ne pouvez pas les utiliser.
   <% end %>
 </p>
 <%= SiteHtml::Tool::output %>

@@ -19,14 +19,6 @@ class Paiement
   # en argument de make_transaction.
   attr_reader :objet_id
 
-  # Dossier de base du paiement. Par défaut, c'est le dossier './objet'
-  # et il s'agit du paiement pour le site lui-même.
-  def base_folder
-    @base_folder ||= begin
-      context.nil? ? site.folder_objet : (site.folder_objet + context)
-    end
-  end
-
   # = main =
   #
   # C'est la méthode principale qui doit être appelée
@@ -37,10 +29,11 @@ class Paiement
   #
   def make_transaction data_transaction
 
-    @context  = data_transaction.delete(:context)
-    @objet    = data_transaction.delete(:objet)
-    @objet_id = data_transaction.delete(:objet_id)
-    @montant  = data_transaction.delete(:montant)
+    @context      = data_transaction.delete(:context)
+    @objet        = data_transaction.delete(:objet)
+    @objet_id     = data_transaction.delete(:objet_id)
+    @montant      = data_transaction.delete(:montant)
+    @description  = data_transaction.delete(:description)
 
     case param(:pres)
     when '1'
@@ -64,8 +57,53 @@ class Paiement
       # page paiement.erb mais c'est une méthode d'helper qui fourni
       # le code du formulaire : site.paiement.form).
       init
-      self.output = Vue::new('user/paiement/form', base_folder, self).output
+      self.output = Vue::new('user/paiement/form', nil, self).output
     end
+  end
+
+  # = Main =
+  #
+  # Méthode appelée quand on arrive sur la page. Elle commence par appeler
+  # SetExpressCheckout pour définir le paiement, afin de définir l'action
+  # du formulaire du bouton PayPal. Note : L'icarien n'est pas encore sur la
+  # page de paiement, elle lui sera affichée à la fin de ce processus.
+  def init
+
+    raise "Il faut fournir le montant du paiement (:montant)" if montant.nil?
+
+    command = Command::new(self, "Initialisation du paiement")
+    # On ajoute les "données clés" que sont la devise, les
+    # URL OK et Cancel etc.
+    command << data_key
+
+    debug "url_retour_ok : #{url_retour_ok.inspect}"
+    debug "url_retour_cancel : #{url_retour_cancel.inspect}"
+
+    command << {
+      method:                 "SetExpressCheckout",
+      localecode:             "FR",
+      cartbordercolor:        "008080",
+      paymentrequest_0_amt:   montant_paypal,
+      paymentrequest_0_qty:   "1"
+      # # Détails
+      # l_paymentrequest_0_name0:    "Module d'apprentissage #{current_user.current_module.name}",
+      # l_paymentrequest_0_number0:  "#{current_user.current_module.id[3..-1]}"
+    }
+
+    # Exécution de la requête Paypal, sur le site PayPal
+    command.exec
+
+    # En cas de failure, on affiche le message d'erreur
+    raise command.error if command.failure?
+
+    # On définit le numéro du ticket, par commodité en propriété
+    # du paiement, en l'empruntant à la commande.
+    @token = command.token
+
+  rescue Exception => e
+    error "Un problème est malheureusement survenue au cours de l'instanciation du paiement (#init) : #{e.message}"
+    debug e.message
+    debug e.backtrace.join("\n")
   end
 
   # Méthode appelée suite au paiement réussi par l'user
@@ -92,15 +130,6 @@ class Paiement
   # Enregistrer le paiement
   def save_paiement
     self.class::table_paiements.insert(data_paiement)
-  end
-  def data_paiement
-    @data_paiement ||= {
-      user_id:    user.id,
-      objet_id:   objet_id,
-      montant:    montant,
-      facture:    token,
-      created_at: Time.now.to_i
-    }
   end
 
   # Envoyer un mail de confirmation à l'user

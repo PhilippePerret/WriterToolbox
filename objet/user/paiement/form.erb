@@ -3,9 +3,8 @@
 #
 # NOTE C'est l'instance {SiteHtml::Paiement} qui est bindé à la vue
 %>
-<h1>Section de paiement</h1>
 <div id="cadre_form_paiement">
-  <p>Cliquez sur le bouton ci-dessous pour rejoindre PayPal et procédez en toute sécurité au paiement de l'abonnement (<strong><%= montant_humain %></strong>).</p>
+  <p>Cliquez sur le bouton ci-dessous pour rejoindre PayPal et procéder en toute sécurité au <%= description %> (<strong><%= montant_humain %></strong>).</p>
   <%
     description_paiement = description || "Paiement de #{montant_humain}"
   %>

@@ -74,7 +74,7 @@ class Page
   end
 
   def login_box_unless_identified
-    return "" if user.identified? || (site.current_route && ['user/signup','user/signup?in=unan', 'user/signin'].include?(site.current_route.route))
+    return "" if user.identified? || (site.current_route && ['user/signup','user/signup?in=unan', 'user/signin', 'user/paiement'].include?(site.current_route.route))
     login_box
   end
   # {StringHTML} Return la boite d'identification

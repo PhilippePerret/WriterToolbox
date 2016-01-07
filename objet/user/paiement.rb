@@ -14,7 +14,8 @@ end
 # Instancier un paiement et le traiter en fonction de
 # param(:pres)
 site.paiement.make_transaction(
-  montant:    site.tarif,
-  objet:      "Abonnement d'un an au site “#{site.name}”",
-  objet_id:   "ABONNEMENT" # Pour la table
+  montant:      site.tarif,
+  objet:        "Abonnement d'un an au site “#{site.name}”",
+  objet_id:     "ABONNEMENT", # Pour la table
+  description:  "paiement de l'abonnement d'un an" # pour le formulaire
 )

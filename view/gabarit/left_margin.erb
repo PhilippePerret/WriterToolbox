@@ -13,20 +13,25 @@ if user.identified?
   <a href="unan/home" id="link_uaus">UN AN<br>UN SCRIPT</a>
   <a href="user/<%= user.id %>/deconnexion">Déconnexion</a>
   <a href="tool/list">Outils</a>
-  <hr />
   <% if user.admin? %>
+    <hr />
     <a href="site/console">Console</a>
+  <% end %>
   <%
-    elsif user.subscribed?
-      # Quand l'user est abonné au site, on lui présente un lien
-      # vers tous les outils
+  if user.subscribed?
+    # Quand l'user est abonné au site, on lui présente un lien
+    # vers tous les outils
   %>
-    <%= "Analyses".in_a(href:'analyse/home') %>
-    <%= "Narration".in_a(href:'cnarration/home') %>
-    <%= "Forum".in_a(href:'forum/home') %>
-    <%= "Calculateur".in_a(href: 'calculateur/home') %>
-    <%= "Scénodico".in_a(href:'scenodico/home') %>
-    <%= "Filmodico".in_a(href:'filmodico/home') %>
+    <hr />
+    <div id="leftm_tools">
+      <%= "Forum".in_a(href:'forum/home') %>
+      <%= "Narration".in_a(href:'cnarration/home') %>
+      <%= "Analyses".in_a(href:'analyse/home') %>
+      <%= "Calculateur".in_a(href: 'calculateur/home') %>
+      <%= "Scénodico".in_a(href:'scenodico/home') %>
+      <%= "Filmodico".in_a(href:'filmodico/home') %>
+      <%= "Factures".in_a(href:'factures/home') %>
+    </div>
 
   <% end %>
 

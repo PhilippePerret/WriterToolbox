@@ -43,9 +43,8 @@ class User
   def abonnement_recent?(nombre_mois = 6)
     return false if @id.nil? # pour guest
     return false if User::table_paiements.exist? == false
-    last_paiement_abonnement = User::table_paiements.select(where:"user_id = #{id} AND objet_id = 'ABONNEMENT'", order:"created_at DESC", limit:1).values.first
-    return false if last_paiement_abonnement.nil?
-    last_paiement_abonnement > (NOW - (30.5*nombre_mois).days)
+    return false if last_abonnement.nil?
+    last_abonnement > (NOW.to_i - (30.5*nombre_mois).to_i.days)
   end
 
 end

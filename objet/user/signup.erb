@@ -7,12 +7,16 @@
 #      l'inscription au programme UN AN UN SCRIPT.
 #
 signup_for_unanunscript = site.current_route.context == "unan"
+signup_for_site = !signup_for_unanunscript
 %>
 <% unless signup_for_unanunscript %>
   <h2>Inscription</h2>
 <% end %>
+
 <% if user.identified? %>
+
   <p>Voyons, vous êtes déjà inscrit<%= user.f_e %>, <%= user.pseudo %> ! :-;</p>
+
 <% else %>
   <%
   # ---------------------------------------------------------------------

@@ -14,6 +14,12 @@ class Unan
     def tarif_humain
       @tarif_humain ||= tarif.as_tarif
     end
+    alias :montant_humain :tarif_humain
+
+    def description
+      @description ||= ""
+    end
+    
     def tarif
       @tarif ||= 29.80
     end
@@ -24,5 +30,7 @@ class Unan
         titre.in_a(href:"unan/home").in_h1
       end
     end
+
+    def bind; binding() end
   end # << self
 end

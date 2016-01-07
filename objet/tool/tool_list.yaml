@@ -5,7 +5,7 @@ unan:
   home:     'unan/home'
   description: |
     Ce programme unique en son genre vous permet de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
-    Ce programme d'un an nécessite une <a href="user/signup?in=unan">inscription séparée</a> et possède son propre coût de <strong>#{Unan::tarif_humain} pour l'année complète</strong> (notez que l'inscription à ce programme donne accès à tous les autres outils du site).
+    Ce programme d'un an nécessite une <a href="user/paiement?in=unan">inscription séparée</a> et possède son propre coût de <strong>#{Unan::tarif_humain} pour l'année complète</strong> (notez que l'inscription à ce programme donne accès à tous les autres outils du site).
 
 forum:
   name:     Le Forum
