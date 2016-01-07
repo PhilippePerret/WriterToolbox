@@ -1,0 +1,49 @@
+---
+unan:
+  name:     Le Programme “Un An Un Script”
+  folder:   unan
+  home:     'unan/home'
+  description: |
+    Ce programme unique en son genre vous permet de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
+    Ce programme d'un an nécessite une <a href="unan/signup">inscription séparée</a> et possède son propre coût de <strong>#{Unan::tarif_humain} pour l'année complète</strong> (notez que l'inscription à ce programme donne accès à tous les autres outils du site).
+
+forum:
+  name:     Le Forum
+  folder:   forum
+  home:     'forum/home'
+  description: |
+    Le forum réservé exclusivement aux membres de la boite à outils offre un espace inédit où chaque auteur peut trouver les réponses aux questions qu'il se pose, qu'elles soient générales ou particulières à son projet. Par son système de hiérarchie inspirée des meilleurs sites de connaissance, ce forum se distingue par la qualité des connaissances véhiculés de tous les sites d'écriture dont la plupart colportent nombre d'idées précconçues, erronnées ou falacieuses.
+
+analyse:
+  name:       Les Analyses de films
+  folder:     analyse
+  home:       analyse/home
+  description: |
+    Cette section à la pointe de la technologie vous permet de tirer le maximum de profit des films de tout genre et de toute provenance, grâce à des analyses approfondies, instructives, donc indispensables.
+
+calculateur:
+  name:       Le Calculateur de structure
+  folder:     calculateur
+  home:       calculateur/home
+  description: |
+    Utilisé par de nombreux auteurs depuis de nombreuses années, ce calculateur vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
+
+cnarration:
+  name:       La collection Narration
+  folder:     cnarration
+  home:       cnarration/home
+  description: |
+    Profitez en ligne de la future version papier des cours narratifs de <strong>Philippe Perret</strong>, auteur et pédagogue qui œuvre depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel.
+
+scenodico:
+  name:       Le Scénodico
+  folder:     scenodico
+  home:       scenodico/home
+  description: |
+    Le <strong>dictionnaire encyclopédique</strong> indispensable du scénariste, comportant des centaines de définitions de tous les termes propres à l'écriture, au scénario, au roman ou à la BD.
+    En plus des définitions complètes, il comporte également de nombreux liens vers les pages de cours en ligne pour parfaire sa connaissance du sujet abordé.
+
+autres:
+  name:       Autres outils
+  description: |
+    On trouve également d'autres outils plus ponctuels, tel que le <strong>Filmodico</strong>, la <strong>fabrique de facture</strong> ou les <strong>didactiels</strong> qui permettent de se familiariser ou d'apprendre en profondeur l'écriture.
