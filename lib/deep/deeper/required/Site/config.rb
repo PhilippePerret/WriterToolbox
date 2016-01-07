@@ -24,6 +24,8 @@ class SiteHtml
 
   # À ajouter au sujet du mail
   attr_accessor :mail_before_subject
+  # La signature de tous les mails (au format HTML)
+  attr_accessor :mail_signature
 
   # HOST local et distant qui permettront de déterminer les propriétés
   # méthodes `local_url` et `distant_url`

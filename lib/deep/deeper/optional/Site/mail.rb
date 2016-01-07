@@ -148,7 +148,7 @@ module MailModuleMethods
   end
 
   def signature
-    set_class(:signature, SiteHtml::Mail::respond_to?(:signature) ? SiteHtml::Mail::signature : "") if get_class(:signature).nil?
+    set_class(:signature, site.mail_signature ? site.mail_signature : "") if get_class(:signature).nil?
     get_class :signature
   end
 
