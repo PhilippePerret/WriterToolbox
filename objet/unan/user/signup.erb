@@ -6,6 +6,8 @@
 # est totalement inconnu et il faut alors lui proposer le formulaire
 # d'inscription du site en général, plus l'inscription au programme.
 %>
+<% debug "-> unan/user/signup.erb" %>
+
 <%= Unan::titre_h1 %>
 
 <% if user.unanunscript? %>
@@ -14,11 +16,14 @@
   <h2>Inscription</h2>
   <% if user.identified? %>
     <p>Vous êtes déjà inscrit sur le site des outils de l'auteur, il vous suffit donc de vous inscrire au programme “Un An Un Script” pour le suivre.</p>
+    <%=  %>
   <% else %>
-    <%
-    app.require_optional '_per_route/user/signup'
+    <p class='small'>L'inscription au programme “Un An Un Script” vous inscrit également au site et vous offre donc un complet accès à tous les autres outils. Merci de bien vouloir remplir le formulaire ci-dessous.</p>
+    <%=
+      app.require_optional '_per_route/user/signup'
+      page.view('user/signup')
     %>
-    <p class='small'>L'inscription au programme “Un An Un Script” vous donne également accès à tous les outils du site des Outils d'auteurs. Merci de bien vouloir remplir le formulaire ci-dessous.</p>
-    <%= page.view('user/signup') %>
   <% end %>
 <% end %>
+
+<% debug "<- unan/user/signup.erb" %>

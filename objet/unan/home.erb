@@ -6,7 +6,8 @@
 <%
   # LES OUTILS SI L'UTILISATEUR EST L'ADMINISTRATEUR
   if user.admin? %>
-  <div>
+  <div class='admin_tools right small'>
+    <%= "Outils administrateur".in_div %>
   <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
   </div>
   <% end %>
@@ -34,7 +35,7 @@ if user.identified?
       # Un user identifié mais qui ne suit pas le programme
       # un an un script
 %>
-  <p>Vous ne suivez pas le programme “Un An Un Script”. Que désirez-vous faire ?</p>
+  <p>Vous ne suivez pas encore le programme “Un An Un Script”. Que désirez-vous faire ?</p>
   <ul>
     <li><%= "Découvrir le programme".in_a(href:'overview/home?in=unan') %></li>
     <li><%= "S'inscrire au programme".in_a(href:"user/signup?in=unan") %> </li>
