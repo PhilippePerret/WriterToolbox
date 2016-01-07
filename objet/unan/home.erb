@@ -52,16 +52,18 @@ if user.identified?
 else
 
   # Un visiteur qui n'est pas identifié
-  # On lui présente simplement le panneau explicatif
+  # On lui présente simplement le panneau explicatif avec des liens pour
+  # s'inscrire au programme ou pour en savoir plus.
 
 %>
 <p>
-  Le pari de ce programme est simple : que vous soyez ou non expérimenté, vous pouvez parvenir à écrire le script (le scénario) d'un film en un an, tout en suivant une formation complète à la dramaturgie.
+  Le pari de ce <strong>programme d'écriture</strong> est très simple : que vous soyez ou non expérimenté(e), que vous ayez des connaissances poussées en dramaturgie ou non, que vous ayez déjà essayé l'expérience d'une écriture complète ou non, ce programme est là pour vous faire <strong>parvenir à écrire votre roman, votre scénario de film ou de BD</strong>, en un temps donné d'environ un an — suivant le rythme choisis —, tout en vous faisant suivre une <strong>formation complète à la narration</strong>, l'art d'écrire des histoires.
 </p>
+<ul>
+  <li><a href="overview/home?in=unan">En apprendre plus sur ce programme</a></li>
+  <li><a href="user/paiement?in=unan">S'inscrire à ce programme d'un an (pour seulement <%= Unan::tarif_humain %>)</li>
+</ul>
+
 <%
-
-
 end
-
-
 %>
