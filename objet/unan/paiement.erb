@@ -7,6 +7,7 @@
 %>
 <%= Unan::titre_h1 %>
 
+
 <% if user.unanunscript? %>
   <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p>
 <% else %>
@@ -15,7 +16,7 @@
     <%= user.check_abonnement %>
     <%= site.paiement.output %>
   <% elsif user.identified? %>
-    <p>Vous êtes enregistré<%= f_e %> sur le site, mais vous n'avez pas d'abonnement courant. En conséquence, notez que l'inscription au programme “Un An Un Script” offre automatiquement <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
+    <p class='small'>Vous êtes enregistré<%= f_e %> sur le site, mais vous n'avez pas d'abonnement courant. En conséquence, notez que l'inscription au programme “Un An Un Script” offre automatiquement <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
     <%= site.paiement.output%>
   <% else %>
     <%

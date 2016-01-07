@@ -4,6 +4,7 @@
 # Note : concerne seulement le paiement pour l'abonnement aux outils
 # pas au programme 1an1script.
 #
+debug "-> ./objet/user/paiement.erb"
 %>
 <% raise_unless_identified %>
 
@@ -20,7 +21,7 @@
     <%= site.paiement.output %>
   <%
     else
-      # Si l'user est déjà abonné
+      # Si l'user est déjà abonné depuis plus d'un jour
   %>
     <p><%= user.pseudo %>, vous êtes à jour de vos paiements, vous n'avez donc rien à payer.</p>
     <p class="small">Votre prochain paiement devra s'effectuer le <%= user.next_paiement.as_human_date %>.</p>
@@ -28,3 +29,6 @@
 <% else %>
   <%= site.paiement.output %>
 <% end %>
+<%
+debug "<- ./objet/user/paiement.erb"
+%>

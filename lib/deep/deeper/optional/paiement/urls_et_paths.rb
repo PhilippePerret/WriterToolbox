@@ -22,20 +22,16 @@ class SiteHtml
     # qui dépend de ONLINE ou OFFLINE.
     def url_retour_ok
       @url_retour_ok ||= begin
-        url = "#{base_url}"
-        qs = Array::new
-        qs << "in=#{context}" unless context.nil?
-        qs << "pres=1"
-        url += "?#{qs.join('&')}"
+        url = "#{base_url}?pres=1"
+        url << "-#{context}" unless context.nil?
+        url
       end
     end
     def url_retour_cancel
       @url_retour_cancel ||= begin
-        url = "#{base_url}"
-        qs = Array::new
-        qs << "in=#{context}" unless context.nil?
-        qs << "pres=0"
-        url += "?#{qs.join('&')}"
+        url = "#{base_url}?pres=0"
+        url << "-#{context}" unless context.nil?
+        url
       end
     end
 
@@ -45,11 +41,11 @@ class SiteHtml
 
     # Adresse locale pour le paiement (quand sandbox)
     def local_url
-      @local_url ||= "#{site.local_url}/user/paiement"
+      @local_url ||= "#{site.local_url}/#{context || 'user'}/paiement"
     end
     # URL distant pour le paiement (non sandbox)
     def distant_url
-      @distant_url ||= "#{site.distant_url}/user/paiement"
+      @distant_url ||= "#{site.distant_url}/#{context || 'user'}/paiement"
     end
 
     def url_paypal

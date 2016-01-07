@@ -56,6 +56,7 @@ class SiteHtml
     # dans les données de l'Icarien.
     #
     def valider_paiement
+      debug "-> valider_paiement"
       # Instancier une commande Paypal
       command = Command::new(self, "Validation du paiement effectué")
 
@@ -70,22 +71,29 @@ class SiteHtml
       }
       # === Exécuter la requête ===
       command.exec
+
+      debug "Succès de la commande pour valider le paiement : #{command.success?.inspect}"
+
       # Test du résultat
       if command.success?
 
-        # Enregistrement du paiement dans la base de données
-        save_paiement
-        # Envoi d'un mail à l'utilisateur pour lui confirmer
-        # le paiement
-        send_mail_to_user
+        unless context
+          # Enregistrement du paiement dans la base de données
+          save_paiement
+          # Envoi d'un mail à l'utilisateur pour lui confirmer
+          # le paiement
+          send_mail_to_user
 
-        # S'il y a une méthode de fin de processus, il faut
-        # l'appeler. Dans le cas contraire, on s'arrête là.
-        after_validation_paiement if self.respond_to?(:after_validation_paiement)
+          # S'il y a une méthode de fin de processus, il faut
+          # l'appeler. Dans le cas contraire, on s'arrête là.
+          after_validation_paiement if self.respond_to?(:after_validation_paiement)
+        end
 
         return true
       else
-        return error "Une erreur s'est produite : #{command.response[:l_shortmessage0]} / #{command.response[:l_longmessage0]}"
+        err =  "Une erreur s'est produite : #{command.response[:l_shortmessage0]} / #{command.response[:l_longmessage0]}"
+        debug err
+        return error err
       end
 
     rescue Exception => e

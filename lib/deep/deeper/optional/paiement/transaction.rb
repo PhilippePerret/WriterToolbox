@@ -35,6 +35,23 @@ class Paiement
     @montant      = data_transaction.delete(:montant)
     @description  = data_transaction.delete(:description)
 
+    # Analyse du retour de Paypal
+    # Au début, j'avais mis deux variables en query-string,
+    # :pres et :in mais visiblement Paypal ne tient compte que
+    # d'une seule variable. Donc, à présent, je mets le
+    # context, s'il existe, au bout de la valeur de pres :
+    #   param(:pres) = "(1|2)-<context>"
+    # Donc, il faut analyser :pres et en extraire le context
+    # si nécessaire.
+    paiement_res = param(:pres)
+    unless param(:pres).nil?
+      pres, tcontext = param(:pres).split('-')
+      param(pres: pres)
+      @context = tcontext unless tcontext.nil?
+    end
+
+    # debug "[make_transaction] param(:pres) = #{param(:pres).inspect} / @context = #{@context}"
+
     case param(:pres)
     when '1'
       # On passe par ici lorsque le paiement a été effectué avec succès
@@ -57,6 +74,12 @@ class Paiement
       # page paiement.erb mais c'est une méthode d'helper qui fourni
       # le code du formulaire : site.paiement.form).
       init
+      # Noter que le formulaire est toujours le même, quel que soit
+      # le context qui appelle. Il faut définir précisément les
+      # propriétés :objet et :description transmises à la méthode
+      # make_transaction pour modifier l'affichage.
+      # Le context doit aussi pouvoir répondre à :montant pour fixer
+      # le montant attendu.
       self.output = Vue::new('user/paiement/form', nil, self).output
     end
   end
@@ -114,9 +137,9 @@ class Paiement
     @token    = param(:token)
     @payer_id = param(:PayerID)
     if valider_paiement
-      self.output = Vue::new('user/paiement/on_ok', base_folder, self).output
+      self.output = Vue::new("#{context || 'user'}/paiement/on_ok", nil, self).output
     else
-      self.output = Vue::new('user/paiement/on_error', base_folder, self).output
+      self.output = Vue::new("#{context || 'user'}/paiement/on_error", nil, self).output
     end
   end
 
@@ -129,11 +152,14 @@ class Paiement
 
   # Enregistrer le paiement
   def save_paiement
+    debug "-> save_paiement"
+    debug "= data_paiement : #{data_paiement.inspect}"
     self.class::table_paiements.insert(data_paiement)
   end
 
   # Envoyer un mail de confirmation à l'user
   def send_mail_to_user
+    debug "-> send_mail_to_user"
     site.send_mail(
       from: site.mail,
       to:   user.mail,

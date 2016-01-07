@@ -2,6 +2,12 @@
 class SiteHtml
 class Paiement
 
+  # Pour que la commande définisse le montant en revenant
+  # de PayPal.
+  def montant= value
+    @montant = value
+  end
+
   # Data enregistrées dans la base de données pour
   # le paiement (table users.paiements)
   def data_paiement

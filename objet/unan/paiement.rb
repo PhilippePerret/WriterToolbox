@@ -1,4 +1,5 @@
 # encoding: UTF-8
+debug "-> ./objet/unan/paiement.rb"
 class User
 
   # Méthode appelée lorsque l'user est déjà inscrit sur le
@@ -13,7 +14,7 @@ class User
       "#{user.pseudo}, puisque vous venez récemment de vous inscrire — moins de 6 mois —, votre abonnement au site de #{site.tarif_humain} est déduit de votre inscription de #{Unan::tarif_humain} au programme “Un An Un Script”. Vous n'avez donc que <strong>#{tarif_unanunscript.as_tarif}</strong> à payer ! :-)"
     else
       "#{user.pseudo}, votre abonnement au site remontant à plus de 6 mois, vous devez payer l'inscription complète au programme, soit #{tarif_unanunscript.as_tarif}."
-    end.in_p
+    end.in_p(class:'small')
   end
 
 end #/User
@@ -36,3 +37,5 @@ if false == user.unanunscript? && user.identified?
   )
 
 end
+
+debug "<- ./objet/unan/paiement.rb"
