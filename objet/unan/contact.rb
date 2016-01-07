@@ -64,8 +64,8 @@ class Unan
       @sender ||= data[:mail] || (user.identified? ? user.mail : nil)
     end
 
-    def confirmation_mail
-      @confirmation_mail ||= data[:mail_confirmation]
+    def mail_confirmation
+      @mail_confirmation ||= data[:mail_confirmation]
     end
 
     def data
