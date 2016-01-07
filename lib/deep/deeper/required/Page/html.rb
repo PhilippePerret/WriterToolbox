@@ -16,21 +16,6 @@ class Page
     end.join("\n")
   end
 
-  # Code CSS à écrire en dur dans la balise <style> de la page
-  # html
-  def raw_css
-    low_opacity_header = user.identified? ? "0.14" : "1"
-    low_opacity_margin = user.identified? ? "0.352" : "1"
-    <<-CSS
-<style type="text/css">
-section#header{opacity:#{low_opacity_header}}
-section#header:hover{opacity:1}
-section#left_margin{opacity:#{low_opacity_margin}}
-section#left_margin:hover{opacity:1}
-</style>
-    CSS
-  end
-
   def css
     allcss = Array::new
     allcss += Dir["#{site.folder_view}/css/**/*.css"]
@@ -42,6 +27,21 @@ section#left_margin:hover{opacity:1}
       "<link charset='utf-8' href='#{css_path}' rel='stylesheet' type='text/css' />"
     end.join("\n")
 
+  end
+
+  # Code CSS à écrire en dur dans la balise <style> de la page
+  # html
+  def raw_css
+    low_opacity_header = user.identified? ? "0.14" : "1"
+    low_opacity_margin = user.identified? ? "0.352" : "1"
+    <<-CSSS
+<style type="text/css">
+section#header{opacity:#{low_opacity_header}}
+section#header:hover{opacity:1}
+section#left_margin{opacity:#{low_opacity_margin}}
+section#left_margin:hover{opacity:1}
+</style>
+    CSSS
   end
 
 end
