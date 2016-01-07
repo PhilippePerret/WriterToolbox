@@ -12,6 +12,15 @@ class User
     @id == nil
   end
 
+  # Return true si le visiteur est une femme
+  def femme?
+    identified? && sexe == 'F'
+  end
+  # Return true si le visiteur est un homme
+  def homme?
+    !identified? || sexe == 'H'
+  end
+
   def identified?
     @id != nil
   end
