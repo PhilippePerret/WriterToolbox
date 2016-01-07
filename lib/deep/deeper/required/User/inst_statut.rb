@@ -25,11 +25,6 @@ class User
     @id != nil
   end
 
-  # Retour true si l'user est à jour de son abonnement
-  def subscribed?
-
-  end
-
   # Retourne true si l'user est à jour de ses paiements
   # Pour qu'il soit à jour, il faut qu'il ait un paiement qui
   # remonte à moins d'un an.
@@ -37,8 +32,7 @@ class User
     return false if @id.nil? # Un simple visiteur
     now = Time.now
     anprev = Time.new(now.year - 1, now.month, now.day).to_i
-    where = "user_id = #{id} AND created_at > #{anprev} AND objet_id = 'ABONNEMENT'"
-    User::table_paiements.count(where:where) != 0
+    last_abonnement && last_abonnement > anprev
   end
   alias :paiement_ok? :paiements_ok?
   alias :subscribed? :paiements_ok?
@@ -54,15 +48,4 @@ class User
     last_paiement_abonnement > (NOW - (30.5*nombre_mois).days)
   end
 
-  # {Fixnum} Date (timestamp) de prochain paiement
-  # Noter que cette méthode, pour le moment, ne doit être appelée
-  # que si l'user a déjà procédé à un paiement.
-  def next_paiement
-    @next_paiement ||= begin
-      raise "ID devrait être défini pour checker le paiement" if @id.nil?
-      last_paiement = User::table_paiements.select(where:{user_id: id, objet_id: "ABONNEMENT"}, order:"created_at DESC", limit:1, colonnes:[:created_at]).values.first[:created_at]
-      dlast = Time.at(last_paiement)
-      Time.new(dlast.year + 1, dlast.month, dlast.day).to_i
-    end
-  end
 end

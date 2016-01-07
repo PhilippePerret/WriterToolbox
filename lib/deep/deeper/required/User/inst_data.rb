@@ -46,18 +46,4 @@ class User
   def created_at  ; @created_at ||= get(:created_at)  end
   def updated_at  ; @updated_at ||= get(:updated_at)  end
 
-  # {Float} Retourne le tarif à payer pour l'user en fonction du
-  # fait qu'il est abonné ou non au site (writer's toolbox) depuis
-  # plus de 6 mois. S'il est inscrit depuis plus de 6 mois, il
-  # paie le tarif normal.
-  # Utiliser `tarif_unanunscript.as_tarif` pour un affichage avec
-  # la devise et le bon séparateur
-  def tarif_unanunscript
-    if abonnement_recent?(6)
-      Unan::tarif - site.tarif
-    else
-      Unan::tarif
-    end
-  end
-
 end
