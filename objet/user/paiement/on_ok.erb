@@ -5,7 +5,7 @@
 
   <h1>Super, <%= user.pseudo %> ! :-D</h1>
   <p>Votre paiement a été enregistré avec succès, et nous vous en remercions autant que nous vous en félicitons. ;-)</p>
-  <p>
+  <p class='small'>
     À présent que vous êtes abonné<%= f_e %> pour un an aux outils du site, vous pouvez :
     <ul>
       <li>Consulter l'intégralité des cours de la collection Narration ;</li>
@@ -16,8 +16,9 @@
       <li>… et bien plus encore !</li>
     </ul>
   </p>
+  <p class='small'>Vous pouvez à présent retrouver tous ces outils dans votre marge gauche en la survolant lorsque vous êtes identifié<%= f_e %>.</p>
   <p>Une facture vous a été expédiée à votre adresse mail : </p>
-  <div style="background-color:#CCC">
+  <div style="background-color:#CCC;padding:1em">
     <%= site.paiement.facture %>
   </div>
 </div>

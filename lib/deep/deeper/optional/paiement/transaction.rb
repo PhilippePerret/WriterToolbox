@@ -119,10 +119,15 @@ class Paiement
       <<-HTML
 <p>Bonjour #{user.pseudo},</p>
 <p>Veuillez trouver ci-dessous votre facture pour votre dernier paiement.</p>
-<table type="fixed" style="border:1px solid" padding="4">
+<style type="text/css">
+table#facture{border:2px solid}
+table#facture tr{border: 1px solid}
+table#facture td{padding: 1px}
+</style>
+<table id="facture">
   <colsgroup>
-    <col width="200" />
-    <col width="600" />
+    <col width="150" />
+    <col width="450" />
   </colsgroup>
   <tr>
     <td>Facture ID</td>
@@ -134,7 +139,7 @@ class Paiement
   </tr>
   <tr>
     <td>Pour</td>
-    <td>#{user.patronyme || user.pseudo} (utilisateur ##{user.id})<br />#{user.mail}</td>
+    <td>#{user.patronyme || user.pseudo} (##{user.id})<br />#{user.mail}</td>
   </tr>
   <tr>
     <td>Objet</td>
@@ -150,6 +155,7 @@ class Paiement
   </tr>
 </table>
 <p>Bien à vous et au plaisir ! :-)</p>
+<p>#{site.name}</p>
       HTML
     end
   end
