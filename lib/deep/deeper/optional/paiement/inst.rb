@@ -17,29 +17,6 @@ class SiteHtml
     #   Instances SiteHtml::Paiement
     # ---------------------------------------------------------------------
 
-    # {Float} Le montant du paiement
-    # Il doit être défini dans le Hash qui est envoyé à la
-    # méthode `make_transaction`
-    attr_reader :montant
-
-    # {String} L'objet du paiement, par exemple le paiement
-    # de l'abonnement au site.
-    # Doit absolument être défini dans le Hash qui est
-    # envoyé à la méthode `make_transaction`
-    attr_reader :objet
-
-    # {String} Le token de la transaction
-    # C'est la méthode qui le définit en utilisant la
-    # tournure :
-    #   @token = command.token
-    # avec `command` qui est la transaction effectuée
-    # Elle peut également le récupérer dans l'url au
-    # retour du paiement
-    attr_reader :token
-
-    # {String} La description du paiement, au cas où
-    attr_accessor :description
-
     # Pour les vues
     def bind; binding() end
 
@@ -56,7 +33,7 @@ class SiteHtml
     # dans les données de l'Icarien.
     #
     def valider_paiement
-      debug "-> valider_paiement"
+      # debug "-> valider_paiement"
       # Instancier une commande Paypal
       command = Command::new(self, "Validation du paiement effectué")
 

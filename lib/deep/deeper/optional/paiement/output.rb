@@ -19,10 +19,5 @@ class Paiement
     @output
   end
 
-  # Le montant à payer, au format humain
-  def montant_humain
-    @montant_humain ||= montant.as_tarif
-  end
-
 end # /Paiement
 end # /SiteHtml

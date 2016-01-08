@@ -2,23 +2,6 @@
 class SiteHtml
 class Paiement
 
-  # Définir le contexte du paiement, lorsque ce n'est pas un paiement
-  # pour le site lui-même, mais pour une sous-section.
-  # Ce contexte est le dossier à partir de "./objet".
-  #
-  # @usage
-  #   Définir la propriété :context dans le hash envoyé
-  #   à la méthode make_transaction :
-  #     site.paiement.make_transaction(montant: 120, context: "unan", ...)
-  #
-  attr_reader :context
-
-  # Pour connaitre l'objet du paiement dans la table de données
-  # des paiements, propriété de même nom.
-  # Il faut transmettre cette donnée dans le Hash qui est donné
-  # en argument de make_transaction.
-  attr_reader :objet_id
-
   # = main =
   #
   # C'est la méthode principale qui doit être appelée
@@ -38,6 +21,9 @@ class Paiement
     # Dispatch des données envoyées
     # [:context, :objet, :objet_id, :montant, :description]
     data_transaction.each do |k, v| instance_variable_set("@#{k}", v)
+
+    # Par défaut, le context(e) est 'user'
+    @context ||= 'user'
 
     case param(:pres)
     when '1'
@@ -82,8 +68,8 @@ class Paiement
   # le formulaire du contexte.
   def form_affixe_path
     @form_path ||= begin
-      fp = Site.folder_objet + File.join((context || 'user'), 'paiement', 'form.erb')
-      arr_dossiers = fp.exist? ? [(context || 'user'), 'paiement', 'form'] : ['user', 'paiement', 'form']
+      fp = Site.folder_objet + File.join(context, 'paiement', 'form.erb')
+      arr_dossiers = [ (fp.exist? ? context : 'user'),'paiement','form' ]
       File.join(*arr_dossiers)
     end
   end
@@ -141,9 +127,9 @@ class Paiement
     @token    = param(:token)
     @payer_id = param(:PayerID)
     if valider_paiement
-      self.output = Vue::new("#{context || 'user'}/paiement/on_ok", nil, self).output
+      self.output = Vue::new("#{context}/paiement/on_ok", nil, self).output
     else
-      self.output = Vue::new("#{context || 'user'}/paiement/on_error", nil, self).output
+      self.output = Vue::new("#{context}/paiement/on_error", nil, self).output
     end
   end
 
@@ -151,22 +137,22 @@ class Paiement
   # d'exécuter le paiement.
   # TODO : Il faut faire un test pour voir si la vue existe
   def on_cancel
-    self.output = Vue::new('user/paiement/on_cancel', base_folder, self).output
+    self.output = Vue::new("#{context}/paiement/on_cancel", base_folder, self).output
   end
 
   # Enregistrer le paiement
   def save_paiement
-    debug "-> save_paiement"
-    debug "= data_paiement : #{data_paiement.inspect}"
+    # debug "-> save_paiement"
+    # debug "= data_paiement : #{data_paiement.inspect}"
     self.class::table_paiements.insert(data_paiement)
   end
 
   # Envoyer un mail de confirmation à l'user
   def send_mail_to_user
-    debug "-> send_mail_to_user"
+    # debug "-> send_mail_to_user"
     site.send_mail(
-      from: site.mail,
-      to:   user.mail,
+      from:     site.mail,
+      to:       user.mail,
       subject:  "Confirmation de votre paiement",
       message:  facture,
       formated: true

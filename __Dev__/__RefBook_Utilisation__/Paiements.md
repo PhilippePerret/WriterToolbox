@@ -11,6 +11,7 @@
   * [Vue propre à la validation du paiement](#vueproprequandok)
   * [Vue propre au renoncement du paiement](#vueproprequandcancel)
   * [Vue d'erreur propre](#vueerreurpropre)
+* [Opération à exécuter après la transaction](#codeaprespaiementok)
 * [Test du paiement](#testdufonctionnement)
 
 `RestSite 2.0` gère entièrement les paiements par PayPal.
@@ -248,6 +249,20 @@ On peut créer une vue d'erreur propre au paiement dans le context en créant le
 
     ./objet/<context>/paiement/on_error.erb
 
+<a name='codeaprespaiementok'></a>
+
+## Opération à exécuter après la transaction
+
+On peut définir une opération après la transaction réussie avec la méthode `SiteHtml::Paiement#after_validation_paiement` qui sera automatiquement appelée si elle existe.
+
+    class SiteHtml
+      class Paiement
+        def after_validation_paiement
+
+        end
+      end
+    end
+
 <a name='testdufonctionnement'></a>
 
 ## Test du paiement
@@ -256,4 +271,4 @@ Le test de paiement se fait dans la sandbox (bac à sable) de PayPal. Pour le mo
 
 Si on veut modifier ce comportement, il faut modifier la méthode `sandbox?` dans le fichier :
 
-    
+    ./lib/deep/deeper/optional/paiement/class.rb
