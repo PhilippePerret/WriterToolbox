@@ -55,16 +55,16 @@ class Paiement
 
     # Exécution de la commande/requête
     def exec
-      debug "\n\n--- Requête exécuté : #{request}"
+      # debug "\n\n--- Requête exécuté : #{request}"
       @response = reponse_to_hash `#{request}`
-      debug "--- Retour de Paypal (transformé en Hash)"
-      debug response.pretty_inspect
-      debug "\n\n"
+      # debug "--- Retour de Paypal (transformé en Hash)"
+      # debug response.pretty_inspect
+      # debug "\n\n"
       # Si la valeur :amt existe, on la retransmet au paiement,
       # car elle sera peut-être plus juste que celle fourni
       # à make_transaction qui est toujours la même lorsque l'on
       # revient de paypal
-      paiement.montant = response[:amt].to_f if response.has_key?(:amt)
+      # paiement.montant = response[:amt].to_f if response.has_key?(:amt)
     end
 
     # ---------------------------------------------------------------------

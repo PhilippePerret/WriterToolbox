@@ -26,6 +26,7 @@ class User
   # Return TRUE si l'user vient juste de s'inscrire au programme
   # un an un script (dans les cinq minutes qui précèdent)
   def just_subscribe_unanunscript?
+    return false
     raise "Doit être implémentée"
     @has_just_subscribe_unanunscript ||= false
   end

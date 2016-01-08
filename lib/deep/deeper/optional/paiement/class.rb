@@ -10,10 +10,10 @@ class SiteHtml
   class Paiement
     class << self
 
-      # Pour savoir si c'est un test ou en live
-      # TODO À DÉFINIR (COMMENT ? Simplement ONLINE/OFFLINE ?)
+      # Méthode principale pour savoir si on est en mode de test
+      # ou en réel.
       def sandbox?
-        true
+        true == OFFLINE
       end
 
       # Table dans la base de données users

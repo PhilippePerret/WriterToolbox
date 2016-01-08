@@ -72,22 +72,20 @@ class SiteHtml
       # === Exécuter la requête ===
       command.exec
 
-      debug "Succès de la commande pour valider le paiement : #{command.success?.inspect}"
+      debug "Validation du paiement : #{command.success? ? 'OUI' : 'NON'}"
 
       # Test du résultat
       if command.success?
 
-        unless context
-          # Enregistrement du paiement dans la base de données
-          save_paiement
-          # Envoi d'un mail à l'utilisateur pour lui confirmer
-          # le paiement
-          send_mail_to_user
+        # Enregistrement du paiement dans la base de données
+        save_paiement
+        # Envoi d'un mail à l'utilisateur pour lui confirmer
+        # le paiement
+        send_mail_to_user
 
-          # S'il y a une méthode de fin de processus, il faut
-          # l'appeler. Dans le cas contraire, on s'arrête là.
-          after_validation_paiement if self.respond_to?(:after_validation_paiement)
-        end
+        # S'il y a une méthode de fin de processus, il faut
+        # l'appeler. Dans le cas contraire, on s'arrête là.
+        after_validation_paiement if self.respond_to?(:after_validation_paiement)
 
         return true
       else

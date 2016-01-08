@@ -38,7 +38,7 @@ if user.identified?
   <p>Vous ne suivez pas encore le programme “Un An Un Script”. Que désirez-vous faire ?</p>
   <ul>
     <li><%= "Découvrir le programme en profondeur".in_a(href:'overview/home?in=unan') %></li>
-    <li><%= "S'inscrire au programme".in_a(href:"unan/paiement") %> </li>
+    <li><%= "S'inscrire au programme “Un An Un Script”".in_a(href:"unan/paiement") %><span class='small'> (<%= Unan::tarif_humain %> pour une année)</span></li>
   </ul>
 <%
 

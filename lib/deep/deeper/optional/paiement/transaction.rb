@@ -29,32 +29,15 @@ class Paiement
   #
   def make_transaction data_transaction
 
-    debug "-> SiteHtml::Paiement#make_transaction(data_transaction :"
-    debug data_transaction.pretty_inspect
-    debug ")"
+    # # Pour voir les données envoyées
+    # # ------------------------------
+    # debug "-> SiteHtml::Paiement#make_transaction(data_transaction :"
+    # debug data_transaction.pretty_inspect
+    # debug ")"
 
-    @context      = data_transaction.delete(:context)
-    @objet        = data_transaction.delete(:objet)
-    @objet_id     = data_transaction.delete(:objet_id)
-    @montant      = data_transaction.delete(:montant)
-    @description  = data_transaction.delete(:description)
-
-    # Analyse du retour de Paypal
-    # Au début, j'avais mis deux variables en query-string,
-    # :pres et :in mais visiblement Paypal ne tient compte que
-    # d'une seule variable. Donc, à présent, je mets le
-    # context, s'il existe, au bout de la valeur de pres :
-    #   param(:pres) = "(1|2)-<context>"
-    # Donc, il faut analyser :pres et en extraire le context
-    # si nécessaire.
-    paiement_res = param(:pres)
-    unless param(:pres).nil?
-      pres, tcontext = param(:pres).split('-')
-      param(pres: pres)
-      # @context = tcontext unless tcontext.nil?
-    end
-
-    # debug "[make_transaction] param(:pres) = #{param(:pres).inspect} / @context = #{@context}"
+    # Dispatch des données envoyées
+    # [:context, :objet, :objet_id, :montant, :description]
+    data_transaction.each do |k, v| instance_variable_set("@#{k}", v)
 
     case param(:pres)
     when '1'
@@ -78,13 +61,30 @@ class Paiement
       # page paiement.erb mais c'est une méthode d'helper qui fourni
       # le code du formulaire : site.paiement.form).
       init
-      # Noter que le formulaire est toujours le même, quel que soit
-      # le context qui appelle. Il faut définir précisément les
+      # Noter que le formulaire est par défaut le formulaire du
+      # dossier `user'. Mais si le context possède un dossier
+      # `paiement' avec un fichier `form', c'est ce formulaire
+      # qui sera utilisé.
+      # Il faut définir précisément les
       # propriétés :objet et :description transmises à la méthode
       # make_transaction pour modifier l'affichage.
       # Le context doit aussi pouvoir répondre à :montant pour fixer
       # le montant attendu.
-      self.output = Vue::new('user/paiement/form', nil, self).output
+      # Si vraiment une application doit utiliser des formulaires
+      # différents en fonction du context, il faut modifier pour
+      # que le
+      self.output = Vue::new(form_affixe_path, nil, self).output
+    end
+  end
+
+  # Path du formulaire
+  # Soit le formulaire par défaut (./objet/user/paiement/form.erb) soit
+  # le formulaire du contexte.
+  def form_affixe_path
+    @form_path ||= begin
+      fp = Site.folder_objet + File.join((context || 'user'), 'paiement', 'form.erb')
+      arr_dossiers = fp.exist? ? [(context || 'user'), 'paiement', 'form'] : ['user', 'paiement', 'form']
+      File.join(*arr_dossiers)
     end
   end
 
