@@ -1,3 +1,13 @@
+# AU PAIEMENT
+
+* Expliquer que c'est déjà commencé, mais qu'on peut mettre en pause
+* Demander le rythme choisi
+* Demander le support final (livre, film, etc.)
+* Expliquer comment ça fonctionne, comment on travaille
+* Envoi un mail à l'administration
+* Envoi un long mail explicatif à l'user pour tout lui expliquer (ou faire un PDF ?)
+* Faire signer un contrat à l'user ? Engagement à aller jusqu'au bout de son projet, sinon il paie une taxe :-).
+
 # Reprendre :
 
 La phrase de présentation qui dit "le pari de ce module est simple etc."

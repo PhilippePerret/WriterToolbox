@@ -1,4 +1,7 @@
 # encoding: UTF-8
+
+require_folder "./lib/deep/console"
+
 class SiteHtml
 class Admin
 class Console

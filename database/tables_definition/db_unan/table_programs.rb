@@ -5,14 +5,14 @@ Définition de la table pour un programme “Un An Un script”
 Ce sont les données générales
 
 =end
-def schema_table_unan_programme
-  @schema_table_unan_programme ||= {
+def schema_table_unan_programs
+  @schema_table_unan_programs ||= {
     id:           {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
     auteur_id:    {type:"INTEGER", constraint:"NOT NULL"},
     # Options
     # -------
     # Pour la définition de chaque bit des options, cf. le
-    # fichier 
+    # fichier
     options:      {type:"VARCHAR(32)", default: "'"+("0"*32)+"'"},
     etape_id:     {type:"INTEGER(4)"}, # ID de l'étape courante
     points:       {type:"INTEGER(4)"}, # Nombre total de points

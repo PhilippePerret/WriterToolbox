@@ -24,11 +24,11 @@ class User
   end
 
   # Return TRUE si l'user vient juste de s'inscrire au programme
-  # un an un script (dans les cinq minutes qui précèdent)
+  # un an un script (dans les deux minutes qui précèdent)
   def just_subscribe_unanunscript?
-    return false
-    raise "Doit être implémentée"
-    @has_just_subscribe_unanunscript ||= false
+    @has_just_subscribe_unanunscript ||= begin
+      unanunscript? && program.created_at > (NOW.to_i - 120)
+    end
   end
 
 end #/User

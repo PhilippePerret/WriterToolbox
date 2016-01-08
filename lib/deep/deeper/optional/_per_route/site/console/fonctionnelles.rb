@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # encoding: UTF-8
-raise "Section interdite" unless user.admin?
+raise_unless_admin
 
 class SiteHtml
 class Admin

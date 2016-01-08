@@ -4,12 +4,21 @@
 Class Unan
 ----------
 Gestion du programme Un An Un Script
-La classe gère le programme dans sa globalité
+La classe gère le programme dans sa globalité, comme programme de cours
+et de création.
+Pour un programme en particulier, voir la classe Unan::Program
 
 =end
 
 class Unan
   class << self
+
+    # Crée un nouveau programme pour l'user courant
+    # (qui vient certainement de payer son programme)
+    def create_program
+      (folder_modules + 'create_program.rb').require
+      Program::create
+    end
 
     def tarif_humain
       @tarif_humain ||= tarif.as_tarif

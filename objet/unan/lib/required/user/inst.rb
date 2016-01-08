@@ -1,19 +1,21 @@
 # encoding: UTF-8
 class User
 
-  # Création de l'user tout de suite après son
-  # inscription/paiement
-  def create_for_unan
-    folder_data.build unless folder_data.exist?
+  # {Unan::Program} Le programme courant (ou nil)
+  def program
+    @program ||= Unan::Program::get_current_program_of(self.id)
   end
 
+  # Return TRUE si l'user vient de s'inscrire au programme
+  # un an un script
+  
   # RETURN true si l'user suit le programme Un An Un Script
   # On le sait à partir du moment où il possède un dossier dans
   # ./data/unan/user/
   # NOTE Ce dossier est créé tout de suite après le paiement
   # /inscription au programme
   def unanunscript?
-    folder_data.exist?
+    folder_data.exist? && program.instance_of?(Unan::Program)
   end
 
   # Le dossier data de l'user dans ./database/data/unan/user/<id>/

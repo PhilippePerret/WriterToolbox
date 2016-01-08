@@ -18,6 +18,7 @@ class User
     def table_users
       @table_users ||= create_table_if_needed('users')
     end
+    alias :table :table_users
 
     def database
       @database ||= BdD::new(database_path.to_s)

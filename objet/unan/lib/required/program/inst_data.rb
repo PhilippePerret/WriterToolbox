@@ -1,20 +1,16 @@
 # encoding: UTF-8
 =begin
 
-Instances Unan
---------------
-Gestion d'un programme en particulier
-C'est donc le programme suivi par un user inscrit et à jour de ses paiements.
+Méthode de data du programme
 
 =end
 class Unan
+class Program
 
   # La propriété la plus importante du programme : l'auteur
-  # lui-même. Il est enregistré.
   # Note : on obtient son instance par `auteur`
 
   attr_reader :auteur_id
-  attr_reader :options
   attr_reader :created_at
   attr_reader :updated_at
 
@@ -28,12 +24,20 @@ class Unan
   # Ces points font partie de l'aspect ludique du programme.
   attr_reader :points
 
-  def initialize id = nil
-
+  def get key
+    Unan::table_programs.get(id, colonnes:[key])[key]
+  end
+  def set hdata
+    Unan::table_programs.set(id, hdata)
   end
 
+  # {User} Auteur du programme
   def auteur
     @auteur ||= User::get(auteur_id)
   end
 
-end
+  # {Fixnum} Date de création (timestamp)
+  def created_at    ; @created_at ||= get(:created_at) end
+
+end # /Program
+end # /Unan

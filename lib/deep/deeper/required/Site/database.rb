@@ -53,7 +53,7 @@ class SiteHtml
     # la base de nom `db_name`. Cf. RefBook utilisation
     def schema db_name, table_name
       path = site.folder_tables_definition + "db_#{db_name}/table_#{table_name}.rb"
-      raise "Impossible de trouver la définition de la table #{path}…" unless path.exist?
+      raise "Impossible de trouver la définition de la table : `#{path.to_s}`…" unless path.exist?
       path.require
       self.send("schema_table_#{db_name}_#{table_name}")
     end

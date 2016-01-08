@@ -45,6 +45,10 @@ class Console
   <dt>`montre table &lt;database&gt;.&lt;table&gt;`</dt>
   <dd>Pour afficher le contenu d'une table. NON IMPLÉMENTÉE.</dd>
   <dd>Variante : `montre` peut être remplacé par `affiche`.</dd>
+
+  <dt>`detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;`</dt>
+  <dd>Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.</dd>
+  <dd>OFFLINE seulement</dd>
 </dl>
     HTML
   end

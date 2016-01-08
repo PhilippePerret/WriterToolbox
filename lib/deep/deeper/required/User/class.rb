@@ -12,6 +12,12 @@ class User
       @instances[id] ||= User::new(id)
     end
 
+    def get_by_pseudo pseudo
+      u = table_users.select(where:"pseudo = '#{pseudo}'", colonnes: [:id]).values.first
+      return nil if u.nil?
+      get(u[:id])
+    end
+
     # {User} Instance de l'user courant
     # Soit un user identifié, soit un invité, mais toujours
     # une instance User en tout cas.
