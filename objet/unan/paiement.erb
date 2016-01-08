@@ -13,6 +13,8 @@
 # Si l'utilisateur est INSCRIT AU PROGRAMME 1 AN 1 SCRIPT
 if user.unanunscript?
 
+  debug "[paiement.erb] user.unanunscript? OUI"
+
   # Si l'utilisateur vient juste de souscrire au programme
   # UN AN UN SCRIPT, on lui fait un accueil chaleureux
   # NOTE C'est celui qui est est contenu dans on_ok.erb, qu'on
@@ -20,9 +22,13 @@ if user.unanunscript?
 
   if user.just_subscribe_unanunscript?
 
+    debug "[paiement.erb] user.just_subscribe_unanunscript? OUI"
+
     %><%= site.paiement.output %><%
 
   else
+
+    debug "[paiement.erb] user.just_subscribe_unanunscript? NON"
 
     # Si l'user en vient pas juste de s'inscrire au programme, mais
     # est inscrit depuis un bon bout de temps
@@ -36,10 +42,14 @@ if user.unanunscript?
 # Si l'user N'EST PAS ENCORE INSCRIT au programme 1 an 1 script
 else
 
+  debug "[paiement.erb] user.unanunscript? NON"
+
   %><h2>Inscription au programme</h2><%
 
   # Si l'user est ABONNÉ au site
   if user.subscribed?
+
+    debug "[paiement.erb] user.subscribed? OUI"
 
     # On va vérifier le message et le coût de son inscription au
     # programme UN AN UN SCRIT, en sachant que s'il a payé il y a
@@ -54,11 +64,15 @@ else
   # Si l'user est seulement INSCRIT AU SITE
   elsif user.identified?
 
+    debug "[paiement.erb] user.subscribed? NON identified? OUI"
+
     %><p class='small'>Notez qu'avec l'inscription au programme “Un An Un Script” vous bénéficiez automatiquement de <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
     <%= site.paiement.output %><%
 
   # Si l'user n'est NI INSCRIT, NI ABONNÉ
   else
+
+    debug "[paiement.erb] user.subscribed? NON identified? NON"
 
       # Dans le cas où l'user n'est pas encore inscrit sur le site,
       # c'est une inscription complète, avec paiement de l'inscription
@@ -77,4 +91,7 @@ else
   %>
 <%
 end
+%>
+<%
+debug "<--- ./objet/unan/paiement.erb"
 %>

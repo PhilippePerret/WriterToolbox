@@ -7,9 +7,11 @@ Méthode de data du programme
 class Unan
 class Program
 
+  # ID du programme (dans la table Unan::table_programs)
+  attr_reader :id
+
   # La propriété la plus importante du programme : l'auteur
   # Note : on obtient son instance par `auteur`
-
   attr_reader :auteur_id
   attr_reader :created_at
   attr_reader :updated_at

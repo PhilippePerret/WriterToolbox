@@ -8,14 +8,12 @@ class User
 
   # Return TRUE si l'user vient de s'inscrire au programme
   # un an un script
-  
+
   # RETURN true si l'user suit le programme Un An Un Script
-  # On le sait à partir du moment où il possède un dossier dans
-  # ./data/unan/user/
-  # NOTE Ce dossier est créé tout de suite après le paiement
-  # /inscription au programme
+  # On le sait à partir du moment où il possède un programme
+  # ACTIF dans la table des programmes
   def unanunscript?
-    folder_data.exist? && program.instance_of?(Unan::Program)
+    program.instance_of?(Unan::Program)
   end
 
   # Le dossier data de l'user dans ./database/data/unan/user/<id>/
