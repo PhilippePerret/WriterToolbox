@@ -1,0 +1,43 @@
+<%
+# Cette vue est atteinte lorsque l'user vient de payer avec succès
+# son inscription au programme UN AN UN SCRIPT
+# (ou lorsqu'il veut revoir cette page de démarrage)
+#
+# Note : Elle pourrait être dans paiement/on_ok.erb mais elle est
+# séparée pour pouvoir être corrigée facilement et être revue par
+# l'user s'il en a envie
+#
+raise_unless( user.admin? || user.unanunscript? )
+%>
+<%= Unan::titre_h1 %>
+<h2>C'est parti !</h2>
+<p>
+  Waouh ! C'est une grande décision que vous venez de prendre ! :-D
+</p>
+<p>
+  Vous êtes à présent parti<%= f_e %> pour entreprendre <strong>le long voyage de l'auteur<%= f_e %></strong>, grâce au programme <strong>“Un An Un Script”</strong>. Nous vous en félicitons !
+</p>
+<p>
+  Mais nous n'allons pas nous jeter tête baissée dans ce programme et encore moins sur notre premier document. La première chose que nous allons accomplir, c'est… fermer les yeux et tenter de nous projeter dans un an…
+</p>
+<p>
+  <strong>Dans un an…</strong> vous aurez votre script de film ou votre manuscrit de roman, ou tout autre support de projet que nous allons définir plus bas.
+</p>
+<p>
+  <strong>Dans un an…</strong> vous en connaitrez un bon bout sur la narration et l'art de l'écriture.
+</p>
+<p>
+  Fermez les yeux, et imaginez cela… Puis revenez à ce texte, car nous avons <strong>quelques petites formalités</strong> à remplir, tout de même ;-).
+</p>
+<p>
+  Hé oui, nous allons définir quelques points concernant le projet, et notamment son type (film, roman, autre…) et le rythme de travail que vous voulez adopter pour commencer.
+</p>
+<p>
+  Mais avant cela, <strong>encore bravo à vous</strong> pour vous être lancé<%= f_e %> dans l'aventure, et surtout bon courage ! :-)
+</p>
+<p>
+  <strong>Votre travail commencera réellement dès demain</strong>, et vous en serez informé<%= f_e %> à la première heure par mail. En attendant, n'hésitez pas à <%= "consulter toute la documentation sur ce programme".in_a(href:"overview/home?in=unan", target:'_new') %> pour vous familiariser avec ses principes et son fonctionnement (cette page s'ouvre dans une nouvelle fenêtre).
+</p>
+<p>
+  <strong>Bien, nous devons à présent <%= "régler ensemble les propriétés du programme".in_a(href:"program/settings?in=unan", class:'strong') %></strong>.
+</p>

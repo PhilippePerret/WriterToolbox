@@ -24,6 +24,10 @@ class SiteHtml
     execute_route
     page.preload
     page.output
+  rescue SectionInterditeError => e
+    # Barrière raise_unless( condition )
+    page.content= page.error_unless_condition
+    page.output
   rescue ErrorUnidentified => e
     # Barrière raise_unless_identified
     page.content= page.error_unless_identified

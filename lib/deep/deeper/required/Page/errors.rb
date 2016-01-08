@@ -19,6 +19,10 @@ class Page
   def error_unless_admin
     Vue::new('error_unless_admin', folder_error_unless_admin, site).output
   end
+  # Rappel : pour une protection par `raise_unless( <condition> )`
+  def error_unless_condition
+    Vue::new('error_unless_condition', folder_error_unless_condition, site).ouput
+  end
 
   # {SuperFile} Dossier contenant la vue à afficher en
   # cas d'erreur de section sans identification
@@ -44,6 +48,18 @@ class Page
     @folder_error_unless_admin ||= begin
       pfolder = site.folder_view + 'page'
       if (pfolder + 'error_unless_admin.erb').exist?
+        pfolder
+      else
+        # Sinon le fichier par défaut
+        site.folder_deeper_view + 'page'
+      end
+    end
+  end
+
+  def folder_error_unless_condition
+    @folder_error_unless_condition ||= begin
+      pfolder = site.folder_view + 'page'
+      if (pfolder + 'error_unless_condition.erb').exist?
         pfolder
       else
         # Sinon le fichier par défaut
