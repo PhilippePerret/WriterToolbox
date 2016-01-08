@@ -20,7 +20,7 @@ class Paiement
 
     # Dispatch des données envoyées
     # [:context, :objet, :objet_id, :montant, :description]
-    data_transaction.each do |k, v| instance_variable_set("@#{k}", v)
+    data_transaction.each{ |k, v| instance_variable_set("@#{k}", v) }
 
     # Par défaut, le context(e) est 'user'
     @context ||= 'user'
@@ -68,7 +68,7 @@ class Paiement
   # le formulaire du contexte.
   def form_affixe_path
     @form_path ||= begin
-      fp = Site.folder_objet + File.join(context, 'paiement', 'form.erb')
+      fp = site.folder_objet + File.join(context, 'paiement', 'form.erb')
       arr_dossiers = [ (fp.exist? ? context : 'user'),'paiement','form' ]
       File.join(*arr_dossiers)
     end

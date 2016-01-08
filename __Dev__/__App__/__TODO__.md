@@ -1,3 +1,9 @@
+# Placer le texte :
+
+Écrire une histoire plus personnelle et plus passionnée. Ou écrire avec passion une écrire plus passionnée et plus personnelle
+Éviter les sentiers battus et les histoires trop prévisibles : penser au contraire (le Principe du contraire <= principe créateur de haut niveau)
+
+
 # Inscription de l'user au site quand il vient pour payer
 
 Certains liens conduisent directement à la route `unan/paiement` même lorsque l'user n'est pas encore inscrit au site. Il faut dans ce cas procéder d'abord à leur inscription puis ensuite leur reproposer le formulaire de paiement.
