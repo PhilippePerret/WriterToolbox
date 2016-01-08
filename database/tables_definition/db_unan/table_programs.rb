@@ -9,6 +9,13 @@ def schema_table_unan_programs
   @schema_table_unan_programs ||= {
     id:           {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
     auteur_id:    {type:"INTEGER", constraint:"NOT NULL"},
+
+    # Aperçu des jours
+    # ----------------
+    # Cf. le fichier Days-Overview.md
+    # Pour avoir un aperçu de tous les jours
+    days_overviews:   {type:"CLOB(230)"},
+
     # Options
     # -------
     # Pour la définition de chaque bit des options, cf. le

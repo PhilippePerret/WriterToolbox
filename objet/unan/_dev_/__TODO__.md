@@ -1,3 +1,20 @@
+# Processus de travail
+
+* Un nouveau jour-programme commence
+* -> Envoyer le mail décrivant le programme du jour à l'user
+      => ajouter B_MAIL_DEB au jour de days_overview
+* <- User confirme son démarrage
+      => ajouter B_CONF_DEB au jour de days_overview
+
+* Calcul des points de l'auteur.
+  S'ils sont suffisants, le jour-programme est marqué OK
+    => ajouter B_FIN au jour de days_overview
+* <- L'auteur peut forcer la fin du jour-programme
+    => ajouter B_FORC_FIN au jour de days_overview
+    => ajouter B_FIN au jour de days_overview
+* Un mail est envoyé pour confirmer la fin du travail (si nécessaire) avec récapitulation de ce qui a été fait
+    => ajouter B_MAIL_FIN au jour de days_overview
+
 # AU PAIEMENT
 
 * Expliquer que c'est déjà commencé, mais qu'on peut mettre en pause
@@ -7,6 +24,8 @@
 * Envoi un mail à l'administration
 * Envoi un long mail explicatif à l'user pour tout lui expliquer (ou faire un PDF ?)
 * Faire signer un contrat à l'user ? Engagement à aller jusqu'au bout de son projet, sinon il paie une taxe :-).
+
+
 
 # Reprendre :
 
