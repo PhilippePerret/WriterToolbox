@@ -157,7 +157,7 @@ class Page
       # -------------------------
       def span_libelle
         @span_libelle ||= begin
-          libelle.in_span( class: options[:span_libelle_class] )
+          libelle.to_s.in_span( class: options[:span_libelle_class] )
         end
       end
 
@@ -183,10 +183,10 @@ class Page
       # ---------------------------------------------------------------------
 
       def field_text
-        field_value.in_input_text( field_attrs )
+        field_value.to_s.in_input_text( field_attrs )
       end
       def field_textarea
-        field_value.in_textarea( field_attrs )
+        field_value.to_s.in_textarea( field_attrs )
       end
       def field_select
         case options[:values]
