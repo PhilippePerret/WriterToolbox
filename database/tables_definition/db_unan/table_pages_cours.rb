@@ -18,6 +18,10 @@ def schema_table_unan_pages_cours
     # C'est l'identifiant utilisé pour faire référence à la page
     handler: {type:"VARCHAR(200)", constraint:"NOT NULL"},
 
+    # Titre
+    # ------
+    titre: {type:"VARCHAR(255)", constraint:"NOT NULL"},
+    
     # Description
     # -----------
     description:{type:"TEXT",constraint:"NOT NULL"},
