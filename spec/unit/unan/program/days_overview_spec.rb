@@ -25,6 +25,7 @@ describe 'Test de la propriété `days_overview` d’un programme' do
   def set_to value
     daysover = Unan::Program::DaysOverview::new(@program)
     daysover.instance_variable_set('@value', value)
+    @program.instance_variable_set('@all_days_overview', Array::new)
     @program.instance_variable_set('@days_overview', daysover)
   end
 
@@ -73,9 +74,253 @@ describe 'Test de la propriété `days_overview` d’un programme' do
   end
 
   describe 'les méthodes pour modifier les bits des jours' do
-    # Par exemple :
-    # add_bit_fin
-    # remove_bit_mail_deb
+    before(:all) do
+      set_to "vv00"
+      @jour = @program.day_overview(2)
+    end
+    let(:jour) { @jour }
+    describe 'pour le bit B_FIN (512)' do
+      it 'répond à add_bit_fin' do
+        expect(jour).to respond_to :add_bit_fin
+      end
+      it 'répond à remove_bit_fin' do
+        expect(jour).to respond_to :remove_bit_fin
+      end
+      it 'permette d’ajouter et de retirer le bit' do
+        expect(jour.value).to eq 0
+        jour.add_bit_fin
+        expect(jour.value).to eq 512
+        jour.remove_bit_fin
+        expect(jour.value).to eq 0
+      end
+    end
+    describe 'pour le bit B_FORC_FIN (256)' do
+      it 'répond à add_bit_forc_fin' do
+        expect(jour).to respond_to :add_bit_forc_fin
+      end
+      it 'répond à remove_bit_forc_fin' do
+        expect(jour).to respond_to :remove_bit_forc_fin
+      end
+      it 'permette d’ajouter et de retirer le bit' do
+        expect(jour.value).to eq 0
+        jour.add_bit_forc_fin
+        expect(jour.value).to eq 256
+        jour.remove_bit_forc_fin
+        expect(jour.value).to eq 0
+      end
+    end
+    describe 'pour le bit B_MAIL_FIN (128)' do
+      it 'répond à add_bit_mail_fin' do
+        expect(jour).to respond_to :add_bit_mail_fin
+      end
+      it 'répond à remove_bit_mail_fin' do
+        expect(jour).to respond_to :remove_bit_mail_fin
+      end
+      it 'permettent d’ajouter et de retirer le bit de mail de fin' do
+        expect(jour.value).to eq 0
+        jour.add_bit_mail_fin
+        expect(jour.value).to eq 128
+        jour.remove_bit_mail_fin
+        expect(jour.value).to eq 0
+      end
+    end
+    # (64)
+    # (32)
+    # (16)
+    # (8)
+    describe 'pour le bit B_CONF_DEB(4)' do
+      it 'répond à add_bit_conf_deb' do
+        expect(jour).to respond_to :add_bit_conf_deb
+      end
+      it 'répond à remove_bit_conf_deb' do
+        expect(jour).to respond_to :remove_bit_conf_deb
+      end
+      it 'permettent d’ajouter et de retirer le bit' do
+        expect(jour.value).to eq 0
+        jour.add_bit_conf_deb
+        expect(jour.value).to eq 4
+        jour.remove_bit_conf_deb
+        expect(jour.value).to eq 0
+      end
+    end
+    describe 'pour le bit B_MAIL_DEB(2)' do
+      it 'répond à add_bit_mail_deb' do
+        expect(jour).to respond_to :add_bit_mail_deb
+      end
+      it 'répond à remove_bit_mail_deb' do
+        expect(jour).to respond_to :remove_bit_mail_deb
+      end
+      it 'permettent d’ajouter et de retirer le bit, une seule fois' do
+        expect(jour.value).to eq 0
+        jour.add_bit_mail_deb
+        expect(jour.value).to eq 2
+        jour.add_bit_mail_deb
+        expect(jour.value).not_to eq 4
+        expect(jour.value).to eq 2
+        jour.remove_bit_mail_deb
+        expect(jour.value).to eq 0
+        jour.remove_bit_mail_deb
+        expect(jour.value).not_to eq -2
+        expect(jour.value).to eq 0
+      end
+    end
+    describe 'pour le bit B_ACTIF(1)' do
+      it 'répond à add_bit_actif' do
+        expect(jour).to respond_to :add_bit_actif
+      end
+      it 'répond à remove_bit_actif' do
+        expect(jour).to respond_to :remove_bit_actif
+      end
+      it 'permettent d’ajouter et de retirer le bit' do
+        expect(jour.value).to eq 0
+        jour.add_bit_actif
+        expect(jour.value).to eq 1
+        jour.remove_bit_actif
+        expect(jour.value).to eq 0
+      end
+      it 'n’ajoutent et ne retirent le bit qu’une seule fois' do
+        expect(jour.value).to eq 0
+        jour.add_bit_actif
+        expect(jour.value).to eq 1
+        jour.add_bit_actif
+        expect(jour.value).not_to eq 2
+        expect(jour.value).to eq 1
+        jour.remove_bit_actif
+        expect(jour.value).to eq 0
+        jour.remove_bit_actif
+        expect(jour.value).not_to eq -1
+        expect(jour.value).to eq 0
+      end
+    end
+
+    describe 'essai avec tous les bits' do
+      it 'retourne toujours la bonne valeur' do
+        expect(jour.value).to eq 0
+        jour.add_bit_actif
+        expect(jour.value).to eq 1
+        jour.add_bit_mail_deb
+        expect(jour.value).to eq 3
+        jour.add_bit_conf_deb
+        expect(jour.value).to eq 7
+        jour.remove_bit_conf_deb
+        expect(jour.value).to eq 3
+        jour.add_bit_mail_fin
+        expect(jour.value).to eq 3 + 128
+        jour.add_bit_mail_fin
+        jour.add_bit_mail_fin
+        jour.add_bit_mail_deb
+        jour.add_bit_actif
+        expect(jour.value).to eq 3 + 128
+        jour.add_bit_fin
+        jour.add_bit_fin
+        jour.add_bit_fin
+        expect(jour.value).to eq 3 + 128 + 512
+        jour.remove_bit_fin
+        expect(jour.value).to eq 3+ 128
+        jour.remove_bit_mail_fin
+        expect(jour.value).to eq 3
+        jour.remove_bit_mail_deb
+        expect(jour.value).to eq 1
+        jour.remove_bit_actif
+        expect(jour.value).to eq 0
+      end
+    end
+  end
+
+  describe 'méthodes pour tester la valeur des bits du jour avec' do
+    before(:all) do
+      set_to "000110vv" # -- 4 jours à 0, 1, 10 et vv
+      @jour1 = @program.day_overview(1)
+      @jour2 = @program.day_overview(2)
+      @jour3 = @program.day_overview(3)
+      @jour4 = @program.day_overview(4)
+
+      # puts "@program.daysoverview : #{@program.days_overview.value}"
+      # puts "Valeur @jour1 : #{@jour1.value}"
+      # puts "Valeur @jour2 : #{@jour2.value}"
+      # puts "Valeur @jour3 : #{@jour3.value}"
+      # puts "Valeur @jour4 : #{@jour4.value}"
+    end
+    let(:jour1) { @jour1 }
+    let(:jour2) { @jour2 }
+    let(:jour3) { @jour3 }
+    let(:jour4) { @jour4 }
+
+    describe 'actif?' do
+      it 'répond' do
+        expect(jour1).to respond_to :actif?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_actif
+        expect(jour2).to be_actif
+        expect(jour3).not_to be_actif
+        expect(jour4).to be_actif
+      end
+    end
+    describe 'mail_deb?' do
+      it 'répond' do
+        expect(jour1).to respond_to :mail_deb?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_mail_deb
+        expect(jour2).not_to be_mail_deb
+        expect(jour3).not_to be_mail_deb
+        expect(jour4).to be_mail_deb
+      end
+    end
+    describe 'conf_deb?' do
+      it 'répond' do
+        expect(jour1).to respond_to :conf_deb?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_conf_deb
+        expect(jour2).not_to be_conf_deb
+        jour2.add_bit_conf_deb
+        expect(jour2).to be_conf_deb
+        expect(jour3).not_to be_conf_deb
+        expect(jour4).to be_conf_deb
+      end
+    end
+    describe 'mail_fin?' do
+      it 'répond' do
+        expect(jour1).to respond_to :mail_fin?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_mail_fin
+        expect(jour2).not_to be_mail_fin
+        jour2.add_bit_mail_fin
+        expect(jour2).to be_mail_fin
+        expect(jour3).not_to be_mail_fin
+        expect(jour4).to be_mail_fin
+      end
+    end
+    describe 'forc_fin?' do
+      it 'répond' do
+        expect(jour1).to respond_to :forc_fin?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_forc_fin
+        expect(jour2).not_to be_forc_fin
+        expect(jour3).not_to be_forc_fin
+        jour3.add_bit_forc_fin
+        expect(jour3).to be_forc_fin
+        expect(jour4).to be_forc_fin
+      end
+    end
+    describe 'fin?' do
+      it 'répond' do
+        expect(jour2).to respond_to :fin?
+      end
+      it 'retourne la bonne valeur' do
+        expect(jour1).not_to be_fin
+        expect(jour2).not_to be_fin
+        jour2.add_bit_fin
+        expect(jour2).to be_fin
+        expect(jour3).not_to be_fin
+        expect(jour4).to be_fin
+      end
+    end
+
   end
 
   describe 'Les méthodes pour tester les jours-programme' do

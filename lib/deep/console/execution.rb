@@ -1,5 +1,6 @@
 # encoding: UTF-8
-raise "Section interdite" unless user.admin?
+raise_unless_admin
+
 class SiteHtml
 class Admin
 class Console
@@ -53,6 +54,11 @@ class Console
     when "remove table paiements"
 
       remove_table_paiements
+
+    when "Unan affiche (table pages cours)"
+
+      afficher_table_pages_cours
+      
     else
 
       nil # pour essayer autrement

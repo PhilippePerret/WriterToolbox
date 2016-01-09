@@ -82,6 +82,8 @@ Produira :
 
     form.field_checkbox( <params> )
 
+Noter que pour la case à cocher, le libellé (premier argument) servira de label. Il n'y aura donc pas de libellé, sauf explicitement indiqué dans les options (4e argument)
+
 ### Construction d'un ensemble de cases à cocher
 
     form.field_checkbox( <param> )

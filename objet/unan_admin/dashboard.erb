@@ -11,8 +11,9 @@ http = "http://localhost/WriterToolbox"
 %>
 <ul>
   <li><%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %></li>
-  <li><a href="abs_etape/create?in=unan_admin">Créer une étape</a></li>
-  <li><a href="abs_etape/edit?in=unan_admin">Éditer une étape</a></li>
+  <li><a href="abs_etape/create?in=unan_admin">Créer un travail</a></li>
+  <li><a href="abs_etape/edit?in=unan_admin">Éditer un travail</a></li>
+  <li><a href="pages_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
   <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
   <li><a href="<%= http %>/abs_work/edit?in=unan/program">Données absolues d'un travail (AbsWork)</a></li>
   <li><a href="<%= http %>/abs_pday/edit?in=unan/program">Données absolues d'un P-Day (AbsPDay)</a></li>

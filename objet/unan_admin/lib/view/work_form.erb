@@ -1,0 +1,37 @@
+<%
+# Formulaire d'édition d'un travail
+%>
+<%
+site.require 'form_tools'
+
+# On doit requérir toutes les données de Unan qui contiennent notamment les
+# données listes (pour les bits)
+Dir["./objet/unan/lib/data/**/*.rb"].each{|m| require m}
+
+# Le préfix des champs
+form.prefix = 'work'
+%>
+<form id="form_edit_work_unan" class="form2080" action="abs_work/save" method="POST">
+  <%= form.field_text("Numéro", "numero", "", {class: 'short'}) %>
+  <%= form.field_description("Numéro de 1 à 9999. Pour un nouveau travail, l'unicité de ce numéro sera vérifié avant l'enregistrement.") %>
+  <%= form.field_text("Titre", "titre", "", {placeholder: 'Titre du travail'}) %>
+  <%= form.field_text("Jour départ", 'jour_start', "", {class:'short', text_after:"ième jour"}) %>
+  <%= form.field_description("Le “jour départ” définit le jour de démarrage du travail, en sachant que les travaux peuvent se chevaucher suivant leur durée. C'est ce qui permet de mener plusieurs travaux parallèlement.") %>
+  <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours"}) %>
+  <%= form.field_raw("Sujet cible", 'sujet_cible', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_sujet_cible', name: 'work[sujet_cible]') }) %>
+  <%= form.field_description("Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier `./objet/unan_admin/lib/data/sujets_cibles.rb` (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
+  <%# étape précédente (if any) %>
+  <%= form.field_text("Work précédent", 'previous_work', "", {class: 'short'}) %>
+  <%= form.field_description("Le work précédent est à préciser lorsque le travail est la suite exacte d'un travail précédent, par exemple lorsqu'il s'agit de poursuivre un document qui a été ébauché avant, conformément au principe du développement en spirale.") %>
+  <%# TRAVAIL %>
+  <%= form.field_textarea("Travail", 'travail', "") %>
+  <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail, abstraction faite des questionnaires et autres quiz.") %>
+  <%# RESULTAT ATTENDU %>
+  <%= form.field_textarea("Résultat", 'resultat',"") %>
+  <%= form.field_description("Le type de résultat attendu, un document, un plan ou autre, mais décrit de façon littéraire, contrairement à la donnée suivante.") %>
+  <%= form.field_select("Support du résultat", 'support', "", {values: Unan::SUPPORTS_RESULTAT}) %>
+  <%= form.field_select("Destinataire", 'destinataire', "", {values: Unan::DESTINATAIRES}) %>
+  <%= form.field_description("Définit à qui le résultat est destiné, virtuellement.") %>
+  <%= form.field_select("Niveau d'exigence", 'niveau_dev', "", {values: Unan::NIVEAU_DEVELOPPEMENT}) %>
+  <%= form.field_description("Le niveau d'exigence définit en quelque sort le niveau de développement à obtenir sur le document à produire. Pour bien faire comprendre le principe des quatre vis et le gérer au cours du développement.") %>
+</form>

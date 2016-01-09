@@ -15,6 +15,21 @@
 * Un mail est envoyé pour confirmer la fin du travail (si nécessaire) avec récapitulation de ce qui a été fait
     => ajouter B_MAIL_FIN au jour de days_overview
 
+* Explication du développement en spirale => page cours
+
+# Raccourci et id pour les pages de cours
+
+Mettre au point un système d'identifiant absolus sous forme de pointeurs (handler) pour les pages de cours. Cela permettra de les modifier plus facilement en cas de besoin.
+
+Il faut donc une MAP qui tienne à jour ça. C'est dans une table
+
+    id          ID absolu
+    handler     <l'id à utiliser>       introduction_structure
+    path        Path de la page, dans   structure/introduction.html
+                ./data/cnarration/
+    type        Le type de la page      HTML ou ?
+
+
 # AU PAIEMENT
 
 * Expliquer que c'est déjà commencé, mais qu'on peut mettre en pause

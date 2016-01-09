@@ -32,7 +32,7 @@ class Console
   <dd>Les variables devraient être traitées dans un très proche avenir.</dd>
 </dl>
 
-<h4>Lignes de code utilisables</h4>
+<h4>Lignes de codes utilisables</h4>
 <dl class='small'>
 
   <dt>`vide table paiements`</dt>
@@ -49,6 +49,16 @@ class Console
   <dt>`detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;`</dt>
   <dd>Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.</dd>
   <dd>OFFLINE seulement</dd>
+</dl>
+
+<h4>Lignes propres à l'application</h4>
+<dl>
+  <dt>`Unan ...`</dt>
+  <dd>Tous les codes commençant par `Unan` concernent la programme Un An Un Script et chargent automatiquement cet objet avant leur exécution.</dd>
+
+  <dt>`Unan affiche (table pages cours)`</dt>
+  <dd>Affiche le contenu complet de la table des pages de cours</dd>
+
 </dl>
     HTML
   end

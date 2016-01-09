@@ -14,7 +14,12 @@
 #
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
-#
+
+# On requiert tout ce que requiert l'index du site
+# Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?
+require './lib/required'
+
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -93,5 +98,5 @@ RSpec.configure do |config|
   def require_folder folder
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
   end
-  
+
 end

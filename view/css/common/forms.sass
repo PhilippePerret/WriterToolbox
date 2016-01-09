@@ -106,7 +106,7 @@ form
         min-height        : 160px
 
       &.descfield
-        font-size         : 13.2pt
+        font-size         : 10.4pt
         font-style        : italic
         opacity           : 0.4
         &:hover
@@ -126,3 +126,8 @@ input[type="text"], input[type="password"]
 span 
   + input[type="text"], + select
     margin-right      : 0.5em
+    
+// Un label de checkbox doit se trouver éloigné de la case à cocher
+input[type="checkbox"] + label
+  margin-left       : 0.5em
+  vertical-align    : middle

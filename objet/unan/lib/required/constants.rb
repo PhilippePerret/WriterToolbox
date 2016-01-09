@@ -5,8 +5,6 @@ Quelques constantes utiles
 
 =end
 
-NOW = Time.now
-
 # Le rythme moyen par défaut pour suivre le programme. C'est à ce
 # rythme qu'on met 1 an pour développer son script
 RYTHME_STANDARD = 5

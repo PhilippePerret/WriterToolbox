@@ -1,6 +1,7 @@
 # Bases de données
 
 * [Introduction](#introductionbasededonnees)
+* [Récupérer n'importe quelle table (ou la créer)](#getanytableorcreate)
 * [Exemple complet d'utilisation dans le programme](#exemplecompletdutilisation)
 * [Définition d'une table](#definitiondunetable)
   * [Définition du schéma de la table](#definitionduschemadelatable)
@@ -21,6 +22,17 @@ Les données de ces tables se trouvent dans :
     ./database/data/
 
 *Note : C'est ce dossier qui doit être utilisé pour les gels.*
+
+
+<a name='getanytableorcreate'></a>
+
+## Récupérer n'importe quelle table (ou la créer)
+
+Pour récupérer n'importe quelle table de base de données dans le programme, qu'elle soit ou non créée, on utilise la tournure :
+
+    site.db.create_table_if_needed('<nom base de données>', '<nom table>')
+
+Il est juste nécessaire que le schéma de la table soit défini tel qu'attendu. Cf. [Définition d'une table](#definitionduschemadelatable)
 
 <a name='exemplecompletdutilisation'></a>
 

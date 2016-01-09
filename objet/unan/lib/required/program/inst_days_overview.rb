@@ -91,8 +91,18 @@ class Program
       end
 
       # ---------------------------------------------------------------------
+      #   Toutes les méthodes pour tester les bits
+
+      def actif?      ; value & B_ACTIF     > 0   end
+      def mail_deb?   ; value & B_MAIL_DEB  > 0   end
+      def conf_deb?   ; value & B_CONF_DEB  > 0   end
+      def mail_fin?   ; value & B_MAIL_FIN  > 0   end
+      def forc_fin?   ; value & B_FORC_FIN  > 0   end
+      def fin?        ; value & B_FIN       > 0   end
+
+      # ---------------------------------------------------------------------
       #
-      # Toutes les méthodes pour ajouter une valeur de bite
+      # Toutes les méthodes pour ajouter une valeur de bit
       #
       # Elles sont toutes construites sur add_bit_<nom bite minuscuel sans B_>
       def add_bit_actif     ; add B_ACTIF     end
@@ -115,14 +125,18 @@ class Program
       # et l'enregistre dans la table, sauf si dont_save
       # et true
       def < valeur, saving = true
-        self.val10 += valeur
-        update_values saving
+        unless self.val10 & valeur > 0
+          self.val10 += valeur
+          update_values saving
+        end
       end
       alias :add :<
 
       def > valeur, saving = true
-        self.val10 -= valeur
-        update_values saving
+        if (self.val10 & valeur) > 0
+          self.val10 -= valeur
+          update_values saving
+        end
       end
       alias :remove :>
 
@@ -131,7 +145,7 @@ class Program
       def update_values saving = true
         @val32  = self.val10.to_s(32).freeze
         @valbin = self.val10.to_s(2).freeze
-        idays_overview.set_jour index_jour, @val32
+        idays_overview.set_jour jour, @val32
         idays_overview.save if saving
       end
 

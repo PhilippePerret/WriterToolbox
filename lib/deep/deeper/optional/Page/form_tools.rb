@@ -19,6 +19,25 @@ class Page
         @prefix = value
       end
 
+      # Définition de l'objet qui contient actuellement
+      # les valeurs. Sert à donner une valeur aux champs si
+      # elles ne sont pas définies dans le formulaire (3e donnée)
+      # C'est un Hash ou un objet. Si c'est un hash, les propriétés
+      # seront considérées comme des clés (objet[<prop>]) sinon, elles
+      # seront considérées comme des méthodes-propriétés.
+      def objet
+        @objet
+      end
+      def objet= value
+        @objet = value
+      end
+      def objet_hash?
+        if @is_objet_hash === nil
+          @is_objet_hash = !!objet.instance_of?(Hash)
+        end
+        @is_objet_hash
+      end
+
 
       # ---------------------------------------------------------------------
       #   Les différents types de champ
@@ -37,6 +56,11 @@ class Page
       # Un input-text
       def field_text libelle, prop, value, options = nil
         Field::new(:text, libelle, prop, value, options).form_row
+      end
+
+      # Un input-checkbox
+      def field_checkbox libelle, prop, value, options = nil
+        Field::new(:checkbox, libelle, prop, value, options).form_row
       end
 
       # Quand le code du champ est donné de façon brute
@@ -80,7 +104,7 @@ class Page
       attr_reader :type
       attr_reader :libelle
       attr_reader :property
-      attr_reader :default_value
+      attr_reader :field_value
       attr_reader :raw_options
 
       # Instanciation
@@ -88,8 +112,32 @@ class Page
         @type           = type
         @raw_options    = opts
         @property       = prop
-        @default_value  = default
+        @field_value    = set_field_value(prop, default)
         @libelle        = libelle
+
+        # Pour supprimer le libellé et le mettre en label dans un
+        # checkbox
+        cb_label if type == :checkbox
+      end
+
+      # ---------------------------------------------------------------------
+      #   Méthodes de données
+      # ---------------------------------------------------------------------
+      def set_field_value prop, defvalue
+        # Valeur qui peut se trouver dans les paramètres
+        param_value = if Page::FormTools::prefix.nil?
+          param(prop.to_sym)
+        else
+          (param(Page::FormTools::prefix)||Hash::new)[prop.to_sym]
+        end
+        objet_value = if Page::FormTools::objet != nil && (defvalue.nil? || defvalue == "")
+          if Page::FormTools::objet_hash?
+            Page::FormTools::objet[prop]
+          elsif Page::FormTools::objet.respond_to?(prop.to_sym)
+            Page::FormTools::objet.send(prop.to_sym)
+          end
+        end
+        param_value || objet_value || defvalue || ""
       end
 
       # ---------------------------------------------------------------------
@@ -149,8 +197,11 @@ class Page
         end
       end
       def field_checkbox
-
+        # Note : Pour un champ checkbox, le libellé sert de texte pour la
+        # case à cocher, pas de libellé (qui est supprimé par défaut)
+        cb_label.in_checkbox( field_attrs.merge(checked: field_value == 'on') )
       end
+
       def field_radio
 
       end
@@ -162,11 +213,6 @@ class Page
       #   Méthodes de valeurs volatiles
       # ---------------------------------------------------------------------
 
-      def field_value
-        @field_value ||= begin
-          default_value || ""
-        end
-      end
       def field_attrs
         @field_attrs ||= begin
           h = { name:field_name, id:field_id, class:options[:class] }
@@ -204,7 +250,13 @@ class Page
       # des champs du formulaire
       def prefix  ; @prefix ||= Page::FormTools::prefix end
 
-
+      def cb_label
+        @cb_label ||= begin
+          lib = libelle.to_s.freeze
+          @libelle = options[:libelle] || ""
+          lib
+        end
+      end
       # ---------------------------------------------------------------------
       #   Méthodes utilitaires
       # ---------------------------------------------------------------------
