@@ -26,7 +26,7 @@ class << self
   #   Données générales de la base de données
   # ---------------------------------------------------------------------
   def database
-    @database ||= BdD::new(database_path)
+    @database ||= BdD::new(database_path.to_s)
   end
   def database_path
     @database_path ||= site.folder_db + "unan.db"
