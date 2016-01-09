@@ -59,6 +59,9 @@ class Console
   <dt>`Unan affiche (table pages cours)`</dt>
   <dd>Affiche le contenu complet de la table des pages de cours</dd>
 
+  <dt>`Unan destroy (table pages cours)`</dt>
+  <dd>Détruire totalement la table des pages de cours (table qui contient toutes les données et notamment les handlers).</dd>
+  <dd>Attention, cette destruction est définitive et doit être opérée quand on possède un backup.</dd>
 </dl>
     HTML
   end

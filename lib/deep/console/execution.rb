@@ -29,6 +29,11 @@ class Console
       # ruby
       res ||= execute_as_ruby( line )
 
+      res = case res
+      when String   then res
+      when NilClass then "-- aucun retour --"
+      else res.inspect
+      end
       add_code "##{'-'*50}\n# => " + res + "\n##{'-'*50}"
 
     end
@@ -58,7 +63,11 @@ class Console
     when "Unan affiche (table pages cours)"
 
       afficher_table_pages_cours
-      
+
+    when "Unan destroy (table pages cours)"
+
+      detruire_table_pages_cours
+
     else
 
       nil # pour essayer autrement
