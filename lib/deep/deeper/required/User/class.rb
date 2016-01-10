@@ -27,11 +27,10 @@ class User
 
     def current
       if @current == nil && app.session['user_id']
-        debug "User ID en session : #{app.session['user_id']}"
+        # debug "User ID en session : #{app.session['user_id']}"
         uchecked = get(app.session['user_id'].to_i)
         if uchecked.get(:session_id) == app.session.session_id
           @current = uchecked
-          debug "Session identique => OK => User courant : #{@current.pseudo} (##{@current.id})"
         end
       end
       @current ||= User::new

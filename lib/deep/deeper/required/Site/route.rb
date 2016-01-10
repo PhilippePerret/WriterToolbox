@@ -265,11 +265,11 @@ class SiteHtml
             if main_class.constants.include?(objet_cam.to_sym)
               main_class.const_get(objet_cam) # p.e. Forum::Message
             else
-              debug "[SiteHtml::Route#classe] Le contexte #{context.camelize} ne connait pas la sous-classe #{objet_cam}"
+              # debug "[SiteHtml::Route#classe] Le contexte #{context.camelize} ne connait pas la sous-classe #{objet_cam}"
               nil
             end
           else
-            debug "[SiteHtml::Route#classe] Contexte défini (#{context.camelize}) mais INCONNU."
+            # debug "[SiteHtml::Route#classe] Contexte défini (#{context.camelize}) mais INCONNU."
             nil
           end
         else
@@ -277,7 +277,7 @@ class SiteHtml
             # debug "[SiteHtml::Route#classe] Pas de contexte, la classe #{objet_cam} existe, on la prend"
             Object.const_get(objet_cam)
           else
-            debug "[SiteHtml::Route#classe] Pas de contexte et objet #{objet_cam} INCONNU"
+            # debug "[SiteHtml::Route#classe] Pas de contexte et objet #{objet_cam} INCONNU"
             nil
           end
         end
