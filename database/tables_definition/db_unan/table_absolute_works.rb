@@ -20,30 +20,30 @@ def schema_table_unan_absolute_works
 
     # Jour de départ
     # --------------
-    # Le programme-jour (de 1 à 365) où l'étape doit être commencée.
-    # Pour rappel, des étapes peuvent se chevaucher, donc il est important,
-    # pour chaque étape, de préciser son jour départ et sa durée
+    # Le programme-jour (de 1 à 365) où le travail doit être commencé.
+    # Pour rappel, des travaux peuvent se chevaucher, donc il est important,
+    # pour chaque travail, de préciser son jour départ et sa durée
     pday_start:  {type:"INTEGER(3)", constraint:"NOT NULL"},
 
     # Durée absolue du travail
     # ------------------------
     # C'est la durée absolue (en programmes-jours) dans laquelle ce
-    # travail doit être effectué. Il variera en fonction du `rythme`
-    # choisi par l'auteur
+    # travail doit être effectué. Le nombre de jours-réels variera en
+    # fonction du `rythme` choisi par l'auteur
     duree:        {type:"INTEGER(3)", constraint:"NOT NULL"},
 
-    # Le type de l'étape
+    # Le type du travail
     # ------------------
-    # Il est constitué de 8 chiffres/lettres définissant 8 paramètres
-    # pour le type. Par exemple, le premier paramètres correspond la
-    # cible principal du travail de l'étape, à savoir: 0:histoire,
+    # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
+    # pour le type du travail.
+    #   BIT 1   Le type merci, page de cours à lire, travail sur
+    # la définition de l'histoire, action à accomplir comme créer
+    # des dossiers, etc.
+    #   BIT 2-3 Cible principal du travail de l'étape, à savoir: 0:histoire,
     # 1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
     # nombres sont donnés en pure illustration et ne correspondent
-    # pas à une réalité)
-    # Ce champ rassemble donc plusieurs propriétés du champ d'édition
-    # de l'étape. dont :
-    #   sujet_cible
-    type:       {type:"VARCHAR(8)", constraint:"NOT NULL"},
+    # pas à une réalité — cf. le document "Narrative Target")
+    type:       {type:"VARCHAR(16)", constraint:"NOT NULL"},
 
 
     # Travail général
@@ -52,14 +52,14 @@ def schema_table_unan_absolute_works
     # dans d'autres propriétés
     travail:    {type:"TEXT", constraint:"NOT NULL"},
 
-    # Étape précédente
+    # Travail précédent
     # ----------------
-    # Lorsque l'étape de travail fait suite à une autre, par exemple lorsqu'il
-    # faut reprendre le document d'une étape précédente, on l'indique par ce
+    # Lorsque le travail fait suite à un autre, par exemple lorsqu'il
+    # faut reprendre le document d'un travail précédent, on l'indique par ce
     # biais
     # Cette donnée est donc fortement liée à la notion de développement en
     # spirale.
-    previous_etape: {type:'INTEGER(4)', default:"NULL"},
+    previous_work: {type:'INTEGER(4)', default:"NULL"},
 
     # Résultat du travail
     # -------------------
@@ -71,14 +71,16 @@ def schema_table_unan_absolute_works
     # ----------------
     # Pour compléter la donnée précédente le type du résultat
     # Bit 1     : Type de document 0:Brainstorming, 1:Document rédigé, 2:Image, etc.
+    #             3 Action à accomplir
     # BIT 2     : Destinataire (0: pour soi, document de travail, 1: lecteur,
     #             document de vente, etc. ?)
-    type_resultat:  {type:"VARCHAR(8)", default:"'"+("0"*8)+"'"},
+    type_resultat:  {type:"VARCHAR(8)"},
 
     # Pages de cours
     # --------------
-    # Hash jsonnés définissant les pages de cours à étudier en
-    # rapport (ou non) avec l'étape courante.
+    # Lorsque le travail consiste à lire des pages de cours, on les
+    # indique ici comme une liste ordonnée d'ID ou de handlers de
+    # page de cours (cf. Unan::Program::PageCours)
     pages_cours:    {type:"BLOB"},
 
     # Pages de cours optionnelles, peut-être déjà étudiées mais
@@ -90,6 +92,8 @@ def schema_table_unan_absolute_works
     # Exemples de travaux réalisés, le plus souvent tirés de films,
     # même lorsqu'il s'agit de pitch, synopsis, etc.
     # C'est une liste d'identifiants dans la table `exemples`
+    # Il peut s'agir aussi de screenshots lorsqu'il s'agit de
+    # d'action à accomplir.
     exemples:       {type:"BLOB"},
 
     # Valeur en Points

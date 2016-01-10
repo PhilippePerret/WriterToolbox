@@ -7,9 +7,6 @@ Gestion des jours de programme, les "p-day".
 
 Principes généraux
 ------------------
-
-    - Quel que soit le rythme, il y a toujours 365 p-day dans un programme
-    - Il peut y avoir plusieurs étapes en cours dans un p-day
     - Un p-day est absolu, il décrit le jour-programme de façon absolue,
       quel que soit l'auteur et le rythme.
 

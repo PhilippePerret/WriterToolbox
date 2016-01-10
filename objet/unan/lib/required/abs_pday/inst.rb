@@ -8,6 +8,8 @@ class Unan
 class Program
 class AbsPDay
 
+  include MethodesObjetsBdD
+
 end
 end
 end

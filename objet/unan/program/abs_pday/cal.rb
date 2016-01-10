@@ -34,8 +34,8 @@ class PDayMap
 
   # Les données totales de toutes les étapes du calendrier
   # exprimé en jours-programme (p-day)
-  require './objet/unan/lib/data/cal_pday'
-  require './objet/unan/lib/data/listes'
+  require './data/unan/data/cal_pday'
+  require './data/unan/data/listes'
 
   class << self
 

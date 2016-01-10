@@ -6,6 +6,7 @@
 * [Définition d'une table](#definitiondunetable)
   * [Définition du schéma de la table](#definitionduschemadelatable)
   * [Définition des colonnes d'une table](#colonnedefinitiondunetable)
+* [Méthodes à inclure pour les objets BdD](#methodesdesobjetsbdd)
 
 
 
@@ -117,7 +118,6 @@ On trouve en valeur un `Hash` définissant la colonne :
     constraint:   La contrainte       NOT NULL ou PRIMARY KEY AUTOINCREMENT
     default:      La valeur défaut
 
-* [Méthodes à inclure pour les objets BdD](#methodesdesobjetsbdd)
 <a name='methodesdesobjetsbdd'></a>
 
 ## Méthodes à inclure pour les objets BdD

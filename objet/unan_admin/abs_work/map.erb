@@ -1,0 +1,22 @@
+<%
+raise_unless_admin
+#
+# ---------------------------------------------------------------------
+#   Carte des travaux, qui permet de voir les superpositions des
+#   travaux en fonction de leur départ et de leur durée
+# ---------------------------------------------------------------------
+%>
+<style type="text/css">
+div#abs_work_map div.work{top: <%= Unan::Program::AbsWork::MAP_DAY_HEIGHT %>px}
+</style>
+
+<%
+# ---------------------------------------------------------------------
+#   La carte
+# ---------------------------------------------------------------------
+%>
+<div id="abs_work_map" style="<%= Unan::Program::AbsWork::MAP_WIDTH %>px">
+  <% Unan::Program::AbsWorks:all do |work| %>
+    <%= work.in_map %>
+  <% end %>
+</div>
