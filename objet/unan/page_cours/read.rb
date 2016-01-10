@@ -11,9 +11,7 @@ class PageCours
   # Obtenir un lien pour afficher la page, l'éditer ou
   # la détruire
   def output options = nil
-    debug "-> PageCours#output"
-    "Ceci est la page de cours."
-    debug "<- PageCours#output"
+    titre.in_h2 + read
   end
 
 end #/PageCours

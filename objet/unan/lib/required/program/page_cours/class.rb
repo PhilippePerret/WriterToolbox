@@ -2,6 +2,13 @@
 class Unan
 class Program
 class PageCours
+
+  TYPES_PAGE = {
+    program:      {hname:"Programme Un An Un Script"},
+    narration:    {hname:"Livre Narration"},
+    cnarration:   {hname:"Collection Narration"}
+  }
+
   class << self
 
     def get pref
