@@ -5,6 +5,9 @@ site.require_objet 'unan'
 
 class UnanAdmin
 class PageCours
+
+  EXTENSIONS_PATH_VALIDES = ['.erb', '.rb', '.txt', '.tex', '.html', '.htm']
+
   class << self
 
     def save
@@ -49,6 +52,8 @@ class PageCours
 
     # Méthode qui vérifie les valeurs de la page de cours
     def check_values_page_cours
+      # Les propriétés qui ne doivent absolument pas être
+      # vides.
       properties_not_nil([:titre, :description, :path, :handler])
       # L'handler doit être unique si c'est une nouvelle page
       if new_page?
@@ -56,8 +61,13 @@ class PageCours
         debug "handler : #{handler}"
         raise "l'handler doit être unique" if table_pages_cours.count(where:"handler = '#{handler}'") > 0
       end
-      # La page doit exister dans le dossier du type
+      # Contrôle du path de la page de cours
       path = data_page[:path]
+      # Le path doit posséder une extension valide
+      unless EXTENSIONS_PATH_VALIDES.include?(File.extname(path))
+        raise "Le path ne possède pas une extension valide. L'extension doit appartenir à #{EXTENSIONS_PATH_VALIDES.join(', ')}."
+      end
+      # La page doit exister dans le dossier du type
       fullpath = site.folder_data + "unan/pages_cours/#{data_page[:type]}/#{path}"
       unless fullpath.exist?
         if creer_fichier_is_inexistant?
