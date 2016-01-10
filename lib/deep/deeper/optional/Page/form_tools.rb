@@ -106,6 +106,10 @@ class Page
       attr_reader :property
       attr_reader :field_value
       attr_reader :raw_options
+      # Gestionnaires d'évènement
+      attr_reader :onchange
+      attr_reader :onclick
+      attr_reader :onsubmit
 
       # Instanciation
       def initialize type, libelle, prop, default, opts
@@ -115,6 +119,12 @@ class Page
         @field_value    = set_field_value(prop, default)
         @libelle        = libelle
 
+        # Les gestionnaires d'évènement
+        unless opts.nil?
+          @onchange = opts.delete(:onchange)
+          @onclick  = opts.delete(:onclick)
+          @onsubmit = opts.delete(:onsubmit)
+        end
         # Pour supprimer le libellé et le mettre en label dans un
         # checkbox
         cb_label if type == :checkbox
@@ -217,6 +227,9 @@ class Page
         @field_attrs ||= begin
           h = { name:field_name, id:field_id, class:options[:class] }
           h.merge!(placeholder: options[:placeholder]) if options[:placeholder]
+          h.merge!(onclick: onclick)    unless onclick.nil?
+          h.merge!(onchange: onchange)  unless onchange.nil?
+          h.merge!(onsubmit: onsubmit)  unless onsubmit.nil?
           h
         end
       end
