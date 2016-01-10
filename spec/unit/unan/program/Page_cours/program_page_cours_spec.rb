@@ -5,7 +5,7 @@ Test de la méthode générale
 =end
 require_folder './objet/unan/lib/required'
 
-describe 'UnAn::Program#page_cours' do
+describe 'UnAn::Program #page_cours' do
   before(:all) do
     @program = Unan::Program::new(0)
   end

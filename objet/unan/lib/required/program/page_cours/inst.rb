@@ -15,32 +15,64 @@ class Program
   end
 
 class PageCours
-  class << self
 
-    def table_pages_cours
-      @table_pages_cours ||= site.db.create_table_if_needed('unan', 'pages_cours')
-    end
-    
-  end # << self PageCours
+  include MethodesObjetsBdD
+
+  # ID
+  attr_reader :id
   # Pointeur
   attr_reader :handler
 
-  def initialize handler
-    @handler = handler
+  # Instanciation de la page de cours, soit avec l'ID soit
+  # avec son handler
+  def initialize pref
+    case pref
+    when Symbol then @handler = pref
+    when Fixnum then @id      = pref
+    else raise "Une instance Unan::Program::PageCours doit être initialisée avec un handler ou un ID."
+    end
   end
   # Retourne l'instance ou raise une erreur si la page n'existe pas
   def self_if_exists_or_raise
-    return self unless db_data.nil?
+    return self unless data.nil?
     raise ArgumentError, "Page de cours introuvable (#{handler.inspect})"
   end
 
-  def db_data
-    @db_data ||= table.get(where:"handler = '#{handler}'")
+  # ---------------------------------------------------------------------
+  #   Données base de la page
+  # ---------------------------------------------------------------------
+
+  def id        ; @id       ||= get_id        end
+  def handler   ; @handler  ||= get(:handler) end
+  def path      ; @path     ||= get(:path)    end
+  def type      ; @type     ||= get(:type)    end
+
+  #
+  # ---------------------------------------------------------------------
+
+  def get_id
+    table.select(where:"handler = '#{handler}'", colonnes:[:id]).values.first[:id]
+  end
+
+  # Retourne toutes les données
+  # NOTE Surclasse la méthode du module MethodesObjetsBdD car on
+  # peut utiliser ici l'ID ou le handler.
+  def data
+    @data ||= begin
+      if handler != nil
+        table.get(where:"handler = '#{handler}'")
+      elsif id != nil
+        table.get(id)
+      else
+        nil
+      end
+    end
   end
 
   def table
     @table ||= self.class::table_pages_cours
   end
+
 end #/PageCours
 end #/Program
 end #/Unan

@@ -15,10 +15,8 @@ Méthodes pour les objets (instances) des bases de données.
 =end
 module MethodesObjetsBdD
 
-  # Relève toutes les données dans la table atelier.taches ou
-  # atelier.past_data
+  # Relève toutes les données dans la table
   # Retourne {Hash} des données ou NIL si la donnée n'existe pas
-  # Cf. _MANUEL_.md > Module de méthodes d'objet > #data
   def data
     @data ||= begin
       id.nil? ? Hash::new : table.select(where: {id: id}).values.first
@@ -29,9 +27,10 @@ module MethodesObjetsBdD
     table.select(params)
   end
 
-  # Cf. _MANUEL_.md > Module de méthodes d'objet > #get
+  # +key+ Symbol (la propriété) ou liste de Symbol
+  # Retourne un Hash (si liste de Symbol) ou la valeur (si Symbol)
   def get keys
-    want_unique_data = keys.class != Array
+    want_unique_data = false == keys.instance_of?(Array)
     keys = [keys] if want_unique_data
     retour = table.select( colonnes: keys, where: { id: id } ).values.first
     return nil if retour.nil?
@@ -52,6 +51,8 @@ module MethodesObjetsBdD
     else # Update ou Insert
       table.set values: hdata, where: {id: id}
     end
+    # On actualise les variables d'instance
+    hdata.each { |k, v| instance_variable_set("@#{k}", v) }
   rescue Exception => e
     error e
   ensure
@@ -67,4 +68,5 @@ module MethodesObjetsBdD
     error e
   end
   alias :remove :delete
+  
 end

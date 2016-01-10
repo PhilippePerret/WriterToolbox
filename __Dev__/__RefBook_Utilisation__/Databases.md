@@ -7,6 +7,8 @@
   * [Définition du schéma de la table](#definitionduschemadelatable)
   * [Définition des colonnes d'une table](#colonnedefinitiondunetable)
 
+
+
 <a name='introductionbasededonnees'></a>
 
 ## Introduction
@@ -114,3 +116,34 @@ On trouve en valeur un `Hash` définissant la colonne :
     type:         Le type             VARCHAR(32)
     constraint:   La contrainte       NOT NULL ou PRIMARY KEY AUTOINCREMENT
     default:      La valeur défaut
+
+* [Méthodes à inclure pour les objets BdD](#methodesdesobjetsbdd)
+<a name='methodesdesobjetsbdd'></a>
+
+## Méthodes à inclure pour les objets BdD
+
+J'appelle "objets BdD" tous les objets, donc toutes les instances, qui sont créées pour des éléments enregistrées dans des bases de données `BdD`.
+
+On inclut ces méthodes en ajoutant la ligne :
+
+    include MethodesObjetsBdD
+
+… au-dessus de la classe.
+
+Pour utiliser ces méthodes, il faut impérativement définir la méthode d'instance `table` qui renvoie la table `BdD::Table` contenant l'objet (les données de l'instance).
+
+    def table
+      @table ||= <BdD::Table contenant les données>
+    end
+
+Ensuite, on peut utiliser les méthodes :
+
+    #data       Retourne toutes les données
+    #get(key)   Retourne la valeur de la clé `key` ou du hash de données
+                si c'est un hash qui est transmis
+    #set(hash_key)    Enregistre le hash de données hash_key
+                      Noter que les variables d'instance courantes seront aussi
+                      modifiées
+    #save(hkey)       Cf. #set
+    #delete     Détruit la donnée dans la base de donnée
+    #remove     Cf. #delete
