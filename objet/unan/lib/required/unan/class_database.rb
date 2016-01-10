@@ -15,6 +15,11 @@ class << self
     @table_programs ||= get_table('programs')
   end
 
+  # Table contenant toutes les données absolues des travaux (abs_works)
+  def table_absolute_works
+    @table_absolute_works ||= get_table('absolute_works')
+  end
+  
   # ---------------------------------------------------------------------
   #   Méthode générique construisant la table si nécessaire
   # ---------------------------------------------------------------------

@@ -5,6 +5,9 @@ Quelques constantes utiles
 
 =end
 
+# Charger toutes les données générales
+Dir["./data/unan/data/**/*.rb"].each{|m| require m}
+
 # Le rythme moyen par défaut pour suivre le programme. C'est à ce
 # rythme qu'on met 1 an pour développer son script
 RYTHME_STANDARD = 5

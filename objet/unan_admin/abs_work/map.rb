@@ -15,8 +15,20 @@ class AbsWork
       @zones ||= Hash::new
     end
 
+    # La hauteur de la carte des travaux, en fonction des
+    # rangées qui ont dû être construites
+    # Sert à définir le style css dans map.erb pour le div
+    # de la map
+    def map_height
+      @map_height ||= @zones.count * (MAP_DAY_HEIGHT + 2)
+    end
+
     def all
-      @all ||= table.select
+      @all ||= begin
+        table.select(colonnes:[:id]).collect do |wid, wdata|
+          new(wid)
+        end
+      end
     end
 
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
@@ -136,3 +148,5 @@ class AbsWork
 end # /AbsWork
 end # /Program
 end # /Unan
+
+Unan::Program::AbsWork::init_map

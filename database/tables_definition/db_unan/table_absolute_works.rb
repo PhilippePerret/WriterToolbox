@@ -36,10 +36,10 @@ def schema_table_unan_absolute_works
     # ------------------
     # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
     # pour le type du travail.
-    #   BIT 1   Le type merci, page de cours à lire, travail sur
+    #   BIT 1-2   Le type général, page de cours à lire, travail sur
     # la définition de l'histoire, action à accomplir comme créer
     # des dossiers, etc.
-    #   BIT 2-3 Cible principal du travail de l'étape, à savoir: 0:histoire,
+    #   BIT 3-4 Cible principal du travail, à savoir: 0:histoire,
     # 1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
     # nombres sont donnés en pure illustration et ne correspondent
     # pas à une réalité — cf. le document "Narrative Target")
@@ -59,7 +59,7 @@ def schema_table_unan_absolute_works
     # biais
     # Cette donnée est donc fortement liée à la notion de développement en
     # spirale.
-    previous_work: {type:'INTEGER(4)', default:"NULL"},
+    prev_work: {type:'INTEGER(4)', default:"NULL"},
 
     # Résultat du travail
     # -------------------
@@ -74,6 +74,7 @@ def schema_table_unan_absolute_works
     #             3 Action à accomplir
     # BIT 2     : Destinataire (0: pour soi, document de travail, 1: lecteur,
     #             document de vente, etc. ?)
+    # BIT 3     : Niveau d'exigence de 0 à 9
     type_resultat:  {type:"VARCHAR(8)"},
 
     # Pages de cours
@@ -125,7 +126,10 @@ def schema_table_unan_absolute_works
     # Noter que des questions peuvent être récurrentes et apparaitre
     # même plusieurs fois au cours d'une étape. Par exemple la question :
     # "Avez-vous travaillé hier ?"
-    flying_qcms:    {type:"BLOB"}
+    flying_qcms:    {type:"BLOB"},
+
+    created_at: {type:"INTEGER(10)",constraint:"NOT NULL"},
+    updated_at: {type:"INTEGER(10)",constraint:"NOT NULL"}
 
   }
 end

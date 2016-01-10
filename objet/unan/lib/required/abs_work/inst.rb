@@ -34,6 +34,12 @@ class AbsWork
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
   # ---------------------------------------------------------------------
+
+  # La table "absolute_works" dans la base de données du programme
+  def table
+    @table ||= Unan::table_absolute_works
+  end
+
   def type_general
     @type_general ||= begin
       TYPES[type[0].to_i]

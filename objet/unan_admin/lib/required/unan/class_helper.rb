@@ -60,7 +60,7 @@ class UnanAdmin
     # automatiquement actualisé pour que toutes les données soient prises
     # en compte.
     def path_fichier_data
-      @path_fichier_data ||= site.folder_objet + '/unan_admin/lib/data/sujets_cibles.rb'
+      @path_fichier_data ||= Unan::folder_data + 'sujets_cibles.rb'
     end
 
     # Actualisation du menu des sujets cibles

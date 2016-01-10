@@ -23,6 +23,21 @@ class Console
     show_table Unan::Program::PageCours::table_pages_cours
   end
 
+  def afficher_table_absolute_works
+    init_unan
+    show_table Unan::table_absolute_works
+  end
+
+  def detruire_table_absolute_works
+    if OFFLINE
+      init_unan
+      Unan::database.execute("DROP TABLE IF EXISTS 'absolute_works';")
+      "Tables des données travaux absolus détruite à jamais."
+    else
+      "Impossible de détruire la table des données absolues\n# des travaux ONLINE"
+    end
+  end
+
 end #/Console
 end #/Admin
 end #/SiteHtml

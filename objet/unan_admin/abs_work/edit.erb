@@ -1,8 +1,100 @@
 <%
 # Vue pour l'édition d'un travail (absolu)
+raise_unless_admin
+site.require_objet 'unan'
 %>
+<%
+# Formulaire d'édition d'un travail
+%>
+<%
+site.require 'form_tools'
+
+# On doit requérir toutes les données de Unan qui contiennent notamment les
+# données listes (pour les bits)
+Dir["./objet/unan/lib/data/**/*.rb"].each{|m| require m}
+
+# Le préfix des champs
+form.prefix = 'work'
+data = param(:work) || Hash::new
+%>
+<form id="form_edit_work_unan" class="form2080" action="abs_work/edit?in=unan_admin" method="POST">
+
+  <%= "save_abs_work".in_hidden(name:'operation') %>
+
+  <%# id %>
+  <%= form.field_text("Numéro", "numero", "", {class: 'short'}) %>
+  <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
+
+  <%# titre %>
+  <%= form.field_text("Titre", "titre", "", {placeholder: 'Titre du travail'}) %>
+
+  <%# pday_start %>
+  <%= form.field_text("Jour départ", 'pday_start', "", {class:'short', text_after:"ième jour"}) %>
+  <%= form.field_description("Le “jour départ” définit le jour de démarrage du travail, en sachant que les travaux peuvent se chevaucher suivant leur durée. C'est ce qui permet de mener plusieurs travaux parallèlement.") %>
+
+  <%# duree %>
+  <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours"}) %>
+
+  <%# type (bit 1-2) %>
+  <%= form.field_select("Type W", 'typeW', data[:typeW], {values: Unan::Program::AbsWork::types_for_select, onchange:"on_change_type_general_travail(this.value)"}) %>
+  <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans ./data/unan/data/listes.rb") %>
+
+  <%# type (bit 3-4) %>
+  <%= form.field_raw("Sujet cible", 'narrative_target', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_sujet_cible', name: 'work[sujet_cible]') }) %>
+  <%= form.field_description("AKA “Narrative target”. Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier `./data/unan/data/sujets_cibles.rb` (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
+
+  <%# Travail précédent (if any) %>
+  <%= form.field_text("Work précédent", 'prev_work', "", {class: 'short'}) %>
+  <%= form.field_description("L'ID du travail précédent est à préciser lorsque le travail est la suite exacte d'un travail précédent, par exemple lorsqu'il s'agit de poursuivre un document qui a été ébauché avant, conformément au principe du développement en spirale.") %>
+
+  <%# Description du `travail` %>
+  <%= form.field_textarea("Travail", 'travail', "") %>
+  <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
+
+  <%# Page de cours %>
+  <div id="div_pages_cours" style="display:none">
+    <%= form.field_text("Pages cours", 'pages_cours', nil) %>
+    <%= form.field_description("Liste d'ID ou de HANDLERS de pages, lorsque le travail consiste en pages de cours à lire. Séparés par des espaces simples.") %>
+    <%= form.field_text("Pages optionnelles", 'pages_optionnelles', nil) %>
+    <%= form.field_description("Liste d'ID ou de HANDLERS de pages qu'on peut optionnellement lire ou relire au cours de ce travail. Séparés par des espaces simples.") %>
+  </div>
+
+  <%# Questionnaires %>
+  <div id="div_questionnaires" style="display:none">
+    <%= form.field_text("Questionnaires", 'questionnaires', nil) %>
+    <%= form.field_description("Liste d'IDs de questionnaires si le travail est un questionnaire. Séparés par des espaces simples. Noter que si plusieurs questionnaires sont proposés, ils seront assemblés en un seul questionnaire.") %>
+  </div>
+
+  <%# Résultat attendu %>
+  <%= form.field_textarea("Résultat", 'resultat',"") %>
+  <%= form.field_description("Le type de résultat attendu, exprimé de façon littéraire et convivial, comme si on parlait à l'auteur.") %>
+
+  <%# support du résultat = forme du résultat (bit 1 de la data `type_resultat`)%>
+  <%= form.field_select("Support du résultat", 'support', "", {values: Unan::SUPPORTS_RESULTAT}) %>
+  <%= form.field_description("Aurait pu s'appeler aussi la “forme du résultat”. C'est le premier bit de la donnée `type_resultat`.") %>
+
+  <%# destinataire (bit 2 de `type_resultat`) %>
+  <%= form.field_select("Destinataire", 'destinataire', "", {values: Unan::DESTINATAIRES}) %>
+  <%= form.field_description("Définit à qui le résultat est destiné, virtuellement, parlant, ou réellement parlant. C'est le bit 2 de la donnée `type_resultat`.") %>
+
+  <%# niveau d'exigence (bit 3 de `type_resultat`) %>
+  <%= form.field_select("Niveau d'exigence", 'niveau_dev', "", {values: Unan::NIVEAU_DEVELOPPEMENT}) %>
+  <%= form.field_description("Le niveau d'exigence définit en quelque sort le niveau de développement à obtenir sur le document à produire. Pour bien faire comprendre le principe des quatre vis et le gérer au cours du développement. C'est le 3e bit de la donnée `type_resultat`.") %>
+
+  <%# Exemples %>
+  <%= form.field_text("Exemples",'exemples', nil) %>
+  <%= form.field_description("Liste d'ID d'exemples illustrant ce travail à accomplir. Prendre ces identifiants dans la table des exemples. Séparés par des espaces simples.") %>
+
+  <%= form.field_text("Points", 'points', nil, {class:'short'}) %>
+  <%= form.field_description("Nombre de points de 1 à 999 pour ce travail. Pour le moment, il est difficile d'estimer combien doit valeur un travail, mais commencer à attribuer des points au feeling.") %>
+
+  <%= form.submit_button("Enregistrer") %>
+</form>
 
 <%
-# Charger le formulaire partagé entre la création et l'édition
+# Pour régler la visibilité des réglages des questionnaires et autres
+# pages de cours
 %>
-<%= form_edition_travail(false) %>
+<script type="text/javascript">
+  on_change_type_general_travail()
+</script>

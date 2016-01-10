@@ -1,5 +1,6 @@
 require 'singleton'
 require 'sqlite3'
+require 'json'
 
 ONLINE  = ENV['HTTP_HOST'] != "localhost"
 OFFLINE = !ONLINE

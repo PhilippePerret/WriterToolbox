@@ -68,6 +68,14 @@ class Console
 
       detruire_table_pages_cours
 
+    when "Unan affiche (table absolute works)"
+
+      afficher_table_absolute_works
+
+    when "Unan destroy (table absolute works)"
+
+      detruire_table_absolute_works
+      
     else
 
       nil # pour essayer autrement

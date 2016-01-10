@@ -5,6 +5,8 @@ Méthodes pratiques de haut niveau
 
 =end
 
+# Return une instance Unan::Program::PageCours d'une page de cours
+# +page_ref+ Soit l'id {Fixnum} soit l'handler ({Symbol}) de la page
 def page_cours page_ref
   case page_ref
   when Symbol then Unan::Program::PageCours::get_by_handler page_ref

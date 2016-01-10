@@ -16,7 +16,10 @@ div#abs_work_map div.work{top: <%= Unan::Program::AbsWork::MAP_DAY_HEIGHT %>px}
 # ---------------------------------------------------------------------
 %>
 <div id="abs_work_map" style="<%= Unan::Program::AbsWork::MAP_WIDTH %>px">
-  <% Unan::Program::AbsWorks:all do |work| %>
+  <% Unan::Program::AbsWork::all do |work| %>
     <%= work.in_map %>
   <% end %>
 </div>
+<style type="text/css">
+div#abs_work_map{height:<%= Unan::Program::AbsWork::map_height%>px}
+</style>
