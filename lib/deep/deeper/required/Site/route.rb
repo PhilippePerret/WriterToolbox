@@ -266,6 +266,7 @@ class SiteHtml
               main_class.const_get(objet_cam) # p.e. Forum::Message
             else
               debug "[SiteHtml::Route#classe] Le contexte #{context.camelize} ne connait pas la sous-classe #{objet_cam}"
+              nil
             end
           else
             debug "[SiteHtml::Route#classe] Contexte défini (#{context.camelize}) mais INCONNU."

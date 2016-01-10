@@ -44,6 +44,7 @@ class PageCours
 
   def id        ; @id       ||= get_id        end
   def handler   ; @handler  ||= get(:handler) end
+  def titre     ; @titre    ||= get(:titre)   end
   def path      ; @path     ||= get(:path)    end
   def type      ; @type     ||= get(:type)    end
 

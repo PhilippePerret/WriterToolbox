@@ -1,9 +1,15 @@
 <%
 # Édition des données d'une page de cours
+raise_unless_admin
 
 site.require 'form_tools'
 form.prefix = 'page_cours'
-form.objet  = pc
+if site.current_route.objet_id != nil
+  # Lorsque la page est appelée par href="page_cours/<id>/edit?in=unan_admin"
+  form.objet = page_cours(site.current_route.objet_id).data
+else
+  form.objet  = pc
+end
 
 TYPES_PAGE = {
   unan:         {hname:"Programme Un An Un Script"},
@@ -12,7 +18,7 @@ TYPES_PAGE = {
 }
 types_page = TYPES_PAGE.collect{|typep, datatype| [typep, datatype[:hname]]}
 %>
-<form class="form2080" action="pages_cours/edit?in=unan_admin" method="POST">
+<form class="form2080" action="page_cours/edit?in=unan_admin" method="POST">
   <%= form.field_text("ID", 'id', nil, {class:'short'}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>

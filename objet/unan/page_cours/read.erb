@@ -1,0 +1,10 @@
+<%
+# Vue pour affichage d'une page de cours
+#
+# Noter que puisqu'on rejoint cette vue par un context "unan" alors que
+# la class est dans "Unan::Program::PageCours" (donc il faudrait un context
+# défini à "unan/program") la route ne peut pas définir l'objet comme
+# instance, il faut donc le prendre ici.
+page_cours = page_cours(site.current_route.objet_id)
+%>
+<%= page_cours.output %>

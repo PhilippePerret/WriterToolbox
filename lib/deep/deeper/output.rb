@@ -35,7 +35,7 @@ class SiteHtml
   rescue ErrorNoAdmin => e
     # Barrière raise_unless_admin
     page.content= page.error_unless_admin
-    page.ouput
+    page.output
   rescue Exception => e
     # ERREUR FATALE
     m = "<html><head><meta content='text/html; charset=utf-8' http-equiv='Content-type' /></head><body>" +
