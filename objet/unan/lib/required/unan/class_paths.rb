@@ -7,8 +7,13 @@ Méthods de path pour Unan
 class Unan
 class << self
 
+  # "./data/unan/data"
   def folder_data
-    @folder_data ||= folder_lib + 'data'
+    @folder_data ||= main_folder_data + 'data'
+  end
+  # Le dossier principal "./data/unan"
+  def main_folder_data
+    @main_folder_data ||= site.folder_data + 'unan'
   end
   def folder_modules
     @folder_modules ||= folder_lib + 'module'
