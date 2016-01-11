@@ -2,10 +2,15 @@
 raise_unless_admin
 
 site.require_objet 'unan'
+(site.folder_deeper_module + 'data_checker.rb').require
 
 class UnanAdmin
 class Program
 class AbsWork
+
+  # Pour le check des données
+  include DataChecker
+
   class << self
 
     def save
@@ -75,19 +80,9 @@ class AbsWork
       @is_new_work ||= data[:id] == nil
     end
 
-    def check_data_abs_work
-      [:id, :titre, :pday_start, :duree, :travail, :prev_work, :resultat, :pages_cours, :pages_optionnelles, :questionnaires, :exemples, :flying_qcms, :points].each do |key|
-        data[key] = data[key].nil_if_empty
-      end
-
-      # Les valeurs liste exprimées en string séparés par des espaces
-      # Mais on ne les traite plus, on les enregistre telles quelles, elles
-      # seront traitées seulement au moment voulu
-      [:pages_cours, :pages_optionnelles, :questionnaires, :exemples, :flying_qcms].each do |key|
-        data[key] = data[key].split(' ') unless data[key].nil?
-      end
-
-      hcond = {
+    # Pour DataChecker
+    def definition_values
+      {
         titre:        {hname:"Le titre",        type: :string, defined:true},
         pday_start:   {hname:"Le jour-départ",  type: :fixnum, defined:true, min: 1, max: 365},
         duree:        {hname:"La durée",        type: :fixnum, defined:true, min: 1, max: 300},
@@ -96,17 +91,17 @@ class AbsWork
         resultat:     {hname:"Le résultat",     type: :string},
         points:       {hname:"Les points",      type: :fixnum, defined:true, min:1, max:5000}
       }
-      hcond.each do |key, dcheck|
-        designation = dcheck[:hname] || "La propriété #{key.inspect}"
-        checked = data[key]
-        checked = checked.to_i_inn if dcheck[:type] == :fixnum
-        raise "La valeur de #{designation.downcase} devrait être définie." if dcheck[:defined] && checked.nil?
-        if dcheck[:type] == :fixnum
-          raise "#{designation} devrait être supérieur à #{dcheck[:min]}." if dcheck[:min] && checked < dcheck[:min]
-          raise "#{designation} devrait être inférieur à #{dcheck[:max]}." if dcheck[:max] && checked > dcheck[:max]
-        end
-        data[key] = checked
+    end
+
+    def check_data_abs_work
+
+      retour = data.check_data( definition_values )
+      retour.ok || begin
+        raise retour.errors.collect do |prop, derr|
+          derr[:err_message].in_div
+        end.join
       end
+      data = retour.data
 
       # Les pages de cours doivent être définies si le typew est 3
       if data[:typeW] == "3"
