@@ -291,8 +291,13 @@ class SiteHtml
         if objet_id.nil? || classe.nil?
           nil
         else
-          class_method = classe.respond_to?(:get) ? :get : :new
-          classe.send( class_method, objet_id )
+          begin
+            class_method = classe.respond_to?(:get) ? :get : :new
+            classe.send( class_method, objet_id )
+          rescue Exception => e
+            error "Impossible d'instancier l'objet avec #{classe}::#{class_method}, malheureusement : #{e.message}"
+            nil
+          end
         end
       end
     end
