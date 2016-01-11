@@ -129,7 +129,24 @@ class AbsWork
     top   = free_row * (MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
-    titre.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+  end
+
+  def displayed_infos
+    @displayed_infos ||= begin
+      (
+        "[#{id}]".in_span(class:'id') + "#{titre}" +
+        "P-Days #{pday_start} à #{pday_end}".in_div +
+        ("Travail : ".in_span(class:'libelle') + "#{travail}").in_div(class:'italic') +
+        ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
+      ).in_div(class:'infos')
+    end
+  end
+
+  def pday_end
+    @pday_end ||= begin
+      pday_start + duree - 1
+    end
   end
 
   def left

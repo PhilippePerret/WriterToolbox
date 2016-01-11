@@ -76,10 +76,10 @@ unless data.empty?  # nil ne peut pas arriver
 end
 
 # Le lien pour éditer le work défini dans le champ ID
-lien_to_edit_abswork = "[éditer]".in_a(class: 'btn', onclick:"$('form#form_edit_work_unan input#operation').val('edit_abs_work');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
+lien_to_edit_abswork = "éditer".in_a(class: 'small btn', onclick:"$('form#form_edit_work_unan input#operation').val('edit_abs_work');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
 
 # Le lien pour détruire le travail courant
-lien_to_destroy_current = "[détruire]".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
+lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
 
 %>
 <form id="form_edit_work_unan" class="form2080" action="abs_work/edit?in=unan_admin" method="POST">
@@ -87,7 +87,7 @@ lien_to_destroy_current = "[détruire]".in_a(class:'small btn warning', onclick:
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 
   <%# id %>
-  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: "#{lien_to_edit_abswork} | #{lien_to_destroy_current}".in_span(class:'small')}) %>
+  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current}".in_span(class:'small')}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>

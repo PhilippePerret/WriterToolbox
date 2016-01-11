@@ -22,6 +22,8 @@ class AbsWork
     # @usage : data = UnanAdmin::Program::AbsWork::full_data_for( data )
     def full_data_for data
 
+      return nil if data.nil?
+      
       # Ajout des propriétés
       # typeW, typeP, narrative_target
       data[:type]           ||= ("0"*16).freeze
@@ -39,7 +41,7 @@ class AbsWork
       data[:id] = data[:id].to_i_inn
 
       return data
-      
+
     end
 
     # = main =
@@ -55,6 +57,8 @@ class AbsWork
       param(:work => nil)
       if wid.nil?
         error "Il faut indiquer l'ID de l'abs-work à éditer"
+      elsif Unan::table_absolute_works.count(where:"id = #{wid}") == 0
+        error "L'abs-work d'ID ##{wid} n'existe pas."
       else
         form.objet = full_data_for( Unan::Program::AbsWork::new(wid).get_all )
       end
