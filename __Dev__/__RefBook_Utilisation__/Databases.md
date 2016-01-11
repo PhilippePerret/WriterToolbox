@@ -6,7 +6,7 @@
 * [Définition d'une table](#definitiondunetable)
   * [Définition du schéma de la table](#definitionduschemadelatable)
   * [Définition des colonnes d'une table](#colonnedefinitiondunetable)
-* [Méthodes à inclure pour les objets BdD](#methodesdesobjetsbdd)
+* [Méthodes courantes pour les objets BdD](#methodesdesobjetsbdd)
 
 
 
@@ -147,3 +147,17 @@ Ensuite, on peut utiliser les méthodes :
     #save(hkey)       Cf. #set
     #delete     Détruit la donnée dans la base de donnée
     #remove     Cf. #delete
+
+### Méthode spéciale `get_all`
+
+Pour ne pas multiplier les appels à la base de données, on peut charger toutes les données d'un objet d'un seul coup, à l'aide de la méthode `get_all` :
+
+    mon_objet = ObjetBD::new
+    mon_objet.get_all # => charge toutes les données
+    mon_objet.duree
+    # duree étant une propriété et une méthode utilisant get(:duree),
+    # la méthode get_all a mis :duree dans @data avec sa valeur et
+    # la méthode get cherchera d'abord dans @data[:duree] pour retourner
+    # la valeur
+
+Noter que `get_all` a l'avantage de remettre à nil `@data`, même si des méthodes get ont été appelées avant (initialisant `@data`), ce qui force dans tous les cas la lecture de la donnée dans la base de données.
