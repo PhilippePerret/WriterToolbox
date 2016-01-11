@@ -29,6 +29,7 @@ class Page
         @objet
       end
       def objet= value
+        # debug "objet mis à #{value.pretty_inspect}"
         @objet = value
       end
       def objet_hash?
@@ -133,20 +134,38 @@ class Page
       # ---------------------------------------------------------------------
       #   Méthodes de données
       # ---------------------------------------------------------------------
+
+      # Méthode qui essaie de définir la valeur à donner
+      # au champ de données
       def set_field_value prop, defvalue
-        # Valeur qui peut se trouver dans les paramètres
+        # debug "[set_field_value] Recherche d'une valeur pour `#{prop}`"
+
+        # Valeur qui peut se trouver dans les paramètres, tel
+        # quel ou dans un prefix défini
         param_value = if Page::FormTools::prefix.nil?
           param(prop.to_sym)
         else
           (param(Page::FormTools::prefix)||Hash::new)[prop.to_sym]
         end
-        objet_value = if Page::FormTools::objet != nil && (defvalue.nil? || defvalue == "")
+
+        # debug "[set_field_value] param_value : #{param_value.inspect}"
+
+        # Valeur qui peut se trouver dans l'objet, si un objet
+        # a été déterminé, qui peut être une instance ou un hash
+        # Cf. la propriété `objet`
+        objet_value = if Page::FormTools::objet != nil
           if Page::FormTools::objet_hash?
-            Page::FormTools::objet[prop]
+            Page::FormTools::objet[prop.to_sym]
           elsif Page::FormTools::objet.respond_to?(prop.to_sym)
             Page::FormTools::objet.send(prop.to_sym)
+          else
+            nil
           end
         end
+
+        # debug "[set_field_value] objet_value  : #{objet_value.inspect}"
+        # debug "[set_field_value] defvalue     : #{defvalue.inspect}"
+
         param_value || objet_value || defvalue || ""
       end
 
@@ -201,7 +220,7 @@ class Page
       def field_select
         case options[:values]
         when String, Hash, Array
-          options[:values].in_select( field_attrs)
+          options[:values].in_select( field_attrs.merge( selected: field_value ) )
         else
           raise "Je ne sais pas comment traiter une donnée de class #{options[:values].class} dans `field_select` (attendu : un Hash, un Array ou un String)."
         end
