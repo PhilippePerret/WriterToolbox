@@ -2,6 +2,7 @@
 raise_unless_admin
 
 site.require_objet 'unan'
+site.require 'form_tools'
 (site.folder_deeper_module + 'data_checker.rb').require
 
 class UnanAdmin
@@ -13,6 +14,72 @@ class AbsWork
 
   class << self
 
+    # Méthode qui complète le hash des données de l'abs-work en
+    # ajoutant toutes les valeurs qui servent au formulaire mais
+    # n'apparaissent pas en tant que données, comme la propriété `type`
+    # qui permet de définir `typeW` (le type de travail), `narrative_target`
+    # (le sujet cible).
+    # @usage : data = UnanAdmin::Program::AbsWork::full_data_for( data )
+    def full_data_for data
+
+      # Ajout des propriétés
+      # typeW, typeP, narrative_target
+      data[:type]           ||= ("0"*16).freeze
+      data[:type_resultat]  ||= ("0"*16).freeze
+      data.merge!(
+        # Décomposition de `type`
+        typeW:            data[:type][0..1].to_i,
+        narrative_target: data[:type][2..3],
+        typeP:            data[:type][4].to_i,
+        #  Décomposition de `type_resultat`
+        support:          data[:type_resultat][0].to_i,
+        destinataire:     data[:type_resultat][1].to_i,
+        niveau_dev:       data[:type_resultat][2].to_i
+      )
+      data[:id] = data[:id].to_i_inn
+
+      return data
+      
+    end
+
+    # = main =
+    #
+    # Méthode appelée quand on clique sur le bouton-lien "Éditer"
+    # à côté du champ pour entrer l'ID
+    # Puisque form_tools se sert en priorité des paramètres pour
+    # prendre les valeurs de l'objet (field_value) il faut vider
+    # les paramètres de l'abs-work qui a peut-être été édité
+    # avant pour ne mettre que l'id
+    def edit_other
+      wid = param(:work)[:id].to_i_inn
+      param(:work => nil)
+      if wid.nil?
+        error "Il faut indiquer l'ID de l'abs-work à éditer"
+      else
+        form.objet = full_data_for( Unan::Program::AbsWork::new(wid).get_all )
+      end
+    end
+
+    # = main =
+    #
+    # Destruction de l'abs-work (après confirmation).
+    # Méthode appelée en bas de ce module lorsqu l'opération
+    # est 'destroy_abs_work'
+    def destroy
+      wid = param(:work)[:id].to_i
+      nombre = Unan::table_absolute_works.count(where:"id = #{wid}")
+      if nombre == 0
+        error "La donnée abs-work d'ID ##{wid} n'existe pas. Impossible de la détruire."
+      else
+        Unan::table_absolute_works.delete(wid)
+        flash "Destruction de l'abs-work #{wid} OK"
+      end
+    end
+
+    # = main =
+    #
+    # Sauvegarde de l'abswork. Méthode appelée en bas de ce
+    # module lorsque l'opération est "save_abs_work"
     def save
 
       # On vérifie la validité des données ou on s'en retourne
@@ -141,4 +208,11 @@ end #/AbsWork
 end #/Program
 end #/UnanAdmin
 
-UnanAdmin::Program::AbsWork::save if param(:operation) == "save_abs_work"
+case param(:operation)
+when "edit_abs_work"
+  UnanAdmin::Program::AbsWork::edit_other
+when "save_abs_work"
+  UnanAdmin::Program::AbsWork::save
+when "destroy_abs_work"
+  UnanAdmin::Program::AbsWork::destroy
+end

@@ -55,7 +55,6 @@ class UnanAdmin
         sujet     = value[0].to_i.freeze
         subsujet  = value[1].to_i.freeze
         data_sujet = SUJETS_CIBLES.values[sujet]
-        debug "data_sujet: #{data_sujet.inspect}"
         hval = data_sujet[:hname] + "::"
         data_sujet[:sub].each do |k, dk|
           if dk[:value] == subsujet

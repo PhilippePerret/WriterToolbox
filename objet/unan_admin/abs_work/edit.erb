@@ -1,8 +1,6 @@
 <%
 # Vue pour l'édition d'un travail (absolu)
 raise_unless_admin
-site.require_objet 'unan'
-site.require 'form_tools'
 %>
 <%
 # Formulaire d'édition d'un travail
@@ -30,6 +28,7 @@ data = if param(:work)
   # faut éditer l'abs_work de cet identifiant
   if param(:work)[:id] != nil && param(:work)[:travail].to_s == ""
     debug "-- param(:work)[:id] est défini, pas param[:work][:travail]"
+    debug "-- => Je vais prendre l'instance ##{param(:work)[:id]}"
     # Par exemple lorsque l'on met un ID dans le champ ID et
     # qu'on clique sur le lien "Éditer" pour éditer le travail
     # voulu
@@ -51,43 +50,44 @@ elsif site.current_route.objet == "abs_work" && site.current_route.objet_id != n
   site.current_route.instance.get_all
 else
   debug "-- Rien n'est défini, on initie un Hash vite pour les données"
-  Hash::new
+  nil
 end
+
+data ||= Hash::new
 
 # Si les données ne sont pas vides (donc proviennent du formulaire par
 # les paramètres ou d'une instance) alors on les transmet à `form` et
 # surtout on ajoute les propriétés qui manquent telles que celles définies
 # dans un type constitué de bits, etc.
-unless data.empty? || data.nil? # normalement, nil ne peut pas arriver
-  # Ajout des propriétés
-  # typeW, typeP, narrative_target
-  data[:type]           ||= ("0"*16).freeze
-  data[:type_resultat]  ||= ("0"*16).freeze
-  data.merge!(
-    # Décomposition de `type`
-    typeW:            data[:type][0..1].to_i,
-    narrative_target: data[:type][2..3],
-    typeP:            data[:type][4].to_i,
-    #  Décomposition de `type_resultat`
-    support:          data[:type_resultat][0].to_i,
-    destinataire:     data[:type_resultat][1].to_i,
-    niveau_dev:       data[:type_resultat][2].to_i
-  )
-  data[:id] = data[:id].to_i_inn
+unless data.empty?  # nil ne peut pas arriver
+
+  # On complète les données avec les données pour le
+  # formulaire
+  data = UnanAdmin::Program::AbsWork::full_data_for( data )
+
+  # On affiche les données qui seront utilisées pour le
+  # formulaire en débug
   debug data.pretty_inspect
   debug "-"*70
 
+  # On donne cet objet au formulaire (form_tools) pour qu'il
+  # en utilise les valeurs
   form.objet = data
 end
 
-lien_to_edit_abswork = "[éditer]".in_a(class:'small', onclick:"$('form#form_edit_work_unan input#operation').val('pour_voir');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
+# Le lien pour éditer le work défini dans le champ ID
+lien_to_edit_abswork = "[éditer]".in_a(class: 'btn', onclick:"$('form#form_edit_work_unan input#operation').val('edit_abs_work');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
+
+# Le lien pour détruire le travail courant
+lien_to_destroy_current = "[détruire]".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
+
 %>
 <form id="form_edit_work_unan" class="form2080" action="abs_work/edit?in=unan_admin" method="POST">
 
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 
   <%# id %>
-  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: lien_to_edit_abswork}) %>
+  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: "#{lien_to_edit_abswork} | #{lien_to_destroy_current}".in_span(class:'small')}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>
