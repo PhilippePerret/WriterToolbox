@@ -125,14 +125,15 @@ class AbsWork
 
   # {StringHTML} Code HTML du travail sur la carte
   def in_map
+    get_all # pour charger toutes les données d'un coup
     top   = free_row * (MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
-    "".in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    titre.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
   end
 
   def left
-    @left ||= pday * MAP_DAY_WIDTH
+    @left ||= (pday_start - 1) * MAP_DAY_WIDTH
   end
   def width
     @width ||= duree * MAP_DAY_WIDTH
