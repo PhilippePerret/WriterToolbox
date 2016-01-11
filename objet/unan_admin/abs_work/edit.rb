@@ -83,19 +83,21 @@ class AbsWork
     # Pour DataChecker
     def definition_values
       {
-        titre:        {hname:"Le titre",        type: :string, defined:true},
-        pday_start:   {hname:"Le jour-départ",  type: :fixnum, defined:true, min: 1, max: 365},
-        duree:        {hname:"La durée",        type: :fixnum, defined:true, min: 1, max: 300},
-        travail:      {hname:"Le travail",      type: :string, defined:true},
-        prev_work:    {hname:"Le travail précédent", type: :fixnum},
-        resultat:     {hname:"Le résultat",     type: :string},
-        points:       {hname:"Les points",      type: :fixnum, defined:true, min:1, max:5000}
+        titre:        {hname:"titre",        type: :string, defined:true},
+        pday_start:   {hname:"jour-départ",  type: :fixnum, defined:true, min: 1, max: 365},
+        duree:        {hname:"durée",        type: :fixnum, defined:true, min: 1, max: 300},
+        travail:      {hname:"travail",      type: :string, defined:true},
+        prev_work:    {hname:"travail précédent", type: :fixnum},
+        resultat:     {hname:"résultat",     type: :string},
+        points:       {hname:"points",      type: :fixnum, defined:true, min:1, max:5000}
       }
     end
 
     def check_data_abs_work
-
+      debug "-> check_data_abs_work"
       retour = data.check_data( definition_values )
+      debug retour.errors.pretty_inspect
+      debug "<- retour de check_data"
       retour.ok || begin
         raise retour.errors.collect do |prop, derr|
           derr[:err_message].in_div
@@ -111,7 +113,7 @@ class AbsWork
       if ["4","5"].include?(data[:typeW])
         raise "Il faut indiquer les IDs de questionnaires ou de checkpoints à accomplir." if data[:questionnaires].nil?
       end
-
+      debug "<- check_data_abs_work"
     rescue Exception => e
       error e.message
     else
