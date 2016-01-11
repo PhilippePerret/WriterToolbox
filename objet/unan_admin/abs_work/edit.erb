@@ -2,45 +2,112 @@
 # Vue pour l'édition d'un travail (absolu)
 raise_unless_admin
 site.require_objet 'unan'
+site.require 'form_tools'
 %>
 <%
 # Formulaire d'édition d'un travail
 %>
-<%
-site.require 'form_tools'
 
+<%
 # On doit requérir toutes les données de Unan qui contiennent notamment les
 # données listes (pour les bits)
-Dir["./objet/unan/lib/data/**/*.rb"].each{|m| require m}
+Unan::require_data
 
 # Le préfix des champs
 form.prefix = 'work'
-data = param(:work) || Hash::new
+
+debug "-"*70
+debug "Data transmises à form.objet juste avant le formulaire (if any) :"
+
+data = if param(:work)
+  debug "-- param(:work) est défini"
+  # Si param(:work) est défini, il peut s'agit de deux choses :
+  # Soit les données sont ré-affichées suite à un enregistrement ou
+  # une erreur de données. Dans ce cas, il faut prendre les données
+  # dans les paramètres.
+  # Si, en revanche, param[:work][:id] est défini, mais pas la
+  # données :travail (qui est normalement obligatoire), alors il
+  # faut éditer l'abs_work de cet identifiant
+  if param(:work)[:id] != nil && param(:work)[:travail].to_s == ""
+    debug "-- param(:work)[:id] est défini, pas param[:work][:travail]"
+    # Par exemple lorsque l'on met un ID dans le champ ID et
+    # qu'on clique sur le lien "Éditer" pour éditer le travail
+    # voulu
+    Unan::Program::AbsWork::new(param(:work)[:id].to_i).get_all
+  else
+    # En cas d'erreur sur les données ou d'enregistrement normal
+    debug "-- param(:work)[:travail] est défini => ON PREND LES DATA DANS LES PARAMÈTRES"
+    debug "-- param(:work) : #{param(:work).pretty_inspect}"
+    param(:work)
+  end
+elsif site.current_route.objet == "abs_work" && site.current_route.objet_id != nil
+  # Si les paramètres ne contiennent pas :work mais que
+  # la route défini l'objet comme "abs_work" et un id, c'est qu'il
+  # faut mettre un travail en édition
+  # Attention : ici, il s'agit d'une instance UnanAdmin::AbsWork et
+  # non pas d'une instance Unan::Program::AbsWork comme pour l'user
+  # dans le programme normal
+  debug "-- La route définit l'objet abs_work et l'identifiant #{site.current_route.objet_id}"
+  site.current_route.instance.get_all
+else
+  debug "-- Rien n'est défini, on initie un Hash vite pour les données"
+  Hash::new
+end
+
+# Si les données ne sont pas vides (donc proviennent du formulaire par
+# les paramètres ou d'une instance) alors on les transmet à `form` et
+# surtout on ajoute les propriétés qui manquent telles que celles définies
+# dans un type constitué de bits, etc.
+unless data.empty? || data.nil? # normalement, nil ne peut pas arriver
+  # Ajout des propriétés
+  # typeW, typeP, narrative_target
+  data[:type]           ||= ("0"*16).freeze
+  data[:type_resultat]  ||= ("0"*16).freeze
+  data.merge!(
+    # Décomposition de `type`
+    typeW:            data[:type][0..1].to_i,
+    narrative_target: data[:type][2..3],
+    typeP:            data[:type][4].to_i,
+    #  Décomposition de `type_resultat`
+    support:          data[:type_resultat][0].to_i,
+    destinataire:     data[:type_resultat][1].to_i,
+    niveau_dev:       data[:type_resultat][2].to_i
+  )
+  data[:id] = data[:id].to_i_inn
+  debug data.pretty_inspect
+  debug "-"*70
+
+  form.objet = data
+end
+
+lien_to_edit_abswork = "[éditer]".in_a(class:'small', onclick:"$('form#form_edit_work_unan input#operation').val('pour_voir');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
 %>
 <form id="form_edit_work_unan" class="form2080" action="abs_work/edit?in=unan_admin" method="POST">
 
-  <%= "save_abs_work".in_hidden(name:'operation') %>
+  <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 
   <%# id %>
-  <%= form.field_text("Numéro", "numero", "", {class: 'short'}) %>
+  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: lien_to_edit_abswork}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>
-  <%= form.field_text("Titre", "titre", "", {placeholder: 'Titre du travail'}) %>
+  <%= form.field_text("Titre", "titre", nil, {placeholder: 'Titre du travail'}) %>
 
   <%# pday_start %>
-  <%= form.field_text("Jour départ", 'pday_start', "", {class:'short', text_after:"ième jour"}) %>
+  <%= form.field_text("Jour départ", 'pday_start', nil, {class:'short', text_after:"ième jour"}) %>
   <%= form.field_description("Le “jour départ” définit le jour de démarrage du travail, en sachant que les travaux peuvent se chevaucher suivant leur durée. C'est ce qui permet de mener plusieurs travaux parallèlement.") %>
 
   <%# duree %>
   <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours"}) %>
 
+  <%# type (bit 5) -- bit 6 pourra servir, mais inutilisé pour le moment %>
+  <%= form.field_select("Type Projet", 'typeP', data[:typeP], {values: UnanAdmin::types_projets_for_select}) %>
   <%# type (bit 1-2) %>
   <%= form.field_select("Type W", 'typeW', data[:typeW], {values: Unan::Program::AbsWork::types_for_select, onchange:"on_change_type_general_travail(this.value)"}) %>
   <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans ./data/unan/data/listes.rb") %>
 
   <%# type (bit 3-4) %>
-  <%= form.field_raw("Sujet cible", 'narrative_target', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_sujet_cible', name: 'work[sujet_cible]') }) %>
+  <%= form.field_raw("Sujet cible", 'narrative_target', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_narrative_target', name: 'work[narrative_target]', value: data[:narrative_target]) }) %>
   <%= form.field_description("AKA “Narrative target”. Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier `./data/unan/data/sujets_cibles.rb` (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
 
   <%# Travail précédent (if any) %>
@@ -48,6 +115,7 @@ data = param(:work) || Hash::new
   <%= form.field_description("L'ID du travail précédent est à préciser lorsque le travail est la suite exacte d'un travail précédent, par exemple lorsqu'il s'agit de poursuivre un document qui a été ébauché avant, conformément au principe du développement en spirale.") %>
 
   <%# Description du `travail` %>
+  <%# Note : Sera mis à "" pour éditer un autre travail en entrant un ID à la main %>
   <%= form.field_textarea("Travail", 'travail', "") %>
   <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
 
@@ -63,6 +131,8 @@ data = param(:work) || Hash::new
   <div id="div_questionnaires" style="display:none">
     <%= form.field_text("Questionnaires", 'questionnaires', nil) %>
     <%= form.field_description("Liste d'IDs de questionnaires si le travail est un questionnaire. Séparés par des espaces simples. Noter que si plusieurs questionnaires sont proposés, ils seront assemblés en un seul questionnaire.") %>
+    <%= form.field_text("QCM volants", 'flying_qcms', nil) %>
+    <%= form.field_description("Liste des IDs des QCMs volants, séparés par des espaces simples. Voir la table des QCMs volants pour connaitre les IDs.") %>
   </div>
 
   <%# Résultat attendu %>

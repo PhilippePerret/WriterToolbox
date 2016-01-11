@@ -43,7 +43,7 @@ class AbsWork
           titre:            data[:titre],
           pday_start:       data[:pday_start],
           duree:            data[:duree],
-          type:             "#{data[:typeW].to_s.rjust(2,'0')}#{data[:narrative_target]}",
+          type:             data_type,
           travail:          data[:travail],
           prev_work:        data[:prev_work],
           resultat:         data[:resultat],
@@ -54,14 +54,26 @@ class AbsWork
           exemples:         data[:exemples],
           flying_qcms:      data[:flying_qcms],
           points:           data[:points],
-          updated_at: NOW.to_i
+          updated_at:       NOW.to_i
         }
         if new_work?
           dts.merge!(created_at: NOW.to_i)
         else
-          dts.merge!(id: data[:id])
+          dts.merge!(id: data[:id].to_i_inn)
         end
+        debug "\n\nDATA FINALES À SAUVER :\n#{dts.pretty_inspect}\n\n"
+        debug "(On met ces data finales dans param(:work))"
+        param(:work => dts)
+        dts
       end
+    end
+
+    # Le type
+    # Voir dans la définition de table
+    # (./database/table_definition/db_unan/table_absolute_work) comment
+    # est constituée cette donnée
+    def data_type
+      "0#{data[:typeW].to_s}#{data[:narrative_target]}#{data[:typeP].to_i.to_s}0"
     end
 
     # Le type_resultat est constitué de plusieurs valeurs
@@ -70,10 +82,10 @@ class AbsWork
     #   BIT 1   Le type de support
     #   BIT 2   Le destinataire
     #   BIT 3   Le niveau de développement
+    # Note : on en profite pour le mettre aussi dans la donnée (objet)
+    # et la donnée en paramètre (param(:<prefix>))
     def type_resultat
-      @type_resultat ||= begin
-        "#{data[:support]}#{data[:destinataire]}#{data[:niveau_dev]}"
-      end
+      "#{data[:support]}#{data[:destinataire]}#{data[:niveau_dev]}"
     end
 
     def new_work?
@@ -83,27 +95,24 @@ class AbsWork
     # Pour DataChecker
     def definition_values
       {
-        titre:        {hname:"titre",        type: :string, defined:true},
-        pday_start:   {hname:"jour-départ",  type: :fixnum, defined:true, min: 1, max: 365},
-        duree:        {hname:"durée",        type: :fixnum, defined:true, min: 1, max: 300},
-        travail:      {hname:"travail",      type: :string, defined:true},
+        titre:        {hname:"titre",         type: :string, defined:true},
+        pday_start:   {hname:"jour-départ",   type: :fixnum, defined:true, min: 1, max: 365},
+        duree:        {hname:"durée",         type: :fixnum, defined:true, min: 1, max: 300},
+        travail:      {hname:"travail",       type: :string, defined:true},
         prev_work:    {hname:"travail précédent", type: :fixnum},
-        resultat:     {hname:"résultat",     type: :string},
-        points:       {hname:"points",      type: :fixnum, defined:true, min:1, max:5000}
+        resultat:     {hname:"résultat",      type: :string},
+        points:       {hname:"points",        type: :fixnum, defined:true, min:1, max:5000}
       }
     end
 
     def check_data_abs_work
-      debug "-> check_data_abs_work"
       retour = data.check_data( definition_values )
-      debug retour.errors.pretty_inspect
-      debug "<- retour de check_data"
       retour.ok || begin
-        raise retour.errors.collect do |prop, derr|
+        raise( retour.errors.collect do |prop, derr|
           derr[:err_message].in_div
-        end.join
+        end.join)
       end
-      data = retour.data
+      data = retour.objet
 
       # Les pages de cours doivent être définies si le typew est 3
       if data[:typeW] == "3"
@@ -113,9 +122,11 @@ class AbsWork
       if ["4","5"].include?(data[:typeW])
         raise "Il faut indiquer les IDs de questionnaires ou de checkpoints à accomplir." if data[:questionnaires].nil?
       end
-      debug "<- check_data_abs_work"
     rescue Exception => e
       error e.message
+      debug e.message
+      debug e.backtrace.join("\n")
+      return false
     else
       return true # pour poursuivre
     end
@@ -125,6 +136,7 @@ class AbsWork
     end
 
   end # << self
+
 end #/AbsWork
 end #/Program
 end #/UnanAdmin

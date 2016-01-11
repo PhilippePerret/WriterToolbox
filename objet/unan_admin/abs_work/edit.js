@@ -1,5 +1,5 @@
 function on_change_type_general_travail(value){
-  if(undefined == value) value = $('select#work_typew')[0].value;
+  if(undefined == value){ value = $('select#work_typeW')[0].value }
 
   $('div#div_pages_cours').hide();
   $('div#div_questionnaires').hide();

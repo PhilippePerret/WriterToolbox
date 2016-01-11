@@ -13,6 +13,11 @@ Pour un programme en particulier, voir la classe Unan::Program
 class Unan
   class << self
 
+    # Requérir les données
+    def require_data
+      self.folder_data.require
+    end
+
     # Crée un nouveau programme pour l'user courant
     # (qui vient certainement de payer son programme)
     def create_program
@@ -33,10 +38,17 @@ class Unan
       @tarif ||= 29.80
     end
 
-    def titre_h1
+    # Permet d'écrire le titre "Un An Un Script" de façon
+    # correcte, avec un sous-titre (h2) s'il est défini
+    def titre_h1 sous_titre = nil
       @titre_h1 ||= begin
         titre = "Le Programme “<span style='letter-spacing:-1px;'>Un<span style='font-size:0.5em'> </span>An<span style='font-size:0.5em'> </span><span style='letter-spacing:-2px'>Un</span><span style='font-size:0.5em'> </span><span style='letter-spacing:-2px'>Script</span></span>”"
         titre.in_a(href:"unan/home").in_h1
+      end
+      if sous_titre
+        @titre_h1 + sous_titre.in_h2
+      else
+        @titre_h1
       end
     end
 

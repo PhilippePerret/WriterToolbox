@@ -4,6 +4,13 @@ class UnanAdmin
 
   class << self
 
+    # Données pour un menu select des types de projet
+    def types_projets_for_select
+      @types_projets_for_select ||= begin
+        Unan::TYPES_PROJETS.collect { |wtype, dtype| [ wtype, dtype[:hname] ] }
+      end
+    end
+
     # {StringHTML} Return le code HTML pour tous les menus qui
     # constituent la données 'type_resultat' (à la base pour une
     # étape) déterminant le type du résultat attendu, de façon
@@ -37,13 +44,35 @@ class UnanAdmin
       options ||= Hash::new
       options[:id]    ||= 'youpi'
       options[:name]  ||= 'youpi'
+
+      value = options.delete(:value)
+      hvalue = if value.nil?
+        ""
+      else
+        # Il y a une valeur
+        # => Il faut la mettre telle quelle dans le champ hidden et
+        # reconstituer sa donnée humaine pour la mettre dans le span
+        sujet     = value[0].to_i.freeze
+        subsujet  = value[1].to_i.freeze
+        data_sujet = SUJETS_CIBLES.values[sujet]
+        debug "data_sujet: #{data_sujet.inspect}"
+        hval = data_sujet[:hname] + "::"
+        data_sujet[:sub].each do |k, dk|
+          if dk[:value] == subsujet
+            hval << dk[:hname]
+            break # on a trouvé le sous-sujet
+          end
+        end
+        hval
+      end
+
       if false == path_fichier_html.exist? || path_fichier_html.mtime < path_fichier_data.mtime
         update_menu_sujets_cibles
       end
       (
-        "".in_span(class:'sujet_human_value', id: "#{options[:id]}_human") + # pour afficher la valeur humaine
+        hvalue.in_span(class:'sujet_human_value', id: "#{options[:id]}_human") + # pour afficher la valeur humaine
         path_fichier_html.read.sub(/__HIDDEN_FIELD_ID__/, options[:id]) +
-        "".in_hidden(name: options[:name], id: options[:id])
+        value.to_s.in_hidden(name: options[:name], id: options[:id])
       )
       .in_span(class:'conteneur_menu_sujets')
     end

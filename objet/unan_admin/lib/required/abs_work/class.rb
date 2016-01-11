@@ -6,5 +6,7 @@ class UnanAdmin
       def bind;binding()end
 
     end # << self
+
+    
   end # /AbsWork
 end # /UnanAdmin

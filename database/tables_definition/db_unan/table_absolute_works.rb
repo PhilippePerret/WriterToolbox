@@ -36,13 +36,22 @@ def schema_table_unan_absolute_works
     # ------------------
     # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
     # pour le type du travail.
-    #   BIT 1-2   Le type général, page de cours à lire, travail sur
-    # la définition de l'histoire, action à accomplir comme créer
-    # des dossiers, etc.
-    #   BIT 3-4 Cible principal du travail, à savoir: 0:histoire,
-    # 1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
-    # nombres sont donnés en pure illustration et ne correspondent
-    # pas à une réalité — cf. le document "Narrative Target")
+    #   BIT 1-2   (typeW) Le type général, page de cours à lire, travail
+    #     sur la définition de l'histoire, action à accomplir comme créer
+    #     des dossiers, etc. C'est un nombre de 0 à 99
+    #     Cf. la liste Unan::Program::AbsWork::TYPES
+    #   BIT 3-4 (narrative_targe) Cible principal du travail, à savoir:
+    #     1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
+    #     nombres sont donnés en pure illustration et ne correspondent
+    #     pas à une réalité — cf. le document "Narrative Target")
+    #   BIT 5-6   (typeP) Le type de projet, entre roman, film, etc.
+    #     Cette donnée permet d'avoir des travaux "jumeaux" en fonction
+    #     des types de projets, entendu qu'un auteur travaillant un
+    #     roman travaillera sur le manuscrit à la fin alors qu'un auteur
+    #     de film travaillera sur le scénario.
+    #     Noter que pour le moment seul le premier bit est utilisé. L'autre
+    #     est laissé dans lequel cas il faudrait être plus précis
+    #     Cf. la liste Unan::TYPES_PROJETS
     type:       {type:"VARCHAR(16)", constraint:"NOT NULL"},
 
 
@@ -72,9 +81,12 @@ def schema_table_unan_absolute_works
     # Pour compléter la donnée précédente le type du résultat
     # Bit 1     : Type de document 0:Brainstorming, 1:Document rédigé, 2:Image, etc.
     #             3 Action à accomplir
+    #             propriété volatile `support`
     # BIT 2     : Destinataire (0: pour soi, document de travail, 1: lecteur,
     #             document de vente, etc. ?)
+    #             Propriété volatile `destinataire`
     # BIT 3     : Niveau d'exigence de 0 à 9
+    #             Propriété volatile `niveau_dev`
     type_resultat:  {type:"VARCHAR(8)"},
 
     # Pages de cours
