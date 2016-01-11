@@ -113,6 +113,7 @@ class Page
       attr_reader :onsubmit
 
       # Instanciation
+      # +prop+ {String} La propriété
       def initialize type, libelle, prop, default, opts
         @type           = type
         @raw_options    = opts
@@ -129,6 +130,7 @@ class Page
         # Pour supprimer le libellé et le mettre en label dans un
         # checkbox
         cb_label if type == :checkbox
+
       end
 
       # ---------------------------------------------------------------------
