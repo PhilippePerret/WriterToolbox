@@ -40,7 +40,8 @@ module DataChecker
     # et mises dans leur type défini par la `checks`
     def check_objet
       definition.each do |prop, dcheck|
-        dcheck[:hname] ||= "La propriété #{prop.inspect}"
+        dcheck[:hname] ||= prop.inspect
+        dcheck[:hname] = "La valeur de #{dcheck[:hname]}"
         check_property prop, dcheck
       end
     end

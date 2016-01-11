@@ -67,7 +67,7 @@ describe 'DataChecker' do
 
   describe 'check les valeurs' do
     context 'avec un nombre non défini' do
-      before(:all) do
+      before(:each) do
         @objet = {nombre: ""}
         @defcheck = {nombre: {type: :fixnum, defined: true}}
       end
@@ -76,7 +76,7 @@ describe 'DataChecker' do
       end
       it 'retourne le message d’erreur' do
         expect(result.errors).to have_key :nombre
-        expect(result.errors[:nombre][:err_message]).to eq "La propriété :nombre doit être définie."
+        expect(result.errors[:nombre][:err_message]).to eq "La valeur de :nombre doit être définie."
       end
     end
 
@@ -85,20 +85,20 @@ describe 'DataChecker' do
   describe 'check du minimum' do
     context 'avec un string' do
       context 'trop court' do
-        before(:all) do
+        before(:each) do
           @objet    = {texte: "Trop court"}
-          @defcheck = {texte: {hname: "Le texte", type: :string, min: 20}}
+          @defcheck = {texte: {hname: "texte", type: :string, min: 20}}
         end
         it 'produit une erreur' do
           expect(result.ok).to eq false
         end
         it 'retourne un message valide' do
           expect(result.errors).to have_key(:texte)
-          expect(result.errors[:texte][:err_message]).to eq "Le texte devrait avoir une longueur minimum de 20 (la longueur est de 10)."
+          expect(result.errors[:texte][:err_message]).to eq "La valeur de texte devrait avoir une longueur minimum de 20 (la longueur est de 10)."
         end
       end
       context 'assez long' do
-        before(:all) do
+        before(:each) do
           @objet = {text: "Le texte assez long."}
           @defcheck = {text: {type: :string, min: 10}}
         end
@@ -108,16 +108,16 @@ describe 'DataChecker' do
       end
     end
     context 'avec un nombre :fixnum trop petit' do
-      before(:all) do
+      before(:each) do
         @objet    = {nombre: "5"}
-        @defcheck = {nombre: {hname: "Le nombre", type: :fixnum, min: 6}}
+        @defcheck = {nombre: {hname: "nombre", type: :fixnum, min: 6}}
       end
       it 'produit une erreur' do
         expect(result.ok).to eq false
       end
       it 'retourne un message valide' do
         expect(result.errors).to have_key(:nombre)
-        expect(result.errors[:nombre][:err_message]).to eq "Le nombre devrait être supérieur ou égal à 6 (sa valeur est de 5)."
+        expect(result.errors[:nombre][:err_message]).to eq "La valeur de nombre devrait être supérieur ou égal à 6 (sa valeur est de 5)."
       end
     end
     context 'avec un nombre :fixnum assez grand' do
@@ -134,19 +134,19 @@ describe 'DataChecker' do
   describe 'Check du maximum' do
     context 'avec un nombre' do
       context 'trop grand' do
-        before(:all) do
+        before(:each) do
           @objet = {nombre: 100}
-          @defcheck = {nombre: {type: :fixnum, hname: "Le nombre", max: 50}}
+          @defcheck = {nombre: {type: :fixnum, hname: "nombre", max: 50}}
         end
         it 'produit une erreur' do
           expect(result.ok).to eq false
         end
         it 'retourne le bon message' do
-          expect(result.errors[:nombre][:err_message]).to eq "Le nombre devrait être inférieur ou égal à 50 (sa valeur est de 100)."
+          expect(result.errors[:nombre][:err_message]).to eq "La valeur de nombre devrait être inférieur ou égal à 50 (sa valeur est de 100)."
         end
       end
       context 'assez court' do
-        before(:all) do
+        before(:each) do
           @objet = {nombre: 100}
           @defcheck = {nombre: {type: :fixnum, max: 100}}
         end
@@ -158,15 +158,15 @@ describe 'DataChecker' do
 
     context 'avec un string' do
       context 'trop long' do
-        before(:all) do
+        before(:each) do
           @objet = {texte: "Le texte trop long."}
-          @defcheck = {texte: {hname: "Le texte", type: :string, max: 10}}
+          @defcheck = {texte: {hname: "texte", type: :string, max: 10}}
         end
         it 'produit une erreur' do
           expect(result.ok).to eq false
         end
         it 'retourne le bon message d’erreur' do
-          expect(result.errors[:texte][:err_message]).to eq "Le texte devrait avoir une longueur maximale de 10 (la longueur est de 19)."
+          expect(result.errors[:texte][:err_message]).to eq "La valeur de texte devrait avoir une longueur maximale de 10 (la longueur est de 19)."
         end
       end
       context 'pas trop long' do
