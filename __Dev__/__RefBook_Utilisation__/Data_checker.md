@@ -7,6 +7,11 @@ Toutes les explications se trouvent dans le manuel `./lib/deep/deeper/module/Dat
 Rappel rapide :
 
     require './lib/deep/deeper/module/data_checker'
+    ou, si à l'intérieur d'une méthode :
+    def save
+      (site.folder_deeper_module + 'data_checker.rb').require
+      ...
+    end
 
     # dans la class
     include DataChecker
