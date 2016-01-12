@@ -102,9 +102,40 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
+  config.before :suite do
+    # On prend le temps de départ qui permettra de savoir les choses
+    # qui ont été créées au cours des tests et pourront être
+    # supprimées à la fin de la suite de tests
+    @start_suite_time = Time.now.to_i
+  end
+
+  config.after :suite do
+    debug "\n\n"
+    # Destruction de tout ce qui a été créé au cours des tests,
+    # c'est-à-dire après le @start_suite_time
+    if Unan::table_programs.exist?
+      nb_init = Unan::table_programs.count
+      Unan::table_programs.delete(where:"created_at >= #{@start_suite_time}")
+      nb_destroyed = nb_init - Unan::table_programs.count
+      debug "Nombre de programmes détruits dans la table unan_hot.programs : #{nb_destroyed}"
+    else
+      debug "Aucun programme détruit (table unan_hot.programs inexistante)"
+    end
+    if Unan::table_projets.exist?
+      nb_init = Unan::table_projets.count
+      Unan::table_projets.delete(where:"created_at >= #{@start_suite_time}")
+      nb_destroyed = nb_init - Unan::table_projets.count
+      debug "\nNombre de projets détruits dans la table unan_hot.projets : #{nb_destroyed}"
+    else
+      debug "Aucun projet détruit (table unan_hot.projets inexistante)"
+    end
+  end
 
   def require_folder folder
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
   end
 
+  def debug str
+    puts "#{str}\n"
+  end
 end
