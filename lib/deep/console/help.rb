@@ -50,7 +50,7 @@ class Console
   <dd>Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.</dd>
   <dd>OFFLINE seulement</dd>
 </dl>
-
+<!--  PROPRE À L'APPLICATION -->
 <h4>Lignes propres à l'application</h4>
 <dl>
   <dt>`Unan ...`</dt>
@@ -65,6 +65,9 @@ class Console
   <dt>`Unan destroy (table pages cours)`</dt>
   <dd>(!!! DANGER !!!)Détruire totalement la table des pages de cours (table qui contient toutes les données et notamment les handlers).</dd>
   <dd>Attention, cette destruction est définitive et doit être opérée quand on possède un backup.</dd>
+
+  <dt>`Unan destroy (table projets)`</dt>
+  <dd>(!!! DANGER !!!) Détruit totalement la table des données des projets. Par mesure de précaution, cette commande ne peut être appelée ONLINE.</dd>
 
   <dt>`Unan destroy (table absolute works)`</dt>
   <dd>(!!! DANGER !!!) Détruit totalement la table des données absolues de travaux.</dd>

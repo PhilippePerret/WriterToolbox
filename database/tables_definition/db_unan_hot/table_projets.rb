@@ -13,6 +13,8 @@ def schema_table_unan_hot_projets
     auteur_id:    {type:"INTEGER", constraint:"NOT NULL"},
     program_id:   {type:"INTEGER", constraint:"NOT NULL"},
 
+    resume:       {type:"TEXT"},
+
     specs:        {type:"VARCHAR(32)"},
 
     created_at:   {type:"INTEGER(10)", constraint:"NOT NULL"},

@@ -76,6 +76,22 @@ class Console
 
       detruire_table_absolute_works
 
+    when "Unan destroy (table projets)"
+
+      detruire_table_projets
+
+    when "Unan affiche (table projets)"
+
+      affiche_table_projets
+
+    when "Unan affiche (table programs)"
+
+      affiche_table_programs
+
+    when "Unan destroy (table programs)"
+
+      detruire_table_programs
+      
     else
 
       nil # pour essayer autrement

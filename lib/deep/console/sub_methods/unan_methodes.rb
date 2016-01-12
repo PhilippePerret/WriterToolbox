@@ -8,6 +8,26 @@ class Console
     site.require_objet 'unan'
   end
 
+  def detruire_table_programs
+    if OFFLINE
+      init_unan
+      Unan::database_hot.execute("DROP TABLE IF EXISTS 'programs';")
+      "Table des programmes détruite avec succès."
+    else
+      "Impossible de détruire la table des projets en ONLINE (trop dangereux)."
+    end
+  end
+
+  def detruire_table_projets
+    if OFFLINE
+      init_unan
+      Unan::database_hot.execute("DROP TABLE IF EXISTS 'projets';")
+      "Table des projets détruite avec succès."
+    else
+      "Impossible de détruire la table des projets en ONLINE (trop dangereux)."
+    end
+  end
+
   def detruire_table_pages_cours
     if OFFLINE
       init_unan
@@ -16,6 +36,16 @@ class Console
     else
       "Impossible de détruire la table des pages de cours en ONLINE (trop dangereux)."
     end
+  end
+
+  def affiche_table_programs
+    init_unan
+    show_table Unan::table_programs
+  end
+
+  def affiche_table_projets
+    init_unan
+    show_table Unan::table_projets
   end
 
   def afficher_table_pages_cours

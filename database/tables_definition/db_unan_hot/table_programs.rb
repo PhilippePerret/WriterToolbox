@@ -10,6 +10,9 @@ def schema_table_unan_hot_programs
     id:           {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
     auteur_id:    {type:"INTEGER", constraint:"NOT NULL"},
 
+    # ID du projet ({Unan::Projet})
+    projet_id:    {type:"INTEGER"},
+
     # Aperçu des jours
     # ----------------
     # Cf. le fichier Days-Overview.md
