@@ -44,6 +44,7 @@ class << self
 
     new(@program_id).set(projet_id: projet_id)
 
+    return @program_id # notamment pour les tests
   end
 end # <<self
 end # /Program

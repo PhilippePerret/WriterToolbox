@@ -37,15 +37,18 @@ class Projet
     # modification ultérieure.
     # Retourne l'ID du nouveau projet
     def create_with data
-      data_param = data
-      projet_id = Unan::table_projets.insert(data2save)
+      @param_data = data
+      d2save = data2save
+      d2save.delete(:id)
+      d2save.merge!(created_at: NOW.to_i)
+      projet_id = Unan::table_projets.insert(d2save)
     end
 
     # Les données exactes à sauver
     def data2save
       @data2save ||= begin
         {
-          id:           param_data[:id].to_i,
+          id:           param_data[:id].to_i_inn,
           auteur_id:    param_data[:auteur_id].to_i,
           program_id:   param_data[:program_id].to_i,
           titre:        param_data[:titre],
