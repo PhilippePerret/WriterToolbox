@@ -3,6 +3,9 @@
 
 Définition de la table des travaux (works)
 
+C'est une table qui est ajoutée à la base de l'auteur, pas dans la
+base générale.
+
 =end
 def schema_table_unan_works
   @schema_table_unan_etape ||= {

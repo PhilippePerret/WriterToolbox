@@ -5,7 +5,7 @@ Définition de la table pour un programme “Un An Un script”
 Ce sont les données générales
 
 =end
-def schema_table_unan_programs
+def schema_table_unan_hot_programs
   @schema_table_unan_programs ||= {
     id:           {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
     auteur_id:    {type:"INTEGER", constraint:"NOT NULL"},

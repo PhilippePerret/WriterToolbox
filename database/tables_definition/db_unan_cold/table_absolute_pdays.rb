@@ -5,7 +5,7 @@ Définition de la table `pdays` qui définit précisément le travail (les
 travaux) à accomplir pour chaque jour du programme Un An Un Script.
 Donc il y a 365 pdays définis dans cette table.
 =end
-def schema_table_unan_absolute_pdays
+def schema_table_unan_cold_absolute_pdays
   @schema_table_unan_absolute_pdays ||= {
 
     # Identifiant/index du p-day
@@ -40,6 +40,6 @@ def schema_table_unan_absolute_pdays
     # Le nombre minimum de points qui doivent être acquis pour considérer que
     # ce jour-programme est achevé et qu'on peut passer au suivant
     minimum_points: {type:"INTEGER(3)", constraint:"NOT NULL"}
-    
+
   }
 end

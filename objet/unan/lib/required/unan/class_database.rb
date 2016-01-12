@@ -12,29 +12,43 @@ class << self
 
   # Table contenant tous les programmes
   def table_programs
-    @table_programs ||= get_table('programs')
+    @table_programs ||= get_table_hot('programs')
+  end
+
+  # Table contenant tous les projets
+  def table_projets
+    @table_projets ||= get_table_hot('projets')
   end
 
   # Table contenant toutes les données absolues des travaux (abs_works)
   def table_absolute_works
-    @table_absolute_works ||= get_table('absolute_works')
-  end
-  
-  # ---------------------------------------------------------------------
-  #   Méthode générique construisant la table si nécessaire
-  # ---------------------------------------------------------------------
-  def get_table table_name
-    site.db.create_table_if_needed('unan', table_name)
+    @table_absolute_works ||= get_table_cold('absolute_works')
   end
 
   # ---------------------------------------------------------------------
-  #   Données générales de la base de données
+  #   Méthode générique construisant la table si nécessaire
+  # ---------------------------------------------------------------------
+  def get_table_cold table_name
+    site.db.create_table_if_needed('unan_cold', table_name)
+  end
+  def get_table_hot table_name
+    site.db.create_table_if_needed('unan_hot', table_name)
+  end
+
+  # ---------------------------------------------------------------------
+  #   Données générales des deux bases de données, cold et hot
   # ---------------------------------------------------------------------
   def database
     @database ||= BdD::new(database_path.to_s)
   end
   def database_path
-    @database_path ||= site.folder_db + "unan.db"
+    @database_path ||= site.folder_db + "unan_cold.db"
+  end
+  def database_hot
+    @database_hot ||= BdD::new(database_hot_path.to_s)
+  end
+  def database_hot_path
+    @database_hot_path ||= site.folder_db + 'unan_hot.db'
   end
 
 end # << self

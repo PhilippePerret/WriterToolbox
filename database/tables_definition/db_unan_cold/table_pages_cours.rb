@@ -6,7 +6,7 @@ informations sur les pages utilisées pour le programme UN AN UN SCRIPT
 et sert notamment à gérer les handlers de page
 
 =end
-def schema_table_unan_pages_cours
+def schema_table_unan_cold_pages_cours
   @schema_table_unan_pages_cours ||= {
 
     # Identifiant unique (mais seulement pour cette table propre
@@ -21,7 +21,7 @@ def schema_table_unan_pages_cours
     # Titre
     # ------
     titre: {type:"VARCHAR(255)", constraint:"NOT NULL"},
-    
+
     # Description
     # -----------
     description:{type:"TEXT",constraint:"NOT NULL"},

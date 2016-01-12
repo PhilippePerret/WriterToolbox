@@ -1,5 +1,5 @@
 # encoding: UTF-8
-def schema_table_unan_flying_qcms
+def schema_table_unan_cold_flying_qcms
   @schema_table_unan_flying_qcms ||= {
     id:         {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
 

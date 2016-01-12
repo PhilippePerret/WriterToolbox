@@ -5,7 +5,7 @@ Définition de la table `absolute_works` qui définit précisément tous
 les travaux à accomplir pour arriver au bout du scénario.
 
 =end
-def schema_table_unan_absolute_works
+def schema_table_unan_cold_absolute_works
   @schema_table_unan_absolute_works ||= {
 
     # ID absolu du travail

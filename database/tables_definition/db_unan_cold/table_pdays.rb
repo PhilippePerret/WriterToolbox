@@ -6,7 +6,7 @@ particulier.
 Cette table est enregistrée dans la base de données propre à chaque
 auteur qui suit le programme.
 =end
-def schema_table_unan_pdays
+def schema_table_unan_cold_pdays
   @schema_table_unan_pdays ||= {
 
     # Identifiant unique (mais seulement pour cette table propre
@@ -23,6 +23,6 @@ def schema_table_unan_pdays
     # ---------------
     # Le total des points récoltés au cours de ce jour
     points: {type:"INTEGER(3)", constraint:"NOT NULL", default:"0"}
-    
+
   }
 end
