@@ -51,7 +51,7 @@ def schema_table_unan_cold_absolute_works
     #     de film travaillera sur le scénario.
     #     Noter que pour le moment seul le premier bit est utilisé. L'autre
     #     est laissé dans lequel cas il faudrait être plus précis
-    #     Cf. la liste Unan::TYPES_PROJETS
+    #     Cf. la liste Unan::Projet::TYPES
     type:       {type:"VARCHAR(16)", constraint:"NOT NULL"},
 
 

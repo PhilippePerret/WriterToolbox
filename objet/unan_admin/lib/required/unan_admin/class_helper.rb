@@ -6,9 +6,7 @@ class UnanAdmin
 
     # Données pour un menu select des types de projet
     def types_projets_for_select
-      @types_projets_for_select ||= begin
-        Unan::TYPES_PROJETS.collect { |wtype, dtype| [ wtype, dtype[:hname] ] }
-      end
+      @types_projets_for_select ||= Unan::Projet::types_for_select
     end
 
     # {StringHTML} Return le code HTML pour tous les menus qui

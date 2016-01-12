@@ -63,7 +63,7 @@ class AbsWork
   # sur le scénario)
   def type_projet # typeP
     @type_projet ||= begin
-      Unan::TYPES_PROJETS[type[4].to_i]
+      Unan::Projet::TYPES[type[4].to_i]
       # type[5] pourra servir pour préciser
     end
   end
