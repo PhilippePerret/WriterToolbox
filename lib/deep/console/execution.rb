@@ -75,7 +75,7 @@ class Console
     when "Unan destroy (table absolute works)"
 
       detruire_table_absolute_works
-      
+
     else
 
       nil # pour essayer autrement
@@ -160,7 +160,7 @@ class Console
 
     # On charge tout ce qui concerne Unan, on en aura
     # besoin plus bas (pour les bases de données)
-    (site.folder_objet+'unan/lib/required').require
+    site.require_objet 'unan'
 
     # Destruction des paiements "1UN1SCRIPT" de l'user
     where = "user_id = #{u.id} AND objet_id = '1AN1SCRIPT'"
