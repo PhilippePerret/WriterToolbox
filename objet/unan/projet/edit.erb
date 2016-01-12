@@ -1,0 +1,40 @@
+<%
+# Formulaire d'édition du projet
+# Permet à l'utilisateur de le modifier
+#
+raise_unless_identified
+
+site.require 'form_tools'
+
+if param(:projet)
+  projet_id = param(:projet)[:id]
+  projet = Unan::Projet::new(projet_id)
+
+  # Le visiteur courant doit être l'auteur du projet (ou admin)
+  if projet.auteur_id != user.id
+    raise_unless_owner("Vous n'êtes pas l'auteur de ce projet, vous ne pouvez pas l'éditer !")
+  end
+
+  form.data = projet
+end
+
+
+%>
+<%= Unan::titre_h1("Définition du projet") %>
+<form class="form2080" action="projet/edit?in=unan" method="POST">
+
+  <%= "save_data_projet".in_hidden(name:'operation') %>
+
+  <%# TITRE DU PROJET %>
+  <%= form.field_text("Titre", 'titre', nil) %>
+  <%= form.field_description("Le titre du projet, même si c'est seulement un titre de travail. Si le titre n'est pas spécifié, “Projet &lt;xxx&gt;” sera utilisé.") %>
+
+  <%# TYPE DU PROJET (bit 1 de specs -  bit 2 pour développement ultérieur) %>
+  <%= form.field_select("Type", 'typeP', nil, {values:Unan::Projet::types_for_select}) %>
+  <%= form.field_description("") %>
+  <%# Partage du projet %>
+  <%= form.field_select("Partage", 'sharing', nil, {values:Unan::SHARINGS, text_before:"Qui peut suivre ce projet ? "}) %>
+  <%= form.field_description("Le partage définit qui peut visiter les pages de travail de votre projet. Si aucun partage n'est défini ou que “Personne” est choisi, notez cependant que le titre du projet — et seulement le titre du projet — pourra apparaitre dans certaines parties du site.") %>
+
+  <%= form.submit_button("Enregistrer") %>
+</form>

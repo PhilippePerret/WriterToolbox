@@ -11,6 +11,8 @@ Note : on peut obtenir le projet du programme en faisant program.projet
 class Unan
 class Projet
 
+  include MethodesObjetsBdD
+
   attr_reader :id
 
   def initialize pid
@@ -23,6 +25,11 @@ class Projet
   def auteur_id     ; @auteur_id  ||= get(:auteur_id)   end
   def program_id    ; @program_id ||= get(:program_id)  end
   def titre         ; @titre      ||= get(:titre) || "Projet ##{id}" end
+  def created_at    ; @created_at ||= get(:created_at)  end
+  def updated_at    ; @updated_at ||= get(:updated_at)  end
+  # Bit 1   Type du projet (Unan::Projet::TYPES)
+  # Bit 2   - pour développement ultérieur -
+  # Bit 3   - visibilité (personne, autres auteurs, monde) -
   def specs         ; @specs      ||= get(:specs)       end
 
   # ---------------------------------------------------------------------
@@ -39,9 +46,15 @@ class Projet
   end
 
   # Type du projet
-  # C'est le premier BIT des specs
+  # C'est le BIT 1 des specs
   def type
     @type ||= specs[0].to_i
+  end
+
+  # Autorisation
+  # cf. Unan::SHARINGS
+  def sharing
+    @sharing ||= specs[3].to_i
   end
 
   # ---------------------------------------------------------------------
@@ -49,6 +62,6 @@ class Projet
   def table
     @table ||= Unan::table_projets
   end
-  
+
 end # /Projet
 end # /Unan
