@@ -2,9 +2,6 @@
 # Formulaire d'édition du projet
 # Permet à l'utilisateur de le modifier
 #
-raise_unless_identified
-
-site.require 'form_tools'
 
 if param(:projet)
   projet_id = param(:projet)[:id]
@@ -16,6 +13,8 @@ if param(:projet)
   end
 
   form.data = projet
+else
+  projet_id = ""
 end
 
 
@@ -38,3 +37,5 @@ end
 
   <%= form.submit_button("Enregistrer") %>
 </form>
+
+<%= "Voir la fiche".in_a(class:'small btn', href:"projet/#{projet_id}/show?in=unan") %>

@@ -6,6 +6,11 @@ class User
     @program ||= Unan::Program::get_current_program_of(self.id)
   end
 
+  # {Unan::Projet} Le projet courant de l'user, ou nil
+  def projet
+    @projet ||= Unan::Projet::get_current_projet_of(self.id)
+  end
+
   # Return TRUE si l'user vient de s'inscrire au programme
   # un an un script
 

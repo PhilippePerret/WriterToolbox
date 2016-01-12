@@ -1,0 +1,22 @@
+<%
+# Affichage d'un projet
+#
+# Doit être appelé par la route "projet/<id>/show?in=unan"
+%>
+
+<%
+projet = site.current_route.instance
+
+# Si le projet n'existe pas, on produit une erreur non fatale
+raise NonFatalError::new( "Projet inexistant", param(:last_route) ) unless projet.exist?
+
+%>
+
+<%
+# Si c'est le propriétaire du projet, un lien pour modifier
+# la fiche
+%>
+<%
+  if user.id == projet.auteur_id %>
+  <%= "Éditer".in_a(class:'small btn', href:"projet/#{projet.id}/edit?in=unan") %>
+<% end %>

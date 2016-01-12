@@ -10,9 +10,14 @@ class Unan
 class Projet
   class << self
 
-    def types_for_select
-      @types_for_select ||= TYPES.collect { |tid, tdata| [tid, tdata[:hname] ] }
+    # {Unan::Projet} Retourne le projet courant de l'auteur
+    # d'identifiant auteur_id
+    def get_current_projet_of auteur_id
+      res = Unan::table_projets.select(where:"auteur_id = '#{auteur_id}'", order: "created_at DESC", limit:1, colonnes:[:id]).values.first
+      res.nil? ? nil : new(res[:id])
     end
+
+
 
   end # << self
 end #/Projet
