@@ -9,7 +9,7 @@ raise_unless_admin
 <%= Unan::titre_h1("Carte des travaux") %>
 
 <style type="text/css">
-div#abs_work_map div.work{top: <%= Unan::Program::AbsWork::MAP_DAY_HEIGHT %>px}
+div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %>px}
 </style>
 
 <%
@@ -19,12 +19,13 @@ div#abs_work_map div.work{top: <%= Unan::Program::AbsWork::MAP_DAY_HEIGHT %>px}
 # Noter qu'elle se trouve dans un conteneur, mais c'est juste pour
 # faciliter l'affichage avec bords, etc.
 %>
-<div id="abs_work_map_container" style="width:<%= Unan::Program::AbsWork::MAP_WIDTH + 24 %>px">
+<div id="abs_work_map_container" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH + 24 %>px">
+  <%= Unan::Helper::graduation_jours(day_width:UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH) %>
   <div id="map_container_tools" class="" style="height:12px">
     <%# On mettra ici les outils et notamment le menu pour changer le zoom de la carte %>
   </div>
-  <div id="abs_work_map" style="width:<%= Unan::Program::AbsWork::MAP_WIDTH %>px">
-    <% Unan::Program::AbsWork::all.each do |work| %>
+  <div id="abs_work_map" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH %>px">
+    <% UnanAdmin::Program::AbsWork::all.each do |work| %>
       <% debug "Travail ##{work.id}" %>
       <%= work.in_map %>
     <% end %>
@@ -33,5 +34,5 @@ div#abs_work_map div.work{top: <%= Unan::Program::AbsWork::MAP_DAY_HEIGHT %>px}
 
 
 <style type="text/css">
-div#abs_work_map{height:<%= Unan::Program::AbsWork::map_height%>px}
+div#abs_work_map{height:<%= UnanAdmin::Program::AbsWork::map_height%>px}
 </style>

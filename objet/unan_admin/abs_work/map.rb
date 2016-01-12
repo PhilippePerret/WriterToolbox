@@ -1,7 +1,7 @@
 # encoding: UTF-8
 raise_unless_admin
 site.require_objet 'unan'
-class Unan
+class UnanAdmin
 class Program
 class AbsWork
 
@@ -25,8 +25,8 @@ class AbsWork
 
     def all
       @all ||= begin
-        table.select(colonnes:[:id]).collect do |wid, wdata|
-          new(wid)
+        Unan::table_absolute_works.select(colonnes:[:id]).collect do |wid, wdata|
+          Unan::Program::AbsWork::new(wid)
         end
       end
     end
@@ -119,6 +119,15 @@ class AbsWork
 
   end # << self
 
+
+end # /AbsWork
+end # /Program
+end # /Unan
+
+# Extensiono de Unan::Program::AbsWork
+class Unan
+class Program
+class AbsWork
   # ---------------------------------------------------------------------
   #   Instance
   # ---------------------------------------------------------------------
@@ -126,7 +135,7 @@ class AbsWork
   # {StringHTML} Code HTML du travail sur la carte
   def in_map
     get_all # pour charger toutes les données d'un coup
-    top   = free_row * (MAP_DAY_HEIGHT + 2)
+    top   = free_row * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
     displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
@@ -150,21 +159,21 @@ class AbsWork
   end
 
   def left
-    @left ||= (pday_start - 1) * MAP_DAY_WIDTH
+    @left ||= (pday_start - 1) * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def width
-    @width ||= duree * MAP_DAY_WIDTH
+    @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def free_row
-    @free_row ||= self.class::free_top_zone_for(left, width)
+    @free_row ||= UnanAdmin::Program::AbsWork::free_top_zone_for(left, width)
   end
 
   def memorize_zone
-    self.class::memorize_zone(left, width, free_row)
+    UnanAdmin::Program::AbsWork::memorize_zone(left, width, free_row)
   end
 
 end # /AbsWork
 end # /Program
 end # /Unan
 
-Unan::Program::AbsWork::init_map
+UnanAdmin::Program::AbsWork::init_map
