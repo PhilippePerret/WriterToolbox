@@ -60,38 +60,78 @@ class Console
 
       remove_table_paiements
 
+    # ---------------------------------------------------------------------
+    
     when "Unan affiche (table pages cours)"
 
       afficher_table_pages_cours
+
+    when "Unan backup data (table pages cours)"
+
+      backup_data_pages_cours
 
     when "Unan destroy (table pages cours)"
 
       detruire_table_pages_cours
 
+    when "Unan retreive data (table pages cours)"
+
+      retreive_data_pages_cours
+
+    # ---------------------------------------------------------------------
+
     when "Unan affiche (table absolute works)"
 
       afficher_table_absolute_works
+
+    when "Unan backup data (table absolute works)"
+
+      backup_data_absolute_works
 
     when "Unan destroy (table absolute works)"
 
       detruire_table_absolute_works
 
-    when "Unan destroy (table projets)"
+    when "Unan retreive data (table absolute works)"
 
-      detruire_table_projets
+      retreive_data_absolute_works
+
+    # ---------------------------------------------------------------------
 
     when "Unan affiche (table projets)"
 
       affiche_table_projets
 
+    when "Unan backup data (table projets)"
+
+      backup_data_projets
+
+    when "Unan destroy (table projets)"
+
+      detruire_table_projets
+
+    when "Unan retreive data (table projets)"
+
+      retreive_data_projets
+
+    # ---------------------------------------------------------------------
+
     when "Unan affiche (table programs)"
 
       affiche_table_programs
 
+    when "Unan backup data (table programs)"
+
+      backup_data_programs
+
     when "Unan destroy (table programs)"
 
       detruire_table_programs
-      
+
+    when "Unan retreive data (table programs)"
+
+      retreive_data_programs
+
     else
 
       nil # pour essayer autrement

@@ -8,6 +8,107 @@ class Console
     site.require_objet 'unan'
   end
 
+  # {SuperFile} Pstore qui va contenir le backup des
+  # données des tables à modifier.
+  def pstore_path_for db_path, table_name
+    SuperFile::new("#{db_path.to_s}.#{table_name}.pstore")
+  end
+  # Ces deux méthodes génériques, 'backup_data_of' et
+  # 'retreive_data_from' visent à permettre de modifier les
+  # tables sans perdre toutes les données (lorsque ce n'est pas
+  # simplement l'ajout d'une colonne)
+  # Le principe est de prendre les données pour faire un backup
+  # (la base est copiée ou alors on met tout dans un pstore)
+  # puis ensuite, pour le retreive_data_from, on donne un schéma
+  # qui permet de transformer les données. Par exemple en indiquant
+  # la nouvelle valeur qui doit être ajoutée.
+  def backup_data_of path, table_name
+    raise "La base de données `#{path}` n'existe pas. Impossible de faire le backup des données." unless path.exist?
+    database  = BdD::new(path.to_s)
+    table     = database.table( table_name )
+    raise "La table `#{table_name}` n'existe pas dans la base de donnée `#{path}`. Impossible de faire le backup des données." unless table.exist?
+    pstore_path = pstore_path_for(path, table_name)
+    pstore_path.remove if pstore_path.exist?
+    PStore::new(pstore_path.to_s).transaction do |ps|
+      BdD::new(path.to_s).table(table_name).select.each do |id, data|
+        ps[id] = data
+      end
+    end
+  end
+  # +path+ le path de la base de données
+  # +table_name+  le nom de la table
+  # +schema+      Le schéma de modification des données par rapport au
+  #               backup. C'est une procédure dont l'argument est le
+  #               Hash des données anciennes (actuelles)
+  #               Donc on définit ce schéma par :
+  #               schema = Proc::new do |data|
+  #                 ... traitement de data...
+  #                 ... propre à la nouvelle table ...
+  #                 data # il faut absolument terminer par data à retourner
+  #               end
+  def retreive_data_from path, table_name, schema
+    database  = BdD::new(path.to_s)
+    table     = database.table( table_name )
+    pstore_path = pstore_path_for(path, table_name)
+    raise "Le pstore `#{pstore_path}` est malheureusement introuvable : impossible de récupérer les données" unless pstore_path.exist?
+    PStore::new(pstore_path.to_s).transaction do |ps|
+      ps.roots.each do |id|
+        data = ps[id]
+        # Ici, le schéma permet de modifier les données avant de les
+        # insérer dans la nouvelle table
+        data = schema.call(data)
+        # On peut enfin insérer la donnée, en gardant absolument
+        # le même identifiant.
+        table.set(id, data )
+      end
+    end
+  end
+
+  def backup_data_pages_cours
+    backup_data_of( site.folder_db + 'unan_cold.db', 'pages_cours')
+  end
+  def retreive_data_pages_cours
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'page_cours', proc_modif)
+  end
+  def backup_data_programs
+    backup_data_of( site.folder_db + 'unan_hot.db', 'programs')
+  end
+  def retreive_data_programs
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db + 'unan_hot.db', 'programs', proc_modif)
+  end
+  def backup_data_projets
+    backup_data_of( site.folder_db + 'unan_hot.db', 'projets')
+  end
+  def retreive_data_projets
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db + 'unan_hot.db', 'projets', proc_modif)
+  end
+  def backup_data_absolute_works
+    backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_works')
+  end
+  def retreive_data_absolute_works
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)
+  end
+
   def detruire_table_programs
     if OFFLINE
       init_unan
