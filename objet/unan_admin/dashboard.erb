@@ -12,6 +12,7 @@ http = "http://localhost/WriterToolbox"
 <ul>
   <li><%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %></li>
   <li><a href="abs_work/edit?in=unan_admin">Créer/éditer un travail</a></li>
+  <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
   <li><a href="page_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
   <li>
     <form action="" method="POST" onsubmit="$(this).attr('action', 'page_cours/'+$('input#page_id_to_read').val()+'/read?in=unan')">
@@ -20,7 +21,6 @@ http = "http://localhost/WriterToolbox"
     </form>
   </li>
   <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
-  <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
   <li><a href="<%= http %>/abs_pday/edit?in=unan_admin">Données absolues d'un P-Day (AbsPDay)</a></li>
   <li>Agencer les étapes</li>
   <li>Gérer une inscription</li>
