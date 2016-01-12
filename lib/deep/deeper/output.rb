@@ -40,6 +40,9 @@ class SiteHtml
     # Barrière raise_unless_owner
     page.content= page.error_unless_owner(e.message)
     page.output
+  rescue NonFatalError => err
+    page.content= page.error_non_fatale(err)
+    page.output
   rescue Exception => e
     # ERREUR FATALE
     m = "<html><head><meta content='text/html; charset=utf-8' http-equiv='Content-type' /></head><body>" +

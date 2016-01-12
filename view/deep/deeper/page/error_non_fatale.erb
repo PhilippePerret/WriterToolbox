@@ -1,0 +1,9 @@
+<%
+# Page affichée lorsqu'on utilise raise NonFatalError, "le message d'erreur"
+# Noter que malgré son nom c'est bien le titre "Erreur fatale" qui
+# apparait. Pour le moment, c'est pour distinguer du fait que l'erreur
+# fatale produit une page vierge avec le message.
+%>
+<h1>Erreur fatale</h1>
+<p class='warning'><%= page.error.message %></p>
+<p><%= "Retourner à votre page précédente".in_a(href:page.error.redirection) %></p>
