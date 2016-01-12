@@ -11,6 +11,7 @@ end
 class ErrorUnidentified < StandardError; end
 class ErrorNoAdmin < StandardError; end
 class SectionInterditeError < StandardError; end
+class ErrorNotOwner < StandardError; end
 
 # Barrière anti non-identifié
 # Cf. RefBook > Protection.md
@@ -23,6 +24,12 @@ def raise_unless_admin
   raise ErrorNoAdmin unless user.admin?
 end
 # Barrière anti non quelque chose
+# Cf. RefBook > Protection.md
 def raise_unless condition
   raise SectionInterditeError if false == condition
+end
+# Cf. RefBook > Protection.md
+def raise_unless_owner message = nil
+  return true if user.admin?
+  raise ErrorNotOwner, message
 end

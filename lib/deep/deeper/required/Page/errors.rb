@@ -21,7 +21,14 @@ class Page
   end
   # Rappel : pour une protection par `raise_unless( <condition> )`
   def error_unless_condition
-    Vue::new('error_unless_condition', folder_error_unless_condition, site).ouput
+    Vue::new('error_unless_condition', folder_error_unless_condition, site).output
+  end
+
+  attr_accessor :message_error_not_owner
+  def error_unless_owner message
+    message ||= "Vous n'êtes pas le propriétaire de cette section du site, vous ne pouvez donc pas y pénétrer."
+    self.message_error_not_owner = message
+    Vue::new('error_unless_owner', folder_error_unless_owner, site).output
   end
 
   # {SuperFile} Dossier contenant la vue à afficher en
@@ -29,42 +36,33 @@ class Page
   # Pour prendre soit la vue standard soit la vue personnalisée
   # Cf. RefBook > Protection.md
   def folder_error_unless_identified
-    @folder_error_unless_identified ||= begin
-      pfolder = site.folder_view + 'page'
-      if (pfolder + 'error_unless_identified.erb').exist?
-        pfolder
-      else
-        # Sinon le fichier par défaut
-        site.folder_deeper_view + 'page'
-      end
-    end
+    @folder_error_unless_identified ||= folder_error_for('identified')
   end
+
   # {SuperFile} Dossier contenant la vue à afficher
   # en cas d'erreur de tentative d'atteinte de
   # section administrateur.
   # Pour prendre soit la vue standard soit la vue personnalisée
   # Cf. RefBook > Protection.md
   def folder_error_unless_admin
-    @folder_error_unless_admin ||= begin
-      pfolder = site.folder_view + 'page'
-      if (pfolder + 'error_unless_admin.erb').exist?
-        pfolder
-      else
-        # Sinon le fichier par défaut
-        site.folder_deeper_view + 'page'
-      end
-    end
+    @folder_error_unless_admin ||= folder_error_for('admin')
   end
 
   def folder_error_unless_condition
-    @folder_error_unless_condition ||= begin
-      pfolder = site.folder_view + 'page'
-      if (pfolder + 'error_unless_condition.erb').exist?
-        pfolder
-      else
-        # Sinon le fichier par défaut
-        site.folder_deeper_view + 'page'
-      end
+    @folder_error_unless_condition ||= folder_error_for('condition')
+  end
+
+  def folder_error_unless_owner
+    @folder_error_unless_owner ||= folder_error_for('owner')
+  end
+
+  def folder_error_for suffix
+    pfolder = site.folder_view + 'page'
+    if (pfolder + "error_unless_#{suffix}.erb").exist?
+      pfolder
+    else
+      # Sinon le dossier du fichier par défaut
+      site.folder_deeper_view + 'page'
     end
   end
 end
