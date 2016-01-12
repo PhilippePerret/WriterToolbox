@@ -33,8 +33,9 @@ describe 'UnAn::Program #page_cours' do
   end
   context 'avec un pointeur valide en argument' do
     it 'retourne une instance Unan::Program::PageCours' do
-      expect(program.page_cours(:introduction_uaus)).to be_instance_of Unan::Program::PageCours
-      expect(res.titre).to eq "Introduction au programme “Un An Un Script”"
+      res = program.page_cours(:introduction_uaus)
+      expect(res).to be_instance_of Unan::Program::PageCours
+      expect(res.titre).to eq "Introduction au programme “Un An Un Script”"
     end
   end
 end
