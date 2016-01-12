@@ -66,7 +66,9 @@ La méthode `graduation_jours` permet de construire une graduation de jours dans
         Le décalage gauche à utiliser. C'est le padding du
         conteneur.
         Par défaut : 12px
+
     by
 
-        Pas à utiliser pour afficher les jours
+        Le pas à utiliser pour afficher les jours
         Par défaut : 1 (jour)
+        NOTE : Pas encore implémenté
