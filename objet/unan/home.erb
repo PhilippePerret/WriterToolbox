@@ -35,10 +35,10 @@ if user.identified?
       # Un user identifié mais qui ne suit pas le programme
       # un an un script
 %>
-  <p>Vous ne suivez pas encore le programme “Un An Un Script”. Que désirez-vous faire ?</p>
-  <ul>
+  <p class='small right'>Vous ne suivez pas (encore) le programme “Un An Un Script”.</p>
+  <ul class='free bordure'>
     <li><%= "Découvrir le programme en profondeur".in_a(href:'overview/home?in=unan') %></li>
-    <li><%= "S'inscrire au programme “Un An Un Script”".in_a(href:"unan/paiement") %><span class='small'> (<%= Unan::tarif_humain %> pour une année)</span></li>
+    <li><%= "S'inscrire au programme “Un An Un Script”".in_a(href:"unan/paiement") %><span class='small'> (<%= Unan::tarif_humain %> pour l'année complète)</span></li>
   </ul>
 <%
 
