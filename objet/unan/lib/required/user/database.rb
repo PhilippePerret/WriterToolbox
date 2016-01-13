@@ -55,15 +55,17 @@ class User
       require schema_path
       schema_method = "schema_table_unan_user_#{table_name}"
       table_schema = send( schema_method.to_sym )
+      # debug "Schéma table #{table_name} : #{table_schema.pretty_inspect}"
       site.db.build_table(program_database, table_name, table_schema)
       # Barrière en cas de problème
       raise "La table `#{table_name}` n'a pas pu être construite…" unless get_table(table_name).exist?
+      # debug "== Table `#{table_name}` créée avec succès"
     end
   end
 
   # {SuperFile}
   def folder_tables_definitions
-    @folder_tables_definitions ||= site.folder_tables_definition + "unan_user"
+    @folder_tables_definitions ||= site.folder_tables_definition + "db_unan_user"
   end
 
 end

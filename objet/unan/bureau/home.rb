@@ -5,13 +5,16 @@ Donc toutes les méthodes de ce module peuvent être appelées de n'importe
 où par :
     bureau.<methode> ...
 =end
+# Beaucoup de formulaires dans ce bureau
+site.require 'form_tools'
+
 class Unan
 class Bureau
-  include Singleton
 
   # Données des onglets du bureau Un An Un Script
   ONGLETS = {
-    state:        {id: :state,        titre:"État"},
+    state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
+    projet:       {id: :projet,       titre:"Projet"},
     travail:      {id: :travail,      titre:"Travail",  nombre: :travaux},
     pages_cours:  {id: :pages_cours,  titre:"Cours",    nombre: :pages},
     forum:        {id: :forum,        titre:"Forum",    nombre: :messages},
@@ -20,19 +23,26 @@ class Bureau
     preferences:  {id: :preferences,  titre:"Préférences"}
   }
 
+  # = main =
+  #
+  # {StringHTML} Retourne le code HTML pour l'onglet
+  # courant (current_onglet)
+  def panneau_courant
+    (data_onglet[:plain_titre]||data_onglet[:titre]).in_h3 +
+    Vue::new(current_onglet.to_s, folder_panneaux, self).output
+  end
+
   # {Symbol} ID de l'onglet courant
   # Est défini dans `cong` dans les paramètres
   def current_onglet
     @current_onglet ||= (param(:cong) || :state).to_sym
   end
 
-  # = main =
-  #
-  # {StringHTML} Retourne le code HTML pour l'onglet
-  # courant (current_onglet)
-  def panneau_courant
-    "C'est le panneau de l'onglet #{current_onglet.inspect}".in_div
+  # Données dans ONGLETS de l'onglet courant
+  def data_onglet
+    @data_onglet ||= ONGLETS[current_onglet]
   end
+
 
   # = main =
   #
@@ -61,6 +71,7 @@ class Bureau
   def onglet data
     titre_onglet(data).in_a(href:"bureau/home?in=unan&cong=#{data[:id]}").in_li(class: (current_onglet == data[:id] ? 'actif' : nil ))
   end
+
   def titre_onglet data
     tit = data[:titre]
     if data[:nombre]
@@ -70,12 +81,5 @@ class Bureau
     tit
   end
 
-  def panneau_onglet onglet_id, is_current = false
-    "C'est le panneau de l'onglet #{onglet_id.inspect}".in_div(class:(is_current ? "actif" : nil))
-  end
 end #/Bureau
 end #/Unan
-
-def bureau
-  @bureau ||= Unan::Bureau::instance
-end

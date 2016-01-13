@@ -14,7 +14,21 @@ class App
       @messages = Array::new
     end
     def add mess
+      case mess
+      when String
+        # rien à faire
+      when SQLite3::SQLException then
+        mess = mess.message # pour le moment
+      else
+        if mess.respond_to?(:message)
+          mess = mess.message
+        else
+          mess = mess.to_s
+        end
+      end
+
       mess += "\n"
+      
       # mess = mess.class.to_s
       @messages << mess
       write mess

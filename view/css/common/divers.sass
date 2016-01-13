@@ -7,3 +7,14 @@
   float : left
 .fright
   float : right
+  
+// Un élément "discret" est un élément dont l'opacité est moindre et
+// qui apparait quand on passe sa souris dessus
+.discret
+  opacity : 0.6
+  &:hover
+    opacity : 1  
+  &.tres
+    opacity : 0.3
+    &:hover
+      opacity : 0.8

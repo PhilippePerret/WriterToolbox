@@ -1,0 +1,17 @@
+<%
+# Panneau du projet
+#
+# C'est notamment dans ce panneau qu'on règle le titre du projet
+%>
+<form class="form2080" action="bureau/home?in=unan" method="POST">
+
+  <%= form.field_text("Titre du projet", 'titre', nil) %>
+  <%= form.field_description("Le titre du projet, même si ça n'est qu'un <strong>titre de travail</strong>.") %>
+
+
+  <%= bureau.submit_button %>
+
+</form>
+<p class='small'>
+Pour régler les autres préférences du projet, utiliser le panneau “Préférences”.
+</p>
