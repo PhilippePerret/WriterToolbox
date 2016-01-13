@@ -111,6 +111,9 @@ class Page
       attr_reader :onchange
       attr_reader :onclick
       attr_reader :onsubmit
+      # Aspect spéciaux
+      attr_reader :exergue
+      attr_reader :warning
 
       # Instanciation
       # +prop+ {String} La propriété
@@ -126,6 +129,8 @@ class Page
           @onchange = opts.delete(:onchange)
           @onclick  = opts.delete(:onclick)
           @onsubmit = opts.delete(:onsubmit)
+          @exergue  = opts.delete(:exergue)
+          @warning  = opts.delete(:warning)
         end
         # Pour supprimer le libellé et le mettre en label dans un
         # checkbox
@@ -222,7 +227,10 @@ class Page
       def field_select
         case options[:values]
         when String, Hash, Array
-          options[:values].in_select( field_attrs.merge( selected: field_value ) )
+          if options[:values].instance_of?(Hash)
+            options[:values] = options[:values].collect{ |k,v| [k, v[:hname]] }
+          end
+          options[:values].in_select( field_attrs.merge( selected: options[:selected] || field_value ) )
         else
           raise "Je ne sais pas comment traiter une donnée de class #{options[:values].class} dans `field_select` (attendu : un Hash, un Array ou un String)."
         end
@@ -246,7 +254,7 @@ class Page
 
       def field_attrs
         @field_attrs ||= begin
-          h = { name:field_name, id:field_id, class:options[:class] }
+          h = { name:field_name, id:field_id, class:field_class }
           h.merge!(placeholder: options[:placeholder]) if options[:placeholder]
           h.merge!(onclick: onclick)    unless onclick.nil?
           h.merge!(onchange: onchange)  unless onchange.nil?
@@ -254,6 +262,15 @@ class Page
           h
         end
       end
+
+      # Class CSS du champ
+      def field_class
+        css = (options[:class]||"").split(' ')
+        css << 'exergue' if exergue
+        css << 'warning' if warning
+        css.join(' ')
+      end
+
       # Le texte avant le champ d'édition. Renvoie un string vide
       # si aucun texte avant n'est défini.
       def text_before

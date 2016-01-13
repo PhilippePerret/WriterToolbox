@@ -3,11 +3,19 @@
 #
 # C'est notamment dans ce panneau qu'on règle le titre du projet
 %>
+<% if missing_data(:projet) %>
+  <span class='warning small'>Des données sont manquantes pour votre projet, elles sont indiquées en rouge ci-dessous (<%= missing_data(:projet) %>).</span>
+<% end %>
 <form class="dim2080" action="bureau/home?in=unan" method="POST">
 
-  <%= form.field_text("Titre du projet", 'titre', nil) %>
+  <%= form.field_text("Titre du projet", 'titre', user.projet.titre, {warning: user.projet.titre.nil?}) %>
   <%= form.field_description("Le titre du projet, même si ça n'est qu'un <strong>titre de travail</strong>.") %>
 
+  <%= form.field_textarea("Résumé", 'resume', user.projet.resume, {warning: user.projet.resume.nil?}) %>
+  <%= form.field_description("Entrez un cours résumé de l'histoire pour le présenter à ceux avec qui vous le partagez.") %>
+
+  <%= form.field_select("Type du support", 'support', user.program.type_support, {values: Unan::Program::TYPES_SUPPORT, warning: user.program.type_support_id == 0}) %>
+  <%= bureau.row_form_sharing %>
 
   <%= bureau.submit_button %>
 

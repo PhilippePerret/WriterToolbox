@@ -7,8 +7,6 @@ Méthodes et définitions pour les options
 class Unan
 class Program
 
-  attr_reader :options
-
   # BIT 1 (0)     Actif(1) ou Inactif(0)
   def activite
     @activite ||= options[0].to_i
@@ -35,7 +33,10 @@ class Program
   }
   # {Hash} Retour le type de support du projet
   def type_support
-    TYPES_SUPPORT[options[3].to_i]
+    TYPES_SUPPORT[type_support_id]
+  end
+  def type_support_id
+    @type_support_id ||= options[3].to_i
   end
 
 end #/Program

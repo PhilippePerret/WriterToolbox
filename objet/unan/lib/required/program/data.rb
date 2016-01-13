@@ -33,13 +33,15 @@ class Program
     Unan::table_programs.set(id, hdata)
   end
 
+  # ---------------------------------------------------------------------
+  #   Data du programme
+  # ---------------------------------------------------------------------
   # {User} Auteur du programme
-  def auteur
-    @auteur ||= User::get(auteur_id)
-  end
-
+  def auteur        ; @auteur ||= User::get(auteur_id)  end
+  # {String} Options du programme
+  def options       ; @options ||= get(:options) || ""  end
   # {Fixnum} Date de création (timestamp)
-  def created_at    ; @created_at ||= get(:created_at) end
+  def created_at    ; @created_at ||= get(:created_at)  end
 
 end # /Program
 end # /Unan

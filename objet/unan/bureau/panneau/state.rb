@@ -7,10 +7,10 @@ Méthodes d'helper pour le panneau "État" du bureau de programme
 class Unan
 class Program
 
-  # Pour les essais avec un autre rythme
-  def rythme
-    5
-  end
+  # # Pour les essais avec un autre rythme
+  # def rythme
+  #   5
+  # end
 
 
 

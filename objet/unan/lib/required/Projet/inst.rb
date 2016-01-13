@@ -24,7 +24,8 @@ class Projet
   # ---------------------------------------------------------------------
   def auteur_id     ; @auteur_id  ||= get(:auteur_id)   end
   def program_id    ; @program_id ||= get(:program_id)  end
-  def titre         ; @titre      ||= get(:titre) || "Projet ##{id}" end
+  def titre         ; @titre      ||= get(:titre)       end
+  def resume        ; @resume     ||= get(:resume)      end
   def created_at    ; @created_at ||= get(:created_at)  end
   def updated_at    ; @updated_at ||= get(:updated_at)  end
   # Bit 1   Type du projet (Unan::Projet::TYPES)

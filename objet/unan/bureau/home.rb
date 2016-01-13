@@ -81,5 +81,37 @@ class Bureau
     tit
   end
 
+  # {StringHTML} Return le code HTML pour les formulaires de la
+  # rangée de définition du partage. Mis dans un helper ici pour
+  # être utilisé notamment dans le panneau "Projet" et dans le
+  # panneau "Préférences"
+  def row_form_sharing
+    form.field_select("Partage", 'sharing', nil, {values: Unan::SHARINGS, selected: user.projet.sharing , text_before:"Peut suivre ce projet :", warning: (user.projet.sharing == 0)}) +
+    form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
+  end
+
+  # return TRUE si des données sont manquantes pour la cible
+  # +target+
+  # Si true, ajoute un texte dans le panneau invitant l'auteur à définir les
+  # données manquantes
+  def missing_data target # :projet, :preferences, etc.
+    @missing_data ||= Hash::new
+
+    @missing_data[target] ||= begin
+      errors = Array::new
+      case target
+      when :projet
+        errors << "le titre"    if user.projet.titre.nil_if_empty.nil?
+        errors << "le résumé"   if user.projet.resume.nil_if_empty.nil?
+        errors << "le support"  if user.program.type_support_id == 0
+        errors << "le partage"  if user.projet.sharing == 0
+      when :preferences
+        errors << "le partage"  if user.projet.sharing == 0
+      else
+        return false
+      end
+      errors.pretty_join
+    end
+  end
 end #/Bureau
 end #/Unan
