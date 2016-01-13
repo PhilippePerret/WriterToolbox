@@ -7,7 +7,7 @@ C'est une table qui est ajoutée à la base de l'auteur, pas dans la
 base générale.
 
 =end
-def schema_table_unan_works
+def schema_table_unan_user_works
   @schema_table_unan_etape ||= {
     id:         {type:"INTEGER",    constraint:"PRIMARY KEY AUTOINCREMENT"},
 

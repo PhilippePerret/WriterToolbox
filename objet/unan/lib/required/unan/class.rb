@@ -21,8 +21,8 @@ class Unan
     # Crée un nouveau programme pour l'user courant
     # (qui vient certainement de payer son programme)
     def create_program
-      (folder_modules + 'create_program.rb').require
-      Program::create
+      (folder_modules + 'signup_user.rb').require
+      user.signup_program_uaus
     end
 
     def tarif_humain

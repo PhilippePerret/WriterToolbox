@@ -6,8 +6,8 @@ particulier.
 Cette table est enregistrée dans la base de données propre à chaque
 auteur qui suit le programme.
 =end
-def schema_table_unan_cold_pdays
-  @schema_table_unan_pdays ||= {
+def schema_table_unan_user_pdays
+  @schema_table_unan_user_pdays ||= {
 
     # Identifiant unique (mais seulement pour cette table propre
     # à l'auteur)

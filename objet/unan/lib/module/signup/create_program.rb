@@ -25,26 +25,6 @@ class << self
       updated_at:  NOW.to_i
     }
     @program_id = Unan::table_programs.insert(data_program)
-
-    # On crée un nouveau enregistrement pour un projet
-    # Rappel : il y a d'un côté le programme Unan::Program et de
-    # l'autre le projet Unan::Projet développé au cours de ce
-    # programme.
-    data_new_projet = {
-      auteur_id:  user.id,
-      program_id: @program_id,
-      titre:      nil,
-      resume:     nil,
-      typeP:      0,
-      sharing:    0,
-      created_at: NOW.to_i
-    }
-    require './objet/unan/projet/edit.rb'
-    projet_id = Unan::Projet::create_with data_new_projet
-
-    new(@program_id).set(projet_id: projet_id)
-
-    return @program_id # notamment pour les tests
   end
 end # <<self
 end # /Program

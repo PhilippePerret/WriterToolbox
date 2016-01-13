@@ -32,9 +32,24 @@ class SiteHtml
       # Il faut charger la définition de la table
       # C'est un module qui contient simplement la méthode
       # qui définit la table
-      table = database_of(db_name).table(table_name)
-      table.define schema(db_name, table_name)
-      table.create
+      db    = database_of(db_name)
+      sche  = schema(db_name, table_name)
+      build_table( db, table_name, sche )
+    end
+
+    # Méthode qui construit vraiment la table
+    # Note : Elle a été séparée de `create_table` ci-dessous pour
+    # pouvoir être appelée pour construire des tables particulières
+    # qui ne respectent pas les conventions générales (c'est parfois
+    # nécessaire)
+    # Note : La table n'est créée que si elle n'existe pas.
+    def build_table database, table_name, schema
+      database = BdD::new(database.to_s) unless database.instance_of?(BdD)
+      table = database.table( table_name )
+      unless table.exist?
+        table.define schema
+        table.create
+      end
     end
 
     def database_exists? db_name

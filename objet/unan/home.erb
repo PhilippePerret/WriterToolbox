@@ -1,16 +1,20 @@
 <%
 # Page d'accueil de l'utilisateur dans Un An Un Script
 %>
-<%= Unan::titre_h1 %>
+<% unless user.unanunscript? %>
+  <%= Unan::titre_h1 %>
 
-<%
-  # LES OUTILS SI L'UTILISATEUR EST L'ADMINISTRATEUR
-  if user.admin? %>
-  <div class='admin_tools right small'>
-    <%= "Outils administrateur".in_div %>
-  <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
-  </div>
-  <% end %>
+  <%
+    # LES OUTILS SI L'UTILISATEUR EST L'ADMINISTRATEUR
+    if user.admin? %>
+    <div class='admin_tools right small'>
+      <%= "Outils administrateur".in_div %>
+    <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
+    </div>
+    <% end %>
+
+<% end %>
+
 <%
 
 
@@ -26,8 +30,10 @@ if user.identified?
   if user.unanunscript?
 
       # Un user qui suit le programme
+      #
+      # NOTE : Pas de titre ici, c'est le bureau qui le contient
 %>
-  <p>Vous suivez le programme Un An Un Script.</p>
+  <%= Unan::view("bureau/home") %>
 <%
 
   else

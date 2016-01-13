@@ -1,6 +1,7 @@
 # Généralités sur le programme “Un An Un Script”
 
 * [Hiérarchie des éléments dans le programme](#hierarchiedeselements)
+* [Les “jours-programme”](#lesjoursprogrammes)
 
 <a name='hierarchiedeselements'></a>
 
@@ -35,7 +36,6 @@
     AbsWork     Définition absolue d'un travail particulier.
 
 
-* [Les “jours-programme”](#lesjoursprogrammes)
 
 Il faut au maximum que ce programme soit **ludique**. Par les vecteurs suivant :
 

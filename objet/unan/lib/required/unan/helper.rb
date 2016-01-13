@@ -8,6 +8,13 @@ Méthodes d'helper spécifiques
 
 =end
 class Unan
+  class << self
+    # Permet de charger une vue
+    # @usage  Unan::view('path/relatif/depuis/dossier/objet_sans_erb')
+    def view path
+      Vue::new(path, Unan::folder, Unan).output
+    end
+  end # << self
 class Helper
   class << self
 

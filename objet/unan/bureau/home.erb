@@ -1,0 +1,9 @@
+<%= Unan::titre_h1("Votre bureau") %>
+<p class='small right'>Bienvenue dans votre bureau de travail, <%= user.pseudo %> !</p>
+
+<%
+# Le bureau fonctionne en onglets cliquables
+%>
+
+<%= bureau.bande_onglets %>
+<%= bureau.panneau_courant.in_div(id:'panneaux_onglets') %>

@@ -1,0 +1,31 @@
+ul#bande_onglets
+  list-style      : none
+  margin-bottom   : 0
+  padding-bottom  : 0
+  li
+    display         : inline-block
+    min-width       : 94px
+    border          : 1px solid
+    border-radius   : 0.6em 0.6em 0 0
+    padding         : 4px 8px 3px
+    text-align      : center
+    font-size       : 11pt
+    letter-spacing  : 1.2px
+    margin          : 0
+    a
+      color           : black
+    &.actif
+      background-color  : #578088
+      a
+        color             : white
+div#panneaux_onglets
+  border        : 1px solid #777
+  border-radius : 0.4em
+  margin        : 0 !important
+  padding       : 1em 2em
+  
+  > div
+    // border      : 1px solid blue
+    display     : none
+    &.actif
+      display     : block
