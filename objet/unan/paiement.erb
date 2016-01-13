@@ -5,9 +5,6 @@
 # qui appelle la méthode `make_transaction` qui permet de procéder
 # au paiement du programme.
 %>
-<%= Unan::titre_h1 %>
-
-
 <%
 
 # Si l'utilisateur est INSCRIT AU PROGRAMME 1 AN 1 SCRIPT
@@ -34,7 +31,7 @@ if user.unanunscript?
     # est inscrit depuis un bon bout de temps
 
     %>
-    <h2>Inscription au programme</h2>
+    <%= Unan::titre_h1("Inscription au programme") %>
     <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p><%
 
   end
@@ -44,7 +41,7 @@ else
 
   debug "[paiement.erb] user.unanunscript? NON"
 
-  %><h2>Inscription au programme</h2><%
+  %><%= Unan::titre_h1("Inscription au programme") %><%
 
   # Si l'user est ABONNÉ au site
   if user.subscribed?
@@ -91,7 +88,4 @@ else
   %>
 <%
 end
-%>
-<%
-debug "<--- ./objet/unan/paiement.erb"
 %>
