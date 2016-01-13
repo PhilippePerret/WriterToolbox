@@ -1,0 +1,18 @@
+<%
+# Tdm de ce dossier préférences
+%>
+
+<%= Unan::Aide::titre("Préférences") %>
+
+
+<p class='small'>Dans cette section de l'aide vous pouvez tout découvrir des réglages des différentes préférences d'un programme “Un An Un Script”.</p>
+
+<ul>
+<%
+{
+  'rythme'       => "Réglage du rythme du programme"
+}.each do |path, titre|
+%>
+  <%= Unan::lien_aide("preferences/#{path}", titre).in_li %>
+<% end %>
+</ul>
