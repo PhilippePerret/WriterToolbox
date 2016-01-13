@@ -1,0 +1,19 @@
+<%
+# Accueil de la partie “Fonctionnement” de l'aide
+%>
+<%= Unan::Aide::titre("Fonctionnement") %>
+
+
+<p class='small'>Dans cette section de l'aide vous pouvez tout découvrir du fonctionnement du programme “Un An Un Script”.</p>
+
+<ul>
+<%
+{
+  'general'       => "Fonctionnement général de l'année de programme",
+  'au_quotidien'  => "Fonctionnement au quotidien",
+  'bureau'        => "Le bureau de travail"
+}.each do |path, titre|
+%>
+  <%= Unan::lien_aide("fonctionnement/#{path}", titre).in_li %>
+<% end %>
+</ul>

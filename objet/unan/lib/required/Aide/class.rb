@@ -11,6 +11,7 @@ class Aide
         map_symbols_path.require
         hdata = SYMBOLS_MAP[relpath]
         hdata[:titre] = titre unless titre.nil?
+        hdata
       when String
         {titre: titre, relpath: relpath}
       else raise "Le premier argument de Unan::Aide::link_to doit être un String ou un Symbol (existant)"

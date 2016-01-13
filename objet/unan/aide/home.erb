@@ -1,0 +1,30 @@
+<h1>Aide “Un An Un Script”</h1>
+<h2>Table des matières</h2>
+
+<ul>
+<%
+{
+  overview: {
+    titre: "Aperçu du programme “Un An Un Script”",
+    subitems: {
+      home:         "Aperçu général du programme"
+    }
+  },
+
+  fonctionnement:{
+    titre:"Fonctionnement du programme “Un An Un Script”",
+    subitems: {
+      home:         "Accueil",
+      general:      "Fonctionnement général d'une année",
+      au_quotidien: "Fonctionnement au quotidien",
+      bureau:       "Le Bureau de travail"
+    }
+  }
+}.each do |main_folder, data_folder|
+%>
+  <%= data_folder[:titre].in_li(class:'title') %>
+  <% data_folder[:subitems].each do |sub_folder, titre| %>
+    <%= Unan::lien_aide( "#{main_folder}/#{sub_folder}", titre).in_li %>
+  <% end %>
+<% end %>
+</ul>

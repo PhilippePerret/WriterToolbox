@@ -9,7 +9,8 @@ class Aide
   #   la méthode `Unan::lien_aide` (ou `Unan::link_help`)
   #   Par exemple : `Unan::lien_aide(:overview, "Tout découvrir du programme !")`
   SYMBOLS_MAP = {
-    overview: {titre: "Présentation", relpath: "overview/home"}
+    overview: {titre: "Présentation", relpath: "overview/home"},
+    bureau:   {titre:"bureau de travail", relpath:"fonctionnement/bureau"}
   }
 
 
