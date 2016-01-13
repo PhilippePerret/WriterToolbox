@@ -16,3 +16,17 @@ ul
   list-style-type : square
   li
     margin          : 0.4em 0.0em
+
+  // Pour que la liste soit bien espacée, isolée dans la
+  // page (les LI sont également plus espacés)
+  &.free
+    margin          : 6em
+    padding-top     : 4px // note : comportement bizarre, les paddings
+    padding-bottom  : 4px // note : idem
+    li
+      margin  : 1.3em 0
+  
+  // Pour avoir une 
+  &.bordure
+    list-style      : none
+    border-left     : 1px solid 
