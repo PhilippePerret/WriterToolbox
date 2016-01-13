@@ -5,24 +5,32 @@
 
 
 %>
+<% if missing_data(:preferences) %>
+  <span class="warning small">Des données sont manquantes pour les préférences. Merci de les renseigner (<%= missing_data(:preferences) %>).</span>
+<% end %>
 <form class="dim2080" action="bureau/home?in=unan" method="POST">
   <%= bureau.submit_button %>
 <hr />
 <h4>Projet</h4>
 
 <%# RYTHME DU PROGRAMME %>
-  <%= form.field_select("Rythme", 'rythme', nil, {values:[[0,"Lent"],[5,"Normal"], [9,"Rapide"]]}) %>
-  <%= form.field_description("Le rythme déterminera la durée totale de votre apprentissage et de votre développement. Plus le rythme est lent, plus la durée sera longue. Un rythme normal correspond à un “jour-programme” par jour réel, le rythme le plus rapide correspond à deux jours-programme par jour réel et le rythme le plus lent correspond à 2 jours réels par jour-programme.") %>
+  <%= form.field_select("Rythme", 'rythme', user.program.rythme, { values:Unan::Program::RYTHMES }) %>
+  <%= form.field_description("Le rythme déterminera la durée totale de votre apprentissage et de votre développement. Vous ne devriez avoir à modifier cette valeur que si vous vous apercevez que la démarche générale est trop rapide pour vous ou trop lente.") %>
 <%= bureau.submit_button %>
 <hr />
+
 <h4>Notifications</h4>
 
 
 <%# TODO RECEVOIR UN MAIL QUOTIDIEN OU SEULEMENT AU CHANGEMENT DE TRAVAIL %>
 <%# Préciser que le mail quotidien permet d'avoir un récapitulatif journalier %>
 
-  <%= bureau.submit_button %>
-  <hr />
+<%= bureau.submit_button %>
+<hr />
 
-  <%= bureau.submit_button %>
+<h4>Partage</h4>
+
+    <%= bureau.row_form_sharing %>
+
+<%= bureau.submit_button %>
 </form>
