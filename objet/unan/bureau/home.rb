@@ -1,4 +1,10 @@
 # encoding: UTF-8
+=begin
+Noter que c'est un singleton et que la méthode `bureau` le renvoie.
+Donc toutes les méthodes de ce module peuvent être appelées de n'importe
+où par :
+    bureau.<methode> ...
+=end
 class Unan
 class Bureau
   include Singleton
@@ -7,7 +13,7 @@ class Bureau
   ONGLETS = {
     state:        {id: :state,        titre:"État"},
     travail:      {id: :travail,      titre:"Travail",  nombre: :travaux},
-    page_cours:   {id: :page_cours,   titre:"Cours",    nombre: :pages},
+    pages_cours:  {id: :pages_cours,  titre:"Cours",    nombre: :pages},
     forum:        {id: :forum,        titre:"Forum",    nombre: :messages},
     quiz:         {id: :quiz,         titre:"Quiz",     nombre: :quiz},
 

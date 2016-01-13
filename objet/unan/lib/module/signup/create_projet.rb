@@ -7,7 +7,8 @@ class Projet
     # Rappel : il y a d'un côté le programme Unan::Program et de
     # l'autre le projet Unan::Projet développé au cours de ce
     # programme.
-    def create program_id
+    def create
+      program_id = user.program_id
 
       data_new_projet = {
         auteur_id:  user.id,

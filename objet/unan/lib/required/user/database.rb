@@ -56,6 +56,8 @@ class User
       schema_method = "schema_table_unan_user_#{table_name}"
       table_schema = send( schema_method.to_sym )
       site.db.build_table(program_database, table_name, table_schema)
+      # Barrière en cas de problème
+      raise "La table `#{table_name}` n'a pas pu être construite…" unless get_table(table_name).exist?
     end
   end
 

@@ -3,7 +3,7 @@ class User
 
   def signup_program_uaus
 
-    (folder_modules + 'signup').require
+    (Unan::folder_modules + 'signup').require
     # Création du programme (dans la table générale des programmes)
     @program_id = Unan::Program::create
     # Création du projet (dans la table générale des projets)

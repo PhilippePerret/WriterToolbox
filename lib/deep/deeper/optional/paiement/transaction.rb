@@ -137,7 +137,7 @@ class Paiement
   # d'exécuter le paiement.
   # TODO : Il faut faire un test pour voir si la vue existe
   def on_cancel
-    self.output = Vue::new("#{context}/paiement/on_cancel", base_folder, self).output
+    self.output = Vue::new("#{context}/paiement/on_cancel", nil, self).output
   end
 
   # Enregistrer le paiement

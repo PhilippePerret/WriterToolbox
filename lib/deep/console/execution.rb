@@ -61,7 +61,7 @@ class Console
       remove_table_paiements
 
     # ---------------------------------------------------------------------
-    
+
     when "Unan affiche (table pages cours)"
 
       afficher_table_pages_cours
@@ -153,6 +153,10 @@ class Console
 
       detruire_programmes_de( last_word )
 
+    when 'affiche table'
+
+      montre_table( last_word )
+
     else
       nil
     end
@@ -199,9 +203,13 @@ class Console
   end
 
   def montre_table table_ref
-
     db_name, table_name = table_ref.split('.')
-
+    db_path = "./database/data/#{db_name}.db"
+    raise "La base `#{db_path}` est introuvable…" unless File.exist?(db_path)
+    table = BdD::new(db_path).table(table_name)
+    raise NotFatalError, "La table `table_name` est inconnue dans `#{db_path}`…" unless table.exist?
+    # Sinon, on peut afficher la table
+    show_table table
   end
 
   def detruire_programmes_de uref
@@ -224,16 +232,18 @@ class Console
     User::table_paiements.delete(where:where)
 
     # Destruction de son dossier dans database/data/unan/user
-    dossier = site.folder_db + "unan/user/#{u.id}"
-    with_dossier_db = dossier.exist? ? "détruit" : "inexistant"
-    dossier.remove if dossier.exist?
+    with_dossier_db = u.folder_data.exist? ? "détruit" : "inexistant"
+    u.folder_data.remove if u.folder_data.exist?
 
     # Destruction de ses programmes dans la table
     where = "auteur_id = #{u.id}"
     nombre_programmes = Unan::table_programs.count(where:where)
+    nombre_projets    = Unan::table_projets.count(where:where)
     Unan::table_programs.delete(where:where)
+    # Destruction de ses projets dans la table
+    Unan::table_projets.delete(where:where)
 
-    "Destruction de tous les programmes de #{u.pseudo} opérée avec succès\n# Nombre paiements détruits : #{nombre_paiements}\n# Dossier database : #{with_dossier_db}\n# Nombre programmes détruits : #{nombre_programmes}"
+    "Destruction de tous les programmes de #{u.pseudo} opérée avec succès\n# Nombre paiements détruits : #{nombre_paiements}\n# Dossier database : #{with_dossier_db}\n# Nombre programmes détruits : #{nombre_programmes}\n# Nombre projets détruits : #{nombre_projets}"
   end
 
 end #/Console
