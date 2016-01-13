@@ -8,7 +8,7 @@ class Forum
   def formulaire_new_topic
     <<-HTML
 <form action="forum/new_topic" method="POST" class='small'>
-  <div class="form_row">
+  <div class="row">
     <span class="value"><input type="text" name="new_topic_name" placeholder="Sujet" value="" class="w300" /></span>
     <input type="submit" value="Initier ce nouveau sujet" class='btn' />
   </div>

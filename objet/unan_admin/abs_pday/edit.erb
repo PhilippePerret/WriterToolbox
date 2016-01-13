@@ -39,7 +39,7 @@ function set_href_lien_read(o){
 #   Le formulaire proprement dit
 # ---------------------------------------------------------------------
 %>
-<form class="form2080" action="abs_pday/edit?in=unan_admin" method="POST">
+<form class="dim2080" action="abs_pday/edit?in=unan_admin" method="POST">
   <%= form.field_text('JOUR', 'id', nil, {class:'short', onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Le JOUR est un nombre de 1 à 365 correspondant au jour dans l'année de ce P-Day de façon absolue, i.e. sans tenir compte du rythme (donc à rytme moyen avec 1 p-day = 1 jour réel).") %>
 

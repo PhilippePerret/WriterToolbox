@@ -47,10 +47,12 @@ class User
 
   # Récupérer la valeur de la variable `var_name` (qui peut avoir
   # n'importe quel type)
-  def get_var var_name
+  # +default_value+ est la valeur par défaut qui sera retournée
+  # si la valeur est nil.
+  def get_var var_name, default_value = nil
     h = table_variables.get(where:{name: var_name})
-    return nil if h.nil?
-    var_value_by_type h
+    return default_value if h.nil?
+    var_value_by_type( h ) || default_value
   end
 
   # Prend la donnée définie par +h+ (contenant une valeur

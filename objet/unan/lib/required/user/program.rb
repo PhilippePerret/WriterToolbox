@@ -21,11 +21,11 @@ class User
 
   # Données de la table `variables`
   def travaux_ids=        arr_ids; set_var :travaux => arr_ids end
-  def travaux_ids         ; @travaux_ids ||= get_var(:travaux) end
+  def travaux_ids         ; @travaux_ids ||= get_var(:travaux, []) end
   def messages_forum_ids= arr_ids; set_var :messages_forum => arr_ids end
-  def messages_formum_ids ; @mess_forum_ids ||= get_var(:messages_forum) end
-  def quiz_ids=           arr_ids; set_var :quiz => arr_ids           end
-  def quiz_ids            ; @quiz_ids ||= get_var( :quiz )            end
-  def pages_cours_ids=    arr_ids; set_var :pages_cours => arr_ids    end
-  def pages_cours_ids     ; @pages_cours_ids ||= get_var(:pages_cours)end
+  def messages_formum_ids ; @mess_forum_ids ||= get_var(:messages_forum, []) end
+  def quiz_ids=           arr_ids; set_var :quiz => arr_ids                 end
+  def quiz_ids            ; @quiz_ids ||= get_var( :quiz, [] )              end
+  def pages_cours_ids=    arr_ids; set_var :pages_cours => arr_ids          end
+  def pages_cours_ids     ; @pages_cours_ids ||= get_var(:pages_cours, [])  end
 end

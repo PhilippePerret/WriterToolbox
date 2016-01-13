@@ -77,7 +77,7 @@ class Page
         (
           "".in_span(class:'libelle') +
           description.in_span(class:'value descfield')
-        ).in_div(class:'form_row description')
+        ).in_div(class:'row description')
       end
 
       # Le bouton submit
@@ -86,7 +86,7 @@ class Page
         (
           (options[:libelle]||"").in_span(class:'libelle') +
           button_name.in_submit(class:'btn').in_span(class:'value')
-        ).in_div(class:'form_row right')
+        ).in_div(class:'row right')
       end
 
 
@@ -181,7 +181,7 @@ class Page
           span_libelle +
           span_value
         )
-        .in_div(class:'form_row')
+        .in_div(class:'row')
       end
 
       # RETURN le code du libellé

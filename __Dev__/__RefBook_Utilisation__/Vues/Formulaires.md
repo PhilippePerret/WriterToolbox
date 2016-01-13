@@ -17,10 +17,10 @@ Le principe du nom du sélecteur est le suivant : les deux premiers chiffres co
 
     Selector CSS    Largeur     Largeur
                     libellés    Champs
-    form5050          50%         50%
-    form4060          40%         60%
-    form3070          30%         70%
-    form2080          20%         80%
+    dim5050          50%         50%
+    dim4060          40%         60%
+    dim3070          30%         70%
+    dim2080          20%         80%
 
 *Note : En réalité, le total ne fait pas 100%, pour tenir compte des paddings et autres décalages. La somme est calculée sur 95%*.
 
@@ -63,7 +63,7 @@ Par exemple :
 
 Produira :
 
-    <div class="form_row">
+    <div class="row">
       <span class="libelle">Durée</span>
       <span class="value">
         <input type="text" name="voyage[duree]" id="voyage_id" value="10" class="short" />

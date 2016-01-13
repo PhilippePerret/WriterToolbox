@@ -22,7 +22,7 @@ end
 site.require 'form_tools'
 form.prefix = 'contact'
 %>
-<form id="form_contact" class="form2080" action="unan/contact" method="POST">
+<form id="form_contact" class="dim2080" action="unan/contact" method="POST">
   <%= "envoyer".in_hidden(name:'operation') %>
   <%= form.field_text("Sujet", 'sujet', Unan::current_mail.subject) %>
   <%= form.field_textarea("Message", 'message', Unan::current_mail.message) %>

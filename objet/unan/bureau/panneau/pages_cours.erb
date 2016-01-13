@@ -1,3 +1,18 @@
 <%
 # Panneau des pages de cours à lire
 %>
+<p class='small right'>Retrouvez ici toutes les pages de cours que vous avez à lire.</p>
+
+<% if user.pages_cours_ids.empty? %>
+
+  <p>
+    <strong>Aucune page de cours à lire</strong>. Notez que lorsque vous avez des pages de cours à lire, <%= user.pseudo %>, un nombre <span class='small'>— le nombre de pages —</span> est indiqué dans l'onglet, sous la forme : “Cours (4)”<span class='small'> (pour “4 pages à lire”)</span>.
+  </p>
+
+<% else %>
+
+  <% bureau.pages_cours.each do |page_cours| %>
+    <%= page_cours.output_bureau %>
+  <% end %>
+
+<% end %>

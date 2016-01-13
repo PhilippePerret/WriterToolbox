@@ -1,35 +1,37 @@
-form
-
+form, div
   // Les différentes tailles entre libellé et value s'obtiennent en
   // pourcentage dans la classe donnée au formulaire
   // La classe est 'form<pourcentage libellé><pourcentage value>'
-  &.form5050
-    div.form_row
+  // Noter que ça tient aussi pour des div contenant des row et span
+  // libelle et value
+  &.dim5050
+    div.row
       span.libelle
         width : 45%
       span.value
         width : 50%
-  
-  &.form4060
-    div.form_row
+
+  &.dim4060
+    div.row
       span.libelle
         width : 40%
       span.value
         width : 55%
-  &.form3070
-    div.form_row
+  &.dim3070
+    div.row
       span.libelle
         width : 30%
       span.value
         width : 65%
-
-  &.form2080
-    div.form_row
+  &.dim2080
+    div.row
       width: 100%
       span.libelle
         width : 20%
       span.value
         width : 75%
+
+form
   
   input[type="password"], input[type="text"], textarea, select
     border-width          : 1px
@@ -91,7 +93,7 @@ form
     input[type="submit"]
       font-size           : inherit
     
-  div.form_row
+  div.row
     margin-top        : 0.7em
     &.description
       margin-top        : 0

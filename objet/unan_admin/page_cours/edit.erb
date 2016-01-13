@@ -31,7 +31,7 @@ function set_href_lien_read(o){
 <%
 # Formulaire d'édition de la page
 %>
-<form class="form2080" action="page_cours/edit?in=unan_admin" method="POST">
+<form class="dim2080" action="page_cours/edit?in=unan_admin" method="POST">
   <%= form.field_text("ID", 'id', nil, {class:'short', text_after: lien_read_page, onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>

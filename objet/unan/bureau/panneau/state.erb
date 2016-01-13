@@ -1,12 +1,36 @@
 <%
 # Panneau de l'état général
 %>
+<div class="dim3070">
 
-<div class="row">
-  <span class="libelle">Jour-programme courant</span>
-  <span class="value">XXX</span>
-</div>
-<div class="row">
-  <span class="libelle">Jour réel courant</span>
-  <span class="value">XXX</span>
+  <div class="row">
+    <span class="libelle">Programme débuté le</span>
+    <span class="value"><%= user.program.created_at.as_human_date %></span>
+  </div>
+  <div class="row">
+    <span class="libelle">Fin approximative</span>
+    <span class="value"><%= user.program.fin_approximative(:human) %></span>
+  </div>
+  <div class="row">
+    <span class="libelle">Rythme</span>
+    <span class="value">
+      Rythme <%= user.program.rythme_humain %>
+    </span>
+  </div>
+  <div class="row">
+    <span class="libelle"></span>
+    <span class="value small">(vous pouvez le modifier dans le <%= bureau.lien_preferences('panneau des préférences') %>)</span>
+  </div>
+  <div class="row">
+    <span class="libelle">Jour-programme courant</span>
+    <span class="value"><%= user.program.current_pday(:human) %> (reste <%= user.program.nombre_pdays_restants(:human) %>)</span>
+  </div>
+  <div class="row">
+    <span class="libelle">Jour réel courant</span>
+    <span class="value"><%= user.program.nombre_jour_reels_from_start(:human) %></span>
+  </div>
+  <div class="row">
+    <span class="libelle">Total de points</span>
+    <span class="value"><%= user.program.points || 0 %></span>
+  </div>
 </div>

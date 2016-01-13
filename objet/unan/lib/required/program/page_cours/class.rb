@@ -11,6 +11,8 @@ class PageCours
 
   class << self
 
+    # {Unan::Program::PageCours} retourne l'instance PageCours
+    # de la page de cours.
     def get pref
       case pref
       when Symbol, Fixnum then new( pref )

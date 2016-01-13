@@ -34,7 +34,7 @@ class Program
     end
 
     def value
-      @value ||= program.get(:days_overview)
+      @value ||= program.get(:days_overview) || ""
     end
 
     # Modifie la valeur d'un jour day-overview

@@ -20,11 +20,11 @@ def row libelle, property, field_type, values = nil
   when :select
     values.in_select(name:field_name, id: field_id, selected: user.send(property))
   end.in_span(class: 'value')
-  c.in_div(class:'form_row')
+  c.in_div(class:'row')
 end
 
 %>
-<form id="form_user_signup" class="form3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
+<form id="form_user_signup" class="dim3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
   <%= row("Pseudo", :pseudo, :text) %>
   <%= row("Patronyme", :patronyme, :text) %>
   <%= row("Vous êtes…", :sexe, :select, [["F", "une femme"], ["H", "un homme"]]) %>

@@ -82,7 +82,7 @@ lien_to_edit_abswork = "éditer".in_a(class: 'small btn', onclick:"$('form#form_
 lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
 
 %>
-<form id="form_edit_work_unan" class="form2080" action="abs_work/edit?in=unan_admin" method="POST">
+<form id="form_edit_work_unan" class="dim2080" action="abs_work/edit?in=unan_admin" method="POST">
 
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 

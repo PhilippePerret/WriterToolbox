@@ -12,9 +12,8 @@ class Cal
   class Day
     attr_reader :cal
     attr_reader :time
+
     # +cal+ Instance Unan::Program::Cal du calendrier contenant ce jour
-    # +ijour+ est l'indice du jour dans le programme Un An Un Script en
-    # considérant le rythme.
     def initialize cal, time
       @cal    = cal
       @time  = time
