@@ -23,6 +23,7 @@ class User
   # dans la table général des users.
   def remove
     self.app_remove if self.respond_to?( :app_remove )
+    folder.remove if folder.exist? # Dossier des données et databases persos
     User::table.delete(id)
   end
 

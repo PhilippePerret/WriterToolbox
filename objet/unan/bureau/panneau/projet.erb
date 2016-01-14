@@ -8,6 +8,9 @@
 <% end %>
 <form class="dim2080" action="bureau/home?in=unan" method="POST">
 
+  <%# OPÉRATION %>
+  <%= "bureau_save_projet".in_hidden(name:'operation') %>
+
   <%= form.field_text("Titre du projet", 'titre', user.projet.titre, {warning: user.projet.titre.nil?}) %>
   <%= form.field_description("Le titre du projet, même si ça n'est qu'un <strong>titre de travail</strong>.") %>
 

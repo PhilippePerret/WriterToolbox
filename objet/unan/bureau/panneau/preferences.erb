@@ -9,6 +9,11 @@
   <span class="warning small">Des données sont manquantes pour les préférences. Merci de les renseigner (<%= missing_data(:preferences) %>).</span>
 <% end %>
 <form class="dim2080" action="bureau/home?in=unan" method="POST">
+
+
+  <%# OPÉRATION %>
+  <%= "bureau_save_preferences".in_hidden(name:'operation') %>
+
   <%= bureau.submit_button %>
 <hr />
 <h4>Projet</h4>

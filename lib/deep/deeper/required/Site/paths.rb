@@ -14,6 +14,10 @@ class SiteHtml
   # ---------------------------------------------------------------------
   #   Méthodes utiles pour les paths
   # ---------------------------------------------------------------------
+
+  # Construit le dossier si nécessaire.
+  # Noter que ça ne sert pas seulement à site
+  # @usage    site.get_and_build_folder( path/to/folder )
   def get_and_build_folder sfile
     sfile = SuperFile::new(sfile) unless sfile.instance_of?(SuperFile)
     sfile.build unless sfile.exist?
@@ -42,6 +46,10 @@ class SiteHtml
   # ---------------------------------------------------------------------
   #   Database
   # ---------------------------------------------------------------------
+
+  def folder_db_users
+    folder_db_users ||= get_and_build_folder(folder_db + 'user')
+  end
 
   # Les données de l'application, c'est-à-dire le contenu de
   # toutes les bases de données
@@ -86,7 +94,7 @@ class SiteHtml
   def folder_deeper_module
     @folder_deeper_module ||= folder_deeper + 'module'
   end
-  
+
   # ---------------------------------------------------------------------
   #   Librairie
   # ---------------------------------------------------------------------

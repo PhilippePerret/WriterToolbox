@@ -1,5 +1,13 @@
 # encoding: UTF-8
+=begin
+Extension des instances User pour la gestion des variables dans
+la table `variables` de la base de données personnelles.
+C'est notamment cette table qui mémorise les préférences de chaque
+user.
+=end
 class User
+
+  VARIABLES_TYPES = [String, Fixnum, Bignum, Float, Hash, Array, NilClass]
 
   # Toutes les variables (valeurs de la table `variables` qui
   # fonctionne en name: <valeur>)
@@ -14,7 +22,6 @@ class User
     end
   end
 
-  VARIABLES_TYPES = [String, Fixnum, Bignum, Float, Hash, Array, NilClass]
 
   # Mets la variable +var_name+ à +var_value+ dans la table `variables`
   # de l'user.
@@ -178,5 +185,6 @@ class User
     when 7      then (h[:value] == "1")
     end
   end
+
 
 end

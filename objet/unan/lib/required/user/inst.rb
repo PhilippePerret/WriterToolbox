@@ -30,6 +30,8 @@ class User
   end
 
   # Le dossier data de l'user dans ./database/data/unan/user/<id>/
+  # Note : ce dossier n'est pas à confondre avec le dossier `folder`
+  # de l'user, dossier général, qui se trouve dans `./database/data/user/<id>`
   def folder_data
     @folder_data ||= begin
       d = site.folder_db + "unan/user/#{id}"

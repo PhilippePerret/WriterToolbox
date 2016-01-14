@@ -135,3 +135,12 @@ class Bureau
 
 end #/Bureau
 end #/Unan
+
+case param(:operation)
+when 'bureau_save_preferences'
+  bureau.save_preferences
+when 'bureau_save_projet'
+  bureau.save_projet
+when 'bureau_save_travail'
+  bureau.save_traail
+end

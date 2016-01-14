@@ -20,6 +20,8 @@ class User
     end
     alias :table :table_users
 
+    # Attention : Il s'agit de la base de données commune, avec tous
+    # les users, pas la base de données propre à chaque user (cf. + bas)
     def database
       @database ||= BdD::new(database_path.to_s)
     end
@@ -33,9 +35,5 @@ class User
   # ---------------------------------------------------------------------
   #   Instances
   # ---------------------------------------------------------------------
-
-  def table_users
-    @table_users ||= self.class::table_users
-  end
 
 end

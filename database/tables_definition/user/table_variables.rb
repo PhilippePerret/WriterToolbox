@@ -12,7 +12,7 @@ l'extension Unan :
 booléenne.
 
 =end
-def schema_table_unan_user_variables
+def schema_table_user_variables
   @schema_table_unan_user_variables ||= {
       name:   {type:"VARCHAR(200)", constraint:"UNIQUE"},
       value:  {type:"BLOB"},
