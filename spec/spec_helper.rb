@@ -19,9 +19,12 @@
 # Pour les tests avec have_tag etc.
 require 'rspec-html-matchers'
 
+
 # On requiert tout ce que requiert l'index du site
 # Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?
 require './lib/required'
+
+require_folder './spec/support'
 
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
@@ -107,10 +110,23 @@ RSpec.configure do |config|
     # qui ont été créées au cours des tests et pourront être
     # supprimées à la fin de la suite de tests
     @start_suite_time = Time.now.to_i
+
+    # Un Array contenant les instances ou les identifiants des
+    # users qu'il faudra détruire à la fin des tests.
+    $users_2_destroy = Array::new
+
   end
 
   config.after :suite do
     debug "\n\n"
+
+    # Destruction des users qui ont été créés au cours des
+    # tests
+    $users_2_destroy.each do |uref|
+      u = uref.instance_of?(User) ? uref : User::get(uref)
+      u.remove # appelle aussi `u.app_remove` propre à l'app.
+    end
+
     # Destruction de tout ce qui a été créé au cours des tests,
     # c'est-à-dire après le @start_suite_time
     if Unan::table_programs.exist?
