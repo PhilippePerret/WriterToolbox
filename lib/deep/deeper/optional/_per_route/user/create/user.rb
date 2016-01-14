@@ -62,8 +62,6 @@ class User
       patronyme:    patronyme,
       sexe:         sexe,
       mail:         mail,
-      pseudo:       pseudo,
-      patronyme:    patronyme,
       cpassword:    cpassword,
       salt:         random_salt,
       session_id:   app.session.session_id,
