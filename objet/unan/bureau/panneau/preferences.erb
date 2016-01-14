@@ -36,7 +36,7 @@
 %>
 <h4>Navigation</h4>
 
-  <%= form.field_checkbox("Rejoindre le bureau “Un An Un Script” après identification", "bureau_after_login", nil) %>
+  <%= form.field_checkbox("Rejoindre le bureau “Un An Un Script” après identification", "pref_bureau_after_login", user.preference(:bureau_after_login)) %>
 
 
 <%= bureau.submit_button %>

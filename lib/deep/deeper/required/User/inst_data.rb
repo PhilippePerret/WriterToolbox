@@ -14,6 +14,8 @@ class User
   # Instanciation, à l'aide de l'ID optionnel
   def initialize uid = nil
     @id = uid
+    # Initialisation de propriétés volatiles utiles
+    @preferences = Hash::new
   end
 
   # Obtenir la valeur d'une propriété de l'user

@@ -10,14 +10,19 @@ class User
   # ---------------------------------------------------------------------
   #
   # Table contenant les variables
+  # Noter que c'est une méthode d'instance
   def table_variables
     @table_variables ||= get_table('variables')
   end
 
+  # Tables des jours-programmes de l'user
+  # Noter que c'est une méthode d'instance
   def table_pdays
     @table_pdays ||= get_table('pdays')
   end
 
+  # Table des travaux accomplis ou en cours de l'user
+  # Noter que c'est une méthode d'instance
   def table_works
     @table_works ||= get_table('works')
   end
