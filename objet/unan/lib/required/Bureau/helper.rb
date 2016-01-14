@@ -44,17 +44,6 @@ class Bureau
     (titre||"Préférences").in_a( data_lien(:preferences, options) )
   end
 
-
-  # Bouton submit
-  # Pour avoir une cohérence entre les panneaux
-  # @usage    bureau.submit_button
-  def submit_button name = "Enregistrer"
-    @submit_button ||= begin
-      subbtn = form.submit_button(name)
-      subbtn.sub!(/class="btn"/, 'class="btn tiny discret"')
-    end
-  end
-
   # ---------------------------------------------------------------------
   #   Méthodes fonctionnelles
   # ---------------------------------------------------------------------

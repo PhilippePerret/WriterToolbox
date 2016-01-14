@@ -90,10 +90,18 @@ class Bureau
     form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
   end
 
-  # return TRUE si des données sont manquantes pour la cible
-  # +target+
+  # {String} Return un texte si des données sont manquantes pour la cible
+  # +target+. Ce texte est une liste humaine des données manquantes en fonction
+  # de la cible
+  # Cette méthode est utilisée au-dessus des formulaires pour indiquer
+  # les données manquantes qu'il convient de régler, par exemple le
+  # partage du projet ou encore son titre.
   # Si true, ajoute un texte dans le panneau invitant l'auteur à définir les
   # données manquantes
+  # @usage
+  #   <% if missing_data(<:target>) %>
+  #     <p>... on indique que des données manquent <%= missing_data(<:target>) %> ..</p>
+  #   <% end %>
   def missing_data target # :projet, :preferences, etc.
     @missing_data ||= Hash::new
 
@@ -113,5 +121,17 @@ class Bureau
       errors.pretty_join
     end
   end
+
+
+  # Bouton submit
+  # Pour avoir une cohérence entre les panneaux
+  # @usage    bureau.submit_button
+  def submit_button name = "Enregistrer"
+    @submit_button ||= begin
+      subbtn = form.submit_button(name)
+      subbtn.sub!(/class="btn"/, 'class="btn tiny tres discret"')
+    end
+  end
+
 end #/Bureau
 end #/Unan

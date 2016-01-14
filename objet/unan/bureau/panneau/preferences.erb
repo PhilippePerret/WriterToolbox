@@ -19,6 +19,9 @@
 <%= bureau.submit_button %>
 <hr />
 
+<%
+# ---------------------------------------------------------------------
+%>
 <h4>Notifications</h4>
 
 
@@ -27,6 +30,21 @@
 
 <%= bureau.submit_button %>
 <hr />
+
+<%
+# ---------------------------------------------------------------------
+%>
+<h4>Navigation</h4>
+
+  <%= form.field_checkbox("Rejoindre le bureau “Un An Un Script” après identification", "bureau_after_login", nil) %>
+
+
+<%= bureau.submit_button %>
+<hr />
+
+<%
+# ---------------------------------------------------------------------
+%>
 
 <h4>Partage</h4>
 
