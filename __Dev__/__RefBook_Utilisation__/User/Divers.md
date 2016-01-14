@@ -1,6 +1,7 @@
 # Divers à propos de l'user
 
 * [Redirection après l'identification (login)](#redirectionapreslogin)
+* [Destruction d'un utilisateur](#destructionuser)
 
 
 <a name='redirectionapreslogin'></a>
@@ -17,3 +18,15 @@ Pour rediriger l'user quelque part après son identification au site RestSite, i
       end
       ...
     end
+
+<a name='destructionuser'></a>
+
+## Destruction d'un utilisateur
+
+La destruction d'un utilisateur se fait par la méthode `User#remove`. Mais cette méthode ne fait que supprimer la donnée de l'user dans la table des users (`users.db`).
+
+Pour appliquer une destruction particulière à l'application, il suffit d'implémenter la méthode :
+
+    User#app_remove
+
+Cette méthode sera automatiquement appelée AVANT la destruction de l'user dans la table des users.
