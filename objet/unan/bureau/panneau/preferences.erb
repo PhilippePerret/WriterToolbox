@@ -5,7 +5,7 @@
 
 
 %>
-<% if missing_data(:preferences) %>
+<% if missing_data(:preferences).nil_if_empty %>
   <span class="warning small">Des données sont manquantes pour les préférences. Merci de les renseigner (<%= missing_data(:preferences) %>).</span>
 <% end %>
 <form class="dim2080" action="bureau/home?in=unan&cong=preferences" method="POST">
@@ -19,7 +19,7 @@
 <h4>Projet</h4>
 
 <%# RYTHME DU PROGRAMME %>
-  <%= form.field_select("Rythme", 'rythme', user.program.rythme, { values:Unan::Program::RYTHMES }) %>
+  <%= form.field_select("Rythme", 'pref_rythme', user.preference(:rythme), { values:Unan::Program::RYTHMES }) %>
   <%= form.field_description("Le rythme déterminera la durée totale de votre apprentissage et de votre développement. Vous ne devriez avoir à modifier cette valeur que si vous vous apercevez que la démarche générale est trop rapide pour vous ou trop lente.") %>
 <%= bureau.submit_button %>
 <hr />
@@ -41,7 +41,7 @@
 %>
 <h4>Navigation</h4>
 
-  <%= form.field_checkbox("Rejoindre le bureau “Un An Un Script” après identification", "pref_bureau_after_login", user.preference(:bureau_after_login)) %>
+  <%= form.field_checkbox("Rejoindre ce bureau après identification", "pref_bureau_after_login", user.preference(:bureau_after_login)) %>
 
 
 <%= bureau.submit_button %>

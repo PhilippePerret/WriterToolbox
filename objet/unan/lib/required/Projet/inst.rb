@@ -55,7 +55,7 @@ class Projet
   # Autorisation
   # cf. Unan::SHARINGS
   def sharing
-    @sharing ||= specs[3].to_i
+    @sharing ||= user.preference(:sharing) # specs[3].to_i
   end
 
   # ---------------------------------------------------------------------

@@ -86,7 +86,7 @@ class Bureau
   # être utilisé notamment dans le panneau "Projet" et dans le
   # panneau "Préférences"
   def row_form_sharing
-    form.field_select("Partage", 'sharing', nil, {values: Unan::SHARINGS, selected: user.projet.sharing , text_before:"Peut suivre ce projet : ", warning: (user.projet.sharing == 0)}) +
+    form.field_select("Partage", 'pref_sharing', user.preference(:sharing), {values: Unan::SHARINGS , text_before:"Peut suivre ce projet : ", warning: (user.projet.sharing == 0)}) +
     form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
   end
 
@@ -99,9 +99,13 @@ class Bureau
   # Si true, ajoute un texte dans le panneau invitant l'auteur à définir les
   # données manquantes
   # @usage
-  #   <% if missing_data(<:target>) %>
+  #   <% if missing_data(<:target>).nil_if_empty %>
   #     <p>... on indique que des données manquent <%= missing_data(<:target>) %> ..</p>
   #   <% end %>
+  # Noter le `.nil_if_empty` ci-dessus qui permet de mettre la valeur à nil
+  # quand le texte missing_data est à "", ce qu'il est lorsqu'aucun valeur
+  # n'est manquante, puisque par convénience la méthode retourne le texte qui
+  # sera marqué pour donner la liste des informations manquantes.
   def missing_data target # :projet, :preferences, etc.
     @missing_data ||= Hash::new
 

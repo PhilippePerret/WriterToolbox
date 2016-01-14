@@ -30,7 +30,6 @@ class Program
   def end
     @end ||= start + ((DUREE_ANNEE_VIRTUELLE / rythme) + 1).days
   end
-  def rythme  ; @rythme ||= RYTHME_STANDARD end
 
 end
 end

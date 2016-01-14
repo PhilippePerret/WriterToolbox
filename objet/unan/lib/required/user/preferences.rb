@@ -7,6 +7,7 @@ Extension des instances User pour les préférences
 class User
 
   # Enregistre la préférence +pref_id+ à la valeur +pref_value+
+  # +pref_id+ NE DOIT PAS être préfixé avec "pref_"
   # Cf. User > Preferences.md
   def set_preference pref_id, pref_value = nil
     if pref_id.instance_of?(Hash)
@@ -19,6 +20,7 @@ class User
   end
 
   # Enregistre un flot de préférences d'un bloc
+  # WARNING : Les +pref_id+ NE DOIVENT PAS être préfixés avec "pref_"
   def set_preferences hpreferences
     # Modifier les clés pour l'enregistrement dans la table `variables`
     hprefs_def = Hash::new

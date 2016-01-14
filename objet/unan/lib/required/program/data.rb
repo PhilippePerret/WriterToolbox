@@ -42,6 +42,9 @@ class Program
   def options       ; @options ||= get(:options) || ""  end
   # {Fixnum} Date de création (timestamp)
   def created_at    ; @created_at ||= get(:created_at)  end
+  # {Fixnum} Le rythme
+  # ATTENTION : c'est une préférence, pas une donnée du projet
+  def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
 
 end # /Program
 end # /Unan

@@ -3,7 +3,13 @@ require 'uri'
 class Page
   include Singleton
 
-  # {Hash} des paramètres définis explicitement
+  # {Hash} Les paramètres déjà lus
+  # Noter que les paramètres ne se trouvent dans cette
+  # variables d'instance (page.custom_params) que si on
+  # les a appelés au cours du programme (c'est le comportement
+  # "lazzy" normal du programme).
+  # Pour forcer la lecture des paramètres, utiliser la
+  # méthode 'page.all_params'
   attr_reader :custom_params
 
   # Retourne le paramètre de demandé ou le définit
@@ -30,16 +36,44 @@ class Page
     end
   end
 
+  # {Hash} Retourne l'intégralité des paramètres
+  # Utilisé dans certains cas seulement pour connaitre l'intégralité
+  # des paramètres. Mais en règle générale, on n'en a pas besoin puisqu'on
+  # ne lit que les paramètres dont on a besoin (comportement "lazzy")
+  def all_params
+    @all_params ||= begin
+      h = params_session
+      h.merge! params_querystrings
+      h.merge! params_cgi
+    end
+  end
+
+  def params_session
+    @params_session ||= app.session.instance_variable_get('@data').to_sym
+  end
+  # Paramètres de l'url
+  def params_querystrings
+    @params_querystrings ||= get_query_strings
+  end
+  # Paramètres CGI (par exemple les données d'un formulaire POST)
+  def params_cgi
+    @params_cgi ||= begin
+      h = Hash::new
+      cgi.instance_variable_get('@params').keys.each { |key| h.merge!(key.to_sym => cgi[key]) }
+      h
+    end
+  end
+
   REG_COMPLEXE_VALUES_CGI = /^(.*?)\[(.*?)\](?:\[(.*?)\])?$/
   def decomplexe_values_cgi
-    @custom_params ||= {}
+    @custom_params ||= Hash::new
     h_decomplexed = decomplexe_hash cgi.params
     @custom_params.merge! h_decomplexed
     @cgi_values_decomplexed = true
   end
 
   def decomplexe_hash h
-    decomplexed = {}
+    decomplexed = Hash::new
     h.each do |k, v|
       # puts "k: #{k.inspect}<br />v: #{v.inspect}".in_div
       if k.match REG_COMPLEXE_VALUES_CGI
@@ -199,7 +233,7 @@ class Page
   # Définit explicitement un paramètre
   def set_param added_params, value
     added_params = {added_params.to_sym => value} unless added_params.class == Hash
-    @custom_params ||= {}
+    @custom_params ||= Hash::new
     @custom_params = @custom_params.merge added_params
   end
 

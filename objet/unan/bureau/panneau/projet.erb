@@ -3,7 +3,7 @@
 #
 # C'est notamment dans ce panneau qu'on règle le titre du projet
 %>
-<% if missing_data(:projet) %>
+<% if missing_data(:projet).nil_if_empty %>
   <span class='warning small'>Des données sont manquantes pour votre projet, elles sont indiquées en rouge ci-dessous (<%= missing_data(:projet) %>).</span>
 <% end %>
 <form class="dim2080" action="bureau/home?in=unan&cong=projet" method="POST">
