@@ -86,7 +86,7 @@ class Bureau
   # être utilisé notamment dans le panneau "Projet" et dans le
   # panneau "Préférences"
   def row_form_sharing
-    form.field_select("Partage", 'sharing', nil, {values: Unan::SHARINGS, selected: user.projet.sharing , text_before:"Peut suivre ce projet :", warning: (user.projet.sharing == 0)}) +
+    form.field_select("Partage", 'sharing', nil, {values: Unan::SHARINGS, selected: user.projet.sharing , text_before:"Peut suivre ce projet : ", warning: (user.projet.sharing == 0)}) +
     form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
   end
 

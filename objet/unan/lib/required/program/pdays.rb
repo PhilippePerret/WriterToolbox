@@ -3,20 +3,10 @@ class Unan
 class Program
 
   # Retourne le jour programme courant au format +as+
-  #
+  # Note : C'est une variable de name :current_pday
   def current_pday as = :nombre # ou :human
-    @ijour_actif ||= begin
-      ijr = nil
-      (1..365).each do |ijour|
-        if day_overview(ijour).actif?
-          ijr = ijour.freeze
-          break
-        end
-      end
-      ijr.nil? ? 1 : ijr
-    end
-
-    # Type du retour
+    @ijour_actif ||= user.get_var(:current_pday, 1)
+    # En fonction du type du retour
     case as
     when :human, :humain then
       mark = @ijour_actif == 1 ? "er" : "e"

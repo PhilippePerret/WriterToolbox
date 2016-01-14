@@ -133,6 +133,7 @@ module MailModuleMethods
   # ---------------------------------------------------------------------
   #   Sous-sous-sous méthodes de construction du message
 
+
   def header
     if get_class(:header).nil?
       set_class(:header, SiteHtml::Mail::respond_to?(:header) ? SiteHtml::Mail::header : "" )
@@ -156,6 +157,7 @@ module MailModuleMethods
     set_class(:footer, SiteHtml::Mail::respond_to?(:footer) ? SiteHtml::Mail::footer : "") if get_class(:footer).nil?
     get_class :footer
   end
+
 
   # ---------------------------------------------------------------------
   #   Sous-sous-sous-sous méthodes de construction du message
@@ -255,7 +257,7 @@ class SiteHtml
     # ----------------
     def send
       if self.class.offline? && ( @force_offline != true ) && self.class.respond_to?(:send_offline)
-        self.class.send_offline data.merge(subject: subject, to: to, from: from)
+        self.class.send_offline data.merge(subject: subject, to: to, from: from, message: message)
       else
         self.class.send message, to, from
       end

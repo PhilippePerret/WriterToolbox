@@ -18,6 +18,7 @@ class << self
   def folder_modules
     @folder_modules ||= folder_lib + 'module'
   end
+  alias :folder_module :folder_modules
   # ---------------------------------------------------------------------
   def folder_lib
     @folder_lib ||= folder + 'lib'
