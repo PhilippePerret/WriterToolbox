@@ -6,7 +6,7 @@
 <% if missing_data(:projet) %>
   <span class='warning small'>Des données sont manquantes pour votre projet, elles sont indiquées en rouge ci-dessous (<%= missing_data(:projet) %>).</span>
 <% end %>
-<form class="dim2080" action="bureau/home?in=unan" method="POST">
+<form class="dim2080" action="bureau/home?in=unan&cong=projet" method="POST">
 
   <%# OPÉRATION %>
   <%= "bureau_save_projet".in_hidden(name:'operation') %>

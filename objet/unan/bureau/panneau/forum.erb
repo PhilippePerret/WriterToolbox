@@ -1,3 +1,10 @@
 <%
 # Panneau des messages du forum à lire
 %>
+<form class="dim3070" action="bureau/home?in=unan&cong=forum" method="post">
+
+  <%# TODO Ici, on trouvera une liste des messages écrits à l'user, avec un champ de texte pour y répondre %>
+
+  <%= 'bureau_repondre_messages_forum'.in_hidden(name:'operation') %>
+  <%= bureau.submit_button("Envoyer réponses aux messages") %>
+</form>

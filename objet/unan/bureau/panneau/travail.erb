@@ -1,3 +1,7 @@
 <p>
   Retrouvez tous les jours ici le travail que vous avez à accomplir.
 </p>
+<form class="dim3070" action="bureau/home?in=unan&cong=travail" method="POST">
+  <%= "bureau_save_travail".in_hidden(name:'operation') %>
+  <%= bureau.submit_button("Envoyer le travail") %>
+</form>
