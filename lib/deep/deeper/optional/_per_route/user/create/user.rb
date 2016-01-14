@@ -6,26 +6,33 @@ valide
 require 'digest/md5'
 class User
 
-  # = main =
-  #
-  # Méthode appelée par le formulaire pour inscrire
-  # l'utilisateur
-  # Si la création réussit, on affiche la page d'accueil du nouvel
-  # user, sinon on revient à la page d'inscription (redirection)
-  def self.create
-    User::current = User::new
-    User::current.create
-  end
+  # ---------------------------------------------------------------------
+  #   Classe User
+  # ---------------------------------------------------------------------
+  class << self
+
+    # Méthode appelée par le formulaire pour inscrire
+    # l'utilisateur
+    # Si la création réussit, on l'identifie et on affiche sa page
+    # d'accueil. Sinon on revient à la page d'inscription (redirection)
+    def create
+      newuser = User::new
+      if newuser.create
+        newuser.login
+      end
+    end
+
+  end # << self
 
   # ---------------------------------------------------------------------
-  #   Instance
+  #   Instance User
   # ---------------------------------------------------------------------
   def create
     if data_valides?
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
-      debug "Je peux créer l'user qui a des données correctes"
       save_all_data
+      true
     else
       # Les données sont invalides, on doit rediriger vers
       # la page du formulaire d'inscription (user/signup)
@@ -35,6 +42,7 @@ class User
       # Un Script.
       # redirect_to 'user/signup'
       redirect_to site.current_route.route
+      false
     end
   end
 

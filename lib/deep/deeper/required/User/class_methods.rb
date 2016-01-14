@@ -5,17 +5,13 @@ class User
 
     # Identification
     def login
-      debug "-> User::login"
       unless login_ok?
         error "Je ne vous remets pas…"
         redirect_to :home
-      else
-        debug "[User:login] login_ok? a retourné TRUE"
       end
     end
 
     def login_ok?
-      debug "-> User::login_ok?"
       login_data = param(:login)
       mail = login_data[:mail]
       pasw = login_data[:password]
@@ -25,7 +21,6 @@ class User
       compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
       ok = expected == compared
       if ok
-        debug "[User::login_ok?] OK => Instanciation d'un nouvel user (#{res[:id].inspect})"
         u = User::new( res[:id] )
         u.login
       end
