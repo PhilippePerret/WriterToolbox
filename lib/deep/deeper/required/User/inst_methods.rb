@@ -17,5 +17,13 @@ class User
     set(session_id: nil)
   end
 
+  # Détruit l'user
+  # S'il y a une procédure propre à l'application, il faut la définir
+  # dans `User#app_remove` qui sera appelé avant la destruction de l'user
+  # dans la table général des users.
+  def remove
+    self.app_remove if self.respond_to?( :app_remove )
+    User::table.delete(id)
+  end
 
 end
