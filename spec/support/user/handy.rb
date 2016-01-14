@@ -3,12 +3,19 @@
 Handy méthodes pour les user
 =end
 
+# +options+
+#   :unanunscript   Si true, l'inscrit au programme
+#   :current        Si true, le met en user courant
+#   Toutes les autres propriétés servent à décrire les
+#   données de l'user, qui seront enregistrées dans la
+#   table
 def create_user options = nil
   now = Time.now.to_i
   options ||= Hash::new
 
   # Retirer les valeurs qui ne doivent pas être enregistrées
   mettre_courant = options.delete(:current)
+  programme_1a1s = options.delete(:unanunscript)
 
   options[:pseudo]      ||= "pseudo#{now}"
   options[:patronyme]   ||= "Patro N#{now}"
@@ -28,6 +35,14 @@ def create_user options = nil
   $users_2_destroy << new_user.id
 
   User::current= new_user if mettre_courant
+
+  # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il
+  # faut simuler son inscription
+  if programme_1a1s
+    site.require_objet 'unan'
+    (Unan::folder_modules + 'signup_user.rb').require
+    new_user.signup_program_uaus
+  end
 
   return new_user
 
