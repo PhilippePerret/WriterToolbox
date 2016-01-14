@@ -3,13 +3,21 @@ describe 'Création d’un programme au niveau unitaire' do
   before(:all) do
     @start_time = Time.now.to_i
     site.require_objet 'unan'
-    (site.folder_objet+'unan/lib/module/create_program.rb').require
+    (site.folder_objet+'unan/lib/module/signup/create_program.rb').require
     # => pour Unan::Program::create
-    user_id = User::table_users.select(colonnes:[:id]).values.first[:id]
-    @user = User::new(user_id)
-    User::current = @user
+    (site.folder_objet+'unan/lib/module/signup/create_projet.rb').require
+    # => pour Unan::Projet::create
+
+    # On crée un nouvel user pour pouvoir faire le test
+    @user = create_user( :current => true )
+    user_id = @user.id
+    # puts "Nouvel user : ##{user_id}"
+
     # ===>  TEST   <===
     program_id = Unan::Program::create
+    # puts "program_id créé : #{program_id}"
+    projet_id  = Unan::Projet::create
+    # puts "projet_id créé : #{projet_id}"
     # ===>  /TEST   <===
 
     # On essaie de récupérer le programme
@@ -28,6 +36,13 @@ describe 'Création d’un programme au niveau unitaire' do
   it 'enregistre les bonnes données du programme dans la table' do
     dprog = Unan::table_programs.get(program.id)
     dproj = Unan::table_projets.get(where: "created_at >= #{@start_time}")
+    # puts "@start_time = #{@start_time}"
+    # puts "dprog : #{dprog.inspect}"
+    # puts "dproj : #{dproj.inspect}"
+    # puts "TABLE PROGRAMMES"
+    # puts Unan::table_programs.select.inspect
+    # puts "TABLE PROJETS"
+    # puts Unan::table_projets.select.inspect
     expect(dprog[:projet_id]).not_to eq nil
     expect(dprog[:projet_id]).to eq dproj[:id]
     expect(dprog[:auteur_id]).not_to eq nil
