@@ -22,7 +22,7 @@ class Projet
       require './objet/unan/projet/edit.rb'
       projet_id = create_with data_new_projet
 
-      Unan::Program::new(program_id).set(projet_id: projet_id)
+      user.program.set(projet_id: projet_id)
 
       return projet_id
     end
