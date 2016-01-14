@@ -51,11 +51,9 @@ class User
     schema_path.require # charge le fichier de la définition de la table
     schema_method = "schema_table_user_#{table_name}"
     table_schema = send( schema_method.to_sym )
-    # debug "Schéma table #{table_name} : #{table_schema.pretty_inspect}"
     site.db.build_table(self.database, table_name, table_schema)
     # Barrière en cas de problème
     raise "La table `#{table_name}` n'a pas pu être construite…" unless self.database.table(table_name).exist?
-    # debug "== Table `#{table_name}` créée avec succès"
   end
 
 end #/User
