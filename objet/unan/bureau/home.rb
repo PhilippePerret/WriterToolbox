@@ -11,7 +11,7 @@ site.require 'form_tools'
 class Unan
 class Bureau
 
-  # Données des onglets du bureau Un An Un Script
+  # Onglets du bureau Un An Un Script d'un user suivant le programme
   ONGLETS = {
     state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
     projet:       {id: :projet,       titre:"Projet"},
@@ -23,6 +23,13 @@ class Bureau
     preferences:  {id: :preferences,  titre:"Préférences"}
   }
 
+
+  # ---------------------------------------------------------------------
+  #   Méthodes pour les PANNEAUX
+  #
+  # Cf. plus bas les méthodes pour les onglets
+  # ---------------------------------------------------------------------
+
   # = main =
   #
   # {StringHTML} Retourne le code HTML pour l'onglet
@@ -31,6 +38,44 @@ class Bureau
     (data_onglet[:plain_titre]||data_onglet[:titre]).in_h3 +
     Vue::new(current_onglet.to_s, folder_panneaux, self).output
   end
+
+  # {StringHTML} Return le code HTML pour les formulaires de la
+  # rangée de définition du partage. Mis dans un helper ici pour
+  # être utilisé notamment dans le panneau "Projet" et dans le
+  # panneau "Préférences"
+  def row_form_sharing
+    form.field_select("Partage", 'pref_sharing', user.preference(:sharing), {values: Unan::SHARINGS , text_before:"Peut suivre ce projet : ", warning: (user.projet.sharing == 0)}) +
+    form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
+  end
+
+  # {Return un texte si des données sont manquantes pour la cible ou
+  # autre texte qui pointe du doigt un problème (on pourrait d'ailleurs
+  # peut-être changer le nom car ce ne sera pas toujours des données manquantes)
+  # {String|Nil} RETURN NIL ou le texte indiquant le problème, par exemple
+  # les données manquantes.
+  # Chaque panneau (i.e. chaque module de panneau) possède sa propre méthode
+  # qui est appelée quand le panneau est appelé.
+  # @usage dans la vue
+  #   <% if missing_data %>
+  #     <p>... Des données manquent <%= missing_data(<:target>) %> ..</p>
+  #   <% end %>
+  # def missing_data
+  # end
+
+
+  # Bouton submit
+  # Pour avoir une cohérence entre les panneaux
+  # @usage    bureau.submit_button
+  def submit_button name = "Enregistrer"
+    @submit_button ||= begin
+      subbtn = form.submit_button(name)
+      subbtn.sub!(/class="btn"/, 'class="btn tiny tres discret"')
+    end
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes pour les ONGLETS
+  # ---------------------------------------------------------------------
 
   # {Symbol} ID de l'onglet courant
   # Est défini dans `cong` dans les paramètres
@@ -42,7 +87,6 @@ class Bureau
   def data_onglet
     @data_onglet ||= ONGLETS[current_onglet]
   end
-
 
   # = main =
   #
@@ -79,62 +123,6 @@ class Bureau
       tit << " (#{nb})" if nb > 0
     end
     tit
-  end
-
-  # {StringHTML} Return le code HTML pour les formulaires de la
-  # rangée de définition du partage. Mis dans un helper ici pour
-  # être utilisé notamment dans le panneau "Projet" et dans le
-  # panneau "Préférences"
-  def row_form_sharing
-    form.field_select("Partage", 'pref_sharing', user.preference(:sharing), {values: Unan::SHARINGS , text_before:"Peut suivre ce projet : ", warning: (user.projet.sharing == 0)}) +
-    form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
-  end
-
-  # {String} Return un texte si des données sont manquantes pour la cible
-  # +target+. Ce texte est une liste humaine des données manquantes en fonction
-  # de la cible
-  # Cette méthode est utilisée au-dessus des formulaires pour indiquer
-  # les données manquantes qu'il convient de régler, par exemple le
-  # partage du projet ou encore son titre.
-  # Si true, ajoute un texte dans le panneau invitant l'auteur à définir les
-  # données manquantes
-  # @usage
-  #   <% if missing_data(<:target>).nil_if_empty %>
-  #     <p>... on indique que des données manquent <%= missing_data(<:target>) %> ..</p>
-  #   <% end %>
-  # Noter le `.nil_if_empty` ci-dessus qui permet de mettre la valeur à nil
-  # quand le texte missing_data est à "", ce qu'il est lorsqu'aucun valeur
-  # n'est manquante, puisque par convénience la méthode retourne le texte qui
-  # sera marqué pour donner la liste des informations manquantes.
-  def missing_data target # :projet, :preferences, etc.
-    @missing_data ||= Hash::new
-
-    @missing_data[target] ||= begin
-      errors = Array::new
-      case target
-      when :projet
-        errors << "le titre"    if user.projet.titre.nil_if_empty.nil?
-        errors << "le résumé"   if user.projet.resume.nil_if_empty.nil?
-        errors << "le support"  if user.program.type_support_id == 0
-        errors << "le partage"  if user.projet.sharing == 0
-      when :preferences
-        errors << "le partage"  if user.projet.sharing == 0
-      else
-        return false
-      end
-      errors.pretty_join
-    end
-  end
-
-
-  # Bouton submit
-  # Pour avoir une cohérence entre les panneaux
-  # @usage    bureau.submit_button
-  def submit_button name = "Enregistrer"
-    @submit_button ||= begin
-      subbtn = form.submit_button(name)
-      subbtn.sub!(/class="btn"/, 'class="btn tiny tres discret"')
-    end
   end
 
 end #/Bureau

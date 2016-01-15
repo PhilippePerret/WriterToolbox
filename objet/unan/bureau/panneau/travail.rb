@@ -6,6 +6,13 @@ class Bureau
     flash "Je sauve les données travail"
   end
 
+  # cf. l'explication dans le fichier home.rb
+  def missing_data
+    @missing_data ||= begin
+      nil # pour le moment
+    end
+  end
+
 end # /Bureau
 end # /Unan
 

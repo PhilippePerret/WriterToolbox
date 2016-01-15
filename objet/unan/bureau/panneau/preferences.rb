@@ -38,6 +38,15 @@ class Bureau
     flash "Préférences sauvées"
   end
 
+  # Cf. l'explication dans home.rb
+  def missing_data
+    @missing_data ||= begin
+      errors = Array::new
+      errors << "le partage"  if user.projet.sharing == 0
+      errors.pretty_join.nil_if_empty
+    end
+  end
+
 end #/Bureau
 end #/Unan
 
