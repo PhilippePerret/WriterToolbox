@@ -2,12 +2,11 @@
 =begin
 Module qui doit être appelé toutes les heures par le cron-job.
 
-NOTE : Il doit être exécutable (? je pense que oui).
+NOTE : Il doit être exécutable.
 
 =end
 
 THIS_FOLDER = File.dirname(__FILE__)
-require File.join(THIS_FOLDER, 'lib', 'required.rb')
 
 def log mess
   reflog.puts "#{mess}"
@@ -24,6 +23,15 @@ end
 def reflog_path
   @reflog_path ||= File.join(THIS_FOLDER, "log-#{Time.now.to_i}.log")
 end
+
+begin
+  require File.join(THIS_FOLDER, 'lib', 'required.rb')
+rescue Exception => e
+  log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES : #{e.message}"
+  log "### JE DOIS RENONCER À LANCER LE CRON-JOB"
+  exit(1)
+end
+
 
 # On se place à la racine de l'application pour
 # exécuter toutes les opérations
