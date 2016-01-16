@@ -1,0 +1,7 @@
+
+
+----------------------------------------------------------------------==========CRON JOB DU 16 01 2016 - 19:15==========
+
+-> lib/required.rb
+### IMPOSSIBLE DE CHARGER LES LIBRAIRIES : undefined local variable or method `site' for main:Object
+### JE DOIS RENONCER À LANCER LE CRON-JOB
