@@ -2,7 +2,7 @@
 # Panneau des questionnaires à remplir
 %>
 <form class="dim3070" action="bureau/home?in=unan&cong=quiz" method="POST">
-  <%= if missing_data %>
+  <% if missing_data %>
   <% end %>
   <%= 'bureau_save_quiz'.in_hidden(name:'operation') %>
   <%= bureau.submit_button("Soumettre les questionnaires") %>
