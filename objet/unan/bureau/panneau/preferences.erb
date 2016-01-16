@@ -30,8 +30,8 @@
 <h4>Notifications</h4>
 
 
-<%# TODO RECEVOIR UN MAIL QUOTIDIEN OU SEULEMENT AU CHANGEMENT DE TRAVAIL %>
-<%# Préciser que le mail quotidien permet d'avoir un récapitulatif journalier %>
+  <%= form.field_checkbox("Récapitulatif journalier", 'pref_daily_summary', user.preference(:daily_summary)) %>
+  <%= form.field_description("Si vous cochez cette case, un mail vous sera envoyé quotidiemment pour faire un point sur votre avancée. Dans le cas contraire, vous ne recevrez un mail que lorsqu'en cas de nouveau travail à fournir.") %>
 
 <%= bureau.submit_button %>
 <hr />

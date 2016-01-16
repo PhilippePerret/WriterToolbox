@@ -1,8 +1,9 @@
 # encoding: UTF-8
 class User
 
-  # Procédure principale qui inscript l'user au programme UN AN UN SCRIPT
+  # Procédure principale qui inscrit l'user au programme UN AN UN SCRIPT
   # tout de suite après le paiement de son module.
+  #
   # Note : c'est une procédure hyper protégée (mode sans échec) pour
   # aller jusqu'au bout et pouvoir corriger les problèmes au cas où.
   def signup_program_uaus
@@ -38,8 +39,8 @@ class User
 
     # Signaler les erreurs au cas où
     unless @errors.empty?
-      error "Des erreurs sont malheureusement survenues au cours de votre inscription :"
-      error @errors.collect{|merr| merr.in_div}.join
+      error "Des erreurs sont malheureusement survenues au cours de votre inscription (merci de les signaler à l'administration, qui s'efforcera de régler le problème) :"
+      error @errors.collect { |merr| merr.in_div }.join
     end
 
     # pour les tests
@@ -47,18 +48,32 @@ class User
   end
 
   def create_program_et_projet
-    folder_signup.require
-    # Création du programme (dans la table générale des programmes)
-    @program_id = Unan::Program::create
-    # Création du projet (dans la table générale des projets)
-    @projet_id  = Unan::Projet::create
-  rescue Exception => e
-    raise NonFatalError, "Malheureusement, la procédure d'inscription a dû être interrompue car le programme et le projet n'ont pu être créés."
+    begin
+      folder_signup.require
+    rescue Exception => e
+      @errors << "Impossible de requérir le dossier signup : #{e.message}"
+      return
+    end
+    begin
+      # Création du programme (dans la table générale des programmes)
+      @program_id = Unan::Program::create
+    rescue Exception => e
+      @errors << "Impossible de créer le programme : #{e.message}. Le projet ne sera pas créé non plus."
+      return
+    end
+    begin
+      # Création du projet (dans la table générale des projets)
+      @projet_id  = Unan::Projet::create
+    rescue Exception => e
+      @errors << "Impossible de créer le projet : #{e.message}"
+    end
   end
 
   # Instancier le premier jour programme
   def instancier_premier_jour_programme
-    set_var :current_pday => 1
+    program.start_pday 1
+  rescue Exception => e
+    @errors << "Impossible d'instancier le premier jour-programme : #{e.message}"
   end
 
   # Envoyer les mails de confirmation d'inscription à l'user et
@@ -98,7 +113,7 @@ class User
     les_mails_pour_error.shift
 
   rescue Exception => e
-    @errors << "Problème en envoyant les mails (mails non envoyé : #{les_mails_pour_error.pretty_join})"
+    @errors << "Problème en envoyant les mails : #{e.message} (mails non envoyé : #{les_mails_pour_error.pretty_join})"
   end
 
   def folder_signup

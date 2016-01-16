@@ -12,7 +12,7 @@ Méthodes de gestion des erreurs
 #
 class NonFatalError < StandardError
   attr_reader :redirection
-  def initialize message, redirection
+  def initialize message, redirection = ''
     @message      = message
     @redirection  = redirection
   end

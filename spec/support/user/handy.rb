@@ -4,8 +4,10 @@ Handy méthodes pour les user
 =end
 
 # +options+
+#
 #   :unanunscript   Si true, l'inscrit au programme
 #   :current        Si true, le met en user courant
+#
 #   Toutes les autres propriétés servent à décrire les
 #   données de l'user, qui seront enregistrées dans la
 #   table
@@ -14,8 +16,8 @@ def create_user options = nil
   options ||= Hash::new
 
   # Retirer les valeurs qui ne doivent pas être enregistrées
-  mettre_courant = options.delete(:current)
   programme_1a1s = options.delete(:unanunscript)
+  mettre_courant = options.delete(:current) || programme_1a1s
 
   options[:pseudo]      ||= "pseudo#{now}"
   options[:patronyme]   ||= "Patro N#{now}"

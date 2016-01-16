@@ -30,7 +30,7 @@ def schema_table_unan_hot_programs
     # Rythme adopté
     # -------------
     # Le rythme adopté pour le programme, de 1 à 10 (en fait de 0 à 9).
-    # La valeur 7 est la valeur moyenne, celle qui correspond à une
+    # La valeur 5 est la valeur moyenne, celle qui correspond à une
     # réalisation du programme en un an. Les valeurs supérieures
     # permettent d'écrire en moins de temps, les valeurs inférieures
     # en plus de temps.

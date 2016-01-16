@@ -15,10 +15,10 @@ class Bureau
   ONGLETS = {
     state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
     projet:       {id: :projet,       titre:"Projet"},
-    travail:      {id: :travail,      titre:"Travail",  nombre: :travaux},
-    pages_cours:  {id: :pages_cours,  titre:"Cours",    nombre: :pages},
-    forum:        {id: :forum,        titre:"Forum",    nombre: :messages},
-    quiz:         {id: :quiz,         titre:"Quiz",     nombre: :quiz},
+    taches:       {id: :taches,       titre:"Tâches",   knombre: :tasks},
+    pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages_non_lues},
+    forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
+    quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
 
     preferences:  {id: :preferences,  titre:"Préférences"}
   }
@@ -96,30 +96,16 @@ class Bureau
     ONGLETS.collect { |ong_id, ong_data| onglet(ong_data) }.join.in_ul(id:'bande_onglets')
   end
 
-
-  def travaux_count
-    @travaux_count ||= user.nombre_de(:travaux)
-  end
-  def pages_count
-    @pages_count ||= user.nombre_de(:pages_cours)
-  end
-  def messages_count
-    @messages_count ||= user.nombre_de(:messages_forum)
-  end
-  def quiz_count
-    @quiz_count ||= user.nombre_de(:quiz)
-  end
-
-
   # Retourne le code HTML pour l'onglet de données +data+
   def onglet data
     titre_onglet(data).in_a(href:"bureau/home?in=unan&cong=#{data[:id]}").in_li(class: (current_onglet == data[:id] ? 'actif' : nil ))
   end
 
+  # Retourne le titre de l'onglet pour les données d'onglet +data+
   def titre_onglet data
     tit = data[:titre]
     if data[:nombre]
-      nb = self.send("#{data[:nombre]}_count")
+      nb = user.nombre_de(data[:knombre])
       tit << " (#{nb})" if nb > 0
     end
     tit

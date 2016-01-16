@@ -16,11 +16,11 @@ class Mail
     # Inséré dans une balise DIV contenant tout le mail
     # + Inséré dans la balise <style>...</style>
     def body_style
-      "margin: 2em;background-color:black;color:white;"
+      "margin:0;background-color:black;color:white;font-size:17.2pt"
     end
     # Styles ajoutés à la balise <style>...</style>
     def styles_css
-      "div#logo{margin-bottom:2em;background-color:green;}"
+      "div#logo{margin-bottom:2em;background-color:#578088;color:white;}"
     end
 
     # {StringHTML} Entête du message

@@ -16,11 +16,28 @@ class Program
 class PDay
 
   # Index du PDay, de 1 (premier jour) à 365 (dernier jour)
-  attr_reader :index
+  # Noter que ça correspond donc à l'index de l'AbsWork.
+  attr_reader :id
 
-  def initialize index
-    @index = index
+  # {Unan::Program} Instance du programme qui possède ce P-Day
+  # Toujours précisé à l'instanciation
+  attr_reader :program
+
+  def initialize program, index
+    @program  = program
+    @index    = index
   end
+
+  # ---------------------------------------------------------------------
+  #   Data enregistrées
+  # ---------------------------------------------------------------------
+  # def start (pour recherche)
+  def created_at  ; @created_at ||= get(:created_at)  end
+  alias :start :created_at
+  def points      ; @points     ||= get(:points)      end
+  def program_id  ; @program_id ||= get(:program_id)  end
+  def status      ; @status     ||= get(:status)      end
+  def updated_at  ; @updated_at ||= get(:updated_at)  end
 
   # RETURN true si le nombre de points pour le p-day est
   # suffisant (pday.points = absolute_pday.minimum_points)
@@ -35,6 +52,11 @@ class PDay
     # ATTENTION : "1" n'est peut-être plus le type "Connaissance",
     # Mais c'est bien le 3e bit du type qu'il faut tester.
 
+  end
+
+  # Table contenant tous les p-days de ce programme
+  def table
+    @table ||= program.database.table('pdays')
   end
 
 end #/PDay

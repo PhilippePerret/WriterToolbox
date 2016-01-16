@@ -15,7 +15,8 @@ def schema_table_unan_cold_absolute_works
     # Titre du travail
     # ----------------
     # Un titre générique pour le travail
-    # Noter qu'un "jour-programme" peut avoir plusieurs titres
+    # Noter qu'un "jour-programme" possède en général de nombre
+    # travaux donc peut avoir plusieurs titres.
     titre:      {type:"VARCHAR(250)", constraint:"NOT NULL"},
 
     # Jour de départ
@@ -32,19 +33,33 @@ def schema_table_unan_cold_absolute_works
     # fonction du `rythme` choisi par l'auteur
     duree:        {type:"INTEGER(3)", constraint:"NOT NULL"},
 
-    # Le type du travail
+    # Type de travail
+    # ---------------
+    # Un nombre de 0 (non défini) à 99 qui définit précisément
+    # le type de travail, depuis la production d'un document sur
+    # l'histoire jusqu'au remplissage d'un questionnaire en passant
+    # par des actions à accomplir.
+    # Cf. la liste Unan::Program::AbsWork::TYPES dans le fichier
+    # ./data/unan/data/listes.rb
+    type_w:   { type:"INTEGER(2)", constraint:"NOT NULL" },
+
+    # Le type
     # ------------------
     # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
     # pour le type du travail.
-    #   BIT 1-2   (typeW) Le type général, page de cours à lire, travail
+    #   BIT 1-2   [OBSOLÈTE cf. type_w ci-dessus] (typeW) Le type général,
+    #     page de cours à lire, travail
     #     sur la définition de l'histoire, action à accomplir comme créer
     #     des dossiers, etc. C'est un nombre de 0 à 99
     #     Cf. la liste Unan::Program::AbsWork::TYPES
-    #   BIT 3-4 (narrative_targe) Cible principal du travail, à savoir:
+    #   BIT 3-4 (narrative_target) Cible principal du travail, à savoir:
     #     1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
     #     nombres sont donnés en pure illustration et ne correspondent
     #     pas à une réalité — cf. le document "Narrative Target")
     #   BIT 5-6   (typeP) Le type de projet, entre roman, film, etc.
+    #     qui peut être visé par ce travail. Ça change principalement
+    #     au niveau des termes, par exemple on parlera de "scénario"
+    #     pour des films et des BD et de "manuscrit" pour des livres.
     #     Cette donnée permet d'avoir des travaux "jumeaux" en fonction
     #     des types de projets, entendu qu'un auteur travaillant un
     #     roman travaillera sur le manuscrit à la fin alors qu'un auteur
@@ -89,16 +104,11 @@ def schema_table_unan_cold_absolute_works
     #             Propriété volatile `niveau_dev`
     type_resultat:  {type:"VARCHAR(8)"},
 
-    # Pages de cours
-    # --------------
-    # Lorsque le travail consiste à lire des pages de cours, on les
-    # indique ici comme une liste ordonnée d'ID ou de handlers de
-    # page de cours (cf. Unan::Program::PageCours)
-    pages_cours:    {type:"BLOB"},
-
-    # Pages de cours optionnelles, peut-être déjà étudiées mais
-    # qu'il peut être intéressant de relire.
-    pages_optionnelles: {type:"BLOB"},
+    # Pour consigner l'ID de l'item suivant le travail,
+    # s'il peut en avoir. Par exemple, pour une page de cours, l'id
+    # de la page de cours, ou pour un questionnaire, l'id de ce
+    # questionnaire, etc.
+    item_id: { type:"INTEGER" },
 
     # Exemples
     # --------
@@ -117,28 +127,6 @@ def schema_table_unan_cold_absolute_works
     # les autres sources, comme les questionnaires ou autres
     # questions volantes.
     points:  {type:"INTEGER(3)", constraint:"NOT NULL"},
-
-    # Questionnaires
-    # --------------
-    # Liste des questionnaires de l'étape (une en général)
-    # C'est une liste d'ID correspondant à la table
-    #  questionnaires_absolus qui définit ces questionnaires
-    questionnaires:  {type:"VARCHAR(255)"},
-
-    # Questions à la volée
-    # --------------------
-    # Identifiants des questions à la volée qui doivent être posées
-    # au cours de cette étape. Ces questions peuvent être posées
-    # n'importe quand, au début, en cours ou à la fin d'une session
-    # de travail.
-    # Il s'agit d'une liste d'identifiants dans la table `flying_qcms`
-    # qui sont jsonnés et déjsonnés.
-    # Chaque question rapportent un certain nombre de points pour
-    # l'auteur en fonction de ses réponses.
-    # Noter que des questions peuvent être récurrentes et apparaitre
-    # même plusieurs fois au cours d'une étape. Par exemple la question :
-    # "Avez-vous travaillé hier ?"
-    flying_qcms:    {type:"BLOB"},
 
     created_at: {type:"INTEGER(10)",constraint:"NOT NULL"},
     updated_at: {type:"INTEGER(10)",constraint:"NOT NULL"}

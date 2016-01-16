@@ -45,12 +45,13 @@ class AbsWork
     @table ||= Unan::table_absolute_works
   end
 
-  def type_general # typeW
-    @type_general ||= begin
-      TYPES[type[0].to_i]
-      # type[1] pourra servir pour préciser le type général
-    end
+  def type_w # typeW
+    @type_w ||= get(:type_w)
   end
+  def data_type_w
+    @data_type_w ||= TYPES[type_w]
+  end
+
   def narrative_target
     @narrative_target ||= begin
       bits = type[2..3]

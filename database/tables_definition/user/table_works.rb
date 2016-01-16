@@ -7,15 +7,20 @@ C'est une table qui est ajoutée à la base de l'auteur, pas dans la
 base générale.
 
 =end
-def schema_table_unan_user_works
+def schema_table_user_works
   @schema_table_unan_etape ||= {
-    id:         {type:"INTEGER",    constraint:"PRIMARY KEY AUTOINCREMENT"},
+    # Bien tenir compte du fait que cet identifiant est unique pour
+    # l'user mais pas pour "le monde". Les users possèdent les
+    # même identifiants. Donc s'il fallais les "couper" (dans un bureau
+    # d'administration par exemple) il faudrait penser à les associer
+    # toujours à l'utilisateur.
+    id: {type:"INTEGER",    constraint:"PRIMARY KEY AUTOINCREMENT"},
 
     # Numéro du travail
     # -----------------
     # Renverra à un travail de la table `absolute_work` qui permet
     # de savoir exactement le but du travail et ce qu'il faut y faire
-    work_id:     {type:"INTEGER", constraint:"NOT NULL"},
+    abs_work_id:     {type:"INTEGER", constraint:"NOT NULL"},
 
     # ID de l'auteur
     # ---------------
@@ -25,6 +30,14 @@ def schema_table_unan_user_works
     # travail)
     auteur_id:  {type:"INTEGER",    constraint:"NOT NULL"},
 
+
+    # État du travail
+    # ---------------
+    # Nombre de 0 à 9 qui indique où en est le travail.
+    # Noter que chaque élément de l'user possède cette propriété
+    # `status` pour savoir où il en est. Elle renvoie chaque fois à
+    # une liste propre décrivant le status.
+    status: {type:"INTEGER(1)", contraint:"NOT NULL", default:0},
 
     # Options de 32 chiffres pour des options comme pour les autres
     # classe. Le premier nombre correspond notamment à l'état du

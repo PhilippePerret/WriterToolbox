@@ -57,7 +57,19 @@ class ::Fixnum
   def as_duree
     mns = self / 60
     sec = (self % 60).to_s.rjust(2,'0')
-    "#{mns}\"#{sec}'"
+    if mns > 60
+      hrs = mns / 60
+      mns = (mns % 60).to_s.rjust(2,'0')
+      if hrs > 24
+        jrs = "#{hrs / 24} jours "
+        hrs = hrs % 24
+      end
+      hrs = "#{hrs}h"
+    else
+      hrs = ""
+      jrs = ""
+    end
+    "#{jrs}#{hrs}#{mns}'#{sec}\""
   end
 
   # @usage : <nombre>.day ou <nombre>.days

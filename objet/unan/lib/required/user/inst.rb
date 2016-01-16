@@ -1,4 +1,7 @@
 # encoding: UTF-8
+=begin
+Extension de la class User pour le programme UN AN UN SCRIPT
+=end
 require 'json'
 
 class User
@@ -15,8 +18,9 @@ class User
   # des listes d'identifiants. Par exemple des identifiants
   # de pages de cours, ou de questionnaires, ou de messages
   # de forum, etc.
+  # Cf. les fichier User > Variables.md
   def nombre_de quoi
-    ( variables[quoi] || Array::new ).count
+    get_var("#{quoi}_ids".to_sym, Array::new ).count
   end
 
   # Return TRUE si l'user vient de s'inscrire au programme
