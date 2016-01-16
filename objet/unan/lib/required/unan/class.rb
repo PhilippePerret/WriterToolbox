@@ -18,13 +18,6 @@ class Unan
       self.folder_data.require
     end
 
-    # Crée un nouveau programme pour l'user courant
-    # (qui vient certainement de payer son programme)
-    def create_program
-      (folder_modules + 'signup_user.rb').require
-      user.signup_program_uaus
-    end
-
     def tarif_humain
       @tarif_humain ||= tarif.as_tarif
     end

@@ -40,6 +40,9 @@ function set_href_lien_read(o){
 # ---------------------------------------------------------------------
 %>
 <form class="dim2080" action="abs_pday/edit?in=unan_admin" method="POST">
+
+  <%= "save_absolute_pday".in_hidden(name:'operation') %>
+
   <%= form.field_text('JOUR', 'id', nil, {class:'short', onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Le JOUR est un nombre de 1 à 365 correspondant au jour dans l'année de ce P-Day de façon absolue, i.e. sans tenir compte du rythme (donc à rytme moyen avec 1 p-day = 1 jour réel).") %>
 
@@ -51,9 +54,10 @@ function set_href_lien_read(o){
 
   <%= form.field_text("Works", 'works', nil) %>
   <%= form.field_description("Liste des travaux à accomplir, par ID et dans l'ordre où ils doivent être effectués, séparés par des simples espaces.") %>
+  <%= form.field_raw("", "", nil, {field:"[LIEN POUR CRÉER UN NOUVEAU TRAVAIL]".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')}) %>
 
   <%= form.field_text("Minimum Points", 'minimum_points', nil, {class:'short'}) %>
-  <%= form.field_description("Nombre de points minimum qu'il faut acquérir pour considérer que le jour-programme est accompli.") %>
+  <%= form.field_description("Nombre de points minimum qu'il faut acquérir pour considérer que le jour-programme est accompli. Ce nombre sera calculé par rapport au nombre de points de chaque travail en cas de non définition explicite ici.") %>
 
   <%= form.submit_button "Enregistrer" %>
 </form>
@@ -74,5 +78,5 @@ function set_href_lien_read(o){
   Pour avoir un aperçu du plan général des travaux, i.e. un aperçu qui tient compte du nombre de jours de chaque travail, on peut utiliser le lien ci-dessous :
 </p>
 <p>
-  <%= "Plan des travaux".in_a(href: "abs_works/map?in=unan_admin") %>
+  <%= "Plan des travaux".in_a(href: "abs_work/map?in=unan_admin", target:'_new') %>
 </p>

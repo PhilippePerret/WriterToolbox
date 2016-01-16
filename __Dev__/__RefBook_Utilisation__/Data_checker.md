@@ -34,5 +34,9 @@ Rappel rapide :
         ... etc. ...
       else
         # erreurs par propriété dans result.errors ({Hash})
+        # Les valeurs sont des Hash définissant :err_code et
+        # :err_message. C'est :err_message qui doit surtout être
+        # utilisé puisque :err_code correspond à un code connu
+        # du data-checker seulement.
       end
     end

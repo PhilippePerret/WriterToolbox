@@ -39,7 +39,10 @@ def schema_table_unan_cold_absolute_pdays
     # ------------------------
     # Le nombre minimum de points qui doivent être acquis pour considérer que
     # ce jour-programme est achevé et qu'on peut passer au suivant
-    minimum_points: {type:"INTEGER(3)", constraint:"NOT NULL"}
+    minimum_points: {type:"INTEGER(3)"},
+
+    created_at:{type:"INTEGER(10)", constraint:"NOT NULL"},
+    updated_at:{type:"INTEGER(10)", constraint:"NOT NULL"}
 
   }
 end

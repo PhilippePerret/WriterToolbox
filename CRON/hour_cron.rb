@@ -15,13 +15,14 @@ end
 def reflog
   @reflog ||= begin
     ref = File.open(reflog_path, 'a')
-    ref.write "\n\n" + ("-"*70)
+    ref.write( "\n\n" + ("-"*70) )
     now_humain = Time.now.strftime("%d %m %Y - %H:%M")
-    ref.write ("="*10) + "CRON JOB DU #{now_humain}" + ("="*10) + "\n\n"
+    ref.write( ("="*10) + "CRON JOB DU #{now_humain}" + ("="*10) + "\n\n" )
+    ref
   end
 end
 def reflog_path
-  @reflog_path ||= File.join(THIS_FOLDER, "log.log")
+  @reflog_path ||= File.join(THIS_FOLDER, "log-#{Time.now.to_i}.log")
 end
 
 # On se place à la racine de l'application pour
@@ -36,8 +37,12 @@ Dir.chdir("#{APP_FOLDER}") do
   begin
     User::traite_users_unanunscript
   rescue Exception => e
-    log "### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : #{e.message}\n"
-    log e.backtrace.join("\n")
+    begin
+      log "### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : #{e.message}\n"
+      log e.backtrace.join("\n")
+    rescue Exception => e
+      File.open("./CRON/fatal_error.log", 'wb'){|f| f.write "#{e.message}\n\n" + e.backtrace.join("\n")}
+    end
   end
 
 end

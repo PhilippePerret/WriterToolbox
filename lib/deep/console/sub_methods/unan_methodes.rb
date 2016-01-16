@@ -64,6 +64,18 @@ class Console
     end
   end
 
+  def backup_data_absolute_pdays
+    backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_pdays')
+  end
+  def retreive_data_absolute_pdays
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'absolute_pdays', proc_modif)
+  end
+
   def backup_data_pages_cours
     backup_data_of( site.folder_db + 'unan_cold.db', 'pages_cours')
   end
@@ -153,6 +165,21 @@ class Console
     init_unan
     show_table Unan::Program::PageCours::table_pages_cours
   end
+
+  def afficher_table_absolute_pdays
+    init_unan
+    show_table Unan::table_absolute_pdays
+  end
+  def detruire_table_absolute_pdays
+    if OFFLINE
+      init_unan
+      Unan::database.execute("DROP TABLE IF EXISTS 'absolute_pdays';")
+      "Tables des données jours-programme absolus détruite à jamais."
+    else
+      "Impossible de détruire la table des données absolues\n# des jours-programme ONLINE"
+    end
+  end
+
 
   def afficher_table_absolute_works
     init_unan

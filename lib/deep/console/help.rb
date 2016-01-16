@@ -76,6 +76,17 @@ class Console
   <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
   <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_pages_cours`, la procédure de modification appelée `proc_modif`.</dd>
 
+  <dt>`Unan affiche (table absolute pdays)`</dt>
+  <dd>Affiche la table des données des jours-programme (P-Days)</dd>
+  <dt>`Unan backup data (table absolute pdays)`</dt>
+  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
+  <dd>Voir pour la méthode plus haut pour les pages de cours l'explication complète de la procédure classique de modification d'une table sans perte des données.</dd>
+  <dt>`Unan destroy (table absolute pdays)`</dt>
+  <dd>(!!! DANGER !!!) Détruit totalement la table des données absolues des p-days (jours-programme).</dd>
+  <dt>`Unan retreive data (table absolute pdays)`</dt>
+  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
+  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_absolute_pdays`, la procédure de modification appelée `proc_modif`.</dd>
+
   <dt>`Unan affiche (table absolute works)`</dt>
   <dd>Affiche la table des données de travaux absolues</dd>
   <dt>`Unan backup data (table absolute works)`</dt>

@@ -20,6 +20,12 @@ class << self
     @table_projets ||= get_table_hot('projets')
   end
 
+  # Table contenant la définition absolue de tous les
+  # jours-programme
+  def table_absolute_pdays
+    @table_absolute_pdays ||= get_table_cold('absolute_pdays')
+  end
+  
   # Table contenant toutes les données absolues des travaux (abs_works)
   def table_absolute_works
     @table_absolute_works ||= get_table_cold('absolute_works')

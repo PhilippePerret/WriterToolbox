@@ -80,20 +80,22 @@ class Console
 
     # ---------------------------------------------------------------------
 
+    when "Unan affiche (table absolute pdays)"
+      afficher_table_absolute_pdays
+    when "Unan backup data (table absolute pdays)"
+      backup_data_absolute_pdays
+    when "Unan destroy (table absolute pdays)"
+      detruire_table_absolute_pdays
+    when "Unan retreive data (table absolute pdays)"
+      retreive_data_absolute_pdays
+
     when "Unan affiche (table absolute works)"
-
       afficher_table_absolute_works
-
     when "Unan backup data (table absolute works)"
-
       backup_data_absolute_works
-
     when "Unan destroy (table absolute works)"
-
       detruire_table_absolute_works
-
     when "Unan retreive data (table absolute works)"
-
       retreive_data_absolute_works
 
     # ---------------------------------------------------------------------
