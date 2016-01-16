@@ -1,12 +1,11 @@
 # encoding: UTF-8
 raise_unless_admin
-site.require_objet 'unan'
 class UnanAdmin
 class Program
-class AbsWork
+class AbsPDay
 
-  MAP_DAY_WIDTH   = 40   # Largeur en pixels de chaque jour sur la carte
-  MAP_DAY_HEIGHT  = 20    # Hauteur
+  MAP_DAY_WIDTH   = 40
+  MAP_DAY_HEIGHT  = 20
   MAP_WIDTH       = 365 * MAP_DAY_WIDTH
 
   class << self
@@ -15,7 +14,7 @@ class AbsWork
       @zones ||= Hash::new
     end
 
-    # La hauteur de la carte des travaux, en fonction des
+    # La hauteur de la carte des pdays, en fonction des
     # rangées qui ont dû être construites
     # Sert à définir le style css dans map.erb pour le div
     # de la map
@@ -25,8 +24,8 @@ class AbsWork
 
     def all
       @all ||= begin
-        Unan::table_absolute_works.select(colonnes:[:id]).collect do |wid, wdata|
-          Unan::Program::AbsWork::new(wid)
+        Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pdid, pddata|
+          Unan::Program::AbsPDay::new(pdid)
         end
       end
     end
@@ -116,18 +115,17 @@ class AbsWork
 
     end
 
-
   end # << self
 
 
-end # /AbsWork
-end # /Program
-end # /Unan
+end #/AbsPDay
+end #/Program
+end #/UnanAdmin
 
-# Extension de Unan::Program::AbsWork
+# Extension de Unan::Program::AbsPDay
 class Unan
 class Program
-class AbsWork
+class AbsPDay
   # ---------------------------------------------------------------------
   #   Instance
   # ---------------------------------------------------------------------
@@ -135,45 +133,45 @@ class AbsWork
   # {StringHTML} Code HTML du travail sur la carte
   def in_map
     get_all # pour charger toutes les données d'un coup
-    top   = free_row * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
+    top   = free_row * (UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
-    displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    displayed_infos.in_a(href:"abs_pday/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'pday', style:"top:#{top}px;left:#{left}px;width:#{width}px")
   end
 
   def displayed_infos
     @displayed_infos ||= begin
       (
-        "[#{id}]".in_span(class:'id') + "#{titre}" +
-        "P-Days #{pday_start} à #{pday_end}".in_div +
-        ("Travail : ".in_span(class:'libelle') + "#{travail}").in_div(class:'italic') +
-        ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
+        "PDay #{id} / #{titre}"  +
+        "P-Day #{id}".in_div +
+        ("Travaux : ".in_span(class:'libelle') + "#{travaux}").   in_div(class:'italic')
       ).in_div(class:'infos')
     end
   end
 
-  def pday_end
-    @pday_end ||= begin
-      pday_start + duree - 1
+  def travaux
+    @travaux ||= begin
+      works_ids.collect do |wid|
+        "Travail ##{wid}".in_div
+      end.join
     end
   end
-
   def left
-    @left ||= (pday_start - 1) * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
+    @left ||= (id - 1) * UnanAdmin::Program::AbsPDay::MAP_DAY_WIDTH
   end
   def width
-    @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
+    @width ||= 1 * UnanAdmin::Program::AbsPDay::MAP_DAY_WIDTH
   end
   def free_row
-    @free_row ||= UnanAdmin::Program::AbsWork::free_top_zone_for(left, width)
+    @free_row ||= UnanAdmin::Program::AbsPDay::free_top_zone_for(left, width)
   end
 
   def memorize_zone
-    UnanAdmin::Program::AbsWork::memorize_zone(left, width, free_row)
+    UnanAdmin::Program::AbsPDay::memorize_zone(left, width, free_row)
   end
 
-end # /AbsWork
+end # /AbsPDay
 end # /Program
 end # /Unan
 
-UnanAdmin::Program::AbsWork::init_map
+UnanAdmin::Program::AbsPDay::init_map

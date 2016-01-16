@@ -86,13 +86,13 @@ class AbsPDay
       error result.errors.collect { |k,v| v[:err_message].in_div }.join
     end
 
-    # => Les données sont valides, on poursuit
+    # => Les données sont valides, on poursuit les tests de validité
     @data_in_param = result.objet # pour obtenir les données épurées
 
     # Les ID des travaux doivent exister
     expect_travaux_existent || ( return false )
 
-    return true # pour poursuivre
+    return true # tout est OK
   end
 
   def expect_travaux_existent

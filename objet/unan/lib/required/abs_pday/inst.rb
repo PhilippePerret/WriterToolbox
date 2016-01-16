@@ -18,6 +18,15 @@ class AbsPDay
     @id = pday_id
   end
 
+  def titre       ; @titre      ||= get(:titre)       end
+  def works       ; @works      ||= get(:works)       end
+  def works_ids   ; @works_ids  ||= works.split(' ')  end
+
+  # La table "absolute_works" dans la base de données du programme
+  def table
+    @table ||= Unan::table_absolute_pdays
+  end
+
 end
 end
 end
