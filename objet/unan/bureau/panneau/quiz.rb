@@ -11,10 +11,11 @@ class Bureau
       nil # pour le moment
     end
   end
-  
+
 end #/Bureau
 end #/Unan
 
+# Pour lancer la sauvegarde des données du questionnaire
 case param(:operation)
 when 'bureau_save_quiz'
   bureau.save_quiz

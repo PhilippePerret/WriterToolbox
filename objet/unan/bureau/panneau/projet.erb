@@ -14,10 +14,14 @@
   <%= form.field_text("Titre du projet", 'titre', user.projet.titre, {warning: user.projet.titre.nil?}) %>
   <%= form.field_description("Le titre du projet, même si ça n'est qu'un <strong>titre de travail</strong>.") %>
 
+  <%# RÉSUMÉ %>
   <%= form.field_textarea("Résumé", 'resume', user.projet.resume, {warning: user.projet.resume.nil?}) %>
   <%= form.field_description("Entrez un cours résumé de l'histoire pour le présenter à ceux avec qui vous le partagez.") %>
 
-  <%= form.field_select("Type du support", 'support', user.program.type_support, {values: Unan::Program::TYPES_SUPPORT, warning: user.program.type_support_id == 0}) %>
+  <%# TYPE SUPPORT %>
+  <%= form.field_select("Type du support", 'support', user.projet.type, {values: Unan::Projet::TYPES, warning: user.projet.type == 0}) %>
+
+  <%# PARTAGE %>
   <%= bureau.row_form_sharing %>
 
   <%= bureau.submit_button %>
