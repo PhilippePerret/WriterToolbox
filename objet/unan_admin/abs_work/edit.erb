@@ -119,21 +119,14 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%= form.field_textarea("Travail", 'travail', "") %>
   <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
 
-  <%# Page de cours %>
-  <div id="div_pages_cours" style="display:none">
-    <%= form.field_text("Pages cours", 'pages_cours', nil) %>
-    <%= form.field_description("Liste d'ID ou de HANDLERS de pages, lorsque le travail consiste en pages de cours à lire. Séparés par des espaces simples.") %>
-    <%= form.field_text("Pages optionnelles", 'pages_optionnelles', nil) %>
-    <%= form.field_description("Liste d'ID ou de HANDLERS de pages qu'on peut optionnellement lire ou relire au cours de ce travail. Séparés par des espaces simples.") %>
-  </div>
-
-  <%# Questionnaires %>
-  <div id="div_questionnaires" style="display:none">
-    <%= form.field_text("Questionnaires", 'questionnaires', nil) %>
-    <%= form.field_description("Liste d'IDs de questionnaires si le travail est un questionnaire. Séparés par des espaces simples. Noter que si plusieurs questionnaires sont proposés, ils seront assemblés en un seul questionnaire.") %>
-    <%= form.field_text("QCM volants", 'flying_qcms', nil) %>
-    <%= form.field_description("Liste des IDs des QCMs volants, séparés par des espaces simples. Voir la table des QCMs volants pour connaitre les IDs.") %>
-  </div>
+  <%
+  # Item ID
+  # -------
+  # Par exemple, si le travail consiste à lire une page de cours, ce
+  # champ contiendra la (ou les ?) ID des pages de cours à lire.
+  %>
+  <%= form.field_text("Item ID", 'item_id', nil) %>
+  <%= form.field_description("ID (IDs ?) de la page de cours si c'est une page de cours, du questionnaire si c'est un questionnaire, etc.") %>
 
   <%# Résultat attendu %>
   <%= form.field_textarea("Résultat", 'resultat',"") %>
@@ -153,18 +146,10 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
 
   <%# Exemples %>
   <%= form.field_text("Exemples",'exemples', nil) %>
-  <%= form.field_description("Liste d'ID d'exemples illustrant ce travail à accomplir. Prendre ces identifiants dans la table des exemples. Séparés par des espaces simples.") %>
+  <%= form.field_description("Liste d'IDs d'exemples illustrant ce travail à accomplir. Prendre ces identifiants dans la table des exemples. Séparés par des espaces simples.") %>
 
   <%= form.field_text("Points", 'points', nil, {class:'short'}) %>
   <%= form.field_description("Nombre de points de 1 à 999 pour ce travail. Pour le moment, il est difficile d'estimer combien doit valeur un travail, mais commencer à attribuer des points au feeling.") %>
 
   <%= form.submit_button("Enregistrer") %>
 </form>
-
-<%
-# Pour régler la visibilité des réglages des questionnaires et autres
-# pages de cours
-%>
-<script type="text/javascript">
-  on_change_type_general_travail()
-</script>

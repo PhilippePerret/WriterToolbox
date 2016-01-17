@@ -11,7 +11,7 @@ class Console
 
     return "Cette table ne contient aucune valeur." if data.empty?
 
-    data.inspect
+
 
     # Format
     # ID handler titre path
@@ -22,11 +22,19 @@ class Console
         rowdata.keys.each { |col| datacolumns.merge! col => {max_len: 0, name: col.to_s.freeze}}
       end
       rowdata.each do |col, valcol|
+
+        if valcol.instance_of?(String)
+          valcol = rowdata[col] = valcol.gsub(/[\n\r]/,'⌅')
+        end
+
         if valcol.to_s.length > datacolumns[col][:max_len]
           datacolumns[col][:max_len] = valcol.to_s.length
         end
       end
     end
+
+    # Pour voir si les retours chariot ont été traités
+    debug "DATA SANS RETOUR CHARIOT : #{data.pretty_inspect}"
 
     # Lignes de titre + séparateur
     lentot = 0

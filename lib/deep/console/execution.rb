@@ -53,29 +53,19 @@ class Console
     case line
 
     when "vide table paiements", "vider table paiements"
-
       vide_table_paiements
-
     when "remove table paiements"
-
       remove_table_paiements
 
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table pages cours)"
-
       afficher_table_pages_cours
-
     when "Unan backup data (table pages cours)"
-
       backup_data_pages_cours
-
     when "Unan destroy (table pages cours)"
-
       detruire_table_pages_cours
-
     when "Unan retreive data (table pages cours)"
-
       retreive_data_pages_cours
 
     # ---------------------------------------------------------------------
@@ -101,43 +91,25 @@ class Console
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table projets)"
-
       affiche_table_projets
-
     when "Unan backup data (table projets)"
-
       backup_data_projets
-
     when "Unan destroy (table projets)"
-
       detruire_table_projets
-
     when "Unan retreive data (table projets)"
-
       retreive_data_projets
-
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table programs)"
-
       affiche_table_programs
-
     when "Unan backup data (table programs)"
-
       backup_data_programs
-
     when "Unan destroy (table programs)"
-
       detruire_table_programs
-
     when "Unan retreive data (table programs)"
-
       retreive_data_programs
-
     else
-
       nil # pour essayer autrement
-
     end
   end
 
@@ -152,13 +124,9 @@ class Console
     case sentence
 
     when 'detruire programmes de'
-
       detruire_programmes_de( last_word )
-
     when 'affiche table'
-
       montre_table( last_word )
-
     else
       nil
     end

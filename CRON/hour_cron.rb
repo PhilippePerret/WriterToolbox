@@ -27,7 +27,7 @@ end
 begin
   require File.join(THIS_FOLDER, 'lib', 'required.rb')
 rescue Exception => e
-  log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES : #{e.message}"
+  log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES CRON : #{e.message}"
   log "### JE DOIS RENONCER À LANCER LE CRON-JOB"
   exit(1)
 end
@@ -37,7 +37,23 @@ end
 # exécuter toutes les opérations
 Dir.chdir("#{APP_FOLDER}") do
   # On requiert tout ce qu'il faut requérir
-  require "./lib/required"
+  begin
+    require "./lib/required"
+  rescue Exception => e
+    log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
+    lob "### JE DOIS RENONCER"
+    exit(1)
+  end
+
+  # L'objet Unan doit être requis pour traiter tout ce qui
+  # concerne le programme UN AN UN SCRIPT
+  begin
+    site.require_objet 'unan'
+  rescue Exception => e
+    log "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan` : #{e.message}"
+    log "### JE DOIS RENONCER"
+    exit(1)
+  end
 
   # Toutes les heures, voir si des auteurs en activité
   # sur le programme UN AN UN SCRIPT doivent être passés

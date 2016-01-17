@@ -47,7 +47,18 @@ class App
     def output
       return "" if errors.empty?
       @output ||= begin
-        errors.collect{|e| e.in_div(class:'error')}.join('').in_div(id:'errors')
+        errors.collect do |e|
+          m = case e
+          when String then e
+          else
+            if e.respond_to?(:message)
+              e.message
+            else
+              e.inspect
+            end
+          end
+          m.in_div(class:'error')
+        end.join('').in_div(id:'errors')
       end
     end
   end

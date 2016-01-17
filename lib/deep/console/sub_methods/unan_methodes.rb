@@ -1,8 +1,44 @@
 # encoding: UTF-8
 raise_unless_admin
+
+require 'pstore'
+
 class SiteHtml
 class Admin
 class Console
+
+  # ---------------------------------------------------------------------
+  # Méthodes de récupération des données
+  # (qui ont été backupées dans des PStores)
+  def retreive_data_pages_cours
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'page_cours', proc_modif)
+  end
+  def retreive_data_programs
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db + 'unan_hot.db', 'programs', proc_modif)
+  end
+  def retreive_data_absolute_works
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data # doit être retourné (ou nil)
+    end
+    retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)
+  end
+
+  #
+  # /Fin des méthodes de récupération des data
+  # ---------------------------------------------------------------------
+
 
   def init_unan
     site.require_objet 'unan'
@@ -57,6 +93,8 @@ class Console
         # Ici, le schéma permet de modifier les données avant de les
         # insérer dans la nouvelle table
         data = schema.call(data)
+        # Si data est nil, c'est qu'il faut supprimer la donnée
+        next if data.nil?
         # On peut enfin insérer la donnée, en gardant absolument
         # le même identifiant.
         table.set(id, data )
@@ -79,24 +117,8 @@ class Console
   def backup_data_pages_cours
     backup_data_of( site.folder_db + 'unan_cold.db', 'pages_cours')
   end
-  def retreive_data_pages_cours
-    proc_modif = Proc::new do |data|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data
-    end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'page_cours', proc_modif)
-  end
   def backup_data_programs
     backup_data_of( site.folder_db + 'unan_hot.db', 'programs')
-  end
-  def retreive_data_programs
-    proc_modif = Proc::new do |data|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data
-    end
-    retreive_data_from(site.folder_db + 'unan_hot.db', 'programs', proc_modif)
   end
   def backup_data_projets
     backup_data_of( site.folder_db + 'unan_hot.db', 'projets')
@@ -111,14 +133,6 @@ class Console
   end
   def backup_data_absolute_works
     backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_works')
-  end
-  def retreive_data_absolute_works
-    proc_modif = Proc::new do |data|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data
-    end
-    retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)
   end
 
   def detruire_table_programs
