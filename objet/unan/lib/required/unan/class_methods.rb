@@ -27,7 +27,7 @@ class Unan
     # Requiert `module_name` dans le dossier `./objet/unan/lib/module`
     def require_module module_name
       p = (folder_modules + module_name)
-      raise "Impossible de trouver le module #{p.to_s}" unless p.exist
+      raise "Impossible de trouver le module #{p.to_s}" unless p.exist?
       p.require
     end
   end # <<self

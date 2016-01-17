@@ -143,7 +143,11 @@ class Page
       # ---------------------------------------------------------------------
 
       # Méthode qui essaie de définir la valeur à donner
-      # au champ de données
+      # au champ de données dans le formulaire. Cette valeur peut être
+      # donnée et obtenue de différentes manières :
+      #   - de façon explicite en troisième argument
+      #   - dans l'objet de la classe (form.objet)
+      #   - dans les paramètres contenant l'objet
       def set_field_value prop, defvalue
         # debug "[set_field_value] Recherche d'une valeur pour `#{prop}`"
 
@@ -153,7 +157,7 @@ class Page
           param(prop.to_sym)
         else
           (param(Page::FormTools::prefix)||Hash::new)[prop.to_sym]
-        end
+        end.nil_if_empty
 
         # debug "[set_field_value] param_value : #{param_value.inspect}"
 
@@ -168,7 +172,7 @@ class Page
           else
             nil
           end
-        end
+        end.nil_if_empty
 
         # debug "[set_field_value] objet_value  : #{objet_value.inspect}"
         # debug "[set_field_value] defvalue     : #{defvalue.inspect}"

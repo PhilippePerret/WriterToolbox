@@ -20,6 +20,11 @@ class ::Fixnum
     self
   end
 
+  # Pour compatibilité avec autres objets
+  def nil_if_empty
+    self
+  end
+
   def in_hidden attrs = nil
     self.to_s.in_hidden attrs
   end

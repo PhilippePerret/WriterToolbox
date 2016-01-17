@@ -12,7 +12,19 @@ form.objet  = if param(:pday).nil?
     Unan::Program::AbsPDay::new(site.current_route.objet_id).data
   end
 else
-  param(:pday)
+  if param(:operation) == 'edit_abs_pday'
+    # Noter ci-dessous qu'il faut prendre les `data` car
+    # on se sert des méthodes crochets pour récupérer les
+    # données et s'en servir dans le formulaire et les liens
+    # ci-dessous.
+    Unan::Program::AbsPDay::new(param(:pday)[:id].to_i).data
+  else
+    param(:pday)
+  end
+end
+
+if form.objet
+  debug "form.objet : #{form.objet.pretty_inspect}"
 end
 
 lien_read_pday = "Afficher".in_a(href:"abs_pday/#{form.objet[:id]}", id:'lien_read_pday')
@@ -24,26 +36,25 @@ function set_href_lien_read(o){
 </script>
 
 <%
-# ---------------------------------------------------------------------
-#   Barre de boutons généraux
-#   Par exemple pour éditer le jour programme suivant ou précédent
-# ---------------------------------------------------------------------
+
+# Le lien pour éditer le work défini dans le champ ID
+lien_to_edit_abspday = "éditer".in_a(class: 'small btn', onclick:"$('form#form_edit_pday_unan input#operation').val('edit_abs_pday');$('form#form_edit_pday_unan').submit();")
+
+# Le lien pour détruire le travail courant
+lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce P-Day ?')){$('form#form_edit_pday_unan input#operation').val('destroy_abs_pday');$('form#form_edit_pday_unan').submit();}")
+
+
 %>
-<div class="pdays_tools right">
- [jour précédent] [---] [jour suivant]
-</div>
-
-
 <%
 # ---------------------------------------------------------------------
 #   Le formulaire proprement dit
 # ---------------------------------------------------------------------
 %>
-<form class="dim2080" action="abs_pday/edit?in=unan_admin" method="POST">
+<form id="form_edit_pday_unan" class="dim2080" action="abs_pday/edit?in=unan_admin" method="POST">
 
-  <%= "save_absolute_pday".in_hidden(name:'operation') %>
+  <%= "save_absolute_pday".in_hidden(name:'operation', id:'operation') %>
 
-  <%= form.field_text('JOUR', 'id', nil, {class:'short', onchange:"set_href_lien_read(this)"}) %>
+  <%= form.field_text('JOUR', 'id', nil, {class:'short', onchange:"set_href_lien_read(this)", text_after: "#{lien_to_edit_abspday} #{lien_to_destroy_current}"}) %>
   <%= form.field_description("Le JOUR est un nombre de 1 à 365 correspondant au jour dans l'année de ce P-Day de façon absolue, i.e. sans tenir compte du rythme (donc à rytme moyen avec 1 p-day = 1 jour réel).") %>
 
   <%= form.field_text('Titre', 'titre', nil) %>
@@ -54,7 +65,7 @@ function set_href_lien_read(o){
 
   <%= form.field_text("Works", 'works', nil) %>
   <%= form.field_description("Liste des travaux à accomplir, par ID et dans l'ordre où ils doivent être effectués, séparés par des simples espaces.") %>
-  <%= form.field_raw("", "", nil, {field:"[LIEN POUR CRÉER UN NOUVEAU TRAVAIL]".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')}) %>
+  <%= form.field_raw("", "", nil, {field:"[Créer un nouveau travail]".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')}) %>
 
   <%= form.field_text("Minimum Points", 'minimum_points', nil, {class:'short'}) %>
   <%= form.field_description("Nombre de points minimum qu'il faut acquérir pour considérer que le jour-programme est accompli. Ce nombre sera calculé par rapport au nombre de points de chaque travail en cas de non définition explicite ici.") %>

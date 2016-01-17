@@ -18,8 +18,37 @@ class AbsPDay
     @id = pday_id
   end
 
+  # ---------------------------------------------------------------------
+  #   Data enregistrées
+  # ---------------------------------------------------------------------
   def titre       ; @titre      ||= get(:titre)       end
-  def works       ; @works      ||= get(:works)       end
+
+  # Suivant le format as qui peut être :
+  #   :as_data      Comme dans la base, c'est-à-dire un string des
+  #                 identifiant séparés par des espaces
+  #   :as_ids       {Array de Fixnum} Liste des identifiants des AbsWork
+  #   :as_instance  {Array d'instances} Retourne la liste des
+  #                 instances Unan::Program::AbsWork.
+  def works as = :as_data
+    @works ||= get(:works) || ""
+    case as
+    when :as_data
+      # Comme enregistré dans la base de donnée
+      @works
+    when :as_ids, :as_id
+      # Une liste de Fixnum
+      @works_as_ids ||= @works.split(' ').collect{ |wid| wid.to_i }
+    when :as_instances, :as_instance
+      # Une liste d'instances Unan::Program::AbsWork
+      @works_as_instances ||= @works.split(' ').collect do |wid|
+        Unan::Program::AbsWork::new(wid)
+      end
+    end
+  end
+
+  # ---------------------------------------------------------------------
+  #   Data volatiles
+  # ---------------------------------------------------------------------
   def works_ids   ; @works_ids  ||= works.split(' ')  end
 
   # La table "absolute_works" dans la base de données du programme

@@ -10,10 +10,13 @@ class Program
     # Noter que c'est une instance Unan::Program qui est retournée,
     # ou NIL si aucun programme n'a été trouvé
     def get_current_program_of auteur_id
+      debug "-> Unan::Program::get_current_program_of(auteur_id:#{auteur_id.inspect})"
       return nil if auteur_id.nil?
       hdata = Unan::table_programs.select(where:"auteur_id = #{auteur_id} AND options LIKE '1%'", colonnes:[:id]).values.first
-      debug "[get_current_program_of] hdata : #{hdata.inspect}"
-      return nil if hdata.nil? # Aucun programme trouvé
+      if hdata.nil? # Aucun programme trouvé
+        debug "hdata est nil, get_current_program_of return NIL"
+        return nil
+      end
       program_id = hdata[:id].freeze
       debug "[get_current_program_of] program_id = #{program_id.inspect}::#{program_id.class}"
       new(program_id)

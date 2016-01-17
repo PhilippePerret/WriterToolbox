@@ -334,6 +334,10 @@ class BdD
 
       # La soumettre
       res = execute request
+
+      # TODO Traiter le cas où res = false
+      # Il faut raiser une erreur qui puisse être comprise
+      
       # Étudier le retour
       return res.first
     end

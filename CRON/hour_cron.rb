@@ -14,7 +14,7 @@ end
 def reflog
   @reflog ||= begin
     ref = File.open(reflog_path, 'a')
-    ref.write( "\n\n" + ("-"*70) )
+    ref.write( "\n\n" + ("-"*70) + "\n")
     now_humain = Time.now.strftime("%d %m %Y - %H:%M")
     ref.write( ("="*10) + "CRON JOB DU #{now_humain}" + ("="*10) + "\n\n" )
     ref

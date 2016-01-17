@@ -1,0 +1,20 @@
+
+
+----------------------------------------------------------------------
+==========CRON JOB DU 17 01 2016 - 19:30==========
+
+-> lib/required.rb
+<- lib/required.rb
+### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : undefined method `first' for false:FalseClass
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/divers/BdD/Table/bdd_table_inst.rb:338:in `count'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/p_day/inst.rb:54:in `new?'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/p_day/inst.rb:49:in `save'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/start_next_pday.rb:67:in `start_pday'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/start_next_pday.rb:8:in `start_next_pday'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/test_if_next_pday.rb:30:in `test_if_next_pday'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/User.rb:33:in `block in traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/User.rb:19:in `each'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/User.rb:19:in `traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:62:in `block in <main>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:38:in `chdir'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:38:in `<main>'
