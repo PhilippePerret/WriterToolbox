@@ -5,7 +5,7 @@ class Program
 
   # Démarre le jour-programme suivant
   def start_next_pday
-    start_pday( current_pday(:nombre) + 1 )
+    start_pday( ( current_pday(:nombre) || 0 ) + 1 )
   end
 
   # Pour le développement du programme (implémentation), cette
@@ -14,7 +14,7 @@ class Program
   # au cours de la programmation
   def check_validitie_program
     # Toutes les tables doivent exister
-    
+
   end
 
   # Démarre le jour-programme d'index +ipday+ du programme courant

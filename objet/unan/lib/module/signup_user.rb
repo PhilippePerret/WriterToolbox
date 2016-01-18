@@ -105,7 +105,7 @@ class User
     mail_to_admin = folder_signup + 'mail_to_admin.erb'
     data_mail = {
       from:     self.mail,
-      subject:  "Nouvelle inscription (#{self.id})",
+      subject:  "Nouvelle inscription (##{self.id})",
       message:  mail_to_admin.deserb( self ),
       formated: true
     }

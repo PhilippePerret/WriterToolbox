@@ -12,6 +12,7 @@ puisse servir pour les tests principaux et notamment le cron-job.
 # Date de démarrage du programme UN AN UN SCRIPT.
 # Par défaut, c'est maintenant, mais on peut vouloir le mettre
 # à une autre date.
+
 start_time = Time.now.to_i
 
 #
@@ -34,10 +35,17 @@ class Benoit
   end
   # Méthode pour faire démarrer le programme à
   # benoit au temps +start_time+
-  def start_unanunscript_at start_time = nil
-    start_time ||= Time.now.to_i
+  def start_unanunscript_at stime = nil
+    stime ||= Time.now.to_i
+
+    # Il faut mettre benoit en auteur courant pour
+    # toutes les méthodes qui utilisent `user`
+    User::current = user
+
+    # On requiert le module de démarrage d'un auteur
     (Unan::folder_modules + 'signup_user.rb').require
     user.signup_program_uaus
+
     # NOTE Pour le moment on ne tient pas compte de la date
     # de démarrage
     # TODO Tenir compte de la date de démarrage
@@ -52,6 +60,7 @@ class Benoit
     @folder_data ||= Unan::folder_data + "user/#{id}"
   end
 end
+# Instance du singleton
 def benoit; @benoit ||= Benoit.instance end
 
 # ---------------------------------------------------------------------

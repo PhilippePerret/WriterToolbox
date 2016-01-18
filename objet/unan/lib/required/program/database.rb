@@ -33,6 +33,8 @@ class Program
   def table_programs
     @table_programs ||= site.db.create_table_if_needed('unan_hot', 'programs')
   end
+  alias :table :table_programs # pour les méthodes des objets BdD
+
   # Table générales de tous les projets de UN AN UN SCRIPT
   # C'est une sorte de raccourci
   def table_projets

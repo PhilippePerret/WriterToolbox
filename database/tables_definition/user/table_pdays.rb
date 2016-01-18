@@ -32,7 +32,7 @@ def schema_table_user_pdays
     # Total de points
     # ---------------
     # Le total des points récoltés au cours de ce jour
-    points: {type:"INTEGER(3)", constraint:"NOT NULL", default:"0"}
+    points: {type:"INTEGER(3)", constraint:"NOT NULL", default:"0"},
 
     # Démarrage du p-day
     created_at: {type:"INTEGER(10)", constraint:"NOT NULL"},

@@ -19,14 +19,16 @@ class Program
   # suivre les rythmes exacts programmés. Noter que ça a aussi
   # l'avantage d'envoyer les mails au bon moment.
   def test_if_next_pday
+    # debug "" +
+    #     "\nNOW            : #{NOW.inspect}" +
+    #     "\nnext-pday-time : #{next_pday_time.inspect}" +
+    #     "\n(test_if_next_pday return false si NOW est < à next-pday-time)" +
+    #     "\nNOW est #{(NOW < next_pday_time) ? 'inférieur' : 'supérieur'} à next_pday_time" +
+    #     "\n=> On ne doit pas passer au prochain jour" +
+    #     "\nAutres données :" +
+    #     "\nlast_pday_time : #{last_pday_time.inspect}" +
+    #     "\npday_duration : #{pday_duration.inspect}"
     return false if NOW < next_pday_time
-    debug "" +
-        "\nNOW            : #{NOW.inspect}" +
-        "\nnext-pday-time : #{next_pday_time.inspect}" +
-        "\n(test_if_next_pday return false si NOW est < à next-pday-time)" +
-        "\nAutres données :" +
-        "\nlast_pday_time : #{last_pday_time.inspect}" +
-        "\npday_duration : #{pday_duration.inspect}"
     start_next_pday
     return true
   end

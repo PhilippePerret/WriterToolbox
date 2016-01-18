@@ -16,7 +16,7 @@ class Mail
     # Inséré dans une balise DIV contenant tout le mail
     # + Inséré dans la balise <style>...</style>
     def body_style
-      "margin:0;background-color:black;color:white;font-size:17.2pt"
+      "margin:0;background-color:white;color:#555;font-size:17.2pt"
     end
     # Styles ajoutés à la balise <style>...</style>
     def styles_css
@@ -24,13 +24,13 @@ class Mail
     end
 
     def style_bande_logo
-      "div#logo{padding:0.5em 1em;background-color:#578088;color:white;}"
+      "div#logo{padding:1em 2em;background-color:#578088;color:white;}"
     end
 
     # Style du message, hors de l'entête (header) donc hors bande
     # logo
     def style_message_content
-      "div#message_content{margin:2em}"
+      "div#message_content{margin:2em 4em}"
     end
 
     # {StringHTML} Entête du message

@@ -42,8 +42,11 @@ class User
   def program_database_path
     @program_database_path ||= begin
       debug "[program_database_path]"
-      debug "user.id : #{user.id}"
-      debug "user.program : #{user.program.inspect}::#{user.program.class}"
+      debug "self.id : #{self.id.inspect}"
+      debug "Classe de user.program : #{user.program.class}"
+      if user.program.instance_of?(Unan::Program)
+        debug "user.program.id = #{user.program.id}"
+      end
       debug "[/program_database_path]"
       folder_data + "programme#{program.id}.db"
     end
@@ -52,8 +55,15 @@ class User
   # Récupérer n'importe quelle table de la base de données personnelle
   # du programme de l'user et la construire si nécessaire.
   def get_table table_name
+    debug "-> get_table('#{table_name}')"
+    debug "program_database_path.exist? #{program_database_path.exist?.inspect}"
+    debug "program_database.table(table_name).exist? : #{program_database.table(table_name).exist?.inspect}"
     unless program_database_path.exist? && program_database.table(table_name).exist?
+      debug "[get_table] On doit créer la table '#{table_name}' qui n'existe pas"
       create_tables_1a1s
+    end
+    unless program_database_path.exist? && program_database.table(table_name).exist?
+      raise "LA TABLE '#{table_name}' N'EXISTE TOUJOURS PAS ALORS QU'ELLE AURAIT DÛ ÊTRE CONSTRUITE."
     end
     program_database.table(table_name)
   end
@@ -64,10 +74,14 @@ class User
   # on peut en ajouter d'autres, pourvu que cette méthode soit
   # appelée pour la créer.
   def create_tables_1a1s
+    # debug "-> create_tables_1a1s"
+    # debug "Dossier de définition de table : #{folder_tables_definitions.to_s}"
     Dir["#{folder_tables_definitions.to_s}/*.rb"].each do |schema_path|
+      debug "Path du schéma : #{schema_path}"
       table_name = File.basename(schema_path)[6..-4]
+      # debug "Nom de la table : '#{table_name}'"
       require schema_path
-      schema_method = "schema_table_unan_user_#{table_name}"
+      schema_method = "schema_table_user_#{table_name}"
       table_schema = send( schema_method.to_sym )
       # debug "Schéma table #{table_name} : #{table_schema.pretty_inspect}"
       site.db.build_table(program_database, table_name, table_schema)
@@ -79,7 +93,7 @@ class User
 
   # {SuperFile}
   def folder_tables_definitions
-    @folder_tables_definitions ||= site.folder_tables_definition + "db_unan_user"
+    @folder_tables_definitions ||= site.folder_tables_definition + "user"
   end
 
 end
