@@ -4,6 +4,11 @@ class SiteHtml
   # ---------------------------------------------------------------------
   #   URLs
   # ---------------------------------------------------------------------
+
+  # Pour le moment
+  def distant_host  ; @distant_host ||= 'www.atelier-icare/writertools' end
+  def local_host    ; @local_host   ||= "localhost/WriterToolbox"       end
+
   def local_url
     @local_url ||= "http://#{local_host}"
   end

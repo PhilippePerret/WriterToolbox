@@ -25,4 +25,8 @@ avec `data_mail` qui peut alors ne pas contenir `:to` ni `:from` (qui sera mis �
 
 ## Gabarit pour les mails
 
-Aucun gabarit n'est encore utilisé pour les mails, mais la procédure sera implémentée bientôt.
+On peut trouver tout ce qui concerne les mails dans le dossier :
+
+    ./lib/deep/deeper/optional/Site/mail
+
+Il faut modifier les méthodes du fichier `custom.rb` pour modifier l'aspect du mail.

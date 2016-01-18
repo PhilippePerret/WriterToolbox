@@ -20,7 +20,17 @@ class Mail
     end
     # Styles ajoutés à la balise <style>...</style>
     def styles_css
-      "div#logo{margin-bottom:2em;background-color:#578088;color:white;}"
+      style_bande_logo + style_message_content
+    end
+
+    def style_bande_logo
+      "div#logo{padding:0.5em 1em;background-color:#578088;color:white;}"
+    end
+
+    # Style du message, hors de l'entête (header) donc hors bande
+    # logo
+    def style_message_content
+      "div#message_content{margin:2em}"
     end
 
     # {StringHTML} Entête du message

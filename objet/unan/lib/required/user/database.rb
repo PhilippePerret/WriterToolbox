@@ -40,7 +40,13 @@ class User
   # La base de données contenant toutes les données pour le programme
   # de l'utilisateur (sa database personnelle)
   def program_database_path
-    @program_database_path ||= folder_data + "programme#{program.id}.db"
+    @program_database_path ||= begin
+      debug "[program_database_path]"
+      debug "user.id : #{user.id}"
+      debug "user.program : #{user.program.inspect}::#{user.program.class}"
+      debug "[/program_database_path]"
+      folder_data + "programme#{program.id}.db"
+    end
   end
 
   # Récupérer n'importe quelle table de la base de données personnelle
