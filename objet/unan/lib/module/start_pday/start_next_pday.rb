@@ -8,18 +8,35 @@ class Program
     start_pday( current_pday(:nombre) + 1 )
   end
 
-  # Démarre le jour-programme d'index +ipd+ du programme courant
+  # Pour le développement du programme (implémentation), cette
+  # méthode procède à quelques vérifications sur les 5 premiers
+  # jours pour rectifier/corriger certaines choses qui changent
+  # au cours de la programmation
+  def check_validitie_program
+    # Toutes les tables doivent exister
+    
+  end
+
+  # Démarre le jour-programme d'index +ipday+ du programme courant
   #
   # NOTE
   # Cette méthode peut être appelée à n'importe quelle heure par
   # le cron-job pour faire passer au jour suivant, car la méthode
-  # `test_if_next_pday` ci-dessus est appelée toutes les heures
-  # par le CRON job.
+  # `test_if_next_pday` est appelée toutes les heures par le CRON job.
   # NOTE
   # Tous les p-days n'ont pas forcément de travail, donc un
   # changement de p-day peut se résumer à son changement d'index
   # dans le programme courant.
+  # +ipday+ {Fixnum} Index du jour-programme à démarrer, de 1 à
+  # 365
   def start_pday ipday
+
+    # Pour la programmation et le développement, tant qu'on en est
+    # pas au cinquième jour-programme, on procède à certaines
+    # vérification d'usage pour rectifier le tir
+    # La méthode vérifie par exemple que toutes les tables soient
+    # bien construites
+    check_validitie_program if ipday < 5
 
     # Instancier un PDay pour le PDay absolu
     pday = PDay::new(self, ipday)

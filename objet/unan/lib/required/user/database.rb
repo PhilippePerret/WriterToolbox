@@ -6,7 +6,15 @@ class User
 
   #
   # ---------------------------------------------------------------------
-  #   Tables
+  # TABLES
+  #
+  # Note : On appelle toujours ces méthodes en premier, car elles
+  # permettent de construire les tables si elles n'existent pas
+  # encore.
+  #
+  # Note : La table `variables` est une table de RestSite, pas du
+  # programme UN AN UN SCRIPT. On peut donc la trouver dans les
+  # librairies de RestSite, pas ici.
   # ---------------------------------------------------------------------
   #
 
@@ -32,7 +40,7 @@ class User
   # La base de données contenant toutes les données pour le programme
   # de l'utilisateur (sa database personnelle)
   def program_database_path
-    @program_database_path ||= folder_data + "programme#{program_id}.db"
+    @program_database_path ||= folder_data + "programme#{program.id}.db"
   end
 
   # Récupérer n'importe quelle table de la base de données personnelle

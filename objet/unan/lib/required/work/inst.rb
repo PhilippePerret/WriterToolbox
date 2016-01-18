@@ -16,10 +16,10 @@ class Work
 
   include MethodesObjetsBdD
 
+  # Instanciaiton du Work
+  # +wid+ Identifiant du
   def initialize wid
-
     @id = wid
-
   end
 
   # Après un enregistrement de points, ou l'auteur qui
@@ -40,6 +40,16 @@ class Work
     # SInon => Proposer de lire les pages non lues
 
   end
+
+  # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire
+  # ses résultats divers sur les travaux absolus.
+  # Noter que c'est la méthode `program.table_works` qui doit être
+  # impérativement invoquée pour procéder à la construction de
+  # la table si elle n'existe pas encore.
+  def table
+    @table ||= program.table_works
+  end
+
 end #/Work
 end #/Program
 end #/Unan

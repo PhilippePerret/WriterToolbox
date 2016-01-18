@@ -335,11 +335,19 @@ class BdD
       # La soumettre
       res = execute request
 
-      # TODO Traiter le cas où res = false
-      # Il faut raiser une erreur qui puisse être comprise
-      
-      # Étudier le retour
-      return res.first
+      if res == false
+        # Deux solutions lorsque le résultat est false :
+        # - soit il y a une erreur dans le code sql
+        # - soit la table n'existe pas (encore)
+        # Dans les deux cas, on débuggue le problème et
+        # on retourne 0
+        debug "# BdD::Table#count problème : res est false"
+        debug "# request: #{request}"
+        return 0
+      else
+        return res.first
+      end
+
     end
 
     ##

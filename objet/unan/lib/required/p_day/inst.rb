@@ -15,6 +15,8 @@ class Unan
 class Program
 class PDay
 
+  include MethodesObjetsBdD
+
   # Index du PDay, de 1 (premier jour) à 365 (dernier jour)
   # Noter que ça correspond donc à l'index/id de l'AbsWork.
   attr_reader :id
@@ -79,8 +81,11 @@ class PDay
   end
 
   # Table contenant tous les p-days de ce programme
+  # Noter que c'est la méthode `program.table_pdays` qui doit être
+  # impérativement invoquée pour pouvoir construire la table
+  # quand elle n'existe pas.
   def table
-    @table ||= program.database.table('pdays')
+    @table ||= program.table_pdays
   end
 
 end #/PDay
