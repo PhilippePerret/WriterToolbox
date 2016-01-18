@@ -1,0 +1,26 @@
+
+
+========== CRON JOB DU 18 01 2016 - 22:00 ==========
+
+<- lib/required.rb
+= Nombre d'auteurs en activité : 1
+= IDs : 2
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #15
+= Jour-programme courant de Benoit : 1
+-- Des data sont définis (travaux) pour le jour 2
+Mail envoyé à Benoit : mail_new_works.erb
+### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : Un objet à binder doit répondre à la méthode `bind' (définie par : `def bind; binding() end')
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/gem/superfile/lib/superfile/instance/io.rb:103:in `deserb'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/start_next_pday.rb:130:in `send_mail_to_auteur'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/start_next_pday.rb:102:in `start_pday'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/start_next_pday.rb:8:in `start_next_pday'
+/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/test_if_next_pday.rb:32:in `test_if_next_pday'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:48:in `block in traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:21:in `each'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:21:in `traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:46:in `block in <main>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `chdir'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `<main>'

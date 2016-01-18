@@ -18,8 +18,10 @@ site.require_objet 'unan'
 
 benoit = User::new(2)
 
-puts "P-Day courant de benoit (:current_pday) : #{benoit.get_var(:current_pday)}"
+current_pday = benoit.get_var(:current_pday).freeze
+puts "P-Day courant de benoit (:current_pday) : #{current_pday}"
 
 benoit.set_var(:current_pday, PDAY)
-
 puts "P-Day mis à #{benoit.get_var(:current_pday)}"
+
+benoit.table_pdays.delete(where:"id >= #{PDAY}")

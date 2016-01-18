@@ -48,7 +48,6 @@ class PDay
   # crée ce p-day, c'est-à-dire lorsque le programme de l'auteur
   # passe à ce jour-programme
   def save
-    debug "-> Unan::Program::PDay#save / data2save = \n#{data2save.pretty_inspect}"
     table.insert( data2save )
   end
 

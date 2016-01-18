@@ -43,9 +43,9 @@ class User
     @program_database_path ||= begin
       debug "[program_database_path]"
       debug "self.id : #{self.id.inspect}"
-      debug "Classe de user.program : #{user.program.class}"
-      if user.program.instance_of?(Unan::Program)
-        debug "user.program.id = #{user.program.id}"
+      debug "Classe de self.program : #{self.program.class}"
+      if self.program.instance_of?(Unan::Program)
+        debug "self.program.id = #{self.program.id}"
       end
       debug "[/program_database_path]"
       folder_data + "programme#{program.id}.db"
