@@ -51,6 +51,7 @@ class AbsPDay
   # ---------------------------------------------------------------------
   def works_ids   ; @works_ids  ||= works.split(' ')  end
 
+
   # La table "absolute_works" dans la base de données du programme
   def table
     @table ||= Unan::table_absolute_pdays

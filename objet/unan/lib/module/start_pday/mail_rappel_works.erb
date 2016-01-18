@@ -1,0 +1,19 @@
+<%
+# Mail au changement de jour-programme sans nouveaux travaux
+#
+# C'est le programme de l'auteur qui est bindée à cette vue
+%>
+<p>Bonjour <%= pseudo %>,</p>
+
+<%
+# Ici, on présente les rappels de travaux à faire
+%>
+<%
+# LES TRAVAUX COURANTS
+%>
+<h3>Rappel des travaux courants</h3>
+<ul id="travaux_courants">
+  <%= pday.liste_travaux_courants %>
+</ul>
+
+<p class='small'>Vous recevez ce mail parce que vous êtes inscrit<%= f_e %> au programme “Un An Un Script” et que vous désirez recevoir des messages journaliers de rappels et d'information. Pour modifier ce comportement, vous pouvez modifier vos préférences sur <%= Unan::lien_bureau('votre bureau') %>.</p>

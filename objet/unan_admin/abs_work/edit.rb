@@ -23,7 +23,7 @@ class AbsWork
     def full_data_for data
 
       return nil if data.nil?
-      
+
       # Ajout des propriétés
       # typeW, typeP, narrative_target
       data[:type]           ||= ("0"*16).freeze
@@ -112,18 +112,17 @@ class AbsWork
       @data_to_save ||= begin
         dts = {
           titre:            data[:titre],
+          type_w:           data[:type_w],
           pday_start:       data[:pday_start],
           duree:            data[:duree],
           type:             data_type,
           travail:          data[:travail],
+          parent:           data[:parent],
           prev_work:        data[:prev_work],
           resultat:         data[:resultat],
           type_resultat:    type_resultat,
-          pages_cours:      data[:pages_cours],
-          pages_optionnelles:  data[:pages_optionnelles],
-          questionnaires:   data[:questionnaires],
+          item_id:          data[:item_id],
           exemples:         data[:exemples],
-          flying_qcms:      data[:flying_qcms],
           points:           data[:points],
           updated_at:       NOW.to_i
         }
@@ -166,13 +165,16 @@ class AbsWork
     # Pour DataChecker
     def definition_values
       {
-        titre:        {hname:"titre",         type: :string, defined:true},
-        pday_start:   {hname:"jour-départ",   type: :fixnum, defined:true, min: 1, max: 365},
-        duree:        {hname:"durée",         type: :fixnum, defined:true, min: 1, max: 300},
-        travail:      {hname:"travail",       type: :string, defined:true},
-        prev_work:    {hname:"travail précédent", type: :fixnum},
-        resultat:     {hname:"résultat",      type: :string},
-        points:       {hname:"points",        type: :fixnum, defined:true, min:1, max:5000}
+        titre:        {hname:"titre",             type: :string,  defined:true},
+        type_w:       {hname:"type travail",      type: :fixnum,  defined:true},
+        pday_start:   {hname:"jour-départ",       type: :fixnum,  defined:true, min: 1, max: 365},
+        duree:        {hname:"durée",             type: :fixnum,  defined:true, min: 1, max: 300},
+        travail:      {hname:"travail",           type: :string,  defined:true},
+        parent:       {hname:"travail-parent",    type: :fixnum},
+        prev_work:    {hname:"previous travail",  type: :fixnum},
+        resultat:     {hname:"résultat",          type: :string},
+        item_id:      {hname:"ID de l'item",      type: :fixnum},
+        points:       {hname:"points",            type: :fixnum, defined:true, min:1, max:5000}
       }
     end
 
@@ -189,6 +191,12 @@ class AbsWork
       if data[:typeW] == "3"
         raise "Il faut indiquer les IDs ou HANDLERS des pages de cours à lire." if data[:pages_cours].nil?
       end
+
+      # Si le parent est défini, il doit exister
+      if data[:parent] != nil
+        raise "Le travail-parent ##{data[:parent]} doit absolument exister." unless Unan::Program::AbsWork::exist?( data[:parent] )
+      end
+
       # Les questionnaires doivent être définis si le typew est 4 ou 5
       if ["4","5"].include?(data[:typeW])
         raise "Il faut indiquer les IDs de questionnaires ou de checkpoints à accomplir." if data[:questionnaires].nil?

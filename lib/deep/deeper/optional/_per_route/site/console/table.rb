@@ -11,8 +11,6 @@ class Console
 
     return "Cette table ne contient aucune valeur." if data.empty?
 
-
-
     # Format
     # ID handler titre path
     datacolumns = nil
@@ -24,7 +22,7 @@ class Console
       rowdata.each do |col, valcol|
 
         if valcol.instance_of?(String)
-          valcol = rowdata[col] = valcol.gsub(/[\n\r]/,'⌅')
+          valcol = rowdata[col] = valcol.gsub(/\r/,'').gsub(/\n/,'[RC]')
         end
 
         if valcol.to_s.length > datacolumns[col][:max_len]

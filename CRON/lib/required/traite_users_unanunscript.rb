@@ -16,7 +16,7 @@ class User
       Unan::require_module 'start_pday'
 
       log "= Nombre d'auteurs en activité : #{users_en_activite.count}"
-      log "= #{users_en_activite.collect{|a| a.id }.pretty_join}"
+      log "= IDs : #{users_en_activite.collect{|a| a.id }.pretty_join}\n"
       # Boucler sur tous les programmes en activité
       users_en_activite.each do |auteur|
 
@@ -46,9 +46,9 @@ class User
         # etc.) cette méthode exécutera tout ce qu'il faut exécuter, avec
         # l'envoi des mails d'annonce, etc.
         if auteur.program.test_if_next_pday
-          log "Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) a été passé au jour-programme suivant (#{auteur.get_var(:current_pday)})."
+          log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
         else
-          log "Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) n'a pas été passé au jour-programme suivant."
+          log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) n'a pas eu besoin d'être passé au jour-programme suivant."
         end
 
       end

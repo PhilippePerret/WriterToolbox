@@ -34,14 +34,23 @@
     works_ids
 
         {Array} Liste des IDs de travaux (work) en cours pour l'auteur.
+        Cette liste contient TOUS les travaux, quiz, task, etc. confondus
         Noter qu'il s'agit des instances Unan::Program::Work, pas des
         travaux absolus.
         La liste est alimentée d'un côté par les changements de p-days
         et de l'autre pour les travaux accomplis.
         <- user.get_var :works_ids
-        -> user.set_var :works_ids
+        -> user.set_var :works_ids, Array(d'ids)
 
         Note : `user.nombre_de(:works)` retourne le nombre ou 0
+
+    tasks_ids
+
+        {Array de Fixnum} Liste des travaux de type "tâches", ce sont les
+        travaux qui n'ont pas pu être classés dans d'autres types comme
+        les questionnaires (quiz_ids) ou les pages de cours à lire (pages_ids)
+        <- user.get_var :tasks_ids
+        -> user.set_var :tasks_ids, Array(d'ids)
 
     quiz_ids
 
@@ -63,16 +72,16 @@
 
         Note : `user.nombre_de(:messages)` en retourne le nombre, ou 0
 
-    pages_cours_ids
+    pages_ids
 
         {Array} Liste des IDs des pages de cours courantes (à lire ou
         lues). Elles ne dépendant que des p-days courants et précédents
         en fonction de la durée de lecture de la page.
 
-        <- user.get_var :pages_cours_ids
-        -> user.set_var :pages_cours_ids
+        <- user.get_var :pages_ids
+        -> user.set_var :pages_ids
 
-        user.nombre_de(:page_cours) en retourne le nombre, ou 0
+        user.nombre_de(:page) en retourne le nombre, ou 0
 
     pages_non_lues_ids
 

@@ -30,6 +30,7 @@ class Console
     proc_modif = Proc::new do |data|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      # debug "data work : #{data.inspect}"
       data # doit être retourné (ou nil)
     end
     retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)

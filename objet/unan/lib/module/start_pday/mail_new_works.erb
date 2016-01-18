@@ -1,5 +1,18 @@
 <%
 # Mail envoyé quand il y a des nouveaux travaux pour un
 # nouveau jour-programme.
+#
+# C'est le programme de l'auteur qui est bindée à cette vue
 %>
 <p>Bonjour <%= auteur.pseudo %>,</p>
+
+<%
+# LES NOUVEAUX TRAVAUX
+%>
+<h3>Nouveaux travaux</h3>
+<ul id="nouveaux_travaux">
+  <%= pday.liste_nouveaux_travaux %>
+</ul>
+
+
+<p class='small'>Vous recevez ce mail parce que vous êtes inscrit<%= f_e %> au programme “Un An Un Script” et que vous désirez ne recevoir des messages que lorsque de nouveaux travaux sont demandés. Pour modifier ce comportement et recevoir des messages quotidiens vous rappelant votre travail courant, vous pouvez modifier vos préférences dans <%= Unan::lien_bureau('votre bureau') %>.</p>

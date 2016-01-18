@@ -104,9 +104,9 @@ class PageCours
       when 'tex'
         "% Page #{data_page[:titre]}\n\n[Contenu de la page #{data_page[:titre]}]"
       when 'erb'
-        "<%\n# Page de cours #{data_page[:titre]}\n%>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
+        "<%\n# Page de cours #{data_page[:titre]}\n%>\n<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
       when 'html', 'htm'
-        "<p>[Contenu de la page #{data_page[:titre]}]</p>"
+        "<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
       else
         flash "l'extension #{sfile.extension} n'est pas traitée dans la création automatique des fichiers."
         nil

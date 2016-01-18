@@ -53,7 +53,10 @@ class Program
   # du programme courant. Mais normalement, un pday a été
   # créé au démarrage du programme (cf. signup_user.rb)
   def last_pday_time
-    @last_pday_time ||= ( icurrent_pday.nil? ? self.created_at : icurrent_pday.start )
+    @last_pday_time ||= begin
+      tm = ( icurrent_pday.nil? ? self.created_at : icurrent_pday.start )
+      tm || self.created_at
+    end
   end
 
   # Retourne le jour-programme courant, mais au format

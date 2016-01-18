@@ -26,20 +26,20 @@ class PDay
   attr_reader :program
 
   def initialize program, index
-    @program  = program
-    @id       = index
+    @program    = program
+    @program_id = program.id
+    @id         = index
   end
 
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
   # def start (pour recherche)
-  def created_at  ; @created_at ||= get(:created_at)  end
-  alias :start :created_at
   def points      ; @points     ||= get(:points)      end
-  def program_id  ; @program_id ||= get(:program_id)  end
+  def program_id  ; @program_id ||= program.id        end
   def status      ; @status     ||= get(:status)      end
   def created_at  ; @created_at ||= get(:created_at)  end
+  alias :start :created_at
   def updated_at  ; @updated_at ||= get(:updated_at)  end
 
   # Enregistre toutes les données du P-Day du programme
@@ -48,7 +48,7 @@ class PDay
   # crée ce p-day, c'est-à-dire lorsque le programme de l'auteur
   # passe à ce jour-programme
   def save
-    data2save.merge!(created_at: NOW) if new?
+    debug "-> Unan::Program::PDay#save / data2save = \n#{data2save.pretty_inspect}"
     table.insert( data2save )
   end
 
@@ -56,15 +56,21 @@ class PDay
     table.count(where:{id: id}) == 0
   end
 
+  # On part du principe qu'on n'utilise cette méthode que lorsque
+  # l'on crée la donnée pour la première fois. Donc on met la
+  # propriété created_at (qui posait problème avant lorsque de la
+  # création, sans que je sache pourquoi)
   def data2save
     @data2save ||= {
-      id:           id,
-      program_id:   program_id,
-      status:       status || 1,
-      points:       points || 0,
-      updated_at:   NOW
-    }
+        id:           id,
+        program_id:   program_id,
+        status:       status || 1,
+        points:       points || 0,
+        updated_at:   NOW,
+        created_at:   NOW
+      }
   end
+
   # RETURN true si le nombre de points pour le p-day est
   # suffisant (pday.points = absolute_pday.minimum_points)
   def enough_points?

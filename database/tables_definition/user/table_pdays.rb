@@ -7,7 +7,7 @@ Cette table est enregistrée dans la base de données propre à chaque
 auteur qui suit le programme.
 =end
 def schema_table_user_pdays
-  @schema_table_unan_user_pdays ||= {
+  @schema_table_user_pdays ||= {
 
     # Identifiant unique (mais seulement pour cette table propre
     # à l'auteur)
@@ -37,7 +37,7 @@ def schema_table_user_pdays
     # Démarrage du p-day
     created_at: {type:"INTEGER(10)", constraint:"NOT NULL"},
     # Date de dernière modification
-    updated_at: {type:"INTEGER(10)"}
+    updated_at: {type:"INTEGER(10)", constraint:"NOT NULL"}
 
   }
 end

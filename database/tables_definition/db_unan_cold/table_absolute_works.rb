@@ -76,6 +76,12 @@ def schema_table_unan_cold_absolute_works
     # dans d'autres propriétés
     travail:    {type:"TEXT", constraint:"NOT NULL"},
 
+    # Travail parent
+    #
+    # {FIXNUM} Identifiant du travail parent, c'est-à-dire du plus
+    # grand ensemble contenant ce travail.
+    parent: {type:"INTEGER", default:"NULL"},
+
     # Travail précédent
     # ----------------
     # Lorsque le travail fait suite à un autre, par exemple lorsqu'il
@@ -83,7 +89,7 @@ def schema_table_unan_cold_absolute_works
     # biais
     # Cette donnée est donc fortement liée à la notion de développement en
     # spirale.
-    prev_work: {type:'INTEGER(4)', default:"NULL"},
+    prev_work: {type:'INTEGER', default:"NULL"},
 
     # Résultat du travail
     # -------------------
