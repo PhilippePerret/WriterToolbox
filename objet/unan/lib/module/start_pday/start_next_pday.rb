@@ -135,31 +135,146 @@ class Program
     # Donc il est très simple d'obtenir l'un et l'autre.
     works_ids = auteur.get_var(:works_ids, nil)
 
+    # Nombre de travaux à faire par l'auteur actuellement
+    # Noter que c'est avant d'ajouter les travaux du jour
+    # s'il y en a.
+    nombre_travaux = works_ids.count.freeze
+
     # Dans le cas où l'auteur n'a plus aucun travail à faire, tout
     # est OK, il n'y a aucun problème.
-    return if works_ids.nil?
+    return if works_ids.nil? || works_ids.empty?
+
+    # Pour consigner le nombre d'avertissements par niveau en
+    # enregistrant les instances travaux dans les listes.
+    # Par exemple, la donnée de clé 3 correspond à l'avertissement
+    # de niveau 3 et contient dans sa liste tous les travaux qui
+    # ont atteint ce niveau d'avertissement
+    avertissements = {
+      1 => Array::new(),
+      2 => Array::new(),
+      3 => Array::new(),
+      4 => Array::new(),
+      5 => Array::new(),
+      6 => Array::new(),
+      total:0,
+      greater_than_four:0
+    }
+
+    # Pour indiquer qu'il faudra prévenir l'administration
+    avertissement_administration = false
+
+    # Pour conserver les instances Unan::Program::Work parce
+    # qu'on en aura besoin pour voir si un travail peut être
+    # mené après un autre
+    @travaux = Hash::new
 
     # On passe ici si l'auteur a encore des travaux à effectuer
     # Il faut regarder s'il n'est pas en dépassement du temps.
-    travaux_courants = works_ids.collect do |wid|
+    titre_travaux_courants = works_ids.collect do |wid|
 
-      # On prend l'instance de l'absolute-work (pour connaitre
-      # le titre mais aussi la durée du travail)
-      iabs_work = Unan::Program::AbsWork::get(wid)
+      # L'instance du travail du programme
       iwork     = self.work(wid)
+      @travaux.merge!( wid => iwork )
 
       if iwork.depassement?
 
-      end
+        # Si le programme est en dépassement, il faut le mémoriser
+        # pour faire une alerte à l'auteur.
+        # Et une alerte à l'administration si ça dépasse un niveau
+        # d'avertissements.
+
+        case true
+        when iwork.depassament < 3.days
+          # Premier avertissement, lorsque le travail était de la veille
+          # ou l'avant-veille
+          # Donc jour 1 à 2 supplémentaires
+          niveau_avertissement = 1
+
+        when iwork.depassement < 7.days
+          # Second avertissement, lorsque le travail aurait dû être
+          # fait 3 jours avant jusque fin de semaine
+          # Donc : jours 3 à 7 supplémentaires
+          niveau_avertissement = 2
+
+        when iwork.depassement < 15.days
+          # 3e avertissement, lorsque le travail devait être fait dans
+          # la semaine jusque 15 jours
+          # Donc : de jour 8 à jour 15
+          # Note : Un mail est également envoyé à l'administration
+          niveau_avertissement = 3
+
+        when iwork.depassement < 31.days
+          # 4e avertissement, lorsque le travail devait être fait dans
+          # le mois
+          # Donc : de jour 16 à 31
+          # Note : Un mail est également envoyé à l'administration
+          niveau_avertissement = 4
+
+        when iwork.depassement < 47.days
+          # 5e avertissement, lorsque le travail n'a pas été fait
+          # dans le mois.
+          # Donc : de jour 32 à plus
+          # Note : Un mail est également envoyé à l'administration
+          niveau_avertissement = 5
+
+        else
+          # Dernier avertissement. L'alerte maximale a été donnée 15
+          # jour auparavant, sans réponse et sans changement, l'auteur
+          # est considéré comme démissionnaire, on l'arrête.
+          # Donc depuis jours 47
+          # Note : Un mail est également envoyé à l'administration
+          niveau_avertissement = 6
+
+        end
+
+        # Incrémentation du nombre de travaux en dépassement
+        # d'échéance
+        avertissements[:total] += 1
+
+        # Ajout du travail à son niveau d'avertissement
+        avertissements[niveau_avertissement] << iwork
+
+        if niveau_avertissement > 2
+          avertissement_administration = true
+          if niveau_avertissement > 4
+            avertissements[:greater_than_four] += 1
+          end
+        end
+
+      end # / fin si le travail est en dépassement
 
       # On termine par le titre pour le collect de
-      # la boucle
-      iabs_work.titre.in_li
-    end.join
+      # la boucle qui ramasse les titres de tous les travaux
+      iwork.abs_work.titre.in_li(class: (iwork.depassement? ? 'warning' : nil))
+    end.join # / fin de boucle sur tous les travaux courants
 
-    pday.liste_travaux_courants = travaux_courants
+    # On ne fait quelque chose de radical que lorsqu'il
+    # y a un certain nombre de travaux en retard. Si 5
+    # travaux ont dépassé le niveau 4, c'est qu'il y a
+    # vraiment un problème avec l'auteur
+    key_message = case true
+    when avertissements[:greater_than_four] > 5
+      :trop_de_depassement
+    when avertissements[:total] > 0
+      :depassement
+    else # avertissements[:total] == 0
+      :non_depassement # => Un mot d'encouragement
+    end
+    pday.message_depassement = Unan::choose_message(key_message)
+
+    if avertissement_administration
+      # On n'envoie pas tout de suite le mail, car il rassemble
+      # en un seul mail tous les auteurs qui ont des travaux en
+      # retard (sinon, les mails risquent d'être trop nombreux)
+      Unan::rapport_administration[:depassements] << "#{auteur.pseudo} (##{auteur.id}) est en dépassement important (travaux en dépassement d'échéance : #{avertissements[:total]}, travaux en dépassement de plus d'un mois : #{avertissements[:greater_than_four]})"
+    end
+
+
+
+    pday.liste_travaux_courants = titre_travaux_courants
 
   end
+
 
   # Quand on doit envoyer un mail à l'auteur, donc soit s'il y a
   # de nouveaux travaux soit lorsque l'auteur désire recevoir des
@@ -170,19 +285,19 @@ class Program
       # Mail de rappel de travail quand le jour-programme ne
       # définit pas de nouveaux travaux, pour un auteur qui en
       # a fait la demande (préférences)
-      "mail_rappel_works"
+      "rappel_works"
     when pday_with_new_travaux && auteur.daily_summary?
       # Mail informant d'un jour-programme avec nouveaux travaux
       # + rappel des travaux courants pour un auteur qui veut être
       # informé quotidiennement
-      "mail_new_works_et_rappel"
+      "new_works_et_rappel"
     when pday_with_new_travaux
       # Mail informant d'un jour-programme définissant de nouveaux
       # travaux pour un auteur qui ne reçoit pas les mail journaliers
-      "mail_new_works"
-    end + ".erb"
+      "new_works"
+    end
 
-    mail_path = Unan::folder_module + "start_pday/#{mail_name}"
+    mail_path = Unan::folder_module + "start_pday/mail/#{mail_name}.erb"
     message_mail = mail_path.deserb( self )
     log "Mail envoyé à #{auteur.pseudo} : #{mail_name}"
 

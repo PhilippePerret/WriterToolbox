@@ -19,8 +19,8 @@ class Work
   # ---------------------------------------------------------------------
   #   Data bdd
   # ---------------------------------------------------------------------
-  def status      ; @status     ||= get(:status)      end
-  def options     ; @options    ||= get(:options)     end
+  def status      ; @status     ||= get(:status)||0   end
+  def options     ; @options    ||= get(:options)||"" end
   def created_at  ; @created_at ||= get(:created_at)  end
   def updated_at  ; @updated_at ||= get(:updated_at)  end
 
@@ -48,6 +48,10 @@ class Work
   def duree_relative
     @duree_relative ||= (program.coefficient_duree * abs_work.duree.days).to_i
   end
+
+  # ---------------------------------------------------------------------
+  #   Data provenant des options
+  # ---------------------------------------------------------------------
 
 end #/Work
 end #/Program

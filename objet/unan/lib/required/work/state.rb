@@ -7,19 +7,15 @@ class Work
   # Return TRUE si le travail est en dépassement de temps, i.e.
   # s'il aurait dû être fini avant
   def depassement?
-    (self.created_at + self.duree_relative) > NOW
+    depassement > 0
   end
-  # Retourne TRUE si le travail est valide et que l'auteur
-  # peut passer au travail suivant
-  def completed?
 
-    # TODO Voir si le travail a été effectué (il faut que
-    # l'auteur le stipule explicitement)
-
-    # TODO Toutes les pages du cours doivent avoir été lues
-    # SInon => Proposer de lire les pages non lues
-
+  # {Fixnum} Nombre de secondes de dépassement
+  # Note : c'est en secondes pour comparer à x.days
+  def depassement
+    @depassement ||= NOW - (self.created_at + self.duree_relative)
   end
+
 
 end #/Work
 end #/Program

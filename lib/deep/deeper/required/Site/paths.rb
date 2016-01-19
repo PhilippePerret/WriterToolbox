@@ -5,15 +5,15 @@ class SiteHtml
   #   URLs
   # ---------------------------------------------------------------------
 
-  # Pour le moment
-  def distant_host  ; @distant_host ||= 'www.atelier-icare/writertools' end
-  def local_host    ; @local_host   ||= "localhost/WriterToolbox"       end
+  # Défini par le fichier de configuration
+  # def distant_host  ; @distant_host end
+  # def local_host    ; @local_host   end
 
   def local_url
-    @local_url ||= "http://#{local_host}"
+    @local_url ||= "http://#{self.local_host}"
   end
   def distant_url
-    @distant_url ||= "http://#{distant_host}"
+    @distant_url ||= "http://#{self.distant_host}"
   end
 
   # ---------------------------------------------------------------------

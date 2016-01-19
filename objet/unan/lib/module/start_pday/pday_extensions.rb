@@ -3,6 +3,10 @@ class Unan
 class Program
 class PDay
 
+  # Le message de dépassement ou de non dépassement qui est placée
+  # après la liste des nouveaux travaux
+  attr_accessor :message_depassement
+  
   # Les messages ajoutés au mail, pour faire la liste des travaux
   # du jour-programme
   attr_reader :messages_mail

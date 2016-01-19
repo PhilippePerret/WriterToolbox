@@ -14,4 +14,9 @@ class ::NilClass
   def nil_or_empty?
     true
   end
+
+  def empty?
+    true
+  end
+
 end

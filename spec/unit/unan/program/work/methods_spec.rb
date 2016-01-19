@@ -9,24 +9,50 @@ describe 'Méthodes de Unan::Program::Work' do
 
   let(:work) { @work }
 
+  #depassement
+  describe 'Unan::Program::Work#depassement' do
+    before(:all) do
+      @abswork = Unan::Program::AbsWork::get(@work.id)
+      @duree_relative = @work.duree_relative.freeze
+    end
+    before(:each) do
+      @work.instance_variable_set('@depassement', nil)
+    end
+    it 'répond' do
+      expect(work).to respond_to :depassement
+    end
+    it 'retourne un nombre négatif si aucun dépassement' do
+      work.set(created_at: NOW - (@duree_relative - 30) )
+      expect(work.depassement).to be < 0
+    end
+    it 'retourne le nombre de secondes de dépassement si dépassé' do
+      work.set(created_at: NOW - (@duree_relative + 30) )
+      expect(work.depassement).to be > 0
+      expect(work.depassement).to eq 30
+    end
+  end
+
   #depassement?
   describe 'Unan::Program::Work#depassement?' do
     before(:all) do
       @abswork = Unan::Program::AbsWork::get(@work.id)
       @duree_relative = @work.duree_relative.freeze
     end
+    before(:each) do
+      @work.instance_variable_set('@depassement', nil)
+    end
     it 'répond' do
       expect(work).to respond_to :depassement?
     end
     context 'avec un travail qui aurait dû être terminé' do
       it 'retourne true' do
-        work.set(created_at: NOW - (@duree_relative - 10) )
+        work.set(created_at: NOW - (@duree_relative + 10) )
         expect(work).to be_depassement
       end
     end
     context 'avec un travail qui doit se terminer plus tard' do
       it 'retourne false (n’est pas en dépassement)' do
-        work.set(created_at: NOW - (@duree_relative + 10))
+        work.set(created_at: NOW - (@duree_relative - 10))
         expect(work).not_to be_depassement
       end
     end

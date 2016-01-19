@@ -1,0 +1,11 @@
+<%
+# Mail envoyé à l'administration lorsqu'un auteur est en
+# dépassement.
+# NOTE En prévoyance du fait qu'ils seront certainement nombreux
+# à caler un moment ou à un autre, on rassemble tous ces avertissements
+# dans un seul mail
+%>
+<p>Phil,</p>
+<p>Voici le rapport de changement de jour-programme du <%= NOW.as_human_date(true, true) %>.</p>
+
+<%= rapport_administration %>
