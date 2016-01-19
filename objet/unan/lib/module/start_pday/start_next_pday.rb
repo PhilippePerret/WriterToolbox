@@ -124,10 +124,10 @@ class Program
       "mail_new_works"
     end + ".erb"
 
-    log "Mail envoyé à #{auteur.pseudo} : #{mail_name}"
-
     mail_path = Unan::folder_module + "start_pday/#{mail_name}"
     message_mail = mail_path.deserb( self )
+    log "Mail envoyé à #{auteur.pseudo} : #{mail_name}"
+
   end
 
   # Quand un jour-programme existe pour le jour-programme dans
@@ -159,14 +159,20 @@ class Program
     works_titres = Array::new
 
     abs_pday.works(:as_instance).each do |work|
+
       # Les données de type de travail
       list_id = Unan::Program::AbsWork::TYPES[work.type_w][:id_list]
+
+      # TODO Voir si le travail peut être accompli. Si sa donnée
+      # prev_work est définie et que le travail précédent n'est pas
+      # marqué fini, il faut l'indiquer. Au bout d'un certain temps,
+      # il faut faire quelque chose.
+      
       # On ajoute ce travail dans la liste adéquate
       ids_lists[list_id]  << work.id
       # On ajoute toujours le travail dans la liste de tous
       # les travaux
       ids_lists[:works]   << work.id
-
       # Pour le mail : le titre du travail
       works_titres << work.titre.in_li
 
@@ -219,7 +225,11 @@ class Program
     return if works_ids.nil?
 
     travaux_courants = works_ids.collect do |wid|
-      Unan::Program::AbsWork::get(wid).titre.in_li
+      iabs_work = Unan::Program::AbsWork::get(wid)
+      iwork     = self.work(wid)
+      # On termine par le titre pour le collect de
+      # la boucle
+      iabs_work.titre.in_li
     end.join
 
     pday.liste_travaux_courants = travaux_courants

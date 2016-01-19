@@ -16,30 +16,21 @@ class Work
 
   include MethodesObjetsBdD
 
+  # {Fixnum} ID du programme dans la table des travaux
+  # propre au programme.
+  attr_reader :id
+
+  # {Unan::Program} Program auquel appartient le travail
+  attr_reader :program
+
   # Instanciaiton du Work
-  # +wid+ Identifiant du
-  def initialize wid
-    @id = wid
+  # +wid+ Identifiant du travail absolu qui sert aussi d'id
+  # pour le travail propre au programme ici.
+  def initialize program, wid
+    @program  = program
+    @id       = wid
   end
 
-  # Après un enregistrement de points, ou l'auteur qui
-  # stipule que le travail est terminé, on peut
-  # voir si on le passe au travail suivant
-  def passer_au_suivant?
-    return false if completed? == false
-  end
-
-  # Retourne TRUE si le travail est valide et que l'auteur
-  # peut passer au travail suivant
-  def completed?
-
-    # TODO Voir si le travail a été effectué (il faut que
-    # l'auteur le stipule explicitement)
-
-    # TODO Toutes les pages du cours doivent avoir été lues
-    # SInon => Proposer de lire les pages non lues
-
-  end
 
   # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire
   # ses résultats divers sur les travaux absolus.

@@ -82,13 +82,12 @@ def schema_table_unan_cold_absolute_works
     # grand ensemble contenant ce travail.
     parent: {type:"INTEGER", default:"NULL"},
 
+
     # Travail précédent
     # ----------------
-    # Lorsque le travail fait suite à un autre, par exemple lorsqu'il
-    # faut reprendre le document d'un travail précédent, on l'indique par ce
-    # biais
-    # Cette donnée est donc fortement liée à la notion de développement en
-    # spirale.
+    # Lorsque le travail fait suite à un autre, et ne peut pas être commencé
+    # avant qu'un autre soit terminé (le précédent), on renseigne cette
+    # donnée.
     prev_work: {type:'INTEGER', default:"NULL"},
 
     # Résultat du travail

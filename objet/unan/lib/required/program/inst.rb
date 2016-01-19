@@ -16,8 +16,11 @@ class Program
     # Pour contenir tous les jours de la propriété
     # days_overview (cf. le fichier dev Days-overview.md)
     @all_days_overview = Array::new
-    
+
   end
+
+  # Pour ERB
+  def bind; binding() end
 
 end #/Program
 end #/Unan

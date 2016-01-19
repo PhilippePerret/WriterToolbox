@@ -41,13 +41,9 @@ class User
   # de l'utilisateur (sa database personnelle)
   def program_database_path
     @program_database_path ||= begin
-      debug "[program_database_path]"
-      debug "self.id : #{self.id.inspect}"
-      debug "Classe de self.program : #{self.program.class}"
       if self.program.instance_of?(Unan::Program)
         debug "self.program.id = #{self.program.id}"
       end
-      debug "[/program_database_path]"
       folder_data + "programme#{program.id}.db"
     end
   end
@@ -55,11 +51,7 @@ class User
   # Récupérer n'importe quelle table de la base de données personnelle
   # du programme de l'user et la construire si nécessaire.
   def get_table table_name
-    debug "-> get_table('#{table_name}')"
-    debug "program_database_path.exist? #{program_database_path.exist?.inspect}"
-    debug "program_database.table(table_name).exist? : #{program_database.table(table_name).exist?.inspect}"
     unless program_database_path.exist? && program_database.table(table_name).exist?
-      debug "[get_table] On doit créer la table '#{table_name}' qui n'existe pas"
       create_tables_1a1s
     end
     unless program_database_path.exist? && program_database.table(table_name).exist?
@@ -77,7 +69,6 @@ class User
     # debug "-> create_tables_1a1s"
     # debug "Dossier de définition de table : #{folder_tables_definitions.to_s}"
     Dir["#{folder_tables_definitions.to_s}/*.rb"].each do |schema_path|
-      debug "Path du schéma : #{schema_path}"
       table_name = File.basename(schema_path)[6..-4]
       # debug "Nom de la table : '#{table_name}'"
       require schema_path

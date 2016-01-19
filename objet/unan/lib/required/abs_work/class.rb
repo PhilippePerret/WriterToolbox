@@ -9,7 +9,7 @@ class AbsWork
     attr_reader :instances
 
     def get wid
-      wid = wid.to_i
+      wid = wid.to_i_inn
       @instances ||= Hash::new
       @instances[wid] ||= new(wid)
     end
