@@ -20,7 +20,7 @@ class Mail
     end
     # Styles ajoutés à la balise <style>...</style>
     def styles_css
-      style_bande_logo + style_message_content
+      style_bande_logo + style_message_content + other_styles
     end
 
     def style_bande_logo
@@ -31,6 +31,11 @@ class Mail
     # logo
     def style_message_content
       "div#message_content{margin:2em 4em}"
+    end
+
+    def other_styles
+      ".tiny{font-size:11.2pt}"  +
+      ".small{font-size:14.3pt}"
     end
 
     # {StringHTML} Entête du message
@@ -56,8 +61,8 @@ class Mail
     # l'analyser au cours du test
     def send_offline hash_data_message_plus
       # Pour le moment
-      debug "Mail qui aurait été envoyé : "
-      debug hash_data_message_plus.pretty_inspect
+      # debug "Mail qui aurait été envoyé : "
+      # debug hash_data_message_plus.pretty_inspect
       # TODO L'enregistrer dans un fichier pour pouvoir le lire et
       # le tester
     end

@@ -83,7 +83,7 @@ module MailModuleMethods
   def to  ; @to   ||= site.mail end
 
   def code_html
-    <<-HTML
+    @code_html ||= <<-HTML
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>#{content_type}#{title}#{style_tag}</head><body>#{body}</body></html>
@@ -97,9 +97,11 @@ module MailModuleMethods
   # ---------------------------------------------------------------------
   #   Sous-sous-méthodes de construction du message
 
+  # Pour la balise title du message HTML
   def title
     @title ||= "<title>#{subject}</title>"
   end
+  # Pour le sujet du message
   def subject
     @subject ||= "(sans sujet)"
     "#{header_subject}#{@subject}"
@@ -111,9 +113,12 @@ module MailModuleMethods
     get_class(:content_type)
   end
 
+  # Le corps du message du mail
   def body
     c = "#{header}<div id='message_content'>#{ message_formated + signature + footer }</div>"
-    c << "<div style='#{SiteHtml::Mail::body_style}'>#{c}</div>" if SiteHtml::Mail::respond_to?(:body_style)
+    # Si le body style est défini, on met le code dans un div
+    # contenant ce body style.
+    c = c.in_div(style: SiteHtml::Mail::body_style) if SiteHtml::Mail::respond_to?(:body_style)
     return c
   end
 
