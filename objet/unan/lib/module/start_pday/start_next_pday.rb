@@ -14,7 +14,6 @@ class Program
   # au cours de la programmation
   def check_validitie_program
     # Toutes les tables doivent exister
-
   end
 
   # Pour pouvoir les utiliser dans toutes les méthodes
@@ -49,6 +48,9 @@ class Program
     # pour ce jour-là.
     @abs_pday = AbsPDay::new(ipday)
 
+    # Variable qui permet de savoir s'il y a des travaux pour
+    # ce jour-programme. Quand le jour-programme absolu existe,
+    # c'est qu'il y a forcément des travaux.
     @pday_with_new_travaux = @abs_pday.exist?
 
     # Si le jour-programme existe, on initialise un jour-programme
@@ -56,13 +58,28 @@ class Program
     # Noter que `abs_pday.id` ci-dessous correspond simplement
     # à l'indice du jour, donc 12 pour le 12e jour, etc.
     # Ce sera également l'ID du PDay propre au programme.
-    @pday = PDay::new(self, ipday) if @pday_with_new_travaux
+    @pday = PDay::new(self, ipday) # if @pday_with_new_travaux
+
+    # On commence par un contrôle de l'état du programme
+    # On regarde si les travaux sont faits dans les temps et
+    # on signale à l'auteur les éventuels retards, avec une
+    # gradation en fonction du nombre de rappels et des conseils
+    # différents.
+    # Quel que soit le choix de l'auteur (mails journaliers ou non,
+    # il sera averti de ses retards)
+    # Noter que tous ces messages sont ajoutés à l'instance @pday
+    # créée ci-dessus, par commodité.
+    # Mais ce @pday ne sera créé que s'il y a des travaux (vraiment ?
+    # ou alors on consigne aussi les problèmes, justemnet ?)
+    # Cette méthode prépare aussi le mail journalier, puisqu'elle
+    # va passer en revue tous les travaux courants de l'auteur.
+    check_current_etat_travail_programme
 
     # Si l'auteur veut recevoir un mail quotidien pour
     # lui rappeler ses travaux ou son état, il faut relever
     # la liste de ses travaux courants avant d'ajouter les
     # nouveaux travaux.
-    # On les relève aussi même si l'auteur ne veux pas de mails
+    # On les relève aussi même si l'auteur ne veut pas de mails
     # quotidien pour lui rappeler le travail qui reste à faire
     # après lui avoir présenté les nouveaux travaux
     if auteur.daily_summary? || @pday_with_new_travaux
@@ -100,6 +117,47 @@ class Program
     #     mais l'auteur demande à être averti journalièrement
 
     send_mail_to_auteur
+
+  end
+
+
+  # Méthode qui vérifie l'état de travail de l'auteur et
+  # prépare des messages d'avertissement à l'auteur s'il est
+  # en retard.
+  # + Préparation du mail pour l'auteur qui veut un mail
+  # journalier.
+  def check_current_etat_travail_programme
+
+    # La liste des IDs de tous les travaux (works) courant de
+    # l'auteur.
+    # Noter que chaque "absolute-work" du programme correspond
+    # à un "work" de même ID dans la database du programme.
+    # Donc il est très simple d'obtenir l'un et l'autre.
+    works_ids = auteur.get_var(:works_ids, nil)
+
+    # Dans le cas où l'auteur n'a plus aucun travail à faire, tout
+    # est OK, il n'y a aucun problème.
+    return if works_ids.nil?
+
+    # On passe ici si l'auteur a encore des travaux à effectuer
+    # Il faut regarder s'il n'est pas en dépassement du temps.
+    travaux_courants = works_ids.collect do |wid|
+
+      # On prend l'instance de l'absolute-work (pour connaitre
+      # le titre mais aussi la durée du travail)
+      iabs_work = Unan::Program::AbsWork::get(wid)
+      iwork     = self.work(wid)
+
+      if iwork.depassement?
+
+      end
+
+      # On termine par le titre pour le collect de
+      # la boucle
+      iabs_work.titre.in_li
+    end.join
+
+    pday.liste_travaux_courants = travaux_courants
 
   end
 
@@ -167,7 +225,7 @@ class Program
       # prev_work est définie et que le travail précédent n'est pas
       # marqué fini, il faut l'indiquer. Au bout d'un certain temps,
       # il faut faire quelque chose.
-      
+
       # On ajoute ce travail dans la liste adéquate
       ids_lists[list_id]  << work.id
       # On ajoute toujours le travail dans la liste de tous
@@ -197,7 +255,7 @@ class Program
 
     # On enregistre le P-Day dans la base de donnée du
     # programme de l'auteur
-    pday.save
+    pday.create
 
   rescue Exception => e
     log "# ERREUR FATALE : #{e.message}"
@@ -217,23 +275,8 @@ class Program
   # pas (comment le savoir ?) et les signalier le cas échéant.
   def memorise_liste_travaux_courants_pour_mail
 
-    # La liste des IDs de tous les travaux (works) courant de
-    # l'auteur
-    works_ids = auteur.get_var(:works_ids, nil)
-
-    # Dans le cas où l'auteur n'a plus aucun travail à faire
-    return if works_ids.nil?
-
-    travaux_courants = works_ids.collect do |wid|
-      iabs_work = Unan::Program::AbsWork::get(wid)
-      iwork     = self.work(wid)
-      # On termine par le titre pour le collect de
-      # la boucle
-      iabs_work.titre.in_li
-    end.join
-
-    pday.liste_travaux_courants = travaux_courants
-
+    # OBSOLÈTE : Maintenant, c'est fait dans le check de l'état
+    # courant de l'auteur/programme
   end
 
 end #/Program

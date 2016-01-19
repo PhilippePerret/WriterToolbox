@@ -3,12 +3,12 @@ class Unan
 class Program
 class Work
 
-  # Return TRUE si le travail existe dans la table du programme
-  # false dans le cas contraire.
-  def exist?
-    table.count(where:{id: id}) > 0
-  end
 
+  # Return TRUE si le travail est en dépassement de temps, i.e.
+  # s'il aurait dû être fini avant
+  def depassement?
+    (self.created_at + self.duree_relative) > NOW
+  end
   # Retourne TRUE si le travail est valide et que l'auteur
   # peut passer au travail suivant
   def completed?

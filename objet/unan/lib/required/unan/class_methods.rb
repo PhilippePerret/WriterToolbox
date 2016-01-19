@@ -17,7 +17,7 @@ class Unan
       (Unan::folder_module+'mail').require
 
       # Test : Pour forcer son envoi, même en local
-      data_mail.merge!(force_offline: true) unless data_mail.has_key?(:force_offline)
+      # data_mail.merge!(force_offline: true) unless data_mail.has_key?(:force_offline)
 
       Unan::exec_send_mail data_mail
     rescue Exception => e

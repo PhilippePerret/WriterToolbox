@@ -43,7 +43,11 @@ class Work
     @abs_work ||= Unan::Program::AbsWork::get(id)
   end
 
-
+  # {Fixnum} Durée relative du travail en secondes en
+  # fonction du rythme courant du programme.
+  def duree_relative
+    @duree_relative ||= (program.coefficient_duree * abs_work.duree.days).to_i
+  end
 
 end #/Work
 end #/Program

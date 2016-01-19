@@ -43,11 +43,8 @@ class PDay
   def updated_at  ; @updated_at ||= get(:updated_at)  end
 
   # Enregistre toutes les données du P-Day du programme
-  #
-  # Pour le moment, la méthode n'est utilisée que lorsqu'on
-  # crée ce p-day, c'est-à-dire lorsque le programme de l'auteur
-  # passe à ce jour-programme
-  def save
+  # pour créer la donnée
+  def create
     table.insert( data2save )
   end
 
@@ -68,21 +65,6 @@ class PDay
         updated_at:   NOW,
         created_at:   NOW
       }
-  end
-
-  # RETURN true si le nombre de points pour le p-day est
-  # suffisant (pday.points = absolute_pday.minimum_points)
-  def enough_points?
-
-    # TODO Le nombre de points pour l' doit être
-    # suffisant
-    # SINON : Proposer de reprendre des questionnaires, à
-    # commencer par les questionnaires de connaissance.
-    # Rappel : pour trouver les questions de connaissance,
-    # on fait "WHERE id IN (<liste id étape>) AND type LIKE '__1%'"
-    # ATTENTION : "1" n'est peut-être plus le type "Connaissance",
-    # Mais c'est bien le 3e bit du type qu'il faut tester.
-
   end
 
   # Table contenant tous les p-days de ce programme

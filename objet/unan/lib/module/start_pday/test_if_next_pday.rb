@@ -40,12 +40,7 @@ class Program
 
   # Durée d'un jour-programme en fonction du rythme choisi
   # par l'auteur.
-  def pday_duration ; @pday_duration ||= Fixnum::DUREE_JOUR * coefficient_pday end
-
-  # Coefficient de durée du jour-programme
-  # @usage : On MULTIPLIE la durée réelle par ce nombre pour
-  # obtenir la durée-programme.
-  def coefficient_pday ; @coef_pday ||= 5.0 / rythme end
+  def pday_duration ; @pday_duration ||= Fixnum::DUREE_JOUR * coefficient_duree end
 
   # Timestamp du jour-programme courant, donc du dernier
   # jour-programme du programme courant. Si aucun pday
