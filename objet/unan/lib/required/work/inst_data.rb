@@ -5,7 +5,7 @@ class Work
 
   # La méthode qui crée la donnée
   def create
-    table.insert(data2save.merge(created_at: NOW))
+    @id = table.insert(data2save)
   end
 
   # Sauvegarde de toutes les données du travail
@@ -34,6 +34,8 @@ class Work
       updated_at:   NOW
     }
   end
+  # Pour définir les données à enregistrer à la création
+  def data2save= hdata; @data2save = hdata end
 
   # ---------------------------------------------------------------------
   #   Data volatile

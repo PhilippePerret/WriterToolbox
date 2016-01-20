@@ -1,14 +1,11 @@
 
 
-========== CRON JOB DU 20 01 2016 - 15:00 ==========
+========== CRON JOB DU 20 01 2016 - 17:00 ==========
 
 <- lib/required.rb
 ### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/mails.rb:62: syntax error, unexpected !=, expecting ';' or '\n'
     def travaux_courants? travaux_courants    != "" end
                                                 ^
-/Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/mails.rb:66: syntax error, unexpected '='
-    def conclusion?       ; conclusion !      = ""  end
-                                               ^
 /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/mails.rb:81: class definition in method body
 /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/mails.rb:107: syntax error, unexpected keyword_end, expecting end-of-input
 end #/Unan

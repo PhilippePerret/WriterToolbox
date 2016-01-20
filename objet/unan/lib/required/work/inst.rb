@@ -25,7 +25,7 @@ class Work
 
   # Instanciaiton du Work
   # +wid+ Identifiant du travail. Note : CE N'EST PLUS l'id
-  # du travail absolu.
+  # du travail absolu. Note : Il est nil à l'instanciation
   def initialize program, wid
     @program  = program
     @id       = wid

@@ -97,6 +97,9 @@ class AbsPDay
 
   def expect_travaux_existent
     errors = Array::new
+    if data_in_param[:works].empty?
+      return error "Il faut indiquer les travaux à faire pour ce jour-programme."
+    end
     data_in_param[:works].split(' ').each do |wid|
       errors << "#{wid} n'est pas un identifiant de travail (pas un nombre)" unless wid.numeric?
       wid = wid.to_i

@@ -13,12 +13,6 @@ def schema_table_unan_cold_exemples
     # ---------------
     id: {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
 
-    # Le travail visé
-    # ---------------
-    # ID du travail dont cet exemple est l'illustration, dans la
-    # table `absolute_works`.
-    work_id: {type:"INTEGER", constraint:"NOT NULL"},
-
     # Titre de l'exemple
     # ------------------
     # Doit être assez cours, simplement pour affichage dans un
@@ -26,6 +20,12 @@ def schema_table_unan_cold_exemples
     # "Synopsis de Titanic" (ne pas utiliser "Exemple" qui sera
     # ajouté)
     titre:  {type:"VARCHAR(255)", constraint:"NOT NULL"},
+
+    # Le travail visé
+    # ---------------
+    # ID du travail dont cet exemple est l'illustration, dans la
+    # table `absolute_works`.
+    work_id: {type:"INTEGER", constraint:"NOT NULL"},
 
     # Contenu de l'exemple
     # --------------------

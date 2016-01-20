@@ -25,9 +25,25 @@ end
 
 if form.objet
   debug "form.objet : #{form.objet.pretty_inspect}"
+  lien_read_pday = "Afficher".in_a(href:"abs_pday/#{form.objet[:id]}", id:'lien_read_pday')
+else
+  lien_read_pday = ""
 end
 
-lien_read_pday = "Afficher".in_a(href:"abs_pday/#{form.objet[:id]}", id:'lien_read_pday')
+
+# Liste des travaux du jour-programme édité, avec un lien
+# pour les éditer
+def liste_linked_travaux
+  if form.objet != nil && false == form.objet[:works].empty?
+    form.objet[:works].split(' ').collect do |wid|
+      aw = Unan::Program::AbsWork::new(wid.to_i)
+      "[#{aw.id}] #{aw.titre}".in_a(href:"abs_work/#{wid}/edit?in=unan_admin", target:'_edit_work_').in_li
+    end.join.in_ul(id: 'linked_works')
+  else
+    ""
+  end
+end
+
 %>
 <script type="text/javascript">
 function set_href_lien_read(o){
@@ -64,6 +80,7 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
 
   <%= form.field_text("Works", 'works', nil) %>
   <%= form.field_description("Liste des travaux à accomplir, par ID et dans l'ordre où ils doivent être effectués, séparés par des simples espaces.") %>
+  <%= form.field_raw("", "", nil, {field: liste_linked_travaux}) %>
   <%= form.field_raw("", "", nil, {field:"[Créer un nouveau travail]".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')}) %>
 
   <%= form.field_text("Minimum Points", 'minimum_points', nil, {class:'short'}) %>

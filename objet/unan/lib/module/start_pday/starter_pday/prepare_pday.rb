@@ -34,10 +34,23 @@ class StarterPDay
       none:   Array::new()  # ?
     }
 
-    abs_pday.works(:as_instance).each do |work|
+    abs_pday.works(:as_instance).each do |abswork|
+
+      # Il faut commencer par créer une instance Unan::Program::Work
+      # propre pour ce travail
+      work = Unan::Program::Work::new(program, id = nil)
+      work.data2save= {
+        program_id:   program.id,
+        abs_work_id:  abswork.id,
+        status:       "0",
+        options:      "",
+        created_at:   NOW,
+        updated_at:   NOW
+      }
+      work.create
 
       # Les données de type de travail
-      list_id = Unan::Program::AbsWork::TYPES[work.type_w][:id_list]
+      list_id = Unan::Program::AbsWork::TYPES[abswork.type_w][:id_list]
 
       # TODO Voir si le travail peut être accompli. Si sa donnée
       # prev_work est définie et que le travail précédent n'est pas
@@ -51,7 +64,7 @@ class StarterPDay
       ids_lists[:works]   << work.id
 
       # Le titre du nouveau travail doit être ajouté au mail
-      auteur_mail.nouveaux_travaux << work.titre.in_li
+      auteur_mail.nouveaux_travaux << abswork.titre.in_li
 
     end
 

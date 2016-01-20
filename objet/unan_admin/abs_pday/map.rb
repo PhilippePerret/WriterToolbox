@@ -142,7 +142,7 @@ class AbsPDay
   def displayed_infos
     @displayed_infos ||= begin
       (
-        "PDay #{id} / #{titre}"  +
+        "PD#{id} / #{titre}"  +
         "P-Day #{id}".in_div +
         ("Travaux : ".in_span(class:'libelle') + "#{travaux}").   in_div(class:'italic')
       ).in_div(class:'infos')
@@ -152,7 +152,8 @@ class AbsPDay
   def travaux
     @travaux ||= begin
       works_ids.collect do |wid|
-        "Travail ##{wid}".in_div
+        aw = Unan::Program::AbsWork::new(wid.to_i)
+        "Travail ##{wid} : #{aw.titre}".in_div
       end.join
     end
   end

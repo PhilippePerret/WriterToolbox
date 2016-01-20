@@ -108,6 +108,15 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%= form.field_select("Type W", 'type_w', data[:typeW], {values: Unan::Program::AbsWork::types_for_select, onchange:"on_change_type_general_travail(this.value)"}) %>
   <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans ./data/unan/data/listes.rb") %>
 
+  <%
+  # Item ID
+  # -------
+  # Par exemple, si le travail consiste à lire une page de cours, ce
+  # champ contiendra la (ou les ?) ID des pages de cours à lire.
+  %>
+  <%= form.field_text("Item ID", 'item_id', nil) %>
+  <%= form.field_description("ID (IDs ?) de la page de cours si c'est une page de cours, du questionnaire si c'est un questionnaire, etc.") %>
+
   <%# type (bit 3-4) %>
   <%= form.field_raw("Sujet cible", 'narrative_target', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_narrative_target', name: 'work[narrative_target]', value: data[:narrative_target]) }) %>
   <%= form.field_description("AKA “Narrative target”. Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier `./data/unan/data/sujets_cibles.rb` (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
@@ -125,14 +134,6 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%= form.field_textarea("Travail", 'travail', "") %>
   <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
 
-  <%
-  # Item ID
-  # -------
-  # Par exemple, si le travail consiste à lire une page de cours, ce
-  # champ contiendra la (ou les ?) ID des pages de cours à lire.
-  %>
-  <%= form.field_text("Item ID", 'item_id', nil) %>
-  <%= form.field_description("ID (IDs ?) de la page de cours si c'est une page de cours, du questionnaire si c'est un questionnaire, etc.") %>
 
   <%# Résultat attendu %>
   <%= form.field_textarea("Résultat", 'resultat',"") %>
