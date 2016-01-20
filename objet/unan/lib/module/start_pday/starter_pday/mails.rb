@@ -58,12 +58,12 @@ class StarterPDay
 
     def introduction      ; @introduction     ||= Section::new(self)  end
     def introduction?     ; introduction      != "" end
-    def travaux_courants ; @travaux_courants  ||= Section::new(self)  end
-    def travaux_courants? travaux_courants    != "" end
+    def travaux_courants  ; @travaux_courants  ||= Section::new(self)  end
+    def travaux_courants? ; travaux_courants  != "" end
     def nouveaux_travaux  ; @nouveaux_travaux ||= Section::new(self)  end
     def nouveaux_travaux? ; nouveaux_travaux  != "" end
     def conclusion        ; @conclusion       ||= Section::new(self)  end
-    def conclusion?       ; conclusion        != ""  end
+    def conclusion?       ; conclusion        != "" end
 
     # Petit texte ajouté à la fin des mails indiquant pourquoi ils sont
     # envoyés à l'utilisateur.

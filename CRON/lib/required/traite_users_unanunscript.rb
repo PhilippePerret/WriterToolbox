@@ -18,9 +18,8 @@ class User
       log "= Nombre d'auteurs en activité : #{users_en_activite.count}"
       log "= IDs : #{users_en_activite.collect{|a| a.id }.pretty_join}\n"
 
-      Unan::rapport_administration = {
-        :depassements => Array::new()
-        }
+      # Pour initialiser le rapport administration
+      Unan::rapport_admin.init
 
       # Boucler sur tous les programmes en activité
       users_en_activite.each do |auteur|
@@ -65,7 +64,7 @@ class User
       # Dans le cas où les rapports seraient trop nombreux, il suffirait
       # de les enregistrer dans un fichier qui ne sera envoyé qu'un fois
       # par jour. Ça sera géré dans la méthode elle-même.
-      send_rapport_to_admin
+      Unan::rapport_admin.traite
     end
 
     # {Array of User} Retourne la liste de tous les auteurs

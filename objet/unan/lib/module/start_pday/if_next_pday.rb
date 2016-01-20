@@ -10,27 +10,24 @@ class Program
   # = main =
   #
   # Fonction principale appelée par le CRON job pour savoir
-  # s'il faut passer le programme (l'auteur) au jour-programme
+  # s'il faut passer le programme courant au jour-programme
   # suivant, en fonction de son rythme et de son jour-programme
   # courant.
-  # NOTE : Cette méthode est appelée TOUTES LES HEURES. Donc
+  # Note : Cette méthode est appelée TOUTES LES HEURES. Donc
   # il faut vérifier s'il faut réellement passer au jour-programme
   # suivant. Note : Le CRON fonctionne toutes les heures pour pouvoir
   # suivre les rythmes exacts programmés. Noter que ça a aussi
   # l'avantage d'envoyer les mails au bon moment.
   def test_if_next_pday
-    # debug "" +
-    #     "\nNOW            : #{NOW.inspect}" +
-    #     "\nnext-pday-time : #{next_pday_time.inspect}" +
-    #     "\n(test_if_next_pday return false si NOW est < à next-pday-time)" +
-    #     "\nNOW est #{(NOW < next_pday_time) ? 'inférieur' : 'supérieur'} à next_pday_time" +
-    #     "\n=> On ne doit pas passer au prochain jour" +
-    #     "\nAutres données :" +
-    #     "\nlast_pday_time : #{last_pday_time.inspect}" +
-    #     "\npday_duration : #{pday_duration.inspect}"
-    return false if NOW < next_pday_time
-    start_next_pday
-    return true
+    if NOW < next_pday_time
+      # Il n'est pas encore temps de passer au jour-programme
+      # suivant pour ce programme
+      return false
+    else
+      # Il est temps pour ce programme de passer au jour suivant
+      StarterPDay::new(self).activer_next_pday
+      return true
+    end
   end
 
   # Timestamp du jours suivant

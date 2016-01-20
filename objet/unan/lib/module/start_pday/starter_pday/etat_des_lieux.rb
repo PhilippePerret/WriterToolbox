@@ -71,6 +71,15 @@ class StarterPDay
 
     end # Fin de boucle sur tous les travaux courants
 
+    # S'il y a plus de 5 travaux en niveau d'avertissement
+    # supérieur à 4 (:greater_than_four) il faut avertir
+    # l'administration
+    if avertissement[:greater_than_four] > 4
+      Unan::rapport_admin.depassements.merge!(
+        auteur.id => "#{auteur.pseudo} (##{auteur.id}) est en sur-dépassement (nombre de travaux en avertissement supérieur à 4 : #{avertissement[:greater_than_four]})."
+      )
+    end
+
   rescue Exception => e
     error e.message
   else

@@ -44,6 +44,9 @@ class StarterPDay
   end
 
   # Vérification de la validité du programme courant
+  # Pour l'instant, ça ne fait rien, mais ensuite, on pourra voir
+  # s'il faut checker certaines choses pour voir si le programme
+  # en lui-même fonctionne bien.
   def check_validite_program
     true
   end
