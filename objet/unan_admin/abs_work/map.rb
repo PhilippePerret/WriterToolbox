@@ -23,14 +23,6 @@ class AbsWork
       @map_height ||= @zones.count * (MAP_DAY_HEIGHT + 2)
     end
 
-    def all
-      @all ||= begin
-        Unan::table_absolute_works.select(colonnes:[:id]).collect do |wid, wdata|
-          Unan::Program::AbsWork::new(wid)
-        end
-      end
-    end
-
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
     # être placé le travail sur la carte
     def free_top_zone_for left, width
@@ -133,7 +125,8 @@ class AbsWork
   # ---------------------------------------------------------------------
 
   # {StringHTML} Code HTML du travail sur la carte
-  def in_map
+  def in_map jour_depart
+    @jour_depart = jour_depart
     get_all # pour charger toutes les données d'un coup
     top   = free_row * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
@@ -144,22 +137,29 @@ class AbsWork
   def displayed_infos
     @displayed_infos ||= begin
       (
-        "[#{id}]".in_span(class:'id') + "#{titre}" +
-        "P-Days #{pday_start} à #{pday_end}".in_div +
+        "#{titre}".in_span(class:'bold') + " [work ##{id}]".in_span(class:'id') +
+        ("Type W : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
+        "P-Days #{jour_depart} à #{jour_fin}".in_div +
         ("Travail : ".in_span(class:'libelle') + "#{travail}").in_div(class:'italic') +
         ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
       ).in_div(class:'infos')
     end
   end
 
-  def pday_end
-    @pday_end ||= begin
-      pday_start + duree - 1
-    end
-  end
+  # Le jour de départ et de fin du travail.
+  # Noter que maintenant, ce jour dépend du P-Day auquel appartient le
+  # travail, qui n'est connu que du P-Day. En effet, un même travail
+  # peut appartenir à plusieurs P-Day. Ce jour_depart est fixé par
+  # argument à la méthode `in_map` ci-dessus.
+  # En revanche, la durée est propre au travail, même si on pourrait
+  # imaginer qu'elle soit différente en fonction du P-Day. Peut-être
+  # est-ce une donnée qui pourrait être précisée dans le "work" propre
+  # au P-Day… Mais comment le définir ?
+  def jour_depart ; @jour_depart end
+  def jour_fin    ; @jour_fin ||= jour_depart + duree - 1 end
 
   def left
-    @left ||= (pday_start - 1) * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
+    @left ||= (jour_depart - 1) * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def width
     @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH

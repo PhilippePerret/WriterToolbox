@@ -24,14 +24,27 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
   <div id="map_container_tools" class="" style="height:12px">
     <%# On mettra ici les outils et notamment le menu pour changer le zoom de la carte %>
   </div>
+  <%
+  # NOTE Maintenant, ce sont les P-Days (absolus) sur lesquels on tourne pour
+  # faire la carte des travaux car les travaux ne correspondent plus à des jours
+  # précis depuis qu'on peut mettre le même travail à plusieurs endroits, ce
+  # qui est somme toute plus logique (voir par exemple le travail qui consiste
+  # à élaborer un pitch d'histoire tous les jours)
+  %>
   <div id="abs_work_map" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH %>px">
-    <% UnanAdmin::Program::AbsWork::all.each do |work| %>
-      <% debug "Travail ##{work.id}" %>
-      <%= work.in_map %>
+    <% Unan::Program::AbsPDay::all.each do |pday| %>
+      <% debug "PDay ##{pday.id}" %>
+      <% pday.works(:as_instance).each do |work| %>
+        <% debug "\tWork ##{work.id}" %>
+        <%= work.in_map( pday.id ) %>
+      <% end %>
     <% end %>
   </div>
 </div><%# Le conteneur %>
-
+<%
+# Pour afficher les infos du travail survolé
+%>
+<div id="overview_infos_work"></div>
 
 <style type="text/css">
 div#abs_work_map{height:<%= UnanAdmin::Program::AbsWork::map_height%>px}

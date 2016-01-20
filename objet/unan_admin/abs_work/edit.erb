@@ -95,10 +95,6 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%# titre %>
   <%= form.field_text("Titre", "titre", nil, {placeholder: 'Titre du travail'}) %>
 
-  <%# pday_start %>
-  <%= form.field_text("Jour départ", 'pday_start', nil, {class:'short', text_after:"ième jour"}) %>
-  <%= form.field_description("Le “jour départ” définit le jour de démarrage du travail, en sachant que les travaux peuvent se chevaucher suivant leur durée. C'est ce qui permet de mener plusieurs travaux parallèlement.") %>
-
   <%# duree %>
   <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours"}) %>
 

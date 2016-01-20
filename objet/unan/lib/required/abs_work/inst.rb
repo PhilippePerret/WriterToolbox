@@ -13,7 +13,6 @@ class AbsWork
   include MethodesObjetsBdD
 
   attr_reader :id
-  attr_reader :pday_start
 
   def initialize wid
     @id = wid.to_i_inn
@@ -29,8 +28,8 @@ class AbsWork
   #   BIT 2-3   La cible narrative du travail (narrative_target), par exemple
   #             les personnage, ou la structure.
   def titre         ; @titre          ||= get(:titre)         end
+  def type_w        ; @type_w         ||= get(:type_w)        end
   def type          ; @type           ||= get(:type)          end
-  def pday_start    ; @pday_start     ||= get(:pday_start)    end
   def duree         ; @duree          ||= get(:duree)         end
   def travail       ; @travail        ||= get(:travail)       end
   def resultat      ; @resultat       ||= get(:resultat)      end
@@ -45,11 +44,11 @@ class AbsWork
     @table ||= Unan::table_absolute_works
   end
 
-  def type_w # typeW
-    @type_w ||= get(:type_w)
-  end
   def data_type_w
     @data_type_w ||= TYPES[type_w]
+  end
+  def human_type_w
+    @human_type_w ||= data_type_w[:hname]
   end
 
   def narrative_target

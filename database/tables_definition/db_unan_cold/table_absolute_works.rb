@@ -19,13 +19,6 @@ def schema_table_unan_cold_absolute_works
     # travaux donc peut avoir plusieurs titres.
     titre:      {type:"VARCHAR(250)", constraint:"NOT NULL"},
 
-    # Jour de départ
-    # --------------
-    # Le programme-jour (de 1 à 365) où le travail doit être commencé.
-    # Pour rappel, des travaux peuvent se chevaucher, donc il est important,
-    # pour chaque travail, de préciser son jour départ et sa durée
-    pday_start:  {type:"INTEGER(3)", constraint:"NOT NULL"},
-
     # Durée absolue du travail
     # ------------------------
     # C'est la durée absolue (en programmes-jours) dans laquelle ce

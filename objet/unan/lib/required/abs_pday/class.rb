@@ -20,6 +20,18 @@ class AbsPDay
       @instances[abspday_id] ||= new(abspday_id)
     end
 
+    # Retourne la liste Array de toutes les instances AbsPDay
+    # des jours-programme. Pour le moment, sert principalement pour
+    # la carte des Jour-programme et la carte des travaux absolus.
+    def all
+      @all ||= begin
+        Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pdid, pddata|
+          Unan::Program::AbsPDay::new(pdid)
+        end
+      end
+    end
+
+
   end # <<self
 end # /AbsPDay
 end # /Program

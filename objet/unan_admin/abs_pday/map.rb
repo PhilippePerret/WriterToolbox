@@ -22,14 +22,6 @@ class AbsPDay
       @map_height ||= @zones.count * (MAP_DAY_HEIGHT + 2)
     end
 
-    def all
-      @all ||= begin
-        Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pdid, pddata|
-          Unan::Program::AbsPDay::new(pdid)
-        end
-      end
-    end
-
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
     # être placé le travail sur la carte
     def free_top_zone_for left, width

@@ -113,7 +113,6 @@ class AbsWork
         dts = {
           titre:            data[:titre],
           type_w:           data[:type_w],
-          pday_start:       data[:pday_start],
           duree:            data[:duree],
           type:             data_type,
           travail:          data[:travail],
@@ -167,7 +166,6 @@ class AbsWork
       {
         titre:        {hname:"titre",             type: :string,  defined:true},
         type_w:       {hname:"type travail",      type: :fixnum,  defined:true},
-        # pday_start:   {hname:"jour-départ",       type: :fixnum,  min: 1, max: 365},
         duree:        {hname:"durée",             type: :fixnum,  defined:true, min: 1, max: 300},
         travail:      {hname:"travail",           type: :string,  defined:true},
         parent:       {hname:"travail-parent",    type: :fixnum},
