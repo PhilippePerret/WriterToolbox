@@ -14,8 +14,11 @@ def schema_table_user_works
     # même identifiants. Donc s'il fallait les "couper" (dans un bureau
     # d'administration par exemple) il faudrait penser à les associer
     # toujours à l'utilisateur.
-    # Noter également que ce ID est le même que celui du travail
-    # absolu correspondant.
+    # Noter également que ce ID N'EST PLUS LE MÊME que celui du travail
+    # absolu correspondant. Car un même travail absolu peut donner
+    # lieu à plusieurs travaux propres au programme. C'est maintenant
+    # la propriété `abs_work_id` qui contient l'identifiant du travail
+    # absolu.
     id: {type:"INTEGER",    constraint:"PRIMARY KEY AUTOINCREMENT"},
 
     # ID du program
@@ -23,6 +26,9 @@ def schema_table_user_works
     # Pour rappel, puisqu'on pourrait le trouver par rapport au nom
     # de la base de données auquel appartient le work courant
     program_id: {type:"INTEGER", constraint:"NOT NULL"},
+
+    # ID du travail absolu correspondant
+    abs_work_id: {type:"INTEGER", constraint:"NOT NULL"},
 
     # État du travail
     # ---------------

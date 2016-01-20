@@ -50,21 +50,27 @@ class Mail
       footer_vue.deserb(site) if footer_vue.exist?
     end
 
-
-    # # À ajouter au suject (une espace sera ajoutée après le contenu)
-    # site.mail_before_subject
-    # # La signature du mail, normalement définie dans la configuration
-    # site.mail_signature
-
     # Méthode pour recevoir l'envoi si on est en OFFLINE
     # Permet d'écrire le message dans un tampon pour pouvoir
     # l'analyser au cours du test
     def send_offline hash_data_message_plus
-      # Pour le moment
+      hash_data_message_plus.merge!(created_at: NOW)
       # debug "Mail qui aurait été envoyé : "
       # debug hash_data_message_plus.pretty_inspect
-      # TODO L'enregistrer dans un fichier pour pouvoir le lire et
-      # le tester
+      File.open(tmp_mail_path,'w') do |f|
+        f.write Marshal.dump(hash_data_message_plus)
+      end
+    end
+    def tmp_mail_path
+      (site.folder_tmp + "mails/#{tmp_mail_name}").to_s
+    end
+    def tmp_mail_name
+      "mail#{imail}.msh"
+    end
+    def imail
+      @imail ||= 0
+      @imail += 1
+      "#{@imail}".rjust(4,"0")
     end
 
   end # << self

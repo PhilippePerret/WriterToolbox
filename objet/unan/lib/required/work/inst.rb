@@ -24,8 +24,8 @@ class Work
   attr_reader :program
 
   # Instanciaiton du Work
-  # +wid+ Identifiant du travail absolu qui sert aussi d'id
-  # pour le travail propre au programme ici.
+  # +wid+ Identifiant du travail. Note : CE N'EST PLUS l'id
+  # du travail absolu.
   def initialize program, wid
     @program  = program
     @id       = wid

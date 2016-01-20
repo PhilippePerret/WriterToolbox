@@ -23,7 +23,7 @@ class StarterPDay
   def work_ids      ; @work_ids     ||= auteur.get_var(:works_ids)    end
   # Instances Unan::Program::Work des travaux du program
   def works         ; @works        ||= (work_ids||Array::new).collect { |wid| program.work(wid) } end
-
+  def nombre_travaux_courants ; @nombre_travaux_courants ||= work_ids.count end
 
 end #/StarterPDay
 end #/Program

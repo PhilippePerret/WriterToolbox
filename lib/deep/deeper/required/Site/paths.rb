@@ -124,4 +124,11 @@ class SiteHtml
     @folder_objet ||= SuperFile::new('./objet')
   end
 
+  def folder_tmp
+    @folder_tmp ||= begin
+      d = SuperFile::new('./tmp')
+      d.build unless d.exist?
+      d
+    end
+  end
 end

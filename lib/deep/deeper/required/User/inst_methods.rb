@@ -1,6 +1,11 @@
 # encoding: UTF-8
 class User
 
+  # Pour envoyer un message à l'user
+  def send_mail data_mail
+    site.send_mail( data_mail.merge(to: self.mail) )
+  end
+
   # On connecte l'user
   def login
     app.session['user_id'] = id
