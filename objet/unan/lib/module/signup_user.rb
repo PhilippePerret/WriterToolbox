@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class User
+class ::User
 
   # Procédure principale qui inscrit l'user au programme UN AN UN SCRIPT
   # tout de suite après le paiement de son module.

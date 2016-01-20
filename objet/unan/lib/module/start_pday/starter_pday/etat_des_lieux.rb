@@ -44,7 +44,7 @@ class StarterPDay
       # le titre)
       abs_work = Unan::Program::AbsWork::get(iwork.abs_work_id)
 
-      titre = abs_work
+      titre = "#{abs_work.titre}"
 
       if iwork.niveau_avertissement != nil
         # Le travail est en dépassement de jours de travail
@@ -57,8 +57,9 @@ class StarterPDay
         # message en fonction du niveau d'avertissement, message
         # qui sera ajouté au titre avec une mise en exergue du titre
         titre += " (#{message_avertissement})"
-        avertissement[niveau_avertissement] << iwork
-        avertissement[:greater_than_four] += 1 if niveau_avertissement > 4
+        avertissements[niveau_avertissement] << iwork
+        avertissements[:total]              += 1
+        avertissements[:greater_than_four]  += 1 if niveau_avertissement > 4
         class_css = 'warning'
       else
         # Si le travail n'est pas en dépassement
@@ -81,7 +82,9 @@ class StarterPDay
     end
 
   rescue Exception => e
-    error e.message
+    log "#ERR: #{e.message}"
+    log "#BACKTRACE:\n# " + e.backtrace.join("\n# ")
+    return false
   else
     true
   end

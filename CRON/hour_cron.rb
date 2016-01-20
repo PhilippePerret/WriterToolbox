@@ -39,6 +39,29 @@ Dir.chdir("#{APP_FOLDER}") do
     exit(1)
   end
 
+  # begin
+  #   require 'digest/md5'
+  #   random_salt = "marion"
+  #   mail = "phil@atelier-icare.net"
+  #   password = "19ElieSalome64"
+  #   now = Time.now.to_i
+  #   data_admin = {
+  #     id:           1,
+  #     pseudo:       "Phil",
+  #     patronyme:    "Philippe Perret",
+  #     sexe:         "H",
+  #     mail:         mail,
+  #     cpassword:    Digest::MD5.hexdigest("#{password}#{mail}#{random_salt}"),
+  #     salt:         random_salt,
+  #     session_id:   nil,
+  #     created_at:   now,
+  #     updated_at:   now
+  #   }
+  #   User::table.insert(data_admin)
+  # rescue Exception => e
+  #   log "#ERREUR : #{e.message}"
+  # end
+
   # Toutes les heures, voir si des auteurs en activité
   # sur le programme UN AN UN SCRIPT doivent être passés
   # au jour-programme suivant.

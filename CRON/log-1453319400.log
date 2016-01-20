@@ -1,0 +1,78 @@
+
+
+========== CRON JOB DU 20 01 2016 - 20:50 ==========
+
+<- lib/required.rb
+= Nombre d'auteurs en activité : 3
+= IDs : 2, 2 et 2
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #15
+= Jour-programme courant de Benoit : 8
+#ERR: undefined method `days' for nil:NilClass
+#BACKTRACE:
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/inst_data.rb:52:in `duree_relative'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/state.rb:16:in `depassement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/work_extensions.rb:32:in `niveau_avertissement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:49:in `block in etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/main.rb:39:in `activer_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/if_next_pday.rb:28:in `test_if_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:52:in `block in traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:69:in `block in <main>'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `chdir'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `<main>'
+#ERREUR FATALE : Impossible de faire l'état des lieux du programme…
+--- Le programme #15 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 8).
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #15
+= Jour-programme courant de Benoit : 8
+#ERR: undefined method `days' for nil:NilClass
+#BACKTRACE:
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/inst_data.rb:52:in `duree_relative'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/state.rb:16:in `depassement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/work_extensions.rb:32:in `niveau_avertissement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:49:in `block in etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/main.rb:39:in `activer_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/if_next_pday.rb:28:in `test_if_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:52:in `block in traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:69:in `block in <main>'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `chdir'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `<main>'
+#ERREUR FATALE : Impossible de faire l'état des lieux du programme…
+--- Le programme #15 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 8).
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #15
+= Jour-programme courant de Benoit : 8
+#ERR: undefined method `days' for nil:NilClass
+#BACKTRACE:
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/inst_data.rb:52:in `duree_relative'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/required/work/state.rb:16:in `depassement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/work_extensions.rb:32:in `niveau_avertissement'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:49:in `block in etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/etat_des_lieux.rb:41:in `etat_des_lieux_program'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/starter_pday/main.rb:39:in `activer_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/objet/unan/lib/module/start_pday/if_next_pday.rb:28:in `test_if_next_pday'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:52:in `block in traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `each'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:25:in `traite_users_unanunscript'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:69:in `block in <main>'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `chdir'
+# /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `<main>'
+#ERREUR FATALE : Impossible de faire l'état des lieux du programme…
+--- Le programme #15 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 8).
+Rapport administration consigné dans un fichier
+Rapport horaire envoyé à l'administration

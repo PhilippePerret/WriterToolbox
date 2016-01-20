@@ -35,7 +35,7 @@ class Bureau
   # de l'user, pour boucler dessus et les afficher, ou autre
   # travail.
   def works
-    @works ||= works_ids.collect { |wid| Unan::Programm::Work::new(wid) }
+    @works ||= works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
   end
 
   # {Array} Liste ordonnée des IDs de travaux à accomplir par

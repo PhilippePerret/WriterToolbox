@@ -56,7 +56,7 @@ class Unan
         path_rapport_admin.remove
       else
         # On doit envoyer le rapport toutes les heures
-        message_mail = mail_path.deserb( self )
+        message_mail = path_mail.deserb( self )
         log "Rapport horaire envoyé à l'administration"
       end
     end
