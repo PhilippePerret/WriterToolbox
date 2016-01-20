@@ -1,0 +1,24 @@
+
+
+========== CRON JOB DU 20 01 2016 - 09:00 ==========
+
+<- lib/required.rb
+= Nombre d'auteurs en activité : 6
+= IDs : 2, 59, 64, 68, 75 et 85
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #15
+= Jour-programme courant de Benoit : 356
+# ERREUR GRAVE : Impossible de vérifier l'étape du travail du programme courant (15) : undefined method `+' for false:FalseClass
+-- Aucune donnée AbsPDay pour le jour 357
+--- Le programme #15 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 357).
+### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : undefined method `[]' for nil:NilClass
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/User/inst_data.rb:24:in `get'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/User/inst_data.rb:42:in `pseudo'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:28:in `block in traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:26:in `each'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb:26:in `traite_users_unanunscript'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:46:in `block in <main>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `chdir'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:22:in `<main>'

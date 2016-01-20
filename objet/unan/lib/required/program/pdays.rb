@@ -13,19 +13,19 @@ class Program
   # "1er jour".
   # NOTE : C'est une `variable` de l'auteur de name :current_pday
   def current_pday as = :nombre # ou :human
-    @ijour_actif ||= auteur.get_var(:current_pday, :none)
+    @current_pday ||= auteur.get_var(:current_pday, :none)
     # En fonction du type du retour
     case as
     when :instance
-      @ijour_actif == :none ? nil : PDay::new(self, @ijour_actif)
+      @current_pday == :none ? nil : PDay::new(self, @current_pday)
     when :human, :humain
-      @ijour_actif = 1 if @ijour_actif == :none
-      mark = @ijour_actif == 1 ? "er" : "e"
-      "#{@ijour_actif}<sup>#{mark}</sup> jour"
+      @current_pday = 1 if @current_pday == :none
+      mark = @current_pday == 1 ? "er" : "e"
+      "#{@current_pday}<sup>#{mark}</sup> jour"
     when :nombre, :number
-      @ijour_actif == :none ? 1 : @ijour_actif
+      @current_pday == :none ? 1 : @current_pday
     else
-      @ijour_actif
+      @current_pday
     end
   end
 

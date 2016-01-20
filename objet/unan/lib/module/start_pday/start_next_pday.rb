@@ -4,15 +4,20 @@ class Program
 
 
   # Démarre le jour-programme suivant
+  # Méthode générale qui va faire passer le programme courant
+  # du jour courant au jour suivant.
+  # Noter que suivant le rythme du programme, cela peut survenir
+  # n'importe quand, à n'importe quelle heure.
   def start_next_pday
     start_pday( ( current_pday(:nombre) || 0 ) + 1 )
+    StarterPDay::new(self).next_pday
   end
 
   # Pour le développement du programme (implémentation), cette
   # méthode procède à quelques vérifications sur les 5 premiers
   # jours pour rectifier/corriger certaines choses qui changent
   # au cours de la programmation
-  def check_validitie_program
+  def check_validite_program
     # Toutes les tables doivent exister
   end
 
@@ -40,7 +45,11 @@ class Program
     # vérification d'usage pour rectifier le tir
     # La méthode vérifie par exemple que toutes les tables soient
     # bien construites
-    check_validitie_program if ipday < 5
+    begin
+      check_validite_program if ipday < 5
+    rescue Exception => e
+      log "# Impossible de vérifier la validité du program : #{e.message}"
+    end
 
     # Instancier un AbsPDay pour ce jour
     # Mais ce jour-programme n'est peut-être pas défini,
@@ -73,17 +82,10 @@ class Program
     # ou alors on consigne aussi les problèmes, justemnet ?)
     # Cette méthode prépare aussi le mail journalier, puisqu'elle
     # va passer en revue tous les travaux courants de l'auteur.
-    check_current_etat_travail_programme
-
-    # Si l'auteur veut recevoir un mail quotidien pour
-    # lui rappeler ses travaux ou son état, il faut relever
-    # la liste de ses travaux courants avant d'ajouter les
-    # nouveaux travaux.
-    # On les relève aussi même si l'auteur ne veut pas de mails
-    # quotidien pour lui rappeler le travail qui reste à faire
-    # après lui avoir présenté les nouveaux travaux
-    if auteur.daily_summary? || @pday_with_new_travaux
-      memorise_liste_travaux_courants_pour_mail
+    begin
+      check_current_etat_travail_programme
+    rescue Exception => e
+      log "# ERREUR GRAVE : Impossible de vérifier l'étape du travail du programme courant (#{id}) : #{e.message}"
     end
 
     # On enregistre le jour-programme suivant dans la variable
@@ -102,7 +104,11 @@ class Program
     # pour l'auteur
     if pday_with_new_travaux
       log "-- Des data sont définis (travaux) pour le jour #{ipday}"
-      prepare_absolute_pday || return
+      begin
+        prepare_absolute_pday || return
+      rescue Exception => e
+        log "# Impossible de préparer le jour-programme absolu : #{e.message}."
+      end
     else
       log "-- Aucune donnée AbsPDay pour le jour #{ipday}"
       # Si l'auteur ne veut pas recevoir de mail journalier de
@@ -115,8 +121,11 @@ class Program
     #     il faut avertir l'auteur
     #   - Soit le jour-programme ne définit pas de nouveaux travaux
     #     mais l'auteur demande à être averti journalièrement
-
-    send_mail_to_auteur
+    begin
+      send_mail_to_auteur
+    rescue Exception => e
+      log "#GRAVE ERREUR : Impossible d'envoyer le mail à l'auteur du programme ##{id} (#{auteur.pseudo}/##{auteur.id}) : #{e.message}."
+    end
 
   end
 
@@ -128,40 +137,6 @@ class Program
   # journalier.
   def check_current_etat_travail_programme
 
-    # La liste des IDs de tous les travaux (works) courant de
-    # l'auteur.
-    # Noter que chaque "absolute-work" du programme correspond
-    # à un "work" de même ID dans la database du programme.
-    # Donc il est très simple d'obtenir l'un et l'autre.
-    works_ids = auteur.get_var(:works_ids, nil)
-
-    # Nombre de travaux à faire par l'auteur actuellement
-    # Noter que c'est avant d'ajouter les travaux du jour
-    # s'il y en a.
-    nombre_travaux = works_ids.count.freeze
-
-    # Dans le cas où l'auteur n'a plus aucun travail à faire, tout
-    # est OK, il n'y a aucun problème.
-    return if works_ids.nil? || works_ids.empty?
-
-    # Pour consigner le nombre d'avertissements par niveau en
-    # enregistrant les instances travaux dans les listes.
-    # Par exemple, la donnée de clé 3 correspond à l'avertissement
-    # de niveau 3 et contient dans sa liste tous les travaux qui
-    # ont atteint ce niveau d'avertissement
-    avertissements = {
-      1 => Array::new(),
-      2 => Array::new(),
-      3 => Array::new(),
-      4 => Array::new(),
-      5 => Array::new(),
-      6 => Array::new(),
-      total:0,
-      greater_than_four:0
-    }
-
-    # Pour indiquer qu'il faudra prévenir l'administration
-    avertissement_administration = false
 
     # Pour conserver les instances Unan::Program::Work parce
     # qu'on en aura besoin pour voir si un travail peut être
@@ -379,20 +354,6 @@ class Program
     true # pour poursuivre
   end
 
-
-  # Méthode qui mémorise les travaux courants de l'auteur pour
-  # le mail. Soit parce qu'il veut recevoir un mail quotidien, soit
-  # parce que c'est un nouveau jour-programme (donc de nouveaux
-  # travaux) et qu'on rappelle toujours les travaux courants dans
-  # ce cas
-  # TODO Dans cette méthode, il faudrait également voir si des
-  # travaux ne devraient pas déjà être accomplis, qui ne le sont
-  # pas (comment le savoir ?) et les signalier le cas échéant.
-  def memorise_liste_travaux_courants_pour_mail
-
-    # OBSOLÈTE : Maintenant, c'est fait dans le check de l'état
-    # courant de l'auteur/programme
-  end
 
 end #/Program
 end #/Unan

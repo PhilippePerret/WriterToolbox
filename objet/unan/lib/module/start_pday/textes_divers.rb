@@ -40,7 +40,7 @@ class Unan
       "Si vous vous laissez aller, vous ne serez pas en mesure d'achever votre projet.",
       "Ne croyez-vous pas qu'il serait temps de vous ressaisir ? Vous avez trop de travail en retard.",
       "Il va vous falloir maintenant une bonne dose de courage et d'effort pour rattraper le temps perdu."
-    ]
+    ],
     # Message qui est affiché lorsque tous les travaux de l'auteur
     # sont à jour, c'est-à-dire qu'il les a tous finis à temps (en tout
     # cas ceux qui devraient être finis)
