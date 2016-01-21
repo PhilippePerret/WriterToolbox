@@ -29,6 +29,7 @@ class AbsWork
   #             les personnage, ou la structure.
   def titre         ; @titre          ||= get(:titre)         end
   def type_w        ; @type_w         ||= get(:type_w)        end
+  def item_id       ; @item_id        ||= get(:item_id)       end
   def type          ; @type           ||= get(:type)          end
   def duree         ; @duree          ||= get(:duree)         end
   def travail       ; @travail        ||= get(:travail)       end

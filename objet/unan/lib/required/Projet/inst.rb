@@ -30,7 +30,7 @@ class Projet
   def updated_at    ; @updated_at ||= get(:updated_at)  end
   # Bit 1   Type du projet (Unan::Projet::TYPES)
   # Bit 2   - pour développement ultérieur -
-  # Bit 3   - visibilité (personne, autres auteurs, monde) -
+  # Bit 3   - pour développement ultérieur -
   def specs         ; @specs      ||= get(:specs)       end
 
   # ---------------------------------------------------------------------
@@ -46,6 +46,28 @@ class Projet
     @program ||= Unan::Program::get(program_id)
   end
 
+  # Nouvelle méthode `set` pour pouvoir fonctionner même avec
+  # les “valeurs bits”
+  #
+  # On récupère la méthode normale
+  alias :db_set :set
+  # Et on implémente une autre qui va corriger les valeurs à
+  # corriger
+  def set hdata
+    if hdata.has_key?(:type)
+      @type = hdata.delete(:type).to_i
+      @specs    = specs
+      @specs[0] = @type.to_s
+      hdata.merge!( :specs => @specs)
+    end
+    if hdata.has_key?(:sharing)
+      # C'est dans les préférences qu'il faut régler ça
+      @sharing = hdata.delete(:sharing).to_i
+      user.set_preference(:sharing => @sharing)
+    end
+    db_set hdata # enregistrement dans la db
+  end
+
   # Type du projet
   # C'est le BIT 1 des specs
   def type
@@ -55,7 +77,7 @@ class Projet
   # Autorisation
   # cf. Unan::SHARINGS
   def sharing
-    @sharing ||= user.preference(:sharing) # specs[3].to_i
+    @sharing ||= user.preference(:sharing)
   end
 
   # ---------------------------------------------------------------------

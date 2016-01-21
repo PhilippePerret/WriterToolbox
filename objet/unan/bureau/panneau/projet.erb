@@ -2,6 +2,9 @@
 # Panneau du projet
 #
 # C'est notamment dans ce panneau qu'on règle le titre du projet
+form.prefix = 'projet'
+dpm = param(:projet) || Hash::new
+
 %>
 <% if missing_data %>
   <span class='warning small'>Des données sont manquantes pour votre projet, elles sont indiquées en rouge ci-dessous (<%= missing_data %>).</span>
@@ -11,15 +14,15 @@
   <%# OPÉRATION %>
   <%= "bureau_save_projet".in_hidden(name:'operation') %>
 
-  <%= form.field_text("Titre du projet", 'titre', user.projet.titre, {warning: user.projet.titre.nil?}) %>
+  <%= form.field_text("Titre du projet", 'titre', dpm[:titre] || user.projet.titre, {warning: user.projet.titre.nil?}) %>
   <%= form.field_description("Le titre du projet, même si ça n'est qu'un <strong>titre de travail</strong>.") %>
 
   <%# RÉSUMÉ %>
-  <%= form.field_textarea("Résumé", 'resume', user.projet.resume, {warning: user.projet.resume.nil?}) %>
+  <%= form.field_textarea("Résumé", 'resume', dpm[:resume] || user.projet.resume, {warning: user.projet.resume.nil?}) %>
   <%= form.field_description("Entrez un cours résumé de l'histoire pour le présenter à ceux avec qui vous le partagez.") %>
 
   <%# TYPE SUPPORT %>
-  <%= form.field_select("Type du support", 'support', user.projet.type, {values: Unan::Projet::TYPES, warning: user.projet.type == 0}) %>
+  <%= form.field_select("Type du support", 'type', dpm[:type] || user.projet.type, {values: Unan::Projet::TYPES, warning: (dpm[:type] || user.projet.type).to_i == 0}) %>
 
   <%# PARTAGE %>
   <%= bureau.row_form_sharing %>

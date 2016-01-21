@@ -30,7 +30,7 @@ class Bureau
   # @usage : if works.count == 0
   #            ...
   def message_si_aucun_travail
-    @message_si_aucun_travail ||= "<p class='grand air small'>Pas de tâches à accomplir… pas pages de cours à lire… pas de questionnaire… Et si vous alliez faire un petit tour au parc ou en forêt ?…</p>"
+    @message_si_aucun_travail ||= "<p class='grand air small'>Pas de tâches à accomplir… pas pages de cours à lire… pas de questionnaire à remplir… Et si vous alliez faire un petit tour au parc ou en forêt ?…</p>"
   end
 
   # ---------------------------------------------------------------------
