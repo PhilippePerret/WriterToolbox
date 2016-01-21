@@ -1,0 +1,53 @@
+<%
+#
+# Pour éditer une question de questionnaire/checkup ou quiz
+#
+site.require 'form_tools'
+
+if param(:operation) == 'edit_question'
+  debug "param(:operation) : #{param(:operation).inspect}"
+  iquestion = Unan::Quiz::Question::new(param(:question)[:id].to_i)
+  dquestion = iquestion.get_all
+  dquestion.merge!(
+    type_a: iquestion.type_a,
+    type_c: iquestion.type_c
+  )
+  param(:question => dquestion)
+end
+
+form.prefix = "question"
+form.objet  = param(:question) || Hash::new # pour le moment
+
+%>
+<%
+lien_edit_question    = "Edit".in_a(href:"", onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
+lien_destroy_question = "Détruire".in_a(href:"question/destroy?in=unan_admin/quiz", class:'small btn warning')
+%>
+<form id="form_question_edit" class="dim3070" action="question/edit?in=unan_admin/quiz" method="POST">
+
+  <%= "save_question".in_hidden(name:'operation', id:'operation') %>
+
+  <%= form.field_text("ID", 'id', nil, {class:'short', text_after: "#{lien_edit_question} #{lien_destroy_question}"}) %>
+  <%= form.field_description("Mettre ID à rien pour générer une nouvelle question.") %>
+
+  <%# QUESTION %>
+  <%= form.field_text("Question", 'question', nil) %>
+
+  <%# RÉPONSES %>
+  <div id="reponses"></div>
+  <%= "".in_hidden(name:"question[nombre_reponses]", id:"question_nombre_reponses") %>
+  <%= form.field_raw("", "", nil, {field: " + réponse".in_a(class:'btn small', onclick:"$.proxy(Question,'new_reponse')()")}) %>
+  <%= form.field_description("Ajouter les réponses en précisant leur nombre de points. Si une réponse est laissée vide, elle sera supprimée.") %>
+  <%# Champ caché dans le cas où c'est une édition, pour mettre les réponses dans leur format brut (string) %>
+  <textarea id="reponses_json" style="display:none;"><%= form.objet[:reponses] %></textarea>
+
+
+  <%# TYPE (checkbox ou radio) %>
+  <%= form.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (Cases à cocher)"]]}) %>
+  <%= form.field_select("Affichage", 'type_a', nil, {values: [['c', "L'un en dessous de l'autre"], ['l', "En ligne"], ['m', "En menu"]]}) %>
+
+  <%= form.field_textarea("Raison bonne réponse", 'raison', nil) %>
+  <%= form.field_description("Dans le cas d'un vrai test, on peut donner ici la raison de la bonne réponse et aussi pourquoi les autres réponses ne sont pas valables.") %>
+
+  <%= form.submit_button("Enregistrer la question") %>
+</form>

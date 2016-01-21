@@ -25,10 +25,18 @@ class << self
   def table_absolute_pdays
     @table_absolute_pdays ||= get_table_cold('absolute_pdays')
   end
-  
+
   # Table contenant toutes les données absolues des travaux (abs_works)
   def table_absolute_works
     @table_absolute_works ||= get_table_cold('absolute_works')
+  end
+
+  def table_questions
+    @table_questions ||= get_table_cold('questions')
+  end
+
+  def table_quiz
+    @table_quiz ||= get_table_cold('quiz')
   end
 
   # ---------------------------------------------------------------------

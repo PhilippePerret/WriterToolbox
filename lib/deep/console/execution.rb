@@ -98,6 +98,7 @@ class Console
       detruire_table_projets
     when "Unan retreive data (table projets)"
       retreive_data_projets
+
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table programs)"
@@ -108,6 +109,14 @@ class Console
       detruire_table_programs
     when "Unan retreive data (table programs)"
       retreive_data_programs
+
+    # ---------------------------------------------------------------------
+
+    when "Unan affiche (table questions)"
+      affiche_table_questions
+    when "Unan affiche (table quiz)"
+      affiche_table_quiz
+      
     else
       nil # pour essayer autrement
     end

@@ -16,11 +16,17 @@ Méthodes pour les objets (instances) des bases de données.
 module MethodesObjetsBdD
 
   # Relève toutes les données de l'instance pour éviter les
-  # requêtes à répétition.
-  #
+  # requêtes à répétition et les dispatche dans les variables
+  # Retourne toujours les données, sous forme de Hahs
   def get_all
     @data = nil # pour forcer la relève
-    data
+    dispatch data
+    return data
+  end
+
+  # Dispatche les données +hdata+ dans les variables d'instance
+  def dispatch hdata
+    hdata.each { |k, v| instance_variable_set( "@#{k}", v ) }
   end
 
   # Relève toutes les données dans la table

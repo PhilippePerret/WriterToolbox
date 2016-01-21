@@ -166,6 +166,14 @@ class Console
     end
   end
 
+  def affiche_table_questions
+    init_unan
+    show_table Unan::table_questions
+  end
+  def affiche_table_quiz
+    init_unan
+    show_table Unan::table_quiz
+  end
   def affiche_table_programs
     init_unan
     show_table Unan::table_programs
