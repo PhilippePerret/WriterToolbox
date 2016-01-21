@@ -8,3 +8,5 @@
   <%= 'bureau_repondre_messages_forum'.in_hidden(name:'operation') %>
   <%= bureau.submit_button("Envoyer réponses aux messages") %>
 </form>
+
+<% if works.count == 0 %><%= message_si_aucun_travail %><% end %>

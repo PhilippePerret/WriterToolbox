@@ -1,3 +1,31 @@
+input[type="submit"].btn, a.btn
+  font-family         : Arial
+  font-size           : inherit
+  background-color    : green
+  color               : white !important
+  padding             : 0.4em 2em
+  letter-spacing      : 2.2px
+  &.warning
+    background-color    : #CF0000
+  
+input[type="submit"].btn
+  &.tiny
+    font-size       : 10.8pt
+    padding         : 0.3em 1.2em
+    letter-spacing  : 1.1px
+  &.small
+    font-size       : 13.2pt
+    padding         : 0.38em 1.6em
+    letter-spacing  : 1.5px
+  &.medium
+    font-size : inherit
+  &.big
+    font-size : 17.8pt
+a.btn
+  &.small
+    font-size : 11.9pt
+    padding   : 0.4em 1em
+
 form, div
   // Les différentes tailles entre libellé et value s'obtiennent en
   // pourcentage dans la classe donnée au formulaire
@@ -53,34 +81,6 @@ form
       background-color    : #3F7E3F
       color               : white
       
-  input[type="submit"].btn, a.btn
-    font-family         : Arial
-    font-size           : inherit
-    background-color    : green
-    color               : white
-    padding             : 0.4em 2em
-    letter-spacing      : 2.2px
-    &.warning
-      background-color    : #CF0000
-    
-  input[type="submit"].btn
-    &.tiny
-      font-size       : 10.8pt
-      padding         : 0.3em 1.2em
-      letter-spacing  : 1.1px
-    &.small
-      font-size       : 13.2pt
-      padding         : 0.38em 1.6em
-      letter-spacing  : 1.5px
-    &.medium
-      font-size : inherit
-    &.big
-      font-size : 17.8pt
-  a.btn
-    &.small
-      font-size : 11.9pt
-      padding   : 0.4em 1em
-
   // Form de class 'small
   &.small
     input[type="submit"]

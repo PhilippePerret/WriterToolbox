@@ -18,6 +18,9 @@ ul#bande_onglets
       background-color  : #578088
       a
         color             : white
+      // La marque du nombre de travaux, messages, etc.
+      span.nombre
+        color       : yellow
 div.panneau_onglet
   border        : 1px solid #777
   border-radius : 0.4em
@@ -32,3 +35,34 @@ div.panneau_onglet
     line-height   : 1.3em
   span
     display       : inline-block
+    
+  div.work
+    padding           : 1em
+    border            : 1px solid #CCC
+    border-radius     : 0.5em
+    font-size         : 0.9em
+    background-color  : burlywood
+    div.titre
+      margin-bottom : 1em
+      font-weight   : bold
+      font-size     : 1.1em
+    div.buttons
+      text-align    : right
+      margin-top    : 1em
+      padding-top   : 1em
+      border-top    : 1px solid #777
+      color         : #777
+      a
+        background-color  : white
+        border            : 1px solid green
+        color             : green
+        padding           : 0.4em 1em
+        font-size         : 12.2pt
+        margin-right      : 1em
+        
+section#completed_works
+  opacity       : 0.55
+  div.work
+    div.buttons
+      // Il faut masquer la barre des boutons pour empêcher de faire des bêtises
+      display   : none

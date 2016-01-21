@@ -57,4 +57,25 @@ describe 'Méthodes d’état du work' do
     end
   end
 
+  describe '#completed?' do
+    it 'répond' do
+      expect(work).to respond_to :completed?
+    end
+    context 'avec un travail terminé' do
+      before(:all) do
+        @work.set(status: 9)
+      end
+      it 'retourne true' do
+        expect(work).to be_completed
+      end
+    end
+    context 'avec un travail qui n’est pas terminé' do
+      before(:all) do
+        @work.set(status: 0)
+      end
+      it 'retourne false' do
+        expect(work).not_to be_completed
+      end
+    end
+  end
 end

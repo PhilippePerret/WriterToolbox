@@ -5,7 +5,7 @@ class Work
 
   # La méthode qui crée la donnée
   def create
-    @id = table.insert(data2save)
+    @id = table.insert(data2save.merge(created_at: NOW))
   end
 
   # Sauvegarde de toutes les données du travail
@@ -49,7 +49,13 @@ class Work
   # {Fixnum} Durée relative du travail en secondes en
   # fonction du rythme courant du programme.
   def duree_relative
-    @duree_relative ||= (program.coefficient_duree * abs_work.duree.days).to_i
+    @duree_relative ||= begin
+      raise "Programme ne devrait pas être nil" if program.nil?
+      raise "Le coefficiant de durée ne devrait pas être nil" if program.coefficient_duree.nil?
+      raise "L'abs-work du travail ne devrait pas être nil" if abs_work.nil?
+      raise "La durée de l'abs-work ne devrait pas être nil" if abs_work.duree.nil?
+      (program.coefficient_duree * abs_work.duree.days).to_i
+    end
   end
 
   # ---------------------------------------------------------------------

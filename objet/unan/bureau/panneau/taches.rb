@@ -31,25 +31,12 @@ class Bureau
     end
   end
 
-  # {Array} Liste des instances Unan::Program::Travaux courantes
-  # de l'user, pour boucler dessus et les afficher, ou autre
-  # travail.
-  def works
-    @works ||= works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
-  end
-
   def tasks
-    @tasks ||= user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::new(user.program, wid) }
+    @tasks ||= user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::get(user.program, wid) }
   end
-  
-  # {Array} Liste ordonnée des IDs de travaux à accomplir par
-  # l'auteur
-  def works_ids
-    @works_ids ||= user.get_var(:works_ids, Array::new)
-  end
-
-  def table_travaux
-    @table_travaux ||= User::table_works
+  # Raccourci
+  def last_tasks
+    @last_tasks ||= user.program.last_tasks
   end
 
 end # /Bureau
@@ -73,7 +60,10 @@ class Work
     ).in_div(class:'work')
   end
   def form
-    "[Le marquer fini et gagner #{abs_work.points} points]"
+    (
+      "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches") +
+      " (et gagner #{abs_work.points} points)".in_span(class:'small')
+    ).in_div(class:'buttons')
   end
 
 

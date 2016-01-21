@@ -69,14 +69,20 @@ class SiteHtml
     else rut
     end
 
-    debug "rut après premier traitement : #{rut}"
+    # debug "rut après premier traitement : #{rut}"
 
     # Traitement réel de la route
-    case rut
-    when :home
+    begin
+      case rut
+      when :home
+        obj, obj_id, meth, cont = nil, nil, nil, nil
+      else
+        tout, obj, obj_id, meth, cont = rut.match(/^([a-z_]+)(?:\/([0-9]+))?\/([a-z_]+)(?:\?in=([a-z_]+))?$/).to_a
+      end
+    rescue Exception => e
+      debug "#ERREUR #{e.message}"
+      debug e.backtrace.join("\n")
       obj, obj_id, meth, cont = nil, nil, nil, nil
-    else
-      tout, obj, obj_id, meth, cont = rut.match(/^([a-z_]+)(?:\/([0-9]+))?\/([a-z_]+)(?:\?in=([a-z_]+))?$/).to_a
     end
     set_params_route obj, obj_id, meth, cont
     execute_route
@@ -193,7 +199,7 @@ class SiteHtml
     # 'lib/required' de l'objet pour pouvoir être chargé
     # avant l'appel de cette méthode.
     def method_call
-      sujet.send(method_sym) if sujet.respond_to?(method_sym)
+      sujet.send(method_sym) if method_sym != nil && sujet.respond_to?(method_sym)
     end
 
     # ---------------------------------------------------------------------

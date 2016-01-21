@@ -1,0 +1,14 @@
+
+
+========== CRON JOB DU 21 01 2016 - 14:00 ==========
+
+= Nombre d'auteurs en activité : 1
+= IDs : 2
+
+* TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
+= User::current : 2 (Benoit)
+= L'ID programme de Benoit est : #1
+= Jour-programme courant de Benoit : 1
+--- Le programme #1 de Benoit (#2) n'a pas eu besoin d'être passé au jour-programme suivant.
+Rapport administration consigné dans un fichier
+Rapport horaire envoyé à l'administration

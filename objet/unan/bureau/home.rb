@@ -23,6 +23,35 @@ class Bureau
     preferences:  {id: :preferences,  titre:"Préférences"}
   }
 
+  # ---------------------------------------------------------------------
+  #   Messages communs à tous les panneaux
+  # ---------------------------------------------------------------------
+
+  # @usage : if works.count == 0
+  #            ...
+  def message_si_aucun_travail
+    @message_si_aucun_travail ||= "<p class='grand air small'>Pas de tâches à accomplir… pas pages de cours à lire… pas de questionnaire… Et si vous alliez faire un petit tour au parc ou en forêt ?…</p>"
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes pour les travaux
+  # ---------------------------------------------------------------------
+  # {Array} Liste des instances Unan::Program::Travaux courantes
+  # de l'user, pour boucler dessus et les afficher, ou autre
+  # travail.
+  def works
+    @works ||= works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
+  end
+
+  # {Array} Liste ordonnée des IDs de travaux à accomplir par
+  # l'auteur
+  def works_ids
+    @works_ids ||= user.get_var(:works_ids, Array::new)
+  end
+
+  def table_travaux
+    @table_travaux ||= User::table_works
+  end
 
   # ---------------------------------------------------------------------
   #   Méthodes pour les PANNEAUX
@@ -104,9 +133,9 @@ class Bureau
   # Retourne le titre de l'onglet pour les données d'onglet +data+
   def titre_onglet data
     tit = data[:titre]
-    if data[:nombre]
+    if data[:knombre]
       nb = user.nombre_de(data[:knombre])
-      tit << " (#{nb})" if nb > 0
+      tit << " <span class='nombre'>(#{nb})</span>" if nb > 0
     end
     tit
   end

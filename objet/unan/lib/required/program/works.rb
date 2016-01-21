@@ -14,23 +14,61 @@ class Program
     Work::get(self, wid)
   end
 
-  # {Array of Unan::Program::Work} Liste des travaux propres du
+  # {Array of Hash} Liste des travaux propres du
   # programme courant en appliquant le filtre +filtre+ s'il est
-  # défini.
+  # défini. Noter que les travaux sont toujours en ordre inverse,
+  # les derniers en premier.
   # +filtre+
-  #   :completed      SI true, les travaux terminés (status 9)
+  #   :completed    Si true, les travaux terminés (status 9)
   #                 Si false, seulement les non terminés
+  #   :type         Le type, parmi :task, :quiz, :pages (cours)
+  #                 :forum.
+  #   :count        {Fixnum} Pour ne récupérer qu'un certain nombre
+  #                 de tâche. Par exemple, pour les 10 dernières :
+  #                 filtre = {completed:true, count:10}
   def works filtre = nil
-    @works ||= self.table_works.select(order:"created_at ASC").values
+    @works ||= self.table_works.select(order:"created_at DESC").values
     return @works if filtre.nil?
 
     filtered = @works.dup
+
+    # Filtrage pour ne prendre que les works terminés (ou pas)
     if filtre[:completed]
       filtered.reject! { |h| h[:status] < 9 }
     elsif filtre[:completed] === false
       filtered.reject! { |h| h[:status] == 9 }
     end
+
+    # Filtrage pour ne prendre que les works d'un
+    # certain type
+    if filtre[:type]
+      filtre[:type] = case filtre[:type]
+      when :task then :tasks
+      when :page then :pages
+      else filtre[:type]
+      end
+      liste_codes_type = Unan::Program::AbsWork::CODES_BY_TYPE[filtre[:type]]
+      filtered.select! do |h|
+        liste_codes_type.include?(Unan::Program::AbsWork::get(h[:abs_work_id]).type_w)
+      end
+    end
+
+    # Filtrage pour ne prendre que les x derniers
+    if filtre[:count]
+      filtered = filtered[0..filtre[:count] - 1]#.compact
+    end
+
     filtered
+  end
+
+  # {Array of Unan::Program::Work} Retourne les 5 dernières tâches
+  # comme instance.
+  def last_tasks
+    @last_tasks ||= begin
+      works(completed:true, count:5, type: :task).collect do |hwork|
+        Work::new(self, hwork[:id])
+      end
+    end
   end
 
 end #/Program

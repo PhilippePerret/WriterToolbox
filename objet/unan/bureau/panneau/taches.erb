@@ -1,9 +1,35 @@
+<%
+# Note : C'est le programme qui est bindé à cette vue
+%>
 <p class='small right'>
   Retrouvez tous les jours ici le travail que vous avez à accomplir.
 </p>
 
+<%
+# ---------------------------------------------------------------------
+#   Section affichant les tâches courantes à exécuter
+# ---------------------------------------------------------------------
+%>
 <% if tasks.count > 0 %>
   <%= tasks.collect { |iwork| iwork.output }.join %>
 <% else %>
-  <p>Vous n'avez aucun travail courant. C'est étrange, mais cela peut arriver. Puis-je vous conseiller d'aller faire un tour au parc ou en forêt ?</p>
+  <p class='small discret'>Vous n'avez aucun travail courant.</p>
+  <% if works.count == 0 %>
+    <%= message_si_aucun_travail %>
+  <% end %>
 <% end %>
+
+<%
+# ---------------------------------------------------------------------
+#   Section affichant les tâches achevées récemment
+# ---------------------------------------------------------------------
+%>
+<hr />
+<section id="completed_works">
+<% if last_tasks.count > 0 %>
+  <h3>Tâches récemment achevées</h3>
+  <%= last_tasks.collect { |iwork| iwork.output }.join %>
+<% else %>
+  <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>
+<% end %>
+</section>

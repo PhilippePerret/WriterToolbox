@@ -19,6 +19,11 @@ class Work
     @depassement ||= NOW - (self.created_at + self.duree_relative)
   end
 
+  # Return true si le travail est terminé, false dans le cas
+  # contraire
+  def completed?
+    status == 9
+  end
 
 end #/Work
 end #/Program

@@ -17,7 +17,6 @@ class << self
     # dans la table des programmes
     data_program = {
       auteur_id:  user.id,
-      etape_id:   nil,
       options:    "1" + ("0"*31), # actif
       points:     0,
       rythme:     5,

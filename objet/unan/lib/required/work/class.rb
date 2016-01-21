@@ -4,7 +4,9 @@ class Program
 class Work
   class << self
 
+    # Obtenir un travail
     def get program, wid
+      # debug "-> Unan::Program::Work::get (program = #{program.inspect} / wid = #{wid.inspect})"
       wid = wid.to_i_inn
       @instances ||= Hash::new
       @instances[wid] ||= new(program, wid)

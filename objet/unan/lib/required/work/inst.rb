@@ -31,6 +31,28 @@ class Work
     @id       = wid
   end
 
+  def set_complete
+    # Il faut le retirer des listes
+    # On ajoute la clé :works pour traiter aussi la liste
+    # :works_ids à laquelle appartient forcément le travail
+    # puisque cette liste contient tous les travaux courants
+    liste_retraits = Array::new
+    hliste = Unan::Program::AbsWork::CODES_BY_TYPE
+    hliste.merge(works: nil).each do |lid, ldata|
+      key_list = "#{lid}_ids".to_sym
+      liste = program.auteur.get_var(key_list, Array::new).uniq
+      if liste.include? id
+        liste.delete( id )
+        user.set_var(key_list => liste )
+        liste_retraits << key_list
+      end
+    end
+    if (OFFLINE || user.admin?) && liste_retraits.count < 2
+      error "Bizarrement, le travail n'a été retiré que de la liste #{liste_retraits.pretty_join}… Il aurait dû être retiré de deux listes."
+    end
+    set(status: 9, updated_at: NOW)
+    flash "Travail #{id} marqué terminé."
+  end
 
   # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire
   # ses résultats divers sur les travaux absolus.

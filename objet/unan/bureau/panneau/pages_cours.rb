@@ -5,12 +5,12 @@ class Bureau
   # cours à lire
   def pages_cours
     @pages_cours ||= begin
-      ids = get_var(:pages_cours).nil_if_empty.nil?
-      unless ids.nil?
-        ids.collect{|pid| Unan::Program::PageCours::get(pid)}
-      else
-        Array::new
-      end
+      user.get_var(:pages_ids, Array::new).uniq.collect { |pid| Unan::Program::PageCours::get(pid) }
+    end
+  end
+  def last_pages_cours
+    user.program.works(completed:true, type: :pages).collect do |hwork|
+      Unan::Program::PageCours::get(hwork[:item_id])
     end
   end
 
@@ -30,7 +30,7 @@ class PageCours
 
   # Affichage complet de la page de cours pour le bureau
   def output_bureau
-
+    "[sortie de la page ##{id} pour le bureau]"
   end
 
 end #/PageCours

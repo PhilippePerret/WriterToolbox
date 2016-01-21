@@ -1,18 +1,23 @@
 <%
 # Panneau des pages de cours à lire
 %>
-<p class='small right'>Retrouvez ici toutes les pages de cours que vous avez à lire.</p>
+<p class='small right'>Retrouvez ici toutes les pages de cours à lire.</p>
 
-<% if user.pages_cours_ids.empty? %>
+<% if works.count == 0 %><%= message_si_aucun_travail %><% end %>
 
-  <p>
-    <strong>Aucune page de cours à lire</strong>. Notez que lorsque vous avez des pages de cours à lire, <%= user.pseudo %>, un nombre <span class='small'>— le nombre de pages —</span> est indiqué dans l'onglet, sous la forme : “Cours (4)”<span class='small'> (pour “4 pages à lire”)</span>.
-  </p>
+<% if pages_cours.count > 0 %>
 
-<% else %>
+  <% pages_cours.each do |page| %>
+    <%= page.output_bureau %>
+  <% end %>
 
-  <% bureau.pages_cours.each do |page_cours| %>
-    <%= page_cours.output_bureau %>
+<% end %>
+<% if last_pages_cours.count > 0 %>
+
+  <h3>Dernières pages de cours lues</h3>
+
+  <% last_pages_cours.each do |page| %>
+    <%= page.output_bureau %>
   <% end %>
 
 <% end %>
