@@ -1,4 +1,10 @@
 # encoding: UTF-8
+=begin
+Script qui affiche tous les mails qui n'ont pas été envoyés
+en OFFLINE.
+RAPPEL : Ces mails ont été consignés au format Marshal dans
+le dossier `./tmp/mails/`
+=end
 
 require './lib/required'
 

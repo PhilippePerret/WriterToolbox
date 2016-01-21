@@ -24,8 +24,10 @@ def schema_table_unan_hot_programs
     # Pour la définition de chaque bit des options, cf. le
     # fichier
     options:      {type:"VARCHAR(32)", default: "'"+("0"*32)+"'"},
-    etape_id:     {type:"INTEGER(4)"}, # ID de l'étape courante
-    points:       {type:"INTEGER(4)"}, # Nombre total de points
+
+    # Nombre de points
+    # ----------------
+    points:       {type:"INTEGER(4)"},
 
     # Rythme adopté
     # -------------

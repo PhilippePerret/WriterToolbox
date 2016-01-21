@@ -40,12 +40,13 @@ class Unan
       # On enregistre le rapport mis en forme dans le fichier,
       # s'il existe, car c'est ce fichier qui sera lu et mis
       # dans le mail
-      unless rapport_mis_en_forme.empty?
-        File.open(path_rapport_admin.to_s, 'a') do |f|
-          f.write "\n\n#{rapport_mis_en_forme}"
-        end
-        log "Rapport administration consigné dans un fichier"
+      # Noter qu'il existe toujours puisqu'on ajoute au
+      # bout le log. Ce log témoigne de tout ce qui a
+      # été fait au cours du cron job.
+      File.open(path_rapport_admin.to_s, 'a') do |f|
+        f.write "\n\n#{rapport_mis_en_forme}"
       end
+      log "Rapport administration consigné dans un fichier"
 
       # S'il faut envoyer le rapport seulement une fois par
       # jour et qu'on est dans la première heure de la journée
@@ -65,16 +66,15 @@ class Unan
     def rapport_mis_en_forme
       @rapport_mis_en_forme ||= begin
         c = ""
-        c << "<h3>Dépassements</h3>"
-        c << depassements.collect{|k, v| v.in_li}.join.in_ul
-
-        unless c.empty?
-          # On ajoute un titre général et le dernier log au
-          # mail qui sera envoyé
-          "<h2>Rapport administration du cronjob du #{NOW.as_human_date(true, true)}</h2>#{c}<hr />#{log_content}"
-        else
-          nil
+        unless depassements.empty?
+          c << "<h3>Dépassements</h3>"
+          c << depassements.collect{|k, v| v.in_li}.join.in_ul
         end
+
+        # On ajoute un titre général et le dernier log au
+        # mail qui sera envoyé
+        "<h2>Rapport administration du cronjob du #{NOW.as_human_date(true, true)}</h2>#{c}<hr /><pre>\n#{log_content}\n</pre>"
+
       end
     end
 
@@ -118,7 +118,7 @@ class Unan
     # Path du fichier qui contient l'enregistrement des
     # rapports effectués toutes les heures
     def path_rapport_admin
-      @path_rapport_admin ||= SuperFile::new(['.', 'CRON', 'rapport_admin.html'])
+      @path_rapport_admin ||= SuperFile::new([Log::folder, 'rapport_admin.html'])
     end
 
   end

@@ -15,7 +15,7 @@ class Log
       ref
     end
     def reflog_path
-      @reflog_path ||= File.join(THIS_FOLDER, "log-#{Time.now.to_i}.log")
+      @reflog_path ||= File.join(folder, "log-#{Time.now.to_i}.log")
     end
 
     # Obtenir le contenu du fichier log
@@ -30,6 +30,16 @@ class Log
       @reflog = File.open(reflog_path, 'a')
       return content
     end
+
+    # Dossier ./CRON/log/
+    def folder
+      @folder ||= begin
+        d = File.join(THIS_FOLDER, 'log')
+        Dir.mkdir(d, 0755) unless File.exist?(d)
+        d
+      end
+    end
+    
   end # << self
 end
 
