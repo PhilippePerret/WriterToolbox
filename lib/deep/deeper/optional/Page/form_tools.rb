@@ -242,7 +242,7 @@ class Page
       def field_checkbox
         # Note : Pour un champ checkbox, le libellé sert de texte pour la
         # case à cocher, pas de libellé (qui est supprimé par défaut)
-        cb_label.in_checkbox( field_attrs.merge(checked: field_value == 'on') )
+        cb_label.in_checkbox( field_attrs.merge(checked: (field_value == 'on' || field_value == true)) )
       end
 
       def field_radio

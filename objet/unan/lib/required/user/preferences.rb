@@ -15,7 +15,8 @@ class User
       pref_id    = pref_id.keys.first
     end
     pref_id = pref_id.to_sym
-    set_var( "pref_#{pref_id}", pref_value )
+    var_key = "pref_#{pref_id}".to_sym.freeze
+    set_var( var_key, pref_value )
     @preferences[pref_id] = pref_value
   end
 

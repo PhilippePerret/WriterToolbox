@@ -28,7 +28,6 @@ class User
   # Note : Pour l'enregistrement de plusieurs variables en même temps,
   # utiliser la méthode `set_vars` ci-dessous.
   def set_var var_name, var_value = nil
-
     # Enregistrement de plusieurs variables d'un coup
     if var_name.instance_of?(Hash)
       if var_name.count > 1
@@ -41,10 +40,15 @@ class User
     end
 
     # Le Hash qui sera enregistré dans la table
-    h2save = var_real_to_hash2save( var_value ).merge(name: var_name)
+    h2save = var_real_to_hash2save( var_value )
 
-    table_variables.set( where:{name: var_name}, values: h2save )
-
+    # Création ou update
+    if table_variables.count(where:{name: var_name}) == 0
+      h2save.merge!(name: var_name)
+      table_variables.insert(h2save)
+    else
+      table_variables.set( where:{name: var_name}, values: h2save )
+    end
   end
 
   # Return l'index 0-start du type de la valeur
@@ -103,50 +107,16 @@ class User
 
   # ---------------------------------------------------------------------
 
-  # Sauve dans la table `variables` en enregistrant plusieurs
-  # données à la fois
+  # Sauve dans la table `variables` en enregistrant les données
+  # les unes après les autres. Des essais ont été faits pour
+  # distinguer les UPDATE des INSERT mais ça foirait, donc je
+  # suis revenu à ça, même si c'est plus long. Noter que ça ne
+  # posera jamais trop de problèmes puisqu'on a affaire à une
+  # table qui ne concerne que l'user courant.
   def set_vars hdata
-    # On essaie d'abord de les récupérer pour voir celles qui
-    # existent. On va mettre dans le Hash `hsaved` en clé le
-    # var_name est en valeur le hash (dont on se servira pour
-    # voir si la valeur a changé)
-    all_saved = get_vars( hdata.keys, as_real_value = false )
-
-    requests    = Array::new
-    insertions  = Array::new
-
-    # On boucle sur toutes les données à sauver pour voir
-    # s'il faut les UPDATEr ou les INSERTer et on renseigne les
-    # éléments de requête.
     hdata.each do |var_name, var_value|
-
-      h2save = var_real_to_hash2save( var_value )
-      # => contient {:value, :type}
-
-      # Si la donnée était déjà enregistrée
-      if all_saved.has_key?( var_name )
-        # C'est une ancienne donnée => UPDATE ou rien si la valeur n'a
-        # pas changé
-        hsaved = all_saved[var_name].freeze
-        if h2save[:value] == hsaved[:value] && h2save[:type] == hsaved[:type]
-          # La donnée n'a pas changé, inutile de la sauver
-          next
-        else
-          requests << "UPDATE variables SET value = '#{h2save[:value]}', type = #{h2save[:type]} WHERE id = #{hsaved[:id]};"
-        end
-      else
-        # C'est une nouvelle donnée => INSERT(ion)
-        insertions << "('#{var_name}', '#{h2save[:value]}', #{h2save[:type]})"
-      end
+      set_var(var_name, var_value)
     end
-    # On finalise la requête d'insertion (multiples insertions)
-    requests << "INSERT INTO variables (name, value, type) VALUES #{insertions.join(', ')};"
-
-    # La requête totale
-    requests = requests.join("")
-    # debug "Requête multiple dans variables :\n#{requests}"
-    res = program_database.execute( requests )
-    # debug "Retour de requête : #{res.inspect}"
   end
 
   # Récupérer la valeur de la variable `var_name` (qui peut avoir

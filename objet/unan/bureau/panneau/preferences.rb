@@ -17,7 +17,8 @@ class Bureau
     # cases à cocher décochées. Si elles en sont pas définies, il
     # faut mettre leur valeur à false
     prefs = {
-      bureau_after_login: false
+      bureau_after_login:   false,
+      daily_summary:        false
     }
     page.params_cgi.each do |key, val|
       next unless key.to_s.start_with?('pref_')
@@ -33,9 +34,8 @@ class Bureau
       end
       prefs.merge! key => def_value
     end
-    user.set_preferences prefs
-    debug "PRÉFÉRENCES SAUVÉES : #{prefs.pretty_inspect}"
-    flash "Préférences sauvées"
+    user.set_preferences( prefs )
+    flash "Préférences enregistrées."
   end
 
   # Cf. l'explication dans home.rb
