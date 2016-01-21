@@ -32,6 +32,14 @@ class StarterPDay
 
   # = main =
   #
+  # Méthode qui démarre le programme
+  def activer_first_pday
+    @next_pday = 1
+    proceed_changement_pday
+  end
+
+  # = main =
+  #
   # Méthode principale qui va passer le programme du jour-programme
   # current_pday au jour-programme next_pday
   def activer_next_pday
@@ -63,7 +71,7 @@ class StarterPDay
 
     # Il ne faut créer le p-day propre au programme et faire
     # les procédures suivantes que si ce jour-programme possède
-    # un programme.
+    # un programme, donc des travaux.
     prepare_program_pday
 
   rescue Exception => e

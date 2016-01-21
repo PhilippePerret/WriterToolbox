@@ -14,5 +14,24 @@ class Program
     Work::get(self, wid)
   end
 
+  # {Array of Unan::Program::Work} Liste des travaux propres du
+  # programme courant en appliquant le filtre +filtre+ s'il est
+  # défini.
+  # +filtre+
+  #   :completed      SI true, les travaux terminés (status 9)
+  #                 Si false, seulement les non terminés
+  def works filtre = nil
+    @works ||= self.table_works.select(order:"created_at ASC").values
+    return @works if filtre.nil?
+
+    filtered = @works.dup
+    if filtre[:completed]
+      filtered.reject! { |h| h[:status] < 9 }
+    elsif filtre[:completed] === false
+      filtered.reject! { |h| h[:status] == 9 }
+    end
+    filtered
+  end
+
 end #/Program
 end #/Unan

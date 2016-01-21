@@ -3,6 +3,9 @@ class Unan
 class Program
 class Work
 
+  def type_task?
+    @is_type_task ||= abs_work.type_task?
+  end
 
   # Return TRUE si le travail est en dépassement de temps, i.e.
   # s'il aurait dû être fini avant

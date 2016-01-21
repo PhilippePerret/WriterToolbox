@@ -38,6 +38,10 @@ class Bureau
     @works ||= works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
   end
 
+  def tasks
+    @tasks ||= user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::new(user.program, wid) }
+  end
+  
   # {Array} Liste ordonnée des IDs de travaux à accomplir par
   # l'auteur
   def works_ids
@@ -62,12 +66,14 @@ class Work
   # Noter que c'est une méthode de `Work` plutôt que de `AbsWork` pour
   # s'adapter exactement à l'auteur en particulier.
   def output
-    "[LE TRAVAIL - INTITULÉ ET DESCRIPTION]" +
-    "[FORMULAIRE POUR L'ENREGISTRER, LE MARQUER FINI, CONFIRMER LE DÉMARRAGE]"+
-    form
+    (
+      "#{abs_work.titre}".in_div(class:'titre') +
+      "#{abs_work.travail}".in_div(class:'travail') +
+      form
+    ).in_div(class:'work')
   end
   def form
-    "[Formulaire]"
+    "[Le marquer fini et gagner #{abs_work.points} points]"
   end
 
 

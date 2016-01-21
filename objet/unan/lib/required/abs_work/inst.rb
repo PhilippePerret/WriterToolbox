@@ -34,6 +34,7 @@ class AbsWork
   def travail       ; @travail        ||= get(:travail)       end
   def resultat      ; @resultat       ||= get(:resultat)      end
   def type_resultat ; @type_resultat  ||= get(:type_resultat) end
+  def points        ; @points         ||= get(:points)        end
 
   # ---------------------------------------------------------------------
   #   Propriétés volatiles

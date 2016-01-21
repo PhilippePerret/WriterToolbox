@@ -1,16 +1,9 @@
-<p>
+<p class='small right'>
   Retrouvez tous les jours ici le travail que vous avez à accomplir.
 </p>
-<form class="dim3070" action="bureau/home?in=unan&cong=travail" method="POST">
-  <% if missing_data %>
-    <p>Texte à voir <%= missing_data %></p>
-  <% end %>
-  <%= "bureau_save_travail".in_hidden(name:'operation') %>
-  <%= bureau.submit_button("Envoyer le travail") %>
-</form>
 
-<% if works.count > 0 %>
-  <%= works.collect { |iwork| iwork.output }.join %>
+<% if tasks.count > 0 %>
+  <%= tasks.collect { |iwork| iwork.output }.join %>
 <% else %>
   <p>Vous n'avez aucun travail courant. C'est étrange, mais cela peut arriver. Puis-je vous conseiller d'aller faire un tour au parc ou en forêt ?</p>
 <% end %>

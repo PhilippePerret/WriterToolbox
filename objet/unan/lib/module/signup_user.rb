@@ -71,7 +71,8 @@ class ::User
 
   # Instancier le premier jour programme
   def instancier_premier_jour_programme
-    program.start_pday 1
+    Unan::require_module 'start_pday'
+    StarterPDay::new(program).activer_first_pday
   rescue Exception => e
     @errors << "Impossible d'instancier le premier jour-programme : #{e.message}"
   end

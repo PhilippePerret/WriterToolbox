@@ -1,4 +1,4 @@
-describe 'Méthodes Unan::Program pour les travaux Work' do
+describe 'Méthodes Unan::Program pour un travail Work' do
   before(:all) do
     site.require_objet 'unan'
     @user = create_user(current: true, unanunscript:true)
