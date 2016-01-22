@@ -85,7 +85,7 @@ class Page
         options ||= Hash::new
         (
           (options[:libelle]||"").in_span(class:'libelle') +
-          button_name.in_submit(class:'btn').in_span(class:'value')
+          button_name.in_submit(options.merge(class:'btn')).in_span(class:'value')
         ).in_div(class:'row right')
       end
 

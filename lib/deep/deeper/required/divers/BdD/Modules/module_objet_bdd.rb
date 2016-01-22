@@ -15,6 +15,15 @@ Méthodes pour les objets (instances) des bases de données.
 =end
 module MethodesObjetsBdD
 
+
+  # ---------------------------------------------------------------------
+  #   Données qu'on retrouve presque partout
+  def created_at  ; @created_at ||= get(:created_at) end
+  def updated_at  ; @updated_at ||= get(:updated_at) end
+
+  # /
+  # ---------------------------------------------------------------------
+
   # Relève toutes les données de l'instance pour éviter les
   # requêtes à répétition et les dispatche dans les variables
   # Retourne toujours les données, sous forme de Hahs

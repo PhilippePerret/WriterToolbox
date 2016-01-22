@@ -12,7 +12,6 @@ class Question
       return "[Question ##{id} inexistante]"
     end
     choix = reponses.collect do |hr|
-      debug "hr: #{hr.inspect}"
       cb_id   = "q-#{id}_r-#{hr[:id]}".freeze
 
       # En menu select
@@ -35,11 +34,31 @@ class Question
     end
 
     (
-      question.in_div(class:'q') +
+      infos_admin                     +
+      question.in_div(class:'q')      +
+      indications                     +
       choix.in_ul(class:"r #{type_a}")
     ).in_div(class:'question')
   end
 
+  def infos_admin
+    "##{id}".in_div(class:'tiny fright adminonly')
+  end
+
+  def indications
+    ind = String::new
+    ind << indication unless indication.empty?
+    ind << indication_when_checkboxes if type_c == "c"
+    ind.in_div(class:'indication')
+  end
+
+  # Texte d'aide pour les questions qui ont des checkboxes au lieu
+  # des radios groupes habituels.
+  def indication_when_checkboxes
+    @indication_when_checkboxes ||= <<-STR
+    Cochez tous les choix qui vous semblent pertinents.
+    STR
+  end
 end #/Question
 end #/Quiz
 end #/Unan

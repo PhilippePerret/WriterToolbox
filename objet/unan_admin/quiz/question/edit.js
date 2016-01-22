@@ -3,14 +3,37 @@ if(undefined == window.Question){window.Question = {}}
 $.extend(window.Question,{
   last_id_reponse:0,
 
+  init_new:function(){
+    var champs_valeurs = [
+      'input#question_id',
+      "input#question_question",
+      'textarea#question_raison',
+      'textarea#reponses_json'
+    ];
+    var champs_vide_html = [
+      'div#reponses'
+    ];
+    var champs_select = [
+      'question_type_f',
+      'question_type_c',
+      'question_type_a'
+    ];
+    var champs_uncheck = [
+
+    ];
+    UI.init_form({
+      val:      champs_valeurs,
+      select:   champs_select,
+      uncheck:  champs_uncheck,
+      empty:    champs_vide_html
+    })
+    $('input#question_nombre_reponses').val('0')
+    Question.last_id_reponse = 0 ;
+    $("input#question_question").focus();
+  },
+
   // Tout ré-initialiser pour une nouvelle question
   reset_all: function(){
-    $("input#question_question").val('');
-    $('textarea#question_raison').val('');
-    $('div#reponses').html("");
-    $('input#question_nombre_reponses').val('0')
-    $('textarea#reponses_json').val('');
-    Question.last_id_reponse = 0 ;
   },
 
   // Méthode appelée par le bouton "+ Réponse" dans le formulaire
@@ -91,14 +114,12 @@ $(document).ready(function(){
 
   // Pour surveiller le changement de ID
   $('input#question_id').bind('change', function(){
-    console.log("Il est vidé. Valeur du champ : ")
-    console.log($(this).val()) ;
     if($(this).val() == ""){
       // Quand on vide le change de ID, c'est pour initialiser
       // une nouvelle question. il faut donc tout initialiser
-      Question.reset_all();
+      Question.init_new();
     } else {
-      // Plus tard, pour régler le bouton pour voir la question ?
+      // Ne rien faire (un bouton permet d'éditer la question si nécessaire)
     }
   })
 })

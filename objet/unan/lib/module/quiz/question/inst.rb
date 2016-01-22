@@ -20,13 +20,14 @@ class Question
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
-  def question  ; @question   ||= get(:question)  end
+  def question    ; @question   ||= get(:question)  end
   # Noter que les réponses sont un Hash, tout simplement parce
   # que BdD essaie de se comporter intelligemment et reconnait un
   # Array. Donc il faut penser à le passer par json pour l'enregistrer
-  def reponses  ; @reponses   ||= get(:reponses)  end
-  def raison    ; @raison     ||= get(:raison)    end
-  def type      ; @type       ||= get(:type)      end
+  def reponses    ; @reponses   ||= get(:reponses)  end
+  def indication  ; @indication ||= get(:indication)  end
+  def raison      ; @raison     ||= get(:raison)    end
+  def type        ; @type       ||= get(:type)      end
 
   # ---------------------------------------------------------------------
   #   Data volatile

@@ -6,6 +6,14 @@ def schema_table_unan_cold_questions
     # La question
     question:   {type:"VARCHAR(255)", constraint:"NOT NULL"},
 
+    # Indication
+    # -----------
+    # Une indication à ajouter sous la question, en petit, pour aider
+    # à faire le choix.
+    # Remarquer qu'une indication automatique existe lorsque la question
+    # comporte plusieurs choix à cocher (checkbox au lieu de radion).
+    indication: {type:"TEXT"},
+    
     # Les réponses possibles
     # ----------------------
     # Puisqu'il s'agit toujours que de QCM, les réponses sont toujours

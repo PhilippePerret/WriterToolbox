@@ -5,14 +5,23 @@ div#aspect, div.quiz
     
 div.question
   font-size   : 15.2pt
+  
   // La question
   div.q
     border-bottom : 1px solid #999
-    margin-bottom : 0.7em
+    margin-bottom : 0
+  // Indications, par exemple le fait que lorsqu'il s'agit
+  // de case à cocher, il faut choisir toutes les réponses qu'il faut
+  div.indication
+    font-size       : 10.5pt
+    color           : #777
+    padding         : 0
+    margin          : 0
+    line-height     : 1.4em
   // Les réponses
   ul.r
     list-style    : none
-    margin        : 0 0 0 3.5em
+    margin        : 0.7em 0 0 3.5em
     font-size     : 0.85em
     // affichage en ligne
     &.l 

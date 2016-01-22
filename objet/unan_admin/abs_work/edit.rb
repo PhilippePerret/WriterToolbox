@@ -172,7 +172,7 @@ class AbsWork
         prev_work:    {hname:"previous travail",  type: :fixnum},
         resultat:     {hname:"résultat",          type: :string},
         item_id:      {hname:"ID de l'item",      type: :fixnum},
-        points:       {hname:"points",            type: :fixnum, defined:true, min:1, max:5000}
+        points:       {hname:"points",            type: :fixnum, min:0, max:999}
       }
     end
 
@@ -209,7 +209,14 @@ class AbsWork
     end
 
     def data
-      @data ||= param(:work)
+      @data ||= begin
+        d = param(:work)
+        # Quelques corrections
+        if d[:points].empty?
+          d[:points] = 0 # correspond à : prendre valeur par exemple du quiz
+        end
+        d
+      end
     end
 
   end # << self

@@ -22,7 +22,7 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT %
     <%# On mettra ici les outils et notamment le menu pour changer le zoom de la carte %>
   </div>
   <div id="abs_pday_map" style="width:<%= UnanAdmin::Program::AbsPDay::MAP_WIDTH %>px">
-    <% UnanAdmin::Program::AbsPDay::all.each do |pday| %>
+    <% Unan::Program::AbsPDay::all.each do |pday| %>
       <% debug "P-Day ##{pday.id}" %>
       <%= pday.in_map %>
     <% end %>

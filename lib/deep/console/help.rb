@@ -50,75 +50,64 @@ class Console
   <dd>Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.</dd>
   <dd>OFFLINE seulement</dd>
 </dl>
+
+
+
 <!--  PROPRE À L'APPLICATION -->
+
+
+
 <h4>Lignes propres à l'application</h4>
 <dl>
   <dt>`Unan ...`</dt>
   <dd>Tous les codes commençant par `Unan` concernent la programme Un An Un Script et chargent automatiquement cet objet avant leur exécution.</dd>
 
-  <dt>`Unan affiche (table pages cours)`</dt>
-  <dd>Affiche le contenu complet de la table des pages de cours</dd>
-  <dt>`Unan backup data (table pages cours)`</dt>
-  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
-  <dd>Le schéma classique d'utilisation est :
-    <ol>
-      <li>Cette méthode pour faire le backup des données ;</li>
-      <li>On détruit la table avec `Unan destroy etc.` ;</li>
-      <li>On modifie de schéma de la table (dans `./database/table_definitions`) ;</li>
-      <li>On définit la procédure de modifications des anciennes données ;</li>
-      <li>On lance la méthode `Unan retreive data etc.` pour récupérer les données en les traitant pour les injecter dans la table modifiée.</li>
-    </ol>
+  <dt>
+    <strong>affiche</strong><br />
+    <strong>backup data</strong><br />
+    <strong>destroy</strong><br />
+    <strong>&lt;Modification du schéma de la table&gt;</strong><br />
+    <strong>affiche</strong><br />
+    <strong>retreive data</strong><br />
+  </dt>
+  <dd>C'est le cycle de modification d'une table du programme, quand il faut modifier son schéma. On en sauve toutes les données, puis on la reconstruit.</dd>
+  <dd>On modifie de schéma de la table (dans `./database/table_definitions`) ;</dd>
+  <dd>Après avoir modifié le schéma, il faut indiquer à la méthode `retreive_data` comment elle doit modifier les données enregistrées pour qu'elles correspondent à la nouvelle table. C'est fait dans les méthodes `def retreive_data_...` (chercher cette amorce) dans le fichier `unan_methodes.rb`.</dd>
+  <dd><strong>TABLES QUI CONNAISSENT CE CYCLE</strong>
+    <ul>
+      <li>table programs</li>
+      <li>table projets</li>
+      <li>`table pages cours` (les pages de cours)</li>
+      <li>table quiz (les questionnaires)</li>
+      <li>table questions (les questions des questionnaires)</li>
+      <li>absolute works (les travaux absolus)</li>
+      <li>absolute pdays (les jours absolus)</li>
+    </ul>
   </dd>
-  <dt>`Unan destroy (table pages cours)`</dt>
-  <dd>(!!! DANGER !!!)Détruire totalement la table des pages de cours (table qui contient toutes les données et notamment les handlers).</dd>
-  <dd>Attention, cette destruction est définitive et doit être opérée quand on possède un backup.</dd>
-  <dt>`Unan retreive data (table pages cours)`</dt>
-  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
-  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_pages_cours`, la procédure de modification appelée `proc_modif`.</dd>
 
   <dt>`Unan affiche (table absolute pdays)`</dt>
   <dd>Affiche la table des données des jours-programme (P-Days)</dd>
-  <dt>`Unan backup data (table absolute pdays)`</dt>
-  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
-  <dd>Voir pour la méthode plus haut pour les pages de cours l'explication complète de la procédure classique de modification d'une table sans perte des données.</dd>
-  <dt>`Unan destroy (table absolute pdays)`</dt>
-  <dd>(!!! DANGER !!!) Détruit totalement la table des données absolues des p-days (jours-programme).</dd>
-  <dt>`Unan retreive data (table absolute pdays)`</dt>
-  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
-  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_absolute_pdays`, la procédure de modification appelée `proc_modif`.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
 
   <dt>`Unan affiche (table absolute works)`</dt>
   <dd>Affiche la table des données de travaux absolues</dd>
-  <dt>`Unan backup data (table absolute works)`</dt>
-  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
-  <dd>Voir pour la méthode plus haut pour les pages de cours l'explication complète de la procédure classique de modification d'une table sans perte des données.</dd>
-  <dt>`Unan destroy (table absolute works)`</dt>
-  <dd>(!!! DANGER !!!) Détruit totalement la table des données absolues de travaux.</dd>
-  <dt>`Unan retreive data (table absolute works)`</dt>
-  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
-  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_absolute_works`, la procédure de modification appelée `proc_modif`.</dd>
+  <dd>Cette table connait le cycle ci-dessus.</dd>
 
   <dt>`Unan affiche (table projets)`</dt>
   <dd>Affichage de la liste des projets courants.</dd>
-  <dt>`Unan backup data (table projets)`</dt>
-  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
-  <dt>`Unan destroy (table projets)`</dt>
-  <dd>(!!! DANGER !!!) Détruit totalement la table des données des projets. Par mesure de précaution, cette commande ne peut être appelée ONLINE.</dd>
-  <dd>Voir pour la méthode plus haut pour les pages de cours l'explication complète de la procédure classique de modification d'une table sans perte des données.</dd>
-  <dt>`Unan retreive data (table projets)`</dt>
-  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
-  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_projets`, la procédure de modification appelée `proc_modif`.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
 
   <dt>`Unan affiche (table programs)`</dt>
   <dd>Affichage de la liste des programmes courants.</dd>
-  <dt>`Unan backup data (table programs)`</dt>
-  <dd>Faire une copie des données dans un PStore. Cela permet, combiné à la méthode suivante, de modifier les tables en préservant les données.</dd>
-  <dt>`Unan destroy (table programs)`</dt>
-  <dd>(!!! DANGER !!!) Détruit totalement la table des données des projets. Par mesure de précaution, cette commande ne peut être appelée ONLINE.</dd>
-  <dd>Voir pour la méthode plus haut pour les pages de cours l'explication complète de la procédure classique de modification d'une table sans perte des données.</dd>
-  <dt>`Unan retreive data (table programs)`</dt>
-  <dd>Récupération des données placées dans le PStore par la méthode précédente.</dd>
-  <dd>Définir dans le fichier `unan_methodes.rb`, dans la méthode `retreive_data_programs`, la procédure de modification appelée `proc_modif`.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
+
+  <dt>`Unan affiche (table quiz)`</dt>
+  <dd>Affichage de la liste des questionnaires.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
+
+  <dt>`Unan affiche (table questions)`</dt>
+  <dd>Affichage de la liste des questions de questionnaires.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
 
 </dl>
     HTML

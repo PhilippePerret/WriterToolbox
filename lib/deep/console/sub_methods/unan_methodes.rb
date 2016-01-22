@@ -35,6 +35,41 @@ class Console
     end
     retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)
   end
+  def retreive_data_absolute_pdays
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'absolute_pdays', proc_modif)
+  end
+  def retreive_data_projets
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db + 'unan_hot.db', 'projets', proc_modif)
+  end
+  def retreive_data_questions
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'questions', proc_modif)
+
+  end
+  def retreive_data_quiz
+    proc_modif = Proc::new do |data|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data
+    end
+    retreive_data_from(site.folder_db+'unan_cold.db', 'quiz', proc_modif)
+
+  end
+
 
   #
   # /Fin des méthodes de récupération des data
@@ -103,18 +138,16 @@ class Console
     end
   end
 
+
+  def backup_data_questions
+    backup_data_of( site.folder_db + 'unan_cold.db', 'questions')
+  end
+  def backup_data_quiz
+    backup_data_of( site.folder_db + 'unan_cold.db', 'quiz')
+  end
   def backup_data_absolute_pdays
     backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_pdays')
   end
-  def retreive_data_absolute_pdays
-    proc_modif = Proc::new do |data|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data
-    end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'absolute_pdays', proc_modif)
-  end
-
   def backup_data_pages_cours
     backup_data_of( site.folder_db + 'unan_cold.db', 'pages_cours')
   end
@@ -124,25 +157,38 @@ class Console
   def backup_data_projets
     backup_data_of( site.folder_db + 'unan_hot.db', 'projets')
   end
-  def retreive_data_projets
-    proc_modif = Proc::new do |data|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data
-    end
-    retreive_data_from(site.folder_db + 'unan_hot.db', 'projets', proc_modif)
-  end
   def backup_data_absolute_works
     backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_works')
   end
 
+  def destruction_impossible
+    @destruction_impossible ||= "Impossible de détruire la table des %{choses} en ONLINE (trop dangereux)."
+  end
+  def detruire_table_questions
+    if OFFLINE
+      init_unan
+      Unan::database.execute("DROP TABLE IF EXISTS 'questions';")
+      "Table des questions détruite avec succès."
+    else
+      destruction_impossible % {choses: "questions"}
+    end
+  end
+  def detruire_table_quiz
+    if OFFLINE
+      init_unan
+      Unan::database.execute("DROP TABLE IF EXISTS 'quiz';")
+      "Table des quiz détruite avec succès."
+    else
+      destruction_impossible % {choses: "quiz"}
+    end
+  end
   def detruire_table_programs
     if OFFLINE
       init_unan
       Unan::database_hot.execute("DROP TABLE IF EXISTS 'programs';")
       "Table des programmes détruite avec succès."
     else
-      "Impossible de détruire la table des projets en ONLINE (trop dangereux)."
+      destruction_impossible % {choses: "programmes"}
     end
   end
 
@@ -152,7 +198,7 @@ class Console
       Unan::database_hot.execute("DROP TABLE IF EXISTS 'projets';")
       "Table des projets détruite avec succès."
     else
-      "Impossible de détruire la table des projets en ONLINE (trop dangereux)."
+      destruction_impossible % {choses: "projets"}
     end
   end
 
@@ -162,7 +208,7 @@ class Console
       Unan::database.execute("DROP TABLE IF EXISTS 'pages_cours';")
       "Table des pages de cours détruite avec succès."
     else
-      "Impossible de détruire la table des pages de cours en ONLINE (trop dangereux)."
+      destruction_impossible % {choses: "pages de cours"}
     end
   end
 

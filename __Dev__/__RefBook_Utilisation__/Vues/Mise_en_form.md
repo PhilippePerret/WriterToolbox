@@ -3,6 +3,7 @@
 * [Mise en forme de TEXTE](#misteenformedetexte)
   * [Différentes mises en forme fréquentes](#differentesmisesenformeparcss)
   * [Rendre un texte/élément plus discret](#rendreuntexteplusdiscret)
+  * [Style spécial pour l'administrateur](#stylespecialadminonly)
 * [Mise en forme de SECTIONs/DIVs](#miseenformedesectionsdetexte)
   * [Dimensionnement par la classe](#dimensionnementparlaclasse)
   * [Données tabulaires](#donneestabulaires)
@@ -34,7 +35,7 @@
     .center
 
         Centre le contenu
-        
+
     .fright
 
         Rend l'élément flottant à droite
@@ -70,6 +71,16 @@ Noter que cette discrétion joue sur l'opacité et que le texte sera rendu plus 
 <a name='miseenformedesectionsdetexte'></a>
 
 ## Mise en forme de section/divisions
+
+
+<a name='stylespecialadminonly'></a>
+
+## Style spécial pour l'administrateur
+
+On peut utiliser la class CSS spéciale `adminonly` pour ajouter des textes qui ne seront visibles que lorsque c'est un administrateur qui visite le site.
+
+ATTENTION ! Ces textes se trouvent quand même dans la page HTML, seulement ils ne sont pas affichés. Donc, ne pas mettre d'information sensible.
+
 
 <a name='dimensionnementparlaclasse'></a>
 

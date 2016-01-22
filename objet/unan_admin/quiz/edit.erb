@@ -37,13 +37,14 @@ form.objet  = param(:quiz) || Hash::new
 <%
 lien_destroy_quiz = "Détruire".in_a(class:'small btn', onclick:"$('form#form_quiz_edit input#operation').val('destroy_quiz');$('form#form_quiz_edit').submit()")
 lien_edit_quiz    = "Éditer".in_a(class:'small btn warning', onclick:"$('form#form_quiz_edit input#operation').val('edit_quiz');$('form#form_quiz_edit').submit()")
+lien_init_quiz    = "Init new".in_a(class:'small btn', onclick:"$.proxy(Quiz, 'init_new')()")
 %>
 
 <form id="form_quiz_edit" class="dim3070" action="quiz/edit?in=unan_admin" method="POST">
 
-  <%= "save_quiz".in_hidden(name:'operation', id:'operation') %>
+  <%= "edit_quiz".in_hidden(name:'operation', id:'operation') %>
 
-  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after:"#{lien_edit_quiz} #{lien_destroy_quiz}"}) %>
+  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after:"#{lien_edit_quiz} #{lien_destroy_quiz} #{lien_init_quiz}"}) %>
 
   <%# TITRE %>
   <%= form.field_text("Titre", 'titre', nil) %>
@@ -69,13 +70,13 @@ lien_edit_quiz    = "Éditer".in_a(class:'small btn warning', onclick:"$('form#f
   <%= form.field_description("Si la case ci-dessus est cochée, la description du questionnaire pourra être affichée (par exemple en information sous le titre).") %>
 
 
-  <%= form.submit_button("Enregistrer") %>
+  <%= form.submit_button("Enregistrer", {onclick:"$('form#form_quiz_edit input#operation').val('save_quiz')"}) %>
 </form>
 
 <%
 # Aperçu du questionnaire
 %>
 <% if iquiz %>
-  <h3>Affichage du questionnaire</h3>
-  <%= iquiz.output(forcer = true) %>
+  <h3>Aperçu du questionnaire</h3>
+  <div id="overview"><%= iquiz.output(forcer = true) %></div>
 <% end %>

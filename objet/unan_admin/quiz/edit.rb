@@ -29,7 +29,13 @@ class Quiz
 
   def save
     check_data || return
-    if id.nil?
+    # Parfois, on force l'enregistrement du questionnaire
+    # sous un autre ID. Il faut donc vérifier, si l'idenditifiant
+    # est fourni, si c'est bien une actualisation
+    if id.nil? || !exist?
+      if !exist? && id != nil
+        data2save.merge!(id: id)
+      end
       data2save.merge!(created_at: NOW)
       @id = Unan::table_quiz.insert(data2save)
       dinp[:id] = @id
@@ -37,6 +43,7 @@ class Quiz
     else
       Unan::table_quiz.update(id, data2save)
     end
+    "Questionnaire ##{id} enregistré."
   end
 
   def data2save

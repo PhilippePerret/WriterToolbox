@@ -2,6 +2,10 @@
 #
 # Pour éditer une question de questionnaire/checkup ou quiz
 #
+raise_unless_admin
+%>
+<h2>Question (édition)</h2>
+<%
 site.require 'form_tools'
 
 # if param(:operation) == 'edit_question'
@@ -39,14 +43,15 @@ form.objet  = param(:question) || Hash::new # pour le moment
 
 %>
 <%
+lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(Question, 'init_new')()")
 lien_edit_question    = "Edit".in_a(onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
 lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_destroy')()", class:'small btn warning')
 %>
 <form id="form_question_edit" class="dim3070" action="question/edit?in=unan_admin/quiz" method="POST">
 
-  <%= "save_question".in_hidden(name:'operation', id:'operation') %>
+  <%= "edit_question".in_hidden(name:'operation', id:'operation') %>
 
-  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_edit_question} #{lien_destroy_question}"}) %>
+  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_edit_question} #{lien_destroy_question} #{lien_init_question}"}) %>
   <%= form.field_description("Mettre ID à rien pour générer une nouvelle question.") %>
 
   <%# QUESTION %>
@@ -77,10 +82,15 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
   <%= form.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (Cases à cocher)"]]}) %>
   <%= form.field_select("Affichage", 'type_a', nil, {values: [['c', "L'un en dessous de l'autre"], ['l', "En ligne"], ['m', "En menu"]]}) %>
 
+  <%# INDICATION %>
+  <%= form.field_textarea("Indication", 'indication', nil) %>
+  <%= form.field_description("Cette indication sera écrite en petit sous la question et permettra à l'auteur de mieux comprendre cette question. Notez qu'il y a déjà une indication automatique lorsque ce sont des checkboxes au lieu des boutons-radio.") %>
+
+  <%# RAISON %>
   <%= form.field_textarea("Raison bonne réponse", 'raison', nil) %>
   <%= form.field_description("Dans le cas d'un vrai test, on peut donner ici la raison de la bonne réponse et aussi pourquoi les autres réponses ne sont pas valables.") %>
 
-  <%= form.submit_button("Enregistrer la question") %>
+  <%= form.submit_button("Enregistrer la question", {onclick:"$('form#form_question_edit input#operation').val('save_question')"}) %>
 </form>
 <%
 #
@@ -88,6 +98,6 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 #
 if iquestion
 %>
-  <h3>Affichage de la question</h3>
+  <h3>Aperçu de la question</h3>
   <%= iquestion.output.in_div(id:'aspect') %>
 <% end %>

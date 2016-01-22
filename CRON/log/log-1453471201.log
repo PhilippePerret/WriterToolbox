@@ -1,6 +1,6 @@
 
 
-========== CRON JOB DU 22 01 2016 - 10:00 ==========
+========== CRON JOB DU 22 01 2016 - 15:00 ==========
 
 = Nombre d'auteurs en activité : 4
 = IDs : 2, 100, 104 et 112
@@ -8,11 +8,11 @@
 * TRAITEMENT USER EN ACTIVITÉ : Benoit (#2)
 = User::current : 2 (Benoit)
 = L'ID programme de Benoit est : #1
-= Jour-programme courant de Benoit : 2
-#ERREUR FATALE : undefined local variable or method `auteur_mail' for #<Unan::Program::StarterPDay:0x007f85bb07f808>
+= Jour-programme courant de Benoit : 7
+#ERREUR FATALE : undefined local variable or method `auteur_mail' for #<Unan::Program::StarterPDay:0x007fead187dd90>
 #MALHEUREUSEMENT, IL EST IMPOSSIBLE DE DÉTERMINER LA LISTE DES NOUVEAUX TRAVAUX…
 #ERREUR FATALE : Impossible d'envoyer le mail à l'auteur du programme…
---- Le programme #1 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 3).
+--- Le programme #1 de Benoit (#2) a été passé au jour-programme suivant avec succès (P-Day 8).
 ### IMPOSSIBLE DE TRAITER LES AUTEURS DE UN AN UN SCRIPT EN ACTIVITÉ : undefined method `[]' for nil:NilClass
 /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/User/inst_data.rb:24:in `get'
 /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/User/inst_data.rb:42:in `pseudo'

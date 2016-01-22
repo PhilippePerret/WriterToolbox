@@ -114,9 +114,22 @@ class Console
 
     when "Unan affiche (table questions)"
       affiche_table_questions
+    when "Unan backup data (table questions)"
+      backup_data_questions
+    when "Unan destroy (table questions)"
+      detruire_table_questions
+    when "Unan retreive data (table questions)"
+      retreive_data_questions
+
     when "Unan affiche (table quiz)"
       affiche_table_quiz
-      
+    when "Unan backup data (table quiz)"
+      backup_data_quiz
+    when "Unan destroy (table quiz)"
+      detruire_table_quiz
+    when "Unan retreive data (table quiz)"
+      retreive_data_quiz
+
     else
       nil # pour essayer autrement
     end
