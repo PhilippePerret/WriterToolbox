@@ -2,6 +2,8 @@
 
 data/secret/
 
+data/gel/
+
 database/data/
 
 database/data/users.db

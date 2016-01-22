@@ -17,7 +17,15 @@ class SiteHtml
   # Note : Pour le moment, produit une erreur fatale si le dossier
   # n'existe pas.
   def require_objet objet_name
-    dos = site.folder_objet + "#{objet_name}/lib/required"
+    dos = folder_objet + "#{objet_name}/lib/required"
+    require_all_in dos
+  end
+
+  # Requiert tout ce qui se trouve dans le dossier module
+  # +module_name+, i.e. les modules ruby, css et javascript.
+  # Le dossier module se trouve à l'adresse : './lib/deep/deeper/module/'
+  def require_module module_name
+    dos = folder_deeper_module + module_name
     require_all_in dos
   end
 

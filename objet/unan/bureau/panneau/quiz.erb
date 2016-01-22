@@ -1,11 +1,21 @@
 <%
 # Panneau des questionnaires à remplir
 %>
-<form class="dim3070" action="bureau/home?in=unan&cong=quiz" method="POST">
-  <% if missing_data %>
-  <% end %>
-  <%= 'bureau_save_quiz'.in_hidden(name:'operation') %>
-  <%= bureau.submit_button("Soumettre les questionnaires") %>
-</form>
 
-<% if works.count == 0 %><%= message_si_aucun_travail %><% end %>
+<%
+#
+# SE SERVIR DU CODE CI-DESSOUS POUR CONSTRUIRE LE FORMULAIRE DU
+# QUIZ.
+#
+%>
+<% if missing_data %>
+<%# Les missing-data, ici, correspondent certainement aux questionnaires en retard. %>
+<% end %>
+
+<% if works.count == 0 %>
+  <%= message_si_aucun_travail %>
+<% elsif has_quiz? %>
+  <% quizes.each do |iquiz| %>
+    <%= iquiz.output_in_form %>
+  <% end %>
+<% end %>

@@ -41,9 +41,6 @@ class User
   # de l'utilisateur (sa database personnelle)
   def program_database_path
     @program_database_path ||= begin
-      if self.program.instance_of?(Unan::Program)
-        debug "self.program.id = #{self.program.id}"
-      end
       folder_data + "programme#{program.id}.db"
     end
   end

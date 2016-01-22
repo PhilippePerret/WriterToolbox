@@ -121,6 +121,8 @@ class Console
     when "Unan retreive data (table questions)"
       retreive_data_questions
 
+    # ---------------------------------------------------------------------
+
     when "Unan affiche (table quiz)"
       affiche_table_quiz
     when "Unan backup data (table quiz)"
@@ -129,6 +131,11 @@ class Console
       detruire_table_quiz
     when "Unan retreive data (table quiz)"
       retreive_data_quiz
+
+    # ---------------------------------------------------------------------
+
+    when "list gels"
+      affiche_liste_des_gels
 
     else
       nil # pour essayer autrement
@@ -149,6 +156,10 @@ class Console
       detruire_programmes_de( last_word )
     when 'affiche table'
       montre_table( last_word )
+    when 'gel'
+      gel last_word
+    when 'degel'
+      degel last_word
     else
       nil
     end

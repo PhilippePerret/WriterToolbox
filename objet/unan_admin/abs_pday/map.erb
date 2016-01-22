@@ -6,7 +6,7 @@ raise_unless_admin
 %>
 <%= Unan::titre_h1("Carte des P-Days") %>
 <style type="text/css">
-div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT %>px}
+div#abs_work_map div.work{top:<%= UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT %>px}
 </style>
 
 <%
@@ -23,7 +23,6 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT %
   </div>
   <div id="abs_pday_map" style="width:<%= UnanAdmin::Program::AbsPDay::MAP_WIDTH %>px">
     <% Unan::Program::AbsPDay::all.each do |pday| %>
-      <% debug "P-Day ##{pday.id}" %>
       <%= pday.in_map %>
     <% end %>
   </div>

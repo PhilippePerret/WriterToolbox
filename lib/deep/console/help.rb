@@ -51,6 +51,18 @@ class Console
   <dd>OFFLINE seulement</dd>
 </dl>
 
+<h4>Gels et dégels</h4>
+<dl class="small">
+  <dt>list gels</dt>
+  <dd>Affiche la liste de tous les gels. Avec une description si le gel en possède une.</dd>
+  <dt>`gel 'nom-du-gel'`</dt>
+  <dd>Pour geler l'état actuel du site dans le gel de nom 'nom-du-gel'</dd>
+  <dd>Ne pas utiliser d'espace dans le nom du gel (de toute façon, ils seront supprimés et remplacés par des traits d'union)</dd>
+  <dt>`degel 'nom-du-gel'`</dt>
+  <dd>Remet le site dans l'état du gel de nom 'nom-du-gel'.</dd>
+  <dt>`site.require_module('gel');Gel::gel('nom-gel', {options})`</dt>
+  <dd>Tournure plus complexe à utiliser si des options doivent être transmises. Cf. le manuel sur les gels et les dégels pour plus de détails sur les options.</dd>
+</dl>
 
 
 <!--  PROPRE À L'APPLICATION -->

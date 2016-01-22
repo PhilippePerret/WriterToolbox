@@ -35,9 +35,6 @@ class SiteHtml
   def folder_data_secret
     @folder_data_secret ||= get_and_build_folder(folder_data+'secret')
   end
-  def folder_data
-    @folder_data ||= get_and_build_folder('./data')
-  end
 
   # ---------------------------------------------------------------------
   #   Images
@@ -117,8 +114,12 @@ class SiteHtml
   end
 
   # ---------------------------------------------------------------------
-  #   Objet
+  #   Dossier de base
   # ---------------------------------------------------------------------
+
+  def folder_data
+    @folder_data ||= get_and_build_folder('./data')
+  end
 
   def folder_objet
     @folder_objet ||= SuperFile::new('./objet')
