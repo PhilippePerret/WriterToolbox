@@ -4,9 +4,21 @@
 #
 site.require 'form_tools'
 
-if param(:operation) == 'edit_question'
-  debug "param(:operation) : #{param(:operation).inspect} / ID = #{param(:question)[:id]}"
-  iquestion = Unan::Quiz::Question::new(param(:question)[:id].to_i)
+# if param(:operation) == 'edit_question'
+#   debug "param(:operation) : #{param(:operation).inspect} / ID = #{param(:question)[:id]}"
+#   iquestion = Unan::Quiz::Question::new(param(:question)[:id].to_i)
+# end
+
+# Y a-t-il un identifiant défini ?
+#
+# Rappel : L'identifiant peut être défini dans :
+#   - dans le paramètre `question_id`
+#   - dans la route rest `question/<id>/edit`
+#   - dans le param(:question) édité
+question_id = (site.current_route.objet_id || param(:question_id) || (param(:question)||Hash::new)[:id]).to_i_inn
+if question_id != nil
+  debug "question_id : #{question_id}"
+  iquestion = Unan::Quiz::Question::new(question_id)
   dquestion = iquestion.get_all
   dquestion.merge!(
     type_a: iquestion.type_a,
@@ -14,6 +26,8 @@ if param(:operation) == 'edit_question'
   )
   debug dquestion
   param(:question => dquestion)
+else
+  iquestion = nil
 end
 
 form.prefix = "question"
@@ -33,12 +47,18 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 
   <%# QUESTION %>
   <%= form.field_text("Question", 'question', nil, {class:'bold'}) %>
-
+  <%= form.field_description("Indiquer la question qui sera posée. Vous pouvez voir sous le formulaire l'aspect que prendra la question (une fois enregistrée).") %>
   <%# RÉPONSES %>
   <div id="reponses"></div>
+  <%= form.field_description("Ajouter les réponses en précisant leur nombre de points. Pour <strong>indiquer la bonne réponse</strong>, il faut mettre 0 points aux réponses fausses et un nombre de points à la bonne réponse.<br />Pour <strong>supprimer une réponse</strong>, vider son libellé.") %>
+  <%# Bouton pour ajouter une réponse possible %>
+  <div class='row air'>
+    <span class='libelle'></span>
+    <span class='value'>
+      <%= " + réponse".in_a(class:'btn small', onclick:"$.proxy(Question,'new_reponse')()") %>
+    </span>
+  </div>
   <%= "".in_hidden(name:"question[nombre_reponses]", id:"question_nombre_reponses") %>
-  <%= form.field_raw("", "", nil, {field: " + réponse".in_a(class:'btn small', onclick:"$.proxy(Question,'new_reponse')()")}) %>
-  <%= form.field_description("Ajouter les réponses en précisant leur nombre de points. Si une réponse est laissée vide, elle sera supprimée.") %>
   <%# Champ caché dans le cas où c'est une édition, pour mettre les réponses dans leur format brut (string) %>
   <textarea id="reponses_json" style="display:none;"><%=
     case form.objet[:reponses]
@@ -49,6 +69,7 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 
 
   <%# TYPE (checkbox ou radio) %>
+  <%= form.field_select("Type",      'type_f', nil, {values: Unan::Quiz::TYPES}) %>
   <%= form.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (Cases à cocher)"]]}) %>
   <%= form.field_select("Affichage", 'type_a', nil, {values: [['c', "L'un en dessous de l'autre"], ['l', "En ligne"], ['m', "En menu"]]}) %>
 
@@ -57,3 +78,11 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 
   <%= form.submit_button("Enregistrer la question") %>
 </form>
+<%
+#
+# Si une question est affichée, on montre son aspect
+#
+if iquestion
+%>
+  <%= iquestion.output.in_div(id:'aspect') %>
+<% end %>

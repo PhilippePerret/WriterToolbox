@@ -17,7 +17,14 @@ class SiteHtml
   # Note : Pour le moment, produit une erreur fatale si le dossier
   # n'existe pas.
   def require_objet objet_name
-    dossier = site.folder_objet + "#{objet_name}/lib/required"
+    dos = site.folder_objet + "#{objet_name}/lib/required"
+    require_all_in dos
+  end
+
+  # Requiert tout (ruby, css, js) dans le dossier +dossier+
+  # +dossier+ Un path {String} ou un {SuperFile}
+  def require_all_in dossier
+    dossier = SuperFile::new(dossier) unless dossier.instance_of?(SuperFile)
     dossier.require
     page.add_css        Dir["#{dossier}/**/*.css"]
     page.add_javascript Dir["#{dossier}/**/*.js"]

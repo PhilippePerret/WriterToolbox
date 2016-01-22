@@ -16,6 +16,9 @@ class Question
   #   Data enregistrées
   # ---------------------------------------------------------------------
   def question  ; @question   ||= get(:question)  end
+  # Noter que les réponses sont un Hash, tout simplement parce
+  # que BdD essaie de se comporter intelligemment et reconnait un
+  # Array. Donc il faut penser à le passer par json pour l'enregistrer
   def reponses  ; @reponses   ||= get(:reponses)  end
   def raison    ; @raison     ||= get(:raison)    end
   def type      ; @type       ||= get(:type)      end
@@ -23,8 +26,17 @@ class Question
   # ---------------------------------------------------------------------
   #   Data volatile
   # ---------------------------------------------------------------------
+  # Type de choix ("c" pour cases à cocher, "r" pour radio)
   def type_c  ; @type_c ||= type[0] end
+  # Type d'affichage ("l" pour en ligne, "c" pour en colonne, "m" pour
+  # en menu)
   def type_a  ; @type_a ||= type[1] end
+  # Le type de questions
+  # Pour savoir si c'est une question de simple renseignement,
+  # ou une question de quiz, etc.
+  # Cf. la liste Unan::Quiz::TYPES, qui est la même que pour le
+  # type de quiz
+  def type_f  ; @type_f ||= type[2] end
 
   # ---------------------------------------------------------------------
   #   Méthodes d'helper
@@ -34,7 +46,7 @@ class Question
   #   Méthodes de database
   # ---------------------------------------------------------------------
   def table ; @table ||= Unan::table_questions end
-  
+
 end #/Question
 end #/Quiz
 end #/Unan

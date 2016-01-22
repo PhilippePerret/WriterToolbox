@@ -2,6 +2,7 @@
 raise_unless_admin
 
 require 'json'
+Unan::require_module 'quiz'
 
 class UnanAdmin
 class Quiz
@@ -41,14 +42,14 @@ class Question
       Unan::table_questions.update(dinp[:id].to_i, data2save)
     end
     param( :question => dinp.merge(reponses: reponses) )
-    flash "Question sauvegardée."
+    flash "Question ##{dinp[:id]} sauvegardée."
   end
 
   def data2save
     @data2save ||= {
       question:     dinp[:question].nil_if_empty,
       reponses:     reponses,
-      type:         "#{dinp[:type_c]}#{dinp[:type_a]}",
+      type:         "#{dinp[:type_c]}#{dinp[:type_a]}#{dinp[:type_f]}",
       raison:       dinp[:raison],
       updated_at:   NOW
     }
@@ -69,11 +70,11 @@ class Question
   # :points.
   def reponses
     @reponses ||= begin
-      (1..nombre_reponses).collect do |ireponse|
-        h = dinp["reponse_#{ireponse}".to_sym].to_sym
+      (1..nombre_reponses).collect do |indice_rep|
+        h = dinp["reponse_#{indice_rep}".to_sym].to_sym
         h[:libelle] = h[:libelle].strip
         next nil if h[:libelle].empty?
-        h[:id]      = ireponse.freeze,
+        h[:id]      = indice_rep.freeze
         h[:points]  = h[:points].to_i.freeze
         h
       end.compact.to_json
