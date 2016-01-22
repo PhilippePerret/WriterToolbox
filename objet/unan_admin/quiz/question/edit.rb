@@ -47,7 +47,7 @@ class Question
 
   def data2save
     @data2save ||= {
-      question:     dinp[:question].nil_if_empty,
+      question:     dinp[:question].gsub(/"/, '“').nil_if_empty,
       reponses:     reponses,
       type:         "#{dinp[:type_c]}#{dinp[:type_a]}#{dinp[:type_f]}",
       raison:       dinp[:raison],
@@ -72,7 +72,7 @@ class Question
     @reponses ||= begin
       (1..nombre_reponses).collect do |indice_rep|
         h = dinp["reponse_#{indice_rep}".to_sym].to_sym
-        h[:libelle] = h[:libelle].strip
+        h[:libelle] = h[:libelle].strip.gsub(/"/, '“')
         next nil if h[:libelle].empty?
         h[:id]      = indice_rep.freeze
         h[:points]  = h[:points].to_i.freeze

@@ -1,0 +1,80 @@
+<%
+#
+# ÉDITION D'UN QUIZ/QUESTIONNAIRE
+#
+raise_unless_admin
+%>
+
+<h2>Questionnaire (édition)</h2>
+
+<%
+# Données à afficher
+site.require 'form_tools'
+form.prefix = 'quiz'
+%>
+
+<%
+# Prépare les données
+quiz_id = param(:quiz_id) || site.current_route.objet_id || (param(:quiz) && param(:quiz)[:id].to_i_inn)
+if quiz_id
+  iquiz = Unan::Quiz::new( quiz_id )
+  if iquiz.exist?
+    data_quiz = iquiz.get_all
+    Unan::Quiz::OPTIONS.each do |k, dk|
+      data_quiz.merge!( "option_#{k}".to_sym => iquiz.send("#{k}?".to_sym))
+    end
+    param(:quiz => data_quiz)
+  else
+    iquiz = nil
+  end
+else
+  iquiz = nil
+end
+
+form.objet  = param(:quiz) || Hash::new
+%>
+
+<%
+lien_destroy_quiz = "Détruire".in_a(class:'small btn', onclick:"$('form#form_quiz_edit input#operation').val('destroy_quiz');$('form#form_quiz_edit').submit()")
+lien_edit_quiz    = "Éditer".in_a(class:'small btn warning', onclick:"$('form#form_quiz_edit input#operation').val('edit_quiz');$('form#form_quiz_edit').submit()")
+%>
+
+<form id="form_quiz_edit" class="dim3070" action="quiz/edit?in=unan_admin" method="POST">
+
+  <%= "save_quiz".in_hidden(name:'operation', id:'operation') %>
+
+  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after:"#{lien_edit_quiz} #{lien_destroy_quiz}"}) %>
+
+  <%# TITRE %>
+  <%= form.field_text("Titre", 'titre', nil) %>
+  <%= form.field_checkbox("Ne pas afficher le titre", 'option_no_titre', nil) %>
+  <%= form.field_description("Si le formulaire est à l'intérieur d'un texte, on peut vouloir ne pas afficher son titre. Noter que dans ce cas la class du div.quiz contiendra en plus `no_titre` qui affiche le questionnaire de façon différente.") %>
+
+  <%# TYPE %>
+  <%= form.field_select("Type", 'type', nil, {values: Unan::Quiz::TYPES}) %>
+
+  <%# LISTE QUESTIONS %>
+  <%= form.field_text("Questions", 'questions_ids', nil) %>
+  <%= form.field_description("Liste des IDs de questions, séparées par des espaces.") %>
+
+  <%# NOMBRE DE POINTS QUAND SUCCÈS %>
+  <%= form.field_text("Points", 'points', nil, {class:'short'}) %>
+  <%= form.field_description("Le nombre de points qui sera acquis en plus en cas de succès/réussite du questionnaire. Le <em>en plus</em> précédemment indique que les questions elles-mêmes peuvent générer la valeur de leur réponse en points.") %>
+  <%= form.field_checkbox("Aucun point par question", 'option_only_points_quiz', nil) %>
+  <%= form.field_description("Si cette case est cochée, alors les questions n'apporteront aucun point, seule la valeur de point fixée ci-dessus sera acquise par l'auteur.") %>
+
+  <%# DESCRIPTION %>
+  <%= form.field_textarea("Description", 'description', nil) %>
+  <%= form.field_checkbox("Afficher la description", 'option_description', nil) %>
+  <%= form.field_description("Si la case ci-dessus est cochée, la description du questionnaire pourra être affichée (par exemple en information sous le titre).") %>
+
+
+  <%= form.submit_button("Enregistrer") %>
+</form>
+
+<%
+# Aperçu du questionnaire
+%>
+<% if iquiz %>
+  <%= iquiz.output(forcer = true) %>
+<% end %>

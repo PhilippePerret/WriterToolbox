@@ -9,25 +9,42 @@
 <%
 http = "http://localhost/WriterToolbox"
 %>
-<ul>
-  <li><a href="<%= http %>/abs_pday/edit?in=unan_admin">Création / édition des P-Days (AbsPDay)</a></li>
-  <li><a href="abs_pday/map?in=unan_admin" class="bold">Carte des P-Days</a></li>
-  <li><%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %></li>
-  <li><a href="abs_work/edit?in=unan_admin">Créer/éditer un travail</a></li>
-  <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
-  <li><a href="page_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
-  <li>
-    <form action="" method="POST" onsubmit="$(this).attr('action', 'page_cours/'+$('input#page_id_to_read').val()+'/read?in=unan')">
-      <div class='row buttons' style="text-align:left"><span class='value'><input type="submit" value="Lire la page de cours : " />
-      <input type="text" class="short" value="" id="page_id_to_read" /></span></div>
-    </form>
-  </li>
-  <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
-  <li>Agencer les étapes</li>
+<ul style="list-style:none">
+  <fieldset class='inline-block'>
+    <legend>P-Days</legend>
+    <li><a href="<%= http %>/abs_pday/edit?in=unan_admin">Création / édition des P-Days (AbsPDay)</a></li>
+    <li><a href="abs_pday/map?in=unan_admin" class="bold">Carte des P-Days</a></li>
+  </fieldset>
+  <fieldset class='inline-block'>
+    <legend>Travaux</legend>
+    <li><a href="abs_work/edit?in=unan_admin">Créer/éditer un travail</a></li>
+    <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
+  </fieldset>
+
+  <fieldset class='inline-block'>
+    <legend>Pages de cours</legend>
+    <li><a href="page_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
+    <li>
+      <form action="" method="POST" onsubmit="$(this).attr('action', 'page_cours/'+$('input#page_id_to_read').val()+'/read?in=unan')">
+        <div class='row buttons' style="text-align:left"><span class='value'><input type="submit" value="Lire la page de cours : " />
+        <input type="text" class="short" value="" id="page_id_to_read" /></span></div>
+      </form>
+    </li>
+  </fieldset>
+  <fieldset class='inline-block'>
+    <legend>Calendrier</legend>
+    <li><%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %></li>
+    <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
+  </fieldset>
+  <fieldset class='inline-block'>
+    <legend>Quiz et questionnaires</legend>
+    <li><%= "Questionnaires".in_a(href:"quiz/edit?in=unan_admin") %> </li>
+    <li><%= "Question QCM".in_a(href:"question/edit?in=unan_admin/quiz") %></li>
+  </fieldset>
+  <fieldset class='inline-block'>
+    <legend>Exemples</legend>
+    <li>Créer un exemple</li>
+    <li>Éditer un exemple</li>
+  </fieldset>
   <li>Gérer une inscription</li>
-  <li>Créer un questionnaire</li>
-  <li>Éditer un questionnaire</li>
-  <li><%= "Édition question QCM".in_a(href:"question/edit?in=unan_admin/quiz") %></li>
-  <li>Créer un exemple</li>
-  <li>Éditer un exemple</li>
 </ul>
