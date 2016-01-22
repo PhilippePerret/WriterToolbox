@@ -54,7 +54,8 @@ class SiteHtml
   end
 
   # Les données de l'application, c'est-à-dire le contenu de
-  # toutes les bases de données
+  # toutes les bases de données.
+  # Note : C'est ce dossier qui est copié pour faire des gels
   def folder_db
     @folder_db ||= get_and_build_folder(folder_database + 'data')
   end

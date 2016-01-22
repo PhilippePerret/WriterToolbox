@@ -15,14 +15,20 @@ class Console
 
   def gel gel_name
     site.require_module('gel')
-    Gel::gel(gel_name)
-    "Le site a été gelé dans `#{gel_name}`."
+    if Gel::gel(gel_name)
+      "Le site a été gelé dans `#{gel_name}`."
+    else
+      "Un problème est survenu au cours du gel."
+    end
   end
 
   def degel gel_name
     site.require_module('gel')
-    Gel::degel(gel_name)
-    "Le gel `#{gel_name}` a été degelé."
+    if Gel::degel(gel_name)
+      "Le gel `#{gel_name}` a été degelé."
+    else
+      "Le gel `#{gel_name}` n'a pas pu être dégelé."
+    end
   end
 
 end #/Console
