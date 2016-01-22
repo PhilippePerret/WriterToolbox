@@ -50,7 +50,8 @@ class Question
       question:     dinp[:question].gsub(/"/, '“').nil_if_empty,
       reponses:     reponses,
       type:         "#{dinp[:type_c]}#{dinp[:type_a]}#{dinp[:type_f]}",
-      raison:       dinp[:raison],
+      indication:   dinp[:indication].nil_if_empty,
+      raison:       dinp[:raison].nil_if_empty,
       updated_at:   NOW
     }
   end
