@@ -25,11 +25,10 @@ class Quiz
   # Construction du questionnaire
   # Return le code HTML du questionnaire
   def build
-    debug "-> build"
     html = String::new
     html << titre.in_div(class:'titre') unless no_titre?
     html << description.in_div(class:'description') if description?
-    html << questions.collect{|iquestion| iquestion.output}.join.in_div(class:'questions')
+    html << questions.collect { |iquestion| iquestion.output }.join.in_div(class:'questions')
 
     css = ['quiz']
     css << "no_titre" if no_titre?

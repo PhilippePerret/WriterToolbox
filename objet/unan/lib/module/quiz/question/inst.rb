@@ -12,6 +12,11 @@ class Question
     @id = qid.to_i
   end
 
+  # Retourne true si la question existe
+  def exist?
+    table.count(where:{id: id}) > 0
+  end
+
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------

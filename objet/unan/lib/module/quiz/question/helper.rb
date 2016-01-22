@@ -8,7 +8,9 @@ class Question
 
   # Mise en forme de la question pour affichage
   def output
-
+    unless exist?
+      return "[Question ##{id} inexistante]"
+    end
     choix = reponses.collect do |hr|
       debug "hr: #{hr.inspect}"
       cb_id   = "q-#{id}_r-#{hr[:id]}".freeze

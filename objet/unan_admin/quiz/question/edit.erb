@@ -19,12 +19,16 @@ question_id = (site.current_route.objet_id || param(:question_id) || (param(:que
 if question_id != nil
   debug "question_id : #{question_id}"
   iquestion = Unan::Quiz::Question::new(question_id)
-  dquestion = iquestion.get_all
-  dquestion.merge!(
-    type_a: iquestion.type_a,
-    type_c: iquestion.type_c
-  )
-  debug dquestion
+  if iquestion.exist?
+    dquestion = iquestion.get_all
+    dquestion.merge!(
+      type_a: iquestion.type_a,
+      type_c: iquestion.type_c
+    )
+    debug dquestion
+  else
+    dquestion = iquestion = nil
+  end
   param(:question => dquestion)
 else
   iquestion = nil
@@ -84,5 +88,6 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 #
 if iquestion
 %>
+  <h3>Affichage de la question</h3>
   <%= iquestion.output.in_div(id:'aspect') %>
 <% end %>
