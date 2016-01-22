@@ -5,6 +5,8 @@ class Question
 
   include MethodesObjetsBdD
 
+  attr_reader :id
+
   # +qid+ ID de la question dans la table
   def initialize qid
     @id = qid.to_i
@@ -28,6 +30,11 @@ class Question
   #   Méthodes d'helper
   # ---------------------------------------------------------------------
 
+  # ---------------------------------------------------------------------
+  #   Méthodes de database
+  # ---------------------------------------------------------------------
+  def table ; @table ||= Unan::table_questions end
+  
 end #/Question
 end #/Quiz
 end #/Unan

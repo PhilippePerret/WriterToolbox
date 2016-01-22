@@ -89,7 +89,7 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 
   <%# id %>
-  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current}".in_span(class:'small')}) %>
+  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current}".in_span(class:'small')}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>

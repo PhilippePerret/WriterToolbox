@@ -3,6 +3,16 @@ if(undefined == window.Question){window.Question = {}}
 $.extend(window.Question,{
   last_id_reponse:0,
 
+  // Tout ré-initialiser pour une nouvelle question
+  reset_all: function(){
+    $("input#question_question").val('');
+    $('textarea#question_raison').val('');
+    $('div#reponses').html("");
+    $('input#question_nombre_reponses').val('0')
+    $('textarea#reponses_json').val('');
+    Question.last_id_reponse = 0 ;
+  },
+
   // Méthode appelée par le bouton "+ Réponse" dans le formulaire
   new_reponse:function(){
     this.build_reponse_field();
@@ -16,7 +26,7 @@ $.extend(window.Question,{
     $(reponses).each(function(key, value){
       libelle = value.libelle ;
       points  = value.points  ;
-      Question.build_reponse_field(key, libelle, points) ;
+      Question.build_reponse_field(key + 1, libelle, points) ;
     })
   },
 
@@ -37,10 +47,30 @@ $.extend(window.Question,{
     "</div>";
     rep_code = "<div class='row'><span class='libelle'>Réponse "+rep_id+"</span><span class='value'>"+rep_code+"</span></div>";
     $('div#reponses').append(rep_code) ;
+  },
+
+  // Méthode appelée quand on veut détruire la question
+  on_want_destroy:function(){
+    if( this.question_id == ""){
+      return F.error("Il faut indiquer l'identifiant de la question à détruire.")
+    }
+    if(!confirm("Voulez-vous réellement détruire définitivement cette question ?")){return false}
+    this.form.find("input#operation").val("destroy_question");
+    this.form.submit();
   }
 })
 Object.defineProperties(window.Question,{
-
+  'form':{
+    get:function(){
+      if(undefined == this._form){this._form = $('form#form_question_edit')};
+      return this._form;
+    }
+  },
+  'question_id':{
+    get:function(){
+      return $('input#question_id').val();
+    }
+  }
 })
 
 
@@ -61,12 +91,12 @@ $(document).ready(function(){
 
   // Pour surveiller le changement de ID
   $('input#question_id').bind('change', function(){
+    console.log("Il est vidé. Valeur du champ : ")
+    console.log($(this).val()) ;
     if($(this).val() == ""){
-      // Quand on vide le change de ID
-      $(
-        ["input#question_question"]
-      ).each(function(i,o){o.val('')})
-      $('div#reponses').html("");
+      // Quand on vide le change de ID, c'est pour initialiser
+      // une nouvelle question. il faut donc tout initialiser
+      Question.reset_all();
     } else {
       // Plus tard, pour régler le bouton pour voir la question ?
     }

@@ -1,4 +1,5 @@
 # encoding: UTF-8
+raise_unless_admin
 
 require 'json'
 
@@ -6,8 +7,31 @@ class UnanAdmin
 class Quiz
 class Question
 
+  # ---------------------------------------------------------------------
+  #   Méthodes de classe
+  # ---------------------------------------------------------------------
+  class << self
+    def destroy question_id
+      if question_id.nil?
+        error "Il faut indiquer l'identifiant de la question à détruire…"
+        return
+      elsif Unan::table_questions.count(where:{id: question_id}) == 0
+        flash "La question ##{question_id} n'existe pas ou plus."
+      else
+        Unan::table_questions.delete(question_id)
+        flash "Question ##{question_id} détruite."
+      end
+      param(:question => nil)
+    end
+  end # << self
+
+  # ---------------------------------------------------------------------
+  #   Instance
+  # ---------------------------------------------------------------------
+
   def save
-    debug "data2save : #{data2save.pretty_inspect}"
+    check_data2save || return
+    # debug "data2save : #{data2save.pretty_inspect}"
     if dinp[:id].nil_if_empty.nil?
       # => Nouvelle question
       data2save.merge!(created_at: NOW)
@@ -16,7 +40,7 @@ class Question
       # => Actualisation de question
       Unan::table_questions.update(dinp[:id].to_i, data2save)
     end
-    param( :question => dinp )
+    param( :question => dinp.merge(reponses: reponses) )
     flash "Question sauvegardée."
   end
 
@@ -30,14 +54,27 @@ class Question
     }
   end
 
+  def check_data2save
+    d = data2save # + court
+    raise "La question doit être définie."  if d[:question].nil?
+    raise "Il faut au moins une réponse."   if nombre_reponses == 0
+  rescue Exception => e
+    error e.message
+  else
+    true
+  end
+
+  # Prépare le champ réponses qui  contient chaque réponse
+  # Chaque réponse est un objet définissant :id, :libelle et
+  # :points.
   def reponses
     @reponses ||= begin
       (1..nombre_reponses).collect do |ireponse|
         h = dinp["reponse_#{ireponse}".to_sym].to_sym
         h[:libelle] = h[:libelle].strip
         next nil if h[:libelle].empty?
-        h[:id]      = h[:id].to_i
-        h[:points]  = h[:points].to_i
+        h[:id]      = ireponse.freeze,
+        h[:points]  = h[:points].to_i.freeze
         h
       end.compact.to_json
     end
@@ -55,6 +92,9 @@ end #/Question
 end #/Quiz
 end #/UnanAdmin
 
-if param(:operation) == 'save_question'
+case param(:operation)
+when 'save_question'
   UnanAdmin::Quiz::Question::new().save
+when 'destroy_question'
+  UnanAdmin::Quiz::Question::destroy(param(:question)[:id].to_i_inn)
 end
