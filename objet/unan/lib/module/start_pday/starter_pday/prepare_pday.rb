@@ -64,7 +64,7 @@ class StarterPDay
       ids_lists[:works]   << work.id
 
       # Le titre du nouveau travail doit être ajouté au mail
-      auteur_mail.nouveaux_travaux << abswork.titre.in_li
+      mail_auteur.nouveaux_travaux << abswork.titre.in_li
 
     end
 
