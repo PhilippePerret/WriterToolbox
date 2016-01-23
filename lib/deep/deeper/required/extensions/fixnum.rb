@@ -33,6 +33,32 @@ class ::Fixnum
     self.to_f.as_tarif
   end
 
+  # Retourne le nombre comme une durée en jours,
+  # avec "jour(s) à la fin"
+  def as_jours
+    nombre_jours = self / DUREE_JOUR
+    s = nombre_jours > 1 ? "s" : ""
+    "#{nombre_jours} jour#{s}"
+  end
+  alias :as_jour :as_jours
+
+  # Méthode qui retourne le temps en jours (et heures) s'il
+  # fait plus d'un jour et en heures dans le cas contraire
+  def as_jours_or_hours
+    jrs = self / DUREE_JOUR
+    hrs = (self % DUREE_JOUR) / 3600
+    d = ""
+    if jrs > 0
+      d << "#{jrs} jour#{jrs > 1 ? 's' : ''}"
+    end
+    if hrs > 0
+      d << " et " unless d.empty?
+      d << "#{hrs} heure#{hrs > 1 ? 's' : ''}"
+    end
+    d
+  end
+  alias :as_jour_or_hour :as_jours_or_hours
+
   # Retourne la date correspondant au fixnum (quand c'est un timestamp)
   def as_date format = :dd_mm_yyyy
     format_str =

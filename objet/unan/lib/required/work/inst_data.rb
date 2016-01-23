@@ -59,6 +59,12 @@ class Work
     end
   end
 
+  # {Fixnum} Fin attendue, en seconde, en fonction de la date
+  # de départ du travail et la durée relative.
+  def expected_end
+    @expected_end ||= ( created_at + duree_relative )
+  end
+
   # Type du travail au format humain (vient de abs_work)
   def human_type
     @human_type ||= abs_work.human_type_w

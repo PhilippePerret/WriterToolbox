@@ -54,19 +54,44 @@ class Work
   # s'adapter exactement à l'auteur en particulier.
   def output
     (
-      "#{abs_work.titre}".in_div(class:'titre') +
+      "#{abs_work.titre}".in_div(class:'titre')     +
       "#{abs_work.travail}".in_div(class:'travail') +
-      form
+      date_fin_attendue +
+      form_pour_marquer_fini
     ).in_div(class:'work')
   end
-  def form
+  def form_pour_marquer_fini
     (
       "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches") +
       " (et gagner #{abs_work.points} points)".in_span(class:'small')
     ).in_div(class:'buttons')
   end
 
+  def date_fin_attendue
+    doit = depassement? ? "aurait dû" : "doit"
+    avez = depassement? ? "aviez" : "avez"
+    mess_duree = "Ce travail #{doit} être accompli en #{duree_relative.as_jours}."
+    css  = ['exbig']
+    css << "warning" if depassement?
+    mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé avant le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
+    mess_reste_jours = if depassement?
+      "Vous êtes en dépassement de #{temps_humain_depassement} !".in_div(class:'warning')
+    else
+      "Il vous reste <span class='exbig'>#{temps_humain_restant}</span>.".in_div
+    end
+    (
+      mess_duree.in_div +
+      mess_echeance.in_div +
+      mess_reste_jours
+    ).in_div(class:'dates')
+  end
 
+  def temps_humain_depassement
+    depassement.as_jours_or_hours
+  end
+  def temps_humain_restant
+    (expected_end - NOW).as_jours_or_hours
+  end
 
 end #/Work
 end #/Program

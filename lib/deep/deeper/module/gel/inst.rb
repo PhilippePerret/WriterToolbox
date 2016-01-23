@@ -47,7 +47,6 @@ class Gel
 
   def name_invalide?
     raise "Il faut préciser le nom du gel." if name.empty?
-    debug "name = '#{name}'"
     raise "`__backup__` est un nom réservé." if name == "__backup__"
     raise "Les noms ne peuvent pas contenir d'espaces." if name.match(/ /)
     not_ok = name.gsub(/[a-zA-Z0-9_\.\-]/,'') != ""

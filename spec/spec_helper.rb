@@ -166,4 +166,13 @@ RSpec.configure do |config|
   def debug str
     puts "#{str}\n"
   end
+
+  def degel gel_name
+    site.require_module('gel')
+    SiteHtml::Gel::degel gel_name
+  end
+  def gel gel_name
+    site.require_module('gel')
+    SiteHtml::Gel::gel gel_name
+  end
 end
