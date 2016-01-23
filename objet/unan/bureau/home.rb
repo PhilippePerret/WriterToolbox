@@ -11,18 +11,11 @@ site.require 'form_tools'
 class Unan
 class Bureau
 
-  # Onglets du bureau Un An Un Script d'un user suivant le programme
-  ONGLETS = {
-    state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
-    projet:       {id: :projet,       titre:"Projet"},
-    taches:       {id: :taches,       titre:"Tâches",   knombre: :tasks},
-    pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages_non_lues},
-    forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
-    quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
 
-    preferences:  {id: :preferences,  titre:"Préférences"}
-  }
-
+  # Raccourci pour pouvoir utiliser `auteur` comme `user`
+  def auteur
+    user
+  end
   # ---------------------------------------------------------------------
   #   Messages communs à tous les panneaux
   # ---------------------------------------------------------------------
@@ -62,11 +55,8 @@ class Bureau
   # = main =
   #
   # {StringHTML} Retourne le code HTML pour l'onglet
-  # courant (current_onglet)
-  def panneau_courant
-    (data_onglet[:plain_titre]||data_onglet[:titre]).in_h3 +
-    Vue::new(current_onglet.to_s, folder_panneaux, self).output
-  end
+  # courant
+  def panneau_courant ; Onglet::current.panneau end
 
   # {StringHTML} Return le code HTML pour les formulaires de la
   # rangée de définition du partage. Mis dans un helper ici pour
@@ -112,42 +102,114 @@ class Bureau
   end
 
   # ---------------------------------------------------------------------
+  #
   #   Méthodes pour les ONGLETS
+  #
   # ---------------------------------------------------------------------
 
-  # {Symbol} ID de l'onglet courant
-  # Est défini dans `cong` dans les paramètres
-  def current_onglet
-    @current_onglet ||= (param(:cong) || :state).to_sym
-  end
-
-  # Données dans ONGLETS de l'onglet courant
-  def data_onglet
-    @data_onglet ||= ONGLETS[current_onglet]
-  end
-
-  # = main =
-  #
   # {StringHTML} Retourne le code HTML de la barre
   # d'onglets
-  def bande_onglets
-    ONGLETS.collect { |ong_id, ong_data| onglet(ong_data) }.join.in_ul(id:'bande_onglets')
-  end
+  def bande_onglets ; Onglet::bande end
 
-  # Retourne le code HTML pour l'onglet de données +data+
-  def onglet data
-    titre_onglet(data).in_a(href:"bureau/home?in=unan&cong=#{data[:id]}").in_li(class: (current_onglet == data[:id] ? 'actif' : nil ))
-  end
 
-  # Retourne le titre de l'onglet pour les données d'onglet +data+
-  def titre_onglet data
-    tit = data[:titre]
-    if data[:knombre]
-      nb = user.nombre_de(data[:knombre])
-      tit << " <span class='nombre'>(#{nb})</span>" if nb > 0
+  class Onglet
+
+    # Onglets du bureau Un An Un Script d'un user suivant le programme
+    ONGLETS = {
+      state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
+      projet:       {id: :projet,       titre:"Projet"},
+      taches:       {id: :taches,       titre:"Tâches",   knombre: :tasks},
+      pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages_non_lues},
+      forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
+      quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
+
+      preferences:  {id: :preferences,  titre:"Préférences"}
+    }
+
+    # ---------------------------------------------------------------------
+    #   Classe
+    # ---------------------------------------------------------------------
+    class << self
+
+      # Retourne le code HTML de la bande d'onglets
+      def bande
+        ONGLETS.keys.collect do |ong_id|
+          new(ong_id).onglet
+        end.join.in_ul(id:'bande_onglets')
+      end
+
+      # {Unan::Bureau::Onglet} Return l'instance Onglet
+      # de l'onglet courant.
+      def current
+        @current ||= new((param(:cong) || :state).to_sym)
+      end
+
+    end # << self
+
+    # ---------------------------------------------------------------------
+    #   INSTANCES
+    # ---------------------------------------------------------------------
+    # {Symbol} Identifiant de l'onglet, par exemple :forum
+    attr_reader :id
+    def initialize onglet_id
+      @id = onglet_id
     end
-    tit
-  end
+
+    # {StringHTML} Retourne le code HTML de l'onglet
+    # en tant qu'onglet
+    def onglet
+      # return "#{id}"
+      titre_onglet.
+        in_a(href:"bureau/home?in=unan&cong=#{id}").
+        in_li(class: class_onglet)
+    end
+    # {StringHTML} Retourne le code HTML du panneau
+    # complet de l'onglet.
+    # Note : Utilisé seulement pour l'onglet courant
+    def panneau
+      @panneau ||= begin
+        Onglet::current.titre_panneau +
+        Vue::new(id.to_s, bureau.folder_panneaux, bureau).output
+      end
+    end
+
+
+    # Retourne le titre en fonction du fait qu'il y a
+    # ou nom des travaux dans cet onglet
+    def titre_onglet
+      @titre_onglet ||= begin
+        data[:titre] + (has_travaux? ? " (#{nombre_travaux})" : '')
+      end
+    end
+    def titre_panneau
+      @titre_panneau ||= (data[:plain_titre]||data[:titre]).in_h3
+    end
+
+    def class_onglet
+      @class_onglet ||= begin
+        css = Array::new
+        css << 'exergue'  if has_travaux?
+        css << 'actif'    if current?
+        css.join(' ').nil_if_empty
+      end
+    end
+
+    # Return true si l'onglet est l'onglet courant
+    def current?
+      @is_current ||= self.class.current.id == id
+    end
+    def has_travaux?
+      @has_travaux ||= (nombre_travaux > 0)
+    end
+    def nombre_travaux
+      @nombre_travaux ||= user.nombre_de(data[:knombre])
+    end
+
+    # Données de l'onglet (dans ONGLETS)
+    def data
+      @data ||= ONGLETS[id]
+    end
+  end #/Onglet
 
 end #/Bureau
 end #/Unan

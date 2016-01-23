@@ -12,5 +12,29 @@ class Quiz
     'no_titre'          => {bit:2, hname:"Ne pas afficher le titre du questionnaire"}
   }
 
+  # ---------------------------------------------------------------------
+  #   Options
+  #
+  # Définir dynamiquement toutes les méthodes d'options
+  # description?, no_titre? etc.
+  # Cf. la constante OPTIONS définie dans
+  # OPTIONS.each do |k, dk|
+  #   define_method "#{k}?" do
+  #     options[dk[:bit]].to_i == 1
+  #   end
+  # end
+  def description?
+    options[0].to_i == 1
+  end
+  def only_points_quiz?
+    options[1].to_i == 1
+  end
+  def no_titre?
+    if options.nil?
+      return false
+    else
+      options[2].to_i == 1
+    end
+  end
 end #/Quiz
 end #/Unan

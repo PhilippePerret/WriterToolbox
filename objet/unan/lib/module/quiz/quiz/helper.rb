@@ -2,6 +2,13 @@
 class Unan
 class Quiz
 
+  def unless_not_exists
+    @unless_not_exists ||= begin
+      raise "Le questionnaire ##{id} n'existe pas, désolé…" unless exist?
+      true
+    end
+  end
+
   # {StringHtml} Retourne le code HTML pour afficher
   # le questionnaire.
   # Ce code est enregistré dans la propriété :output
@@ -13,6 +20,7 @@ class Quiz
   # ce output est défini. C'est pourquoi il faut mettre le forcer et
   # le out_of_date? avant de tester @output contre nil.
   def output forcer = false
+    unless_not_exists
     @output = nil if forcer || out_of_date?
     @output ||= begin
       code = get(:output)
@@ -25,6 +33,7 @@ class Quiz
   # Construction du questionnaire
   # Return le code HTML du questionnaire
   def build
+    unless_not_exists
     html = String::new
     html << titre.in_div(class:'titre') unless no_titre?
     html << description.in_div(class:'description') if description?

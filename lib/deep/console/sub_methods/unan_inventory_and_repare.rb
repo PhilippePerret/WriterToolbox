@@ -49,13 +49,15 @@ class Console
   # Pour faire le rapport du programme de données {Hash} +hprog+
   def rapport_programme_unan hprog
     user = User::get(hprog[:auteur_id])
+    prog = user.program
     add_rap "Programme ID", hprog[:id]
     add_rap "Auteur", "#{user.pseudo} (#{hprog[:auteur_id]})"
     add_rap "Commencé le", hprog[:created_at].as_human_date(true, true)
     add_rap "Modifier le", hprog[:updated_at].as_human_date(true, true)
+    add_rap "Jour-programme courant", prog.current_pday.inspect
     @rapport << "<strong>Liste des travaux (variable `:works_ids`)</strong>"
     user.get_var(:works_ids, Array::new).each do |wid|
-      work = Unan::Program::Work::get(user.program, wid)
+      work = Unan::Program::Work::get(prog, wid)
       add_rap "    Work #{wid}", work.abs_work.titre
     end.join
     add_rap "  Liste des quiz", user.get_var(:quiz_ids,[]).pretty_join
