@@ -58,6 +58,8 @@ lien_to_edit_abspday = "éditer".in_a(class: 'small btn', onclick:"$('form#form_
 
 # Le lien pour détruire le travail courant
 lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce P-Day ?')){$('form#form_edit_pday_unan input#operation').val('destroy_abs_pday');$('form#form_edit_pday_unan').submit();}")
+
+lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsPDay, 'init_new')()", class:'small btn')
 %>
 <h2>Absolute P-Day</h2>
 <%
@@ -69,7 +71,7 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
 
   <%= "save_absolute_pday".in_hidden(name:'operation', id:'operation') %>
 
-  <%= form.field_text('JOUR', 'id', nil, {class:'short id_field', onchange:"set_href_lien_read(this)", text_after: "#{lien_to_edit_abspday} #{lien_to_destroy_current}"}) %>
+  <%= form.field_text('JOUR', 'id', nil, {class:'short id_field', onchange:"set_href_lien_read(this)", text_after: "#{lien_to_edit_abspday} #{lien_to_destroy_current} #{lien_to_init_new}"}) %>
   <%= form.field_description("Le JOUR est un nombre de 1 à 365 correspondant au jour dans l'année de ce P-Day de façon absolue, i.e. sans tenir compte du rythme (donc à rytme moyen avec 1 p-day = 1 jour réel).") %>
 
   <%= form.field_text('Titre', 'titre', nil) %>

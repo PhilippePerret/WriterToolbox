@@ -81,6 +81,8 @@ lien_to_edit_abswork = "éditer".in_a(class: 'small btn', onclick:"$('form#form_
 # Le lien pour détruire le travail courant
 lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
 
+lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", class:'small btn')
+
 %>
 <h2>Absolute Work</h2>
 
@@ -89,7 +91,7 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
 
   <%# id %>
-  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current}".in_span(class:'small')}) %>
+  <%= form.field_text("Numéro/ID", "id", nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current} #{lien_to_init_new}".in_span(class:'small')}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>

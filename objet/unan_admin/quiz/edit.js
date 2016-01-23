@@ -15,7 +15,7 @@ $.extend(window.Quiz,{
     var champs_select = [
       'quiz_type'
     ]
-    var champs_unckeck = [
+    var champs_uncheck = [
       'quiz_option_no_titre',
       'quiz_option_description',
       'quiz_option_only_points_quiz'
