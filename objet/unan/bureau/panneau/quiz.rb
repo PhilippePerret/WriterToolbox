@@ -44,19 +44,8 @@ end #/Bureau
 
 require_module 'quiz'
 class Quiz
-  # {StringHTML} Retourne le code HTML intégral avec le formulaires
-  # et les boutons pour soumettre chaque questionnaires
-  def output_in_form
-    form = String::new
-    form << 'bureau_save_quiz'.in_hidden(name:'operation')
-    form << output
-    form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
-    code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: "bureau/home?in=unan&cong=quiz")
-    # code += "".in_div(style:'clear:both;')
-    # debug code
-    code
-  end
 end #/Quiz
+
 end #/Unan
 
 # Pour lancer la sauvegarde des données du questionnaire

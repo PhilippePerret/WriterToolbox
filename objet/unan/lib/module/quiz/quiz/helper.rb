@@ -29,6 +29,24 @@ class Quiz
     end
   end
 
+  # {StringHTML} Retourne le code HTML intégral avec le formulaires
+  # et les boutons pour soumettre chaque questionnaires
+  # +options+
+  #   forcer:   Si true, on force la reconstruction du questionnaire
+  #   simulation:  Si true, c'est une simulation
+  def output_in_form options = nil
+    options ||= Hash::new
+
+    form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
+    form = String::new
+    form << 'bureau_save_quiz'.in_hidden(name:'operation')
+    form << output(forcer = !!options[:forcer])
+    form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
+    code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
+    # code += "".in_div(style:'clear:both;')
+    # debug code
+    code
+  end
 
   # Construction du questionnaire
   # Return le code HTML du questionnaire
@@ -42,12 +60,16 @@ class Quiz
     css = ['quiz']
     css << "no_titre" if no_titre?
 
+    html << id              .in_hidden(name:"quiz[id]", id:"quiz_id-#{id}")
+    html << questions.count .in_hidden(name: "quiz[questions_count]")
+
     html = html.in_div( class: css.join(' ') )
     # On enregistre le questionnaire dans la table
     set(:output => html, updated_at: NOW)
-    # On retourne le code
+    # On retourne le code après l'avoir enregistré
     return html
   end
+
 
 end #/Quiz
 end #/Unan
