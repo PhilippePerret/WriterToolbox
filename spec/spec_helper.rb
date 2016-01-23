@@ -106,6 +106,7 @@ RSpec.configure do |config|
 =end
 
   config.before :suite do
+
     # On prend le temps de départ qui permettra de savoir les choses
     # qui ont été créées au cours des tests et pourront être
     # supprimées à la fin de la suite de tests
@@ -115,6 +116,11 @@ RSpec.configure do |config|
     # users qu'il faudra détruire à la fin des tests.
     $users_2_destroy = Array::new
 
+    # On fait un gel du site actuel pour pouvoir le remettre
+    # ensuite.
+    SiteHtml.instance.require_module('gel')
+    SiteHtml::Gel::gel('before-test')
+
   end
 
   config.after :suite do
@@ -122,29 +128,35 @@ RSpec.configure do |config|
 
     # Destruction des users qui ont été créés au cours des
     # tests
-    $users_2_destroy.each do |uref|
-      u = uref.instance_of?(User) ? uref : User::get(uref)
-      u.remove # appelle aussi `u.app_remove` propre à l'app.
-    end
+    # OBSOLÈTE maintenant qu'on travail avec les gels
+    # $users_2_destroy.each do |uref|
+    #   u = uref.instance_of?(User) ? uref : User::get(uref)
+    #   u.remove # appelle aussi `u.app_remove` propre à l'app.
+    # end
 
     # Destruction de tout ce qui a été créé au cours des tests,
     # c'est-à-dire après le @start_suite_time
-    if Unan::table_programs.exist?
-      nb_init = Unan::table_programs.count
-      Unan::table_programs.delete(where:"created_at >= #{@start_suite_time}")
-      nb_destroyed = nb_init - Unan::table_programs.count
-      debug "Nombre de programmes détruits dans la table unan_hot.programs : #{nb_destroyed}"
-    else
-      debug "Aucun programme détruit (table unan_hot.programs inexistante)"
-    end
-    if Unan::table_projets.exist?
-      nb_init = Unan::table_projets.count
-      Unan::table_projets.delete(where:"created_at >= #{@start_suite_time}")
-      nb_destroyed = nb_init - Unan::table_projets.count
-      debug "\nNombre de projets détruits dans la table unan_hot.projets : #{nb_destroyed}"
-    else
-      debug "Aucun projet détruit (table unan_hot.projets inexistante)"
-    end
+    # OBSOLÈTE maintenant qu'on travaille avec les gels
+    # if Unan::table_programs.exist?
+    #   nb_init = Unan::table_programs.count
+    #   Unan::table_programs.delete(where:"created_at >= #{@start_suite_time}")
+    #   nb_destroyed = nb_init - Unan::table_programs.count
+    #   debug "Nombre de programmes détruits dans la table unan_hot.programs : #{nb_destroyed}"
+    # else
+    #   debug "Aucun programme détruit (table unan_hot.programs inexistante)"
+    # end
+    # if Unan::table_projets.exist?
+    #   nb_init = Unan::table_projets.count
+    #   Unan::table_projets.delete(where:"created_at >= #{@start_suite_time}")
+    #   nb_destroyed = nb_init - Unan::table_projets.count
+    #   debug "\nNombre de projets détruits dans la table unan_hot.projets : #{nb_destroyed}"
+    # else
+    #   debug "Aucun projet détruit (table unan_hot.projets inexistante)"
+    # end
+
+    SiteHtml.instance.require_module('gel')
+    SiteHtml::Gel::degel('before-test')
+
   end
 
   def require_folder folder

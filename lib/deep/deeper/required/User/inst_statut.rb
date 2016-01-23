@@ -4,8 +4,11 @@ Méthodes de statut pour l'utilisateur (courant ou autre)
 =end
 class User
 
-  def admin?
-    @id == 1
+  # Pour admin?, super? et manitou?, cf. le fichier options.rb
+
+  def exist?
+    return false if @id.nil?
+    table.count(where:{id: id}) > 0
   end
 
   def guest?

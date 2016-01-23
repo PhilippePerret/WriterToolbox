@@ -11,8 +11,8 @@ class Console
   #
   def help
     <<-HTML
-<h4>Généralités</h4>
-<dl class='small'>
+<h4 onclick="$('dl#generalites').toggle()">Généralités</h4>
+<dl id="generalites" class='small' style="display:none">
 
   <dt>Fonctionnement général</dt>
   <dd>Taper une ligne de code puis presser “Entrée” comme dans une console pour exécuter le code.</dd>
@@ -32,8 +32,8 @@ class Console
   <dd>Les variables devraient être traitées dans un très proche avenir.</dd>
 </dl>
 
-<h4>Lignes de codes utilisables</h4>
-<dl class='small'>
+<h4 onclick="$('dl#code_lines').toggle()">Lignes de codes utilisables</h4>
+<dl class='small' id="code_lines" style="display:none">
 
   <dt>`montre table &lt;database&gt;.&lt;table&gt;`</dt>
   <dd>Pour afficher le contenu d'une table. NON IMPLÉMENTÉE.</dd>
@@ -51,8 +51,8 @@ class Console
   <dd>OFFLINE seulement</dd>
 </dl>
 
-<h4>Gels et dégels</h4>
-<dl class="small">
+<h4 onclick="$('dl#gels').toggle()">Gels et dégels</h4>
+<dl class="small" id="gels" style="display:none">
   <dt>list gels</dt>
   <dd>Affiche la liste de tous les gels. Avec une description si le gel en possède une.</dd>
   <dt>`gel 'nom-du-gel'`</dt>
@@ -69,8 +69,8 @@ class Console
 
 
 
-<h4>Lignes propres à l'application</h4>
-<dl>
+<h4 onclick="$('dl#unan').toggle()">Lignes propres à l'application (UN AN UN SCRIPT)</h4>
+<dl id="unan" class='small' style="display:none;">
   <dt>`Unan ...`</dt>
   <dd>Tous les codes commençant par `Unan` concernent la programme Un An Un Script et chargent automatiquement cet objet avant leur exécution.</dd>
 
@@ -79,6 +79,10 @@ class Console
 
   <dt>`Unan repare`</dt>
   <dd>Répare le programme UN AN UN SCRIPT. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.</dd>
+
+  <dt>`Unan init program for &lt;ID de user existant&gt;`</dt>
+  <dd>Pour initier un programme pour un utilisateur existant.</dd>
+  <dd>La commande fait plusieurs vérification, notamment l'existence de l'utilisateur et le fait qu'il ne soit pas déjà en train de suivre un programme (qu'il faudrait arrêter avant de poursuivre).</dd>
 
   <dt>
     <strong>affiche</strong><br />

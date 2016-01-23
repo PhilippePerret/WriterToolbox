@@ -7,6 +7,11 @@ class Work
     @is_type_task ||= abs_work.type_task?
   end
 
+  # Retourne true si le travail
+  def ended?
+    @is_ended ||= ended_at != nil
+  end
+
   # Return TRUE si le travail est en dépassement de temps, i.e.
   # s'il aurait dû être fini avant
   def depassement?

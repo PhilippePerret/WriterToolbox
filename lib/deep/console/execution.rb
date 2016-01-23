@@ -63,7 +63,7 @@ class Console
 
     when "Unan répare", "Unan repare"
       reparation_programme_unan
-      
+
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table pages cours)"
@@ -165,6 +165,8 @@ class Console
     end
 
     case sentence
+    when 'Unan init program for'
+      init_program_1an1script_for( last_word )
     when 'detruire programmes de'
       detruire_programmes_de( last_word )
     when 'affiche table'

@@ -57,8 +57,16 @@ class Console
     add_rap "Jour-programme courant", prog.current_pday.inspect
     @rapport << "<strong>Liste des travaux (variable `:works_ids`)</strong>"
     user.get_var(:works_ids, Array::new).each do |wid|
-      work = Unan::Program::Work::get(prog, wid)
-      add_rap "    Work #{wid}", work.abs_work.titre
+      work  = Unan::Program::Work::get(prog, wid)
+      titre = work.abs_work.titre
+      type  = work.human_type
+      depart  = work.created_at.as_human_date(false, true)
+      fin = if ended?
+        work.ended_at.as_human_date(false, true)
+      else
+        "- inaché -"
+      end
+      @rapport << "    Work #{wid} - #{titre} - #{type} - de #{depart} à #{fin} "
     end.join
     add_rap "  Liste des quiz", user.get_var(:quiz_ids,[]).pretty_join
     add_rap "  Liste des pages de cours", user.get_var(:pages_ids,[]).pretty_join

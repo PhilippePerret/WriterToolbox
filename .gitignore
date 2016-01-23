@@ -11,3 +11,7 @@ database/data/users.db
 debug.log
 
 data/unan/
+
+CRON/log/
+
+tmp/mails/

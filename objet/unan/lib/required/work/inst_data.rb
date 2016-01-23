@@ -22,6 +22,7 @@ class Work
   def abs_work_id ; @abs_work_id  ||= get(:abs_work_id) end
   def status      ; @status       ||= get(:status)||0   end
   def options     ; @options      ||= get(:options)||"" end
+  def ended_at    ; @ended_at     ||= get(:ended_at)    end
   def created_at  ; @created_at   ||= get(:created_at)  end
   def updated_at  ; @updated_at   ||= get(:updated_at)  end
 
@@ -50,12 +51,17 @@ class Work
   # fonction du rythme courant du programme.
   def duree_relative
     @duree_relative ||= begin
-      raise "Programme ne devrait pas être nil" if program.nil?
+      raise "La donnée `program` du work ne devrait pas être nil" if program.nil?
       raise "Le coefficiant de durée ne devrait pas être nil" if program.coefficient_duree.nil?
       raise "L'abs-work du travail ne devrait pas être nil" if abs_work.nil?
       raise "La durée de l'abs-work ne devrait pas être nil" if abs_work.duree.nil?
       (program.coefficient_duree * abs_work.duree.days).to_i
     end
+  end
+
+  # Type du travail au format humain (vient de abs_work)
+  def human_type
+    @human_type ||= abs_work.human_type_w
   end
 
   # ---------------------------------------------------------------------

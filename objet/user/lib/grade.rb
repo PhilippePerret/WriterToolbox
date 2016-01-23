@@ -30,16 +30,6 @@ class User
   def grade_humain
     @grade_humain ||= GRADES[grade][:hname]
   end
-  # {Fixnum} Grade forum de l'user en nombre de 0 à 9
-  def grade
-    @grade ||= options[1].to_i
-  end
-
-  # Met le grade de l'use à +new_grade+
-  def set_grade new_grade
-    @grade = new_grade
-    set_option(1, new_grade)
-  end
 
   # {String} Liste humaine des privilèges de l'auteur
   def privileges_forum

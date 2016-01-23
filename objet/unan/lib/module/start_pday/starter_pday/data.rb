@@ -7,6 +7,7 @@ class StarterPDay
   #   Raccourcis pour les données du programme
   # ---------------------------------------------------------------------
   def auteur        ; @auteur       ||= program.auteur                end
+  alias :user :auteur
   # {Fixnum} Indice du jour-programme courant
   def current_pday  ; @current_pday ||= auteur.get_var(:current_pday) end
   # {Fixnum} Indice du jour-programme suivant, celui affecté

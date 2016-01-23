@@ -10,6 +10,7 @@ class User
   def table_users
     @table_users ||= self.class::table_users
   end
+  alias :table :table_users
 
   # Table PERSONNELLE contenant les variables
   # Noter que c'est une méthode d'instance

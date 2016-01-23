@@ -1,6 +1,11 @@
 # encoding: UTF-8
 class ::User
 
+  # Pour ajouter une erreur
+  def add_error mess_err
+    @errors << mess_err
+  end
+
   # Procédure principale qui inscrit l'user au programme UN AN UN SCRIPT
   # tout de suite après le paiement de son module.
   #
@@ -9,7 +14,10 @@ class ::User
   def signup_program_uaus
 
     # Pour consigner toutes les erreurs qui sont survenues et
-    # pouvoir y remédier
+    # pouvoir y remédier.
+    # À l'intérieur d'une autre méthode ou de l'instance
+    # user, utiliser la méthode `auteur.add_error "<erreur>"` ou
+    # `user.add_error "<erreur>"`
     @errors = Array::new
 
     # On crée le programme de l'user et son projet

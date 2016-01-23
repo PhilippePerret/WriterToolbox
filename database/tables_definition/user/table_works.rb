@@ -53,6 +53,9 @@ def schema_table_user_works
     # grâce aux questions "à la volée" posées
     points: {type:"INTEGER(3)",constraint:"NOT NULL", default:0},
 
+    # Les temps
+    # ---------
+    ended_at:   {type:"INTEGER(10)"},
     updated_at: {type:"INTEGER(10)", constraint:"NOT NULL"},
     created_at: {type:"INTEGER(10)", constraint:"NOT NULL"}
 
