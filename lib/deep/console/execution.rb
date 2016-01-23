@@ -57,6 +57,13 @@ class Console
     when "remove table paiements"
       remove_table_paiements
 
+
+    when "Unan état des lieux", "Unan inventory"
+      faire_etat_des_lieux_programme
+
+    when "Unan répare", "Unan repare"
+      reparation_programme_unan
+      
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table pages cours)"
@@ -150,8 +157,14 @@ class Console
     sentence  = words.join(' ')
     # debug "sentence : '#{sentence}'"
     # debug "last word : '#{last_word}'"
-    case sentence
 
+    # On corrige last_word qui peut commencer par des
+    # guillemets simples ou doubles
+    if last_word.match(/^['"](.*?)['"]$/)
+      last_word = last_word[1..-2].strip
+    end
+
+    case sentence
     when 'detruire programmes de'
       detruire_programmes_de( last_word )
     when 'affiche table'

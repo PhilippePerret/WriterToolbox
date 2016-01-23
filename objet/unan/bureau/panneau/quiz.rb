@@ -32,8 +32,11 @@ class Quiz
     form = String::new
     form << 'bureau_save_quiz'.in_hidden(name:'operation')
     form << output
-    form << bureau.submit_button("Soumettre le questionnaire")
-    form.in_form(id:"form_quiz_#{quiz_id}", action: "bureau/home?in=unan&cong=quiz")
+    form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
+    code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: "bureau/home?in=unan&cong=quiz")
+    # code += "".in_div(style:'clear:both;')
+    # debug code
+    code
   end
 end #/Quiz
 end #/Unan

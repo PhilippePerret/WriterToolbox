@@ -50,9 +50,7 @@ class Console
 
   # Enregistrer un message pour la sortie des opérations
   def log mess, css = nil
-    debug "-> log #{mess}"
     @messages << mess.in_div(class: css.to_s)
-    debug "@messages : #{@messages.join}"
   end
 
 end #/Console

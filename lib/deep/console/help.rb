@@ -74,6 +74,12 @@ class Console
   <dt>`Unan ...`</dt>
   <dd>Tous les codes commençant par `Unan` concernent la programme Un An Un Script et chargent automatiquement cet objet avant leur exécution.</dd>
 
+  <dt>`Unan état des lieux` ou `Unan inventory`</dt>
+  <dd>Procède à un état des lieux du programme UN AN UN SCRIPT, c'est-à-dire consulte les tables pour faire le rapport. C'est en quelques sortes une version simplifiée de l'affichage de toutes les tables.</dd>
+
+  <dt>`Unan repare`</dt>
+  <dd>Répare le programme UN AN UN SCRIPT. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.</dd>
+
   <dt>
     <strong>affiche</strong><br />
     <strong>backup data</strong><br />

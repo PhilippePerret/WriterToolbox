@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class SuperFile
-  
-  
+
+
   # Construit le dossier
   # (et toute la hiérarchie nécessaire)
   # @return TRUE en cas de succès
@@ -18,7 +18,7 @@ class SuperFile
       end
     end
   end
-  
+
   # Build path hierarchie up to file path
   # If +up_to_path+ is nil, build up to current file
   # So :
@@ -31,8 +31,8 @@ class SuperFile
     up_to_path ||= path
     `if [ ! -d "#{up_to_path}" ];then mkdir -p "#{up_to_path}";fi`
   end
-    
-  
+
+
   # Détruit le fichier ou le dossier
   def remove
     raise "Unable to find file #{path}" unless exist?
@@ -43,10 +43,26 @@ class SuperFile
     end
     return true
   end
-  
+
+  # Renomme le superfile
+  # Attention : Il s'agit simplement d'un changement de
+  # nom, +new_name+ est un nom de dossier, PAS un path
+  def rename new_name
+    new_path = (dirname + new_name).to_s
+    ::FileUtils::mv path.to_s, new_path
+  end
+
+  # Renomme le SuperFile mais en le déplaçant
+  # ailleurs
+  # Note : Pour ne changer que le nom, utiliser plutôt
+  # rename
+  def move new_path
+    ::FileUtils::mv path.to_s, new_path
+  end
+
   alias :top_require :require
   ##
-  # Require file (if a file) or all folder's files according to 
+  # Require file (if a file) or all folder's files according to
   # +params+
   #
   # +params+ (only with folders)
@@ -71,7 +87,7 @@ class SuperFile
     end
     return true
   end
-  
+
   # Download le fichier/dossier
   # On en fait toujours un zip avant de le transmettre
   def download
@@ -83,8 +99,8 @@ class SuperFile
     STDOUT.puts File.open( zip_path.expanded_path, 'rb'){ |f| f.read }
     zip_path.remove
   end
-  
-  
+
+
   class NotAUploadedFile < StandardError; end
   # Upload d'un fichier
   # +tempfile+  Le StringIO du fichier, comme obtenu par exemple par le
@@ -92,7 +108,7 @@ class SuperFile
   # +option+    {Hash} d'options
   #   :change_name      Si FALSE, ne modifie pas le nom de ce fichier
   #                     Si TRUE (défaut), le nom donné à l'instanciation de
-  #                     ce superfile est remplacé par le nom du fichier à 
+  #                     ce superfile est remplacé par le nom du fichier à
   #                     uploader
   def upload tempfile, options = nil
     if tempfile.nil? || tempfile == ""
@@ -100,7 +116,7 @@ class SuperFile
     end
     raise NotAUploadedFile unless tempfile.respond_to? :original_filename
     options ||= {}
-    
+
     # Nom du fichier
     # --------------
     # On l'attribue au superfile courant, sauf indication contraire
@@ -111,11 +127,11 @@ class SuperFile
       @name = tempfile_name
       @path = good_path
     end
-    
+
     # On écrit le fichier
     # --------------------
     self.write tempfile.read.force_encoding('UTF-8')
-  
+
   rescue NotAUploadedFile => e
     raise ArgumentError, "L'argument envoyé à SuperFile#upload doit être le fichier StringIO. Impossible d'uploader le fichier"
   rescue ArgumentError => e
@@ -125,7 +141,7 @@ class SuperFile
   else
     return true
   end
-  
+
   # Zip The File
   # ------------
   # +params+
@@ -146,8 +162,8 @@ class SuperFile
     res = `#{cmd}`
     return zip_path.exist?
   end
-  
-    
+
+
   # Actualise le fichier si Markdown
   # @return TRUE si l'actualisation a pu se faire
   # sinon FALSE
@@ -166,5 +182,5 @@ class SuperFile
     html_path.write chtml
     return true
   end
-  
+
 end

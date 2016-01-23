@@ -8,9 +8,11 @@ class Console
   # Retourne la liste des gels
   def affiche_liste_des_gels
     site.require_module('gel')
-    Dir["#{Gel::folder}/*"].collect do |path|
+    t = Dir["#{Gel::folder}/*"].collect do |path|
       File.basename(path)
-    end.join("\n")
+    end.join("\n").in_pre
+    sub_log("<strong>Liste des gels</strong>\n#{t}")
+    "Cf. la liste sous la table"
   end
 
   def gel gel_name

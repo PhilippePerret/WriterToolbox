@@ -14,6 +14,7 @@ class Console
   # Sortie spéciale qui ne se fait pas dans la console mais
   # en dessous. Utile pour les affichages un peu spéciaux, comme
   # les contenus de table particulièrement larges
+  # Alias : def sub_log
   def special_output code = nil
     if code.nil?
       @special_output || ""
@@ -22,6 +23,7 @@ class Console
       @special_output << code
     end
   end
+  alias :sub_log :special_output
 
 end #/Console
 end #/Admin
