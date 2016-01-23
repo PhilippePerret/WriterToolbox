@@ -18,4 +18,10 @@
   <% quizes.each do |iquiz| %>
     <%= iquiz.output_in_form %>
   <% end %>
+<% else %>
+  <%# Aucun quiz (mais d'autres travaux) %>
+  <p class='big air'>Vous n'avez aucun questionnaire ni aucun quiz à remplir. Mais rassurez-vous, ça ne saurait tarder bien longtemps…</p>
+  <%
+  # TODO Proposer quelques questions.
+  %>
 <% end %>

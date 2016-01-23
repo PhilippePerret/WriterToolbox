@@ -19,12 +19,27 @@ class Unan
     def lien_bureau titre = "bureau", options = nil
       options ||= Hash::new
       options.merge!( href: "bureau/home?in=unan" )
-      titre.in_a( options )
+      ( titre.in_a options )
+    end
+
+    # Retourne un lien HTML pour rejoindre la collection
+    # Narration
+    def lien_collection_narration titre = "Collection Narration", options = nil
+      options ||= Hash::new
+      options.merge!(href: "cnarration/home")
+      ( titre.in_a options )
+    end
+
+    def lien_forum titre = "Forum", options = nil
+      options ||= Hash::new
+      options.merge!(href: "forum/home")
+      ( titre.in_a options )
     end
 
   end # << self
 
   class Helper
+
     class << self
 
       # Construit le code d'une graduation pour les

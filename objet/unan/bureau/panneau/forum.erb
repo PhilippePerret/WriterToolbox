@@ -1,12 +1,15 @@
 <%
 # Panneau des messages du forum à lire
 %>
-<form class="dim3070" action="bureau/home?in=unan&cong=forum" method="post">
-
-  <%# TODO Ici, on trouvera une liste des messages écrits à l'user, avec un champ de texte pour y répondre %>
-
-  <%= 'bureau_repondre_messages_forum'.in_hidden(name:'operation') %>
-  <%= bureau.submit_button("Envoyer réponses aux messages") %>
-</form>
+<% if missing_data %>
+<% end %>
 
 <% if works.count == 0 %><%= message_si_aucun_travail %><% end %>
+<% if messages_forum.count > 0 %>
+
+<% else %>
+  <%# Aucun message à lire, valider ou répondre %>
+  <p class='big air'>
+    Vous n'avez aucun message forum à consulter, valider et vous n'avez aucune réponse à donner. N'hésitez cependant pas à faire un petit tour sur <%= Unan::lien_forum("le forum") %>.
+  </p>
+<% end %>
