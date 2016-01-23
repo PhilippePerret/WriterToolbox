@@ -61,12 +61,12 @@ class Console
       titre = work.abs_work.titre
       type  = work.human_type
       depart  = work.created_at.as_human_date(false, true)
-      fin = if ended?
+      fin = if work.ended?
         work.ended_at.as_human_date(false, true)
       else
         "- inaché -"
       end
-      @rapport << "    Work #{wid} - #{titre} - #{type} - de #{depart} à #{fin} "
+      @rapport << "    Work #{wid} - #{titre} - #{type} - du <b>#{depart}</b> au <b>#{fin}</b> "
     end.join
     add_rap "  Liste des quiz", user.get_var(:quiz_ids,[]).pretty_join
     add_rap "  Liste des pages de cours", user.get_var(:pages_ids,[]).pretty_join
