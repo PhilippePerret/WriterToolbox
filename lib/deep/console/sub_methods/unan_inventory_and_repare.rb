@@ -53,9 +53,10 @@ class Console
     add_rap "Programme ID", hprog[:id]
     add_rap "Auteur", "#{user.pseudo} (#{hprog[:auteur_id]})"
     add_rap "Commencé le", hprog[:created_at].as_human_date(true, true)
-    add_rap "Modifier le", hprog[:updated_at].as_human_date(true, true)
+    add_rap "Modifié le", hprog[:updated_at].as_human_date(true, true)
+    add_rap "Rythme", prog.rythme
     add_rap "Jour-programme courant", prog.current_pday.inspect
-    @rapport << "<strong>Liste des travaux (variable `:works_ids`)</strong>"
+    @rapport << "<strong>Liste des travaux courants (variable `:works_ids`)</strong>"
     user.get_var(:works_ids, Array::new).each do |wid|
       work  = Unan::Program::Work::get(prog, wid)
       titre = work.abs_work.titre
@@ -68,10 +69,11 @@ class Console
       end
       @rapport << "    Work #{wid} - #{titre} - #{type} - du <b>#{depart}</b> au <b>#{fin}</b> "
     end.join
-    add_rap "  Liste des quiz", user.get_var(:quiz_ids,[]).pretty_join
-    add_rap "  Liste des pages de cours", user.get_var(:pages_ids,[]).pretty_join
-    add_rap "  Liste des pures tâches", user.get_var(:tasks_ids,[]).pretty_join
-    add_rap "  Liste des messages", user.get_var(:forum_ids,[]).pretty_join
+    @rapport << "<strong>Détails des IDs par type de travail</strong>"
+    add_rap "  Quiz     :quiz_ids", user.get_var(:quiz_ids,[]).pretty_join
+    add_rap "  Cours    :pages_ids", user.get_var(:pages_ids,[]).pretty_join
+    add_rap "  Tâches   :task_ids", user.get_var(:tasks_ids,[]).pretty_join
+    add_rap "  Messages :forum_ids", user.get_var(:forum_ids,[]).pretty_join
 
   end
 
