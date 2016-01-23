@@ -13,6 +13,7 @@ class ::User
   # aller jusqu'au bout et pouvoir corriger les problèmes au cas où.
   def signup_program_uaus
 
+    debug "\n\n=== INSTANCIATION D'UN PROGRAMME UN AN UN SCRIPT ===\n\n"
     # Pour consigner toutes les erreurs qui sont survenues et
     # pouvoir y remédier.
     # À l'intérieur d'une autre méthode ou de l'instance
@@ -27,7 +28,8 @@ class ::User
     begin
       create_tables_1a1s
     rescue Exception => e
-      @errors << "Les tables du programme n'ont pas pu être créés"
+      @errors << "Les tables du programme n'ont pas pu être créés : #{e.message}"
+      debug "# IMPOSSIBLE DE CRÉER LES TABLES 1A1S : #{e.message}\n\n"+e.backtrace.join("\n")
     end
 
     # Définition du premier p-day (jour-programme)
@@ -35,6 +37,7 @@ class ::User
       instancier_premier_jour_programme
     rescue Exception => e
       @errors << "Le premier jour-programme n'a pas pu être instancié."
+      debug "# IMPOSSIBLE D'INSTANCIER LE PREMIER JOUR-PROGRAMME : #{e.message}\n\n"+e.backtrace.join("\n")
     end
 
     # Envoi des mails à l'user pour lui confirmer les
@@ -43,10 +46,13 @@ class ::User
       send_mail_confirmation_inscription_uaus
     rescue Exception => e
       @errors << "Les mails de confirmation n'ont pas pu être envoyés."
+      debug "# IMPOSSIBLE D'ENVOYER LE MAIL DE CONFIRMATION D'INSCRIPTION AU PROGRAMME 1A1S : #{e.message}\n\n"+e.backtrace.join("\n")
     end
 
     # Signaler les erreurs au cas où
-    unless @errors.empty?
+    if @errors.empty?
+      debug "=== PROGRAMME 1 AN 1 SCRIPT INSTANCIÉ AVEC SUCCÈS ==="
+    else
       error "Des erreurs sont malheureusement survenues au cours de votre inscription (merci de les signaler à l'administration, qui s'efforcera de régler le problème) :"
       error @errors.collect { |merr| merr.in_div }.join
     end
@@ -65,6 +71,10 @@ class ::User
     begin
       # Création du programme (dans la table générale des programmes)
       @program_id = Unan::Program::create
+      raise "@program_id (ID du programme créé) ne devrait pas être nil…" if @program_id.nil?
+      # On définit le programme pour ne pas avoir de problèmes par
+      # la suite avec `user.program` ou `auteur.program`
+      @program = Unan::Program::new(@program_id)
     rescue Exception => e
       @errors << "Impossible de créer le programme : #{e.message}. Le projet ne sera pas créé non plus."
       return
@@ -72,6 +82,7 @@ class ::User
     begin
       # Création du projet (dans la table générale des projets)
       @projet_id  = Unan::Projet::create
+      raise "@projet_id (ID du projet créé) ne devrait pas être nil…" if @projet_id.nil?
     rescue Exception => e
       @errors << "Impossible de créer le projet : #{e.message}"
     end
@@ -80,7 +91,7 @@ class ::User
   # Instancier le premier jour programme
   def instancier_premier_jour_programme
     Unan::require_module 'start_pday'
-    StarterPDay::new(program).activer_first_pday
+    Unan::Program::StarterPDay::new(program).activer_first_pday
   rescue Exception => e
     @errors << "Impossible d'instancier le premier jour-programme : #{e.message}"
   end
