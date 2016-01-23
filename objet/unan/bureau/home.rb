@@ -160,8 +160,8 @@ class Bureau
     def onglet
       # return "#{id}"
       titre_onglet.
-        in_a(href:"bureau/home?in=unan&cong=#{id}").
-        in_li(class: class_onglet)
+        in_li(class: class_onglet).
+        in_a(href:"bureau/home?in=unan&cong=#{id}")
     end
     # {StringHTML} Retourne le code HTML du panneau
     # complet de l'onglet.
@@ -178,7 +178,7 @@ class Bureau
     # ou nom des travaux dans cet onglet
     def titre_onglet
       @titre_onglet ||= begin
-        data[:titre] + (has_travaux? ? " (#{nombre_travaux})" : '')
+        data[:titre] + (has_travaux? ? " (#{nombre_travaux})".in_span(class:'nombre') : '')
       end
     end
     def titre_panneau

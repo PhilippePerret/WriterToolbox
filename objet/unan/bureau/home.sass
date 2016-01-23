@@ -2,27 +2,28 @@ ul#bande_onglets
   list-style      : none
   margin-bottom   : 0
   padding-bottom  : 0
-  li
-    display         : inline-block
-    min-width       : 94px
-    border          : 1px solid
-    border-radius   : 0.6em 0.6em 0 0
-    padding         : 4px 8px 3px
-    text-align      : center
-    font-size       : 11pt
-    letter-spacing  : 1.2px
-    margin          : 0
-    a
-      color           : black
-    &.exergue
-      background-color  : #F8A
-    &.actif
-      background-color  : #578088
-      a
-        color             : white
-      // La marque du nombre de travaux, messages, etc.
-      span.nombre
-        color       : yellow
+  a
+    color           : black
+    li
+      display         : inline-block
+      min-width       : 94px
+      border          : 1px solid
+      border-radius   : 0.6em 0.6em 0 0
+      padding         : 4px 8px 3px
+      text-align      : center
+      font-size       : 11pt
+      letter-spacing  : 1.2px
+      margin          : 0
+      &.exergue
+        background-color  : #F8A
+      &.actif
+        background-color  : #578088
+        color             : white !important
+        a
+          color           : white
+        // La marque du nombre de travaux, messages, etc.
+        span.nombre
+          color       : #f9E !important
 div.panneau_onglet
   border        : 1px solid #777
   border-radius : 0.4em
@@ -44,6 +45,11 @@ div.panneau_onglet
     border-radius     : 0.5em
     font-size         : 0.9em
     background-color  : burlywood
+    div.nbpoints  
+      color           : white
+      font-size       : 15pt
+      font-style      : italic
+      float           : right
     div.titre
       margin-bottom : 1em
       font-weight   : bold

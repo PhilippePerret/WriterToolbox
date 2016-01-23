@@ -53,18 +53,23 @@ class Work
   # Noter que c'est une méthode de `Work` plutôt que de `AbsWork` pour
   # s'adapter exactement à l'auteur en particulier.
   def output
+    withid = OFFLINE ? "[#{id}] " : ""
     (
-      "#{abs_work.titre}".in_div(class:'titre')     +
-      "#{abs_work.travail}".in_div(class:'travail') +
+      nombre_de_points +
+      "#{withid}#{abs_work.titre}".in_div(class:'titre')  +
+      "#{abs_work.travail}".in_div(class:'travail')       +
       date_fin_attendue +
       form_pour_marquer_fini
     ).in_div(class:'work')
   end
   def form_pour_marquer_fini
     (
-      "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches") +
-      " (et gagner #{abs_work.points} points)".in_span(class:'small')
+      "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches")
     ).in_div(class:'buttons')
+  end
+
+  def nombre_de_points
+    "#{abs_work.points} points".in_div(class:'nbpoints')
   end
 
   def date_fin_attendue
