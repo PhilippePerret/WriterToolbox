@@ -33,6 +33,19 @@ class Quiz
     end
   end
 
+  # {Fixnum|Nil} Nombre de points maximum pour ce questionnaire, ou
+  # nil si aucun point n'est à attribuer.
+  # Note : Ne tient pas compte de la valeur `points` qui peut être
+  # définie optionnellement.
+  def max_points
+    @max_points ||= begin
+      mp = 0
+      questions.each { |q| mp += q.max_points unless q.max_points.nil? }
+      mp = nil if mp == 0
+      mp
+    end
+  end
+
   # ---------------------------------------------------------------------
   #   Méthodes de version
   # ---------------------------------------------------------------------

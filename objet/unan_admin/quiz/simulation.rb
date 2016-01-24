@@ -29,37 +29,26 @@ end
 
 class Unan
 class Quiz
-  # Méthode appelée à la soumission du questionnaire
+
+  # Pour contenir le texte qui sera affiché suite à
+  # l'évaluation du questionnaire en mode simulation
+  attr_reader :resultat_simulation
+
+  # Méthode appelée à la soumission du questionnaire dans la
+  # page de simulation.
   def on_submit
     debug "-> Unan::Quiz::on_submit"
     debug "Nombre de questions : #{questions.count}"
-    # Récolte des réponses par type de question
-    @reponses                = Hash::new
-    @reponses_for_javascript = Array::new
-    une_erreur = false
-    prefix = "quiz-#{id}"
-    # Boucler sur chaque question du questionnaire
-    questions.each do |question|
-      qid = question.id
-      debug "Valeur question ##{qid}"
-      # On récupère la valeur donnée à la question, qui doit
-      # être forcément définie.
-      hvalue = question.value
-      # Attention, hvalue[:id] est un Fixnum, mais en cas de
-      # menu select à multiple choix, c'est un Array qui contient
-      # les Fixnum des identifiants de chaque item choisi.
-      if hvalue[:error]
-        une_erreur = true
-        @reponses_for_javascript << { qid:qid, type:'error' }
-        debug "Aucune réponse donnée"
-      else
-        # Pour remettre les réponses en cas de ré-affichage
-        hvalue[:jid] = "#{hvalue[:tagname]}##{prefix}_#{hvalue[:jid]}"
-        @reponses_for_javascript << { jid:hvalue[:jid], type:hvalue[:type], value:hvalue[:value] }
-        debug "-> #{hvalue.inspect}"
-      #   @reponses.merge!( qid => value )
-      end
+
+    # Évaluer le questionnaire
+    if evaluate
+      dprov = data2save.dup
+      dprov[:reponses] = JSON.parse(dprov[:reponses])#.pretty_inspect
+      @resultat_simulation = "Donnée qui serait enregistrée dans la table de l'user :<pre style='white-space:pre-wrap;'>\n#{dprov.pretty_inspect}\n</pre>"
+    else
+      @resultat_simulation = "Une erreur est survenue."
     end
+
   rescue Exception => e
     error e.message
     debug e

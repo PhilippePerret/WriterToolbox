@@ -36,23 +36,20 @@ class Hash
   # @usage : puts <hash>.pretty_inspect
   # @param  retrait {Fixnum|String}
   #         Le retrait à appliquer à chaque donnée
-  def pretty_inspect retrait = 1
-    retrait = case retrait
-    when Fixnum   then "  " * retrait
-    when String   then retrait
-    else ""
-    end
-    str = "{\n"
+  def pretty_inspect retrait = 0
+    retrait_str =  "  " * retrait
+    str = "#{retrait_str}{\n"
     self.each do |k, v|
-      str += retrait + "#{k.inspect} => " +
-      case v.class.to_s
+      v = case k
+      when :created_at, :updated_at
+        v.as_human_date(true, true) + " (real: #{v})"
+      else v end
+      v = case v
       when Hash then "\n" + v.pretty_inspect(retrait + 1)
-      else
-        v.inspect
-      end +
-      "\n"
+      else v.inspect end
+      str += retrait_str + "#{k.inspect} => " + v  + "\n"
     end
-    str + "}"
+    str + "#{retrait_str}}"
   end
 
   # Plutôt une méthode de débuggage : pour faire un affichage

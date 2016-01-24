@@ -62,7 +62,7 @@ class Quiz
 <script type="text/javascript">
 var quiz_values = {
   quiz_id:#{id},
-  reponses:#{@reponses_for_javascript.to_json}
+  reponses:#{@user_reponses.to_json}
 }
 $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
 </script>

@@ -8,7 +8,7 @@ base générale.
 
 =end
 def schema_table_user_works
-  @schema_table_unan_etape ||= {
+  @schema_table_user_works ||= {
     # Bien tenir compte du fait que cet identifiant est unique pour
     # l'user mais pas pour "le monde". Les users possèdent les
     # même identifiants. Donc s'il fallait les "couper" (dans un bureau
