@@ -55,8 +55,19 @@ class Question
   #   Méthodes d'helper
   # ---------------------------------------------------------------------
 
+  # {Fixnum} Retourne le maximum de points qu'on peut marquer
+  # avec la question. Noter que suivant qu'il s'agit d'une question
+  # à multiple réponses possible ou à réponse unique, le calcul n'est
+  # pas le même.
   def max_points
-    @max_points ||= reponses.collect { |hrep| hrep[:points] }.max
+    @max_points ||= begin
+      liste_points = reponses.collect { |hrep| hrep[:points] }
+      if type_c == 'c'
+        liste_points.inject(:+)
+      else
+        liste_points.max
+      end
+    end
   end
 
   # ---------------------------------------------------------------------

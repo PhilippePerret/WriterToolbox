@@ -18,6 +18,7 @@ describe 'Calcul des points d’une question' do
     it { expect(question).to respond_to :max_points }
     context 'avec des réponses à points' do
       before(:all) do
+        @question.instance_variable_set('@type_c', 'r')
         @max_points = 100
         @reponses[0][:points] = @max_points
         set_reponses_to @reponses
@@ -26,10 +27,24 @@ describe 'Calcul des points d’une question' do
         expect(question.max_points).to eq @max_points
       end
     end
+    context 'avec des réponses à choix multipe' do
+      before(:all) do
+        @question.instance_variable_set('@type_c', 'c')
+        @max_points = 0
+        @reponses.each do |hrep|
+          hrep[:points] = 50
+          @max_points += 50
+        end
+        set_reponses_to @reponses
+      end
+      it 'retourne la somme des réponses' do
+        expect(question.max_points).to eq @max_points
+      end
+    end
     context 'avec des réponses sans points' do
       before(:all) do
+        @question.instance_variable_set('@type_c', 'r')
         set_reponses_to(@reponses.collect{|hrep|hrep[:points] = nil;hrep})
-
       end
       it 'retourne nil' do
         expect(question.max_points).to eq nil

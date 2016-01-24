@@ -44,7 +44,11 @@ class Quiz
     if evaluate
       dprov = data2save.dup
       dprov[:reponses] = JSON.parse(dprov[:reponses])#.pretty_inspect
-      @resultat_simulation = "Donnée qui serait enregistrée dans la table de l'user :<pre style='white-space:pre-wrap;'>\n#{dprov.pretty_inspect}\n</pre>"
+      @resultat_simulation =
+        "Note obtenue pour ce questionnaire, sur 20 ou nil : <strong>#{note_sur_20_for.inspect}</strong>" +
+        "Donnée qui serait enregistrée dans la table de l'user :".in_p +
+        "<pre style='white-space:pre-wrap;'>\n#{dprov.pretty_inspect}\n</pre>"
+
     else
       @resultat_simulation = "Une erreur est survenue."
     end

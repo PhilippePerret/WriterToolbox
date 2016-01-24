@@ -25,6 +25,14 @@ class Quiz
     }
   end
 
+  def note_sur_20_for note = nil
+    note ||= user_points
+    return nil if [1,7].include?(type)
+    return nil if note.nil?
+    return nil if max_points.to_i == 0
+    (note.to_f * 20 / max_points).round(1)
+  end
+
   # = main =
   #
   # Méthode principale appelée pour procéder au calcul
