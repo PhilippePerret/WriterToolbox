@@ -9,12 +9,10 @@ $.extend(window.Quiz,{
     var prefix_quiz  = "quiz-" + quiz_id ;
     var form_id   = 'form_quiz_'+quiz_id;
     var form_jid  = "form#" + form_id ;
-    var o, id, jid, prefix, values ;
+    var o, id, jid, prefix ;
     for(var qid in values.reponses){
       o = values.reponses[qid];
-      console.log("qid = " + qid);
       prefix = prefix_quiz + "_q_" + o.qid;
-      console.log(o);
       switch(o.type){
         case 'error':
           // Une erreur sur une question, ou une question
@@ -32,10 +30,9 @@ $.extend(window.Quiz,{
           break;
         case 'sem':
           jid = "select#" + prefix ;
-          values = new Array();
-          $(o.value).each(function(ii,oo){values.push("r_" + oo)})
-          console.log( "Values pour select multiple : " + values ) ;
-          $(jid).val(values);
+          vals = new Array();
+          $(o.value).each(function(ii,oo){vals.push("r_" + oo)})
+          $(jid).val(vals);
           break;
         case 'che':
           // Pour les checkboxes, c'est la propriété `value` qui
@@ -43,13 +40,11 @@ $.extend(window.Quiz,{
           // du prefix à ajouter pour construire le JID.
           $(o.value).each(function(ii,rid){
             jid = 'input[type="checkbox"]#' + prefix + "_r_" + rid ;
-            console.log(jid) ;
             $(jid)[0].checked = true;
           })
           break;
-        default:
+        // default:
           // $(o.jid).val(o.value)
-          console.log("# IMPOSSIBLE DE TRAITER : " + o)
       }
     };
     // $(form_jid).find() etc.
