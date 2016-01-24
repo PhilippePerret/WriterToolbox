@@ -4,6 +4,7 @@ raise_unless_admin
 # require 'json'
 Unan::require_module 'quiz'
 
+
 class UnanAdmin
 class Quiz
 
@@ -11,7 +12,11 @@ class Quiz
   #   Méthodes de classe
   # ---------------------------------------------------------------------
   class << self
-
+    attr_accessor :current
+    # Pour répondre à la route quiz/<id>/edit?in=unan_admin
+    def get quiz_id
+      self.current= Unan::Quiz::new(quiz_id)
+    end
   end # << self
 
   # ---------------------------------------------------------------------
@@ -29,10 +34,15 @@ class Quiz
 
   def save
     check_data || return
+
     # Parfois, on force l'enregistrement du questionnaire
-    # sous un autre ID. Il faut donc vérifier, si l'idenditifiant
+    # sous un autre ID. Il faut donc vérifier, si l'identifiant
     # est fourni, si c'est bien une actualisation
-    if id.nil? || !exist?
+    if new_version? || id == nil || !exist?
+      if new_version?
+        id_previous_version = "#{id}".to_i.freeze
+        @id = nil
+      end
       if !exist? && id != nil
         data2save.merge!(id: id)
       end
@@ -43,7 +53,16 @@ class Quiz
     else
       Unan::table_quiz.update(id, data2save)
     end
-    "Questionnaire ##{id} enregistré."
+
+    if new_version?
+      previous_quiz = Unan::Quiz::new(id_previous_version)
+      previous_quiz.set_next_version(@id)
+      Unan::Quiz::new(@id).set_previous_version(id_previous_version)
+      added_messages = " (nouvelle version du questionnaire ##{id_previous_version})"
+    else
+      added_messages = ""
+    end
+    "Questionnaire ##{id} enregistré#{added_messages}."
   end
 
   def data2save
@@ -91,6 +110,9 @@ class Quiz
     Unan::table_quiz.count(where:{id: id}) > 0
   end
 
+  def new_version?
+    @for_new_version ||= (dinp.delete(:new_version) == "on")
+  end
 
   def dinp
     @dinp ||= param(:quiz)
@@ -98,7 +120,7 @@ class Quiz
 
   def check_data
     raise "Le titre doit être défini (même s'il n'est pas affiché)." if titre.nil?
-    raise "Les IDs de question doivent être donnés." if questions_ids.nil?
+    raise "Les IDs des questions doivent être donnés." if questions_ids.nil?
     raise "La description doit être donnée, pour être affichée." if description? && description.nil?
     raise "Il faut fixer le nombre de points, si les réponses n'en apportent pas." if no_point_question? && points.nil?
   rescue Exception => e

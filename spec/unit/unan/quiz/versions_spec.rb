@@ -91,7 +91,6 @@ describe 'Test du versionning des questionnaires' do
       end
     end
   end
-
   describe 'Unan::Quiz::next_version' do
     it 'répond' do
       expect(quiz).to respond_to :next_version
@@ -116,4 +115,36 @@ describe 'Test du versionning des questionnaires' do
       end
     end
   end
+
+  describe 'Unan::Quiz::set_previous_version' do
+    it 'répond' do
+      expect(quiz).to respond_to :set_previous_version
+    end
+    it 'définit la version précédente' do
+      set_version_to nil
+      expect(quiz.previous_version).to eq nil
+      quiz.set_previous_version 1200
+      expect(quiz.previous_version_id).not_to eq nil
+      expect(quiz.previous_version_id).to eq 1200
+      quiz.set_previous_version nil
+      expect(quiz.previous_version).to eq nil
+    end
+  end
+
+  describe 'Unan::Quiz::set_next_version' do
+    it 'répond' do
+      expect(quiz).to respond_to :set_next_version
+    end
+    it 'définit la version suivante' do
+      set_next_version_to nil
+      expect(quiz.next_version).to eq nil
+      quiz.set_next_version 800
+      expect(quiz.next_version_id).not_to eq nil
+      expect(quiz.next_version_id).to eq 800
+      expect(quiz.next_version).not_to eq nil
+      quiz.set_next_version nil
+      expect(quiz.next_version).to eq nil
+    end
+  end
+
 end

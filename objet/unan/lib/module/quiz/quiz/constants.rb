@@ -32,11 +32,38 @@ class Quiz
     options[1].to_i == 1
   end
   def no_titre?
-    if options.nil?
-      return false
-    else
-      options[2].to_i == 1
+    options.nil? ? false : ( options[2].to_i == 1 )
+  end
+  def previous_version_id
+    @previous_version_id ||= begin
+      vip = options[3..8].to_i
+      vip = nil if vip == 0
+      vip
     end
   end
+  def set_previous_version quiz_id
+    opts = "#{options}"
+    opts = opts.ljust(9,"0")
+    opts[3..8] = quiz_id.to_s.rjust(6,'0')
+    instance_variable_set('@previous_version', nil)
+    instance_variable_set('@previous_version_id', nil)
+    set(options: opts)
+  end
+  def next_version_id
+    @next_version_id ||= begin
+      vip = options[9..14].to_i
+      vip = nil if vip == 0
+      vip
+    end
+  end
+  def set_next_version quiz_id
+    opts = "#{options}"
+    opts = opts.ljust(15,"0")
+    opts[9..14] = quiz_id.to_s.rjust(6,'0')
+    instance_variable_set('@next_version', nil)
+    instance_variable_set('@next_version_id', nil)
+    set(options: opts)
+  end
+
 end #/Quiz
 end #/Unan

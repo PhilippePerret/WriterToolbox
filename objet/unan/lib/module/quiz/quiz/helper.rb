@@ -89,6 +89,16 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     return html
   end
 
+  # Lien pour éditer
+  def lien_edit titre = "edit"
+    titre.in_a( href:"quiz/#{id}/edit?in=unan_admin", target: '_quiz_edition_' )
+  end
+
+  # Lien pour simuler le questionnaire
+  def lien_simulation titre = "simule"
+    titre.in_a( href:"quiz/#{id}/simulation?in=unan_admin", target: '_quiz_simulation_' )
+  end
+  alias :lien_simule :lien_simulation
 
 end #/Quiz
 end #/Unan

@@ -20,32 +20,34 @@ class Quiz
 end #/Quiz
 end #/UnanAdmin
 
+# Méthode-raccourci pour obtenir l'instance du questionnaire
+# courant (ici comme dans la vue simulation.erb)
+def iquiz
+  @iquiz ||= site.current_route.instance
+end
+
+
 class Unan
 class Quiz
-
   # Méthode appelée à la soumission du questionnaire
   def on_submit
     debug "-> Unan::Quiz::on_submit"
     debug "Nombre de questions : #{questions.count}"
-
     # Récolte des réponses par type de question
     @reponses                = Hash::new
     @reponses_for_javascript = Array::new
     une_erreur = false
     prefix = "quiz-#{id}"
-
     # Boucler sur chaque question du questionnaire
     questions.each do |question|
       qid = question.id
       debug "Valeur question ##{qid}"
-
       # On récupère la valeur donnée à la question, qui doit
       # être forcément définie.
       hvalue = question.value
       # Attention, hvalue[:id] est un Fixnum, mais en cas de
       # menu select à multiple choix, c'est un Array qui contient
       # les Fixnum des identifiants de chaque item choisi.
-
       if hvalue[:error]
         une_erreur = true
         @reponses_for_javascript << { qid:qid, type:'error' }
@@ -64,12 +66,6 @@ class Quiz
   end
 end #/Quiz
 end #/Unan
-
-# Méthode-raccourci pour obtenir l'instance du questionnaire
-# courant (ici comme dans la vue simulation.erb)
-def iquiz
-  @iquiz ||= site.current_route.instance
-end
 
 case param(:operation)
 when 'bureau_save_quiz'
