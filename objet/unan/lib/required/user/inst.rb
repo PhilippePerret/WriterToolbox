@@ -23,6 +23,15 @@ class User
     get_var("#{quoi}_ids".to_sym, Array::new ).count
   end
 
+  def total_points
+    @total_points ||= get_var(:total_points, 0)
+  end
+
+  def add_points value
+    return if value.nil?
+    set_var(:total_points, total_points + value )
+  end
+
   # Return TRUE si l'user vient de s'inscrire au programme
   # un an un script
 

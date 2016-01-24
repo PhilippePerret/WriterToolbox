@@ -98,7 +98,10 @@
         {Fixnum} Niveau de partage du projet de l'auteur
         <- user.preference(:sharing)
 
+    total_points
 
+        {Fixnum} Total des points de l'auteur.
+        
 <a name='jourprogrammecourant'></a>
 
 ## Indice du jour-programme (p-day) courant

@@ -46,6 +46,17 @@ class Quiz
     end
   end
 
+  # Retourne les points marqués pour ce quiz, i.e. les points pour les
+  # questions s'il y en a + les points spécialement du questionnaire
+  def quiz_points
+    @quiz_points ||= begin
+      pts = 0
+      pts += (user_points || 0) unless only_points_quiz?
+      pts += (points || 0)
+      pts
+    end
+  end
+
   # ---------------------------------------------------------------------
   #   Méthodes de version
   # ---------------------------------------------------------------------

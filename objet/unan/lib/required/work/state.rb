@@ -6,6 +6,9 @@ class Work
   def type_task?
     @is_type_task ||= abs_work.type_task?
   end
+  def type_quiz?
+    @is_type_quiz ||= abs_work.type_quiz?
+  end
 
   # Retourne true si le travail
   def ended?

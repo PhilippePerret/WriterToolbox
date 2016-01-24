@@ -41,9 +41,7 @@ def schema_table_unan_cold_quiz
     # Options
     # -------
     # Pour définir des options
-    # BIT 1 : Afficher la description (1) ou non (0)
-    # BIT 2 : Ne pas compter les points des questions (1) mais seulement les
-    #         points définis dans ce questionnaire.
+    # Cf. options.rb
     options: {type:"VARCHAR(32)"},
 
     # Description

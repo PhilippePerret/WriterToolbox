@@ -30,6 +30,11 @@ class User
     @table_works ||= get_table('works')
   end
 
+  # Table des questionnaires
+  def table_quiz
+    @table_quiz ||= get_table('quiz')
+  end
+
   # La base de données personnelle du programme de l'user,
   # dépendant de l'id de l'user et de l'id du programme.
   # Noter qu'on utilise `program_id` ici (plutôt que `program.id`)
