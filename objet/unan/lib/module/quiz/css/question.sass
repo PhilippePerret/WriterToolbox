@@ -7,6 +7,17 @@ div#aspect
 
 div.question
   font-size   : 15.2pt
+  padding     : 1em !important
+
+  // Une question à problème ou sans réponse
+  &.warning
+    display           : block !important
+    border-radius     : 0 !important
+    border-width      : 1px !important
+    color             : black
+    background-color  : #ff8181
+    *
+      background-color  : #ff8181
   
   // La question
   div.q
@@ -37,6 +48,11 @@ div.question
         margin    : 0 !important
         padding   : 0 !important
     // Menu select
+    &.m
+      li
+        display   : block
+  ul.c
+    // Menu select à choix multiple
     &.m
       li
         display   : block

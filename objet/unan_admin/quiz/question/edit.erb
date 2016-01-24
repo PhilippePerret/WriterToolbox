@@ -79,7 +79,7 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
 
   <%# TYPE (checkbox ou radio) %>
   <%= form.field_select("Type",      'type_f', nil, {values: Unan::Quiz::TYPES}) %>
-  <%= form.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (Cases à cocher)"]]}) %>
+  <%= form.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix"], ['c', "Plusieurs choix"]]}) %>
   <%= form.field_select("Affichage", 'type_a', nil, {values: [['c', "L'un en dessous de l'autre"], ['l', "En ligne"], ['m', "En menu"]]}) %>
 
   <%# INDICATION %>

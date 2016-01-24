@@ -21,14 +21,14 @@ class App
         mess = mess.message # pour le moment
       else
         if mess.respond_to?(:message)
-          mess = mess.message
+          mess = mess.message + "\n\n" + mess.backtrace.join("\n")
         else
           mess = mess.to_s
         end
       end
 
       mess += "\n"
-      
+
       # mess = mess.class.to_s
       @messages << mess
       write mess

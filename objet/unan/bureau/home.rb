@@ -6,7 +6,7 @@ où par :
     bureau.<methode> ...
 =end
 # Beaucoup de formulaires dans ce bureau
-site.require 'form_tools'
+Unan::require_module 'bureau'
 
 class Unan
 class Bureau
@@ -80,26 +80,6 @@ class Bureau
   #   <% end %>
   # def missing_data
   # end
-
-
-  # Bouton submit
-  # Pour avoir une cohérence entre les panneaux
-  # @usage    bureau.submit_button
-  def submit_button name = "Enregistrer", options = nil
-    if options.nil?
-      @submit_button ||= begin
-        subbtn = form.submit_button(name)
-        subbtn.sub!(/class="btn"/, 'class="btn tiny tres discret"')
-      end
-    else
-      css = ['btn']
-      css << 'tiny' unless options[:tiny] === false
-      css << 'tres' unless options[:tres_discret] === false
-      css << 'discret' unless options[:tres_discret] === false || options[:discret] === false
-      subbtn = form.submit_button(name)
-      subbtn.sub!(/class="btn"/, "class=\"#{css.join(' ')}\"")
-    end
-  end
 
   # ---------------------------------------------------------------------
   #

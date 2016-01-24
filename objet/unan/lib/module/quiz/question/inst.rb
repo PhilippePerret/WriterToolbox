@@ -7,9 +7,16 @@ class Question
 
   attr_reader :id
 
+  # {Fixnum} Peut-être défini
+  attr_reader :quiz_id
+
   # +qid+ ID de la question dans la table
-  def initialize qid
-    @id = qid.to_i
+  # +quiz_id+ ID du questionnaire qui contient cette question, si
+  # on est en train de le construire (mais dans l'absolu, une
+  # question n'appartient jamais à un questionnaire en particulier)
+  def initialize qid, quiz_id = nil
+    @id       = qid.to_i
+    @quiz_id  = quiz_id
   end
 
   # Retourne true si la question existe

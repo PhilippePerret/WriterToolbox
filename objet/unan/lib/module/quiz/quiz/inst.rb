@@ -29,7 +29,7 @@ class Quiz
   # questions du questionnaires.
   def questions
     @questions ||= begin
-      questions_ids.split(' ').collect{|qid| Question::new(qid.to_i)}
+      questions_ids.split(' ').collect{|qid| Question::new(qid.to_i, self.id)}
     end
   end
 

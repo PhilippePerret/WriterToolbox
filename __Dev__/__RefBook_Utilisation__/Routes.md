@@ -68,8 +68,10 @@ La classe `Bibliotheque` devra être définie dans :
 
 La classe `Bibliotheque::Livre` devra être définie :
 
-    # Soit dans ./objet/bibliotheque/lib/required/livre.rb ("livre.rb" ou autre nom)
-    # Soit dans ./objet/bibliotheque/livre/lib/required/class.rb (ou autre nom)
+    # Soit dans ./objet/bibliotheque/lib/required/livre.rb
+    # ("livre.rb" ou autre nom)
+    # Soit dans ./objet/bibliotheque/livre/lib/required/class.rb
+    # (ou autre nom)
     class Bibliotheque
       class Livre
         ...
@@ -156,8 +158,32 @@ Dans le fichier `./objet/forum/message/destroy.rb` on trouve le code :
       end
     end
 
+### Instancier un autre objet que celui de la route/contexte
 
+Le problème s'est posé avec les questionnaires, pour leur simulation en mode administration. La route était (c'est le programme UN AN UN SCRIPT) :
 
+    quiz/<id>/simulation?in=unan_admin
+
+En toute logique, la classe de l'instance de cette route doit être :
+
+    UnanAdmin::Quiz
+
+Or, nous voulons :
+
+    Unan::QUiz
+
+Dans ce cas, il faut utiliser le fait que l'instanciation se fait, dans la route, en premier lieu par la méthode de classe `get`. Ici `UnanAdmin::Quiz::get`. Et donc, on a fait :
+
+    class UnanAmin
+      class Quiz
+        def self.get quiz_id
+          Unan::Quiz::new(quiz_id)  # => Instance Unan::Quiz au lieu
+                                    #    de UnanAdmin::Quiz
+        end
+      end
+    end
+
+Ce code est bien sûr mis dans un fichier `simulation.rb` à côté de `simulation.erb` pour être chargé avant que ne soit analysée la route.
 
 
 <a name='classedelobjet'></a>

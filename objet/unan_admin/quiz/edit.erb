@@ -42,7 +42,9 @@ lien_init_quiz    = "Init new".in_a(class:'small btn', onclick:"$.proxy(Quiz, 'i
 
 lien_to_simulate = if iquiz
   "Simulation".in_a(class:'small btn', href:"quiz/#{iquiz.id}/simulation?in=unan_admin", target:"_simule_form_")
-else "" end
+else
+  ""
+end
 
 %>
 

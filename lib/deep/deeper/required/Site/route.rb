@@ -11,6 +11,7 @@ class SiteHtml
 
   # Exécution de la route, si elle est définie
   def execute_route
+    # debug "-> SiteHtml::execute_route"
 
     # Si aucun objet n'est défini dans la route, on peut s'en
     # retourner immédiatement.
@@ -51,6 +52,7 @@ class SiteHtml
     # la sous-classe (si contexte) correspondant à la route
     iroute.method_call
 
+    # debug "<- SiteHtml::execute_route"
   end
 
   # Une redirection
@@ -115,6 +117,7 @@ class SiteHtml
 
     # À l'initialisatoin, on ne fait rien
     def initialize
+      # debug "-> Route::initialize"
     end
 
     # ---------------------------------------------------------------------
@@ -128,11 +131,13 @@ class SiteHtml
     # chose dans `./lib/deep/deeper/optional/_per_route/<segment path>`.
     # Note : Il s'agit des fichiers ruby, css et javascript
     def load_required
+      # debug "-> Route::load_required"
       all_folders_lib_required.each do |dossier|
         next if dossier.nil? || false == dossier.exist?
-        dossier.require
-        page.add_css        Dir["#{dossier}/**/*.css"]
-        page.add_javascript Dir["#{dossier}/**/*.js"]
+        site.require_all_in dossier
+        # dossier.require
+        # page.add_css        Dir["#{dossier}/**/*.css"]
+        # page.add_javascript Dir["#{dossier}/**/*.js"]
       end
     end
 
@@ -144,6 +149,7 @@ class SiteHtml
     # Noter que l'ordre est important, pour pouvoir surclasser
     # certaines méthodes
     def all_folders_lib_required
+      # debug "-> Route::all_folders_lib_required"
       @all_folders_lib_required ||= begin
         folders = Array::new
         # Le dossier ./lib/deep/deeper/required/<objet cam>
@@ -185,6 +191,7 @@ class SiteHtml
     # le code de la vue (même si ça ne serait pas gênant en soit, mais
     # ça doublerait la construction de la page)
     def load_per_vue
+      # debug "-> Route::load_per_vue (instance_vue = #{instance_vue.path})"
       instance_vue.require_all
     end
 
@@ -199,6 +206,7 @@ class SiteHtml
     # 'lib/required' de l'objet pour pouvoir être chargé
     # avant l'appel de cette méthode.
     def method_call
+      # debug "-> Route::method_call"
       sujet.send(method_sym) if method_sym != nil && sujet.respond_to?(method_sym)
     end
 
@@ -221,9 +229,10 @@ class SiteHtml
         route_sans_context.to_s + (context.nil? ? "" : "?in=#{context}")
       end
     end
-    # Pour obtenir la route en faisant route.current_route
+    # Pour obtenir la route en faisant current_route.route
     alias :to_str :route
 
+    # La route, sans le contexte (i.e. sans querystring ?in=...)
     def route_sans_context
       @route_sans_context ||= File.join(*[objet,objet_id_s,method_s].compact)
     end
@@ -232,6 +241,7 @@ class SiteHtml
     # Noter que des fichiers attachés à la vue (ruby, css, js) peuvent
     # exister sans que la vue existe.
     def vue
+      # debug "-> Route::vue"
       @vue ||= ( instance_vue.exist? ? instance_vue : nil )
     end
 
@@ -239,6 +249,7 @@ class SiteHtml
     # utile, par exemple, pour charger les éventuelles js,
     # ruby, etc.
     def instance_vue
+      # debug "-> Route::instance_vue"
       @instance_vue ||= Vue::new(segment_path)
     end
 
@@ -255,6 +266,7 @@ class SiteHtml
     # Ce sujet sert notamment à savoir ce qu'il faut binder à une vue
     # en fonction de la route.
     def sujet
+      # debug "-> Route::sujet"
       @sujet ||= ( instance || classe )
     end
 
@@ -263,6 +275,7 @@ class SiteHtml
     #   Objet::             S'il n'y a pas de contexte
     # RETURN la classe ou NIL si elle n'existe pas
     def classe
+      # debug "-> Route::classe"
       @classe ||= begin
         if context != nil
           if Object.constants.include?(context.camelize.to_sym)
@@ -293,6 +306,7 @@ class SiteHtml
     # L'instance demandée, si objet_id est défini et que la
     # classe existe.
     def instance
+      # debug "-> Route::instance"
       @instance ||= begin
         if objet_id.nil? || classe.nil?
           nil

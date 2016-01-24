@@ -11,26 +11,28 @@ class Question
     unless exist?
       return "[Question ##{id} inexistante]"
     end
+    prefix = quiz_id.nil? ? "quiz" : "quiz-#{quiz_id}"
     choix = reponses.collect do |hr|
-      cb_id   = "q-#{id}_r-#{hr[:id]}".freeze
+      cb_id   = "#{prefix}_q_#{id}_r_#{hr[:id]}".freeze
 
       # En menu select
       if type_a == "m"
-        hr[:libelle].in_option(value: "r-#{hr[:id]}")
+        hr[:libelle].in_option(value: "r_#{hr[:id]}")
       # EN case à cocher (plusieurs choix)
       elsif type_c == "c"
-        cb_name = "q-#{id}_r-#{hr[:id]}".freeze
+        cb_name = "quiz[q_#{id}_r_#{hr[:id]}]".freeze
         hr[:libelle].in_checkbox(id:cb_id, name:cb_name).in_li
       # EN bouton radio
       elsif type_c == "r"
-        cb_name = "q-#{id}".freeze
+        cb_name = "quiz[q_#{id}]".freeze
         hr[:libelle].in_radio(id:cb_id, name:cb_name, value: hr[:id]).in_li
       end
     end.join
 
     if type_a == "m"
-      type_c = "r" # pour avoir un li de class "r m"
-      choix = choix.in_select(name:"q_#{id}").in_li
+      data_select = {name:"quiz[q_#{id}]", id:"#{prefix}_q_#{id}"}
+      data_select.merge!(multiple: true) if type_c == "c"
+      choix = choix.in_select( data_select ).in_li
     end
 
     (
@@ -38,7 +40,7 @@ class Question
       question.in_div(class:'q')      +
       indications                     +
       choix.in_ul(class:"r #{type_a}")
-    ).in_div(class:'question')
+    ).in_div(class:'question', id:"question-#{id}")
   end
 
   def infos_admin
@@ -56,8 +58,11 @@ class Question
   # des radios groupes habituels.
   def indication_when_checkboxes
     @indication_when_checkboxes ||= <<-STR
-    Cochez tous les choix qui vous semblent pertinents.
+    Cochez tous les choix qui vous semblent pertinents#{indication_ajout_when_select_multiple if type_a=='m'}.
     STR
+  end
+  def indication_ajout_when_select_multiple
+    @indication_ajout_when_select_multiple ||= " (tenir la touche CMD sur Mac ou CTRL sur Unix/Windows pour plusieurs choix)"
   end
 end #/Question
 end #/Quiz

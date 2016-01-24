@@ -1,4 +1,5 @@
 # encoding: UTF-8
+require 'json'
 class Unan
 class Quiz
 
@@ -24,7 +25,8 @@ class Quiz
     @output = nil if forcer || out_of_date?
     @output ||= begin
       code = get(:output)
-      code = build if code.empty?
+      code = build if forcer || code.empty?
+      code += code_for_regle_reponses
       code
     end
   end
@@ -40,12 +42,32 @@ class Quiz
     form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
     form = String::new
     form << 'bureau_save_quiz'.in_hidden(name:'operation')
+    form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
     form << output(forcer = !!options[:forcer])
     form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
     code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
     # code += "".in_div(style:'clear:both;')
     # debug code
     code
+  end
+
+  # Un code pour ré-affecter les réponses déjà données, dans le
+  # cas où il faut ré-afficher le questionnaire (soit pour voir les
+  # réponses données — admin) soit pour corriger une erreur.
+  # C'est dans le fichier `calcul.rb` que se fabrique la donnée qui va
+  # permettre à la méthode javascript `regle_reponses` de réaffecter les
+  # valeurs.
+  def code_for_regle_reponses
+    <<-HTML
+<script type="text/javascript">
+var quiz_values = {
+  quiz_id:#{id},
+  reponses:#{@reponses_for_javascript.to_json}
+}
+$(document).ready(function(){Quiz.regle_reponses(quiz_values)})
+</script>
+
+    HTML
   end
 
   # Construction du questionnaire
@@ -59,9 +81,6 @@ class Quiz
 
     css = ['quiz']
     css << "no_titre" if no_titre?
-
-    html << id              .in_hidden(name:"quiz[id]", id:"quiz_id-#{id}")
-    html << questions.count .in_hidden(name: "quiz[questions_count]")
 
     html = html.in_div( class: css.join(' ') )
     # On enregistre le questionnaire dans la table
