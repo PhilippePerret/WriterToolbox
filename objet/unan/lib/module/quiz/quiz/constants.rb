@@ -10,6 +10,8 @@ class Quiz
     'description'       => {bit:0, hname:"Afficher la description"},
     'only_points_quiz'  => {bit:1, hname:"Les questions n'apportent aucun point"},
     'no_titre'          => {bit:2, hname:"Ne pas afficher le titre du questionnaire"}
+    # de 3 à 8  = l'identifiant du questionnaire précédente (if any)
+    # de 9 à 14 = l'identifiant du questionnaire suivant (if any)
   }
 
   # ---------------------------------------------------------------------

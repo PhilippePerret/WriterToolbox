@@ -34,6 +34,34 @@ class Quiz
   end
 
   # ---------------------------------------------------------------------
+  #   Méthodes de version
+  # ---------------------------------------------------------------------
+  def previous_version
+    @previous_version ||= begin
+      previous_version_id.nil? ? nil : Unan::Quiz::new(previous_version_id)
+    end
+  end
+  def previous_version_id
+    @previous_version_id ||= begin
+      vip = options[3..8].to_i
+      vip = nil if vip == 0
+      vip
+    end
+  end
+  def next_version
+    @next_version ||= begin
+      next_version_id.nil? ? nil : Unan::Quiz::new(next_version_id)
+    end
+  end
+  def next_version_id
+    @next_version_id ||= begin
+      vip = options[9..14].to_i
+      vip = nil if vip == 0
+      vip
+    end
+  end
+
+  # ---------------------------------------------------------------------
   #   Base de données
   # ---------------------------------------------------------------------
   def table   ; @table ||= Unan::table_quiz end
