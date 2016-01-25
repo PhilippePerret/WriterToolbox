@@ -9,8 +9,6 @@
 site.require_objet 'unan'
 Unan::require_module 'quiz'
 
-raise "Ne répond pas" unless Unan.respond_to?(:table_quiz)
-
 class ::Unan
 class Quiz
   def as_li_item
@@ -56,4 +54,4 @@ end
 
 %>
 
-<ul idd="quiz_list"><%= liste_questionnaires %></ul>
+<ul id="quiz_list"><%= liste_questionnaires %></ul>

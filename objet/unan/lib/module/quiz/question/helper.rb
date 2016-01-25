@@ -186,9 +186,9 @@ class Question
     ("##{id} "+lien_edit).in_div(class:'tiny fright adminonly')
   end
 
-  def lien_edit
+  def lien_edit titre = "edit"
     return "" unless user.admin?
-    "edit".in_a(href:"question/#{id}/edit?in=unan_admin/quiz", target:'_edit_question_quiz_')
+    titre.in_a(href:"question/#{id}/edit?in=unan_admin/quiz", target:'_edit_question_quiz_')
   end
 
   def indications

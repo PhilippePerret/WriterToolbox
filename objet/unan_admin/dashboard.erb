@@ -39,6 +39,7 @@ http = "http://localhost/WriterToolbox"
   <fieldset class='inline-block'>
     <legend>Quiz et questionnaires</legend>
     <li><%= "Liste des QCM".in_a(href:"quiz/list?in=unan_admin") %> </li>
+    <li><%= "Liste des questions".in_a(href:"question/list?in=unan_admin/quiz") %></li>
     <li><%= "Édition QCM".in_a(href:"quiz/edit?in=unan_admin") %> </li>
     <li><%= "Question QCM".in_a(href:"question/edit?in=unan_admin/quiz") %></li>
   </fieldset>

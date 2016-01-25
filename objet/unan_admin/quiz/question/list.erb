@@ -1,0 +1,8 @@
+<%
+# Affichage de la liste des questions
+#
+# Plus tard, on pourra faire une recherche
+raise_unless_admin
+%>
+<%= Unan::titre_h1("Liste des questions") %>
+<ul id="questions_list"><%= liste_questions %></ul>
