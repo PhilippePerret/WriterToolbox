@@ -22,15 +22,23 @@
     <span class="value small">(vous pouvez le modifier dans le <%= bureau.lien_preferences('panneau des préférences') %>)</span>
   </div>
   <div class="row">
-    <span class="libelle">Jour-programme courant</span>
-    <span class="value"><%= user.program.current_pday(:human) %> (reste <%= user.program.nombre_pdays_restants(:human) %>)</span>
-  </div>
-  <div class="row">
     <span class="libelle">Jour réel courant</span>
     <span class="value"><%= user.program.nombre_jour_reels_from_start(:human) %></span>
   </div>
   <div class="row">
-    <span class="libelle">Total de points</span>
-    <span class="value"><%= user.total_points_program %></span>
+    <span class="libelle">Jours-programme</span>
+    <span class="value"><%= user.program.current_pday(:human) %>, reste <%= user.program.nombre_pdays_restants(:human) %></span>
+  </div>
+  <div id="div_mark_pday" class="row">
+    <span class="libelle">Jour-programme courant</span>
+    <span class="value" id="mark_pday"><%=
+      nb = user.program.current_pday(:nombre)
+      er = nb == 1 ? 'er' : 'e'
+      "#{nb}<sup>#{er}</sup>"
+      %></span>
+  </div>
+  <div id="div_mark_points" class="row">
+    <span class="libelle">Total des points</span>
+    <span class="value" id="mark_points"><%= user.total_points_program %></span>
   </div>
 </div>
