@@ -16,7 +16,16 @@
   <%= message_si_aucun_travail %>
 <% elsif has_quiz? %>
   <% quizes.each do |iquiz| %>
-    <%= iquiz.output_in_form %>
+    <%= iquiz.output_in_container %>
+    <%
+    # Si le questionnaire était en correction, c'est qu'il faut
+    # maintenant le supprimer. Rappel : Si on le fait avant, il ne
+    # se trouverait plus dans la liste des quizes et la version corrigée
+    # du questionnaire ne serait donc pas affichée ici.
+    if iquiz.correction?
+      iquiz.mark_work_done
+    end
+    %>
   <% end %>
 <% else %>
   <%# Aucun quiz (mais d'autres travaux) %>

@@ -27,11 +27,11 @@ class User
 
     def current
       if @current == nil && app.session['user_id']
-        debug "User ID en session : #{app.session['user_id']}"
+        # debug "User ID en session : #{app.session['user_id']}"
         uchecked = get(app.session['user_id'].to_i)
         uchecked.instance_variable_set('@session_id', nil)
-        debug "uchecked.get(:session_id) : #{uchecked.get(:session_id).inspect}"
-        debug "app.session.session_id    : #{app.session.session_id.inspect}"
+        # debug "uchecked.get(:session_id) : #{uchecked.get(:session_id).inspect}"
+        # debug "app.session.session_id    : #{app.session.session_id.inspect}"
         if uchecked.get(:session_id) == app.session.session_id
           @current = uchecked
         end

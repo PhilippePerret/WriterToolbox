@@ -2,10 +2,6 @@
 class Unan
 class Quiz
 
-  BIT_NO_RESULT = 2
-  BIT_COMPTAGE  = 4
-  BIT_REQUIRED  = 8
-
   TYPES = {
     0 => {value:0, hname:"Indéfini",              type_v: :none},
     1 => {value:1, hname:"Simple renseignement",  type_v: :renseignements},

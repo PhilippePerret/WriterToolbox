@@ -11,7 +11,7 @@ def schema_table_user_quiz
 
     # Identifiant unique (mais seulement pour cette table propre
     # à l'auteur)
-    id: {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENTE"},
+    id: {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
 
     # ID du questionnaire
     # -------------------

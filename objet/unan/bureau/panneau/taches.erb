@@ -28,7 +28,7 @@
 <section id="completed_works">
 <% if last_tasks.count > 0 %>
   <h3>Tâches récemment achevées</h3>
-  <%= last_tasks.collect { |iwork| iwork.output }.join %>
+  <%= last_tasks.collect{ |iwork| iwork.output }.join %>
 <% else %>
   <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>
 <% end %>

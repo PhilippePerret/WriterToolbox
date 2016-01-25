@@ -134,7 +134,7 @@ class Question
         # debug "hreponses[#{rid}] = #{hreponses[rid].pretty_inspect}"
         class_css = hreponses[rid][:result] if hreponses[rid][:result]
         label_reponse = hreponses[rid][:label].nil_if_empty
-        libelle += " (#{label_reponse})".in_span(class:'exg') if label_reponse
+        libelle += "&nbsp;&nbsp;(#{label_reponse})".in_span(class:'exg') if label_reponse
       end
 
       # Les différents affichages en fonction du type

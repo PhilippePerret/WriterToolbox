@@ -47,34 +47,40 @@ class Quiz
       # Barrière pour voir si le questionnaire ne vient pas
       # d'être soumis
       existe_deja = user.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.days}") > 0
-      return error "Votre questionnaire a déjà été enregistré. Merci de ne pas le soumettre à nouveaux." if existe_deja
+      return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if existe_deja
 
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
       user.table_quiz.insert(data2save)
 
       # Enregistrer le score dans le programme de l'utilisateur
-      user.program.add_points( user_points ) unless user_points.nil?
+      unless quiz_points.nil?
+        debug "quiz_points : #{quiz_points.inspect}"
+        user.add_points( quiz_points.freeze )
+      end
 
       # Marquer le travail (qui a généré le questionnaire) comme
       # accompli.
-      # Marquer le ended_at du travail (work)
-      # :quiz_ids => liste des IDs de work qui concernent les questionnaires
-      # =>
-      mark_work_done
+      # NON : Surtout pas, sinon le quiz ne serait plus affiché et
+      # aucun résultat ne serait donné à l'auteur. On marque donc
+      # le travail fini après avoir affiché le résultat, dans la vue
+      # ERB, en testant la propriété correction?
 
       # Si c'est une validation des acquis et que le questionnaire
       # n'est pas validé (note insuffisante), il faut le reprogrammer
       # pour plus tard (quinze jours plus tard)
       if type_validation == :validation_acquis && !questionnaire_valided?
+        debug "--> reprogrammer_questionnaire"
         reprogrammer_questionnaire(15) # 15 = nombre de jours
       end
 
-      # Étudier et construire le retour en fonction du
-      # questionnaire et du résultat de l'auteur.
+      # Étudier et construire le retour en fonction du questionnaire
+      # et du résultat de l'auteur.
       # Cf. dans le fichier `retour.rb`
+      debug "--> build_output"
       build_output
 
+      flash "Votre questionnaire a été évalué et enregistré avec succès.<br />Vous trouverez ci-dessous votre résultat ainsi que les erreurs que vous avez pu commettre."
       return true
     else
       false
@@ -177,6 +183,7 @@ class Quiz
           points: hvalue[:points],
           value:  hvalue[:rep_value]
         }
+        # debug "hreponse : #{hreponse.inspect}"
         @user_reponses.merge!( qid => hreponse )
         @user_points += hreponse[:points] unless hreponse[:points].nil?
         @max_points  += hreponse[:max]    unless hreponse[:max].nil?
@@ -188,12 +195,10 @@ class Quiz
       # On ne doit pas comptabiliser le questionnaire puisqu'il y
       # a une erreur
       @for_correction = false
-      error "Merci de bien vouloir répondre à toutes les questions du formulaire (les questions sans réponses sont indiquées en rouge)."
+      error "Merci de bien vouloir répondre à toutes les questions du formulaire (les questions sans réponses sont indiquées en roug)e."
       return false
     else
       # Le questionnaire a été rempli correctement
-      # On peut utiliser `data2save` pour obtenir les données
-      # à sauvegarder dans la table de l'user.
       return true
     end
 
