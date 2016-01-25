@@ -5,7 +5,10 @@ class Work
 
   # La méthode qui crée la donnée
   def create
-    @id = table.insert(data2save.merge(created_at: NOW))
+    unless data2save.has_key?(:created_at)
+      data2save.merge!(created_at: NOW) 
+    end
+    @id = table.insert( data2save )
   end
 
   # Sauvegarde de toutes les données du travail

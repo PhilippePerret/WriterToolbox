@@ -98,10 +98,15 @@
         {Fixnum} Niveau de partage du projet de l'auteur
         <- user.preference(:sharing)
 
+    total_points_projet
+
+        {Fixnum} Total des points courants sur le projet courant.
+        
     total_points
 
-        {Fixnum} Total des points de l'auteur.
-        
+        {Fixnum} Total des points de l'auteur, tous programmes
+        confondus.
+
 <a name='jourprogrammecourant'></a>
 
 ## Indice du jour-programme (p-day) courant

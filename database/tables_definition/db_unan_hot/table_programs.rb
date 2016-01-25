@@ -27,7 +27,7 @@ def schema_table_unan_hot_programs
 
     # Nombre de points
     # ----------------
-    points:       {type:"INTEGER(4)"},
+    points:       {type:"INTEGER(8)"},
 
     # Rythme adopté
     # -------------

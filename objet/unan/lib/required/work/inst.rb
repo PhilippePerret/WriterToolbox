@@ -31,6 +31,16 @@ class Work
     @id       = wid
   end
 
+  # Marque un travail terminé.
+  #
+  # La méthode est appelée par la route "work/<id>/complet?in=unan/program"
+  # invoquée par les bouton "Marquer fini" dans le bureau de l'auteur
+  # Elle produit :
+  #   - met le travail au statut 9 (status)
+  #   - ajoute les points au programme de l'user
+  #   - retire le travail de la liste de ses :works_ids
+  #   - retire le travail de la liste des ses :<choses>_ids particulières,
+  #     comme les quiz, etc.
   def set_complete
     # Il faut le retirer des listes
     # On ajoute la clé :works pour traiter aussi la liste
@@ -51,7 +61,8 @@ class Work
       error "Bizarrement, le travail n'a été retiré que de la liste #{liste_retraits.pretty_join}… Il aurait dû être retiré de deux listes."
     end
     set(status: 9, updated_at: NOW)
-    flash "Travail #{id} marqué terminé."
+    user.add_points( abs_work.points )
+    flash "Travail #{id} terminé (vous avez #{abs_work.points} nouveaux points :-))."
   end
 
   # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire

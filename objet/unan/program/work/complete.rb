@@ -16,8 +16,8 @@ begin
   # Ce travail ne doit pas avoir déjà été marqué terminé
   raise "Ce travail est déjà marqué terminé…" if work.completed?
 
-  # Le retirer de la liste des travaux où il se trouve
-  # Et le marquer terminé.
+  # Marquer ce travail terminé en faisant tout ce qu'il y a à
+  # faire le concernant.
   work.set_complete
 
   raise "Le travail devrait avoir été marqué terminé…" unless work.completed?

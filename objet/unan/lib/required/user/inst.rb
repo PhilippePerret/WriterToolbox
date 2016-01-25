@@ -26,10 +26,18 @@ class User
   def total_points
     @total_points ||= get_var(:total_points, 0)
   end
+  def total_points_projet
+    @total_points_projet ||= get_var(:total_points_projet, 0)
+  end
 
   def add_points value
     return if value.nil?
     set_var(:total_points, total_points + value )
+    unless program.nil?
+      tot_pts_programme = total_points_projet + value
+      set_var(:total_points_projet, tot_pts_programme)
+      program.set(:points => tot_pts_programme)
+    end
   end
 
   # Return TRUE si l'user vient de s'inscrire au programme

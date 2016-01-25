@@ -95,10 +95,19 @@ class Quiz
   # n'a pas été rempli correctement (pour le type :validation_acquis)
   #
   def reprogrammer_questionnaire nombre_jours = 7
-    # TODO Il faudrait définir le pday qui aura lieu dans
-    # +nombre_jours+ jours-programme pour ajouter ce questionnaire.
-    hnew_work = work.get_all.dup
-    debug "hnew_work: #{hnew_work}"
+    hnew_work = {
+      program_id:   work.program.id,
+      abs_work_id:  work.abs_work_id,
+      status:       0,
+      options:      "",
+      points:       0,
+      ended_at:     nil,
+      created_at:   NOW + nombre_jours.days,
+      updated_at:   NOW + nombre_jours.days
+    }
+    new_work = Unan::Program::Work::new(work.program, nil)
+    new_work.instance_variable_set('@data2save', hnew_work)
+    new_work_id = new_work.create
   end
 
   # = main =
