@@ -79,6 +79,9 @@ class Quiz
     else
       false
     end
+  rescue Exception => e
+    error "# Un problème est survenu au cours de l'évaluation de votre questionnaire : #{e.message}."
+    debug e
   end
 
   # Marquer le travail qui a conduit à ce questionnaire comme
@@ -184,6 +187,8 @@ class Quiz
     if une_erreur
       # On ne doit pas comptabiliser le questionnaire puisqu'il y
       # a une erreur
+      @for_correction = false
+      error "Merci de bien vouloir répondre à toutes les questions du formulaire (les questions sans réponses sont indiquées en rouge)."
       return false
     else
       # Le questionnaire a été rempli correctement
@@ -237,9 +242,7 @@ class Quiz
             ref_balise.merge!(rep_value: ireponse)
             hreponse = reponses[ireponse - 1]
             # debug "hreponse = #{hreponse.inspect}"
-            unless hreponse.nil?
-              return hreponse.merge(ref_balise)
-            end
+            return hreponse.merge(ref_balise) unless hreponse.nil?
           end
           return ref_balise.merge( error:true )
         end

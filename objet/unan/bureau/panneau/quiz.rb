@@ -1,11 +1,21 @@
 # encoding: UTF-8
+Unan::require_module 'quiz'
 class Unan
 class Bureau
 
   # Enregistrement d'un questionnaire
   # L'opération est complexe
   def save_quiz
-    flash "Je sauve les questionnaires"
+    quiz_id = param(:quiz)[:id].to_i_inn
+    raise "Aucun questionnaire n'a été soumis…" if quiz_id == nil
+    # debug "Questionnaire soumis : #{quiz_id}"
+    Unan::Quiz::get(quiz_id).evaluate_and_save
+  end
+
+  # {Array of Quiz} Liste des derniers questionnaires remplis,
+  # pour information sur le bureau (panneau des quiz)
+  def last_quiz
+    Array::new # pour le moment
   end
 
   # Retourne true si l'user a des questionnaires à remplir
@@ -22,7 +32,7 @@ class Bureau
         # l'id du quiz dans la propriété `item_id` du work
         # absolu.
         quiz_id = Unan::Program::Work::new(user.program,wid).abs_work.item_id
-        iquiz = Unan::Quiz::new(quiz_id)
+        iquiz = Unan::Quiz::get(quiz_id)
         # TODO Ici, on pourrait préciser certaines données volatiles
         # du questionnaire, par exemple pour savoir s'il est en
         # retard ou non. Il suffirait d'avoir des accessors de propriétés
@@ -42,7 +52,6 @@ class Bureau
 
 end #/Bureau
 
-require_module 'quiz'
 class Quiz
 end #/Quiz
 

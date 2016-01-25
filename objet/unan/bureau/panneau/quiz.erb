@@ -25,3 +25,11 @@
   # TODO Proposer quelques questions.
   %>
 <% end %>
+<section id="completed_works">
+<% if last_quiz.count > 0 %>
+  <h3>Questionnaires récemment achevés</h3>
+  <%= last_quiz.collect { |iquiz| iquiz.output_simple }.join %>
+<% else %>
+  <p class='small discret'>Aucun questionnaire récent n'a été rempli.</p>
+<% end %>
+</section>
