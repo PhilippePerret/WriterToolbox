@@ -19,39 +19,9 @@ class Quiz
   # rouge et l'affichage des raisons des résultats.
   #
   def build_output
-
-    # TODO Voir en fonction du type de questionnaire ce qu'il faut
-    # dire à l'utilisateur. Par exemple, si c'est une simple prise
-    # de renseignement, il n'y a rien à faire d'autre que de le remercier.
-    # En revanche, si c'est un questionnaire de validation des acquis, à
-    # l'opposé, il faut refuser le questionnaire s'il ne comporte pas le
-    # nombre de points suffisant (au moins 12 sur 20 ?)
-
-
-    # 3 cas principaux :
-    #   1. C'est un simple questionnaire, sans nécessité de points
-    #   2. C'est un quiz qu'on évalue pour 1/ donner des points et
-    #      2/ attribuer une note sur 20.
-    #   3. C'est une validation d'acquis qu'il faut absolument
-    #      réussir (question : qu'est-ce que ce veut dire "réussir"
-    #      la moyenne n'est pas suffisante.)
-    #      Au début, il faut 10 (la moyenne), puis, un point de plus
-    #      tous les deux mois-programme.
-    #
-    # Quel texte en fonction des trois cas ?
-    #   1. On remercie simplement l'auteur d'avoir rempli le
-    #      questionnaire.
-    #   2. On donne un texte suivant le résultat, sans plus
-    #      On donne quand même les bonnes réponses.
-    #   3. On donne un texte suivant le résultat, mais en
-    #      considérant qu'il est impératif de réussir ce
-    #      questionnaire.
-    #      On donne quand les bonnes réponses.
-    #      On donne des indications pour savoir comment améliorer
-    #      son score.
-
-
-    return texte_per_quiz_type + developped_texte + detail_bonnes_reponses
+    texte_per_quiz_type     +
+    texte_per_ecart_moyenne +
+    detail_bonnes_reponses
   end
 
   # Retourne le questionnaire avec les bonnes réponses mises
@@ -61,7 +31,7 @@ class Quiz
   # avec les réponses de l'utilisateur.
   def detail_bonnes_reponses
     return "" if type_validation == :renseignements
-    build(corrections: true)
+    build
   end
 
   # Le texte ne fonctionne du type de questionnaire et du résultat
@@ -71,13 +41,11 @@ class Quiz
     case type_validation
     when :renseignements
       # Pour les prises de renseignement et les sondages
-      t << "Merci pour vos réponses."
-      t << "Ce questionnaire vous fait gagner %{nombre_points} points." % quiz_points
-      developped_texte = ""
+      t << "Merci #{user.pseudo} pour vos réponses."
+      t << "Ce questionnaire vous fait gagner %{nombre_points} points." % {nombre_points: quiz_points}
     when :simple_quiz
       t << "Merci pour vos réponses."
-      t << "Ce questionnaire vous fait gagner %{nombre_points} points." % quiz_points
-      developped_texte = texte_per_ecart_moyenne
+      t << "Ce questionnaire vous fait gagner %{nombre_points} points." % {nombre_points: quiz_points}
     when :validation_acquis
       t << "Merci pour vos réponses."
       if questionnaire_valided?
@@ -91,7 +59,6 @@ class Quiz
         # TODO Il faut reprogrammer le questionnaire pour dans quelques
         # jours-programme.
       end
-      developped_texte = texte_per_ecart_moyenne
     end
 
     t.collect{|p|p.in_p}.join
@@ -106,31 +73,47 @@ class Quiz
     texte_moyenne = if ecart_moyenne == 0
       "Vous avez pile la moyenne de #{moyenne_minimum}"
     else
-      "Vous avez #{ecart_moyenne} point" +
+      s = ecart_moyenne != 1 ? "s" : ""
+      if ecart_moyenne < 0
+        "Cependant, votre"
+      else
+        "Votre"
+      end +
+      " note est de <strong>#{user_note_sur_vingt}</strong> et "+
+      "vous avez donc #{ecart_moyenne} point#{s} " +
       (ecart_moyenne > 0 ? "au-dessus" : "en dessous") +
-      "de la moyenne (qui est de #{moyenne_minimum})"
+      " de la moyenne (qui est actuellement de #{moyenne_minimum} pour les questionnaires)."
     end
     t << texte_moyenne.in_p
 
 
     t << case true
     when user_note_sur_vingt < 5
-      "<strong>Une catastrophe</strong>."
+      "<strong>C'est pour le moins une catastrophe</strong>. " +
+      "Si vous n'avez aucun projet sérieux concernant votre écriture, alors pas de doute : ce questionnaire est cohérent avec vos ambitions. "+
+      "En revanche, si vous fomentez l'espoir de devenir un jour auteur#{user.f_e}, il est impératif que vous changiez définitivement d'attitude et que vous vous mettiez à travailler ardemment !"
     when user_note_sur_vingt < 10
-      "<strong>Loin d'être convainquant</strong>."
-    when user_note_sur_vingt < 12
-      "<strong>Honorable</strong>".+
-      "Voilà ce qu'on peut dire de ce résultat."
-    when user_note_sur_vingt < 15
-      "<strong>Bien</strong>."+
-      "Voilà ce qu'on peut affirmer de ce résultat."
-    when user_note_sur_vingt < 18
-      "<strong>Très bien</strong>."
+      "<strong>C'est loin d'être convainquant</strong>. "+
+      "Une note sous la moyenne n'est jamais une bonne chose. "+
+      "Nous espérons que vous en conviendrez et que vous prendrez la décision de travailler plus sérieusement afin de parvenir à des résultats quelque peu meilleurs."
+    when user_note_sur_vingt < 12 # de 10 à 12
+      "<strong>C'est honorable</strong>. ".+
+      "Vous avez la moyenne et c'est pour le moins honorable. " +
+      "Cependant, nous vous conseillons de ne pas viser la moyenne si vous souhaitez réellement parvenir à quelque chose dans votre écriture. En effet, ce ne sont jamais les artistes dans la moyenne qui parviennent à vivre de leur métier. " +
+      "Bon courage à vous !"
+    when user_note_sur_vingt < 15 # de 12 à 15
+      "<strong>C'est bien</strong>. "+
+      "On ne peut pas affirmer que ce soit excellent, mais cette note entre 12 et 15 témoigne d'un certain acquis. "+
+      "Il vous faut cependant travailler encore pour vous élever à un niveau digne d'un auteur qui ne serait plus simple apprenti."
+    when user_note_sur_vingt < 18 # de 15 à 18
+      "<strong>C'est très bien</strong>. " +
+      "Sans être excellente, cette note n'en est pourtant pas moins le signe que vous commencez à savoir de quoi vous parlez. "+
+      "Les travaux futurs devraient vous permettre de parvenir à l'excellence. Accrochez-vous !"
     when user_note_sur_vingt < 20
-      "<strong>Vraiment très bien</strong>." +
+      "<strong>C'est vraiment très bien</strong>." +
       "Vous êtes passé#{user.f_e} à deux doigts de l'excellence."
     when user_note_sur_vingt == 20
-      "C'est tout simplement excellent</strong>." +
+      "<strong>C'est tout simplement excellent</strong>." +
       "Il n'y a rien à dire, vous avez brillamment exécuté ce questionnaire, les notions sont parfaitement acquises ou les opérations clairement menées. Cela présage du meilleur pour la suite, félicitation à vous !"
     end
 

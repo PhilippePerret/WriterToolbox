@@ -24,7 +24,7 @@ class Quiz
   # Le nombre de points au-dessus (positif) de la moyenne
   # ou en dessous (négatif)
   def ecart_moyenne
-    @ecart_moyenne ||= user_note_sur_vingt - moyenne_minimum
+    @ecart_moyenne ||= (user_note_sur_vingt - moyenne_minimum).round(2)
   end
 
   # La note sur 20 de l'user pour ce questionnaire, en fonction

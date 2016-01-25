@@ -39,13 +39,19 @@ class Quiz
   def output_in_form options = nil
     options ||= Hash::new
 
-    form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
-    form = String::new
-    form << 'bureau_save_quiz'.in_hidden(name:'operation')
-    form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
-    form << output(forcer = !!options[:forcer])
-    form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
-    code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
+    if correction?
+      # Correction du questionnaire
+      code = output(forcer = true).in_div(class:'quiz_corrected')
+    else
+      # Affichage du questionnaire pour remplissage
+      form = String::new
+      form << 'bureau_save_quiz'.in_hidden(name:'operation')
+      form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
+      form << output(forcer = !!options[:forcer])
+      form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
+      form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
+      code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
+    end
     # code += "".in_div(style:'clear:both;')
     # debug code
     code
@@ -79,13 +85,12 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     unless_not_exists
 
     options ||= Hash::new
-    for_corrections = options.delete(:corrections) == true
 
     html = String::new
     html << titre.in_div(class:'titre') unless no_titre?
     html << description.in_div(class:'description') if description?
     html << questions.collect do |iquestion|
-      iquestion.output( user_reponses[iquestion.id] ) 
+      iquestion.output( user_reponses[iquestion.id] )
     end.join.in_div(class:'questions')
 
     css = ['quiz']
@@ -94,7 +99,7 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     html = html.in_div( class: css.join(' ') )
     # On enregistre le questionnaire dans la table, sauf si c'est une
     # construction pour voir les corrections
-    unless for_corrections
+    unless correction?
       set(:output => html, updated_at: NOW)
     end
     # On retourne le code après l'avoir enregistré

@@ -41,6 +41,7 @@ class Quiz
   # fonction du résultat.
   def evaluate_and_save
 
+
     if evaluate == true
 
       # Barrière pour voir si le questionnaire ne vient pas
@@ -100,6 +101,12 @@ class Quiz
   # Par exemple param('q-2') pourra valeur "4" si le choix 4 de
   # la question 2 a été sélectionné.
   def evaluate
+
+    # Pour indiquer à toutes les méthodes que c'est pour une
+    # correction du questionnaire (cela permet à `<quiz>correction?`
+    # de retourner true)
+    @for_correction = true
+
     # Récolte des réponses par type de question
     @user_reponses  = Hash::new
     # Nombre de points total marqués par l'user

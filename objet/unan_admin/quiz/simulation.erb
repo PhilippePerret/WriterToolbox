@@ -8,6 +8,9 @@
 # cette page est appelée par :
 #   "quiz/<id>/simulation?in=unan"
 %>
-<%= iquiz.output_in_form(simulation:true, forcer:true) %>
-<h3>Résultat de la simulation</h3>
-<%= iquiz.resultat_simulation %>
+<h2>Simulation de questionnaire</h2>
+<% if param(:operation) != "bureau_save_quiz" %>
+  <%= iquiz.output_in_form(simulation:true, forcer:true) %>
+<% else %>
+  <%= iquiz.resultat_simulation %>
+<% end %>

@@ -6,6 +6,16 @@ class Quiz
     Unan::table_quiz.count(where:{id: id}) > 0
   end
 
+  # Retourne true si c'est un affichage du questionnaire pour
+  # correction.
+  # Les changements sont les suivants :
+  #   - pas de bouton pour soumettre le questionnaire
+  #   - on laisse le code JS pour régler les réponses
+  #   - mis en exergue des bonnes et mauvaises réponses
+  def correction?
+    !!@for_correction
+  end
+
   # Return true si le questionnaire valide les acquis, i.e. s'il
   # est supérieur au minimum de points requis.
   # Cette méthode produit aussi :

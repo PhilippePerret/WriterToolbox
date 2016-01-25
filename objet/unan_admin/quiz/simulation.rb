@@ -44,11 +44,22 @@ class Quiz
     if evaluate
       dprov = data2save.dup
       dprov[:reponses] = JSON.parse(dprov[:reponses])#.pretty_inspect
+      current_admin_id = User::current.id.freeze
+      User::current = User::get(2)
       @resultat_simulation =
-        "Note obtenue pour ce questionnaire, sur 20 ou nil : <strong>#{note_sur_20_for.inspect}</strong>" +
+      ("Refaire ce questionnaire".in_a(href:"quiz/#{id}/simulation?in=unan_admin")).in_div(class:'right') +
+        "Noter que ce résultat est calculé pour #{user.pseudo} (##{user.id})".in_div(class:'small italic') +
+        "Note obtenue pour ce questionnaire, sur 20 ou nil : <strong>#{note_sur_20_for.inspect}</strong>".in_div +
+        "Jour-programme courant : <strong>#{user_pday_courant}</strong>".in_div +
+        "Moyenne correspondant au jour-programme : <strong>#{moyenne_minimum}</strong>".in_div +
+        "Écart par rapport à la moyenne : #{ecart_moyenne}".in_div +
+        "<hr /><h3>Message après soumission</h3>" +
+        build_output +
+        "<hr />" +
         "Donnée qui serait enregistrée dans la table de l'user :".in_p +
         "<pre style='white-space:pre-wrap;'>\n#{dprov.pretty_inspect}\n</pre>"
 
+      User::current = User::get(current_admin_id)
     else
       @resultat_simulation = "Une erreur est survenue."
     end
