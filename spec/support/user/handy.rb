@@ -3,6 +3,21 @@
 Handy méthodes pour les user
 =end
 
+def get_any_user
+  ids = User::table.select(colonnes:[:id]).keys
+  ids.shuffle.shuffle.first
+  u = User::new(ids)
+  expect(u).to be_instance_of(User)
+  return u
+end
+
+def benoit
+  u = User::new(2)
+  expect(u).to be_instance_of(User)
+  expect(u.pseudo).to eq "Benoit"
+  return u
+end
+
 # +options+
 #
 #   :unanunscript   Si true, l'inscrit au programme

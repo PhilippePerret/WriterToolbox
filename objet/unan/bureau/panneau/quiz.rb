@@ -12,10 +12,13 @@ class Bureau
     Unan::Quiz::get(quiz_id).evaluate_and_save
   end
 
-  # {Array of Quiz} Liste des derniers questionnaires remplis,
+  # {Array of User::UQuiz} Liste des derniers questionnaires remplis,
   # pour information sur le bureau (panneau des quiz)
+  # ATTENTION : Il s'agit d'instances User::UQuiz et
+  # PAS des instances Unan::Quiz
+  #
   def last_quiz
-    Array::new # pour le moment
+    @last_quiz ||= user.quizes(created_after: NOW - 4.days)
   end
 
   # Retourne true si l'user a des questionnaires à remplir
