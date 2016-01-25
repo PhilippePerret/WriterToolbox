@@ -25,6 +25,15 @@ class Quiz
     @human_type ||= TYPES[type][:hname]
   end
 
+  # Retourne le type-validation du questionnaire, qui peut
+  # être :renseignements (renseignements et sondage),
+  # :simple_quiz (questionnaire à point mais sans validation
+  # d'acquis), :validation_acquis (questionnaire à réussir
+  # impérativement pour poursuivre)
+  def type_validation
+    @type_validation ||= TYPES[type][:type_v]
+  end
+
   # {Array} Retourne la liste des instances Unan::Quiz::Question des
   # questions du questionnaires.
   def questions

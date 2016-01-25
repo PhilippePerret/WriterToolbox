@@ -22,4 +22,28 @@ div.quiz
   div.questions
     margin-top    : 3em
     div.question
-      margin-top    : 2em
+      margin-top        : 2em
+      background-color  : #F1F1F1
+      // LI contenant les réponses (une réponse par LI)
+      li
+        &.best
+          background-color  : #EFE
+          border            : 1px solid #AFA
+        &.good
+          background-color  : #BFB
+          border            : 1px solid green
+        &.wrong
+          background-color  : #FBB
+          border            : 1px solid red
+        span.exg
+          font-weight       : bold
+          color             : green
+      // Le div contenant la raison de la bonne réponse quand c'est
+      // une correction de questionnaire
+      div.raison
+        border      : 1px solid green
+        padding     : 0.5em
+        margin-left : 4em
+        margin-top  : 1em
+        font-size   : 0.85em
+      

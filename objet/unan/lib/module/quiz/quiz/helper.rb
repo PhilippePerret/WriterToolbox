@@ -34,8 +34,8 @@ class Quiz
   # {StringHTML} Retourne le code HTML intégral avec le formulaires
   # et les boutons pour soumettre chaque questionnaires
   # +options+
-  #   forcer:   Si true, on force la reconstruction du questionnaire
-  #   simulation:  Si true, c'est une simulation
+  #   forcer:       Si true, on force la reconstruction du questionnaire
+  #   simulation:   Si true, c'est une simulation
   def output_in_form options = nil
     options ||= Hash::new
 
@@ -72,19 +72,31 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
 
   # Construction du questionnaire
   # Return le code HTML du questionnaire
-  def build
+  # +options+
+  #   corrections:  Si true, c'est un affichage mettant en exergue les
+  #                 réponses de l'utilisateur et les réponses attendues.
+  def build options = nil
     unless_not_exists
+
+    options ||= Hash::new
+    for_corrections = options.delete(:corrections) == true
+
     html = String::new
     html << titre.in_div(class:'titre') unless no_titre?
     html << description.in_div(class:'description') if description?
-    html << questions.collect { |iquestion| iquestion.output }.join.in_div(class:'questions')
+    html << questions.collect do |iquestion|
+      iquestion.output( user_reponses[iquestion.id] ) 
+    end.join.in_div(class:'questions')
 
     css = ['quiz']
     css << "no_titre" if no_titre?
 
     html = html.in_div( class: css.join(' ') )
-    # On enregistre le questionnaire dans la table
-    set(:output => html, updated_at: NOW)
+    # On enregistre le questionnaire dans la table, sauf si c'est une
+    # construction pour voir les corrections
+    unless for_corrections
+      set(:output => html, updated_at: NOW)
+    end
     # On retourne le code après l'avoir enregistré
     return html
   end

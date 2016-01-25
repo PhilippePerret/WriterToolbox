@@ -9,8 +9,14 @@ require 'json'
 class Unan
 class Quiz
 
-  attr_reader :user_reponses
-  attr_reader :user_points
+  # Les réponses de l'utilisateur, après la soumission du
+  # questionnaire.
+  # Mais noter que cette propriété est invoquée aussi à la
+  # construction du questionnaire, que ce soit pour les
+  # corrections ou non, pour simplifier le code.
+  def user_reponses
+    @user_reponses ||= Hash::new
+  end
 
   # Les données à enregistrer dans la table de l'auteur,
   # de ses réponses au questionnaire courant
@@ -23,14 +29,6 @@ class Quiz
       points:     user_points,
       created_at: NOW
     }
-  end
-
-  def note_sur_20_for note = nil
-    note ||= user_points
-    return nil if [1,7].include?(type)
-    return nil if note.nil?
-    return nil if max_points.to_i == 0
-    (note.to_f * 20 / max_points).round(1)
   end
 
   # = main =
@@ -54,7 +52,7 @@ class Quiz
       # table de l'utilisateur
       user.table_quiz.insert(data2save)
 
-      # Enregistrer le score dans le work de l'utilisateur
+      # Enregistrer le score dans le programme de l'utilisateur
       user.program.add_points( user_points ) unless user_points.nil?
 
       # Marquer le travail (qui a généré le questionnaire) comme
@@ -64,64 +62,12 @@ class Quiz
       # =>
       mark_work_done
 
-      # TODO Voir en fonction du type de questionnaire ce qu'il faut
-      # dire à l'utilisateur. Par exemple, si c'est une simple prise
-      # de renseignement, il n'y a rien à faire d'autre que de le remercier.
-      # En revanche, si c'est un questionnaire de validation des acquis, à
-      # l'opposé, il faut refuser le questionnaire s'il ne comporte pas le
-      # nombre de points suffisant (au moins 12 sur 20 ?)
+      # Étudier et construire le retour en fonction du
+      # questionnaire et du résultat de l'auteur.
+      # Cf. dans le fichier `retour.rb`
+      build_output
 
-
-      bits = 0
-      # BIT 1 : sexe
-      BIT_SEXE = 1      # 0 si homme, 1 si femme
-      bits += ( user.femelle? ? BIT_SEXE : 0 )
-      # 3 cas principaux :
-      #   1. C'est un simple questionnaire, sans nécessité de points
-      #   2. C'est un quiz qu'on évalue pour 1/ donner des points et
-      #      2/ attribuer une note sur 20.
-      #   3. C'est une validation d'acquis qu'il faut absolument
-      #      réussir (question : qu'est-ce que ce veut dire "réussir"
-      #      la moyenne n'est pas suffisante.)
-      #      Au début, il faut 10 (la moyenne), puis, un point de plus
-      #      tous les deux mois-programme.
-      #
-      # Quel texte en fonction des trois cas ?
-      #   1. On remercie simplement l'auteur d'avoir rempli le
-      #      questionnaire.
-      #   2. On donne un texte suivant le résultat, sans plus
-      #      On donne quand même les bonnes réponses.
-      #   3. On donne un texte suivant le résultat, mais en
-      #      considérant qu'il est impératif de réussir ce
-      #      questionnaire.
-      #      On donne quand les bonnes réponses.
-      #      On donne des indications pour savoir comment améliorer
-      #      son score.
-
-      t = Array::new
-      case cas
-      when 1 # Simple questionnaire
-        t << "Merci pour vos réponses."
-        t << "Ce questionnaire vous fait gagner %{nombre_points} points." % quiz_points
-      when 2 # Simple quiz
-        t << "Merci pour vos réponses."
-        t << "Ce questionnaire vous fait gagner %{nombre_points} points." % quiz_points
-      when 3 # Validation acquis
-        t << "Merci pour vos réponses."
-        if questionnaire_valided?
-          # Le nombre de points est suffisant pour considérer les
-          # notions comme acquises, on peut passer à la suite.
-          t << "Vous avez réussi ce questionnaire."
-        else
-          # Le nombre de points n'est pas suffisant pour valider
-          # les acquis. Que faut-il faire ?
-          t << "Malheureusement, vos points sont insuffisants pour valider vos acquis pour le moment."
-          # TODO Il faut reprogrammer le questionnaire pour dans quelques
-          # jours-programme.
-        end
-      end
-
-
+      return true
     else
       false
     end
@@ -130,11 +76,12 @@ class Quiz
   # Marquer le travail qui a conduit à ce questionnaire comme
   # exécuté. Noter qu'on le fait même quand c'est par exemple
   # une validation des acquis et qu'elle n'est pas réussie. Cela
-  # reposera simplement le questionnaire plus tard.
+  # reposera simplement le questionnaire plus tard, mais un questionnaire
+  # est toujours enregistré comme record.
   def mark_work_done
     work = nil
     user.get_var(:quiz_ids).each do |wid|
-      w = Unan:Program::Work::new(user.program, wid)
+      w = Unan::Program::Work::new(user.program, wid)
       if w.type_quiz? && w.abs_work.item_id == self.id
         work = w
         break

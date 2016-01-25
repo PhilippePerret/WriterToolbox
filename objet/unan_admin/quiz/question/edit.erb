@@ -47,7 +47,7 @@ lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(Ques
 lien_edit_question    = "Edit".in_a(onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
 lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_destroy')()", class:'small btn warning')
 %>
-<form id="form_question_edit" class="dim3070" action="question/edit?in=unan_admin/quiz" method="POST">
+<form id="form_question_edit" class="dim2080" action="question/edit?in=unan_admin/quiz" method="POST">
 
   <%= "edit_question".in_hidden(name:'operation', id:'operation') %>
 
@@ -59,7 +59,7 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
   <%= form.field_description("Indiquer la question qui sera posée. Vous pouvez voir sous le formulaire l'aspect que prendra la question (une fois enregistrée).") %>
   <%# RÉPONSES %>
   <div id="reponses"></div>
-  <%= form.field_description("Ajouter les réponses en précisant leur nombre de points. Pour <strong>indiquer la bonne réponse</strong>, il faut mettre 0 points aux réponses fausses et un nombre de points à la bonne réponse.<br />Pour <strong>supprimer une réponse</strong>, vider son libellé.") %>
+  <%= form.field_description("Ajouter les réponses en précisant leur nombre de points. S'il y a <strong>une seule bonne réponse</strong>, il faut mettre 0 points aux autres réponses et un nombre de points à la bonne réponse. S'il y a <strong>plusieurs réponses possibles</strong>, on peut mettre différents points, et le plus grand nombre de points sera considéré comme la <strong>meilleure réponse</strong>.<br />Pour <strong>supprimer une réponse</strong>, vider son libellé.") %>
   <%# Bouton pour ajouter une réponse possible %>
   <div class='row air'>
     <span class='libelle'></span>

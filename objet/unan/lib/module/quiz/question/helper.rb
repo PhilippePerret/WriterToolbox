@@ -7,27 +7,155 @@ class Quiz
 class Question
 
   # Mise en forme de la question pour affichage
-  def output
+  # +user_reponse+ Si défini, il faut :
+  #   - mettre en exergue la bonne réponse
+  #   - mettre en exergue la réponse erronée de l'auteur
+  #   - afficher le pourquoi de la bonne réponse.
+  # Note : Les réponses de l'utilisateur se trouvent dans
+  # +user_reponse+.
+  # Rappel : il y a la "bonne" et la "meilleur" réponse suivant
+  # que :
+  #   Si toutes les réponses sont à 0 sauf 1 => une seule réponse
+  #   possible => la "bonne"
+  #   Si ≠ points pour ≠ réponses, alors plusieurs réponses possibles
+  #   mais une "meilleure", celle qui a le plus de points.
+  # Il y aura "bonne", "meilleure" et "pire" réponse.
+  def output user_reponse = nil
+    
     unless exist?
       return "[Question ##{id} inexistante]"
     end
-    prefix = quiz_id.nil? ? "quiz" : "quiz-#{quiz_id}"
-    choix = reponses.collect do |hr|
-      cb_id   = "#{prefix}_q_#{id}_r_#{hr[:id]}".freeze
 
-      # En menu select
-      if type_a == "m"
-        hr[:libelle].in_option(value: "r_#{hr[:id]}")
-      # EN case à cocher (plusieurs choix)
+    correction_questionnaire = user_reponse != nil
+
+    # Préfix de tous les objets DOM
+    prefix = quiz_id.nil? ? "quiz" : "quiz-#{quiz_id}"
+
+    # Pour pouvoir ajouter des propriétés aux réponses de
+    # la question, dans le cas où c'est une correction de
+    # formulaire, sans modifier la propriété `reponses`
+    # originale.
+    thereps = reponses.dup
+
+    # Si c'est une correction de questionnaire, il faut
+    # faire un premier tour sur les réponses pour les comparer avec
+    # les réponses de l'utilisateur. Cela permettra de marquer les
+    # types (classes) à affecter aux affichages des réponses ci-desous,
+    # à savoir :
+    #   - si c'est une bonne réponse, la réponse est mise en vert
+    #     elle est sélectionné pour un menu.
+    #   - si c'est une mauvaise réponse, la réponse est mise en rouge
+    #
+    if correction_questionnaire
+      rights = Hash::new
+      wrongs = Hash::new
+      # On fait d'abord un Hash des réponses pour pouvoir les
+      # manipuler plus facilement
+      hreponses = Hash::new
+
+      thereps.each do |hr|
+        # On met cette réponse dans le hash de données de
+        # la question.
+        hreponses.merge!(hr[:id] => hr)
+        # Les points pour cette réponse.
+        # On en a besoin si c'est un affichage des réponses au
+        # questionnaire.
+        points = hr[:points].freeze
+        # Pour le moment, quel que soit le type de réponse, on
+        # mémorise cette réponse comme bonne ou mauvaise réponse
+        # en fonction de son nombre de points.
+        if points > 0
+          rights.merge! hr[:id] => {id: hr[:id], points: points}
+        else
+          wrongs.merge! hr[:id] => {id: hr[:id], points: points}
+        end
+      end # / boucle sur les réponses, en cas de correction de formulaire
+
+      une_seule_bonne_reponse = (rights.count == 1)
+      # debug "rights: #{rights.pretty_inspect}"
+      # debug "une_seule_bonne_reponse = #{une_seule_bonne_reponse.inspect}"
+      if une_seule_bonne_reponse
+        # => Une seule "bonne" réponse
+        good_or_best = rights.values.first
+        adjectif = "bonne"
+      else
+        # => Une "meilleure" réponse
+        good_or_best = rights.sort_by{ |k, h| h[:points] }.reverse.first[1]
+        adjectif = "meilleure"
+      end
+      # Maintenant qu'on a récupéré la ou les bonnes réponses, on
+      # les indique dans les réponses en indiquant aussi si c'est
+      # une mauvaise réponse de l'utilisateur.
+      hreponses.each do |rid, rdata|
+        debug "Réglage de réponse ##{rid}"
+
+        # On "marque" la bonne ou la meilleure réponse
+        if rid == good_or_best[:id]
+          d = {label: "#{adjectif} réponse"}
+          if une_seule_bonne_reponse
+            d.merge!(res: 'good')
+          else
+            d.merge!(res: 'best')
+          end
+          hreponses[rid].merge!(d)
+          # S'il y a une seule bonne réponse et que l'user n'a pas
+          # donné celle-là, on signale que sa réponse est mauvaise.
+          if une_seule_bonne_reponse && user_reponse[:value] != rid
+            hreponses[user_reponse[:value]].merge!(res: 'wrong')
+          end
+        elsif wrongs.keys.include?(rid)
+          # On "marque" une mauvaise réponse de l'utilisateur
+          if (user_reponse[:value].instance_of?(Array) && user_reponse[:value].include?(rid)) || (user_reponse[:value] == rid)
+            hreponses[rid].merge!(res: 'wrong')
+          end
+        end
+      end
+
+      debug "hreponses: #{hreponses.pretty_inspect}"
+
+    end # / fin de si c'est une correction de questionnaire
+
+    choix = thereps.collect do |hr|
+
+      # Identifiant de cette réponse
+      rid = hr[:id].freeze
+
+      # L'ID de l'élément DOM de cette réponse
+      cb_id   = "#{prefix}_q_#{id}_r_#{rid}".freeze
+
+      # Le libellé de la réponse
+      # Pourra être modifié si c'est une correction de questionnaire
+      # et que c'est la bonne ou la meilleure réponse (cf. ci-dessous)
+      libelle = hr[:libelle]
+
+      # Si c'est une correction de questionnaire, il faut voir
+      # quelle classe ajouter à la réponse
+      if correction_questionnaire
+        # debug "hreponses[#{rid}] = #{hreponses[rid].pretty_inspect}"
+        class_css = Array::new
+        class_css << hreponses[rid][:res] unless hreponses[rid][:res].nil?
+        class_css = class_css.join(' ')
+        label_reponse = hreponses[rid][:label].nil_if_empty
+        libelle += " (#{label_reponse})".in_span(class:'exg') if label_reponse
+        class_css = nil
+      end
+
+      # Les différents affichages en fonction du type
+      # de réponse (select, radio, etc.)
+
+      if type_a == "m" # En menu select
+        libelle.in_option(value: "r_#{hr[:id]}", class: class_css)
+      # En case à cocher (plusieurs choix)
       elsif type_c == "c"
         cb_name = "quiz[q_#{id}_r_#{hr[:id]}]".freeze
-        hr[:libelle].in_checkbox(id:cb_id, name:cb_name).in_li
+        libelle.in_checkbox(id:cb_id, name:cb_name).in_li(class: class_css)
       # EN bouton radio
       elsif type_c == "r"
         cb_name = "quiz[q_#{id}]".freeze
-        hr[:libelle].in_radio(id:cb_id, name:cb_name, value: hr[:id]).in_li
+        libelle.in_radio(id:cb_id, name:cb_name, value: hr[:id]).in_li(class: class_css)
       end
-    end.join
+
+    end.join # / fin de boucle sur toutes les réponses
 
     if type_a == "m"
       data_select = {name:"quiz[q_#{id}]", id:"#{prefix}_q_#{id}"}
@@ -35,16 +163,31 @@ class Question
       choix = choix.in_select( data_select ).in_li
     end
 
+    # Class CSS de la question
+    css = ['question']
+
+    if correction_questionnaire && raison
+      raison_bad = "Raison de la bonne réponse : #{raison.to_html}".in_div(class:'raison')
+    else
+      raison_bad = ""
+    end
+
     (
-      infos_admin                     +
-      question.in_div(class:'q')      +
-      indications                     +
-      choix.in_ul(class:"r #{type_a}")
-    ).in_div(class:'question', id:"question-#{id}")
+      infos_admin                       +
+      question.in_div(class:'q')        +
+      indications                       +
+      choix.in_ul(class:"r #{type_a}")  +
+      raison_bad
+    ).in_div(class:css.join(' '), id:"question-#{id}")
   end
 
   def infos_admin
-    "##{id}".in_div(class:'tiny fright adminonly')
+    ("##{id} "+lien_edit).in_div(class:'tiny fright adminonly')
+  end
+
+  def lien_edit
+    return "" unless user.admin?
+    "edit".in_a(href:"question/#{id}/edit?in=unan_admin/quiz", target:'_edit_question_quiz_')
   end
 
   def indications
