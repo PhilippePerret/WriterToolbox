@@ -17,6 +17,8 @@ class Quiz
   # Ce retour est composé principalement de deux choses : l'affichage
   # des résultats avec les bonnes réponses en vert et les mauvaises en
   # rouge et l'affichage des raisons des résultats.
+  # Il comprend également tous les textes par rapport à ces
+  # résultats.
   #
   def build_output
     texte_per_quiz_type     +
@@ -31,6 +33,7 @@ class Quiz
   # avec les réponses de l'utilisateur.
   def detail_bonnes_reponses
     return "" if type_validation == :renseignements
+    "Veuillez trouver ci-dessous le détail de vos bonnes et mauvaises réponses.".in_div(class:'small italic')+
     build
   end
 
@@ -55,7 +58,8 @@ class Quiz
       else
         # Le nombre de points n'est pas suffisant pour valider
         # les acquis. Que faut-il faire ?
-        t << "Malheureusement, vos points sont insuffisants pour valider vos acquis pour le moment."
+        t << "Malheureusement, vos points sont insuffisants pour valider vos acquis pour le moment. "+
+        "Ce questionnaire est reprogrammé pour vous pour dans quelques jours pour vous laisser le temps de combler vos lacunes concernant vos réponses erronées."
         # TODO Il faut reprogrammer le questionnaire pour dans quelques
         # jours-programme.
       end

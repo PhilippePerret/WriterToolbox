@@ -25,6 +25,20 @@ class Quiz
     @human_type ||= TYPES[type][:hname]
   end
 
+  # Travail (Unan::Program::Work) correspondant
+  # à ce questionnaire, ou NIL si aucun travail (quand on le
+  # test, etc.).
+  def work
+    @work ||= find_work
+  end
+  def find_work
+    user.get_var(:quiz_ids).each do |wid|
+      w = Unan::Program::Work::new(user.program, wid)
+      return w if w.type_quiz? && w.abs_work.item_id == self.id
+    end
+    return nil
+  end
+
   # Retourne le type-validation du questionnaire, qui peut
   # être :renseignements (renseignements et sondage),
   # :simple_quiz (questionnaire à point mais sans validation

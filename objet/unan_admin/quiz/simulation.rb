@@ -37,8 +37,8 @@ class Quiz
   # Méthode appelée à la soumission du questionnaire dans la
   # page de simulation.
   def on_submit
-    debug "-> Unan::Quiz::on_submit"
-    debug "Nombre de questions : #{questions.count}"
+    # debug "-> Unan::Quiz::on_submit"
+    # debug "Nombre de questions : #{questions.count}"
 
     # Évaluer le questionnaire
     if evaluate

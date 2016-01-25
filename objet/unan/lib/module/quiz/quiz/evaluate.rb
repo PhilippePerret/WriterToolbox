@@ -63,6 +63,13 @@ class Quiz
       # =>
       mark_work_done
 
+      # Si c'est une validation des acquis et que le questionnaire
+      # n'est pas validé (note insuffisante), il faut le reprogrammer
+      # pour plus tard (quinze jours plus tard)
+      if type_validation == :validation_acquis && !questionnaire_valided?
+        reprogrammer_questionnaire(15) # 15 = nombre de jours
+      end
+
       # Étudier et construire le retour en fonction du
       # questionnaire et du résultat de l'auteur.
       # Cf. dans le fichier `retour.rb`
@@ -80,16 +87,18 @@ class Quiz
   # reposera simplement le questionnaire plus tard, mais un questionnaire
   # est toujours enregistré comme record.
   def mark_work_done
-    work = nil
-    user.get_var(:quiz_ids).each do |wid|
-      w = Unan::Program::Work::new(user.program, wid)
-      if w.type_quiz? && w.abs_work.item_id == self.id
-        work = w
-        break
-      end
-    end
     return error( "Impossible de trouver le travail de ce questionnaire…" ) if work.nil?
     work.set_complete
+  end
+
+  # Méthode qui reprogramme le questionnaire pour plus tard lorsqu'il
+  # n'a pas été rempli correctement (pour le type :validation_acquis)
+  #
+  def reprogrammer_questionnaire nombre_jours = 7
+    # TODO Il faudrait définir le pday qui aura lieu dans
+    # +nombre_jours+ jours-programme pour ajouter ce questionnaire.
+    hnew_work = work.get_all.dup
+    debug "hnew_work: #{hnew_work}"
   end
 
   # = main =

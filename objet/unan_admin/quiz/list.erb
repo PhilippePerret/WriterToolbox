@@ -1,0 +1,59 @@
+<%
+# Affichage de la liste des QCM
+#
+# Note : N'affiche que les dernières versions des questionnaires.
+# Pour les autres versions, utiliser un lien direct.
+%>
+<%= Unan::titre_h1("Liste des Quiz/questionnaires/sondages") %>
+<%
+site.require_objet 'unan'
+Unan::require_module 'quiz'
+
+raise "Ne répond pas" unless Unan.respond_to?(:table_quiz)
+
+class ::Unan
+class Quiz
+  def as_li_item
+    ajout_titre = next_version_id ? " (version du #{created_at.as_human_date})".in_span(class:'tiny') : ""
+    ("[#{id}]".in_span(class:'tiny')+" #{titre}#{ajout_titre}" + " #{lien_edit('[edit]')} #{lien_simulation('[simule]')}".in_span(class:'small')).in_li
+  end
+end #/Quiz
+end #/Unan
+
+def liste_questionnaires
+  # On traite tous les questionnaires pour obtenir les
+  # versions précédentes aussi et les afficher, mais en plus petit
+  html = String::new
+  ::Unan::table_quiz.select(colonnes:[:id]).each do |qid, hquiz|
+    iquiz = ::Unan::Quiz::new(qid)
+    # On passe les quiz qui ont une version suivante, ils seront
+    # traités par la dernière version
+    next if iquiz.next_version_id != nil
+
+    # On traite un quiz qui est une version finale
+    html << iquiz.as_li_item
+
+    # On traite les versions précédente du quiz
+    html << traite_versions_precedentes_of(iquiz) unless iquiz.previous_version_id.nil?
+
+  end
+
+  return html
+end
+
+
+# Traite les versions précédente
+# Note : Ne le fait que si ces versions précédentes existent
+# (au moins une).
+def traite_versions_precedentes_of iquiz
+  c = String::new
+  begin
+    iquiz = iquiz.previous_version
+    c << iquiz.as_li_item
+  end while iquiz.previous_version != nil
+  c.in_ul(class:'quiz_list')
+end
+
+%>
+
+<ul idd="quiz_list"><%= liste_questionnaires %></ul>

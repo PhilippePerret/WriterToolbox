@@ -3,8 +3,9 @@
 
 Définition de la table des travaux (works)
 
-C'est une table qui est ajoutée à la base de l'auteur, pas dans la
-base générale.
+C'est une table qui est ajoutée à la base de l'auteur (*), pas dans la
+base générale. (*) exactement : dans la base de données du programme
+de l'auteur.
 
 =end
 def schema_table_user_works
@@ -55,6 +56,9 @@ def schema_table_user_works
 
     # Les temps
     # ---------
+    # Noter qu'un travail peut être programmé en avance, par exemple
+    # lorsqu'un questionnaire doit être reprogrammé suite à une note
+    # insuffisante pour valider des acquis.
     ended_at:   {type:"INTEGER(10)"},
     updated_at: {type:"INTEGER(10)", constraint:"NOT NULL"},
     created_at: {type:"INTEGER(10)", constraint:"NOT NULL"}

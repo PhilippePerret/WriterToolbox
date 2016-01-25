@@ -24,10 +24,11 @@ class User
   end
 
   # Return TRUE si l'user vient juste de s'inscrire au programme
-  # un an un script (dans les deux minutes qui précèdent)
-  def just_subscribe_unanunscript?
+  # un an un script (dans les deux minutes qui précèdent ou le temps
+  # défini par +depuis_secs+ en secondes)
+  def just_subscribe_unanunscript?( depuis_secs = 120)
     @has_just_subscribe_unanunscript ||= begin
-      unanunscript? && program.created_at > (NOW.to_i - 120)
+      unanunscript? && program.created_at > ( NOW.to_i - depuis_secs )
     end
   end
 

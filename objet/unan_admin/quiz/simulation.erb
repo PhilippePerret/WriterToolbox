@@ -8,7 +8,8 @@
 # cette page est appelée par :
 #   "quiz/<id>/simulation?in=unan"
 %>
-<h2>Simulation de questionnaire</h2>
+<h2>Questionnaire (simulation)</h2>
+<div class="right small"><%= iquiz.lien_edit("Éditer le formulaire") %></div>
 <% if param(:operation) != "bureau_save_quiz" %>
   <%= iquiz.output_in_form(simulation:true, forcer:true) %>
 <% else %>
