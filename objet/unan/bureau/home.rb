@@ -8,6 +8,8 @@ où par :
 # Beaucoup de formulaires dans ce bureau
 Unan::require_module 'bureau'
 
+redirect_to :home unless user.identified? && user.unanunscript?
+
 class Unan
 class Bureau
 
