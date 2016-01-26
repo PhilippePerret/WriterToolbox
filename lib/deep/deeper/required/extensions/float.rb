@@ -15,6 +15,17 @@ class ::Float
     end
   end # << self
 
+  # Retourne le float à la française, avec une virgule en
+  # séparateur. NOter que si le float se termine par ".0", la
+  # virgule et le zéro sont supprimés
+  def as_fr
+    t = "#{self}"
+    unites, decimales = t.split('.')
+    nombre_string = unites
+    nombre_string += "#{self.class::separateur_decimal}#{decimales}" unless decimales == "0"
+    return nombre_string
+  end
+
   # {String} Retourne le flottant comme un tarif, avec le bon
   # séparateur et la bonne devise.
   def as_tarif

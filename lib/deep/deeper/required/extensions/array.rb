@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class Array
+class ::Array
 
   ##
   #
@@ -29,5 +29,16 @@ class Array
   def nil_if_empty
     self.empty? ? nil : self
   end
-  
+
+  # Retourne la note sur vingt de [note, note maximale] en gardant
+  # +decimales+ nombre après la virgules.
+  # Par exemple :
+  #   [15, 20].sur_vingt    # => 15.0
+  #   [150, 200].sur_vingt  # => 15.0
+  #   [10.to_f/3, 20].sur_vingt(3)  # => 3.333
+  def sur_vingt decimales = 2
+    (self.first.to_f * 20 / self.last.to_f).round(decimales)
+  end
+
+
 end

@@ -9,8 +9,8 @@ class Quiz
     note ||= user_points
     return nil if [1,7].include?(type)
     return nil if note.nil?
-    return nil if max_points.to_i == 0
-    (note.to_f * 20 / max_points).round(1)
+    return nil if max_points.to_i == 0 # nil et zéro
+    [note, max_points].sur_vingt(1)
   end
 
   def user_points

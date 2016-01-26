@@ -79,8 +79,16 @@ class User
     # Elle sert soit pour le bureau, dans le panneau Quiz, quand le
     # questionnaire a été rempli récemment, soit dans la partie qui
     # rassemble tous les questionnaires/travaux exécutés jusque-là
-    def output_simple
-      "Questionnaire “#{quiz.titre}”"
+    def output_as_li
+      "<strong>#{quiz.titre}</strong> — #{points} points sur #{max_points} (note : #{note_sur_vingt.as_fr})"
+    end
+
+    # {Float} Retourne la note sur vingt pour ce quiz
+    # Note : Ajouter `.as_fr` pour avoir un bon affichage,
+    # avec une virgule et sans "0" seul à la fin.
+    # Cf. méthode `.as_fr` de Float.
+    def note_sur_vingt
+      @note_sur_vingt ||= [points, max_points].sur_vingt(1)
     end
 
     def quiz
