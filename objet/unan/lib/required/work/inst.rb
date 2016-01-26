@@ -71,7 +71,7 @@ class Work
     else
       ""
     end
-    flash "Travail #{id} terminé#{add_mess_points}."
+    flash "Travail ##{id} terminé#{add_mess_points}."
   end
 
   # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire

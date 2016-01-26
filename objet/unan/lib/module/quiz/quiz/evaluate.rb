@@ -24,9 +24,9 @@ class Quiz
     @data2save ||= {
       quiz_id:    id,
       type:       type,
-      max_points: max_points,
       reponses:   user_reponses.to_json,
       points:     user_points,
+      max_points: max_points,
       created_at: NOW
     }
   end
