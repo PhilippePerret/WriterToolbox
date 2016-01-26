@@ -9,19 +9,16 @@ class Program
   # de cours.
   # @usage program.page_cours <handler>
   def page_cours page_handler
+    unless @module_page_cours_required
+      Unan::require_module 'page_cours'
+      @module_page_cours_required = true
+    end
     page_handler = page_handler.to_sym if page_handler.instance_of?(String)
     raise ArgumentError, "Unan::Program#page_cours attend en argument un Symbol ou un String" unless page_handler.instance_of?(Symbol)
     PageCours::new(page_handler).self_if_exists_or_raise
   end
 
   class PageCours
-
-    include MethodesObjetsBdD
-
-    # ID
-    attr_reader :id
-    # Pointeur
-    attr_reader :handler
 
     # Instanciation de la page de cours, soit avec l'ID soit
     # avec son handler
@@ -34,36 +31,12 @@ class Program
     end
 
     def bind; binding() end
-    
+
     # Retourne l'instance ou raise une erreur si la page n'existe pas
     def self_if_exists_or_raise
       return self unless data.nil?
       raise ArgumentError, "Page de cours introuvable (#{handler.inspect})"
     end
-
-    # ---------------------------------------------------------------------
-    #   Données base de la page
-    # ---------------------------------------------------------------------
-
-    def id        ; @id       ||= get_id        end
-    def handler   ; @handler  ||= get(:handler) end
-    def titre     ; @titre    ||= get(:titre)   end
-    def path      ; @path     ||= get(:path)    end
-    def type      ; @type     ||= get(:type)    end
-
-    # ---------------------------------------------------------------------
-    #   Propriétés volatile de la page
-    # ---------------------------------------------------------------------
-
-    def extension
-      @extension ||= File.extname(path)[1..-1]
-    end
-    def fullpath
-      @fullpath ||= Unan::main_folder_data + "pages_cours/#{type}/#{path}"
-    end
-
-    #
-    # ---------------------------------------------------------------------
 
 
     def get_id
