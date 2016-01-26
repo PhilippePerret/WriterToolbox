@@ -57,7 +57,14 @@ class UPage
   #   Méthodes
   # ---------------------------------------------------------------------
   def add_lecture
+    create unless exist?
     set(lectures: (lectures << NOW) )
+  end
+
+  # L'auteur peut ajouter un commentaire personnel sur la page
+  def add_comments commentaire = nil
+    create unless exist?
+    set(comments: commentaire)
   end
 
   def status= valeur

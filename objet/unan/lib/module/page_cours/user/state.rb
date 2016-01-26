@@ -8,6 +8,10 @@ class UPage
   BIT_TDM = 4
   BIT_PTS = 8   # Ajouté si la page a marqué ses points
 
+  # Retourne true si la page existe pour l'user
+  def exist?    ; table.count(where:{id: id}) > 0 end
+
+  
   # Retourne true si la page a été marquée vue
   def vue?      ; status & BIT_VUE > 0  end
   def not_vue?  ; false == vue?         end
@@ -18,7 +22,7 @@ class UPage
   # matières de l'auteur
   def tdm?      ; status & BIT_TDM > 0  end
   alias :in_tdm? :tdm?
-  
+
   # Retourne true si les points ont déjà été affectés
   def points_affected?
     status & BIT_PTS > 0

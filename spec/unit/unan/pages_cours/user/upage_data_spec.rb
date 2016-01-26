@@ -113,6 +113,7 @@ describe 'Méthodes de données de User::UPage' do
     end
   end
 
+  #created_at
   describe '#created_at' do
     it 'répond' do
       expect(pagecours).to respond_to :created_at
@@ -122,6 +123,7 @@ describe 'Méthodes de données de User::UPage' do
     end
   end
 
+  #index_tdm
   describe 'index_tdm' do
     it 'répond' do
       expect(pagecours).to respond_to :index_tdm
