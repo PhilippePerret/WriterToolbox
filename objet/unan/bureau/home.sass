@@ -90,14 +90,20 @@ section#completed_works
     
     
 div.row
-  &#div_mark_points, &#div_mark_pday
+  &#div_mark_pday_points
+    margin-bottom     : 2em
     text-align        : right
     span.libelle
       vertical-align    : bottom
-      margin-right      : 2em
+      margin-right      : 0.4em
       color             : #7B8263
+      &.mark_pday
+        width   : 140px
+      &.mark_points
+        width         : 50px
+        margin-left   : 1em
     span
-      &#mark_points, &#mark_pday
+      &.value
         display           : inline-block
         width             : 100px
         color             : white

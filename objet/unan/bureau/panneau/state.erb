@@ -3,6 +3,17 @@
 %>
 <div class="dim3070">
 
+  <div id="div_mark_pday_points" class="row">
+    <span class="libelle mark_pday">Jour-programme</span>
+    <span class="value" id="mark_pday"><%=
+      nb = user.program.current_pday(:nombre)
+      er = nb == 1 ? 'er' : 'e'
+      "#{nb}<sup>#{er}</sup>"
+      %></span>
+      <span class="libelle mark_points">Points</span>
+      <span class="value" id="mark_points"><%= user.total_points_program %></span>
+  </div>
+
   <div class="row">
     <span class="libelle">Programme débuté le</span>
     <span class="value"><%= user.program.created_at.as_human_date %></span>
@@ -28,17 +39,5 @@
   <div class="row">
     <span class="libelle">Jours-programme</span>
     <span class="value"><%= user.program.current_pday(:human) %>, reste <%= user.program.nombre_pdays_restants(:human) %></span>
-  </div>
-  <div id="div_mark_pday" class="row">
-    <span class="libelle">Jour-programme courant</span>
-    <span class="value" id="mark_pday"><%=
-      nb = user.program.current_pday(:nombre)
-      er = nb == 1 ? 'er' : 'e'
-      "#{nb}<sup>#{er}</sup>"
-      %></span>
-  </div>
-  <div id="div_mark_points" class="row">
-    <span class="libelle">Total des points</span>
-    <span class="value" id="mark_points"><%= user.total_points_program %></span>
   </div>
 </div>
