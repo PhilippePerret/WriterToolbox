@@ -19,7 +19,7 @@ class Quiz
 
     if correction?
       # Correction du questionnaire
-      code = output(forcer = true).in_div(class:'quiz_corrected')
+      code_corrections_et_commentaires
     else
       # Affichage du questionnaire pour remplissage
       form = String::new
@@ -28,11 +28,17 @@ class Quiz
       form << output(forcer = !!options[:forcer])
       form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
       form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
-      code = form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
+      form.in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
     end
-    # code += "".in_div(style:'clear:both;')
-    # debug code
-    code
+  end
+
+  def code_corrections_et_commentaires
+    @code_corrections_et_commentaires ||= begin
+      (
+        commented_output        + # Les questions/réponses + commentaires
+        code_for_regle_reponses   # Le code JS pour resélectionner les réponses
+      ).in_div(class:'quiz_corrected')
+    end
   end
 
   def unless_not_exists
@@ -74,7 +80,7 @@ class Quiz
 <script type="text/javascript">
 var quiz_values = {
   quiz_id:#{id},
-  reponses:#{@user_reponses.to_json}
+  reponses:#{user_reponses.to_json}
 }
 $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
 </script>
@@ -105,9 +111,7 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     html = html.in_div( class: css.join(' ') )
     # On enregistre le questionnaire dans la table, sauf si c'est une
     # construction pour voir les corrections
-    unless correction?
-      set(:output => html, updated_at: NOW)
-    end
+    set(:output => html, updated_at: NOW) unless correction?
     # On retourne le code après l'avoir enregistré
     return html
   end

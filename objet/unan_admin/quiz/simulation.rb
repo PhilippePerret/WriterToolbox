@@ -54,7 +54,7 @@ class Quiz
         "Moyenne correspondant au jour-programme : <strong>#{moyenne_minimum}</strong>".in_div +
         "Écart par rapport à la moyenne : #{ecart_moyenne}".in_div +
         "<hr /><h3>Message après soumission</h3>" +
-        build_output +
+        commented_output +
         "<hr />" +
         "Donnée qui serait enregistrée dans la table de l'user :".in_p +
         "<pre style='white-space:pre-wrap;'>\n#{dprov.pretty_inspect}\n</pre>"

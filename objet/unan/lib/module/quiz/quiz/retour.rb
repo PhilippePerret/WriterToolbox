@@ -20,10 +20,12 @@ class Quiz
   # Il comprend également tous les textes par rapport à ces
   # résultats.
   #
-  def build_output
-    texte_per_quiz_type     +
-    texte_per_ecart_moyenne +
-    detail_bonnes_reponses
+  def commented_output
+    @commented_output ||= begin
+      texte_per_quiz_type     +
+      texte_per_ecart_moyenne +
+      detail_bonnes_reponses    # utilise la méthode `build`
+    end
   end
 
   # Retourne le questionnaire avec les bonnes réponses mises

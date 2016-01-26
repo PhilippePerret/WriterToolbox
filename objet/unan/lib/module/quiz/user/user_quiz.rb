@@ -63,6 +63,7 @@ class User
     # ID du quiz dans la table de l'auteur
     attr_reader :id
 
+
     def initialize auteur, qid
       @auteur = auteur
       @id     = qid
@@ -80,7 +81,12 @@ class User
     # questionnaire a été rempli récemment, soit dans la partie qui
     # rassemble tous les questionnaires/travaux exécutés jusque-là
     def output_as_li
-      "<strong>#{quiz.titre}</strong> — #{points} points sur #{max_points} (note : #{note_sur_vingt.as_fr})"
+      ("<strong>#{quiz.titre}</strong>".in_div  +
+      (
+        "#{points} points sur #{max_points}&nbsp;" +
+        "—&nbsp;<strong class='notesur20'>#{note_sur_vingt.as_fr} / 20</strong>"
+        ).in_div(class:'small right')
+      ).in_li(class:'quiz')
     end
 
     # {Float} Retourne la note sur vingt pour ce quiz

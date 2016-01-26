@@ -13,9 +13,14 @@ class Quiz
   # questionnaire.
   # Mais noter que cette propriété est invoquée aussi à la
   # construction du questionnaire, que ce soit pour les
-  # corrections ou non, pour simplifier le code.
+  # corrections ou non, pour simplifier le code. C'est le code
+  # qui est par exemple transmis à javascript pour remettre les
+  # réponses qui ont été fournies par l'user.
   def user_reponses
-    @user_reponses ||= Hash::new
+    @user_reponses ||= begin
+      uquiz = user.quizes(quiz_id: id).values.last
+      uquiz.nil? ? Hash::new : uquiz.reponses
+    end
   end
 
   # Les données à enregistrer dans la table de l'auteur,
@@ -40,32 +45,27 @@ class Quiz
   # de l'auteur et affiche un message de fin de questionnaire en
   # fonction du résultat.
   def evaluate_and_save
-
-
     if evaluate == true
-
       # Barrière pour voir si le questionnaire ne vient pas
       # d'être soumis
       existe_deja = user.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.days}") > 0
       return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if existe_deja
-
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
       user.table_quiz.insert(data2save)
-
       # Enregistrer le score dans le programme de l'utilisateur
       unless quiz_points.nil?
         debug "quiz_points : #{quiz_points.inspect}"
         user.add_points( quiz_points.freeze )
       end
-
       # Marquer le travail (qui a généré le questionnaire) comme
       # accompli.
+      #
       # NON : Surtout pas, sinon le quiz ne serait plus affiché et
       # aucun résultat ne serait donné à l'auteur. On marque donc
       # le travail fini après avoir affiché le résultat, dans la vue
       # ERB, en testant la propriété correction?
-
+      #
       # Si c'est une validation des acquis et que le questionnaire
       # n'est pas validé (note insuffisante), il faut le reprogrammer
       # pour plus tard (quinze jours plus tard)
@@ -77,8 +77,8 @@ class Quiz
       # Étudier et construire le retour en fonction du questionnaire
       # et du résultat de l'auteur.
       # Cf. dans le fichier `retour.rb`
-      debug "--> build_output"
-      build_output
+      debug "--> commented_output"
+      commented_output
 
       flash "Votre questionnaire a été évalué et enregistré avec succès.<br />Vous trouverez ci-dessous votre résultat ainsi que les erreurs que vous avez pu commettre."
       return true
