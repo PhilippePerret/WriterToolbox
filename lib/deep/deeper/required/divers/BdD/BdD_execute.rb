@@ -216,6 +216,12 @@ class BdD
       smt.close
 
       return retour
+    rescue Exception => e
+      debug "# IMPOSSIBLE DE JOUER execute_requete : #{e.message}"
+      debug "# Requête : #{request}"
+      debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
+      debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
+      raise e.message
     end
     alias :execute_request :execute_requete
 

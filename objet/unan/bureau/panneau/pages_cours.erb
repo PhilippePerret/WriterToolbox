@@ -1,5 +1,12 @@
 <%
 # Panneau des pages de cours à lire
+#
+# Note : Ce panneau est spécial, il contient trois sections :
+#         - la première présente les pages à lire pas encore lues (status 0)
+#         - la deuxième présente les pages lues une première fois (status 1)
+#         - la troisième présente les pages terminées             (status 9)
+#           ou mise de côté pour lecture                          (status 3)
+#
 %>
 <p class='small right'>Retrouvez ici toutes les pages de cours à lire.</p>
 
@@ -8,7 +15,7 @@
 <% if pages_cours.count > 0 %>
 
   <% pages_cours.each do |page| %>
-    <%#= page.output_bureau %>
+    <%= page.output_bureau %>
   <% end %>
 
 <% else %>
@@ -20,10 +27,11 @@
 <% end %>
 <% if last_pages_cours.count > 0 %>
 
+  <hr />
   <h3>Dernières pages de cours lues</h3>
 
   <% last_pages_cours.each do |page| %>
-    <%#= page.output_bureau %>
+    <%= page.output_bureau %>
   <% end %>
 
 <% end %>

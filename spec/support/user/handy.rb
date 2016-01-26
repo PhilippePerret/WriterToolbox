@@ -3,10 +3,28 @@
 Handy méthodes pour les user
 =end
 
-def get_any_user
-  ids = User::table.select(colonnes:[:id]).keys
-  ids.shuffle.shuffle.first
-  u = User::new(ids)
+def get_any_user options = nil
+
+  options ||= Hash::new
+  ids, where = nil, nil
+
+  if options[:with_program]
+    # => Il faut retourner un user qui suit un programme, donc il faut
+    # prendre les ids dans la table des programmes.
+    programs = Unan::table_programs.select(where:"options LIKE '1%'", colonnes:[:auteur_id]).values
+    ids = programs.collect{|hp| hp[:auteur_id]}
+  end
+
+  if ids.nil?
+    ids = if where.nil?
+      User::table.select(colonnes:[:id]).keys
+    else
+      User::table.select(where:where, colonnes:[:id]).keys
+    end
+  end
+
+  uid = ids.shuffle.shuffle.first
+  u = User::new(uid)
   expect(u).to be_instance_of(User)
   return u
 end

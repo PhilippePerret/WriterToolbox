@@ -18,30 +18,26 @@ class User
   # ---------------------------------------------------------------------
   #
 
-  # Tables des jours-programmes de l'user
+  # Table des lectures de pages de cours
+  def table_pages_cours ; @table_pages_cours ||= get_table('pages_cours') end
+
+  # Table des jours-programmes de l'user
   # Noter que c'est une méthode d'instance
-  def table_pdays
-    @table_pdays ||= get_table('pdays')
-  end
+  def table_pdays ; @table_pdays ||= get_table('pdays') end
 
   # Table des travaux accomplis ou en cours de l'user
   # Noter que c'est une méthode d'instance
-  def table_works
-    @table_works ||= get_table('works')
-  end
+  def table_works ; @table_works ||= get_table('works') end
 
   # Table des questionnaires
-  def table_quiz
-    @table_quiz ||= get_table('quiz')
-  end
+  def table_quiz ; @table_quiz ||= get_table('quiz') end
 
   # La base de données personnelle du programme de l'user,
   # dépendant de l'id de l'user et de l'id du programme.
   # Noter qu'on utilise `program_id` ici (plutôt que `program.id`)
   # car le programme vient d'être défini et on connaitre @program_id
-  def program_database
-    @program_database ||= BdD::new(program_database_path.to_s)
-  end
+  def program_database ; @program_database ||= BdD::new(program_database_path.to_s) end
+  
   # La base de données contenant toutes les données pour le programme
   # de l'utilisateur (sa database personnelle)
   def program_database_path
