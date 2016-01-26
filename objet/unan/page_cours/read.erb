@@ -8,4 +8,7 @@
 page_cours = page_cours(site.current_route.objet_id)
 %>
 <%= Unan::titre_h1 %>
+<% if user.admin? || OFFLINE %>
+  <%= page_cours.link(titre:"[Adminstrateur] Éditer la page ##{page_cours.id}", edit: true).in_div(class:'small fright right') %>
+<% end %>
 <%= page_cours.output %>

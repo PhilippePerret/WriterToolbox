@@ -16,26 +16,40 @@ types_page = Unan::Program::PageCours::TYPES_PAGE.collect{|typep, datatype| [typ
 <%
 # Formulaire pour lire la page
 lien_read_page = if pc[:id]
- "Lire la page".in_a(id:"lien_read_page", target:'_new', href:"page_cours/#{pc[:id]}/read?in=unan")
+ "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{pc[:id]}/read?in=unan")
 else "" end
+
+lien_open_page = if pc[:id]
+  onclick = "PageCours.set_operation('open_page_cours', true)"
+  "Ouvrir la page (texte)".in_a(class:'small btn', id:"lien_open_page", onclick: onclick)
+else "" end
+
 %>
 <%
 # Javascript propre au formulaire
 %>
 <script type="text/javascript">
+window.PageCours = {
+  set_operation:function(ope, soumettre){
+    $('form#form_edit_page_cours input#operation').val(ope);
+    if(soumettre){$('form#form_edit_page_cours').submit()}
+  }
+}
 function set_href_lien_read(o){
-  var href = "page_cours/" + o.value + "/read?in=unan" ;
-  $('a#lien_read_page').attr('href', href) ;
+  var href_pref = "page_cours/" + o.value + "/";
+  var href_read = href_pref + "read?in=unan"  ;
+
+  $('a#lien_read_page').attr('href', href_read) ;
 }
 </script>
 <%
 # Formulaire d'édition de la page
 %>
+<%= Unan::titre_h1("Page de cours (édition data)") %>
 
-<h2>Data à la page cours</h2>
-
-<form class="dim2080" action="page_cours/edit?in=unan_admin" method="POST">
-  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: lien_read_page, onchange:"set_href_lien_read(this)"}) %>
+<form id="form_edit_page_cours" class="dim2080" action="page_cours/edit?in=unan_admin" method="POST">
+  <%= "edit_page_cours".in_hidden(name:'operation', id:'operation') %>
+  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_read_page} #{lien_open_page}", onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>
   <%= form.field_description("Le titre de la page, qui n'est pas forcément le titre exact, mais servira pour les différents affichages dans le programme “Un An Un Script”, à commencer sur la page du travail du jour de l'auteur.") %>
@@ -47,5 +61,5 @@ function set_href_lien_read(o){
   <%= form.field_checkbox("Créer le fichier s'il n'existe pas", 'cb_create_file', nil) %>
   <%= form.field_select("Type", 'type', "", {values:types_page}) %>
   <%= form.field_description("Le type détermine le dossier dans lequel se trouve le fichier, dans `./data/unan/pages_cours/` : pour `Programme Un An Un Script`, dans le dossier 'unan', pour `Livre narration` dans le dossier 'narration' et pour `Collection Narration` dans le dossier 'cnarration'. Cf. la description du champ path pour voir comment est calculé le fullpath du fichier.") %>
-  <%= form.submit_button "Enregistrer" %>
+  <%= form.submit_button "Enregistrer", {onclick: "$('form#form_edit_page_cours input#operation').val('save_page_cours')"} %>
 </form>

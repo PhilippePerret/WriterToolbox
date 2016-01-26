@@ -2,6 +2,7 @@
 raise_unless_admin
 
 site.require_objet 'unan'
+Unan::require_module 'page_cours'
 
 class UnanAdmin
 class PageCours
@@ -90,8 +91,8 @@ class PageCours
       end
     end
 
-    def get page_id
-      table_pages_cours.get(page_id) || Hash::new
+    def get pid
+      table_pages_cours.get(pid) || Hash::new
     end
 
     # Crée le fichier de cours s'il n'existe pas et que la
@@ -119,6 +120,19 @@ class PageCours
       @table_pages_cours ||= Unan::Program::PageCours::table_pages_cours
     end
 
+    def open_page
+      ipage = Unan::Program::PageCours::get(page_id)
+      debug "Page ##{ipage.id}"
+      path = File.expand_path(ipage.fullpath.to_s)
+      dirn = File.dirname(path)
+      base = File.basename(path)
+      cmd = "cd \"#{dirn}\";atom \"#{base}\""
+      system( cmd )
+      flash "Page ##{ipage.id} ouverte.<br />Si elle ne s'ouvre pas, copier coller le code ci-dessous dans le terminal "+
+      "<input type='text' value='#{cmd}' /> "+
+      "ou cliquer sur "+
+      "<a class='bold' href='atm://open?url=file://#{path}' style='color:white'>OUVRIR “#{base}”</a>"
+    end
   end #/ << self
 end #/PageCours
 end #/UnanAdmin
@@ -137,5 +151,11 @@ def pc_id
   end
 end
 
-
-UnanAdmin::PageCours::save if param(:page_cours)
+case param(:operation)
+when "open_page_cours"
+  UnanAdmin::PageCours::open_page
+when "save_page_cours"
+  UnanAdmin::PageCours::save
+when "edit_page_cours"
+  # UnanAdmin::PageCours::edit
+end

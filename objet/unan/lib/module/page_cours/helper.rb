@@ -10,12 +10,15 @@ class PageCours
 
   # Obtenir un lien pour afficher la page, l'éditer ou
   # la détruire
+  # @usage
+  #   page_cours.link(:edit)
   def link options = nil
     options ||= Hash::new
     options[:titre] ||= "#{titre}"
     route = "page_cours/#{id}/" + case true
     when options[:edit] || options[:edition]    then "edit?in=unan_admin"
     when options[:delete] || options[:destroy]  then "destroy?in=unan_admin"
+    when options[:open] || options[:ouvrir]     then "open?in=unan_admin"
     else "read?in=unan"
     end
     options[:titre].in_a(href:route, class: options[:class])

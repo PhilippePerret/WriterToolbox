@@ -13,7 +13,7 @@ class PageCours
   # Sortie complète de la page de cours à écrire dans la page
   # Note : Ajoute également une lecture à l'user.
   def output options = nil
-    user.add_lecture_page_cours(self)
+    user.add_lecture_page_cours(self) if user.unanunscript?
     titre.in_h2 + read
   end
 
