@@ -55,7 +55,7 @@ Cette méthode peut recevoir un filtre pour ne retourner que les instances de qu
 
 ## Méthodes d'instance de la classe `User::UQuiz`
 
-### `<user>.reponses`
+### `<uquiz>.reponses`
 
 `{Hash}` des réponses données au questionnaire. Avec en clé l'ID de la question et en valeur un Hash contenant :
 
@@ -70,14 +70,22 @@ Cette méthode peut recevoir un filtre pour ne retourner que les instances de qu
 
 Instance `Unan::Quiz` du questionnaire de référence.
 
-### `<user>.points`
+### `<uquiz>.points`
 
 Le nombre de points marqués à ce questionnaire. Ou nil.
 
-### `<user>.max_points`
+### `<uquiz>.max_points`
 
 `Fixnum`. Le nombre de points maximum qu'on peut gagner à ce questionnaire.
 
-### `<user>.quiz`
+### `<uquiz>.note_sur_vingt`
+
+`Float`. La note sur vingt pour le questionnaire.
+
+> Calculée avec la méthode d'`Array` `sur_vingt` qui prend en premier argument la note totale et en deuxième argument le maximum de moints :
+
+    [points, max_points].sur_vingt(1)
+
+### `<uquiz>.quiz`
 
 Instance `Unan::Quiz` du questionnaire original.

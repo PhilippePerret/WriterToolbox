@@ -36,8 +36,11 @@
 <% end %>
 <section id="completed_works">
 <% if last_quiz.count > 0 %>
+  <hr />
   <h3>Questionnaires récemment achevés</h3>
-  <%= last_quiz.collect { |qid, iquiz| iquiz.output_simple }.join %>
+  <ul id="last_quizes">
+    <%= last_quiz.collect { |qid, iquiz| iquiz.output_as_li }.join %>
+  </ul>
 <% else %>
   <p class='small discret'>Aucun questionnaire récent n'a été rempli.</p>
 <% end %>
