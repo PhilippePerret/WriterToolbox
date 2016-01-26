@@ -41,7 +41,11 @@ class Work
   #   - retire le travail de la liste de ses :works_ids
   #   - retire le travail de la liste des ses :<choses>_ids particulières,
   #     comme les quiz, etc.
-  def set_complete
+  # +must_add_point+ permet de définir s'il faut ajouter ou non les points
+  # de ce travail. C'est utile par exemple pour les pages de cours,
+  # qu'il suffirait de lire et de remettre à lire en boucle pour ajouter
+  # chaque fois les points de la lecture.
+  def set_complete(must_add_point = true)
     # Il faut le retirer des listes
     # On ajoute la clé :works pour traiter aussi la liste
     # :works_ids à laquelle appartient forcément le travail
@@ -60,9 +64,14 @@ class Work
     if (OFFLINE || user.admin?) && liste_retraits.count < 2
       error "Bizarrement, le travail n'a été retiré que de la liste #{liste_retraits.pretty_join}… Il aurait dû être retiré de deux listes."
     end
-    set(status: 9, updated_at: NOW)
-    user.add_points( abs_work.points )
-    flash "Travail #{id} terminé (vous avez #{abs_work.points} nouveaux points :-))."
+    set(status: 9, updated_at:NOW, ended_at:NOW)
+    add_mess_points = if must_add_point && abs_work.points.to_i > 0
+      user.add_points( abs_work.points )
+      " (vous avez #{abs_work.points} nouveaux points :-))"
+    else
+      ""
+    end
+    flash "Travail #{id} terminé#{add_mess_points}."
   end
 
   # {BdD::Table} Table contenant les travaux propres de l'user, c'est-à-dire

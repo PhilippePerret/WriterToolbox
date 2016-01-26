@@ -4,6 +4,8 @@
 Méthodes pratiques de haut niveau
 
 =end
+site.require_objet 'unan'
+Unan::require_module 'page_cours'
 
 # Return une instance Unan::Program::PageCours d'une page de cours
 # +page_ref+ Soit l'id {Fixnum} soit l'handler ({Symbol}) de la page

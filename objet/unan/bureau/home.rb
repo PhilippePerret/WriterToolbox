@@ -58,6 +58,12 @@ class Bureau
   # courant
   def panneau_courant ; Onglet::current.panneau end
 
+  # Route pour conduire au panneau courant
+  # @usage : href: route_to_this
+  def route_to_this
+    @route_to_this ||= "bureau/home?in=unan&cong=#{Onglet::current.id}"
+  end
+
   # {StringHTML} Return le code HTML pour les formulaires de la
   # rangée de définition du partage. Mis dans un helper ici pour
   # être utilisé notamment dans le panneau "Projet" et dans le
@@ -99,7 +105,7 @@ class Bureau
       state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
       projet:       {id: :projet,       titre:"Projet"},
       taches:       {id: :taches,       titre:"Tâches",   knombre: :tasks},
-      pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages_non_lues},
+      pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages},
       forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
       quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
 

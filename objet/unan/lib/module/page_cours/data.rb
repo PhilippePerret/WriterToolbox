@@ -12,11 +12,12 @@ class PageCours
   #   Data enregistrées
   # ---------------------------------------------------------------------
 
-  def id        ; @id       ||= get_id        end
-  def handler   ; @handler  ||= get(:handler) end
-  def titre     ; @titre    ||= get(:titre)   end
-  def path      ; @path     ||= get(:path)    end
-  def type      ; @type     ||= get(:type)    end
+  def id          ; @id           ||= get_id            end
+  def handler     ; @handler      ||= get(:handler)     end
+  def titre       ; @titre        ||= get(:titre)       end
+  def description ; @description  ||= get(:description) end
+  def path        ; @path         ||= get(:path)        end
+  def type        ; @type         ||= get(:type)        end
 
   # ---------------------------------------------------------------------
   #   Data volatile de la page
@@ -27,6 +28,13 @@ class PageCours
   end
   def fullpath
     @fullpath ||= Unan::main_folder_data + "pages_cours/#{type}/#{path}"
+  end
+
+  # Retourne l'instance User::UPage de l'auteur pour cette page
+  # +auteur+ Instance User de l'auteur, par défaut user courant.
+  def upage auteur = nil
+    auteur ||= user
+    User::UPage::get(auteur, self.id)
   end
 
 

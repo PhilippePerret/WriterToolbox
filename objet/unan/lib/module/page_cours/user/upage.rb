@@ -62,8 +62,7 @@ class UPage
 
   def status= valeur
     raise ArgumentError, "Il faut fournir un nombre pour le status." unless valeur.instance_of?(Fixnum)
-    raise ArgumentError, "Le status doit valoir entre 0 et 9." unless valeur >= 0 && valeur < 10
-    debug "On met status à #{valeur.inspect}::#{valeur.class}"
+    raise ArgumentError, "Le status doit valoir entre 0 et 16." unless valeur >= 0 && valeur < 16
     set(status: valeur)
   end
 

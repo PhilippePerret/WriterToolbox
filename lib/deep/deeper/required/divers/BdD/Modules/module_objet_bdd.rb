@@ -16,6 +16,14 @@ Méthodes pour les objets (instances) des bases de données.
 module MethodesObjetsBdD
 
 
+  # Test de l'existence.
+  # Se fait toujours sur l'identifiant. Surclasser la méthode
+  # pour faire le test autrement
+  def exist?
+    table.count(where: {id: id}) > 0
+  end
+  alias :exists? :exist?
+  
   # ---------------------------------------------------------------------
   #   Données qu'on retrouve presque partout
   def created_at  ; @created_at ||= get(:created_at) end

@@ -23,7 +23,7 @@ ul#bande_onglets
           color           : white
         // La marque du nombre de travaux, messages, etc.
         span.nombre
-          color       : #f9E !important
+          color       : #FFF !important
 div.panneau_onglet
   border        : 1px solid #777
   border-radius : 0.4em
@@ -47,6 +47,13 @@ div.panneau_onglet
     border-radius     : 0.5em
     font-size         : 0.9em
     background-color  : burlywood
+    a, a:hover, a:link, a:visited
+      &.inwork
+        color             : white
+        background-color  : #173
+        font-weight       : normal
+        font-size         : smaller
+        padding           : 1px 0.5em 3px
     div.nbpoints  
       color           : white
       font-size       : 15pt
@@ -84,10 +91,16 @@ section#completed_works
   div.work
     div.buttons
       // Il faut masquer la barre des boutons pour empêcher de faire des bêtises
+      // SAUF pour les pages de cours (cf. ci-dessous)
       display   : none
   strong, span.exbig, div.titre
     color       : #555
-    
+
+section#completed_works
+  &.pages_cours
+    div.work
+      div.buttons
+        display     : block !important
     
 div.row
   &#div_mark_pday_points
