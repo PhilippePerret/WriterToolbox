@@ -8,7 +8,6 @@ class Bureau
   def save_quiz
     quiz_id = param(:quiz)[:id].to_i_inn
     raise "Aucun questionnaire n'a été soumis…" if quiz_id == nil
-    # debug "Questionnaire soumis : #{quiz_id}"
     Unan::Quiz::get(quiz_id).evaluate_and_save
   end
 
@@ -54,10 +53,6 @@ class Bureau
   end
 
 end #/Bureau
-
-class Quiz
-end #/Quiz
-
 end #/Unan
 
 # Pour lancer la sauvegarde des données du questionnaire
