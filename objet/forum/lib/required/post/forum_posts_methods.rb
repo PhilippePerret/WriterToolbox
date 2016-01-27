@@ -13,12 +13,40 @@ class Forum
 class Post
   class << self
 
-    # {StringHTML} Retourne la liste de tous les messages par sujets
-    # @usage :  forum.posts.as_list
-    def as_list
-      Forum::Sujet::all.collect do |sid, isujet|
-        (isujet.as_titre_in_listing_posts + isujet.listing_posts).in_li(class:'topic', id:"topic-#{sid}")
-      end.join('')
+    def as_list params
+      liste_lis = list(params).strip
+      liste_lis.empty? ? "Aucun message dans le forum pour le moment".in_li : liste_lis
+    end
+
+    # +params+
+    #   as:     :ids (default), :instance, :data, :li
+    #           :li retourne un string de tous les titres de posts dans des LI
+    #   from:   Depuis cet ID de message (0 par défaut, le dernier)
+    #   for:    Pour ce nombre de messages Forum::Post::nombre_by_default
+    #           par défaut
+    def list params = nil
+      params ||= Hash::new
+      nombre_posts = params.delete(:for)  || nombre_by_default
+      from_indice  = params.delete(:from) || 0
+
+      data_request = {
+        where:  "options LIKE '1%'",
+        order:  'created_at DESC',
+        offset: from_indice,
+        limit:  nombre_posts
+      }
+      return_as = params.delete(:as)
+      data_request.merge!(colonnes: []) if return_as != :data
+
+      # On relève les messages
+      @posts = Forum::table_posts.select(data_request).keys
+
+      case return_as
+      when :instance, :instances  then @posts.collect { |pid| get(pid) }
+      when :data                  then @posts
+      when :li                    then @posts.collect { |pid| get(pid).as_li }.join('')
+      when :id, :ids, nil         then @posts
+      end
     end
 
   end # << self
