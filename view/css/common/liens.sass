@@ -13,3 +13,13 @@ a, a:hover, a:link, a:visited
 strong 
   a
     font-weight : bold
+
+// Pour hériter de tous les styles supérieurs
+// Mis ici pour les <a> mais peut fonctionner pour n'importe quel
+// élément DOM
+.inherit, .inherit:link, .inherit:visited, .inherit:hover
+  font-size         : inherit !important
+  font-family       : inherit !important
+  font-style        : inherit !important
+  color             : inherit !important
+  background-color  : inherit !important

@@ -81,10 +81,11 @@ class User
     # questionnaire a été rempli récemment, soit dans la partie qui
     # rassemble tous les questionnaires/travaux exécutés jusque-là
     def output_as_li
-      ("<strong>#{quiz.titre}</strong>".in_div  +
       (
-        "#{points} points sur #{max_points}&nbsp;" +
-        "—&nbsp;<strong class='notesur20'>#{note_sur_vingt.as_fr} / 20</strong>"
+        "#{quiz.titre}".in_a(href:"quiz/#{id}/show?in=unan", target:'_quiz_', class:'inherit').in_div(class:'bold')  +
+        (
+          "#{points} points sur #{max_points}&nbsp;" +
+          "—&nbsp;<strong class='notesur20'>#{note_sur_vingt.as_fr} / 20</strong>"
         ).in_div(class:'small right')
       ).in_li(class:'quiz')
     end
@@ -98,7 +99,11 @@ class User
     end
 
     def quiz
-      @quiz ||= Unan::Quiz::get(quiz_id)
+      @quiz ||= begin
+        qz = Unan::Quiz::get(quiz_id)
+        qz.auteur= self.auteur
+        qz
+      end
     end
 
     def table

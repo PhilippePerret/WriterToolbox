@@ -22,6 +22,7 @@ class Quiz
   #
   def commented_output
     @commented_output ||= begin
+      debug "-> commented_output (type_validation : #{type_validation.inspect})"
       texte_per_quiz_type     +
       texte_per_ecart_moyenne +
       detail_bonnes_reponses    # utilise la méthode `build`
@@ -46,7 +47,7 @@ class Quiz
     case type_validation
     when :renseignements
       # Pour les prises de renseignement et les sondages
-      t << "Merci #{user.pseudo} pour vos réponses."
+      t << "Merci #{auteur.pseudo} pour vos réponses."
       t << "Ce questionnaire vous fait gagner %{nombre_points} points." % {nombre_points: quiz_points}
     when :simple_quiz
       t << "Merci pour vos réponses."
@@ -85,7 +86,7 @@ class Quiz
       else
         "Votre"
       end +
-      " note est de <strong>#{user_note_sur_vingt}</strong> et "+
+      " note est de <strong>#{auteur_note_sur_vingt}</strong> et "+
       "vous avez donc #{ecart_moyenne} point#{s} " +
       (ecart_moyenne > 0 ? "au-dessus" : "en dessous") +
       " de la moyenne (qui est actuellement de #{moyenne_minimum} pour les questionnaires)."
@@ -94,31 +95,31 @@ class Quiz
 
 
     t << case true
-    when user_note_sur_vingt < 5
+    when auteur_note_sur_vingt < 5
       "<strong>C'est pour le moins une catastrophe</strong>. " +
       "Si vous n'avez aucun projet sérieux concernant votre écriture, alors pas de doute : ce questionnaire est cohérent avec vos ambitions. "+
-      "En revanche, si vous fomentez l'espoir de devenir un jour auteur#{user.f_e}, il est impératif que vous changiez définitivement d'attitude et que vous vous mettiez à travailler ardemment !"
-    when user_note_sur_vingt < 10
+      "En revanche, si vous fomentez l'espoir de devenir un jour auteur#{auteur.f_e}, il est impératif que vous changiez définitivement d'attitude et que vous vous mettiez à travailler ardemment !"
+    when auteur_note_sur_vingt < 10
       "<strong>C'est loin d'être convainquant</strong>. "+
       "Une note sous la moyenne n'est jamais une bonne chose. "+
       "Nous espérons que vous en conviendrez et que vous prendrez la décision de travailler plus sérieusement afin de parvenir à des résultats quelque peu meilleurs."
-    when user_note_sur_vingt < 12 # de 10 à 12
+    when auteur_note_sur_vingt < 12 # de 10 à 12
       "<strong>C'est honorable</strong>. ".+
       "Vous avez la moyenne et c'est pour le moins honorable. " +
       "Cependant, nous vous conseillons de ne pas viser la moyenne si vous souhaitez réellement parvenir à quelque chose dans votre écriture. En effet, ce ne sont jamais les artistes dans la moyenne qui parviennent à vivre de leur métier. " +
       "Bon courage à vous !"
-    when user_note_sur_vingt < 15 # de 12 à 15
+    when auteur_note_sur_vingt < 15 # de 12 à 15
       "<strong>C'est bien</strong>. "+
       "On ne peut pas affirmer que ce soit excellent, mais cette note entre 12 et 15 témoigne d'un certain acquis. "+
       "Il vous faut cependant travailler encore pour vous élever à un niveau digne d'un auteur qui ne serait plus simple apprenti."
-    when user_note_sur_vingt < 18 # de 15 à 18
+    when auteur_note_sur_vingt < 18 # de 15 à 18
       "<strong>C'est très bien</strong>. " +
       "Sans être excellente, cette note n'en est pourtant pas moins le signe que vous commencez à savoir de quoi vous parlez. "+
       "Les travaux futurs devraient vous permettre de parvenir à l'excellence. Accrochez-vous !"
-    when user_note_sur_vingt < 20
+    when auteur_note_sur_vingt < 20
       "<strong>C'est vraiment très bien</strong>." +
-      "Vous êtes passé#{user.f_e} à deux doigts de l'excellence."
-    when user_note_sur_vingt == 20
+      "Vous êtes passé#{auteur.f_e} à deux doigts de l'excellence."
+    when auteur_note_sur_vingt == 20
       "<strong>C'est tout simplement excellent</strong>." +
       "Il n'y a rien à dire, vous avez brillamment exécuté ce questionnaire, les notions sont parfaitement acquises ou les opérations clairement menées. Cela présage du meilleur pour la suite, félicitation à vous !"
     end

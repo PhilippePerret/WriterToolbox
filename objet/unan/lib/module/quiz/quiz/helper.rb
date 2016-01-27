@@ -76,11 +76,12 @@ class Quiz
   # permettre à la méthode javascript `regle_reponses` de réaffecter les
   # valeurs.
   def code_for_regle_reponses
+    return "" if user.admin?
     <<-HTML
 <script type="text/javascript">
 var quiz_values = {
   quiz_id:#{id},
-  reponses:#{user_reponses.to_json}
+  reponses:#{auteur_reponses.to_json}
 }
 $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
 </script>
@@ -102,7 +103,8 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     html << titre.in_div(class:'titre') unless no_titre?
     html << description.in_div(class:'description') if description?
     html << questions.collect do |iquestion|
-      iquestion.output( user_reponses[iquestion.id] )
+      reps = user.admin? ? nil : auteur_reponses[iquestion.id]
+      iquestion.output( reps )
     end.join.in_div(class:'questions')
 
     css = ['quiz']

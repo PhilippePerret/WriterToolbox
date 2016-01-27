@@ -24,13 +24,13 @@ class Quiz
   # et en négatif dans le cas contraire. Permet d'adapter le texte.
   # Cette méthode est appelée quand l'on soumet le formulaire, mais
   # elle doit fonctionner aussi d'après les données enregistrées. C'est
-  # la raison pour laquelle on calcule user_points si nécessaire.
+  # la raison pour laquelle on calcule auteur_points si nécessaire.
   def questionnaire_valided?
 
     # La moyenne pour ce questionnaire doit être supérieure au
     # minimum du moment.
     # Note : C'est cette valeur qui doit être retournée.
-    user_note_sur_vingt > moyenne_minimum
+    auteur_note_sur_vingt > moyenne_minimum
 
   end
 

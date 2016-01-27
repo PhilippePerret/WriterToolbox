@@ -18,11 +18,20 @@ class Quiz
   def description   ; @description    ||= get(:description)   end
   def options       ; @options        ||= get(:options)       end
   def points        ; @points         ||= get(:points)        end
+
   # ---------------------------------------------------------------------
   #   Données volatiles
   # ---------------------------------------------------------------------
   def human_type
     @human_type ||= TYPES[type][:hname]
+  end
+
+  def auteur
+    return nil if user.admin?
+    @auteur ||= user
+  end
+  def auteur= quser
+    @auteur = quser
   end
 
   # Travail (Unan::Program::Work) correspondant
@@ -32,11 +41,20 @@ class Quiz
     @work ||= find_work
   end
   def find_work
-    user.get_var(:quiz_ids).each do |wid|
-      w = Unan::Program::Work::new(user.program, wid)
+    auteur.get_var(:quiz_ids).each do |wid|
+      w = Unan::Program::Work::new(auteur.program, wid)
       return w if w.type_quiz? && w.abs_work.item_id == self.id
     end
     return nil
+  end
+
+  # Retourne l'User::UQuiz pour ce quiz, qu'il existe ou
+  # non.
+  # Si +quser+ ({User} qui est l'auteur du questionnaire, n'est pas
+  # précisé, c'est l'auteur courant (user) qui est pris en
+  # référence.
+  def uquiz quser = nil
+    User::UQuiz::get(self.id, auteur)
   end
 
   # Retourne le type-validation du questionnaire, qui peut
@@ -74,7 +92,7 @@ class Quiz
   def quiz_points
     @quiz_points ||= begin
       pts = 0
-      pts += (user_points || 0) unless only_points_quiz?
+      pts += (auteur_points || 0) unless only_points_quiz?
       pts += (points || 0)
       pts
     end
@@ -97,7 +115,7 @@ class Quiz
   # ---------------------------------------------------------------------
   #   Base de données
   # ---------------------------------------------------------------------
-  def table   ; @table ||= Unan::table_quiz end
+  def table ; @table ||= Unan::table_quiz end
 
 end #/Quiz
 end #/Unan

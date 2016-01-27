@@ -50,7 +50,7 @@ class Quiz
       ("Refaire ce questionnaire".in_a(href:"quiz/#{id}/simulation?in=unan_admin")).in_div(class:'right') +
         "Noter que ce résultat est calculé pour #{user.pseudo} (##{user.id})".in_div(class:'small italic') +
         "Note obtenue pour ce questionnaire, sur 20 ou nil : <strong>#{note_sur_20_for.inspect}</strong>".in_div +
-        "Jour-programme courant : <strong>#{user_pday_courant}</strong>".in_div +
+        "Jour-programme courant : <strong>#{auteur_pday_courant}</strong>".in_div +
         "Moyenne correspondant au jour-programme : <strong>#{moyenne_minimum}</strong>".in_div +
         "Écart par rapport à la moyenne : #{ecart_moyenne}".in_div +
         "<hr /><h3>Message après soumission</h3>" +

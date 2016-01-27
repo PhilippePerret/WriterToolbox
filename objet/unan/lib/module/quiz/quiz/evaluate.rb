@@ -16,9 +16,9 @@ class Quiz
   # corrections ou non, pour simplifier le code. C'est le code
   # qui est par exemple transmis à javascript pour remettre les
   # réponses qui ont été fournies par l'user.
-  def user_reponses
-    @user_reponses ||= begin
-      uquiz = user.quizes(quiz_id: id).values.last
+  def auteur_reponses
+    @auteur_reponses ||= begin
+      uquiz = auteur.quizes(quiz_id: id).values.last
       uquiz.nil? ? Hash::new : uquiz.reponses
     end
   end
@@ -29,8 +29,8 @@ class Quiz
     @data2save ||= {
       quiz_id:    id,
       type:       type,
-      reponses:   user_reponses.to_json,
-      points:     user_points,
+      reponses:   auteur_reponses.to_json,
+      points:     auteur_points,
       max_points: max_points,
       created_at: NOW
     }
@@ -48,15 +48,15 @@ class Quiz
     if evaluate == true
       # Barrière pour voir si le questionnaire ne vient pas
       # d'être soumis
-      existe_deja = user.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.days}") > 0
+      existe_deja = auteur.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.days}") > 0
       return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if existe_deja
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
-      user.table_quiz.insert(data2save)
+      auteur.table_quiz.insert(data2save)
       # Enregistrer le score dans le programme de l'utilisateur
       unless quiz_points.nil?
         debug "quiz_points : #{quiz_points.inspect}"
-        user.add_points( quiz_points.freeze )
+        auteur.add_points( quiz_points.freeze )
       end
       # Marquer le travail (qui a généré le questionnaire) comme
       # accompli.
@@ -135,11 +135,11 @@ class Quiz
     @for_correction = true
 
     # Récolte des réponses par type de question
-    @user_reponses  = Hash::new
+    @auteur_reponses  = Hash::new
     # Nombre de points total marqués par l'user
     # Note : Peut être nil sur certains questionnaires, sans
     # que cela ne génère de problème.
-    @user_points    = 0
+    @auteur_points    = 0
     # Pour comptabiliser le nombre maximum de points possibles
     # Noter que c'est aussi une méthode-propriété qui fait ce
     # calcul, mais ici, on le fait en même temps que le reste.
@@ -168,7 +168,7 @@ class Quiz
       # les Fixnum des identifiants de chaque item choisi.
       if hvalue[:error]
         une_erreur = true
-        @user_reponses.merge!( qid => { qid:qid, type:'error' } )
+        @auteur_reponses.merge!( qid => { qid:qid, type:'error' } )
       else
         # Pour remettre les réponses en cas de ré-affichage
         hvalue[:jid] = "#{hvalue[:tagname]}##{prefix}_#{hvalue[:jid]}"
@@ -184,9 +184,9 @@ class Quiz
           value:  hvalue[:rep_value]
         }
         # debug "hreponse : #{hreponse.inspect}"
-        @user_reponses.merge!( qid => hreponse )
-        @user_points += hreponse[:points] unless hreponse[:points].nil?
-        @max_points  += hreponse[:max]    unless hreponse[:max].nil?
+        @auteur_reponses.merge!( qid => hreponse )
+        @auteur_points  += hreponse[:points] unless hreponse[:points].nil?
+        @max_points     += hreponse[:max]    unless hreponse[:max].nil?
       end
 
     end # /Fin de la boucle sur chaque question

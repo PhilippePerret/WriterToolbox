@@ -1,0 +1,9 @@
+<%
+# Affichage d'un quiz par quiz/<id>/show?in=unan
+#
+# Noter qu'il s'agit toujours, dans cette formule, d'un questionnaire
+# de l'user courant. Dans le cas contraire, il faut ajouter `user_id`
+# à la requête
+%>
+<%= Unan::titre_h1("Questionnaires (consultation)") %>
+<%= master_quiz.commented_output %>
