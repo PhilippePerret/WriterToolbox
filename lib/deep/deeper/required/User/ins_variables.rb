@@ -7,8 +7,6 @@ user.
 =end
 class User
 
-  VARIABLES_TYPES = [String, Fixnum, Bignum, Float, Hash, Array, NilClass]
-
   # Toutes les variables (valeurs de la table `variables` qui
   # fonctionne en name: <valeur>)
   def variables

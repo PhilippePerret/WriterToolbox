@@ -10,7 +10,7 @@ def schema_table_users_users
     cpassword:    {type:"VARCHAR(32)",  constraint:"NOT NULL"},
     salt:         {type:"VARCHAR(32)",  constraint:"NOT NULL"},
     session_id:   {type:"VARCHAR(32)"},
-    options:      {type:"VARCHAR(32)",  default: "'"+('0'*32)+"'"},
+    options:      {type:"VARCHAR(32)"},
     sexe:         {type:"BOOLEAN"},
     address:      {type:"TEXT"},
     telephone:    {type:"VARCHAR(10)"},

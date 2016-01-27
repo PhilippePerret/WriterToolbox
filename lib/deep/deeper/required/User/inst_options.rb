@@ -42,7 +42,7 @@ class User
   # +value+ Valeur à lui donner, de 0 à 9
   def set_option key_option, value
     index, instance_var = option_index_and_inst_name(key_option)
-    opts = options.dup || ("0"*32)
+    opts = options.dup || "00" # || ("0"*32)
     opts[index] = value.to_s
     set( options: opts )
     # On renseigne la variable d'instance si elle existe
