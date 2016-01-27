@@ -4,16 +4,21 @@
 <%= forum.titre_h1("Sujets") %>
 <%= forum.onglets %>
 
+<%
+# ---------------------------------------------------------------------
+#   Liste des sujets
+# ---------------------------------------------------------------------
+%>
 <ul id="forum_topics">
-  <%= forum.sujets.as_list %>
-</section>
+  <%= forum.sujets.as_list(from: :last, for: forum.sujets.nombre_by_default) %>
+</ul>
 
 <%
 if user.grade >= 5
   # Il peut initier un sujet
 %>
-<div class="right">
-  <%= Forum::Sujet::new_sujet_form %>
-</div>
+  <div class="right">
+    <%= Forum::Sujet::new_sujet_form %>
+  </div>
 
 <% end %>

@@ -7,7 +7,8 @@
 # end
 
 %>
-<%= forum.titre_h1 %>
+<%= forum.titre_h1("Accueil") %>
+<%= forum.onglets %>
 <p>
   Bienvenue sur le forum d'écriture. <span class='small'>Forum privé, à haut niveau de modération, constitué d'auteurs professionnels et amateurs.</span>
 </p>
@@ -28,13 +29,6 @@ if user.grade >= 5
 <%
 end # si grade >= 5
 %>
-<p class='right'>
-  <%= "Sujets".in_a(href:'sujet/list?in=forum') %>
-  <span> | </span>
-  <%= "Messages".in_a(href:'post/list?in=forum') %>
-  <span> | </span>
-  <%= "Vos préférences".in_a(href:"user/preferences?in=forum") %>
-</p>
 <%
 
   # / Si identifié

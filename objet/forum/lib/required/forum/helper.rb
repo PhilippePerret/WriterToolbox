@@ -16,7 +16,14 @@ class Forum
   # Pour afficher les onglets généraux
   # @usage:  <%= forum.onglets %>
   def onglets
-    "[ONGLETS]"
+    {
+      "Messages"  => 'post/list?in=forum',
+      "Sujets" => 'sujet/list?in=forum',
+      "Vos préférences" => 'user/preferences?in=forum'
+    }.
+      collect{|tita, href| tita.in_a(href:href, class:'onglet')}.
+      join('').
+      in_div(id:"onglets", style:'margin:0!important')
   end
 
 end
