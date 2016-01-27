@@ -6,4 +6,9 @@
 # à la requête
 %>
 <%= Unan::titre_h1("Questionnaires (consultation)") %>
-<%= master_quiz.commented_output %>
+<p class='italic small'>
+  Vous pouvez retrouver sur cette page le résultat de vos précédents questionnaires et quiz.
+</p>
+<div class='cadre'>
+  <%= master_quiz.output_archives %>
+</div>

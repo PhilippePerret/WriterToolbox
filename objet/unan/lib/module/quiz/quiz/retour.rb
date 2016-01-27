@@ -22,7 +22,6 @@ class Quiz
   #
   def commented_output
     @commented_output ||= begin
-      debug "-> commented_output (type_validation : #{type_validation.inspect})"
       texte_per_quiz_type     +
       texte_per_ecart_moyenne +
       detail_bonnes_reponses    # utilise la méthode `build`
@@ -36,7 +35,7 @@ class Quiz
   # avec les réponses de l'utilisateur.
   def detail_bonnes_reponses
     return "" if type_validation == :renseignements
-    "Veuillez trouver ci-dessous le détail de vos bonnes et mauvaises réponses.".in_div(class:'small italic')+
+    "Veuillez trouver ci-dessous le détail de vos bonnes et mauvaises réponses.".in_div(class:'small italic') +
     build
   end
 

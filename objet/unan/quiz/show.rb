@@ -22,6 +22,5 @@ def user_quiz
     auteur = param(:user_id) ? User::get(param(:user_id).to_i) : user
     qid = site.current_route.objet_id.to_i
     User::UQuiz::get( qid, auteur )
-    # uquiz = master_quiz.uquiz(auteur)
   end
 end
