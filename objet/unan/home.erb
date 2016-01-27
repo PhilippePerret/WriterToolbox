@@ -63,11 +63,11 @@ else
 
 %>
 <p>
-  Le pari de ce <strong>programme d'écriture</strong> est simple : que vous soyez ou non expérimenté, que vous ayez ou non des connaissances poussées en dramaturgie, que vous ayez ou non déjà mené à terme un projet d'écriture, ce programme payant, sérieux, inventif, s'engage à vous faire <strong>parvenir à écrire votre roman, votre scénario de film ou de BD</strong> en un temps donné d'environ un an — suivant le rythme choisi —, tout en vous faisant suivre une <strong>formation complète à la narration</strong> (l'art d'écrire des histoires).
+  Le pari de ce <strong>programme d'écriture</strong> est simple : que vous soyez auteur expérimenté ou non, que vous ayez ou non des connaissances poussées en dramaturgie, que vous ayez ou non déjà mené à terme un projet d'écriture, ce programme sérieux et inventif s'engage à vous faire <strong>parvenir à écrire votre roman, votre scénario de film ou de BD</strong> en un temps donné d'environ un an — suivant le rythme choisi —, tout en vous faisant suivre une <strong>formation complète à la narration</strong> (l'art d'écrire des histoires).
 </p>
 <ul>
-  <li><a href="overview/home?in=unan">En apprendre plus sur ce programme</a></li>
-  <li><a href="unan/paiement">S'inscrire à ce programme d'un an (pour seulement <%= Unan::tarif_humain %>)</li>
+  <li><%= Unan::lien_aide(:overview, "En apprendre plus sur ce programme") %></li>
+  <li><a href="unan/paiement"><strong class='inherit'>S'inscrire à ce programme d'un an</strong> pour seulement <%= Unan::tarif_humain(tarif_mois = true) %></li>
 </ul>
 
 <%

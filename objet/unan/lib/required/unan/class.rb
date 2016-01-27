@@ -18,8 +18,13 @@ class Unan
       self.folder_data.require
     end
 
-    def tarif_humain
-      @tarif_humain ||= tarif.as_tarif
+    def tarif_humain(with_tarif_mois = false)
+      if with_tarif_mois
+        parmois = (tarif / 12).round(1).as_tarif
+        tarif_humain(false) + " (~ #{parmois} par mois)"
+      else
+        @tarif_humain ||= tarif.as_tarif
+      end
     end
     alias :montant_humain :tarif_humain
 

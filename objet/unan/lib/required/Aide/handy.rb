@@ -6,10 +6,13 @@
 class Unan
 class << self
   def lien_aide relpath, titre = nil, options = nil
-    if relpath == :home
+    case relpath
+    when :home
       options ||= Hash::new
       options.merge!(href:"aide/home?in=unan")
       (titre || "Aide").in_a(options)
+    # when :overview
+    #
     else
       Unan::Aide::link_to relpath, titre, options
     end
