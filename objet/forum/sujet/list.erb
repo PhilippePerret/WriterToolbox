@@ -1,7 +1,8 @@
 <%
 # Liste des sujets du forum
 %>
-<h1>Forum (sujets)</h1>
+<%= forum.titre_h1("Sujets") %>
+<%= forum.onglets %>
 
 <ul id="forum_topics">
   <%= forum.sujets.as_list %>
