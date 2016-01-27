@@ -16,7 +16,6 @@ class Sujet
     # Méthode d'helper retournant la liste des sujets dans des
     # LI
     def as_list params
-
       all.collect { |sid, sujet| sujet.as_li }.join('')
     end
 

@@ -294,7 +294,7 @@ class BdD
     # éviter les erreurs)
     # @note: On met un hash pour développements ultérieurs
     def delete foo = nil, confirmation = nil
-      raise AIError, :db_delete_all_need_confirmation if foo.nil? && confirmation != true
+      raise "La destruction intégrale des données nécessite une confirmation." if foo.nil? && confirmation != true
       request = "DELETE FROM #{name}"
       request += case foo
       when NilClass

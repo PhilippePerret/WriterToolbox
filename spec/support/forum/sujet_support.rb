@@ -14,16 +14,17 @@ class << self
     Forum::table_sujets.insert( data_new_sujet )
   end
   def data_new_sujet
-    creator = pick_any_user
+    time = NOW - rand(100).days
+    creator = pick_any_admin
     {
-      creator_id: creator.id,
-      name:       "Nom du sujet de #{creator.pseudo} à #{Time.now}",
-      last_message:   nil,
+      creator_id:     creator.id,
+      name:           "Nom du sujet de #{creator.pseudo} à #{Time.now}",
+      last_post_id:   nil,
       count:          0,
       options:        "",
       categories:     nil,
-      created_at:     NOW,
-      updated_at:     NOW
+      created_at:     time,
+      updated_at:     time
     }
   end
 
@@ -31,8 +32,8 @@ class << self
   def shuffled_sujets_ids
     @shuffled_sujets_ids ||= begin
       # Sil y a moins de 10 sujets, en créer jusqu'à 10
-      if all_sujets.count < 10
-        (10 - all_sujets.count).times do create_new_sujet end
+      if all_sujets_ids.count < 10
+        (10 - all_sujets_ids.count).times do create_new_sujet end
         reset_sujets
       end
       all_sujets_ids.dup
@@ -48,7 +49,7 @@ class << self
   end
   # {Array de Fixnum} Liste de tous les ID de sujet
   def all_sujets_ids
-    @all_sujets_ids ||= Forum::table_sujets.select(colonnes:[]).keys
+    @all_sujets_ids ||= Forum::table_sujets.select(colonnes:[:id]).keys
   end
 
   def reset_sujets

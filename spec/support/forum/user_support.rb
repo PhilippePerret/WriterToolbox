@@ -7,7 +7,7 @@ class << self
   # +params+ {Hash}
   #   grade_min:    {Fixnum de 0 à 9}, le grade minimum
   #   admin:
-  def create_new_auteur params
+  def create_new_auteur params = nil
     params ||= Hash::new
     params[:grade_min] ||= 4
     bit2 = params[:grade_min] + rand(9 - params[:grade_min])
@@ -20,10 +20,14 @@ class << self
   def pick_any_user
     User::get(shuffled_user_ids.shuffle!.shuffle!.first)
   end
+  alias :get_any_user   :pick_any_user
+  alias :get_any_auteur :pick_any_user
+
   # Retourne un administrateur (grade > 6)
   def pick_any_admin
     User::get(shuffled_admin_ids.shuffle!.shuffle!.first)
   end
+  alias :get_any_admin :pick_any_admin
 
   def shuffled_user_ids
     @shuffled_user_ids ||= begin

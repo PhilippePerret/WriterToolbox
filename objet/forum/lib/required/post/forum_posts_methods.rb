@@ -49,6 +49,11 @@ class Post
       end
     end
 
+
+    def count filter = nil
+      Forum::table_posts.count()
+    end
+
   end # << self
 end #/Post
 end #/Forum

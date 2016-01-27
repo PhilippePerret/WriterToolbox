@@ -25,8 +25,8 @@ class << self
   #   :validation
   def create_new_post params
     npd = new_post_data(params).dup
-    new_post_id = Forum::table_posts.insert( ndp )
-    sujet = Forum::Sujet::get(new_post_id)
+    new_post_id = Forum::table_posts.insert( npd )
+    sujet = Forum::Sujet::get( npd[:sujet_id] )
     sujet.add_post( new_post_id )
     new_post_id
   end
@@ -40,13 +40,16 @@ class << self
     else rand(1) # :both ou rien
     end
 
-    auteur = pick_any_user  # => User
-    sujet  = pick_any_sujet # => Forum::Sujet
+    auteur  = pick_any_user  # => User
+    sujet   = pick_any_sujet # => Forum::Sujet
+    time    = NOW - rand(100).days
     npd = {
       user_id:      auteur.id,
       content:      "Contenu du message du #{Time.now}, un message de #{auteur.pseudo} sur le sujet #{sujet.name}.",
       sujet_id:     sujet.id,
-      options:      "#{bit_validation}"
+      options:      "#{bit_validation}",
+      updated_at:   time,
+      created_at:   time
     }
     npd.merge!(valided_by: pick_any_admin.id) if bit_validation == 1
     return npd

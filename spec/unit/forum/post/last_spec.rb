@@ -1,6 +1,7 @@
 describe 'Affichage des derniers messages envoyés' do
   before(:all) do
     site.require_objet 'forum'
+    puts "Nombre de messages : #{forum.posts.count}"
   end
   describe '#last_posts' do
     it 'répond' do
