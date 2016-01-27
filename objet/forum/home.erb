@@ -1,15 +1,15 @@
 <%
 # Accueil du forum
 
-if user.admin? && user.grade != 9
-  user.set_grade(9)
-  debug "J'ai mis le grade de l'administrateur à 9"
-end
+# if user.admin? && user.grade != 9
+#   user.set_grade(9)
+#   debug "J'ai mis le grade de l'administrateur à 9"
+# end
 
 %>
-<h1>Forum d'écriture</h1>
+<h1>Forum</h1>
 <p>
-  Bienvenue dans le forum d'écriture.
+  Bienvenue sur le forum d'écriture. <span class='small'>Forum privé, à haut niveau de modération, constitué d'auteurs professionnels et amateurs.</span>
 </p>
 <%
 
@@ -19,33 +19,38 @@ if user.identified?
 
 
 %>
-<p>
-  Votre grade sur le forum est : <%= user.grade_humain %>.
-</p>
-<p class='small'>
-  En tant que <%= user.grade_humain %>, vous pouvez <%= user.privileges_forum %>.
-</p>
+<p>Votre grade sur le forum est : <%= user.grade_humain %>.
+<span class='small'>En tant que <%= user.grade_humain %>, vous pouvez <%= user.privileges_forum %>.</span></p>
 
 <%
 if user.grade >= 5
 %>
 <%
-#
-# Formulaire pour initier un nouveau sujet
-#
-%>
-<%= Forum::Sujet::new_sujet_form.in_div(class:'right') %>
-<%
 end # si grade >= 5
 %>
 <p class='right'>
-  <a href="sujet/list?in=forum">Les sujets</a><span> | </span><a href="message/list?in=forum">Les messages</a>
+  <%= "Sujets".in_a(href:'sujet/list?in=forum') %>
+  <span> | </span>
+  <%= "Messages".in_a(href:'post/list?in=forum') %>
+  <span> | </span>
+  <%= "Vos préférences".in_a(href:"user/preferences?in=forum") %>
+</p>
+<%
+
+  # / Si identifié
+  # ---------------------------------------------------------------------
+else
+  # ---------------------------------------------------------------------
+  #   Si non identifié
+%>
+<p>
+  Vous n'êtes ni identifié <%= site.lien_signup("ni abonné") %>, vous ne pouvez donc pas profiter des ressources d'écriture du forum privé de <strong>La Boite à Outils de l'Auteur</strong>.
 </p>
 <%
 
 
 end
-# / Si identifié
-# ---------------------------------------------------------------------
 
 %>
+
+<% forum.last_posts %>

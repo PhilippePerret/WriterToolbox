@@ -1,13 +1,16 @@
 # encoding: UTF-8
 class Forum
   class Sujet
-    def as_titre_in_listing_messages
+    def as_titre_in_listing_posts
       "#{name}".in_div(class:'topic_titre')
     end
-    # def listing_messages
-    #   "Messages du sujet #{name}".in_div(class:'topic_messages')
-    # end
+
+    def listing_posts
+      "Messages du sujet #{name}".in_div(class:'topic_messages')
+    end
+
   end # /Forum::Sujet
+
 
 
     # {StringHTML} Un formulaire pour ajouter un sujet

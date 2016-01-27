@@ -1,6 +1,6 @@
 # encoding: UTF-8
-def schema_table_forum_messages
-  @schema_table_forum_messages ||= {
+def schema_table_forum_posts
+  @schema_table_forum_posts ||= {
     id:           {type:"INTEGER",      constraint:"PRIMARY KEY AUTOINCREMENT"},
     user_id:      {type:'INTEGER',      constraint:"NOT NULL"},
     parent_id:    {type:'INTEGER'} # ID message parent (if any)
