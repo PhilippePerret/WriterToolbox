@@ -105,7 +105,7 @@ class Quiz
     when auteur_note_sur_vingt < 12 # de 10 à 12
       "<strong>C'est honorable</strong>. ".+
       "Vous avez la moyenne et c'est pour le moins honorable. " +
-      "Cependant, nous vous conseillons de ne pas viser la moyenne si vous souhaitez réellement parvenir à quelque chose dans votre écriture. En effet, ce ne sont jamais les artistes dans la moyenne qui parviennent à vivre de leur métier. " +
+      "Cependant, nous vous conseillons de ne pas viser la moyenne si vous souhaitez réellement parvenir à quelque chose dans votre écriture. En effet, ce ne sont jamais les artistes <em>dans la moyenne</em> qui parviennent à vivre de leur métier, si tel était votre souhait. " +
       "Bon courage à vous !"
     when auteur_note_sur_vingt < 15 # de 12 à 15
       "<strong>C'est bien</strong>. "+
@@ -113,14 +113,14 @@ class Quiz
       "Il vous faut cependant travailler encore pour vous élever à un niveau digne d'un auteur qui ne serait plus simple apprenti."
     when auteur_note_sur_vingt < 18 # de 15 à 18
       "<strong>C'est très bien</strong>. " +
-      "Sans être excellente, cette note n'en est pourtant pas moins le signe que vous commencez à savoir de quoi vous parlez. "+
-      "Les travaux futurs devraient vous permettre de parvenir à l'excellence. Accrochez-vous !"
+      "Sans être excellente, cette note n'en est pourtant pas moins le signe que vous savez de quoi vous parlez. "+
+      "Les travaux futurs devraient vous permettre de parvenir à l'excellence, alors accrochez-vous !"
     when auteur_note_sur_vingt < 20
       "<strong>C'est vraiment très bien</strong>." +
-      "Vous êtes passé#{auteur.f_e} à deux doigts de l'excellence."
+      "Vous êtes passé#{auteur.f_e} à deux doigts de l'excellence, vos réponses sont remarquables et pertinentes. Nous ne pouvons que vous en féliciter chaudement et vous inviter à poursuivre dans le même sens ! Un grand “bravo” à vous ! :-)"
     when auteur_note_sur_vingt == 20
       "<strong>C'est tout simplement excellent</strong>." +
-      "Il n'y a rien à dire, vous avez brillamment exécuté ce questionnaire, les notions sont parfaitement acquises ou les opérations clairement menées. Cela présage du meilleur pour la suite, félicitation à vous !"
+      "Il n'y a rien à dire, vous avez brillamment réussi ce questionnaire, les notions sont parfaitement acquises ou les opérations clairement menées. Félicitations sincères à vous !"
     end
 
     return t.collect{|p| p.in_p}.join
