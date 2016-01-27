@@ -19,7 +19,7 @@ class Tool
       "<dl>" +
       list.collect do |tid, tdata|
         titre = tdata[:name]
-        titre += (" (--> afficher)").in_a(href:tdata[:home]) unless tdata[:home].nil?
+        titre += (" (rejoindre)").in_a(href:tdata[:home]) unless tdata[:home].nil?
         "<dt>#{titre}</dt>" +
         tdata[:description].split("\n").collect do |p|
           if p.match(/#\{/)
