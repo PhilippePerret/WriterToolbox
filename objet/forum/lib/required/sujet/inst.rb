@@ -56,7 +56,7 @@ class Forum
 
     # Raccourci à la table contenant les sujets
     def table
-      @table ||= self.class::table_sujets
+      @table ||= Forum::table_sujets
     end
 
   end

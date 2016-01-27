@@ -20,7 +20,7 @@ class Forum
 
 
     # {StringHTML} Un formulaire pour ajouter un sujet
-    def new_sujet_form
+    def form_new
       <<-HTML
   <form action="forum/new_topic" method="POST" class='small'>
     <div class="row">

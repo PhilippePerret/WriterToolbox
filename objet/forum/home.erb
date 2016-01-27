@@ -37,9 +37,7 @@ else
   # ---------------------------------------------------------------------
   #   Si non identifié
 %>
-<p>
-  Vous n'êtes ni identifié <%= site.lien_signup("ni abonné") %>, vous ne pouvez donc pas profiter des ressources d'écriture du forum privé de <strong>La Boite à Outils de l'Auteur</strong>.
-</p>
+  <p>Vous n'êtes ni identifié <%= site.lien_signup("ni abonné") %>, vous ne pouvez donc pas profiter des ressources d'écriture du forum privé de <strong>La Boite à Outils de l'Auteur</strong>.</p>
 <%
 
 
@@ -47,4 +45,4 @@ end
 
 %>
 
-<% forum.last_posts %>
+<% forum.last_posts(as = :li) %>

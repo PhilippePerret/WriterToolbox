@@ -1,23 +1,7 @@
 # encoding: UTF-8
 class Forum
 
-  def sujets
-    @sujets ||= Sujet
-  end
-
   class Sujet
-    # ---------------------------------------------------------------------
-    #   Class Forum::Sujet
-    # ---------------------------------------------------------------------
-    class << self
-
-      # Méthode d'helper retournant la liste des sujets dans des
-      # LI
-      def as_list
-        all.collect { |sid, sujet| sujet.as_li }.join('')
-      end
-
-    end # << self
 
     # ---------------------------------------------------------------------
     #   Instances Forum::Sujet (un sujet en particulier)

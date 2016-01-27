@@ -7,10 +7,4 @@
 <%= forum.titre_h1("Messages") %>
 <%= forum.onglets %>
 
-<div class="right">
-  <a href="forum/sujets">Sujets</a>
-</div>
-
-<section id="messages">
-  <%= forum.posts.as_list %>
-</section>
+<ul id="messages"><%= forum.posts.as_list %></ul>

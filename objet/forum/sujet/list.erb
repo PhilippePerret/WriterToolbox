@@ -13,12 +13,6 @@
   <%= forum.sujets.as_list(from: :last, for: forum.sujets.nombre_by_default) %>
 </ul>
 
-<%
-if user.grade >= 5
-  # Il peut initier un sujet
-%>
-  <div class="right">
-    <%= Forum::Sujet::new_sujet_form %>
-  </div>
-
+<% if user.grade >= 5 %>
+  <%= Forum::Sujet::form_new %>
 <% end %>
