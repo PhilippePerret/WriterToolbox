@@ -7,6 +7,8 @@ class Page
   attr_reader :added_css
   attr_reader :added_javascript
 
+  attr_accessor :fatal_error
+
   # Il faut "précharger" l'entête et le contenu de la page pour
   # définir toutes les choses avant d'appeler les méthodes qui
   # vont charger les css, les js, les messages, etc.
@@ -16,6 +18,15 @@ class Page
     footer
     content
     left_margin
+    head
+    @content = page.error_standard(fatal_error) unless fatal_error.nil?
+  rescue Exception => e
+    @content = page.error_standard(e)
+  end
+
+  def prebuild_body
+    body
+    app.session['last_route'] = site.current_route.route unless site.current_route.nil?
   end
 
   # {StringHTML} Retourne le code HTML pour l'entête du
@@ -25,6 +36,9 @@ class Page
     @header ||= begin
       vue = Vue::new('header', site.folder_custom_gabarit)
       vue.output
+    rescue Exception => e
+      self.fatal_error = e
+      "[PROBLÈME D'HEADER : #{e.message}]"
     end
   end
 
@@ -36,17 +50,26 @@ class Page
       else
         ""
       end
+    rescue Exception => e
+      self.fatal_error = e
+      "[PROBLÈME DE FOOTER : #{e.message}]"
     end
   end
 
   def content
-    @content ||= (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
+    @content ||= begin
+      (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
+    rescue Exception => e
+      self.fatal_error = e
+      "[PROBLÈME DE CONTENT : #{e.message}]"
+    end
   end
   # Définir le contenu à l'aide de `page.content = ...`
   # Pour le moment, seulement utilisé pour les protections de sections
   # et de modules
   # Noter que c'est @content_route qui est défini (cf. plus bas) pour
   # garder le code d'affichage dans un section#content
+  # (JE NE COMPRENDS PAS LE MESSAGE CI-DESSUS...)
   def content= value
     @content_route = value
   end
@@ -54,6 +77,9 @@ class Page
   def left_margin
     @left_margin ||= begin
       Vue::new('left_margin', site.folder_custom_gabarit).output
+    rescue Exception => e
+      self.fatal_error = e
+      "[PROBLÈME DE LEFT-MARGIN : #{e.message}]"
     end
   end
 
@@ -70,6 +96,9 @@ class Page
       if site.current_route && site.current_route.vue
         site.current_route.vue.output
       end
+    rescue Exception => e
+      self.fatal_error = e
+      "[PROBLÈME DE CONTENT_ROUTE : #{e.message}]"
     end
   end
 

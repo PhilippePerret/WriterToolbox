@@ -21,8 +21,18 @@ end
 class Page
 
   # Pour avoir accès à l'erreur dans la page grâce à : page.error
+  # On peut utiliser aussi pour certaines méthodes :
+  #   - error_message (message)
+  #   - error_backtrace
   attr_accessor :error
+  attr_accessor :error_message
+  attr_accessor :error_backtrace
 
+  def error_standard err
+    self.error_message = err.message
+    self.error_backtrace = err.backtrace.collect{|l| l.in_div}.join("\n")
+    Vue::new('error_standard', folder_error_for('standard'), site).output
+  end
 
   def error_non_fatale err
     self.error = err
