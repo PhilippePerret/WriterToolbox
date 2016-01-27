@@ -3,7 +3,7 @@
 Extension de Forum::Message pour la gestion des messages
 =end
 class Forum
-class Message
+class Post
   # ---------------------------------------------------------------------
   #   Classe Forum::Message
   # ---------------------------------------------------------------------

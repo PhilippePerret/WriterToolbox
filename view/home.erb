@@ -1,11 +1,21 @@
 <%
 # Page d'accueil du site
 %>
+
+<div class="fright w400 air_autour cadre" style="background-color:#8cff5b;">
+  <p class='small'>
+    Pour pouvoir demeurer <strong>indépendant</strong>, pour n'afficher <strong>aucune publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> (dont la conception demande du temps), l'utilisation de certains outils du site requiert un paiement modique d'un montant de <strong><%= site.tarif_humain %> à l'année</strong>, prix dérisoire eu égard aux services que rendent <a href="tool/list">les outils proposés</a>.
+  </p>
+  <p class='bold'>
+    N'hésitez donc pas à…
+    <ul>
+      <li><a href="user/signup">Vous inscrire</a> <span class='small'>(gratuit)</span></li>
+      <li><a href="user/paiement">Vous abonner</a> <span class='small'>(<%= site.tarif_humain %>/an)</span></li>
+    </ul>
+  </p>
+</div>
+
 <p>Bonjour !</p>
 <p>Bienvenue dans la “Boite à outils de l'auteur”, le site entièrement dédié au <strong>développement d'histoires</strong> en tout genre, et tout particulièrement les <strong>films</strong> et les <strong>romans</strong>.</p>
-<p class='small'>
-  Pour pouvoir demeurer <strong>indépendant</strong>, pour résister aux épidémies de <strong>publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> (dont la conception demande du temps), l'utilisation de certains outils du site requiert un <strong>paiement modique</strong> d'un montant actuel de <strong><%= site.tarif_humain %> à l'année</strong>, prix dérisoire eu égard aux services que rendent <a href="tool/list">les outils proposés</a>.
-</p>
-<p>
-  N'hésitez donc pas à <a href="user/signup">vous inscrire</a> et/ou à <a href="user/paiement">vous abonner</a> !
-</p>
+
+<div style='clear:both'></div>

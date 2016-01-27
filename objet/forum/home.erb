@@ -34,7 +34,7 @@ if user.grade >= 5
 # Formulaire pour initier un nouveau sujet
 #
 %>
-<%= forum.formulaire_new_topic.in_div(class:'right') %>
+<%= Forum::Sujet::new_sujet_form.in_div(class:'right') %>
 <%
 end # si grade >= 5
 %>
