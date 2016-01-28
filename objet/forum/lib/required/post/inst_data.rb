@@ -7,6 +7,7 @@ class Post
   # ---------------------------------------------------------------------
   def user_id   ; @user_id  ||= get(:user_id)   end
   def sujet_id  ; @sujet_id ||= get(:sujet_id)  end
+  def content   ; @content  ||= get(:content)   end
 
   # ---------------------------------------------------------------------
   #   Data volatiles

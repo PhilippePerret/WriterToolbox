@@ -1,34 +1,20 @@
 # encoding: UTF-8
 class Forum
-  class Sujet
-    def as_titre_in_listing_posts
-      "#{name}".in_div(class:'topic_titre')
-    end
+class Sujet
 
-    def posts params
-      params ||= Hash::new
-      params[:from] ||= 0
-      params[:for]  ||= Forum::Sujet::nombre_by_default
+  def as_titre_in_listing_posts
+    "#{name}".in_div(class:'topic_titre')
+  end
 
-    end
-    def listing_posts
-      "Messages du sujet #{name}".in_div(class:'topic_messages')
-    end
+  def posts params
+    params ||= Hash::new
+    params[:from] ||= 0
+    params[:for]  ||= Forum::Sujet::nombre_by_default
 
-  end # /Forum::Sujet
+  end
+  def listing_posts
+    "Messages du sujet #{name}".in_div(class:'topic_messages')
+  end
 
-
-
-    # {StringHTML} Un formulaire pour ajouter un sujet
-    def form_new
-      <<-HTML
-  <form action="forum/new_topic" method="POST" class='small'>
-    <div class="row">
-      <span class="value"><input type="text" name="new_topic_name" placeholder="Sujet" value="" class="w300" /></span>
-      <input type="submit" value="Initier ce nouveau sujet" class='btn' />
-    </div>
-  </form>
-
-      HTML
-    end
+end # /Sujet
 end # /Forum

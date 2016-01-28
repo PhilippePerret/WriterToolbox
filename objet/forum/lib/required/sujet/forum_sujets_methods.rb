@@ -78,13 +78,6 @@ class Sujet
       end
     end
 
-    # {StringHTML} Retourne les messages sous la forme d'un string
-    # contenant la liste des LI de chaque message.
-    def as_list params
-      liste_lis = list(params.merge(as: :li)).strip
-      liste_lis.empty? ? "Aucun sujet dans le forum pour le moment".in_li : liste_lis
-    end
-
   end # << self
 end #/Sujet
 end #/Forum

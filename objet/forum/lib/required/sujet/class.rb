@@ -25,23 +25,6 @@ class Forum
     class << self
       def bind; binding() end
 
-      def get id
-        @instances ||= Hash::new
-        @instances[id] ||= new(id)
-      end
-
-      # {Hash} où les clés sont des IDs de sujet et les
-      # valeurs des instances Forum::Sujet
-      def all # sujet
-        @all ||= begin
-          h = Hash::new
-          table_sujets.select(order: "updated_at DESC", where:"options LIKE '0%'").each do |sid, sdata|
-            h.merge!(sid => new(sid, sdata))
-          end
-          h
-        end
-      end
-
       def table_sujets
         @table_sujets ||= site.db.create_table_if_needed('forum', 'sujets')
       end

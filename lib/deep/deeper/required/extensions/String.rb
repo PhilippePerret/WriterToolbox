@@ -95,6 +95,7 @@ class String
   def normalize
     self.tr(DATA_NORMALIZE[:from], DATA_NORMALIZE[:to])
   end
+  alias :normalized :normalize
 
   # Pour un nom de fichier sans problème
   def as_normalized_filename

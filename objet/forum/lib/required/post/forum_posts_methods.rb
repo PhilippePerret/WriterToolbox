@@ -128,13 +128,6 @@ class Post
       Forum::where_clause_from filter
     end
 
-    # {StringHTML} Retourne les messages sous la forme d'un string
-    # contenant la liste des LI de chaque message.
-    def as_list params
-      liste_lis = list(params.merge(as: :li)).strip
-      liste_lis.empty? ? "Aucun message dans le forum pour le moment".in_li : liste_lis
-    end
-
   end # << self
 end #/Post
 end #/Forum

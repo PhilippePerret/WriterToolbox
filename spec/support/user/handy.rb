@@ -69,9 +69,12 @@ def create_user options = nil
   programme_1a1s = options.delete(:unanunscript)
   mettre_courant = options.delete(:current) || programme_1a1s
 
-  options[:sexe]        ||= ["H","F"][rand(2)]
-  options[:pseudo]      ||= "pseudo#{options[:sexe]}#{now}"
-  options[:patronyme]   ||= "Patro #{options[:sexe]} N#{now}"
+  sexe    = ["H","F"][rand(2)]
+  prenom  = UserSpec::random_prenom(sexe)
+
+  options[:sexe]        ||= sexe
+  options[:pseudo]      ||= "#{prenom.normalized}#{options[:sexe]}#{now}"
+  options[:patronyme]   ||= "#{prenom} Patro #{options[:sexe]} N#{now}"
   options[:mail]        ||= "mail#{options[:sexe]}#{now}@chez.moi"
   options[:options]     ||= ""
   options[:cpassword]   ||= "0123"*8
