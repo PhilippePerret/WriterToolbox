@@ -22,14 +22,16 @@ class Gel
   # RETURN True (principalement pour la console)
   def gel options = nil
     return false if name_invalide?
+    # debug "===> gel"
     folder.remove if exist?
     FileUtils::cp_r site.folder_db.to_s , folder.to_s
+    # debug "<=== gel"
     true
   end
   # RETURN True (principalement pour la console) si tout s'est
   # bien passé, false otherwise
   def degel options = nil
-    debug "===> degel"
+    # debug "===> degel"
     return false if name_invalide?
     if exist?
       get_admin_session_id
@@ -50,7 +52,7 @@ class Gel
       error "Le gel `#{name}` n'existe pas."
       false
     end
-    debug "<=== degel"
+    # debug "<=== degel"
   end
   #
   # ---------------------------------------------------------------------
@@ -60,12 +62,10 @@ class Gel
   # de session qui est actuellement défini pour les administrateurs et
   # on les remet dans le dégel opéré.
   def get_admin_session_id
-    debug "-> get_admin_session_id"
     sessid = app.session.session_id
-    debug "session ID : #{sessid}"
-    @connected_admins = User::table.select(where:"session_id = '#{sessid}'")
-    debug "admins trouvés : #{@connected_admins.pretty_inspect}"
-    debug "<- get_admin_session_id"
+    @connected_admins = User::table.select(colonnes:[:session_id], where:"(options NOT LIKE '0%') AND session_id = '#{sessid}'")
+    # debug "admins trouvés : #{@connected_admins.pretty_inspect}"
+    # debug "<- get_admin_session_id"
   rescue Exception => e
     error "# Erreur en essayant de prendre les administrateurs connectés : #{e.message}"
     debug e
@@ -73,13 +73,11 @@ class Gel
 
   # On reconnecte les administrateurs après le dégel
   def set_admin_session_id
-    debug "-> set_admin_session_id"
+    # debug "-> set_admin_session_id"
     @connected_admins.each do |uid, udata|
-      debug "Tentative de reconnection de l'admin ##{uid}…"
       User::new(uid).set(session_id: app.session.session_id)
-      debug "Admin ##{uid} (#{udata[:pseudo]}) reconnecté à session courante."
     end
-    debug "<- set_admin_session_id"
+    # debug "<- set_admin_session_id"
   rescue Exception => e
     error "# Erreur en essayant de reconnecter les administrateurs : #{e.message}"
     debug e
@@ -118,11 +116,11 @@ class Gel
     false # OK
   end
   def backup_and_delete_current_folder_data
-    debug "-> backup_and_delete_current_folder_data"
+    # debug "-> backup_and_delete_current_folder_data"
     as_folder_backup.remove if as_folder_backup.exist?
     FileUtils::cp_r   site.folder_db.to_s, as_folder_backup.to_s
     FileUtils::rm_rf  site.folder_db.to_s
-    debug "<- backup_and_delete_current_folder_data"
+    # debug "<- backup_and_delete_current_folder_data"
   end
 
   def exist?

@@ -33,19 +33,23 @@ class << self
 
   # Retourne des données pour un nouveau message
   def new_post_data params
-    bit_validation = case params.delete(:validation)
+    bit_validation = case (params[:validation] || :valided)
     when :both
-    when :valided then 1
+    when :valided     then 1
     when :not_valided then 0
-    else rand(1) # :both ou rien
+    else rand(2) # :both ou rien
     end
+
+    # puts "bit validation : #{bit_validation}"
 
     auteur  = pick_any_user  # => User
     sujet   = pick_any_sujet # => Forum::Sujet
     time    = NOW - rand(100).days
+    # Pour la recherche par texte
+    mot_alea = ["gazelle", "crocodile", "éléphant"][rand(3)]
     npd = {
       user_id:      auteur.id,
-      content:      "Contenu du message du #{Time.now}, un message de #{auteur.pseudo} sur le sujet #{sujet.name}.",
+      content:      "Contenu du message du #{Time.now}, un message de #{auteur.pseudo} sur le sujet #{sujet.name} parlant de #{mot_alea}.",
       sujet_id:     sujet.id,
       options:      "#{bit_validation}",
       updated_at:   time,

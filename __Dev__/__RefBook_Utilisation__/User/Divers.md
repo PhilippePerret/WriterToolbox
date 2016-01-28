@@ -1,8 +1,43 @@
 # Divers à propos de l'user
 
+* [Options de l'utilisateur](#optionsuser)
+  * [Grade d'administration](#gradedadministration)
+  * [Grade du forum](#gradeforumeuser)
 * [Redirection après l'identification (login)](#redirectionapreslogin)
 * [Destruction d'un utilisateur](#destructionuser)
 
+<a name='optionsuser'></a>
+
+## Options de l'utilisateur
+
+Les `options` de l'utilisateur permettent de définir certaines données “bits” de l'utilisateur. Nous allons les détailler ci-dessous, voici un bref aperçu.
+
+    BIT 1   Degré d'ADMINISTRATION
+
+Cf. [Grade administration](#gradedadministration)
+
+<a name='gradedadministration'></a>
+
+### Grade d'administration
+
+Bit 1 des options. Comparaison par bit
+
+    0 Simple utilisateur
+    1 Administrateur de premier niveau
+    2 Super-administrateur
+    4 Grand manitou
+
+<a name='gradeforumeuser'></a>
+
+## Grade du forum
+
+Si c'est un forum à haut degré de modération (avec n'importe qui ne pouvant pas s'y exprimer), le deuxième bit des options de l'user conserve la valeur.
+
+Bit 2 des options. Valeur de 0 à 9, depuis le simple lecteur qui ne peut pas laisser de message jusqu'au modérateur qui a tout pouvoir.
+
+Cf. le fichier forum/user/constants.rb pour les valeurs que peut prendre ce deuxième caractère.
+
+---------------------------------------------------------------------
 
 <a name='redirectionapreslogin'></a>
 

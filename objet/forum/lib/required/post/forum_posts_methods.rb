@@ -49,9 +49,52 @@ class Post
       end
     end
 
+    # Retourne un Array dont le premier élément est la
+    # clause WHERE (avec des "?") et le second élément est
+    # la liste Array des valeurs des points d'interrogation
+    def where_clause_from filter
+      return [nil, nil] if filter.nil?
+      arr_where   = Array::new
+      arr_values  = Array::new
+      if filter[:user_id]
+        arr_where   << "user_id = ?"
+        arr_values  << filter[:user_id]
+      end
+      if filter[:created_after]
+        arr_where   << "created_at >= ?"
+        arr_values  << filter[:created_after]
+      end
+      if filter[:created_before]
+        arr_where   << "created_at < ?"
+        arr_values  << filter[:created_before]
+      end
+      if filter.has_key?(:valid)
+        arr_where   << "options LIKE ?"
+        arr_values  << (filter[:valid] ? '1%' : '0%')
+      end
+      if filter[:content]
+        arr_where   << "content LIKE ?"
+        arr_values  << "%" + filter[:content].gsub(/</,'&lt;').gsub(/>/,'&gt;') + "%"
+      end
 
+      [arr_where.join(' AND '), arr_values]
+    end
+
+    # Retourne le nombre de messages répondant ou non au filtre
+    # +filtre+ {Hash}
+    #   user_id:          Que les messages de cet auteur
+    #   created_after:    Les messages créés à ou après ce timestamp
+    #   created_before:   Les messages créés à ou avant ce timestamp
     def count filter = nil
-      Forum::table_posts.count()
+      data_request = unless filter.nil?
+        where, valeurs = ( where_clause_from filter )
+        { where: where, values: valeurs }
+      else
+        nil
+      end
+
+      Forum::table_posts.count(data_request)
+
     end
 
   end # << self
