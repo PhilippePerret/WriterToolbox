@@ -3,16 +3,33 @@
 Handy méthodes pour les user
 =end
 
+
+# {User} Retourne une instance User prise au hasard sur le site
+#
+# +options+
+#   :but    Array des IDs à ne pas utiliser
+#   :with_program   Si true, l'auteur doit avoir un programme 1a1s
+#
 def get_any_user options = nil
 
   options ||= Hash::new
-  ids, where = nil, nil
+  ids, where = nil, Array::new
 
   if options[:with_program]
     # => Il faut retourner un user qui suit un programme, donc il faut
     # prendre les ids dans la table des programmes.
     programs = Unan::table_programs.select(where:"options LIKE '1%'", colonnes:[:auteur_id]).values
     ids = programs.collect{|hp| hp[:auteur_id]}
+  end
+
+  if options[:but] && !options[:but].empty?
+    where << "id NOT IN (#{options[:but].join(', ')})"
+  end
+
+  where = if where.empty?
+    nil
+  else
+    where.join(' AND ')
   end
 
   if ids.nil?

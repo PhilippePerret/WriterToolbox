@@ -9,9 +9,9 @@ class Post
   # derniers messages envoyés ou les derniers dans chaque sujet.
   def as_li
     (
-      sujet.name.in_span('name')  +
-      auteur.pseudo.in_span('pseudo') +
-      updated_at.as_human_date(true).in_span('date')
+      sujet.name.in_span(class: 'name')  +
+      auteur.pseudo.in_span(class: 'pseudo') +
+      updated_at.as_human_date(true).in_span(class: 'date')
     ).in_li(class:'post', id:"post-#{id}")
   end
 end

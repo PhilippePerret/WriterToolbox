@@ -1,6 +1,8 @@
 describe 'forum.posts' do
   before(:all) do
     site.require_objet 'forum'
+    degel 'forum-with-messages'
+    @nombre_total_messages = Forum::table_posts.count
   end
 
   describe '#count' do
@@ -8,13 +10,8 @@ describe 'forum.posts' do
       expect(forum.posts).to respond_to :count
     end
     context 'avec des messages et sans paramètre' do
-      before(:all) do
-        Forum::table_posts.delete(nil, true)
-        Forum::create_posts(count: 30)
-        Forum::create_posts(count: 5, validation: :not_valided)
-      end
       it 'retourne le nombre exact de messages' do
-        expect(forum.posts.count).to eq 35
+        expect(forum.posts.count).to eq @nombre_total_messages
       end
     end
     context 'avec des messages et des paramètres' do

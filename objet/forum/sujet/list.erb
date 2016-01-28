@@ -9,7 +9,7 @@
 #   Liste des sujets
 # ---------------------------------------------------------------------
 %>
-<ul id="forum_topics">
+<ul id="ul_sujets">
   <%= forum.sujets.as_list(from: :last, for: forum.sujets.nombre_by_default) %>
 </ul>
 

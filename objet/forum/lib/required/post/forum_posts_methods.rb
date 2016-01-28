@@ -13,71 +13,94 @@ class Forum
 class Post
   class << self
 
-    def as_list params
-      liste_lis = list(params).strip
-      liste_lis.empty? ? "Aucun message dans le forum pour le moment".in_li : liste_lis
+
+    # = main =
+    #
+    # Méthode principale pour récupérer des messages ou
+    # un seul message (méthode get habituelle)
+    # Retourne une liste {Array} d'instances Forum::Post ou
+    # le message.
+    #
+    # La distinction se fait sur filter, qui peut être soit
+    # un Fixnum (=> un seul message retourné) soit un filtre
+    #
+    # +filter+ {Hash} définissant le filtre à appliquer
+    # Cf. where_clause_from pour le détail.
+    # On peut définir notamment : :user_id, :created_after,
+    # :created_before, :valid (true/false), :content (texte que
+    # le message doit contenir)
+    #
+    def get filter = nil
+      if filter.instance_of?( Fixnum )
+        get_by_id(filter)
+      else
+        data_request = Hash::new
+        unless filter.nil? || filter.empty?
+          where, valeurs = where_clause_from(filter)
+          data_request.merge!(where: where, values: valeurs)
+        end
+        data_request.merge!( colonnes: [:id] )
+        # debug "data_request: #{data_request.inspect}"
+        Forum::table_posts.select( data_request ).keys.collect do |pid|
+          new(pid)
+        end
+      end
     end
 
+    # Pour pouvoir utiliser la méthode `get` comme pour toutes
+    # les autres classes.
+    def get_by_id pid
+      pid = pid.to_i
+      @instances ||= Hash::new
+      @instances[pid] ||= new(pid)
+    end
+
+    # = main =
+    #
+    # Retourne une liste Array des messages répondant
+    # au filtre +params+
     # +params+
-    #   as:     :ids (default), :instance, :data, :li
+    #   <Toutes les valeurs possibles de filtre>
+    #   +
+    #   as:     :ids (default), :instance, :data, :li, :hash
     #           :li retourne un string de tous les titres de posts dans des LI
     #   from:   Depuis cet ID de message (0 par défaut, le dernier)
     #   for:    Pour ce nombre de messages Forum::Post::nombre_by_default
     #           par défaut
     def list params = nil
       params ||= Hash::new
-      nombre_posts = params.delete(:for)  || nombre_by_default
-      from_indice  = params.delete(:from) || 0
+      nombre_posts  = params.delete(:for)  || nombre_by_default
+      from_indice   = params.delete(:from) || 0
+      return_as     = params.delete(:as)
 
-      data_request = {
-        where:  "options LIKE '1%'",
+      data_request = Hash::new
+
+      unless params.empty?
+        params.merge!(valid: true)
+        where, valeurs = where_clause_from(params)
+        data_request.merge!(where: where, values: valeurs)
+      end
+
+      data_request.merge!(
         order:  'created_at DESC',
         offset: from_indice,
         limit:  nombre_posts
-      }
-      return_as = params.delete(:as)
-      data_request.merge!(colonnes: []) if return_as != :data
+      )
+
+      # On a besoin que de l'identifiant s'il ne faut
+      # pas retourner les données ou un hash des valeurs.
+      data_request.merge!(colonnes: []) unless [:hash, :data].include?(return_as)
 
       # On relève les messages
-      @posts = Forum::table_posts.select(data_request).keys
+      @posts = Forum::table_posts.select(data_request)
 
       case return_as
-      when :instance, :instances  then @posts.collect { |pid| get(pid) }
-      when :data                  then @posts
-      when :li                    then @posts.collect { |pid| get(pid).as_li }.join('')
-      when :id, :ids, nil         then @posts
+      when :instance, :instances  then @posts.keys.collect { |pid| get(pid) }
+      when :li                    then @posts.keys.collect { |pid| get(pid).as_li }.join('')
+      when :id, :ids, nil         then @posts.keys
+      when :data                  then @posts.values
+      when :hash                  then @posts
       end
-    end
-
-    # Retourne un Array dont le premier élément est la
-    # clause WHERE (avec des "?") et le second élément est
-    # la liste Array des valeurs des points d'interrogation
-    def where_clause_from filter
-      return [nil, nil] if filter.nil?
-      arr_where   = Array::new
-      arr_values  = Array::new
-      if filter[:user_id]
-        arr_where   << "user_id = ?"
-        arr_values  << filter[:user_id]
-      end
-      if filter[:created_after]
-        arr_where   << "created_at >= ?"
-        arr_values  << filter[:created_after]
-      end
-      if filter[:created_before]
-        arr_where   << "created_at < ?"
-        arr_values  << filter[:created_before]
-      end
-      if filter.has_key?(:valid)
-        arr_where   << "options LIKE ?"
-        arr_values  << (filter[:valid] ? '1%' : '0%')
-      end
-      if filter[:content]
-        arr_where   << "content LIKE ?"
-        arr_values  << "%" + filter[:content].gsub(/</,'&lt;').gsub(/>/,'&gt;') + "%"
-      end
-
-      [arr_where.join(' AND '), arr_values]
     end
 
     # Retourne le nombre de messages répondant ou non au filtre
@@ -92,9 +115,18 @@ class Post
       else
         nil
       end
+      return Forum::table_posts.count(data_request)
+    end
 
-      Forum::table_posts.count(data_request)
+    def where_clause_from filter = nil
+      Forum::where_clause_from filter
+    end
 
+    # {StringHTML} Retourne les messages sous la forme d'un string
+    # contenant la liste des LI de chaque message.
+    def as_list params
+      liste_lis = list(params.merge(as: :li)).strip
+      liste_lis.empty? ? "Aucun message dans le forum pour le moment".in_li : liste_lis
     end
 
   end # << self

@@ -24,6 +24,15 @@ describe '::where_clause_from' do
       end
     end
 
+    context 'avec un user dans le filtre' do
+      it 'retourne la clause avec user_id' do
+        u = get_any_user
+        where, values = FP::where_clause_from(user: u)
+        expect(where).to match "user_id = ?"
+        expect(values).to eq [u.id]
+      end
+    end
+
     context 'avec un created_after dans le filtre' do
       it 'retourne la clause sur created_at' do
         now = NOW - 4.days

@@ -1,7 +1,7 @@
 describe 'Liste des messages d’un sujet du forum' do
   before(:all) do
     site.require_objet 'forum'
-
+    degel 'forum-with-messages'
     @sujet = Forum::get_any_sujet # <- Support
   end
 
