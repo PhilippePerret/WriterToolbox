@@ -25,8 +25,8 @@ class BdD
 
       # L'opération (request)
       operation = params[:requete] || params[:request] || params[:operation] || params[:do]
-      raise :bd_execute_request_required if operation.nil?
-      raise :bd_execute_request_str_or_sym unless [String, Symbol].include?(operation.class)
+      raise :bd_execute_request_required    if operation.nil?
+      raise :bd_execute_request_str_or_sym  unless [String, Symbol].include?(operation.class)
       operation = operation.to_s.upcase
 
       # La requête SELECT nécessite toujours la relève de la colonne :ID pour
@@ -117,17 +117,19 @@ class BdD
     # Exécute la requête +request+ avec les valeurs +values+
     # @alias: def execute_request
     def execute_requete database, request, values = nil, params = nil
-      params ||= {}
+      params ||= Hash::new
 
       request_name = request.split.first
 
-      # debug "\n\n---BdD::execute_requete---"
-      # debug "[BdD::execute_requete]"
-      # debug "REQUEST: #{request}"
-      # debug "VALUES: #{values.inspect}"
-      # debug "PARAMS: #{params.inspect}"
-      # debug "[/BdD::execute_requete]"
-      # debug "-"*50 + "\n\n"
+      if @debug_on
+        debug "\n\n---BdD::execute_requete---"
+        debug "[BdD::execute_requete]"
+        debug "REQUEST: #{request}"
+        debug "VALUES: #{values.inspect}"
+        debug "PARAMS: #{params.inspect}"
+        debug "[/BdD::execute_requete]"
+        debug "-"*50 + "\n\n"
+      end
 
       # Préparation de la requête
       begin

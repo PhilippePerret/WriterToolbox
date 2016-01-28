@@ -28,6 +28,7 @@
 
 * [Annexes](#annexes)
   * [Notes de programme](#notes_de_programme)
+  * [Débuggage des requêtes](#debuggagedesrequetes)
 
 
 Maintenant, j'utilise les bases SQLite3 pour les bases de données plutôt que les PStore.
@@ -594,6 +595,7 @@ Retourne toutes les données enregistrées dans la table de l'instance, ou un `H
 
 ## Annexes
 
+
 <a name='notes_de_programme'></a>
 
 ### Notes de programme
@@ -611,3 +613,18 @@ Au final, si c'est une création (la donnée #12 n'existe pas encore), il faudra
     values: { nom: "Son nom", prenom: "Son prénom", id: 12 }
 
 Donc il faut obligatoirement que `:where` soit un `Hash` pour pouvoir l'ajouter aux values.
+
+
+<a name='debuggagedesrequetes'></a>
+
+### Débuggage des requêtes
+
+On peut obtenir un affichage des requêtes dans le débug du programme en utilisant :
+
+    BdD::debug_start
+
+    ... les requêtes sont affichées dans le débug ...
+
+    BdD::debug_stop
+
+    ... Les requêtes ne sont plus affichées dans le débug ...

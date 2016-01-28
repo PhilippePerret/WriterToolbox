@@ -332,8 +332,9 @@ class BdD
       request = "SELECT COUNT(*) FROM #{name}"
       request += " WHERE #{clause_where_conforme params[:where]}" if params.has_key?(:where)
 
-      # La soumettre
-      res = execute request
+      res = BdD::execute_requete( bdd.database, request, params[:values] ).first
+      # # La soumettre
+      # res = execute request
 
       if res == false
         # Deux solutions lorsque le résultat est false :

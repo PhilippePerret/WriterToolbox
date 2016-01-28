@@ -8,6 +8,19 @@ class BdD
 
   class << self
 
+    # Arrêter et démarrer le débuggage des requêtes (leur
+    # affichage dans le débug)
+    # @usage BdD::debug_start / BdD::debug_stop
+    attr_reader :debug_on
+    def debug_start
+      @debug_on = true
+      debug "BdD DEBUG ON"
+    end
+    def debug_stop
+      @debug_on = false
+      debug "BdD DEBUG OFF"
+    end
+
     def traite_colonnes_in params
       colonnes = params[:colonnes] || params[:columns]
       case colonnes
