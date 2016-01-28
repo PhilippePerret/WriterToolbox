@@ -70,8 +70,11 @@ class Post
     def list params = nil
       params ||= Hash::new
       nombre_posts  = params.delete(:for)  || nombre_by_default
-      from_indice   = params.delete(:from) || 0
       return_as     = params.delete(:as)
+      from_index   = params.delete(:from) || 0
+      if from_index == :last
+        from_index = 0 # pour le moment. Après, on le lira dans les paramètres
+      end
 
       data_request = Hash::new
 
@@ -83,7 +86,7 @@ class Post
 
       data_request.merge!(
         order:  'created_at DESC',
-        offset: from_indice,
+        offset: from_index,
         limit:  nombre_posts
       )
 
@@ -96,7 +99,10 @@ class Post
 
       case return_as
       when :instance, :instances  then @posts.keys.collect { |pid| get(pid) }
-      when :li                    then @posts.keys.collect { |pid| get(pid).as_li }.join('')
+      when :li                    then
+        lis = @posts.keys.collect { |pid| get(pid).as_li }.join('')
+        lis = "Aucun message sur le forum pour le moment.".in_li if lis.empty?
+        lis
       when :id, :ids, nil         then @posts.keys
       when :data                  then @posts.values
       when :hash                  then @posts

@@ -13,14 +13,14 @@ class Forum
     end
 
     def as_titre_in_listing_messages
-      "#{name}".in_div(class:'topic_titre')
+      "#{name}".in_div(class:'titre')
     end
     def div_infos_last_message
       (
         created_at.as_human_date(false).in_span(class:'date')+
         info_nombre_messages      +
         info_last_message
-      ).in_div(class: 'topic_infos')
+      ).in_div(class: 'infos')
     end
     def info_last_message
       mess = case last_message

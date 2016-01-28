@@ -9,9 +9,7 @@
 #   Liste des sujets
 # ---------------------------------------------------------------------
 %>
-<ul id="ul_sujets">
-  <%= forum.sujets.as_list(from: :last, for: forum.sujets.nombre_by_default) %>
-</ul>
+<ul id="ul_sujets"><%= forum.sujets.list(as: :li, from: :last) %></ul>
 
 <% if user.grade >= 5 %>
   <%= Forum::Sujet::form_new %>

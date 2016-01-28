@@ -38,10 +38,15 @@ class Sujet
     #   from:   Depuis cet index
     #   for:    Pour ce nombre d'éléments
     #
-    def list params
+    def list params = nil
+      params ||= Hash::new
       return_as   = params.delete(:as)    || :id
       for_nombre  = params.delete(:for)   || nombre_by_default
       from_index  = params.delete(:from)  || 0
+      if from_index == :last
+        from_index = 0 # pour le moment. Après, on le lira dans les paramètres
+      end
+
 
       data_request = Hash::new
 
@@ -66,7 +71,10 @@ class Sujet
       when :hash      then @hash_sujets
       when :data      then @hash_sujets.values
       when :instance  then @hash_sujets.keys.collect { |sid| get(sid) }
-      when :li        then @hash_sujets.keys.collect { |sid| get(sid).as_li }.join('')
+      when :li        then
+        lis = @hash_sujets.keys.collect { |sid| get(sid).as_li }.join('')
+        lis = "Aucun sujet sur le forum pour le moment.".in_li if lis.empty?
+        lis
       end
     end
 

@@ -7,4 +7,4 @@
 <%= forum.titre_h1("Messages") %>
 <%= forum.onglets %>
 
-<ul id="ul_posts"><%= forum.posts.as_list(as: :li, from: 0) %></ul>
+<ul id="ul_posts"><%= forum.posts.list(as: :li, from: :last) %></ul>
