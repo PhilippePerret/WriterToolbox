@@ -4,12 +4,38 @@ ul#ul_posts, ul#ul_sujets
   margin        : 1em 0
   padding       : 1em
   font-size     : 14.2pt
+  
+  a:hover, a:visited, a:link
+    color           : inherit
+    font-family     : inherit
+    font-size       : inherit
+    font-style      : inherit
+    letter-spacing  : inherit  
+    font-weight     : inherit
+
+  span.libelle
+    font-style      : normal
 
   div.topic, li.topic
-    background-color  : #D7D7FF
+    background-color  : #F7D7C3
     margin-bottom     : 1em
     padding           : 0.5em
     position          : relative
+    
+    
+    div.titre
+      font-size     : 1.2em
+      font-weight   : normal
+      color         : #000
+      border-bottom : 1px solid #8c8c8c
+      margin-bottom : 0.3em
+
+    div.infos_sujet
+      border-top      : 1px solid #8c8c8c
+      font-size       : 0.85em
+      margin-top      : 1em
+      span.libelle
+        margin-left     : 1em
 
     div.hidetools
       opacity           : 0
@@ -29,11 +55,6 @@ ul#ul_posts, ul#ul_sujets
       div.hidetools
         opacity         : 0.9
         
-    div.titre
-      font-size     : 1.2em
-      font-weight   : normal
-      color         : #000
-
     div.infos
       font-size     : 0.85em
       span.last_post

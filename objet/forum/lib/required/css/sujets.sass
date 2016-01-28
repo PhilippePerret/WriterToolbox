@@ -7,3 +7,68 @@ ul#forum_topics
   li.sujet
     border-bottom     : 1px solid #CCC
     padding-bottom    : 4px
+
+ul#posts
+  list-style        : none
+  margin            : 0
+  padding           : 14px
+  background-color  : #dfdfdf
+  span.libelle
+    font-style      : normal
+  li.post
+    margin          : 0.5 0
+    padding         : 0.5
+    // border          : 1px solid #ccc
+
+    // Les infos sur le message (pseudo, date, etc.)
+    div.infos_post
+      opacity         : 0.73
+      font-size       : 0.75em
+      text-align      : right
+      > span
+        margin-right    : 1em
+      span
+        &.numero
+          font-weight     : bold
+    div.infos_auteur
+      opacity         : 0.73
+      text-align      : left
+      font-size       : 0.75em
+      float           : left
+      width           : 200px
+      overflow        : hidden
+      > span
+        display         : block
+      span.pseudo
+        font-weight     : bold
+      span.nbposts
+        font-weight     : normal
+      span.date
+        color           : #555
+        
+    // Le contenu du message lui-même
+    div.content
+      margin-left       : 220px
+      font-size         : 13.8pt
+      // border            : 1px solid #999
+      padding           : 2.4em 2em
+      background-color  : white
+
+      // Les boutons "répondre", etc.
+      div.btns
+        margin-top        : 2em
+        margin-bottom     : -1em
+        text-align        : right
+        a
+          border            : 1px solid green
+          padding           : 4px 8px
+          display           : inline-block
+          width             : 72px
+          font-size         : 10.4pt
+          color             : black
+          background-color  : #48d848
+          margin-left       : 8px
+          text-align        : center
+          opacity           : 0.5
+          &:hover
+            opacity           : 1

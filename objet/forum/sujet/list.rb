@@ -11,6 +11,7 @@ class Sujet
     (
       as_titre_in_listing_messages  +
       div_infos_last_message        +
+      div_infos_sujet               +
       div_tools
     ).in_li(class:'topic')
   end
@@ -20,8 +21,7 @@ class Sujet
   end
   def div_infos_last_message
     (
-      info_last_message     +
-      info_nombre_messages
+      info_last_message
     ).in_div(class: 'infos')
   end
 
@@ -40,9 +40,29 @@ class Sujet
     end
     (
       "Dernier message ".in_span(class:'libelle') +
-      "(#{created_at.as_human_date(false)}, de <strong>#{pseudo_last_post}</strong>)".in_span(class:'date') +
+      "(#{last_post.created_at.as_human_date(false)}, de <strong>#{pseudo_last_post}</strong>)".in_span(class:'date') +
       " : #{mess}".in_span
-    ).in_span(class:'last_post')
+    ).in_a(href:"sujet/#{id}/read?in=forum#post_#{last_post.id}").in_span(class:'last_post')
+  end
+
+  def div_infos_sujet
+    (
+      info_nombre_messages  +
+      info_dates_sujet      +
+      info_creator
+    ).in_div(class:'infos_sujet')
+  end
+  def info_dates_sujet
+    (
+      "Sujet créé le ".in_span(class:'libelle') +
+      "#{created_at.as_human_date(false)}"
+    ).in_span(class:'date')
+  end
+  def info_creator
+    (
+      " par ".in_span(class:'libelle') +
+      "<strong>#{creator.pseudo}</strong> (#{creator.grade_humain})".in_span
+    ).in_span(class:'creator')
   end
   def info_nombre_messages
     (

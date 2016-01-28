@@ -1,0 +1,14 @@
+<%
+# Vue pour lire un sujet
+#
+# NOTE À UTILISER
+#   Mettre une ancre "post_<id post>" aux posts, pour pouvoir y venir
+#   depuis n'importe où.
+
+# Raccourci pour obtenir l'instance du sujet
+def sujet
+  @sujet ||= site.current_route.instance
+end
+%>
+<%= forum.titre_h1(sujet.name) %>
+<%= sujet.posts(from: 0, as: :ul) %>

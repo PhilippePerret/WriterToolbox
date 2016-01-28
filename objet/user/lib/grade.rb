@@ -9,11 +9,6 @@ il est élevé, plus l'utilisateur possède de privilège.
 =end
 class User
 
-  # {String} Grade forum de l'utilisateur au format humain
-  def grade_humain
-    @grade_humain ||= GRADES[grade][:hname]
-  end
-
   # {String} Liste humaine des privilèges de l'auteur
   def privileges_forum
     (grade < 4 ? "seulement " : "") +
