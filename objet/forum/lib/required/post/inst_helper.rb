@@ -30,9 +30,24 @@ class Post
 
   def post_content
     (
-      content +
+      content_formated +
       boutons_inter
     ).in_div(class:'content')
+  end
+
+  # Traitement du contenu du message
+  def content_formated
+    content.gsub!(/\[cite([0-9]+)\](.*)\[\/cite\1\]/){
+      post_id   = $1.to_i
+      citation  = $2.to_s
+      post_cite = Forum::Post::get(post_id)
+      "<div class='citation'>"+
+        "<span class='auteur-citation'>#{post_cite.auteur.pseudo}</span>" +
+        "#{citation}" +
+        "<span class='link-citation'><a href='post/#{post_id}/read?in=forum'>Lire l'original</a></span>" +
+      "</div>"
+    }
+    content.to_html
   end
   def post_infos
     @post_infos ||= begin
@@ -75,8 +90,8 @@ class Post
   end
   def bouton_votes
     return "" unless user.grade > 1
-    "+1".in_a(class:'vote', title:"“Upvotez” pour ce message si vous l'avez apprécié ou que vous le trouvez intéressant ou pertinent.") +
-    "-1".in_a(class:'vote', title:"“Downvotez” pour ce message s'il ne présente pas d'intérêt pour vous.")
+    "+1".in_a(href:"post/#{id}/vote?in=forum&v=1", class:'vote', title:"“Upvotez” pour ce message si vous l'avez apprécié ou que vous le trouvez intéressant ou pertinent.") +
+    "-1".in_a(href:"post/#{id}/vote?in=forum&v=-1", class:'vote', title:"“Downvotez” pour ce message s'il ne présente pas d'intérêt pour vous.")
   end
 end #/Post
 end #/Forum

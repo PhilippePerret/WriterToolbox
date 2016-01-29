@@ -16,6 +16,12 @@ def schema_table_forum_posts_votes
     # différent
     vote: {type:"INTEGER(8)", default: "0"},
 
+    # Liste des users ayant voté POUR ce post
+    upvotes: {type:"BLOB", default:"'[]'"},
+
+    # Liste des users ayant voté CONTRE ce post
+    downvotes: {type:"BLOB", default:"'[]'"},
+
     # Date de dernier vote
     updated_at: {type:"INTEGER(10)", constraint:"NOT NULL"}
   }
