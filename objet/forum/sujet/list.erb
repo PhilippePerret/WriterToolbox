@@ -17,5 +17,5 @@ end
 # ---------------------------------------------------------------------
 %>
 <%= formulaire_nouveau_sujet %>
-<ul id="ul_sujets"><%= forum.sujets.list(as: :li, from: :last) %></ul>
+<ul id="ul_sujets"><%= forum.sujets.list(valid:true, as: :li, from: :last) %></ul>
 <%= formulaire_nouveau_sujet %>
