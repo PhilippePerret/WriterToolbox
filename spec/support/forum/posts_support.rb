@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-class Forum
+class ForumSpec
 class << self
   # +params+
   #   :count        Nombre de messages à créer
@@ -24,12 +24,43 @@ class << self
   # +params+ pour :
   #   :validation
   def create_new_post params
+
+    # Former les données et les insérer dans
+    # la table
     npd = new_post_data(params).dup
+    contenu = npd.delete(:content)
     new_post_id = Forum::table_posts.insert( npd )
-    sujet = Forum::Sujet::get( npd[:sujet_id] )
-    sujet.add_post( new_post_id )
+
+    # Ajouter le contenu dans la table
+    # le contenant
+    data_content = {
+      id: new_post_id,
+      content: contenu,
+      updated_at: npd[:updated_at]
+    }
+    Forum::table_posts_content.insert(data_content)
+
+    # Donner un vote aléatoire à ce message
+    data_vote = {
+      id: new_post_id,
+      vote: rand(100),
+      updated_at: npd[:updated_at]
+    }
+    Forum::table_posts_votes.insert(data_vote)
+
+    # Ajouter ce post à son auteur
+    User::get(npd[:user_id]).add_post( new_post_id )
+
+    # Ajouter ce post à son sujet
+    Forum::Sujet::get( npd[:sujet_id] ).add_post( new_post_id )
+
+    # ON retourne l'id du nouveau post
     new_post_id
+
   end
+
+  MOTS_ALEAS = ["gazelle", "crocodile", "chaudron", "philosophie", "marteau", "neige", "scénario"]
+  NOMBRE_MOTS_ALEAS = MOTS_ALEAS.count
 
   # Retourne des données pour un nouveau message
   def new_post_data params
@@ -42,20 +73,22 @@ class << self
 
     # puts "bit validation : #{bit_validation}"
 
-    auteur  = pick_any_user  # => User
-    sujet   = pick_any_sujet # => Forum::Sujet
+    auteur  = ForumSpec::pick_any_user  # => User
+    sujet   = ForumSpec::pick_any_sujet # => Forum::Sujet
     time    = NOW - rand(100).days
     # Pour la recherche par texte
-    mot_alea = ["gazelle", "crocodile", "éléphant"][rand(3)]
+    mot_alea = MOTS_ALEAS[rand(NOMBRE_MOTS_ALEAS)]
     npd = {
       user_id:      auteur.id,
-      content:      "Contenu du message du #{Time.now}, un message de #{auteur.pseudo} sur le sujet #{sujet.name} parlant de #{mot_alea}.",
+      # Note : le content sera retiré pour le mettre dans la
+      # table séparée qui le contient.
+      content:      "Un nouveau message de #{auteur.pseudo} écrit le #{time.as_human_date} sur le sujet ##{sujet.id} parlant de #{mot_alea}.",
       sujet_id:     sujet.id,
       options:      "#{bit_validation}",
       updated_at:   time,
       created_at:   time
     }
-    npd.merge!(valided_by: pick_any_admin.id) if bit_validation == 1
+    npd.merge!(valided_by: ForumSpec::pick_any_admin.id) if bit_validation == 1
     return npd
   end
 

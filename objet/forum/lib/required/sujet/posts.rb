@@ -43,8 +43,13 @@ class Sujet
   # Ajoute le post d'ID +post_id+ au sujet courant
   def add_post post_id
     post_id = post_id.id if post_id.instance_of?(Forum::Post)
-    @count = count + 1
-    set( count:@count, last_post_id:post_id )
+    @count        = count + 1
+    @last_post_id = post_id
+    Forum::table_sujets_posts.update(id, {
+      count:          @count,
+      last_post_id:   post_id,
+      updated_at:     NOW
+    })
   end
 
 end #/Sujet

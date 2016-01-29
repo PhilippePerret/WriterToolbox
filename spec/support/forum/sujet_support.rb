@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class Forum
+class ForumSpec
 class << self
 
   # Retourne un sujet au hasard (instance {Forum::Sujet})
@@ -11,7 +11,8 @@ class << self
   # Crée un sujet et retourne son instance
   # Retourne l'IDentifiant du nouveau sujet
   def create_new_sujet
-    Forum::table_sujets.insert( data_new_sujet )
+    new_sujet_id = Forum::table_sujets.insert( data_new_sujet )
+    Forum::table_sujets_posts.insert( data_new_sujet_posts(new_sujet_id) )
   end
   def data_new_sujet
     time = NOW - rand(100).days
@@ -19,11 +20,19 @@ class << self
     {
       creator_id:     creator.id,
       name:           "Nom du sujet de #{creator.pseudo} à #{Time.now}",
-      last_post_id:   nil,
-      count:          0,
       options:        "",
       categories:     nil,
       created_at:     time,
+      updated_at:     time
+    }
+  end
+  def data_new_sujet_posts(id)
+    time = NOW - rand(50).days
+    {
+      id:             id,
+      last_post_id:   nil,
+      count:          0,
+      views:          0,
       updated_at:     time
     }
   end

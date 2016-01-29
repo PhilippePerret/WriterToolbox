@@ -1,6 +1,14 @@
 # encoding: UTF-8
-class Forum
+class ForumSpec
 class << self
+
+  # Crée +nombre+ user pour le forum
+  def create_users nombre
+    nombre.times.each do
+      create_new_auteur
+    end
+    reset_auteurs
+  end
 
   # Note : il faut une procédure spéciale pour pouvoir
   # créer des auteurs qui peuvent écrire des messages
@@ -12,7 +20,19 @@ class << self
     params[:grade_min] ||= 4
     bit2 = params[:grade_min] + rand(9 - params[:grade_min])
     opts = "0#{bit2}"
-    create_user(options: opts, session_id:nil)
+    new_user = create_user(options: opts, session_id:nil)
+    ( create_forum_user new_user )
+  end
+
+  # Créer l'enregistrement dans la table propre au forum
+  def create_forum_user new_user
+    dnew = {
+      id:           new_user.id,
+      posts_count:  0,
+      created_at:   new_user.created_at,
+      updated_at:   new_user.updated_at
+    }
+    Forum::table_users.insert(dnew)
   end
 
 
@@ -31,8 +51,8 @@ class << self
 
   def shuffled_user_ids
     @shuffled_user_ids ||= begin
-      if all_auteurs_ids.count < 10
-        (10 - all_auteurs_ids.count).times do create_new_auteur end
+      if all_auteurs_ids.count < 20
+        (20 - all_auteurs_ids.count).times do create_new_auteur end
         reset_auteurs
       end
       all_auteurs_ids.dup

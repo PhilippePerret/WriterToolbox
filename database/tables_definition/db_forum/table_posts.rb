@@ -10,7 +10,7 @@ def schema_table_forum_posts
 
     # ID message parent (if any)
     parent_id:    {type:'INTEGER'},
-    content:      {type:"TEXT",         constraint:"NOT NULL"},
+
     #  Options
     # ---------
     # String de 32 caractères max
