@@ -4,7 +4,6 @@
 # Par défaut, la page affiche les 30 derniers messages. Sinon, affiche
 # les messages du sujet voulu par la route.
 %>
-<%= forum.titre_h1("Messages") %>
-<%= forum.onglets %>
+<%= forum.titre_h1("Messages", {onglets: true}) %>
 
 <ul id="ul_posts"><%= forum.posts.list(as: :li, from: :last) %></ul>

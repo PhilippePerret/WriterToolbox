@@ -10,5 +10,5 @@ def sujet
   @sujet ||= site.current_route.instance
 end
 %>
-<%= forum.titre_h1(sujet.name) %>
+<%= forum.titre_h1(sujet.name, {onglets: true}) %>
 <%= sujet.posts(from: 0, as: :ul) %>

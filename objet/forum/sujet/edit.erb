@@ -5,9 +5,12 @@ site.require 'form_tools'
 form.prefix = "sujet"
 form.objet  = sujet
 
+# Barrière : l'utilisateur doit être le possesseur de ce
+# sujet ou doit avoir un grade de 7 au moins
+raise_unless user.id == sujet.creator_id || user.grade > 6
 
 %>
-<%= forum.titre_h1("Sujet/question (édition/création)") %>
+<%= forum.titre_h1("Sujet/question (édition/création)", {onglets: true}) %>
 
 <form class="dim2080" action="sujet/<%= sujet.id %>/edit?in=forum" method="POST">
 

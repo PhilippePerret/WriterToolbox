@@ -2,10 +2,6 @@
 class Forum
 class Sujet
 
-  # ---------------------------------------------------------------------
-  #   Instances Forum::Sujet (un sujet en particulier)
-  # ---------------------------------------------------------------------
-
   def as_li
     # return "#{id}"
     (
@@ -17,7 +13,7 @@ class Sujet
   end
 
   def as_titre_in_listing_messages
-    "#{name}".in_div(class:'titre')
+    lien_read(name, {class:'inherit'}).in_div(class:'titre')
   end
   def div_infos_last_message
     (
@@ -27,14 +23,21 @@ class Sujet
 
   # Retourne le dernier message sur le sujet courant
   def last_post
-    @last_post ||= forum.posts.list(for:1, as: :instance, sujet_id: id).first
+    @last_post ||= begin
+      pid = Forum::table_sujets_posts.get(id, colonnes:[:last_post_id])[:last_post_id]
+      Forum::Post::get(pid) unless pid.nil?
+    end
   end
   def pseudo_last_post
-    @pseudo_last_post ||= last_post.auteur.pseudo
+    @pseudo_last_post ||= "PSEUDO" #last_post.auteur.pseudo
   end
   def info_last_message
-    mess = case last_post
-    when nil then "--- aucun dernier message ---"
+    return "--- aucun dernier message ---" if last_post.nil?
+    # IL faut charger le content du message, qui se trouve dans une
+    # autre table
+    last_post.content
+    mess = if last_post.content.length > 300
+      last_post.content[0..300] + "[…]"
     else
       last_post.content
     end
@@ -75,11 +78,12 @@ class Sujet
   # en fonction du niveau de l'user
   def div_tools
     (
-    "Détruire ce sujet".in_a(href:"sujet/#{id}/destroy?in=forum", onclick:"if(confirm('Voulez-vous vraiment détruire ce sujet ?')){return true}else{return false}") +
-    '<br />' +
-    "Lire ce sujet".in_a(href:"sujet/#{id}/read?in=forum")
+      lien_read("Lire ce sujet") +
+      lien_edit("Éditer ce sujet") +
+      lien_destroy("Détruire ce sujet")
     ).in_div(class:'hidetools')
   end
+
 
 end #/Sujet
 end #/Forum

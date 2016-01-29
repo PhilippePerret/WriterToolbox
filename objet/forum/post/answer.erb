@@ -7,8 +7,7 @@ form.prefix = 'answer'
 form.objet  = param(:answer) || {content: "[cite#{post.id}]#{post.content}[/cite#{post.id}]"}
 %>
 
-<%= forum.titre_h1("Réponse de message") %>
-<%= forum.onglets %>
+<%= forum.titre_h1("Réponse de message", {onglets: true}) %>
 <%
 # ---------------------------------------------------------------------
 #   Formulaire de réponse

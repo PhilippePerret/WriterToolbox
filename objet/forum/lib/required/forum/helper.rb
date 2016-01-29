@@ -7,8 +7,12 @@ class Forum
 
   # Pour écrire titre et sous-titre
   # @usage    <%= forum.titre_h1[("<sous titre>")] %>
-  def titre_h1 sous_titre = nil
+  # +params+
+  #     :onglets      Si true, on place les onglets sous le titre
+  def titre_h1 sous_titre = nil, params = nil
+    params ||= Hash::new
     t = "Forum".in_h1
+    t << onglets if params[:onglets]
     t << sous_titre.in_h2 unless sous_titre.nil?
     t
   end
