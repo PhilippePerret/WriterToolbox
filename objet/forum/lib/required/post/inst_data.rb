@@ -5,9 +5,10 @@ class Post
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
-  def user_id   ; @user_id    ||= get(:user_id)   end
-  def sujet_id  ; @sujet_id   ||= get(:sujet_id)  end
-  def sujet_id= valeur; @sujet_id = valeur        end
+  def user_id     ; @user_id      ||= get(:user_id)     end
+  def sujet_id    ; @sujet_id     ||= get(:sujet_id)    end
+  def sujet_id= valeur; @sujet_id = valeur end
+  def modified_by ; @modified_by  ||= get(:modified_by) end
   # Data dans autres tables
   def content   ; @content    ||= get_content     end
   def vote      ; @vote       ||= get_vote        end

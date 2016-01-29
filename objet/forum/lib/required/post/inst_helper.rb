@@ -59,7 +59,7 @@ class Post
         "<span class='link-citation'><a href='post/#{post_id}/read?in=forum'>Lire l'original</a></span>" +
       "</div>"
     }
-    content.to_html
+    content.split("\n").reject{|p|p.empty?}.collect{|p| p.in_p}.join
   end
   def post_infos
     @post_infos ||= begin
@@ -82,6 +82,7 @@ class Post
 
   def boutons_inter
     (
+      mark_last_update  +
       bouton_editer     +
       bouton_supprimer  +
       bouton_repondre   +
@@ -89,6 +90,20 @@ class Post
     ).in_div(class:'btns')
   end
 
+  # Retourne le texte indiquant que le message a été modifié, peut-être
+  # par quelqu'un d'autre.
+  # Noter qu'il ne suffit pas de comparer l'exactitude entre created_at
+  # et updated_at, entendu qu'il peut y avoir un décalage "naturel", puisqu'en
+  # utilisant le bouton général "Répondre" (pas celui d'un message), on crée
+  # le message avant de l'enregistrer. Donc on indique la modification que
+  # si elle a eu lieu au moins deux heures après la création.
+  def mark_last_update
+    return "" if created_at < (updated_at - (2*3600)) && modified_by.nil?
+    mlu = String::new
+    mlu << "modifié le #{updated_at.as_human_date}"
+    mlu << " par <strong>#{User::get(modified_by).pseudo}</strong>" unless modified_by.nil?
+    mlu.in_span(class:'lastupdate fleft tiny')
+  end
   def bouton_editer
     return "" unless current_user_is_owner? || user.grade > 6
     "Modifier".in_a(href:"post/#{id}/edit?in=forum")
