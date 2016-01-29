@@ -52,8 +52,9 @@ class Post
   def post_infos
     @post_infos ||= begin
       (
-        updated_at.as_human_date(true).in_span(class: 'date') +
-        "##{numero}".in_span(class:'numero')
+        ("Votes".in_span(class:'libelle') + vote.to_s.in_span).in_span(class:'votes') +
+        ("Créé le".in_span(class:'libelle') + updated_at.as_human_date(true)).in_span(class: 'date') +
+        "Index".in_span(class:'libelle') + ("##{numero}").in_span(class:'numero')
       ).in_div(class:'infos_post')
     end
   end
