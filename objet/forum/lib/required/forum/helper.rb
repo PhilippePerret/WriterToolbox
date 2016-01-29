@@ -16,11 +16,17 @@ class Forum
   # Pour afficher les onglets généraux
   # @usage:  <%= forum.onglets %>
   def onglets
-    {
-      "Messages"  => 'post/list?in=forum',
-      "Sujets" => 'sujet/list?in=forum',
+    hongs = {
+      "Messages"        => 'post/list?in=forum',
+      "Sujets"          => 'sujet/list?in=forum',
       "Vos préférences" => 'user/preferences?in=forum'
-    }.
+    }
+
+    if param(:forum_current_sujet)
+      hongs.merge!("Revenir" => "sujet/#{param(:forum_current_sujet)}/read?in=forum")
+    end
+
+    hongs.
       collect{|tita, href| tita.in_a(href:href, class:'onglet')}.
       join('').
       in_div(id:"onglets", style:'margin:0!important')

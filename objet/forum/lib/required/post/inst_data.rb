@@ -18,6 +18,18 @@ class Post
   def auteur      ; @auteur ||= User::get(user_id)          end
   def sujet       ; @sujet  ||= Forum::Sujet::get(sujet_id) end
 
+  # ---------------------------------------------------------------------
+  #   Méthodes de données
+  # ---------------------------------------------------------------------
+
+  # Actualisation du texte du message
+  def update_content contenu
+    new_data = {
+      content:    contenu,
+      updated_at: NOW
+    }
+    Forum::table_posts_content.update(id, new_data)
+  end
 
   # ---------------------------------------------------------------------
   #   Private

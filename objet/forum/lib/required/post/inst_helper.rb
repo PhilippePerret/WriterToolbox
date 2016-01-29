@@ -34,18 +34,11 @@ class Post
       boutons_inter
     ).in_div(class:'content')
   end
-  def boutons_inter
-    (
-      "Éditer".in_a()     +
-      "Répondre".in_a()   +
-      "Supprimer".in_a()
-    ).in_div(class:'btns')
-  end
   def post_infos
     @post_infos ||= begin
       (
-        "Message ##{numero}".in_span(class:'numero') +
-        updated_at.as_human_date(true).in_span(class: 'date')
+        updated_at.as_human_date(true).in_span(class: 'date') +
+        "##{numero}".in_span(class:'numero')
       ).in_div(class:'infos_post')
     end
   end
@@ -58,5 +51,32 @@ class Post
     ).in_div(class:'infos_auteur')
 
   end
-end
-end
+
+  def boutons_inter
+    (
+      bouton_editer     +
+      bouton_supprimer  +
+      bouton_repondre   +
+      bouton_votes
+    ).in_div(class:'btns')
+  end
+
+  def bouton_editer
+    return "" unless current_user_is_owner? || user.grade > 6
+    "Modifier".in_a(href:"post/#{id}/edit?in=forum")
+  end
+  def bouton_repondre
+    return "" unless user.grade > 2
+    "Répondre".in_a(href:"post/#{id}/answer?in=forum")
+  end
+  def bouton_supprimer
+    return "" unless user.grade > 6
+    "Détruire".in_a(href:"post/#{id}/destroy?in=forum", style:'background-color:red;color:white', onclick:"if(confirm('Voulez-vous réellement détruire définitivement ce message ?')){return true}else{return false}")
+  end
+  def bouton_votes
+    return "" unless user.grade > 1
+    "+1".in_a(class:'vote', title:"“Upvotez” pour ce message si vous l'avez apprécié ou que vous le trouvez intéressant ou pertinent.") +
+    "-1".in_a(class:'vote', title:"“Downvotez” pour ce message s'il ne présente pas d'intérêt pour vous.")
+  end
+end #/Post
+end #/Forum

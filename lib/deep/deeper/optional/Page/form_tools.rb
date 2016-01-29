@@ -46,6 +46,10 @@ class Page
       #     form.field_<tyle> "<libelle>", "<property>", selected[, options]
       # ---------------------------------------------------------------------
 
+      def field_hidden libelle, prop, selected, options = nil
+        f = Field::new(:hidden, libelle, prop, selected, options)
+        f.field_value.in_hidden(name:f.field_name, id:f.field_id)
+      end
       def field_select libelle, prop, selected, options = nil
         Field::new(:select, libelle, prop, selected, options).form_row
       end

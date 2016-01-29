@@ -1,0 +1,27 @@
+<%
+# Vue pour modifier le message courant
+
+post = site.objet # pris dans la route
+
+site.require 'form_tools'
+form.prefix = "post"
+form.objet  = site.objet
+%>
+
+<%= forum.titre_h1("Édition de message") %>
+
+<%
+# ---------------------------------------------------------------------
+#   Aperçu du message
+%>
+
+<%
+# ---------------------------------------------------------------------
+#   Formulaire
+%>
+<form class="dim2080" action="post/<%= post.id %>/save?in=forum" method="POST">
+  <%= "save_post".in_hidden(name:'operation') %>
+  <%= user.id.in_hidden(name:"post[modifier]") %>
+  <%= form.field_textarea("Message", 'content', nil) %>
+  <%= form.submit_button("Enregistrer") %>
+</form>

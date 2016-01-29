@@ -70,6 +70,10 @@ Produira :
       </span>
     </div>
 
+### Construction d'un champ hidden
+
+    form.field_hidden(nil, '<prop>', nil)
+    
 ### Construction d'un textarea
 
     form.field_textarea(<params>)

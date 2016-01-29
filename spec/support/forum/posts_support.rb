@@ -2,7 +2,7 @@
 
 class ForumSpec
 
-  MOTS_ALEAS = ["gazelle", "crocodile", "chaudron", "philosophie", "marteau", "neige", "scénario", "fantastique", "la question du logemenet", "toi", "rossignol"]
+  MOTS_ALEAS = ["gazelle", "crocodile", "chaudron", "philosophie", "marteau", "neige", "scénario", "fantastique", "la question du logement", "toi", "rossignol"]
   NOMBRE_MOTS_ALEAS = MOTS_ALEAS.count
 
 class << self

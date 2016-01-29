@@ -1,0 +1,46 @@
+<%
+# Vue pour répondre à un message
+raise_unless user.grade > 2
+
+site.require 'form_tools'
+form.prefix = 'answer'
+form.objet  = param(:answer) || {content: "[cite#{post.id}]#{post.content}[/cite#{post.id}]"}
+%>
+
+<%= forum.titre_h1("Réponse de message") %>
+<%= forum.onglets %>
+<%
+# ---------------------------------------------------------------------
+#   Formulaire de réponse
+%>
+<form class="dim2080" action="post/<%= post.id %>/answer?in=forum" method="POST">
+
+  <%= "save_answer".in_hidden(name:'operation') %>
+  <%
+  # Pour que les onglets affiche un onglet "Revenir" qui permettra
+  # de revenir au sujet
+  %>
+  <%= post.sujet_id.in_hidden(name:'forum_current_sujet') %>
+
+  <%= form.field_raw("", "", nil, {field:"Revenir au sujet".in_a(href:"sujet/#{post.sujet_id}/read?in=forum").in_div(class:'small right')}) %>
+  <%= post.id.in_hidden(name:'answer[parent_id]') %>
+
+
+  <%
+  #   Le message original
+  %>
+  <%= form.field_raw("En réponse à ", 'reponse', nil, {field: post.content}) %>
+  <%= form.field_description("Message de <strong>#{post.auteur.pseudo}</strong> du #{post.created_at.as_human_date(true, true)}.") %>
+  <%
+  #   La réponse
+  %>
+  <%= form.field_hidden('', 'id', nil) %>
+  <%= form.field_hidden('', 'user_id', user.id) %>
+  <%= form.field_hidden('', 'sujet_id', post.sujet_id) %>
+  <%= form.field_textarea("Répondre", 'content', nil, {class:'high'}) %>
+  <%# Quand le grade de l'user n'est pas suffisant %>
+  <% if user.grade < 4 %>
+    <%= form.field_raw(nil, '', nil, {field:"<em class='small'>Votre grade n'étant pas suffisant, merci de noter que votre message devra être validé pour pouvoir apparaitre en réponse au précédent.</em>"}) %>
+  <% end %>
+  <%= form.submit_button("Enregistrer") %>
+</form>

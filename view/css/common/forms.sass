@@ -127,12 +127,16 @@ form
       input[type="text"], input[type="password"], textarea, select, select option
         font-size         : inherit
         font-family       : inherit
+        font-style        : inherit
 
       input[type="text"], input[type="password"], textarea
         width             : 95%
       
       textarea
         min-height        : 160px
+        padding           : 8px
+        &.high
+          min-height        : 320px
 
       &.descfield
         font-size         : 10.4pt

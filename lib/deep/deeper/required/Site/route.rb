@@ -6,6 +6,13 @@ Méthodes propres au traitement de la route
 =end
 class SiteHtml
 
+  # Un raccourci pour obtenir l'instance courante
+  # de la route à l'aide de `site.objet` ou `site.instance`
+  def objet
+    @objet ||= self.current_route.instance
+  end
+  alias :instance :objet
+
   # {SiteHtml::Route} Instance de la route courante
   attr_reader :current_route
 
