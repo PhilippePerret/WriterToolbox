@@ -1,6 +1,10 @@
 # encoding: UTF-8
 
 class ForumSpec
+
+  MOTS_ALEAS = ["gazelle", "crocodile", "chaudron", "philosophie", "marteau", "neige", "scénario", "fantastique", "la question du logemenet", "toi", "rossignol"]
+  NOMBRE_MOTS_ALEAS = MOTS_ALEAS.count
+
 class << self
   # +params+
   #   :count        Nombre de messages à créer
@@ -59,8 +63,6 @@ class << self
 
   end
 
-  MOTS_ALEAS = ["gazelle", "crocodile", "chaudron", "philosophie", "marteau", "neige", "scénario"]
-  NOMBRE_MOTS_ALEAS = MOTS_ALEAS.count
 
   # Retourne des données pour un nouveau message
   def new_post_data params

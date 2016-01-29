@@ -13,10 +13,14 @@ class Sujet
     data_request = Hash::new
     data_request.merge!(
       where:    { sujet_id:  id },
-      order:    "created_at DESC",
+      order:    "created_at ASC",
       offset:   from_index,
       limit:    for_nombre
     )
+
+    # TODO : L'ordre (order) peut dépendre d'autres choses, par exemple
+    # des votes qui sont dans la table posts_votes quand le sujet est d'un
+    # type réponse à une question avec meilleure réponse.
 
     data_request.merge!(colonnes:[]) unless [:hash, :data].include?(return_as)
 

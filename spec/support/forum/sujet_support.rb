@@ -17,9 +17,10 @@ class << self
   def data_new_sujet
     time = NOW - rand(100).days
     creator = pick_any_admin
+    mot_alea = MOTS_ALEAS[rand(NOMBRE_MOTS_ALEAS)]
     {
       creator_id:     creator.id,
-      name:           "Nom du sujet de #{creator.pseudo} à #{Time.now}",
+      name:           "Un sujet initié par #{creator.pseudo} à #{time.as_human_date} à propos de #{mot_alea}",
       options:        "",
       categories:     nil,
       created_at:     time,

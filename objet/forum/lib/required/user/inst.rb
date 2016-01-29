@@ -27,6 +27,11 @@ class User
   end
 
   # Ajoute un message pour l'auteur
+  # Cela correspond à plusieurs actions : incrémente la
+  # donnée `count` de l'auteur (note : dans l'autre table),
+  # renseigne `first_post` si c'est le premier message et
+  # enfin renseigne `last_post` spécifiant l'identifiant
+  # du dernier message.
   def add_post post_id
     post_id = post_id.id if post_id.instance_of?(Forum::Post)
 
@@ -39,7 +44,8 @@ class User
     dnew.merge!(last_post: {at: NOW, id: post_id} )
 
     # On incrémente toujours le nombre de message de l'user
-    dnew.merge!( posts_count: posts_count + 1 )
+    @posts_count = posts_count + 1
+    dnew.merge!( posts_count: @posts_count )
 
     Forum::table_users.update(id, dnew)
   end
