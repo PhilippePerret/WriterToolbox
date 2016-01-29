@@ -98,7 +98,7 @@ class Post
   # le message avant de l'enregistrer. Donc on indique la modification que
   # si elle a eu lieu au moins deux heures après la création.
   def mark_last_update
-    return "" if created_at < (updated_at - (2*3600)) && modified_by.nil?
+    return "" unless updated_at > (created_at + 2*3600) || modified_by != nil
     mlu = String::new
     mlu << "modifié le #{updated_at.as_human_date}"
     mlu << " par <strong>#{User::get(modified_by).pseudo}</strong>" unless modified_by.nil?

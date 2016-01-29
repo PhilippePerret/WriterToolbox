@@ -40,6 +40,11 @@ class Forum
       }
     end
 
+    def incremente_vues
+      @views = views + 1
+      Forum::table_sujets_posts.update( id, { views:@views, updated_at:NOW } )
+    end
+
     # Raccourci à la table contenant les sujets
     def table
       @table ||= Forum::table_sujets

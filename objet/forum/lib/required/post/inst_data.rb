@@ -54,7 +54,8 @@ class Post
   # ---------------------------------------------------------------------
   private
     def get_content
-      Forum::table_posts_content.get(id, colonnes: [:content] )[:content]
+      res = Forum::table_posts_content.get(id, colonnes: [:content] )
+      res.nil? ? "" : res[:content]
     end
 
     def get_vote
@@ -62,10 +63,10 @@ class Post
       res.nil? ? 0 : res[:vote].to_i
     end
     def get_votes
-      d = table_vote.get(id, colonnes:[:upvotes, :downvotes, :vote])
-      @upvotes    = d[:upvotes]
-      @downvotes  = d[:downvotes]
-      @vote       = d[:vote]
+      d = table_vote.get(id, colonnes:[:upvotes, :downvotes, :vote]) || Hash::new
+      @upvotes    = d[:upvotes]   || Array::new
+      @downvotes  = d[:downvotes] || Array::new
+      @vote       = d[:vote]      || 0
     end
 end #/Post
 end #/Forum

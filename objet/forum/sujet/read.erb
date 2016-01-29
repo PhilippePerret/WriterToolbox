@@ -6,7 +6,23 @@
 #   depuis n'importe où.
 
 # Raccourci pour obtenir l'instance du sujet
-def sujet ; @sujet ||= site.objet end
+def sujet
+  @sujet ||= begin
+    # Attention, parfois on revient ici après fait quelque chose sur
+    # un message et le sujet de la route est peut-être un post. Il
+    # faut donc faire un test et, le cas échéant prendre le sujet du
+    # message édité
+    if site.objet.instance_of?( Forum::Sujet)
+      # On en profite aussi pour marquer le sujet lu à nouveau
+      site.objet.incremente_vues
+      site.objet
+    elsif site.objet.instance_of?(Forum::Post)
+      site.objet.sujet
+    else
+      raise "Impossible de déterminer le sujet, dans forum/sujet/read.erb. La classe de site.objet est #{site.objet.class}."
+    end
+  end
+end
 
 def bouton_nouveau_message
   @bouton_nouveau_message ||= begin
@@ -15,12 +31,10 @@ def bouton_nouveau_message
 end
 %>
 <%= forum.titre_h1(sujet.name, {onglets: true}) %>
-<% if user.grade > 2 %>
-  <%= bouton_nouveau_message %>
-<% end %>
+<% if user.grade > 2 %><%= bouton_nouveau_message %><% end %>
+
 <% if sujet.count > 0 %>
   <%= sujet.posts(from: 0, as: :ul) %>
 <% end %>
-<% if sujet.count > 5 && user.grade > 2 %>
-  <%= bouton_nouveau_message %>
-<% end %>
+
+<% if sujet.count > 5 && user.grade > 2 %><%= bouton_nouveau_message %><% end %>

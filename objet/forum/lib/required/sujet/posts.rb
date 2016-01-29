@@ -56,5 +56,21 @@ class Sujet
     })
   end
 
+  def remove_post post_id
+    post_id = post_id.id if ( post_id.instance_of? Forum::Post )
+    @count = count - 1
+    data_update = {
+      count:        @count,
+      updated_at:   NOW
+    }
+    if last_post_id == post_id
+      # Il faut rechercher le nouveau dernier message s'il existe
+      res = Forum::table_posts.select( where:"id != #{post_id} AND sujet_id = #{id}", order:"created_at DESC", limit:1, colonnes: [] ).keys
+      data_update.merge!( last_post_id: res.first ) # peut-être nil
+    end
+
+    Forum::table_sujets_posts.update(id, data_update)
+  end
+
 end #/Sujet
 end #/Forum

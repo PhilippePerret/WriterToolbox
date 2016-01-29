@@ -51,13 +51,14 @@ class Sujet
   def div_infos_sujet
     (
       info_nombre_messages  +
+      info_nombre_vues      +
       info_dates_sujet      +
       info_creator
     ).in_div(class:'infos_sujet')
   end
   def info_dates_sujet
     (
-      "Sujet créé le ".in_span(class:'libelle') +
+      "créé le ".in_span(class:'libelle') +
       "#{created_at.as_human_date(false)}"
     ).in_span(class:'date')
   end
@@ -72,6 +73,12 @@ class Sujet
       "Nombre de messages : ".in_span(class:'libelle') +
       "#{count || 0}".in_span
     ).in_span(class:'count')
+  end
+  def info_nombre_vues
+    (
+      "Vues : ".in_span(class:'libelle') +
+      "#{views || 0}".in_span
+    ).in_span(class:'views')
   end
 
   # Les outils pour le sujet, avec des outils différents

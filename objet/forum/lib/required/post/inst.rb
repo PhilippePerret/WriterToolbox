@@ -22,7 +22,7 @@ class Post
       updated_at:   NOW,
       created_at:   NOW
     )
-    contenu = d4create.delete(:content)
+    contenu = d4create.delete(:content).to_s # vide au départ
     @id = table.insert(d4create)
     contenu = contenu.gsub(/\r/,'') if contenu.match(/\n/)
     d4create_content = {
@@ -33,6 +33,14 @@ class Post
     table_content.insert(d4create_content)
   end
 
+  # Effacer le message
+  def delete
+    sujet.remove_post id
+    auteur.remove_post id
+    (table.delete         id)
+    (table_content.delete id)
+    (table_vote.delete    id)
+  end
 
   def upvote
     return error "Vous avez déjà plébiscité ce message." if upvotes.include?(user.id)
@@ -63,8 +71,12 @@ class Post
     ( set_vote data_vote )
   end
   def set_vote data_vote
-    debug "data_vote: #{data_vote.pretty_inspect}"
-    table_vote.update(id, data_vote)
+    data_vote.merge!( updated_at:NOW )
+    if table_vote.count(where:{id: id}) > 0
+      table_vote.update(id, data_vote)
+    else
+      table_vote.insert(data_vote.merge(id: id))
+    end
     flash "Merci pour votre vote."
     return true
   end

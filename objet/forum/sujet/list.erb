@@ -4,12 +4,18 @@
 <%= forum.titre_h1("Sujets", {onglets: true}) %>
 
 <%
+def formulaire_nouveau_sujet
+  @formulaire_nouveau_sujet ||= begin
+    user.grade >= 5 ? Forum::Sujet::form_new : ""
+  end
+end
+%>
+
+<%
 # ---------------------------------------------------------------------
 #   Liste des sujets
 # ---------------------------------------------------------------------
 %>
+<%= formulaire_nouveau_sujet %>
 <ul id="ul_sujets"><%= forum.sujets.list(as: :li, from: :last) %></ul>
-
-<% if user.grade >= 5 %>
-  <%= Forum::Sujet::form_new %>
-<% end %>
+<%= formulaire_nouveau_sujet %>
