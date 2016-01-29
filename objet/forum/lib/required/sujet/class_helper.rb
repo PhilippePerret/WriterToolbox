@@ -6,7 +6,7 @@ class Sujet
     # {StringHTML} Un formulaire pour ajouter un sujet
     def form_new
       <<-HTML
-<form action="forum/new_topic" method="POST" class='dim3070'>
+<form action="sujet/new?in=forum" method="POST" class='dim3070'>
   <div class="row">
     <span class="libelle">
       <input type="submit" value="Initier ce nouveau sujet" class='btn small' />

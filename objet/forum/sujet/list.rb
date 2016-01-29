@@ -75,7 +75,7 @@ class Sujet
   # en fonction du niveau de l'user
   def div_tools
     (
-    "Détruire ce sujet".in_a(href:"sujet/#{id}/destroy?in=forum", onclick:"if(confirm('Veux-tu vraiment détruire ce sujet ?')){return true}else{return false}") +
+    "Détruire ce sujet".in_a(href:"sujet/#{id}/destroy?in=forum", onclick:"if(confirm('Voulez-vous vraiment détruire ce sujet ?')){return true}else{return false}") +
     '<br />' +
     "Lire ce sujet".in_a(href:"sujet/#{id}/read?in=forum")
     ).in_div(class:'hidetools')

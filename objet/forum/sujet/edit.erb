@@ -1,0 +1,29 @@
+<%
+# Édition/création d'un sujet
+
+site.require 'form_tools'
+form.prefix = "sujet"
+form.objet  = sujet
+
+
+%>
+<%= forum.titre_h1("Sujet/question (édition/création)") %>
+
+<form class="dim2080" action="sujet/<%= sujet.id %>/edit?in=forum" method="POST">
+
+  <%= "save_sujet".in_hidden(name:'operation') %>
+  <%= sujet.id.in_hidden(name:'sujet[id]') %>
+
+  <%# NAME %>
+  <%= form.field_text("Nom/Titre/Question", 'name', nil) %>
+
+  <%# TYPE %>
+  <%= form.field_select("Type", 'type_s', sujet.type_s, {values:Forum::Sujet::TYPES}) %>
+  <%= form.field_description("Le type va déterminer comment le sujet apparaitra.") %>
+
+  <%# CATEGORIES %>
+  <%= form.field_text("Catégories", 'categories',nil) %>
+  <%= form.field_description("Liste des catégories du sujet, juste pour information. Ce sont des identifiants séparés par des espaces.") %>
+
+  <%= form.submit_button("Enregistrer") %>
+</form>

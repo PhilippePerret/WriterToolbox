@@ -9,11 +9,8 @@ class Forum
     # ---------------------------------------------------------------------
     attr_reader   :id
 
-    def initialize id = nil, data = nil
+    def initialize id = nil
       @id   = id.to_i_inn
-      @data = data
-      @data = table.get(@id) if data.nil? && @id != nil
-      dispatch_data unless @data.nil?
     end
 
     def bind; binding() end
@@ -23,6 +20,14 @@ class Forum
       @id = Forum::table_sujets.insert(data4create.merge(created_at: NOW))
       Forum::table_sujets_posts.insert(dataposts4create)
     end
+    def data4create
+      @data4create ||= {
+        creator_id:   user.id,
+        name:         name,
+        categories:   categories,
+        options:      "#{bit_validation}#{type_s}"
+      }
+    end
     def dataposts4create
       {
         id:             id,
@@ -30,13 +35,6 @@ class Forum
         count:          0,
         views:          0,
         updated_at:     NOW
-      }
-    end
-    def data4create
-      @data4create ||= {
-        creator_id:   user.id,
-        name:         name,
-        categories:   categories
       }
     end
 

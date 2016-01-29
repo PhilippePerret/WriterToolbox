@@ -6,6 +6,7 @@ class Sujet
   #   Data enregistrées
   # ---------------------------------------------------------------------
   def name          ; @name           ||= get(:name)          end
+  def name= valeur  ; @name = valeur end
   def categories    ; @categories     ||= get(:categories) || Array::new end
   def creator_id    ; @creator_id     ||= get(:creator_id)    end
   # Dans autres tables
