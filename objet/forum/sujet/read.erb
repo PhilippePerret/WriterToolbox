@@ -6,9 +6,21 @@
 #   depuis n'importe où.
 
 # Raccourci pour obtenir l'instance du sujet
-def sujet
-  @sujet ||= site.current_route.instance
+def sujet ; @sujet ||= site.objet end
+
+def bouton_nouveau_message
+  @bouton_nouveau_message ||= begin
+    sujet.lien_write_post(sujet.data_type[:titre_new_post], {class:'btn small'}).in_div(class:'right')
+  end
 end
 %>
 <%= forum.titre_h1(sujet.name, {onglets: true}) %>
-<%= sujet.posts(from: 0, as: :ul) %>
+<% if user.grade > 2 %>
+  <%= bouton_nouveau_message %>
+<% end %>
+<% if sujet.count > 0 %>
+  <%= sujet.posts(from: 0, as: :ul) %>
+<% end %>
+<% if sujet.count > 5 && user.grade > 2 %>
+  <%= bouton_nouveau_message %>
+<% end %>

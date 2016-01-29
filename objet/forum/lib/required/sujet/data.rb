@@ -25,6 +25,9 @@ class Sujet
   # ---------------------------------------------------------------------
   def creator ; @creator ||= User::get(creator_id.to_i) end
 
+  def data_type
+    @data_type ||= TYPES[type_s]
+  end
 
   private
     def get_count

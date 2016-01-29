@@ -7,6 +7,7 @@ class Post
   # ---------------------------------------------------------------------
   def user_id   ; @user_id    ||= get(:user_id)   end
   def sujet_id  ; @sujet_id   ||= get(:sujet_id)  end
+  def sujet_id= valeur; @sujet_id = valeur        end
   # Data dans autres tables
   def content   ; @content    ||= get_content     end
   def vote      ; @vote       ||= get_vote        end
@@ -27,6 +28,13 @@ class Post
   def auteur      ; @auteur ||= User::get(user_id)          end
   def sujet       ; @sujet  ||= Forum::Sujet::get(sujet_id) end
 
+  def data4create
+    {
+      user_id:    user.id,
+      sujet_id:   sujet_id,
+      options:    "#{bit_validation}"
+    }
+  end
   # ---------------------------------------------------------------------
   #   Méthodes de données
   # ---------------------------------------------------------------------
@@ -49,7 +57,8 @@ class Post
     end
 
     def get_vote
-      table_vote.get(id, colonnes: [:vote])[:vote].to_i
+      res = table_vote.get(id, colonnes: [:vote])
+      res.nil? ? 0 : res[:vote].to_i
     end
     def get_votes
       d = table_vote.get(id, colonnes:[:upvotes, :downvotes, :vote])

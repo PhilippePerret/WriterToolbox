@@ -29,7 +29,7 @@ class Sujet
     end
   end
   def pseudo_last_post
-    @pseudo_last_post ||= "PSEUDO" #last_post.auteur.pseudo
+    @pseudo_last_post ||= last_post.auteur.pseudo
   end
   def info_last_message
     return "--- aucun dernier message ---" if last_post.nil?

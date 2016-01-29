@@ -1,18 +1,21 @@
 <%
 # Vue pour modifier le message courant
 
-post = site.objet # pris dans la route
+def post
+  @post ||= site.objet
+end
 
 site.require 'form_tools'
 form.prefix = "post"
-form.objet  = site.objet
+form.objet  = post
 %>
 
-<%= forum.titre_h1("Édition de message", {onglets: true}) %>
+<%= forum.titre_h1("Message", {onglets: true}) %>
 
 <%
 # ---------------------------------------------------------------------
-#   Aperçu du message
+
+field_sujet = post.sujet.name.in_span(class:'bold') + " " + post.sujet.lien_read('[Revenir au sujet]', {class:'tiny'})
 %>
 
 <%
@@ -21,7 +24,14 @@ form.objet  = site.objet
 %>
 <form class="dim2080" action="post/<%= post.id %>/save?in=forum" method="POST">
   <%= "save_post".in_hidden(name:'operation') %>
-  <%= user.id.in_hidden(name:"post[modifier]") %>
+  <%= form.field_raw("Sujet", '', nil, { field: field_sujet } ) %>
+  <%
+    # Pour que les onglets affiche un onglet "Revenir" qui permettra
+    # de revenir au sujet
+  %>
+  <%= post.sujet_id.in_hidden(name:'forum_current_sujet') %>
+  <%= post.sujet_id.in_hidden( name:'post[sujet_id]' ) %>
+  <%= user.id.in_hidden( name:"post[modified_by]" ) %>
   <%= form.field_textarea("Message", 'content', nil) %>
   <%= form.submit_button("Enregistrer") %>
 </form>

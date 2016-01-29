@@ -29,7 +29,7 @@ class Sujet
   end
 
   def type_s
-    @type_s ||= options[1].to_s
+    @type_s ||= options[1].to_i
   end
   def type_s= valeur
     opts = "#{options}"

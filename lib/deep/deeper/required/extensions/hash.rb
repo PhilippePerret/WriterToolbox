@@ -42,7 +42,11 @@ class Hash
     self.each do |k, v|
       v = case k
       when :created_at, :updated_at
-        v.as_human_date(true, true) + " (real: #{v})"
+        unless v.nil?
+          v.as_human_date(true, true) + " (real: #{v})"
+        else
+          nil
+        end
       else v end
       v = case v
       when Hash then "\n" + v.pretty_inspect(retrait + 1)

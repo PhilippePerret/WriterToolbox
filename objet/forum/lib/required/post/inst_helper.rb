@@ -7,6 +7,18 @@ class Post
 
   attr_reader :numero
 
+  # Pour tous les messages
+  # Quand c'est un administrateur, l'ID est ajouté.
+  # Par exemple "Message #32 enregistré" versus "Message enregistré"
+  def chose
+    @chose ||= begin
+      c = "Message"
+      c << " ##{id}" if user.admin?
+      c
+    end
+  end
+
+
   # Le post, pour une liste de messages, comme par exemple les
   # derniers messages envoyés ou les derniers dans chaque sujet.
   # +params+

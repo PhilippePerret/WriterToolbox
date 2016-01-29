@@ -20,12 +20,14 @@ class Forum
       @id = Forum::table_sujets.insert(data4create.merge(created_at: NOW))
       Forum::table_sujets_posts.insert(dataposts4create)
     end
+
     def data4create
       @data4create ||= {
         creator_id:   user.id,
         name:         name,
         categories:   categories,
-        options:      "#{bit_validation}#{type_s}"
+        options:      "#{bit_validation}#{type_s}",
+        updated_at:   NOW
       }
     end
     def dataposts4create
@@ -36,12 +38,6 @@ class Forum
         views:          0,
         updated_at:     NOW
       }
-    end
-
-
-    # Sauver toutes les données du sujet
-    def save
-      table.update(id, all_data)
     end
 
     # Raccourci à la table contenant les sujets

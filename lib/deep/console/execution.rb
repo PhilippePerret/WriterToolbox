@@ -152,7 +152,7 @@ class Console
   # On exécute la ligne comme si son dernier terme était
   # une variable
   def execute_as_last_is_variable line
-    words = line.split(' ').reject{|m| m.strip == ""}
+    words = line.split(' ').reject { |m| m.strip == "" }
     last_word = words.pop
     sentence  = words.join(' ')
     # debug "sentence : '#{sentence}'"
@@ -160,7 +160,7 @@ class Console
 
     # On corrige last_word qui peut commencer par des
     # guillemets simples ou doubles
-    if last_word.match(/^['"](.*?)['"]$/)
+    if last_word.match( /^['"](.*?)['"]$/ )
       last_word = last_word[1..-2].strip
     end
 
@@ -190,6 +190,7 @@ class Console
     rescue Exception => e
       error "Line injouable : `#{line}`"
       "### LIGNE INCOMPRÉHENSIBLE ### #{e.message}"
+      debug e
     end
   end
 

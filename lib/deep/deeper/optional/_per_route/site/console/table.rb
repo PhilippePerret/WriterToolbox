@@ -17,7 +17,7 @@ class Console
     data.each do |rowid, rowdata|
       if datacolumns.nil?
         datacolumns = Hash::new
-        rowdata.keys.each { |col| datacolumns.merge! col => {max_len: 0, name: col.to_s.freeze}}
+        rowdata.keys.each { |col| datacolumns.merge! col => { max_len: 0, name: col.to_s.freeze } }
       end
       rowdata.each do |col, valcol|
 
@@ -30,9 +30,6 @@ class Console
         end
       end
     end
-
-    # Pour voir si les retours chariot ont été traités
-    debug "DATA SANS RETOUR CHARIOT : #{data.pretty_inspect}"
 
     # Lignes de titre + séparateur
     lentot = 0

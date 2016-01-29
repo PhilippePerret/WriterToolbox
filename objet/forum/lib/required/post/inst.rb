@@ -16,13 +16,15 @@ class Post
     @id = pid
   end
 
-  def create d4create
+  def create d4create = nil
+    d4create ||= data4create
     d4create.merge!(
       updated_at:   NOW,
       created_at:   NOW
     )
     contenu = d4create.delete(:content)
     @id = table.insert(d4create)
+    contenu = contenu.gsub(/\r/,'') if contenu.match(/\n/)
     d4create_content = {
       id:           @id,
       content:      contenu,

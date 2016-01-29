@@ -8,6 +8,10 @@ ul#forum_topics
     border-bottom     : 1px solid #CCC
     padding-bottom    : 4px
 
+// Pour séparer les boutons de la liste des messages
+div + ul#posts, ul#posts + div
+  margin-top        : 1em
+
 ul#posts
   list-style        : none
   margin            : 0
@@ -57,7 +61,7 @@ ul#posts
       // Les boutons "répondre", etc.
       div.btns
         margin-top        : 2em
-        margin-bottom     : -1em
+        margin-bottom     : -3em
         text-align        : right
         a
           border            : 1px solid green
