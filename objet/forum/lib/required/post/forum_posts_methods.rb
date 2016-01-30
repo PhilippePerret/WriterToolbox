@@ -94,8 +94,32 @@ class Post
       # pas retourner les données ou un hash des valeurs.
       data_request.merge!(colonnes: []) unless [:hash, :data].include?(return_as)
 
-      # On relève les messages
+      # Cas spécial
+      # -----------
+      # NOTER que ce n'est pas ici qu'est traité le cas de l'affichage
+      # d'une liste de messages d'un sujet. Cf. dans posts.rb d'un sujet
+      # 
+      # Où on doit rechercher les posts d'un certain sujet de
+      # type "Question technique". Dans ce cas, il faut utiliser
+      # une jointure pour classer les messages.
+      # Note : Ce système pourra être utiliser aussi plus tard si
+      # on veut obtenir une liste de messages classés par votes
+      if params[:sujet_id] && Forum::Sujet::get(params[:sujet_id]).type_s == 2
+        debug "===> Relève sur sujet de type question technique"
+        # Note : on doit utiliser "OUTER" car tous les posts n'ont
+        # pas forcément de vote au moment où on fait la requête
+        "SELECT id, vote"+
+        " FORM posts"+
+        " OUTER JOIN posts_votes"+
+        " USING posts.id = posts_votes.id"+
+        " WHERE sujet_id = #{sujet_id}"
+      else
+        debug "===> PAS question technique"
+      end
+      # ----------------------------------------------
+      # Relève des messages
       @posts = Forum::table_posts.select(data_request)
+      # ----------------------------------------------
 
       case return_as
       when :instance, :instances  then @posts.keys.collect { |pid| get(pid) }

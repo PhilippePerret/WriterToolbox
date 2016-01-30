@@ -30,5 +30,12 @@ class Forum
       @table_users ||= site.db.create_table_if_needed('forum', 'users')
     end
 
+    # {SQLite3::Databalse} Base de données du forum. Pour injection
+    # directe de code.
+    def db
+      @db ||= site.db.database_of('forum')
+    end
+
+
   end # << self
 end #/Forum
