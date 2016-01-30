@@ -26,15 +26,23 @@ end
 
 def bouton_nouveau_message
   @bouton_nouveau_message ||= begin
-    sujet.lien_write_post(sujet.data_type[:titre_new_post], {class:'btn small'}).in_div(class:'right')
+    if user.identified?
+      if user.grade > 2
+        sujet.lien_write_post(sujet.data_type[:titre_new_post], {class:'btn small'})
+      else
+        "Votre grade est insuffisant pour pouvoir répondre".in_span(class:'small italic')
+      end
+    else
+      (site.lien_signup("Inscrivez-vous") + " ou " + site.lien_suscribe("abonnez-vous") + " pour pouvoir profiter pleinement du forum").in_span(class:'small italic')
+    end.in_div(class:'right')
   end
 end
 %>
 <%= forum.titre_h1(sujet.name, {onglets: true}) %>
-<% if user.grade > 2 %><%= bouton_nouveau_message %><% end %>
+<%= bouton_nouveau_message %>
 
 <% if sujet.count > 0 %>
   <%= sujet.posts(from: 0, as: :ul) %>
 <% end %>
 
-<% if sujet.count > 5 && user.grade > 2 %><%= bouton_nouveau_message %><% end %>
+<% if sujet.count > 3 %><%= bouton_nouveau_message %><% end %>
