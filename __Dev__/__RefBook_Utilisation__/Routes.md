@@ -3,6 +3,7 @@
 
 * [Introduction](#introductionauxroutes)
 * [La Route courante](#routecourante)
+* [Précédente route suivie](#precedenteroutesuivie)
 * [Tous les exemples possibles](#touslesexemples)
 * [Classe de l'objet](#classedelobjet)
 * [Utilisation des contextes](#utilisationdescontexte)
@@ -42,6 +43,13 @@ grâce à la méthode `to_str` qui est un alias de :
 
     site.current_route.route
 
+<a name='precedenteroutesuivie'></a>
+
+## Précédente route suivie
+
+Quelquefois, pour revenir à une page précédente, on doit faire référence à la route précédente. Pour y accéder, on utilise :
+
+    site.route.last
 
 <a name='touslesexemples'></a>
 

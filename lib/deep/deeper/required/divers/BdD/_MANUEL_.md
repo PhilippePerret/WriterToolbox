@@ -374,7 +374,7 @@ Syntaxe :
 
     table.update <id donnée>, {<hash des nouvelles données>}
 
-Noter que cette méthode ne permet pas de créer la donnée.
+Noter que cette méthode ne permet pas de créer la donnée, il s'agit vraiment d'un actualisation.
 
 <a name='destruction_dune_donnee'></a>
 

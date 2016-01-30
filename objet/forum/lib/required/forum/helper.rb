@@ -21,9 +21,10 @@ class Forum
   # @usage:  <%= forum.onglets %>
   def onglets
     hongs = {
-      "Messages"        => 'post/list?in=forum',
-      "Sujets"          => 'sujet/list?in=forum',
-      "Vos préférences" => 'user/preferences?in=forum'
+      "Nouvelle question" => 'sujet/question?in=forum',
+      "Messages"          => 'post/list?in=forum',
+      "Sujets"            => 'sujet/list?in=forum',
+      "Vos préférences"   => 'user/preferences?in=forum'
     }
 
     if param(:forum_current_sujet)

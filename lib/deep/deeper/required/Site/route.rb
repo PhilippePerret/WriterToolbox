@@ -16,6 +16,10 @@ class SiteHtml
   # {SiteHtml::Route} Instance de la route courante
   attr_reader :current_route
 
+  def route
+    @route ||= SiteHtml::Route
+  end
+
   # Exécution de la route, si elle est définie
   def execute_route
     # debug "-> SiteHtml::execute_route"
@@ -112,6 +116,13 @@ class SiteHtml
   # ---------------------------------------------------------------------
   class Route
     class << self
+
+      # Retourne la dernière route
+      # @usage site.route.last
+      def last
+        app.session['last_route']
+      end
+
     end # << self
 
     # ---------------------------------------------------------------------

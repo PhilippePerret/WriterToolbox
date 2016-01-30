@@ -10,15 +10,15 @@ class Forum
     attr_reader   :id
 
     def initialize id = nil
-      @id   = id.to_i_inn
+      @id = id.to_i_inn
     end
 
     def bind; binding() end
 
     # Créer le sujet
     def create
-      @id = Forum::table_sujets.insert(data4create.merge(created_at: NOW))
-      Forum::table_sujets_posts.insert(dataposts4create)
+      @id = Forum::table_sujets.insert( data4create.merge(created_at: NOW) )
+      Forum::table_sujets_posts.insert( dataposts4create )
     end
 
     def data4create
