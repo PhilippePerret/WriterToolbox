@@ -48,39 +48,6 @@ class Sujet
     ).in_a(href:"sujet/#{id}/read?in=forum#post_#{last_post.id}").in_span(class:'last_post')
   end
 
-  def div_infos_sujet
-    (
-      info_nombre_messages  +
-      info_nombre_vues      +
-      info_dates_sujet      +
-      info_creator
-    ).in_div(class:'infos_sujet')
-  end
-  def info_dates_sujet
-    (
-      "créé le ".in_span(class:'libelle') +
-      "#{created_at.as_human_date(false)}"
-    ).in_span(class:'date')
-  end
-  def info_creator
-    (
-      " par ".in_span(class:'libelle') +
-      "<strong>#{creator.pseudo}</strong> (#{creator.grade_humain})".in_span
-    ).in_span(class:'creator')
-  end
-  def info_nombre_messages
-    (
-      "Nombre de messages : ".in_span(class:'libelle') +
-      "#{count || 0}".in_span
-    ).in_span(class:'count')
-  end
-  def info_nombre_vues
-    (
-      "Vues : ".in_span(class:'libelle') +
-      "#{views || 0}".in_span
-    ).in_span(class:'views')
-  end
-
   # Les outils pour le sujet, avec des outils différents
   # en fonction du niveau de l'user
   def div_tools

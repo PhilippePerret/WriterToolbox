@@ -13,8 +13,10 @@ def sujet
     # faut donc faire un test et, le cas échéant prendre le sujet du
     # message édité
     if site.objet.instance_of?( Forum::Sujet)
-      # On en profite aussi pour marquer le sujet lu à nouveau
-      site.objet.incremente_vues
+      # On en profite aussi pour marquer le sujet lu, sauf si l'user
+      # l'a déjà lu dans cette session courante. Mais noter qu'un autre
+      # jour, ou au cours d'une autre sesson du même jour, il pourra
+      # rajouter un incrément au nombre de fois où le sujet a été vu.
       site.objet
     elsif site.objet.instance_of?(Forum::Post)
       site.objet.sujet
@@ -38,11 +40,25 @@ def bouton_nouveau_message
   end
 end
 %>
+
+<%
+# ---------------------------------------------------------------------
+#   INCRÉMENTER LE NOMBRE DE VUES DE CE SUJET S'IL LE FAUT
+
+unless app.session['forum_sujets_vus'] != nil && app.session['forum_sujets_vus'].match(/:#{sujet.id}:/)
+  site.objet.incremente_vues
+  app.session['forum_sujets_vus'] ||= ""
+  app.session['forum_sujets_vus'] << ":#{sujet.id}:"
+end
+
+# / Incrémentation nombre de vues
+# ---------------------------------------------------------------------
+%>
 <%= forum.titre_h1(sujet.name, {onglets: true}) %>
 <%= bouton_nouveau_message %>
+<%= sujet.div_infos_sujet %>
 
 <% if sujet.count > 0 %>
   <%= sujet.posts(from: 0, as: :ul) %>
 <% end %>
-
 <% if sujet.count > 3 %><%= bouton_nouveau_message %><% end %>

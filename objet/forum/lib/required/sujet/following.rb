@@ -3,7 +3,7 @@ class Forum
 class Sujet
 
   def followed_by? user_id
-
+    followers.include? user_id
   end
 
   def followers
@@ -17,9 +17,9 @@ class Sujet
   # Sauvegarde la liste des suiveurs de ce sujet
   def save_followers
     if @followers_doesnt_exist
-      table_follow.insert({sujet_id: id, items_ids: followers})
+      table_follow.insert(sujet_id:id, items_ids:followers)
     else
-      table_follow.update(values:{items_ids: followers}, where:{sujet_id: id})
+      table_follow.set(values:{items_ids:followers}, where:{sujet_id:id})
     end
   end
 
@@ -29,9 +29,9 @@ class Sujet
   # User.
   def save_sujets_suivi user_id, sujets_suivis
     if @followed_by_doesnt_exist
-      table_follow.insert({user_id:user_id, items_ids:sujets_suivis})
+      table_follow.insert(user_id:user_id, items_ids:sujets_suivis)
     else
-      table_follow.update(values:{items_ids:sujets_suivis}, where:{user_id:user_id})
+      table_follow.set(values:{items_ids:sujets_suivis}, where:{user_id:user_id})
     end
   end
 
@@ -64,6 +64,8 @@ class Sujet
   # le sujet)
   def remove_follower user_id
     user_id = user_id.id if user_id.instance_of?(User)
+
+    sujets_suivis = followed_by(user_id)
 
     if followers.include?(user_id)
       @followers.delete(user_id)
