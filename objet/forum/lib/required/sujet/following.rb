@@ -2,24 +2,30 @@
 class Forum
 class Sujet
 
+  # Return true si le sujet courant est suivi par l'user
+  # d'id +user_id+
   def followed_by? user_id
     followers.include? user_id
   end
 
+  # {Array} Retourne la liste des IDs des users qui suivent
+  # ce sujet.
   def followers
     @followers ||= begin
-      res = table_follow.get(where:{sujet_id: id}, colonnes:[:items_ids] )
-      @followers_doesnt_exist = !!res.nil?
-      (res.nil? ? nil : res[:items_ids]) || Array::new
+      res = table_follow.select(where:"sujet_id = #{id} AND user_id IS NULL"}, colonnes:[:items_ids] )
+      @followers_row_id = res.keys.first
+      (@followers_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
     end
   end
 
+  def followers_row_id ; @followers_row_id end
+
   # Sauvegarde la liste des suiveurs de ce sujet
   def save_followers
-    if @followers_doesnt_exist
+    if followers_row_id.nil?
       table_follow.insert(sujet_id:id, items_ids:followers)
     else
-      table_follow.set(values:{items_ids:followers}, where:{sujet_id:id})
+      table_follow.update( @followers_row_id, {items_ids:followers} )
     end
   end
 
@@ -28,21 +34,24 @@ class Sujet
   # TODO Normalement, cette méthode aurait plus à faire dans l'instance
   # User.
   def save_sujets_suivi user_id, sujets_suivis
-    if @followed_by_doesnt_exist
+    if following_row_id.nil?
       table_follow.insert(user_id:user_id, items_ids:sujets_suivis)
     else
-      table_follow.set(values:{items_ids:sujets_suivis}, where:{user_id:user_id})
+      table_follow.update(following_row_id, {items_ids:sujets_suivis})
     end
   end
 
   # Retourne la liste des IDs des sujets suivis par +user_id+
   def followed_by user_id
-    suivis = table_follow.get(where:{user_id: user_id}, colonnes:[:items_ids])
-    @followed_by_doesnt_exist = !!suivis.nil?
-    (suivis.nil? ? nil : suivis[:sujets_suivis]) || Array::new
+    res = table_follow.select(where:"user_id = #{user_id} AND sujet_id IS NULL"}, colonnes:[:items_ids])
+    @following_row_id = res.keys.first
+    (@following_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
   end
 
+  def following_row_id ; @following_row_id end
 
+  # Ajoute l'user +user_id+ à la liste des suiveurs de ce
+  # sujet. Crée la liste si nécessaire.
   def add_follower user_id
     user_id = user_id.id if user_id.instance_of?(User)
 
