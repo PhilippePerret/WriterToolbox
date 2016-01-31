@@ -20,9 +20,9 @@ des suiveurs d'un sujet et les derniers appels.
   depuis la dernière alerte qui lui a été envoyée pour le dernier
   message
 =end
-# On peut charger le fichier database.db qui définit toutes les
-# table du forum
-require './objet/forum/lib/required/database.rb'
+
+# Chargement de toutes les librairies du forum
+site.require_objet 'forum'
 
 class Forum
 class << self
@@ -30,40 +30,115 @@ class << self
 
   # = main =
   #
-  # Méthode principale de check des nouveaux messages éventuels
+  # Méthode principale de check des nouveaux messages éventuels déposés
+  # sur le forum. Il faut prévenir tous les suiveurs qui doivent l'être (ne
+  # doivent pas l'être ceux qui ont été prévenus d'une précédente réponse
+  # et ne sont pas venus sur le sujet depuis).
   # @usage : Forum::check_new_messages
   def check_new_messages
 
+    log "\n\n=== Check des nouveaux messages du forum === \n\n"
+
     # On récupère tous les messages qui ont été créés depuis le
     # dernier checkup du forum et qui sont validés.
-    drequest = {where:"created_at > #{last_time_checkup} AND options LIKE '0%'"}
+    drequest = {where:"created_at > #{last_time_checkup} AND options LIKE '1%'"}
     drequest.merge!( colonnes: [:sujet_id] )
     new_messages = table_posts.select(drequest).values
+
+    log "= Nouveaux messages trouvés : #{new_messages.count}"
 
     # On actualise tout de suite la date de dernier checkup pour
     # pouvoir traiter au prochain tour tous les messages qui auront
     # été créés pendant le processus courant.
     update_last_time_checkup
 
+    # Table pour conserver les sujets déjà traités. Un sujet n'a besoin
+    # que d'un traitement.
+    @sujets_deja_traited = Hash::new
+
     # On traite chaque nouveau message du forum en envoyant une alerte
     # aux abonnés du sujets, sauf si une alerte leur a déjà été envoyée
     new_messages.each do |dmessage|
 
-      # TODO Récupérer la liste des abonnés
+      log "- Traitement du message #{dmessage[:id]}"
 
-      # TODO S'en retourner sans rien faire si la liste est nil ou vide
+      # Le post dont il est question
+      ipost = Forum::Post::get(dmessage[:id])
 
-      # TODO Vérifier si l'abonné a déjà reçu une alerte pour un message
-      # précédent dans le même sujet (s'en retourner si oui)
+      # L'identifiant du sujet du message
+      sujet_id  = dmessage[:sujet_id].to_i
 
-      # TODO Envoyer le mail à l'abonné
+      # S'en retourner sans rien faire si ce sujet a déjà été
+      # traité.
+      next if @sujets_deja_traited[sujet_id] == true
+      # Sinon on marque qu'il a déjà été traité
+      @sujets_deja_traited.merge!(sujet_id => true)
 
-      # TODO Enregistrer que l'abonné a reçu une alerte pour ce message
-      # dans ce sujet
+      # Le sujet auquel appartient le message
+      sujet = ( Forum::Sujet::get sujet_id )
+
+      # La liste des abonnés à ce sujet
+      followers = sujet.followers
+
+      # S'en retourner sans rien faire si la liste est nil ou vide
+      if followers.empty?
+        log "  Aucun followers de ce sujet"
+        next
+      else
+        log "  Nombre de followers de ce sujet : #{followers.count} (#{followers.join(', ')})"
+      end
+
+      # Lien pour lire le message
+      href = "#{site.distant_url}/sujet/#{sujet_id}/read?in=forum&pid=#{ipost.id}"
+
+      # Le message qui doit être envoyé aux followers pour leur
+      # annoncer le nouveau  post sur le forum.
+      message_annonce_new_post = <<-HTML
+      <p>Bonjour %{pseudo},</p>
+      <p>Je vous informe qu'un nouveau message à propos du sujet “#{sujet.name}” vient d'être rédigé par <strong>#{ipost.auteur.pseudo}</strong>.</p>
+      <p>Pour le lire, rejoignez le lien :</p>
+      <p><a href="#{href}">#{href}</a></p>
+      <p>Bonne lecture !</p>
+      HTML
+
+      log "  Envoi du message d'annonce aux followers"
+      followers.each do |follower_id|
+
+        # Normalement, sur les autres sites, on ne prévient pas
+        # l'auteur du message, même s'il fait partie de la liste des
+        # followers. Personnellement, je préfère le prévenir, afin qu'il
+        # ne se demande pas si son message a bien été reçu. D'autre part
+        # puisqu'il faut une validation, c'est une manière pour lui aussi
+        # de savoir que son message a été validé.
+
+        # Vérifier si l'abonné a déjà reçu une alerte pour un message
+        # précédent dans le même sujet (s'en retourner si oui). Cette vérification
+        # se fait à l'aide de la table sujets_followers, pour les données où
+        # l'user_id et le sujet_id sont tous les deux définis.
+        where_clause = "sujet_id = #{sujet_id} AND user_id = #{follower_id}"
+        next if Forum::table_sujets_followers.count(where:where_clause) > 0
+
+        # Le destinataire du message. On a besoin d'en faire une
+        # instance pour remplir les données du template de mail
+        destinataire = User::get(follower_id)
+
+        # Envoyer le mail à l'abonné
+        destinataire.send_mail(
+          subject: "Nouveau message sur le forum",
+          message: (message_annonce_new_post % {pseudo: destinataire.pseudo})
+        )
+
+        # Enregistrer que l'abonné a reçu une alerte pour ce message
+        # dans ce sujet
+        Forum::table_sujets_followers.insert( {user_id:follower_id, sujet_id:sujet_id, items_ids:NOW.to_s} )
+
+      end # / fin de boucle sur les followers du sujet
     end
 
   rescue Exception => e
     add_error "# Impossible de checker les nouveaux messages forum…", e
+  ensure
+    log "\n\n=== Fin du check des nouveaux messages du forum ===\n\n"
   end
 
   # Time de dernier checkup (n'est jamais nil car on met toujours au

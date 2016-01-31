@@ -43,6 +43,17 @@ class Cron
         end
       end
 
+      # Toutes les heures, on vérifie s'il y de nouveaux
+      # messages sur le forum, et on envoie les messages
+      # d'annonce aux suiveurs (followers) des sujets des
+      # messages concernés.
+      begin
+        Forum::check_new_messages
+      rescue Exception => e
+        log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
+        log e.backtrace.join("\n")
+      end
+
     end
   end #/run
 end
