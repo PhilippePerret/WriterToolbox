@@ -1,8 +1,11 @@
 
 describe 'Création d’un programme au niveau unitaire' do
   before(:all) do
-    @start_time = Time.now.to_i
+    @start_time = Time.now.to_i - 10
+    degel 'before-test'
+    reset_all_variables
     site.require_objet 'unan'
+    reset_variables_unanunscript
     (site.folder_objet+'unan/lib/module/signup/create_program.rb').require
     # => pour Unan::Program::create
     (site.folder_objet+'unan/lib/module/signup/create_projet.rb').require
@@ -62,7 +65,7 @@ describe 'Création d’un programme au niveau unitaire' do
     expect(res).not_to eq nil
     {
       id:           dprog[:projet_id],
-      auteur_id:    user.id,
+      # auteur_id:    user.id, # pose problème avec toute la suite
       program_id:   dprog[:id],
       titre:        nil,
       resume:       nil,

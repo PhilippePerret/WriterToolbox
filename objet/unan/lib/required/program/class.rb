@@ -3,6 +3,14 @@ class Unan
 class Program
   class << self
 
+    attr_reader :instances
+
+    def get program_id
+      program_id = program_id.to_i
+      @instances ||= Hash::new
+      @instances[program_id] ||= new(program_id)
+    end
+
     # {Unan::Program|NilClass} Retourne le dernier programme suivi
     # par l'auteur d'id +auteur_id+ donc certainement son programme
     # courant. Puisque l'auteur ne peut avoir qu'un seul programme
@@ -22,7 +30,7 @@ class Program
       end
       program_id = hdata[:id].freeze
       # debug "[get_current_program_of] program_id = #{program_id.inspect}::#{program_id.class}"
-      new(program_id)
+      get(program_id)
     end
 
     # {Hash de Hash} Retourne tous les programmes de l'auteur

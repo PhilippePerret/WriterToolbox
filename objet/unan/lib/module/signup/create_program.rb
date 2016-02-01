@@ -8,6 +8,11 @@ class Unan
 class Program
 class << self
 
+  # Puisque `create` ci-dessous est une méthode de classe, le
+  # @program_id qu'elle définit sera une variable de classe que la
+  # création de projet devra lire par Unan::Program::program_id
+  attr_reader :program_id
+
   # Création d'un nouveau programme
   # La méthode est appelée suite au paiement du programme
   # par un nouveau user

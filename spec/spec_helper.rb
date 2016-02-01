@@ -191,6 +191,10 @@ RSpec.configure do |config|
   end
   alias :reset_variables_forum :reset_forum_variables
 
+  def reset_variables_unanunscript
+    Unan::instance_variables.each{|k|Unan::remove_instance_variable(k)}
+    Unan::Program::instance_variables.each{|k|Unan::Program::remove_instance_variable(k)}
+  end
 
   def require_folder folder
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
@@ -204,7 +208,7 @@ RSpec.configure do |config|
   def log str
     puts "LOG: #{str.to_s}"
   end
-  
+
   def degel gel_name
     site.require_module('gel')
     SiteHtml::Gel::degel gel_name
