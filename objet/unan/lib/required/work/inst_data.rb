@@ -6,7 +6,7 @@ class Work
   # La méthode qui crée la donnée
   def create
     unless data2save.has_key?(:created_at)
-      data2save.merge!(created_at: NOW) 
+      data2save.merge!(created_at: NOW)
     end
     @id = table.insert( data2save )
   end
@@ -54,10 +54,10 @@ class Work
   # fonction du rythme courant du programme.
   def duree_relative
     @duree_relative ||= begin
-      raise "La donnée `program` du work ne devrait pas être nil" if program.nil?
-      raise "Le coefficiant de durée ne devrait pas être nil" if program.coefficient_duree.nil?
-      raise "L'abs-work du travail ne devrait pas être nil" if abs_work.nil?
-      raise "La durée de l'abs-work ne devrait pas être nil" if abs_work.duree.nil?
+      raise "La donnée `program` du work ##{id} (d'abs-work ###{abs_work_id}) ne devrait pas être nil" if program.nil?
+      raise "Le coefficiant de durée du programme ne devrait pas être nil" if program.coefficient_duree.nil?
+      raise "L'abs-work ##{abs_work_id} ne devrait pas être nil" if abs_work.nil?
+      raise "La durée de l'abs-work ##{abs_work_id} ne devrait pas être nil" if abs_work.duree.nil?
       (program.coefficient_duree * abs_work.duree.days).to_i
     end
   end

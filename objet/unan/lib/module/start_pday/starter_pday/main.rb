@@ -149,10 +149,11 @@ class StarterPDay
     # Pas de mail s'il n'y a pas de jour-programme et si l'auteur
     # ne veut pas être averti quotidiennement
     return true unless has_new_works? || mail_journalier?
+
     # Sinon, un mail lui est envoyé, qu'on construit à partir
     # des données de `mail_auteur` (qui est une instance qui
     # a permis de constituer les sections du mail — cf. mails.rb)
-    auteur.send_mail
+    mail_auteur.send_mail
 
   rescue Exception => e
     @errors << e.message

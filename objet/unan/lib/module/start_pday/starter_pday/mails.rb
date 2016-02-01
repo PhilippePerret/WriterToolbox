@@ -17,7 +17,9 @@ class StarterPDay
   end # << self
 
   # ---------------------------------------------------------------------
-  #   Instance, donc pour le check du programme en particulier
+  #   Instance, donc l'auteur pour le starter du programme en particulier
+  #   On utilise notamment mail_auteur.send_mail pour envoyer le mail
+  #   final à l'auteur, si nécessaire.
   # ---------------------------------------------------------------------
   def mail_auteur
     @mail_auteur ||= MailAuteur::new(self)

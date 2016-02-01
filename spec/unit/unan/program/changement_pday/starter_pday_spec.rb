@@ -16,6 +16,7 @@ describe 'Méthodes de Unan::Program::StarterPDay' do
   end
 
   before(:all) do
+    degel 'benoit-2e-pday-after-quiz'
     site.require_objet 'unan'
     Unan::require_module 'start_pday'
 
@@ -297,7 +298,6 @@ describe 'Méthodes de Unan::Program::StarterPDay' do
         end
       end
     end
-
 
     describe '#send_mail_auteur_if_needed' do
       it 'répond' do

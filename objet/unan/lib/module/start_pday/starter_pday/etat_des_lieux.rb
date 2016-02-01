@@ -8,7 +8,7 @@ class Unan
 class Program
 class StarterPDay
 
-  # Fais l'état des lieux du programme avant son changement
+  # Fait l'état des lieux du programme avant son changement
   # de jour-programme.
   # En même temps, on relève les travaux courants (qui restent)
   # pour les signaler à l'auteur en cas de nouveau jour ou
@@ -18,7 +18,6 @@ class StarterPDay
     # S'il n'y a aucun travail à faire (tous exécutés), on peut
     # s'en retourner tout de suite.
     return true if nombre_travaux_courants == 0
-
 
     # Pour consigner le nombre d'avertissements par niveau en
     # enregistrant les instances travaux dans les listes.
@@ -46,7 +45,24 @@ class StarterPDay
 
       titre = "#{abs_work.titre}"
 
-      if iwork.niveau_avertissement != nil
+      niveau_alerte = nil
+      begin
+        # Définition du niveau d'avertissagement
+        # --------------------------------------
+        # Ici, une erreur peut survenir, avec une durée
+        # d'abs-work qui est nil, peut-être parce que le jour-programme
+        # n'est pas défini. L'erreur se produit dans work/inst_data.rb,
+        # dans la méthode `duree_relative` appelée par `depassement`.
+        niveau_alerte = iwork.niveau_avertissement
+      rescue Exception => e
+        @errors << "Niveau d'alerte indéfinissable"
+        log "# IMPOSSIBLE DE DÉFINIR niveau_alerte (d'après la méthode <work>.niveau_avertissement)"
+        log "# -> #{e.message}"
+        log "# Backtrace :\n" + e.backtrace.join("\n")
+        # Note : on laisse donc niveau_alerte à nil
+      end
+
+      if niveau_alerte != nil
         # Le travail est en dépassement de jours de travail
         # Il faut faire une alerte en fonction du niveau de
         # dépassement, qui est une valeur de 1 à 6, du plus en
