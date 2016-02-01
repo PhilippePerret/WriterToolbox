@@ -1,13 +1,20 @@
 describe 'forum.sujets.where_clause_from' do
   before(:all) do
-    site.require_objet 'forum'
     degel 'forum-with-messages'
+    site.require_objet('forum') unless defined?(Forum)
+    reset_forum_variables
 
-    @creator = Forum::get_any_admin
+    @creator = ForumSpec::get_any_admin
   end
 
   it 'répond' do
-    expect(forum.sujets).to respond_to :where_clause_from
+    begin
+      res = forum.sujets
+    rescue Exception => e
+      puts e.message
+      puts e.backtrace.join("\n")
+    end
+    expect(res).to respond_to :where_clause_from
   end
 
   context 'avec :creator_id' do

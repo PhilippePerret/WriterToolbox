@@ -113,8 +113,6 @@ class Post
         " OUTER JOIN posts_votes"+
         " USING posts.id = posts_votes.id"+
         " WHERE sujet_id = #{sujet_id}"
-      else
-        debug "===> PAS question technique"
       end
       # ----------------------------------------------
       # Relève des messages

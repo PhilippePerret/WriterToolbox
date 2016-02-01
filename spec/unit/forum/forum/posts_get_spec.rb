@@ -17,6 +17,8 @@ describe 'forum.posts.get' do
 
   context 'avec des messages' do
     it 'retourne la liste des instances Forum::Post' do
+      Forum::instance_variable_set("@table_posts", nil)
+        # Sinon, plante quand on lance tous les tests
       res = forum.posts.get(created_before: NOW)
       expect(res).to be_instance_of Array
       expect(res).not_to be_empty

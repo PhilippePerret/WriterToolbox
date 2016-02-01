@@ -16,9 +16,9 @@ class SiteHtml
   # lib/required
   # Note : Pour le moment, produit une erreur fatale si le dossier
   # n'existe pas.
-  def require_objet objet_name
+  def require_objet objet_name, forcer = false
     dos = folder_objet + "#{objet_name}/lib/required"
-    require_all_in dos
+    require_all_in dos, forcer
   end
 
   # Requiert tout ce qui se trouve dans le dossier module
@@ -31,9 +31,16 @@ class SiteHtml
 
   # Requiert tout (ruby, css, js) dans le dossier +dossier+
   # +dossier+ Un path {String} ou un {SuperFile}
-  def require_all_in dossier
+  # C'est pour le moment uniquement pour les tests qu'on a besoin
+  # de +forcer+ qui load au lieu de requirer.
+  def require_all_in dossier, forcer = false
     dossier = SuperFile::new(dossier) unless dossier.instance_of?(SuperFile)
-    dossier.require
+    # dossier.require
+    if forcer
+      Dir["#{dossier}/**/*.rb"].each{|m| load m}
+    else
+      Dir["#{dossier}/**/*.rb"].each{|m| require m}
+    end
     page.add_css        Dir["#{dossier}/**/*.css"]
     page.add_javascript Dir["#{dossier}/**/*.js"]
   end

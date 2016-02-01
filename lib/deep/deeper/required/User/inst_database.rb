@@ -48,7 +48,6 @@ class User
   def create_table itable
     table_name = itable.name
     schema_path = site.folder_tables_definition + "user/table_#{table_name}.rb"
-    debug "schema_path: #{schema_path.to_s}"
     schema_path.require # charge le fichier de la définition de la table
     schema_method = "schema_table_user_#{table_name}"
     table_schema = send( schema_method.to_sym )

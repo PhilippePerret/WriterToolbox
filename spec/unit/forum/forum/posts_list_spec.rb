@@ -1,6 +1,6 @@
 describe 'forum.posts.list' do
   before(:all) do
-    site.require_objet 'forum'
+    site.require_objet('forum')
     degel 'forum-with-messages' # plein de messages
   end
 
@@ -30,7 +30,11 @@ describe 'forum.posts.list' do
       expect(res.count).to eq 10
       first = res.values.first
       expect(first).to be_instance_of Hash
-      expect(first).to have_key :content
+      expect(first).to have_key :options
+      expect(first).to have_key :valided_by
+      # Il ne contient pas la propriété :content qui se trouve dans
+      # une autre table
+      expect(first).not_to have_key :content
     end
   end
 
@@ -51,8 +55,9 @@ describe 'forum.posts.list' do
       expect(res).to be_instance_of Array
       expect(res.count).to eq 9
       first = res.first
-      expect(first).to have_key :content
+      expect(first).to have_key :valided_by
       expect(first).to have_key :user_id
+      expect(first).not_to have_key :content
     end
   end
 end

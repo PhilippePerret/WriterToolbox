@@ -123,6 +123,11 @@ RSpec.configure do |config|
 
   end
 
+  # À faire avant chaque module de test
+  config.before :all do
+
+  end
+
   config.after :suite do
     debug "\n\n"
 
@@ -158,6 +163,32 @@ RSpec.configure do |config|
     SiteHtml::Gel::degel('before-test')
 
   end
+
+
+  # Méthode à appeler dans le before(:all) de certains tests pour
+  # tout ré-initialiser
+  def reset_all_variables
+
+    if defined?(site)
+      site.instance_variables.each{|k|site.instance_variable_set(k,nil)}
+    end
+
+
+    # @site   = nil
+    # @forum  = nil
+  end
+
+  # NE PAS L'UTILISER DANS reset_all_variables, car ça a justement été
+  # mis à part pour ne pas l'utiliser avec
+  def reset_forum_variables
+    return unless defined?(Forum)
+    Object.send(:remove_const, 'Forum')
+    site.require_objet('forum', forcer = true)
+    forum.instance_variables.each{|k|forum.remove_instance_variable(k)} rescue nil
+    # Forum.instance_variables.each{|k|Forum.remove_instance_variable(k)}
+  end
+  alias :reset_variables_forum :reset_forum_variables
+
 
   def require_folder folder
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
