@@ -17,6 +17,6 @@ class User
     7 => {hname:"Rédacteur confirmé",     privilege_forum:"clore un sujet"},
     8 => {hname:"Maitre rédacteur",       privilege_forum:"supprimer des sujets"},
     9 => {hname:"Expert d'écriture",      privilege_forum:"bannir des utilisateurs"}
-  }
+  } unless defined?(GRADES) # quand tests, car on reload ce module
 
 end

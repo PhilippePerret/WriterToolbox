@@ -1,6 +1,7 @@
 describe 'Méthodes de données de User::UPage' do
   before(:all) do
-    @start_time = Time.now.to_i
+    reset_all_variables
+    @start_time = Time.now.to_i - 10
     site.require_objet 'unan'
     Unan::require_module 'page_cours'
 

@@ -1,6 +1,7 @@
 describe 'Méthodes de données de User::UPage' do
   before(:all) do
     @start_time = Time.now.to_i
+    degel 'benoit-2e-pday-after-quiz' # ou un autre, pourquoi pas
     site.require_objet 'unan'
     Unan::require_module 'page_cours'
 
@@ -60,7 +61,7 @@ describe 'Méthodes de données de User::UPage' do
     end
     context 'avec un nombre trop grand' do
       it 'produit une erreur d’argument' do
-        expect{pagecours.status= 12}.to raise_error ArgumentError, "Le status doit valoir entre 0 et 9."
+        expect{pagecours.status= 16}.to raise_error ArgumentError, "Le status doit valoir entre 0 et 16."
       end
     end
     context 'avec un nombre correct' do

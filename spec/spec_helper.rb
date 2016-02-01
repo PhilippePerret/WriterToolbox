@@ -173,7 +173,9 @@ RSpec.configure do |config|
       site.instance_variables.each{|k|site.instance_variable_set(k,nil)}
     end
 
-
+    if defined?(Unan)
+      Unan.instance_variables.each do |k| Unan.remove_instance_variable k end
+    end
     # @site   = nil
     # @forum  = nil
   end
