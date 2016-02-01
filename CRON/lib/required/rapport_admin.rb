@@ -1,7 +1,9 @@
 # encoding: UTF-8
+safed_log "-> #{__FILE__}"
+
 require 'singleton'
 
-class Unan
+class Cron
 
   class << self
     def rapport_admin
@@ -103,7 +105,7 @@ class Unan
     # programmes.
     def init
       @rapport_administration = String::new
-      self.depassements           = Hash::new
+      self.depassements       = Hash::new
       return self # pour le chainage
     end
 
@@ -123,3 +125,5 @@ class Unan
 
   end
 end #/Unan
+
+safed_log "<- #{__FILE__}"

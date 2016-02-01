@@ -1,4 +1,5 @@
 # encoding: UTF-8
+safed_log "-> #{__FILE__}"
 
 class Log
   class << self
@@ -39,10 +40,12 @@ class Log
         d
       end
     end
-    
+
   end # << self
 end
 
 def log mess
   Log::log mess
 end
+
+safed_log "<- #{__FILE__}"

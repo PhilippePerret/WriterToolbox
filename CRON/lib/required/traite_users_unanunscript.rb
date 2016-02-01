@@ -2,6 +2,8 @@
 =begin
 Extension de la class User pour le CRON
 =end
+safed_log "-> #{__FILE__}"
+
 class User
 
   class << self
@@ -71,3 +73,5 @@ class User
     end
   end # << self
 end #/User
+
+safed_log "<- #{__FILE__}"

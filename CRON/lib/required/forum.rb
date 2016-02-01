@@ -20,6 +20,7 @@ des suiveurs d'un sujet et les derniers appels.
   depuis la dernière alerte qui lui a été envoyée pour le dernier
   message
 =end
+safed_log "-> #{__FILE__}"
 
 # Chargement de toutes les librairies du forum
 site.require_objet 'forum'
@@ -160,3 +161,5 @@ class << self
 
 end #/ << self
 end #/Forum
+
+safed_log "<- #{__FILE__}"
