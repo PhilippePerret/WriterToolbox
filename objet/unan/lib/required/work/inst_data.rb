@@ -6,7 +6,7 @@ class Work
   # La méthode qui crée la donnée
   def create
     unless data2save.has_key?(:created_at)
-      data2save.merge!(created_at: NOW)
+      data2save.merge!( created_at: NOW )
     end
     @id = table.insert( data2save )
   end
@@ -16,7 +16,7 @@ class Work
   # données après création sont enregistrées de façon
   # séparées par 'set'
   def save
-    table.set(id, data2save)
+    table.set( id, data2save )
   end
 
   # ---------------------------------------------------------------------
@@ -31,10 +31,10 @@ class Work
 
   def data2save
     @data2save ||= {
-      program_id:   program.id,
-      abs_work_id:  abs_work_id,
-      status:       status,
-      options:      options,
+      program_id:   program.id  ,
+      abs_work_id:  abs_work_id ,
+      status:       status      ,
+      options:      options     ,
       updated_at:   NOW
     }
   end

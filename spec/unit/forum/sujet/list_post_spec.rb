@@ -20,14 +20,14 @@ describe 'Liste des messages d’un sujet du forum' do
       end
     end
 
-    context 'avec un argument :for' do
-      it 'retourne le nombre de messages demandés' do
-        res = sujet.posts(for: 2)
-        expect(res.count).to eq 2
-        res = sujet.posts(for: 3)
-        expect(res.count).to eq 3
-      end
-    end
+    # context 'avec un argument :for' do
+    #   it 'retourne le nombre de messages demandés' do
+    #     res = sujet.posts(for: 2)
+    #     expect(res.count).to eq 2
+    #     res = sujet.posts(for: 3)
+    #     expect(res.count).to eq 3
+    #   end
+    # end
 
     # # Pose problème avec la suite complète, mais pas
     # en lançant la feuille courante seule

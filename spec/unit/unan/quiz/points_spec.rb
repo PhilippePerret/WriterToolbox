@@ -1,4 +1,5 @@
 describe 'Méthodes de calcul de points du quiz' do
+
   before(:all) do
     site.require_objet 'unan'
     Unan::require_module 'quiz'
@@ -55,6 +56,7 @@ describe 'Méthodes de calcul de points du quiz' do
         @quiz.instance_variable_set('@type', 2)
         @quiz.instance_variable_set('@max_points', 0)
       end
+      let(:quiz) { @quiz }
       it 'retourne nil' do
         expect(quiz.note_sur_20_for(10)).to eq nil
       end
@@ -63,9 +65,11 @@ describe 'Méthodes de calcul de points du quiz' do
       before(:all) do
         @quiz.instance_variable_set('@type', 2)
         @quiz.instance_variable_set('@max_points', 1000)
+        @quiz.instance_variable_set('@auteur_points', nil)
       end
+      let(:quiz) { @quiz }
       it 'retourne nil' do
-        expect(quiz.note_sur_20_for(nil)).to eq nil
+        expect{quiz.note_sur_20_for(nil)}.to raise_error
       end
     end
     context 'avec un questionnaire à points' do
