@@ -22,9 +22,6 @@ des suiveurs d'un sujet et les derniers appels.
 =end
 safed_log "-> #{__FILE__}"
 
-# Chargement de toutes les librairies du forum
-site.require_objet 'forum'
-
 class Forum
 class << self
 
@@ -39,6 +36,9 @@ class << self
   def check_new_messages
 
     log "\n\n=== Check des nouveaux messages du forum === \n\n"
+
+    # Chargement de toutes les librairies du forum
+    site.require_objet 'forum'
 
     # On récupère tous les messages qui ont été créés depuis le
     # dernier checkup du forum et qui sont validés.

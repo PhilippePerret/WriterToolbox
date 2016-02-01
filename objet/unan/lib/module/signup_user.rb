@@ -58,7 +58,7 @@ class ::User
     end
 
     # pour les tests
-    return program_id
+    return @program_id
   end
 
   def create_program_et_projet

@@ -69,12 +69,14 @@ class StarterPDay
 
     return true unless has_new_works?
 
-    # Il ne faut créer le p-day propre au programme et faire
+    # Il ne faut créer le p-day propre au programme et ne faire
     # les procédures suivantes que si ce jour-programme possède
     # un programme, donc des travaux.
     prepare_program_pday
 
   rescue Exception => e
+    log "Erreur fatale dans Unan::Programme::StartPDay::proceed_changement_pday : #{e.message}"
+    log "Bactrace :\n" + e.backtrace.join("\n")
     error e.message
   else
     true

@@ -12,10 +12,10 @@ describe 'Méthodes Unan::Program::works' do
   it 'retourne une liste' do
     expect(program.works).to be_instance_of Array
   end
-  it 'retourne une liste d’instance Unan::Program::Work' do
+  it 'retourne une liste de Hash de données des travaux' do
     res = program.works
     res.each do |w|
-      expect(w).to be_instance_of Unan::Program::Work
+      expect(w).to be_instance_of Hash
     end
   end
 

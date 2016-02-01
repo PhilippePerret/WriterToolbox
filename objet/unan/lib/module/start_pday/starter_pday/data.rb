@@ -21,9 +21,9 @@ class StarterPDay
   # {Array of Fixnum} Liste des IDs des travaux.
   # Dans un premier temps ne contient que les travaux actuels, puis
   # sera augmentée des nouveaux travaux s'il y en a
-  def work_ids      ; @work_ids     ||= auteur.get_var(:works_ids)    end
+  def work_ids      ; @work_ids     ||= auteur.get_var(:works_ids, Array::new) end
   # Instances Unan::Program::Work des travaux du program
-  def works         ; @works        ||= (work_ids||Array::new).collect { |wid| program.work(wid) } end
+  def works         ; @works        ||= work_ids.collect { |wid| program.work(wid) } end
   def nombre_travaux_courants ; @nombre_travaux_courants ||= work_ids.count end
 
 end #/StarterPDay

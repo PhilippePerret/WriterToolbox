@@ -8,6 +8,7 @@ qui chargera toutes les librairies du site, ce qui sera fait plus tard
 
 =end
 safed_log "-> #{__FILE__}"
+
 safed_log "* STEP 1"
 begin
   # On requiert d'abord le module qui permet de loguer les
@@ -21,7 +22,9 @@ begin
 rescue Exception => e
   err_message =
     "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES CRON : #{e.message}\n" +
-    "### JE DOIS RENONCER À LANCER LE CRON-JOB"
+    "### JE DOIS RENONCER À LANCER LE CRON-JOB\n" +
+    "### BACKTRACE\n" + e.backtrace.join("\n")
+  safed_log err_message
   if respond_to?(:log)
     log err_message
   else

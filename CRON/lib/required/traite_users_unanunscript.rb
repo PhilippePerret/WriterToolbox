@@ -21,7 +21,7 @@ class User
       log "= IDs : #{users_en_activite.collect{|a| a.id }.pretty_join}\n"
 
       # Pour initialiser le rapport administration
-      Unan::rapport_admin.init
+      Cron::rapport_admin.init
 
       # Boucler sur tous les programmes en activité
       users_en_activite.each do |auteur|

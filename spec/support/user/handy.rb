@@ -9,6 +9,9 @@ Handy méthodes pour les user
 # +options+
 #   :but    Array des IDs à ne pas utiliser
 #   :with_program   Si true, l'auteur doit avoir un programme 1a1s
+#   :with_forum_messages
+#     Si true, il faut trouver un utilisateur qui a des messages sur
+#     le forum.
 #
 def get_any_user options = nil
 
@@ -39,6 +42,16 @@ def get_any_user options = nil
       User::table.select(where:where, colonnes:[:id]).keys
     end
   end
+
+  if options[:with_messages_forum] && !ids.empty?
+    # Il faut que les users choisis possèdent des messages sur le
+    # forum
+    res = Forum::table_posts.select(colonnes:[:user_id], where:"user_id IN (#{ids.join(',')})")
+    ids = res.values.collect{|h| h[:user_id]}
+    raise "Impossible de trouver des users avec des messages forum…" if ids.empty?
+  end
+
+  raise "Impossible de trouver des users répondant aux conditions…" if ids.empty?
 
   uid = ids.shuffle.shuffle.first
   u = User::new(uid)

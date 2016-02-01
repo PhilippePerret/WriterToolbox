@@ -34,7 +34,7 @@ describe 'forum.posts.get' do
         @nombre_essais = 0
         @liste_users_essayed = Array::new
         begin
-          u = get_any_user(but: @liste_users_essayed)
+          u = get_any_user(but: @liste_users_essayed, with_messages_forum:true)
           @liste_users_essayed << u.id
           res = forum.posts.get(user: u)
           raise if res.count == 0
@@ -43,7 +43,7 @@ describe 'forum.posts.get' do
             expect(ipost.user_id).to eq u.id
           end
         rescue Exception => e
-          puts "0 messages pour #{u.pseudo}"
+          # puts "0 messages pour #{u.pseudo}"
           @nombre_essais += 1
           if @nombre_essais > 4
             raise "Impossible de trouver un user avec des messages…"
