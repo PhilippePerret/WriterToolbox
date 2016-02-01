@@ -20,13 +20,14 @@ class Program
   # l'avantage d'envoyer les mails au bon moment.
   def test_if_next_pday
     if NOW < next_pday_time
-      # Il n'est pas encore temps de passer au jour-programme
-      # suivant pour ce programme
-      return false
+      # => Pas l'heure pour passer au jours suivant
+      return nil
     else
       # Il est temps pour ce programme de passer au jour suivant
+      # Note : Bien laisser cette ligne en dernière ligne car elle
+      # retourne la valeur de la méthode (un Hash définissant :errors
+      # qui est la liste des erreurs rencontrées éventuellement)
       StarterPDay::new(self).activer_next_pday
-      return true
     end
   end
 

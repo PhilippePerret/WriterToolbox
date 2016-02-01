@@ -19,11 +19,19 @@ class StarterPDay
     :send_mail_auteur_if_needed => "Impossible d'envoyer le mail à l'auteur du programme…"
   }
 
+  # {Array} Les erreurs rencontrées au cours du démarrage
+  # Noter que normalement, ces erreurs indiquent que le jour-programme
+  # suivant n'a pas pu être démarré.
+  attr_reader :errors
+
   # {Unan::Program} Le programme dont il faut changer le jour-programme
   attr_reader :program
 
   def initialize program
     @program = program
+    # Pour conserver la liste de toutes les erreurs rencontrées et savoir
+    # si le jour suivant a pu être démarré avec succès
+    @errors  = Array::new
   end
 
   # ---------------------------------------------------------------------
@@ -48,7 +56,11 @@ class StarterPDay
     proceed_changement_pday     || raise(ERRORS[:proceed_changement_pday])
     send_mail_auteur_if_needed  || raise(ERRORS[:send_mail_auteur_if_needed])
   rescue Exception => e
-    log "#ERREUR FATALE : #{e.message}"
+    @errors << "# ERREUR FATALE : #{e.message}"
+    log "# ERREUR FATALE : #{e.message}"
+    log e.backtrace.join("\n")
+  ensure
+    return {errors: @errors}
   end
 
   # Vérification de la validité du programme courant
@@ -89,12 +101,25 @@ class StarterPDay
       end
     end
     log "= Current pday (avec get_var) : #{auteur.get_var(:current_pday).inspect}"
+    thenext_pday = nil
     begin
-      thenext_pday = next_pday.freeze
-      log "= Next pday calculé avec succès : #{thenext_pday}"
+      thenext_pday = next_pday.to_i
+      log "= Next pday calculé normalement : #{thenext_pday}"
     rescue Exception => e
       log "# Impossible de calculer next_pday : #{e.message} (je le mets à 2 pour pouvoir poursuivre)"
       thenext_pday = 2
+    end
+
+    # Il se peut que le jour-programme enregistré dans la variable
+    # :current_pday soit en désaccord avec les enregistrements dans la
+    # table des pdays de l'auteur. On s'en assure ici et, le cas
+    # échéant, on modifie la valeurs du jour-programme suivant.
+    if auteur.table_pdays.count(where:{id: thenext_pday}) > 0
+      # Il faut prendre le dernier
+      log "= Ce next-pday existe déjà en tant que jour dans la table pdays de l'auteur. Je dois prendre le dernier."
+      last_pdays = auteur.table_pdays.select(limit:1, order:"id DESC").keys.first
+      thenext_pday = (last_pdays + 1).freeze
+      log "= L'ultime next-pday défini est : #{thenext_pday}"
     end
 
     auteur.set_var(current_pday: thenext_pday)
@@ -108,22 +133,12 @@ class StarterPDay
     prepare_program_pday
 
   rescue Exception => e
+    @errors << e.message
     log "Erreur fatale dans Unan::Programme::StartPDay::proceed_changement_pday : #{e.message}"
     log "Backtrace :\n" + e.backtrace.join("\n")
     error e.message
   else
     true
-  end
-
-  # Tente de réparer la variable :current_pday de l'auteur, quand elle
-  # est nil (cela est arrivé au cours des tests avec Benoit, peut-être à
-  # cause d'un jour-programme effacé au cours des tests précédents).
-  # Pour le moment, on renvoie toujours 1 mais plus tard, on pourra
-  # essayer de retrouver ce
-  def reparer_error_current_pday_nil
-    curpday = 1
-    
-    auteur.set_var(:current_pday, curpday)
   end
 
   # On envoie un mail à l'auteur si nécessaire
@@ -140,6 +155,9 @@ class StarterPDay
     auteur.send_mail
 
   rescue Exception => e
+    @errors << e.message
+    log "# ERROR DANS send_mail_auteur_if_needed : #{e.message}"
+    log "# Backtrace: \n" + e.backtrace.join("\n")
     error e.message
   else
     true

@@ -57,7 +57,7 @@ class Cron
 
   # Gestion des nouveaux messages sur le forum
   def self.traitement_messages_forum
-    log "---> cron.traitement_messages_forum"
+    log "\n\n\n---> cron.traitement_messages_forum"
     safed_log "     -> Cron::traitement_messages_forum"
     # Toutes les heures, on vérifie s'il y de nouveaux
     # messages sur le forum, et on envoie les messages

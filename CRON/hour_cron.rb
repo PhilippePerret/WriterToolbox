@@ -12,12 +12,12 @@ def safed_log mess
 end
 THIS_FOLDER = File.dirname(__FILE__)
 File.open("#{THIS_FOLDER}/safed_log.log", 'wb') do |f|
-  f.write "SAFED LOG DU #{Time.now.strftime('%d %m %Y - %H:%M')}\n(Si ce fichier existe, c'est qu'un problème est survenu et que le cron n'a pas pu être exécuté jusqu'au bout.\n"
+  f.write "SAFED LOG DU #{Time.now.strftime('%d %m %Y - %H:%M')}\n(Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)\n"
 end
 
 begin
   require File.join(THIS_FOLDER, 'lib', 'required.rb')
-  safed_log "\n\n=== FIN SANS ERREUR FATALE DU SAFED LOG ==="
+  safed_log "\n\n=== FIN DU SAFED LOG SANS ERREUR FATALE ==="
 rescue Exception => e
   safed_log "\n\nERREUR FATALE : #{e.message}\n"
   safed_log e.backtrace.join("\n")

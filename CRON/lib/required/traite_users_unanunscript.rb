@@ -51,8 +51,13 @@ class User
         # Si nécessaire (i.e. s'il y a changement de jour, nouveaux travaux,
         # etc.) cette méthode exécutera tout ce qu'il faut exécuter, avec
         # l'envoi des mails d'annonce, etc.
-        if auteur.program.test_if_next_pday
-          log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
+        resultat = auteur.program.test_if_next_pday
+        if resultat != nil
+          if resultat[:errors].empty?
+            log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
+          else
+            log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
+          end
         else
           log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) n'a pas eu besoin d'être passé au jour-programme suivant."
         end

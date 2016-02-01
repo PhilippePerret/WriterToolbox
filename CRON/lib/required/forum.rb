@@ -35,7 +35,7 @@ class << self
   # @usage : Forum::check_new_messages
   def check_new_messages
 
-    log "\n\n=== Check des nouveaux messages du forum === \n\n"
+    log "=== Check des nouveaux messages du forum ==="
 
     # Chargement de toutes les librairies du forum
     site.require_objet 'forum'
@@ -139,7 +139,7 @@ class << self
   rescue Exception => e
     add_error "# Impossible de checker les nouveaux messages forum…", e
   ensure
-    log "\n\n=== Fin du check des nouveaux messages du forum ===\n\n"
+    log "=== Fin du check des nouveaux messages du forum ===\n"
   end
 
   # Time de dernier checkup (n'est jamais nil car on met toujours au

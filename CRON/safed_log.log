@@ -1,5 +1,5 @@
-SAFED LOG DU 01 02 2016 - 16:45
-(Si ce fichier existe, c'est qu'un problème est survenu et que le cron n'a pas pu être exécuté jusqu'au bout.
+SAFED LOG DU 01 02 2016 - 19:45
+(Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
 - Require log.rb
