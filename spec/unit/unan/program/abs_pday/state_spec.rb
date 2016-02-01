@@ -2,7 +2,6 @@ describe 'Méthodes d’état d’un jour-programme absolu' do
   before(:all) do
     site.require_objet 'unan'
     liste_ids_abs_pdays = Unan::table_absolute_pdays.select(colonnes:[:id]).keys
-    puts "liste_ids_abs_pdays: #{liste_ids_abs_pdays.join}"
     inexistant_id = nil
     existant_id   = nil
     (1..365).each do |checked_id|

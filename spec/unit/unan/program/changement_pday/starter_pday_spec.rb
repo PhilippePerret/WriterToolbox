@@ -255,12 +255,6 @@ describe 'Méthodes de Unan::Program::StarterPDay' do
     # ---------------------------------------------------------------------
     #   Méthodes
     # ---------------------------------------------------------------------
-    describe '#active_next_pday' do
-      it 'répond' do
-        expect(starter).to respond_to :active_next_pday
-      end
-    end
-
 
     describe '#check_validite_program' do
       it 'répond' do

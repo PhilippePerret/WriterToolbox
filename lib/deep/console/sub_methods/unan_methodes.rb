@@ -16,15 +16,23 @@ class Console
       # NOUVELLE TABLE
       data
     end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'page_cours', proc_modif)
+    retreive_data_from_all( 'unan_cold.db', 'page_cours', proc_modif )
   end
+
+  # Noter qu'il ne suffit pas de traiter les tables courantes mais
+  # également celles de tous les gels…
   def retreive_data_programs
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
+      debug "data : #{data.pretty_inspect}"
+      data.delete(:days_oveview)
+      data.merge!(days_overview: data.delete(:days_overviews))
       data
     end
-    retreive_data_from(site.folder_db + 'unan_hot.db', 'programs', proc_modif)
+    # La table courante
+    retreive_data_from_all('unan_hot.db', 'programs', proc_modif)
   end
   def retreive_data_absolute_works
     proc_modif = Proc::new do |data|
@@ -33,7 +41,7 @@ class Console
       # debug "data work : #{data.inspect}"
       data # doit être retourné (ou nil)
     end
-    retreive_data_from(site.folder_db + 'unan_cold.db', 'absolute_works', proc_modif)
+    retreive_data_from_all('unan_cold.db', 'absolute_works', proc_modif)
   end
   def retreive_data_absolute_pdays
     proc_modif = Proc::new do |data|
@@ -41,7 +49,7 @@ class Console
       # NOUVELLE TABLE
       data
     end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'absolute_pdays', proc_modif)
+    retreive_data_from_all('unan_cold.db', 'absolute_pdays', proc_modif)
   end
   def retreive_data_projets
     proc_modif = Proc::new do |data|
@@ -49,7 +57,7 @@ class Console
       # NOUVELLE TABLE
       data
     end
-    retreive_data_from(site.folder_db + 'unan_hot.db', 'projets', proc_modif)
+    retreive_data_from_all('unan_hot.db', 'projets', proc_modif)
   end
   def retreive_data_questions
     proc_modif = Proc::new do |data|
@@ -57,7 +65,7 @@ class Console
       # NOUVELLE TABLE
       data
     end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'questions', proc_modif)
+    retreive_data_from_all('unan_cold.db', 'questions', proc_modif)
 
   end
   def retreive_data_quiz
@@ -66,8 +74,7 @@ class Console
       # NOUVELLE TABLE
       data
     end
-    retreive_data_from(site.folder_db+'unan_cold.db', 'quiz', proc_modif)
-
+    retreive_data_from_all('unan_cold.db', 'quiz', proc_modif)
   end
 
 
@@ -75,6 +82,37 @@ class Console
   # /Fin des méthodes de récupération des data
   # ---------------------------------------------------------------------
 
+
+  # ---------------------------------------------------------------------
+
+  # On récupère les données pour la table +table_name+ courante dans
+  # la base {String} current_db_name ainsi que pour TOUTES les tables
+  # identiques des gels
+  def retreive_data_from_all current_db_name, table_name, proc_modif
+    # La base de données courante
+    all_dbs = Dir["./data/gel/**/#{current_db_name}"]
+    # Toutes les bases identiques des gels
+    all_dbs << site.folder_db+current_db_name.to_s
+    # On les traite toutes
+    all_dbs.each do |dbpath|
+      retreive_data_from(dbpath, table_name, proc_modif)
+    end
+  end
+
+  # Pour la table courante et TOUTES LES TABLES dans tous les
+  # gels
+  def backup_data_from_all current_db_name, table_name
+    # La base de données courante
+    all_dbs = Dir["./data/gel/**/#{current_db_name}"]
+    # Toutes les bases identiques des gels
+    all_dbs << site.folder_db + current_db_name.to_s
+    # On les traite toutes
+    all_dbs.each do |dbpath|
+      backup_data_of(dbpath, table_name)
+    end
+  end
+
+  # ---------------------------------------------------------------------
 
   def init_unan
     site.require_objet 'unan'
@@ -95,7 +133,7 @@ class Console
   # qui permet de transformer les données. Par exemple en indiquant
   # la nouvelle valeur qui doit être ajoutée.
   def backup_data_of path, table_name
-    raise "La base de données `#{path}` n'existe pas. Impossible de faire le backup des données." unless path.exist?
+    raise "La base de données `#{path}` n'existe pas. Impossible de faire le backup des données." unless File.exist?(path)
     database  = BdD::new(path.to_s)
     table     = database.table( table_name )
     raise "La table `#{table_name}` n'existe pas dans la base de donnée `#{path}`. Impossible de faire le backup des données." unless table.exist?
@@ -107,7 +145,7 @@ class Console
       end
     end
   end
-  # +path+ le path de la base de données
+  # +path+ le path de la base de données courante
   # +table_name+  le nom de la table
   # +schema+      Le schéma de modification des données par rapport au
   #               backup. C'est une procédure dont l'argument est le
@@ -119,8 +157,34 @@ class Console
   #                 data # il faut absolument terminer par data à retourner
   #               end
   def retreive_data_from path, table_name, schema
+
+    # Pour simplifier, on détruit et on reconstruit la table
+    # concernée ici seulement
+
+    # Destruction de la table courante, si elle existe
+    db = SQLite3::Database::new(path)
+    db.execute("DROP TABLE IF EXISTS #{table_name};")
+    db_name = File.basename(path)
+    db_affixe = File.basename(path, File.extname(path))
+
+    # On récupère le schéma de la table, qui va nous permettre
+    # de la reconstruire
+    table_schema_path = "./database/tables_definition/db_#{db_affixe}/table_#{table_name}.rb"
+    table_schema_method = "schema_table_#{db_affixe}_#{table_name}".to_sym
+    require table_schema_path
+    table_schema = send(table_schema_method)
+
+    # Données utiles pour la suite
     database  = BdD::new(path.to_s)
     table     = database.table( table_name )
+
+    # On peut reconstruire la table d'après son schéma
+    table.define table_schema
+    table.create
+
+    # À présent, on peut récupérer les données et les
+    # remettre dans la nouvelle table en respectant le nouveau
+    # schéma défini
     pstore_path = pstore_path_for(path, table_name)
     raise "Le pstore `#{pstore_path}` est malheureusement introuvable : impossible de récupérer les données" unless pstore_path.exist?
     PStore::new(pstore_path.to_s).transaction do |ps|
@@ -140,25 +204,25 @@ class Console
 
 
   def backup_data_questions
-    backup_data_of( site.folder_db + 'unan_cold.db', 'questions')
+    backup_data_from_all('unan_cold.db', 'questions')
   end
   def backup_data_quiz
-    backup_data_of( site.folder_db + 'unan_cold.db', 'quiz')
+    backup_data_from_all('unan_cold.db', 'quiz')
   end
   def backup_data_absolute_pdays
-    backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_pdays')
+    backup_data_from_all('unan_cold.db', 'absolute_pdays')
   end
   def backup_data_pages_cours
-    backup_data_of( site.folder_db + 'unan_cold.db', 'pages_cours')
+    backup_data_from_all('unan_cold.db', 'pages_cours')
   end
   def backup_data_programs
-    backup_data_of( site.folder_db + 'unan_hot.db', 'programs')
+    backup_data_from_all('unan_hot.db', 'programs')
   end
   def backup_data_projets
-    backup_data_of( site.folder_db + 'unan_hot.db', 'projets')
+    backup_data_from_all('unan_hot.db', 'projets')
   end
   def backup_data_absolute_works
-    backup_data_of( site.folder_db + 'unan_cold.db', 'absolute_works')
+    backup_data_from_all('unan_cold.db', 'absolute_works')
   end
 
   def destruction_impossible

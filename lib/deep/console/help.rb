@@ -87,9 +87,7 @@ class Console
   <dt>
     <strong>affiche</strong><br />
     <strong>backup data</strong><br />
-    <strong>destroy</strong><br />
     <strong>&lt;Modification du schéma de la table&gt;</strong><br />
-    <strong>affiche</strong><br />
     <strong>retreive data</strong><br />
   </dt>
   <dd>C'est le cycle de modification d'une table du programme, quand il faut modifier son schéma. On en sauve toutes les données, puis on la reconstruit.</dd>
@@ -106,7 +104,8 @@ class Console
       <li>absolute pdays (les jours absolus)</li>
     </ul>
   </dd>
-
+  <dd>Noter que cette modification affecte les tables courantes mais également toutes les tables des gels, en respectant leurs données propres.</dd>
+  
   <dt>`Unan affiche (table absolute pdays)`</dt>
   <dd>Affiche la table des données des jours-programme (P-Days)</dd>
   <dd>Cette table connait le cycle ci-dessus</dd>

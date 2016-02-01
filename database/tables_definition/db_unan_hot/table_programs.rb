@@ -17,7 +17,7 @@ def schema_table_unan_hot_programs
     # ----------------
     # Cf. le fichier Days-Overview.md
     # Pour avoir un aperçu de tous les jours
-    days_overviews:   {type:"CLOB(230)"},
+    days_overview:   {type:"CLOB(230)"},
 
     # Options
     # -------

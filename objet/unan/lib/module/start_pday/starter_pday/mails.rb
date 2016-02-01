@@ -40,7 +40,7 @@ class StarterPDay
         formated: true
       )
     rescue Exception => e
-      mess_err "#ERREUR ENVOI MAIL USER DE PROGRAM : #{e.message}\n\n" + e.backtrace.join("\n") 
+      mess_err "#ERREUR ENVOI MAIL USER DE PROGRAM : #{e.message}\n\n" + e.backtrace.join("\n")
       debug mess_err
       auteur.add_error mess_err
       false

@@ -196,10 +196,15 @@ RSpec.configure do |config|
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
   end
 
+  # Pour catcher les messages débug
   def debug str
     puts "#{str}\n"
   end
-
+  # Pour catcher les messages log (par exemple pour le cron)
+  def log str
+    puts "LOG: #{str.to_s}"
+  end
+  
   def degel gel_name
     site.require_module('gel')
     SiteHtml::Gel::degel gel_name

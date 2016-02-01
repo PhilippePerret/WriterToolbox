@@ -63,9 +63,42 @@ class StarterPDay
   # Méthode qui procède réellement au changement de jour-programme
   # du programme, qu'il y ait ou non des travaux définis
   def proceed_changement_pday
+
     # À faire qu'il y ait ou non un jour-programme défini
-    auteur.set_var(current_pday: next_pday)
-    program.instance_variable_set('@current_pday', next_pday)
+    # MAIS : En implémentant la méthode, j'obtiens une erreur sur
+    # Benoit alors qu'il est clairement au premier jour (l'état des
+    # lieux précédent en témoigne) donc je voudrais savoir ce qui
+    # foire ici. D'où la raison de tous ces logs avant de procéder
+    # au changement proprement dit.
+
+    log "\n\n=== Contrôle dans Unan::Program::StarterPDay::proceed_changement_pday ==="
+    log "= Auteur : ##{auteur.id} / #{auteur.pseudo}"
+    @reparation_count = 0
+    begin
+      raise if auteur.get_var(:current_pday).nil?
+    rescue Exception => e
+      @reparation_count += 0
+      if @reparation_count > 1
+        raise "Impossible de passer l'auteur ##{auteur.id} (#{auteur.pseudo}) au jour-programme suivant, car son current_pday n'est pas défini dans ses variables et il n'a malheureusement pas pu être réparé."
+      else
+        # Problème de définition de current_pday…
+        # Je dois réparer ce problème pour pouvoir poursuivre. Sur quoi pourrais-je
+        # me base pour savoir à quel jour-programme peut en être l'auteur ?
+        reparer_error_current_pday_nil
+        retry
+      end
+    end
+    log "= Current pday (avec get_var) : #{auteur.get_var(:current_pday).inspect}"
+    begin
+      thenext_pday = next_pday.freeze
+      log "= Next pday calculé avec succès : #{thenext_pday}"
+    rescue Exception => e
+      log "# Impossible de calculer next_pday : #{e.message} (je le mets à 2 pour pouvoir poursuivre)"
+      thenext_pday = 2
+    end
+
+    auteur.set_var(current_pday: thenext_pday)
+    program.instance_variable_set('@current_pday', thenext_pday)
 
     return true unless has_new_works?
 
@@ -76,12 +109,22 @@ class StarterPDay
 
   rescue Exception => e
     log "Erreur fatale dans Unan::Programme::StartPDay::proceed_changement_pday : #{e.message}"
-    log "Bactrace :\n" + e.backtrace.join("\n")
+    log "Backtrace :\n" + e.backtrace.join("\n")
     error e.message
   else
     true
   end
 
+  # Tente de réparer la variable :current_pday de l'auteur, quand elle
+  # est nil (cela est arrivé au cours des tests avec Benoit, peut-être à
+  # cause d'un jour-programme effacé au cours des tests précédents).
+  # Pour le moment, on renvoie toujours 1 mais plus tard, on pourra
+  # essayer de retrouver ce
+  def reparer_error_current_pday_nil
+    curpday = 1
+    
+    auteur.set_var(:current_pday, curpday)
+  end
 
   # On envoie un mail à l'auteur si nécessaire
   # Cela est nécessaire lorsque :
