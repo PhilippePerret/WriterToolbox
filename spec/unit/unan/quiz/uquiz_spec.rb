@@ -1,13 +1,15 @@
 describe 'Méthodes pour gérer les Quiz d’auteur' do
 
   before(:all) do
+    degel 'before-test'
     site.require_objet 'unan'
     Unan::require_module 'quiz'
     @quiz = Unan::Quiz::new(1)
 
     @current_user = create_user(:current => true, :unanunscript => true)
+    puts "@current_user : #{@current_user.id.inspect}"
     @autre_auteur = create_user(:current => false, :unanunscript => true)
-
+    puts "@autre_auteur : #{@autre_auteur.id.inspect}"
   end
 
   let(:quiz) { @quiz }

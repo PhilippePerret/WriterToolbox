@@ -28,6 +28,7 @@ class Program
       @current_pday
     end
   end
+  def current_pday= valeur ; @current_pday = valeur end
 
 end #/Program
 end #/Unan

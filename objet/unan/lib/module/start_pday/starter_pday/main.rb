@@ -103,7 +103,7 @@ class StarterPDay
     log "= Current pday (avec get_var) : #{auteur.get_var(:current_pday).inspect}"
     thenext_pday = nil
     begin
-      thenext_pday = next_pday.to_i
+      thenext_pday = auteur.get_var(:current_pday, 0) + 1
       log "= Next pday calculé normalement : #{thenext_pday}"
     rescue Exception => e
       log "# Impossible de calculer next_pday : #{e.message} (je le mets à 2 pour pouvoir poursuivre)"
@@ -123,7 +123,15 @@ class StarterPDay
     end
 
     auteur.set_var(current_pday: thenext_pday)
-    program.instance_variable_set('@current_pday', thenext_pday)
+    program.current_pday = thenext_pday
+
+    # Les méthodes `pday' et `abs_pday` utilisent la variable
+    # d'instance `next_pday` pour se régler (dans `prepare_program_pday`)
+    # donc il faut les définir.
+    # Mais garder en tête qu'à partir de là, `current_pday' et `next_pday`
+    # ont la même valeur (TODO: Réfléchir pour savoir si c'est vraiment
+    # rationnel)
+    self.next_pday = thenext_pday
 
     return true unless has_new_works?
 
