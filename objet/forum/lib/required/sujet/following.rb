@@ -12,7 +12,7 @@ class Sujet
   # ce sujet.
   def followers
     @followers ||= begin
-      res = table_follow.select(where:"sujet_id = #{id} AND user_id IS NULL"}, colonnes:[:items_ids] )
+      res = table_follow.select(where:"sujet_id = #{id} AND user_id IS NULL", colonnes:[:items_ids] )
       @followers_row_id = res.keys.first
       (@followers_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
     end
@@ -43,7 +43,7 @@ class Sujet
 
   # Retourne la liste des IDs des sujets suivis par +user_id+
   def followed_by user_id
-    res = table_follow.select(where:"user_id = #{user_id} AND sujet_id IS NULL"}, colonnes:[:items_ids])
+    res = table_follow.select(where:"user_id = #{user_id} AND sujet_id IS NULL", colonnes:[:items_ids])
     @following_row_id = res.keys.first
     (@following_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
   end

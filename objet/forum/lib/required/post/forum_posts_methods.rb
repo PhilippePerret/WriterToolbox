@@ -36,7 +36,7 @@ class Post
       else
         data_request = Hash::new
         unless filter.nil? || filter.empty?
-          where, valeurs = where_clause_from(filter)
+          where, valeurs = Forum::where_clause_from(filter)
           data_request.merge!(where: where, values: valeurs)
         end
         data_request.merge!( colonnes: [:id] )
@@ -80,7 +80,7 @@ class Post
 
       unless params.empty?
         params.merge!(valid: true)
-        where, valeurs = where_clause_from(params)
+        where, valeurs = Forum::where_clause_from(params)
         data_request.merge!(where: where, values: valeurs)
       end
 
@@ -98,7 +98,7 @@ class Post
       # -----------
       # NOTER que ce n'est pas ici qu'est traité le cas de l'affichage
       # d'une liste de messages d'un sujet. Cf. dans posts.rb d'un sujet
-      # 
+      #
       # Où on doit rechercher les posts d'un certain sujet de
       # type "Question technique". Dans ce cas, il faut utiliser
       # une jointure pour classer les messages.
@@ -138,18 +138,39 @@ class Post
     #   user_id:          Que les messages de cet auteur
     #   created_after:    Les messages créés à ou après ce timestamp
     #   created_before:   Les messages créés à ou avant ce timestamp
+    #   content:          Les messages contenant ce texte (recherche spéciale)
     def count filter = nil
-      data_request = unless filter.nil?
-        where, valeurs = ( where_clause_from filter )
+      filter ||= Hash::new
+
+      filtre_sur_texte = filter.delete(:content)
+
+      data_request = unless filter.empty?
+        where, valeurs = ( Forum::where_clause_from filter )
         { where: where, values: valeurs }
       else
         nil
       end
-      return Forum::table_posts.count(data_request)
-    end
 
-    def where_clause_from filter = nil
-      Forum::where_clause_from filter
+      if filtre_sur_texte.nil?
+        # => Pas de recherche sur le texte
+        return Forum::table_posts.count(data_request)
+      elsif data_request.nil?
+        # => Seulement une recherche sur le texte
+        return Forum::table_posts_content.count(where:"content LIKE ?", values:["%#{filtre_sur_texte}%"])
+      else
+        # => Une recherche sur le texte et autre chose
+        data_request ||= {where: "", values:[]}
+        data_request[:where] += " AND " unless data_request[:where].empty?
+        data_request[:where] += "posts_content.content LIKE ?"
+        data_request[:values] << "%#{filtre_sur_texte}%"
+        request = "SELECT posts_content.content" +
+        # request = "SELECT COUNT(posts.id)" +
+          " FROM posts" +
+          " INNER JOIN posts_content" +
+          " WHERE #{data_request[:where]}"
+        BdD::execute_request(Forum::db.database, request, data_request[:values]).first.first
+      end
+
     end
 
   end # << self

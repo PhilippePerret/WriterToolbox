@@ -72,10 +72,16 @@ class Gel
   end
 
   # On reconnecte les administrateurs après le dégel
+  # Mais attention, ces administrateurs peuvent très bien ne plus exister
+  # lorsque ce sont des tests par exemple. Donc il faut checker avant que
+  # ce soit possible.
   def set_admin_session_id
     # debug "-> set_admin_session_id"
     @connected_admins.each do |uid, udata|
-      User::new(uid).set(session_id: app.session.session_id)
+      admin = User::get(uid)
+      next unless admin.exist?
+      next unless admin.admin?
+      admin.set(session_id: app.session.session_id)
     end
     # debug "<- set_admin_session_id"
   rescue Exception => e

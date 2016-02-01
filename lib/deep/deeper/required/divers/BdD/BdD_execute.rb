@@ -114,7 +114,8 @@ class BdD
 
 
     ##
-    # Exécute la requête +request+ avec les valeurs +values+
+    # Exécute la requête {String} +request+ avec les valeurs
+    # {Hash} +values+ sur la table {SQLite3::Database} +database+
     # @alias: def execute_request
     def execute_requete database, request, values = nil, params = nil
       params ||= Hash::new
@@ -223,6 +224,8 @@ class BdD
       debug "# Requête : #{request}"
       debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
       debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
+      debug "Backtrace :\n" + e.backtrace.join("\n")
+      debug e
       raise e.message
     end
     alias :execute_request :execute_requete

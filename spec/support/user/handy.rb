@@ -86,10 +86,6 @@ def create_user options = nil
   @id = User::table_users.insert(options)
   new_user = User::get(@id)
 
-  # Enregistrer cet utilisateur à détruire à la
-  # fin des tests
-  $users_2_destroy << new_user.id
-
   User::current= new_user if mettre_courant
 
   # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il

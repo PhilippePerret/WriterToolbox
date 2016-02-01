@@ -10,7 +10,8 @@ class User
   def login
     app.session['user_id'] = id
     User::current= self
-    set(session_id: app.session.session_id)
+    # set(session_id: app.session.session_id)
+    # update( id, {session_id: app.session.session_id} )
     self.send(:redirect_after_login) if self.respond_to?(:redirect_after_login)
   end
 

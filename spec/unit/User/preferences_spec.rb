@@ -7,13 +7,17 @@ de tout passer sur RestSite :
 =end
 site.require_objet 'unan'
 describe 'Préférences de l’utilisateur' do
+
   before(:all) do
-    @user = create_user( current: true, unanunscript: true)
+    @user = create_user( current:true, unanunscript:true)
+    # puts "@user.id = #{@user.id.inspect}"
   end
+
   let(:user) { @user }
 
   def get_in_table key, as_real_value = true
-    hres = user.table_variables.get(where:"name = '#{key}'")
+    hres = user.table_variables.get(where:{name: "#{key}"})
+    return nil if hres.nil?
     if as_real_value
       user.var_value_to_real(hres)
     else

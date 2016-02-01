@@ -37,6 +37,10 @@ class User
       end
     end
 
+    # NAME doit toujours être un string (même lorsqu'il est
+    # fourni en Symbol)
+    var_name = var_name.to_s
+
     # Le Hash qui sera enregistré dans la table
     h2save = var_real_to_hash2save( var_value )
 
@@ -93,7 +97,8 @@ class User
   # la méthode, qui est surtout appelée pour `set_vars`)
   def get_vars arr_var_names, as_real_values = false
     hsaved = Hash::new
-    where = "name IN ('#{arr_var_names.join('\', \'')}')"
+    arr_names = arr_var_names.collect{|n| "'#{n}'"}
+    where = "name IN (#{arr_names.join(', ')})"
     saved_vars = table_variables.select(where: where).values.each do |hvalue|
       # hvalue => {:id, :name, :value, :type}
       hsaved.merge!(hvalue[:name] => hvalue)
@@ -118,13 +123,14 @@ class User
   end
 
   # Récupérer la valeur de la variable `var_name` (qui peut avoir
-  # n'importe quel type)
+  # n'importe quel type, String ou Symbol, mais sera toujours
+  # recherché en String dans la table)
   # +default_value+ est la valeur par défaut qui sera retournée
   # si la valeur est nil. Noter que pour une valeur booléenne
   # false, il ne faut pas remplacer par la valeur par défaut,
   # sinon ça serait fait chaque fois qu'elle est fausse
   def get_var var_name, default_value = nil
-    h = table_variables.get(where:{name: var_name})
+    h = table_variables.get(where:{name: var_name.to_s})
     return default_value if h.nil?
     real_value = var_value_to_real( h )
     return real_value if h[:type] == 7

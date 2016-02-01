@@ -16,7 +16,7 @@ describe 'forum.posts' do
     end
     context 'avec des messages et des paramètres' do
       before(:all) do
-        @un_auteur_forum = Forum::get_any_user
+        @un_auteur_forum = ForumSpec::get_any_user
       end
       it 'retourne le nombre de messages répondant au filtre (user_id)' do
         nombre = forum.posts.count(user_id: @un_auteur_forum.id)
@@ -44,7 +44,7 @@ describe 'forum.posts' do
       end
       it 'retourne le nombre de messages contenant un texte' do
         str = "crocodile"
-        expected = Forum::table_posts.count(where:"content LIKE '%#{str}%'")
+        expected = Forum::table_posts_content.count(where:"content LIKE '%#{str}%'")
         expect(forum.posts.count(content: "#{str}")).to eq expected
       end
     end

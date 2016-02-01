@@ -57,14 +57,6 @@ class User
 
       end
 
-      # Envoyer le rapport à l'administrateur
-      # Remarquer que ce ne sera fait que s'il y a des
-      # messages à envoyer. Le cron fonctionnant toutes les
-      # heures, il vaut mieux qu'il n'y ait pas trop de messages
-      # Dans le cas où les rapports seraient trop nombreux, il suffirait
-      # de les enregistrer dans un fichier qui ne sera envoyé qu'un fois
-      # par jour. Ça sera géré dans la méthode elle-même.
-      Unan::rapport_admin.traite
     end
 
     # {Array of User} Retourne la liste de tous les auteurs
