@@ -64,10 +64,15 @@ class Console
   <dd>Tournure plus complexe à utiliser si des options doivent être transmises. Cf. le manuel sur les gels et les dégels pour plus de détails sur les options.</dd>
 </dl>
 
-
 <!--  PROPRE À L'APPLICATION -->
 
-
+<h4 onclick="$('dl#databases').toggle()">Lignes propres aux bases de données</h4>
+<dl id="databases" class="small" style="display:none;">
+  <dt>`affiche table &lt;path/to/database_sans_db.&gt;.&lt;nom_table&gt;`</dt>
+  <dd>Affiche le contenu de la table `nom_table` dans la base de données spécifiée.</dd>
+  <dd>Le path vers la base de données se compte à partir du dossier `./database/data/` (qu'il ne faut donc pas mettre).</dd>
+  <dd>La méthode prend en main toutes les erreurs et les signale correctement.</dd>
+</dl>
 
 <h4 onclick="$('dl#unan').toggle()">Lignes propres à l'application (UN AN UN SCRIPT)</h4>
 <dl id="unan" class='small' style="display:none;">
@@ -105,7 +110,7 @@ class Console
     </ul>
   </dd>
   <dd>Noter que cette modification affecte les tables courantes mais également toutes les tables des gels, en respectant leurs données propres.</dd>
-  
+
   <dt>`Unan affiche (table absolute pdays)`</dt>
   <dd>Affiche la table des données des jours-programme (P-Days)</dd>
   <dd>Cette table connait le cycle ci-dessus</dd>

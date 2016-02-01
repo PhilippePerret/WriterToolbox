@@ -165,6 +165,8 @@ class Console
     end
 
     case sentence
+    when 'affiche table'
+      affiche_table_of_database last_word
     when 'Unan init program for'
       init_program_1an1script_for( last_word )
     when 'detruire programmes de'

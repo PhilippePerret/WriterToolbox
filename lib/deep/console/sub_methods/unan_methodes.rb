@@ -11,9 +11,10 @@ class Console
   # Méthodes de récupération des données
   # (qui ont été backupées dans des PStores)
   def retreive_data_pages_cours
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
       data
     end
     retreive_data_from_all( 'unan_cold.db', 'page_cours', proc_modif )
@@ -26,52 +27,54 @@ class Console
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
       data = data_init.dup
-      debug "data : #{data.pretty_inspect}"
-      data.delete(:days_oveview)
-      data.merge!(days_overview: data.delete(:days_overviews))
       data
     end
     # La table courante
     retreive_data_from_all('unan_hot.db', 'programs', proc_modif)
   end
   def retreive_data_absolute_works
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
       # debug "data work : #{data.inspect}"
+      data = data_init.dup
       data # doit être retourné (ou nil)
     end
     retreive_data_from_all('unan_cold.db', 'absolute_works', proc_modif)
   end
   def retreive_data_absolute_pdays
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
       data
     end
     retreive_data_from_all('unan_cold.db', 'absolute_pdays', proc_modif)
   end
   def retreive_data_projets
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
       data
     end
     retreive_data_from_all('unan_hot.db', 'projets', proc_modif)
   end
   def retreive_data_questions
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
       data
     end
     retreive_data_from_all('unan_cold.db', 'questions', proc_modif)
 
   end
   def retreive_data_quiz
-    proc_modif = Proc::new do |data|
+    proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
+      data = data_init.dup
       data
     end
     retreive_data_from_all('unan_cold.db', 'quiz', proc_modif)
