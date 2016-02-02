@@ -98,8 +98,12 @@ def create_user options = nil
 
   @id = User::table_users.insert(options)
   new_user = User::get(@id)
+  # debug "ID du nouvel user créé par `create_user` des tests : #{new_user.id.inspect}"
 
-  User::current= new_user if mettre_courant
+  # Mettre en courant lorsqu'on en a fait explicitement la
+  # demande ou lorsqu'un programme UN AN UN SCRIPT doit être
+  # instancié pour l'auteur.
+  User::current= new_user if mettre_courant || programme_1a1s
 
   # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il
   # faut simuler son inscription

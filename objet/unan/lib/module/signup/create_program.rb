@@ -14,8 +14,10 @@ class << self
   attr_reader :program_id
 
   # Création d'un nouveau programme
+  # -------------------------------
   # La méthode est appelée suite au paiement du programme
-  # par un nouveau user
+  # par un nouveau user (ou par les tests lorsque l'on crée
+  # un user qui suit le programme UN AN UN SCRIPT)
   def create
 
     # On crée un nouvel enregistrement pour l'user courant

@@ -1,6 +1,7 @@
 section#content
   padding           : 1em 2em
   margin-left       : 150px
+  position          : relative
   
   > div, > p
     line-height     : 1.6em
@@ -8,3 +9,13 @@ section#content
     width           : 966px
   > p
     width           : 820px
+
+  div#chapiteau_logo
+    position          : absolute
+    top               : 0
+    left              : 0
+    backgroud-color   : #578088
+    z-index           : -1
+    div#inner_chapiteau_logo
+      border-radius     : 1em
+      background-color  : white

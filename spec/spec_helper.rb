@@ -169,12 +169,25 @@ RSpec.configure do |config|
   # tout ré-initialiser
   def reset_all_variables
 
+    if defined?(User)
+      User::instance_variables.each do |iv|
+        debug "Écrasement de User::#{iv}"
+        User.remove_instance_variable(iv)
+      end
+    end
     if defined?(site)
       site.instance_variables.each{|k|site.instance_variable_set(k,nil)}
+      @site = nil
     end
 
     if defined?(Unan)
-      Unan.instance_variables.each do |k| Unan.remove_instance_variable k end
+      Unan.instance_variables.each { |k| Unan.remove_instance_variable k }
+      if defined?(Unan::Program)
+        Unan::Program.instance_variables.each { |k| Unan::Program.remove_instance_variable k }
+      end
+      if defined?(Unan::Projet)
+        Unan::Projet.instance_variables.each { |k| Unan::Projet.remove_instance_variable k }
+      end
     end
     # @site   = nil
     # @forum  = nil
@@ -202,11 +215,11 @@ RSpec.configure do |config|
 
   # Pour catcher les messages débug
   def debug str
-    puts "#{str}\n"
+    puts "DBG: #{str.strip}\n"
   end
   # Pour catcher les messages log (par exemple pour le cron)
   def log str
-    puts "LOG: #{str.to_s}"
+    puts "LOG: #{str.to_s.strip}"
   end
 
   def degel gel_name

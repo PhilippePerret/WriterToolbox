@@ -23,7 +23,7 @@ class Program
       mark = @current_pday == 1 ? "er" : "e"
       "#{@current_pday}<sup>#{mark}</sup> jour"
     when :nombre, :number
-      @current_pday == :none ? 1 : @current_pday
+      @current_pday == :none ? 0 : @current_pday
     else
       @current_pday
     end

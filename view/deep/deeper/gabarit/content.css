@@ -1,1 +1,1 @@
-section#content{padding:1em 2em;margin-left:150px}section#content>div,section#content>p{line-height:1.6em}section#content>div{width:966px}section#content>p{width:820px}
+section#content{padding:1em 2em;margin-left:150px;position:relative}section#content>div,section#content>p{line-height:1.6em}section#content>div{width:966px}section#content>p{width:820px}section#content div#chapiteau_logo{position:absolute;top:0;left:0;backgroud-color:#578088;z-index:-1}section#content div#chapiteau_logo div#inner_chapiteau_logo{border-radius:1em;background-color:#fff}

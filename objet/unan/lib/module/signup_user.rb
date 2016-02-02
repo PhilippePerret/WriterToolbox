@@ -72,6 +72,7 @@ class ::User
       # Création du programme (dans la table générale des programmes)
       @program_id = Unan::Program::create
       raise "@program_id (ID du programme créé) ne devrait pas être nil…" if @program_id.nil?
+      debug "ID du nouveau programme : #{@program_id}"
       # On définit le programme pour ne pas avoir de problèmes par
       # la suite avec `user.program` ou `auteur.program`
       @program = Unan::Program::new(@program_id)
@@ -83,6 +84,7 @@ class ::User
       # Création du projet (dans la table générale des projets)
       @projet_id  = Unan::Projet::create
       raise "@projet_id (ID du projet créé) ne devrait pas être nil…" if @projet_id.nil?
+      debug "ID du nouveau projet : #{@projet_id}"
     rescue Exception => e
       @errors << "Impossible de créer le projet : #{e.message}"
     end
@@ -90,8 +92,11 @@ class ::User
 
   # Instancier le premier jour programme
   def instancier_premier_jour_programme
+    debug "user.get_var(:current_pday) = #{user.get_var(:current_pday).inspect}"
     Unan::require_module 'start_pday'
     Unan::Program::StarterPDay::new(program).activer_first_pday
+    debug "P-Day courant du user : #{self.program.current_pday.inspect}"
+    raise "Le jour courant de l'user devrait être 1" unless self.program.current_pday == 1
   rescue Exception => e
     @errors << "Impossible d'instancier le premier jour-programme : #{e.message}"
   end

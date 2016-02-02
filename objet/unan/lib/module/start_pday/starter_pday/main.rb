@@ -42,7 +42,8 @@ class StarterPDay
   #
   # Méthode qui démarre le programme
   def activer_first_pday
-    @next_pday = 1
+    # @next_pday = 0
+    # @current_pday = 0
     proceed_changement_pday
   end
 
@@ -85,21 +86,21 @@ class StarterPDay
 
     log "\n\n=== Contrôle dans Unan::Program::StarterPDay::proceed_changement_pday ==="
     log "= Auteur : ##{auteur.id} / #{auteur.pseudo}"
-    @reparation_count = 0
-    begin
-      raise if auteur.get_var(:current_pday).nil?
-    rescue Exception => e
-      @reparation_count += 0
-      if @reparation_count > 1
-        raise "Impossible de passer l'auteur ##{auteur.id} (#{auteur.pseudo}) au jour-programme suivant, car son current_pday n'est pas défini dans ses variables et il n'a malheureusement pas pu être réparé."
-      else
-        # Problème de définition de current_pday…
-        # Je dois réparer ce problème pour pouvoir poursuivre. Sur quoi pourrais-je
-        # me base pour savoir à quel jour-programme peut en être l'auteur ?
-        reparer_error_current_pday_nil
-        retry
-      end
-    end
+    # @reparation_count = 0
+    # begin
+    #   raise if auteur.get_var(:current_pday).nil?
+    # rescue Exception => e
+    #   @reparation_count += 0
+    #   if @reparation_count > 1
+    #     raise "Impossible de passer l'auteur ##{auteur.id} (#{auteur.pseudo}) au jour-programme suivant, car son current_pday n'est pas défini dans ses variables et il n'a malheureusement pas pu être réparé."
+    #   else
+    #     # Problème de définition de current_pday…
+    #     # Je dois réparer ce problème pour pouvoir poursuivre. Sur quoi pourrais-je
+    #     # me base pour savoir à quel jour-programme peut en être l'auteur ?
+    #     reparer_error_current_pday_nil
+    #     retry
+    #   end
+    # end
     log "= Current pday (avec get_var) : #{auteur.get_var(:current_pday).inspect}"
     thenext_pday = nil
     begin

@@ -8,12 +8,25 @@ class Projet
     # l'autre le projet Unan::Projet développé au cours de ce
     # programme.
     def create
-      program_id = user.program_id
+      debug "-> Unan::Projet::create (création du projet)"
+      user_program_id = user.program_id
+      debug "program_id par user.program_id : #{user_program_id.inspect}"
       # Au cas où… mais normalement aucun problème n'a été détecté
-      program_id = Unan::Program::program_id if program_id.nil?
+      program_id = Unan::Program::program_id
+
+      if user_program_id.nil? || user_program_id != program_id
+        debug "program_id par Unan::Program::program_id : #{Unan::Program::program_id.inspect}"
+        debug "user.program_id et Unan::Program::program_id sont divergents. Je prends le second (et j'essaie de rectifier l'auteur aussi)."
+        debug "user ID : #{user.id.inspect}"
+      end
+      program = Unan::Program::get(program_id)
+      auteur_program = program.auteur
+      debug "Auteur program ID = #{auteur_program.id}"
+      if auteur_program.instance_of?(User)
+      end
 
       data_new_projet = {
-        auteur_id:  user.id,
+        auteur_id:  auteur_program.id,
         program_id: program_id,
         titre:      nil,
         resume:     nil,

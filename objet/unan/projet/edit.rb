@@ -37,10 +37,13 @@ class Projet
     # modification ultérieure.
     # Retourne l'ID du nouveau projet
     def create_with data
+      debug "-> Unan::Projet::create_with"
+      debug "Data initiales pour la création du nouveau projet : #{data.inspect}"
       @param_data = data
       d2save = data2save
       d2save.delete(:id)
-      d2save.merge!(created_at: NOW.to_i)
+      d2save.merge!(created_at: NOW)
+      debug "Data finales pour la création du nouveau projet : #{d2save.inspect}"
       projet_id = Unan::table_projets.insert(d2save)
     end
 
