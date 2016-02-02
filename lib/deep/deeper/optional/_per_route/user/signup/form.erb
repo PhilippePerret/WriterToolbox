@@ -25,6 +25,7 @@ end
 
 %>
 <form id="form_user_signup" class="dim3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
+  <%= (param(:route_after_signup)||"").in_hidden(name:'route_after_signup') %>
   <%= row("Pseudo", :pseudo, :text) %>
   <%= row("Patronyme", :patronyme, :text) %>
   <%= row("Vous êtes…", :sexe, :select, [["F", "une femme"], ["H", "un homme"]]) %>

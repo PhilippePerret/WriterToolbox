@@ -4,36 +4,36 @@ unan:
   folder:   unan
   home:     'unan/home'
   description: |
-    Ce programme unique en son genre vous permet de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
-    Ce programme d'un an nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût de <strong>#{Unan::tarif_humain} pour l'année complète</strong> (notez que l'inscription à ce programme donne accès à tous les autres outils du site).
+    Ce programme unique en son genre permet à tout auteur, expérimenté ou non, de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée génératrice jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
+    Ce programme spécial nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût complet de #{Unan::tarif_humain} pour une année (#{Unan::tarif_humain_par_mois}). Noter que l'inscription à ce programme d'apprentissage et de développement donne accès à tous les autres outils du site pendant deux ans.
 
 forum:
   name:     Le Forum
   folder:   forum
   home:     'forum/home'
   description: |
-    Le forum réservé exclusivement aux membres de la boite à outils offre un espace inédit où chaque auteur peut trouver les réponses aux questions qu'il se pose, qu'elles soient générales ou particulières à son projet. Par son système de hiérarchie inspirée des meilleurs sites de connaissance, ce forum se distingue par la qualité des connaissances véhiculés de tous les sites d'écriture dont la plupart colportent nombre d'idées précconçues, erronnées ou falacieuses.
+    Ce forum, réservé exclusivement aux membres inscrits de la “Boite à outils”, offre un espace inédit où chaque auteur peut trouver de vraies réponses aux questions qu'il se pose, qu'elles soient générales ou particulières à son projet. Par son système de modération inspiré des meilleurs sites de connaissances (et notamment le site <a href="http://stackoverflow.com" target="_new">StackOverflow</a> pour les programmeurs), ce forum d'écriture se distingue par la pertinence et la véracité des connaissances véhiculées.
 
 analyse:
   name:       Les Analyses de films
   folder:     analyse
   home:       analyse/home
   description: |
-    Cette section à la pointe de la technologie vous permet de tirer le maximum de profit des films de tout genre et de toute provenance, grâce à des analyses approfondies, instructives, donc indispensables.
+    Cette section à la pointe de la technologie vous permet de tirer le maximum de profit des films de tout genre et de toute provenance, grâce à des analyses approfondies, instructives, indispensables.
 
 calculateur:
   name:       Le Calculateur de structure
   folder:     calculateur
   home:       calculateur/home
   description: |
-    Utilisé par de nombreux auteurs depuis de nombreuses années, ce calculateur vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
+    Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
 
 cnarration:
   name:       La collection Narration
   folder:     cnarration
   home:       cnarration/home
   description: |
-    Profitez en ligne de la future version papier des cours narratifs de <strong>Philippe Perret</strong>, auteur et pédagogue qui œuvre depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel.
+    Profitez en ligne de la future version papier des cours de <strong>Philippe Perret</strong>, auteur et pédagogue œuvrant depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel, et qui s'inspire des grands pédagogues aussi bien que des œuvres elles-mêmes pour divulguer une connaissance de la narration la plus pragmatique et la plus profonde possible.
 
 scenodico:
   name:       Le Scénodico

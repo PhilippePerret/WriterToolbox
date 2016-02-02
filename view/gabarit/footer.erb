@@ -12,3 +12,7 @@
     <%= "“1 An 1 Script”::Aide".in_a(href:'aide/home?in=unan') %>
   <% end %>
 </section>
+<% if OFFLINE || user.admin? %>
+  <div class="right" style="margin-right:1em"><%= "Debug".in_a(class:'tiny', onclick:"$('section#debug').toggle()") %></div>
+<% end %>
+<div id="bande_bas_de_page"></div>

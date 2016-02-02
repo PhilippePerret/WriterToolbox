@@ -40,6 +40,7 @@ section#header{opacity:#{low_opacity_header}}
 section#header:hover{opacity:1}
 section#left_margin{opacity:#{low_opacity_margin}}
 section#left_margin:hover{opacity:1}
+div#chapiteau_logo{opacity:#{low_opacity_header}}
 .adminonly{#{user.admin? ? '' : 'display:none;'}}
 </style>
     CSSS

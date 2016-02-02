@@ -5,13 +5,13 @@
 # même place que ce fichier (cf. tool_list.yaml)
 %>
 <h1>Outils d'écriture</h1>
-<p class='small italic'>
+<p class='small italic air'>
   <% if user.paiements_ok? %>
-      <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>rejoindre tous les outils</strong>.
+      <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>utiliser tous les outils</strong>.
   <% elsif user.identified? %>
-    <%= user.pseudo %>, vous êtes inscrit<%= f_e %> mais votre <a href="user/paiement">abonnement</a> n'est pas à jour (<%= site.tarif_humain %>/an), donc vous ne pouvez pas utiliser certains outils présentés ici.
+    <%= user.pseudo %>, vous êtes inscrit<%= f_e %> mais votre <a href="user/paiement">abonnement</a> n'est pas à jour (<%= site.tarif_humain %>/an), vous pouvez donc utiliser la plupart des outils présentés ici.
   <% else %>
-    Veuillez noter que sans <a href="user/signin">vous identifier</a> (si vous êtes déjà inscrit), sans <a href="user/signup">vous inscrire</a> et sans <a href="user/paiement">s'abonner aux outils</a> (<%= site.tarif_humain %>/an), vous ne pouvez pas les utiliser.
+    Merci de noter que certains de ces outils sont exclusivement réservés aux membres inscrits. D'autres nécessitent un abonnement annuel au site. <a href="user/signup">S'inscrire</a> ou <a href="user/paiement">s'abonner</a> (pour <%= site.tarif_humain(false) %>/an — <%= site.tarif_humain_par_mois("/mois") %>).
   <% end %>
 </p>
 <%= SiteHtml::Tool::output %>

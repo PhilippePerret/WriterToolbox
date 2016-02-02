@@ -13,12 +13,16 @@ class User
 
     # Méthode appelée par le formulaire pour inscrire
     # l'utilisateur
-    # Si la création réussit, on l'identifie et on affiche sa page
-    # d'accueil. Sinon on revient à la page d'inscription (redirection)
+    # Si la création réussit :
+    #  * Si une page suivante est définie (par exemple pour payer l'abonnement)
+    #    on la rejoint
+    #  * Sinon on l'identifie et on affiche sa page
+    #  * Sinon on revient à la page d'inscription (redirection)
     def create
       newuser = User::new
       if newuser.create
         newuser.login
+        redirect_to param(:route_after_signup) unless param(:route_after_signup).empty?
       end
     end
 

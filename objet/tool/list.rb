@@ -19,14 +19,20 @@ class Tool
       "<dl>" +
       list.collect do |tid, tdata|
         titre = tdata[:name]
-        titre += (" (rejoindre)").in_a(href:tdata[:home]) unless tdata[:home].nil?
+        dd_rejoindre = if tdata[:home].nil?
+          ""
+        else
+          lien_rejoindre = "-> rejoindre #{titre}".in_a(class:'small', href:tdata[:home])
+          titre = titre.in_a(href:tdata[:home], class:'inherit')
+          "<dd class='right'>#{lien_rejoindre}</dd>"
+        end
         "<dt>#{titre}</dt>" +
         tdata[:description].split("\n").collect do |p|
           if p.match(/#\{/)
             p.gsub!(/#\{(.*?)\}/){ eval($1) }
           end
           "<dd>#{p}</dd>"
-        end.join("\n")
+        end.join("\n") + dd_rejoindre
       end.join("\n") +
       "</dl>"
     end

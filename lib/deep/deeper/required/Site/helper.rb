@@ -10,8 +10,19 @@ Méthode d'helper pour le site
 =end
 class SiteHtml
 
-  def tarif_humain
-    @tarif_humain ||= tarif.as_tarif
+  def tarif_humain(with_tarif_mois = false)
+    if with_tarif_mois
+      tarif_humain(false) + " (#{tarif_humain_par_mois})"
+    else
+      @tarif_humain ||= tarif.as_tarif
+    end
+  end
+
+  def tarif_humain_par_mois suffix = " par mois"
+    @tarif_humain_with_mois ||= begin
+      parmois = (tarif / 12).round(1).as_tarif
+      "#{parmois}#{suffix}"
+    end
   end
 
   # Lien pour s'inscrire sur le site

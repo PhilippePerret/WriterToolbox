@@ -6,8 +6,6 @@
 #
 debug "-> ./objet/user/paiement.erb"
 %>
-<% raise_unless_identified %>
-
 <h1>Section de paiement</h1>
 <% if user.paiements_ok? %>
   <%
