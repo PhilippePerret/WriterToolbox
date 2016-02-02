@@ -54,7 +54,7 @@ class Quiz
   # précisé, c'est l'auteur courant (user) qui est pris en
   # référence.
   def uquiz quser = nil
-    User::UQuiz::get(self.id, auteur)
+    User::UQuiz::get(self.id, quser)
   end
 
   # Retourne le type-validation du questionnaire, qui peut

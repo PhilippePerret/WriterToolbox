@@ -59,6 +59,9 @@ class Cron
         path_rapport_admin.remove
       else
         # On doit envoyer le rapport toutes les heures
+        fullpath = File.expand_path(path_mail.to_s)
+        log "Fullpath du mail : #{fullpath}"
+        log "Fullpath existe ? #{File.exist?(fullpath).inspect}"
         message_mail = path_mail.deserb( self )
         log "Rapport horaire envoyé à l'administration"
       end

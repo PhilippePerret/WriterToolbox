@@ -3,9 +3,13 @@ describe 'User::UQuiz::get' do
     site.require_objet 'unan'
     Unan::require_module 'quiz'
 
-    @current_auteur = create_user(:current => true, :unanunscript => true)
-    @autre_auteur = create_user(current:true, unanunscript:true)
+    @current_auteur = create_user(unanunscript:true)
+    # => mis en auteur courant
+    @autre_auteur = create_user(unanunscript:true)
+    # => mis en auteur courant
 
+    reset_all_variables
+    User::UQuiz.instance_variables.each{|iv| User::UQuiz.remove_instance_variable(iv)}
   end
 
   it 'répond' do

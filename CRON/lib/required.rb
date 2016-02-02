@@ -40,7 +40,7 @@ begin
   Cron::run
   safed_log "= STEP 2 OK ="
 rescue Exception => e
-  log "### IMPOSSIBLE DE LANCER LE CRON-JOB : #{e.message}"
+  log "### PROBLÈME AU COURS DE Cron::run : #{e.message}"
 end
 
 safed_log "<- #{__FILE__}"

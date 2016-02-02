@@ -171,7 +171,6 @@ RSpec.configure do |config|
 
     if defined?(User)
       User::instance_variables.each do |iv|
-        debug "Écrasement de User::#{iv}"
         User.remove_instance_variable(iv)
       end
     end
