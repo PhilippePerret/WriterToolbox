@@ -11,6 +11,8 @@ page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.0.js").t
 <h1>Édition page cours #<%= page_cours.id %> (type: <%= page_cours.type %>)</h1>
 
 <div id="top_tools" class="tiny right" style="margin-top:0!important;">
+  <%= "CONSTRUIRE".in_a(href:"page_cours/#{page_id}/build?in=unan_admin") %>
+  <%= "Visualiser".in_a(href:"page_cours/#{page_id}/read?in=unan", target:'_show_page_') %>
   <%= "Optimise l'interface".in_a(id:'btn_optimize',onclick:"$.proxy(PageCours,'toggle_interface')()") %>
 </div>
 <form class="" action="page_cours/<%= page_id %>/edit_content?in=unan_admin" method="POST">
