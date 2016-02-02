@@ -98,6 +98,9 @@ class SiteHtml
     @folder_deeper_module ||= folder_deeper + 'module'
   end
 
+  def folder_deeper_javascript
+    @folder_deeper_javascript ||= folder_deeper + 'js'
+  end
   # ---------------------------------------------------------------------
   #   Librairie
   # ---------------------------------------------------------------------

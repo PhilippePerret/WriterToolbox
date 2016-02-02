@@ -139,9 +139,7 @@ end #/UnanAdmin
 
 def pc # comme "P-age C-cours"
   return Hash::new if pc_id == :undefined
-  @pc ||= begin
-    UnanAdmin::PageCours::get(pc_id)
-  end
+  @pc ||= UnanAdmin::PageCours::get(pc_id)
 end
 def pc_id
   @pc_id ||= begin

@@ -14,14 +14,27 @@ end
 types_page = Unan::Program::PageCours::TYPES_PAGE.collect{|typep, datatype| [typep, datatype[:hname]]}
 %>
 <%
+page_id = if site.current_route.objet == "page_cours" && site.current_route.objet_id.instance_of?(Fixnum)
+  site.current_route.objet_id
+elsif pc[:id]
+  pc[:id]
+elsif pc.respond_to?(:id)
+  pc.id
+else
+  nil
+end
 # Formulaire pour lire la page
-lien_read_page = if pc[:id]
- "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{pc[:id]}/read?in=unan")
-else "" end
+lien_read_page = if page_id
+ "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{page_id}/read?in=unan")
+else "- no page_id -" end
 
-lien_open_page = if pc[:id]
-  onclick = "PageCours.set_operation('open_page_cours', true)"
-  "Ouvrir la page (texte)".in_a(class:'small btn', id:"lien_open_page", onclick: onclick)
+# lien_open_page = if page_id
+#   onclick = "PageCours.set_operation('open_page_cours', true)"
+#   "Ouvrir la page (texte)".in_a(class:'small btn', id:"lien_open_page", onclick: onclick)
+# else "" end
+
+lien_open_page = if page_id
+  "Edit text".in_a(class:'small btn', id:"lien_editer_content", target:'_edit_content_page_cours_', href:"page_cours/#{page_id}/edit_content?in=unan_admin")
 else "" end
 
 %>

@@ -1,0 +1,23 @@
+<%
+# Vue pour éditer le contenu de la page de cours, quelle qu'elle soit
+raise_unless_admin
+%>
+<%
+page_id = site.current_route.objet_id
+
+page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.0.js").to_s)
+
+%>
+<h1>Édition page cours #<%= page_cours.id %> (type: <%= page_cours.type %>)</h1>
+
+<div id="top_tools" class="tiny right" style="margin-top:0!important;">
+  <%= "Optimise l'interface".in_a(id:'btn_optimize',onclick:"$.proxy(PageCours,'toggle_interface')()") %>
+</div>
+<form class="" action="page_cours/<%= page_id %>/edit_content?in=unan_admin" method="POST">
+  <%= "save_page_content".in_hidden(name:'operation') %>
+  <%= "not_optimized".in_hidden(name:"interface_state", id:"interface_state") %>
+  <textarea name="page_cours[content]" id="page_cours_content"><%=
+    page_cours.content
+  %></textarea>
+  <input type="submit" class="btn fright" value="Enregistrer" />
+</form>
