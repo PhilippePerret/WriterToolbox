@@ -1,16 +1,12 @@
 # encoding: UTF-8
-class Unan
-  class << self
+class SiteHtml
+  def envoyer
+    current_mail.send
+  end
 
-    def envoyer
-      current_mail.send
-    end
-
-    def current_mail
-      @current_mail ||= Contact::new
-    end
-
-  end # << self
+  def current_mail
+    @current_mail ||= Contact::new
+  end
 
   class Contact
 
