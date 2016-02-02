@@ -8,6 +8,7 @@ class AbsPDay
   MAP_DAY_HEIGHT  = 20
   MAP_WIDTH       = 365 * MAP_DAY_WIDTH
 
+
   class << self
 
     def init_map
@@ -25,7 +26,8 @@ class AbsPDay
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
     # être placé le travail sur la carte
     def free_top_zone_for left, width
-      return 0 if @zones.empty?
+
+      return top_type if @zones.empty?
       index_row = nil
 
       # Le départ et la fin de la nouvelle zone

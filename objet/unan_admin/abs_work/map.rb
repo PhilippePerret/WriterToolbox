@@ -9,10 +9,18 @@ class AbsWork
   MAP_DAY_HEIGHT  = 20    # Hauteur
   MAP_WIDTH       = 365 * MAP_DAY_WIDTH
 
+
   class << self
 
     def init_map
-      @zones ||= Hash::new
+      @zones ||= begin
+        {
+          tasks:  Hash::new,
+          pages:  Hash::new,
+          quiz:   Hash::new,
+          forum:  Hash::new
+        }
+      end
     end
 
     # La hauteur de la carte des travaux, en fonction des
@@ -20,13 +28,14 @@ class AbsWork
     # Sert à définir le style css dans map.erb pour le div
     # de la map
     def map_height
-      @map_height ||= @zones.count * (MAP_DAY_HEIGHT + 2)
+      @map_height ||= (Unan::Program::AbsWork::first_row_last_zone + @zones[:forum].count) * (MAP_DAY_HEIGHT + 2)
     end
 
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
     # être placé le travail sur la carte
-    def free_top_zone_for left, width
-      return 0 if @zones.empty?
+    def free_top_zone_for left, width, type_id
+
+      return 0 if @zones[type_id].empty?
       index_row = nil
 
       # Le départ et la fin de la nouvelle zone
@@ -35,7 +44,7 @@ class AbsWork
       # On va boucler sur toutes les zones déjà occupées pour
       # choisir un espace libre. S'il n'existe pas, on ajoute
       # une nouvelle rangée
-      @zones.each do |irow, troncons|
+      @zones[type_id].each do |irow, troncons|
 
         # Si la nouvelle zone peut être placée avant le
         # premier tronçon, on prend cette ligne
@@ -59,18 +68,18 @@ class AbsWork
 
       # Si on passe par ici, c'est qu'aucun espace n'a été trouvé
       # On doit ajouter une rangée
-      return @zones.keys.last + 1
+      return @zones[type_id].keys.last + 1
     end
 
     # Mémorise la zone du travail qui commence à left et
     # fait une largeur de width à la rangée irow de la
     # carte. Cette zone ne pourra plus être occupée par un
     # travail suivant.
-    def memorize_zone left, width, irow
-      @zones.merge!( irow => Array::new ) unless @zones.has_key?(irow)
+    def memorize_zone left, width, irow, type_id
+      @zones[type_id].merge!( irow => Array::new ) unless @zones[type_id].has_key?(irow)
       # Liste des tronçons occupés, qui ressemblent à
       # [{:from, :to}, {:from, :to}....]
-      troncons = @zones[irow]
+      troncons = @zones[type_id][irow]
 
       from  = left
       to    = left + width - 1
@@ -80,7 +89,7 @@ class AbsWork
       # premier troncon. Si c'est le cas, on l'ajoute et
       # on s'en retourne directement
       if troncons.first && to < troncons.first[:from]
-        @zones[irow] = [added] + troncons
+        @zones[type_id][irow] = [added] + troncons
         return
       end
       # On cherche si on peut allonger un tronçons existant
@@ -104,7 +113,7 @@ class AbsWork
       # Si le tronçon n'a pas pu être ajouté (<= quand à la fin)
       troncons << {from: from, to: to} unless troncon_added
 
-      @zones[irow] = troncons
+      @zones[type_id][irow] = troncons
 
     end
 
@@ -116,10 +125,28 @@ end # /AbsWork
 end # /Program
 end # /Unan
 
+
 # Extension de Unan::Program::AbsWork
 class Unan
 class Program
 class AbsWork
+
+  # Chaque type de travail (tâche, page de cours, quiz, etc.) est mis
+  # dans une rangée différente. Cette table indique le bord haut de
+  # chaque rangée. On pourra l'augmenter s'il le faut.
+  # Pour le moment, permet de superposer 5 éléments de chaque type,
+  # ce qui devrait suffire.
+  FIRST_ROW_BY_TYPES = {
+    tasks:  0,
+    pages:  5,
+    quiz:   10,
+    forum:  15
+  }
+
+  def self.first_row_last_zone
+    Unan::Program::AbsWork::FIRST_ROW_BY_TYPES[:forum]
+  end
+
   # ---------------------------------------------------------------------
   #   Instance
   # ---------------------------------------------------------------------
@@ -128,10 +155,14 @@ class AbsWork
   def in_map jour_depart
     @jour_depart = jour_depart
     get_all # pour charger toutes les données d'un coup
-    top   = free_row * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
+    top   = (free_row + FIRST_ROW_BY_TYPES[type_id]) * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
     displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+  end
+
+  def type_id
+    @type_id ||= Unan::Program::AbsWork::TYPES[type_w][:id_list]
   end
 
   def displayed_infos
@@ -165,11 +196,11 @@ class AbsWork
     @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def free_row
-    @free_row ||= UnanAdmin::Program::AbsWork::free_top_zone_for(left, width)
+    @free_row ||= UnanAdmin::Program::AbsWork::free_top_zone_for(left, width, type_id)
   end
 
   def memorize_zone
-    UnanAdmin::Program::AbsWork::memorize_zone(left, width, free_row)
+    UnanAdmin::Program::AbsWork::memorize_zone(left, width, free_row, type_id)
   end
 
 end # /AbsWork

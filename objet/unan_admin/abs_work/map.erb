@@ -30,8 +30,15 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
   # précis depuis qu'on peut mettre le même travail à plusieurs endroits, ce
   # qui est somme toute plus logique (voir par exemple le travail qui consiste
   # à élaborer un pitch d'histoire tous les jours)
+  def top_titre type_id
+    40 + (Unan::Program::AbsWork::FIRST_ROW_BY_TYPES[type_id] * UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT)
+  end
   %>
   <div id="abs_work_map" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH %>px">
+    <div class="titre_zone" style="top:<%= top_titre(:tasks) %>px">Travaux</div>
+    <div class="titre_zone" style="top:<%= top_titre(:pages) %>px">Pages cours</div>
+    <div class="titre_zone" style="top:<%= top_titre(:quiz) %>px">Quiz</div>
+    <div class="titre_zone" style="top:<%= top_titre(:forum) %>px">Forum</div>
     <% Unan::Program::AbsPDay::all.each do |pday| %>
       <% debug "PDay ##{pday.id}" %>
       <% pday.works(:as_instance).each do |work| %>
