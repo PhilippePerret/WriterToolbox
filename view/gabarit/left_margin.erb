@@ -10,8 +10,9 @@
 <a href="tool/list">Outils</a>
 
 <% if false == user.identified? %>
-  <%= "S'IDENTIFIER".in_a(href:'user/signin') %>
-  <%= "S'INSCRIRE".in_a(href:'user/signup') %>
+  <hr />
+  <%= "S'identifier".in_a(href:'user/signin') %>
+  <%= "S'inscrire".in_a(href:'user/signup') %>
 <%
   else
     # Si le visiteur est identifié
