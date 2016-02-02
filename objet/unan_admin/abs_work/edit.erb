@@ -114,6 +114,29 @@ lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", cla
   %>
   <%= form.field_text("Item ID", 'item_id', nil) %>
   <%= form.field_description("ID (IDs ?) de la page de cours si c'est une page de cours, du questionnaire si c'est un questionnaire, etc.") %>
+  <%=
+    # Un lien pour éditer l'élémnet en fonction du type d'item
+    # Par exemple, pour une page, on obtient des liens pour modifier les données, modifier le texte ou lire la page
+    # Pour un questionnaire, on obtient un lien pour modifier le questionnaire
+    data_type = Unan::Program::AbsWork::TYPES[data[:type_w]][:id_list]
+    liens_outils = case data_type
+    when :tasks
+      "Visualiser".in_a(onclick:"alert('Je ne sais pas encore visualiser une tâche.')")
+    when :pages
+      page_id = data[:item_id]
+      "Éditer les données".in_a(class:'small', href:"page_cours/#{page_id}/edit?in=unan_admin", target:'_data_edition_') +
+      '<span>&nbsp;|&nbsp;</span>' +
+      "Éditer le texte".in_a(class:'small', href:"page_cours/#{page_id}/edit_content?in=unan_admin", target:'_content_edition_') +
+      '<span>&nbsp;|&nbsp;</span>' +
+      "Visualiser".in_a(class:'small', href:"page_cours/#{page_id}/read?in=unan", target:'_page_reader_')
+    when :quiz
+      quiz_id = data[:item_id]
+      "Éditer le questionnaire".in_a(class:'small', href:"quiz/#{quiz_id}/edit?in=unan_admin")
+    else
+      ""
+    end
+    form.field_raw("", '', nil, {field: liens_outils})
+  %>
 
   <%# type (bit 3-4) %>
   <%= form.field_raw("Sujet cible", 'narrative_target', nil, { field: UnanAdmin::menu_sujets_cibles(id: 'work_narrative_target', name: 'work[narrative_target]', value: data[:narrative_target]) }) %>
