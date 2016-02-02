@@ -9,7 +9,13 @@
 <%= "Forum".in_a(href:'forum/home') %>
 <a href="tool/list">Outils</a>
 
-<% if user.identified? %>
+<% if false == user.identified? %>
+  <%= "S'IDENTIFIER".in_a(href:'user/signin') %>
+  <%= "S'INSCRIRE".in_a(href:'user/signup') %>
+<%
+  else
+    # Si le visiteur est identifié
+%>
 
   <a href="user/<%= user.id %>/profil">Profil</a>
   <a href="unan/home" id="link_uaus">UN AN<br>UN SCRIPT</a>
