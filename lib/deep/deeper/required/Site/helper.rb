@@ -32,6 +32,13 @@ class SiteHtml
     titre.in_a(options)
   end
 
+  # Lien pour s'identifier
+  def lien_signin titre = "s'identifier", options = nil
+    options ||= Hash::new
+    options.merge!(href: "user/signin")
+    titre.in_a(options)
+  end
+
   # Lien pour s'abonner au site
   def lien_suscribe titre = "s'abonner", options = nil
     options ||= Hash::new
