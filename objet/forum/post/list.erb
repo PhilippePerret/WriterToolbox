@@ -6,4 +6,6 @@
 %>
 <%= forum.titre_h1("Messages", {onglets: true}) %>
 
-<ul id="ul_posts"><%= forum.posts.list(as: :li, from: :last) %></ul>
+<%= forum.posts.navigation_bar(:top) %>
+<ul id="posts"><%= forum.posts.list(as: :li, from: :last) %></ul>
+<%= forum.posts.navigation_bar(:bottom) %>

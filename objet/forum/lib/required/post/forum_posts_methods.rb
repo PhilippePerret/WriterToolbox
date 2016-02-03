@@ -13,6 +13,41 @@ class Forum
 class Post
   class << self
 
+    # {StringHTML} Retourne le div contenant les boutons
+    # de navigation
+    def navigation_bar toporbottom # :top ou :bottom
+      (
+        message_explication +
+        nav_button_back +
+        nav_button_forward
+      ).in_div(class:"nav_tools_bar #{toporbottom}")
+    end
+    def message_explication
+      "Trouvez ici tous les messages, tous sujets confondus, les derniers arrivés en premiers.".in_div(class:'fleft italic small')
+    end
+    def nav_button_back
+      first_back =from - nombre_by_default
+      (
+        first_back.in_hidden(name:'posts_from') +
+        "←".in_submit
+      ).in_form(action:"post/list?in=forum", style:"visibility:#{first_back < 0 ? 'hidden' : 'visible'}")
+    end
+    def nav_button_forward
+      first_forward = from + nombre_by_default
+      (
+        first_forward.in_hidden(name:'posts_from') +
+        "→".in_submit
+      ).in_form(action:"post/list?in=forum", style:"visibility:#{first_forward > nombre_total_messages ? 'hidden' : 'visible'}")
+    end
+    def from
+      # TODO: Il ne faudra pas faire "nombre_by_default" mais prendre
+      # le nombre de messages affichésd
+      @from ||= param(:posts_from).to_i
+    end
+
+    def nombre_total_messages
+      @nombre_total_messages ||= Forum::table_posts.count
+    end
 
     # = main =
     #
@@ -73,7 +108,7 @@ class Post
       return_as     = params.delete(:as)
       from_index   = params.delete(:from) || 0
       if from_index == :last
-        from_index = 0 # pour le moment. Après, on le lira dans les paramètres
+        from_index = param(:posts_from).to_i
       end
 
       data_request = Hash::new
@@ -121,8 +156,12 @@ class Post
 
       case return_as
       when :instance, :instances  then @posts.keys.collect { |pid| get(pid) }
-      when :li                    then
-        lis = @posts.keys.collect { |pid| get(pid).as_li }.join('')
+      when :li
+        numero_message = from_index.to_i
+        lis = @posts.keys.collect do |pid|
+          numero_message += 1
+          get(pid).as_li(as: :full_message, numero: numero_message)
+        end.join('')
         lis = "Aucun message sur le forum pour le moment.".in_li if lis.empty?
         lis
       when :id, :ids, nil         then @posts.keys

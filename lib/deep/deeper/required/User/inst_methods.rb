@@ -8,7 +8,7 @@ class User
 
   # On connecte l'user
   def login
-    unless mail_confirmed?
+    unless mail_confirmed? || admin?
       return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
     end
     app.session['user_id'] = id
