@@ -9,6 +9,7 @@ def require_folder dossier
   Dir["#{dossier}/**/*.rb"].each { |m| require m }
 end
 # Le site
+require_folder './lib/deep/deeper/required/divers'
 require_folder './lib/deep/deeper/required/Site'
 require_folder "./lib/deep/deeper/required"
 site.require_gem 'superfile'

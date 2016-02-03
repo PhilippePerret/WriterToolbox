@@ -1,7 +1,10 @@
 <%
 # Vue chargée lorsque l'user a pu s'inscrire
 %>
-<h1>Bienvenue</h1>
+<h1>Vous êtes inscrit<%= user.f_e %> !</h1>
+<p><%= user.pseudo %>, heureux de vous compter parmi les auteurs de la “Boite à outils”.</p>
+<p>N'oubliez pas de confirmer votre mail pour que votre inscription soit tout à fait enregistrée.</p>
+<p>Pour pouvoir profiter de tous les outils du site, vous pouvez ensuite <a href="user/<%= user.id %>/paiement">vous abonner pour un an</a>, pour seulement <%= site.tarif_humain(true) %>.</p>
 <p>
-  Heureux de vous compter parmi les auteurs de la “Boite à outils”. Pour le moment, vous ne pouvez pas encore utiliser les outils, tant que vous n'avez pas <a href="user/<%= user.id %>/paiement">régler votre annuité</a>. <a href="user/<%= user.id %>/paiement">Merci de le faire</a> pour profiter de tous les outils du site et vous lancer dans l'écriture de votre scénario.
+  Vous pouvez également vous inscrire au <%= "programme UN AN UN SCRIPT".in_a(href:"voerview/home?in=unan/aide") %> pour développer votre projet de film ou de roman.
 </p>

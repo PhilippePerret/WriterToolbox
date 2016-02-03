@@ -24,6 +24,10 @@ def row libelle, property, field_type, values = nil
 end
 
 %>
+<%
+site.require 'form_tools'
+form.prefix = 'user'
+%>
 <form id="form_user_signup" class="dim3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
   <%= (param(:route_after_signup)||"").in_hidden(name:'route_after_signup') %>
   <%= row("Pseudo", :pseudo, :text) %>
@@ -33,5 +37,6 @@ end
   <%= row("Confirmation mail", :mail_confirmation, :text) %>
   <%= row("Mot de passe", :password, :text) %>
   <%= row("Confirmation mot de passe", :password_confirmation, :text) %>
+  <%= form.field_text("Anti-robot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')}) %>
   <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons') %>
 </form>

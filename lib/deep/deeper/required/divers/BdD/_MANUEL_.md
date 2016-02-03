@@ -517,6 +517,7 @@ L'argument unique passé à `BdD::execute` doit être un {Hash} contenant&nbsp;:
 Ce module est défini dans `./ruby/lib/class/BdD/Modules/module_objet_bdd.rb`.
 
 Il est chargé automatiquement puisqu'il se trouve dans le dossier `lib/class` qui est toujours chargé.
+MAIS : Il faut le charger avant le reste, car App, par exemple, en a besoin.
 
 <a name='modules_de_methodes_dinstance_acquisition'></a>
 

@@ -1,0 +1,11 @@
+<%
+# Mail de confirmation de l'inscription, pour confirmer le mail
+#
+# C'est l'user qui est bindé à cette vue
+%>
+<p>Bonjour <%= pseudo %>,</p>
+<p>Vous venez de vous inscrire sur la <%= site.name %>.</p>
+<p>Merci de bien vouloir confirmer votre adresse-mail et votre inscription en cliquant le lien ci-dessous :</p>
+<p><%= lien_confirmation_inscription %></p>
+<p>Si vous n'aviez pas sollicité d'inscription à <%= site.name %>, il vous suffit d'ignorer ce message.</p>
+<p>Bien à vous,</p>

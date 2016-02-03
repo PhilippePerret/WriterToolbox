@@ -36,6 +36,12 @@ class User
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
       save_all_data
+      # On envoie à l'utilisateur un message pour qu'il confirme
+      # son adresse-mail.
+      send_mail(
+        subject: "Confirmez votre inscription",
+        message: SuperFile::new(_"mail_confirmation.erb").deserb(self)
+      )
       true
     else
       # Les données sont invalides, on doit rediriger vers
@@ -48,6 +54,23 @@ class User
       redirect_to site.current_route.route
       false
     end
+  end
+
+  # Méthode appelée par le mail de confirmation de l'inscription
+  # et du mail pour permettre à l'user de confirmer son inscription.
+  # La méthode enregistre aussi le ticket de confirmation.
+  # On se sert de la session_id pour le construire
+  # La méthode enregistre aussi cette session-id dans les variables
+  # de l'user pour qu'il confirme.
+  #   Ticket-id     tckid
+  #   ID    L'identifiant, souvent tiré de la session-id
+  #   Code  Le code à exécuter.
+  def lien_confirmation_inscription
+    code = "User::get(#{id}).confirm_mail"
+    app.save_ticket(app.session.session_id, code)
+    # On retourne le lien de confirmation
+    href = site.distant_host + "?tckid=#{app.session.session_id}"
+    "Confirmation de votre inscription/mail".in_a(href:href)
   end
 
   # Méthode qui sauve toutes les données de l'user d'un coup
@@ -108,6 +131,10 @@ class User
     @sexe = form_data[:sexe].nil_if_empty
     raise "Le sexe devrait être défini." if @sexe.nil?
     raise "Le sexe n'a pas la bonne valeur." unless ['F', 'H'].include?(@sexe)
+
+    captcha = form_data[:captcha]
+    raise "Il faut fournir le captcha pour nous assurer que vous n'êtes pas un robot" if captcha.nil?
+    raise "Le captcha est mauvais, seriez-vous un robot ?" if captcha != "365"
 
   rescue Exception => e
     error e.message
