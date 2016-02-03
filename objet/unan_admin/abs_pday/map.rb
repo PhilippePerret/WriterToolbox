@@ -27,7 +27,7 @@ class AbsPDay
     # être placé le travail sur la carte
     def free_top_zone_for left, width
 
-      return top_type if @zones.empty?
+      return 0 if @zones.empty?
       index_row = nil
 
       # Le départ et la fin de la nouvelle zone
