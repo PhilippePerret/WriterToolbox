@@ -16,7 +16,7 @@
     </ul>
   </p>
   <p class='small'>
-    Pour pouvoir demeurer <strong>indépendant</strong>, pour n'afficher <strong>aucune publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> (dont la conception demande du temps), l'utilisation de certains outils du site requiert un paiement modique d'un montant de <strong><%= site.tarif_humain %> à l'année</strong>.
+    Pour pouvoir demeurer <strong>indépendant</strong>, pour n'afficher <strong>aucune publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> (dont la conception demande du temps), l'utilisation de certains outils du site requiert un paiement modique d'un montant de <strong><%= site.tarif_humain %> pour une année</strong> (<%= site.tarif_humain_par_mois %>).
   </p>
   <p class='bold'>
     N'hésitez donc pas à…
@@ -34,10 +34,13 @@
   </p>
 </div>
 
-<p>Bonjour !</p>
-<p>Bienvenue dans la “Boite à outils de l'auteur”, le site entièrement dédié au <strong>développement d'histoires</strong> en tout genre.</p>
-<%
-# Boite d'identification
-%>
-<%= page.login_box_unless_identified %>
+<p class='small'>Bienvenue dans…</p>
+<div class='border center' style='width:400px'>
+  <p style="font-family:Verdana;font-weight:bold;font-size:1.2em;">LA BOITE À OUTILS DE L'AUTEUR</p>
+  <%= image('divers/logo.png', width:"340px").in_div(class:'center') %>
+
+</div>
+
+<p class='small'>Un site entièrement consacré au développement d'histoires en tout genre. Si vous êtes déjà inscrit, vous pouvez vous <%= "identifier".in_a(href:"user/signin") %> grâce au lien de la marge gauche. Si vous n'êtes pas inscrit, alors… qu'attendez-vous pour <%= "le faire".in_a(href:"user/signup") %> ? :-)
+</p>
 <div style='clear:both'></div>

@@ -15,9 +15,21 @@
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
 
+require 'rspec-steps'
+require 'rspec-steps/monkeypatching'
+
 # require 'capybara/rspec'
 # Pour les tests avec have_tag etc.
 require 'rspec-html-matchers'
+
+
+require 'capybara/rspec'
+require 'capybara-webkit'
+
+# Capybara.javascript_driver = :webkit
+# Capybara.javascript_driver = :webkit
+Capybara.javascript_driver  = :selenium
+Capybara.default_driver     = :selenium
 
 
 # On requiert tout ce que requiert l'index du site
@@ -228,5 +240,16 @@ RSpec.configure do |config|
   def gel gel_name
     site.require_module('gel')
     SiteHtml::Gel::gel gel_name
+  end
+
+
+
+  # ---------------------------------------------------------------------
+  #   Concernant la navigation (features)
+  # ---------------------------------------------------------------------
+
+  # Pour pouvoir utiliser `visit home`
+  def home
+    @home ||= "http://localhost/WriterToolbox"
   end
 end
