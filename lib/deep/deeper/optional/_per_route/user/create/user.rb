@@ -3,7 +3,6 @@
 Extension de la classe User pour créer l'utilisateur après son inscription
 valide
 =end
-require 'digest/md5'
 
 class SiteHtml
   # Puisque l'user créé ne va pas être mis en user courant (car son mail
@@ -11,13 +10,12 @@ class SiteHtml
   # pouvoir être utilisé à l'affichage du message de bienvenue.
   attr_accessor :user_prov
 end
-class User
 
+class User
   # ---------------------------------------------------------------------
   #   Classe User
   # ---------------------------------------------------------------------
   class << self
-
     # Méthode appelée par le formulaire pour inscrire
     # l'utilisateur
     # Si la création réussit :
@@ -26,6 +24,7 @@ class User
     #  * NON : CONFIRMATION REQUIRED Sinon on l'identifie et on affiche sa page
     #  * Sinon on revient à la page d'inscription (redirection)
     def create
+      debug "-> User::create"
       newuser = User::new
       if newuser.create
         # newuser.login # NON Il doit confirmer avant
@@ -33,13 +32,13 @@ class User
         redirect_to param(:route_after_signup) unless param(:route_after_signup).empty?
       end
     end
-
   end # << self
 
   # ---------------------------------------------------------------------
   #   Instance User
   # ---------------------------------------------------------------------
   def create
+    debug "-> User#create"
     if data_valides?
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
@@ -54,12 +53,14 @@ class User
     else
       # Les données sont invalides, on doit rediriger vers
       # la page du formulaire d'inscription (user/signup)
-      # Avec la formule `site.current_route.route` on s'assure
-      # que le contexte soit défini, ce qui est utile lorsque
-      # l'on crée l'utilisateur à partir du programme Un An
-      # Un Script.
+      # Il y a peut-être un contexte, comme lorsque l'on crée
+      # l'user pour un programme UN AN UN SCRIPT.
       # redirect_to 'user/signup'
-      redirect_to site.current_route.route
+      redirection = "user/signup"
+      unless site.current_route.context.nil?
+        redirection += "?in=#{site.current_route.context}"
+      end
+      redirect_to redirection
       false
     end
   end
@@ -135,11 +136,12 @@ class User
     raise "Le sexe devrait être défini." if @sexe.nil?
     raise "Le sexe n'a pas la bonne valeur." unless ['F', 'H'].include?(@sexe)
 
-    captcha = form_data[:captcha]
-    raise "Il faut fournir le captcha pour nous assurer que vous n'êtes pas un robot" if captcha.nil?
-    raise "Le captcha est mauvais, seriez-vous un robot ?" if captcha != "365"
+    captcha = form_data[:captcha].nil_if_empty
+    raise "Il faut fournir le captcha pour nous assurer que vous n'êtes pas un robot." if captcha.nil?
+    raise "Le captcha est mauvais, seriez-vous un robot ?" if captcha.to_i != 365
 
   rescue Exception => e
+    debug "# #{e.message}"
     error e.message
   else
     true
@@ -152,7 +154,10 @@ class User
 
   # Retourne le mot de passe crypté
   def cpassword
-    @cpassword ||= Digest::MD5.hexdigest("#{@password}#{mail}#{random_salt}")
+    @cpassword ||= begin
+      require 'digest/md5'
+      Digest::MD5.hexdigest("#{@password}#{mail}#{random_salt}")
+    end
   end
 
   # Retourne un nouveau sel pour le mot de passe crypté

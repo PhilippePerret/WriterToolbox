@@ -232,7 +232,6 @@ class SiteHtml
     #   Propriétés fixes
     # ---------------------------------------------------------------------
     # Les propriétés de la route, héritées des paramètres
-    def context     ; @context    ||= param(:in)            end
     def objet       ; @objet      ||= param(:__o)           end
     def objet_cam   ; @objet_cam  ||= objet.camelize        end
     def objet_id_s  ; @objet_id_s ||= param(:__i)           end
@@ -240,6 +239,7 @@ class SiteHtml
     alias :method :method_s
     def objet_id    ; @objet_id   ||= param(:__i).to_i_inn  end
     def method_sym  ; @method_sym ||= get_method_sym        end
+    def context     ; @context    ||= param(:in)            end
 
     # La route reconstituée
     def route

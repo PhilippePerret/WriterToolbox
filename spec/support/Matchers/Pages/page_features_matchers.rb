@@ -3,9 +3,14 @@
 module Capybara
   class Session
 
-    def _try_ message, condition
+    def _try_ message, condition = nil
       error = false
-      error ||= message unless condition
+      unless message.instance_of?(Hash)
+        message = { message => condition }
+      end
+      message.each do |mess, cond|
+        error ||= mess unless cond
+      end
       !error or raise Capybara::ExpectationNotMet, error
     end
 
@@ -34,11 +39,10 @@ module Capybara
       self.send("#{key_page}_page?".to_sym)
     end
     def home_page? options = nil
-      error = false
-      error ||= "le bouton aperçu de l'atelier est introuvable" unless self.has_css?('a#btn_overview')
-      error ||= "le fieldset de l'article courant est introuvable" unless self.has_css?('fieldset#article_courant')
-      !error or raise Capybara::ExpectationNotMet, "On devrait être sur la page d'accueil mais #{error}"
-      true
+      _try_(
+        "le bouton aperçu de l'atelier est introuvable, ce n'est pas la page d'accueil" => self.has_css?('a#btn_overview'),
+        "le fieldset de l'article courant est introuvable, ce n'est pas la page d'accueil" => self.has_css?('fieldset#article_courant')
+      )
     end
     def bureau_page? options = nil
       ok = has_css?('h1', text: "Votre bureau")
@@ -47,10 +51,10 @@ module Capybara
     end
     def contact_page? options = nil
       error = false
-      error ||= "Le titre n'est pas “Contact”" unless has_css?('h1', text: "Contact")
-      error ||= "Le formulaire est introuvable" unless has_css?('form#form_contact')
-      !error or raise Capybara::ExpectationNotMet, "On devrait se trouver sur le formulaire de contact (#{error})"
-      true
+      _try_(
+        "Le titre n'est pas “Contact”"  => has_css?('h1', text: "Contact"),
+        "Le formulaire de contact est introuvable" => has_css?('form#form_contact')
+      )
     end
     def dashboard_page? options = nil
       ok = has_css?('h1', text: "Bureau administrateur")
@@ -104,13 +108,13 @@ module Capybara
     end
     alias :collection_narration_page? :narration_collection_page?
     def has_error? err_message = nil
-      error = false
-      error ||= "La page ne contient aucun message d'erreur" unless self.has_css?('div#flash div.errors div.error')
-      error ||= "La page contient des messages d'erreur mais pas le message “#{err_message}”" unless self.has_css?('div#flash div.errors div.error', text: err_message)
-      !error or raise Capybara::ExpectationNotMet, error
+      _try_(
+        "La page ne contient aucun message d'erreur" => self.has_css?('div#flash div#errors div.error'),
+        "La page contient des messages d'erreur mais pas le message “#{err_message}”" => self.has_css?('div#flash div#errors div.error', text: err_message)
+      )
     end
     def has_not_error?
-      _try_ "La page ne devrait pas contenir de messages d'erreur", self.has_css?('div#flash div.errors div.error')
+      _try_ "La page ne devrait pas contenir de messages d'erreur", self.has_css?('div#flash div#errors div.error')
     end
     def has_notice? mess = nil
       error = false
