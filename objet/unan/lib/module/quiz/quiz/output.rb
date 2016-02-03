@@ -17,6 +17,9 @@ class Quiz
   def output_in_container options = nil
     options ||= Hash::new
 
+    # Note : options[:correction] est utilisé pour les simulations
+    @for_correction = true if options[:correction] == true
+
     if correction?
       # Correction du questionnaire
       code_corrections_et_commentaires

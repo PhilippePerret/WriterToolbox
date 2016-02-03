@@ -26,7 +26,11 @@ class Question
       return "[Question ##{id} inexistante]"
     end
 
-    correction_questionnaire = user_reponse != nil
+    correction_questionnaire = if quiz_id.nil?
+       user_reponse != nil
+     else
+       quiz.correction?
+     end
 
     # Préfix de tous les objets DOM
     prefix = quiz_id.nil? ? "quiz" : "quiz-#{quiz_id}"

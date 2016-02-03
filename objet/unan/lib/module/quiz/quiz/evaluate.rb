@@ -122,7 +122,7 @@ class Quiz
   # = main =
   #
   # Méthode principale appelée pour procéder au calcul
-  # Note : les données se trouvent dans les paramètres, de façon
+  # Note : les réponses se trouvent dans les paramètres, de façon
   # générale dans des paramètres "q-X_r-X" ou des valeurs pour
   # q-X quand ce sont des boutons radio.
   # Par exemple param('q-2') pourra valeur "4" si le choix 4 de
@@ -191,11 +191,12 @@ class Quiz
 
     end # /Fin de la boucle sur chaque question
 
+    # Une erreur avec le questionnaire, c'est-à-dire que toutes les
+    # réponses n'ont pas été fournie par l'utilisateur.
+    # On ne doit pas comptabiliser le questionnaire
     if une_erreur
-      # On ne doit pas comptabiliser le questionnaire puisqu'il y
-      # a une erreur
       @for_correction = false
-      error "Merci de bien vouloir répondre à toutes les questions du formulaire (les questions sans réponses sont indiquées en roug)e."
+      error "Merci de bien vouloir répondre à toutes les questions du formulaire (les questions sans réponses sont indiquées en rouge)."
       return false
     else
       # Le questionnaire a été rempli correctement

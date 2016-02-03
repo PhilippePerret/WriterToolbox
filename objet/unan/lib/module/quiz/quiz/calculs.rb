@@ -7,9 +7,13 @@ class Quiz
 
   def note_sur_20_for note = nil
     note ||= auteur_points
+    # Si le type du quiz est 1 ou 7, i.e. simple renseignement
+    # ou sondage, on retourne nil. MAIS QU'EST-CE QU'ON FAIT ICI
+    # ALORS ??????????
     return nil if [1,7].include?(type)
     return nil if note.nil?
     return nil if max_points.to_i == 0 # nil et zéro
+    # Si on arrive ici c'est que tout est bon
     [note, max_points].sur_vingt(1)
   end
 
@@ -24,7 +28,9 @@ class Quiz
   # Le nombre de points au-dessus (positif) de la moyenne
   # ou en dessous (négatif)
   def ecart_moyenne
-    @ecart_moyenne ||= (auteur_note_sur_vingt - moyenne_minimum).round(2)
+    @ecart_moyenne ||= begin
+      (auteur_note_sur_vingt - moyenne_minimum).round(2)
+    end
   end
 
   # La note sur 20 de l'user pour ce questionnaire, en fonction
@@ -33,6 +39,7 @@ class Quiz
   # l'user vient de faire le questionnaire, soit dans sa table
   # quiz.
   def auteur_note_sur_vingt
+    debug "auteur_points: #{auteur_points.inspect}"
     @auteur_note_sur_vingt ||= note_sur_20_for(auteur_points)
   end
 

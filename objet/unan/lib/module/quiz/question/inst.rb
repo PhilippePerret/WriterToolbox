@@ -39,6 +39,12 @@ class Question
   # ---------------------------------------------------------------------
   #   Data volatile
   # ---------------------------------------------------------------------
+
+  # {Unan::Quiz} L'instance du quiz, mais seulement si la question
+  # est considérée dans le contexte d'un questionnaire.
+  def quiz
+    @quiz ||= quiz_id.nil? ? nil : Unan::Quiz::get(quiz_id)
+  end
   # Type de choix ("c" pour cases à cocher, "r" pour radio)
   def type_c  ; @type_c ||= type[0] end
   # Type d'affichage ("l" pour en ligne, "c" pour en colonne, "m" pour
