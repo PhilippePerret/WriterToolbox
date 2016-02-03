@@ -6,7 +6,7 @@ site.require 'form_tools'
 form.prefix = 'page_cours'
 if site.current_route.objet_id != nil
   # Lorsque la page est appelée par href="page_cours/<id>/edit?in=unan_admin"
-  form.objet = page_cours(site.current_route.objet_id).data
+  form.objet = page_cours.data
 else
   form.objet  = pc
 end
