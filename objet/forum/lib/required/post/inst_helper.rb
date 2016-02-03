@@ -117,7 +117,7 @@ class Post
     "Détruire".in_a(href:"post/#{id}/destroy?in=forum", style:'background-color:red;color:white', onclick:"if(confirm('Voulez-vous réellement détruire définitivement ce message ?')){return true}else{return false}")
   end
   def bouton_votes
-    return "" unless user.grade > 1
+    return "" if (user.grade < 2) || user.id == user_id
     "+1".in_a(href:"post/#{id}/vote?in=forum&v=1", class:'vote', title:"“Upvotez” pour ce message si vous l'avez apprécié ou que vous le trouvez intéressant ou pertinent.") +
     "-1".in_a(href:"post/#{id}/vote?in=forum&v=-1", class:'vote', title:"“Downvotez” pour ce message s'il ne présente pas d'intérêt pour vous.")
   end

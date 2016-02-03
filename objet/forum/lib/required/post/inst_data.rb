@@ -26,6 +26,8 @@ class Post
   #   Data volatiles
   # ---------------------------------------------------------------------
 
+  # ATTENTION : Ne pas utiliser `user` qui entrerait en conflit
+  # avec l'user courant.
   def auteur      ; @auteur ||= User::get(user_id)          end
   def sujet       ; @sujet  ||= Forum::Sujet::get(sujet_id) end
 
