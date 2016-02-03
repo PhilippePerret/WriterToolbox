@@ -16,6 +16,32 @@ describe 'Méthodes pour la gestion des tickets' do
     it 'répond' do
       expect(app).to respond_to :create_ticket
     end
+    context 'sans argument' do
+      it 'produit une erreur' do
+        expect{app.create_ticket}.to raise_error ArgumentError
+      end
+    end
+    context 'avec deux arguments définis' do
+      it 'crée le ticket spécifié' do
+        tid   = "tickettestcreateticket"
+        tcode = "debug 'ca'"
+        res = app.create_ticket(tid, tcode)
+        expect(res).to be_instance_of App::Ticket
+        expect(app.table_tickets.count(where:{id: tid})).to eq 1
+      end
+    end
+    context 'avec un code et un ID à nil' do
+      it 'ne produit pas d’erreur' do
+        expect{app.create_ticket(nil, "debug 'ca'")}.not_to raise_error
+      end
+      it 'définit un ID de 32 charactères pour le ticket' do
+        tk = app.create_ticket(nil, "debug 'ca'")
+        expect(tk).to be_instance_of App::Ticket
+        expect(tk.id).not_to eq nil
+        expect(tk.id).to be_instance_of String
+        expect(tk.id.length).to eq 32
+      end
+    end
   end
 
   describe 'ticket' do
@@ -210,6 +236,39 @@ describe 'Méthodes pour la gestion des tickets' do
       expect(ticket).to be_exist
       app.delete_ticket
       expect(ticket).not_to be_exist
+    end
+  end
+
+  # check_ticket
+  describe 'check_ticket' do
+    it 'répond' do
+      expect(app).to respond_to :check_ticket
+    end
+    context 'sans ticket défini dans les paramètres' do
+      it 'ne fait rien' do
+        param(:tckid => nil)
+        res = app.check_ticket
+        expect(res).to eq nil
+      end
+    end
+    context 'avec un ticket défini dans les paramètres mais inexistant' do
+      it 'retourn false (et affiche un message d’erreur)' do
+        param(:tckid => "unticketinexistantfakes")
+        expect(app.check_ticket).to eq false
+      end
+    end
+    context 'avec un ticket défini et existant' do
+      it 'joue le ticket et retourne true' do
+        tid = "monticketpourcheckticket"
+        code = "$variable = 'variable après check_ticket'"
+        app.create_ticket(tid, code)
+        param(:tckid => tid)
+        $variable = nil
+        expect($variable).to eq nil
+        res = app.check_ticket
+        expect(res).to eq true
+        expect($variable).to eq "variable après check_ticket"
+      end
     end
   end
 

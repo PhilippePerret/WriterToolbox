@@ -16,5 +16,9 @@ site.require_gem 'superfile'
 site.require_config
 require './lib/deep/deeper/output'
 
-# Quelques initialisations
-User::init
+# ---------------------------------------------------------------------
+#   Quelques initialisations et vérification
+# ---------------------------------------------------------------------
+
+require './lib/preambule'
+execute_preambule

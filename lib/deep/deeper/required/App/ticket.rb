@@ -5,12 +5,24 @@ Extention de la class App pour la gestion des tickets
 
 class App
 
+  # Méthode appelée par le préambule (./lib/preambule.rb) pour
+  # traiter l'éventuel ticket.
+  def check_ticket
+    return if param(:tckid).nil?
+    execute_ticket(param(:tckid))
+  end
+
   # Crée un ticket à partir des données +tid+ et +tcode+
-  # +tid+ {String} ID à donner au ticket, en général un 32 bits
+  # +tid+ {String|NIL} ID à donner au ticket, en général un 32 bits
+  #       La méthode en calcule un unique si NIL
   # +tcode+ {String} Le code ruby qui devra être exécuté à l'appel
   # du ticket.
   # Retourne le ticket créé, mais ne sert que pour les tests
   def create_ticket tid, tcode
+    tid ||= begin
+      require 'securerandom'
+      SecureRandom.hex
+    end
     @ticket = Ticket::new(tid, tcode)
     @ticket.create
     @ticket
