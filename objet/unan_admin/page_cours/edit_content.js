@@ -59,8 +59,10 @@ $(document).ready(function(){
     "text.html",
     "text.erb",
     {
-      'P':{replace:"PAGE[$0]"},
-      'F':{replace:"FILM[$1]"}
+      'work' : {replace:"[work::$1::$2] $0"},
+      'page' : {replace:"[page::$1::$2] $0"},
+      'film' : {replace:"[film::$1] $0"},
+      'mot'  : {replace:"[mot::$1::$2] $0"}
     }
     ])
 
