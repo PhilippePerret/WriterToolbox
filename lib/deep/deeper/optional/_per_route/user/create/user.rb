@@ -4,6 +4,13 @@ Extension de la classe User pour créer l'utilisateur après son inscription
 valide
 =end
 require 'digest/md5'
+
+class SiteHtml
+  # Puisque l'user créé ne va pas être mis en user courant (car son mail
+  # doit d'abord être confirmé), on le met dans cette variable pour
+  # pouvoir être utilisé à l'affichage du message de bienvenue.
+  attr_accessor :user_prov
+end
 class User
 
   # ---------------------------------------------------------------------
@@ -16,12 +23,13 @@ class User
     # Si la création réussit :
     #  * Si une page suivante est définie (par exemple pour payer l'abonnement)
     #    on la rejoint
-    #  * Sinon on l'identifie et on affiche sa page
+    #  * NON : CONFIRMATION REQUIRED Sinon on l'identifie et on affiche sa page
     #  * Sinon on revient à la page d'inscription (redirection)
     def create
       newuser = User::new
       if newuser.create
-        newuser.login
+        # newuser.login # NON Il doit confirmer avant
+        site.user_prov = newuser
         redirect_to param(:route_after_signup) unless param(:route_after_signup).empty?
       end
     end
@@ -58,19 +66,14 @@ class User
 
   # Méthode appelée par le mail de confirmation de l'inscription
   # et du mail pour permettre à l'user de confirmer son inscription.
-  # La méthode enregistre aussi le ticket de confirmation.
-  # On se sert de la session_id pour le construire
-  # La méthode enregistre aussi cette session-id dans les variables
-  # de l'user pour qu'il confirme.
-  #   Ticket-id     tckid
-  #   ID    L'identifiant, souvent tiré de la session-id
-  #   Code  Le code à exécuter.
+  # La méthode crée un ticket de confirmation et donne le lien au
+  # mail
   def lien_confirmation_inscription
+    debug "-> lien_confirmation_inscription"
     code = "User::get(#{id}).confirm_mail"
-    app.save_ticket(app.session.session_id, code)
+    app.create_ticket(nil, code, {user_id: id})
     # On retourne le lien de confirmation
-    href = site.distant_host + "?tckid=#{app.session.session_id}"
-    "Confirmation de votre inscription/mail".in_a(href:href)
+    app.lien_ticket("Confirmation de votre inscription/mail").freeze
   end
 
   # Méthode qui sauve toutes les données de l'user d'un coup

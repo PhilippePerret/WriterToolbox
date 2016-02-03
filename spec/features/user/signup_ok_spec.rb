@@ -18,10 +18,10 @@ feature "Inscription d'un nouveau membre" do
     mail          = "unmail#{Time.now.to_i}@chez.lui"
     mot_de_passe  = "unmotdepassecorrect"
     data = {
-      mail:mail, mail_confirmation:mail,
-      password:mot_de_passe, password_confirmation:mot_de_passe,
       pseudo:"Pseudo#{Time.now.to_i}",
       patronyme:"Patro De#{Time.now.to_i}",
+      mail:mail, mail_confirmation:mail,
+      password:mot_de_passe, password_confirmation:mot_de_passe,
       captcha: "365"
     }
     within("form#form_user_signup") do
@@ -32,6 +32,8 @@ feature "Inscription d'un nouveau membre" do
       click_button "S'inscrire"
     end
 
+    shot("after-signup")
+
     # On doit se trouver sur la page ?
     # Page d'arrivée conforme
     expect(page).to have_titre("Vous êtes inscrite !")
@@ -39,6 +41,7 @@ feature "Inscription d'un nouveau membre" do
     new_nombre_users = User::table_users.count.freeze
     expect(new_nombre_users).to eq nombre_users + 1
     puts "Il y a un auteur en plus"
+
 
     last_user = User::table_users.select(limit:1, order:"created_at DESC").values.first
 
@@ -55,6 +58,12 @@ feature "Inscription d'un nouveau membre" do
 
     # Un mail de confirmation lui a été envoyé
     user = User::get(last_user[:id])
+
+    # Un ticket a été créé pour lui
+    res = app.table_tickets.select(where:{user_id: last_user[:id]}, limit:1, order:"created_at DESC").values.first
+    expect(res).not_to eq nil
+    expect(res[:created_at]).to be >= start_time
+    puts "Un ticket a été créé pour l'user avec les bonnes données"
 
     expect(user).to have_mail_with(
       sent_after:     start_time,

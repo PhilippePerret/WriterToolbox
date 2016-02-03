@@ -252,4 +252,20 @@ RSpec.configure do |config|
   def home
     @home ||= "http://localhost/WriterToolbox"
   end
+
+
+
+  # ---------------------------------------------------------------------
+  #   Screenshots
+  # ---------------------------------------------------------------------
+  def shot name
+    name = "#{Time.now.to_i}-#{name}"
+    page.save_screenshot("./spec/screenshots/#{name}.png")
+  end
+  def empty_screenshot_folder
+    p = './spec/screenshots'
+    FileUtils::rm_rf p if File.exists? p
+    Dir.mkdir( p, 0777 )
+  end
+
 end

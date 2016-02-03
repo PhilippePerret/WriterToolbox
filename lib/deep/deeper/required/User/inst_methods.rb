@@ -8,7 +8,9 @@ class User
 
   # On connecte l'user
   def login
-
+    unless mail_confirmed?
+      return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
+    end
     app.session['user_id'] = id
     User::current= self
     set(session_id: app.session.session_id)

@@ -18,12 +18,15 @@ class App
   # +tcode+ {String} Le code ruby qui devra être exécuté à l'appel
   # du ticket.
   # Retourne le ticket créé, mais ne sert que pour les tests
-  def create_ticket tid, tcode
+  # +options+ Permet de passer des données qui ne pourront pas être
+  # prises autrement, par exemple l'user_id lorsque c'est une création
+  # d'user et qu'il n'y a donc pas de user courant.
+  def create_ticket tid, tcode, options = nil
     tid ||= begin
       require 'securerandom'
       SecureRandom.hex
     end
-    @ticket = Ticket::new(tid, tcode)
+    @ticket = Ticket::new(tid, tcode, options)
     @ticket.create
     @ticket
   end
@@ -79,9 +82,10 @@ class App
 
     attr_reader :id
 
-    def initialize tid, tcode = nil
+    def initialize tid, tcode = nil, options = nil
       @id   = tid
       @code = tcode
+      options.each { |k, v| instance_variable_set("@#{k}", v) } unless options.nil?
     end
 
     # Retourne le lien pour activer le ticket (à copier
@@ -128,7 +132,7 @@ class App
       @data4create ||= {
         id:         id,
         code:       code,
-        user_id:    user.id,
+        user_id:    @user_id || user.id,
         created_at: NOW,
         updated_at: NOW
       }

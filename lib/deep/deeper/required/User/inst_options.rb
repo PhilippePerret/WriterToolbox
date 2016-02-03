@@ -17,6 +17,20 @@ class User
   def grade ; @grade ||= get_option(:grade) end
   def set_grade new_grade ; set_option(:grade, new_grade) end
 
+  # Index d'option : 2
+  # Méthode utilisée par un ticket pour confirmer le mail/inscription
+  # de l'user.
+  # Note : on loggue automatiquement l'user.
+  def confirm_mail
+    set_option(:confirm_mail, 1)
+    login
+    flash "Merci à vous #{pseudo}, votre inscription est confirmée."
+  end
+  # Retourne true si le mail est bien confirmé
+  def mail_confirmed?
+    get_option(:confirm_mail) == 1
+  end
+
   # Retourne un Array à deux éléments dont le premier est
   # l'index de l'option de clé +key_option+ (par exemple :admin, :grade)
   # et le second est le nom de la variable d'instance qui conserve
@@ -29,8 +43,9 @@ class User
     case key_option
     when Symbol
       case key_option
-      when :admin then [0, nil]
-      when :grade then [1, '@grade']
+      when :admin         then [0, nil]
+      when :grade         then [1, '@grade']
+      when :confirm_mail  then [2, nil]
       end
     when Fixnum
       [key_option, nil]
