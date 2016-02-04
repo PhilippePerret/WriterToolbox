@@ -35,7 +35,7 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
   <%= form.field_text("Titre", 'titre', nil) %>
 
   <%# SUJET (catégorie) %>
-  <%= form.field_select("Sujet", 'sujet', nil, {values:SUJETS_CIBLES_AS_SELECT}) %>
+  <%= form.field_select("Sujet", 'sujet', nil, {values:sujets_cibles_as_select}) %>
 
   <%# CONTENU DE L'EXEMPLE %>
   <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>

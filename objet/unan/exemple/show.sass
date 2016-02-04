@@ -1,0 +1,28 @@
+div.xpl
+  font-size       : 0.8em
+  border          : 1px solid #ccc
+  padding         : 1em
+  border-radius   : 0.5em
+  
+  // Le titre de l'exemple. Mais il sert peut-être surtout pour l'édition,
+  // on ne l'affiche pas trop fort dans la carte
+  div.titre
+    font-size       : 1.2em
+    color           : #999
+    
+  // Le contenu, c'est-à-dire l'exemple en lui-même
+  div.content
+    font-size       : 1.2em
+
+  // Le Div qui contient les informations sur l'exemple
+  div.infos
+    color            : #999
+    
+  // Version pleine carte de l'exemple, c'est-à-dire avec toutes
+  // ses informations
+  &.fullcard
+  
+  // Version présentant seulement l'exemple et rien d'autre
+  &.simple
+    div.infos, div.titre
+      display : none

@@ -1,0 +1,8 @@
+<%
+# Vue pour l'affichage d'un exemple
+raise_unless user.unanunscript? || user.admin?
+
+# Mettre l'ID de l'exemple à voir soit dans param(:exid) soit dans
+# la route avec 'exemple' en objet.
+%>
+<%= exemple.as_card( param(:exemple_as) || :full_card ) %>
