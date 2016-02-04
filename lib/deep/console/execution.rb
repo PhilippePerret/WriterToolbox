@@ -110,7 +110,7 @@ class Console
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table projets)"
-      affiche_table_projets
+      afficher_table_projets
     when "Unan backup data (table projets)"
       backup_data_projets
     when "Unan destroy (table projets)"
@@ -121,7 +121,7 @@ class Console
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table programs)"
-      affiche_table_programs
+      afficher_table_programs
     when "Unan backup data (table programs)"
       backup_data_programs
     when "Unan destroy (table programs)"
@@ -132,7 +132,7 @@ class Console
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table questions)"
-      affiche_table_questions
+      afficher_table_questions
     when "Unan backup data (table questions)"
       backup_data_questions
     when "Unan destroy (table questions)"
@@ -143,7 +143,7 @@ class Console
     # ---------------------------------------------------------------------
 
     when "Unan affiche (table quiz)"
-      affiche_table_quiz
+      afficher_table_quiz
     when "Unan backup data (table quiz)"
       backup_data_quiz
     when "Unan destroy (table quiz)"

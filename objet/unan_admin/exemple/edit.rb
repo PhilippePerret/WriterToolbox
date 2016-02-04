@@ -18,7 +18,8 @@ class Exemple
     de.merge!(
       source_pays:  source_pays,
       source_src:   source_src,
-      source_year:  source_year
+      source_year:  source_year,
+      sujet:        sujet
     )
     param(exemple: de)
     debug "param(:exemple) : #{param(:exemple).pretty_inspect}"
@@ -69,9 +70,10 @@ class Exemple
     @param_data ||= param(:exemple)
   end
   def assemble_source_type
-    "#{param_data[:source_src]}" +
+    "#{param_data[:source_src]}"  +
     "#{param_data[:source_year]}" +
-    "#{param_data[:source_pays]}"
+    "#{param_data[:source_pays]}" +
+    "#{param_data[:sujet]}"
   end
 
   # Vérification des données à enregistrer

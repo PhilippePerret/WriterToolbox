@@ -19,13 +19,16 @@ class Exemple
   # ---------------------------------------------------------------------
 
   def source_src
-    @source_src ||= source_type[0].to_i
+    @source_src   ||= source_type[0].to_i
   end
   def source_year
-    @source_year ||= source_type[1..4].to_i
+    @source_year  ||= source_type[1..4].to_i
   end
   def source_pays
-    @source_pays ||= source_type[5..6]
+    @source_pays  ||= source_type[5..6].ljust(2,"fr")
+  end
+  def sujet
+    @sujet        ||= source_type[7..8].ljust(2,"-")
   end
 
 end #/Exemple

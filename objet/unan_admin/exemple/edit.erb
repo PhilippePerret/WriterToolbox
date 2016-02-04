@@ -1,6 +1,8 @@
 <%
 # Vue pour l'édition des exemples
 raise_unless_admin
+
+page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.1.js").to_s)
 %>
 <h2>Exemple (édition)</h2>
 <div class="right">
@@ -13,12 +15,13 @@ form.prefix = 'exemple'
 form.objet  = param(:exemple) || Hash::new
 
 onclick = "var f=$('form#form_exemple_edit');f.find('input#operation').val('edit_exemple');f.submit()"
-lien_edit = "Éditer".in_a(onclick:onclick, class:'btn tiny')
+lien_edit = "Éditer".in_a(onclick:onclick, class:'btn small')
 lien_show = if form.objet_id.nil?
   ""
 else
-  "Visualiser".in_a(href:"exemple/#{form.objet_id}/show?in=unan", class:'btn tiny')
+  "Visualiser".in_a(href:"exemple/#{form.objet_id}/show?in=unan", class:'btn small')
 end
+lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'small btn')
 
 %>
 <form id="form_exemple_edit" class="dim2080" action="exemple/<%= form.objet[:id] %>/edit?in=unan_admin" method="POST">
@@ -26,10 +29,13 @@ end
   <%= "save_exemple".in_hidden(name:'operation', id:'operation') %>
 
   <%# ID %>
-  <%= form.field_text('ID', 'id', nil, {class:'short', text_after:"#{lien_edit} #{lien_show}"}) %>
+  <%= form.field_text('ID', 'id', nil, {class:'short', text_after:"#{lien_edit} #{lien_show} #{lien_init}"}) %>
 
   <%# TITRE %>
   <%= form.field_text("Titre", 'titre', nil) %>
+
+  <%# SUJET (catégorie) %>
+  <%= form.field_select("Sujet", 'sujet', nil, {values:SUJETS_CIBLES_AS_SELECT}) %>
 
   <%# CONTENU DE L'EXEMPLE %>
   <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
@@ -48,9 +54,9 @@ end
 
   <%# SOURCE TYPE (plusieurs valeurs définissant la valeur finale) %>
   <%= form.field_select("Type", 'source_src', nil, {values: Unan::Program::Exemple::TYPES_SOURCES}) %>
-  <%= form.field_select_pays("Pays", 'source_pays', nil, {selected: param(:exemple)[:source_pays]}) %>
+  <%= form.field_select_pays("Pays", 'source_pays', nil) %>
   <%# Source type : Année %>
-  <%= form.field_text("Année", 'source_year', nil, {class: 'short', text_after:"(année de l'exemple sous la forme AAAA)"}) %>
+  <%= form.field_text("Année", 'source_year', nil, {class: 'short', text_after:" (année de la source de l'exemple - AAAA)".in_span(class:'small')}) %>
 
 
   <%= form.submit_button("Enregistrer l'exemple") %>

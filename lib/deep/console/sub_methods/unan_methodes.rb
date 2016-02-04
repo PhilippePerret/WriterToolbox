@@ -301,24 +301,24 @@ class Console
     end
   end
 
-  def affiche_table_exemples
+  def afficher_table_exemples
     init_unan
     show_table Unan::table_exemples
   end
-  def affiche_table_questions
+  def afficher_table_questions
     init_unan
     show_table Unan::table_questions
   end
-  def affiche_table_quiz
+  def afficher_table_quiz
     init_unan
     show_table Unan::table_quiz
   end
-  def affiche_table_programs
+  def afficher_table_programs
     init_unan
     show_table Unan::table_programs
   end
 
-  def affiche_table_projets
+  def afficher_table_projets
     init_unan
     show_table Unan::table_projets
   end
