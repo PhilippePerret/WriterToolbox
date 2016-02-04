@@ -23,13 +23,6 @@ class PageCours
   #   Data volatile de la page
   # ---------------------------------------------------------------------
 
-  # def extension
-  #   @extension ||= File.extname(path)[1..-1]
-  # end
-  # def fullpath
-  #   @fullpath ||= Unan::main_folder_data + "pages_cours/#{type}/#{path}"
-  # end
-
   # Retourne l'instance User::UPage de l'auteur pour cette page
   # +auteur+ Instance User de l'auteur, par défaut user courant.
   def upage auteur = nil
