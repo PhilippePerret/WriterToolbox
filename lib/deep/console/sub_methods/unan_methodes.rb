@@ -157,6 +157,8 @@ class Console
         ps[id] = data
       end
     end
+  rescue Exception => e
+    error "#{e.message} (mais je poursuis le travail)."
   end
   # +path+ le path de la base de données courante
   # +table_name+  le nom de la table
@@ -199,7 +201,7 @@ class Console
     # remettre dans la nouvelle table en respectant le nouveau
     # schéma défini
     pstore_path = pstore_path_for(path, table_name)
-    raise "Le pstore `#{pstore_path}` est malheureusement introuvable : impossible de récupérer les données" unless pstore_path.exist?
+    raise "Le pstore `#{pstore_path}` n'existe pas : impossible de récupérer les données" unless pstore_path.exist?
     PStore::new(pstore_path.to_s).transaction do |ps|
       ps.roots.each do |id|
         data = ps[id]
@@ -213,6 +215,8 @@ class Console
         table.set(id, data )
       end
     end
+  rescue Exception => e
+    error "#{e.message} (mais je poursuis le travail)."
   end
 
 
