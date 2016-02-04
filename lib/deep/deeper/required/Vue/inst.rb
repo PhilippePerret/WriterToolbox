@@ -17,7 +17,7 @@ class Vue
     @bindee  = bindee
     # Pour pouvoir retrouver rapidement une vue actuellement affichée,
     # on indique son path dans le débug
-    debug "---> vue “#{path}”"
+    debug "---> vue “#{path}” (@already_required: #{@already_required.inspect})"
   end
 
   # Retourne le code déserbé de la vue (elle doit exister et on doit

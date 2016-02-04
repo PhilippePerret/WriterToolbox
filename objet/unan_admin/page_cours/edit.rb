@@ -4,7 +4,7 @@ raise_unless_admin
 class Unan
 class Program
 class PageCours
-
+#
   EXTENSIONS_PATH_VALIDES = ['.erb', '.rb', '.txt', '.tex', '.html', '.htm']
 
   class << self
@@ -112,10 +112,6 @@ class PageCours
       end
       return if content.nil?
       sfile.write content
-    end
-
-    def table_pages_cours
-      @table_pages_cours ||= Unan::Program::PageCours::table_pages_cours
     end
 
     def open_page
