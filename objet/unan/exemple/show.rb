@@ -17,6 +17,7 @@ class Exemple
   def as_card as = :fullcard
     (
       div_titre   +
+      div_notes   +
       div_content +
       div_infos
     ).in_div(id:"xpl-#{id}", class:"xpl #{as}")
@@ -25,16 +26,26 @@ class Exemple
   def div_titre
     titre.in_div(class:'titre')
   end
+  def div_notes
+    return "" if notes.empty?
+    notes.in_div(class:'notes')
+  end
   def div_content
     content.in_div(class:'content')
   end
   def div_infos
     (
-      "Sujet ".in_span(class:'libelle') + sujet_humain +
-      "Tiré de ".in_span(class:'libelle') + source +
-      "Créé le ".in_span(class:'libelle') + created_at.as_human_date
+      "Exemple tiré de".in_span(class:'libelle') + source   +
+      "sujet".in_span(class:'libelle')   + sujet_humain      +
+      "année".in_span(class:'libelle')   + source_year.to_s  +
+      "créé le".in_span(class:'libelle') + created_at.as_human_date
     ).in_div(class:'infos')
   end
+
+  def sujet_humain
+    @sujet_humain ||= Unan::SujetCible::new(sujet).human_name
+  end
+
 
 end #/Exemple
 end #/Program

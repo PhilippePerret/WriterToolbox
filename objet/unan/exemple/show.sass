@@ -3,26 +3,57 @@ div.xpl
   border          : 1px solid #ccc
   padding         : 1em
   border-radius   : 0.5em
+  margin-left     : 6em
+  width           : 740px !important
+  
+  h3
+    margin-top      : 1.3em
+    font-size       : 17.4pt
+    border-bottom   : 1px solid #a5a5a5
+    padding-bottom  : 5px
   
   // Le titre de l'exemple. Mais il sert peut-être surtout pour l'édition,
   // on ne l'affiche pas trop fort dans la carte
   div.titre
-    font-size       : 1.2em
+    font-size       : 1.1em
     color           : #999
+    font-style      : italic
     
   // Le contenu, c'est-à-dire l'exemple en lui-même
   div.content
     font-size       : 1.2em
+    
+    dl
+      font-size       : 0.85em
+      dt                
+        margin-bottom   : 0.1em
+        margin-top      : 0.4em
+        font-size       : 1.1em
+        color           : #373737 !important
 
+  // Le div qui contient les notes (la note)
+  div.notes
+    margin-left     : 5em
+    margin-top      : 2em
+    font-size       : 0.86em
+    color           : #555
+    font-style      : italic
+    padding-left    : 1em
+    border-left     : 1px solid
+    
   // Le Div qui contient les informations sur l'exemple
   div.infos
-    color            : #999
+    color           : #999
+    font-size       : 11.6pt
+    text-align      : right
+    span.libelle
+      margin-left     : 0.6em
     
   // Version pleine carte de l'exemple, c'est-à-dire avec toutes
   // ses informations
   &.fullcard
-  
+    display : block
   // Version présentant seulement l'exemple et rien d'autre
   &.simple
-    div.infos, div.titre
+    div.infos, div.titre, div.notes
       display : none
