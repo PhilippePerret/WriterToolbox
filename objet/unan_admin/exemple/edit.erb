@@ -34,6 +34,10 @@ end
   <%# CONTENU DE L'EXEMPLE %>
   <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
 
+  <%# CONTENU DE L'EXEMPLE %>
+  <%= form.field_textarea("Notes", 'notes', nil) %>
+  <%= form.field_description("Des notes ou un note qui sera ajoutée à l'affichage de l'exemple, par exemple pour préciser la nature de l'exemple, s'il est simplifié ou non.") %>
+
   <%# WORK DE RÉFÉRENCE (ID) %>
   <%= form.field_text("Work ID", 'work_id', nil, {class:'short'}) %>
   <%= form.field_description("Si cet exemple est intimement lié à un travail absolu, alors on peut indiquer son ID ici.") %>

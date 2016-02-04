@@ -103,6 +103,7 @@ class Console
       <li>table programs</li>
       <li>table projets</li>
       <li>`table pages cours` (les pages de cours)</li>
+      <li>table exemples</li>
       <li>table quiz (les questionnaires)</li>
       <li>table questions (les questions des questionnaires)</li>
       <li>absolute works (les travaux absolus)</li>
@@ -133,6 +134,10 @@ class Console
 
   <dt>`Unan affiche (table questions)`</dt>
   <dd>Affichage de la liste des questions de questionnaires.</dd>
+  <dd>Cette table connait le cycle ci-dessus</dd>
+
+  <dt>`Unan affiche (table exemples)`</dt>
+  <dd>Affichage de la liste des exemples donnés pour les cours.</dd>
   <dd>Cette table connait le cycle ci-dessus</dd>
 
 </dl>

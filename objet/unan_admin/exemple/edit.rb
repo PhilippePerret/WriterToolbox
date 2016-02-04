@@ -59,6 +59,7 @@ class Exemple
     @common_data ||= {
       titre:        param_data[:titre]    || titre,
       content:      param_data[:content]  || content,
+      notes:        param_data[:notes]    || notes,
       source:       param_data[:source]   || source,
       source_type:  assemble_source_type  || source_type,
       updated_at:   NOW
@@ -90,6 +91,9 @@ class Exemple
     unless dc[:work_id].nil?
       raise "Le work-id ##{dc[:work_id]} n'existe pas ! (noter qu'il s'agit d'un AbsWork, n'est-ce pas ?)" unless abswork_exist?(dc[:work_id])
     end
+
+    # Autres données
+    dc[:notes] = dc[:notes].nil_if_empty
 
     # On remet les données corrigée dans les paramètres avant de
     # renvoyer true

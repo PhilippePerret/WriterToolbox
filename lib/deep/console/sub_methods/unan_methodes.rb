@@ -20,6 +20,16 @@ class Console
     retreive_data_from_all( 'unan_cold.db', 'page_cours', proc_modif )
   end
 
+  def retreive_data_exemples
+    proc_modif = Proc::new do |data_init|
+      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
+      # NOUVELLE TABLE
+      data = data_init.dup
+      data
+    end
+    # La table courante
+    retreive_data_from_all('unan_cold.db', 'exemples', proc_modif)
+  end
   # Noter qu'il ne suffit pas de traiter les tables courantes mais
   # également celles de tous les gels…
   def retreive_data_programs
@@ -206,6 +216,9 @@ class Console
   end
 
 
+  def backup_data_exemples
+    backup_data_from_all('unan_cold.db', 'exemples')
+  end
   def backup_data_questions
     backup_data_from_all('unan_cold.db', 'questions')
   end
@@ -230,6 +243,15 @@ class Console
 
   def destruction_impossible
     @destruction_impossible ||= "Impossible de détruire la table des %{choses} en ONLINE (trop dangereux)."
+  end
+  def detruire_table_exemples
+    if OFFLINE
+      init_unan
+      Unan::database.execute("DROP TABLE IF EXISTS 'exemples';")
+      "Table des exemples détruite avec succès."
+    else
+      destruction_impossible % {choses: "exemples"}
+    end
   end
   def detruire_table_questions
     if OFFLINE
@@ -279,6 +301,10 @@ class Console
     end
   end
 
+  def affiche_table_exemples
+    init_unan
+    show_table Unan::table_exemples
+  end
   def affiche_table_questions
     init_unan
     show_table Unan::table_questions

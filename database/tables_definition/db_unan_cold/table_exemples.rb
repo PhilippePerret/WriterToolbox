@@ -31,6 +31,9 @@ def schema_table_unan_cold_exemples
     # --------------------
     content: {type:"TEXT", constraint:"NOT NULL"},
 
+    # Notes sur l'exemple
+    notes: {type:"TEXT"},
+
     # Source de l'exemple
     # -------------------
     # Description de la source de l'exemple, lorsqu'il vient d'un

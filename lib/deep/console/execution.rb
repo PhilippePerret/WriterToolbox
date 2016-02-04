@@ -77,6 +77,18 @@ class Console
 
     # ---------------------------------------------------------------------
 
+    when "Unan affiche (table exemples)"
+      afficher_table_exemples
+    when "Unan backup data (table exemples)"
+      backup_data_exemples
+    when "Unan destroy (table exemples)"
+      detruire_table_exemples
+    when "Unan retreive data (table exemples)"
+      retreive_data_exemples
+
+
+    # ---------------------------------------------------------------------
+
     when "Unan affiche (table absolute pdays)"
       afficher_table_absolute_pdays
     when "Unan backup data (table absolute pdays)"
