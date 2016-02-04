@@ -23,8 +23,13 @@ class Console
       #
       # On exécute la ligne telle quelle
       res = execute_as_is( line )
+
       # On exécute la ligne de type dernier mot variable
       res ||= execute_as_last_is_variable( line )
+
+      # ON exécute la ligne de type get <foo> of <something> <id>
+      res ||= execute_as_get_of_line( line )
+
       # En dernier recours, on exécute la ligne comme du code
       # ruby
       res ||= execute_as_ruby( line )
@@ -159,6 +164,18 @@ class Console
     else
       nil # pour essayer autrement
     end
+  end
+
+  # On exécute la ligne (si on peut) comme une ligne composée
+  # de `get <something> of <something else> <id something else>`
+  # Par exemple, c'est ce qui est utilisé pour UN AN UN SCRIPT
+  # pour retrouver un work d'une page de cours, un p-day d'un
+  # questionnaire, etc.
+  def execute_as_get_of_line line
+    marqueur = /([a-zA-Z0-9_\.\-]+)/
+    found = line.match(/^get #{marqueur} of #{marqueur} ([0-9]+)$/)
+    return nil if found.nil?
+    get_of_exec(* found.to_a[1..3])
   end
 
   # On exécute la ligne comme si son dernier terme était

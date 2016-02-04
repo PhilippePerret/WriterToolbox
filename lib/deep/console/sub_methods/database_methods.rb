@@ -7,6 +7,8 @@
     ./lib/deep/deeper/optional/_per_route/site/console/table.rb
 
 =end
+raise_unless_admin
+
 class SiteHtml
 class Admin
 class Console

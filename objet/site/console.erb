@@ -11,7 +11,7 @@ raise "Vous n'avez rien à faire ici" unless user.admin?
 </form>
 
 <%= console.output %>
-<%= console.special_output %>
+<div id="special_output"><%= console.special_output %></div>
 
 <div class="right">
   <%= "Aide".in_a(onclick:"$('div#console_aide').toggle()") %>
