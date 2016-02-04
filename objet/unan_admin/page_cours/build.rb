@@ -8,7 +8,8 @@ uniquement les textes dynamiques de type %{variable} qui
 seront traités à la volée au chargement de la page.
 
 =end
-class UnanAdmin
+class Unan
+class Program
 class PageCours
 
   # Le contenu dynamique qui va être construit à partir de
@@ -63,7 +64,7 @@ class PageCours
       tout    = $0
       page_id = $1
       titre   = $3.nil_if_empty
-      "<a href='page_cours/#{page_id}/read?in=unan'>#{titre}</a>"
+      "<a href='page_cours/#{page_id}/show?in=unan'>#{titre}</a>"
     }
 
   rescue Exception => e
@@ -80,7 +81,8 @@ class PageCours
   end
 
 end #/PageCours
-end #/UnanAdmin
+end #/Program
+end #/Unan
 
 # Avant de reconstruire la page, il faut la sauver
 # Non : L'enregistrer avant, manuellement, car il y a un problème qui

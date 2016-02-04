@@ -7,7 +7,11 @@ Méthodes commune à toutes les vues du dossier page_cours et peut-être
 même au-delà.
 
 =end
-class UnanAdmin
+site.require_objet 'unan'
+site.require_module 'page_cours'
+
+class Unan
+class Program
 class PageCours
 
   def content
@@ -32,6 +36,7 @@ class PageCours
   alias :table :table_pages_cours
 
 end #/PageCours
+end #/Program
 end #/UnanAdmin
 
 # Retourne l'instance UnanAdmin::PageCours de la page courante, mais seulement
@@ -40,7 +45,7 @@ debug "site.current_route.objet: #{site.current_route.objet.inspect}::#{site.cur
 def page_cours
   @page_cours ||= begin
     if site.current_route.objet == "page_cours" && site.current_route.objet_id
-      UnanAdmin::PageCours::new( site.current_route.objet_id )
+      Unan::Program::PageCours::new( site.current_route.objet_id )
     else
       nil
     end

@@ -5,7 +5,8 @@ Extension de la class UnanAdmin::PageCours et ses méthods d'instance
 pour l'actualisation du code de la page originale.
 
 =end
-class UnanAdmin
+class Unan
+class Program
 class PageCours
 
   # Actualiser le contenu de la page
@@ -38,7 +39,8 @@ class PageCours
   end
 
 end #/PageCours
-end #/UnanAdmin
+end #/Program
+end #/Unan
 
 
 case param(:operation)

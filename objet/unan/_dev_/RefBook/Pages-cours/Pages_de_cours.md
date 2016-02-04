@@ -10,13 +10,15 @@
 
 ## Lien pour afficher/éditer/détruire une page de cours
 
-Fonctionnellement, suivant le principe restfull du site, on utilise pour afficher une page de cours, pour l'éditer ou pour la détruire, respectivement :
+Fonctionnellement, suivant le principe restfull du site, on utilise pour afficher une page de cours, pour l'éditer ou pour la détruire, ou pour modifier son texte, respectivement :
 
-    href="page_cours/<id>/read?in=unan"
+    href="page_cours/<id>/show?in=unan"
 
-    href="page_cours/<id>/edit?in=unan"
+    href="page_cours/<id>/edit?in=unan_admin"
 
-    href="page_cours/<id>/destroy?in=unan"
+    href="page_cours/<id>/destroy?in=unan_admin"
+
+    href="page_cours/<id>/edit_content?in=unan_admin"
 
 Mais on préfèrera utiliser la méthode pratique utilisant [les pointeurs](#leshandlersdepage) :
 
@@ -53,11 +55,13 @@ Elle est définie dans le fichier principal des méthodes pratiques :
 
     ./objet/unan/lib/required/handy.rb
 
+OBSOLÈTE. `page_cours` est maintenant une méthode-propriété qui retourne la page de cours définie d'après l'id de la rest-route.
+
 <a name='mapdespagesdecours'></a>
 
 ## Map des pages de cours
 
-Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre le handler (Symbol explicite) et l'ID de la table.
+Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre le handler (Symbol explicite) et l'ID de la table. C'est dans les données de la page, dans la base de données (unan_cold.pages_cours), qu'est définie cette correspondance.
 
 <a name='leshandlersdepage'></a>
 
@@ -70,6 +74,8 @@ Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre 
 
 Pour le moment, toutes les pages de cours, qu'elles soient propre au programme ou qu'elle provienne du livre ou de la collection Narration, se trouvent respectivement dans les dossiers :
 
-    ./data/unan/ unan/        Dossier des pages propres au programme
-                 narration/   Pages du livre
-                 cnarration/  Pages de la collection
+    ./data/unan/ pages_cours/   unan/        Pages propres au programme
+                                narration/   Pages du livre
+                                cnarration/  Pages de la collection
+                 pages_semidyn/ (même hiérarchie mais avec les pages semi-
+                                 dynamiques qui seront vraiment chargées)

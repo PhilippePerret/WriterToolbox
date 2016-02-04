@@ -1,10 +1,8 @@
 # encoding: UTF-8
 raise_unless_admin
 
-site.require_objet 'unan'
-Unan::require_module 'page_cours'
-
-class UnanAdmin
+class Unan
+class Program
 class PageCours
 
   EXTENSIONS_PATH_VALIDES = ['.erb', '.rb', '.txt', '.tex', '.html', '.htm']
@@ -135,7 +133,8 @@ class PageCours
     end
   end #/ << self
 end #/PageCours
-end #/UnanAdmin
+end #/Program
+end #/Unan
 
 def pc # comme "P-age C-cours"
   return Hash::new if pc_id == :undefined

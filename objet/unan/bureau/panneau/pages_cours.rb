@@ -119,7 +119,7 @@ class UPage
 
   # Lien pour lire la page dans
   def lien_read
-    " Lire la page ".in_a(href:"page_cours/#{id}/read?in=unan", class:'inwork', target:'_page_cours_')
+    " Lire la page ".in_a(href:"page_cours/#{id}/show?in=unan", class:'inwork', target:'_page_cours_')
   end
 
 

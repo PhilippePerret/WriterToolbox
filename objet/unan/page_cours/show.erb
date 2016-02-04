@@ -1,0 +1,9 @@
+<%
+# Vue pour affichage d'une page de cours
+#
+%>
+<%= Unan::titre_h1 %>
+<% if user.admin? || OFFLINE %>
+  <%= page_cours.link(titre:"[Admin: Éditer page ##{page_cours.id}]", edit: true).in_div(class:'small fright right') %>
+<% end %>
+<%= page_cours.output %>

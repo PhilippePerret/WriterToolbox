@@ -16,13 +16,13 @@ describe 'Méthodes de liens de Unan::Program::PageCours' do
     context 'sans option' do
       it 'retourne un lien valide vers la page de cours à afficher' do
         res = pagecours.link
-        expect(res).to have_tag 'a', with: {href:"page_cours/#{@page_id}/read?in=unan"}
+        expect(res).to have_tag 'a', with: {href:"page_cours/#{@page_id}/show?in=unan"}
       end
     end
     context 'avec un titre forcé' do
       it 'retourne le lien avec le titre voulu' do
         res = pagecours.link titre: "Mon titre"
-        expect(res).to have_tag 'a', with: {href:"page_cours/#{@page_id}/read?in=unan"}, text: "Mon titre"
+        expect(res).to have_tag 'a', with: {href:"page_cours/#{@page_id}/show?in=unan"}, text: "Mon titre"
       end
     end
     context 'avec l’option :edit à true' do

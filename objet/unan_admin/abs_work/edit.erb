@@ -128,7 +128,7 @@ lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", cla
       '<span>&nbsp;|&nbsp;</span>' +
       "Éditer le texte".in_a(class:'small', href:"page_cours/#{page_id}/edit_content?in=unan_admin", target:'_content_edition_') +
       '<span>&nbsp;|&nbsp;</span>' +
-      "Visualiser".in_a(class:'small', href:"page_cours/#{page_id}/read?in=unan", target:'_page_reader_')
+      "Visualiser".in_a(class:'small', href:"page_cours/#{page_id}/show?in=unan", target:'_page_reader_')
     when :quiz
       quiz_id = data[:item_id]
       "Éditer le questionnaire".in_a(class:'small', href:"quiz/#{quiz_id}/edit?in=unan_admin")

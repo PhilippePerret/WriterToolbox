@@ -1,7 +1,8 @@
 # encoding: UTF-8
-class UnanAdmin
+class Unan
+class Program
 class PageCours
-  
+
   include MethodesObjetsBdD
 
   # {Fixnum} Identifiant de la page de cours éditée
@@ -11,4 +12,5 @@ class PageCours
   end
 
 end #/PageCours
+end #/Program
 end #/UnanAdmin

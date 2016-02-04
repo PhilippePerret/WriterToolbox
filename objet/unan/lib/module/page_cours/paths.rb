@@ -1,15 +1,11 @@
 # encoding: UTF-8
-class UnanAdmin
+class Unan
+class Program
 class PageCours
-
-  # Path relatif depuis le dossier du type
-  def relpath
-    @relpath ||= data[:path]
-  end
 
   # Path de la page originale (celle dont on travaille le contenu)
   def fullpath
-    @fullpath ||= folder_pages_originales + "#{type}/#{relpath}"
+    @fullpath ||= folder_pages_originales + "#{type}/#{path}"
   end
   # Path de la page semi-dynmaique (celle dont on a corrigé les
   # principaux textes fixes — balises — pour ne laisser que les
@@ -17,7 +13,7 @@ class PageCours
   # template qui sera détemplatisé et envoyé au lecteur.
   def fullpath_semidyn
     @fullpath_semidyn ||= begin
-      sf = folder_pages_semidynamiques + "#{type}/#{relpath}"
+      sf = folder_pages_semidynamiques + "#{type}/#{path}"
       sf.dirname.build unless sf.dirname.exist?
       sf
     end
@@ -55,4 +51,5 @@ class PageCours
   end
 
 end #/PageCours
+end #/Program
 end #/UnanAdmin

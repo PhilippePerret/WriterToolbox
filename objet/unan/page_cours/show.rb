@@ -21,6 +21,10 @@ end #/PageCours
 end #/Program
 end #/Unan
 
+def page_cours
+  @page_cours ||= Unan::Program::PageCours::get(site.current_route.objet_id)
+end
+
 class User
   # Ajoute une lecture pour la page +ipage+ {Unan::Program::PageCours}
   def add_lecture_page_cours ipage

@@ -25,8 +25,10 @@ else
 end
 # Formulaire pour lire la page
 lien_read_page = if page_id
- "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{page_id}/read?in=unan")
-else "- no page_id -" end
+  "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{page_id}/show?in=unan")
+else
+  "- no page_id -"
+end
 
 # lien_open_page = if page_id
 #   onclick = "PageCours.set_operation('open_page_cours', true)"
@@ -50,7 +52,7 @@ window.PageCours = {
 }
 function set_href_lien_read(o){
   var href_pref = "page_cours/" + o.value + "/";
-  var href_read = href_pref + "read?in=unan"  ;
+  var href_read = href_pref + "show?in=unan"  ;
 
   $('a#lien_read_page').attr('href', href_read) ;
 }
