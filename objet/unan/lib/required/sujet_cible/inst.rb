@@ -1,4 +1,25 @@
 # encoding: UTF-8
+=begin
+
+Instances Unan::SujetCible
+
+@usage
+
+    sc = Unan::SujetCible::new <arguments>
+
+    <arguments> :
+
+        Soit valeur-sujet, valeur-sous-sujet      new(2,5)
+        Soit "<val-sujet><val-subsujet>"          new("25")
+        Soit :id-sujet, :id-sous-sujet            new(:projet, :presentation)
+        Soit :id-sujet, <val-sous-sujet>          new(:projet, 5)
+        Soit <val-sujet>, :id-sous-sujet          new(2, :presentation)
+
+  Ensuite :
+
+      sc.human_name (ou hname) retourne le nom humain au format :
+                    "Sujet::Sous-sujet"
+=end
 class Unan
 class SujetCible
 
@@ -43,7 +64,8 @@ class SujetCible
     @sub_sujet_id ||= data_sub_sujet[:id]
   end
 
-  def human_name
+  # Non encore employé
+  def human_name format = nil
     @human_name ||= begin
       hn = data_sujet[:hname].dup
       hn << "::#{data_sub_sujet[:hname]}" if sub_sujet_id != nil
