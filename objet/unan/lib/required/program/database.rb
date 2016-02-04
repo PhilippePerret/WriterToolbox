@@ -10,6 +10,12 @@ enregistrées dans une table ./database/data/unan/<id auteur>/
 class Unan
 class Program
 
+  class << self
+    def table_works
+      @table_works ||= Unan::table_absolute_works
+    end
+  end
+
   # Tables des P-Days propres au programme
   # Noter qu'il faut utiliser `auteur.table_pdays` pour construire
   # la table en cas d'inexistence

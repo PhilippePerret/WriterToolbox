@@ -25,7 +25,7 @@ def schema_table_unan_cold_exemples
     # ---------------
     # ID du travail dont cet exemple est l'illustration, dans la
     # table `absolute_works`.
-    work_id: {type:"INTEGER", constraint:"NOT NULL"},
+    work_id: {type:"INTEGER"},
 
     # Contenu de l'exemple
     # --------------------

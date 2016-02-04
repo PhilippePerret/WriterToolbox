@@ -7,7 +7,15 @@
 raise_unless_admin
 
 class UnanAdmin
-  class << self
-    def bind; binding() end
+class << self
+
+  # Requiert le dossier +module_name+ qui se trouve dans le dossier
+  # module d'Unan-Admin (./objet/unan_admin/lib/module)
+  def require_module module_name
+    (folder_modules + module_name).require
   end
-end
+
+  def bind; binding() end
+
+end # << self
+end #/UnanAdmin

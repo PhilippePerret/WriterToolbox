@@ -41,7 +41,8 @@ end #/UnanAdmin
 
 # Retourne l'instance UnanAdmin::PageCours de la page courante, mais seulement
 # si elle est définie par l'url RestFull.
-debug "site.current_route.objet: #{site.current_route.objet.inspect}::#{site.current_route.objet.class}"
+# TODO Peut-être qu'il vaudrait mieux mettre ça dans un module plutôt que
+# dans cette libraire tout le temps required.
 def page_cours
   @page_cours ||= begin
     if site.current_route.objet == "page_cours" && site.current_route.objet_id

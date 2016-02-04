@@ -8,6 +8,42 @@
 =end
 class Page
   class FormTools
+
+    PAYS = {
+      'af'  => "Afrique",
+      'de'  => "Allemagne",
+      'en'  => "Angleterre",
+      'ar'  => "Arabie",
+      'hy'  => "Arménie",
+      'au'  => "Australie",
+      'be'  => "Belgique",
+      'kn'  => "Canada",
+      'zh'  => "Chine",
+      'ko'  => "Corée",
+      'hr'  => "Croatie",
+      'da'  => "Danemark",
+      'es'  => "Espagne",
+      'et'  => "Estonie"
+      'us'  => "États-Unis",
+      'fi'  => "Finlande",
+      'fr'  => "France",
+      'gr'  => "Grèce",
+      'hu'  => "Hongrie",
+      'fj'  => "Îles Fiji",
+      'hi'  => "Inde",
+      'id'  => "Indonésie",
+      'ga'  => "Irlande",
+      'is'  => "Islande",
+      'it'  => "Italie",
+      'ja'  => "Japon",
+      'no'  => "Norvège",
+      'fa'  => "Perse",
+      'pt'  => "Portugal",
+      'ru'  => "Russie",
+      'cs'  => "Tchécoslovaquie"
+    }
+    PAYS_ARR_SELECT = PAYS.collect{|k, v| [k, v]}
+
     class << self
 
       # Définition et restitution du prefixe qui servira pour les
@@ -53,6 +89,10 @@ class Page
       def field_select libelle, prop, selected, options = nil
         Field::new(:select, libelle, prop, selected, options).form_row
       end
+      def field_select_pays libelle, prop, selected, options = nil
+        Field::new(:select_pays, libelle, prop, selected, options).form_row
+      end
+      alias :field_select_country :field_select_pays
 
       def field_textarea libelle, prop, value, options = nil
         Field::new(:textarea, libelle, prop, value, options).form_row
@@ -242,6 +282,12 @@ class Page
         else
           raise "Je ne sais pas comment traiter une donnée de class #{options[:values].class} dans `field_select` (attendu : un Hash, un Array ou un String)."
         end
+      end
+      # Un menu standard pour choisir un pays
+      def field_select_pays
+        @options ||= Hash::new
+        @options.merge! values: PAYS
+        field_select
       end
       def field_checkbox
         # Note : Pour un champ checkbox, le libellé sert de texte pour la

@@ -59,6 +59,13 @@ def get_any_user options = nil
   return u
 end
 
+def phil
+  u = User::new(1)
+  expect(u).to be_instance_of(User)
+  expect(u).to be_admin
+  return u
+end
+
 def benoit
   u = User::new(2)
   expect(u).to be_instance_of(User)
