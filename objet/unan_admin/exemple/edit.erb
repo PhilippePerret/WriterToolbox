@@ -2,20 +2,37 @@
 # Vue pour l'édition des exemples
 raise_unless_admin
 %>
+<h2>Exemple (édition)</h2>
+<div class="right">
+  <%= "Liste des exemples".in_a(href:"exemple/list?in=unan_admin", class:'small') %>
+</div>
 <%
 # site.require_objet 'unan'
 site.require 'form_tools'
 form.prefix = 'exemple'
 form.objet  = param(:exemple) || Hash::new
+
+onclick = "var f=$('form#form_exemple_edit');f.find('input#operation').val('edit_exemple');f.submit()"
+lien_edit = "Éditer".in_a(onclick:onclick, class:'btn tiny')
+lien_show = if form.objet_id.nil?
+  ""
+else
+  "Visualiser".in_a(href:"exemple/#{form.objet_id}/show?in=unan", class:'btn tiny')
+end
+
 %>
-<form class="dim2080" action="exemple/<%= form.objet[:id] %>/edit?in=unan_admin" method="POST">
+<form id="form_exemple_edit" class="dim2080" action="exemple/<%= form.objet[:id] %>/edit?in=unan_admin" method="POST">
+
   <%= "save_exemple".in_hidden(name:'operation', id:'operation') %>
+
+  <%# ID %>
+  <%= form.field_text('ID', 'id', nil, {class:'short', text_after:"#{lien_edit} #{lien_show}"}) %>
 
   <%# TITRE %>
   <%= form.field_text("Titre", 'titre', nil) %>
 
   <%# CONTENU DE L'EXEMPLE %>
-  <%= form.field_textarea("Exemple", 'content', nil) %>
+  <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
 
   <%# WORK DE RÉFÉRENCE (ID) %>
   <%= form.field_text("Work ID", 'work_id', nil, {class:'short'}) %>
@@ -27,7 +44,7 @@ form.objet  = param(:exemple) || Hash::new
 
   <%# SOURCE TYPE (plusieurs valeurs définissant la valeur finale) %>
   <%= form.field_select("Type", 'source_src', nil, {values: Unan::Program::Exemple::TYPES_SOURCES}) %>
-  <%= form.field_select_pays("Pays", 'source_pays', nil) %>
+  <%= form.field_select_pays("Pays", 'source_pays', nil, {selected: param(:exemple)[:source_pays]}) %>
   <%# Source type : Année %>
   <%= form.field_text("Année", 'source_year', nil, {class: 'short', text_after:"(année de l'exemple sous la forme AAAA)"}) %>
 

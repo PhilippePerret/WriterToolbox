@@ -39,6 +39,10 @@ class << self
     @table_quiz ||= get_table_cold('quiz')
   end
 
+  def table_exemples
+    @table_exemples ||= get_table_cold('exemples')
+  end
+
   # ---------------------------------------------------------------------
   #   Méthode générique construisant la table si nécessaire
   # ---------------------------------------------------------------------

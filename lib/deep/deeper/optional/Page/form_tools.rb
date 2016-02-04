@@ -23,7 +23,7 @@ class Page
       'hr'  => "Croatie",
       'da'  => "Danemark",
       'es'  => "Espagne",
-      'et'  => "Estonie"
+      'et'  => "Estonie",
       'us'  => "États-Unis",
       'fi'  => "Finlande",
       'fr'  => "France",
@@ -73,6 +73,17 @@ class Page
           @is_objet_hash = !!objet.instance_of?(Hash)
         end
         @is_objet_hash
+      end
+
+      # Pratique pour faire `form.objet_id` dans la vue
+      def objet_id
+        @objet_id ||= begin
+          if objet.nil?
+            nil
+          else
+            objet_hash? ? objet[:id] : objet.id
+          end
+        end
       end
 
 
@@ -232,7 +243,8 @@ class Page
       def form_row
         (
           span_libelle +
-          span_value
+          span_value   +
+          code_javascript # if any
         )
         .in_div(class:'row')
       end
@@ -254,6 +266,17 @@ class Page
           )
           .in_span(class: options[:span_value_class])
         end
+      end
+
+      # Retourne le code HTML/Javascript permettant de sélectionner
+      # certaines valeurs par javascript.
+      # Cela est nécessaire pour palier le fait que les select n'affichent
+      # pas toujours la valeur sélectionnée malgré l'insertion corrected
+      # d'un SELECTED.
+      # Note : Ce code ne sert que pour le select courant.
+      def code_javascript
+        return "" if @javascripts.nil?
+        "<script type='text/javascript'>"+@javascripts.join(";\n")+"</script>"
       end
 
       # {StringHTML} Return le champ d'édition seul
@@ -278,15 +301,23 @@ class Page
           if options[:values].instance_of?(Hash)
             options[:values] = options[:values].collect{ |k,v| [k, v[:hname]] }
           end
-          options[:values].in_select( field_attrs.merge( selected: options[:selected] || field_value ) )
+          selected = options[:selected] || field_value
+          add_javascript "$('select##{field_id}').val('#{selected}')" unless selected.nil?
+          options[:values].in_select( field_attrs.merge( selected:selected ) )
         else
           raise "Je ne sais pas comment traiter une donnée de class #{options[:values].class} dans `field_select` (attendu : un Hash, un Array ou un String)."
         end
       end
+
+      def add_javascript code
+        @javascripts ||= Array::new
+        @javascripts << code
+        # debug "code ajouté : #{code}"
+      end
       # Un menu standard pour choisir un pays
       def field_select_pays
         @options ||= Hash::new
-        @options.merge! values: PAYS
+        @options.merge! values: PAYS_ARR_SELECT
         field_select
       end
       def field_checkbox

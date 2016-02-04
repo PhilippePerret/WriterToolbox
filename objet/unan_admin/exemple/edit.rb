@@ -1,11 +1,28 @@
 # encoding: UTF-8
 raise_unless_admin
 
+site.require_objet 'unan'
+Unan::require_module 'exemple'
 UnanAdmin::require_module 'exemple'
 
 class Unan
 class Program
 class Exemple
+
+  # Édition de l'exemple
+  # Cela met simplement les données dans les paramètres (param :exemple)
+  # en décomposant certaines valeurs comme le source_type
+  def edit
+    de = get_all
+    source_type = de.delete(:source_type)
+    de.merge!(
+      source_pays:  source_pays,
+      source_src:   source_src,
+      source_year:  source_year
+    )
+    param(exemple: de)
+    debug "param(:exemple) : #{param(:exemple).pretty_inspect}"
+  end
 
   # Enregistrement de l'exemple dans la table, le crée ou
   # l'actualise
@@ -13,12 +30,19 @@ class Exemple
   # cas contraire.
   def save
     check_data_or_raise || (return false)
-    id.nil? ? create : table.update(id, data2save)
+    if id.nil?
+      create
+    else
+      table.update(id, data2save)
+      flash "Exemple ##{id} enregistré."
+    end
     return true
   end
 
   def create
     @id = table.insert(data4create)
+    param(exemple: param(:exemple).merge(id: @id))
+    flash "Donnée créée avec succès."
   end
 
   def data2save
@@ -33,8 +57,9 @@ class Exemple
   end
   def common_data
     @common_data ||= {
-      titre:        param_data(:titre)    || titre,
-      content:      param_data(:content)  || content,
+      titre:        param_data[:titre]    || titre,
+      content:      param_data[:content]  || content,
+      source:       param_data[:source]   || source,
       source_type:  assemble_source_type  || source_type,
       updated_at:   NOW
     }
@@ -87,14 +112,30 @@ end #/Unan
 
 def exemple
   @exemple ||= begin
-    if param(:exemple).nil?
+    if exemple_id.nil?
+      nil
     else
-
+      Unan::Program::Exemple::new(exemple_id)
     end
   end
 end
 
+def exemple_id
+  @exemple_id ||= begin
+    if site.current_route.objet == "exemple" && site.current_route.objet_id != nil
+      site.current_route.objet_id.to_i
+    elsif param(:exemple) != nil
+      param(:exemple)[:id].nil? ? nil : param(:exemple)[:id].to_i
+    else
+      nil
+    end
+  end
+end
+
+debug "exemple_id: #{exemple_id.inspect}"
 case param(:operation)
 when "save_exemple"
   exemple.save
+else
+  exemple.edit if exemple_id != nil
 end
