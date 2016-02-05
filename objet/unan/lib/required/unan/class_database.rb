@@ -43,6 +43,10 @@ class << self
     @table_exemples ||= get_table_cold('exemples')
   end
 
+  def table_pages_cours
+    @table_pages_cours ||= get_table_cold('pages_cours')
+  end
+
   # ---------------------------------------------------------------------
   #   Méthode générique construisant la table si nécessaire
   # ---------------------------------------------------------------------

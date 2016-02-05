@@ -67,7 +67,7 @@ module MethodesLinksProgramThings
     arr_pdays_ids = [arr_pdays_ids] unless arr_pdays_ids.instance_of?(Array)
 
     s = arr_pdays_ids.count > 1 ? "s" : ""
-    sub_log "Le #{owner.type} ##{owner.id} (#{owner.titre}) appartient au P-Day#{s} : #{arr_pdays_ids.pretty_join}"
+    sub_log "#{le_type_humain.capitalize} ##{owner.id} (#{owner.titre}) appartient au P-Day#{s} : #{arr_pdays_ids.pretty_join}"
     arr_pdays_ids.collect do |pdid|
       ipday = Unan::Program::AbsPDay::get(pdid)
       e = pdid > 1 ? "e" : "er"
@@ -132,22 +132,24 @@ module MethodesLinksProgramThings
   end
 
   def le_type_humain inst = nil
-    case inst || self
-    when Unan::Program::AbsWork   then "l'absolute-work"
-    when Unan::Program::AbsPDay   then "le jour-programme"
-    when Unan::Program::PageCours then "la page de cours"
-    when Unan::Program::Exemple   then "l'exemple"
-    when Unan::Quiz then "le quiz"
+    # Note : On utilise .class.to_s car la classe n'est pas
+    # forcément définie au moment où on appelle cette méthode
+    case (inst || self).class.to_s
+    when 'Unan::Program::AbsWork'   then "l'absolute-work"
+    when 'Unan::Program::AbsPDay'   then "le jour-programme"
+    when 'Unan::Program::PageCours' then "la page de cours"
+    when 'Unan::Program::Exemple'   then "l'exemple"
+    when 'Unan::Quiz' then "le quiz"
     else (inst || self).class.to_s
     end
   end
   def du_type_humain inst = nil
-    case inst || self
-    when Unan::Program::AbsWork   then "de l'absolute-work"
-    when Unan::Program::AbsPDay   then "du jour-programme"
-    when Unan::Program::PageCours then "de la page de cours"
-    when Unan::Program::Exemple   then "de l'exemple"
-    when Unan::Quiz               then "du quiz"
+    case (inst || self).class.to_s
+    when 'Unan::Program::AbsWork'   then "de l'absolute-work"
+    when 'Unan::Program::AbsPDay'   then "du jour-programme"
+    when 'Unan::Program::PageCours' then "de la page de cours"
+    when 'Unan::Program::Exemple'   then "de l'exemple"
+    when 'Unan::Quiz'               then "du quiz"
     else (inst || self).class.to_s
     end
   end

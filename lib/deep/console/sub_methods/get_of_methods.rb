@@ -13,15 +13,19 @@ class Console
 
     ichose = case foo
     when "work", "works"
+      foo = "work"
       Unan::require_module "abs_work" # et notamment 'getof_methods.rb'
       Unan::Program::AbsWork::get(foo_id)
     when "page_cours", "pages_cours"
+      foo = "page_cours"
       Unan::require_module "page_cours"
       Unan::Program::PageCours::get(foo_id)
     when "pday", "pdays"
+      foo = "pday"
       Unan::require_module "abs_pday"
       Unan::Program::AbsPDay::get(foo_id)
     when "exemple", "exemples"
+      foo = "exemple"
       Unan::require_module "exemple"
       Unan::Program::Exemple::get(foo_id)
     when "quiz"
@@ -38,6 +42,10 @@ class Console
     when 'pdays'        then 'pday'
     else wanted
     end
+
+    # Il faut requérir le module qui traite les méthodes
+    # get-of en fonction de l'objet sujet
+    (site.folder_lib_optional + "console/modules_getof/#{foo}.rb").require
 
     # Il suffit ensuite d'appeler la méthode utilitaire
     # getof_<wanted> de l'instance
