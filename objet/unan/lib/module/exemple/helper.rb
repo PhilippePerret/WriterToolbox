@@ -20,6 +20,13 @@ class Exemple
     hsujet
   end
 
+  def lien_show atitre = nil, options = nil
+    atitre ||= "Visualiser l'exemple ##{id}"
+    options ||= Hash::new
+    options.merge!(href: "exemple/#{id}/show?in=unan")
+    atitre.in_a(options)
+  end
+
 end #/Exemple
 end #/Program
 end #/Unan

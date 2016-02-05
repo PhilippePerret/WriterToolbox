@@ -14,7 +14,7 @@ class Exemple
   def as_li
     (
       boutons_edition +
-      titre
+      "[##{id}] #{titre}"
     ).in_li(class:'li_ex')
   end
 

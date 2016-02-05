@@ -17,20 +17,21 @@ class AbsWork
     # Méthode qui complète le hash des données de l'abs-work en
     # ajoutant toutes les valeurs qui servent au formulaire mais
     # n'apparaissent pas en tant que données, comme la propriété `type`
-    # qui permet de définir `typeW` (le type de travail), `narrative_target`
-    # (le sujet cible).
+    # qui permet de définir `narrative_target` (le sujet cible). Note :
+    # type_w N'EST PLUS défini de cette façon, il possède sa propre
+    # propriété.
     # @usage : data = UnanAdmin::Program::AbsWork::full_data_for( data )
     def full_data_for data
 
       return nil if data.nil?
 
       # Ajout des propriétés
-      # typeW, typeP, narrative_target
+      # typeP, narrative_target
       data[:type]           ||= ("0"*16).freeze
       data[:type_resultat]  ||= ("0"*16).freeze
       data.merge!(
         # Décomposition de `type`
-        typeW:            data[:type][0..1].to_i,
+        rien:             data[:type][0..1].to_i,
         narrative_target: data[:type][2..3],
         typeP:            data[:type][4].to_i,
         #  Décomposition de `type_resultat`
@@ -141,8 +142,10 @@ class AbsWork
     # Voir dans la définition de table
     # (./database/table_definition/db_unan/table_absolute_work) comment
     # est constituée cette donnée
+    # Rappel : Les deux premiers "bits" étaient utilisés avant pour le
+    # type de travail (type_w) mais maintenant ils ne servent plus
     def data_type
-      "0#{data[:typeW].to_s}#{data[:narrative_target]}#{data[:typeP].to_i.to_s}0"
+      "00#{data[:narrative_target]}#{data[:typeP].to_i.to_s}0"
     end
 
     # Le type_resultat est constitué de plusieurs valeurs
@@ -185,19 +188,9 @@ class AbsWork
       end
       data = retour.objet
 
-      # Les pages de cours doivent être définies si le typew est 3
-      if data[:typeW] == "3"
-        raise "Il faut indiquer les IDs ou HANDLERS des pages de cours à lire." if data[:pages_cours].nil?
-      end
-
       # Si le parent est défini, il doit exister
       if data[:parent] != nil
         raise "Le travail-parent ##{data[:parent]} doit absolument exister." unless Unan::Program::AbsWork::exist?( data[:parent] )
-      end
-
-      # Les questionnaires doivent être définis si le typew est 4 ou 5
-      if ["4","5"].include?(data[:typeW])
-        raise "Il faut indiquer les IDs de questionnaires ou de checkpoints à accomplir." if data[:questionnaires].nil?
       end
     rescue Exception => e
       error e.message

@@ -34,6 +34,7 @@ class AbsWork
   def duree         ; @duree          ||= get(:duree)         end
   def travail       ; @travail        ||= get(:travail)       end
   def resultat      ; @resultat       ||= get(:resultat)      end
+  def exemples      ; @exemples       ||= get(:exemples)      end
   def type_resultat ; @type_resultat  ||= get(:type_resultat) end
   def points        ; @points         ||= get(:points)        end
 

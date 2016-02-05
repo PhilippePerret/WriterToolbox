@@ -30,6 +30,15 @@ class Console
     else raise "La chose `#{foo}` est inconnu…"
     end
 
+    wanted = case wanted
+    when 'exemples'     then 'exemple'
+    when 'quizes'       then 'quiz'
+    when 'pages_cours'  then 'page_cours'
+    when 'works'        then 'work'
+    when 'pdays'        then 'pday'
+    else wanted
+    end
+
     # Il suffit ensuite d'appeler la méthode utilitaire
     # getof_<wanted> de l'instance
     getof_method = "getof_#{wanted}".to_sym

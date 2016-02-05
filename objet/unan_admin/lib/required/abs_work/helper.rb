@@ -13,6 +13,7 @@ class AbsWork
   end
 
   def ktype_and_context
+    return ['work', 'unan'] if data_type_w.nil? # c'est une erreur, mais bon
     case data_type_w[:id_list]
     when :pages then ['page_cours', 'unan']
     when :quiz  then ['quiz', 'unan']

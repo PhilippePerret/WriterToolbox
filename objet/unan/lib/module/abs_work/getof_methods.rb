@@ -62,6 +62,7 @@ module MethodesLinksProgramThings
   def liens_edition_for inst, options = nil
     options ||= Hash::new
     (
+      "#{inst.class} ##{inst.id} : " +
       inst.lien_edit("[Edit]") +
       inst.lien_show("[Show]", options[:options_show]) +
       inst.lien_delete("[Delete]", {class:'warning'})
@@ -70,9 +71,7 @@ module MethodesLinksProgramThings
 
   def all_liens_works arr_ids
     require_all_modules_of 'abs_work'
-
     liens_edition_for_allin_ofclass(arr_ids, Unan::Program::AbsWork)
-
   end
 
   def all_liens_quiz arr_ids
@@ -82,6 +81,7 @@ module MethodesLinksProgramThings
 
   def all_liens_exemples arr_ids
     require_all_modules_of('exemple')
+    "Liens d'édition des exemples (#{arr_ids.inspect})" +
     liens_edition_for_allin_ofclass(arr_ids, Unan::Program::Exemple)
   end
 
@@ -95,11 +95,32 @@ module MethodesLinksProgramThings
 
   def error_does_not_exist
     return if exist?
-    raise "Le #{type} ##{id} n'existe pas, impossible d'obtenir ce que vous voulez."
+    raise "#{le_type_humain.capitalize} ##{id} n'existe pas, impossible d'obtenir ce que vous voulez."
   end
   def error_no_type_w
     return if type_w != nil
-    raise "Le type_w de #{type}##{id} n'est pas défini… Impossible de le traiter."
+    raise "Le type_w #{du_type_humain}##{id} n'est pas défini… Impossible de le traiter."
+  end
+
+  def le_type_humain inst = nil
+    case inst || self
+    when Unan::Program::AbsWork   then "l'absolute-work"
+    when Unan::Program::AbsPDay   then "le jour-programme"
+    when Unan::Program::PageCours then "la page de cours"
+    when Unan::Program::Exemple   then "l'exemple"
+    when Unan::Quiz then "le quiz"
+    else (inst || self).class.to_s
+    end
+  end
+  def du_type_humain inst = nil
+    case inst || self
+    when Unan::Program::AbsWork   then "de l'absolute-work"
+    when Unan::Program::AbsPDay   then "du jour-programme"
+    when Unan::Program::PageCours then "de la page de cours"
+    when Unan::Program::Exemple   then "de l'exemple"
+    when Unan::Quiz               then "du quiz"
+    else (inst || self).class.to_s
+    end
   end
 end
 
@@ -155,7 +176,14 @@ class AbsWork
   # Retourne tous les exemples de cet AbsWork, s'il y en a
   def getof_exemple
     error_does_not_exist
-
+    error_no_type_w
+    if exemples.empty?
+      sub_log "Le work ##{id} “#{titre}” ne possède aucun exemple."
+      false
+    else
+      sub_log(all_liens_exemples(exemples.split(' ').collect{|id| id.to_i}))
+    end
+    sub_log "Pour éditer ce work##{id} : #{all_liens_works(id)}".in_div(class:'air')
   end
 
   # Retourne la page de cours associée à cet AbsWork, s'il
