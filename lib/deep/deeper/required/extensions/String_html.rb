@@ -46,8 +46,12 @@ class String
       # La propriété :displayed indique si l'élément doit être
       # affiché ou non.
       #  La propriété :mask fait le contraire
+      #  La propriété :visible indique si l'élément est visible
       displayed = attrs.delete(:displayed)
       nodisplay = attrs.delete(:mask)
+      has_key_visible = attrs.has_key?(:visible)
+      isvisible = attrs.delete(:visible)
+
       # Le style peut être fourni par un string ou un Hash
       if attrs[:style].class == Hash
         attrs[:style] = attrs[:style].collect do |prop, value|
@@ -63,7 +67,12 @@ class String
         else display
         end
         attrs[:style] ||= ""
-        attrs[:style] = "display:#{display};#{attrs[:style]}"
+        attrs[:style] += "display:#{display};#{attrs[:style]}"
+      end
+
+      if has_key_visible
+        attrs[:style] ||= ""
+        attrs[:style] += "visibility:#{isvisible ? 'visible' : 'hidden'}"
       end
 
       attrs = unless attrs.empty?

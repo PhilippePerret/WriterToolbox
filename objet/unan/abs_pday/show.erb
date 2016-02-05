@@ -1,0 +1,37 @@
+<%
+# Vue pour affiche un abs-pday
+%>
+<%= Unan::titre_h1("PDay absolu (aperçu)") %>
+<%
+def ipday
+  @ipday ||= begin
+    if site.current_route.objet == "abs_pday"
+      Unan::Program::AbsPDay::get(site.current_route.objet_id)
+    else
+      nil
+    end
+  end
+end
+%>
+
+<%
+def boutons_navigations where
+  (
+    "précédent".in_a(href:"abs_pday/#{ipday.id-1}/show?in=unan", visible:(ipday.id > 1)) +
+    " | " +
+    "suivant".in_a(href:"abs_pday/#{ipday.id+1}/show?in=unan", visible:(ipday.id < 364))
+  ).in_div(class:'small')
+end
+%>
+
+<%= boutons_navigations(:top).in_div(class:'right') %>
+
+<div class='pday'>
+  <h3>
+    <%= ipday.id %><sup><%= ipday.id == 1 ? 'er' : 'e' %></sup> P-Day :
+    <%= ipday.titre %>
+  </h3>
+  <% ipday.works(:as_instances).each do |iwork| %>
+    <%= iwork.as_card %>
+  <% end %>
+</div>

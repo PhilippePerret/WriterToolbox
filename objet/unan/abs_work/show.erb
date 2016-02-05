@@ -1,0 +1,16 @@
+<%
+# Vue pour affiche un abs-pday
+%>
+<%= Unan::titre_h1("Travail (aperçu)") %>
+<%
+def iwork
+  @iwork ||= begin
+    if site.current_route.objet == "abs_work"
+      Unan::Program::AbsWork::get(site.current_route.objet_id)
+    else
+      nil
+    end
+  end
+end
+%>
+<%= iwork.as_card %>
