@@ -9,7 +9,7 @@ class Console
     site.require_objet 'unan'
     site.require_objet 'unan_admin'
     foo_id = foo_id.to_i
-    debug "wanted:#{wanted.inspect} / foo:#{foo.inspect} / foo_id:#{foo_id.inspect}"
+    # debug "wanted:#{wanted.inspect} / foo:#{foo.inspect} / foo_id:#{foo_id.inspect}"
 
     ichose = case foo
     when "work", "works"
