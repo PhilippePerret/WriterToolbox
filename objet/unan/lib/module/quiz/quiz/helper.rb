@@ -69,14 +69,19 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
     return html
   end
 
-  # Lien pour éditer
-  def lien_edit titre = "edit"
-    titre.in_a( href:"quiz/#{id}/edit?in=unan_admin", target: '_quiz_edition_' )
+  # Lien pour afficher le quiz
+  def lien_show atitre = nil, options = nil
+    atitre ||= self.titre
+    options ||= Hash::new
+    href = "quiz/#{id}/show?in=unan"
+    href += "&user_id=#{options[:user_id]}" if options[:user_id]
+    options.merge!(href: href)
+    atitre.in_a(options)
   end
 
   # Lien pour simuler le questionnaire
-  def lien_simulation titre = "simule"
-    titre.in_a( href:"quiz/#{id}/simulation?in=unan_admin", target: '_quiz_simulation_' )
+  def lien_simulation atitre = "simule"
+    atitre.in_a( href:"quiz/#{id}/simulation?in=unan_admin", target: '_quiz_simulation_' )
   end
   alias :lien_simule :lien_simulation
 
