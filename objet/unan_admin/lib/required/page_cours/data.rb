@@ -15,6 +15,7 @@ class Program
 class PageCours
 
   def content
+    debug "Je passe par ce content (fullpath = #{fullpath})"
     @content ||= begin
       fullpath.read
     end
@@ -27,7 +28,7 @@ class PageCours
   # Type de la page (page un an un script, ou narration, ou
   # collection narration)
   def type
-    @type ||= data[:type]
+    @type ||= data[:type] || get(:type)
   end
 
   def table_pages_cours

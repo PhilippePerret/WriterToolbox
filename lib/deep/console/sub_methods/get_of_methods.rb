@@ -16,13 +16,13 @@ class Console
       foo = "work"
       Unan::require_module "abs_work" # et notamment 'getof_methods.rb'
       Unan::Program::AbsWork::get(foo_id)
-    when "page_cours", "pages_cours"
+    when "page_cours", "pages_cours", "page", "pages"
       foo = "page_cours"
       Unan::require_module "page_cours"
       Unan::Program::PageCours::get(foo_id)
     when "pday", "pdays"
       foo = "pday"
-      Unan::require_module "abs_pday"
+      # Unan::require_module "abs_pday"
       Unan::Program::AbsPDay::get(foo_id)
     when "exemple", "exemples"
       foo = "exemple"
@@ -37,7 +37,7 @@ class Console
     wanted = case wanted
     when 'exemples'     then 'exemple'
     when 'quizes'       then 'quiz'
-    when 'pages_cours'  then 'page_cours'
+    when 'pages_cours', 'pages', 'page'  then 'page_cours'
     when 'works'        then 'work'
     when 'pdays'        then 'pday'
     else wanted

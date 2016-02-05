@@ -67,6 +67,11 @@ class PDay
       }
   end
 
+  # ---------------------------------------------------------------------
+  #   Données volatiles
+  # ---------------------------------------------------------------------
+
+
   # Table contenant tous les p-days de ce programme
   # Noter que c'est la méthode `program.table_pdays` qui doit être
   # impérativement invoquée pour pouvoir construire la table

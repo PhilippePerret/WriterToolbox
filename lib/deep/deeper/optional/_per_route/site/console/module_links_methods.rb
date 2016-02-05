@@ -67,7 +67,9 @@ module MethodesLinksProgramThings
     arr_pdays_ids = [arr_pdays_ids] unless arr_pdays_ids.instance_of?(Array)
 
     s = arr_pdays_ids.count > 1 ? "s" : ""
-    sub_log "#{le_type_humain.capitalize} ##{owner.id} (#{owner.titre}) appartient au P-Day#{s} : #{arr_pdays_ids.pretty_join}"
+    unless owner.nil?
+      sub_log "#{le_type_humain.capitalize} ##{owner.id} (#{owner.titre}) appartient au P-Day#{s} : #{arr_pdays_ids.pretty_join}"
+    end
     arr_pdays_ids.collect do |pdid|
       ipday = Unan::Program::AbsPDay::get(pdid)
       e = pdid > 1 ? "e" : "er"
