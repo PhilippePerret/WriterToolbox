@@ -18,6 +18,7 @@ http = "http://localhost/WriterToolbox"
   </fieldset>
   <fieldset class='inline-block'>
     <legend>Travaux</legend>
+    <li><%= "Liste (filtrable) des travaux".in_a(href:'abs_work/list?in=unan_admin', target:'_list_abs_work_') %></li>
     <li><a href="abs_work/edit?in=unan_admin">Créer/éditer un travail</a></li>
     <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
   </fieldset>

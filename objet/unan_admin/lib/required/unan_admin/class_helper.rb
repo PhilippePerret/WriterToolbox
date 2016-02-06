@@ -4,6 +4,12 @@ class UnanAdmin
 
   class << self
 
+    # @usage : UnanAdmin::titre_h1(sous_titre_optionnel)
+    def titre_h1 sous_titre = nil
+      "Administration UN AN UN SCRIPT".in_h1 +
+      (sous_titre.nil? ? "" : sous_titre.in_h2)
+    end
+
     # Données pour un menu select des types de projet
     def types_projets_for_select
       @types_projets_for_select ||= Unan::Projet::types_for_select

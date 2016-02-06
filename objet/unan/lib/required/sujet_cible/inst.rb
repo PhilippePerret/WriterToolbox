@@ -18,7 +18,7 @@ Instances Unan::SujetCible
   Ensuite :
 
       sc.human_name (ou hname) retourne le nom humain au format :
-                    "Sujet::Sous-sujet"
+                    "Sous-sujet sujet"
 =end
 class Unan
 class SujetCible
