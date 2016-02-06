@@ -4,6 +4,7 @@ class Unan
 class Quiz
 
   def code_corrections_et_commentaires
+    raise "Questionnaire inexistant" unless exist?
     @code_corrections_et_commentaires ||= begin
       html = ""
       html << titre.in_div(class:'titre') unless no_titre?

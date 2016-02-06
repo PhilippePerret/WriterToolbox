@@ -5,10 +5,22 @@
 # de l'user courant. Dans le cas contraire, il faut ajouter `user_id`
 # à la requête
 %>
-<%= Unan::titre_h1("Questionnaires (consultation)") %>
-<p class='italic small'>
-  Vous pouvez retrouver sur cette page le résultat de vos précédents questionnaires et quiz.
-</p>
-<div class='cadre'>
-  <%= master_quiz.output_archives %>
-</div>
+<%= Unan::titre_h1 %>
+<% unless user.admin? %>
+  <h2>"Questionnaires (consultation)"</h2>
+  <p class='italic small'>
+    Vous pouvez retrouver sur cette page le résultat de vos précédents questionnaires et quiz.
+  </p>
+  <div class='cadre'>
+    <%= master_quiz.output_archives %>
+  </div>
+<% else %>
+  <%
+  # Dans le cas où c'est un administrateur qui visite cette page, il
+  # faut charger les librairies administration pour pouvoir afficher
+  # la simulation du quiz
+  site.require_objet 'unan_admin'
+  UnanAdmin::require_module 'quiz'
+  %>
+  <%= Vue::new("simulation.erb", site.folder_objet + "unan_admin/quiz/").output %>
+<% end %>

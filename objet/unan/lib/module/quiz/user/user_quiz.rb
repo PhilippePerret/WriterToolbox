@@ -76,7 +76,7 @@ class User
     def max_points  ; @max_points ||= get(:max_points)  end
     def reponses    ; @reponses   ||= get(:reponses)    end
 
-    # Pour faire une sortie simple qui quiz
+    # Pour faire une sortie simple du quiz
     # Elle sert soit pour le bureau, dans le panneau Quiz, quand le
     # questionnaire a été rempli récemment, soit dans la partie qui
     # rassemble tous les questionnaires/travaux exécutés jusque-là

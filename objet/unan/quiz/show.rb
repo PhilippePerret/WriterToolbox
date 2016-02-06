@@ -17,6 +17,12 @@ def master_quiz
 end
 
 # Le quiz propre à l'auteur
+# Noter que le quiz demandé peut ne pas avoir été exécuté par
+# l'user qui veut l'afficher. Dans ce cas, on le signale au
+# visiteur mais on affiche quand même le questionnaire, sans
+# bouton (de toute façon, je crois qu'il n'y a pas de boutons)
+# Ce modus operandi est nécessaire pour la consultation par
+# un administrateur par exemple.
 def user_quiz
   @user_quiz ||= begin
     auteur = param(:user_id) ? User::get(param(:user_id).to_i) : user
