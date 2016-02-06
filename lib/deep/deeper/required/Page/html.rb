@@ -1,6 +1,20 @@
 # encoding: UTF-8
 class Page
 
+  def title
+    if site.current_route.nil? || site.current_route.route == ""
+      site.title
+    else
+      titre = ""
+      titre << site.title_prefix if site.title_prefix
+      titre << "#{site.title_separator || " | "}#{@title}" if @title
+      titre || site.title
+    end
+  end
+  def title= valeur
+    @title = valeur
+  end
+
   def javascript
     alljs = Array::new
     alljs += Dir["./lib/deep/deeper/js/first_required/**/*.js"]

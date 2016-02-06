@@ -14,6 +14,10 @@ class Forum
     t = "Forum".in_h1
     t << onglets if params[:onglets]
     t << sous_titre.in_h2 unless sous_titre.nil?
+    # Pour le titre de la fenêtre
+    page_title = "Forum"
+    page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
+    page.title = page_title
     t
   end
 

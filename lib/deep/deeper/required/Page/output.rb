@@ -18,7 +18,7 @@ class Page
     @head ||= begin
       <<-HEAD
 <meta content="text/html; charset=utf-8" http-equiv="Content-type">
-<title>#{site.title}</title>
+<title>#{page.title}</title>
 <base href="#{site.base}" />
 #{page.javascript}
 #{page.css}

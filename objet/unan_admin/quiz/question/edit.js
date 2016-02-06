@@ -111,15 +111,4 @@ $(document).ready(function(){
     // Construire un premier champ réponse
     Question.build_reponse_field();
   }
-
-  // Pour surveiller le changement de ID
-  $('input#question_id').bind('change', function(){
-    if($(this).val() == ""){
-      // Quand on vide le change de ID, c'est pour initialiser
-      // une nouvelle question. il faut donc tout initialiser
-      Question.init_new();
-    } else {
-      // Ne rien faire (un bouton permet d'éditer la question si nécessaire)
-    }
-  })
 })

@@ -17,6 +17,13 @@ class SiteHtml
   # officiels
   attr_accessor :official_designation
 
+  # Le préfix, pour mettre devant la page courante dans le
+  # title HTML
+  attr_accessor :title_prefix
+
+  # Le séparateur de nom dans la balise title ("|" par défaut)
+  attr_accessor :title_separator
+
   # Mail de l'administrateur du site.
   # Définir `site.mail = "adresse@chez.moi"` dans le fichier de
   # configuration

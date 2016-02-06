@@ -45,6 +45,8 @@ def liste_linked_travaux
 end
 
 %>
+<%= UnanAdmin::titre_h1("Jour-programme (édition)") %>
+
 <script type="text/javascript">
 function set_href_lien_read(o){
   $('a#lien_read_pday').attr('href', "abs_pday/"+o.value+"/read?in=unan");
@@ -61,7 +63,6 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
 
 lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsPDay, 'init_new')()", class:'small btn')
 %>
-<h2>Absolute P-Day</h2>
 <%
 # ---------------------------------------------------------------------
 #   Le formulaire proprement dit
@@ -83,7 +84,11 @@ lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsPDay, 'init_new')()", cla
   <%= form.field_text("Works", 'works', nil) %>
   <%= form.field_description("Liste des travaux à accomplir, par ID et dans l'ordre où ils doivent être effectués, séparés par des simples espaces.") %>
   <%= form.field_raw("", "", nil, {field: liste_linked_travaux}) %>
-  <%= form.field_raw("", "", nil, {field:"[Créer un nouveau travail]".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')}) %>
+  <%
+  lien_creer_new_work = "Créer un nouveau travail".in_a(href:"abs_work/edit?in=unan_admin", target:'_new_work_')
+  lien_list_works     = "Liste des travaux".in_a(href:"abs_work/list?in=unan_admin", target:'_list_works_')
+  %>
+  <%= form.field_raw("", "", nil, {field: "#{lien_creer_new_work} | #{lien_list_works}".in_div(class:'small')}) %>
 
   <%= form.field_text("Minimum Points", 'minimum_points', nil, {class:'short'}) %>
   <%= form.field_description("Nombre de points minimum qu'il faut acquérir pour considérer que le jour-programme est accompli. Ce nombre sera calculé par rapport au nombre de points de chaque travail en cas de non définition explicite ici.") %>

@@ -44,6 +44,9 @@ class Unan
     # correcte, avec un sous-titre (h2) s'il est défini
     def titre_h1 sous_titre = nil
       @titre_h1 ||= begin
+        page_title = "UN AN UN SCRIPT"
+        page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
+        page.title = page_title
         titre = "Le Programme “<span style='letter-spacing:-1px;'>Un<span style='font-size:0.5em'> </span>An<span style='font-size:0.5em'> </span><span style='letter-spacing:-2px'>Un</span><span style='font-size:0.5em'> </span><span style='letter-spacing:-2px'>Script</span></span>”"
         titre.in_a(href:"unan/home").in_h1
       end

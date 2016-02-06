@@ -1,6 +1,7 @@
 # encoding: UTF-8
 raise_unless_admin
 site.require_objet 'unan'
+Unan::require_module 'abs_work'
 class UnanAdmin
 class Program
 class AbsWork

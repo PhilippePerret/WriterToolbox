@@ -3,6 +3,7 @@ raise_unless_admin
 
 # require 'json'
 Unan::require_module 'quiz'
+UnanAdmin::require_module 'quiz'
 
 
 class UnanAdmin
@@ -87,9 +88,14 @@ class Quiz
   # Reconstitution des options
   def options
     @options ||= begin
-      # COnstruction des options
+      # Construction des options
       opts = String::new
-      ['description', 'no_point_question', 'no_titre'].each do |k|
+      [
+        'description',
+        'no_point_question',
+        'no_titre',
+        'desordre'
+      ].each do |k|
         option_ok = dinp["option_#{k}".to_sym] == "on"
         opts << (option_ok ? "1" : "0")
       end

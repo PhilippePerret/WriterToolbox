@@ -6,6 +6,10 @@ class UnanAdmin
 
     # @usage : UnanAdmin::titre_h1(sous_titre_optionnel)
     def titre_h1 sous_titre = nil
+      page_title = "1A1S Admin"
+      page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
+      page.title = page_title
+
       "Administration UN AN UN SCRIPT".in_h1 +
       (sous_titre.nil? ? "" : sous_titre.in_h2)
     end

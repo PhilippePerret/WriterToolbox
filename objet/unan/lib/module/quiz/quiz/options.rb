@@ -9,7 +9,8 @@ class Quiz
   OPTIONS = {
     'description'       => {bit:0, hname:"Afficher la description"},
     'only_points_quiz'  => {bit:1, hname:"Les questions n'apportent aucun point"},
-    'no_titre'          => {bit:2, hname:"Ne pas afficher le titre du questionnaire"}
+    'no_titre'          => {bit:2, hname:"Ne pas afficher le titre du questionnaire"},
+    'desordre'          => {bit:3, hname:"Présenter les questions dans le désordre"}
     # de 3 à 8  = l'identifiant du questionnaire précédente (if any)
     # de 9 à 14 = l'identifiant du questionnaire suivant (if any)
   }
@@ -26,14 +27,18 @@ class Quiz
   #   end
   # end
   def description?
-    options[0].to_i == 1
+    options.nil? ? false : ( options[0].to_i == 1 )
   end
   def only_points_quiz?
-    options[1].to_i == 1
+    options.nil? ? false : ( options[1].to_i == 1 )
   end
   def no_titre?
     options.nil? ? false : ( options[2].to_i == 1 )
   end
+  def desordre?
+    options.nil? ? false : ( options[3].to_i == 1 )
+  end
+
   def previous_version_id
     @previous_version_id ||= begin
       vip = options[3..8].to_i
