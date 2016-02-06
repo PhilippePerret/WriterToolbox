@@ -73,7 +73,7 @@ class SiteHtml
     page.content= page.error_unless_condition
   rescue ErrorUnidentified => e
     # Barrière raise_unless_identified
-    page.content= page.error_unless_identified
+    page.content = page.error_unless_identified
   rescue ErrorNoAdmin => e
     # Barrière raise_unless_admin
     page.content= page.error_unless_admin

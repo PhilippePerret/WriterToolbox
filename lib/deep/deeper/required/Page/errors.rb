@@ -29,11 +29,11 @@ class Page
   attr_accessor :error_backtrace
 
   def lien_backward
-    "Revenir à la page précédente".in_a(href:site.route.last).in_div(class:'right')
+    "Revenir à la page précédente".in_a(href:(site.route.last||page.error.redirection)).in_div(class:'right')
   end
 
   def output_error error_id
-    Vue::new("error_#{error_id}", folder_error_for(error_id), site).output +
+    Vue::new("error_#{error_id}.erb", folder_error_for(error_id), site).output +
     lien_backward
   end
 
@@ -45,7 +45,7 @@ class Page
 
   def error_non_fatale err
     self.error = err
-    ( output_error 'non_fatale' )
+    output_error 'non_fatale'
   end
 
   # {StringHTML} Retourne le code HTML à afficher lorsque
@@ -53,25 +53,25 @@ class Page
   # nécessite une identification.
   # Rappel : protégé par raise_unless_identified
   def error_unless_identified
-    ( output_error 'unless_identified' )
+    output_error 'unless_identified'
   end
   # {StringHTML} Retourne le code HTML à afficher lorsque
   # l'utilisateur essaie de rejoindre une section qui
   # nécessite d'être administrateur du site.
   # Rappel : protégé par raise_unless_admin
   def error_unless_admin
-    ( output_error 'unless_admin' )
+    output_error 'unless_admin'
   end
   # Rappel : pour une protection par `raise_unless( <condition> )`
   def error_unless_condition
-    ( output_error 'unless_condition' )
+    output_error 'unless_condition'
   end
 
   attr_accessor :message_error_not_owner
   def error_unless_owner message
     message ||= "Vous n'êtes pas le propriétaire de cette section du site, vous ne pouvez donc pas y pénétrer."
     self.message_error_not_owner = message
-    ( output_error 'unless_owner' )
+    output_error 'unless_owner'
   end
 
   def folder_error_for suffix
