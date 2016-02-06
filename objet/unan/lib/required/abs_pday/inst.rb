@@ -21,7 +21,8 @@ class AbsPDay
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
-  def titre       ; @titre      ||= get(:titre)       end
+  def titre       ; @titre        ||= get(:titre)       end
+  def description ; @description  ||= get(:description) end
 
   # Suivant le format as qui peut être :
   #   :as_data      Comme dans la base, c'est-à-dire un string des

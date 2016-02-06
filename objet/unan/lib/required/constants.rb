@@ -17,3 +17,5 @@ RYTHME_STANDARD = 5
 # de jours d'une année réelle.
 DUREE_ANNEE_VIRTUELLE   = 365 * RYTHME_STANDARD
 DUREE_SEMAINE_VIRTUELLE = DUREE_ANNEE_VIRTUELLE / 7
+
+ESPACE_FINE = "<span class='thin'></span>"

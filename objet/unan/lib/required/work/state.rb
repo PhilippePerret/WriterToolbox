@@ -3,11 +3,11 @@ class Unan
 class Program
 class Work
 
-  def type_task?
-    @is_type_task ||= abs_work.type_task?
+  def task?
+    @is_type_task ||= abs_work.task?
   end
-  def type_quiz?
-    @is_type_quiz ||= abs_work.type_quiz?
+  def quiz?
+    @is_type_quiz ||= abs_work.quiz?
   end
 
   # Retourne true si le travail

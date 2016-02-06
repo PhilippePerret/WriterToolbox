@@ -64,13 +64,5 @@ class SujetCible
     @sub_sujet_id ||= data_sub_sujet[:id]
   end
 
-  # Non encore employé
-  def human_name format = nil
-    @human_name ||= begin
-      hn = data_sujet[:hname].dup
-      hn << "::#{data_sub_sujet[:hname]}" if sub_sujet_id != nil
-      hn
-    end
-  end
 end #/SujetCible
 end #/Unan

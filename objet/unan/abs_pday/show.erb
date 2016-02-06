@@ -1,7 +1,7 @@
 <%
 # Vue pour affiche un abs-pday
 %>
-<%= Unan::titre_h1("PDay absolu (aperçu)") %>
+<%= Unan::titre_h1("Jours-programme (aperçu)") %>
 <%
 def ipday
   @ipday ||= begin
@@ -16,11 +16,12 @@ end
 
 <%
 def boutons_navigations where
+  precedent = ipday.id - 1
+  suivant   = ipday.id + 1
   (
-    "précédent".in_a(href:"abs_pday/#{ipday.id-1}/show?in=unan", visible:(ipday.id > 1)) +
-    " | " +
-    "suivant".in_a(href:"abs_pday/#{ipday.id+1}/show?in=unan", visible:(ipday.id < 364))
-  ).in_div(class:'small')
+    ("← Jour #{precedent}".in_a(href:"abs_pday/#{precedent}/show?in=unan", class:'bold', visible:(precedent > 0) )).in_span(class:'navbtn left') +
+    ("Jour #{suivant} →".in_a(href:"abs_pday/#{suivant}/show?in=unan", class:'bold', visible:(suivant < 366) )).in_span(class:'navbtn right')
+  ).in_div(class:'small navbtns')
 end
 %>
 
@@ -31,7 +32,9 @@ end
     <%= ipday.id %><sup><%= ipday.id == 1 ? 'er' : 'e' %></sup> P-Day :
     <%= ipday.titre %>
   </h3>
+  <%= ipday.description.in_div(class:'description') %>
   <% ipday.works(:as_instances).each do |iwork| %>
     <%= iwork.as_card %>
   <% end %>
+  <%= ipday.edit_buttons %>
 </div>

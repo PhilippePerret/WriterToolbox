@@ -43,7 +43,7 @@ class Quiz
   def find_work
     auteur.get_var(:quiz_ids).each do |wid|
       w = Unan::Program::Work::new(auteur.program, wid)
-      return w if w.type_quiz? && w.abs_work.item_id == self.id
+      return w if w.quiz? && w.abs_work.item_id == self.id
     end
     return nil
   end

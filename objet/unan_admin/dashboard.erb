@@ -12,8 +12,9 @@ http = "http://localhost/WriterToolbox"
 <ul style="list-style:none">
   <fieldset class='inline-block'>
     <legend>P-Days</legend>
-    <li><a href="<%= http %>/abs_pday/edit?in=unan_admin">Création / édition des P-Days (AbsPDay)</a></li>
-    <li><a href="abs_pday/map?in=unan_admin" class="bold">Carte des P-Days</a></li>
+    <li><%= "Création/édition".in_a(href:"abs_pday/edit?in=unan_admin", target:'_creation_pday_') %></li>
+    <li><%= "Carte complète".in_a(href:'abs_pday/map?in=unan_admin', target:'_map_pdays_') %></li>
+    <li><%= "Consultation jour par jour".in_a(href:'abs_pday/1/show?in=unan', target:'_day_by_day_') %> </li>
   </fieldset>
   <fieldset class='inline-block'>
     <legend>Travaux</legend>

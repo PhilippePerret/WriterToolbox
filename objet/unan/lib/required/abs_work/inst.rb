@@ -50,9 +50,6 @@ class AbsWork
   def data_type_w
     @data_type_w ||= TYPES[type_w]
   end
-  def human_type_w
-    @human_type_w ||= data_type_w[:hname]
-  end
 
   def narrative_target
     @narrative_target ||= begin
@@ -61,7 +58,7 @@ class AbsWork
   end
   # {Hash} décrivant le type du projet
   # Pour savoir à qui s'adresse le travail lorsque plusieurs travaux
-  # alterantifs co-existent (par exemple quand l'auteur de roman devra
+  # alternatifs co-existent (par exemple quand l'auteur de roman devra
   # travailler sur le manuscrit alors que l'auteur de film devra travailler
   # sur le scénario)
   def type_projet # typeP

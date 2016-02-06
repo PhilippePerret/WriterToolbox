@@ -116,7 +116,7 @@ class Benoit
     tasks_ids.each do |tid|
       if liste_in_database.include?(tid)
         w = Unan::Program::Work::get(program, tid.to_i)
-        if w.type_task?
+        if w.task?
           good_taches_ids << tid.to_i
         else
           if REPARER
@@ -138,7 +138,7 @@ class Benoit
     # oubliées
     liste_in_database.each do |wid|
       w = Unan::Program::Work::get(program, wid.to_i)
-      if w.type_task? && false == good_taches_ids.include?(wid.to_i)
+      if w.task? && false == good_taches_ids.include?(wid.to_i)
         if REPARER
           good_taches_ids << wid.to_i
           erreur = true

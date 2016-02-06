@@ -22,10 +22,10 @@ describe 'Méthodes d’état du work' do
 
   let(:work)          { @work }
 
-  #type_task? (raccourci de abs_work)
-  describe '#type_task?' do
+  #task? (raccourci de abs_work)
+  describe '#task?' do
     it 'répond' do
-      expect(work).to respond_to :type_task?
+      expect(work).to respond_to :task?
     end
     context 'avec un travail de type tâche' do
       before(:each) do
