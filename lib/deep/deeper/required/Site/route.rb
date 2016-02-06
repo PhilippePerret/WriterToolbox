@@ -64,6 +64,26 @@ class SiteHtml
     iroute.method_call
 
     # debug "<- SiteHtml::execute_route"
+
+    # ---------------------------------------------------------------------
+    #   Gestion de toutes les erreurs possibles
+    # ---------------------------------------------------------------------
+  rescue SectionInterditeError => e
+    # Barrière raise_unless( condition )
+    page.content= page.error_unless_condition
+  rescue ErrorUnidentified => e
+    # Barrière raise_unless_identified
+    page.content= page.error_unless_identified
+  rescue ErrorNoAdmin => e
+    # Barrière raise_unless_admin
+    page.content= page.error_unless_admin
+  rescue ErrorNotOwner => e
+    # Barrière raise_unless_owner
+    page.content= page.error_unless_owner(e.message)
+  rescue NonFatalError => err
+    page.content= page.error_non_fatale(err)
+  rescue Exception => e
+    page.content= page.error_standard(e)
   end
 
   # Une redirection

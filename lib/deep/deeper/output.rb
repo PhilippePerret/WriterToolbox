@@ -21,29 +21,9 @@ class SiteHtml
 
 
   def output
-    begin
-
-      execute_route
-      page.preload
-      page.prebuild_body
-
-    rescue SectionInterditeError => e
-      # Barrière raise_unless( condition )
-      page.content= page.error_unless_condition
-    rescue ErrorUnidentified => e
-      # Barrière raise_unless_identified
-      page.content= page.error_unless_identified
-    rescue ErrorNoAdmin => e
-      # Barrière raise_unless_admin
-      page.content= page.error_unless_admin
-    rescue ErrorNotOwner => e
-      # Barrière raise_unless_owner
-      page.content= page.error_unless_owner(e.message)
-    rescue NonFatalError => err
-      page.content= page.error_non_fatale(err)
-    rescue Exception => e
-      page.content= page.error_standard(e)
-    end
+    execute_route
+    page.preload
+    page.prebuild_body
     page.output
   rescue Exception => e
     # ERREUR FATALE

@@ -16,6 +16,7 @@ class ErrorNotOwner < StandardError; end
 # Barrière anti non-identifié
 # Cf. RefBook > Protection.md
 def raise_unless_identified
+  debug "caller dans raise_unless_identified\n" + caller.inspect
   raise ErrorUnidentified unless user.identified?
 end
 # Barrière anti non-administrateur

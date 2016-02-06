@@ -1,3 +1,6 @@
+# encoding: UTF-8
+raise_unless user.grade > 2
+
 class Forum
 class Post
 
