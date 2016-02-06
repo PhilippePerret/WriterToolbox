@@ -1,6 +1,7 @@
 # encoding: UTF-8
 raise_unless_admin
 
+Unan::require_module 'abs_work'
 UnanAdmin::require_module 'abs_work'
 
 class Unan
@@ -51,8 +52,22 @@ class AbsWork
     end
   end # << self
 
+  # ---------------------------------------------------------------------
+  #   Instance
+  # ---------------------------------------------------------------------
   def as_li
-    ("[##{id}] #{titre}").in_li
+    (
+      boutons_edition +
+      "[##{id}] #{titre}"
+    ).in_li
+  end
+
+  def boutons_edition
+    (
+      lien_edit("[Edit]") +
+      lien_show("[Show]") +
+      lien_delete("[Kill]")
+    ).in_div(class:'fright small')
   end
 end #/AbsWork
 end #/Program
