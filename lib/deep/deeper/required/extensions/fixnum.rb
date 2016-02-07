@@ -55,6 +55,12 @@ class ::Fixnum
       d << " et " unless d.empty?
       d << "#{hrs} heure#{hrs > 1 ? 's' : ''}"
     end
+    if d.empty?
+      secs = (self % DUREE_JOUR) % 3600
+      mns  = secs / 60
+      scs  = secs % 60
+      d << "#{mns} mns #{scs} secs"
+    end
     d
   end
   alias :as_jour_or_hour :as_jours_or_hours

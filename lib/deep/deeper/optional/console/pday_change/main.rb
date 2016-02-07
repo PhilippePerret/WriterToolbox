@@ -62,9 +62,14 @@ class User
     # DURÉE RÉELLE = DURÉE PROGRAMME x coef_duree
     coef_duree = 5.0 / params[:rythme]
 
+    # Pour pouvoir se trouver à la 23e heure du jour voulu (afin que
+    # les travaux à faire ou à finir dans la journée ne soient pas
+    # marqués en retard)
+    faux_now = NOW + 3600
+
     # On doit régler le jour de commencement du programme pour que
     # ça corresponde au rythme et au jour choisi
-    debut_time = NOW - ( coef_duree * ( pday_indice.days - 1000 ) ).to_i
+    debut_time = faux_now - ( coef_duree * ( pday_indice.days - 1000 ) ).to_i
     program.set(created_at: debut_time, updated_at: debut_time + 4000)
 
     # Remonter les pdays depuis le premier jour jusqu'à la VEILLE
@@ -80,7 +85,7 @@ class User
 
       # Le temps où a dû être créé le jour-programme (en tenant compte
       # du rythme qui a pu être défini par les paramètres.
-      pday_time = (NOW - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
+      pday_time = (faux_now - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
       debug "NOW        : #{NOW}\n" +
             "pday_time  : #{pday_time}"
 
@@ -143,7 +148,7 @@ class User
         # n'est pas fini si sa date de fin `work_end_time` est
         # supérieure à maintenant
         work_is_completed = work_end_time < NOW
-        debug "NOW            : #{NOW}\n"+
+        debug "NOW            : #{faux_now}\n"+
               "work_end_time  : #{work_end_time}\n"+
               "work_is_completed : #{work_is_completed.inspect}"
 

@@ -53,10 +53,9 @@ class Work
   # Noter que c'est une méthode de `Work` plutôt que de `AbsWork` pour
   # s'adapter exactement à l'auteur en particulier.
   def output
-    withid = OFFLINE ? "[#{id}] " : ""
     (
       nombre_de_points +
-      "#{withid}#{abs_work.titre}".in_div(class:'titre')  +
+      "#{abs_work.titre}".in_div(class:'titre')  +
       "#{abs_work.travail}".in_div(class:'travail')       +
       date_fin_attendue +
       form_pour_marquer_fini
@@ -85,7 +84,7 @@ class Work
       "Vous êtes en dépassement de #{temps_humain_depassement} !".in_div(class:'warning')
     else
       (
-        "Reste".in_span(class:'libelle')+
+        "Reste".in_span(class:'libelle va_bottom')      +
         temps_humain_restant.in_span(class:'mark_fort')
       ).in_div(class:'right air')
     end

@@ -34,13 +34,11 @@ class Program
 
     # Filtrage pour ne prendre que les works terminés (ou pas)
     if ( filtre.has_key? :completed )
-      debug "filtered AVANT filtrage completed : #{filtered.inspect}"
       if filtre[:completed]
         filtered.select! { |h| h[:status] == 9 }
       else
         filtered.select! { |h| h[:status] < 9 }
       end
-      debug "filtered APRÈS filtrage completed : #{filtered.inspect}"
     end
 
     # Filtrage pour ne prendre que les works d'un
