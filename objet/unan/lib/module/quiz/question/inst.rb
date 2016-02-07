@@ -28,7 +28,7 @@ class Question
   #   Data enregistrées
   # ---------------------------------------------------------------------
   def question    ; @question   ||= get(:question)  end
-  # Noter que les réponses sont un Hash, tout simplement parce
+  # Noter que les réponses sont un Array de Hash, tout simplement parce
   # que BdD essaie de se comporter intelligemment et reconnait un
   # Array. Donc il faut penser à le passer par json pour l'enregistrer
   def reponses    ; @reponses   ||= get(:reponses)  end

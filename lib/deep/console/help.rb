@@ -67,6 +67,13 @@ class Console
 <!--  PROPRE À L'APPLICATION -->
 <h4 onclick="$('dl#work_pday_etc').toggle()">Commandes propres aux Works, P-Days et autres Pages de cours</h4>
 <dl id="work_pday_etc" class="small" style="display:none;">
+  <dt>`set benoit to pday &lt;x p-day (1-start)&gt;`</dt>
+  <dd>Passe Benoit à ce jour-programme, en réglant tout ce qu'il faut régler.</dd>
+  <dt>`set benoit to pday &lt;x p-day&gt; with {&lt;params&gt;}`</dt>
+  <dd>Même que précédente mais en définissant des paramètres supplémentaires.</dd>
+  <dd>Ces paramètres peuvent être : <ul>
+    <li>`rythme` : Le rythme choisi, de 1 à 9</li>
+  </ul></dd>
   <dt>`get &lt;chose&gt; of &lt;autre_chose&gt; &lt;id&gt;`</dt>
   <dd>Obtient la chose (work, page de cours, p-day etc.) de l'autre chose (work, page de cours, p-day, etc.)</dd>
   <dd>En plus, produit une ligne qui permet d'éditer, d'afficher ou de détruire l'élément voulu.</dd>

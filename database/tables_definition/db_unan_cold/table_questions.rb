@@ -13,11 +13,11 @@ def schema_table_unan_cold_questions
     # Remarquer qu'une indication automatique existe lorsque la question
     # comporte plusieurs choix à cocher (checkbox au lieu de radion).
     indication: {type:"TEXT"},
-    
+
     # Les réponses possibles
     # ----------------------
     # Puisqu'il s'agit toujours que de QCM, les réponses sont toujours
-    # définies et strictes. La donnée est un Hash jsonné.
+    # définies et strictes. La donnée est un Array de Hash jsonné.
     # Voir le format dans le programme.
     # Chaque réponse définit sa valeur en points.
     reponses:   {type:"BLOB", constraint:"NOT NULL"},

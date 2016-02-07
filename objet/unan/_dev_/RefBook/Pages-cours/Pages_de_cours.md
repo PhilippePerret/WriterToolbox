@@ -5,6 +5,7 @@
 * [Lien pour afficher/éditer/détruire une page de cours](#lienpourafficherunepagedecours)
 * [Instance de page de cours (`page_cours()`)](#instancedepagedecours)
 * [Map des pages de cours](#mapdespagesdecours)
+* [Enregistrement des LECTURES de la page de cours](#lecturesdelapagedecours)
 
 <a name='lienpourafficherunepagedecours'></a>
 
@@ -79,3 +80,10 @@ Pour le moment, toutes les pages de cours, qu'elles soient propre au programme o
                                 cnarration/  Pages de la collection
                  pages_semidyn/ (même hiérarchie mais avec les pages semi-
                                  dynamiques qui seront vraiment chargées)
+
+
+<a name='lecturesdelapagedecours'></a>
+
+## Enregistrement des LECTURES de la page de cours
+
+Les lectures sont enregistrées dans la donnée `lectures` de la page (table `pages_cours` de l'user). Pour le moment, c'est un simple Hash dont les clés sont les heures de lecture en secondes et la valeur est la même chose. Plus tard, on pourra imaginer que la valeur soit la fin de la lecture.

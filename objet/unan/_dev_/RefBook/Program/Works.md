@@ -35,3 +35,5 @@ Valeurs :
 <a name='valeursbitsoptions'></a>
 
 ## Valeur des bits d'options
+
+Pour le moment, les bits d'options d'un `Unan::Program::Work` ne sont pas utilisés.

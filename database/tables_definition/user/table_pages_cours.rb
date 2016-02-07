@@ -1,8 +1,8 @@
 # encoding: UTF-8
 =begin
 
-Définition de la table `pdays` qui définit les pdays d'un auteur en
-particulier.
+Définition de la table `pages_cours` qui définit la lecture des
+pages de cours d'un auteur en particulier.
 Cette table est enregistrée dans la base de données propre à chaque
 auteur qui suit le programme, dans la base de données du programme.
 =end

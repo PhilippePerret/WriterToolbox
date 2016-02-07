@@ -51,6 +51,12 @@ class AbsWork
     @data_type_w ||= TYPES[type_w]
   end
 
+  # Le type de liste, :pages, :quiz, etc.
+  def id_list_type
+    @id_list_type ||= data_type_w[:id_list]
+  end
+
+
   def narrative_target
     @narrative_target ||= begin
       bits = type[2..3]
@@ -67,6 +73,7 @@ class AbsWork
       # type[5] pourra servir pour préciser
     end
   end
+
 
 end #/AbsWork
 end #/Program

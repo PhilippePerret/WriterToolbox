@@ -23,7 +23,7 @@ class Program
   def created_at    ; @created_at ||= get(:created_at)  end
   def updated_at    ; @updated_at ||= get(:updated_at)  end
   # {Fixnum} Le rythme
-  # ATTENTION : c'est une préférence, pas une donnée du projet
+  # ATTENTION : c'est une préférence, pas une donnée du programme
   def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
 
   # ---------------------------------------------------------------------
@@ -34,6 +34,8 @@ class Program
   # Coefficient de durée du jour-programme du programme courant
   # @usage : On MULTIPLIE la durée réelle par ce nombre pour
   # obtenir la durée-programme.
+  # DURÉE_RÉELLE * coefficient_duree = DURÉE_PROGRAMME
+  # => DURÉE_RÉELLE = DURÉE_PROGRAMME * coefficiant_duree
   def coefficient_duree ; @coefficient_duree ||= 5.0 / rythme end
 
 end # /Program

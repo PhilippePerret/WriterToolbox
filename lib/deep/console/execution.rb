@@ -21,14 +21,18 @@ class Console
       # DÈS QU'UNE LIGNE EST AJOUTÉE, IL FAUT RENSEIGNER
       # LE FICHIER help.rb DE CONSOLE
       #
+      res = false
+
+      res ||= ( execute_as_regular_sentence line )
+
       # On exécute la ligne telle quelle
-      res = execute_as_is( line )
+      res ||= ( execute_as_is line )
 
       # On exécute la ligne de type dernier mot variable
-      res ||= execute_as_last_is_variable( line )
+      res ||= ( execute_as_last_is_variable line )
 
       # ON exécute la ligne de type get <foo> of <something> <id>
-      res ||= execute_as_get_of_line( line )
+      res ||= ( execute_as_get_of_line line )
 
       # En dernier recours, on exécute la ligne comme du code
       # ruby
@@ -176,6 +180,26 @@ class Console
     found = line.match(/^get #{marqueur} of #{marqueur} ([0-9]+)$/)
     return nil if found.nil?
     get_of_exec(* found.to_a[1..3])
+  end
+
+  # On analyse la ligne comme une expression régulière connue
+  def execute_as_regular_sentence line
+    if ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a ).count > 0
+      # Pour faire des tests avec Benoit à un PDay particulier
+      # @exemple : set benoit to pday 5 with {rythme:4}
+      (site.folder_lib_optional + 'console/pday_change/main.rb').require
+      pday_indice = found[1].to_i
+      params = found[2]
+      params = eval(params) unless params.nil?
+      # debug "--> User::get(2).change_pday(pday_indice=#{pday_indice}, params=#{params.inspect})"
+      site.require_objet 'unan'
+      Unan::require_module 'quiz'
+      User::get(2).change_pday pday_indice, params
+      true
+    else
+      debug "Pas d'expression régulière reconnue"
+      return false
+    end
   end
 
   # On exécute la ligne comme si son dernier terme était
