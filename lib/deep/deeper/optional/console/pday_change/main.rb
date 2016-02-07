@@ -80,7 +80,9 @@ class User
 
       # Le temps où a dû être créé le jour-programme (en tenant compte
       # du rythme qui a pu être défini par les paramètres.
-      pday_time = (Time.now - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
+      pday_time = (NOW - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
+      debug "NOW        : #{NOW}\n" +
+            "pday_time  : #{pday_time}"
 
       # Le statut du p-day. Il est à 1 quand le PDay est en cours
       # 1: Déclenché par le programme
@@ -132,15 +134,18 @@ class User
         # égale à created_at.
         # TODO Tenir compte des paramètres qui peuvent décider qu'on
         # n'est pas ok sur ce travail.
-        duree_work = is_current_pday ? 0 : ((iabswork.duree * coef_duree) - rand(3600*4)).to_i
+        duree_work = is_current_pday ? 0 : ((iabswork.duree.days * coef_duree) - rand(3600*4)).to_i
 
         # La date de fin du travail en fonction de sa durée
-        work_end_time = pday_time + ( coef_duree * iabswork.duree ).to_i
+        work_end_time = pday_time + ( coef_duree * iabswork.duree.days ).to_i
 
         # Est-ce que c'est un travail fini a priori. Un travail
         # n'est pas fini si sa date de fin `work_end_time` est
         # supérieure à maintenant
         work_is_completed = work_end_time < NOW
+        debug "NOW            : #{NOW}\n"+
+              "work_end_time  : #{work_end_time}\n"+
+              "work_is_completed : #{work_is_completed.inspect}"
 
         # Pour le moment, le status est mis à 9 pour dire
         # que le travail a été terminé. Plus tard, on pourra modifier

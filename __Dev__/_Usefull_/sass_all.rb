@@ -11,7 +11,7 @@ Dir["./**/*.sass"].each do |src_path|
   css_path = File.join(folder, File.basename(src_path, File.extname(src_path)) + '.css')
   if false == File.exist?(css_path) || File.stat(css_path).mtime < File.stat(src_path).mtime
     puts "#{src_path} -> #{css_path}"
-    data_compilation = {line_comments: false, style: :compressed}
+    data_compilation = { line_comments: false, style: :compressed }
     Sass::compile_file src_path, css_path, data_compilation
   end
 end

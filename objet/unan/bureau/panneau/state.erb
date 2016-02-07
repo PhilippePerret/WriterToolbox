@@ -5,13 +5,13 @@
 
   <div id="div_mark_pday_points" class="row">
     <span class="libelle mark_pday">Jour-programme</span>
-    <span class="value" id="mark_pday"><%=
+    <span class="value mark_fort" id="mark_pday"><%=
       nb = user.program.current_pday(:nombre)
       er = nb == 1 ? 'er' : 'e'
       "#{nb}<sup>#{er}</sup>"
       %></span>
       <span class="libelle mark_points">Points</span>
-      <span class="value" id="mark_points"><%= user.total_points_program %></span>
+      <span class="value mark_fort" id="mark_points"><%= user.total_points_program %></span>
   </div>
 
   <div class="row">

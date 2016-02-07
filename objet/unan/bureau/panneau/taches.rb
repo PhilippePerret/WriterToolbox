@@ -78,15 +78,21 @@ class Work
     mess_duree = "Ce travail #{doit} être accompli en #{duree_relative.as_jours}."
     css  = ['exbig']
     css << "warning" if depassement?
+
+
     mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé avant le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
     mess_reste_jours = if depassement?
       "Vous êtes en dépassement de #{temps_humain_depassement} !".in_div(class:'warning')
     else
-      "Il vous reste <span class='exbig'>#{temps_humain_restant}</span>.".in_div
+      (
+        "Reste".in_span(class:'libelle')+
+        temps_humain_restant.in_span(class:'mark_fort')
+      ).in_div(class:'right air')
     end
+
     (
-      mess_duree.in_div +
-      mess_echeance.in_div +
+      mess_duree.in_div     +
+      mess_echeance.in_div  +
       mess_reste_jours
     ).in_div(class:'dates')
   end

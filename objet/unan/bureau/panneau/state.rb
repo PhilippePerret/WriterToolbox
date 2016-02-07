@@ -47,12 +47,12 @@ class Program
 
   def rythme_humain
     @rythme_humain ||= begin
-      Unan::Program::RYTHMES[rythme][:hname] +
+      Unan::Program::RYTHMES[rythme][:hname].in_span +
       case true
-      when rythme == 5 then " (1 jr réel = 1 jr-programme)"
-      when rythme > 5  then " (1 jr réel = #{coef_rythme} jrs-programme)"
-      when rythme < 5  then " (1 jr réel = #{(1 /coef_rythme).to_i} jrs-programme)"
-      end
+      when rythme == 5 then "&nbsp;(1 jour réel = 1 jour-programme)"
+      when rythme > 5  then "&nbsp;(1 jour réel = #{(1 /coef_rythme).round(2)} jours-programme)"
+      when rythme < 5  then "&nbsp;(1 jour-programme = #{(1 /coef_rythme).round(2)} jours réels)"
+      end.in_span()
     end
   end
 

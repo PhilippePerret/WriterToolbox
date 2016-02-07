@@ -82,7 +82,7 @@ class ::Fixnum
     'sept', 'oct', 'nov', 'déc']
   def as_human_date mois_long = true, with_clock = false
     mois = mois_long ? MOIS_LONG[Time.at(self).month] : MOIS_COURT[Time.at(self).month]
-    Time.at(self).strftime("%e #{mois} %Y#{with_clock ? ' - %H:%M' : ''}").strip
+    Time.at(self).strftime("%e<span class='thin'></span>#{mois}<span class='thin'></span>%Y#{with_clock ? "<span class='thin'></span>-<span class='thin'></span>%H:%M" : ''}").strip
   end
 
   def as_duree
