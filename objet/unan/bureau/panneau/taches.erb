@@ -14,9 +14,7 @@
   <%= tasks.collect { |iwork| iwork.output }.join %>
 <% else %>
   <p class='small discret'>Vous n'avez aucun travail courant.</p>
-  <% if works.count == 0 %>
-    <%= message_si_aucun_travail %>
-  <% end %>
+  <%= message_si_aucun_travail %>
 <% end %>
 
 <%

@@ -59,7 +59,6 @@ class Program
     if filtre[:count]
       filtered = filtered[0..filtre[:count] - 1]#.compact
     end
-
     filtered
   end
 
@@ -67,8 +66,30 @@ class Program
   # comme instance.
   def last_tasks
     @last_tasks ||= begin
-      works(completed:true, count:5, type: :task).collect do |hwork|
-        Work::new(self, hwork[:id])
+      type_task_ids = Unan::Program::AbsWork::CODES_BY_TYPE[:tasks]
+      where_clause = "status = 9"
+      # Je relève les 20 derniers travaux (work) de l'auteur qui
+      # ont été terminés
+      res = self.table_works.select(colonnes: [:abs_work_id], where:where_clause, order:"created_at DESC", limit:20).values
+      debug "res : #{res.inspect}"
+      debug self.table_works.select.pretty_inspect
+      # Parmi ces 20 travaux, je dois garder ceux qui sont de type `task`
+      # en sachant que c'est le travail absolu (abs-work) qui consigne cette
+      # donnée.
+      # Parmi les 20 derniers travaux relevés (il peut n'y en avoir aucun),
+      # je dois garder seulement ceux qui sont de type task
+      ids_works = Array::new
+      res.each do |hwork|
+        id_abswork = hwork[:abs_work_id]
+        typew = Unan::Program::AbsWork::get( id_abswork ).type_w
+        if Unan::Program::AbsWork::CODES_BY_TYPE[:tasks].include?(typew)
+          ids_works << hwork[:id]
+          break if ids_works.count >= 5
+        end
+      end
+      # Ici, on a nos 5 derniers travaux finis (ou moins, ou rien)
+      ids_works.collect do |wid|
+        Unan::Program::Work::new(self, wid)
       end
     end
   end

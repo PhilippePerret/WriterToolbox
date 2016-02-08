@@ -32,7 +32,10 @@ class Bureau
   end
 
   def tasks
-    @tasks ||= user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::get(user.program, wid) }
+    @tasks ||= begin
+      debug "user.get_var(:tasks_ids) : #{user.get_var(:tasks_ids).inspect}"
+      user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::get(user.program, wid) }
+    end
   end
   # Raccourci
   def last_tasks
@@ -77,7 +80,6 @@ class Work
     mess_duree = "Ce travail #{doit} être accompli en #{duree_relative.as_jours}."
     css  = ['exbig']
     css << "warning" if depassement?
-
 
     mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé avant le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
     mess_reste_jours = if depassement?

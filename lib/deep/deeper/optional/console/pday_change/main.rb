@@ -107,21 +107,11 @@ class User
       # Note : On met aussi à 0 pour le jour courant
       pday_points = 0
 
-      # Si c'est le jour courant, il faut des listes pour
-      # mémoriser les travaux à faire :
-      if is_current_pday
-        ids_lists = {
-          works:  Array::new(), # contient tous les travaux
-          pages:  Array::new(),
-          quiz:   Array::new(),
-          tasks:  Array::new(),
-          forum:  Array::new(),
-          none:   Array::new()  # ?
-        }
-      end
 
       # --------------------------------------------------
-      # Les travaux
+      # Les travaux du jour absolu traités
+      # (tous les jours-absolus jusqu'au jour voulu sont
+      #  traités par cette méthode)
       #
       # Deux traitements différents en fonction du fait que
       # c'est le jour courant ou non. Si ce n'est pas le
@@ -148,9 +138,12 @@ class User
         # n'est pas fini si sa date de fin `work_end_time` est
         # supérieure à maintenant
         work_is_completed = work_end_time < NOW
+        work_is_not_completed = !work_is_completed
+
         debug "NOW            : #{faux_now}\n"+
               "work_end_time  : #{work_end_time}\n"+
               "work_is_completed : #{work_is_completed.inspect}"
+
 
         # Pour le moment, le status est mis à 9 pour dire
         # que le travail a été terminé. Plus tard, on pourra modifier
@@ -186,7 +179,7 @@ class User
         # Si c'est le jour courant ou que le travail n'est pas
         # terminé, on doit définir les variables
         # de travail de l'user (les vars :tasks, :pages, etc.)
-        if is_current_pday || !work_is_completed
+        if is_current_pday || work_is_not_completed
           ids_lists[:works]                 << work_id
           ids_lists[iabswork.id_list_type]  << work_id
         else
@@ -246,18 +239,17 @@ class User
       # On ajoute les points à l'auteur courant
       self.add_points pday_points unless is_current_pday
 
-      # Si c'est le jour courant, on doit enregistrer les
-      # travaux dans les variables de l'auteur
-      if is_current_pday
-        ids_lists.each do |key_list, arr_works|
-          next if arr_works.empty?
-          key = "#{key_list}_ids".to_sym.freeze
-          list = self.get_var(key, Array::new)
-          list += arr_works
-          self.set_var( key, list)
-        end
-      end
+    end
 
+    # On enregistre les listes :tasks_ids, quiz_ids etc. dans les
+    # variables de l'auteur.
+    ids_lists.each do |key_list, arr_works|
+      next if arr_works.empty?
+      key = "#{key_list}_ids".to_sym.freeze
+      list = self.get_var(key, Array::new)
+      list += arr_works
+      self.set_var( key, list)
+      debug "Liste #{key.inspect} mise à #{list.inspect}"
     end
 
   end
