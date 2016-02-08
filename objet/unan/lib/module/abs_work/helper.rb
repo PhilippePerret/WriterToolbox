@@ -20,6 +20,30 @@ class AbsWork
     @human_narrative_target ||= Unan::SujetCible::new(narrative_target).human_name
   end
 
+  # Type de résultat au format humain
+  # Rappel : type_resultat est une donnée sur 3 bit dont chaque bit
+  # de 0 à 9 définit une valeur
+  def human_type_resultat
+    bit_res_support   = type_resultat[0].to_i
+    bit_res_destina   = type_resultat[1].to_i
+    bit_res_exigence  = type_resultat[2].to_i
+
+    c = ""
+    if bit_res_support > 0
+      support   = Unan::SUPPORTS_RESULTAT[bit_res_support][1]
+      c << ("Support".in_span(class:'libelle') + support.in_span).in_span
+    end
+    if bit_res_destina > 0
+      destina   = Unan::DESTINATAIRES[bit_res_destina][1]
+      c << ("Destinataire".in_span(class:'libelle')+destina.in_span).in_span
+    end
+    if bit_res_exigence > 0
+      exigence  = Unan::NIVEAU_DEVELOPPEMENT[bit_res_exigence][1]
+      c << ("Niveau de développement attendu".in_span(class:'libelle') + exigence.in_span).in_span
+    end
+    return c
+  end
+
   # ---------------------------------------------------------------------
   #   Builders HTML
   # ---------------------------------------------------------------------

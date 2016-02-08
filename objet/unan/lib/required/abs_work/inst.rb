@@ -42,6 +42,10 @@ class AbsWork
   #   Propriétés volatiles
   # ---------------------------------------------------------------------
 
+  def exemples_ids
+    @exemples_ids ||= exemples.split(' ').collect{|eid|eid.to_i} unless exemples.empty?
+  end
+
   # La table "absolute_works" dans la base de données du programme
   def table
     @table ||= Unan::table_absolute_works

@@ -52,6 +52,7 @@ div.panneau_onglet
     border-radius     : 0.5em
     font-size         : 0.9em
     background-color  : #DDF7DC
+    margin-bottom     : 1em
     a, a:hover, a:link, a:visited
       &.inwork
         color             : white
@@ -60,14 +61,20 @@ div.panneau_onglet
         font-size         : smaller
         padding           : 1px 0.5em 3px
     div.nbpoints  
-      color           : white
-      font-size       : 15pt
+      color           : teal
+      font-size       : 13pt
       font-style      : italic
       float           : right
     div.titre
       margin-bottom     : 1em
       font-weight       : bold
       font-size         : 1.1em
+    div.details
+      padding           : 0.5em
+      &, *
+        font-size         : 12.2pt
+      > span
+        margin-right      : 0.5em
     div.dates         
       font-size         : 0.85em
       color             : black
@@ -88,25 +95,34 @@ div.panneau_onglet
           margin-top          : 1em
           padding             : 1.6em 2em
           font-size           : 15pt
-      
-    div.buttons
-      text-align        : right
+    
+    div.buttons, div.exemples
       margin-top        : 1em
       padding           : 1em
-      border-top        : 3px solid #777
-      border-bottom     : 3px solid white
       color             : #777
       background-color  : #B9C8AA
+      > span
+        margin-right        : 1em        
       a
         background-color  : white
-        border            : 1px solid green
         color             : green
         padding           : 0.4em 1em
         font-size         : 12.2pt
         margin-right      : 1em
+    div.buttons
+      border-top        : 3px solid #777
+      border-bottom     : 3px solid white
+      text-align        : right
+      a
+        border            : 1px solid green
+
+    div.exemples
+      border-bottom     : 1px solid #777
+      border-top        : 1px solid white
         
 section#completed_works
   opacity       : 0.55
+  margin-top    : 2em
   div.work
     div.buttons
       // Il faut masquer la barre des boutons pour empêcher de faire des bêtises

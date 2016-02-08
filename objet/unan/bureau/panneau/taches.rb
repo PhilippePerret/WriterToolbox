@@ -11,6 +11,8 @@ Ce travail doit être contenu sous forme de liste dans la variable
 `travaux_ids` qui est renseignée à mesure que l'auteur avance dans
 les jours et qu'il exécute des travaux.
 =end
+Unan::require_module 'abs_work'
+
 class Unan
 class Bureau
 
@@ -33,7 +35,6 @@ class Bureau
 
   def tasks
     @tasks ||= begin
-      debug "user.get_var(:tasks_ids) : #{user.get_var(:tasks_ids).inspect}"
       user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::get(user.program, wid) }
     end
   end
@@ -61,13 +62,43 @@ class Work
   def output
     (
       nombre_de_points +
-      "#{abs_work.titre}".in_div(class:'titre')  +
-      "#{abs_work.travail}".in_div(class:'travail')       +
+      "#{abs_work.titre}".in_div(class:'titre')     +
+      "#{abs_work.travail}".in_div(class:'travail') +
       date_fin_attendue +
-      form_pour_marquer_started_or_fini
+      form_pour_marquer_started_or_fini +
+      details_tache +
+      section_exemples
     ).in_div(class:'work')
   end
 
+  # Retourne la section contenant les exemples s'ils existent
+  def section_exemples
+    abs_work.instance_variable_set('@exemples', "1 11")
+    return "" if abs_work.exemples.empty?
+    abs_work.exemples_ids.collect do |eid|
+      "Exemple ##{eid}".in_a(href:"exemple/#{eid}/show?in=unan", target:'_exemple_work_').in_span
+    end.join.in_div(class:'exemples')
+  end
+
+  # Les détails de la tâche
+  def details_tache
+    return "" if completed?
+    (
+      span_type_tache +
+      span_resultat
+    ).in_div(class:'details')
+  end
+
+  def span_type_tache
+    ("Type".in_span(class:'libelle') + human_type.in_span).in_span
+  end
+  def span_resultat
+    return "" if abs_work.resultat.empty?
+    c = ""
+    c << ("Résultat".in_span(class:'libelle') + abs_work.resultat).in_span
+    c << abs_work.human_type_resultat
+    return c
+  end
   # Un lien pour soit marquer le travail démarré (s'il n'a pas encore été
   # démarré) soit pour le marquer fini (s'il a été fini). Dans les deux cas,
   # c'est un lien normal qui exécute une action avant de revenir ici.
@@ -80,6 +111,7 @@ class Work
   end
 
   def nombre_de_points
+    return "" if completed?
     "#{abs_work.points} points".in_div(class:'nbpoints')
   end
 
