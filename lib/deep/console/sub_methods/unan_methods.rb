@@ -8,12 +8,14 @@ class Console
   # jour après jour dans le programme UN AN UN SCRIPT
   def unan_affiche_points_sur_lannee
     Unan::require_module 'quiz'
+    debug "  Unan::Program::DATA_POINTS: #{  Unan::Program::DATA_POINTS.inspect}"
     total_points_max  = 0  # quand meilleures réponses
     total_points_min  = 0  # quand pires réponses
     total_works_count = 0
     hdata = Hash::new
     lines = ""
     tab = " "*4 # tabulation entre les données pour l'affichage
+    grade_points_courant = nil
     (1..365).each do |pday_id|
       iabs_pday = ( Unan::Program::AbsPDay::get pday_id )
       pday_points_max = 0
@@ -31,7 +33,7 @@ class Console
         end
         pday_points_max += (iabswork.points || 0) + max
         pday_points_min += (iabswork.points || 0) + min
-      end
+      end #/Fin de boucle sur tous les travaux
 
       total_points_max += pday_points_max
       total_points_min += pday_points_min
@@ -52,6 +54,21 @@ class Console
       mark_works_total = total_works_count.to_s.rjust(6)
 
       lines <<  "#{mark_pday}#{tab}#{mark_works_count}#{tab}  #{mark_pday_min}#{tab}#{mark_pday_max}#{tab}#{mark_total_min}#{tab}#{mark_total_max}#{tab}#{mark_works_total}\n"
+
+      # Est-ce que ces points correspondent à un grade supérieur ?
+      arr_points = Unan::Program::DATA_POINTS.keys
+      index_key = nil
+      arr_points.each_with_index do |points, index |
+        if points > total_points_max ; index_key = index - 1; break end
+      end
+      index_key = arr_points.count - 1 if index_key.nil?
+      points_sub = arr_points[index_key]
+      data_points = Unan::Program::DATA_POINTS[points_sub]
+      if grade_points_courant != data_points[:grade]
+        lines << "=> passage au grade #{data_points[:hname]}\n"
+        grade_points_courant = data_points[:grade].freeze
+      end
+
     end
     line1_titre = "pday #{tab} Nb #{tab}  pts / pday    #{tab}   Total\n"
     line2_titre = "     #{tab}works#{tab}min  |   max  #{tab}min   |   max  |  works\n"
