@@ -8,11 +8,8 @@
 
 <ul>
 <%
-{
-  'general'       => "Fonctionnement général de l'année de programme",
-  'au_quotidien'  => "Fonctionnement au quotidien",
-  'bureau'        => "Le bureau de travail"
-}.each do |path, titre|
+Unan::Aide::load_data
+DATA_TDM_AIDE[:fonctionnement][:subitems].each do |path, titre|
 %>
   <%= Unan::lien_aide("fonctionnement/#{path}", titre).in_li %>
 <% end %>

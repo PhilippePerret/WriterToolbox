@@ -44,14 +44,13 @@ DATA_TDM_AIDE = {
       marquer_work_fini: "Indiquer qu'un travail est achevé"
     }
   }
-
 }
+
 
 class Unan
 class Aide
   class << self
-
-    def tdm
+    def build_tdm
       DATA_TDM_AIDE.collect do |main_folder, data_folder|
         data_folder[:titre].in_li(class:'title') +
         data_folder[:subitems].collect do |sub_folder, titre|
@@ -62,6 +61,6 @@ class Aide
         end.join
       end.join.in_ul(id:"unan_tdm")
     end
-  end # << self
+  end #/ << self
 end #/Aide
 end #/Unan

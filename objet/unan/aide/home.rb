@@ -1,8 +1,5 @@
 # encoding: UTF-8
 
-(site.folder_objet + 'unan/aide/DATA_TDM.rb').require
-# => DATA_TDM_AIDE
-
 class Unan
 class Aide
   class << self
@@ -12,6 +9,10 @@ class Aide
       link_to_original relpath, titre, options
     end
 
+    def tdm
+      load_data
+      build_tdm
+    end
   end # /<< self
 end #/Aide
 end #/Unan
