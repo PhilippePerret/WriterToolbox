@@ -214,8 +214,6 @@ class User
 
           # Sans autre forme de procès, on peut ajouter les points
           # de ce travail aux points finaux du pday
-          # TODO Pour un questionnaire, il faudrait tenir compte des
-          # points marqués.
           # TODO SI les paramètres le demandent, il faut pondérer les
           # points avec quelques retards.
           pday_points += (iabswork.points || 0) + extra_points

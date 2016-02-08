@@ -61,6 +61,9 @@ class Console
   def execute_as_is line
     case line
 
+    when "Unan points"
+      unan_affiche_points_sur_lannee
+      
     when "vide table paiements", "vider table paiements"
       vide_table_paiements
     when "remove table paiements"

@@ -67,6 +67,7 @@ class Console
 <!--  PROPRE À L'APPLICATION -->
 <h4 onclick="$('dl#work_pday_etc').toggle()">Commandes propres aux Works, P-Days et autres Pages de cours</h4>
 <dl id="work_pday_etc" class="small" style="display:none;">
+
   <dt>`set benoit to pday &lt;x p-day (1-start)&gt;`</dt>
   <dd>Passe Benoit à ce jour-programme, en réglant tout ce qu'il faut régler.</dd>
   <dt>`set benoit to pday &lt;x p-day&gt; with {&lt;params&gt;}`</dt>
@@ -75,6 +76,7 @@ class Console
     <li>`rythme` : Le rythme choisi, de 1 à 9</li>
     <li>`just_in_time` : Si true, l'heure sera mise juste au début du jour, ce qui fait que les travaux précédents devraient être en retard.</li>
   </ul></dd>
+
   <dt>`get &lt;chose&gt; of &lt;autre_chose&gt; &lt;id&gt;`</dt>
   <dd>Obtient la chose (work, page de cours, p-day etc.) de l'autre chose (work, page de cours, p-day, etc.)</dd>
   <dd>En plus, produit une ligne qui permet d'éditer, d'afficher ou de détruire l'élément voulu.</dd>
@@ -83,6 +85,8 @@ class Console
   <dt>`get \\<br />(work|pday|page_cours|exemple|quiz) \\<br /> of \\<br />(work|pday|page_cours|exemple|quiz) &lt;id&gt;`</dt>
   <dd>Donne la chose 1 de la chose 2 d'identifiant donné, c'est-à-dire tous les liens permettant de la gérer.</dd>
 
+  <dt>`Unan points`</dt>
+  <dd>Affiche l'évolution des points sur l'année. Doit permettre de régler les différents grades et messages à obtenir.</dd>
 </dl>
 
 <h4 onclick="$('dl#databases').toggle()">Lignes propres aux bases de données</h4>
