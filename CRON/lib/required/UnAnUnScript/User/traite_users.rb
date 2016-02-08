@@ -35,7 +35,7 @@ class User
 
         entete_message = "Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) "
 
-        log "= User::current : #{user.id} (#{user.pseudo})"
+        log "= User::current : #{auteur.id} (#{auteur.pseudo})"
 
         # Normalement, ça ne devrait pas être possible, mais apparemment
         # ça arrive
@@ -43,26 +43,17 @@ class User
           log "# Bizarrement, l'auteur id:#{auteur.id}/pseudo:#{auteur.pseudo} est considéré comme auteur en activité, mais `auteur.program` retour nil."
           next
         else
-          log "= L'ID programme de #{user.pseudo} est : ##{auteur.program.id}"
+          log "= L'ID programme de #{auteur.pseudo} est : ##{auteur.program.id}"
         end
 
-        log "= Jour-programme courant de #{user.pseudo} : #{user.get_var(:current_pday).inspect}"
+        log "= Jour-programme courant de #{auteur.pseudo} : #{auteur.get_var(:current_pday).inspect}"
 
         # On regarde si l'auteur a des travaux de plus de deux jours qui
         # n'ont pas encore été démarrés ou marqués vus. Si c'est le cas, il
         # faut leur envoyer une alerte ainsi qu'à l'administrateur.
         # En fait, à l'administrateur, on enregistre le message dans son
         # rapport, dans les alertes importantes
-        resultat = auteur.program.test_if_works_not_started
-        if resultat != nil
-          mess_resultat = "a des travaux non démarrés. L'auteur a été averti."
-          unless resultat[:errors].empty?
-            mess_resultat << " (#{resultat[:errors].pretty_join})"
-          end
-        else
-          mess_resultat = "n'a aucun travail non démarré (il a bien démarré tous ses travaux courants)."
-        end
-        log "--- #{entete_message} #{mess_resultat}"
+        auteur.program.test_if_works_not_started
 
         # On teste pour savoir si l'auteur doit passer au jour-programme
         # suivant, en fonction de l'heure et de son rythme d'avancée.
@@ -80,7 +71,10 @@ class User
           log "--- #{entete_message} n'a pas eu besoin d'être passé au jour-programme suivant."
         end
 
-      end
+        # Si nécessaire, envoyer le mail à l'auteur
+        auteur.send_mail_if_needed
+
+      end # / fin de boucle sur tous les auteurs en activité
 
     end
 

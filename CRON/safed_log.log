@@ -1,4 +1,4 @@
-SAFED LOG DU 08 02 2016 - 17:00
+SAFED LOG DU 08 02 2016 - 20:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -14,8 +14,8 @@ SAFED LOG DU 08 02 2016 - 17:00
 <- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/forum.rb
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
 <- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/traite_users_unanunscript.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
 = STEP 1 OK =
 * STEP 2 (Cron::run)
 -> Cron::run
@@ -24,6 +24,7 @@ SAFED LOG DU 08 02 2016 - 17:00
      <- Cron::requerir_les_librairies_du_site
     * [Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
+     <- Cron::traitement_programme_un_an_un_script
     * [Cron::run] Traitement des messages forum
      -> Cron::traitement_messages_forum
      <- Cron::traitement_messages_forum

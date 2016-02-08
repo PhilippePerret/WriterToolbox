@@ -9,10 +9,9 @@ class Program
   # vues (pas lues)
   def test_if_works_not_started
     Unan::require_module 'page_cours'
-    @errors = Array::new
     deux_jours_avant = NOW - 2.days
     current_works(as: :instances).each do |iwork|
-    # works(as: :instances).each do |iwork|
+      nombre_jours = (NOW - iwork.created_at) / 1.days
       # Si le travail est donné depuis moins de deux jours,
       # il ne faut pas le checker
       next if iwork.created_at > deux_jours_avant
@@ -22,22 +21,17 @@ class Program
         # => Elle doit avoir été marquée "vu"
         ipage = User::UPage::get(auteur, iwork.item_id)
         next if ipage.vue? # OK
-        @errors << error_message_page_not_vue(ipage)
+        error_message_page_not_vue(ipage, nombre_jours)
       elsif iwork.task?
         next if iwork.started? # OK
-        @errors << error_message_work_not_started(iwork)
+        error_message_work_not_started(iwork, nombre_jours)
       end
     end # / fin de boucle sur tous les travaux
-    if @errors.empty?
-      nil
-    else
-      @errors
-    end
   end
 
   def error_message_page_not_vue ipage, nombre_jours
-    spec_page = "page “#{ipage.titre}” (##{ipage.id})"
-    case true
+    spec_page = "page “#{ipage.page_cours.titre}” (##{ipage.id})"
+    alerte = case true
     when nombre_jours < 2
       "La #{spec_page} aurait dû être marquée vue depuis environ deux jours."
     when nombre_jours < 4
@@ -48,11 +42,12 @@ class Program
       # => Fin du programme
       "Il y a près d'un moins que la #{spec_page} aurait dû être marqué vue. Nous devons vous considérer comme démissionnaire du programme. C'est vraiment dommage."
     end
+    auteur.add_alerte_mail alerte
   end
 
   def error_message_work_not_started iwork, nombre_jours
     spec_work = "travail “#{iwork.titre}” (##{iwork.id})"
-    case true
+    alerte = case true
     when nombre_jours < 2
       "Le #{spec_work} aurait dû être marqué démarré."
     when nombre_jours < 4
@@ -62,6 +57,7 @@ class Program
     when nombre_jours < 32
       "Il y a près d'un moins que le #{spec_work} aurait dû être démarré. Malheureusement, je dois vous compter comme démissionnaire…"
     end
+    auteur.add_alerte_mail alerte
   end
 
 end #/Program

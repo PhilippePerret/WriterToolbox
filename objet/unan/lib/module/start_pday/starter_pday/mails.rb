@@ -9,17 +9,12 @@ class Program
 class StarterPDay
 
   # ---------------------------------------------------------------------
-  #   Classe, donc pour le check en général, tout programme confondus
-  # ---------------------------------------------------------------------
-  class << self
-
-
-  end # << self
-
-  # ---------------------------------------------------------------------
   #   Instance, donc l'auteur pour le starter du programme en particulier
   #   On utilise notamment mail_auteur.send_mail pour envoyer le mail
   #   final à l'auteur, si nécessaire.
+  #   Noter que ce mail est exclusivement réservé pour les annonces de
+  #   changement de jour-programme. Pour les autres mails, cf. les
+  #   méthodes User du Cronjob qui s'en chargent.
   # ---------------------------------------------------------------------
   def mail_auteur
     @mail_auteur ||= MailAuteur::new(self)

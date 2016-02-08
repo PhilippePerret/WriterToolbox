@@ -49,6 +49,7 @@ class UPage
   #   Data volatiles
   # ---------------------------------------------------------------------
 
+  # Instance PageCours de la page de référence
   def page_cours
     @page_cours ||= Unan::Program::PageCours::get(id)
   end

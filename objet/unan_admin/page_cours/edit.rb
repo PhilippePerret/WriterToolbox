@@ -72,7 +72,7 @@ class PageCours
         if creer_fichier_is_inexistant?
           create_file_page_cours(fullpath)
         else
-          raise "Le fichier `#{fullpath.to_s}` est introuvable… Il faut le créer avec d'enregistrer la donnée."
+          raise "Le fichier `#{fullpath.to_s}` est introuvable… Il faut le créer avant d'enregistrer la donnée.<br/>Noter qu'il suffit pour ça de cocher la case pour créer le fichier s'il n'existe pas."
         end
       end
     rescue Exception => e
@@ -134,7 +134,7 @@ end #/Unan
 
 def pc # comme "P-age C-cours"
   return Hash::new if pc_id == :undefined
-  @pc ||= UnanAdmin::PageCours::get(pc_id)
+  @pc ||= Unan::Program::PageCours::get(pc_id)
 end
 def pc_id
   @pc_id ||= begin
@@ -146,9 +146,9 @@ end
 
 case param(:operation)
 when "open_page_cours"
-  UnanAdmin::PageCours::open_page
+  Unan::Program::PageCours::open_page
 when "save_page_cours"
-  UnanAdmin::PageCours::save
+  Unan::Program::PageCours::save
 when "edit_page_cours"
   # UnanAdmin::PageCours::edit
 end
