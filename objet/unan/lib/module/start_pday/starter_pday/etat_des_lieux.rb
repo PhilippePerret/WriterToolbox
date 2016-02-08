@@ -37,6 +37,7 @@ class StarterPDay
 
     # Boucle sur tous les travaux courants
     # +iwork+ est une instance Work, pas AbsWork
+    # Exactement : Unan::Program::Work
     works.each do |iwork|
 
       # Le travail absolu correspondant (pour pouvoir récupérer
@@ -72,10 +73,10 @@ class StarterPDay
         # La propriété  `message_avertissement` contient le
         # message en fonction du niveau d'avertissement, message
         # qui sera ajouté au titre avec une mise en exergue du titre
-        titre += " (#{message_avertissement})"
-        avertissements[niveau_avertissement] << iwork
+        titre += " (#{iwork.message_avertissement})"
+        avertissements[niveau_alerte] << iwork
         avertissements[:total]              += 1
-        avertissements[:greater_than_four]  += 1 if niveau_avertissement > 4
+        avertissements[:greater_than_four]  += 1 if niveau_alerte > 4
         class_css = 'warning'
       else
         # Si le travail n'est pas en dépassement

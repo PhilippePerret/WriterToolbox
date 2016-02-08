@@ -117,7 +117,7 @@ class Cron
     # Path au mail (vue ERB) contenant le code pour le mail
     # à utiliser pour le rapport
     def path_mail
-      @path_mail ||= Unan::folder_module + "start_pday/mail/admin_rapport.erb"
+      @path_mail ||= SuperFile::new([APP_FOLDER, "objet/unan/lib/module/start_pday/mail/admin_rapport.erb"])
     end
 
     # Path du fichier qui contient l'enregistrement des
