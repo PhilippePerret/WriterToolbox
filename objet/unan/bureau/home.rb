@@ -110,8 +110,8 @@ class Bureau
       pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages},
       forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
       quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
-
-      preferences:  {id: :preferences,  titre:"Préférences"}
+      preferences:  {id: :preferences,  titre:"Préférences"},
+      aide:         {id: :aide,         titre:"Aide"}
     }
 
     # ---------------------------------------------------------------------
@@ -122,7 +122,7 @@ class Bureau
       # Retourne le code HTML de la bande d'onglets
       def bande
         ONGLETS.keys.collect do |ong_id|
-          new(ong_id).onglet
+          new(ong_id).onglet# + (ong_id == :aide ? '<br />' : '')
         end.join.in_ul(id:'bande_onglets')
       end
 

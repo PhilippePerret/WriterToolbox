@@ -10,6 +10,7 @@ Méthodes générales pratiques pour les fichiers
 # C'est équivalent à require_relative mais
 # en retournant un path.
 def _( relpath )
+  # debug "caller : #{caller.inspect}"
   first_path = caller.first.split(":").first
   File.join(File.dirname(first_path), relpath)
 end

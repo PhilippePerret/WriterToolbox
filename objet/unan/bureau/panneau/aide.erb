@@ -1,0 +1,10 @@
+<%
+# Vue pour l'aide sur le programme UN AN UN SCRIPT
+%>
+<p class='small italic'>Retrouvez ici le manuel d'utilisation et l'aide du programme UN AN UN SCRIPT.</p>
+<% if param(:pid).nil? %>
+  <%= Unan::Aide::tdm %>
+<% else %>
+  <%= Unan::Aide::link_to_tdm %>
+  <%= Unan::Aide::show_page %>
+<% end %>
