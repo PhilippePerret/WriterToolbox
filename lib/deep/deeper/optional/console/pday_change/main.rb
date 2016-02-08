@@ -6,6 +6,11 @@ Pour le moment, pour lancer ce module, on utilise en console :
 =end
 class User
 
+
+  def sub_log mess
+    console.sub_log mess
+  end
+
   # = main =
   #
   # Méthode qui change le pday de l'utilisateur pour le mettre
@@ -45,14 +50,18 @@ class User
       set_var("#{id_list}_ids".to_sym => Array::new)
     end
 
-
-    # Changer le current_pday de l'user
-    set_var(:current_pday, pday_indice)
-
+    # Réglage et analyse des options
     # Le rythme adopté par l'user, soit dans les paramètres
     # transmis soit la valeur par défaut.
     params[:rythme] ||= 5
     debug "Rythme : #{params[:rythme]}"
+    # Faut-il régler l'heure juste avant ou juste après le changement
+    # de jour
+    just_in_time = !!params.delete(:just_in_time)
+
+    # Changer le current_pday de l'user
+    set_var(:current_pday, pday_indice)
+
 
     # Par précaution, on enregistre toujours le rythme du programme
     # dans les données du programme.
@@ -65,7 +74,8 @@ class User
     # Pour pouvoir se trouver à la 23e heure du jour voulu (afin que
     # les travaux à faire ou à finir dans la journée ne soient pas
     # marqués en retard)
-    faux_now = NOW + 3600
+    faux_now = "#{NOW}".to_i
+    faux_now += just_in_time ? -100 : 3600
 
     # On doit régler le jour de commencement du programme pour que
     # ça corresponde au rythme et au jour choisi
@@ -249,7 +259,13 @@ class User
       list = self.get_var(key, Array::new)
       list += arr_works
       self.set_var( key, list)
-      debug "Liste #{key.inspect} mise à #{list.inspect}"
+      debug "=== Liste #{key.inspect} mise à #{list.inspect}"
+    end
+
+    unless just_in_time
+      sub_log "Noter que le temps choisi est <strong>une heure avant la fin du #{pday_indice}<sup>e</sup> jour</strong>. Donc les travaux de la veille doivent être encore activés."
+    else
+      sub_log "Noter qu'avec l'option “just_in_time”, les travaux qui doivent être terminés le #{pday_indice}<sup>e</sup> jour seront marqués en dépassement de temps."
     end
 
   end

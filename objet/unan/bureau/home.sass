@@ -15,7 +15,7 @@ ul#bande_onglets
       letter-spacing  : 1.2px
       margin          : 0
       &.exergue
-        background-color  : #F8A
+        background-color  : #B9C8AA
       &.actif
         background-color  : #578088
         color             : white !important
@@ -46,7 +46,7 @@ div.panneau_onglet
     border            : 1px solid #CCC
     border-radius     : 0.5em
     font-size         : 0.9em
-    background-color  : burlywood
+    background-color  : #DDF7DC
     a, a:hover, a:link, a:visited
       &.inwork
         color             : white
@@ -69,16 +69,29 @@ div.panneau_onglet
       padding           : 0.3em 1em
       margin            : 1em 0 1em 20%
       border-left       : 3px solid white
-      background-color  : wheat
+      background-color  : #CCDDC8
       span.exbig
         font-weight   : bold
         font-size     : 1.1em
+      
+      // QUAND UNE DATE EST EN DÉPASSEMENT
+      div.depassement
+        text-align : center
+        div.warning
+          background-color    : red
+          color               : white
+          margin-top          : 1em
+          padding             : 1.6em 2em
+          font-size           : 15pt
+      
     div.buttons
-      text-align    : right
-      margin-top    : 1em
-      padding-top   : 1em
-      border-top    : 1px solid #777
-      color         : #777
+      text-align        : right
+      margin-top        : 1em
+      padding           : 1em
+      border-top        : 3px solid #777
+      border-bottom     : 3px solid white
+      color             : #777
+      background-color  : #B9C8AA
       a
         background-color  : white
         border            : 1px solid green

@@ -73,6 +73,7 @@ class Console
   <dd>Même que précédente mais en définissant des paramètres supplémentaires.</dd>
   <dd>Ces paramètres peuvent être : <ul>
     <li>`rythme` : Le rythme choisi, de 1 à 9</li>
+    <li>`just_in_time` : Si true, l'heure sera mise juste au début du jour, ce qui fait que les travaux précédents devraient être en retard.</li>
   </ul></dd>
   <dt>`get &lt;chose&gt; of &lt;autre_chose&gt; &lt;id&gt;`</dt>
   <dd>Obtient la chose (work, page de cours, p-day etc.) de l'autre chose (work, page de cours, p-day, etc.)</dd>

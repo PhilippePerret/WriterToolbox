@@ -55,6 +55,9 @@ class Work
   # ce travail en particulier.
   # Noter que c'est une méthode de `Work` plutôt que de `AbsWork` pour
   # s'adapter exactement à l'auteur en particulier.
+  # Noter qu'elle sert aussi pour les travaux qui viennent d'être
+  # achevés (mis en bas de page) et que donc, certaines informations
+  # comme les dates, ne sont pas toujours affichées.
   def output
     (
       nombre_de_points +
@@ -75,15 +78,16 @@ class Work
   end
 
   def date_fin_attendue
+    return "" if completed?
     doit = depassement? ? "aurait dû" : "doit"
     avez = depassement? ? "aviez" : "avez"
     mess_duree = "Ce travail #{doit} être accompli en #{duree_relative.as_jours}."
     css  = ['exbig']
     css << "warning" if depassement?
 
-    mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé avant le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
+    mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
     mess_reste_jours = if depassement?
-      "Vous êtes en dépassement de #{temps_humain_depassement} !".in_div(class:'warning')
+      "Vous êtes en dépassement de <span class='exbig'>#{temps_humain_depassement}</span>.".in_div(class:'warning').in_div(class:'depassement')
     else
       (
         "Reste".in_span(class:'libelle va_bottom')      +

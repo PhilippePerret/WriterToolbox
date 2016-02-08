@@ -47,7 +47,8 @@ class Page
   # html
   def raw_css
     low_opacity_header = user.identified? ? "0.14" : "1"
-    low_opacity_margin = user.identified? ? "0.352" : "1"
+    low_opacity_margin = user.identified? ? "0.14" : "1"
+    # low_opacity_margin = user.identified? ? "0.352" : "1"
     <<-CSSS
 <style type="text/css">
 section#header{opacity:#{low_opacity_header}}
