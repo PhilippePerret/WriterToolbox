@@ -2,7 +2,7 @@
 =begin
 Module d'aide pour le programme UN AN UN SCRIPT
 =end
-(site.folder_objet + 'unan/aide/data_tdm.rb').require
+(site.folder_objet + 'unan/aide/DATA_TDM.rb').require
 page.add_css(site.folder_objet+'unan/aide/home.css')
 # => DATA_TDM_AIDE
 

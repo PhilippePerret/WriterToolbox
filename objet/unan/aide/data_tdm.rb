@@ -23,13 +23,28 @@ DATA_TDM_AIDE = {
       bureau:       "Le Centre de travail"
     }
   },
+  works:{
+    titre:"Les travaux",
+    subitems: {
+      home:         "Définition générale",
+      deal_with:    "S'occuper des travaux",
+      types:        "Les types de travaux"
+    }
+  },
   preferences:{
     titre:"Préférences",
     subitems:{
       tdm:          "Table des matières",
       rythme:       "Réglage du rythme"
     }
+  },
+  how_to:{
+    titre: "Comment faire pour…",
+    subitems:{
+      marquer_work_fini: "Indiquer qu'un travail est achevé"
+    }
   }
+
 }
 
 class Unan
