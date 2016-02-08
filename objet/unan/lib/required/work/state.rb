@@ -9,6 +9,9 @@ class Work
   def quiz?
     @is_type_quiz ||= abs_work.quiz?
   end
+  def page_cours?
+    @is_page_cours ||= abs_work.page_cours?
+  end
 
   # Retourne true si le travail
   def ended?

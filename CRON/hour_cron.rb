@@ -2,6 +2,7 @@
 =begin
 Module qui doit être appelé toutes les heures par le cron-job.
 
+NOTE Cf. le manuel dans ./objet/unan/_dev_/RefBook/Program/Cron_job.md
 NOTE : Il doit être exécutable.
 
 =end

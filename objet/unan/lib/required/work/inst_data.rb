@@ -50,6 +50,11 @@ class Work
     @abs_work ||= Unan::Program::AbsWork::get(abs_work_id)
   end
 
+  # ---------------------------------------------------------------------
+  #   Raccourcis pour les données du travail absolu
+  # ---------------------------------------------------------------------
+  def item_id   ; @item_id      ||= abs_work.item_id    end
+
   # {Fixnum} Durée relative du travail en secondes en
   # fonction du rythme courant du programme.
   def duree_relative

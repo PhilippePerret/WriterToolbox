@@ -36,4 +36,13 @@ class User
   def quiz_ids            ; @quiz_ids ||= get_var( :quiz, [] )              end
   def pages_cours_ids=    arr_ids; set_var :pages_cours => arr_ids          end
   def pages_cours_ids     ; @pages_cours_ids ||= get_var(:pages_cours, [])  end
+
+  # ---------------------------------------------------------------------
+  #   Raccourcis de user.program
+  # ---------------------------------------------------------------------
+
+  # Retourne les works courant de l'user, c'est-à-dire ceux qui ont
+  # un status inférieur à 9
+  def current_works options = nil ; ( program.current_works options ) end
+
 end

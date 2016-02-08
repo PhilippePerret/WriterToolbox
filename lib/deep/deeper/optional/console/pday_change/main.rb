@@ -8,7 +8,11 @@ class User
 
 
   def sub_log mess
-    console.sub_log mess
+    if defined?(Console)
+      console.sub_log( mess )
+    else
+      debug mess
+    end
   end
 
   # = main =
@@ -21,7 +25,7 @@ class User
   #               pour le jour donné. Si TRUE au lieu d'un nombre,
   #               choisi un nombre au hasard.
   def change_pday pday_indice, params = nil
-    debug "-> change_pday(pday_indice=#{pday_indice.inspect}, params=#{params.inspect})"
+    # debug "-> change_pday(pday_indice=#{pday_indice.inspect}, params=#{params.inspect})"
     params ||= Hash::new
 
     # Initialiser toutes les valeurs de l'user
@@ -54,7 +58,7 @@ class User
     # Le rythme adopté par l'user, soit dans les paramètres
     # transmis soit la valeur par défaut.
     params[:rythme] ||= 5
-    debug "Rythme : #{params[:rythme]}"
+    # debug "Rythme : #{params[:rythme]}"
     # Faut-il régler l'heure juste avant ou juste après le changement
     # de jour
     just_in_time = !!params.delete(:just_in_time)
@@ -96,8 +100,8 @@ class User
       # Le temps où a dû être créé le jour-programme (en tenant compte
       # du rythme qui a pu être défini par les paramètres.
       pday_time = (faux_now - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
-      debug "NOW        : #{NOW}\n" +
-            "pday_time  : #{pday_time}"
+      # debug "NOW        : #{NOW}\n" +
+      #       "pday_time  : #{pday_time}"
 
       # Le statut du p-day. Il est à 1 quand le PDay est en cours
       # 1: Déclenché par le programme
@@ -150,9 +154,9 @@ class User
         work_is_completed = work_end_time < NOW
         work_is_not_completed = !work_is_completed
 
-        debug "NOW            : #{faux_now}\n"+
-              "work_end_time  : #{work_end_time}\n"+
-              "work_is_completed : #{work_is_completed.inspect}"
+        # debug "NOW            : #{faux_now}\n"+
+        #       "work_end_time  : #{work_end_time}\n"+
+        #       "work_is_completed : #{work_is_completed.inspect}"
 
 
         # Pour le moment, le status est mis à 9 pour dire
@@ -174,7 +178,7 @@ class User
           updated_at:   pday_time + duree_work
         )
         work_id = self.table_works.insert( data2save )
-        debug "= Création du work ##{work_id} : #{data2save.inspect}"
+        # debug "= Création du work ##{work_id} : #{data2save.inspect}"
 
         # On (RE)prend l'instance du work user, on en aura besoin
         # juste ci-dessous
@@ -241,7 +245,7 @@ class User
         created_at:   pday_time
       )
       iusr_pday.instance_variable_set('@data2save', dprov)
-      debug "* Création du pday ##{iusr_pday.id} : #{iusr_pday.data2save.inspect}"
+      # debug "* Création du pday ##{iusr_pday.id} : #{iusr_pday.data2save.inspect}"
       iusr_pday.create
 
       # On ajoute les points à l'auteur courant
@@ -257,7 +261,7 @@ class User
       list = self.get_var(key, Array::new)
       list += arr_works
       self.set_var( key, list)
-      debug "=== Liste #{key.inspect} mise à #{list.inspect}"
+      # debug "=== Liste #{key.inspect} mise à #{list.inspect}"
     end
 
     unless just_in_time

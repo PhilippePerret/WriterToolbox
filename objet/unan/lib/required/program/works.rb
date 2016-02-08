@@ -14,6 +14,23 @@ class Program
     Work::get(self, wid)
   end
 
+  # Retourne les travaux courants (i.e. non finis) dans le format
+  # :as voulu
+  def current_works options = nil
+    options ||= Hash::new
+    options[:as] ||= :data
+    @works_hash ||= self.table_works.select(where:"status < 9")
+
+    case options[:as]
+    when :data then @works_hash.values
+    when :id, :ids then @works_hash.keys
+    when :instance, :instances
+      @works_hash.keys.collect { |wid| Work::get(self, wid) }
+    else
+      @works_hash
+    end
+  end
+
   # {Array of Hash} Liste des travaux propres du
   # programme courant en appliquant le filtre +filtre+ s'il est
   # défini. Noter que les travaux sont toujours en ordre inverse,

@@ -33,6 +33,8 @@ class User
         # usage de `user`
         User::current = auteur
 
+        entete_message = "Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) "
+
         log "= User::current : #{user.id} (#{user.pseudo})"
 
         # Normalement, ça ne devrait pas être possible, mais apparemment
@@ -46,6 +48,22 @@ class User
 
         log "= Jour-programme courant de #{user.pseudo} : #{user.get_var(:current_pday).inspect}"
 
+        # On regarde si l'auteur a des travaux de plus de deux jours qui
+        # n'ont pas encore été démarrés ou marqués vus. Si c'est le cas, il
+        # faut leur envoyer une alerte ainsi qu'à l'administrateur.
+        # En fait, à l'administrateur, on enregistre le message dans son
+        # rapport, dans les alertes importantes
+        resultat = auteur.program.test_if_works_not_started
+        if resultat != nil
+          mess_resultat = "a des travaux non démarrés. L'auteur a été averti."
+          unless resultat[:errors].empty?
+            mess_resultat << " (#{resultat[:errors].pretty_join})"
+          end
+        else
+          mess_resultat = "n'a aucun travail non démarré (il a bien démarré tous ses travaux courants)."
+        end
+        log "--- #{entete_message} #{mess_resultat}"
+
         # On teste pour savoir si l'auteur doit passer au jour-programme
         # suivant, en fonction de l'heure et de son rythme d'avancée.
         # Si nécessaire (i.e. s'il y a changement de jour, nouveaux travaux,
@@ -54,12 +72,12 @@ class User
         resultat = auteur.program.test_if_next_pday
         if resultat != nil
           if resultat[:errors].empty?
-            log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
+            log "--- #{entete_message} a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
           else
-            log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
+            log "--- #{entete_message} N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
           end
         else
-          log "--- Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) n'a pas eu besoin d'être passé au jour-programme suivant."
+          log "--- #{entete_message} n'a pas eu besoin d'être passé au jour-programme suivant."
         end
 
       end
