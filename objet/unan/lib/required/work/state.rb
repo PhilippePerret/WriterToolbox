@@ -32,6 +32,12 @@ class Work
   def completed?
     status == 9
   end
+  # Return true si le travail a été démarré par l'auteur
+  # Noter que le chrono tourne même quand le travail n'a pas été
+  # démarré.
+  def started?
+    status > 0
+  end
 
 end #/Work
 end #/Program

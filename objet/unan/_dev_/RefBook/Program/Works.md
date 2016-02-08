@@ -29,8 +29,16 @@ Ce statut est passé à 9 lorsque le travail est achevé, de force ou réellemen
 Valeurs :
 
     0   Travail créé/instancié
+    1   Travail marqué démarré par l'auteur, c'est-à-dire qu'il l'a
+        vu et pris en compte. Il se marque démarré depuis le bureau
+        Noter que ça ne s'applique qu'aux "vrais" travaux, pas aux
+        pages de cours ou autres quiz.
+        Interroger la méthode `started?` pour savoir si le travail a
+        été démarré.
 
     9   Travail terminé
+        Interroger la méthode `completed?` pour savoir si le travail
+        est fini.
 
 <a name='valeursbitsoptions'></a>
 

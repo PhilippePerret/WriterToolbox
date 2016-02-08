@@ -64,13 +64,19 @@ class Work
       "#{abs_work.titre}".in_div(class:'titre')  +
       "#{abs_work.travail}".in_div(class:'travail')       +
       date_fin_attendue +
-      form_pour_marquer_fini
+      form_pour_marquer_started_or_fini
     ).in_div(class:'work')
   end
-  def form_pour_marquer_fini
-    (
+
+  # Un lien pour soit marquer le travail démarré (s'il n'a pas encore été
+  # démarré) soit pour le marquer fini (s'il a été fini). Dans les deux cas,
+  # c'est un lien normal qui exécute une action avant de revenir ici.
+  def form_pour_marquer_started_or_fini
+    if started?
       "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches")
-    ).in_div(class:'buttons')
+    else
+      "Démarrer ce travail".in_a(href:"work/#{id}/start?in=unan/program&cong=taches")
+    end.in_div(class:'buttons')
   end
 
   def nombre_de_points

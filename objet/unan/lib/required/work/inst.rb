@@ -31,6 +31,11 @@ class Work
     @id       = wid
   end
 
+  # Marque un travail démarré
+  def set_started
+    set( status:1, updated_at:NOW )
+  end
+
   # Marque un travail terminé.
   #
   # La méthode est appelée par la route "work/<id>/complet?in=unan/program"
@@ -67,7 +72,7 @@ class Work
     set(status: 9, updated_at:NOW, ended_at:NOW)
     add_mess_points = if must_add_point && abs_work.points.to_i > 0
       user.add_points( abs_work.points )
-      " (vous avez #{abs_work.points} nouveaux points :-))"
+      " (#{abs_work.points} nouveaux points :-))"
     else
       ""
     end
