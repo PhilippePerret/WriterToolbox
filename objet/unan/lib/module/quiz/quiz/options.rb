@@ -41,7 +41,7 @@ class Quiz
 
   def previous_version_id
     @previous_version_id ||= begin
-      vip = options[3..8].to_i
+      vip = options[4..9].to_i
       vip = nil if vip == 0
       vip
     end
@@ -49,22 +49,22 @@ class Quiz
   def set_previous_version quiz_id
     opts = "#{options}"
     opts = opts.ljust(9,"0")
-    opts[3..8] = quiz_id.to_s.rjust(6,'0')
+    opts[4..9] = quiz_id.to_s.rjust(6,'0')
     instance_variable_set('@previous_version', nil)
     instance_variable_set('@previous_version_id', nil)
     set(options: opts)
   end
   def next_version_id
     @next_version_id ||= begin
-      vip = options[9..14].to_i
+      vip = options[10..15].to_i
       vip = nil if vip == 0
       vip
     end
   end
   def set_next_version quiz_id
     opts = "#{options}"
-    opts = opts.ljust(15,"0")
-    opts[9..14] = quiz_id.to_s.rjust(6,'0')
+    opts = opts.ljust(16,"0")
+    opts[10..15] = quiz_id.to_s.rjust(6,'0')
     instance_variable_set('@next_version', nil)
     instance_variable_set('@next_version_id', nil)
     set(options: opts)

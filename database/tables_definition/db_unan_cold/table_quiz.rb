@@ -41,7 +41,7 @@ def schema_table_unan_cold_quiz
     # Options
     # -------
     # Pour définir des options
-    # Cf. options.rb
+    # Cf. ./objet/unan/lib/module/quiz/quiz/options.rb
     options: {type:"VARCHAR(32)"},
 
     # Description

@@ -22,7 +22,7 @@ class Console
       rowdata.each do |col, valcol|
 
         if valcol.instance_of?(String)
-          valcol = rowdata[col] = valcol.gsub(/\r/,'').gsub(/\n/,'[RC]')
+          valcol = rowdata[col] = valcol.gsub(/<(.*?)>/,'').gsub(/[\r\t]/,'').gsub(/  +/,' ').gsub(/\n/,'[RC]')
         end
 
         if valcol.to_s.length > datacolumns[col][:max_len]
