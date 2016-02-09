@@ -15,8 +15,10 @@ class PageCours
   def output options = nil
     user.add_lecture_page_cours(self) if user.unanunscript?
     titre.in_h2 + read
+  rescue Exception => e
+    debug e
+    "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister]"
   end
-
 end #/PageCours
 end #/Program
 end #/Unan

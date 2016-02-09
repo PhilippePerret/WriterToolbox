@@ -53,19 +53,19 @@ class AbsWork
   def lien_show titre_lien = nil, attrs = nil
     titre_lien ||= self.titre
     attrs ||= Hash::new
-    ktype, context = ktype_and_context
-    attrs.merge!(href: "#{ktype}/#{id}/show?in=#{context}")
+    ktype, context, objet_id = ktype_and_context
+    attrs.merge!(href: "#{ktype}/#{objet_id}/show?in=#{context}")
     titre_lien.in_a(attrs)
   end
 
   def ktype_and_context
-    return ['work', 'unan'] if data_type_w.nil? # c'est une erreur, mais bon
+    return ['work', 'unan', id] if data_type_w.nil? # c'est une erreur, mais bon
     case data_type_w[:id_list]
-    when :pages then ['page_cours', 'unan']
-    when :quiz  then ['quiz', 'unan']
-    when :forum then ['post', 'forum']
+    when :pages then ['page_cours', 'unan', item_id]
+    when :quiz  then ['quiz', 'unan', item_id]
+    when :forum then ['post', 'forum', item_id]
     else # :tasks
-      ['abs_work', 'unan']
+      ['abs_work', 'unan', id]
     end
   end
 
