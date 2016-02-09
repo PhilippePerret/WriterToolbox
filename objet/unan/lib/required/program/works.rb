@@ -16,10 +16,16 @@ class Program
 
   # Retourne les travaux courants (i.e. non finis) dans le format
   # :as voulu
+  # Rappel : Un travail courant est un travail qui a
+  #   - le status inférieur à 9
+  #   - ET la date de création inférieur à NOW (*)
+  #
+  # (*) Les travaux qui ont un created_at supérieur à NOW sont
+  #     des travaux reprogrammés.
   def current_works options = nil
     options ||= Hash::new
     options[:as] ||= :data
-    @works_hash ||= self.table_works.select(where:"status < 9")
+    @works_hash ||= self.table_works.select(where:"status < 9 AND created_at < #{NOW + 1}")
 
     case options[:as]
     when :data then @works_hash.values
@@ -28,6 +34,25 @@ class Program
       @works_hash.keys.collect { |wid| Work::get(self, wid) }
     else
       @works_hash
+    end
+  end
+
+  # Retourne la liste des travaux futurs
+  # +options+ définit principalement :as, le format de retour des
+  # éléments du Array qui est retourné (cf. ci-dessus la méthode
+  # current_works)
+  def ulterieurs_works options = nil
+    options ||= Hash::new
+    options[:as] ||= :data
+    @ulterieurs_works ||= self.table_works.select(where:"created_at > #{NOW}")
+
+    case options[:as]
+    when :data then @ulterieurs_works.values
+    when :id, :ids then @ulterieurs_works.ids
+    when :instance, :instances
+      @ulterieurs_works.keys.collect{ |wid| Work::get(self, wid) }
+    else
+      @ulterieurs_works
     end
   end
 
@@ -43,6 +68,9 @@ class Program
   #   :count        {Fixnum} Pour ne récupérer qu'un certain nombre
   #                 de tâche. Par exemple, pour les 10 dernières :
   #                 filtre = {completed:true, count:10}
+  #
+  # Noter que les travaux futur (avec un created_at supérieur à NOW)
+  # seront aussi traités par cette méthode.
   def works filtre = nil
     @works ||= self.table_works.select(order:"created_at DESC").values
     return @works if filtre.nil?

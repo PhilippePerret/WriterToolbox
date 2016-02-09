@@ -10,6 +10,10 @@ class User
 
     # Méthode principale appelée toutes les heures par le cron job
     # pour voir s'il faut passer un programme au jour suivant.
+    #
+    # Cette méthode vérifie aussi les travaux reprogrammés de l'user
+    # Rappel : Ces travaux reprogrammés sont reconnaissables au fait
+    # qu'il ont une date de création dans le futur.
     def traite_users_unanunscript
 
       # Charger les librairies propres aux Unan::Program pour voir
@@ -54,6 +58,15 @@ class User
         # En fait, à l'administrateur, on enregistre le message dans son
         # rapport, dans les alertes importantes
         auteur.program.test_if_works_not_started
+
+        # On teste pour savoir si l'auteur doit avoir des travaux
+        # ultérieur ré-injectés dans le courant de ses travaux.
+        # Pour le faire, on regarde les travaux qui ont été créé depuis
+        # maintenant jusqu'à 2 heures plus tard que maintenant. Si le
+        # programme en trouve, il les ré-injecte dans le flux des travaux
+        # en changeant leur created_at pour qu'ils ne soient pas traités
+        # plusieurs fois.
+        auteur.program.check_if_ulteriors_works
 
         # On teste pour savoir si l'auteur doit passer au jour-programme
         # suivant, en fonction de l'heure et de son rythme d'avancée.

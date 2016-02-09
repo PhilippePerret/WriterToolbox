@@ -63,7 +63,7 @@ class Quiz
     else
       added_messages = ""
     end
-    "Questionnaire ##{id} enregistré#{added_messages}."
+    flash "Questionnaire ##{id} enregistré#{added_messages}."
   end
 
   def data2save
