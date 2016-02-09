@@ -6,6 +6,7 @@ route et que donc Unan::Quiz soit connu avant de lancer la simulation
 
 # On a besoin de la classe UnanQuiz
 Unan::require_module 'quiz'
+UnanAdmin::require_module 'quiz'
 # On a aussi besoin de certaines méthode Unan::Bureau (comme
 # celle pour fabriquer le bouton submit)
 Unan::require_module 'bureau'
