@@ -1,8 +1,22 @@
 <%
 # Page principale et accueil des analyses de film
 %>
-<h1>Analyses de film</h1>
+<%
+def participer_aux_analyses
+  @lien_participer ||= "participer aux analyses".in_a(href:'analyse/participer')
+end
+%>
+<%= FilmAnalyse::titre_h1 %>
 
 <p>
-  Section du site consacrée aux analyses de film, où sont exploités des outils informatiques et statistiques originaux et infiniment éclairants pour l'écriture et la narration.
+  Section du site consacrée aux <strong>analyses de films</strong>, où sont exploités des outils informatiques et statistiques originaux et infiniment éclairants pour l'écriture et la narration en général.
 </p>
+<% if user.subscribed? %>
+  <p>En tant qu'abonné<%= user.f_e %>, vous pouvez consulter l'intégralité des analyses de film, et vous pouvez également <%= participer_aux_analyses %> (et gagner par là-même des points d'abonnement).</p>
+<% elsif user.identified? %>
+  <p>Seuls les abonné<%= user.f_e %>s ont accès à l'intégralité des outils d'analyse et des analyses de film (<%= user.pseudo %>, vous pouvez bien sûr <%= lien_abonnement("vous abonner") %>).</p>
+  <p>Vous pouvez aussi <%= participer_aux_analyses %> pour gagner des points d'abonnement.</p>
+<% else %>
+  <p>Pour consulter les analyses, en intégralité ou en partie, vous devez impérativement <%= lien_signup("être inscrit-e") %> ou <%= lien_abonnement("être abonné-e") %>.</p>
+  <p>En étant inscrit-e, vous pourrez également <%= participer_aux_analyses %> produites afin de gagner des points d'abonnement.</p>
+<% end %>
