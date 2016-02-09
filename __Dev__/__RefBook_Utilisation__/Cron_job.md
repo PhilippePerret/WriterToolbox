@@ -1,10 +1,11 @@
 # Cron job
 
+* [Message à un auteur](#messagesaunauteur)
+
 Toutes les heures, un cron-job est lancé, principalement pour gérer le programme UN AN UN SCRIPT (et voir si des utilisateurs/auteurs doivent être passés au jour suivant).
 
 Mais ce cron sert aussi à d'autres choses, notamment à gérer les messages du forum, pour avertir les inscrits qui suivent certains sujets d'être prévenus.
 
-* [Message à un auteur](#messagesaunauteur)
 <a name='messagesaunauteur'></a>
 
 ## Message à un auteur
@@ -24,3 +25,5 @@ Noter que ces messages ne sont envoyés que s'ils existent (sic), c'est-à-dire 
     User#send_mail_if_needed
 
 … spécialement implémentée pour le cron (cf. `CRON/lib/required/User/mail.rb`).
+
+Noter également que pour le moment, ce message n'est envoyé (appel à la méthode `user.send_mail_if_needed`) que dans le traitement des auteurs UN AN UN SCRIPT.
