@@ -45,3 +45,14 @@ Valeurs :
 ## Valeur des bits d'options
 
 Pour le moment, les bits d'options d'un `Unan::Program::Work` ne sont pas utilisés.
+
+* [Travaux reprogrammés](#travauxreprogrammes)
+<a name='travauxreprogrammes'></a>
+
+## Travaux reprogrammés
+
+Parfois, des travaux sont reprogrammés, comme par exemple ceux d'un questionnaire qui n'a pas obtenu assez de points ou de bonnes réponses.
+
+Pour reprogrammer un travail à une date ultérieure, il suffit de régler sa propriété `created_at` (et aussi `updated_at`) à la date voulue dans le futur.
+
+C'est le cron-job horaire qui, trouvant ces travaux, les injecte dans le flux des travaux courants. Pour ça, il ne prend que les travaux qui sont créés (programmés) dans les deux heures suivant l'heure courante.
