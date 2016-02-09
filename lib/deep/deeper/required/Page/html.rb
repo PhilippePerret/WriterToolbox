@@ -52,10 +52,8 @@ class Page
     # low_opacity_margin = user.identified? ? "0.352" : "1"
     <<-CSSS
 <style type="text/css">
-//*
 section#header{opacity:#{low_opacity_header}}
 section#header:hover{opacity:1}
-//*/
 section#left_margin{opacity:#{low_opacity}}
 section#left_margin:hover{opacity:1}
 section#footer{opacity:#{low_opacity}}
