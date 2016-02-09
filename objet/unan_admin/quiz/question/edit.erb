@@ -43,10 +43,14 @@ form.objet  = param(:question) || Hash::new # pour le moment
 
 %>
 <%
+bouton_generate_yaml_file = "Entrer les données à partir d'un fichier YAML".in_a(href:'question/from_yaml?in=unan_admin/quiz')
 lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(Question, 'init_new')()")
 lien_edit_question    = "Edit".in_a(onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
 lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_destroy')()", class:'small btn warning')
 %>
+<div class="right small">
+  <%= bouton_generate_yaml_file %>
+</div>
 <form id="form_question_edit" class="dim2080" action="question/edit?in=unan_admin/quiz" method="POST">
 
   <%= "edit_question".in_hidden(name:'operation', id:'operation') %>

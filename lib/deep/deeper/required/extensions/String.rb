@@ -18,6 +18,15 @@ class String
 
   # ---------------------------------------------------------------------
 
+  # Pour "épurer" le string, c'est-à-dire :
+  #   - le striper
+  #   - remplacer les apostrophes double par des ' “ ' (courbe double)
+  def purified
+    str = self
+    str = str.strip
+    str.gsub(/"(.*?)"/, '“\1”')
+  end
+
   # Pour upcaser vraiment tous les caractères, même les accents et
   # les diacritiques
   DATA_MIN_TO_MAJ = {

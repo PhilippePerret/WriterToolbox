@@ -1,6 +1,15 @@
 # encoding: UTF-8
 class ::Array
 
+  def to_sym
+    self.collect do |e|
+      case e
+      when Hash, Array then e.to_sym
+      else e
+      end
+    end
+  end
+  
   ##
   #
   # Reçoit une liste de paths absolue et retourne la même

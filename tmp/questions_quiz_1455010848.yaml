@@ -1,0 +1,39 @@
+# Code type pour entrer des questions rapidement à l'aide d'un
+# fichier YAML
+# question: "La question à poser à l'utilisateur"
+# reponses:
+#   - La réponse 1::nombre de points
+#   - La réponse 2::nombre de points
+# unique: true    # mettre false si on peut choisir plusieurs réponses. Noter que
+#                 # par défaut la donnée est true
+# dispo:  col     # 'col' ou 'line' pour la disposition. Noter que par défaut
+#                 # la dispotion est en colonne
+# select: false   # mettre à true si c'est un menu select. Noter que si
+#                 # cette donnée est absente, elle sera considérée comme false
+-
+  question: "Une question pour voir ?"
+  reponses:
+    - Première réponse::0
+    - Deuxième réponse::-10
+    - Troisième réponse::10
+# Puisque 'unique' n'est pas précisé, sera true, puisque 'dispo' n'est pas
+# précisé, sera 'col' puisque 'select' n'est pas précisé sera false.
+-
+  question: "Ma deuxième question pour voir seulement ?"
+  reponses:
+    - C'est ça::-10
+    - Ça peut être aussi ça::0
+    - Ou encore ça::10
+  multi: true
+  dispo: line
+-
+  question: "Mon autre question met en menu select cette fois et sans point ?"
+  reponses:
+    - Oui
+    - Non
+    - Peut-être
+  select: true
+  raison: >
+    La bonne réponse est la première car il faut toujours un peu de fantaisie
+    dans la vie sinon elle serait un peu plombante et on ne saurait même pas
+    quoi faire pour dissiper la brume.

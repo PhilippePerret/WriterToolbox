@@ -46,16 +46,21 @@ class Page
   # Code CSS à écrire en dur dans la balise <style> de la page
   # html
   def raw_css
-    low_opacity_header = user.identified? ? "0.14" : "1"
+    low_opacity = user.identified? ? "0.14" : "1"
+    low_opacity_header = user.identified? ? "0.5" : "1"
     low_opacity_margin = user.identified? ? "0.14" : "1"
     # low_opacity_margin = user.identified? ? "0.352" : "1"
     <<-CSSS
 <style type="text/css">
+//*
 section#header{opacity:#{low_opacity_header}}
 section#header:hover{opacity:1}
-section#left_margin{opacity:#{low_opacity_margin}}
+//*/
+section#left_margin{opacity:#{low_opacity}}
 section#left_margin:hover{opacity:1}
-div#chapiteau_logo{opacity:#{low_opacity_header}}
+section#footer{opacity:#{low_opacity}}
+section#footer:hover{opacity:1}
+div#chapiteau_logo{opacity:#{low_opacity}}
 .adminonly{#{user.admin? ? '' : 'display:none;'}}
 </style>
     CSSS
