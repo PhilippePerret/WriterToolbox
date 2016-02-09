@@ -23,3 +23,7 @@
     "Générer un fichier type".in_submit(class:'btn small')
   ).in_form(action:'question/from_yaml?in=unan_admin/quiz')
 %>
+
+<% if UnanAdmin::Quiz::Question::resultat != nil %>
+  <%= UnanAdmin::Quiz::Question::resultat %>
+<% end %>

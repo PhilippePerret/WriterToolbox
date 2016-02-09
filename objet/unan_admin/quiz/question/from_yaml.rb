@@ -100,7 +100,7 @@ class Question
       final_questions = final_questions.collect do |hquestion|
         id = Unan::table_questions.insert( hquestion )
         resultat << "La question “#{hquestion[:question]}” porte l'identifiant ##{id}"
-        hquestion.merge(!id: id)
+        hquestion.merge!(id: id)
       end
 
       debug "QUESTIONS ENREGISTRÉES : " + final_questions.collect{|h|h.pretty_inspect}.join("\n")
