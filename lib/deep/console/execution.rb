@@ -63,7 +63,7 @@ class Console
 
     when "Unan points"
       unan_affiche_points_sur_lannee
-      
+
     when "vide table paiements", "vider table paiements"
       vide_table_paiements
     when "remove table paiements"
@@ -199,8 +199,10 @@ class Console
       Unan::require_module 'quiz'
       User::get(2).change_pday pday_indice, params
       true
+    elsif (found=line.match(/^create film (\{(?:.*?)\})$/).to_a).count > 0
+      site.require_objet 'analyse'
+      FilmAnalyse::create_film(eval(found[1]))
     else
-      debug "Pas d'expression régulière reconnue"
       return false
     end
   end

@@ -6,7 +6,7 @@
 
 <%
 def user_autorized?
-  user.suscribed? || user.analyste_confirmed?
+  user.subscribed? || user.analyste? || user.admin?
 end
 %>
 

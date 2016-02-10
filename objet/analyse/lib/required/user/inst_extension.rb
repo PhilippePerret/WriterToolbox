@@ -51,7 +51,14 @@ class User
     set_option(:analyse, cur_option|BIT_ANALYSTE_CHEF )
   end
 
-
+  # Retourne true si l'user courant est analyste, quel que soit
+  # son grade.
+  def analyste?
+    if @is_analyste === nil
+      @is_analyste = simple_analyste? || real_analyste?
+    end
+    @is_analyste
+  end
 
   # Retourne true si l'user est un simple analyste, c'est-à-dire
   # qu'il a proposé sa participation mais qu'il n'a pas encore

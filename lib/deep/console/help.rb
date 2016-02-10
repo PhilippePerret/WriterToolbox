@@ -51,6 +51,25 @@ class Console
   <dd>OFFLINE seulement</dd>
 </dl>
 
+<!-- FILMS ET ANALYSES -->
+<h4 onclick="$('dl#films_analyses').toggle()">Films et analyses</h4>
+<dl class="small" id="films_analyses" style="display:none">
+  <dt>`create film {&lt;data&gt;}`</dt>
+  <dd>Créer un enregistrement des infos minimales du film dans la table `analyse.films`.</dd>
+  <dd>Les infos minimales sont `{sym:&lt;symbole pour affixe fichier&gt;, titre:&lt;titre du film&gt;}`</dd>
+  <dd>Toutes les autres informations sont optionnelles : `:realisateur`, `auteurs`, `pays` (sur deux lettres minuscules), `annee`, `titre_fr`</dd>
+  <dd><strong>Propriétés spéciales</strong></dd>
+  <dd>On peut ajouter des propriétés spéciales qui en fait seront traités en options :
+    <ul>
+      <li>analyzed:true / Le film est analysé dans les analyses du site (Film TM)</li>
+      <li>lisible:true  / le film est analysé et consultable (:analyzed est donc considéré true)</li>
+      <li>completed:true / le film est analysé et l'analyse est terminée (:lisible est donc considéré true)</li>
+    </ul>
+  </dd>
+  <dd>La commande retourne l'identifiant du nouveau film créé.</dd>
+</dl>
+
+
 <h4 onclick="$('dl#gels').toggle()">Gels et dégels</h4>
 <dl class="small" id="gels" style="display:none">
   <dt>list gels</dt>

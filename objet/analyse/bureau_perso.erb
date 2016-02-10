@@ -1,0 +1,29 @@
+<%
+# Vue du bureau pour un analyste quel que soit son niveau
+#
+# Ce bureau lui permet de voir où il en est et de remettre le
+# fruit de son travail
+raise_unless user.analyste? || user.admin?
+%>
+<%= FilmAnalyse::titre_h1("Bureau") %>
+<p class='small italic'>
+  Votre bureau personnel vous permet de gérer les analyses dans lesquelles vous vous êtes investi<%= user.f_e %>.
+</p>
+
+<p>
+  [TODO: Liste des analyses en cours]
+</p>
+<p>
+  [TODO: ICI UN FORMULAIRE POUR REMETTRE UNE COLLECTE]
+</p>
+<p>
+  [TODO: FORMULAIRE POUR REMETTRE UN ARTICLE RÉDIGÉ]
+</p>
+<p>
+  [TODO: FORMULAIRE POUR PROPOSER UNE ANALYSE]
+</p>
+<%= if user.analyste_confirmed? %>
+  <p>
+    [TODO: FORMULAIRE POUR INITIER UNE ANALYSE]
+  </p>
+<% end %>
