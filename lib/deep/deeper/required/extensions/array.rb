@@ -9,7 +9,18 @@ class ::Array
       end
     end
   end
-  
+
+  def pretty_inspect
+    "[\n" +
+    self.collect do |item|
+      case item
+      when Hash, Array then item.pretty_inspect
+      else item.inspect
+      end
+    end.join("\n") +
+    "\n]"
+  end
+
   ##
   #
   # Reçoit une liste de paths absolue et retourne la même

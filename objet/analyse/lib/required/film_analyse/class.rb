@@ -43,40 +43,5 @@ class FilmAnalyse
       end
     end
 
-    # Crée un film dans la table analyse.films. C'est la méthode pour
-    # le moment utilisée par la console avec la commande `create film`.
-
-    def create_film dfilm
-      # debug "dfilm : #{dfilm.inspect}"
-      # On vérifie qu'il y a les informations minimales
-      raise "Il faut indiquer le `sym` du film (:sym)"    unless dfilm[:sym]
-      raise "Il faut indiquer le titre du film (:titre)"  unless dfilm[:titre]
-
-      # On regarde si des options ont été précisées
-      analyzed = dfilm.delete(:analyzed)
-      lisible  = dfilm.delete(:lisible)
-      complete = dfilm.delete(:complete)
-
-      options = (analyzed || lisible || complete) ? "1" : "0"
-      if complete     then options << "9"
-      elsif lisible   then options << "5"
-      elsif analyzed  then options << "1"
-      else                 options << "0"
-      end
-
-      dfilm.merge!(
-        options: options,
-        created_at: NOW,
-        updated_at: NOW
-      )
-
-      film_id = table_films.insert( dfilm )
-      flash "Film créé avec succès"
-      return "ID nouveau film : #{film_id}"
-    rescue Exception => e
-      debug e
-      "# ERROR : #{e.message}"
-    end
-
   end # << self
 end #/FilmAnalyse

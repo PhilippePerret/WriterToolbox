@@ -54,6 +54,7 @@ class Console
 <!-- FILMS ET ANALYSES -->
 <h4 onclick="$('dl#films_analyses').toggle()">Films et analyses</h4>
 <dl class="small" id="films_analyses" style="display:none">
+
   <dt>`create film {&lt;data&gt;}`</dt>
   <dd>Créer un enregistrement des infos minimales du film dans la table `analyse.films`.</dd>
   <dd>Les infos minimales sont `{sym:&lt;symbole pour affixe fichier&gt;, titre:&lt;titre du film&gt;}`</dd>
@@ -67,6 +68,14 @@ class Console
     </ul>
   </dd>
   <dd>La commande retourne l'identifiant du nouveau film créé.</dd>
+
+  <dt>`update film &lt;id|sym&gt; {&lt;data&gt;}`</dt>
+  <dd>Actualise les données d'un film d'identifiant id ou de sym `sym`(rappel : le `sym` sert de nom de fichier).</dd>
+  <dd>Noter qu'on peut utiliser les mêmes propriétés spéciales que pour create : analyzed, lisible, etc.</dd>
+
+  <dt>`list films` ou `affiche table films`</dt>
+  <dd>Affiche le contenu de la table analyse.films</dd>
+
 </dl>
 
 

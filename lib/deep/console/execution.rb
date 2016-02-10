@@ -61,6 +61,9 @@ class Console
   def execute_as_is line
     case line
 
+    when "list films", "affiche table films"
+      site.require_objet 'analyse'
+      FilmAnalyse::films_in_table
     when "Unan points"
       unan_affiche_points_sur_lannee
 
@@ -202,6 +205,12 @@ class Console
     elsif (found=line.match(/^create film (\{(?:.*?)\})$/).to_a).count > 0
       site.require_objet 'analyse'
       FilmAnalyse::create_film(eval(found[1]))
+    elsif (found=line.match(/^update film ([0-9]+) (\{(?:.*?)\})$/).to_a).count > 0
+      site.require_objet 'analyse'
+      FilmAnalyse::update_film(found[1].to_i, eval(found[2]))
+    elsif (found=line.match(/^update film ([a-zA-Z_]+) (\{(?:.*?)\})$/).to_a).count > 0
+      site.require_objet 'analyse'
+      FilmAnalyse::update_film(found[1], eval(found[2]))
     else
       return false
     end

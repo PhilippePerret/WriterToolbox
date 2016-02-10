@@ -12,8 +12,9 @@ end
 
 <%= FilmAnalyse::titre_h1("Films analysés") %>
 <% if user_autorized? %>
-  <%= FilmAnalyse::liste_all_analyses(completed:true) %>
-  <%= FilmAnalyse::liste_all_analyses(not_completed:true) %>
+  <%= FilmAnalyse::liste_analyses_completed %>
+  <%= FilmAnalyse::liste_analyses_lisibles %>
+  <%= FilmAnalyse::liste_analyses_not_completed %>
 <% else %>
   <%= FilmAnalyse::liste_analyses_autorized %>
   <%= FilmAnalyse::liste_analyses_non_autorized %>
