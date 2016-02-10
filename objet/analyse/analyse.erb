@@ -1,9 +1,0 @@
-<%
-# Vue pour le visionnage des analyses
-%>
-<%= FilmAnalyse::titre_h1("Visionnage") %>
-<% if user.identified? %>
-
-<% else %>
-  <p class='small italic'>En tant que simple visiteur, vous n'avez qu'un accès très limité aux analyses de film.</p>
-<% end %>

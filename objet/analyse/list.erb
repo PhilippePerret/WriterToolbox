@@ -1,7 +1,7 @@
 <%
 # Vue de la liste des analyses
 #
-# Ouvert à tout visiteur même non identifié, non abonné.
+# Ouvert à tout visiteur même non identifié ou non abonné.
 %>
 
 <%
@@ -12,7 +12,8 @@ end
 
 <%= FilmAnalyse::titre_h1("Films analysés") %>
 <% if user_autorized? %>
-  <%= FilmAnalyse::analyses_as_ul %>
+  <%= FilmAnalyse::liste_all_analyses(completed:true) %>
+  <%= FilmAnalyse::liste_all_analyses(not_completed:true) %>
 <% else %>
   <%= FilmAnalyse::liste_analyses_autorized %>
   <%= FilmAnalyse::liste_analyses_non_autorized %>

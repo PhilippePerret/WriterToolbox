@@ -6,6 +6,7 @@ les données du film
 class FilmAnalyse
 class Film
 
+  def sym           ; @sym          ||= get(:sym)         end
   def titre         ; @titre        ||= get(:titre)       end
   def titre_fr      ; @titre_fr     ||= get(:titre_fr)    end
   def annee         ; @annee        ||= get(:annee)       end

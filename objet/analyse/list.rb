@@ -12,25 +12,45 @@ class << self
   def films_list options = nil
     options ||= Hash::new
     flist = if options.has_key?(:out)
-      liste_affixes_film.reject{|affilm| options[:out].include?(affilm)}
+      liste_data_films.reject{|hfilm| options[:out].include?(hfilm[:sym])}
     elsif options.has_key?(:in)
-      liste_affixes_film.select{|affilm| options[:in].include?(affilm)}
+      liste_data_films.select{|hfilm| options[:in].include?(hfilm[:sym])}
     else
-      liste_affixes_film
+      liste_data_films
     end
-    flist.collect do |affilm|
-      
-      affilm.in_a(href:"analyse/#{film[:id]}/show").in_li(class:'film', id:"film-#{affilm}")
+    flist.collect do |hfilm|
+      "#{hfilm[:titre]} (#{hfilm[:annee]} – #{hfilm[:realisateur]})".in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_').in_li(class:'film', id:"film-#{hfilm[:id]}")
     end.join.in_ul(id:'films')
   end
 
-  # {Array} Retourne la liste des affixes de films
-  def liste_affixes_film
-    @liste_affixes_film ||= begin
-      Dir["#{folder_films}/*.htm"].collect do |path|
-        File.basename( path, File.extname(path) )
-      end
+  # {Array de Hash} Retourne la liste des films analysés en les
+  # prenant dans la table analyse.films
+  def liste_data_films
+    @liste_data_films ||= begin
+      table_films.select(where:"options LIKE '1%'").values
     end
+  end
+
+  def liste_all_analyses options = nil
+    options ||= Hash::new
+    if options[:completed]
+      # seulement les analyses terminées
+      liste_analyses_completed
+    elsif options[:not_completed]
+      # Seulement les analyses non terminées
+      liste_analyses_not_completed
+    else
+      # Toutes les analyses
+      films_list
+    end
+  end
+  def liste_analyses_completed
+    "Analyses terminées".in_h3 +
+    films_list(completed: true)
+  end
+  def liste_analyses_not_completed
+    "Analyses en cours".in_h3 +
+    films_list(completed: false)
   end
 
   def liste_analyses_autorized
