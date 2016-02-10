@@ -73,7 +73,7 @@ Produira :
 ### Construction d'un champ hidden
 
     form.field_hidden(nil, '<prop>', nil)
-    
+
 ### Construction d'un textarea
 
     form.field_textarea(<params>)
@@ -110,6 +110,10 @@ La différence par rapport à la case unique se fera à la définition des `valu
                             Rappel : le "placeholder" sera le texte qui apparaitra
                             si le champ est vide. Il indique en général le
                             contenu attendu pour le champ.
+    :confirmation           Si true, le champ est "doublé" pour présenter
+                            un champ de confirmation (par exemple pour un
+                            mail). Noter que le libellé sera construit à partir du libellé du champ à confirmer auquel sera ajouté, devant "Confirmation de" (le libellé sera capitalisé). Par exemple, si le champ s'appelle "Votre mail", le champ de confirmation aura pour libellé "Confirmation de votre mail".
+
 
 <a name='definirunprefixpourlesnameetid'></a>
 

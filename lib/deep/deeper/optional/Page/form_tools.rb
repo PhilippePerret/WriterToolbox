@@ -169,6 +169,7 @@ class Page
       # Aspect spéciaux
       attr_reader :exergue
       attr_reader :warning
+      attr_reader :confirmation
 
       # Instanciation
       # +prop+ {String} La propriété
@@ -181,11 +182,12 @@ class Page
 
         # Les gestionnaires d'évènement
         unless opts.nil?
-          @onchange = opts.delete(:onchange)
-          @onclick  = opts.delete(:onclick)
-          @onsubmit = opts.delete(:onsubmit)
-          @exergue  = opts.delete(:exergue)
-          @warning  = opts.delete(:warning)
+          @onchange     = opts.delete(:onchange)
+          @onclick      = opts.delete(:onclick)
+          @onsubmit     = opts.delete(:onsubmit)
+          @exergue      = opts.delete(:exergue)
+          @warning      = opts.delete(:warning)
+          @confirmation = opts.delete(:confirmation)
         end
         # Pour supprimer le libellé et le mettre en label dans un
         # checkbox
@@ -214,6 +216,8 @@ class Page
           (param(Page::FormTools::prefix)||Hash::new)[prop.to_sym]
         end.nil_if_empty
 
+        # debug "param_value = #{param_value.inspect}"
+
         # debug "[set_field_value] param_value : #{param_value.inspect}"
 
         # Valeur qui peut se trouver dans l'objet, si un objet
@@ -228,6 +232,8 @@ class Page
             nil
           end
         end.nil_if_empty
+
+        # debug "objet_value = #{objet_value.inspect}"
 
         # debug "[set_field_value] objet_value  : #{objet_value.inspect}"
         # debug "[set_field_value] defvalue     : #{defvalue.inspect}"
@@ -245,6 +251,25 @@ class Page
           span_libelle +
           span_value   +
           code_javascript # if any
+        )
+        .in_div(class:'row') + confirmation_field
+      end
+
+      # Si les options contiennent confirmation:true,
+      # il faut faire un champ de confirmation du champ
+      # courant. Ce sera le même champ avec un name
+      # différent et un libellé différent
+      def confirmation_field
+        return "" unless @confirmation
+        [:field_name, :field_id, :field_attrs, :span_libelle, :span_value, :field_value].each do |key|
+          instance_variable_set("@#{key}", nil)
+        end
+        @libelle    = "Confirmation de #{libelle}".capitalize
+        @property   = "#{property}_confirmation"
+        @fied_value = set_field_value( @property, "" )
+        (
+          span_libelle +
+          span_value
         )
         .in_div(class:'row')
       end
