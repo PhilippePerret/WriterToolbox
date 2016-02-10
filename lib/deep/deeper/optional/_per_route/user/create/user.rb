@@ -109,7 +109,8 @@ class User
     raise "Ce pseudo est déjà utilisé, merci d'en choisir un autre" if pseudo_exist?(@pseudo)
     raise "Le pseudo doit faire moins de 40 caractères."  if @pseudo.length >= 40
     raise "Le pseudo doit faire au moins 3 caractères."   if @pseudo.length < 3
-
+    reste = @pseudo.gsub(/[a-zA-Z_\-]/,'')
+    raise "Le pseudo ne doit comporter que des lettres, traits plats et tirets. Il comporte les caractères interdits : #{reste.split.pretty_join}" if reste != ""
     # Validité du patronyme
     @patronyme = form_data[:patronyme].nil_if_empty
     raise "Il faut fournir le patronyme." if @patronyme.nil?
