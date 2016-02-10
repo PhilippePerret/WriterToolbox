@@ -3,7 +3,7 @@
 # Désignation officielle du site, par exemple pour les
 # factures ou autre mail officiel
 site.official_designation = "La Boite à Outils de l'Auteur" # "Writer's Toolbox"
-site.name         = "La Boite à Outils de l'Auteur"
+site.name                 = "La Boite à Outils de l'Auteur"
 
 # Pour composer la balise TITLE de la page
 # Le title_prefix servira pour toutes les autres pages de l'accueil
@@ -27,3 +27,9 @@ site.tarif = 9.90
 # # Si on est en anglais :
 # site.separateur_decimal = "."
 # site.devise = "$"
+
+# Définition propre des bits options de l'utilisateur
+# Cf. RefBook > User > Options.md
+site.user_options = {
+  analyse:  [17, '@analyste_level']
+}

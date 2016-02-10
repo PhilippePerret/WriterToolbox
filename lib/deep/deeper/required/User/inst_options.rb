@@ -1,4 +1,12 @@
 # encoding: UTF-8
+=begin
+Extension de la class User pour les méthodes d'instance qui
+gèrent les options.
+
+Rappel :
+Les "bits" 0 à 15 sont réservés à RestSite
+Les bits 16 à 31 sont réservés à l'application propre
+=end
 class User
 
   # Index d'options : 0
@@ -46,6 +54,11 @@ class User
       when :admin         then [0, nil]
       when :grade         then [1, '@grade']
       when :confirm_mail  then [2, nil]
+      else
+        # Peut-être défini en propre pour l'application courante dans
+        # le fichier `./objet/site/config.rb`
+        # Cf. RefBook > User > Options.md
+        site.user_options[key_option] unless site.user_options.nil?
       end
     when Fixnum
       [key_option, nil]
@@ -53,12 +66,15 @@ class User
   end
 
   # Définir la valeur d'une option
-  # +index+ Offset de l'option (0-start, de 0 à 31)
-  # +value+ Valeur à lui donner, de 0 à 9
+  # +index+ Offset de l'option (0-start, de 0 à 31) ou un
+  #         symbol défini dans la méthode ci-dessus
+  # +value+ Valeur à lui donner, de 0 à 35 (sera toujours transformé)
+  #         en un caractère unique.
   def set_option key_option, value
     index, instance_var = option_index_and_inst_name(key_option)
-    opts = options.dup || "00" # || ("0"*32)
-    opts[index] = value.to_s
+    opts = options.dup || "0"*(index+1) # || ("0"*32)
+    raise "La valeur à donner à une option ne peut être supérieur à 35" if value.to_i > 35
+    opts[index] = value.to_s(36)
     set( options: opts )
     # On renseigne la variable d'instance si elle existe
     instance_variable_set(instance_var, value) unless instance_var.nil?
@@ -66,7 +82,7 @@ class User
 
   def get_option key_option
     index, instance_var = option_index_and_inst_name(key_option)
-    (options||"")[index].to_i
+    (options||"")[index].to_s.to_i(36)
   end
 
 

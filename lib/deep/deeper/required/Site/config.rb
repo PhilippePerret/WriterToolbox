@@ -44,6 +44,10 @@ class SiteHtml
   # Prix de l'abonnement au site, s'il est unique
   attr_accessor :tarif
 
+  # Définition propre à l'application des bits des options de
+  # l'user
+  attr_accessor :user_options
+
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif
   def separateur_decimal; @separateur_decimal ||= "," end

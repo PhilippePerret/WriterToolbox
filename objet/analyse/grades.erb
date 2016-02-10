@@ -1,0 +1,26 @@
+<%
+# Vue pour les grades des analystes
+%>
+<%= FilmAnalyse::titre_h1("Grades") %>
+<p class='small italic'>Cette page présente les grades des analystes.</p>
+
+<dl>
+  <dt>Simple analyste</dt>
+  <dd>On commence toujours par ce grade après que sa <%= "proposition de participation".in_a(href:'analyse/participer') %> a été acceptée. On peut alors se familiariser avec les outils d'analyse et de conception des analyses et proposer ses premières collectes.</dd>
+
+  <dt>Analyste collecteur</dt>
+  <dd>Après avoir produit plusieurs collectes validées, on devient un collecteur confirmé. </dd>
+  <dd>Le privilège de ce grade est de pouvoir consulter toutes les analyses sans abonnement. Mais il ne permet pas encore de produire des documents rédigés d'analyse.</dd>
+
+  <dt>Analyste rédacteur</dt>
+  <dd>Ce grade permet au participant de produire des articles d'analyse s'appuyant sur les données collectées (par lui pou par d'autres).</dd>
+  <dd>On devient analyste rédacteur après plusieurs collectes fructueuses et plusieurs participations aux analyses courantes en qualité de correcteur ou d'assistant.</dd>
+
+  <dt>Analyse confirmé</dt>
+  <dd>Devenir analyste confirmé permet de produire et publier des documents d'analyse sans qu'ils soient validés. Il peut également ouvrir de nouvelles analyses de film.</dd>
+  <dd>Ce grade s'obtient après plusieurs mois de participation efficace.</dd>
+
+  <dt>Chef-analyste</dt>
+  <dd>Le chef-analyste a tout pouvoir sur les analyses de films, il peut même changer les grades des autres analystes, et il bénéficie évidemment des mêmes droits et privilèges que les grades inférieurs.</dd>
+  <dd>Ce grade s'obtient après au moins un an de participation efficace, sauf contre indication positive.</dd>
+</dl>

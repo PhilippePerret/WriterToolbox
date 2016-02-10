@@ -10,6 +10,10 @@ def schema_table_users_users
     cpassword:    {type:"VARCHAR(32)",  constraint:"NOT NULL"},
     salt:         {type:"VARCHAR(32)",  constraint:"NOT NULL"},
     session_id:   {type:"VARCHAR(32)"},
+    # Options
+    # -------
+    # 32 caractères (ou plus) pour spécifier l'user
+    # Cf. le fichier ./lib/deep/deeper/required/User/inst_options.rb
     options:      {type:"VARCHAR(32)"},
     sexe:         {type:"BOOLEAN"},
     address:      {type:"TEXT"},

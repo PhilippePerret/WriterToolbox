@@ -1,0 +1,19 @@
+<%
+# Vue de la liste des analyses
+#
+# Ouvert à tout visiteur même non identifié, non abonné.
+%>
+
+<%
+def user_autorized?
+  user.suscribed? || user.analyste_confirmed?
+end
+%>
+
+<%= FilmAnalyse::titre_h1("Films analysés") %>
+<% if user_autorized? %>
+  <%= FilmAnalyse::analyses_as_ul %>
+<% else %>
+  <%= FilmAnalyse::liste_analyses_autorized %>
+  <%= FilmAnalyse::liste_analyses_non_autorized %>
+<% end %>
