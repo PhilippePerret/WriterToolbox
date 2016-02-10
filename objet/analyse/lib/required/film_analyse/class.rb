@@ -19,7 +19,8 @@ class FilmAnalyse
         "Accueil"     => 'analyse/home',
         "Analyses"    => 'analyse/list',
         "Participer"  => 'analyse/participer',
-        "Grades"      => 'analyse/grades'
+        "Grades"      => 'analyse/grades',
+        "Aide"        => 'manuel/home?in=analyse'
       }
       onglets.merge!("MON BUREAU" => 'analyse/bureau_perso') if user.analyste?
       onglets.collect do |tit, href|
@@ -28,10 +29,8 @@ class FilmAnalyse
 
     end
 
-    # {BdD::Table} La table contenant les informations minimales sur
-    # les films.
-    def table_films
-      @table_films ||= site.db.create_table_if_needed('analyse', 'films')
+    def folder_manuel
+      @folder_manuel ||= site.folder_objet+"analyse/manuel"
     end
 
     # Dossier contenant les analyses

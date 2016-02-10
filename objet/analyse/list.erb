@@ -10,7 +10,7 @@ def user_autorized?
 end
 %>
 
-<%= FilmAnalyse::titre_h1("Films analysés") %>
+<%= FilmAnalyse::titre_h1("Liste des analyses") %>
 <% if user_autorized? %>
   <%= FilmAnalyse::liste_analyses_completed %>
   <%= FilmAnalyse::liste_analyses_lisibles %>

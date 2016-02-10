@@ -1,0 +1,28 @@
+<%
+# Vue principale pour le manuel de consultation des analyses
+
+%>
+<%= FilmAnalyse::titre_h1("Manuel de consultation") %>
+<%
+DATA_MANUEL_CONSULTATION =  {
+  onglets:    {titre:"Utilisation des onglets"},
+  new_window: {titre:"Ouverture dans nouvelle fenêtre"}
+}
+%>
+<% if param(:manp).nil? %>
+  <ul class='list_pages'>
+    <%
+    DATA_MANUEL_CONSULTATION.each do |pid, hpage| %>
+      <%= hpage[:titre].in_a(href:"manuel/consulter?in=analyse&manp=#{pid}").in_li %>
+    <% end %>
+  </ul>
+
+<% else %>
+  <%=
+    (
+      "Table des matières".in_a(href:'manuel/consulter?in=analyse').in_div(class:'fright tiny') +
+      DATA_MANUEL_CONSULTATION[param(:manp).to_sym][:titre]
+    ).in_h3
+  %>
+  <%= (FilmAnalyse::folder_manuel+"consulter/#{param(:manp)}.erb").deserb %>
+<% end %>

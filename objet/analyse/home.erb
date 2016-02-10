@@ -3,7 +3,7 @@
 %>
 <%
 def participer_aux_analyses
-  @lien_participer ||= "participer aux analyses".in_a(href:'analyse/participer')
+  FilmAnalyse::lien_participer "participer aux analyses"
 end
 %>
 <%= FilmAnalyse::titre_h1 %>

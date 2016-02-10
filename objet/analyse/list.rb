@@ -23,7 +23,9 @@ class << self
     # debug "flist: #{flist.pretty_inspect}"
 
     flist.collect do |hfilm|
-      "#{hfilm[:titre]} (#{hfilm[:annee]} – #{hfilm[:realisateur]})".in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_').in_li(class:'film', id:"film-#{hfilm[:id]}")
+      titre = "#{hfilm[:titre]} (#{hfilm[:annee]} – #{hfilm[:realisateur]})"
+      titre += " — France : #{hfilm[:titre_fr].in_span(class:'italic')}" unless hfilm[:titre_fr].nil_if_empty.nil?
+      titre.in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_').in_li(class:'film', id:"film-#{hfilm[:id]}")
     end.join.in_ul(id:'films')
   end
 
@@ -39,7 +41,7 @@ class << self
       opts << "0"
     end
 
-    hfilms = table_films.select(where:"options LIKE '#{opts}%'", colonnes:[:titre, :annee, :realisateur, :sym, :options]).values
+    hfilms = table_films.select(where:"options LIKE '#{opts}%'", colonnes:[:titre, :titre_fr, :annee, :realisateur, :sym, :options]).values
     hfilms.select do |hfilm|
       opts = hfilm[:options]
       opts1 = opts[1].to_i

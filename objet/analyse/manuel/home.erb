@@ -1,0 +1,15 @@
+<%
+# Vue pour le manuel d'analyse
+%>
+<%= FilmAnalyse::titre_h1("Manuel d'utilisation") %>
+
+<div class="air">
+  <ul>
+    <li> <%= "Aide pour <strong>la consultation</strong> des analyses".in_a(href:'manuel/consulter?in=analyse') %> </li>
+    <li> <%= "Aide pour <strong>la collecte et la rédaction</strong> des analyses".in_a(href:'manuel/rediger?in=analyse') %></li>
+  </ul>
+</div>
+
+<p>
+  Pour pouvoir rédiger des analyses, vous devez au préalable <%= FilmAnalyse::lien_participer("proposer votre candidature") %>.
+</p>
