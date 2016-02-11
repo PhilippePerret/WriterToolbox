@@ -1,0 +1,34 @@
+<%
+# Texte récurrent (utilisé par plusieurs fichiers d'aide) pour décrire
+# la constitution des notes, personnages, brins, informations, procédés,
+# etc. où sont définis :
+#   - une description (fonction)
+#   - Des données temporelles
+#   - une timeline indiquant les endroits temporels
+#   - un lien "Citations et relations" (à décrire intérieurement)
+chose       = var[:chose]
+choses      = var[:choses]      || "#{chose}s"
+la_chose    = var[:la_chose]    || "le #{chose}"
+les_choses  = var[:les_choses]  || "les #{choses}"
+de          = var[:de]          || "de "
+de_la       = var[:de_la]       || "de la " # espace, oui, pour "de l'"
+%>
+<h4>Constitution d'une fiche <%= de+chose %></h4>
+<p>
+  La fiche de ces <%= choses %> est constituée de façon type.
+</p>
+<p>
+  Dans une première partie on trouve la description générale <%= de_la+chose %>, sa fonction, de façon textuelle.
+</p>
+<p>
+  Sous cette description se trouve les informations temporelles, l'horloge (temps) de son commencement, de sa fin, sa durée et le pourcentage de durée que cela représente par rapport à la durée totale du film.
+</p>
+<p>
+  En regard du nom, on trouve un lien “dans scène xxx” indiquant dans quelle scène se trouve <%= la_chose %>. En cliquant sur le numéro de la scène, on active sa fiche et on indique sa position dans la timeline générale, la ligne de temps sous les onglets.
+</p>
+<p>
+  Un lien “Citations et relations” permet d'ouvrir un panneau qui contiendra la liste de toutes les citations <%= de_la+chose %> (dans les notes, les documents, etc.) ainsi que toutes les relations entretenues avec les autres éléments semblables ou d'un autre type.
+</p>
+<p>
+  <strong>Astuce</strong> : En regard de chaque élément de la partie “Citations et relations”, un picto <%= image('analyse/manuel/fiche.png') %> permet d'activer la fiche de l'élément en question.
+</p>

@@ -8,9 +8,9 @@ def image path, options = nil
 end
 
 
-def lien_suscribe titre = nil, options = nil
-  site.lien_suscribe( titre, options )
+def lien_subscribe titre = nil, options = nil
+  site.lien_subscribe( titre, options )
 end
-alias :link_suscribe :lien_suscribe
-alias :lien_sabonner :lien_suscribe
-alias :lien_abonnement :lien_suscribe
+alias :link_suscribe :lien_subscribe
+alias :lien_sabonner :lien_subscribe
+alias :lien_abonnement :lien_subscribe

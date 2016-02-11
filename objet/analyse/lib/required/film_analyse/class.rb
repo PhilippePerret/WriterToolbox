@@ -2,8 +2,9 @@
 class FilmAnalyse
   class << self
 
+    # Requérir un dossier du dossier .objet/analyse/lib/module
     def require_module module_name
-
+      (folder_modules+module_name).require
     end
 
     def titre_h1 sous_titre = nil
@@ -27,19 +28,6 @@ class FilmAnalyse
         tit.in_a(href:href).in_li
       end.join.in_ul(class: 'small onglets')
 
-    end
-
-    def folder_manuel
-      @folder_manuel ||= site.folder_objet+"analyse/manuel"
-    end
-
-    # Dossier contenant les analyses
-    def folder_films
-      @folder_analyses ||= begin
-        d = site.folder_data+'analyse/films'
-        d.build unless d.exist?
-        d
-      end
     end
 
   end # << self

@@ -40,7 +40,7 @@ class SiteHtml
   end
 
   # Lien pour s'abonner au site
-  def lien_suscribe titre = "s'abonner", options = nil
+  def lien_subscribe titre = "s'abonner", options = nil
     options ||= Hash::new
     options.merge!(href: "user/paiement")
     titre.in_a(options)

@@ -2,25 +2,14 @@
 # Vue principale du manuel pour la rédaction des analyses
 %>
 <%= FilmAnalyse::titre_h1("Manuel de rédaction") %>
-<%
-DATA_MANUEL_REDACTION = {
-  creation_new_analyse: {titre:"Création d'une nouvelle analyse"}
-}
+<% FilmAnalyse::require_module 'manuel' %>
 
-%>
 <% if param(:manp).nil? %>
-  <ul class='list_pages'>
-    <%
-    DATA_MANUEL_REDACTION.each do |pid, hpage| %>
-      <%= hpage[:titre].in_a(href:"manuel/rediger?in=analyse&manp=#{pid}").in_li %>
-    <% end %>
-  </ul>
+
+  <%= FilmAnalyse::Manuel::table_of_content(:rediger) %>
+
 <% else %>
-  <%=
-    (
-      "Table des matières".in_a(href:'manuel/rediger?in=analyse').in_div(class:'fright tiny') +
-      DATA_MANUEL_REDACTION[param(:manp).to_sym][:titre]
-    ).in_h3
-  %>
-  <%= (FilmAnalyse::folder_manuel+"rediger/#{param(:manp)}.erb").deserb %>
+
+  <%= FilmAnalyse::Manuel::page(param( :manp ), :rediger) %>
+
 <% end %>
