@@ -6,21 +6,23 @@
 <section id="left_margin">
 
 <%= "Accueil".in_a(href: '') %>
+<%= "OUTILS".in_a(href:"tool/list", class:'border') %>
 <%= "Forum".in_a(href:'forum/home') %>
-<a href="tool/list">Outils</a>
 
 <% if false == user.identified? %>
   <hr />
-  <%= "S'identifier".in_a(href:'user/signin') %>
-  <%= "S'inscrire".in_a(href:'user/signup') %>
+  <%= "S'IDENTIFIER".in_a(href:'user/signin') %>
+  <hr />
+  <%= "INSCRIPTION".in_a(href:'user/signup') %>
 <%
   else
     # Si le visiteur est identifié
 %>
 
-  <a href="user/<%= user.id %>/profil">Profil</a>
-  <a href="unan/home" id="link_uaus">UN AN<br>UN SCRIPT</a>
-  <a href="user/<%= user.id %>/deconnexion">Déconnexion</a>
+  <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
+  <%= "UN AN<br>UN SCRIPT".in_a(href:'unan/home', class:'border') %>
+  <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
+
   <% if user.admin? %>
     <hr />
     <a href="site/console">Console</a>
