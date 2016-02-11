@@ -7,13 +7,6 @@ unan:
     Ce programme unique en son genre permet à tout auteur, expérimenté ou non, de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée génératrice jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
     Ce programme spécial nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût complet de #{Unan::tarif_humain} pour une année (#{Unan::tarif_humain_par_mois}). Noter que l'inscription à ce programme d'apprentissage et de développement donne accès à tous les autres outils du site pendant deux ans.
 
-forum:
-  name:     Le Forum
-  folder:   forum
-  home:     'forum/home'
-  description: |
-    Ce forum, réservé exclusivement aux membres inscrits de la “Boite à outils”, offre un espace inédit où chaque auteur peut trouver de vraies réponses aux questions qu'il se pose, qu'elles soient générales ou particulières à son projet. Par son système de modération inspiré des meilleurs sites de connaissances (et notamment le site <a href="http://stackoverflow.com" target="_new">StackOverflow</a> pour les programmeurs), ce forum d'écriture se distingue par la pertinence et la véracité des connaissances véhiculées.
-
 analyse:
   name:       Les Analyses de films
   folder:     analyse
@@ -28,12 +21,26 @@ calculateur:
   description: |
     Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
 
+screencasts:
+  name:       Didacticiels-vidéo
+  folder:     video
+  home:       video/home
+  description: |
+    Des didacticiels en vidéo qui permettent d'améliorer de façon significative son écriture, aussi bien au niveau de la qualité de ce qui est produit que de la quantité.
+
 cnarration:
   name:       La collection Narration
   folder:     cnarration
   home:       cnarration/home
   description: |
     Profitez en ligne de la future version papier des cours de <strong>Philippe Perret</strong>, auteur et pédagogue œuvrant depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel, et qui s'inspire des grands pédagogues aussi bien que des œuvres elles-mêmes pour divulguer une connaissance de la narration la plus pragmatique et la plus profonde possible.
+
+forum:
+  name:     Le Forum
+  folder:   forum
+  home:     'forum/home'
+  description: |
+    Ce forum, réservé exclusivement aux membres inscrits de la “Boite à outils”, offre un espace inédit où chaque auteur peut trouver de vraies réponses aux questions qu'il se pose, qu'elles soient générales ou particulières à son projet. Par son système de modération inspiré des meilleurs sites de connaissances (et notamment le site <a href="http://stackoverflow.com" target="_new">StackOverflow</a> pour les programmeurs), ce forum d'écriture se distingue par la pertinence et la véracité des connaissances véhiculées.
 
 scenodico:
   name:       Le Scénodico
