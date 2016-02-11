@@ -2,6 +2,7 @@
 
 * [Mise en forme de TEXTE](#misteenformedetexte)
   * [Différentes mises en forme fréquentes](#differentesmisesenformeparcss)
+  * [Messages d'alerte (warning)](#messagedewrarning)
   * [Rendre un texte/élément plus discret](#rendreuntexteplusdiscret)
   * [Style spécial pour l'administrateur](#stylespecialadminonly)
 * [Mise en forme de SECTIONs/DIVs](#miseenformedesectionsdetexte)
@@ -46,7 +47,10 @@
 
     .warning
 
-        Écrit en rouge
+        Écrit un message d'alerte.
+        Noter que <div class='alerte'> produira un fond rouge avec fort
+        paddin. Si on veut juste un texte en rouge, on fera :
+        <div><span class='warning'> etc.
 
     .small
 
@@ -55,6 +59,31 @@
     .big
 
         Écrit le contenu en gros
+
+<a name='messagedewrarning'></a>
+
+### Messages d'alerte (warning)
+
+On se sert de la class `warning` pour les messages d'alerte :
+
+    <div class='warning'>Le message d'alerte</div>
+
+Ou :
+
+    <p class='warning'>Le paragraphe d'alerte</div>
+
+Noter que ces messages s'affiche dans un espace à fort padding de fond rouge. Pour n'avoir que le texte en rouge (sans fond), il faut alors utiliser un span :
+
+    <div><span class='warning'>Simple alerte</span></div>
+
+Et pour avoir ce texte dans un cadre, mais toujours sans fond :
+
+    <div><span class='warning border'>Simple alerte</span></div>
+
+Et pour parachever le tout, si le message est assez court, on peut le placer au centre de la page :
+
+    <p class='center'><span class='warning border'>ALERTE !</span></p>
+
 
 <a name='rendreuntexteplusdiscret'></a>
 

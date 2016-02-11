@@ -17,7 +17,7 @@ analyse:
 calculateur:
   name:       Le Calculateur de structure
   folder:     calculateur
-  home:       calculateur/home
+  home:       calculateur/main
   description: |
     Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
 

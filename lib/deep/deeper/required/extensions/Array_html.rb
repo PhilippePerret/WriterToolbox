@@ -16,7 +16,7 @@ class ::Array
       if (doption[2] == true) || (selected != "" && selected == doption[0].to_s)
         data_option = data_option.merge( selected: true)
       end
-      doption[1].in_option(data_option)
+      doption[1].to_s.in_option(data_option)
     end.join('').in_select attrs
   end
 

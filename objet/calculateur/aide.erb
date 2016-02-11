@@ -1,0 +1,45 @@
+<h1>Calculateur de structure</h1>
+<h2>Manuel d'utilisation</h2>
+<div class="right small">
+  <%= "Revenir au calculateur".in_a(href:'calculateur/main') %>
+</div>
+
+<p>
+  On peut, grâce au <%= "“calculateur de structure”".in_a(href:"calculateur/main") %>, calculer la position idéale de ses nœuds dramatiques importants et de ses actes, que ce soit pour un roman (dont on connait approximativement le nombre de pages) ou un scénario (dont on doit forcément connaitre la longueur si c'est un long-métrage, en fonction du pays où on le produira).
+</p>
+
+<h4>Utilisation du calculateur</h4>
+
+<p>
+  Son utilisation est extrêmement aisée :
+</p>
+<ul>
+  <li>Régler le nombre de pages ou de minutes dans les menus de la bande supérieure du tableau, par centaines, dizaines et unités ;</li>
+  <li>Indiquer si le calcul doit se faire en minutes (scénario) ou en pages (roman/BD) ;</li>
+  <li>Cliquer sur le bouton “Calculer” (*)</li>
+</ul>
+<div class="tiny">
+    (*) Noter que le bouton “Calculer” n'apparait que si <%= (lien_subscribe "vous êtes abonné") %>.
+</div>
+<p>
+  Le programme calcule alors la position idéale des actes et des scènes formelles et les affiche dans le tableau.
+</p>
+<p class='small'>
+  Notez que dans le cadre d'un apprentissage ou d'un exercice, il peut être excellent de respecter ces positions à la lettre, à la minute et ou à la page près. Cependant, dans le travail <em>normal</em> d'écriture, la structure propre du film peut s'écarter quelque peu du modèle absolu, comme vous pourrez le constater par vous-même dans <%= lien_analyses_de_films("les analyses de films") %> présentées sur ce site. En conséquence, inutile de vous jeter par la fenêtre si certaines parties de votre projet débordent de quelques minutes ou de quelques pages ;-).
+</p>
+
+<h4>Lecture des résultats dans le tableau</h4>
+<p>
+  Pour une scène formelle, le premier pivot par exemple, le résultat du tableau vous indique un laps de temps ou de pages dans lequel situer la-dite scène formelle. Les deux valeurs extrêmes sont indiquées dans les colonnes “Entre page…” (ou “Entre minute…”) et “et page…” (ou “et minute…”). Notez qu'il ne s'agit <strong>en aucun cas</strong> de faire une scène qui aille de la première valeur à l'autre ! La scène doit simplement se situer <em>à l'intérieur</em> de ce temps, <em>à l'intérieur</em> de ce nombre de pages, mais ne doit pas occuper l'intégralité du temps ou des pages.
+</p>
+<p>
+  Par exemple, si les pages extrêmes du pivot 1 sont la page 53 et la page 80, alors ce premier pivot peut se trouver sur les trois pages de 77 à 79.
+</p>
+
+<h4>Utile aussi pour l'analyse</h4>
+<p>
+  Notez que ce calculateur peut également servir à l’analyse de films, pour déterminer le PFA du film (le Paradigme de Field Augmenté) et donc le décalage de sa structure propre par rapport à ce PFA.
+</p>
+<div class="right small">
+  <%= "Revenir au calculateur".in_a(href:'calculateur/main') %>
+</div>
