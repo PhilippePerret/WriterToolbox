@@ -23,10 +23,11 @@ class << self
     # debug "flist: #{flist.pretty_inspect}"
 
     flist.collect do |hfilm|
-      titre = "#{hfilm[:titre]} (#{hfilm[:annee]} – #{hfilm[:realisateur]})"
-      titre += " — France : #{hfilm[:titre_fr].in_span(class:'italic')}" unless hfilm[:titre_fr].nil_if_empty.nil?
+      titre = "#{hfilm[:titre]} ("
+      titre += "#{hfilm[:titre_fr].in_span(class:'italic')} — " unless hfilm[:titre_fr].nil_if_empty.nil?
+      titre += "#{hfilm[:realisateur]}, #{hfilm[:annee]})"
       titre.in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_').in_li(class:'film', id:"film-#{hfilm[:id]}")
-    end.join.in_ul(id:'films')
+    end.join.in_ul(id:'films', class:'tdm')
   end
 
   # {Array de Hash} Retourne la liste des films analysés en les
