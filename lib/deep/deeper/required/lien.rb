@@ -23,11 +23,11 @@ class Lien
 
 
   def subscribe titre = "s'abonner", options = nil
-    build "user/paiement", titre, options )
+    build "user/paiement", titre, options
   end
-  alias :link_suscribe :lien_subscribe
-  alias :lien_sabonner :lien_subscribe
-  alias :lien_abonnement :lien_subscribe
+  alias :suscribe :subscribe
+  alias :sabonner :subscribe
+  alias :abonnement :subscribe
 
 end
 

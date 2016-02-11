@@ -13,6 +13,7 @@ require_folder './lib/deep/deeper/required/divers'
 require_folder './lib/deep/deeper/required/Site'
 require_folder "./lib/deep/deeper/required"
 site.require_gem 'superfile'
+require_folder "./lib/handy"
 site.require_config
 require './lib/deep/deeper/output'
 

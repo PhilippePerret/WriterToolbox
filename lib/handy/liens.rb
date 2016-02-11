@@ -9,6 +9,8 @@ Rappel : c'est un singleton, on appelle les méthodes par :
 
 =end
 class Lien
+
+  # Lien vers la partie analyse de films
   def analyses_de_films titre = "analyses de films", options = nil
     build("analyse/home", titre, options)
   end
