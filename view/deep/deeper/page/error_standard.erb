@@ -11,6 +11,8 @@
     <div style='font-family:Courier;font-size:13pt;'>
     <%= page.error_backtrace %>
     </div>
+  <% else %>
+    <% debug page.error_backtrace %>
   <% end %>
 </div>
 </section>

@@ -77,6 +77,12 @@ form, div
         width       : 95%
 form
   
+  // Pour séparer deux rangées row avec une ligne
+  div.separator
+    border-bottom         : 1px solid
+    margin                : 1em 0
+    width                 : 80%
+      
   input[type="password"], input[type="text"], textarea, select
     border-width          : 1px
     border-style          : solid
@@ -133,6 +139,9 @@ form
     span.value
       display           : inline-block
       
+      span + span
+        margin-left       : 0.5em
+        
       input[type="text"], input[type="password"], textarea
         width             : 95%
       

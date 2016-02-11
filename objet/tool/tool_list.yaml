@@ -35,6 +35,13 @@ cnarration:
   description: |
     Profitez en ligne de la future version papier des cours de <strong>Philippe Perret</strong>, auteur et pédagogue œuvrant depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel, et qui s'inspire des grands pédagogues aussi bien que des œuvres elles-mêmes pour divulguer une connaissance de la narration la plus pragmatique et la plus profonde possible.
 
+facture:
+  name:       Facture d’auteur
+  folder:     facture
+  home:       facture/main
+  description: |
+    Outils pour concevoir vos factures d'écriture, factures d'auteur, en fournissant la valeur HT ou TTC, brute ou nette, donc permettant des calculs rapide quel que soit le context.
+
 forum:
   name:     Le Forum
   folder:   forum
