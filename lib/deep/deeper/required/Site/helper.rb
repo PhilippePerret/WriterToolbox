@@ -25,27 +25,4 @@ class SiteHtml
     end
   end
 
-  # Méthode principale permettant de construire un lien
-  # quelconque, pour éviter de répéter toujours le même code
-  def build_lien route, titre, options
-    options ||= Hash::new
-    options.merge!( href: route )
-    titre.in_a(options)
-  end
-
-  # Lien pour s'inscrire sur le site
-  def lien_signup titre = "s'inscrire", options = nil
-    build_lien "user/signup", titre, options
-  end
-
-  # Lien pour s'identifier
-  def lien_signin titre = "s'identifier", options = nil
-    build_lien "user/signin", titre, options
-  end
-
-  # Lien pour s'abonner au site
-  def lien_subscribe titre = "s'abonner", options = nil
-    build_lien "user/paiement", titre, options
-  end
-  
 end

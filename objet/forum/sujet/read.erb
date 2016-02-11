@@ -35,7 +35,7 @@ def bouton_nouveau_message
         "Votre grade est insuffisant pour pouvoir répondre".in_span(class:'small italic')
       end
     else
-      (site.lien_signup("Inscrivez-vous") + " ou " + site.lien_subscribe("abonnez-vous") + " pour pouvoir profiter pleinement du forum").in_span(class:'small italic')
+      (lien.signup("Inscrivez-vous") + " ou " + lien.subscribe("abonnez-vous") + " pour pouvoir profiter pleinement du forum").in_span(class:'small italic')
     end.in_div(class:'right')
   end
 end
