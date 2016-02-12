@@ -39,5 +39,15 @@ DATA_MANUEL_REDACTION = {
     items: {
       creation_new_analyse: {titre:"Création d'une nouvelle analyse"}
     }
+  },
+  collecte: {
+    titre: "Collecte",
+    items: {
+      main_file: {titre:"Fichier principal de collecte"},
+      tm_bundle: {titre:"Bundle TextMate sur Mac"},
+      tutoriel_textmate: {titre:"Screencast sur le bundle de relève TextMate", smaller:true},
+      en_ligne:  {titre:"Collecte en ligne sur le site"},
+      tutoriel_en_ligne: {titre:"Screencast sur l'éditeur de collecte en ligne", smaller:true}
+    }
   }
 }
