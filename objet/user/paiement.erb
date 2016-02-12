@@ -6,7 +6,6 @@
 #
 debug "-> ./objet/user/paiement.erb"
 %>
-<h1>Section de paiement</h1>
 <% if user.paiements_ok? %>
   <%
     # Si le paiement vient tout juste d'être effectué
@@ -21,10 +20,12 @@ debug "-> ./objet/user/paiement.erb"
     else
       # Si l'user est déjà abonné depuis plus d'un jour
   %>
+  <h1>Section de paiement</h1>
     <p><%= user.pseudo %>, vous êtes à jour de vos paiements, vous n'avez donc rien à payer.</p>
     <p class="small">Votre prochain paiement devra s'effectuer le <%= user.next_paiement.as_human_date %>.</p>
   <% end %>
 <% else %>
+  <h1>Section de paiement</h1>
   <%= site.paiement.output %>
 <% end %>
 <%

@@ -29,14 +29,17 @@ site.require 'form_tools'
 form.prefix = 'user'
 %>
 <form id="form_user_signup" class="dim3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
-  <%= (param(:route_after_signup)||"").in_hidden(name:'route_after_signup') %>
-  <%= row("Pseudo", :pseudo, :text) %>
-  <%= row("Patronyme", :patronyme, :text) %>
-  <%= row("Vous êtes…", :sexe, :select, [["F", "une femme"], ["H", "un homme"]]) %>
-  <%= row("Mail", :mail, :text) %>
-  <%= row("Confirmation mail", :mail_confirmation, :text) %>
-  <%= row("Mot de passe", :password, :text) %>
-  <%= row("Confirmation mot de passe", :password_confirmation, :text) %>
-  <%= form.field_text("Anti-robot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')}) %>
+  <%= (param(:route_after_signup)||param(:ras)||"").in_hidden(name:'route_after_signup') %>
+  <%= form.field_text("Pseudo", 'pseudo', nil, {class:'milong'}) %>
+  <%= form.field_text("Patronyme", 'patronyme', nil, {class:'milong'}) %>
+  <%= form.field_select("Vous êtes…", 'sexe', nil, {values: [["F", "une femme"], ["H", "un homme"]]}) %>
+  <%= form.field_text("Mail", 'mail', nil, {class:'milong', confirmation:true}) %>
+  <%= form.field_text("Mot de passe", 'password', nil, {class:'milong', confirmation:true}) %>
+  <% if signup_for_unanunscript %>
+    <%= form.field_checkbox("S'abonner au programme UN AN UN SCRIPT", 'subscribe', 'on') %>
+  <% else %>
+    <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: "(Pourquoi s'abonner ?)".in_a(href:'aide/why_subscribe', target:'_new', class:'small')}) %>
+  <% end %>
+  <%= form.field_text("Test anti-robot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')}) %>
   <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons') %>
 </form>

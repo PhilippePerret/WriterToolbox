@@ -18,18 +18,41 @@ class User
   class << self
     # Méthode appelée par le formulaire pour inscrire
     # l'utilisateur
-    # Si la création réussit :
-    #  * Si une page suivante est définie (par exemple pour payer l'abonnement)
-    #    on la rejoint
-    #  * NON : CONFIRMATION REQUIRED Sinon on l'identifie et on affiche sa page
-    #  * Sinon on revient à la page d'inscription (redirection)
+    # Si la création réussit, on doit attendre CONFIRMATION DE L'ADRESSE
+    # MAIL avant la validation complète de l'user. SAUF s'il s'agit d'un
+    # abdonnement dans lequel cas on envoie vers la page de paiement.
+    # Les deux cas qui peuvent se produire sont :
+    #   - l'user a coché la case "s'abonner" et donc on le redirige vers
+    #     le paiement
+    #   - une adresse a été transmise pour rediriger vers le paiement (mais
+    #     je crois que c'est une vieille tournure qui n'a plus cours maintenant)
+    # SI L'INSCRIPTION EST INVALIDE, on revient tout simplement à la page
+    # d'inscription (redirection) pour que l'user recommence.
     def create
       debug "-> User::create"
       newuser = User::new
       if newuser.create
-        # newuser.login # NON Il doit confirmer avant
-        site.user_prov = newuser
-        redirect_to param(:route_after_signup) unless param(:route_after_signup).empty?
+        if param(:user) && param(:user)[:subscribe] == 'on'
+          # Pour passer outre la confirmation du mail, on
+          # doit préciser que l'user procède à son paiement
+          app.session['for_paiement'] = "1"
+          newuser.login
+          if site.current_route.context == 'unan'
+            # => Page de paiement du programme UN AN UN SCRIPT
+            redirect_to 'unan/paiement'
+          else
+            # => Page de paiement de l'ABONNEMENT au site
+            redirect_to 'user/paiement'
+          end
+        else
+          # On le met en user provisoire (pour l'accueillir dans
+          # la prochaine page) mais il doit confirmer son email
+          # tout de suite.
+          site.user_prov = newuser
+          unless param(:route_after_signup).empty?
+            redirect_to param(:route_after_signup)
+          end
+        end
       end
     end
   end # << self

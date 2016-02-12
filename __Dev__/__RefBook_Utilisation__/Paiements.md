@@ -46,7 +46,7 @@ Il suffit de définir le tarif dans le fichier de configuration
 * [OPTIONNEL] [Créer le fichier `paiement/on_cancel.erb`](#vueproprequandcancel) définissant la vue partielle à afficher (dans `paiement.erb`) quand le paiement est annulé ou refusé.
 * [OPTIONNEL] [Créer le fichier `paiement/on_error.erb`](#vueerreurpropre) définissant la vue partielle à afficher (dans `paiement.erb`) quand une erreur survient.
 
-Noter que les vue partielle s'affichent dans la vue `./objet/<context>/paiement.erb` si le code suivant est implémenté dans cette vue :
+Noter que les vue partielles s'affichent dans la vue `./objet/<context>/paiement.erb` si le code suivant est implémenté dans cette vue :
 
     <%= site.paiement.output %>
 

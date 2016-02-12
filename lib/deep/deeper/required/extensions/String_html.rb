@@ -121,9 +121,31 @@ class String
   def in_tr       attrs = nil;  html_balise 'tr',       attrs end
   def in_td       attrs = nil;  html_balise 'td',       attrs end
 
+  # On peut passer des query-strings par :
+  #   query_string: "var=val&var=val etc."
+  #   query_string: {var: val, var: val etc.}
+  #   query_string: [[var,val], [var, val] etc.]
+  # L'avantage des versions par Hash et par Array est que la valeur
+  # est escapé par CGI, contrairement à la version par String qui n'est
+  # pas touchée.
   def in_a attrs = nil
     attrs ||= Hash::new
-    attrs.merge!( :href => 'javascript:void(0)' ) unless attrs.has_key?(:href)
+    qs = attrs.delete(:query_string)
+    if attrs.has_key?(:href)
+      unless qs.nil?
+        href = attrs[:href]
+        href += href.match(/\?/) ? '&' : '?'
+        href += case qs
+        when Hash   then qs.collect{|var,val| "#{var}=#{CGI::escape val}"}.join('&')
+        when Array  then qs.collect{|paire| "#{paire.first}=#{CGI::escape paire.last}"}.join('&')
+        when String then qs
+        end
+        debug "href: #{href.inspect}"
+        attrs[:href] = href
+      end
+    else
+      attrs.merge!( :href => 'javascript:void(0)' )
+    end
     html_balise 'a', attrs
   end
 

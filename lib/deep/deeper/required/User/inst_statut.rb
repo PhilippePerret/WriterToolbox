@@ -40,6 +40,16 @@ class User
   alias :paiement_ok? :paiements_ok?
   alias :subscribed? :paiements_ok?
 
+  # Cette propriété est mise à true lorsque l'user vient de
+  # s'inscrire, qu'il devrait confirmer son mail, mais qu'il
+  # doit payer son abonnement. On a mis alors `for_paiement` à
+  # "1" dans ses variables de session, si qui lui permet de
+  # passer outre la confirmation.
+  # Noter que 'for_paiement' sera détruit après le paiement pour
+  # obliger l'user à confirmer son mail.
+  def for_paiement?
+    @for_paiement ||= param(:for_paiement) == "1"
+  end
   # Renvoie true si l'user est abonné depuis au moins +nombre_mois+
   # au site. False dans le cas contraire.
   # Par défaut 6 mois.

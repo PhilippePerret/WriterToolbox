@@ -2,7 +2,7 @@
 # Vue chargée lorsque l'user a pu s'inscrire
 %>
 <h1>Vous êtes inscrit<%= site.user_prov.f_e %> !</h1>
-<p><%= site.user_prov.pseudo %>, heureux de vous compter parmi les auteurs de la “Boite à outils”.</p>
+<p><%= site.user_prov.pseudo %>, heureux de vous compter parmi les utilisateurs de <em>La Boite à Outils de L'Auteur</em>.</p>
 <p>N'oubliez pas de confirmer votre mail pour que votre inscription soit tout à fait prise en compte, grâce au message que vous allez recevoir incessamment sous peu.</p>
 <p>Pour pouvoir profiter de tous les outils du site, vous pouvez ensuite <a href="user/<%= user.id %>/paiement">vous abonner pour un an</a>, pour seulement <%= site.tarif_humain(true) %>.</p>
 <p>
