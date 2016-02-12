@@ -3,7 +3,7 @@ $.extend(window.Facture,{
 
   // Méthode appelée au chargement de la page
   on_load_page:function(){
-    $("*.hidden-calcul").hide();
+    $("*.hidden_when_calcul").hide();
   },
 
   /**
@@ -14,9 +14,8 @@ $.extend(window.Facture,{
 
   	//-- On masque les textes inutiles
   	$('#page_facture').addClass("page-mode-facture");
-
   	// On affiche tous les éléments masqués par le calcul
-  	$("*.hidden-calcul").show() ;
+  	$("*.hidden_when_calcul").show() ;
   	// On masque tous les éléments propres au calcul
   	$("*.hidden-facture").hide() ;
   	// On affiche les informations d'entête et on règle la
@@ -35,6 +34,10 @@ $.extend(window.Facture,{
     window.print();
   },
 
+  /**
+    * Méthode appelée pour calculer les montants de la facture
+    *
+    */
   calculer_with:function(montant_id){
 
     var montant_ht, montant_ttc, montant_net, pc_5_5, pc97_ht ;
@@ -66,9 +69,30 @@ $.extend(window.Facture,{
     if (undefined == pc97_ht)			{ pc97_ht = Math.round(montant_ht * 97 / 100) }
     if (undefined == montant_ttc) { montant_ttc = montant_ht + pc_5_5 }
 
-    // ---------------------------------------------------------------------
-    //  CALCUL DES VALEURS DE LA FACTURE
-    // ---------------------------------------------------------------------
+    // Dernière définitions
+  	var montant_assurance = Facture.Calcul.montant_assurance(montant_ht)
+  	var montant_csg 			= Facture.Calcul.montant_csg(montant_ht);
+  	var montant_crds 			= Facture.Calcul.montant_crds(montant_ht) ;
+  	$("#montant-assurance-maladie").html(montant_assurance) ;
+  	$("#montant-csg")			.html(montant_csg)   ;
+  	$("#montant-crds")		.html(montant_crds) ;
+
+
+    //Remplir les champs
+    $("#montant-ht")			.html(montant_ht) ;
+    $("#montant-tva-5-5")	.html(pc_5_5) ;
+    $("#total-TTC")				.html(montant_ttc) ;
+    $("#97-pc-ht")				.html(pc97_ht) ;
+    if (montant_id != "montant_net") {
+      if ( undefined == montant_net){
+        montant_net = montant_ttc
+                      - montant_assurance
+                      - montant_csg
+                      - montant_crds ;
+      }
+
+      $("#net-a-payer").html(montant_net) ;
+    }
 
     // On cache les boutons calculer
     this.hide_boutons_calcul();
@@ -78,6 +102,40 @@ $.extend(window.Facture,{
   }
 })
 
+if(undefined == window.Facture.Calcul){ window.Facture.Calcul = {}}
+$.extend(window.Facture.Calcul, {
+	montant_assurance		:function(montant_ht){return Math.round(montant_ht * 0.0085)},
+	montant_csg					:function(montant_ht){return Math.round(7.5 * (montant_ht * 0.97) / 100)},
+	montant_crds				:function(montant_ht){return Math.round(0.5 * (montant_ht * 0.97) / 100),
+	montant_ht_from_net	:function(net){
+		var huitcinq  = 0.85 / 100 ;
+		var neufsept  = 97   / 100 ;
+		var septcinq  = 7.5  / 100 ;
+		var zerocinq  = 0.5  / 100 ;
+
+		// Calcul du montant hors-taxe approximatif
+		var ht = Math.floor(net /	(1 + 0.055 - 0.0085 - (0.97 * 0.075) - (0.97 * 0.005)) ) ;
+		var ht_init = "" + ht ;
+		/*-----------------------------------------------------------------
+			Le calcul n'est pas forcément juste (à cause des approximations).
+			On vérifie et on l'affine si nécessaire
+		------------------------------------------------------------------*/
+		var new_net = this.net_from_ht(ht) ;
+		if ( new_net == net ) return ht ;
+		ht = ht - 10 ; // Pour partir en dessous
+		while (this.net_from_ht(ht) != net ) { ++ ht }
+		return ht ;
+	},
+  // Retourne le montant NET à partir du montant HT
+	net_from_ht: function(ht){
+		var pc_5_5 = Math.round(ht * 5.5 / 100) ;
+		var ttc = ht + pc_5_5 ;
+		return ttc
+			- this.montant_assurance(ht)
+			- this.montant_csg(ht)
+			- this.montant_crds(ht) ;
+	}
+})
 
 /**
   * Exécuté au chargement de la page (en réalité : quand la

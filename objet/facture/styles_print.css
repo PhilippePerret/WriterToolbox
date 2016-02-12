@@ -1,0 +1,8 @@
+body {
+	margin:  0cm;
+	padding: 0;
+}
+div#explication {display: none;}
+div#indication-signature { visibility: hidden ;}
+input#btn-print {visibility: hidden;}
+.editable {background-color: white;}

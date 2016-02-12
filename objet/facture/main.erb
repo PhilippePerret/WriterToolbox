@@ -88,27 +88,38 @@ end
   <%= "Mettre en forme la facture".in_a(class:'btn') %>
 </div>
 
+<%
+def div_montant_facture montant_id, libelle # p.e. "assurance_maladie", "Assurance maladie"
+	(
+		libelle.in_div(id:"texte-#{montant_id}", class:'intitule-montant')+
+		" €".in_div(id:"montant_#{montant_id}", class:'montant-montant')
+	).in_div(id:"div_#{montant_id}") +
+	"".in_div(style:'clear:both')
+end
+%>
+
 <!--
 	TABLE D'AFFICHAGE DES CHIFFRES -->
 
 <div id="div-partie-chiffree">
+
 	<!-- Montant HT -->
+	<%= div_montant_facture 'montant_ht', "Montant Hors-Taxe" %>
 	<div id="div-montant-ht">
 		<div id="texte-montant-ht" class="intitule-montant">Montant Hors-Taxe</div>
 		<div id="montant-ht" class="montant-montant">
-			<input type="text" id="input-montant-ht" value="" class="montant" onfocus="OnFocusMontant('montant-ht')" /> €
+			<input type="text" id="input-montant-ht" value="" class="montant" /> €
 			<input id="btn/montant-ht" type="button" class="btn-calcul hidden-facture" style="visibility: hidden;" onclick="calculer('montant-ht')" value="Calculer" />
 		</div>
 	</div>
 	<div style="clear:both;"></div>
 
+
+
 	<!-- TVA 5.5 % -->
-	<div id="div-cinq-pourcent">
-		<div id="texte-montant-ht" class="intitule-montant">TVA 5,5 %</div>
-		<div id="montant-tva-5-5" class="montant-montant"> €</div>
-	</div>
-	<div style="clear:both;"></div>
-  <div class="hidden-calcul">----------------</div>
+	<%= div_montant_facture "tva_5_5", "TVA 5,5 %" %>
+
+  <div class="hidden_when_calcul">----------------</div>
 
 	<!-- MONTANT T.T.C. -->
 	<div id="div-total-TTC">
@@ -120,34 +131,17 @@ end
 	</div>
 	<div style="clear:both;"></div>
 
-	<div class="hidden-calcul" style="font-weight:bold; font-style:italic; text-align:left; font-size:0.9em;">À déduire (*)&nbsp;:
+	<div class="hidden_when_calcul" style="font-weight:bold; font-style:italic; text-align:left; font-size:0.9em;">À déduire (*)&nbsp;:
 	</div>
 
 	<!-- Assurance maladie -->
-	<div id="div-assurance-maladie">
-		<div id="texte-assurance-maladie" class="intitule-montant">
-			Assurance maladie 0,85 % sur HT</div>
-		<div id="montant-assurance-maladie" class="montant-montant"> €</div>
-	</div>
-	<div style="clear:both;"></div>
+	<%= div_montant_facture "assurance_maladie", "Assurance maladie 0,85 % sur HT" %>
 
 	<!-- C.S.G. -->
-	<div id="div-csg">
-		<div id="texte-csg" class="intitule-montant">
-			CSG 7,5 % sur 97% de HT (<span id="97-pc-ht"></span>)
-		</div>
-		<div id="montant-csg" class="montant-montant"> €</div>
-	</div>
-	<div style="clear:both;"></div>
+	<%= div_montant_facture "csg", "CSG 7,5 % sur 97% de HT (<span id='97_pc_ht'>---</span>)" %>
 
 	<!-- C.R.D.S -->
-	<div id="div-crds">
-		<div id="texte-crds" class="intitule-montant">
-			CRDS 0,5 % sur 97% de HT
-		</div>
-		<div id="montant-crds" class="montant-montant"> €</div>
-	</div>
-	<div style="clear:both;"></div>
+	<%= div_montant_facture "crds", "CRDS 0,5 % sur 97% de HT" %>
 
 	<!-- NET À PAYER -->
 	<div id="div-net-a-payer">
@@ -164,17 +158,17 @@ end
 <!-- PIED DE PAGE FACTURE FORMATÉE -->
 <!-- Pour la signature -->
 <!-- mention AGESSA (pour apparaitre en bas de page) -->
-<div id="mention_agessa" class="hidden-calcul">(*) Montant des cotisations arrondi à l’euro le plus proche, selon convention AGESSA </div>
-<div id="signature-emetteur" class="hidden-calcul">Philippe PERRET</div>
-<div id="indication-signature" class="hidden-calcul" style="height:20px;">Signature</div>
+<div id="mention_agessa" class="hidden_when_calcul">(*) Montant des cotisations arrondi à l’euro le plus proche, selon convention AGESSA </div>
+<div id="signature-emetteur" class="hidden_when_calcul">Philippe PERRET</div>
+<div id="indication-signature" class="hidden_when_calcul" style="height:20px;">Signature</div>
 
 </div> <!-- ./page_facture -->
 
 <!-- SECTION OUTILS -->
 <div id="outils" style="margin-top: 50px;">
 	<input type="button" onclick="window.location.reload()" class="hidden-facture" value="Autre facture" />
-	<input id="btn-formater" type="button" onclick="Formater()" value="Mettre en forme la facture" class="hidden-facture hidden-calcul">
-	<input id="btn-print" type="button" onclick="Imprimer()" value="Imprimer la facture" class="hidden-calcul">
+	<input id="btn-formater" type="button" onclick="Formater()" value="Mettre en forme la facture" class="hidden-facture hidden_when_calcul">
+	<input id="btn-print" type="button" onclick="Imprimer()" value="Imprimer la facture" class="hidden_when_calcul">
 </div>
 
 <!-- Champ pour l'édition -->
