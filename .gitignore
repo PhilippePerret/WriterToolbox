@@ -15,3 +15,5 @@ CRON/log/
 tmp/mails/
 
 debug.log
+
+data/analyse/

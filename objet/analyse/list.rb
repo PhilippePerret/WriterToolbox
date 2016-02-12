@@ -7,33 +7,40 @@ class << self
 
   # Retourne une liste UL des films filtrés par les options
   # +options+
-  #   :in     Liste Array des films (affixes) à prendre
-  #   :out    OU liste Array des films (affixes) à ne pas prendre
+  #   Cf. les options de liste_data_films
+  #   Options propres à cette méthode :
+  #   :no_link    Si true, pas de lien pour voir ces analyses
+  #
   def films_list options = nil
     options ||= Hash::new
-    flist = if options.has_key?(:out)
-      liste_data_films(options).reject{|hfilm| options[:out].include?(hfilm[:sym])}
-    elsif options.has_key?(:in)
-      liste_data_films(options).select{|hfilm| options[:in].include?(hfilm[:sym])}
-    else
-      liste_data_films(options)
-    end
+    class_css = ['tdm']
+    class_css << options.delete(:class) if options.has_key?(:class)
 
-    # Liste des films retenus
-    # debug "flist: #{flist.pretty_inspect}"
-
-    flist.collect do |hfilm|
+    liste_data_films(options).collect do |hfilm|
       titre = "#{hfilm[:titre]} ("
       titre += "#{hfilm[:titre_fr].in_span(class:'italic')} — " unless hfilm[:titre_fr].nil_if_empty.nil?
       titre += "#{hfilm[:realisateur]}, #{hfilm[:annee]})"
-      titre.in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_').in_li(class:'film', id:"film-#{hfilm[:id]}")
-    end.join.in_ul(id:'films', class:'tdm')
+      unless options[:no_link]
+        titre = titre.in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_')
+      end
+      titre.in_li(class:'film', id:"film-#{hfilm[:id]}")
+    end.join.in_ul(id:'films', class:class_css.join(' '))
   end
 
   # {Array de Hash} Retourne la liste des films analysés en les
   # prenant dans la table analyse.films
+  # +options+
+  #   :completed      Si true, seulement les analyses terminées
+  #   :not_completed  Si true, seulement les analyses inachevées
+  #   :lisible        Si true, les analyses lisibles (pas terminées mais assez)
+  #   :not_lisible    Si true, les analyses non lisibles
+  #   :in             Si fourni, c'est une liste d'identifiant ou de sym de films
+  #                   qu'on veut prendre parmi ceux retenus.
+  #                   Noter qu'il faut des sym String, pas symbole
+  #   :out            Si fourni, c'est une liste de syms de films qu'il ne faut
+  #                   pas prendre parmi ceux retenus
+  #                   Noter qu'il faut des sym String, pas symbole
   def liste_data_films options = nil
-    debug "options: #{options.inspect}"
     options ||= Hash::new
     opts = ""
     if options[:completed] || options[:not_completed] || options[:lisible] || options[:not_lisible] || options[:analyzed]
@@ -42,8 +49,17 @@ class << self
       opts << "0"
     end
 
-    hfilms = table_films.select(where:"options LIKE '#{opts}%'", colonnes:[:titre, :titre_fr, :annee, :realisateur, :sym, :options]).values
-    hfilms.select do |hfilm|
+    data_request = Hash::new
+    data_request.merge!(colonnes: [:titre, :titre_fr, :annee, :realisateur, :sym, :options])
+    if opts != ""
+      where_clause = "options LIKE '#{opts}%'"
+      data_request.merge!(where: where_clause)
+    end
+
+    # Relève des films
+    hfilms = table_films.select(data_request).values
+
+    hfilms.select! do |hfilm|
       opts = hfilm[:options]
       opts1 = opts[1].to_i
       if options[:completed] && opts1 == 9
@@ -54,10 +70,22 @@ class << self
         true
       elsif options[:not_lisible] && opts1 < 5
         true
+      elsif options[:analyzed]
+        true
       else
         false
       end
     end
+
+    if options.has_key?(:in)
+      hfilms.select!{|hfilm| options[:in].include? hfilm[:sym]}
+    end
+
+    if options.has_key?(:out)
+      hfilms.reject!{|hfilm| options[:out].include? hfilm[:sym]}
+    end
+
+    return hfilms
   end
 
   def liste_all_analyses options = nil
@@ -89,14 +117,21 @@ class << self
     films_list(not_lisible: true)
   end
 
+  # Les deux listes quand on n'est pas autorisé
   def liste_analyses_autorized
     "Films autorisés".in_h3 +
-    films_list(in:['seven'])
+    films_list(lisible:true, in:['seven'])
   end
 
   def liste_analyses_non_autorized
     "Film non autorisés".in_h3 +
-    films_list(out:['seven'])
+    div_information_not_subscriber +
+    films_list(analyzed:true, out:['seven'], no_link:true, class:'small italic') +
+    "".in_div(style:'clear:both')
+  end
+
+  def div_information_not_subscriber
+    "Seuls les abonnés au site ont la possibilité de consulter l'intégralité des analyses. Si vous le désirez, vous pouvez #{lien.subscribe('vous abonner', class:'bold')} pour #{site.tarif_humain} par an soit #{site.tarif_humain_par_mois}.".in_div(class:'small italic border encart_droit')
   end
 
 end # << self

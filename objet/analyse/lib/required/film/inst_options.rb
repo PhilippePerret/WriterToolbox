@@ -9,7 +9,7 @@ class Film
   # BIT 1 Détermine si l'analyse fait partie des analyses du
   # site (analyses dites “Film TM” car elles sont réalisées avec TextMate)
   def analyzed?
-    options.to_i == 1
+    options[0].to_i == 1
   end
 
   # BIT 2 Indique si l'analyse, qui fait partie des analyses du site

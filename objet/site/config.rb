@@ -22,7 +22,7 @@ site.mail_signature       = "<p>#{site.name}</p>"
 site.local_host   = 'localhost/WriterToolbox'
 site.distant_host = 'www.atelier-icare.net/writertoolbox'
 
-site.tarif = 9.90
+site.tarif = 6.90
 
 # # Si on est en anglais :
 # site.separateur_decimal = "."
