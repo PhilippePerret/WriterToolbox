@@ -1,7 +1,7 @@
 <%
 # Section factures
 %>
-<h1>Facture</h1>
+<h1>Facture d'auteur</h1>
 
 <%
 site.require 'form_tools'
@@ -16,7 +16,7 @@ TODAY_HUMAN = "<%= Time.now.to_i.as_human_date %>" ;
 # ---------------------------------------------------------------------
 # 	Explication simple du processus en quatre étapes
 %>
-<ol class='small tight hidden_when_print hidden_when_formate'>
+<ol id='description_processus' class='small tight hidden_when_print hidden_when_formate'>
   <li>Choisissez le type de montant,</li>
 	<li>Indiquez le montant du contrat,</li>
 	<li>Lancez le calcul en cliquant sur le bouton “Calculer”,</li>
