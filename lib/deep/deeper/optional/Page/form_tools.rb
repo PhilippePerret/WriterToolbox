@@ -93,35 +93,35 @@ class Page
       #     form.field_<tyle> "<libelle>", "<property>", selected[, options]
       # ---------------------------------------------------------------------
 
-      def field_hidden libelle, prop, selected, options = nil
+      def field_hidden libelle, prop, selected = nil, options = nil
         f = Field::new(:hidden, libelle, prop, selected, options)
         f.field_value.in_hidden(name:f.field_name, id:f.field_id)
       end
-      def field_select libelle, prop, selected, options = nil
+      def field_select libelle, prop, selected = nil, options = nil
         Field::new(:select, libelle, prop, selected, options).form_row
       end
-      def field_select_pays libelle, prop, selected, options = nil
+      def field_select_pays libelle, prop, selected = nil, options = nil
         Field::new(:select_pays, libelle, prop, selected, options).form_row
       end
       alias :field_select_country :field_select_pays
 
-      def field_textarea libelle, prop, value, options = nil
+      def field_textarea libelle, prop, value = nil, options = nil
         Field::new(:textarea, libelle, prop, value, options).form_row
       end
 
       # Un input-text
-      def field_text libelle, prop, value, options = nil
+      def field_text libelle, prop, value = nil, options = nil
         Field::new(:text, libelle, prop, value, options).form_row
       end
 
       # Un input-checkbox
-      def field_checkbox libelle, prop, value, options = nil
+      def field_checkbox libelle, prop, value = nil, options = nil
         Field::new(:checkbox, libelle, prop, value, options).form_row
       end
 
       # Quand le code du champ est donné de façon brute
       # Note +options[:field]+ contient le code qui sera mis
-      def field_raw libelle, prop, value, options
+      def field_raw libelle, prop, value = nil, options
         Field::new(:raw, libelle, prop, value, options).form_row
       end
 
@@ -135,6 +135,12 @@ class Page
         ).in_div(class:'row description')
       end
 
+      # Ligne de spération
+      def separator
+        @separator ||= begin
+          "<div class='row'><span class='libelle'></span><span class='value'><div class='separator'></span></div></div>"
+        end
+      end
       # Le bouton submit
       def submit_button button_name, options = nil
         options ||= Hash::new

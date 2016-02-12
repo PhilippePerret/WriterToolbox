@@ -40,7 +40,7 @@ facture:
   folder:     facture
   home:       facture/main
   description: |
-    Outils pour concevoir vos factures d'écriture, factures d'auteur, en fournissant la valeur HT ou TTC, brute ou nette, donc permettant des calculs rapide quel que soit le context.
+    Outil pour concevoir vos factures d'écriture, factures d'auteur, en fournissant la valeur HT (Hors-Taxe), TTC (Toute Taxe Comprise) ou nette, donc permettant des calculs rapides quel que soit l'accord passé avec l'autre partie.
 
 forum:
   name:     Le Forum

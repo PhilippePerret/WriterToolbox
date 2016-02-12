@@ -11,176 +11,127 @@ form.prefix = 'facture'
 TODAY_HUMAN = "<%= Time.now.to_i.as_human_date %>" ;
 </script>
 
-<div id="entete-calcul" class="hidden-facture">
-	<div id="calcul" style="font-size:3em;font-weight:bold;margin-bottom: 20px;"></div>
-	<div style="font-style:italic; margin-bottom: 20px; font-size: 0.9em; width: 480px">
-	</div>
-</div><!-- /#entete-calcul -->
-<!-- ENTETE POUR LA FACTURE (masqué par défaut) -->
-<div id="page_facture" class="page-mode-calcul">
-<div id="entete_facture" style="display:none;">
-	<div id="div_date_facture">
-		à <a href="#" onclick="Modifier(this);return false;"><span id="lieu_facture" class="editable">Paris</span></a>
-		le <span id="date_facture"></span>
-	</div>
-	<!-- Coordonnées émetteur -->
-	<div id="coordonnees" class="coordonnees">
-		<a href="#" onclick="Modifier(this); return false;">
-			<span id="emetteur_facture" class="editable">Philippe PERRET</span><br />
-		</a>
-		<a href="#" onclick="Modifier(this); return false;">
-			<span id="emetteur_adresse" class="editable">32, rue des Lilas<br />97120 TRIFOUILLIS-LES-OIES</span><br />
-		</a>
-	</div>
-	<div class="interligne">FACTURE <a href="#" onclick="Modifier(this); return false;"><span id="emetteur_statut" class="editable">AUTEUR</span></a></div>
-	<!-- Coordonnées client -->
-	<div id="coordonnees_client" class="inteligne">
-		<div style="font-style:italic;" class="interligne">Facture adressée à :</div>
-		<div id="div-client" class="interligne coordonnees">
-			<a href="#" onclick="Modifier(this); return false;"><span id="client" class="editable">LE CLIENT</span></a>
-		</div>
-		<div id="div-client_adresse" class="coordonnees">
-			<a href="#" onclick="Modifier(this); return false;"><span id="client_adresse" class="editable">ADRESSE CLIENT</span></a>
-		</div>
-	</div>
-	<div class="interligne" style="">
-		FACTURE N°
-		<a href="#" onclick="Modifier(this); return false;"><span id="num_facture" class="editable">XXXX</span></a>
-	</div>
-	<div class="interligne">&nbsp;</div>
-	<!-- Objet facture -->
-	<div id="div_objet_facture">
-		<a href="#" onclick="Modifier(this); return false;"><span id="objet_facture" class="editable">OBJET FACTURE (p.e. TITRE DE L'ŒUVRE)</span></a>
-	</div>
-</div><!-- / #entete_facture -->
 
 <%
 # ---------------------------------------------------------------------
-#   NOUVEAU FORMAT POUR BOITE À OUTILS DE L'AUTEUR
+# 	Explication simple du processus en quatre étapes
 %>
+<ol class='small tight hidden_when_print hidden_when_formate'>
+  <li>Choisissez le type de montant,</li>
+	<li>Indiquez le montant du contrat,</li>
+	<li>Lancez le calcul en cliquant sur le bouton “Calculer”,</li>
+	<li>Définissez les informations de la facture (client, objet, etc.),</li>
+	<li>Mettez la facture en forme à l'aide du bouton “Mettre en forme”,</li>
+	<li>Imprimez en cliquant sur le bouton “Imprimez” !</li>
+</ol>
+
 <%
-def bouton_calculer montant_id
-  onclick = "$.proxy(Facture,'calculer_with', '#{montant_id}')();return false;"
-  "Calculer".in_a(href:"", id:"btn_calcul_#{montant_id}", onclick:onclick, class:'btn tiny btn_calcul', style:'vertical-align:top')
-end
+# ---------------------------------------------------------------------
+# 	Formulaire pour entrer le type de montant et le montant de la facture
+#
 %>
-<form class="dim3070" action="facture/main" method="POST">
+<div class="center hidden_when_print hidden_when_formate">
+	<form class="dim3070 grand air inline border" action="facture/main" method="POST">
+		<table cellpadding="10"><tr>
+				<td><%= select_type_montant %></td>
+				<td><%= input_text_montant %><span> €</span></td>
+				<td><%= bouton_calculer %></td>
+		</tr></table>
+	</form>
+</div>
 
-  <%= form.field_text("Montant Hors-Taxe", 'montant_ht', nil, {class:'medium montant_field', text_after:"€ #{bouton_calculer('montant_ht')}"}) %>
-  <%= form.field_raw("TVA 5,5%", '', nil, {field:"".in_span(id:'facture_montant_tva_5_5'), text_after:'€'}) %>
 
-  <div class="separator"></div>
-
-  <%= form.field_text("TOTAL TTC", 'montant_ttc', nil, {class:'medium montant_field', text_after:"€ #{bouton_calculer('montant_ttc')}"}) %>
-
-  <%= form.field_raw("Assurance maladie 0,85 % sur HT", '', nil, {field:"---".in_span(id:'facture_assurance_maladie'), text_after:'€'}) %>
-
-  <%= form.field_raw( "CSG 7,5 % sur 97% de HT (<span id='97_pc_ht'></span>)", '', nil, {field:"---".in_span(id:'facture_cgs'), text_after:'€'}) %>
-
-  <%= form.field_raw("CRDS 0,5 % sur 97% de HT", '', nil, {field:"---".in_span(id:'facture_crds'), text_after:'€'}) %>
-
-  <div class="separator"></div>
-
-  <%= form.field_text("NET À PAYER", 'montant_net', nil, {class:'medium montant_field', text_after:"€ #{bouton_calculer('montant_net')}"}) %>
-
-</form>
-<div class="right air">
-  <%= "Mettre en forme la facture".in_a(class:'btn') %>
+<%
+# ---------------------------------------------------------------------
+# 	Boutons pour imprimer ou annuler
+#
+%>
+<div class="hidden_when_calcul hidden_when_print air">
+	<%= "Annuler".in_a(class:'btn', onclick:"$.proxy(Facture, 'cancel')()") %>
+	<%= "Imprimer".in_a(class:'btn', onclick:"$.proxy(Facture, 'print')()") %>
 </div>
 
 <%
-def div_montant_facture montant_id, libelle # p.e. "assurance_maladie", "Assurance maladie"
-	(
-		libelle.in_div(id:"texte-#{montant_id}", class:'intitule-montant')+
-		" €".in_div(id:"montant_#{montant_id}", class:'montant-montant')
-	).in_div(id:"div_#{montant_id}") +
-	"".in_div(style:'clear:both')
-end
+# ---------------------------------------------------------------------
+# 	LA FACTURE FINALE
 %>
+<div id="page_facture">
 
-<!--
-	TABLE D'AFFICHAGE DES CHIFFRES -->
+	<%= entete_facture %>
 
-<div id="div-partie-chiffree">
+<div id="conteneur_facture">
+<div id="div_facture" class='mode_calcul'>
 
 	<!-- Montant HT -->
-	<%= div_montant_facture 'montant_ht', "Montant Hors-Taxe" %>
-	<div id="div-montant-ht">
-		<div id="texte-montant-ht" class="intitule-montant">Montant Hors-Taxe</div>
-		<div id="montant-ht" class="montant-montant">
-			<input type="text" id="input-montant-ht" value="" class="montant" /> €
-			<input id="btn/montant-ht" type="button" class="btn-calcul hidden-facture" style="visibility: hidden;" onclick="calculer('montant-ht')" value="Calculer" />
-		</div>
-	</div>
-	<div style="clear:both;"></div>
-
-
+	<%= div_montant_facture 'ht', "Montant Hors-Taxe" %>
 
 	<!-- TVA 5.5 % -->
-	<%= div_montant_facture "tva_5_5", "TVA 5,5 %" %>
-
-  <div class="hidden_when_calcul">----------------</div>
+	<div class="inner">
+		<%= div_montant_facture "tva_5_5", "TVA 5,5 %" %>
+	</div>
 
 	<!-- MONTANT T.T.C. -->
-	<div id="div-total-TTC">
-		<div id="texte-total-TTC" class="intitule-montant">TOTAL TTC</div>
-		<div id="total-TTC" class="montant-montant">
-			<input type="text" id="input-total-TTC" value="" class="montant" onfocus="OnFocusMontant('total-TTC')" /> €
-			<input id="btn/total-TTC" type="button" class="btn-calcul hidden-facture" style="visibility: hidden;" onclick="calculer('total-TTC')" value="Calculer" />
-		</div>
+	<%= div_montant_facture "ttc", "TOTAL TTC" %>
+
+	<div id="libelle_a_deduire" class="hidden_when_calcul">À déduire (*) :</div>
+	<div id="facture_deductions" class='inner'>
+		<!-- Assurance maladie -->
+		<%= div_montant_facture "maladie", "Assurance maladie 0,85 % sur HT" %>
+		<!-- C.S.G. -->
+		<%= div_montant_facture "csg", "CSG 7,5 % sur 97% de HT (<span id='97_pc_ht'>---</span>)" %>
+		<!-- C.R.D.S -->
+		<%= div_montant_facture "crds", "CRDS 0,5 % sur 97% de HT" %>
 	</div>
-	<div style="clear:both;"></div>
-
-	<div class="hidden_when_calcul" style="font-weight:bold; font-style:italic; text-align:left; font-size:0.9em;">À déduire (*)&nbsp;:
-	</div>
-
-	<!-- Assurance maladie -->
-	<%= div_montant_facture "assurance_maladie", "Assurance maladie 0,85 % sur HT" %>
-
-	<!-- C.S.G. -->
-	<%= div_montant_facture "csg", "CSG 7,5 % sur 97% de HT (<span id='97_pc_ht'>---</span>)" %>
-
-	<!-- C.R.D.S -->
-	<%= div_montant_facture "crds", "CRDS 0,5 % sur 97% de HT" %>
 
 	<!-- NET À PAYER -->
-	<div id="div-net-a-payer">
-		<div id="texte-net-a-payer" class="intitule-montant">NET À PAYER</div>
-		<div id="net-a-payer" class="montant-montant">
-			<input type="text" id="input-net-a-payer" value="" class="montant" onfocus="OnFocusMontant('net-a-payer')" /> €
-			<input id="btn/net-a-payer" type="button" class="btn-calcul hidden-facture" style="visibility: hidden;" onclick="calculer('net-a-payer')" value="Calculer" />
-		</div>
+	<%= div_montant_facture "net", "NET À PAYER" %>
+
+	<div class="hidden_when_calcul">
+		<%= mention_arrondissements %>
+		<%= signature_emetteur %>
+		<%= emplacement_signature %>
 	</div>
-	<div style="clear:both;"></div>
 
-</div><!-- ./ #div-partie-chiffree -->
-
-<!-- PIED DE PAGE FACTURE FORMATÉE -->
-<!-- Pour la signature -->
-<!-- mention AGESSA (pour apparaitre en bas de page) -->
-<div id="mention_agessa" class="hidden_when_calcul">(*) Montant des cotisations arrondi à l’euro le plus proche, selon convention AGESSA </div>
-<div id="signature-emetteur" class="hidden_when_calcul">Philippe PERRET</div>
-<div id="indication-signature" class="hidden_when_calcul" style="height:20px;">Signature</div>
-
-</div> <!-- ./page_facture -->
-
-<!-- SECTION OUTILS -->
-<div id="outils" style="margin-top: 50px;">
-	<input type="button" onclick="window.location.reload()" class="hidden-facture" value="Autre facture" />
-	<input id="btn-formater" type="button" onclick="Formater()" value="Mettre en forme la facture" class="hidden-facture hidden_when_calcul">
-	<input id="btn-print" type="button" onclick="Imprimer()" value="Imprimer la facture" class="hidden_when_calcul">
 </div>
+</div><!-- Conteneur pour centrer -->
 
-<!-- Champ pour l'édition -->
-<div id="div_champ_edition" style="display:none;">
-	<textarea id="champ_edition"></textarea>
-	<div>
-		<input type="button"
-			onclick="DoModifier(false)"
-			value="Modifier"
-			style="float:right;">
-		<input type="button"
-			onclick="DoModifier(true)"
-			value="Annuler">
-	</div>
+<%
+# / FACTURE INNER
+# ---------------------------------------------------------------------
+%>
+
+
+</div>
+<%
+#
+# / FIN DE LA PAGE DE FACTURE
+# ---------------------------------------------------------------------
+%>
+
+<%
+# ---------------------------------------------------------------------
+# 	Formulaire pour les informations générales
+%>
+
+<form class="dim3070 left hidden_when_formate" action="facture/main" method="POST">
+	<%= form.field_text("Lieu", 'lieu', "Paris", {class:'medium'}) %>
+	<%= form.field_text("Date", 'date', Time.now.to_i.as_human_date.gsub(/<(.*?)>/, ' ')) %>
+	<%= form.separator %>
+	<%= form.field_text("Émetteur (vous)", 'emetteur_name', nil, {placeholder:"Prénom NOM"}) %>
+	<%= form.field_textarea("Adresse", 'emetteur_adresse') %>
+	<%= form.field_text("Statut", 'emetteur_statut', "AUTEUR", {class:'medium'}) %>
+	<%= form.separator %>
+	<%= form.field_text("Client", 'client_name') %>
+	<%= form.field_textarea("Adresse", 'client_adresse') %>
+	<%= form.separator %>
+	<%= form.field_text('Numéro facture', 'facture_numero', "XXX", {class:'medium'}) %>
+	<%= form.field_text("Objet facture", 'facture_objet', "Développement du projet XXX") %>
+</form>
+
+<%
+# ---------------------------------------------------------------------
+#  BOUTONS
+%>
+<div class="right air hidden_when_print">
+  <%= "Mettre en forme la facture".in_a(class:'btn hidden_when_formate', onclick:"$.proxy(Facture,'formate')()") %>
 </div>

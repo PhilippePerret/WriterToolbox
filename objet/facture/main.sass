@@ -1,74 +1,119 @@
-div.page-mode-calcul
-  height    :  auto
+// Le DIV qui contient la facture, pour
+// pouvoir la centrer au départ (calcul) puis la mettre en taille
+// et alignenment normal
+div#conteneur_facture
+  text-align      : center
 
-div.page-mode-facture
-  min-height: 24.6cm
-  max-height: 24.6cm
+// Le DIV de la facture
+// Noter les deux modes : `mode_calcul' quand il s'agit du 
+// calcul des montants et le monde `mode_print' quand il s'agit de
+// la mise en forme
+div#div_facture
+  text-align    : left
+  padding       : 2em
+  margin        : 0
+  &.mode_calcul
+    border        : 1px solid
+    border-radius : 1em
+    display       : inline-block
+    width         : 520px
+  &.mode_print
+    border        : 0
+    border-radius : 0
+    display       : block
 
-input.montant
-  width       : 40px
-  text-align  : right
-  font-weight : bold
+  // Bas de page
+  div#mention_agessa
+    font-size   : 9pt
+    font-style  : italic
+  div#signature_emetteur
+    margin-left : 333.3px // ~10cm
+    margin-top  : 1em
+  div#emplacement_signature
+    font-size             : 1.2em
+    font-style            : italic
+    color                 : #AAA
+    margin-top            : 60px
+    margin-left           : 330px
+    -moz-transform        : rotate(-45deg)
+    -moz-transform-origin : 0 0
 
+body
+  &.when_formate_facture
+    background-color      : #3D3D3D
+    margin-left           : 4em
+    margin-top            : 0
+    section#content
+      margin            : 0 !important
+      padding           : 0 !important
+      background-color  : inherit
+      > div
+        margin            : 0.5em
+    div#page_facture
+      line-height       : 1.45em
+      padding           : 66.66px // = 2cm
+      marging           : 0
+      width             : 566.61px !important // = 17cm !important
+      max-width         : 566.61px !important // = 17cm !important
+      min-width         : 566.61px !important // = 17cm !important
+      min-height        : 840px // = 25.7cm
+      max-height        : 840px // = 25.7cm
+      height            : 840px // = 25.7cm
+      background-color  : white
+      // border            : 1px dashed red
+      font-size         : 12pt !important
+      div#div_facture_numero
+        font-size   : 10pt
+      div#div_facture_objet
+        padding     : 0.5em
+        border      : 1px solid
+        margin-top  : 0
+      div#client_name, div#emetteur_facture
+        font-weight   : bold
+        font-variant  : small-caps
+        font-size     : 1.1em
+      div#facteur_type
+        margin        : 1em 0
+      div#div_net
+        border            : 1px solid #ABABAB
+        padding-top       : 0.3em
+        padding-bottom    : 0.3em
+        padding-left      : 2em
+        margin-top        : 1em
+        margin-bottom     : 1em
+        font-weight       : bold
+      div#div_ht, div#div_ttc
+        padding-top       : 0.2em
+        padding-bottom    : 0.2em
+        padding-left      : 0.5em
+        background-color  : #DDD
+      div#div_ttc
+        margin-top          : 1em
+      div#libelle_a_deduire
+        margin-top        : 1em
+        font-style        : italic
+      div.inner
+        margin-left       : 2em
+        font-size         : 0.95em
+        
+      div#signature_emetteur
+        margin-top          : 2em
+      pre
+        font-family         : inherit
+        font-size           : inherit
+        font-style          : inherit
+        margin-top          : 0
+      div.montant
+        // pour détacher tout du bord droit en gardant l'alignement
+        // de tous les montants
+        padding-right   : 12px
 
-// ENTETE FACTURE FORMATÉE
-div#div-client_adresse
-  min-height: 100px
+    div#div_date_facture
+      float: right
+      font-style: italic
 
-// PARTIE CHIFFRÉE DE LA FACTURE
-div.interligne
-  margin-top  : 0.5cm
-
-div#div-partie-chiffree
-  width: 520px
-
-div#page_facture
-  background-color: white
-  padding: 0.2cm
-  width: 16.6cm
-
-div.page_format_calcul
-  width: 520px
-
-div.page_format_facture
-  width       : 15cm !important
-  margin-left : 1cm
-  text-align  : right
-
-div.page_format_facture
-  > div
-    margin-top: 18px
-
-  div.intitule-montant
-    text-align    : left
-    padding-left  : 40px
-
-
-  div#div-total-TTC
-    border        : 2px solid #ccc
-    padding       : 4px
-    margin-bottom : 50px
-
-  div#div-net-a-payer
-    border: 2px solid #777
-    background-color: #ccc
-    padding: 8px
-    margin-top: 40px
-    font-weight: bold
-
-div#signature-emetteur
-  margin-left: 9cm
-
-div#indication-signature
-  font-size: 1.2em
-  font-style: italic
-  color: #AAA
-  margin-top: 50px
-  margin-left: 9.5cm
-  -moz-transform: rotate(-45deg)
-  -moz-transform-origin: 0 0
-  float: left
-
+    div#coordonnees_client
+      margin-left: 8cm
 
 div.intitule-montant
   width: 340px
@@ -77,55 +122,7 @@ div.intitule-montant
 div.montant-montant
   text-align: right
 
-
-#emetteur_facture
-  font-weight: bold
-
-div#div_date_facture
-  float: right
-  font-style: italic
-
-div#coordonnees_client
-  margin-left: 8cm
-
-div#div_objet_facture
-  padding: 8px 40px
-  border: 2px solid #ccc
-
-span#objet_facture
-  font-weight: bold
-
-
-// PARTIE HAUTE DE LA FACTURE FORMATÉE
-.coordonnees
-  font-variant  : small-caps
-  font-size     : 1em
-
-div#mention_agessa
-  font-size   : 9pt
-  font-style  : italic
-  float       : left
-  width       : 6cm
-
-
-
-// CHAMP D'ÉDITION DU TEXTE
-div#div_champ_edition
-  position  : absolute
-  top       : 0
-  left      : 0
-
-textarea#champ_edition
-  width     : 300px
-  height    : 100px
-  display   : block
-
-
 @media screen
-  body
-    font-size         : 1.1em
-    background-color  : #777
-  
   div#explication
     display           : block
   div#indication-signature
@@ -137,13 +134,13 @@ textarea#champ_edition
 
 @media print
   body
-    margin    : 0
-    padding   : 0
-  div#explication
-    display           : none
-  div#indication-signature 
-    visibility        : hidden
-  input#btn-print
-    visibility        : hidden
-  .editable
+    margin            : 0 !important
+    padding           : 0 !important
+    width             : 700px
+    min-width         : 700px
+    max-width         : 700px
     background-color  : white
+    div#page_facture
+      padding           : 0 !important
+    .hidden_when_print
+      display : none
