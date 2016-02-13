@@ -30,7 +30,14 @@ class Paiement
       # On passe par ici lorsque le paiement a été effectué avec succès
       # par l'utilisateur. On peut enregistrer le paiement et informer
       # l'user de ce qu'il peut faire maintenant.
-      on_ok
+      # S'il venait de s'inscrire, on supprime sa variable session
+      # 'for_paiement' qui le laissait provisoirement tranquille à propos
+      # de la validation de son mail.
+      res = on_ok
+      app.session['for_paiement'] = nil
+      # Je ne sais pas si cette méthode a besoin du résultat, mais je le
+      # retourne quand même (en prévision des modifications futures).
+      res
     when '0'
       # On passe par ici lorsque le paiement a été annulé par
       # l'user ou par PayPal lui-même
