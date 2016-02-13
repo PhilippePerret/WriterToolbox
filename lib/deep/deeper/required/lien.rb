@@ -23,6 +23,8 @@ class Lien
 
 
   def subscribe titre = "s'abonner", options = nil
+    options ||= Hash::new
+    options.merge!(query_string:"user[subscribe]=on")
     build "user/paiement", titre, options
   end
   alias :suscribe :subscribe

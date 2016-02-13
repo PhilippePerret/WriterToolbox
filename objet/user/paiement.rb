@@ -1,7 +1,16 @@
 # encoding: UTF-8
+
+# Des liens conduisent directement à ce formulaire de paiement
+# Mais si l'utilisateur courant n'est pas encore inscrit, il
+# faut au préalable qu'il s'inscrive au site. On le redirige
+# donc vers le formulaire d'inscription.
+# Sinon, on lui permet de s'inscrire par ici.
+# Noter qu'après l'inscription, normalement, il faut valider d'abord
+# son mail pour pouvoir poursuivre. Mais pour ce qui est du paiement,
+# on login provisoirement l'user pour qu'il puisse procéder à son
+# paiement et c'est seulement après qu'on lui demande de confirmer
+# son mail.
 unless user.identified?
-  flash "Vous devez au préalable vous inscrire sur le site."
-  param(route_after_signup: "user/paiement")
   redirect_to 'user/signup'
 else
   app.require_optional 'paiement'
