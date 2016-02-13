@@ -15,7 +15,7 @@ class Lien
     titre ||= "programme #{UN_AN_UN_SCRIPT}"
     build('unan/home', titre, options)
   end
-  
+
   # Lien vers la partie analyse de films
   # @usage : <%= lien.analyses %> ou <%= lien.analyses_de_films %>
   def analyses_de_films titre = "analyses de films", options = nil
@@ -37,7 +37,7 @@ class Lien
   def forum titre = "forum", options = nil
     build('forum/home', titre, options)
   end
-  def forum_de_discussion = titre = "forum de discussion", options = nil
+  def forum_de_discussion titre = "forum de discussion", options = nil
     forum titre, options
   end
 
