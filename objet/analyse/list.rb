@@ -17,11 +17,13 @@ class << self
     class_css << options.delete(:class) if options.has_key?(:class)
 
     liste_data_films(options).collect do |hfilm|
-      titre = "#{hfilm[:titre]} ("
+      titre = "("
       titre += "#{hfilm[:titre_fr].in_span(class:'italic')} — " unless hfilm[:titre_fr].nil_if_empty.nil?
       titre += "#{hfilm[:realisateur]}, #{hfilm[:annee]})"
+
+      titre = "#{hfilm[:titre]} #{titre.in_span(class:'small')}"
       unless options[:no_link]
-        titre = titre.in_a(href:"#{folder_films}/#{hfilm[:sym]}.htm", target:'_boa_film_tm_')
+        titre = titre.in_a(href:"analyse/#{hfilm[:id]}/show", target:'_boa_film_tm_')
       end
       titre.in_li(class:'film', id:"film-#{hfilm[:id]}")
     end.join.in_ul(id:'films', class:class_css.join(' '))
@@ -119,14 +121,14 @@ class << self
 
   # Les deux listes quand on n'est pas autorisé
   def liste_analyses_autorized
+    div_information_not_subscriber +
     "Films autorisés".in_h3 +
     films_list(lisible:true, in:['seven'])
   end
 
   def liste_analyses_non_autorized
     "Film non autorisés".in_h3 +
-    div_information_not_subscriber +
-    films_list(analyzed:true, out:['seven'], no_link:true, class:'small italic') +
+    films_list(analyzed:true, out:['seven'], no_link:true, class:'discret') +
     "".in_div(style:'clear:both')
   end
 

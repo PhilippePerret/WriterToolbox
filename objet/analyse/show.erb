@@ -1,0 +1,57 @@
+<%
+# Une vue un peu speciale puisqu'elle doit interrompre le fonctionnement
+# normal en retournant tout de suite la page demandée.
+# Au départ, on ouvrait simplement le fichier HTML de l'analyse dans
+# une autre fenêtre. Le problème est qu'on pouvait alors "hacker" toutes
+# les autres analyses simplement en connaissant leur identifiant : il suffisait
+# de taper l'adresse HTML du fichier pour l'ouvrir.
+# Maintenant, on passe par ici, on vérifie que l'utilisateur peut ouvrir
+# l'analyse, et on l'ouvre si c'est possible.
+%>
+<%
+film = FilmAnalyse::Film::current
+
+# Si l'utilisateur est autorisé à voir cette analyse, il peut la
+# voir, sinon, on lui présente un message d'interdiction.
+# L'analyse de Seven est toujours consultable.
+if film.exist? && ( film.sym == 'seven' || film.user_autorized? )
+
+  # Le code HTML intégral du fichier de l'analyse de film
+  code = film.html_file.read
+
+  # On change la base du site pour faire comme si le fichier
+  # était chargé depuis la racine. Mais noter que cette
+  # balise sera détruite en fin de chargement de la page
+  # par javascript pour empêcher que les liens (et notamment
+  # les onglets) ne reconduisent à l'accueil.
+  basetag = "#{ONLINE ? site.distant_url : site.local_url}/"
+  basetag = "<base href='#{basetag}' />"
+  code.sub!(/<\/title>/,"</title>\n#{basetag}")
+
+
+  # On remplace les liens vers les CSS et JAVASCRIPT pour les
+  # charger correctement
+  code.gsub!(/\.\.\/(javascript|css)/, './data/analyse/\1')
+
+  # On ajoute en bas du fichier un script qui va supprimer
+  # la balise <base> pour que les liens n'y répondent pas. Sinon,
+  # quand on clique sur les onglets, ça revient à la page d'accueil
+  # C'est un peu hack comme procédure, mais je n'ai pas trouvé mieux
+  # pour le moment.
+  code += <<-JS
+  <script type="text/javascript">
+  $(document).ready(function(){$('base').remove()})
+  </script>
+  JS
+
+  # On sort tout de suite le code
+  page.cgi.out{ code }
+
+else
+  # L'user courant n'est pas autorisé à consulter l'analyse
+%>
+  <%= FilmAnalyse::titre_h1("Consultation impossible") %>
+  <p class='warning big'>
+    Vous n'êtes pas autorisé à consulter cette analyse, désolé.
+  </p>
+<% end %>

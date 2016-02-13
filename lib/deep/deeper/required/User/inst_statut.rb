@@ -4,7 +4,12 @@ Méthodes de statut pour l'utilisateur (courant ou autre)
 =end
 class User
 
-  # Pour admin?, super? et manitou?, cf. le fichier options.rb
+  # Pour admin?, super? et manitou?,
+  # cf. le fichier inst_options.rb
+  # Rappel : Seuls les bits de 0 à 15 peuvent être utilisés par
+  # le rest-site (la base). Les bits de 16 à 31 sont réservés à
+  # l'application elle-même. Cf. le fichier .objet/site/config.rb
+  # qui définit ces valeurs de l'application.
 
   def exist?
     return false if @id.nil?
@@ -50,6 +55,7 @@ class User
   def for_paiement?
     @for_paiement ||= param(:for_paiement) == "1"
   end
+
   # Renvoie true si l'user est abonné depuis au moins +nombre_mois+
   # au site. False dans le cas contraire.
   # Par défaut 6 mois.

@@ -2,8 +2,8 @@
 
 class User
 
-  BIT_SIMP_ANALYSTE = 1   # À proposer sa participation accepté
-                          #  Pas encore de points d'abonnements
+  BIT_SIMP_ANALYSTE = 1   # A proposer sa participation accepté
+                          # Pas encore de points d'abonnements
   BIT_REAL_ANALYSTE = 2   # À fourni un travail suffisant pour avoir
                           # des points d'abonnements.
   BIT_ANALYSTE_REDA = 4   # Analyste rédacteur, qui peut rédiger des
