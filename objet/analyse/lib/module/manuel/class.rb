@@ -42,7 +42,9 @@ class Manuel
         cdata[:titre].in_h3 +
         cdata[:items].collect do |affixe, ditem|
           href = "manuel/#{man_folder}?in=analyse&manp=#{cid}/#{affixe}"
-          ditem[:titre].in_a(href:href).in_li
+          data_lien = {href: href}
+          data_lien.merge!(class:'small') if ditem[:smaller]
+          ditem[:titre].in_a(data_lien).in_li
         end.join
       end.join.in_ul(class:'list_pages tdm')
     end
