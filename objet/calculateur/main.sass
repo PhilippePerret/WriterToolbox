@@ -1,40 +1,58 @@
 /* Styles pour le calculateur de structure */
+div#structure_ideale
+  border                : 1px solid 
+  border-radius         : 1em
+  padding               : 1em
+  font-size             : 13pt
 
-table#structure_ideale
-  font-size : 14.3pt
-  border    : 1px solid black
+  select#pages_ou_minutes
+    width                 : 180px
+    text-align            : center
+  a#btn_calculer
+    vertical-align        : text-top
+    
+  div#table_header
+    font-size             : 22.4pt
+    padding               : 1em
+  // Les "?" pour ouvrir les div d'explication
+  img.btninfo
+    width           : 18.6px
+  div.titre
+    background-color    : #578088
+    color               : white
+    font-weight         : bold
+    font-style          : italic
+    
+  // Chaque ligne contenant un acte ou une scène-clé
+  div.table_row
+    position          : relative
+    min-width         : 940px
+    padding           : 5px 0
+    border-bottom     : 1px solid #CCC
+  
+    // Définition des valeurs de pages ou minutes
+    .time_value
+      font-weight         : bold
+    // Définition des trois colonnes
+    > div
+      display             : inline-block
+      // border-right        : 1px dashed red
+    div.col_libelle
+      width               : 300px
+      text-align          : left
+    div.col_pos_ideale
+      width               : 220px
+      text-align          : center
+    div.col_zone
+      width               : 420px
+      text-align          : center
 
-  td
-    text-align  : center
 
-  tr#sttideale-titres 
-    td
-      color             : white
-      background-color  : #578088
-      font-weight       : bold
-      font-style        : italic
-
-
-  tr#ligne-duree
-    height    : 60px
-
-    td, td select, td option
-      border        : 0
-      font-size     : 21.7pt
-
-    td select
-      border : 0
-
-  td.noeud
-    text-align    : left
-    font-weight   : bold
-
-  td.explicationcachee
+  div.explication
     text-align        : justify
     border            : 1px solid grey
-    background-color  : #EEEEEE
-
-  td.explicationaffichee
-    text-align        : justify
-    border            : 1px solid grey
-    background-color  : #EEEEEE
+    background-color  : white
+    padding           : 0.6em 1.4em
+    width             : 80%
+    line-height       : 1.2em
+    margin-left       : 1.4em

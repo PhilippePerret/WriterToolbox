@@ -13,143 +13,214 @@
 #
 
 def picto_info
-  @picto_info ||= image('pictos/picto_info.png', {alt:"Infos"})
+  @picto_info ||= image('pictos/picto_info.png', {alt:"Infos", class:'btninfo'})
 end
 def bouton_info td_id, part_name
-  picto_info.in_a(onclick:"$('td##{td_id}').toggle();return false;", class:'fbp') + " " + part_name.in_span
+  picto_info.in_a(onclick:"$('div##{td_id}').toggle();return false;", class:'fbp') + " " + part_name.in_span
 end
-def td_bouton_info(td_id, elname)
-  bouton_info(td_id, elname).in_td(class:'noeud', valign:'middle')
+
+def span_unite
+  @span_unite ||= "".in_span(class:'unite')
 end
-def td_tirets
-  "---".in_td
+def span_unite_a
+  @span_unite_a ||= "".in_span(class:'unite_a')
 end
+def label_value label_id
+  "?".in_label(id: label_id, class:'time_value')
+end
+
+EXPLICATIONS = {
+  exposition:     "L’<a href=\"#\" onclick=\"return MOTS.show(51)\" class=\"sceno\">exposition</a> est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le <a href=\"#\" onclick=\"return MOTS.show(211)\" class=\"sceno\">personnage fondamental</a> (<a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a>), 2) défini l’<a href=\"#\" onclick=\"return MOTS.show(10)\" class=\"sceno\">objectif</a> ou la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>, 3) défini l’<a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>.",
+  developpement:  "Le <a href=\"#\" onclick=\"return MOTS.show(42)\" class=\"sceno\">développement</a> est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des <a href=\"#\" onclick=\"return MOTS.show(202)\" class=\"sceno\">moyens</a> utilisés par le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> pour atteindre son but.",
+  denouement:     "Le <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a> correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>, où sera donné la réponse à la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>.<br />Le dénouement peut être amené ou commencer par une <a href=\"#\" onclick=\"return MOTS.show(199)\" class=\"sceno\">crise</a>.",
+  incidentdec:    "L’<a href='#' onclick=\"return MOTS.show(305)\" class='sceno'>incident perturbateur</a> et l’<a href=\"#\" onclick=\"return MOTS.show(67)\" class=\"sceno\">incident déclencheur</a> sont les deux évènements qui déclenchent le film et qui en quelque sorte le rendent possible.<br />NB : Ces nœuds sont des <i>nœuds mobiles</i> et leur durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’ils se situent entre les <span class='unite'>page</span>s définies.",
+  decobjectif:    "La <a href='#' onclick=\"return MOTS.show(198)\" class='sceno'>déclaration de l’objectif</a> est le moment du film où un objectif clair se définit (est perceptible par le spectateur/lecteur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>",
+  pivot1:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">premier pivot</a> est le nœud dramatique qui fait entrer le film dans son développement. Ça peut être le moment où le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> prend la décision d'entrer en action, décide ou accepte d’agir.",
+  cledevoute:     "La <a href=\"#\" onclick=\"return MOTS.show(37)\" class=\"sceno\">clé de voûte</a> est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Souvent, il lance l’histoire dans une nouvelle direction.",
+  pivot2:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">second pivot</a> est l’évènement qui fait entrer l’histoire dans son <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a>. C’est le pendant du Pivot 1.",
+  climax:         "Le <a href=\"#\" onclick=\"return MOTS.show(185)\" class=\"sceno\">climax</a> est le moment du film (souvent une scène) où s’opposent frontalement <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>. Le résultat de cette opposition fournira la <a href=\"#\" onclick=\"return MOTS.show(209)\" class=\"sceno\">Réponse Dramatique Fondamentale</a>."
+
+}
 
 # ---------------------------------------------------------------------
 %>
 
-<% unless user.subscribed? %>
-  <p class='center'><span class='warning border'>L'outil pour calculer sa structure parfaite n'est accessible qu'aux abonnés.</span></p>
+<% unless user.subscribed? || user.admin? %>
+  <p class='right'><span class='warning small'>L'outil pour calculer sa structure parfaite n'est accessible qu'aux abonnés.</span></p>
 <% end %>
 
-<table id="structure_ideale" cellpadding="4" cellspacing="0" border="1" width="100%">
-<tr id="ligne-duree">
-	<td colspan="3">Structure pour
-    <%= (0..9).in_select(id:'centaines', name:'centaines') %>
-    <%= (0..9).in_select(id:'dizaines', name:'dizaines') %>
-    <%= (0..9).in_select(id:'unites', name:'unites') %>
-    <%=
-      ['pages', 'minutes'].collect do |key|
-        key.in_option(value: key)
-      end.join.in_select(id: 'pages_ou_minutes', onchange: "$.proxy(STT, 'on_change_minutes_or_page', this.value)()")
-    %>
-  </td>
-	<td align="right" id="bouton_calculer">
-    <% if user.identified? %>
-      <%= "Calculer".in_a(onclick:"$.proxy(STT, 'calculeStructureIdeale', false)();return false;", class:'btn medium air') %>
-    <% end %>
-  </td>
-</tr>
-<tr id="sttideale-titres">
-	<td width="42%">Nœud / Zone</td>
-	<td width="20%">Position<br />idéale</td>
-  <%=
-    "Entre page…" .in_td(width:"18%", id:"td_entre_page") +
-    "et page…"    .in_td(width:"18%", id:"td_et_page")
-  %>
-</tr>
-<tr>
-  <%= td_bouton_info('exExpo', "EXPOSITION") %>
-	<td></td>
-  <td colspan="2">
-    de <%= "1".in_label(id:'expo_start') %> à <%= "?".in_label(id:'expo_end') %>
-  </td>
-</tr>
-<tr>
-	<td colspan="4" id="exExpo" style="display:none;" class="explicationcachee">L’<a href="#" onclick="return MOTS.show(51)" class="sceno">exposition</a> est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le <a href="#" onclick="return MOTS.show(211)" class="sceno">personnage fondamental</a> (<a href="#" onclick="return MOTS.show(8)" class="sceno">protagoniste</a>), 2) défini l’<a href="#" onclick="return MOTS.show(10)" class="sceno">objectif</a> ou la <a href="#" onclick="return MOTS.show(210)" class="sceno">Question Dramatique Fondamentale</a>, 3) défini l’<a href="#" onclick="return MOTS.show(167)" class="sceno">antagonisme</a>.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exIncDec', "Incident déclencheur") %>
-	<%= td_tirets %>
-	<td>1 (ou avant) </td>
-  <td><%= "?".in_label(id:'incident_declencheur') %></td>
-</tr>
+<div id="structure_ideale" class="">
 
-<tr>
-	<td id="exIncDec" colspan="4" class="explicationcachee" style="display:none;">L’<a href="#" onclick="return MOTS.show(67)" class="sceno">incident déclencheur</a> est l’évènement qui déclenche le film, qui le rend possible.<br />NB : Ce nœud est un <i>nœud mobile</i> et sa durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’il se situe entre les pages définies.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exDO', "Déc. Objectif (ou Q.D.F.)") %>
-	<%= td_tirets %>
-  <%= "?".in_label(id:'do_start').in_td %>
-  <%= "?".in_label(id:'do_end').in_td %>
-</tr>
-<tr>
-	<td id="exDO" colspan="4" class="explicationcachee" style="display:none;">La <b>Déclaration de l’Objectif</b> est le moment du film où un objectif clair se définit (est perceptible par le spectateur/lecteur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la <a href="#" onclick="return MOTS.show(210)" class="sceno">Q.D.F.</a> (Question Dramatique Fondamentale).</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exP1', "Pivot 1") %>
-  <%= "?".in_label(id:'pvt1').in_td %>
-  <%= "?".in_label(id:'pvt1_start').in_td %>
-  <%= "?".in_label(id:'pvt1_end').in_td %>
-</tr>
-<tr>
-	<td id="exP1" colspan="4" class="explicationcachee" style="display:none;">Le <a href="#" onclick="return MOTS.show(91)" class="sceno">premier pivot</a> est le nœud dramatique qui fait entrer le film dans son développement. Ça peut être le moment où le <a href="#" onclick="return MOTS.show(8)" class="sceno">protagoniste</a> prend la décision d'entrer en action, décide ou accepte d’agir.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exDev', "DÉVELOPPEMENT") %>
-	<td></td>
-  <%=
-    ("de "+"?".in_label(id:'dev_start')+" à "+"?".in_label(id:'dev_end')).in_td(colspan:'2')
+  <%
+  # Pour choisir la durée du roman/film et donc l'unité
+  # minute ou page
   %>
-</tr>
-<tr>
-	<td id="exDev" colspan="4" class="explicationcachee" style="display:none;">Le <a href="#" onclick="return MOTS.show(42)" class="sceno">développement</a> est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des <a href="#" onclick="return MOTS.show(202)" class="sceno">moyens</a> utilisés par le <a href="#" onclick="return MOTS.show(8)" class="sceno">protagoniste</a> pour atteindre son but.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exCdV', "clé de voûte") %>
-	<td><label id="cdv">?</label> </td>
-	<td><label id="cdv_start">?</label></td>
-	<td><label id="cdv_end">?</label></td>
-</tr>
-<tr>
-	<td id="exCdV" colspan="4" class="explicationcachee" style="display:none;">La <a href="#" onclick="return MOTS.show(37)" class="sceno">clé de voûte</a> est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Souvent, il lance l’histoire dans une nouvelle direction.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exP2', "Pivot 2") %>
-	<td><label id="pvt2">?</label></td>
-	<td><label id="pvt2_start">?</label></td>
-	<td><label id="pvt2_end">?</label></td>
-</tr>
-<tr>
-	<td id="exP2" colspan="4" class="explicationcachee" style="display:none;">Le <a href="#" onclick="return MOTS.show(91)" class="sceno">second pivot</a> est l’évènement qui fait entrer l’histoire dans son <a href="#" onclick="return MOTS.show(38)" class="sceno">dénouement</a>. C’est le pendant du Pivot 1.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exDen', "DÉNOUEMENT") %>
-	<td></td>
-	<td colspan="2">de <label id="den_start">?</label> à <label id="den_end">?</label></td>
-</tr>
-<tr>
-	<td id="exDen" colspan="4" class="explicationcachee" style="display:none;">Le <a href="#" onclick="return MOTS.show(38)" class="sceno">dénouement</a> correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre <a href="#" onclick="return MOTS.show(8)" class="sceno">protagoniste</a> et
-    <a href="#" onclick="return MOTS.show(167)" class="sceno">antagonisme</a>, où sera donné la réponse à la <a href="#" onclick="return MOTS.show(210)" class="sceno">Question Dramatique Fondamentale</a>.<br />Le dénouement peut être amené ou commencer par une <a href="#" onclick="return MOTS.show(199)" class="sceno">crise</a>.</td>
-</tr>
-<tr>
-  <%= td_bouton_info('exClmx', "Climax") %>
-  <%= td_tirets %>
-  <%=
-    "?".in_label(id:'climax_start').in_td + "?".in_label(id:'climax_end').in_td
+  <div id="table_header" class="table_header">
+    Structure pour
+      <%= (0..9).in_select(id:'centaines', name:'centaines') %>
+      <%= (0..9).in_select(id:'dizaines', name:'dizaines') %>
+      <%= (0..9).in_select(id:'unites', name:'unites') %>
+      <%=
+        ['pages', 'minutes'].collect do |key|
+          key.in_option(value: key)
+        end.join.in_select(id: 'pages_ou_minutes')
+      %>
+      <% if user.identified? %>
+        <%= "Calculer".in_a(id:'btn_calculer', onclick:"$.proxy(STT, 'calculeStructureIdeale', false)();return false;", class:'btn medium air') %>
+      <% end %>
+  </div>
+
+  <%
+  # LIGNE DES TITRES
   %>
-</tr>
-<tr>
-	<td id="exClmx" colspan="4" class="explicationcachee" style="display:none;">Le <a href="#" onclick="return MOTS.show(185)" class="sceno">climax</a> est le moment du film (souvent une scène) où s’opposent frontalement <a href="#" onclick="return MOTS.show(8)" class="sceno">protagoniste</a> et <a href="#" onclick="return MOTS.show(167)" class="sceno">antagonisme</a>.<br />Le résultat de cette opposition fournira la <a href="#" onclick="return MOTS.show(209)" class="sceno">Réponse Dramatique Fondamentale</a>.</td>
-</tr>
-<tr>
-	<td class="noeud">Fin</td>
-	<td><label id="duree_film">?</label></td>
-	<td></td>
-	<td></td>
-</tr>
-</table>
+  <div class="table_row titre">
+    <div class="col_libelle">
+      Acte / Nœud
+    </div>
+    <div class="col_pos_ideale">
+      Position idéale
+    </div>
+    <div class="col_zone">
+      Entre <%= span_unite %> et <%= span_unite %>
+    </div>
+  </div>
+
+  <%# EXPOSITION %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exExpo', "EXPOSITION") %></div>
+    <div class="col_pos_ideale">
+      <%= span_unite %> <%= label_value 'expo_start' %>
+      à <%= label_value 'expo_end' %>
+    </div>
+    <div class="col_zone">---</div>
+  </div>
+  <div id="exExpo" class="explication" style="display:none">
+    <%= EXPLICATIONS[:exposition] %>
+  </div>
+
+  <%# DÉVELOPPEMENT %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exDev', "DÉVELOPPEMENT") %></div>
+    <div class="col_pos_ideale">
+      <%= span_unite %> <%= label_value 'dev_start' %>
+      à <%= label_value 'dev_end' %>
+    </div>
+    <div class="col_zone">---</div>
+  </div>
+  <div id="exDev" class="explication" style="display:none">
+    <%= EXPLICATIONS[:developpement] %>
+  </div>
+
+
+  <%# DÉNOUEMENT %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exDen', "DÉNOUEMENT") %></div>
+    <div class="col_pos_ideale">
+      <%= span_unite %> <%= label_value 'den_start' %>
+      à <%= label_value 'den_end' %>
+    </div>
+    <div class="col_zone">---</div>
+  </div>
+  <div class="explication" id='exDen' style='display:none'>
+    <%= EXPLICATIONS[:denouement] %>
+  </div>
+
+  <%# INCIDENT PERTURBATEUR ET DÉCLENCHEUR %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exIncDec', "Inc. perturbateur et déclencheur") %></div>
+    <div class="col_pos_ideale">---</div>
+    <div class="col_zone">
+      Quelque part entre <%= span_unite %> <%= label_value 'expo_start' %> et <%= span_unite %> <%= label_value 'incident_declencheur' %>
+    </div>
+  </div>
+  <div id='exIncDec' class="explication" style='display:none'>
+    <%= EXPLICATIONS[:incidentdec] %>
+  </div>
+
+  <%# DÉCLARATION OBJECTIF %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exDO', "Déc. Objectif ou QDF") %></div>
+    <div class="col_pos_ideale">---</div>
+    <div class="col_zone">
+      Quelque part entre <%= span_unite %> <%= label_value 'do_start' %>
+      et <%= span_unite %> <%= label_value 'do_end' %>
+    </div>
+  </div>
+  <div id="exDO" class="explication" style='display:none'>
+    <%= EXPLICATIONS[:decobjectif] %>
+  </div>
+
+
+  <%# PIVOT 1 %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exP1', "Pivot 1") %></div>
+    <div class="col_pos_ideale">
+      finit <%= span_unite_a %> <%= label_value 'pvt1' %>
+    </div>
+    <div class="col_zone">
+      Après <%= span_unite %> <%= label_value 'pvt1_start' %>
+      et s'achève <%= span_unite_a %> <%= label_value 'pvt1_end' %>
+    </div>
+  </div>
+  <div id="exP1" class="explication" style="display:none">
+    <%= EXPLICATIONS[:pivot1] %>
+  </div>
+
+  <%# CLÉ DE VOÛTE %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exCdV', "clé de voûte") %></div>
+    <div class="col_pos_ideale">
+      Autour de <%= span_unite %> <%= label_value 'cdv' %>
+    </div>
+    <div class="col_zone">
+      Entre <%= span_unite %> <%= label_value 'cdv_start' %>
+      et <%= span_unite %> <%= label_value 'cdv_end' %>
+    </div>
+  </div>
+  <div id="exCdV" class="explication" style='display:none'>
+    <%= EXPLICATIONS[:cledevoute] %>
+  </div>
+
+  <%# PIVOT 2 %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exP2', "Pivot 2") %></div>
+    <div class="col_pos_ideale">
+      finit <%= span_unite_a %> <%= label_value 'pvt2' %>
+    </div>
+    <div class="col_zone">
+      Après <%= span_unite %> <%= label_value 'pvt2_start' %>
+      et s'achève <%= span_unite_a %> <%= label_value 'pvt2_end' %>
+    </div>
+  </div>
+  <div id="exP2" class="explication" style="display:none">
+    <%= EXPLICATIONS[:pivot2] %>
+  </div>
+
+  <%# CLIMAX %>
+  <div class="table_row">
+    <div class="col_libelle"><%= bouton_info('exClmx', "Climax") %></div>
+    <div class="col_pos_ideale">---</div>
+    <div class="col_zone">
+      Quelque part entre <%= span_unite %> <%= label_value 'climax_start' %>
+      et <%= span_unite %> <%= label_value 'climax_end' %>
+    </div>
+  </div>
+  <div id="exClmx" class="explication" style="display:none">
+    <%= EXPLICATIONS[:climax] %>
+  </div>
+
+  <%# FIN %>
+  <div class="table_row">
+    <div class="col_libelle right">
+      <%= "FIN".in_span(style:'padding-right:1em') %>
+    </div>
+    <div class="col_pos_ideale">
+      <%= span_unite_a %> <%= label_value 'duree_film' %>
+    </div>
+    <div class="col_zone"></div>
+  </div>
+</div>
+
 
 <% unless user.identified? %>
   <%
