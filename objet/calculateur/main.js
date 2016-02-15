@@ -27,9 +27,11 @@ $.extend(window.STT, {
 		}
 
 		// Tous les span de class 'unite' doivent être renseignés
-		// avec la valeur de l'unité
-		$('span.unite').html(ParPages ? 'page' : '')
-		$('span.unite_a').html(ParPages ? 'page' : 'à')
+		// avec la valeur de l'unité et on règle le titre "entre…
+		// et… "
+		$('span.unite').html(ParPages ? 'page' : '') ;
+		$('span.unite_a').html(ParPages ? 'page' : 'à') ;
+		$('div#col_zone_titre').html(ParPages ? "Entre page… et page…" : "Entre minute… et minute…") ;
 
 		/* Douzième et demi douzième */
 		var douzieme 			= duree_film / 12 ;

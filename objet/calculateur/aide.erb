@@ -5,13 +5,13 @@
 </div>
 
 <p>
-  On peut, grâce au <%= "“calculateur de structure”".in_a(href:"calculateur/main") %>, calculer la position idéale de ses nœuds dramatiques importants et de ses actes, que ce soit pour un roman (dont on connait approximativement le nombre de pages) ou un scénario (dont on doit forcément connaitre la longueur si c'est un long-métrage, en fonction du pays où on le produira).
+  On peut, grâce au <%= "“calculateur de structure”".in_a(href:"calculateur/main") %>, calculer la position parfaite de ses nœuds dramatiques et de ses actes, que ce soit pour un roman (dont on connait approximativement le nombre de pages) ou un scénario (dont on doit forcément connaitre la longueur si c'est un long-métrage, en fonction du pays où on le produira).
 </p>
 
 <h4>Utilisation du calculateur</h4>
 
 <p>
-  Son utilisation est extrêmement aisée :
+  Son utilisation est extrêmement simple :
 </p>
 <ul>
   <li>Régler le nombre de pages ou de minutes dans les menus de la bande supérieure du tableau, par centaines, dizaines et unités ;</li>
@@ -19,13 +19,19 @@
   <li>Cliquer sur le bouton “Calculer” (*)</li>
 </ul>
 <div class="tiny">
-    (*) Noter que le bouton “Calculer” n'apparait que si <%= (lien.subscribe "vous êtes abonné") %>.
+  <% if user.admin? %>
+    (*) Noter que le bouton “Calculer” apparait parce que vous êtes administrateur.
+  <% elsif user.subscribed? %>
+    (*) Noter que  le bouton “Calculer” n'apparait que parce que vous êtes abonné<%= user.f_e %> au site.
+  <% else %>
+    (*) Noter que le bouton “Calculer” n'apparait pas puisque vous n'êtes pas abonné<%= user.f_e %> au site (<%= (lien.subscribe "vous abonner, pour #{site.tarif_humain} par an, soit #{site.tarif_humain_par_mois}") %>).
+  <% end %>
 </div>
 <p>
-  Le programme calcule alors la position idéale des actes et des scènes formelles et les affiche dans le tableau.
+  Le programme calcule alors la position parfaites des actes et des scènes formelles conformément au <em>Paradigme de Field Augmenté</em> (PFA) et les affiche dans le tableau.
 </p>
 <p class='small'>
-  Notez que dans le cadre d'un apprentissage ou d'un exercice, il peut être excellent de respecter ces positions à la lettre, à la minute et ou à la page près. Cependant, dans le travail <em>normal</em> d'écriture, la structure propre du film peut s'écarter quelque peu du modèle absolu, comme vous pourrez le constater par vous-même dans <%= lien.analyses_de_films("les analyses de films") %> présentées sur ce site. En conséquence, inutile de vous jeter par la fenêtre si certaines parties de votre projet débordent de quelques minutes ou de quelques pages ;-).
+  Notez que dans le cadre d'un apprentissage ou d'un exercice, il peut être excellent de respecter ces positions à la lettre, à la minute et ou à la page près. Cependant, dans le travail <em>normal</em> d'écriture, la structure propre du roman, de la BD ou du film peut s'écarter quelque peu du modèle absolu, comme vous pourrez le constater par vous-même dans <%= lien.analyses_de_films("les analyses de films") %> présentées sur ce site. En conséquence, inutile de vous jeter par la fenêtre si certaines parties de votre projet débordent de quelques minutes ou de quelques pages ;-).
 </p>
 
 <h4>Lecture des résultats dans le tableau</h4>
@@ -38,7 +44,7 @@
 
 <h4>Utile aussi pour l'analyse</h4>
 <p>
-  Notez que ce calculateur peut également servir à l’analyse de films, pour déterminer le PFA du film (le Paradigme de Field Augmenté) et donc le décalage de sa structure propre par rapport à ce PFA.
+  Notez que ce calculateur peut également servir à l’analyse de films, pour déterminer le PFA du film et donc le décalage de sa structure propre par rapport à ce PFA.
 </p>
 <div class="right small">
   <%= "Revenir au calculateur".in_a(href:'calculateur/main') %>

@@ -30,15 +30,15 @@ def label_value label_id
 end
 
 EXPLICATIONS = {
-  exposition:     "L’<a href=\"#\" onclick=\"return MOTS.show(51)\" class=\"sceno\">exposition</a> est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le <a href=\"#\" onclick=\"return MOTS.show(211)\" class=\"sceno\">personnage fondamental</a> (<a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a>), 2) défini l’<a href=\"#\" onclick=\"return MOTS.show(10)\" class=\"sceno\">objectif</a> ou la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>, 3) défini l’<a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>.",
-  developpement:  "Le <a href=\"#\" onclick=\"return MOTS.show(42)\" class=\"sceno\">développement</a> est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des <a href=\"#\" onclick=\"return MOTS.show(202)\" class=\"sceno\">moyens</a> utilisés par le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> pour atteindre son but.",
-  denouement:     "Le <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a> correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>, où sera donné la réponse à la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>.<br />Le dénouement peut être amené ou commencer par une <a href=\"#\" onclick=\"return MOTS.show(199)\" class=\"sceno\">crise</a>.",
-  incidentdec:    "L’<a href='#' onclick=\"return MOTS.show(305)\" class='sceno'>incident perturbateur</a> et l’<a href=\"#\" onclick=\"return MOTS.show(67)\" class=\"sceno\">incident déclencheur</a> sont les deux évènements qui déclenchent le film et qui en quelque sorte le rendent possible.<br />NB : Ces nœuds sont des <i>nœuds mobiles</i> et leur durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’ils se situent entre les <span class='unite'>page</span>s définies.",
-  decobjectif:    "La <a href='#' onclick=\"return MOTS.show(198)\" class='sceno'>déclaration de l’objectif</a> est le moment du film où un objectif clair se définit (est perceptible par le spectateur/lecteur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>",
+  exposition:     "L’<a href=\"#\" onclick=\"return MOTS.show(51)\" class=\"sceno\">EXPOSITION</a> est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le <a href=\"#\" onclick=\"return MOTS.show(211)\" class=\"sceno\">Personnage Fondamental</a> (<a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a>), 2) défini l’<a href=\"#\" onclick=\"return MOTS.show(10)\" class=\"sceno\">Objectif Fondamental</a> ou la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>, 3) défini l’<a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">Antagonisme</a>.",
+  developpement:  "Le <a href=\"#\" onclick=\"return MOTS.show(42)\" class=\"sceno\">DÉVELOPPEMENT</a> est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des <a href=\"#\" onclick=\"return MOTS.show(202)\" class=\"sceno\">moyens</a> utilisés par le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> pour atteindre son but.",
+  denouement:     "Le <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">DÉNOUEMENT</a> correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>, où sera donné la RDF, réponse à la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>. Le d. peut être amené ou commencer par une <a href=\"#\" onclick=\"return MOTS.show(199)\" class=\"sceno\">Crise</a>.",
+  incidentdec:    "L’<a href='#' onclick=\"return MOTS.show(305)\" class='sceno'>Incident Perturbateur</a> et l’<a href=\"#\" onclick=\"return MOTS.show(67)\" class=\"sceno\">Incident Déclencheur</a> sont les deux évènements qui déclenchent le film et qui en quelque sorte le rendent possible. NB : Ces nœuds sont des <i>nœuds mobiles</i> et leur durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’ils se situent entre les #{span_unite}s définies.",
+  decobjectif:    "La <a href='#' onclick=\"return MOTS.show(198)\" class='sceno'>déclaration de l’objectif</a> est le moment du film où un objectif clair se définit (est perceptible par le lecteur/spectateur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>",
   pivot1:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">premier pivot</a> est le nœud dramatique qui fait entrer le film dans son développement. Ça peut être le moment où le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> prend la décision d'entrer en action, décide ou accepte d’agir.",
-  cledevoute:     "La <a href=\"#\" onclick=\"return MOTS.show(37)\" class=\"sceno\">clé de voûte</a> est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Souvent, il lance l’histoire dans une nouvelle direction.",
-  pivot2:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">second pivot</a> est l’évènement qui fait entrer l’histoire dans son <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a>. C’est le pendant du Pivot 1.",
-  climax:         "Le <a href=\"#\" onclick=\"return MOTS.show(185)\" class=\"sceno\">climax</a> est le moment du film (souvent une scène) où s’opposent frontalement <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>. Le résultat de cette opposition fournira la <a href=\"#\" onclick=\"return MOTS.show(209)\" class=\"sceno\">Réponse Dramatique Fondamentale</a>."
+  cledevoute:     "La <a href=\"#\" onclick=\"return MOTS.show(37)\" class=\"sceno\">Clé de Voûte</a> est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Il relance souvent l’histoire dans une direction nouvelle.",
+  pivot2:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">Second Pivot</a> est l’évènement qui fait entrer l’histoire dans son <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a>. C’est le pendant du Pivot 1.",
+  climax:         "Le <a href=\"#\" onclick=\"return MOTS.show(185)\" class=\"sceno\">climax</a> est le moment du film (souvent une scène) où s’opposent frontalement <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>. Le résultat de cette opposition fournira dans la scène ou juste après la <a href=\"#\" onclick=\"return MOTS.show(209)\" class=\"sceno\">Réponse Dramatique Fondamentale</a>."
 
 }
 
@@ -74,14 +74,14 @@ EXPLICATIONS = {
   # LIGNE DES TITRES
   %>
   <div class="table_row titre">
-    <div class="col_libelle">
+    <div class="col_libelle center">
       Acte / Nœud
     </div>
     <div class="col_pos_ideale">
-      Position idéale
+      Position parfaite
     </div>
-    <div class="col_zone">
-      Entre <%= span_unite %> et <%= span_unite %>
+    <div id="col_zone_titre" class="col_zone">
+      Entre… et…
     </div>
   </div>
 
