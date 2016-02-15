@@ -1,0 +1,20 @@
+<%
+# Vue pour une recherche dans le scénodico
+%>
+<%= Scenodico::titre_h1("Recherche") %>
+<%
+site.require 'form_tools'
+form.prefix = 'search'
+%>
+<form class="dim3070" action="scenodico/search" method="POST">
+  <%= 'search_scenodico'.in_hidden(name:'operation') %>
+  <%= form.field_text("Chercher…", 'search', nil) %>
+  <%= form.field_checkbox("Dans les mots", 'in_mot', nil) %>
+  <%= form.field_checkbox("Dans les définitions", 'in_def', nil) %>
+  <%= form.submit_button("Chercher") %>
+</form>
+
+<%
+# Le résultat de la recherche, si une recherche a été demandée
+%>
+<%= Scenodico::resultat_recherche %>

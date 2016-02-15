@@ -13,6 +13,10 @@ class Mot
       mot_mot = $2.to_s
       mot_mot.in_a(href:"scenodico/#{mot_id}/show", class:'mot', target:'_mot_scenodico_')
     }
+    str.gsub!(/FILM\[(.*?)\]/){
+      tout = $&
+      film_id = $1.to_s
+    }
     return str
   end
 
@@ -37,15 +41,17 @@ class Mot
   def synonymes_formated
     ( formate_mots synonymes )
   end
+
   def hcategories
     (categories||Array::new).collect do |cate_id|
       Scenodico::Categorie::get(cate_id).hname
     end.join(' – ')
   end
+
   def liens_formated
     return "---" if liens.nil?
     liens.collect do |lien|
-      lien
+      lien.in_a(href:lien)
     end.join(' – ')
   end
 end #/Mot

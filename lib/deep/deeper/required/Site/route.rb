@@ -6,6 +6,12 @@ Méthodes propres au traitement de la route
 =end
 class SiteHtml
 
+  # Retourne true si la route +route+ est égale à la route
+  # courante
+  def current_route? route_checked
+    self.current_route.route == route_checked
+  end
+
   # Un raccourci pour obtenir l'instance courante
   # de la route à l'aide de `site.objet` ou `site.instance`
   def objet

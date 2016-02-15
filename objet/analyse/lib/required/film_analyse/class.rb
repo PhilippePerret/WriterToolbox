@@ -26,7 +26,7 @@ class FilmAnalyse
       onglets.merge!("MON BUREAU" => 'analyse/bureau_perso') if user.analyste?
       onglets.collect do |tit, href|
         tit.in_a(href:href).in_li
-      end.join.in_ul(class: 'small onglets')
+      end.join.in_ul(class: 'onglets')
 
     end
 
