@@ -1,5 +1,9 @@
 <%
-# Vue pour l'affichage de la liste des mots
+# Vue pour l'affichage de la liste des mots comme un
+# dictionnaire avec un panneau par lettre.
 %>
 <%= Scenodico::titre_h1("Dictionnaire") %>
-<%= Scenodico::as_ul %>
+<%= Scenodico::in_panneaux %>
+<p class='tiny discret' style="margin-top:1em; border-top:1px solid #999">
+  Le <strong>Scénodico</strong> contient à l'heure actuelle <strong><%= Scenodico::count %> mots</strong>.
+</p>

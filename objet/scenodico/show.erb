@@ -5,8 +5,36 @@
 def mot
   @mot ||= site.objet
 end
+
+# Pour tout charger d'un coup
+mot.get_all
+debug "mot : #{mot.data.pretty_inspect}"
+
 %>
 <%= Scenodico::titre_h1(mot.mot) %>
-<p>
-  [Affichage de la définition du mot #<%= site.current_route.objet_id %>]
-</p>
+<div class="dim2080">
+  <div class='row'>
+    <span class="libelle">Définition</span>
+    <span class="value"><%= mot.definition_formated %></span>
+  </div>
+  <div class='row'>
+    <span class="libelle">Relatifs</span>
+    <span class="value"><%= mot.relatifs_formated %> </span>
+  </div>
+  <div class='row'>
+    <span class="libelle">Contraires</span>
+    <span class="value"><%= mot.contraires_formated %></span>
+  </div>
+  <div class='row'>
+    <span class="libelle">Synonymes</span>
+    <span class="value"><%= mot.synonymes_formated %></span>
+  </div>
+  <div class='row'>
+    <span class='libelle'>Catégories</span>
+    <span class="value"><%= mot.hcategories %></span>
+  </div>
+  <div class='row'>
+    <span class="libelle">Liens</span>
+    <span class="value"><%= mot.liens_formated %></span>
+  </div>
+</div>
