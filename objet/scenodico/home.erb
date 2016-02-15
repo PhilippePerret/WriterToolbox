@@ -1,7 +1,10 @@
 <%
 # Page d'accueil du scénodico
 %>
-<h1>Le Scénodico</h1>
+<%= Scenodico::titre_h1 %>
 <p>
   Bienvenue dans le <strong>Scénodico</strong>, le parfait dictionnaire du scénariste et de l'auteur.
+</p>
+<p>
+  <%= "Dictionnaire".in_a(href:'scenodico/list') %>
 </p>

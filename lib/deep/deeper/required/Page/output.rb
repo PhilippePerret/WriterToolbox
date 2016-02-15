@@ -20,6 +20,7 @@ class Page
 <meta content="text/html; charset=utf-8" http-equiv="Content-type">
 <title>#{page.title}</title>
 <base href="#{site.base}" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
 #{page.javascript}
 #{page.css}
 #{page.raw_css}

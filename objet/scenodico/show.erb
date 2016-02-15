@@ -1,0 +1,12 @@
+<%
+# Affichage de la définition d'un mot
+%>
+<%
+def mot
+  @mot ||= site.objet
+end
+%>
+<%= Scenodico::titre_h1(mot.mot) %>
+<p>
+  [Affichage de la définition du mot #<%= site.current_route.objet_id %>]
+</p>
