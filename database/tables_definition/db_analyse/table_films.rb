@@ -2,6 +2,7 @@
 =begin
 Définition du schéma de la table des films
 C'est la table minimale contenant les informations minimales
+Noter que les ID sont synchronisés avec la table filmodico.films
 =end
 def schema_table_analyse_films
   @schema_table_analyse_films ||= {

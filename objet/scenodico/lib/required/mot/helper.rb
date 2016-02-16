@@ -7,16 +7,7 @@ class Mot
   end
 
   def formate str
-    str.gsub!(/MOT\[([0-9]+)\|(.*?)\]/){
-      tout    = $&
-      mot_id  = $1.to_i
-      mot_mot = $2.to_s
-      mot_mot.in_a(href:"scenodico/#{mot_id}/show", class:'mot', target:'_mot_scenodico_')
-    }
-    str.gsub!(/FILM\[(.*?)\]/){
-      tout = $&
-      film_id = $1.to_s
-    }
+    str.formate_balises_crochets
     return str
   end
 

@@ -28,8 +28,8 @@ class Scenodico
       end
 
       @found = found
-      debug found.pretty_inspect
-      flash "Recherche de #{text_searched}"
+      # On s'arrête là, et c'est la vue, en appelant `resultat_recherche`,
+      # qui demandera la construction du résultat.
     end
 
     def resultat_recherche
@@ -45,11 +45,13 @@ class Scenodico
     end
 
     # Les mots trouvés sous forme d'une liste UL
+    # On ajoute les définitions si la recherche devait se faire aussi dans la
+    # définition, et on met les mots cherchés en exergue.
     def mots_trouved_as_ul
       @found.collect do |mid, hmot|
         c = hmot[:mot].in_a(href:"scenodico/#{mid}/show", target:'_new').in_div(class:'mot')
         if in_definition? && hmot[:definition].match(/#{text_searched}/i)
-          c << ( hmot[:definition].gsub(/(#{text_searched})/i, '<span class="found">\1</span>') ).in_div(class:'definition')
+          c << ( hmot[:definition].formate_balises_crochets.gsub(/(#{text_searched})/i, '<span class="found">\1</span>') ).in_div(class:'definition')
         end
         c.in_li
       end.join.in_ul(class:'mots')

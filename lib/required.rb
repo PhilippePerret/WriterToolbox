@@ -13,7 +13,9 @@ require_folder './lib/deep/deeper/required/divers'
 require_folder './lib/deep/deeper/required/Site'
 require_folder "./lib/deep/deeper/required"
 site.require_gem 'superfile'
-require_folder "./lib/handy"
+# Requérir les librairies propres à l'application
+require_folder "./lib/app/handy"
+require_folder "./lib/app/required"
 site.require_config
 require './lib/deep/deeper/output'
 
