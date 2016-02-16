@@ -2,6 +2,20 @@
 # Vue pour la recherche dans les films
 %>
 <%= Filmodico::titre_h1("Recherche") %>
-<p>
-  La recherche dans les films n'est pas encore implémentée. Merci de votre patience.
-</p>
+<%
+site.require 'form_tools'
+form.prefix = "filmsearch"
+%>
+<form class="dim2080 air" action="filmodico/search" method="POST" accept-charset="utf8">
+  <%= "proceed_search".in_hidden(name:'operation', id:'operation') %>
+  <%= form.field_text("Rechercher…", 'sought') %>
+  <%= form.field_checkbox("Rechercher dans les titres", 'in_titre') %>
+  <%= form.field_checkbox("Rechercher dans les résumés", 'in_resume') %>
+  <%= form.field_checkbox("Rechercher dans les personnes", 'in_people') %>
+  <% menu_before = (1900..(Time.now.year+4)).in_select(name:'filmsearch[year_before]')%>
+  <%= form.field_checkbox("Rechercher les films produit avant ", 'films_before', nil, {text_after: menu_before }) %>
+  <% menu_after = (1900..Time.now.year).in_select(name:'filmsearch[year_after]')%>
+  <%= form.field_checkbox("Rechercher les films produit après ", 'films_after', nil, {text_after: menu_after }) %>
+  <%= form.submit_button("Chercher !") %>
+</form>
+<%= Filmodico::resultat_recherche %>
