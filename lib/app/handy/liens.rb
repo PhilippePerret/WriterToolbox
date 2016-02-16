@@ -56,17 +56,19 @@ class Lien
   # +film_ref+ qui peut être l'ID dans la table des films ou l'ID string
   # tel qu'il est connu ailleurs (par exemple `DancerInTheDark2001`)
   def film film_ref, options = nil
+    options ||= Hash::new
     # On mémorise les films déjà cités pour ne pas mettre plusieurs
     # fois leur année et leur réalisateur
     @films_already_cited ||= Hash::new
-    table_film = site.db.create_table_if_needed('analyse', 'films')
+    # table_film = site.db.create_table_if_needed('analyse', 'films')
+    table_film = site.db.create_table_if_needed('filmodico', 'films')
     cols = [:titre, :titre_fr, :annee, :realisateur]
 
     # On récupère le film dans la table (analyse.films) avec la
     # référence donné.
     case film_ref
     when String
-      hfilm = table_film.select(where:{sym: film_ref}, colonnes:cols).values.first
+      hfilm = table_film.select(where:{film_id: film_ref}, colonnes:cols).values.first
     when Fixnum
       hfilm = table_film.get(film_ref, colonnes:cols)
     else
@@ -84,19 +86,23 @@ class Lien
 
     # Le titre, en fonction du fait que le film a déjà été cité une fois
     # ou non.
-    titre = if @films_already_cited[film_id]
-      "#{hfilm[:titre]}"
+    titre = if @films_already_cited[film_id] == true
+      "#{hfilm[:titre].in_span(class:'titre')}"
     else
       # On commence par indiquer que le film a déjà été cité
       @films_already_cited.merge!(film_id => true)
-      t = "#{hfilm[:titre]} ("
+      t = "#{hfilm[:titre].in_span(class:'titre')} ("
       t << hfilm[:titre_fr].in_span(class:'italic') + " – " if hfilm[:titre_fr] != nil
-      t << "#{hfilm[:realisateur]}, #{hfilm[:annee]}"
+      realisateur = hfilm[:realisateur].collect do |hreal|
+        "#{hreal[:prenom]} #{hreal[:nom]}"
+      end.pretty_join
+      t << "#{realisateur}, #{hfilm[:annee]}"
       t << ")"
       t
     end
     # On construit et on renvoie le lien
-    build("filmodico/#{film_id}/show", hfilm[:titre], options )
+    options.merge!(class:'film')
+    build("filmodico/#{film_id}/show", titre, options )
   end
 
 end
