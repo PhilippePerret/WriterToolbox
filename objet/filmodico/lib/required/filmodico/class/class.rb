@@ -55,6 +55,9 @@ class Filmodico
     def table_films
       @table_films ||= site.db.create_table_if_needed('filmodico', 'films')
     end
+    def table_films_analyse
+      @table_films_analyse ||= site.db.create_table_if_needed('analyse', 'films')
+    end
 
   end #/<<self
 end #/Filmodico

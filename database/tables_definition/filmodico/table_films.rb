@@ -29,8 +29,5 @@ def schema_table_filmodico_films
     producteurs:  {type:"BLOB"},
     musique:      {type:"BLOB"},
     links:        {type:"BLOB"},
-
-    created_at:   {type:"INTEGER(10)", constraint:"NOT NULL"},
-    updated_at:   {type:"INTEGER(10)", constraint:"NOT NULL"}
   end
 end

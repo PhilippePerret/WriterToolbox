@@ -24,6 +24,7 @@ class Filmodico
     ( titre_fr.nil? ? '' : titre_fr.in_div(class:'titre_fr') ) +
     resume.in_div(class:'resume') +
     div_infos +
+    '<div style="clear:both"></div>' +
     div_people
     ).in_div(class:'film')
   end

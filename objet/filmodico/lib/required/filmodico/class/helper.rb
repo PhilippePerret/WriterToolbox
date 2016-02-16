@@ -25,6 +25,8 @@ class Filmodico
     def data_onglets
       donglets = Hash::new
       donglets.merge!(DATA_ONGLETS)
+      donglets.merge!("Nouveau" => "filmodico/edit") if user.admin?
+      donglets
     end
   end #/<< self
 end #/Filmodico

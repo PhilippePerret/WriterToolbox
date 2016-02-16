@@ -1,62 +1,79 @@
 <%
 # Formulaire d'édition d'un film du scénodico et d'analyse
+raise_unless_admin
 %>
+<%= Filmodico::titre_h1("Édition de film") %>
 <%
-##
-## FORMULAIRE D'ÉDITION
-#
+site.require 'form_tools'
+form.prefix = 'film'
 
 lien_calcul_id = "Calculer l'ID du nouveau film (d'après le titre)".in_a(onclick: "$.proxy(Filmodico,'calcul_id_new_film')()", class: 'small')
 
+bouton_load_by_id = "Charger".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_id')()")
+bouton_apercu = "Voir".in_a(class:'btn tiny')
+bouton_load_by_film_id = "Charger par FILM ID".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_film_id')()")
+bouton_load_by_sym_id = "Charger par SYM ID".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_sym_id')()")
+
+bouton_reset_all = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'reset_form')()")
+
+menu_pays = PAYS_ARR_SELECT.in_select(name:'pays', onchange:"$.proxy(Filmodico, 'on_choose_pays', this.value)()")
 %>
-<div class='explication'>
-  Tous les champs marqués d'un “ * ” sont requis.
-</div>
-<form id="form_edit_film" class='form3070' action="index.rb" method="POST" accept-charset="utf-8">
-  <input type="hidden" name="r" value="filmodico/save" />
-  <%
-  {
-    film_id:      {style: 'width:300px;', unite: " #{lien_calcul_id}"},
-    titre:        {},
-    titre_fr:     {unmandatorty: true},
-    resume:       {type: 'textarea'},
-    pays:         {class:'medium', value: (film.pays.class == Array ? film.pays.join(', ') : film.pays)},
-    duree:        {class: 'medium', unite: "secondes (une opération est possible)"},
-    annee:        {class: 'medium'},
-    realisateur:  {type: 'textarea', value: people_to_string(film.realisateur), style: "height:40px; min-height:auto;"},
-    auteurs:      {type: 'textarea', value: people_to_string(film.auteurs), style: "height:100px; min-height:auto;"},
-    producteurs:  {type: 'textarea', value: people_to_string(film.producteurs), style: "height:100px; min-height:auto;"},
-    acteurs:      {type: 'textarea', value: people_to_string(film.acteurs), unmandatorty: true}
-  }.each do |key, dfield|
-    dfield.merge!(type: 'input_text') if dfield[:type].nil?
-    field_type = dfield.delete(:type)
-    dfield.merge!(name: "film_#{key}")
-    unless dfield.has_key?(:value) && dfield[:value] != nil
-      dfield.merge! value: film.send(key)
-    end
-    mandat = dfield[:unmandatorty] ? "" : " (*)"
-    explication = case key
-    when :realisateur, :producteurs
-      "Prénom, Nom"
-    when :auteurs
-      "Prénom, Nom[, fonction (Scénario, Roman…)]"
-    when :acteurs
-      "Prénom, Nom, Prénom personnage, Nom personnage, Fonction personnage"
-    else
-      nil
-    end
-  %>
-    <%=
-      unite = dfield.delete(:unite)
-      row(
-        "#{key.to_s.gsub(/_/, ' ').capitalize} #{mandat}",
-        dfield[:value].to_s.send("in_#{field_type}".to_sym, dfield) +
-        (unite ? " #{unite}" : "") +
-        (explication ? explication.in_div(class: 'small') : "")
-        )
-    %>
+<form id="form_edit_film" class='dim2080' action="filmodico/edit" method="POST" accept-charset="utf-8">
+  <%= "edit_film_by_any_id".in_hidden(name:'operation', id:'operation') %>
 
-  <% end %>
+  <%# TITRE ORIGINAL %>
+  <%= form.field_text("Titre", 'titre') %>
 
-  <%= row("", "Enregistrer".in_submit(class:'main medium'), {class: 'buttons'}) %>
+  <%# ANNÉE %>
+  <%= form.field_text("Année", 'annee', nil, {class:'short', text_after:'AAAA'}) %>
+
+  <%# ID %>
+  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_load_by_id} #{bouton_apercu} #{bouton_reset_all}"}) %>
+
+  <%# ID STRING %>
+  <%= form.field_text("ID String", 'film_id', nil, {class:'milong', text_after:bouton_load_by_film_id}) %>
+  <%= form.field_description("Identifiant calculé par le programme d'après le titre et l'année, mais qui peut être fourni pour retrouver un film.") %>
+
+  <%# SYM ID  %>
+  <%= form.field_text("ID SYM", 'sym', nil, {class:'medium', text_after:bouton_load_by_sym_id}) %>
+  <%= form.field_description("Ce symbol, par exemple `minority_report` pour le Film “Minority Report” est utilisé pour l'enregistrement dans la table `analyse.films` et sert pour le nommage des fichiers d'analyse.") %>
+
+  <%# TITRE FRANÇAIS SI EXISTE %>
+  <%= form.field_text("Titre FR", 'titre_fr') %>
+
+  <%# RÉSUMÉ %>
+  <%= form.field_textarea("Résumé", 'resume') %>
+
+  <%# PAYS %>
+  <%= form.field_text("Pays", 'pays', nil, {class:'medium', text_after: menu_pays}) %>
+  <%= form.field_description("Liste des pays, comme identifiant sur deux lettres, séparés par des espaces.") %>
+
+  <%# DURÉE %>
+  <%= form.field_text("Durée", 'duree', nil, {class:'medium', text_after:'secs.'}) %>
+  <%= form.field_description("On peut entrer la durée sous forme d'une horloge <strong>h:mm:ss</strong>.") %>
+
+  <%# DURÉE GÉNÉRIQUE %>
+  <%= form.field_text("Générique", 'duree_generique', nil, {class:'medium', text_after:'secs.'}) %>
+
+  <%# RÉALISATEUR %>
+  <%= form.field_textarea("Réalisation", 'realisateur', nil, {class:'people'}) %>
+  <%= form.field_description("Prénom, Nom - un par ligne") %>
+
+  <%# AUTEURS %>
+  <%= form.field_textarea("Écriture", 'auteurs', nil, {class:'people'}) %>
+  <%= form.field_description("Prénom, Nom[, Objet (Scénario, Roman, etc.)] - un par ligne") %>
+
+  <%# PRODUCTEURS %>
+  <%= form.field_textarea("Production", 'producteurs', nil, {class:'people'}) %>
+  <%= form.field_description("Prénom, Nom - un par ligne") %>
+
+  <%# ACTEURS %>
+  <%= form.field_textarea("Acteurs", 'acteurs', nil, {class:'people'}) %>
+  <%= form.field_description("Prénom, Nom, Prénom personnage, Nom personnage - un par ligne") %>
+
+  <%# MUSIQUE %>
+  <%= form.field_textarea("Musique", 'musique', nil) %>
+  <%= form.field_description("Prénom, Nom - un par ligne") %>
+
+  <%= form.submit_button("Enregistrer", onclick:"$.proxy(Filmodico,'on_click_submit')()") %>
 </form>

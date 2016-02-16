@@ -24,6 +24,7 @@ class String
   def purified
     str = self
     str = str.strip
+    str = str.gsub(/\r/, '') if str.match(/\n/)
     str.gsub(/"(.*?)"/, '“\1”')
   end
 
