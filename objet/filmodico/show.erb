@@ -9,5 +9,8 @@ end
 # Pour charger toutes les informations d'un seul coup
 film.get_all
 %>
-<%= Filmodico::titre_h1(film.titre) %>
+<%=
+  titre = (user.admin? ? ("[##{film.id}]".in_span(class:'tiny', style:'vertical-align:super')+" ") : "") + film.titre
+  ( Filmodico::titre_h1 titre )
+%>
 <%= film.as_card %>

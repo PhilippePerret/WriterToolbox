@@ -20,6 +20,8 @@ class Scenodico
       return hmot
     end
 
+    # Méthode invoquée quand on clique le bouton "Edit" pour
+    # éditer le mot dont l'identifiant est fourni.
     def edit_mot_by_id
       mot_id = param(:mot)[:id].nil_if_empty.to_i_inn
       if mot_id.nil?

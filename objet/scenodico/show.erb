@@ -11,7 +11,10 @@ mot.get_all
 debug "mot : #{mot.data.pretty_inspect}"
 
 %>
-<%= Scenodico::titre_h1(mot.mot) %>
+<%=
+  disp_word = (user.admin? ? ("[##{mot.id}]".in_span(class:'tiny', style:'vertical-align:super') + " ") : "") + mot.mot
+  Scenodico::titre_h1(disp_word)
+%>
 <div class="dim2080">
   <div class='row'>
     <span class="libelle">Définition</span>

@@ -37,6 +37,18 @@ types_def_for_select = [
   [9, "Valeur 9"]
 ]
 
+# Pour afficher en toutes lettres les mots relatifs, synonymes et
+# contraire, avec un lien pour les afficher
+def liste_relatifs type # :relatifs, :synonymes, :contraires
+  rels = param(:mot)[type].nil_if_empty
+  return "" if rels.nil?
+  liste_rels = rels.split(' ').collect do |mid|
+    imot = Scenodico::get(mid.to_i)
+    "#{imot.mot} [#{mid}]".in_a(href:"scenodico/#{mid}/show", target:'_new', class:'small')
+  end.join(' – ')
+  form.field_raw("", '', nil, {field: "#{liste_rels}"})
+end
+
 %>
 <form id="form_edit_mot" class="dim2080" action="scenodico/edit" method="POST">
   <%= "edit_mot_by_id".in_hidden(name:'operation', id:'operation') %>
@@ -59,24 +71,18 @@ types_def_for_select = [
 
   <%# RELATIFS %>
   <%= form.field_text("Relatifs", 'relatifs', nil) %>
+  <%= liste_relatifs(:relatifs) %>
   <%= form.field_description("Liste des IDs de mots en relation avec le mot courant, séparés par des espaces.") %>
-  <%
-    # TODO Ici, la liste des relatifs (mots)
-  %>
 
   <%# SYNONYMES %>
   <%= form.field_text("Synonymes", 'synonymes', nil) %>
+  <%= liste_relatifs(:synonymes) %>
   <%= form.field_description("Liste des IDs des mots synonymes du mot courant, séparés par des espaces.") %>
-  <%
-    # TODO Ici, la liste des synonymes (mots)
-  %>
 
   <%# CONTRAIRES %>
   <%= form.field_text("Contraires", 'contraires', nil) %>
+  <%= liste_relatifs(:contraires) %>
   <%= form.field_description("Liste des IDs des mots contraires au mot courant, séparés par des espaces.") %>
-  <%
-    # TODO Ici, la liste des contraires (mots)
-  %>
 
   <%# CATÉGORIES %>
   <%= form.field_text("Catégories", 'categories', nil, {class:'milong', text_after: menu_categories}) %>
