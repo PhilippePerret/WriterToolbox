@@ -1,0 +1,13 @@
+<%
+# Vue pour la carte du film
+%>
+<%
+def film
+  @film ||= site.objet
+end
+
+# Pour charger toutes les informations d'un seul coup
+film.get_all
+%>
+<%= Filmodico::titre_h1(film.titre) %>
+<%= film.as_card %>

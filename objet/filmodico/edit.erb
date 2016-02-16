@@ -1,0 +1,62 @@
+<%
+# Formulaire d'édition d'un film du scénodico et d'analyse
+%>
+<%
+##
+## FORMULAIRE D'ÉDITION
+#
+
+lien_calcul_id = "Calculer l'ID du nouveau film (d'après le titre)".in_a(onclick: "$.proxy(Filmodico,'calcul_id_new_film')()", class: 'small')
+
+%>
+<div class='explication'>
+  Tous les champs marqués d'un “ * ” sont requis.
+</div>
+<form id="form_edit_film" class='form3070' action="index.rb" method="POST" accept-charset="utf-8">
+  <input type="hidden" name="r" value="filmodico/save" />
+  <%
+  {
+    film_id:      {style: 'width:300px;', unite: " #{lien_calcul_id}"},
+    titre:        {},
+    titre_fr:     {unmandatorty: true},
+    resume:       {type: 'textarea'},
+    pays:         {class:'medium', value: (film.pays.class == Array ? film.pays.join(', ') : film.pays)},
+    duree:        {class: 'medium', unite: "secondes (une opération est possible)"},
+    annee:        {class: 'medium'},
+    realisateur:  {type: 'textarea', value: people_to_string(film.realisateur), style: "height:40px; min-height:auto;"},
+    auteurs:      {type: 'textarea', value: people_to_string(film.auteurs), style: "height:100px; min-height:auto;"},
+    producteurs:  {type: 'textarea', value: people_to_string(film.producteurs), style: "height:100px; min-height:auto;"},
+    acteurs:      {type: 'textarea', value: people_to_string(film.acteurs), unmandatorty: true}
+  }.each do |key, dfield|
+    dfield.merge!(type: 'input_text') if dfield[:type].nil?
+    field_type = dfield.delete(:type)
+    dfield.merge!(name: "film_#{key}")
+    unless dfield.has_key?(:value) && dfield[:value] != nil
+      dfield.merge! value: film.send(key)
+    end
+    mandat = dfield[:unmandatorty] ? "" : " (*)"
+    explication = case key
+    when :realisateur, :producteurs
+      "Prénom, Nom"
+    when :auteurs
+      "Prénom, Nom[, fonction (Scénario, Roman…)]"
+    when :acteurs
+      "Prénom, Nom, Prénom personnage, Nom personnage, Fonction personnage"
+    else
+      nil
+    end
+  %>
+    <%=
+      unite = dfield.delete(:unite)
+      row(
+        "#{key.to_s.gsub(/_/, ' ').capitalize} #{mandat}",
+        dfield[:value].to_s.send("in_#{field_type}".to_sym, dfield) +
+        (unite ? " #{unite}" : "") +
+        (explication ? explication.in_div(class: 'small') : "")
+        )
+    %>
+
+  <% end %>
+
+  <%= row("", "Enregistrer".in_submit(class:'main medium'), {class: 'buttons'}) %>
+</form>

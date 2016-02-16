@@ -17,7 +17,7 @@ class Scenodico
       data_request = Hash::new
       data_request.merge!(order: "mot ASC")
       colonnes = if options[:as] == :ids
-        [:mots] # on charge toujours les mots pour pouvoir les classer
+        [:mot] # on charge toujours les mots pour pouvoir les classer
       elsif options.has_key?(:colonnes)
         options.delete(:colonnes)
       else
@@ -32,7 +32,7 @@ class Scenodico
       # accents et des diacritiques. Il faut donc classer ici les mots
       @mots = @mots.sort_by { |mid, h| h.merge!(letters: h[:mot][0..2].normalize) ; h[:letters] }
       @count = @mots.count
-      
+
       # Retour en fonction du format :as demandé
       case options[:as] || :data
       when :data      then @mots.collect { |mid,h| h }
