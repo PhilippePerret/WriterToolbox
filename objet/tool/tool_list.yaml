@@ -57,7 +57,14 @@ scenodico:
     Le <strong>dictionnaire encyclopédique</strong> indispensable du scénariste, comportant des centaines de définitions de tous les termes propres à l'écriture, au scénario, au roman ou à la BD.
     En plus des définitions complètes, il comporte également de nombreux liens vers les pages de cours en ligne pour parfaire sa connaissance du sujet abordé.
 
+filmodico:
+  name:       Le Filmodico
+  folder:     filmodico
+  home:       filmodico/home
+  description: |
+    Le <strong>Filmodico</strong> est un dictionnaire non exhaustif de tous les films utilisés sur LA BOITE À OUTILS, pour les analyses, les cours, les illustrations ou encore les définitions de mots.
+
 autres:
   name:       Autres outils
   description: |
-    On trouve également d'autres outils bien pratiques tel que le <strong>Filmodico</strong> ou la <strong>fabrique de facture</strong>.
+    D'autres outils pratiques sont à venir, n'hésitez pas à consulter régulièrement ce listing qu'on peut atteindre à tout moment en cliquant sur le bouton “OUTILS” dans la marge gauche ci-contre.
