@@ -7,7 +7,12 @@ raise_unless_admin
 site.require 'form_tools'
 form.prefix = 'film'
 
-lien_calcul_id = "Calculer l'ID du nouveau film (d'après le titre)".in_a(onclick: "$.proxy(Filmodico,'calcul_id_new_film')()", class: 'small')
+def film
+  @film ||= site.objet
+end
+if param(:film).nil?
+  Filmodico::prepare_edition_film(film.data)
+end
 
 bouton_load_by_id = "Charger".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_id')()")
 bouton_apercu = "Voir".in_a(class:'btn tiny')

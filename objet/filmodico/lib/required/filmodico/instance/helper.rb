@@ -20,6 +20,7 @@ class Filmodico
 
   def as_card
     (affiche.in_div(class:'affiche') +
+    boutons_edition +
     titre.in_div(class:'titre') +
     ( titre_fr.nil? ? '' : titre_fr.in_div(class:'titre_fr') ) +
     resume.in_div(class:'resume') +
@@ -33,6 +34,13 @@ class Filmodico
   # Note : Pour le moment, on la prend sur le site de l'atelier Icare
   def affiche
     @affiche ||= "<img src='http://www.atelier-icare.net/img/affiches/#{film_id}.jpg' />"
+  end
+
+  def boutons_edition
+    return "" unless user.admin?
+    (
+      "[Edit]".in_a(href:"filmodico/#{id}/edit")
+    ).in_div(class:'tiny fright')
   end
 
   def span_lib_val lib, val

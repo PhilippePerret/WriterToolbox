@@ -66,7 +66,7 @@ class Filmodico
     @is_new = id == nil
     check_data_or_raise || return
     if is_new?
-      debug "data2save: #{data2save.pretty_inspect}"
+      # debug "data2save: #{data2save.pretty_inspect}"
       # Table FILMODICO
       @id = Filmodico::table_films.insert(data2save)
       # Table ANALYSE
@@ -76,10 +76,9 @@ class Filmodico
       # Pour l'affichage
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
-      # Filmodico::table_films.update(id, data2save)
-      # Filmodico::table_films_analyse.update(id, data2save_analyse)
+      Filmodico::table_films.update(id, data2save)
+      Filmodico::table_films_analyse.update(id, data2save_analyse)
     end
-    flash "Nouveau film ? #{is_new?.inspect}"
   end
   def is_new? ; @is_new == true end
 
@@ -102,14 +101,18 @@ class Filmodico
   end
   def data2save_analyse
     @data2save_analyse ||= {
-      titre: titre, titre_fr: titre_fr,
-      annee: annee, sym: @sym, options: "00",
-      pays: @pays.first, # String
+      titre:        titre,
+      titre_fr:     titre_fr,
+      annee:        annee,
+      sym:          @sym,
+      options:      "00",
+      pays:         @pays.first, # String
       realisateur:  @realisateur_analyse,
       auteurs:      @auteurs_analyse,
-      updated_at: NOW
+      updated_at:   NOW
     }
   end
+  
   def check_data_or_raise
     @titre = data_params[:titre].nil_if_empty
     raise "Il faut fournir le titre du film !" if @titre.nil?
