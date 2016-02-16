@@ -8,5 +8,6 @@ class Categorie
   def table
     @table ||= Scenodico::table_categories
   end
+  
 end #/Categorie
 end #/Scenodico

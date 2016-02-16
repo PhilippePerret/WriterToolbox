@@ -2,7 +2,87 @@
 # Vue pour l'édition du mot
 raise_unless_admin
 %>
+<%= Scenodico::titre_h1("Édition de mot") %>
 <%
 site.require 'form_tools'
 form.prefix = "mot"
+
+if param(:mot).nil? && site.objet.instance_of?(Scenodico::Mot)
+  param(:mot => Scenodico::prepare_pour_champs(site.objet))
+end
 %>
+<p class='small tres discret italic'>
+  La BOITE À OUTILS et l'atelier ICARE possède chacun une base de données Scénodico qui doit être synchronisé. C'est la BOITE À OUTILS qui contient le fichier `scenodico.db` qui doit être tenu à jour.
+</p>
+<%
+bouton_edit = "Édit".in_a(class:'btn tiny', onclick:"$.proxy(Scenodico,'edit_mot_by_id')()")
+bouton_show = "Show".in_a(class:'btn tiny', href:"", onclick:"$.proxy(Scenodico,'for_show', this)();return true", target:'_new')
+bouton_new = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Scenodico, 'reset_form')()")
+
+onclick = "$.proxy(Scendocio,'on_choose_categorie', this.value)()"
+menu_categories = Scenodico::Categorie::values_for_select.in_select(
+  name:"categories", id:"categories",
+  onchange:"$.proxy(Scenodico, 'on_choose_categorie', this.value)()"
+  )
+
+types_def_for_select = [
+  [1, "Terme d'écriture"],
+  [2, "Terme du site"],
+  [3, "Valeur 3"],
+  [4, "Valeur 4"],
+  [5, "Valeur 5"],
+  [6, "Valeur 6"],
+  [7, "Valeur 7"],
+  [8, "Valeur 8"],
+  [9, "Valeur 9"]
+]
+
+%>
+<form id="form_edit_mot" class="dim2080" action="scenodico/edit" method="POST">
+  <%= "edit_mot_by_id".in_hidden(name:'operation', id:'operation') %>
+
+  <%# ID MOT %>
+  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit} #{bouton_show} #{bouton_new}"}) %>
+
+  <%# MOT %>
+  <%= form.field_text("Mot", 'mot', nil, {class:'milong'}) %>
+
+  <%# ID INTERDATA %>
+  <%= form.field_text("ID Interdata", 'id_interdata', nil, {class:'milong'}) %>
+  <%= form.field_description("ID interdata qui fait le lien avec les data Interdata. Mais comme ces données vont être abandonnées, cette valeur n'est plus nécessaire, elle sera calculée automatiquement.") %>
+
+  <%# DÉFINITION %>
+  <%= form.field_textarea("Définition", 'definition', nil) %>
+
+  <%# TYPE DÉFINITION %>
+  <%= form.field_select("Type", 'type_def', nil, {values:types_def_for_select}) %>
+
+  <%# RELATIFS %>
+  <%= form.field_text("Relatifs", 'relatifs', nil) %>
+  <%= form.field_description("Liste des IDs de mots en relation avec le mot courant, séparés par des espaces.") %>
+  <%
+    # TODO Ici, la liste des relatifs (mots)
+  %>
+
+  <%# SYNONYMES %>
+  <%= form.field_text("Synonymes", 'synonymes', nil) %>
+  <%= form.field_description("Liste des IDs des mots synonymes du mot courant, séparés par des espaces.") %>
+  <%
+    # TODO Ici, la liste des synonymes (mots)
+  %>
+
+  <%# CONTRAIRES %>
+  <%= form.field_text("Contraires", 'contraires', nil) %>
+  <%= form.field_description("Liste des IDs des mots contraires au mot courant, séparés par des espaces.") %>
+  <%
+    # TODO Ici, la liste des contraires (mots)
+  %>
+
+  <%# CATÉGORIES %>
+  <%= form.field_text("Catégories", 'categories', nil, {class:'milong', text_after: menu_categories}) %>
+
+  <%= form.field_textarea("Liens", 'liens', nil) %>
+  <%= form.field_description("Mettre les liens les uns en dessous des autres, en séparant par des '::' l'adresse URL du titre à donner au lien.") %>
+
+  <%= form.submit_button("Enregistrer", onclick:"$.proxy(Scenodico,'set_operation', 'save_mot')()") %>
+</form>

@@ -120,7 +120,7 @@ class String
   #     "Ça c'est l'été et mon titre" => "CaCestLeteEtMonTitre"
   def as_normalized_id separateur = nil
     separateur ||= ""
-    self.normalize.gsub(/[^a-zA-Z0-9 ]/, separateur).downcase.split.collect{|m|m.capitalize}.join('')
+    self.normalize.gsub(/[^a-zA-Z0-9 ]/, separateur).downcase.split.collect{|m|m.capitalize}.join(separateur)
   end
 
   # Retire les slashes

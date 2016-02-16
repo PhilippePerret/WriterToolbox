@@ -5,8 +5,8 @@ class Mot
   include MethodesObjetsBdD
 
   attr_reader :id
-  
-  def initialize mot_id
+
+  def initialize mot_id = nil
     @id = mot_id
   end
 

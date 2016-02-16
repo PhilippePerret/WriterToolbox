@@ -15,7 +15,7 @@ if param(:film).nil?
 end
 
 bouton_load_by_id = "Charger".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_id')()")
-bouton_apercu = "Voir".in_a(class:'btn tiny')
+bouton_apercu = "Voir".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico,'for_show', this)();return true")
 bouton_load_by_film_id = "Charger par FILM ID".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_film_id')()")
 bouton_load_by_sym_id = "Charger par SYM ID".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_sym_id')()")
 

@@ -29,9 +29,7 @@ class Scenodico
 
     def data_onglets
       donglets = DATA_ONGLETS
-      # donglets = donglets.merge(
-      # ''
-      # ) if user.admin?
+      donglets.merge!("Nouveau" => "scenodico/edit") if user.admin?
       return donglets
     end
 

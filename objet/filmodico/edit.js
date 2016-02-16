@@ -12,6 +12,14 @@ $.extend(window.Filmodico, {
     var val = field.val();
   },
 
+  // Méthode appelée quand on clique sur le bouton "Voir" ou "Show"
+  // Elle prépare l'href du lien avant qu'il ne soit activé
+  for_show:function(lien){
+    film_id = this.form.find('input#film_id').val()
+    $(lien).attr('href', "filmodico/"+film_id+"/show");
+    return true
+  },
+
   // Méthode appelée quand on choisit un pays dans la liste
   // des pays
   on_choose_pays:function(pays){

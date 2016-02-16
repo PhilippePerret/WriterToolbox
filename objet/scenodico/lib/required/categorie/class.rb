@@ -11,6 +11,15 @@ class Categorie
       @instances[cat_id] ||= new(cat_id)
     end
 
+    def values_for_select
+      @values_for_select ||= begin
+        menus = [['', "Choisir catégorie…"]]
+        menus += Scenodico::table_categories.select(order: "hname ASC", colonnes:[:cate_id, :hname]).values.collect do |hcate|
+          [hcate[:cate_id], hcate[:hname]]
+        end
+        menus
+      end
+    end
   end #/<< self
 end #/Categorie
 end #/Scenodico
