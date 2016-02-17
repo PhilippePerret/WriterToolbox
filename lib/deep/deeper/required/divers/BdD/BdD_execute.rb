@@ -77,9 +77,11 @@ class BdD
 
       # Clause WHERE
       where = params[:where]
+      debug "params : #{params.pretty_inspect}"
       unless where.nil?
         where = clause_where_from_hash where if where.class == Hash
         template_sql << " WHERE #{where}"
+        template_sql << " COLLATE NOCASE" if params[:nocase]
         values << params[:where_value]  unless params[:where_value].nil?
         values += params[:where_values] unless params[:where_values].nil?
       end
@@ -122,6 +124,7 @@ class BdD
 
       request_name = request.split.first
 
+      # @debug_on = true
       if @debug_on
         debug "\n\n---BdD::execute_requete---"
         debug "[BdD::execute_requete]"
@@ -131,6 +134,7 @@ class BdD
         debug "[/BdD::execute_requete]"
         debug "-"*50 + "\n\n"
       end
+      # @debug_on = false
 
       # Préparation de la requête
       begin

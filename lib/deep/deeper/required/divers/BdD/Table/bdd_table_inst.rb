@@ -302,7 +302,8 @@ class BdD
       when Hash # Avec condition
         foo = condition_deprecated foo if foo.has_key? :condition
         raise ArgumentError, BdD::ERRORS[:delete_invalid_hash] if foo[:where].nil?
-        " WHERE #{clause_where_conforme foo[:where]}"
+        " WHERE #{clause_where_conforme foo[:where]}" +
+        (foo[:nocase] ? " COLLATE NOCASE" : "")
       when Fixnum # Par ID
         " WHERE id = #{foo}"
       else
@@ -330,7 +331,10 @@ class BdD
       params = condition_deprecated params if params.has_key? :condition
       # Requête
       request = "SELECT COUNT(*) FROM #{name}"
-      request += " WHERE #{clause_where_conforme params[:where]}" if params.has_key?(:where)
+      if params.has_key?(:where)
+        request += " WHERE #{clause_where_conforme params[:where]}"
+        request += " COLLATE NOCASE" if params[:nocase]
+      end
 
       res = BdD::execute_requete( bdd.database, request, params[:values] ).first
       # # La soumettre
