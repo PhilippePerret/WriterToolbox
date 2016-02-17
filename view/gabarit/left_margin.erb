@@ -11,7 +11,7 @@
 
 <% if false == user.identified? %>
   <hr />
-  <%= "S'IDENTIFIER".in_a(href:'user/signin') %>
+  <%= "S'IDENTIFIER".in_a(href:'user/signin', back_to: current_route) %>
   <hr />
   <%= "INSCRIPTION".in_a(href:'user/signup') %>
 <%

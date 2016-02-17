@@ -1,4 +1,25 @@
-<h1>Collection Narration</h1>
+<%
+# Accueil de la collection Narration
+%>
+<%= Cnarration::titre_h1 %>
+<%
+site.require_objet 'unan'
+%>
 <p>
-  Bienvenue dans la collection Narration.
+  La <strong>collection Narration</strong> est un ensemble d'ouvrages consacrés à la narration dont chaque volume se concentre sur un domaine particulier (les personnages, la structure, les documents de travail, etc.). Conçue et rédigée par <strong>Philippe Perret</strong>, elle est le produit d'une réflexion pédagogique et d'un accompagnement de très nombreux d'auteurs durant plus de <%= Time.now.year - 1996 %> ans, notamment au sein de l'<%= "Atelier ICARE".in_a(target:'_new', href:"http://www.atelier-icare.net") %> dont sont issus <%= "auteurs professionnels, films, romans, livres pour la jeunesse et autres Bandes-dessinées".in_a(target:'_new', href:"http://www.atelier-icare.net/overview?ovw=reussites") %>.
+</p>
+<p>
+  Pour des raisons éditoriales (*), cette collection nécessite <%= lien.subscribe "d'être abonné au site" %> pour pouvoir être consultée intégralement. Une consultation partielle est possible si <%= lien.signup "vous êtes inscrit" %>.
+</p>
+<p>
+  <% if user.subscribed? || user.unanunscript? %>
+    En tant qu'abonné, vous avez accès à l'intégralité de la collection.
+  <% elsif user.identified? %>
+    En tant que simple inscrit au site, vous avez accès à une consultation limitée de la collection. N'hésitez pas à <%= lien.subscribe "vous abonner pour #{site.tarif_humain}/an" %> (soit <%= site.tarif_humain_par_mois %>) pour profiter pleinement de la collection.
+  <% else %>
+    Vous devez <%= lien.signup "vous inscrire" %> pour consulter partiellement la collection ou <%= lien.subscribe "vous abonner" %> pour bénéficier d'un accès complet, pour <%= site.tarif_humain %> par an, soit seulement <%= site.tarif_humain_par_mois %>.
+  <% end %>
+</p>
+<p class='small'>
+  (*) La <em>Collection Narration</em> est en cours d'édition et les premiers ouvrages seront publiés prochainement sous forme de livre-papier.
 </p>

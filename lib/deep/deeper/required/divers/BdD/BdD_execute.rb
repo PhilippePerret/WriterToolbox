@@ -77,7 +77,6 @@ class BdD
 
       # Clause WHERE
       where = params[:where]
-      debug "params : #{params.pretty_inspect}"
       unless where.nil?
         where = clause_where_from_hash where if where.class == Hash
         template_sql << " WHERE #{where}"
