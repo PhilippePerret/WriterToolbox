@@ -14,7 +14,15 @@ class User
     app.session['user_id'] = id
     User::current= self
     set(session_id: app.session.session_id)
-    self.send(:redirect_after_login) if self.respond_to?(:redirect_after_login)
+    if param(:login)[:back_to]
+      # Une redirection est demandée
+      redirect_to param(:login)[:back_to]
+      flash "Bienvenue, #{pseudo} !"
+    elsif self.respond_to?(:redirect_after_login)
+      # Sinon, une redirection est peut-être définie
+      # par défaut par les préférences ou l'application
+      self.send(:redirect_after_login)
+    end
   end
 
   # On déconnecte l'user

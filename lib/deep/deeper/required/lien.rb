@@ -18,7 +18,10 @@ class Lien
 
   # Lien pour s'identifier
   def signin titre = "s'identifier", options = nil
-    build "user/signin", titre, options
+    options ||= Hash::new
+    href = "user/signin"
+    href += "?backto=#{CGI::escape(options.delete(:back_to))}" if options.has_key?(:back_to)
+    build href, titre, options
   end
 
 
