@@ -33,3 +33,7 @@ site.tarif = 6.90
 site.user_options = {
   analyse:  [17, '@analyste_level']
 }
+
+# Soit :textmate, soit :atom, l'éditeur à utiliser
+# quand on a recours à `lien.edit_file <path>`
+site.default_editor = :atom

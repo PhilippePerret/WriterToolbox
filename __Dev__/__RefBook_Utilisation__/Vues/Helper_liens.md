@@ -3,6 +3,9 @@
 * [Introduction](#introductionhelperliens)
 * [Liens RestSite par défaut](#lienspardefautsrestsite)
 * [Liens propres à l'application](#liensproprealapplication)
+* [Liens pour éditer des fichiers dans un éditeur](#liendeditiondefichier)
+  * [Choix de l'éditeur par défaut](#choixediteurpardefaut)
+
 
 <a name='introductionhelperliens'></a>
 
@@ -57,3 +60,34 @@ Dans le texte, il suffira alors d'utiliser ce lien de cette façon :
 
       Si vous voulez voir <%= lien.livres "tous mes livres" %> je vous
       invite à rejoindre ma <%= lien.livres "bibliothèque" %>.
+
+
+<a name='liendeditiondefichier'></a>
+
+## Liens pour éditer des fichiers dans un éditeur
+
+    lien.edit_file "path/to/file"
+
+Si on veut aller à un numéro de ligne précis :
+
+    lien.edit_file "path/to/file", {line: <numéro de ligne>}
+
+Par défaut, le fichier s'ouvrira dans l'[éditeur par défaut](#choixediteurpardefaut). Pour ouvrir le fichier dans un autre éditeur que l'éditeur par défaut, utiliser :
+
+    lien.edit_file "path/to/file", {editor: <:atom | :textmate>}
+
+Par défaut, le lien aura le titre “Ouvrir”. Pour mettre un titre propre utiliser :
+
+    lien.edit_file "path/to/file.erb", {titre: "Mon titre"}
+    
+On peut bien sûr ajouter aux `options` toutes les valeurs pour la balise finale.
+
+<a name='choixediteurpardefaut'></a>
+
+### Choix de l'éditeur par défaut
+
+Dans le fichier config.rb, définir :
+
+    site.default_editor
+
+Noter que pour ouvrir le fichier dans Atom, à ce jour (2016) il faut utiliser le script se trouvant à l'adresse [https://github.com/WizardOfOgz/atom-handler](https://github.com/WizardOfOgz/atom-handler).

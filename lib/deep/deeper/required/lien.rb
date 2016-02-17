@@ -34,6 +34,24 @@ class Lien
   alias :sabonner :subscribe
   alias :abonnement :subscribe
 
+  # Lien pour éditer un fichier par son path, dans l'éditeur de
+  # son choix, soit Textmate, soit Atom
+  def edit_file path, options = nil
+    options ||= Hash::new
+    editor  = options.delete(:editor) || site.default_editor || :atom
+    titre   = options.delete(:titre) || "Ouvrir"
+    line    = options.delete(:line)
+    url = case editor
+    when :atom
+      "atm://open?url=file://#{path}"
+    when :textmate
+      "txmt://open/?url=file://#{path}"
+    end
+    url += "&line=#{line}" unless line.nil?
+    # On compose le lien et on le renvoie
+    build( url, titre, options )
+  end
+
 end
 
 def lien ; @lien ||= Lien.instance end

@@ -48,6 +48,9 @@ class SiteHtml
   # l'user
   attr_accessor :user_options
 
+  # Éditeur par défaut, pour l'édition des fichiers
+  attr_accessor :default_editor
+
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif
   def separateur_decimal; @separateur_decimal ||= "," end
