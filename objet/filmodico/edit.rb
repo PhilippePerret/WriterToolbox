@@ -112,13 +112,13 @@ class Filmodico
       updated_at:   NOW
     }
   end
-  
+
   def check_data_or_raise
     @titre = data_params[:titre].nil_if_empty
     raise "Il faut fournir le titre du film !" if @titre.nil?
     @annee = data_params[:annee].nil_if_empty.to_i_inn
     raise "Il faut fournir l'année du film !" if @annee.nil?
-    raise "L'année devrait être supérieure à 1985 !" if @annee < 1985
+    raise "L'année devrait être supérieure à 1895 !" if @annee < 1895
     raise "L'année ne peut pas être trop supérieure à l'année courante !" if annee > Time.now.year + 4
     @film_id = data_params[:film_id].nil_if_empty
     # S'il faut calculer l'ID (nouveau film)

@@ -8,36 +8,29 @@ end
 
 # Pour tout charger d'un coup
 mot.get_all
-debug "mot : #{mot.data.pretty_inspect}"
+# debug "mot : #{mot.data.pretty_inspect}"
 
+lien_edit_if_admin = if user.admin?
+  "[Edit]".in_a(href:"scenodico/#{mot.id}/edit", class:'small').in_div(class:'fright')
+else "" end
+
+disp_word = (user.admin? ? ("[##{mot.id}]".in_span(class:'tiny', style:'vertical-align:super') + " ") : "") + mot.mot
+
+def build_row libelle, contenu
+  (
+    libelle.in_span(class:'libelle') +
+    contenu.in_span(class:'value')
+  ).in_div(class:'row')
+end
 %>
-<%=
-  disp_word = (user.admin? ? ("[##{mot.id}]".in_span(class:'tiny', style:'vertical-align:super') + " ") : "") + mot.mot
-  Scenodico::titre_h1(disp_word)
-%>
-<div class="dim2080">
-  <div class='row'>
-    <span class="libelle">Définition</span>
-    <span class="value"><%= mot.definition_formated %></span>
-  </div>
-  <div class='row'>
-    <span class="libelle">Relatifs</span>
-    <span class="value"><%= mot.relatifs_formated %> </span>
-  </div>
-  <div class='row'>
-    <span class="libelle">Contraires</span>
-    <span class="value"><%= mot.contraires_formated %></span>
-  </div>
-  <div class='row'>
-    <span class="libelle">Synonymes</span>
-    <span class="value"><%= mot.synonymes_formated %></span>
-  </div>
-  <div class='row'>
-    <span class='libelle'>Catégories</span>
-    <span class="value"><%= mot.hcategories %></span>
-  </div>
-  <div class='row'>
-    <span class="libelle">Liens</span>
-    <span class="value"><%= mot.liens_formated %></span>
-  </div>
+<%= Scenodico::titre_h1 %>
+<%= lien_edit_if_admin %>
+<h2><%= disp_word %></h2>
+<div class="dim4060">
+  <%= mot.definition_formated.in_div(id:'mot_definition') %>
+  <%= build_row("Relatifs",   mot.relatifs_formated) %>
+  <%= build_row("Contraires", mot.contraires_formated) %>
+  <%= build_row("Synonymes",  mot.synonymes_formated) %>
+  <%= build_row("Catégories", mot.hcategories) %>
+  <%= build_row("Liens",      mot.liens_formated) %>
 </div>

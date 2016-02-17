@@ -7,7 +7,9 @@ class Mot
   end
 
   def formate str
+    str = str.purified
     str.formate_balises_crochets
+    str = str.split("\n").collect{|p| p.in_p}.join
     return str
   end
 
@@ -20,7 +22,7 @@ class Mot
   end
 
   def definition_formated
-    (formate definition)
+    ( formate definition )
   end
 
   def relatifs_formated
