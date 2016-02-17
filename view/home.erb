@@ -8,7 +8,7 @@
       <li style='margin:0'>
         <%=
           (
-          "Vous inscrire " +
+          "S’inscrire " +
           "(gratuit)".in_span(class:'small')
           ).in_a(href:"user/signup", class:'btn', style:'padding:0.4em 1.0em')
          %>
@@ -19,13 +19,12 @@
     Pour pouvoir demeurer <strong>indépendant</strong>, pour n'afficher <strong>aucune publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> (dont la conception demande du temps), l'utilisation de certains outils du site requiert un paiement modique d'un montant de <strong><%= site.tarif_humain %> pour une année</strong> (<%= site.tarif_humain_par_mois %>).
   </p>
   <p class='bold center'>
-    N'hésitez donc pas à…
     <ul class='center' style='list-style:none;margin:0;padding:0;'>
       <li style='height:8px'>&nbsp;</li>
       <li>
         <%=
           (
-            "Vous abonner " +
+            "S’abonner " +
             "(#{site.tarif_humain}/an)".in_span(class:'small')
           ).in_a(href:"user/paiement", class:'btn', style:'padding:0.4em 1.0em')
         %>
