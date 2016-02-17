@@ -1,0 +1,22 @@
+<%
+# Vue pour proposer un mot
+%>
+<%= Scenodico::titre_h1("Proposer un nouveau mot") %>
+<% if user.identified? %>
+  <%
+    site.require 'form_tools'
+    form.prefix = "newmot"
+  %>
+  <p class='discret small'>
+    Avant de proposer un nouveau mot, assurez-vous bien qu'il ne se trouve pas déjà dans le <%= "Dictionnaire".in_a(href:'scenodico/list') %> ;-).
+  </p>
+  <form class="dim3070" action="scenodico/proposer" method="POST" accept-charset="utf8">
+    <%= "proposer_mot".in_hidden(name:'operation', id:'operation') %>
+    <%= form.field_text("Mot", 'mot', nil, {class:'milong'}) %>
+    <%= form.submit_button("Proposer ce mot") %>
+  </form>
+<% else %>
+  <p>
+    Pour proposer un nouveau mot, vous devez <%= lien.signin( "vous identifier", back_to: current_route )%> ou <%= lien.signup "vous inscrire" %>.
+  </p>
+<% end %>

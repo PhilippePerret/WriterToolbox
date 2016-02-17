@@ -7,7 +7,8 @@ class Scenodico
   DATA_ONGLETS = {
     'Accueil'       => "scenodico/home",
     'Dictionnaire'  => "scenodico/list",
-    'Recherche'     => "scenodico/search"
+    'Recherche'     => "scenodico/search",
+    'Proposer'      => "scenodico/proposer"
   }
   class << self
 
