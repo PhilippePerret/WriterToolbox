@@ -4,6 +4,13 @@ def redirect_to route
   site.redirect_to route
 end
 
+# {String} Retourne la route courante en tant que string
+# Attention, ça n'est pas `site.current_route` qui retourne
+# une instance {SiteHtml::Route}.
+def current_route
+  site.current_route.route
+end
+
 
 # ---------------------------------------------------------------------
 #   Barrières de protection des vues et modules

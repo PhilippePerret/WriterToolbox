@@ -43,6 +43,11 @@ grâce à la méthode `to_str` qui est un alias de :
 
     site.current_route.route
 
+On peut obtenir la route courante avec le contexte par l'handy méthode :
+
+    current_route ou route_courante
+
+
 <a name='precedenteroutesuivie'></a>
 
 ## Précédente route suivie

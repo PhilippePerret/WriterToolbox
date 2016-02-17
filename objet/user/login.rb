@@ -2,6 +2,12 @@
 
 class User
 
+  # Redirection après l'identification
+  #
+  # Noter un point important : si un `back_to` a été utilisé pour
+  # se rendre à une adresse après l'identification, cette méthode
+  # ne sera jamais appelée. Donc il ne faut l'utiliser que pour
+  # une redirection et rien d'autre.
   def redirect_after_login
     if true == preference(:bureau_after_login, false)
       redirect_to 'bureau/home?in=unan'

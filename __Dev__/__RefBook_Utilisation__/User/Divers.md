@@ -72,6 +72,19 @@ Pour rediriger l'user quelque part après son identification au site RestSite, i
       ...
     end
 
+Une autre solution, si l'identification est appelée par un lien, est d'envoyer la route suivante à la méthode `lien.signin` (qui conduit au formulaire d'identification) :
+
+    <%=
+      lien.signin "vous identifier", back_to: "la/route/suivante?in=context"
+    %>
+
+Si on doit reconduire à la route courante (une page qui nécessite une identification pour être complète), on peut utiliser ÷
+
+    <%=
+      lien.signin "vous identifier", back_to: current_route
+    %>
+
+
 <a name='destructionuser'></a>
 
 ## Destruction d'un utilisateur
