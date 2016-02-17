@@ -1,5 +1,15 @@
 <%
 # Vue pour la table des matières d'un livre
 %>
-<%= Cnarration::titre_h1(site.objet.titre) %>
+<%
+def livre
+  @livre ||= site.objet
+end
+%>
+<%= Cnarration::titre_h1(livre.titre) %>
+<% if user.admin? %>
+  <div class="tiny right">
+    <%= "Éditer la TdM".in_a(href:"livre/#{livre.id}/edit?in=cnarration") %>
+  </div>
+<% end %>
 <%= site.objet.tdm.as_ul %>

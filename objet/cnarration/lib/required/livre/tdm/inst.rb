@@ -8,7 +8,7 @@ class Tdm
   # {Fixnum} Identifiant de la table des matières
   # Note : Est égal à l'identifiant du livre
   attr_reader :id
-  
+
   # {Cnarration::Livre} Instance du livre de la table des matières
   attr_reader :livre
 
@@ -24,15 +24,8 @@ class Tdm
     else
       pages_ids.collect do |page_id|
         dpage = pages[page_id]
-        css = case dpage[:options][0] # pour savoir si c'est un titre etc.
-        when '1' then 'page'
-        when '2' then 'schap'
-        when '3' then 'chap'
-        else nil # page indéfinie
-        end
-        next if css.nil?
-        dpage[:titre].in_li(class: css)
-      end.join.in_ul(class: 'tdm tdm_livre')
+        dpage[:titre].in_li(class: "niv#{dpage[:options][0]}")
+      end.join.in_ul(class: 'tdm livre_tdm')
     end
   end
 
