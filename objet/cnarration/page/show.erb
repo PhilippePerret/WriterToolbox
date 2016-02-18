@@ -2,8 +2,7 @@
 # Affichage d'une page de la collection Narration
 %>
 <% def page ; @page ||= site.objet end %>
-<%= Cnarration::titre_h1 %>
+<%= Cnarration::titre_h1(page.livre.titre) %>
 <%= page.liens_edition_if_admin %>
-<h2><%= page.livre.titre %></h2>
 <h3><%= page.titre %></h3>
 <%= page.output %>
