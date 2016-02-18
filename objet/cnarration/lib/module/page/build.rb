@@ -13,19 +13,40 @@ class Page
 
   def build
     path_semidyn.remove if path_semidyn.exist?
-    path_semidyn.write html_code
+    path_semidyn.write deprotected_code
+    flash "Page actualisée."
   end
 
   def original_code
     @original_code ||= path.read
   end
 
+  # Retourne le code original où les balises ERB (<% ... %>) ont
+  # été remplacée par des marques pour ne pas être parsées. Elles
+  # seront ensuite remises pour l'enregistrement du fichier semi-
+  # dynamique.
+  def erb_protected_code
+    @erb_protected_code ||= begin
+      original_code.
+        gsub(/<\%/, 'ERB-').
+        gsub(/\%>/, '-ERB')
+    end
+  end
+
+  def deprotected_code
+    @deprotected_code ||= begin
+      html_code.
+        gsub(/ERB-/, '<%').
+        gsub(/-ERB/, '%>')
+    end
+  end
+
   def html_code
-    Kramdown::Document.new(original_code).to_html
+    Kramdown::Document.new(erb_protected_code).to_html
   end
 
   def latex_code
-    Kramdown::Document.new(original_code).to_latex
+    Kramdown::Document.new(erb_protected_code).to_latex
   end
 
 

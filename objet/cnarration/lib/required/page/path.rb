@@ -7,7 +7,7 @@ class Page
   end
   def path
     @path ||= begin
-      p = site.folder_data+"unan/pages_cours/#{livre_folder}/#{handler}.md"
+      p = site.folder_data+"unan/pages_cours/cnarration/#{livre_folder}/#{handler}.md"
       p.folder.build unless p.folder.exist?
       p
     end
@@ -16,7 +16,7 @@ class Page
 
   def path_semidyn
     @path_semidyn ||= begin
-      p = site.folder_data+"unan/pages_semidyn/#{livre_folder}/#{handler}.erb"
+      p = site.folder_data+"unan/pages_semidyn/cnarration/#{livre_folder}/#{handler}.erb"
       p.folder.build unless p.folder.exist?
       p
     end

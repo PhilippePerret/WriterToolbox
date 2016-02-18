@@ -4,5 +4,6 @@
 <% def page ; @page ||= site.objet end %>
 <%= Cnarration::titre_h1 %>
 <%= page.liens_edition_if_admin %>
-<h3><%= site.objet.livre.titre %></h3>
-<%= site.objet.output %>
+<h2><%= page.livre.titre %></h2>
+<h3><%= page.titre %></h3>
+<%= page.output %>
