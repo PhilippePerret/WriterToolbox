@@ -7,6 +7,17 @@ class Page
   def livre_id  ; @livre_id   ||= get(:livre_id)  end
   def handler   ; @handler    ||= get(:handler)   end
 
+  # ---------------------------------------------------------------------
+  #   Données volatiles
+  # ---------------------------------------------------------------------
+  def livre
+    @livre ||= Cnarration::Livre::get(livre_id)
+  end
+
+  # Contenu du fichier d'origine
+  def content
+    @content ||= path.read
+  end
 
   def path
     @path ||= begin
@@ -15,6 +26,7 @@ class Page
       p
     end
   end
+  def fullpath; @fullpath ||= File.expand_path(path.to_s) end
 
   def path_semidyn
     @path_semidyn ||= begin
@@ -23,5 +35,7 @@ class Page
       p
     end
   end
+  def fullpath_semidyn ; @fullpath_semidyn ||= File.expand_path(path_semidyn.to_s) end
+
 end #/Page
 end #/Cnarration

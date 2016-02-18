@@ -24,7 +24,10 @@ class Tdm
     else
       pages_ids.collect do |page_id|
         dpage = pages[page_id]
-        dpage[:titre].in_li(class: "niv#{dpage[:options][0]}")
+        titre = dpage[:titre]
+        # Une page de la collection
+        titre = titre.in_a(href:"page/#{page_id}/show?in=cnarration") if dpage[:options][0] == "1"
+        titre.in_li(class: "niv#{dpage[:options][0]}")
       end.join.in_ul(class: 'tdm livre_tdm')
     end
   end
