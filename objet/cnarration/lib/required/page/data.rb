@@ -19,23 +19,5 @@ class Page
     @content ||= path.read
   end
 
-  def path
-    @path ||= begin
-      p = site.folder_data+"unan/pages_cours/#{handler}.erb"
-      p.folder.build unless p.folder.exist?
-      p
-    end
-  end
-  def fullpath; @fullpath ||= File.expand_path(path.to_s) end
-
-  def path_semidyn
-    @path_semidyn ||= begin
-      p = site.folder_data+"unan/pages_semidyn/#{handler}.erb"
-      p.folder.build unless p.folder.exist?
-      p
-    end
-  end
-  def fullpath_semidyn ; @fullpath_semidyn ||= File.expand_path(path_semidyn.to_s) end
-
 end #/Page
 end #/Cnarration

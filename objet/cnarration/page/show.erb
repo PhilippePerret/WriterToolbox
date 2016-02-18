@@ -3,21 +3,6 @@
 %>
 <% def page ; @page ||= site.objet end %>
 <%= Cnarration::titre_h1 %>
-<% if false %>
-  <%= page.liens_edition_if_admin %>
-  <h3><%= site.objet.livre.titre %></h3>
-  <%= site.objet.output %>
-<% end %>
-
-<%
-# site.require_gem 'redcarpet'
-site.require_deep_gem 'redcarpet'
-def markdown
-  @markdown ||= markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-  @markdown.render(yield)
-end
-%>
-
-<% markdown do %>
-
-<% end %>
+<%= page.liens_edition_if_admin %>
+<h3><%= site.objet.livre.titre %></h3>
+<%= site.objet.output %>

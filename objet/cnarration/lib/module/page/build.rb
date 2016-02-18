@@ -5,18 +5,29 @@ affichée sur le site.
 
 Pour la construire, on se sert du module de la collection version MD.
 =end
+
+site.require_deeper_gem "kramdown-1.9.0"
+
 class Cnarration
 class Page
 
   def build
-    require_all
+    path_semidyn.remove if path_semidyn.exist?
+    path_semidyn.write html_code
   end
 
-  # Méthode pour requérir les librairies de la collection Narration
-  # vers MD qui traite les fichier str.
-  def require_all
-
+  def original_code
+    @original_code ||= path.read
   end
+
+  def html_code
+    Kramdown::Document.new(original_code).to_html
+  end
+
+  def latex_code
+    Kramdown::Document.new(original_code).to_latex
+  end
+
 
 end #/Page
 end #/Cnarration

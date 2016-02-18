@@ -6,17 +6,10 @@ class SiteHtml
     error "Impossible de requérir le gem #{gem_name} : #{e.message}"
   end
 
-  def require_deep_gem gem_name
-    path = folder_deeper+"gem/#{gem_name}"
-    if path.exist?
-      libpath = path + 'lib'
-      dospath = (libpath + gem_name).expanded
-      debug "lib path : #{libpath}"
-      debug "dos path : #{dospath}"
-      $: << libpath.to_s
-      (libpath+"#{gem_name}.rb").require
-    else
-      error "Le gem #{path} est introuvable"
-    end
+  # Pour requérir un gem dans le dossier ./lib/deep/deeper/gem
+  def require_deeper_gem folder_name
+    gem_name = folder_name.split('-')[0]
+    $LOAD_PATH << "./lib/deep/deeper/gem/#{folder_name}/lib"
+    require gem_name
   end
 end

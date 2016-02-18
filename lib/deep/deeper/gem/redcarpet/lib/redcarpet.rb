@@ -1,4 +1,4 @@
-require 'redcarpet.so'
+# require 'redcarpet.so'
 require 'redcarpet/compat'
 
 module Redcarpet

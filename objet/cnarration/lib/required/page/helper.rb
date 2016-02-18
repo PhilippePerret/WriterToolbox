@@ -6,15 +6,15 @@ class Page
   #
   # Méthode principale qui sort le contenu de la page
   def output
-    unless path_semidyn.exist?
+    unless path_semidyn.exist? || out_of_date?
+      flash "Actualisation nécessaire" if out_of_date?
       # La page semi-dynamique n'est pas encore construite, il
-      # faut la construire.
-      (site.folder_objet+"unan_admin/lib/module/page_cours/module_build_methods.rb").require
-      extend MethodesBuildPageSemiDynamique
-      build_page_semi_dynamique
+      # faut la construire. Pour ça, on utilise kramdown.
+      (site.folder_objet+'cnarration/lib/module/page/build.rb').require
+      build
     end
     if path_semidyn.exist?
-      path_semidyn.deserb
+      path_semidyn.read
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
     end
@@ -25,7 +25,7 @@ class Page
   def liens_edition_if_admin
     return "" unless user.admin?
     (
-      lien.edit_file(fullpath, {titre:"Edit text"}) +
+      lien.edit_file( fullpath, { titre:"Edit text" }) +
       "Edit data".in_a(href:"page/#{id}/edit?in=cnarration")
     ).in_div(class:'fright small')
   end
