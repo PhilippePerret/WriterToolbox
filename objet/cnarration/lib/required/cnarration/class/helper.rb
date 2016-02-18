@@ -24,7 +24,12 @@ class Cnarration
     def data_onglets
       donglets = Hash::new
       donglets.merge!(DATA_ONGLETS)
-      donglets.merge!("New page" => "page/edit?in=cnarration") if user.admin?
+      if user.admin?
+        donglets.merge!(
+          "New page"      => "page/edit?in=cnarration",
+          "[Aide admin]"  => "admin/aide?in=cnarration"
+          )
+      end
       donglets
     end
   end #/ << self

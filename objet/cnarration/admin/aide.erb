@@ -1,0 +1,25 @@
+<%
+# Aide pour l'administration
+%>
+<%= Cnarration::titre_h1("Aide administration") %>
+
+<h3>Pages des cours</h3>
+
+<p>
+  Les pages de cours de la collection Narration sont reprises (pour le moment) de la version MD de la collection, mais sont transformées en pages Markdown/Kramdown pour être ensuite transformées en fichier semi-dynamiques ERB.
+</p>
+<p>
+  Markdown/Kramdown -> ERB -> Affichage HTML
+</p>
+<p>
+  Ces pages sont donc en Markdown/Kramdown, avec des éléments ERB insérés entre '&lt;%' et '%&gt;'.
+</p>
+<p>
+  Pour les obtenir de la collection Narration MD, il faut prendre les fichiers .str et les transformer en Markdown/Kramdown.
+</p>
+<p class='small'>
+  Noter qu'à l'avenir ce sont ces fichier Markdown/Kramdown de ce site qui seront utilisés pour la collection réelle. On pourra utiliser la méthode `to_latex` de Kramdown pour construire les fichiers Latex.
+</p>
+<p>
+  Pour l'aide Kramdow, cf. <%= "le site officiel".in_a(href:"http://kramdown.gettalong.org", target:'_new') %>.
+</p>
