@@ -11,7 +11,11 @@ def film
   @film ||= site.objet
 end
 if param(:film).nil?
-  Filmodico::prepare_edition_film(film.data)
+  if film.nil?
+    param(:film => Hash::new)
+  else
+    Filmodico::prepare_edition_film(film.data)
+  end
 end
 
 bouton_load_by_id = "Charger".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'load_by_id')()")

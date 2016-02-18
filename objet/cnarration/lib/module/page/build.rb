@@ -42,7 +42,7 @@ class Page
   end
 
   def html_code
-    Kramdown::Document.new(erb_protected_code).to_html
+    Kramdown::Document.new(erb_protected_code.formate_balises_propres).to_html
   end
 
   def latex_code

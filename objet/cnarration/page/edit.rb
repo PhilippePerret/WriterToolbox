@@ -58,6 +58,7 @@ class Page
       flash "Page ##{@id} créée avec succès."
 
       if page? && data_params[:create_file] == 'on'
+        path.write "<!-- Page: #{@titre} -->\n"
         flash "Fichier créé dans #{path}"
       end
 

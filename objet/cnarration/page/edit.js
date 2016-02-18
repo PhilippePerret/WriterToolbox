@@ -25,7 +25,7 @@ $.extend(window.Cnarration,{
       this.field_id.focus();
       return false
     }
-    var href = "page/" + page_id + "/show?in=cnarration"
+    var href = "page/" + this.page_id + "/show?in=cnarration"
     $(lien).attr('href', href);
     return true
   },
