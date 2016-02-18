@@ -15,4 +15,28 @@ section#content
     tt
       font-family     : "Courier New"
       font-size       : 1.1em
-      
+
+  div.nav
+    margin-right    : 4em
+    > div
+      border-width  : 2px
+      border-style  : solid
+      padding       : 2px 12px
+      display       : inline-block
+      width         : 50px
+      text-align    : center
+      position      : relative
+      height        : 25px
+      border-color  : #CCC #979797 #979797 #CCC
+      &:hover
+        border-color      : #979797 #CCC #CCC #979797
+        background-color  : #E8F3F5
+      & + div
+        margin-left   : 0.2em
+        a
+          right          : 1px
+      a
+        font-size     : 1.4em
+        position      : absolute
+        top           : -6px
+        left          : 18px

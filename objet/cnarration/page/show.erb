@@ -5,4 +5,6 @@
 <%= Cnarration::titre_h1(page.livre.titre) %>
 <%= page.liens_edition_if_admin %>
 <h3><%= page.titre %></h3>
+<%= page.boutons_navigation(:top) %>
 <%= page.output %>
+<%= page.boutons_navigation(:bottom) %>
