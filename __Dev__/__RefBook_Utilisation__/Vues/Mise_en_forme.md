@@ -2,6 +2,7 @@
 
 * [Mise en forme de TEXTE](#misteenformedetexte)
   * [Différentes mises en forme fréquentes](#differentesmisesenformeparcss)
+  * [Espace insécable et constante entre mots](#espaceinsecablentremot)
   * [Messages d'alerte (warning)](#messagedewrarning)
   * [Rendre un texte/élément plus discret](#rendreuntexteplusdiscret)
   * [Style spécial pour l'administrateur](#stylespecialadminonly)
@@ -59,6 +60,16 @@
     .big
 
         Écrit le contenu en gros
+
+<a name='espaceinsecablentremot'></a>
+
+### Espace insécable et constante entre mots
+
+On peut utiliser :
+
+    facteur<thin />U
+
+… pour avoir une espace qui ne sera jamais coupée ou étendue.
 
 <a name='messagedewrarning'></a>
 
