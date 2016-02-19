@@ -10,17 +10,16 @@
 <%= "Forum".in_a(href:'forum/home') %>
 
 <% if false == user.identified? %>
-  <hr />
-  <%= "S'IDENTIFIER".in_a(href:'user/signin', back_to: current_route) %>
-  <hr />
-  <%= "INSCRIPTION".in_a(href:'user/signup') %>
+  <%= "".in_div(class:'air') %>
+  <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: current_route) %>
+  <%= "S'inscrire".in_a(href:'user/signup', style:'letter-spacing:3.3px') %>
 <%
   else
     # Si le visiteur est identifié
 %>
 
   <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
-  <%= "UN AN<br>UN SCRIPT".in_a(href:'unan/home', class:'border') %>
+  <%= "1 an, 1 script".in_a(href:'unan/home') %>
   <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
 
   <% if user.admin? %>

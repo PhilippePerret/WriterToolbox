@@ -33,7 +33,7 @@ form.prefix = 'contact'
     <%= form.field_text("Confirmation", 'mail_confirmation', Unan::current_mail.mail_confirmation) %>
   <% end %>
   <%= form.field_text("Anti-robot", 'captcha', "", {
-    class:'short', text_before: "Nombre de jours dans une année non bisextile : "
+    class:'short', text_before: "Nombre de jours dans une année bisextile : "
     }) %>
   <%= form.submit_button("Envoyer") %>
 </form>

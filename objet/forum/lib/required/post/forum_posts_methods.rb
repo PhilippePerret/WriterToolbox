@@ -17,12 +17,13 @@ class Post
     # de navigation
     def navigation_bar toporbottom # :top ou :bottom
       (
-        message_explication +
+        message_explication(toporbottom) +
         nav_button_back +
         nav_button_forward
       ).in_div(class:"nav_tools_bar #{toporbottom}")
     end
-    def message_explication
+    def message_explication toporbottom
+      return "" if toporbottom == :bottom
       "Trouvez ici tous les messages, tous sujets confondus, les derniers arrivés en premiers.".in_div(class:'fleft italic small')
     end
     def nav_button_back

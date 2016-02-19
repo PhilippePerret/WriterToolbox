@@ -14,7 +14,7 @@ site.title_separator  = " | "
 
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site
-site.mail                 = "phil@atelier-icare.net"
+site.mail                 = "boite-a-outils@alwaysdata.net"
 site.mail_before_subject  = "La Boite à Outils de l'Auteur — "
 site.mail_signature       = "<p>#{site.name}</p>"
 

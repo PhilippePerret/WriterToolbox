@@ -35,7 +35,7 @@ class Unan
       raise "Il faut indiquer votre adresse mail, pour pouvoir recevoir une réponse." if sender.nil?
       raise "La confirmation de votre mail ne correspond pas…" if sender != confirmation_mail
       raise "Il faut répondre à la question anti-robot." if captcha.nil?
-      raise "Seriez-vous un robot ?…" if captcha != 364
+      raise "Seriez-vous un robot ?…" if captcha != 366
     rescue Exception => e
       error e.message
     else

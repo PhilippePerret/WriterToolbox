@@ -31,7 +31,7 @@ form.prefix = 'contact'
     <%= form.field_text("Confirmation", 'mail_confirmation', site.current_mail.mail_confirmation) %>
   <% end %>
   <%= form.field_text("Anti-robot", 'captcha', "", {
-    class:'short', text_before: "Nombre de jours dans une année non bisextile : ".in_span(class:'small')
+    class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')
     }) %>
   <%= form.submit_button("Envoyer") %>
 </form>
