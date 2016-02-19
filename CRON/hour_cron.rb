@@ -24,7 +24,7 @@ rescue Exception => e
   safed_log e.backtrace.join("\n")
 end
 
-safed_log "--- FIN DU SAFED LOG (#{time.now.strftime('%d %m %Y - %H:%M')}) ---"
+safed_log "--- FIN DU SAFED LOG (#{Time.now.strftime('%d %m %Y - %H:%M')}) ---"
 
 # Si on est arrivé là, on peut détruire le safed-log
 # NON ! MAINTENANT, ON A UN RESCUE GÉNÉRAL CI-DESSUS

@@ -20,7 +20,7 @@ site.mail_signature       = "<p>#{site.name}</p>"
 
 # Host local
 site.local_host   = 'localhost/WriterToolbox'
-site.distant_host = 'www.atelier-icare.net/writertoolbox'
+site.distant_host = 'www.laboiteaoutilsdelauteur.fr'
 
 site.tarif = 6.90
 

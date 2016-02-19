@@ -35,20 +35,29 @@ class Lien
   alias :abonnement :subscribe
 
   # Lien pour éditer un fichier par son path, dans l'éditeur de
-  # son choix, soit Textmate, soit Atom
+  # son choix, soit Textmate, soit Atom si le fichier est d'extension
+  # quelconque, sauf .md
+  # Les fichiers Markdown sont ouverts par l'application "MarkdownLife"
+  # si c'est réglé dans le fichier configuration
   def edit_file path, options = nil
     options ||= Hash::new
     editor  = options.delete(:editor) || site.default_editor || :atom
     titre   = options.delete(:titre) || "Ouvrir"
     line    = options.delete(:line)
-    url = case editor
-    when :atom
-      "atm://open?url=file://#{path}"
-    when :textmate
-      "txmt://open/?url=file://#{path}"
+
+    url = case File.extname(path)
+    when '.md'
+      "site/open_md_file?path=#{CGI::escape path}" if user.admin?
+    else
+      case editor
+      when :atom
+        "atm://open?url=file://#{path}"
+      when :textmate
+        "txmt://open/?url=file://#{path}"
+      end
+      url += "&line=#{line}" unless line.nil?
+      # On compose le lien et on le renvoie
     end
-    url += "&line=#{line}" unless line.nil?
-    # On compose le lien et on le renvoie
     build( url, titre, options )
   end
 

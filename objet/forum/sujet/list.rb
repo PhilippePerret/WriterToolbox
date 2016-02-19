@@ -32,7 +32,7 @@ class Sujet
     @pseudo_last_post ||= last_post.auteur.pseudo
   end
   def info_last_message
-    return "--- aucun dernier message ---" if last_post.nil?
+    return "--- aucun dernier message ---" if last_post.nil? || last_post.created_at.nil?
     # IL faut charger le content du message, qui se trouve dans une
     # autre table
     last_post.content

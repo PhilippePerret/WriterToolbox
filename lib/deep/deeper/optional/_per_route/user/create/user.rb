@@ -162,7 +162,7 @@ class User
 
     captcha = form_data[:captcha].nil_if_empty
     raise "Il faut fournir le captcha pour nous assurer que vous n'êtes pas un robot." if captcha.nil?
-    raise "Le captcha est mauvais, seriez-vous un robot ?" if captcha.to_i != 365
+    raise "Le captcha est mauvais, seriez-vous un robot ?" if captcha.to_i != 366
 
   rescue Exception => e
     debug "# #{e.message}"
