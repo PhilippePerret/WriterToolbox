@@ -2,6 +2,47 @@
 class Cnarration
 class Page
 
+
+  # = main =
+  #
+  # Méthode principale qui sort le contenu de la page
+  def output
+    case true
+    when page?          then output_as_page
+    when sous_chapitre? then output_as_sous_chapitre
+    when chapitre?      then output_as_chapitre
+    end
+  end
+
+  # {StringHTML} Sortie du code quand c'est une "vraie" page
+  # donc pas un titre
+  def output_as_page
+    if false == path_semidyn.exist? || out_of_date?
+      # La page semi-dynamique n'est pas encore construite, il
+      # faut la construire. Pour ça, on utilise kramdown.
+      (site.folder_objet+'cnarration/lib/module/page/build.rb').require
+      build
+    end
+    if path_semidyn.exist?
+      path_semidyn.deserb.in_div(id:'page_cours')
+    else
+      error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
+    end
+  end
+
+  def output_as_sous_chapitre
+    (
+      "Sous-chapitre".in_div( class:'libelle_titre' ) +
+      titre.in_div( class:'titre' )
+    ).in_div( id:'page_titre' )
+  end
+  def output_as_chapitre
+    (
+      "Chapitre".in_div( class:'libelle_titre' ) +
+      titre.in_div(class:'titre')
+    ).in_div( id:'page_titre' )
+  end
+
   # Retourne les boutons de navigation pour atteindre
   # les pages précédente et suivante
   def boutons_navigation where = :top

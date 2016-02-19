@@ -1,4 +1,23 @@
 section#content
+  div#page_titre
+    padding       : 8em 0 15em
+    border        : 1px solid #959595
+    margin        : 1em 6em 2em
+    div.libelle_titre
+      font-style    : italic
+      color         : #b9b9b9
+      font-size     : 1.2em
+      text-align    : right
+      width         : 218px
+      padding       : 8px 12px 2px 0
+      border-right  : 12px solid #969273
+    div.titre
+      font-size     : 1.8em
+      margin-left   : 230px
+      text-align    : left
+      padding       : 6px 0 8px 12px
+      border-left   : 12px solid #578088
+      
   div#page_cours
     width       : 780px
     margin-left : 3em
@@ -18,15 +37,31 @@ section#content
 
   div.nav
     margin-right    : 4em
+    &.top
+      float         : right
+      > div
+        height        : 16px
+        width         : 24px
+        a
+          top           : -11px
+          left          : 11px
+          font-size     : 0.9em
+    &.bottom
+      > div
+        height        : 25px
+        width         : 50px
+        a
+          top           : -6px
+          left          : 18px
+          font-size     : 1.4em
+        
     > div
       border-width  : 2px
       border-style  : solid
       padding       : 2px 12px
       display       : inline-block
-      width         : 50px
       text-align    : center
       position      : relative
-      height        : 25px
       border-color  : #CCC #979797 #979797 #CCC
       &:hover
         border-color      : #979797 #CCC #CCC #979797
@@ -36,7 +71,4 @@ section#content
         a
           right          : 1px
       a
-        font-size     : 1.4em
         position      : absolute
-        top           : -6px
-        left          : 18px
