@@ -56,16 +56,25 @@ class Page
       @id = Cnarration::table_pages.insert(data2save.merge(created_at: NOW))
       param(:epage => param(:epage).merge(id: @id))
       flash "Page ##{@id} créée avec succès."
-
-      if page? && data_params[:create_file] == 'on'
-        path.write "<!-- Page: #{@titre} -->\n"
-        flash "Fichier créé dans #{path}"
-      end
-
     else
       Cnarration::table_pages.update(id, data2save)
       flash "Page ##{id} updatée."
     end
+
+    # Que ce soit pour une création ou une actualisation, si
+    # on demande à créer le fichier s'il n'existe pas, il faut
+    # le créer.
+    if page? && data_params[:create_file] == 'on' && false == path.exist?
+      path.write "<!-- Page: #{@titre} -->\n"
+      flash "Fichier créé "+("(dans #{path})".in_span(class:'tiny')) + "."
+    end
+
+    # Si les Identifiants de pages et titres avaient été mis en
+    # session (pour accélérer le calcul des pages avant/après) alors
+    # il faut initialiser cette variable pour qu'elle tienne compte
+    # des changements
+    reset_tdm_livre_in_session
+
   end
 
   def data2save
@@ -79,6 +88,14 @@ class Page
     }
   end
   def new? ; @is_new_page end
+
+  # Resetter la liste des IDs de pages et titres en
+  # session si elle existe.
+  def reset_tdm_livre_in_session
+    if app.session["cnarration_tdm#{livre_id}"]
+      app.session["cnarration_tdm#{livre_id}"] = nil
+    end
+  end
 
   def options
     @options ||= "#{type}#{nivdev}"

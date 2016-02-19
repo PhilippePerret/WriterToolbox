@@ -17,8 +17,21 @@ class Page
     flash "Page actualisée."
   end
 
+  # Retourne le code original du fichier markdown.
+  # Si le fichier n'existe pas (ce qui peut arriver) et que c'est
+  # l'administrateur qui visite, on le crée. Dans tous les cas,
+  # on retourne un code vide.
   def original_code
-    @original_code ||= path.read
+    @original_code ||= begin
+      if path.exist?
+        path.read
+      elsif user.admin?
+        (path.write "<!-- Page: #{titre} -->")
+        "[Fichier créé - Utiliser le lien-bouton “Edit text” pour définir le texte]"
+      else
+        ""
+      end
+    end
   end
 
   # Retourne le code original où les balises ERB (<% ... %>) ont

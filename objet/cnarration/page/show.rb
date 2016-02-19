@@ -68,8 +68,6 @@ class Page
   # au besoin)
   def tdm_ids
     @tdm_ids ||= begin
-      # TODO Il faudrait ne mettre que les pages qui sont
-      # vraiment des pages, pas les chapitres et sous-chapitres
       app.session["cnarration_tdm#{livre_id}"] ||= livre.tdm.pages_ids
     end
   end
@@ -77,7 +75,6 @@ class Page
   # Index de la page courante dans la table des matières
   def index_tdm
     @index_tdm ||= begin
-      debug "tdm_ids: #{tdm_ids.inspect}"
       tdm_ids.index(id)
     end
   end
@@ -89,6 +86,8 @@ class Page
       else
         tdm_ids[index_prev]
       end
+    rescue
+      nil
     end
   end
   def next_page_id
@@ -99,6 +98,8 @@ class Page
       else
         tdm_ids[index_next]
       end
+    rescue
+      nil
     end
   end
 

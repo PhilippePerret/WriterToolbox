@@ -29,12 +29,24 @@ section#content
         font-weight     : bold
         margin          : 3em 4em
         text-align      : center
-
+    // Les blocs de code qui servent pour évènemenciers
+    // par exemple
+    > pre
+      margin-left       : 2em
+      code
+        white-space       : pre-wrap
+        
     // Termes techniques
     tt
       font-family     : "Courier New"
       font-size       : 1.1em
-
+    // Les liens vers les livres
+    a.livre
+      font-variant    : small-caps
+      font-size       : 1.1em
+      font-family     : Arial, Helvetica, Verdana
+      
+  // Les boutons de navigation
   div.nav
     margin-right    : 4em
     &.top
@@ -47,6 +59,7 @@ section#content
           left          : 11px
           font-size     : 0.9em
     &.bottom
+      margin-top    : 4em
       > div
         height        : 25px
         width         : 50px

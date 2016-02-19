@@ -34,4 +34,13 @@ else
   flash "Table des matières créée pour le livre ##{livre.id}."
 end
 
+# Si les Identifiants de pages et titres avaient été mis en
+# session (pour accélérer le calcul des pages avant/après) alors
+# il faut initialiser cette variable pour qu'elle tienne compte
+# des changements
+if app.session["cnarration_tdm#{livre.id}"]
+  app.session["cnarration_tdm#{livre.id}"] = nil
+end
+
+# On retourne à l'édition de la table des matières
 redirect_to "livre/#{site.current_route.objet_id}/edit?in=cnarration"
