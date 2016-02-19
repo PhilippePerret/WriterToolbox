@@ -1,6 +1,10 @@
 # encoding: UTF-8
 class Page
 
+  # Définit le titre à affiche dans la fenêtre et dans
+  # l'historique du navigateur
+  # Pour le définir dans une section, il faut utiliser
+  # page.title = "<le titre>"
   def title
     if site.current_route.nil? || site.current_route.route == ""
       site.title

@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+page.title = "Narration"
+
 class Cnarration
   LIVRES = {
     1   => {id:1,   hname: "La Structure", stitre:nil, folder:'structure'},
