@@ -66,7 +66,7 @@ class Page
     # le créer.
     if page? && data_params[:create_file] == 'on' && false == path.exist?
       path.write "<!-- Page: #{@titre} -->\n"
-      flash "Fichier créé "+("(dans #{path})".in_span(class:'tiny')) + "."
+      flash "Fichier créé<br />"+("(dans #{path})".in_span(class:'tiny')) + "."
     end
 
     # Si les Identifiants de pages et titres avaient été mis en
