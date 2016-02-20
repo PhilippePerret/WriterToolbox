@@ -36,7 +36,7 @@ end
 # que les fichiers écartés seront les mêmes.
 # ---------------------------------------------------------------------
 class Synchro
-  def ignored_files
+  def app_ignored_files
     h = Hash::new ; [
       # Ici la liste des paths de fichiers à ignorer
     ].each { |p| h.merge!(p => true) } ; h

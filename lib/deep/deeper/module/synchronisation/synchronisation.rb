@@ -4,7 +4,7 @@
 Ce module permet de checker l'état de synchronisation entre le site local
 et le site sur serveur.
 
-Il est utilisé aussi bien localement que sur le serveur pour récolter les 
+Il est utilisé aussi bien localement que sur le serveur pour récolter les
 données.
 
 UTILISATION
@@ -27,6 +27,8 @@ if MODE_SERVEUR
   ## pour récupérer les informations des fichiers sur le serveur.
   ##
   isynchro.check_folders
+  # On écrit le résultat en sortie pour qu'il soit transmis en
+  # local.
   puts Marshal::dump( isynchro.result )
 else
   ##
@@ -34,5 +36,3 @@ else
   ##
   isynchro.check_synchro
 end
-
-

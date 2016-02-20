@@ -236,9 +236,9 @@ div.row.err {
 
   def javascript
     c = ""
-    c << tags_scripts_js( Dir["js/first_required/**/*.js"])
-    c << tags_scripts_js( Dir["js/required/**/*.js"])
-    c << tags_scripts_js( Dir["js/defer/**/*.js"])
+    # c << tags_scripts_js( Dir["js/first_required/**/*.js"])
+    # c << tags_scripts_js( Dir["js/required/**/*.js"])
+    # c << tags_scripts_js( Dir["js/defer/**/*.js"])
     c << tags_scripts_js( Dir["#{FOLDER_SYNCHRONISATION}/**/*.js"], true)
     return c
   end

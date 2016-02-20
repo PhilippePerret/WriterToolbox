@@ -1,4 +1,14 @@
 # encoding: UTF-8
+#
+# On charge les données de synchronisation propres
+# au site, à commencer par :
+#   - les informations SSH
+#   - les dossiers à traiter
+#   - les fichiers/dossiers à ignorer
+#
+require './objet/site/data_synchro'
+
+# Extension de Synchro
 class Synchro
 
   #
@@ -22,10 +32,6 @@ class Synchro
   #
   def check_synchro
 
-    #
-    # On charge les données propres au site
-    #
-    require './objet/site/data_synchro'
 
     #
     # Relève les fichiers et dates sur le site local
@@ -52,14 +58,28 @@ class Synchro
   def check_folders_online
     # Appeler ce script et le jouer sur le serveur
     # res = `ssh serveur_icare "ruby run_online.rb './ruby/module/check/synchronisation.rb'" -q`
-    res = `ssh #{serveur_ssh} "ruby run_online.rb '#{File.dirname(folder)}/synchronisation.rb'" -q`
-    res = Marshal.load(res)
-    res.each do |file_path, file_data|
-      if @result.has_key? file_path
-        @result[file_path][:tdis] = file_data[:tdis]
-      else
-        @result.merge! file_path => file_data
+    fullpath_folder = File.dirname(folder)
+    debug "fullpath_folder: #{fullpath_folder}"
+    fullpath_racine = File.expand_path('.')
+    debug "fullpath_racine: #{fullpath_racine}"
+    folder_upto_synchro = fullpath_folder.sub(/^#{fullpath_racine}\//, './')
+    debug "folder_upto_synchro: #{folder_upto_synchro}"
+    res = `ssh #{serveur_ssh} "ruby run_online.rb '#{folder_upto_synchro}/synchronisation.rb'" -q`
+    debug "RETOUR SSH : #{res.inspect}::#{res.class}"
+    begin
+      res = Marshal.load(res)
+      res.each do |file_path, file_data|
+        if @result.has_key? file_path
+          @result[file_path][:tdis] = file_data[:tdis]
+        else
+          @result.merge! file_path => file_data
+        end
       end
+    rescue Exception => e
+      puts "Une erreur est malheureusement survenue : #{e.message}"
+      puts "(consulter le fichier `#{path_log}` pour le détail)"
+      puts e.backtrace.join("\n")
+      debug "RETOUR SSH (évalué par Marshal) : #{res.inspect}::#{res.class}"
     end
   end
 
@@ -133,7 +153,7 @@ class Synchro
       h.merge!(
       "./lib/deep/deeper/module/synchronisation/synchronisation/output/ajax.rb" => true
       )
-      ignored_files.each do |p|
+      app_ignored_files.each do |p|
         p = p.strip
         if File.directory? p
           @ignored_folders << p
