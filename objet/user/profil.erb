@@ -3,48 +3,12 @@
 # mais évidemment pas avec les mêmes possibilités
 %>
 <%
-
-
-if user.identified?
-
-
-%>
-<h1><%= user.id == id ? "Votre profil" : "Profil de #{pseudo}" %></h1>
-
-<div>
-  <span class="libelle w200">Pseudo</span>
-  <span class="value"><%= pseudo %></span>
-</div>
-<div>
-  <span class="libelle w200">Session ID</span>
-  <span class="value"><%= session_id %></span>
-</div>
-<div>
-  <span class="libelle w200">Entrée</span>
-  <span class="value"><%= created_at.as_human_date %></span>
-</div>
-
-<ul>
-<% if user.admin? %>
-  <li>Rejoindre le <a href="unan_admin/dashboard">tableau de bord du programme Un An Un Script</a>.</li>
-<% end %>
-  <li><a href="user/paiement">Rejoindre la section des paiements</a> pour vous abonner au site et profiter de l'intégralité des outils.</li>
-</ul>
-<%
-
-
-else # un visiteur quelconque
-
-
-%>
-<p>
-  Vous n'êtes pas abilité à visiter les profils des utilisateurs du site. Vous devez au préalable <a href="user/signup">vous inscrire</a>.
-</p>
-
-<%
-
-
+def sous_vue vue_name
+  (site.folder_objet+"user/profil/#{vue_name}.erb").deserb(self)
 end
-
-
 %>
+<% if user.identified? %>
+  <%= sous_vue('identified') %>
+<% else %>
+  <%= sous_vue('non_identified') %>
+<% end %>

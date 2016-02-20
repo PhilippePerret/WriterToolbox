@@ -11,10 +11,16 @@ Rappel : c'est un singleton, on appelle les méthodes par :
 class Lien
 
   # Lien vers le programme UN AN UN SCRIPT
-  def programme_un_an_un_script titre = nil, options = nil
+  def unanunscript titre = nil, options = nil
     titre ||= "programme #{UN_AN_UN_SCRIPT}"
     build('unan/home', titre, options)
   end
+  # Lien vers l'inscription au programme UN AN UN SCRIPT
+  def unanunscript_subscribe titre = nil, options = nil
+    titre ||= "S'inscrire au programme #{UN_AN_UN_SCRIPT}"
+    build("unan/paiement", titre, options)
+  end
+  alias :subscribe_unanunscript :unanunscript_subscribe
 
   # Lien vers la partie analyse de films
   # @usage : <%= lien.analyses %> ou <%= lien.analyses_de_films %>

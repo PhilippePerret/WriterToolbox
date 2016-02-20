@@ -5,7 +5,10 @@
 %>
 <section id="left_margin">
 
-<%= "OUTILS".in_a(href:"tool/list", class:'border') %>
+<%= "OUTILS".in_a(href:"tool/list", id:'lk_outils') %>
+<% if user.identified? %>
+  <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
+<% end %>
 <%= "Accueil".in_a(href: '') %>
 <%= "Forum".in_a(href:'forum/home') %>
 
@@ -18,7 +21,6 @@
     # Si le visiteur est identifié
 %>
 
-  <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
   <%= "1 an, 1 script".in_a(href:'unan/home') %>
   <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
 

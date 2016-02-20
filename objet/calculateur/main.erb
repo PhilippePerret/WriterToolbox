@@ -12,9 +12,6 @@
 #   Méthodes d'helper
 #
 
-def picto_info
-  @picto_info ||= image('pictos/picto_info.png', {alt:"Infos", class:'btninfo'})
-end
 def bouton_info td_id, part_name
   picto_info.in_a(onclick:"$('div##{td_id}').toggle();return false;", class:'fbp') + " " + part_name.in_span
 end

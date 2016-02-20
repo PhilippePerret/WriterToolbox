@@ -1,0 +1,75 @@
+<%
+# Vue pour un user identifié et/ou administrateur
+%>
+<h1><%= user.id == id ? "Votre profil" : "Profil de #{pseudo}" %></h1>
+<%
+def div_row libelle, value, options = nil
+  options ||= Hash::new
+  options.merge!(class:'row')
+  (
+    libelle.in_span(class:'libelle') +
+    value.in_span(class:'value')
+  ).in_div(options)
+end
+def mark_subscribed
+  return OUI if subscribed?
+  "#{NON} #{lien.subscribe('(S’abonner)', class:'small')}"
+end
+def mark_unanunscript
+  return OUI if unanunscript?
+  "#{NON} #{lien.subscribe_unanunscript('(S’inscrire)', class:'small')}"
+end
+def info_unan
+  @info_unan ||= lien.unanunscript(picto_info, target:'_new', class:'fright')
+end
+def mark_forum
+  @mark_forum ||= lien.forum(picto_info, target:'_new', class:'fright')
+end
+def why_subscribe
+  @why_subscribe ||= picto_info.in_a(href: "aide/why_subscribe", class:'fright')
+end
+%>
+
+<h3>Identité</h3>
+
+<div class="dim3070">
+  <%= div_row("Pseudo"        , pseudo ) %>
+  <%= div_row("Inscription"   , created_at.as_human_date(true, true) ) %>
+  <%= div_row("Grade forum" , mark_forum + grade_humain ) %>
+  <%= div_row("Abonné"   , why_subscribe + mark_subscribed) %>
+  <%= div_row("Un an un script", info_unan + mark_unanunscript ) %>
+  <%= div_row("Session ID"    , session_id, {class:'small'} ) %>
+</div>
+
+<h3>Forum</h3>
+<p>
+  Vous n'avez aucun message en attente.
+</p>
+<p>
+  Vous n'avez aucune question en attente.
+</p>
+
+<h3>Programme <%= UN_AN_UN_SCRIPT %></h3>
+<% if unanunscript? %>
+  <p>
+    <%
+      nombre_travaux = get_var(:works_ids)
+      travaux = nombre_travaux > 1 ? 'travaux' : 'travail'
+    %>
+    <%=
+    if nombre_travaux > 0
+      "Vous avez #{nombre_travaux} #{travaux} en cours."
+    else
+      "Vous n'avez aucun travail à faire."
+    end
+     %>
+  </p>
+  <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
+
+<% else %>
+
+  <p>Vous ne suivez pas le <%= lien.unanunscript %>.</p>
+
+<% end %>
+
+<% if user.admin? %><%= sous_vue('admin') %><% end %>
