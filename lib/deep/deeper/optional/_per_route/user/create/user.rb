@@ -113,7 +113,7 @@ class User
   def data_to_save
     now = Time.now.to_i
     @data_to_save ||= {
-      pseudo:       pseudo,
+      pseudo:       pseudo.capitalize,
       patronyme:    patronyme,
       sexe:         sexe,
       mail:         mail,
