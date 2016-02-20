@@ -117,18 +117,6 @@ describe 'Méthodes pour la gestion des tickets' do
       end
     end
   end
-  describe 'lien_ticket' do
-    before(:all) do
-      app.create_ticket("ticketpourvoir#{NOW}", "debug 'oui'")
-    end
-    it 'répond' do
-      expect(app).to respond_to :lien_ticket
-    end
-    it 'retourne la bonne valeur' do
-      res = app.lien_ticket "Confirmer votre inscription"
-      expect(res).to eq "<a href=\"#{site.distant_host}?tckid=#{app.ticket.id}\">Confirmer votre inscription</a>"
-    end
-  end
 
 
   describe 'save_ticket' do

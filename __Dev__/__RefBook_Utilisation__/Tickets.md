@@ -21,19 +21,19 @@ Pour créer un ticket, il faut :
 
 Puis on appelle la méthode `app.create_ticket` avec cet ID et ce CODE pour le créer.
 
-    app.create_ticket(ticket_id, ticket_code)
+    letick = app.create_ticket(ticket_id, ticket_code)
 
 Ensuite, il suffit utiliser le lien à coller dans un mail par exemple :
 
-    <%= app.lien_ticket %>
+    <%= letick.link[ "<titre du lien>"] %>
 
 Noter qu'il est inutile de dire à `app` de quel ticket il s'agit puisqu'elle connait `@ticket` pendant la durée du processus. En revanche, si plusieurs tickets devaient être créés, il faut récupérer les valeurs tout de suite :
 
     app.create_ticket(tid1, tcode1)
-    lien_ticket1 = app.lien_ticket.freeze
+    liento_ticket1 = app.ticket.link.freeze
 
     app.create_ticket(tid2, tcode2)
-    lien_ticket2 = app.lien_ticket.freeze
+    liento_ticket2 = app.ticket.link.freeze
 
 <a name='codeaexecuter'></a>
 

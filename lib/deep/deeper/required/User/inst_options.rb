@@ -26,13 +26,13 @@ class User
   def set_grade new_grade ; set_option(:grade, new_grade) end
 
   # Index d'option : 2
-  # Méthode utilisée par un ticket pour confirmer le mail/inscription
+  # Méthode utilisée par un ticket pour confirmer le mail
   # de l'user.
-  # Note : on loggue automatiquement l'user.
+  # Note : on ne loggue pas l'user, pour qu'il ne repasse pas
+  # par l'accueil avec le ticket dans l'URL.
   def confirm_mail
     set_option(:confirm_mail, 1)
-    login
-    flash "Merci à vous #{pseudo}, votre inscription est confirmée."
+    flash "Merci à vous #{pseudo}, votre mail et votre inscription sont confirmées."
   end
   # Retourne true si le mail est bien confirmé
   def mail_confirmed?

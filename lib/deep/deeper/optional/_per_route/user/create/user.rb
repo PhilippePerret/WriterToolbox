@@ -93,11 +93,12 @@ class User
   # La méthode crée un ticket de confirmation et donne le lien au
   # mail
   def lien_confirmation_inscription
-    debug "-> lien_confirmation_inscription"
     code = "User::get(#{id}).confirm_mail"
     app.create_ticket(nil, code, {user_id: id})
     # On retourne le lien de confirmation
-    app.lien_ticket("Confirmation de votre inscription/mail").freeze
+    # Noter que `create_ticket` met le ticket dans App::@ticket
+    # ce qui permet ci-dessous de faire `app.ticket`
+    app.ticket.link("Confirmation de votre mail").freeze
   end
 
   # Méthode qui sauve toutes les données de l'user d'un coup
