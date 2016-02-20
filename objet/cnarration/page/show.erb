@@ -9,8 +9,5 @@ end
 <%= Cnarration::titre_h1 page.livre.titre %>
 <%= page.liens_edition_if_admin %>
 <%= page.boutons_navigation(:top) %>
-<% if page.page? %>
-  <h3><%= page.titre %></h3>
-<% end %>
 <%= page.output %>
 <%= page.boutons_navigation(:bottom) %>

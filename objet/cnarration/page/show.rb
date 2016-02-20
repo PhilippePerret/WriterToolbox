@@ -24,7 +24,10 @@ class Page
       build
     end
     if path_semidyn.exist?
-      path_semidyn.deserb.in_div(id:'page_cours')
+      (
+        titre.in_h3 +
+        path_semidyn.deserb
+      ).in_div(id:'page_cours')
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
     end

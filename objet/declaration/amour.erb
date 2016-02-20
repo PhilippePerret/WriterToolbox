@@ -1,0 +1,19 @@
+<%
+# Vue
+%>
+
+<h1>
+<% if user.identified? && user.pseudo == "Marion" %>
+  Je t'aime
+<% else %>
+  Houps
+<% end %>
+</h1>
+
+<p class='big grand air'>
+<% if user.identified? && user.pseudo == "Marion" %>
+  Je t'aime mon bébé d'amour que j'aime, ma petite piloute adorée.
+<% else %>
+Je ne déclare pas ma flamme à n'importe qui !
+<% end %>
+</p>

@@ -17,6 +17,6 @@ end
   <p>Seuls les abonné<%= user.f_e %>s ont accès à l'intégralité des outils d'analyse et des analyses de film (<%= user.pseudo %>, vous pouvez bien sûr <%= lien.abonnement("vous abonner") %>).</p>
   <p>Vous pouvez aussi <%= participer_aux_analyses %> pour gagner des points d'abonnement.</p>
 <% else %>
-  <p>Pour consulter les analyses, en intégralité ou en partie, vous devez impérativement <%= lien.signup("être inscrit-e") %> ou <%= lien.abonnement("être abonné-e") %>.</p>
-  <p>En étant inscrit-e, vous pourrez également <%= participer_aux_analyses %> produites afin de gagner des points d'abonnement.</p>
+  <p>Pour consulter les analyses, en intégralité ou en partie, vous devez impérativement <%= lien.signup("être inscrit/e") %> ou <%= lien.abonnement("être abonné/e") %>.</p>
+  <p>En étant inscrit/e, vous pourrez également <%= participer_aux_analyses %> produites afin de gagner des points d'abonnement.</p>
 <% end %>
