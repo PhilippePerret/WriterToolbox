@@ -61,9 +61,32 @@ end
 class Synchro
   def folders_2_check
     {
-      'lib'     => {extensions: COMMON_EXTENSIONS,  dir: :l2s},
-      'objet'   => { extensions: COMMON_EXTENSIONS,  dir: :l2s },
-      'view'    => { extensions: COMMON_EXTENSIONS,   dir: :l2s }
+      'lib'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'objet'   => { extensions: COMMON_EXTENSIONS, dir: :l2s },
+      'view'    => { extensions: COMMON_EXTENSIONS, dir: :l2s }
     }
+  end
+end
+
+# ---------------------------------------------------------------------
+#   Différentes configurations dont a besoin la synchronisation
+#
+class Synchro
+
+  def base
+    @base ||= "http://localhost/WriterToolbox/"
+  end
+
+  def app_name
+    @app_name = "WriterToolbox"
+  end
+  # Le dossier contenant les librairies javascript de
+  # base (Ajax, jQuery, etc.)
+  # Ce dossier doit contenir le dossier 'first_required' pour les
+  # premiers JS requis et le dossier 'required' pour les autres
+  # js requis
+  def javascript_folder
+    @javascript_folder ||= './lib/deep/deeper/js'
+    # @javascript_folder ||= File.join('.', 'lib', 'deep', 'deeper', 'js')
   end
 end

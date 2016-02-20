@@ -59,13 +59,9 @@ class Synchro
     # Appeler ce script et le jouer sur le serveur
     # res = `ssh serveur_icare "ruby run_online.rb './ruby/module/check/synchronisation.rb'" -q`
     fullpath_folder = File.dirname(folder)
-    debug "fullpath_folder: #{fullpath_folder}"
     fullpath_racine = File.expand_path('.')
-    debug "fullpath_racine: #{fullpath_racine}"
     folder_upto_synchro = fullpath_folder.sub(/^#{fullpath_racine}\//, './')
-    debug "folder_upto_synchro: #{folder_upto_synchro}"
     res = `ssh #{serveur_ssh} "ruby run_online.rb '#{folder_upto_synchro}/synchronisation.rb'" -q`
-    debug "RETOUR SSH : #{res.inspect}::#{res.class}"
     begin
       res = Marshal.load(res)
       res.each do |file_path, file_data|
@@ -95,13 +91,14 @@ class Synchro
     output.build_html_file
   end
 
+
   def open_result
     # `open -a Firefox "#{path_html_file}"`
     # Pour bénéficier d'ajax
     app_path = File.expand_path(".")
     sync_path = File.expand_path(folder.to_s)
     rel_path = sync_path.sub(/^#{app_path}\//,'')
-    fin_path = "http://localhost/#{fin_path}/output/#{name_html_file}"
+    fin_path = "http://localhost/#{app_name}/#{rel_path}/output/#{name_html_file}"
     # `open http://localhost/AlwaysData/Icare_AD/ruby/module/check/synchronisation/output/#{name_html_file}`
     `open #{fin_path}`
   end

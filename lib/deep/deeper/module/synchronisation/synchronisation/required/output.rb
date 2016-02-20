@@ -173,10 +173,12 @@ class Output
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <title>Check synchro #{now_humain}</title>
+  <base href="#{synchro.base}" />
   <style type="text/css">#{styles.gsub(/\n/,'')}</style>
   #{javascript}
 </head>
 <body>
+  <input type="hidden" name="ajax_url" id="ajax_url" value="#{FOLDER_SYNCHRONISATION_RELPATH}/output/ajax.rb" />
     HTML
   end
 
@@ -236,24 +238,29 @@ div.row.err {
 
   def javascript
     c = ""
-    # c << tags_scripts_js( Dir["js/first_required/**/*.js"])
-    # c << tags_scripts_js( Dir["js/required/**/*.js"])
-    # c << tags_scripts_js( Dir["js/defer/**/*.js"])
+    c << tags_scripts_js( Dir["#{folder_js_first_required}/**/*.js"] )
     c << tags_scripts_js( Dir["#{FOLDER_SYNCHRONISATION}/**/*.js"], true)
+    c << tags_scripts_js( Dir["#{folder_js_required}/**/*.js"] )
     return c
   end
 
   def tags_scripts_js fullpath_list, strict = false
     return "" if fullpath_list.nil? || fullpath_list.empty?
     fullpath_list.collect do |path|
-      path = unless strict
-        "../../../../../#{path}"
+      path = if strict
+        path.sub(/^#{File.expand_path('.')}/,'.')
       else
-        filename = File.basename(path)
-        "../#{filename}"
+        path
       end
       "<script src='#{path}' type='text/javascript' charset='utf-8'></script>"
     end.join("\n")
+  end
+
+  def folder_js_first_required
+    @folder_js_first_required ||= File.join(synchro.javascript_folder, 'first_required')
+  end
+  def folder_js_required
+    @folder_js_required ||= File.join(synchro.javascript_folder, 'required')
   end
 
 end # Output
