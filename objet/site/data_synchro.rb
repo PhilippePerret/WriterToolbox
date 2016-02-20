@@ -37,12 +37,19 @@ end
 # ---------------------------------------------------------------------
 class Synchro
   def app_ignored_files
-    h = Hash::new ; [
+    [
       # Ici la liste des paths de fichiers à ignorer
-    ].each { |p| h.merge!(p => true) } ; h
+      "./database/users.db",
+      "./database/unan_hot.db",
+      './database/site_hot.db'
+    ]
   end
   def ignored_folders
-    ["./database/"]
+    # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
+    [
+      ["./database/data/unan/"],
+      ["./database/data/user/"]
+    ]
   end
 end
 
@@ -61,10 +68,20 @@ end
 class Synchro
   def folders_2_check
     {
-      'lib'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
-      'objet'   => { extensions: COMMON_EXTENSIONS, dir: :l2s },
-      'view'    => { extensions: COMMON_EXTENSIONS, dir: :l2s }
+      'lib'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s },
+      'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s },
+      'data'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'database'  => {extensions: ['db', 'rb'], dir: :l2s}
     }
+  end
+  def files_2_check
+    # {
+    #   './database/filmodico.db'   => {dir: :both},
+    #   './database/cnarration.db'  => {dir: :both},
+    #   './database/scenodico.db'   => {dir: :both},
+    #   './'
+    # }
   end
 end
 
