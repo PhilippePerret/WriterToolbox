@@ -44,10 +44,13 @@ class Ticket
     end
   end
 
+  # Retourne true si le ticket existe. Noter la tournure LIKE au
+  # lieu du test simple d'égalité. Cela tient simplement au fait
+  # que si l'identifiant se termine par "8" la valeur est trans-
+  # formée, sans doute en octal. En revanche, LIKE transforme
+  # forcément le test en string
   def exist?
-    il_existe = table.count(where:"id LIKE '#{id}'", colonnes:[]) > 0
-    debug "Est-ce que le Ticket #{id} existe ? #{il_existe.inspect}"
-    return il_existe
+    table.count(where:"id LIKE '#{id}'", colonnes:[]) > 0
   end
 
   def create
