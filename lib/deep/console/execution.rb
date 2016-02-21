@@ -61,6 +61,10 @@ class Console
   def execute_as_is line
     case line
 
+    when 'read debug', 'show debug'
+      read_debug
+    when 'destroy debug', 'kill debug'
+      destroy_debug
     when "list films", "affiche table films"
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table

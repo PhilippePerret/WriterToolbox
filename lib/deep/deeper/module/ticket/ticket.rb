@@ -45,7 +45,13 @@ class Ticket
   end
 
   def exist?
-    table.count(where:{id: id}) > 0
+    il_existe = table.count(where:{ id: id }, colonnes:[]) > 0
+    debug "Le Ticket #{id} existe ? #{il_existe.inspect}"
+    unless il_existe
+      debug "Il n'existe pas dans la table :"
+      debug "#{table.select.pretty_inspect}"
+    end
+    return il_existe
   end
 
   def create

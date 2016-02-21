@@ -35,6 +35,12 @@ class Console
 <h4 onclick="$('dl#code_lines').toggle()">Lignes de codes utilisables</h4>
 <dl class='small' id="code_lines" style="display:none">
 
+  <dt>`read debug` ou `show debug`</dt>
+  <dd>Pour lire le fichier debug.log.</dd>
+
+  <dt>`destroy debug` ou `kill debug`</dt>
+  <dd>Détruire le fichier debug.log</dd>
+
   <dt>`montre table &lt;database&gt;.&lt;table&gt;`</dt>
   <dd>Pour afficher le contenu d'une table. NON IMPLÉMENTÉE.</dd>
   <dd>Variante : `montre` peut être remplacé par `affiche`.</dd>

@@ -9,13 +9,15 @@ class App
   # ne vérifie pas que c'est bien le possesseur du ticket qui
   # l'exécute.
   def execute_ticket tid
+    debug.add("-> app.execute_ticket(tid: #{tid})")
+    debug.add( "Tous les tickets :\n#{table_tickets.select.pretty_inspect}") rescue nil
     get_ticket(tid)
-    if false == ticket.exist?
+    if false == @ticket.exist?
       error.add "Impossible d'exécuter ce ticket. Il n'existe pas ou plus."
     # elsif (user.id != ticket.user_id) && false == user.admin?
     #   error.add "Vous n'êtes en aucun cas le possesseur de ce ticket, impossible de l'exécuter pour vous."
     else
-      ticket.exec
+      @ticket.exec
     end
   end
 
