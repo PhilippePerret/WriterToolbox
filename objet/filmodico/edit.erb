@@ -33,13 +33,15 @@ bouton_load_by_sym_id = "Charger par SYM ID".in_a(class:'btn tiny', onclick:"$.p
 
 bouton_reset_all = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'reset_form')()")
 
+bouton_imbd = "IMDB".in_a(class:'btn tiny', onclick:"$.proxy(Filmodico, 'on_click_imdb_button', this)()")
+
 menu_pays = PAYS_ARR_SELECT.in_select(name:'pays', onchange:"$.proxy(Filmodico, 'on_choose_pays', this.value)()")
 %>
 <form id="form_edit_film" class='dim2080' action="filmodico/edit" method="POST" accept-charset="utf-8">
   <%= "edit_film_by_any_id".in_hidden(name:'operation', id:'operation') %>
 
   <%# TITRE ORIGINAL %>
-  <%= form.field_text("Titre", 'titre') %>
+  <%= form.field_text("Titre", 'titre', nil, {text_after:"#{bouton_imbd}"}) %>
 
   <%# ANNÉE %>
   <%= form.field_text("Année", 'annee', nil, {class:'short', text_after:'AAAA'}) %>

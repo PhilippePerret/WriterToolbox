@@ -1,6 +1,13 @@
 if(undefined==window.Filmodico){window.Filmodico = {}}
 $.extend(window.Filmodico, {
 
+  on_click_imdb_button:function(lien){
+    lien = $(lien);
+    var titre = this.form.find('input#film_titre').val() ;
+    lien.attr('href', "http://www.imdb.com/find?&q="+titre+"&s=tt");
+    return true
+  },
+
   on_click_submit: function(){
     this.form.find('input#operation').val('save_film');
     return true
