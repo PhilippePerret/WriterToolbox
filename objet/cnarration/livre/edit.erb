@@ -4,6 +4,9 @@
 raise_unless_admin
 %>
 <%= Cnarration::titre_h1("Livre (édition)") %>
+<% if ONLINE %>
+  <p class='warning air'>La collection Narration se modifie seulement en OFFLINE.</p>
+<% else %>
 <%
 def livre
   @livre ||= site.objet
@@ -25,3 +28,6 @@ end
   <%= "Afficher".in_a(class:'fleft', href:"livre/#{livre.id}/tdm?in=cnarration") %>
   <%= "Enregistrer".in_a(class:'btn', onclick:"$.proxy(Cnarration, 'save_tdm', #{livre.id})()") %>
 </div>
+<%
+end # OFFLINE
+%>

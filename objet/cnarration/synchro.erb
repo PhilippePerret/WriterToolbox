@@ -3,10 +3,8 @@
 # collection narration
 %>
 <%= Cnarration::titre_h1("Synchronisation") %>
-<% site.require_module 'remote_file'%>
+<%  site.require_module 'remote_file'  %>
 <%= RFile::new("./database/data/cnarration.db").
     bloc_synchro(verbose: true) %>
 
-<p class='small italic discret'>
-  Noter qu'on ne synchronise ici que la base de données générale de la collection, pas les pages elles-mêmes. On peut aussi synchroniser les fichiers texte en lançant une synchro complète du site (<%= lien.console %>   -> `check synchro`).
-</p>
+<p class='small italic discret'>Noter qu'on ne synchronise ici que la base de données générale de la collection, pas les pages elles-mêmes. On peut aussi synchroniser les fichiers texte en lançant une synchro complète du site (<%= lien.console %>   -> `check synchro`).</p>

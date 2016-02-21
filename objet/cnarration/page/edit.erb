@@ -3,6 +3,9 @@
 raise_unless_admin
 %>
 <%= Cnarration::titre_h1("Page (édition)") %>
+<% if ONLINE %>
+  <p class='air warning'>Les pages de la collection ne peuvent s'éditer qu'en local.</p>
+<% else %>
 <%
 site.require 'form_tools'
 form.prefix = "epage"
@@ -85,3 +88,4 @@ menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id"
 
   <%= form.submit_button("Enregistrer", onclick:"$.proxy(Cnarration,'on_submit_form')()") %>
 </form>
+<% end %>
