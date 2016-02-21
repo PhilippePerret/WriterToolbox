@@ -3,6 +3,22 @@
 Handy méthodes pour les user
 =end
 
+# Retourne un pseudo aléatoire d'une longeur de 6 à 16 lettres
+# à peu près
+def random_pseudo
+  # Longeur aléatoire
+  len_pseudo = 6 + rand(10)
+  # Première lettre
+  pse = (65 + rand(26)).chr
+  liste_voyelles = ['a','e', 'i', 'o', 'u', 'y', 'oi'].freeze
+  nombre_voyelles = liste_voyelles.count
+  # Lettres suivantes
+  (len_pseudo/2).times do
+    pse << liste_voyelles[rand(nombre_voyelles)]
+    pse << (97 + rand(26)).chr
+  end
+  return pse
+end
 
 # {User} Retourne une instance User prise au hasard sur le site
 #

@@ -1,6 +1,9 @@
 require 'digest/md5'
 feature "Inscription d'un nouveau membre" do
+
   scenario "Un nouveau membre s'inscrit avec succès" do
+
+    degel 'aucun-programme'
 
     start_time = Time.now.to_i
 
@@ -18,11 +21,11 @@ feature "Inscription d'un nouveau membre" do
     mail          = "unmail#{Time.now.to_i}@chez.lui"
     mot_de_passe  = "unmotdepassecorrect"
     data = {
-      pseudo:"Pseudo#{Time.now.to_i}",
+      pseudo: random_pseudo,
       patronyme:"Patro De#{Time.now.to_i}",
       mail:mail, mail_confirmation:mail,
       password:mot_de_passe, password_confirmation:mot_de_passe,
-      captcha: "365"
+      captcha: "366"
     }
     within("form#form_user_signup") do
       data.each do |k, val|
@@ -56,13 +59,15 @@ feature "Inscription d'un nouveau membre" do
     expect(last_user[:options][2].to_i).to eq 0
     puts "L'auteur n'est pas encore validé"
 
-    # Un mail de confirmation lui a été envoyé
+    # Le dernier user créé donc celui-ci
     user = User::get(last_user[:id])
 
     # Un ticket a été créé pour lui
+    site.require_module 'ticket'
     res = app.table_tickets.select(where:{user_id: last_user[:id]}, limit:1, order:"created_at DESC").values.first
     expect(res).not_to eq nil
     expect(res[:created_at]).to be >= start_time
+    ticket_id_in_table = res[:id]
     puts "Un ticket a été créé pour l'user avec les bonnes données"
 
     expect(user).to have_mail_with(
@@ -70,5 +75,16 @@ feature "Inscription d'un nouveau membre" do
       subject:        "Confirmez votre inscription"
     )
     puts "Un mail lui est envoyé pour confirmer son inscription"
+    mail_user = MailMatcher::mail_found
+    # puts mail_user.pretty_inspect
+    message = mail_user[:message]
+    expect(message).to include "confirmer votre adresse-mail"
+    puts "Le mail contient le bon message"
+    ticket_id = message.match(/\?tckid\=([a-zA-Z0-9]+)/).to_a[1]
+    puts "ID du ticket dans le message : #{ticket_id}"
+    expect(ticket_id).to eq ticket_id_in_table
+    puts "Le ticket contenu dans le mail correspond au numéro de ticket dans la table"
+
+    gel 'testint-apres-signup-valide'
   end
 end

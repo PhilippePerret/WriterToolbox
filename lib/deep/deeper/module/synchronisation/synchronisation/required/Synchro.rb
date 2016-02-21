@@ -140,7 +140,11 @@ class Synchro
   end
 
   def ignored_folders
-    @ignored_folders
+    @ignored_folders ||= begin
+      arr = Array::new # vide pour le moment
+      arr += app_ignored_folders
+      arr
+    end
   end
   def ignored_files
     @ignored_files ||= begin

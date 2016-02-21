@@ -2,10 +2,23 @@
 
 =begin
 
+Pour obtenir le mail checké (si un seul):
+
+MailMatcher::mail_found
+# => Un hash avec les données du mail
+
+Pour obtenir les mails checkés (si plusieurs)
+
+MailMatcher::mails_found
+# => Array de hash des données des mails
 
 =end
 class MailMatcher
   class << self
+
+    attr_accessor :mail_found
+    attr_accessor :mails_found
+
     def add_message mess
       @message_to_add ||= ""
       @message_to_add << "#{mess} "
@@ -32,8 +45,10 @@ RSpec::Matchers::define :have_mails_with do |params|
     # On cherche les mails
     @mails_found = search_mails_with @params
     if @only_one
+      MailMatcher::mail_found = @mails_found.first
       @mails_found.count == 1
     else
+      MailMatcher::mails_found = @mails_found
       @mails_found.count > 0
     end
   end

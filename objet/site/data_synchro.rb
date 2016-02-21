@@ -44,7 +44,7 @@ class Synchro
       './database/site_hot.db'
     ]
   end
-  def ignored_folders
+  def app_ignored_folders
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
       ["./database/data/unan/"],

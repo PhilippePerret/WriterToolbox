@@ -38,7 +38,7 @@ feature "Inscription non valide au site" do
     set_in_form(pseudo: "Pi")
     expect(page).to have_error "Le pseudo doit faire au moins 3 caractères."
 
-    pseudo = "Pseudo#{NOW}"
+    pseudo = random_pseudo
     data = { pseudo:pseudo, patronyme:"" }
 
     set_in_form( data )
@@ -63,7 +63,8 @@ feature "Inscription non valide au site" do
       expect(page).to have_error "Ce mail n'a pas un bon format de mail."
     end
 
-    set_in_form(data.merge(mail:site.mail))
+    mail_bad = User::table.get(1, colonnes:[:mail])[:mail]
+    set_in_form(data.merge( mail: mail_bad ))
     expect(page).to have_error "Ce mail existe déjà… Vous devez déjà être inscrit…"
 
     mail = "bon_mail@pour.voir"
@@ -113,7 +114,7 @@ feature "Inscription non valide au site" do
     set_in_form(data.merge(captcha:"364"))
     expect(page).to have_error "Le captcha est mauvais, seriez-vous un robot ?"
 
-    set_in_form(data.merge(captcha:"trois cent soixante cinq"))
+    set_in_form(data.merge(captcha:"trois cent soixante six"))
     expect(page).to have_error "Le captcha est mauvais, seriez-vous un robot ?"
 
     # ---------------------------------------------------------------------
@@ -121,7 +122,7 @@ feature "Inscription non valide au site" do
     expect(User::table_users.count).to eq nombre_users
 
     # Maintenant, tout doit passer
-    set_in_form(data.merge(captcha:"365"))
+    set_in_form(data.merge(captcha:"366"))
 
     # Ça a dû marcher
     expect(User::table_users.count).to eq ( nombre_users + 1 )
