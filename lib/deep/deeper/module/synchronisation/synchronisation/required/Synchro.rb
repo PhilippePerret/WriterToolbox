@@ -57,7 +57,6 @@ class Synchro
 
   def check_folders_online
     # Appeler ce script et le jouer sur le serveur
-    # res = `ssh serveur_icare "ruby run_online.rb './ruby/module/check/synchronisation.rb'" -q`
     fullpath_folder = File.dirname(folder)
     fullpath_racine = File.expand_path('.')
     folder_upto_synchro = fullpath_folder.sub(/^#{fullpath_racine}\//, './')
@@ -117,7 +116,7 @@ class Synchro
   ##
   #
   # @RETURN les fichiers du dossiers +folder+ (en cherchant aussi dans les
-  # sous-dossier)
+  # sous-dossiers directs)
   #
   def files_of_folder folder
     extensions = folders_2_check[folder][:extensions]
@@ -125,7 +124,6 @@ class Synchro
     les_fichiers += Dir.glob("#{File.join('.', folder)}/*.{#{extensions.join(',')}}")
     Dir["./#{folder}/**/**"].each do |subfolder|
       next unless File.directory? subfolder
-      next if ignored_files.has_key? "#{subfolder}/"
       next if ignored_subfolder? subfolder
       les_fichiers += Dir.glob("#{subfolder}/*.{#{extensions.join(',')}}")
     end
@@ -138,6 +136,10 @@ class Synchro
     end
     return false
   end
+  def ignored_file? pfile
+    # puts "ignored_file?(#{pfile}) #{(!!ignored_files[pfile]).inspect}"
+    !!ignored_files[pfile]
+  end
 
   def ignored_folders
     @ignored_folders ||= begin
@@ -148,7 +150,6 @@ class Synchro
   end
   def ignored_files
     @ignored_files ||= begin
-      @ignored_folders = []
       h = {}
       # Ajouter quelques fichiers obligatoirement ignorés
       h.merge!(
@@ -157,11 +158,12 @@ class Synchro
       app_ignored_files.each do |p|
         p = p.strip
         if File.directory? p
-          @ignored_folders << p
+          raise "Synchro::app_ignored_files est mal défini dans data_synchro.rb : Elle ne devrait contenir que des fichiers, pas de dossier."
         else
-          h.merge! p => true
+          h.merge!( p => true )
         end
       end
+      # puts "Fichiers ignorés :\n#{h.inspect}"
       h
     end
   end
@@ -172,7 +174,8 @@ class Synchro
   #
   #
   def traite_file path, dfolder
-    return if ignored_files[path] == true
+    # On passe le fichier s'il doit être ignoré
+    return if ignored_file?(path)
     unless @result.has_key? path
       @result.merge! path => { tdis: nil, tloc: nil, dir: dfolder[:dir] }
     end

@@ -39,16 +39,17 @@ class Synchro
   def app_ignored_files
     [
       # Ici la liste des paths de fichiers à ignorer
-      "./database/users.db",
-      "./database/unan_hot.db",
-      './database/site_hot.db'
+      "./database/data/users.db",
+      "./database/data/forum.db",
+      "./database/data/unan_hot.db",
+      './database/data/site_hot.db'
     ]
   end
   def app_ignored_folders
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
-      ["./database/data/unan/"],
-      ["./database/data/user/"]
+      "./database/data/unan/",
+      "./database/data/user/"
     ]
   end
 end
