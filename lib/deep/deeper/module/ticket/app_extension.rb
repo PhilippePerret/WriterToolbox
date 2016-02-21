@@ -10,7 +10,6 @@ class App
   # l'exécute.
   def execute_ticket tid
     debug.add("-> app.execute_ticket(tid: #{tid})")
-    debug.add( "Tous les tickets :\n#{table_tickets.select.pretty_inspect}") rescue nil
     get_ticket(tid)
     if false == @ticket.exist?
       error.add "Impossible d'exécuter ce ticket. Il n'existe pas ou plus."

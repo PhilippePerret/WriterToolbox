@@ -32,7 +32,7 @@ class User
   # par l'accueil avec le ticket dans l'URL.
   def confirm_mail
     set_option(:confirm_mail, 1)
-    flash "Merci à vous #{pseudo}, votre mail et votre inscription sont confirmées."
+    flash "Merci à vous #{pseudo}, votre mail et votre inscription sont confirmés.<br />Vous pouvez vous identifier."
   end
   # Retourne true si le mail est bien confirmé
   def mail_confirmed?

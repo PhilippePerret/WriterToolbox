@@ -8,7 +8,7 @@ class Console
   end
   def read_debug
     if debug_sfile.exist?
-      sub_log debug_sfile.read.to_html
+      sub_log debug_sfile.read.split("\n").collect{|p| p.in_div}.join("")
     else
       sub_log "Aucun fichier log à lire."
     end
