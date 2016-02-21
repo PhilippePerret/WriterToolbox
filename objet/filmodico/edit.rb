@@ -72,13 +72,14 @@ class Filmodico
       # Table ANALYSE
       data2save_analyse.merge!(id: @id, created_at: NOW)
       Filmodico::table_films_analyse.insert(data2save_analyse)
-
       # Pour l'affichage
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
       Filmodico::table_films.update(id, data2save)
       Filmodico::table_films_analyse.update(id, data2save_analyse)
     end
+    # Transmettre l'affiche si nécessaire
+    upload_affiche_if_needed
   end
   def is_new? ; @is_new == true end
 
@@ -111,6 +112,22 @@ class Filmodico
       auteurs:      @auteurs_analyse,
       updated_at:   NOW
     }
+  end
+
+  # Télécharge l'affiche sur le serveur distant si
+  # nécessaire.
+  def upload_affiche_if_needed
+    plocal = "./view/img/affiches/#{@film_id}.jpg"
+    path_local = SuperFile::new( plocal )
+    if path_local.exist?
+      site.require_module 'remote_file'
+      rfile = RFile::new(plocal)
+      rfile.upload unless rfile.synchronized?
+    else
+      error "Il faudrait créer l'affiche : #{path_local}."
+    end
+  rescue Exception => e
+    error "Problème en essayant de télécharger l'image de l'affiche : #{e.message}"
   end
 
   def check_data_or_raise
