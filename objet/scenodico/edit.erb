@@ -48,6 +48,7 @@ types_def_for_select = [
 # Pour afficher en toutes lettres les mots relatifs, synonymes et
 # contraire, avec un lien pour les afficher
 def liste_relatifs type # :relatifs, :synonymes, :contraires
+  return "" if param(:mot).nil?
   rels = param(:mot)[type].nil_if_empty
   return "" if rels.nil?
   liste_rels = rels.split(' ').collect do |mid|
