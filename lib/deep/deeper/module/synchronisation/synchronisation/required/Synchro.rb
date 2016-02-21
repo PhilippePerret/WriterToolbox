@@ -98,7 +98,6 @@ class Synchro
     sync_path = File.expand_path(folder.to_s)
     rel_path = sync_path.sub(/^#{app_path}\//,'')
     fin_path = "http://localhost/#{app_name}/#{rel_path}/output/#{name_html_file}"
-    # `open http://localhost/AlwaysData/Icare_AD/ruby/module/check/synchronisation/output/#{name_html_file}`
     `open #{fin_path}`
   end
 

@@ -3,6 +3,14 @@
 raise_unless_admin
 %>
 <%= Scenodico::titre_h1("Édition de mot") %>
+<% if OFFLINE %>
+  <p class='air warning'>
+    Pour le moment, comme Marion corrige les définitions ONLINE, il faut éditer le dictionnaire seulement en ONLINE.
+  </p>
+  <p>
+    <%= "Synchroniser le fichier local…".in_a(href:'scenodico/download') %>
+  </p>
+<% else %>
 <%
 site.require 'form_tools'
 form.prefix = "mot"
@@ -92,3 +100,6 @@ end
 
   <%= form.submit_button("Enregistrer", onclick:"$.proxy(Scenodico,'set_operation', 'save_mot')()") %>
 </form>
+<%
+end # ONLINE
+%>

@@ -1,0 +1,8 @@
+<%
+# Vue de confirmation du rapatriement de la Database distante
+%>
+<%= Filmodico::titre_h1("Download base de données") %>
+
+<h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
+
+<%= rfile.bloc_synchro(action: "filmodico/download", verbose:true) %>

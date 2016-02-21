@@ -42,7 +42,9 @@ class Synchro
       "./database/data/users.db",
       "./database/data/forum.db",
       "./database/data/unan_hot.db",
-      './database/data/site_hot.db'
+      './database/data/site_hot.db',
+      './database/data/filmodico.db',
+      './database/data/scenodico.db'
     ]
   end
   def app_ignored_folders

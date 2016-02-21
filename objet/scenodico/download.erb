@@ -1,0 +1,9 @@
+<%
+# Vue de confirmation du rapatriement de la Database distante
+%>
+<%= Scenodico::titre_h1("Download base de données") %>
+
+<h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
+
+
+<%= rfile.bloc_synchro(action: "scenodico/download", verbose:true) %>
