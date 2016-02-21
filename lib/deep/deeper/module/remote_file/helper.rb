@@ -12,11 +12,13 @@ indépendants tels que les bases de données du scénodico, etc.)
 class RFile
 
   # +options+
-  #   :action     L'action du formulaire en cas de désynchro
+  #   :action     L'action du formulaire en cas de désynchro. Par
+  #               défaut, la route courante.
   #   ------------------------------------------------------------
   #   :verbose    Si true, envoie un message même lorsque les deux
   #               fichier sont synchronisés.
-  def bloc_synchro options
+  def bloc_synchro options = nil
+    options ||= Hash::new
 
     case param(:operation)
     when 'synchro_upload_local_rfile_to_distant_file'
@@ -30,6 +32,8 @@ class RFile
     else
       # On poursuit
     end
+
+    options[:action] ||= site.route
 
     verbose = !!options[:verbose]
     return "" if synchronized? && !verbose

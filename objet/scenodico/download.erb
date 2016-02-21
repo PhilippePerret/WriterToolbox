@@ -5,5 +5,6 @@
 
 <h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
 
-
-<%= rfile.bloc_synchro(action: "scenodico/download", verbose:true) %>
+<% site.require_module 'remote_file' %>
+<%= RFile::new("./database/data/scenodico.db").
+    bloc_synchro(action: "scenodico/download", verbose:true) %>

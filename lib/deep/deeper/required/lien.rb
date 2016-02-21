@@ -34,6 +34,12 @@ class Lien
   alias :sabonner :subscribe
   alias :abonnement :subscribe
 
+  # Pour rejoindre la console
+  def console titre = "console", options = nil
+    raise_unless_admin
+    build 'site/console', titre, options
+  end
+  
   # Lien pour éditer un fichier par son path, dans l'éditeur de
   # son choix, soit Textmate, soit Atom si le fichier est d'extension
   # quelconque, sauf .md
