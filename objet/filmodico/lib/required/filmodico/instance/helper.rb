@@ -33,7 +33,7 @@ class Filmodico
   # L'image de l'affiche du film
   # Note : Pour le moment, on la prend sur le site de l'atelier Icare
   def affiche
-    @affiche ||= "<img src='http://www.atelier-icare.net/img/affiches/#{film_id}.jpg' />"
+    @affiche ||= "<img src='./view/img/affiches/#{film_id}.jpg' />"
   end
 
   def boutons_edition
