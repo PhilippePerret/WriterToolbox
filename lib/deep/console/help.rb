@@ -41,6 +41,9 @@ class Console
   <dt>`destroy debug` ou `kill debug`</dt>
   <dd>Détruire le fichier debug.log</dd>
 
+  <dt>`check synchro`</dt>
+  <dd>Procède au check de synchro et génère un fichier HTML pour synchroniser le site distant avec le site local.</dd>
+
   <dt>`montre table &lt;database&gt;.&lt;table&gt;`</dt>
   <dd>Pour afficher le contenu d'une table. NON IMPLÉMENTÉE.</dd>
   <dd>Variante : `montre` peut être remplacé par `affiche`.</dd>

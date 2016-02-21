@@ -61,6 +61,8 @@ class Console
   def execute_as_is line
     case line
 
+    when 'check synchro'
+      check_synchro
     when 'read debug', 'show debug'
       read_debug
     when 'destroy debug', 'kill debug'
