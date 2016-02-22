@@ -21,7 +21,7 @@ class Todolist
   # Liste des instances Tache de la liste
   def taches
     @taches ||= begin
-      Admin::table_taches.select(order:"echeance ASC", colonnes:[]).collect do |tid, tdata|
+      Admin::table_taches.select(where: "state < 9", order:"echeance ASC", colonnes:[]).collect do |tid, tdata|
         Tache::new(tid)
       end
     end
