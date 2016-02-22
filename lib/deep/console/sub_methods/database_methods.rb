@@ -4,7 +4,7 @@
   show_table <{BdD::Table} table>
 
   La méthode `show_table` se trouve dans le fichier
-    ./lib/deep/deeper/optional/_per_route/site/console/table.rb
+    ./lib/deep/deeper/module/console/table.rb
 
 =end
 raise_unless_admin

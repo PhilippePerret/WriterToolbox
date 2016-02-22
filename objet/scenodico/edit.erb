@@ -7,9 +7,7 @@ raise_unless_admin
   <p class='air warning'>
     Pour le moment, comme Marion corrige les définitions ONLINE, il faut éditer le dictionnaire seulement en ONLINE.
   </p>
-  <p>
-    <%= "Synchroniser le fichier local…".in_a(href:'scenodico/download') %>
-  </p>
+  <%= "Synchroniser le fichier local…".in_a(href:'scenodico/synchro').in_p %>
 <% else %>
 <%
 site.require 'form_tools'

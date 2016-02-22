@@ -1,6 +1,6 @@
 # encoding: UTF-8
 raise_unless_admin
-
+site.require_module 'console'
 class SiteHtml
 class Admin
 class Console

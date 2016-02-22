@@ -1,12 +1,11 @@
 <%
 # Console administrateur
 #
-# Seulement pour l'administrateur
-raise "Vous n'avez rien à faire ici" unless user.admin?
+raise_unless_admin
 %>
 <% debug "-> console.erb" %>
 <h1>Console</h1>
-<form action="site/console" method="POST" charset="UTF-8">
+<form action="admin/console" method="POST" charset="UTF-8">
 <textarea id="console" name="console" onreturn="this.form.submit()"><%= console.new_code %></textarea>
 </form>
 

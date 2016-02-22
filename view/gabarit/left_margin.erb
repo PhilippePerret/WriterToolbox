@@ -26,24 +26,9 @@
 
   <% if user.admin? %>
     <hr />
-    <a href="site/console">Console</a>
+    <%= lien.console("Console") %>
+    <a href="admin/dashboard">Dashboard</a>
     <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
-  <% end %>
-  <%
-  if user.subscribed?
-    # Quand l'user est abonné au site, on lui présente un lien
-    # vers tous les outils
-  %>
-    <hr />
-    <div id="leftm_tools">
-      <%= "Narration".in_a(href:'cnarration/home') %>
-      <%= "Analyses".in_a(href:'analyse/home') %>
-      <%= "Calculateur".in_a(href: 'calculateur/home') %>
-      <%= "Scénodico".in_a(href:'scenodico/home') %>
-      <%= "Filmodico".in_a(href:'filmodico/home') %>
-      <%= "Factures".in_a(href:'factures/home') %>
-    </div>
-
   <% end %>
 <% end %>
 </section>
