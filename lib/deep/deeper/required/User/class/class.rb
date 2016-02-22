@@ -25,11 +25,20 @@ class User
       @current = u
     end
 
+    # {User} Retourne l'utilisateur courant. Le récupère
+    # dans la session si nécessaire.
+    # Notes
+    #   * C'est la méthode qui est utilisée par la
+    #     méthode handy `current_user`.
+    #   * C'est la méthode qui incrémente la variable session
+    #     du nombre de pages visitées au cours de cette session
+    #     permettant notamment de régler l'opacité de l'interface
     def current
       if @current == nil && app.session['user_id']
         uchecked = get(app.session['user_id'].to_i)
         uchecked.instance_variable_set('@session_id', nil)
         if uchecked.get(:session_id) == app.session.session_id
+          app.session['user_nombre_pages'] += 1
           @current = uchecked
         end
       end

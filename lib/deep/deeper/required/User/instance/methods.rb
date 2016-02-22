@@ -6,12 +6,20 @@ class User
     site.send_mail( data_mail.merge(to: self.mail) )
   end
 
-  # On connecte l'user
+  # On connecte l'user et on le redirige vers la
+  # direction demandée ou logique.
+  # On met également en session une variable qui va permettre
+  # de gérer la transparence de l'interface (il doit disparaitre
+  # petit à petit à mesure que l'utilisateur visite les pages)
   def login
     unless mail_confirmed? || admin? || for_paiement?
       return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
     end
     app.session['user_id'] = id
+    # Variable session permettant de savoir combien de pages a
+    # déjà visité l'utilisateur (pour baisser l'opacité des
+    # éléments annexes de l'interface)
+    app.session['user_nombre_pages'] = 1
     User::current= self
     set(session_id: app.session.session_id)
     if param(:login)[:back_to]
