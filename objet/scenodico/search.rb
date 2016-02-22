@@ -58,7 +58,11 @@ class Scenodico
     end
 
     def text_searched
-      @text_searched ||= param_search[:search].nil_if_empty
+      @text_searched ||= begin
+        m = param_search[:search]
+        m = nil if m.strip == ""
+        m
+      end
     end
     def in_mot?
       @search_in_mot ||= param_search[:in_mot] == "on"
