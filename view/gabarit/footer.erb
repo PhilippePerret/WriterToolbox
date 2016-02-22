@@ -14,6 +14,7 @@
     <%= "Contact".in_a(href:'site/contact') %>
     <%= "Outils".in_a(href:'tool/list') %>
     <%= "Forum".in_a(href:'forum/home') %>
+    <%= "Aide".in_a(href:'aide/home') %>
     <% if site.current_route && site.current_route.context && site.current_route.context.start_with?('unan') %>
       <%= "“1 An 1 Script”::Aide".in_a(href:'aide/home?in=unan') %>
     <% end %>
