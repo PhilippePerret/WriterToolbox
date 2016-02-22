@@ -64,6 +64,37 @@ class Page
     ).in_div(style:"visibility:#{visibility}")
   end
 
+  # {StringHTML} Retourne le code HTML du bloc d'évaluation de
+  # la page
+  def bloc_evaluation
+    we = user.f_e.freeze
+    menu_interet = [
+      ["0", "endormi#{we}"],
+      ["1", "ennuyé#{we}"],
+      ["2", "peu intéressé#{we}"],
+      ["3", "intéressé#{we}"],
+      ["4", "très intéressé#{we}"],
+      ["5", "passionné"]
+    ].in_select(name:'evaluation[interet]', id:'evaluation_interet', selected: "3")
+    menu_clarte = [
+      ["0", "incompréhensible"],
+      ["1", "difficile"],
+      ["2", "peu claire"],
+      ["3", "claire"],
+      ["4", "très claire"],
+      ["5", "limpide"]
+    ].in_select(name:'evaluation[clarte]', id:'evaluation_clarte', selected:"3")
+
+    (
+      id.in_hidden(name:'evaluation[page_id]', id:'evaluation_page_id') +
+      ( "Cette page vous semble #{menu_clarte}" ).in_div +
+      ( "Elle vous a #{menu_interet}" ).in_div +
+      ( "".in_textarea(name:'evaluation[comment]', placeholder:"Commentaire (au plus 500 signes)") ).in_div +
+      ( "Soumettre cet avis".in_submit(id:'btn_submit_evaluation', class:'small btn') ).in_div(class:'right')
+    ).in_div(id:'bloc_evaluation').in_div(class:'right').in_form( action:"page/evaluate?in=cnarration", id:"form_evaluation_page")
+
+  end
+
   # ---------------------------------------------------------------------
   #   Pour trouver les ID de page après et avant
 

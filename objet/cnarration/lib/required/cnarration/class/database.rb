@@ -2,6 +2,9 @@
 class Cnarration
   class << self
 
+    def table_evaluation
+      @table_evaluation ||= site.db.create_table_if_needed('cnarration_hot', 'pages')
+    end
     def table_pages
       @table_pages ||= site.db.create_table_if_needed('cnarration', 'pages')
     end
