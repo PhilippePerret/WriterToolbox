@@ -15,7 +15,7 @@ class Mot
 
   # Formate une liste de mots
   def formate_mots arr_ids
-    return "---" if arr_ids.nil?
+    return nil if arr_ids.nil?
     arr_ids.collect do |mid|
       Scenodico::Mot::get(mid).as_lien
     end.join(' – ')
@@ -42,7 +42,7 @@ class Mot
   end
 
   def liens_formated
-    return "---" if liens.nil?
+    return nil if liens.nil?
     liens.collect do |lien|
       lien.in_a(href:lien)
     end.join(' – ')

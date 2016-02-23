@@ -17,6 +17,7 @@ else "" end
 disp_word = (user.admin? ? ("[##{mot.id}]".in_span(class:'tiny', style:'vertical-align:super') + " ") : "") + mot.mot
 
 def build_row libelle, contenu
+  return "" if contenu.nil?
   (
     libelle.in_span(class:'libelle') +
     contenu.in_span(class:'value')
