@@ -332,66 +332,13 @@ class String
   end
 
   # Htmlize le string
-  # TODO: Il faudrait vraiment améliorer ça
+  # Pour le moment, ne traite plus que les retours chariot
   def to_html
     str = self
-    html, lines, iline, balises_ulol, current_ulol = "", [], 0, [], nil
-    str.strip.each_line do |line|
-      line = line.strip
-      if line == ""
-        lines[iline-1][:in] = '<div style="margin-bottom:1em;">'
-      else
-        case line[0]
-        when "*"
-          line = line[1..-1].strip
-          balise_in = ""
-          if current_ulol == 'ol'
-            balise_in += '</ol>'
-            current_ulol = balises_ulol.pop
-          end
-          if current_ulol != 'ul'
-            balise_in += '<ul>'
-            balises_ulol << "ul"
-            current_ulol = 'ul'
-          end
-          balise_in += '<li>'
-          balise_out = '</li>'
-        when "."
-          line = line[1..-1].strip
-          balise_in = ""
-          if current_ulol == 'ul'
-            balise_in += '</ul>'
-            current_ulol = balises_ulol.pop
-          end
-          if current_ulol != 'ol'
-            balise_in += '<ol>'
-            balises_ulol << "ol"
-            current_ulol = 'ol'
-          end
-          balise_in += '<li>'
-          balise_out = '</li>'
-        else
-          balise_in = ""
-          if current_ulol
-            balises_ulol.reverse.each{ |bal| balise_in += "</#{bal}>" }
-            current_ulol, balises_ulol = nil, []
-          end
-          balise_in   += '<p>'
-          balise_out  = '</p>'
-        end
-        lines << {:content => line, :in => balise_in, :out => balise_out}
-        iline += 1
-      end
-    end
-    fin = ""
-    if current_ulol
-      balises_ulol.reverse.each{ |bal| fin += "</#{bal}>" }
-    end
-    lines.each do |dline|
-      html << "#{dline[:in]}#{dline[:content]}#{dline[:out]}\n"
-    end
-    html << fin
-    "#{html}"
+    str.gsub!(/\r/,'')
+    str = str.split("\n\n").collect { |p| "<p>#{p}</p>" }.join('')
+    str.gsub(/\n/,'<br />')
+    return str
   end
 
 end
