@@ -30,6 +30,9 @@ class Page
 
   def lien_backward
     "Revenir à la page précédente".in_a(href:(site.route.last||page.error.redirection)).in_div(class:'right')
+  rescue Exception => e
+    # Survient lorsque la session est expirée
+    ""
   end
 
   def output_error error_id

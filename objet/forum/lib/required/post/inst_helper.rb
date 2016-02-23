@@ -11,11 +11,7 @@ class Post
   # Quand c'est un administrateur, l'ID est ajouté.
   # Par exemple "Message #32 enregistré" versus "Message enregistré"
   def chose
-    @chose ||= begin
-      c = "Message"
-      c << " ##{id}" if user.admin?
-      c
-    end
+    @chose ||= "Message #{user.admin? ? id : ''}"
   end
 
 
@@ -72,10 +68,10 @@ class Post
   end
   def auteur_infos
     (
-      auteur.pseudo.in_span(class: 'pseudo') +
-      ("Messages : ".in_span(class:'libelle') + auteur.posts_count.to_s).in_span(class: 'nbposts') +
+      auteur.pseudo.in_span(class: 'pseudo')   +
+      ("Messages : ".in_span(class:'libelle')  + auteur.posts_count.to_s).in_span(class: 'nbposts') +
       ("Depuis le : ".in_span(class:'libelle') + auteur.created_at.as_human_date(false)).in_span(class:'date') +
-      ("Grade : ".in_span(class:'libelle') + auteur.grade_humain).in_span(class:'grade')
+      ("Grade : ".in_span(class:'libelle')     + auteur.grade_humain).in_span(class:'grade')
     ).in_div(class:'infos_auteur')
 
   end

@@ -18,7 +18,7 @@ if param(:mot).nil? && site.objet.instance_of?(Scenodico::Mot)
 end
 %>
 <p class='small tres discret italic'>
-  La BOITE À OUTILS et l'atelier ICARE possède chacun une base de données Scénodico qui doit être synchronisé. C'est la BOITE À OUTILS qui contient le fichier `scenodico.db` qui doit être tenu à jour.
+  La BOITE À OUTILS et l'atelier ICARE possèdent chacun la base de données Scénodico. C'est la BOITE À OUTILS qui contient le fichier de référence.
 </p>
 <%
 bouton_edit = "Édit".in_a(class:'btn tiny', onclick:"$.proxy(Scenodico,'edit_mot_by_id')()")

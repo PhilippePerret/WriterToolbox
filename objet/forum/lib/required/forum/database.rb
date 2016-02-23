@@ -25,10 +25,6 @@ class Forum
       @table_sujets_followers ||= site.db.create_table_if_needed('forum', 'sujets_followers')
     end
 
-    def table_categories
-      @table_categories ||= site.db.create_table_if_needed('forum', 'categories')
-    end
-
     def table_users
       @table_users ||= site.db.create_table_if_needed('forum', 'users')
     end

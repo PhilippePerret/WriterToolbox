@@ -133,7 +133,7 @@ class Post
       # Cas spécial
       # -----------
       # NOTER que ce n'est pas ici qu'est traité le cas de l'affichage
-      # d'une liste de messages d'un sujet. Cf. dans posts.rb d'un sujet
+      # d'une liste de messages d'un sujet. Cf. dans posts.rb
       #
       # Où on doit rechercher les posts d'un certain sujet de
       # type "Question technique". Dans ce cas, il faut utiliser
@@ -141,7 +141,7 @@ class Post
       # Note : Ce système pourra être utiliser aussi plus tard si
       # on veut obtenir une liste de messages classés par votes
       if params[:sujet_id] && Forum::Sujet::get(params[:sujet_id]).type_s == 2
-        debug "===> Relève sur sujet de type question technique"
+        # debug "===> Relève sur sujet de type question technique"
         # Note : on doit utiliser "OUTER" car tous les posts n'ont
         # pas forcément de vote au moment où on fait la requête
         "SELECT id, vote"+
@@ -152,7 +152,13 @@ class Post
       end
       # ----------------------------------------------
       # Relève des messages
+      #
+
+      # # Pour le test, on ne réduit pas les données collectées
+      # data_request.delete(:colonnes)
+
       @posts = Forum::table_posts.select(data_request)
+      # debug "@posts: #{@posts.pretty_inspect}"
       # ----------------------------------------------
 
       case return_as

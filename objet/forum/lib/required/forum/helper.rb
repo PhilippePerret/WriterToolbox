@@ -5,6 +5,8 @@ Méthodes d'helper pour le forum
 class Forum
   # Rappel : C'est un SINGLETON
 
+  include MethodesMainObjets
+
   # Pour écrire titre et sous-titre
   # @usage    <%= forum.titre_h1[("<sous titre>")] %>
   # +params+
@@ -12,8 +14,8 @@ class Forum
   def titre_h1 sous_titre = nil, params = nil
     params ||= Hash::new
     t = "Forum".in_h1
-    t << onglets if params[:onglets]
     t << sous_titre.in_h2 unless sous_titre.nil?
+    t << onglets # dans le module MethodesMainObjets
     # Pour le titre de la fenêtre
     page_title = "Forum"
     page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
@@ -21,24 +23,19 @@ class Forum
     t
   end
 
-  # Pour afficher les onglets généraux
-  # @usage:  <%= forum.onglets %>
-  def onglets
-    hongs = {
-      "Nouvelle question" => 'sujet/question?in=forum',
-      "Messages"          => 'post/list?in=forum',
-      "Sujets"            => 'sujet/list?in=forum',
-      "Vos préférences"   => 'user/preferences?in=forum'
-    }
+  DATA_ONGLETS =  {
+    "Nouvelle question" => 'sujet/question?in=forum',
+    "Messages"          => 'post/list?in=forum',
+    "Sujets"            => 'sujet/list?in=forum',
+    "Vos préférences"   => 'user/preferences?in=forum'
+  }
 
+  def data_onglets
+    hongs = DATA_ONGLETS
     if param(:forum_current_sujet)
       hongs.merge!("Revenir" => "sujet/#{param(:forum_current_sujet)}/read?in=forum")
     end
-
-    hongs.
-      collect{|tita, href| tita.in_a(href:href, class:'onglet')}.
-      join('').
-      in_div(id:"onglets", style:'margin:0!important')
+    hongs
   end
 
 end
