@@ -11,7 +11,7 @@ page.title = "Outils"
   <% if user.paiements_ok? %>
       <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>utiliser tous les outils</strong>.
   <% elsif user.identified? %>
-    <%= user.pseudo %>, vous êtes inscrit<%= f_e %> mais votre <a href="user/paiement">abonnement</a> n'est pas à jour (<%= site.tarif_humain %>/an), vous pouvez donc utiliser la plupart des outils présentés ici.
+    <%= user.pseudo %>, vous êtes inscrit<%= f_e %>, donc vous pouvez utiliser la plupart des outils mais pas l'intégralité puisque votre <a href="user/paiement">abonnement n'est pas à jour</a> (<%= site.tarif_humain %>/an).
   <% else %>
     Merci de noter que certains de ces outils sont exclusivement réservés aux membres inscrits. D'autres nécessitent un abonnement annuel au site. <a href="user/signup">S'inscrire</a> ou <a href="user/paiement">s'abonner</a> (pour <%= site.tarif_humain(false) %>/an — <%= site.tarif_humain_par_mois("/mois") %>).
   <% end %>

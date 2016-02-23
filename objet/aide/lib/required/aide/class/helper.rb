@@ -1,18 +1,14 @@
 # encoding: UTF-8
 class Aide
+
+  extend MethodesMainObjets
+
   class << self
 
-    def titre_h1 sous_titre = nil
-      t = "Aide du site".in_h1
-      t << onglets
-      t << sous_titre.in_h2 unless sous_titre.nil?
-      t
-    end
+    def titre; @titre ||= "Aide du site".freeze end
 
-    def onglets
-      DATA_ONGLETS.collect do |route, titre|
-        titre.in_a(href:route).in_li
-      end.join.in_ul(class:'onglets')
+    def data_onglets
+      DATA_ONGLETS
     end
 
     def tdm
