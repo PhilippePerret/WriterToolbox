@@ -32,8 +32,10 @@ PAYS = {
   'ja'  => "Japon",
   'no'  => "Norvège",
   'fa'  => "Perse",
+  'pl'  => "Pologne",
   'pt'  => "Portugal",
   'ru'  => "Russie",
+  'ch'  => "Suisse",
   'cs'  => "Tchécoslovaquie"
 }
 
