@@ -20,20 +20,52 @@ class RFile
   def bloc_synchro options = nil
     options ||= Hash::new
 
+    # Cette méthode sert en même temps à construire le bloc
+    # de synchro et à traiter la synchro du fichier. C'est
+    # l'opération (param(:operation)) qui indique la synchro
+    # qu'il faut faire.
+    # Peut-être que le serveur SSH et/ou le path du fichier distant
+    # ont été modifiés par rapport aux données de base du fichier
+    # data_synchro.rb comme c'est le cas pour le scénodico (scenodico.db)
+    # et le filmodico (filmodico.db) qui doivent être aussi synchronisés
+    # sur l'atelier Icare. Dans ces cas-là, le remote-file a dû être
+    # redéfini par le fichier qui a créé l'instance et cette méthode,
+    # en construisant le bloc de synchro, a mis dans des champs cachés
+    # les valeurs du serveur SSH et du path du fichier distant, donc les
+    # traite ici.
+    # En d'autres termes, si la vue/méthode appelante modifie le serveur
+    # SSH ainsi que le path du fichier distant, il n'y a rien à faire
+    # puisque cette méthode mémorise ces valeurs dans des champs cachés
+    # qui sont ré-utilisés ici.
+    # Noter que param(:operation) est mis à nil en bas de la méthode
+    # pour ne lancer qu'une seule synchro à la fois.
     case param(:operation)
     when 'synchro_upload_local_rfile_to_distant_file'
-      autre_rfile = RFile::new( param(:synchro_rfile_path) )
+      rfile_path          = param(:synchro_rfile_path)
+      rfile_serveur       = param(:synchro_serveur_ssh)
+      rfile_distant_path  = param(:synchro_rfile_path_distant)
+      autre_rfile = RFile::new( rfile_path )
+      if rfile_serveur != serveur_ssh
+        autre_rfile.instance_variable_set('@serveur_ssh', rfile_serveur)
+        # debug "Serveur SSH modifié"
+      end
+      if rfile_distant_path != distant.path
+        autre_rfile.distant.instance_variable_set('@path', rfile_distant_path)
+        autre_rfile.distant.instance_variable_set('@path_no_dot', nil)
+        # debug "Path du fichier distant modifié"
+      end
       autre_rfile.upload
       return autre_rfile.message
     when 'synchro_download_distant_rfile_local_file'
-      autre_rfile = RFile::new( param(:synchro_rfile_path) )
+      rfile_path = param(:synchro_rfile_path)
+      autre_rfile = RFile::new( rfile_path )
       autre_rfile.distant.download
       return autre_rfile.message
     else
       # On poursuit
     end
 
-    options[:action] ||= site.route
+    options[:action] ||= site.current_route.route
 
     verbose = !!options[:verbose]
     return "" if synchronized? && !verbose
@@ -88,11 +120,22 @@ class RFile
       c << (
         operation.in_hidden(name:'operation', id:'operation') +
         path.in_hidden(name:'synchro_rfile_path', id:'synchro_rfile_path') +
+        serveur_ssh.in_hidden(name:'synchro_serveur_ssh', id:'synchro_serveur_ssh') +
+        distant.path.in_hidden(name:'synchro_rfile_path_distant', id:'synchro_rfile_path_distant') +
         operationh.in_submit(class:'btn small')
       ).in_form(action:options[:action], class:'inline')
     else
       c << "Les deux fichiers sont synchronisés.".in_p
     end
+
+    # Il peut y avoir plusieurs champs de synchronisation, il faut
+    # donc ré-initialiser cette valeur pour ne pas lancer la synchro
+    # aussi sur eux. Mais noter que c'est un problème : la synchronisation
+    # fonctionnera toujours du premier vers le dernier. Même lorsque l'on
+    # voudra synchroniser le dernier avant le premier, c'est le premier
+    # qui sera synchronisé. Donc l'ordre est particulièremnet important
+    # s'il y a plusieurs synchros à faire.
+    param(:operation => nil)
 
     return c
   end

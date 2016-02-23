@@ -10,4 +10,25 @@ end
 %>
 
 <h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
-<%= rfile.bloc_synchro(action: "filmodico/synchro", verbose:true) %>
+<h4>Sur la Boite à Outils de l'Auteur</h4>
+<%= rfile.bloc_synchro(verbose:true) %>
+<h4>Sur l'atelier Icare</h4>
+<%
+# Charger les données de synchronisation pour l'atelier Icare
+# (site.folder_objet+'site/data_synchro_icare.rb').require
+def rfile_icare
+  @rfile_icare ||= begin
+    rf = RFile::new("./database/data/filmodico.db")
+    # Régler le serveur SSH particulier à Icare
+    rf.instance_variable_set('@serveur_ssh', 'icare@ssh-icare.alwaysdata.net')
+    # Régler le path particulier à la base de données sur Icare
+    rf.distant.instance_variable_set("@path", "www/storage/db/filmodico.db")
+    rf
+  end
+end
+%>
+<p>
+  Serveur : <%= rfile_icare.serveur_ssh %><br />
+  Path distant : <%= rfile_icare.distant.path %>
+</p>
+<%= rfile_icare.bloc_synchro(verbose:true) %>

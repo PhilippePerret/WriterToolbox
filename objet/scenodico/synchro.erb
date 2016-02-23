@@ -3,10 +3,37 @@
 %>
 <%= Scenodico::titre_h1("Download base de données") %>
 <%
+
+# Chargement de la librairie qui charge la classe RFile
+# Noter que c'est ce fichier qui charge les données de data_synchro.rb,
+# donc les données SSH du serveur pour la boite à outil.
+# Ici, on aura aussi à se servir des données pour l'atelier Icare pour
+# synchroniser aussi le fichier scenodico.db sur l'atelier.
 site.require_module 'remote_file'
 def rfile
   @rfile ||= RFile::new("./database/data/scenodico.db")
 end
 %>
 <h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
-<%= rfile.bloc_synchro(action: "scenodico/synchro", verbose:true) %>
+<h4>Sur la boite à outils de l'auteur</h4>
+<%= rfile.bloc_synchro(verbose:true) %>
+<h4>Sur l'atelier Icare</h4>
+<%
+# Charger les données de synchronisation pour l'atelier Icare
+# (site.folder_objet+'site/data_synchro_icare.rb').require
+def rfile_icare
+  @rfile_icare ||= begin
+    rf = RFile::new("./database/data/scenodico.db")
+    # Régler le serveur SSH particulier à Icare
+    rf.instance_variable_set('@serveur_ssh', 'icare@ssh-icare.alwaysdata.net')
+    # Régler le path particulier à la base de données sur Icare
+    rf.distant.instance_variable_set("@path", "www/storage/db/scenodico.db")
+    rf
+  end
+end
+%>
+<p>
+  Serveur : <%= rfile_icare.serveur_ssh %><br />
+  Path distant : <%= rfile_icare.distant.path %>
+</p>
+<%= rfile_icare.bloc_synchro(verbose:true) %>

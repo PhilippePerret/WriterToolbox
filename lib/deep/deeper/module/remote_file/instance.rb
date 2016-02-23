@@ -65,10 +65,13 @@ class RFile
   end
 
   def upload
-    `ssh #{serveur_ssh} "mkdir -p ./www/#{File.dirname(path_no_dot)}"`
-    `scp -p #{path} #{serveur_ssh}:#{distant.path}`
+    # `ssh #{serveur_ssh} "mkdir -p ./www/#{File.dirname(path_no_dot)}"`
+    `ssh #{serveur_ssh} "mkdir -p ./#{File.dirname(distant.path_no_dot)}"`
+    cmd = "scp -p #{path} #{serveur_ssh}:#{distant.path}"
+    # debug "Commande d'upload : #{cmd.inspect}"
+    `#{cmd}`
     distant.instance_variable_set("@is_exist", nil)
-    @success = distant.exists?
+    @success = distant.exist?
     @message = "UPLOAD du fichier `#{path}` "
     @message << (@success ? "opéré avec succès" : "manqué…")
     @message = @message.in_span(class: (@success ? nil : 'warning'))

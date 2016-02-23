@@ -79,7 +79,7 @@ class Filmodico
       Filmodico::table_films_analyse.update(id, data2save_analyse)
     end
     # Transmettre l'affiche si nécessaire
-    upload_affiche_if_needed
+    upload_affiche_if_needed unless ONLINE
   end
   def is_new? ; @is_new == true end
 
