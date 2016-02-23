@@ -2,6 +2,7 @@
 class Forum
 class Categorie
   # Data des catégories
+  # Propriété `categorie` du sujet
   CATEGORIES = {
     boa: {
       hname: "le site de la Boite à Outils de l'Auteur",
@@ -34,5 +35,12 @@ class Categorie
       description: "Tout ce qui ne peut pas être traité dans les autres catégories."
     }
   }
+
+  id2sym = Hash::new
+  CATEGORIES.each do |cate_sym, dcate|
+    id2sym.merge!(dcate[:id] => cate_sym)
+  end
+  ID2SYM = id2sym
+
 end #/Categorie
 end #/Forum

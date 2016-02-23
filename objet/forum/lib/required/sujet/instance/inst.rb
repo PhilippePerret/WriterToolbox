@@ -25,7 +25,7 @@ class Forum
       @data4create ||= {
         creator_id:   user.id,
         name:         name,
-        categories:   categories,
+        categorie:    categorie,
         options:      "#{bit_validation}#{type_s}",
         updated_at:   NOW
       }

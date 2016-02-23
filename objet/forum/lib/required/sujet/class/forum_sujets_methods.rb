@@ -57,11 +57,11 @@ class Sujet
 
       # Paramètres de la requête
       data_request.merge!(
-        order:    "categories ASC, created_at DESC",
+        order:    "categorie ASC, created_at DESC",
         limit:    for_nombre,
         offset:   from_index
       )
-      colonnes = [:id] unless [:data, :hash].include?(return_as)
+      colonnes = [:id, :categorie] unless [:data, :hash].include?(return_as)
       data_request.merge!(colonnes: colonnes)
 
       @hash_sujets = Forum::table_sujets.select(data_request)
@@ -75,7 +75,14 @@ class Sujet
         if @hash_sujets.empty?
           "Aucun sujet sur le forum pour le moment.".in_li
         else
-          @hash_sujets.keys.collect { |sid| get(sid).as_li }.join('')
+          current_cate = nil
+          @hash_sujets.values.collect do |dsujet|
+            if current_cate != dsujet[:categorie]
+              current_cate = dsujet[:categorie]
+              cate_sym = Forum::Categorie::ID2SYM[current_cate]
+              Forum::Categorie::CATEGORIES[cate_sym][:hname].in_li(class:'titre')
+            else "" end + get(dsujet[:id]).as_li
+          end.join('')
         end
       end
     end

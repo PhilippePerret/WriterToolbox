@@ -24,9 +24,9 @@ raise_unless user.id == sujet.creator_id || user.grade > 6
   <%= form.field_select("Type", 'type_s', sujet.type_s, {values:Forum::Sujet::TYPES}) %>
   <%= form.field_description("Le type va déterminer comment le sujet apparaitra.") %>
 
-  <%# CATEGORIES %>
-  <%= form.field_text("Catégories", 'categories',nil) %>
-  <%= form.field_description("Liste des catégories du sujet, juste pour information. Ce sont des identifiants séparés par des espaces.") %>
+  <%# CATEGORIE %>
+  <%= form.field_text("Catégorie", 'categorie',nil) %>
+  <%= form.field_description("Grande catégorie du sujet, son titre.") %>
 
   <%= form.submit_button("Enregistrer") %>
 

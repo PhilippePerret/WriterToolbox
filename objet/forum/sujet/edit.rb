@@ -31,7 +31,8 @@ class Sujet
     dp.delete(:id)
     dp[:name] = dp[:name].nil_if_empty
     raise "Le sujet ou la question doit être définie" if dp[:name].nil?
-    dp[:categories] = nil if dp[:categories].empty?
+    dp[:categorie] = nil if dp[:categorie].empty?
+    raise "La catégorie devrait être définie…" if dp[:categorie].nil?
     dp[:type_s] = dp[:type_s].to_i_inn
     raise "Le type_s devrait être défini…" if dp[:type_s].nil?
     raise "Le type_s ne possède pas une bonne valeur…" if dp[:type_s] < 0 || dp[:type_s] > 9

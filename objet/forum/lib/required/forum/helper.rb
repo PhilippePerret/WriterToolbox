@@ -24,7 +24,7 @@ class Forum
   end
 
   DATA_ONGLETS =  {
-    "Nouvelle question" => 'sujet/question?in=forum',
+    "Soumettre"         => 'sujet/question?in=forum',
     "Messages"          => 'post/list?in=forum',
     "Sujets"            => 'sujet/list?in=forum',
     "Vos préférences"   => 'user/preferences?in=forum'

@@ -8,8 +8,8 @@ class Sujet
   def name          ; @name           ||= get(:name)          end
   def name= valeur  ; @name = valeur end
   # Une seule categorie, un nombre (ID de la catégorie)
-  def categories    ; @categories     ||= get(:categories)    end
-  def categories= valeur ; @categories = valeur end
+  def categorie     ; @categorie     ||= get(:categorie).to_i    end
+  def categorie= valeur ; @categorie = valeur end
   def creator_id    ; @creator_id     ||= get(:creator_id)    end
   # Dans autres tables
   def count         ; @count          ||= get_count           end
