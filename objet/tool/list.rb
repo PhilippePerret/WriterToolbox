@@ -14,7 +14,8 @@ class SiteHtml
 class Tool
   class << self
 
-    # La liste des outils comme une liste de description
+    # La liste des outils comme une liste de description, avec au-dessus
+    # des liens rapides vers tous les outils
     def output
       "<dl>" +
       list.collect do |tid, tdata|
@@ -35,6 +36,15 @@ class Tool
         end.join("\n") + dd_rejoindre
       end.join("\n") +
       "</dl>"
+    end
+
+    def bloc_liens_rapides
+      (
+        "<h4>Accès rapide</h4>" +
+        list.collect do |tid, tdata|
+          tdata[:name].in_a(class:'small block', href:tdata[:home])
+        end.join
+      ).in_div(id:"tools_quick_list", class:'border inline fright')
     end
 
     # {Hash} Retourne la liste de tous les outils avec leur

@@ -7,6 +7,7 @@
 page.title = "Outils"
 %>
 <h1>Outils d'écriture</h1>
+<%= SiteHtml::Tool::bloc_liens_rapides %>
 <p class='small italic air'>
   <% if user.paiements_ok? %>
       <%= user.pseudo %>, puisque vous êtes inscrit<%= f_e %> et que votre paiement est à jour, vous pouvez <strong>utiliser tous les outils</strong>.
