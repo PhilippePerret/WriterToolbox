@@ -78,9 +78,13 @@ section#content
       text-align    : center
       position      : relative
       border-color  : #CCC #979797 #979797 #CCC
+      // Quand on passe la souris sur les boutons pour passer à la
+      // page précédente et suivante.
       &:hover
+        background-color  : #E8FFDB
+      &:active
         border-color      : #979797 #CCC #CCC #979797
-        background-color  : #E8F3F5
+        background-color  : #98DE6B
       & + div
         margin-left   : 0.2em
         a
