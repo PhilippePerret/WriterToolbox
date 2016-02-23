@@ -1,19 +1,22 @@
 # encoding: UTF-8
 =begin
 Des constantes utiles
+Cf. https://fr.wikipedia.org/wiki/Liste_des_codes_pays_utilisés_par_l%27OTAN
 =end
 
 PAYS = {
   'af'  => "Afrique",
+  'ca'  => "Canada",
   'de'  => "Allemagne",
   'en'  => "Angleterre",
   'ar'  => "Arabie",
   'hy'  => "Arménie",
   'au'  => "Australie",
   'be'  => "Belgique",
-  'kn'  => "Canada",
   'zh'  => "Chine",
   'ko'  => "Corée",
+  'ks'  => "Corée du Sud",
+  'kn'  => "Corée du Nord",
   'hr'  => "Croatie",
   'da'  => "Danemark",
   'es'  => "Espagne",
@@ -34,6 +37,7 @@ PAYS = {
   'fa'  => "Perse",
   'pl'  => "Pologne",
   'pt'  => "Portugal",
+  'cz'  => "République Tchèque",
   'ru'  => "Russie",
   'ch'  => "Suisse",
   'cs'  => "Tchécoslovaquie"

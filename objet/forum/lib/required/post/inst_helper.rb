@@ -31,6 +31,7 @@ class Post
     li << post_infos
     li << auteur_infos if full_message
     li << post_content if full_message
+    debug "-> as_li avec full_message = #{full_message.inspect}"
     li << "".in_div(style:'clear:both')
     # Code retourné
     li.in_li(class:'post', id:"post_#{id}")
@@ -45,17 +46,25 @@ class Post
 
   # Traitement du contenu du message
   def content_formated
-    content.gsub!(/\[cite([0-9]+)\](.*)\[\/cite\1\]/){
-      post_id   = $1.to_i
-      citation  = $2.to_s
-      post_cite = Forum::Post::get(post_id)
-      "<div class='citation'>"+
-        "<span class='auteur-citation'>#{post_cite.auteur.pseudo}</span>" +
-        "#{citation}" +
-        "<span class='link-citation'><a href='post/#{post_id}/read?in=forum'>Lire l'original</a></span>" +
-      "</div>"
-    }
-    content.split("\n").reject{|p|p.empty?}.collect{|p| p.in_p}.join
+    @content_formated ||= begin
+      str = "#{content}"
+      str.gsub!(/\[cite([0-9]+)\](.*)\[\/cite\1\]/){
+        post_id   = $1.to_i
+        citation  = $2.to_s
+        post_cite = Forum::Post::get(post_id)
+        "<div class='citation'>"+
+          "<span class='auteur-citation'>#{post_cite.auteur.pseudo}</span>" +
+          "#{citation}" +
+          "<span class='link-citation'><a href='post/#{post_id}/read?in=forum'>Lire l'original</a></span>" +
+        "</div>"
+      }
+      str.gsub!(/\[url="(.*?)"\](.*?)\[\/url\]/){
+        url   = $1.freeze
+        titre = $2.freeze
+        titre.in_a(href: url)
+      }
+      str.split("\n").reject{|p|p.empty?}.collect{|p| p.in_p}.join
+    end
   end
   def post_infos
     @post_infos ||= begin

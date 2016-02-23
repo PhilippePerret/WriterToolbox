@@ -37,7 +37,7 @@ class Sujet
     # autre table
     last_post.content
     mess = if last_post.content.length > 300
-      last_post.content[0..300] + "[…]"
+      last_post.content_formated.gsub(/<(.*?)>/,'')[0..300] + "[…]"
     else
       last_post.content
     end
