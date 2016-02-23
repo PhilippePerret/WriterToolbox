@@ -65,7 +65,6 @@ class Scenodico
         Scenodico::table_mots.update( id, data2save )
         flash "Mot ##{id} updaté."
       end
-      flash "Noter qu'il faudrait actualiser le fichier scenodico.db sur l'atelier Icare."
     end
 
     def data2save
