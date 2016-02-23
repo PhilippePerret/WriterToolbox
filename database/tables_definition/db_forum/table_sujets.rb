@@ -22,7 +22,9 @@ def schema_table_forum_sujets
     # Catégories
     # ----------
     # Liste des catégories (IDs) auquel appartient le sujet
-    #
+    # Pour le moment, c'est une seule catégorie puisque la
+    # catégorie est en fait un grand titre comme "le site",
+    # "le programme Un an un script", etc.
     categories:     {type:"VARCHAR(250)"}, # liste "X Y Z"
 
     #  Options

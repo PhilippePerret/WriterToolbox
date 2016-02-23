@@ -7,7 +7,9 @@ class Sujet
   # ---------------------------------------------------------------------
   def name          ; @name           ||= get(:name)          end
   def name= valeur  ; @name = valeur end
-  def categories    ; @categories     ||= get(:categories) || Array::new end
+  # Une seule categorie, un nombre (ID de la catégorie)
+  def categories    ; @categories     ||= get(:categories)    end
+  def categories= valeur ; @categories = valeur end
   def creator_id    ; @creator_id     ||= get(:creator_id)    end
   # Dans autres tables
   def count         ; @count          ||= get_count           end

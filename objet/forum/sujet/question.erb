@@ -14,7 +14,7 @@ last_route  = param(:question_last_route) || site.route.last
 
 <%
 div_explication = <<-HTML
-Rédigez ci-dessous la <strong>question d'écriture</strong> que vous désirez soumettre aux membres du forum.
+Rédigez ci-dessous <strong>la question</strong> que vous désirez soumettre aux membres du forum.
 HTML
 div_explication = div_explication.in_p(class:'small')
 
@@ -24,6 +24,7 @@ div_explication = div_explication.in_p(class:'small')
   <%= last_route.in_hidden( name: 'question_last_route' )   %>
   <%= form.field_raw("", '', nil, {field: div_explication}) %>
   <%= form.field_text("Votre question", 'question', nil)    %>
+  <%= form.field_select("Catégorie", 'categories', nil, {values: Forum::Categorie::values_for_select}) %>
   <%= form.field_checkbox("M'avertir des réponses par mail", 'suivre', nil) %>
   <%= form.submit_button("Soumettre") %>
 </form>

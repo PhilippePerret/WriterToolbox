@@ -57,7 +57,7 @@ class Sujet
 
       # Paramètres de la requête
       data_request.merge!(
-        order:    "created_at DESC",
+        order:    "categories ASC, created_at DESC",
         limit:    for_nombre,
         offset:   from_index
       )
@@ -72,9 +72,11 @@ class Sujet
       when :data      then @hash_sujets.values
       when :instance  then @hash_sujets.keys.collect { |sid| get(sid) }
       when :li        then
-        lis = @hash_sujets.keys.collect { |sid| get(sid).as_li }.join('')
-        lis = "Aucun sujet sur le forum pour le moment.".in_li if lis.empty?
-        lis
+        if @hash_sujets.empty?
+          "Aucun sujet sur le forum pour le moment.".in_li
+        else
+          @hash_sujets.keys.collect { |sid| get(sid).as_li }.join('')
+        end
       end
     end
 

@@ -1,10 +1,10 @@
 # encoding: UTF-8
 class Forum
-
+class Categorie
   # Data des catégories
   CATEGORIES = {
     boa: {
-      hname: "la Boite à Outils de l'Auteur",
+      hname: "le site de la Boite à Outils de l'Auteur",
       id: 1,
       description: "Tout ce qui concerne le site dans son ensemble, son fonctionnement, ses administrateurs, etc."
     },
@@ -14,7 +14,7 @@ class Forum
       description:"Tout ce qui concerne le forum, le règlement, la charte de bonne conduite, etc."
     },
     unanunscript:{
-      hname: "Le programme UN AN UN SCRIPT",
+      hname: "Le programme “UN AN UN SCRIPT”",
       id: 3,
       description: "Tout ce qui concerne le programme UN AN UN SCRIPT, les documents à commenter, les résultats, etc."
     },
@@ -29,9 +29,10 @@ class Forum
       description: "Partagez vos projets personnels, votre calendrier du moment, vos annonces, etc."
     },
     autre:{
-      hname:"Sujets divers",
+      hname:"Autre sujets",
       id: 99,
       description: "Tout ce qui ne peut pas être traité dans les autres catégories."
     }
   }
-end
+end #/Categorie
+end #/Forum

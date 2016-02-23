@@ -46,7 +46,7 @@ class Filmodico
         auteurs: (hfilm.delete(:auteurs)||[]).as_people_in_textarea,
         producteurs: (hfilm.delete(:producteurs)||[]).as_people_in_textarea,
         musique: (hfilm.delete(:musique)||[]).as_people_in_textarea,
-        acteurs: hfilm.delete(:acteurs).as_acteurs_in_textarea,
+        acteurs: (hfilm.delete(:acteurs)||[]).as_acteurs_in_textarea,
       )
       param(:film => hfilm)
     end
@@ -204,10 +204,14 @@ class Filmodico
     @acteurs = data_params[:acteurs].purified.nil_if_empty
     unless @acteurs.nil?
       @acteurs = @acteurs.split(/\n/).collect do |line|
-        prenom, nom, prenom_perso, nom_perso, fonction_perso = line.split(', ')
-        { prenom: prenom, nom: nom,
-          prenom_perso: prenom_perso, nom_perso: nom_perso,
-          fonction_perso: fonction_perso }
+        prenom, nom, prenom_perso, nom_perso, fonction_perso = line.split(',')
+        {
+          prenom:         prenom.nil_if_empty,
+          nom:            nom.nil_if_empty,
+          prenom_perso:   prenom_perso.nil_if_empty,
+          nom_perso:      nom_perso.nil_if_empty,
+          fonction_perso: fonction_perso.nil_if_empty
+        }
       end
     end
 
@@ -232,7 +236,11 @@ class ::Array
   end
   def as_acteurs_in_textarea
     self.collect do |ha|
-      "#{ha[:prenom]}, #{ha[:nom]}, #{ha[:prenom_perso]}, #{ha[:nom_perso]}, #{ha[:fonction] || ha[:fonction_perso]}"
+      lig = "#{ha[:prenom]}, #{ha[:nom]}, #{ha[:prenom_perso]}, #{ha[:nom_perso]}, #{ha[:fonction] || ha[:fonction_perso]}".strip
+      begin
+        lig = lig[0..-2].strip
+      end while lig.end_with?(',')
+      lig
     end.join("\n")
   end
 end

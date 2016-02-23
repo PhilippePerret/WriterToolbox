@@ -10,15 +10,17 @@ raise_unless_identified
 class Forum
   def self.save_question
     hquestion = param(:question)
-    question = hquestion[:question].strip
+    question  = hquestion[:question].strip
+    categorie = hquestion[:categories].to_i # Un nombre, ID de la catégorie
     raise "Il faut fournir la question." if question.empty?
     question_existe_deja = Forum::table_sujets.count( where: { name: question } ) > 0
     raise "Cette question a déjà été posée." if question_existe_deja
 
     sujet = Sujet::new
-    sujet.name    = question
-    sujet.type_s  = 2
-    sujet.bit_validation = ( user.grade > 3 ? 1 : 0 )
+    sujet.name            = question
+    sujet.type_s          = 2
+    sujet.bit_validation  = ( user.grade > 3 ? 1 : 0 )
+    sujet.categories      = categorie
     sujet.create
 
     # Si l'utilisateur veut suivre le sujet, on l'ajoute à la
