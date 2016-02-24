@@ -78,17 +78,15 @@ class Post
     (
       specifications  .in_div(class:'specs') +
       boutons_edition .in_div(class:'edition')
-    )
+    ).in_li(class:'item')
   end
   def specifications
-    content.in_span(class:'content') +
-    user.pseudo.in_span(class:'auteur')
+    content_formated.in_span(class:'content') +
+    auteur.pseudo.in_span(class:'auteur')
   end
   def boutons_edition
-    (
-      "VALIDER".in_a(href:"post/#{id}/valider?in=forum", class:'btn small') +
-      "REFUSER…".in_a(href:"post/#{id}/refuser?in=forum", class:'btn warning small')
-    ).in_div(class:'edition')
+    "VALIDER".in_a(href:"post/#{id}/valider?in=forum", class:'btn small') +
+    "REFUSER…".in_a(href:"post/#{id}/refuser?in=forum", class:'btn warning small')
   end
 end #/Post
 

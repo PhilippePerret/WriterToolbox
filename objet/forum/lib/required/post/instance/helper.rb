@@ -17,6 +17,13 @@ class Post
 
   # Le post, pour une liste de messages, comme par exemple les
   # derniers messages envoyés ou les derniers dans chaque sujet.
+  #
+  # Note : Pour obtenir la même apparence partout, mettre le
+  # code de retour dans <ul id="posts"> même si c'est un seul
+  # message qui doit être affiché.
+  # Note : Mettre aussi dans les params as: :full_message pour
+  # avoir l'intégralité des données.
+  # 
   # +params+
   #   :as       :full     Comme un message complet
   #             :titre    (défaut) Comme un titre pour un listing
