@@ -10,16 +10,32 @@ indépendants tels que les bases de données du scénodico, etc.)
 
 =end
 class RFile
+  class << self
+    attr_reader :iform
+    def new_iform
+      @iform ||= 0
+      @iform += 1
+    end
+  end # << self
+
+  attr_reader :options
 
   # +options+
   #   :action     L'action du formulaire en cas de désynchro. Par
   #               défaut, la route courante.
-  #   ------------------------------------------------------------
   #   :verbose    Si true, envoie un message même lorsque les deux
   #               fichier sont synchronisés.
+  #   :buttons    Détermine les boutons à afficher.
+  #               Par défaut, c'est le bouton "logique" qui est affiché
+  #               c'est-à-dire celui correspondant à l'actualisation à
+  #               faire. Mais avec :buttons, on peut forcer les choses
+  #               :both   Les deux boutons sont affichés.
+  #               :upload   Seulement le bouton d'upload (local -> distant)
+  #               :download Seulement le bouton de download (distant -> local)
+  #
+  # Noter que ces options sont mises dans @options
   def bloc_synchro options = nil
-    options ||= Hash::new
-
+    @options = options || Hash::new
     # Cette méthode sert en même temps à construire le bloc
     # de synchro et à traiter la synchro du fichier. C'est
     # l'opération (param(:operation)) qui indique la synchro
@@ -65,9 +81,9 @@ class RFile
       # On poursuit
     end
 
-    options[:action] ||= site.current_route.route
+    @options[:action] ||= site.current_route.route
 
-    verbose = !!options[:verbose]
+    verbose = !!@options[:verbose]
     return "" if synchronized? && !verbose
 
     update_required = nil
@@ -103,29 +119,25 @@ class RFile
     end
 
     # ---------------------------------------------------------------------
-    case update_required
-    when :local_to_distant
-      operationh = "Upload le local vers le distant"
-      operation  = 'synchro_upload_local_rfile_to_distant_file'
-    when :distant_to_local
-      operationh = "Download le distant vers le local"
-      operation  = 'synchro_download_distant_rfile_local_file'
+    if options[:buttons].nil?
+      case update_required
+      when :local_to_distant
+        c << upload_form
+      when :distant_to_local
+        c << download_form
+      else
+        return "" unless verbose
+        c << "Les deux fichiers sont synchronisés.".in_p
+      end
     else
-      return "" unless verbose
-      operation = nil
-    end
-
-    if operation
-      c << "Les deux fichiers ont besoin d'être synchronisés.".in_p
-      c << (
-        operation.in_hidden(name:'operation', id:'operation') +
-        path.in_hidden(name:'synchro_rfile_path', id:'synchro_rfile_path') +
-        serveur_ssh.in_hidden(name:'synchro_serveur_ssh', id:'synchro_serveur_ssh') +
-        distant.path.in_hidden(name:'synchro_rfile_path_distant', id:'synchro_rfile_path_distant') +
-        operationh.in_submit(class:'btn small')
-      ).in_form(action:options[:action], class:'inline')
-    else
-      c << "Les deux fichiers sont synchronisés.".in_p
+      case options[:buttons]
+      when :both
+        c << (upload_form + download_form).in_p(class:'center')
+      when :upload
+        c << upload_form
+      when :download
+        c << download_form
+      end
     end
 
     # Il peut y avoir plusieurs champs de synchronisation, il faut
@@ -138,6 +150,29 @@ class RFile
     param(:operation => nil)
 
     return c
+  end
+
+  def upload_form
+    synchro_form :upload
+  end
+  def download_form
+    synchro_form :download
+  end
+  def synchro_form sens
+    ope = case sens
+    when :upload
+      "synchro_upload_local_rfile_to_distant_file"
+    when :download
+      "synchro_download_distant_rfile_local_file"
+    end
+    form_id = "form_synchro_#{RFile::new_iform}"
+    (
+      ope.in_hidden(name:'operation', id:'operation') +
+      path.in_hidden(name:'synchro_rfile_path', id:'synchro_rfile_path') +
+      serveur_ssh.in_hidden(name:'synchro_serveur_ssh', id:'synchro_serveur_ssh') +
+      distant.path.in_hidden(name:'synchro_rfile_path_distant', id:'synchro_rfile_path_distant') +
+      image("pictos/#{sens}.png", class:'btn', onclick:"$('form##{form_id}').submit()")
+    ).in_form(id:form_id, action:options[:action], class:'inline')
   end
 
 end

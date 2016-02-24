@@ -5,15 +5,23 @@ raise_unless_admin
 <%= Admin::titre_h1 %>
 <p class='small italic discret'>Bienvenue dans le tableau de bord de l'administration du site.</p>
 
-<%= "Console".in_a(href:'admin/console').in_div(class:'border air inline') %>
-<%=
-  (
-    "Scénodico (édition)".in_a(href:'scenodico/edit', class:'block') +
-    "Synchronisation…".in_a(href:"scenodico/synchro", class:'block')
-  ).in_div(class:'border air inline') %>
-<%=
-  (
-    "Filmodico (édition)".in_a(href:'filmodico/edit', class:'block') +
-    "Synchronisation…".in_a(href:"filmodico/synchro", class:'block')
-  ).in_div(class:'border air inline') %>
-<%= "Narration (page)".in_a(href:'page/edit?in=cnarration').in_div(class:'border air inline') %>
+<div id="admin_tools">
+  <%= "Console".in_a(href:'admin/console').in_div(class:'admin_tool') %>
+  <%=
+    (
+      "Scénodico (édition)".in_a(href:'scenodico/edit') +
+      "Synchronisation…".in_a(href:"scenodico/synchro")
+    ).in_div(class:'admin_tool') %>
+  <%=
+    (
+      "Filmodico (édition)".in_a(href:'filmodico/edit') +
+      "Synchronisation…".in_a(href:"filmodico/synchro")
+    ).in_div(class:'admin_tool') %>
+  <%= "Narration (page)".in_a(href:'page/edit?in=cnarration').in_div(class:'admin_tool') %>
+  <%=
+    (
+      "Forum".in_a(href:'forum/dashboard') +
+      "Synchronisation…".in_a(href:'forum/synchro')
+    ).in_div(class:'admin_tool')
+   %>
+</div><%# div#admin_tools %>

@@ -11,6 +11,7 @@ class Page
     return error "Vous avez déjà évalué cette page." if user_has_evaluated_page?
     Cnarration::table_evaluation.insert(data_evaluation)
     flash "Merci pour cet avis."
+    redirect_to :last_route
   end
 
   def user_has_evaluated_page?
@@ -35,7 +36,10 @@ class Page
   def commentaire_devaluation
     @commentaire_devaluation ||= begin
       c = param_eval[:comment].nil_if_empty
-      c.gsub!(/<(.*?)>/,'')[0..500] unless c.nil?
+      unless c.nil?
+        c = c.gsub(/<(.*?)>/,'')
+        c = c[0..500]
+      end
       c
     end
   end
