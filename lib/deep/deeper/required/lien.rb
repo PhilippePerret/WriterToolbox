@@ -4,8 +4,13 @@ class Lien
 
   # Méthode principale permettant de construire un lien
   # quelconque, pour éviter de répéter toujours le même code
+  # +options+
+  #   :distant    Si true, on transforme la route en URL complète
   def build route, titre, options
+    debug "-> build(route:#{route}, titre:#{titre.inspect}, options:#{options.inspect})"
     options ||= Hash::new
+    route = "#{site.distant_url}/#{route}" if options.delete(:distant)
+    debug "route: #{route.inspect}"
     options.merge!( href: route )
     titre.in_a(options)
   end
@@ -61,10 +66,14 @@ class Lien
       when :textmate
         "txmt://open/?url=file://#{path}"
       end
-      url += "&line=#{line}" unless line.nil?
       # On compose le lien et on le renvoie
     end
+    url += "&line=#{line}" unless line.nil?
     build( url, titre, options )
+  end
+
+  def forum titre = "le forum", options = nil
+    build('forum/home', titre, options)
   end
 
 end

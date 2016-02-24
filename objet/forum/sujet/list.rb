@@ -3,7 +3,6 @@ class Forum
 class Sujet
 
   def as_li
-    # return "#{id}"
     (
       as_titre_in_listing_messages  +
       div_infos_last_message        +

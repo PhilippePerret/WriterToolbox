@@ -3,6 +3,15 @@
 
 class Hash
 
+  # Pour un Hash, ce sont la clé et une propriété :hname ou
+  # :titre qui seront utilisés respectivement
+  # comme valeur (clé) et titre.
+  def in_select options = nil
+    self.collect do |hid, hdata|
+      [hid, (hdata[:hname] || hdata[:titre])]
+    end.in_select(options)
+  end
+
   # Retourne NIL si le Hash est vide, sinon
   # le hash lui-même
   def nil_if_empty

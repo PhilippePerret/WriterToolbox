@@ -1,0 +1,19 @@
+<%
+# Vue pour modifier le statut d'un membre
+raise_unless_admin
+%>
+<%= forum.titre_h1("Gestion des membres") %>
+<%
+if site.current_route.objet_id && param(:v)
+  u = User::get(site.current_route.objet_id)
+  new_grade = param(:v).to_i
+  ( u.set_grade new_grade )
+  flash "L'user #{u.pseudo} (##{u.id}) passe au grade : #{User::GRADES[new_grade][:hname]}"
+end
+%>
+<h3>Membres</h3>
+<%
+# On affiche chaque membre par groupe de 50 avec en regard un menu pour
+# modifier son grade
+%>
+<%= User::as_ul %>

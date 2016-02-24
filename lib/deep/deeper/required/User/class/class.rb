@@ -47,5 +47,13 @@ class User
 
     def bind; binding() end
 
+    # Retourne la liste des users comme un Array d'instances User,
+    # classée par les pseudos
+    def as_array
+      table_users.select(order:"pseudo ASC", colonnes:[]).keys.collect do |uid|
+        new(uid)
+      end
+    end
+
   end # << self
 end # User

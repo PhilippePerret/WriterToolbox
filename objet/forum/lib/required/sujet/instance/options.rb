@@ -13,7 +13,7 @@ class Sujet
   end
 
   def bit_validation
-    @bit_validation ||= options[BIT_VALID].to_i || 0
+    @bit_validation ||= options[BIT_VALID].to_i # || 0
   end
   def bit_validation= value
     @bit_validation = value

@@ -1,0 +1,1 @@
+ul#users li.user>span{display:inline-block}ul#users li.user span.pseudo{width:300px;overflow:hidden}ul#users li.user span.date{font-size:0.8em;margin-left:1em;width:160px;text-align:center}ul#users li.user span.grade{font-size:0.85em;margin-left:1em;width:300px}

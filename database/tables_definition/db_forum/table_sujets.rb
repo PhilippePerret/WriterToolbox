@@ -26,12 +26,7 @@ def schema_table_forum_sujets
 
     #  Options
     # ---------
-    # BIT 1
-    #   Peut-être pour savoir si le sujet est clos ou non ?
-    # BIT 2
-    #   Le type du sujet, c'est-à-dire un sujet de forum normal, où
-    #   les messages se suivent ou un sujet où une question est posée
-    #   et on vote pour des réponses données.
+    # Cf. ./objet/forum/lib/required/sujet/instance/options.rb
     options:        {type:'VARCHAR(32)'},
 
     #  Dates

@@ -35,6 +35,11 @@ class Forum
     if param(:forum_current_sujet)
       hongs.merge!("Revenir" => "sujet/#{param(:forum_current_sujet)}/read?in=forum")
     end
+    if user.admin?
+      hongs.merge!(
+        "Administration" => "forum/dashboard"
+      )
+    end
     hongs
   end
 
