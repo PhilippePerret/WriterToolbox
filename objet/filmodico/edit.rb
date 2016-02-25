@@ -76,6 +76,16 @@ class Filmodico
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
       Filmodico::table_films.update(id, data2save)
+      danalyse = data2save_analyse
+      # Il faut remettre le sym et les options si le film
+      # existe déjà dans la table des analyses.
+      dfilm = Filmodico::table_films_analyse.get(id)
+      unless dfilm.nil?
+        data2save_analyse.merge!(options: dfilm[:options])
+        if data2save_analyse[:sym].nil_if_empty == nil
+          data2save_analyse.merge!(sym: dfilm[:sym])
+        end
+      end
       Filmodico::table_films_analyse.update(id, data2save_analyse)
     end
     # Transmettre l'affiche si nécessaire
