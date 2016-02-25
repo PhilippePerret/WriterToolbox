@@ -7,5 +7,9 @@ raise_unless_admin
   <%= forum.ul_messages_a_valider %>
 <h3>Questions/sujets à valider</h3>
   <%= forum.ul_sujets_a_valider %>
-<h3>Grade des membres</h3>
-  <%= "Gestion des membres du forum".in_a(href:'user/statut?in=forum').in_li.in_ul(class:'tdm') %>
+<ul class='tdm'>
+  <h3>Grade des membres</h3>
+    <%= "Gestion des membres du forum".in_a(href:'user/statut?in=forum').in_li %>
+  <h3>Synchronisation</h3>
+    <%= "Synchronisation local/serveur".in_a(href:"forum/synchro").in_li %>
+</ul>

@@ -32,6 +32,6 @@ field_sujet = post.sujet.name.in_span(class:'bold') + " " + post.sujet.lien_read
   <%= post.sujet_id.in_hidden(name:'forum_current_sujet') %>
   <%= post.sujet_id.in_hidden( name:'post[sujet_id]' ) %>
   <%= user.id.in_hidden( name:"post[modified_by]" ) %>
-  <%= form.field_textarea("Message", 'content', nil) %>
+  <%= form.field_textarea("Message", 'content', nil, {class:'high'}) %>
   <%= form.submit_button("Enregistrer") %>
 </form>
