@@ -16,6 +16,9 @@ class Page
 
   # {StringHTML} Sortie du code quand c'est une "vraie" page
   # donc pas un titre
+  # Noter que la page est amputée, en sortie, si l'utilisateur
+  # n'est pas abonné, et un message lui est fourni pour qu'il
+  # s'abonne.
   def output_as_page
     if false == path_semidyn.exist? || out_of_date?
       # La page semi-dynamique n'est pas encore construite, il
@@ -25,11 +28,48 @@ class Page
     end
     if path_semidyn.exist?
       (
-        titre.in_h3 +
-        path_semidyn.deserb
+        titre.in_h3 + page_content_by_user
       ).in_div(id:'page_cours')
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
+    end
+  end
+
+  # Le contenu de la page en fonction de l'abonnement
+  # de l'user
+  def page_content_by_user
+    full_page = path_semidyn.deserb
+    # Si l'user est abonné ou que le texte fait moins de 3000
+    # signes, on retourne le texte tel quel
+    return full_page if user.subscribed? || full_page.length < 2000
+    # Si l'utilisateur n'est pas abonné, on tronque la page
+    # et on ajoute un message l'invitant à s'abonner.
+    tiers_longueur = (full_page.length / 3) - 100
+    # Si le tiers n'est pas assez long, on l'augmente
+    tiers_longueur = 1900 if tiers_longueur < 1900
+    # On cherche le premier double retour chariot suivant
+    offset = full_page.index("\n\n", tiers_longueur)
+    # Si on en trouve pas, on garde 2900
+    offset = 1900 if offset.nil?
+    return message_abonnement_required + full_page[0..offset] + " […]" + message_abonnement_required
+  end
+
+  # Le message d'abonnement demandé pour que l'user puisse lire
+  # l'intégralité de la page.
+  def message_abonnement_required
+    @message_abonnement_required ||= begin
+      <<-HTML
+<div class='center'>
+  <div class='border air small inline left warning' style="width:60%">
+<p>
+  Veuillez noter qu'<b>un tiers seulement de la page</b> est affiché. Seuls les abonnés peuvent consulter les pages de la collection en intégralité.
+</p>
+<p class="center">
+  #{lien.subscribe('S’ABONNER')} (pour #{site.tarif_humain}/an)
+</p>
+  </div>
+</div>
+      HTML
     end
   end
 

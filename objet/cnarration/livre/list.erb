@@ -2,15 +2,7 @@
 # Vue pour la liste des ouvrages de la collection
 %>
 <%= Cnarration::titre_h1("Livres") %>
-<% if user.subscribed? || user.unanunscript? %>
-  <%= Cnarration::Livre::as_ul %>
-<% else %>
-  <% if user.identified? %>
-    <%= Cnarration::Livre::as_ul %>
-    <p>En tant que simple inscrit<%= user.f_e %>, vous bénéficiez d'un accès limité à la collection.</p>
-  <% else %>
-    <p class='air warning'>Désolé mais vous n'avez pas accès à la collection Narration.</p>
-    <p>Vous pouvez obtenir un accès limité en <%= lien.signup "vous inscrivant gratuitement" %> au site.</p>
-  <% end %>
-  <p>Pour bénéficier d'un accès complet, merci de <%= lien.subscribe "vous abonner" %> <span class='small'>(pour <%= site.tarif_humain %> par an soit <%= site.tarif_humain_par_mois %>)</span>.</p>
+<%= Cnarration::Livre::as_ul %>
+<% unless user.subscribed? %>
+  <p class='small italic'>Notez que sans abonnement, vous bénéficiez d'un accès limité à la collection.</p>
 <% end %>
