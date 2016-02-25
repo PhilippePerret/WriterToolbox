@@ -59,8 +59,15 @@ class Console
 
   # Analyse de la ligne telle quelle
   def execute_as_is line
-    case line
+    case line.downcase
 
+    # ---------------------------------------------------------------------
+    # Toutes les aides directes
+    when 'aide analyse'
+      (site.folder_module+'console_aides/analyse.rb').require
+      ::Console::Aide::analyse
+
+    # ---------------------------------------------------------------------
     when 'check synchro'
       check_synchro
     when 'read debug', 'show debug'
@@ -70,7 +77,10 @@ class Console
     when "list films", "affiche table films"
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
-    when "Unan points"
+    when "list filmodico", "list Filmodico", "affiche table filmodico"
+      site.require_objet 'filmodico'
+      Filmodico::films_in_table
+    when "unan points"
       unan_affiche_points_sur_lannee
 
     when "vide table paiements", "vider table paiements"
@@ -79,97 +89,97 @@ class Console
       remove_table_paiements
 
 
-    when "Unan état des lieux", "Unan inventory"
+    when "unan état des lieux", "unan inventory"
       faire_etat_des_lieux_programme
 
-    when "Unan répare", "Unan repare"
+    when "unan répare", "unan repare"
       reparation_programme_unan
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table pages cours)"
+    when "unan affiche (table pages cours)"
       afficher_table_pages_cours
-    when "Unan backup data (table pages cours)"
+    when "unan backup data (table pages cours)"
       backup_data_pages_cours
-    when "Unan destroy (table pages cours)"
+    when "unan destroy (table pages cours)"
       detruire_table_pages_cours
-    when "Unan retreive data (table pages cours)"
+    when "unan retreive data (table pages cours)"
       retreive_data_pages_cours
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table exemples)"
+    when "unan affiche (table exemples)"
       afficher_table_exemples
-    when "Unan backup data (table exemples)"
+    when "unan backup data (table exemples)"
       backup_data_exemples
-    when "Unan destroy (table exemples)"
+    when "unan destroy (table exemples)"
       detruire_table_exemples
-    when "Unan retreive data (table exemples)"
+    when "unan retreive data (table exemples)"
       retreive_data_exemples
 
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table absolute pdays)"
+    when "unan affiche (table absolute pdays)"
       afficher_table_absolute_pdays
-    when "Unan backup data (table absolute pdays)"
+    when "unan backup data (table absolute pdays)"
       backup_data_absolute_pdays
-    when "Unan destroy (table absolute pdays)"
+    when "unan destroy (table absolute pdays)"
       detruire_table_absolute_pdays
-    when "Unan retreive data (table absolute pdays)"
+    when "unan retreive data (table absolute pdays)"
       retreive_data_absolute_pdays
 
-    when "Unan affiche (table absolute works)"
+    when "unan affiche (table absolute works)"
       afficher_table_absolute_works
-    when "Unan backup data (table absolute works)"
+    when "unan backup data (table absolute works)"
       backup_data_absolute_works
-    when "Unan destroy (table absolute works)"
+    when "unan destroy (table absolute works)"
       detruire_table_absolute_works
-    when "Unan retreive data (table absolute works)"
+    when "unan retreive data (table absolute works)"
       retreive_data_absolute_works
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table projets)"
+    when "unan affiche (table projets)"
       afficher_table_projets
-    when "Unan backup data (table projets)"
+    when "unan backup data (table projets)"
       backup_data_projets
-    when "Unan destroy (table projets)"
+    when "unan destroy (table projets)"
       detruire_table_projets
-    when "Unan retreive data (table projets)"
+    when "unan retreive data (table projets)"
       retreive_data_projets
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table programs)"
+    when "unan affiche (table programs)"
       afficher_table_programs
-    when "Unan backup data (table programs)"
+    when "unan backup data (table programs)"
       backup_data_programs
-    when "Unan destroy (table programs)"
+    when "unan destroy (table programs)"
       detruire_table_programs
-    when "Unan retreive data (table programs)"
+    when "unan retreive data (table programs)"
       retreive_data_programs
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table questions)"
+    when "unan affiche (table questions)"
       afficher_table_questions
-    when "Unan backup data (table questions)"
+    when "unan backup data (table questions)"
       backup_data_questions
-    when "Unan destroy (table questions)"
+    when "unan destroy (table questions)"
       detruire_table_questions
-    when "Unan retreive data (table questions)"
+    when "unan retreive data (table questions)"
       retreive_data_questions
 
     # ---------------------------------------------------------------------
 
-    when "Unan affiche (table quiz)"
+    when "unan affiche (table quiz)"
       afficher_table_quiz
-    when "Unan backup data (table quiz)"
+    when "unan backup data (table quiz)"
       backup_data_quiz
-    when "Unan destroy (table quiz)"
+    when "unan destroy (table quiz)"
       detruire_table_quiz
-    when "Unan retreive data (table quiz)"
+    when "unan retreive data (table quiz)"
       retreive_data_quiz
 
     # ---------------------------------------------------------------------

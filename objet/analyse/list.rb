@@ -45,7 +45,12 @@ class << self
   def liste_data_films options = nil
     options ||= Hash::new
     opts = ""
-    if options[:completed] || options[:not_completed] || options[:lisible] || options[:not_lisible] || options[:analyzed]
+    if
+      options[:completed]     ||
+      options[:not_completed] ||
+      options[:lisible]       ||
+      options[:not_lisible]   ||
+      options[:analyzed]
       opts << "1"
     else
       opts << "0"
@@ -53,31 +58,32 @@ class << self
 
     data_request = Hash::new
     data_request.merge!(colonnes: [:titre, :titre_fr, :annee, :realisateur, :sym, :options])
-    if opts != ""
-      where_clause = "options LIKE '#{opts}%'"
-      data_request.merge!(where: where_clause)
-    end
+
+    where_clause = "options LIKE '#{opts}%'"
+    data_request.merge!(where: where_clause)
 
     # Relève des films
     hfilms = table_films.select(data_request).values
 
-    hfilms.select! do |hfilm|
-      opts = hfilm[:options]
-      opts1 = opts[1].to_i
-      if options[:completed] && opts1 == 9
+    hfilms.reject! do |hfilm|
+      fopts = hfilm[:options]
+      opts1 = fopts[1].to_i
+      if options[:completed] && opts1 != 9
         true
-      elsif options[:not_completed] && opts1 != 9
+      elsif options[:not_completed] && opts1 == 9
         true
-      elsif options[:lisible] && opts1 >= 5
+      elsif options[:lisible] && opts1 < 5
         true
-      elsif options[:not_lisible] && opts1 < 5
-        true
-      elsif options[:analyzed]
+      elsif options[:not_lisible] && opts1 >= 5
         true
       else
-        false
+        false # pour le garder
       end
     end
+
+    # Pour ne définir que quelques identifiants sym de films
+    # à prendre ou à exclure, on utilise les listes :in et
+    # :out
 
     if options.has_key?(:in)
       hfilms.select!{|hfilm| options[:in].include? hfilm[:sym]}

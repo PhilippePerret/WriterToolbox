@@ -15,6 +15,8 @@ class FilmAnalyse
     # la console (et seulement par et pour la console).
     # Répond à `list films` ou `affiche table films`
     def films_in_table
+      flash "Attention, cette liste de films, qui sert pour l'outil Analyse de films, n'est pas à confondre avec les films du Scénodico, même si les deux listes sont synchronisées."
+      console.sub_log("Voir l'aide Films & Analyse pour modifier des valeurs.")
       console.show_table self.table_films
       "OK"
     rescue Exception => e

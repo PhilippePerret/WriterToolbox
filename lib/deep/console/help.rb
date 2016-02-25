@@ -64,6 +64,9 @@ class Console
 <h4 onclick="$('dl#films_analyses').toggle()">Films et analyses</h4>
 <dl class="small" id="films_analyses" style="display:none">
 
+  <dt>`aide analyse`</dt>
+  <dd>Pour afficher l'aide pour les analyses de films.</dd>
+  <dd>Si des aides doivent être ajoutées, #{lien.edit_file('/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console_aides/analyse.rb', titre: "modifier ce fichier")}.</dd>
   <dt>`create film {&lt;data&gt;}`</dt>
   <dd>Créer un enregistrement des infos minimales du film dans la table `analyse.films`.</dd>
   <dd>Les infos minimales sont `{sym:&lt;symbole pour affixe fichier&gt;, titre:&lt;titre du film&gt;}`</dd>
@@ -84,6 +87,8 @@ class Console
 
   <dt>`list films` ou `affiche table films`</dt>
   <dd>Affiche le contenu de la table analyse.films</dd>
+  <dt>`list filmodico` ou `affiche filmodico`</dt>
+  <dd>Affiche le contenu de la table du Filmodico.</dd>
 
 </dl>
 

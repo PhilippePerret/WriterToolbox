@@ -10,7 +10,6 @@ class Lien
     debug "-> build(route:#{route}, titre:#{titre.inspect}, options:#{options.inspect})"
     options ||= Hash::new
     route = "#{site.distant_url}/#{route}" if options.delete(:distant)
-    debug "route: #{route.inspect}"
     options.merge!( href: route )
     titre.in_a(options)
   end

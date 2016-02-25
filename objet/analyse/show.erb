@@ -16,37 +16,24 @@ film = FilmAnalyse::Film::current
 # L'analyse de Seven est toujours consultable.
 if film.exist? && ( film.sym == 'seven' || film.user_autorized? )
 
-  # Le code HTML intégral du fichier de l'analyse de film
-  code = film.html_file.read
-
-  # On change la base du site pour faire comme si le fichier
-  # était chargé depuis la racine. Mais noter que cette
-  # balise sera détruite en fin de chargement de la page
-  # par javascript pour empêcher que les liens (et notamment
-  # les onglets) ne reconduisent à l'accueil.
-  basetag = "#{ONLINE ? site.distant_url : site.local_url}/"
-  basetag = "<base href='#{basetag}' />"
-  code.sub!(/<\/title>/,"</title>\n#{basetag}")
-
-
-  # On remplace les liens vers les CSS et JAVASCRIPT pour les
-  # charger correctement
-  code.gsub!(/\.\.\/(javascript|css)/, './data/analyse/\1')
-
-  # On ajoute en bas du fichier un script qui va supprimer
-  # la balise <base> pour que les liens n'y répondent pas. Sinon,
-  # quand on clique sur les onglets, ça revient à la page d'accueil
-  # C'est un peu hack comme procédure, mais je n'ai pas trouvé mieux
-  # pour le moment.
-  code += <<-JS
-  <script type="text/javascript">
-  $(document).ready(function(){$('base').remove()})
-  </script>
-  JS
-
-  # On sort tout de suite le code
-  page.cgi.out{ code }
-
+%>
+  <iframe
+    id="frame_analyse"
+    width="100%"
+    height="100%"
+    src="<%= film.html_file.to_s %>"
+    style="position:fixed;top:0;left:0"></iframe>
+<%
+# Il faut ajouter du code pour supprimer l'interface normal pour
+# qu'on puisse voir la page analyse complète.
+%>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('section').hide();
+  $('section#content').show();
+})
+</script>
+  <%
 else
   # L'user courant n'est pas autorisé à consulter l'analyse
 %>

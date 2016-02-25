@@ -52,6 +52,19 @@ class Filmodico
       @count ||= list(as: :ids).count
     end
 
+    # Affiche la liste des films du filmodico pour
+    # la console (et seulement par et pour la console).
+    # Répond à `list films` ou `affiche table films`
+    def films_in_table
+      flash "Attention, cette liste de films est celle du Filmodico, PAS CELLE qui sert pour l'outil Analyse de films, même si les deux listes sont synchronisées."
+      console.show_table self.table_films
+      "OK"
+    rescue Exception => e
+      debug e
+      "# ERROR: #{e.message}"
+    end
+
+
     def table_films
       @table_films ||= site.db.create_table_if_needed('filmodico', 'films')
     end

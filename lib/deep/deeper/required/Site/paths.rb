@@ -97,6 +97,7 @@ class SiteHtml
   def folder_deeper_module
     @folder_deeper_module ||= folder_deeper + 'module'
   end
+  alias :folder_module :folder_deeper_module
 
   def folder_deeper_javascript
     @folder_deeper_javascript ||= folder_deeper + 'js'
