@@ -2,3 +2,45 @@
 # Fichier aide pour la facture
 %>
 <%= Facture::titre_h1("Aide") %>
+<p>
+  Que vous soyez auteur ou producteur, l'outil “Facture” vous permet de produire rapidement des facteurs d'écriture.
+</p>
+<p>
+  Avant toute chose, notez que vous pouvez remplir cette facture en toute confidentialité : au cours de la réalisation de votre facture, <strong>aucune information d'aucune espèce n'est enregistrée sur le site ou transmise à qui que ce soit !</strong> En d'autres termes, toutes les informations que vous aurez rentrées disparaitront en même temps que la page qui vous a permis de réaliser la facture.
+</p>
+<p>
+  Ces informations ne transitent même pas par le net ou sur le serveur de la Boite à Outils puisque <strong>l'intégralité du traitement se fait dans votre navigateur</strong>, sans aucune donnée transmise.
+</p>
+<p>
+  Le montant de cette facture peut se donner sous trois types de montant différents : le montant <strong>net</strong> (le montant que vous toucherez réellement si vous êtes l'auteur), le montant <strong>HT</strong> ou le montant <strong>TTC</strong> (le montant que vous paierez réellement si vous êtes le producteur ou le client).
+</p>
+<p>
+  Il suffit de choisir le type du montant dans le premier menu, puis d'indiquer le montant en euros dans le champ de saisie à côté de ce menu.
+</p>
+<p>
+  Après avoir défini le type de montant et le montant lui-même, il suffit de cliquer sur le bouton “<%= Facture::button_name_calculer %>” pour que le programme calcule l'intégralité des montants et des taxes de la facture. Ces montants s'affichent sous le formulaire.
+</p>
+<p>
+  Il convient ensuite de fournir les autres informations, nom, client, numéro de facture etc. dans le formulaire qui suit les montants.
+</p>
+<p>
+  Redisons-le : aucune des informations que vous rentrerez ici ne sera enregistrée ou transmise à qui que ce soit.
+</p>
+<p>
+  En bas du formulaire, vous pouvez ensuite cliquer sur le bouton “<%= Facture::button_name_mise_en_forme %>”.
+</p>
+<p>
+  Cela lance la mise en forme immédiate de la facture qui apparait alors comme elle sera imprimée ou enregistrée chez vous.
+</p>
+<p>
+  Si vous avez des corrections à apporter, cliquez sur le bouton “Annuler”, corrigez et cliquez à nouveau sur le bouton pour mettre en forme.
+</p>
+<p>
+  Une fois satisfait<%= user.f_e %> du résultat, vous pouvez cliquer sur le bouton “<%= Facture::button_name_print %>” pour imprimer ou enregistrer la facture.
+</p>
+<p>
+  Sur un Mac par exemple, vous pouvez choisir dans le menu “PDF” en bas à gauche de la fenêtre d'impression qui s'ouvre d'enregistrer votre facture au format PDF. Cela vous permettra de l'imprimer à un autre moment où d'en garder une copie dans les archives de votre ordinateur, ce qu'il est toujours bon de faire.
+</p>
+<p class='right'>
+  <%= "→ Fabriquer la facture".in_a(href:"facture/main") %>
+</p>

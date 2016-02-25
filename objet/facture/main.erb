@@ -48,7 +48,7 @@ TODAY_HUMAN = "<%= Time.now.to_i.as_human_date %>" ;
 %>
 <div class="hidden_when_calcul hidden_when_print air">
 	<%= "Annuler".in_a(class:'btn', onclick:"$.proxy(Facture, 'cancel')()") %>
-	<%= "Imprimer".in_a(class:'btn', onclick:"$.proxy(Facture, 'print')()") %>
+	<%= Facture::button_name_print.in_a(class:'btn', onclick:"$.proxy(Facture, 'print')()") %>
 </div>
 
 <%
@@ -133,5 +133,5 @@ TODAY_HUMAN = "<%= Time.now.to_i.as_human_date %>" ;
 #  BOUTONS
 %>
 <div class="right air hidden_when_print">
-  <%= "Mettre en forme la facture".in_a(class:'btn hidden_when_formate', onclick:"$.proxy(Facture,'formate')()") %>
+  <%= Facture::button_name_mise_en_forme.in_a(class:'btn hidden_when_formate', onclick:"$.proxy(Facture,'formate')()") %>
 </div>

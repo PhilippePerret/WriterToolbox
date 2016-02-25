@@ -5,14 +5,13 @@ Facture
 
 =end
 
-
 # ---------------------------------------------------------------------
 #   CALCUL FACTURE
 # ---------------------------------------------------------------------
 
 def bouton_calculer
   onclick = "$.proxy(Facture,'calculer')();return false;"
-  "Calculer".in_a(href:"", id:"btn_calcul_montant_amount", onclick:onclick, class:'btn small', style:'vertical-align:top')
+  Facture::button_name_calculer.in_a(href:"", id:"btn_calcul_montant_amount", onclick:onclick, class:'btn small', style:'vertical-align:top')
 end
 
 # Menu pour choisir le type de montant
