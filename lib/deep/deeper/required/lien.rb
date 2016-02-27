@@ -7,7 +7,6 @@ class Lien
   # +options+
   #   :distant    Si true, on transforme la route en URL complète
   def build route, titre, options
-    debug "-> build(route:#{route}, titre:#{titre.inspect}, options:#{options.inspect})"
     options ||= Hash::new
     route = "#{site.distant_url}/#{route}" if options.delete(:distant)
     options.merge!( href: route )

@@ -333,3 +333,13 @@ route: "admin/console"
 <- console.erb
 -> build(route:atm://open?url=file:///Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console_aides/analyse.rb, titre:"modifier ce fichier", options:{})
 -> build(route:admin/console, titre:"Console", options:nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+-> console.erb
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+-> console.erb
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
