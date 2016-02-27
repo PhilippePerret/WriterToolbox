@@ -248,18 +248,20 @@ class Console
     end
 
     case sentence
+    when 'kramdown'
+      ( visualise_document_kramdown last_word )
     when 'affiche table'
-      affiche_table_of_database last_word
+      ( affiche_table_of_database last_word )
     when 'Unan init program for'
-      init_program_1an1script_for( last_word )
+      ( init_program_1an1script_for last_word )
     when 'detruire programmes de'
-      detruire_programmes_de( last_word )
+      ( detruire_programmes_de last_word )
     when 'affiche table'
-      montre_table( last_word )
+      ( montre_table last_word )
     when 'gel'
-      gel last_word
+      ( gel last_word )
     when 'degel'
-      degel last_word
+      ( degel last_word )
     else
       nil
     end

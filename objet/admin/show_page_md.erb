@@ -1,0 +1,13 @@
+<%
+# Vue pour afficher une page Markdown
+raise_unless_admin
+%>
+<h1>Lecteur document Markdown</h1>
+<article>
+  <section>
+<%=
+  site.require_module 'kramdown'
+  SuperFile::new(param(:pmd)).kramdown
+%>
+</section>
+</article>

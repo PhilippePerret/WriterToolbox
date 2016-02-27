@@ -60,6 +60,13 @@ class Console
   <dd>OFFLINE seulement</dd>
 </dl>
 
+<h4 onclick="$('dl#fichiers_et_dossiers').toggle()">Fichiers et dossiers</h4>
+<dl class="small" id="fichiers_et_dossiers" style="display:none">
+  <dt>`kramdown &lt;./path/to/file.md`</dt>
+  <dd>Parse et affiche le fichier Markdown fourni en second argument.</dd>
+  <dd>Tip : Dans Atom, trouver le fichier, Ctrl-cliquer dessus et choisir “Copy full path” ou “Copy project path” pour utiliser le résultat en argument. Noter que si c'est le “project path” qui est choisi, il faut ajouter `./` devant.</dd>
+</dl>
+
 <!-- FILMS ET ANALYSES -->
 <h4 onclick="$('dl#films_analyses').toggle()">Films et analyses</h4>
 <dl class="small" id="films_analyses" style="display:none">

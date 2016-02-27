@@ -65,7 +65,7 @@ class Page
     # on demande à créer le fichier s'il n'existe pas, il faut
     # le créer.
     if page? && data_params[:create_file] == 'on' && false == path.exist?
-      path.write "<!-- Page: #{@titre} -->\n"
+      create_page
       flash "Fichier créé<br />"+("(dans #{path})".in_span(class:'tiny')) + "."
     end
 
