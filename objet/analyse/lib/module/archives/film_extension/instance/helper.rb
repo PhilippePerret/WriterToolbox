@@ -4,14 +4,6 @@ Méthodes d'helper
 =end
 require 'yaml'
 
-class SuperFile
-  def deyamelize
-    # YAML::parse(read)
-    # YAML::load(read)
-    Psych.load_file(self.to_s).to_sym
-  end
-end
-
 class FilmAnalyse
 class Film
 
@@ -47,7 +39,7 @@ class Film
         (user.admin? ? lien.edit_file(fpath).in_div(class:'right') : "") +
         case sfile.extension
         when 'md'   then sfile.kramdown
-        when 'yaml' then sfile.deyamelize.inspect
+        when 'yaml' then sfile.yaml_content_by_type
         else
           # Extension inconnue, on lit le fichier tel quel
           sfile.read
