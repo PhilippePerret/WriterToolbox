@@ -1,14 +1,18 @@
-const WITH_MILLIEME   = 1;
-const HOUR_TWO_DIGITS = 2;
+// if('undefined' == typeof WITH_MILLIEME){
+//   try{
+//     const WITH_MILLIEME   = 1;
+//     const HOUR_TWO_DIGITS = 2;
+//   }catch(error){}
+// }
 window.Time = {
-  
+
   // Format de l'horloge
   // @valeurs possibles :
   //    null                => H:MM:SS
   //    'with_milliemes'    => H:MM:SS,MMM
-  
+
   FORMAT_HORLOGE_DEFAULT: 0, //WITH_MILLIEME,
-  
+
   // Retourne le temps courant
   // Pour le moment, le nombre de microsecondes ou le format local
   // si format est défini
@@ -18,7 +22,7 @@ window.Time = {
   },
   /*
    *  Retourne le nombre de minutes pour l'horloge donnée
-   *  
+   *
    */
   horlogeToMinutes:function(val)
   {
@@ -28,7 +32,7 @@ window.Time = {
   /*
    *  Retourne l'horloge en fonction du nombre de minutes
    *  fourni.
-   *  
+   *
    */
   minutesToHorloge:function(mns, options)
   {
@@ -62,7 +66,7 @@ window.Time = {
                           hour_if_0         Indique l'heure si elle vaut zéro (défaut: true)
                           unit_hours        Marque suivant l'heure (":" par défaut)
                           unit_minutes      Marque suivant les minutes (":" par défaut)
-                          unit_seconds      Marque suivant les secondes ("" par défaut)  
+                          unit_seconds      Marque suivant les secondes ("" par défaut)
   */
   secondsToHorloge:function(val,options){
     if('undefined'==typeof options)options = {}

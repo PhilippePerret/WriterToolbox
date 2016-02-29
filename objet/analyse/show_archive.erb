@@ -1,0 +1,22 @@
+<%
+# Affichage d'un film d'archive, c'est-à-dire un film analysé
+# avant la version TM des analyses.
+# Ce sont les films qui ont été récupérés des anciens sites et particulièrement
+# de scénariopole.
+# Mais on continue d'ajouter des films et des analyses dans ses dossiers, ce
+# n'est pas un dossier figé.
+
+# Pour le traitement des anciennes données (avant Films TM)
+# Toutes ces données se trouvent dans le dossier ./data/analyse/data_per_film/
+FilmAnalyse::require_module 'archives'
+page.add_css "./data/analyse/css"
+page.add_javascript "./data/analyse/javascript"
+%>
+<%
+# Le film courant
+def film
+  @film ||= FilmAnalyse::Film::get(site.current_route.objet_id)
+end
+%>
+<%= FilmAnalyse::titre_h1(film.titre, {onglets_top: true}) %>
+<%= film.all_data %>

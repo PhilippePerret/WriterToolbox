@@ -11,6 +11,11 @@ class FilmAnalyse
       @table_films ||= site.db.create_table_if_needed('analyse', 'films')
     end
 
+    # {BdD::Table} La table contenant les films du Filmodico
+    def table_filmodico
+      @table_filmodico ||= site.db.create_table_if_needed('filmodico', 'films')
+    end
+
     # Affiche la liste des films dans la table analyse.films, pour
     # la console (et seulement par et pour la console).
     # Répond à `list films` ou `affiche table films`

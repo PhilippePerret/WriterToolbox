@@ -14,6 +14,8 @@ Ou plus exactement des fichiers `kramdow`.
 
 Le fichier doit être exprimé comme instance `SuperFile`.
 
+    site.require_module 'kramdown'
+    
     <superfile>.kramdown
 
 Ce code retourne le contenu du fichier `<superfile>`, qui doit être au format kramdown, en code HTML.

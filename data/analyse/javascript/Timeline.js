@@ -2,7 +2,11 @@
 // Noter qu'il s'agit de la Timeline des scènes, pas de la Timeline supérieure
 window.Timeline = {
   current_scene: null,
-  
+
+  show_scenes:function(arr_scenes){
+    F.show("Désolé, l'affichage des scènes n'est pas encore pris en charge dans cette nouvelle version de l'application.")
+  },
+
   on_select:function(ev){
     var odom = $(ev.currentTarget);
     if(this.current_scene){
@@ -22,7 +26,7 @@ window.Timeline = {
     if(Movie.exists()) Movie.start_at(parseInt(odom.attr('sid')) - 2) ;
   },
   on_left_arrow:function(ev){
-    var acote = this.current_scene.prev(); 
+    var acote = this.current_scene.prev();
     while( acote.length ){
       if (acote.hasClass('sc')){ this.on_select( {currentTarget:acote} ); break ;}
       acote = acote.prev() ;
@@ -35,7 +39,7 @@ window.Timeline = {
       acote = acote.next() ;
     }
   },
-  
+
   coef_t2p:function(){
     if('undefined' == typeof this._coef_t2p){
       var timeline_width = $('div.timeline_scenes div.timeline').width() ;
@@ -43,7 +47,7 @@ window.Timeline = {
     }
     return this._coef_t2p ;
   },
-  
+
   // Le voile rouge pour mettre une zone de la timeline en exergue
   red_voile:function(){
     if('undefined' == typeof this._red_voile){
@@ -53,6 +57,6 @@ window.Timeline = {
     }
     return this._red_voile ;
   }
-  
+
 }
 window.TL = window.Timeline ;

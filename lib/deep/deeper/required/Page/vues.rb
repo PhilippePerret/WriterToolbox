@@ -126,6 +126,9 @@ class Page
   end
 
   def add_css arr_css
+    if arr_css.instance_of?(String) && File.directory?(arr_css)
+      arr_css = Dir["#{arr_css}/**/*.css"]
+    end
     arr_css = [arr_css] unless arr_css.nil? || arr_css.instance_of?(Array)
     return if arr_css.nil? || arr_css.empty?
     @added_css ||= Array::new
@@ -134,6 +137,9 @@ class Page
   end
 
   def add_javascript arr_js
+    if arr_js.instance_of?(String) && File.directory?(arr_js)
+      arr_js = Dir["#{arr_js}/**/*.js"]
+    end
     arr_js = [arr_js] unless arr_js.nil? || arr_js.instance_of?(Array)
     return if arr_js.nil? || arr_js.empty?
     @added_javascript ||= Array::new

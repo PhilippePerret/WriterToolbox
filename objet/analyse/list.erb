@@ -19,3 +19,8 @@ end
   <%= FilmAnalyse::liste_analyses_autorized %>
   <%= FilmAnalyse::liste_analyses_non_autorized %>
 <% end %>
+
+<h3>Archives</h3>
+<% FilmAnalyse::require_module 'archives' %>
+<p class="small italic">Différentes analyses plus ou moins développées (de la simple note à l'analyse statistique complète) émanant de travaux plus lointains</p>
+<%= FilmAnalyse::archive_films_list(as: :ul) %>
