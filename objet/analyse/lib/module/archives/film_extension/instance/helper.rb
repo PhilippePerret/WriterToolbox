@@ -19,7 +19,12 @@ class Film
   def all_data
     site.require_module 'kramdown'
 
-    debug "tdm: #{tdm.inspect}::#{tdm.class}"
+    # Si un fichier d'introduction existe, il faut le prendre
+    intro = if introduction_file.exist?
+      introduction_file.kramdown.formate_balises_propres
+    else
+      ""
+    end
 
     # Fabriquer la table des matières
     ititre = 0
@@ -51,7 +56,7 @@ class Film
       ).in_div(class:'section')
     end.join
 
-    return table_of_content + content
+    return intro + "Table des matières".in_h3 + table_of_content + content
   end
 
   def tdm

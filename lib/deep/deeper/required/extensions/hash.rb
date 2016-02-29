@@ -114,7 +114,8 @@ class Hash
                     end
                   else v
                 end
-      hash_ruby = hash_ruby.merge( k.to_sym => v_ruby )
+      k = k.to_sym unless k.instance_of?(Fixnum)
+      hash_ruby = hash_ruby.merge( k => v_ruby )
     end
     hash_ruby
   end
