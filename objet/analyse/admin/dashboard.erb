@@ -7,16 +7,6 @@ raise_unless_admin
 <%= FilmAnalyse::titre_h1("Administration") %>
 
 <%
-# Dans un premier temps, on prend toutes les informations sur les films
-# analysés, c'est-à-dire la propriété `options` dans table_films qui
-# N'est PAS le scénodico.
-# Avec ce Hash, il suffit de faire `films_options[<film_id>][:options]` pour obtenir
-# la valeur d'option du film.
-films_options = FilmAnalyse::table_films.select(colonnes:[:options])
-%>
-
-
-<%
 # La rangée du haut, indiquant les libellés car les données contiendront
 # seulement "oui" ou "non"
 %>
@@ -40,7 +30,10 @@ films_options = FilmAnalyse::table_films.select(colonnes:[:options])
   FilmAnalyse::table_filmodico.select(order:"titre ASC", colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
     indexfilm += 1
     ifilm = FilmAnalyse::Film::new(fid)
-    ifilm.set_data fdata.merge(options: films_options[fid][:options])
+    # TODO ATTENTION ! SI le film vient juste d'être créé dans le
+    # filmodico, il n'existe pas encore dans la table des films analysés.
+    # Il faut donc l'enregistrer avec le même identifiant.
+    ifilm.set_data fdata
   %>
     <%= ifilm.as_admin_li %>
   <%
@@ -50,3 +43,44 @@ films_options = FilmAnalyse::table_films.select(colonnes:[:options])
 <div class="right air">
   <%= "Appliquer".in_a(id:"btn_apply", class:'btn medium', onclick:"$.proxy(Analyse,'save_films_options')()", style:"display:none") %>
 </div>
+<p class='small discret'>
+  <table>
+    <colgroup>
+      <col width="120" />
+      <col width="820" />
+    </colgroup>
+      <tr>
+        <td class='bold'>Analysé&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" si le film possède une analyse, TM ou autre.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Inscrit&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" s'il faut être inscrit au site pour pouvoir lire l'analyse.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Abonné&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" s'il faut être abonné au site pour pouvoir lire l'analyse.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Type TM&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" si l'analyse est de type TM, c'est-à-dire TextMate dernière version.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Lisible&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" à partir du moment où l'analyse peut être lue, même si elle n'est pas achevée. Fonctionne en général avec la colonne “En cours”</td>
+      </tr>
+      <tr>
+        <td class='bold'>En cours&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" si le film est en cours d'analyse.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Lecture&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" si l'analyse doit être lue par les participants, les analystes du site.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Finie&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" quand l'analyse est terminée.</td>
+      </tr>
+  </table>
+
+</p>

@@ -45,6 +45,8 @@ $.extend(window.Analyse, {
     var btn_id    = "btn_f"+fid+"-b"+ibit ;
     var btn       = $('a#'+btn_id) ;
     btn.text(btn_name);
+    if(devient_actif){ btn.removeClass('bgred').addClass('bgblue') }
+    else { btn.removeClass('bgblue').addClass('bgred') }
   },
 
   //

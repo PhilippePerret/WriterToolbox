@@ -17,8 +17,8 @@ class Film
   # Boutons pour modifier l'état du film
   def boutons_edition
     (0..7).collect do |bit|
-      bit_yes = options[bit].to_i == 0
-      (bit_yes ? "NON" : "OUI").in_a(class:"colvalue #{bit_yes ? 'blue' : 'red'}", id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
+      bit_yes = options[bit].to_i == 1
+      ( bit_yes ? "OUI" : "NON" ).in_a(class:"colvalue #{bit_yes ? 'bgblue' : 'bgred'}", id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
     end.join
   end
 
