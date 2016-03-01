@@ -19,6 +19,12 @@ class SiteHtml
     end
   end
 
+  # Retourne TRUE si c'est une requête Ajax
+  def ajax?
+    @is_ajax = ( param(:ajx).to_s == "1" ) if @is_ajax === nil
+    @is_ajax
+  end
+
 
   def output
     execute_route

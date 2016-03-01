@@ -14,6 +14,7 @@ class Page
   # vont charger les css, les js, les messages, etc.
   # Cette méthode prédéfinit donc `header` et `content`
   def preload
+    return if site.ajax?
     header
     footer
     content
@@ -25,6 +26,7 @@ class Page
   end
 
   def prebuild_body
+    return if site.ajax?
     body
     app.session['last_route'] = site.current_route.route unless site.current_route.nil?
   end

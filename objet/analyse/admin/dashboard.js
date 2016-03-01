@@ -25,6 +25,7 @@ Film.prototype.set_options = function(opts){
 
 $.extend(window.Analyse, {
 
+  modifications: {},
 
   change_bit:function(fid, ibit){
     var ifilm = new Film( fid ) ;
@@ -34,26 +35,39 @@ $.extend(window.Analyse, {
     opts[ibit] = devient_actif ? "1" : "0" ;
     opts = opts.join('') ;
     ifilm.set_options( opts ) ;
+
+    // On mémorise la nouvelle valeur des options et on
+    // indique que les valeurs ont été modifiées
+    this.modifications[fid] = opts ;
+    this.set_modified() ;
+
     var btn_name  = devient_actif ? "OUI" : "NON" ;
     var btn_id    = "btn_f"+fid+"-b"+ibit ;
     var btn       = $('a#'+btn_id) ;
     btn.text(btn_name);
   },
 
-  // Marque un film analysé ou non analysé
-  // On le met à la valeur de `bit_analyzed`
-  set_analyzed:function( fid ){
-    var f = new Film( fid ) ;
-    f.toggleAnalyzed() ;
-    this.current_film = f ;
-    this.poursuivre_set_analyzed({ok: true})
+  //
+  set_modified:function(modified){
+    if(undefined == modified){ modified = true }
+    $('a#btn_apply')[modified ? 'show' : 'hide']() ;
   },
-  poursuivre_set_analyzed:function(rajax){
-    if(rajax.ok){
-      // Message d'annonce final
-      F.show(
-        "Le film a été marqué " + (this.current_film.is_analyzed() ? "analysé" : "non analysé") + "."
-      );
+
+  save_films_options:function(){
+    var data = JSON.stringify(this.modifications) ;
+    console.log(data)
+    var data_ajax = {
+      url: "admin/save_options?in=analyse",
+      film_options: data,
+      message_on_operation: "Enregistrement des options en cours…",
+      onreturn: $.proxy(Analyse,'retour_save_film_options')
+    }
+    Ajax.send(data_ajax)
+  },
+  retour_save_film_options:function(rajax){
+    if (rajax.ok){
+      this.set_modified( false ) ;
+      this.modifications = {} ;
     }
   }
 

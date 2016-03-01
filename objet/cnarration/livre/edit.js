@@ -17,7 +17,6 @@ $.extend(window.Cnarration,{
     self.window.location.href = "livre/"+livre_id+"/save_tdm?in=cnarration&ids="+liste_ids.join('-')
   },
   save_tdm_poursuivre:function(rajax){
-    console.log(rajax);
     if (rajax.ok ){F.show("Table des matières enregistrée.")}
     else {F.error("Une erreur s'est produite…")}
   }

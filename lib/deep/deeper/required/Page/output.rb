@@ -5,13 +5,18 @@
 class Page
 
   def output
-    # Le code final
-    cgi.out{
-      cgi.html {
-        cgi.head{ head } +
-        cgi.body{ body }
+    unless site.ajax?
+      # Le code final
+      cgi.out{
+        cgi.html {
+          cgi.head{ head } +
+          cgi.body{ body }
+        }
       }
-    }
+    else
+      # Retour d'une requête ajax
+      Ajax::output
+    end
   end
 
   def head

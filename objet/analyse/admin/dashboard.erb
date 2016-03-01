@@ -48,3 +48,6 @@ films_options = FilmAnalyse::table_films.select(colonnes:[:options])
   end # Fin de boucle sur tous les films du scénodico
   %>
 </div><%# / div#films %>
+<div class="right air">
+  <%= "Appliquer".in_a(id:"btn_apply", class:'btn medium', onclick:"$.proxy(Analyse,'save_films_options')()", style:"display:none") %>
+</div>
