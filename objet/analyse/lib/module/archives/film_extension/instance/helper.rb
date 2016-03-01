@@ -48,7 +48,12 @@ class Film
       ).in_div(class:'section')
     end.join
 
-    return intro + "Table des matières".in_h3 + table_of_content + content
+    return (
+      intro +
+      "Table des matières".in_h3 +
+      table_of_content +
+      content
+      ).in_section
   end
 
   def tdm

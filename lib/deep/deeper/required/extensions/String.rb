@@ -28,6 +28,13 @@ class String
     str.gsub(/"(.*?)"/, '“\1”')
   end
 
+  # {Fixnum} Quand le string est une horloge, la transforme en
+  # secondes
+  def h2s
+    str = self.split(':').reverse
+    str[0].to_i + str[1].to_i * 60 + str[2].to_i * 3600
+  end
+
   # Pour upcaser vraiment tous les caractères, même les accents et
   # les diacritiques
   DATA_MIN_TO_MAJ = {
