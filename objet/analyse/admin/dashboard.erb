@@ -37,14 +37,13 @@ films_options = FilmAnalyse::table_films.select(colonnes:[:options])
   # Il s'agit de deux boutons (suivant l'état du film qui est un troisième
   # bouton) permettant de modifier l'état.
   indexfilm = 0
-  FilmAnalyse::table_filmodico.select(colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
+  FilmAnalyse::table_filmodico.select(order:"titre ASC", colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
     indexfilm += 1
     ifilm = FilmAnalyse::Film::new(fid)
     ifilm.set_data fdata.merge(options: films_options[fid][:options])
   %>
     <%= ifilm.as_admin_li %>
   <%
-    break if indexfilm > 10 # pour voir
   end # Fin de boucle sur tous les films du scénodico
   %>
 </div><%# / div#films %>
