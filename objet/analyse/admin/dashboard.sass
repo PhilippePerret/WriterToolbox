@@ -1,0 +1,37 @@
+div#table_header, div#films
+  font-size     : 13pt !important
+  line-height   : 1.6em !important
+  margin-left   : 0 !important
+  span.filmvalue
+    display         : inline-block !important
+    width           : 380px
+    max-width       : 380px
+    overflow        : hidden
+    white-space     : nowrap
+    vertical-align  : middle
+    padding         : 0 0 0 8px
+  span.filmvalue, span.filmvalue > *
+    font-size       : 13pt !important
+  span.colvalue, a.colvalue
+    display         : inline-block !important
+    text-align      : center
+
+div#table_header
+  span.colvalue
+    width           : 65px
+    font-size       : 9pt !important
+  
+div#films
+  overflow          : auto
+  height            : 200px
+  max-height        : 200px
+  margin-left       : 0 !important
+  div.film
+    &:hover, &:hover a
+      background-color    : #578088
+      color               : white !important
+    span.colvalue, a.colvalue
+      width           : 70px
+  
+  
+  

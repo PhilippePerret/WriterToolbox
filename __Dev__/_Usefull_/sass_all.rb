@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 =begin
-
   IL FAUT LANCER CE SCRIPT DANS TEXTMATE POUR ACTUALISER LES SASS -> CSS
-
 =end
 require 'sass'
 Dir["./**/*.sass"].each do |src_path|

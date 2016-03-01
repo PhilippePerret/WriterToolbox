@@ -1,0 +1,50 @@
+<%
+# Administration de la section Analyse
+# Pour le moment, surtout utilisé pour dire si un film doit être visible
+# ou non par des inscrits/abonnés
+raise_unless_admin
+%>
+<%= FilmAnalyse::titre_h1("Administration") %>
+
+<%
+# Dans un premier temps, on prend toutes les informations sur les films
+# analysés, c'est-à-dire la propriété `options` dans table_films qui
+# N'est PAS le scénodico.
+# Avec ce Hash, il suffit de faire `films_options[<film_id>][:options]` pour obtenir
+# la valeur d'option du film.
+films_options = FilmAnalyse::table_films.select(colonnes:[:options])
+%>
+
+
+<%
+# La rangée du haut, indiquant les libellés car les données contiendront
+# seulement "oui" ou "non"
+%>
+<div id="table_header">
+  <span class='filmvalue'>Film</span>
+  <span class='colvalue'>Analysé</span>
+  <span class='colvalue'>Inscrit</span>
+  <span class='colvalue'>Abonné</span>
+  <span class='colvalue'>Type TM</span>
+  <span class='colvalue'>Lisible</span>
+  <span class='colvalue'>En cours</span>
+  <span class='colvalue'>Lecture</span>
+  <span class='colvalue'>Finie</span>
+</div>
+<div id="films">
+  <%
+  # Liste des films, avec un lien pour définir leur niveau de visibilité
+  # Il s'agit de deux boutons (suivant l'état du film qui est un troisième
+  # bouton) permettant de modifier l'état.
+  indexfilm = 0
+  FilmAnalyse::table_filmodico.select(colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
+    indexfilm += 1
+    ifilm = FilmAnalyse::Film::new(fid)
+    ifilm.set_data fdata.merge(options: films_options[fid][:options])
+  %>
+    <%= ifilm.as_admin_li %>
+  <%
+    break if indexfilm > 10 # pour voir
+  end # Fin de boucle sur tous les films du scénodico
+  %>
+</div><%# / div#films %>
