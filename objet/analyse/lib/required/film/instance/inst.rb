@@ -5,9 +5,16 @@ class Film
   include MethodesObjetsBdD
 
   attr_reader :id
-  
+
   def initialize film_id
     @id = film_id
+  end
+
+  # Création du film s'il existe dans le Filmodico mais pas
+  # dans les analyses.
+  def create
+    FilmAnalyse::require_module('film')
+    proceed_create
   end
 
   def table

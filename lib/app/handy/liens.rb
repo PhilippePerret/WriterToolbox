@@ -98,7 +98,7 @@ class Lien
       # On commence par indiquer que le film a déjà été cité
       @films_already_cited.merge!(film_id => true)
       t = "#{hfilm[:titre].in_span(class:'titre')} ("
-      t << hfilm[:titre_fr].in_span(class:'italic') + " – " if hfilm[:titre_fr] != nil
+      t << hfilm[:titre_fr].in_span(class:'italic') + " – " if hfilm[:titre_fr].to_s != ""
       realisateur = hfilm[:realisateur].collect do |hreal|
         "#{hreal[:prenom]} #{hreal[:nom]}"
       end.pretty_join

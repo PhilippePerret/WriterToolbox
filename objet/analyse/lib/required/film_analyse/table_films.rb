@@ -30,66 +30,39 @@ class FilmAnalyse
     end
 
 
-    # Crée un film dans la table analyse.films. C'est la méthode pour
-    # le moment utilisée par la console avec la commande `create film`.
+    # Crée un film dans la table analyse.films. C'est la méthode qui était
+    # utilisée par la console avec la commande `create film`, mais maintenant
+    # il faut empêcher ce comportement : on doit passer par le filmodico
     def create_film dfilm
-      # debug "dfilm : #{dfilm.inspect}"
-      # On vérifie qu'il y a les informations minimales
-      raise "Il faut indiquer le `sym` du film (:sym)"    unless dfilm[:sym]
-      raise "Il faut indiquer le titre du film (:titre)"  unless dfilm[:titre]
-
-      dfilm = ( conforme_data dfilm )
-      dfilm.merge!( created_at:NOW )
-
-      film_id = table_films.insert( dfilm )
-      flash "Film créé avec succès"
-      return "ID nouveau film : #{film_id}"
-    rescue Exception => e
-      debug e
-      "# ERROR : #{e.message}"
+      error "On ne doit plus utiliser la méthode `create film` pour créer un film analysé. On doit passer par le Filmodico en créant le film et ensuite il sera automatiquement ajouté aux analyses."
+      "ERROR"
     end
 
 
     # Actualise les données d'un film existant
+    # Méthode utilisée par la console, mais maintenant il vaut mieux
+    # passer par le tableau de bord d'administration
     def update_film film_ref, dfilm
-      if film_ref.instance_of?(String)
-        hfilm = table_films.select(colonnes:[:options], where:"sym = '#{film_ref}'").values.first
-        film_ref = hfilm[:id]
+      if dfilm.has_key?(:options)
+        error "Pour modifier les options, il faut utiliser le tableau de bord des analyses."
+        "ERROR"
       else
-        hfilm = table_films.get(film_ref, colonnes:[:options])
+        if film_ref.instance_of?(String)
+          hfilm = table_films.select(colonnes:[:options], where:"sym = '#{film_ref}'").values.first
+          film_ref = hfilm[:id]
+        else
+          hfilm = table_films.get(film_ref, colonnes:[])
+        end
+
+        dfilm.merge!(updated_at: NOW)
+
+        table_films.update(film_ref, dfilm)
+        # Pour vérifier, on ré-affiche toujours la liste des films
+        # (en tout cas tant qu'il n'y en a pas trop…)
+        films_in_table
       end
-      dfilm.merge!(options: hfilm[:options]) unless dfilm.has_key?(:options)
-
-      dfilm = ( conforme_data dfilm )
-
-      table_films.update(film_ref, dfilm)
-      # Pour vérifier, on ré-affiche toujours la liste des films
-      # (en tout cas tant qu'il n'y en a pas trop…)
-      films_in_table
     end
 
-    # Prend les données +dfilm+ telles qu'envoyées à la console par
-    # exemple et les transforme en vraies données pour la table
-    # analyse.films.
-    def conforme_data dfilm
-      # On regarde si des options ont été précisées
-      analyzed = dfilm.delete(:analyzed)
-      lisible  = dfilm.delete(:lisible)
-      complete = dfilm.delete(:complete)
-      dfilm[:options] ||= "00"
-
-      options = (analyzed || lisible || complete) ? "1" : dfilm[:options][0]
-      if complete     then options << "9"
-      elsif lisible   then options << "5"
-      elsif analyzed  then options << "1"
-      else options << dfilm[:options][1]
-      end
-
-      dfilm.merge!(
-        options:    options,
-        updated_at: NOW
-      )
-    end
 
   end # << self
 end #/FilmAnalyse

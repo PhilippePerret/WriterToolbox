@@ -46,6 +46,11 @@ class String
     self.old_upcase.tr(DATA_MIN_TO_MAJ[:from], DATA_MIN_TO_MAJ[:to])
   end
 
+  alias :old_downcase :downcase
+  def downcase
+    self.old_downcase.tr(DATA_MIN_TO_MAJ[:to], DATA_MIN_TO_MAJ[:from])
+  end
+
   def nil_if_empty strip = true
     checked = strip ? self.strip : self
     checked == "" ? nil : checked

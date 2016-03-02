@@ -29,10 +29,15 @@ raise_unless_admin
   indexfilm = 0
   FilmAnalyse::table_filmodico.select(order:"titre ASC", colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
     indexfilm += 1
+
     ifilm = FilmAnalyse::Film::new(fid)
-    # TODO ATTENTION ! SI le film vient juste d'être créé dans le
-    # filmodico, il n'existe pas encore dans la table des films analysés.
-    # Il faut donc l'enregistrer avec le même identifiant.
+
+    # Si le film vient d'être créé sur le Filmodico, il n'existe peut-être
+    # pas encore dans les films analysés. Il faut donc l'enregistrer,
+    # avec le même identifiant pour qu'il y ait une jointure entre les
+    # deux tables.
+    ifilm.create if ifilm.exist? == false
+
     ifilm.set_data fdata
   %>
     <%= ifilm.as_admin_li %>
