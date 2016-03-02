@@ -1,20 +1,27 @@
 <%
-# Une vue un peu speciale puisqu'elle doit interrompre le fonctionnement
-# normal en retournant tout de suite la page demandée.
-# Au départ, on ouvrait simplement le fichier HTML de l'analyse dans
-# une autre fenêtre. Le problème est qu'on pouvait alors "hacker" toutes
-# les autres analyses simplement en connaissant leur identifiant : il suffisait
-# de taper l'adresse HTML du fichier pour l'ouvrir.
-# Maintenant, on passe par ici, on vérifie que l'utilisateur peut ouvrir
-# l'analyse, et on l'ouvre si c'est possible.
+# Affiche l'analyse du film courant, qu'elle soit "TM" ou normale
 %>
 <%
-film = FilmAnalyse::Film::current
+def film ; @film ||= FilmAnalyse::Film::current end
 
-# Si l'utilisateur est autorisé à voir cette analyse, il peut la
-# voir, sinon, on lui présente un message d'interdiction.
-# L'analyse de Seven est toujours consultable.
-if film.exist? && film.consultable?
+if false == film.exist?
+  raise "Ce film n'existe pas, désolé."
+elsif true #false == film.consultable? # sous-entendu: par le visiteur courant
+  raise_unless film.consultable?, "Désolé, mais vous n'avez pas les autorisations nécessaires pour visualiser cette analyse."
+end
+%>
+
+<%
+# ---------------------------------------------------------------------
+#   Si l'on passe ici, c'est que l'user a les privilèges qu'il faut
+#   pour visualiser l'analyse.
+# ---------------------------------------------------------------------
+%>
+
+<%
+# Si c'est une analyse TM (TextMate) il faut la charger dans une
+# frame puisque c'est un fichier complet.
+if film.analyse_tm?
 
 %>
   <iframe
@@ -33,12 +40,19 @@ $(document).ready(function(){
   $('section#content').show();
 })
 </script>
-  <%
+
+<%
+
 else
-  # L'user courant n'est pas autorisé à consulter l'analyse
+  # Si ce n'est pas une analyse TM
+
+  # Pour le traitement des anciennes données (avant Films TM)
+  # Toutes ces données se trouvent dans le dossier ./data/analyse/data_per_film/
+  FilmAnalyse::require_module 'archives'
+  page.add_css "./data/analyse/css"
+  page.add_javascript "./data/analyse/javascript"
+
 %>
-  <%= FilmAnalyse::titre_h1("Consultation impossible") %>
-  <p class='warning big'>
-    Vous n'êtes pas autorisé à consulter cette analyse, désolé.
-  </p>
+  <%= FilmAnalyse::titre_h1(film.titre, {onglets_top: true}) %>
+  <%= film.all_data %>
 <% end %>

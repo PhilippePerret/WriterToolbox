@@ -47,6 +47,7 @@ On peut obtenir la route courante avec le contexte par l'handy méthode :
 
     current_route ou route_courante
 
+Noter que cette méthode pratique a l'avantage de toujours retourner une valeur, même lorsque `site.current_route` est nil.
 
 <a name='precedenteroutesuivie'></a>
 

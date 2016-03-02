@@ -13,15 +13,15 @@ window.Scenes = {
     *   * La donnée est peuplée par la méthode get_data_times
     *     => if(this.data_times == null) this.get_data_times() ;
     */
-  data_times: null, 
-  
-  
+  data_times: null,
+
+
   // Retourne l'instance {Scene} de la scène d'identifiant number +id+
   scene:function(id){
     if('undefined' == typeof this.list[id]) this.list[id] = new Scene(id) ;
     return this.list[id] ;
   },
-  
+
   //---------------------------------------------------------------------
   //  Classement par durée
   //---------------------------------------------------------------------
@@ -36,8 +36,8 @@ window.Scenes = {
     var arr_data = this.get_data_times()  ;
     arr_data.sort(function(sa, sb) sb.duree - sa.duree ) ;
     // Construire la liste des scènes classées
-    this.build_scenier_with({ 
-      list:       arr_data, 
+    this.build_scenier_with({
+      list:       arr_data,
       container:  container_scenier,
       suffix:     'sbd',
       remplace_start_by_duree: true
@@ -55,12 +55,12 @@ window.Scenes = {
     var dlongest  = sorted_list[0] ;
     var clone_long  = $('div#'+dlongest.id ).find('> div.ifm').clone() ;
     this.replace_start_by_duree_in(clone_long, this.duree_humaine(dlongest.duree) ) ;
-    
+
     var div_stats = $('div.scenes_sorted_by_duree div.statistiques') ;
     div_stats.find("div.longest_scene > span.value").html('').append(clone_long) ;
     div_stats.find("div.shortest_scene > span.value").html('').append(clone_short) ;
   },
-  
+
   // raccourci pour obtenir la durée au format humain
   duree_humaine:function(seconds){
     return Time.s2h( seconds, {hour_if_0:false, unit_hours: "h", unit_minutes:"’", unit_seconds: "”"})
@@ -103,7 +103,7 @@ window.Scenes = {
     $("div#"+FILM_ID+'-scenes > div.lit').each(function(i){
       var s_obj = $(this) ;
       var data = {
-        id:     s_obj.attr('id'), 
+        id:     s_obj.attr('id'),
         scene_index: s_obj.attr('id').split('-')[2],
         start:  parseInt(s_obj.attr('start')),
         end:    parseInt(s_obj.attr('end')),
@@ -121,7 +121,7 @@ window.Scenes = {
     var id = $(fi).attr('sid') ;
     UI.toggle(id +"-dgene");
   },
-  
+
   observe_all:function(){
     this.observe_all_scenes_timeline() ;
     this.observe_listing();
@@ -131,9 +131,9 @@ window.Scenes = {
     $('div.timeline > div.sc').bind('mouseover', $.proxy(Fiches, 'show'));
     $('div.timeline > div.sc').bind('mouseout', $.proxy(Fiches, 'hide'));
   },
-  
+
   observe_listing:function(){
     $('div.listing.scenier > div.lit a.btn_dg').bind('click', $.proxy(Scenes, 'toggle_data_generales')) ;
   }
-  
+
 }

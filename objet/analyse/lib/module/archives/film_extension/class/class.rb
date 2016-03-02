@@ -21,7 +21,7 @@ class FilmAnalyse
       case options[:as]
       when :ul
         @archive_films_list.collect do |ifilm|
-          ifilm.intitule.in_a(href:"analyse/#{ifilm.id}/show_archive").in_li
+          ifilm.intitule.in_a(href:"analyse/#{ifilm.id}/show").in_li
         end.join.in_ul(class:'films tdm')
       when :data then @archive_films_list
       end

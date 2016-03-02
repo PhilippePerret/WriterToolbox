@@ -47,8 +47,9 @@ Pour une vision d'ensemble et voir comment formater ces fichiers et dossiers, on
 
 ## Affichage des anciennes analyses
 
-L'affichage de ces données se fait par le module :
+L'affichage de ces données se fait à présent par le même module que les analyses TM, c'est à l'intérieur de la vue que le traitement est différent.
 
-    ./objet/analyse/show_archive.erb
+    ./objet/analyse/show.erb
 
+C'est à pr
 Noter que cette vue ERB utilise le module `lib/module/archives` des analyses pour s'afficher.

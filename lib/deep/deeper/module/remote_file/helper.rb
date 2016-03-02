@@ -81,7 +81,7 @@ class RFile
       # On poursuit
     end
 
-    @options[:action] ||= site.current_route.route
+    @options[:action] ||= route_courante
 
     verbose = !!@options[:verbose]
     return "" if synchronized? && !verbose

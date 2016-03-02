@@ -1,9 +1,5 @@
-// if('undefined' == typeof WITH_MILLIEME){
-//   try{
-//     const WITH_MILLIEME   = 1;
-//     const HOUR_TWO_DIGITS = 2;
-//   }catch(error){}
-// }
+const WITH_MILLIEME   = 1;
+const HOUR_TWO_DIGITS = 2;
 window.Time = {
 
   // Format de l'horloge

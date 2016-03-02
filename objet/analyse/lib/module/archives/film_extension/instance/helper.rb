@@ -23,7 +23,7 @@ class Film
     table_of_content = tdm.collect do |fdata|
       ititre += 1
       fdata.merge!(anchor: "titre#{ititre.to_s.rjust(4,'0')}")
-      fdata[:titre].in_a(href:"#{site.current_route.route}##{fdata[:anchor]}").in_li(class:'tdm_item')
+      fdata[:titre].in_a(href:"#{route_courante}##{fdata[:anchor]}").in_li(class:'tdm_item')
     end.join.in_ul(class:'tdm')
 
     content = tdm.collect do |fdata|

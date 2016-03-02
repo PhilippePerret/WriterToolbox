@@ -14,7 +14,7 @@
 
 <% if false == user.identified? %>
   <%= "".in_div(class:'air') %>
-  <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: current_route) %>
+  <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: route_courante) %>
   <%= "S'inscrire".in_a(href:'user/signup', style:'letter-spacing:3.3px') %>
 <%
   else

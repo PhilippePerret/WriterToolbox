@@ -75,7 +75,7 @@ class RFile
     @message = "UPLOAD du fichier `#{path}` "
     @message << (@success ? "opéré avec succès" : "manqué…")
     @message = @message.in_span(class: (@success ? nil : 'warning'))
-    @message << "Contrôler/revenir".in_a(href:site.current_route.route).in_p(class:'right')
+    @message << "Contrôler/revenir".in_a(href:route_courante).in_p(class:'right')
   end
 
   def mtime
@@ -145,7 +145,7 @@ class RFile
       mess = "DOWNLOAD du fichier `#{path}` "
       mess << ( success ? "opéré avec succès." : "manqué…")
       mess = mess.in_span(class: (success ? nil : 'warning'))
-      mess << "Contrôler/revenir".in_a(href:site.current_route.route).in_p(class:'right')
+      mess << "Contrôler/revenir".in_a(href:route_courante).in_p(class:'right')
       rfile.message = mess
     end
 

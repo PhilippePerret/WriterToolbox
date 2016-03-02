@@ -28,7 +28,7 @@ class Page
   def prebuild_body
     return if site.ajax?
     body
-    app.session['last_route'] = site.current_route.route unless site.current_route.nil?
+    app.session['last_route'] = route_courante unless site.current_route.nil?
   end
 
   # {StringHTML} Retourne le code HTML pour l'entête du

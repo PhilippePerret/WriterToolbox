@@ -8,8 +8,13 @@ end
 # Attention, ça n'est pas `site.current_route` qui retourne
 # une instance {SiteHtml::Route}.
 def current_route
-  site.current_route.route
+  if site.current_route.nil?
+    nil
+  else
+    site.current_route.route
+  end
 end
+alias :route_courante :current_route
 
 
 # ---------------------------------------------------------------------
