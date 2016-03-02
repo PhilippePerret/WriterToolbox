@@ -8,7 +8,7 @@ class << self
 
 
   # Dossier contenant les analyses des films TM (TextMate)
-  # Voir aussi le dossier `folder_per_film` qui contient les
+  # Voir aussi le dossier `folder_films_MYE` qui contient les
   # données par film.
   def folder_films
     @folder_analyses ||= begin
@@ -21,9 +21,9 @@ class << self
   # Dossier principal d'analyse qui contient les données des
   # films classées par film. Dossier initié pour contenir les
   # évènemenciers récupérés.
-  def folder_per_film
-    @folder_per_film ||= begin
-      d = site.folder_data+'analyse/data_per_film'
+  def folder_films_MYE
+    @folder_films_MYE ||= begin
+      d = site.folder_data+'analyse/film_MYE'
       d.build unless d.exist?
       d
     end
@@ -36,6 +36,7 @@ class << self
   def folder_lib
     @folder_lib ||= folder+'lib'
   end
+
   def folder
     @folder ||= site.folder_objet+'analyse'
   end

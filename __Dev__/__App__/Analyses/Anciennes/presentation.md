@@ -19,7 +19,7 @@ Ce que j'appelle “anciennes analyses”, en fait, peut comprendre des analyses
 
 Le dossier des analyses de ce type se trouve dans :
 
-    ./data/analyse/data_per_film
+    ./data/analyse/film_MYE
 
 <a name='nomdudossierdanalyse'></a>
 
@@ -40,7 +40,7 @@ Le dossier de l'analyse générale doit correspondre au `film_id` du film. ATTEN
     (fichiers.yaml)     Des fichiers YAML contenant d'autres données
                         récoltées au cours de analyses.
 
-Pour une vision d'ensemble et voir comment formater ces fichiers et dossiers, on peut jeter un coup d'œil à `./data/analyse/data_per_film/AIArtificialIntelligence2001` qui contient l'ensemble des éléments possibles.
+Pour une vision d'ensemble et voir comment formater ces fichiers et dossiers, on peut jeter un coup d'œil à `./data/analyse/film_MYE/AIArtificialIntelligence2001` qui contient l'ensemble des éléments possibles.
 
 * [Affichage des anciennes analyses](#affichagedecesnalayses)
 <a name='affichagedecesnalayses'></a>

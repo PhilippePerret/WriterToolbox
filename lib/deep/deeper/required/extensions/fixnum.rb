@@ -92,22 +92,43 @@ class ::Fixnum
   end
 
   def as_duree
+    self.s2h(usec: "\"", umin: "'", uhour: "h", ujour:"jour")
+  end
+
+  def as_horloge
+    self.s2h(usec: "", umin: ":", uhour: ":", hour_required: true)
+  end
+
+  # +options+ (OBLIGATGOIRE)
+  #     :usec     L'unité pour les secondes
+  #     :umin     L'unité pour les minutes
+  #     :uhour    L'unité pour les heures
+  #     :ujour    L'unité pour les jours (if any)
+  #     :hour_required    Si true, les heures sont toujours affichées,
+  #                       même si elle valent 0
+  def s2h options
     mns = self / 60
     sec = (self % 60).to_s.rjust(2,'0')
     if mns > 60
       hrs = mns / 60
       mns = (mns % 60).to_s.rjust(2,'0')
       if hrs > 24
-        jrs = "#{hrs / 24} jours "
+        jrs = "#{hrs / 24} #{options[:ujour]} "
         hrs = hrs % 24
       end
-      hrs = "#{hrs}h"
+      hrs = "#{hrs}#{options[:uhour]}"
     else
-      hrs = ""
+      if options[:hour_required]
+        hrs = "0#{options[:uhour]}"
+        mns = mns.to_s.rjust(2, '0')
+      else
+        hrs = ""
+      end
       jrs = ""
     end
-    "#{jrs}#{hrs}#{mns}'#{sec}\""
+    "#{jrs}#{hrs}#{mns}#{options[:umin]}#{sec}#{options[:usec]}"
   end
+
 
   # @usage : <nombre>.day ou <nombre>.days
   # Retourne le nombre de secondes correspondantes

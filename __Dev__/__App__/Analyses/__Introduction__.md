@@ -28,4 +28,4 @@ Les films analysés se trouvent dans :
 
 Les films analysés sont définis dans le dossier :
 
-    ./data/analyse/data_per_film/
+    ./data/analyse/film_MYE/

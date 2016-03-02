@@ -5,11 +5,6 @@ class FilmAnalyse
 
   class << self
 
-    # Requérir un dossier du dossier .objet/analyse/lib/module
-    def require_module module_name
-      (folder_modules+module_name).require
-    end
-
     def titre; @titre ||= "Analyses de films".freeze end
 
     # Les onglets communs à toutes les pages qui font

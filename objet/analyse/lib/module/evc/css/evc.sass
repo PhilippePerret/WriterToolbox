@@ -1,20 +1,26 @@
 ul.evc
-  margin  : 2em
-  padding : 2em 1em
+  list-style        : none
+  margin            : 2em
+  padding           : 2em 1em
   background-color  : #ccc
-  border  : 1px solid #999
+  border            : 1px solid #999
   li.ev
+    // Tous les spans
     span.h, span.d, span.r
       display : inline-block
+    // Les spans de durée
     span.h, span.d
-      font-family : Georgia
-      font-size   : 11pt
-    // Le temps
+      font-size       : 13.5pt
+      font-family     : "Courier New", Courier, Monospace
+      vertical-align  : top
+      padding-top     : 8px
+    // Le temps (horloge départ)
     span.h
-      width   : 100px
+      width           : 100px
     // La durée
     span.d
       width   : 100px
     // Le résumé
     span.r
-      width   : 400px
+      width       : 82%
+      font-size   : 12.6pt

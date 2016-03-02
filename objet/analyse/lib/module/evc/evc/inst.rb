@@ -5,7 +5,7 @@ class Evc
   # Le chemin d'accès relatif (commence par ".") à l'evc
   attr_reader :path
   # {Array d'instances Evc::Events} Tous les évènements
-  attr_reader :events
+  # attr_reader :events
   # {Evc::Specs} Infos de l'évènemencier
   # Ou NIL si l'évènemencier ne contient pas de première ligne de
   # description
@@ -24,6 +24,8 @@ class Evc
 
   # = main =
   #
+  # RETURN la liste des évènements (instances Evc::Event)
+  #
   # Méthode principale qui parse le fichier évènemencier et définit :
   #   specs       Les infos sur le film (ou NIL)
   #   events      Toutes les instances Evc::Event des évènements
@@ -36,13 +38,16 @@ class Evc
     @events = lines.collect { |line| Event::new( self, line ) }
   end
 
+  def events
+    @events || self.parse
+  end
+
   # Enregistrement de l'évènemencier
   # TODO Peut-être le mettre seulement dans un module
   # administrateur
   def save
     File.unlink(path) if File.exist?(path)
     File.open(path, 'wb') { |f| f.write code2save }
-    end
   end
 
   # Le code à sauver dans le fichier, reconstitution

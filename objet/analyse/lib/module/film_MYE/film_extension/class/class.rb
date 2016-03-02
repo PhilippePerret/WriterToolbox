@@ -3,10 +3,10 @@ class FilmAnalyse
   class << self
 
     # Retourne un Array d'instances {FilmAnalyse::Film} de tous les
-    # films du dossier data/analyse/data_per_film
+    # films du dossier data/analyse/film_MYE
     def archive_films_list options = nil
       @archive_films_list ||= begin
-        Dir["#{folder_per_film}/*"].collect do |path|
+        Dir["#{folder_films_MYE}/*"].collect do |path|
           film_id = File.basename(path)
           # L'instance du film. Noter qu'il faut impérativement passer
           # par la méthode `FilmAnalyse::Film::get` car ce n'est pas
@@ -27,8 +27,8 @@ class FilmAnalyse
       end
     end
 
-    def folder_per_film
-      @folder_per_film ||= site.folder_data + 'analyse/data_per_film'
+    def folder_films_MYE
+      @folder_films_MYE ||= site.folder_data + 'analyse/film_MYE'
     end
   end # / << self
 end #/FilmAnalyse

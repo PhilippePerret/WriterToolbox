@@ -26,6 +26,8 @@ class SuperFile
   }
 
   # Retourne le code du fichier, kramdowné
+  #
+  # :alias: def as_kramdown
   def kramdown options = nil
     options ||= Hash::new
 
@@ -75,6 +77,7 @@ class SuperFile
       return code_final
     end
   end
+  alias :as_kramdown :kramdown
 
 
 end

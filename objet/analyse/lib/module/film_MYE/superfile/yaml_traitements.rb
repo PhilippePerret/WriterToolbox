@@ -2,7 +2,7 @@
 class SuperFile
 
   # Traitement en fonction du fichier YAML
-  def yaml_content_by_type
+  def as_yaml
 
     case affixe
     when 'personnages'
