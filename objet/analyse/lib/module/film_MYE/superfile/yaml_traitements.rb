@@ -242,31 +242,52 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
 
 
-  def traite_content_as_fondamentales
+  def dsection_fond1
     fd1 = yaml_content[:personnage_fondamental]
+    return "" if fd1.nil? || fd1.empty?
+    <<-HTML
+<dt>Personnage Fondamental (Fd. 1)</dt>
+<dd>
+  #{libnval("Nom", fd1[:nom])}
+  #{description_of(fd1)}
+  #{libnval("Atouts", fd1[:atouts] )}
+  #{libnval("Handicaps", fd1[:handicaps])}
+  #{facteur_u_of(fd1)}
+  #{facteur_o_of(fd1)}
+</dd>
+    HTML
+  end
+  def dsection_fond2
     fd2 = yaml_content[:question_fondamentale]
+    return "" if fd2.nil? || fd2.empty?
+    <<-HTML
+<dt>Question Dramatique Fondamentale (Fd. 2)</dt>
+<dd>
+  #{intitule_of(fd2)}
+  #{description_of(fd2)}
+  #{facteur_u_of(fd2)}
+  #{facteur_o_of(fd2)}
+</dd>
+    HTML
+  end
+  def dsection_fond3
+
+  end
+  def dsection_fond4
+
+  end
+  def dsection_fond5
+
+  end
+
+  def traite_content_as_fondamentales
     fd3 = yaml_content[:opposition_fondamentale]
     fd4 = yaml_content[:reponse_fondamentale]
     fd5 = yaml_content[:concept_fondamental]
     <<-HTML
 <dl>
-  <dt>Personnage Fondamental (Fd. 1)</dt>
-  <dd>
-    #{libnval("Nom", fd1[:nom])}
-    #{description_of(fd1)}
-    #{libnval("Atouts", fd1[:atouts] )}
-    #{libnval("Handicaps", fd1[:handicaps])}
-    #{facteur_u_of(fd1)}
-    #{facteur_o_of(fd1)}
-  </dd>
-
-  <dt>Question Dramatique Fondamentale (Fd. 2)</dt>
-  <dd>
-    #{intitule_of(fd2)}
-    #{description_of(fd2)}
-    #{facteur_u_of(fd2)}
-    #{facteur_o_of(fd2)}
-  </dd>
+  #{dsection_fond1}
+  #{dsection_fond2}
 
   <dt>Opposition Fondamentale (Fd. 3)</dt>
   <dd>

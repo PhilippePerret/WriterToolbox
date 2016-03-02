@@ -19,7 +19,7 @@ class Evc
   # Mais on peut retrouver l'ID dans les infos si elles sont
   # définies
   def initialize path
-    @path = path
+    @path = path.to_s
   end
 
   # = main =

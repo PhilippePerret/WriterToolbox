@@ -15,9 +15,7 @@ class SuperFile
   end
 
   def deyamelize
-    # YAML::parse(read)
-    # YAML::load(read)
-    Psych.load_file(self.to_s).to_sym
+    YAML::load_file(self.to_s).to_sym
   end
 
   def yaml_content
