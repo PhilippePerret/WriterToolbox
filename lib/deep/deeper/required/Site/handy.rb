@@ -32,8 +32,8 @@ def raise_unless_admin
 end
 # Barrière anti non quelque chose
 # Cf. RefBook > Protection.md
-def raise_unless condition
-  raise SectionInterditeError if false == condition
+def raise_unless condition, error_message = nil
+  raise SectionInterditeError, error_message if false == condition
 end
 # Cf. RefBook > Protection.md
 def raise_unless_owner message = nil
