@@ -2,25 +2,62 @@
 # Vue de la liste des analyses
 #
 # Ouvert à tout visiteur même non identifié ou non abonné.
-%>
+=begin
+RÉFLEXION :
+Comment répartir et trouver les analyses.
+- Il ne faut prendre que les films analysés, en sachant que tous les films du
+  Filmodico se trouvent dans la table (premier bit = 1)
+- Ne lier que les films que l'user peut voir :
+  - s'il est inscrit, les films pour inscrit
+  - s'il est abonné, analyste ou admin, tous les films
+- Faire la distinction entre : analyse terminée / analyse en cours
+- Indiquer les analyses de type TM
 
-<%
-def user_autorized?
-  user.subscribed? || user.analyste? || user.admin?
-end
-%>
+ANALYSES TERMINÉES "_______1%"
 
+  FILMS AUTORISÉS
+
+  FILMS NON AUTORISÉS
+
+ANALYSES EN COURS "_____1%"
+
+  FILMS AUTORISÉS
+
+  FILMS NON AUTORISÉS
+
+ANALYSES NON TERMINÉES "_______0%"
+
+=end
+
+# Relève des films
+# Note : On pourrait ne relever que les films accessibles à l'user
+# en fonction de ses privilèges, mais il faut qu'il puisse voir aussi
+# les films qu'il pourrait voir en étant abonné ou inscrit, donc on
+# les relève tous et la différence se fera au niveau des films accessibles
+# ou non.
+
+%>
 <%= FilmAnalyse::titre_h1("Liste des analyses") %>
-<% if user_autorized? %>
-  <%= FilmAnalyse::liste_analyses_completed %>
-  <%= FilmAnalyse::liste_analyses_lisibles %>
-  <%= FilmAnalyse::liste_analyses_not_completed %>
-<% else %>
-  <%= FilmAnalyse::liste_analyses_autorized %>
-  <%= FilmAnalyse::liste_analyses_non_autorized %>
-<% end %>
+<p class='small italic'>
+  <% if user.subscribed? || user.real_analyste? || user.admin? %>
+  En tant qu'<%=
+  case true
+  when user.subscribed?     then "abonné"
+  when user.real_analyste?  then "analyste"
+  when user.admin?          then "administrateur"
+  end
+  %> vous avez un accès complet aux analyses de films.
+  <% elsif user.identified? %>
+  En tant que simple inscrit, vous avez un accès limité aux analyses de film. Pour un accès complet, merci de vous abonner.
+  <% else %>
+  En tant que simple visiteur, votre accès aux analyses de films est limité à quelques films seulement.
+  <% end %>
+</p>
+<h3>Analyses achevées</h3>
+<%= FilmAnalyse::TDM::traite :complete %>
 
-<h3>Archives</h3>
-<% FilmAnalyse::require_module 'archives' %>
-<p class="small italic">Différentes analyses plus ou moins développées (de la simple note à l'analyse statistique complète) émanant de travaux plus lointains</p>
-<%= FilmAnalyse::archive_films_list(as: :ul) %>
+<h3>Analyses en cours</h3>
+<%= FilmAnalyse::TDM::traite :en_cours %>
+
+<h3>Analyses non achevées</h3>
+<%= FilmAnalyse::TDM::traite :inacheves %>

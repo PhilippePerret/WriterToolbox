@@ -14,7 +14,7 @@ film = FilmAnalyse::Film::current
 # Si l'utilisateur est autorisé à voir cette analyse, il peut la
 # voir, sinon, on lui présente un message d'interdiction.
 # L'analyse de Seven est toujours consultable.
-if film.exist? && ( film.sym == 'seven' || film.user_autorized? )
+if film.exist? && film.consultable?
 
 %>
   <iframe

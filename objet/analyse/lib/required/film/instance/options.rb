@@ -7,18 +7,6 @@ class FilmAnalyse
 class Film
 
 
-  # BIT 1
-  # 1   Analysé / Non analysé
-  # 2   Nécessité d'être inscrit
-  # 4   Nécessité d'être abonné
-  # 8   Analyse TM
-  # 16  Lisible / non lisible
-
-  # BIT 2
-  # 1   En cours d'analyse
-  # 2   Achevé / non achevé
-
-
   # BIT 1 Analysé / Non analysé
   def analyzed?
     options[0].to_i == 1
