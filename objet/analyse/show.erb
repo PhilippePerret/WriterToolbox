@@ -49,8 +49,8 @@ else
   # Pour le traitement des anciennes données (avant Films TM)
   # Toutes ces données se trouvent dans le dossier ./data/analyse/film_MYE/
   FilmAnalyse::require_module 'film_MYE'
-  page.add_css        "./data/analyse/css"
-  page.add_javascript "./data/analyse/javascript"
+  # page.add_css        "./data/analyse/css"
+  # page.add_javascript "./data/analyse/javascript"
 
 %>
   <%= FilmAnalyse::titre_h1( film.titre, {onglets_top: true} ) %>

@@ -2,26 +2,95 @@
 class SuperFile
 
   # Traitement en fonction du fichier YAML
+  # On cherche d'abord une méthode qui porterait le nom
+  # "traite_content_as_<affixe fichier>" par exemple
+  # "traite_content_as_notes" pour le fichier notes.ymal et
+  # si la méthode n'existe pas on traite la donnée avec la
+  # méthode générale `traite_content_as_list_of_things`
   def as_yaml
-
-    case affixe
-    when 'personnages'
-      traite_content_as_personnages
-    when 'structure'
-      traite_content_as_structure
-    when 'fondamentales'
-      traite_content_as_fondamentales
-    when 'commentaires'
-      traite_content_as_commentaires
-    when 'ironies_dramatiques'
-      traite_content_as_ironies_dramatiques
-    when 'preparations_paiments'
-      traite_content_as_pps
+    methode = "traite_content_as_#{affixe}".to_sym
+    if respond_to? methode
+      send(methode)
     else
       # Traitement comme une liste de choses, par exemple comme une
       # liste d'ironies dramatiques ou de préparations-paiements
       traite_content_as_list_of_things
     end.formate_balises_propres
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes génériques utilisées par toutes les autres
+  #   méthodes
+  # ---------------------------------------------------------------------
+
+  KEY_SYM_TO_HUMAN = {
+    cdv:                    "Clé de voûte",
+    denouement:             "Dénouement",
+    idees:                  "Idées",
+    incdec:                 "Incident déclencheur",
+    incper:                 "Incident perturbateur",
+    intensite:              "Intensité",
+    memo:                   "Mémo",
+    originalite:            "Originalité",
+    preparation_paiement:   "Préparation/paiement",
+    procedes:               "Procédés",
+    reponse:                "Réponse",
+    running_gag:            "Running-gag",
+    themes:                 "Thèmes"
+
+  }
+  # Méthode qui retourne le nom humain pour une clé symbole.
+  # Elle reçoit par exemple :incdec et retourne "Incident déclencheur"
+  def key_sym_to_human k
+    # return k.to_s  # Pour correction
+    if KEY_SYM_TO_HUMAN.has_key? k
+      KEY_SYM_TO_HUMAN[k]
+    else
+      k.to_s.gsub(/_/,' ').capitalize
+    end
+  end
+
+  # Reçoit un Array définissant des relatifs et retourne un texte
+  # humain pour les voir.
+  # +arr_rels+ Array de Hash contenant :type et :id
+  # :type peut être :qrd, :objectif, :note etc. et :id est l'identifiant
+  # de l'élément en relation.
+  # TODO Pour le moment, pas d'interactivité, on indique simplement
+  # la nature de l'élément et son identifiant
+  def traite_relatifs arr_rels
+    return "---" if arr_rels.nil? || arr_rels.empty?
+    arr_rels.collect do |hrel|
+      (
+        case hrel[:type]
+        when :qrd  then "Question & réponse dramatique"
+        else hrel[:type].to_s.capitalize
+        end + " ##{hrel[:id]}"
+      ) # .in_a(href:"##{hrel[:type]}-#{hrel[:id]}")
+    end.pretty_join
+  end
+
+  def traite_hash_value hvalue
+    hvalue.collect do |lib, value|
+      traite_any_value lib, value
+    end.compact.join.in_div
+  end
+
+  def traite_array_value arr_value
+    arr_value.collect do |value|
+      traite_any_value nil, value
+    end.compact.join.in_div
+  end
+
+  def traite_any_value lib, value
+    return nil if lib == :id
+    case value
+    when String, Fixnum, Float
+      libnval(lib, value.to_s)
+    when Hash
+      traite_hash_value value
+    when Array
+      traite_array_value value
+    end
   end
 
   # Traitement le contenu yam comme une liste de choses
@@ -30,17 +99,65 @@ class SuperFile
   # et la valeur un Hash où on prendra la clé pour faire le libellé et la
   # valeur pour faire… la valeur.
   def traite_content_as_list_of_things
+    traite_hash_value yaml_content
+
     yaml_content.collect do |key, hvalue|
       hvalue.collect do |lib, val|
         next nil if lib == :id
         lib = case lib
         when :titre then "Intitulé"
         when :texte then "Description"
-        else lib.to_s
+        else key_sym_to_human(lib)
         end
         libnval(lib, val.to_s)
       end.compact.join.in_div
     end.join
+  end
+
+  # Traitement d'un fichier YAML contenant une liste de
+  # procédés.
+  def traite_hash_in_liste_definition hvalue
+    hvalue.collect do |lib, value|
+      key_sym_to_human(lib).in_dt + (case value
+      when String, Fixnum
+        value.to_s
+      when Hash
+        traite_hash_in_liste_definition value
+      when Array
+        value.pretty_join
+      else
+        value.inspect
+      end.in_dd)
+    end.join.in_dl
+  end
+
+  # ---------------------------------------------------------------------
+  #   Traitement par type de fichier
+  # ---------------------------------------------------------------------
+
+  def traite_content_as_qrds
+    yaml_content.collect do |qid, qdata|
+      debug "qdata: #{qdata.pretty_inspect}"
+      "##{qid} #{qdata[:question]}".in_dt +
+      (
+        libnval("Réponse", qdata[:reponse]) +
+        libnval("Description", qdata[:description]) +
+        libnval("Relatifs", traite_relatifs(qdata[:relatifs]))
+      )
+    end.join.in_dl
+  end
+  def traite_content_as_notes
+    traite_hash_in_liste_definition yaml_content
+  end
+
+  def traite_content_as_procedes
+    traite_hash_in_liste_definition yaml_content
+  end
+
+  # Traitement d'un fichier YAML contenant une liste des
+  # thèmes
+  def traite_content_as_themes
+    traite_hash_in_liste_definition yaml_content
   end
 
   # Traitement d'un fichier YAML contenant la description des
@@ -70,9 +187,10 @@ class SuperFile
   # Traitement du contenu dans c'est un fichier YAML contenant
   # des commentaires
   def traite_content_as_commentaires
-    yaml_content.collect do |key, hvalue|
-      ( hvalue[:titre].in_dt + hvalue[:texte].in_dd )
-    end.join.in_dl
+    traite_hash_in_liste_definition yaml_content
+    # yaml_content.collect do |key, hvalue|
+    #   ( hvalue[:titre].in_dt + hvalue[:texte].in_dd )
+    # end.join.in_dl
   end
 
   PROPERTIES_PP_TRAITED = [
@@ -80,7 +198,7 @@ class SuperFile
     :libelle, :description,
     :installation, :exploitation, :resolution
   ]
-  def traite_content_as_pps
+  def traite_content_as_preparations_paiments
     explication_pp.in_p(class:'small italic') +
     yaml_content.collect do |key, hvalue|
       if user.admin? && @properties_irdr_traited.nil?
@@ -92,8 +210,8 @@ class SuperFile
         @properties_irdr_traited = true
       end
       <<-HTML
-<a name="ironie_dramatique-#{key}"></a>
-<dt>#{hvalue[:libelle]}</dt>
+<a name="pp-#{key}"></a>
+<dt>##{key} #{hvalue[:libelle]}</dt>
 <dd>
   #{description_of  hvalue}
   #{installation_of hvalue}
@@ -116,7 +234,7 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
     :id,
     :libelle, :description,
     :installation, :exploitation, :resolution,
-    :auteur, :victime
+    :auteur, :victime, :produit
   ]
   def traite_content_as_ironies_dramatiques
     explication_ironies_dramatiques.in_p(class:'small italic') +
@@ -131,7 +249,7 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
       end
       <<-HTML
 <a name="ironie_dramatique-#{key}"></a>
-<dt>#{hvalue[:libelle]}</dt>
+<dt>##{key} #{hvalue[:libelle]}</dt>
 <dd>
   #{description_of  hvalue}
   #{installation_of hvalue}
@@ -139,6 +257,7 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
   #{resolution_of   hvalue}
   #{libnval("Auteur",   hvalue[:auteur])}
   #{libnval("Victime",  hvalue[:victime])}
+  #{libnval("Produit", hvalue[:produit] || "- non défini -")}
 </dd>
       HTML
     end.join.in_dl
@@ -163,7 +282,6 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     incident_declencheur = dstt[:incdec]
 
     stt = ""
-
 
     {
       incper:     {hname:"Incident perturbateur"},
@@ -213,7 +331,7 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   def libelle_and_value libelle, value
     return "" if value.to_s == ""
     (
-      libelle.in_span(class:'libelle') +
+      libelle.to_s.in_span(class:'libelle') +
       value.in_span(class:'value')
     ).in_div(class:'row')
   end
@@ -244,11 +362,12 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
 
   def dsection_fond1
     fd1 = yaml_content[:personnage_fondamental]
-    return "" if fd1.nil? || fd1.empty?
+    return "Pas de première Fondamentale définie.".in_p(class:'italic') if fd1.nil? || fd1.empty?
+    patronyme = "#{fd1[:prenom]} #{fd1[:nom]}".strip
     <<-HTML
 <dt>Personnage Fondamental (Fd. 1)</dt>
 <dd>
-  #{libnval("Nom", fd1[:nom])}
+  #{libnval("Nom", patronyme)}
   #{description_of(fd1)}
   #{libnval("Atouts", fd1[:atouts] )}
   #{libnval("Handicaps", fd1[:handicaps])}
@@ -259,7 +378,7 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
   def dsection_fond2
     fd2 = yaml_content[:question_fondamentale]
-    return "" if fd2.nil? || fd2.empty?
+    return "Pas de deuxième Fondamentale définie.".in_p(class:'italic') if fd2.nil? || fd2.empty?
     <<-HTML
 <dt>Question Dramatique Fondamentale (Fd. 2)</dt>
 <dd>
@@ -271,48 +390,81 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     HTML
   end
   def dsection_fond3
-
+    fd3 = yaml_content[:opposition_fondamentale]
+    return "Pas de troisième Fondamentale définie.".in_p(class:'italic') if fd3.nil? || fd3.empty?
+    <<-HTML
+<dt>Opposition Fondamentale (Fd. 3)</dt>
+<dd>
+  #{intitule_of(fd3)}
+  #{description_of(fd3)}
+  #{facteur_u_of(fd3)}
+  #{facteur_o_of(fd3)}
+</dd>
+    HTML
   end
   def dsection_fond4
-
+    fd4 = yaml_content[:reponse_fondamentale]
+    return "Pas de quatrième Fondamentale définie.".in_p(class:'italic') if fd4.nil? || fd4.empty?
+    <<-HTML
+<dt>Réponse Dramatique Fondamentale (Fd. 4)</dt>
+<dd>
+  #{intitule_of(fd4)}
+  #{description_of(fd4)}
+  #{facteur_u_of(fd4)}
+  #{facteur_o_of(fd4)}
+</dd>
+    HTML
   end
   def dsection_fond5
-
+    fd5 = yaml_content[:concept_fondamental]
+    return "Pas de cinquième Fondamentale définie.".in_p(class:'italic') if fd5.nil? || fd5.empty?
+    <<-HTML
+<dt>Concept Fondamental (Fd. 5)</dt>
+<dd>
+  #{intitule_of(fd5)}
+  #{description_of(fd5)}
+  #{facteur_u_of(fd5)}
+  #{facteur_o_of(fd5)}
+</dd>
+    HTML
   end
 
   def traite_content_as_fondamentales
-    fd3 = yaml_content[:opposition_fondamentale]
-    fd4 = yaml_content[:reponse_fondamentale]
-    fd5 = yaml_content[:concept_fondamental]
     <<-HTML
 <dl>
   #{dsection_fond1}
   #{dsection_fond2}
-
-  <dt>Opposition Fondamentale (Fd. 3)</dt>
-  <dd>
-    #{intitule_of(fd3)}
-    #{description_of(fd3)}
-    #{facteur_u_of(fd3)}
-    #{facteur_o_of(fd3)}
-  </dd>
-
-  <dt>Réponse Dramatique Fondamentale (Fd. 4)</dt>
-  <dd>
-    #{intitule_of(fd4)}
-    #{description_of(fd4)}
-    #{facteur_u_of(fd4)}
-    #{facteur_o_of(fd4)}
-  </dd>
-
-  <dt>Concept Fondamental (Fd. 5)</dt>
-  <dd>
-    #{intitule_of(fd5)}
-    #{description_of(fd5)}
-    #{facteur_u_of(fd5)}
-    #{facteur_o_of(fd5)}
-  </dd>
+  #{dsection_fond3}
+  #{dsection_fond4}
+  #{dsection_fond5}
 </dl>
     HTML
   end
+
+  NATURE_OBJECTIF = {
+    'cc'  => "Concret",
+    'ab'  => "Abstrait"
+  }
+  CATEGORIE_OBJECTIF = {
+    'objf'  => "Objectif fondamental",
+    'objv'  => "Objectif de vie",
+    'sobj'  => "Sous-objectif",
+    'objl'  => "Objectif local"
+  }
+
+  def traite_content_as_dynamique
+    yaml_content.collect do |dynid, dyndata|
+      debug dyndata.inspect
+      (
+        "Objectif ##{dynid} : #{dyndata[:libelle]}".in_dt +
+        (
+          libnval("Description", dyndata[:description]) +
+          libnval("Catégorie", CATEGORIE_OBJECTIF[dyndata[:obj_categorie]]) +
+          libnval("Nature", NATURE_OBJECTIF[dyndata[:obj_nature]])+
+          libnval("Relatifs", traite_relatifs(dyndata[:relatifs]))
+        ).in_dd
+      ).in_dl
+    end.join
+  end
+
 end #/SuperFile
