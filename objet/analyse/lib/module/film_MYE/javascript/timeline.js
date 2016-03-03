@@ -23,7 +23,7 @@ $.extend( window.Timeline, {
     this.calcule_window_width() ;
     this.calcule_coef_duree2pixels() ;
 
-    var style = "width:"+this.window_width+'px;position:fixed;left:40px;top:50px;height:28px;background-color:black;';
+    var style = "opacity:width:"+this.window_width+'px;position:fixed;left:40px;top:50px;height:28px;background-color:black;';
     var tm = '<div id="timeline" style="'+style+'"></div>' ;
     $('body').append( tm ) ;
 

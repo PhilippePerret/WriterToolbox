@@ -1,5 +1,12 @@
 <%
 # Affiche l'analyse du film courant, qu'elle soit "TM" ou normale
+
+
+# FilmAnalyse::require_module 'evc'
+# ievc = Evc::new('./data/analyse/film_MYE/TheStraightStory1999/evc/_evenements.yml')
+# ievc.import_yaml_evenemencier
+# flash "EVC prêt"
+
 %>
 <%
 def film ; @film ||= FilmAnalyse::Film::current end

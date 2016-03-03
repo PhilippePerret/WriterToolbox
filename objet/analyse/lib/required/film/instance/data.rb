@@ -17,14 +17,10 @@ class Film
   #      rechercher.
   attr_writer :film_id
   def film_id
-    @film_id ||= begin
-      FilmAnalyse::table_filmodico.get(id, colonnes:[:film_id])[:film_id]
-    end
+    @film_id ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:film_id])[:film_id]
   end
   def duree
-    @duree ||= begin
-      FilmAnalyse::table_filmodico.get(id, colonnes:[:duree])[:duree]
-    end
+    @duree ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:duree])[:duree]
   end
 
   def titre         ; @titre        ||= get(:titre)       end
