@@ -23,7 +23,7 @@ class Post
   # message qui doit être affiché.
   # Note : Mettre aussi dans les params as: :full_message pour
   # avoir l'intégralité des données.
-  # 
+  #
   # +params+
   #   :as       :full     Comme un message complet
   #             :titre    (défaut) Comme un titre pour un listing
@@ -70,9 +70,16 @@ class Post
         titre = $2.freeze
         titre.in_a(href: url)
       }
+      str.gsub!(/\[(i|u|b|strong|em)\](.*?)\[\/\1\]/){
+        tag   = $1
+        inner = $2
+        "<#{tag}>#{inner}</#{tag}>"
+      }
       str.split("\n").reject{|p|p.empty?}.collect{|p| p.in_p}.join
     end
   end
+
+
   def post_infos
     @post_infos ||= begin
       (
