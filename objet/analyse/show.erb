@@ -53,6 +53,9 @@ else
   # page.add_javascript "./data/analyse/javascript"
 
 %>
+  <script type="text/javascript">
+    Film.duree = <%= film.duree %>;
+  </script>
   <%= FilmAnalyse::titre_h1( film.titre, {onglets_top: true} ) %>
   <%= film.analyse_display %>
 <% end %>

@@ -21,6 +21,11 @@ class Film
       FilmAnalyse::table_filmodico.get(id, colonnes:[:film_id])[:film_id]
     end
   end
+  def duree
+    @duree ||= begin
+      FilmAnalyse::table_filmodico.get(id, colonnes:[:duree])[:duree]
+    end
+  end
 
   def titre         ; @titre        ||= get(:titre)       end
   def titre_fr      ; @titre_fr     ||= get(:titre_fr)    end

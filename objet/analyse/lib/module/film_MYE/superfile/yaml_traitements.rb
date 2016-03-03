@@ -196,11 +196,13 @@ class SuperFile
   PROPERTIES_PP_TRAITED = [
     :id,
     :libelle, :description,
-    :installation, :exploitation, :resolution
+    :installation, :exploitation, :resolution,
+    :scenes
   ]
   def traite_content_as_preparations_paiments
     explication_pp.in_p(class:'small italic') +
     yaml_content.collect do |key, hvalue|
+      # debug "hvalue PP : #{hvalue.inspect}"
       if user.admin? && @properties_irdr_traited.nil?
         hcheck = hvalue.dup
         PROPERTIES_PP_TRAITED.each do |prop|
@@ -217,6 +219,7 @@ class SuperFile
   #{installation_of hvalue}
   #{exploitation_of hvalue}
   #{resolution_of   hvalue}
+  #{scenes_of       hvalue}
 </dd>
       HTML
     end.join.in_dl
@@ -357,6 +360,13 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
   def facteur_o_of h
     libnval("Facteur O", h[:facteurO] || h[:facteur_o])
+  end
+  def scenes_of h
+    return "" if h[:scenes].to_s == ""
+    scenes = h[:scenes].split(' ').collect { |sid| sid.to_i }
+    onclick = "$.proxy(Timeline,'show_scenes', '#{scenes.join(', ')}')()"
+    lien_scenes = scenes.join(', ').in_a(onclick: onclick)
+    libnval( "Scènes", lien_scenes )
   end
 
 
