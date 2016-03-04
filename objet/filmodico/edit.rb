@@ -115,11 +115,10 @@ class Filmodico
       titre:        titre,
       titre_fr:     titre_fr,
       annee:        annee,
+      film_id:      @film_id,
       sym:          @sym,
-      options:      "00",
-      pays:         @pays.first, # String
+      options:      "00000000",
       realisateur:  @realisateur_analyse,
-      auteurs:      @auteurs_analyse,
       updated_at:   NOW
     }
   end

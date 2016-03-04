@@ -36,7 +36,7 @@ class Film
     else
       "La table des matières de cette analyse n'est pas encore établie. Les fichiers sont dont affichés “tels quels” ici.".in_div(class:'grand air warning')
     end
-    
+
     ititre = 0
     table_of_content << tdm.collect do |fdata|
       ititre += 1
@@ -85,7 +85,7 @@ class Film
             sfile.read
           end
         ).in_section
-      ).in_div( class:'section' )
+      ).in_section
     end.join
 
     # L'intégralité de la page d'analyse
