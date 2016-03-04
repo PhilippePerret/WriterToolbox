@@ -82,6 +82,14 @@ class Event
     # On dispatche
     @horloge, @duree, @resume, @note, @indice_real_evt = @dline
 
+    # L'horloge peut avoir également été fournie en temps, il faut
+    # donc checker. Noter que si c'est un nombre de secondes, ça ne
+    # gêne pas.
+    unless @horloge.match(/\:/)
+      @time     = @horloge.to_i
+      @horloge  = @time.s2h
+    end
+
     # Correction de certaines valeurs pour qu'elles aient
     # leur bonne classe
     @indice_real_evt  = @indice_real_evt.to_i   unless @indice_real_evt.nil?
