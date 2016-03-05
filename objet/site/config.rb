@@ -42,4 +42,4 @@ site.default_editor = :atom
 # Note : Il faut que cette application existe, dans le cas
 # contraire, c'est l'application par défaut de l'ordinateur
 # qui serait utilisée.
-site.markdown_application = "Mou"
+site.markdown_application = "TextMate" # "Mou"

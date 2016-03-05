@@ -10,7 +10,8 @@ class Console
 
     sub_log (
       res.collect do |hfilm|
-        "<input type='text' value='FILM[#{hfilm[:film_id]}]' /> (#{hfilm[:titre]})"
+        lien_fiche = hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_new')
+        "<input type='text' value='FILM[#{hfilm[:film_id]}]' /> (#{lien_fiche})"
       end.join('<br>') +
       '<script type="text/javascript>UI.auto_selection_text_fields()</script>"'
     )
