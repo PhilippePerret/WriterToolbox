@@ -248,6 +248,10 @@ class Console
     end
 
     case sentence
+    when 'balise film'
+      ( give_balise_of_filmodico last_word )
+    when 'balise mot'
+      ( give_balise_of_scenodico last_word )
     when 'kramdown'
       ( visualise_document_kramdown last_word )
     when 'affiche table'

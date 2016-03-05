@@ -41,7 +41,7 @@ class Page
     full_page = path_semidyn.deserb
     # Si l'user est abonné ou que le texte fait moins de 3000
     # signes, on retourne le texte tel quel
-    return full_page if user.subscribed? || full_page.length < 2000
+    return full_page if consultable? || full_page.length < 2000
     # Si l'utilisateur n'est pas abonné, on tronque la page
     # et on ajoute un message l'invitant à s'abonner.
     tiers_longueur = (full_page.length / 3) - 100
@@ -107,6 +107,7 @@ class Page
   # {StringHTML} Retourne le code HTML du bloc d'évaluation de
   # la page
   def bloc_evaluation
+    return "" unless consultable?
     we = user.f_e.freeze
     menu_interet = [
       ["0", "endormi#{we}"],

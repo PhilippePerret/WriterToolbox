@@ -14,7 +14,12 @@ class Page
   def sous_chapitre?  ; type == 2 end
   def chapitre?       ; type == 3 end
 
-
+  # Retourne true si l'utilisateur courant peut
+  # consulter la page en entier, retourne false
+  # s'il ne peut en consulter que le tier.
+  def consultable?
+    return true if user.subscribed? || user.admin?
+  end
 
 end #/Page
 end #/Cnarration

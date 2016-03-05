@@ -50,6 +50,9 @@ class SiteHtml
 
   # Éditeur par défaut, pour l'édition des fichiers
   attr_accessor :default_editor
+  
+  # Éditeur de fichier Markdown
+  attr_accessor :markdown_application
 
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif

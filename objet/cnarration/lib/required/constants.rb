@@ -5,7 +5,7 @@ page.title = "Narration"
 class Cnarration
   LIVRES = {
     1   => {id:1,   hname: "La Structure", stitre:nil, folder:'structure'},
-    2   => {id:2,   hname: "Les Personnages", stitre:nil, folder:'personnages'},
+    2   => {id:2,   hname: "Les Personnages", stitre:"Développer des personnages riches, complets et captivants.", folder:'personnages'},
     3   => {id:3,   hname: "La Dynamique narrative", folder:'dynamique', stitre:"Objectifs, Obstacles et Conflits"},
     4   => {id:4,   hname: "La Thématique", folder:'thematique', stitre:nil},
     5   => {id:5,   hname: "Les Documents de travail", folder:'documents', stitre:"Les documents indispensables de l'auteur"},

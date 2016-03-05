@@ -76,7 +76,7 @@ menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id"
 
   <%# HANDLER %>
   <%= form.field_text("Path fichier", 'handler', nil, {class:'milong', text_before:"./data/unan/pages_cours/cnarration/<span id='dossier_page'>structure</span>/".in_span(id:"dossier_page_cours", class:'tiny')}) %>
-  <%= form.field_description("Chemin relatif du fichier à partir du dossier `./data/unan/pages_cours/cnarration/&lt;dossier livre&gt;/`.") %>
+  <%= form.field_description("Chemin relatif du fichier à partir du dossier `./data/unan/pages_cours/cnarration/&lt;dossier livre&gt;/affixe_fichier_sans_tm`.<br />Noter que c'est un fichier Markdown qui doit être produit et qu'on n'indique pas ici son extension, qui sera automatiquement ajoutée.") %>
 
   <%= form.field_checkbox("Créer le fichier s'il n'existe pas déjà.", 'create_file') %>
 

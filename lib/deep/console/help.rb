@@ -67,6 +67,20 @@ class Console
   <dd>Tip : Dans Atom, trouver le fichier, Ctrl-cliquer dessus et choisir “Copy full path” ou “Copy project path” pour utiliser le résultat en argument. Noter que si c'est le “project path” qui est choisi, il faut ajouter `./` devant.</dd>
 </dl>
 
+
+<!-- DICTIONNAIRES -->
+<h4 onclick="$('dl#dictionnaires').toggle()">Dictionnaires</h4>
+<dl class="small" id="dictionnaires" style="display:none">
+  <dt>`list filmodico`</dt>
+  <dd>Affiche la liste des films du Filmodico, c'est-à-dire la table</dd>
+  <dt>`balise film &lt;titre ou portion de titre&gt;`</dt>
+  <dd>Retourne la balise FILM pour le film demandé, ou les balises si plusieurs films correspondent à la demande.</dd>
+  <dd>La recherche se fait par ordre de précédence sur 1/ le film-id, 2/ le titre original et 3/ le titre français.</dd>
+  <dt>`balise mot &lt;mot ou portion de mot&gt;`</dt>
+  <dd>Retourne la balise MOT pour le mot demandé</dd>
+  <dd></dd>
+</dl>
+
 <!-- FILMS ET ANALYSES -->
 <h4 onclick="$('dl#films_analyses').toggle()">Films et analyses</h4>
 <dl class="small" id="films_analyses" style="display:none">

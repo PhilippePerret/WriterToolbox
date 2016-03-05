@@ -37,3 +37,9 @@ site.user_options = {
 # Soit :textmate, soit :atom, l'éditeur à utiliser
 # quand on a recours à `lien.edit_file <path>`
 site.default_editor = :atom
+# Application (nom) qui doit ouvrir les documents Markdown
+# à l'édition.
+# Note : Il faut que cette application existe, dans le cas
+# contraire, c'est l'application par défaut de l'ordinateur
+# qui serait utilisée.
+site.markdown_application = "Mou"
