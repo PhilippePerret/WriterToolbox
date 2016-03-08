@@ -7,6 +7,7 @@ class Mot
   end
 
   def formate str
+    return "" if str.nil?
     str = str.purified
     str = str.formate_balises_propres
     str = str.split("\n").collect{|p| p.in_p}.join
