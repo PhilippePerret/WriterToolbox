@@ -25,6 +25,7 @@ class SuperFile
 
   KEY_SYM_TO_HUMAN = {
     cdv:                    "Clé de voûte",
+    contre_objectif:        "Contre-objectif",
     denouement:             "Dénouement",
     idees:                  "Idées",
     incdec:                 "Incident déclencheur",
