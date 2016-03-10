@@ -636,3 +636,27 @@ route: "admin/console"
 ---> vue “./view/gabarit/footer.erb” (@already_required: nil)
 ---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
 <- console.erb
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)

@@ -119,26 +119,29 @@ class RFile
     end
 
     # ---------------------------------------------------------------------
-    if options[:buttons].nil?
+
+    btns = if options[:buttons].nil?
       case update_required
       when :local_to_distant
-        c << upload_form
+        upload_form
       when :distant_to_local
-        c << download_form
+        download_form
       else
         return "" unless verbose
-        c << "Les deux fichiers sont synchronisés.".in_p
+        "Les deux fichiers sont synchronisés."
       end
     else
       case options[:buttons]
       when :both
-        c << (upload_form + download_form).in_p(class:'center')
+        upload_form + download_form
       when :upload
-        c << upload_form
+        upload_form
       when :download
-        c << download_form
+        download_form
       end
     end
+
+    c << btns.in_div(class:'right')
 
     # Il peut y avoir plusieurs champs de synchronisation, il faut
     # donc ré-initialiser cette valeur pour ne pas lancer la synchro

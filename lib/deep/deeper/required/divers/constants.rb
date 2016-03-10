@@ -34,6 +34,7 @@ PAYS = {
   'it'  => "Italie",
   'ja'  => "Japon",
   'no'  => "Norvège",
+  'nz'  => "Nouvelle Zélande",
   'fa'  => "Perse",
   'pl'  => "Pologne",
   'pt'  => "Portugal",
