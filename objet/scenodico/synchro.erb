@@ -14,6 +14,15 @@ def rfile
   @rfile ||= RFile::new("./database/data/scenodico.db")
 end
 %>
+
+<p class='small italic'>Attention : quand on synchronise d'un endroit vers un autre, <strong>les deux</strong> fichiers donnent l'impression de se synchroniser mais en fait il n'en est rien. La démarche à suivre est la suivante :
+  <ul>
+    <li>charger le fichier distant (modifié) vers local,</li>
+    <li>lancer le contrôle de synchro,</li>
+    <li>charger le fichier local vers l'atelier Icare,</li>
+  </ul>
+</p>
+
 <h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
 <h4>Sur la boite à outils de l'auteur</h4>
 <%= rfile.bloc_synchro(verbose:true) %>
