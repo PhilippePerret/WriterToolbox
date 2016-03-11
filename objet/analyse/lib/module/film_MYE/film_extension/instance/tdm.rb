@@ -36,6 +36,7 @@ class Film
     when 'qrds'         then "Questions & réponses dramatiques"
     when 'chrono'       then "Chronométrage complet du film"
     when 'lecon_tiree'  then "La Leçon tirée du film"
+    when 'themes'       then "Thèmes"
     else
       @alerte_tdm_pas_etablie_necessaire = true
       affixe.gsub(/_/, ' ').capitalize

@@ -158,7 +158,17 @@ class SuperFile
   # Traitement d'un fichier YAML contenant une liste des
   # thèmes
   def traite_content_as_themes
-    traite_hash_in_liste_definition yaml_content
+    yaml_content.collect do |key, hvalue|
+      htheme = case hvalue[:nature_theme]
+      when :concret   then "concret"
+      when :abstrait  then "abstrait"
+      when :both      then "abstrait et concret"
+      end
+
+      "<a name='theme-#{key}'></a>" +
+      "#{hvalue[:libelle]}".in_dt +
+      "Thème #{htheme}".in_dd
+    end.join.in_dl
   end
 
   # Traitement d'un fichier YAML contenant la description des
