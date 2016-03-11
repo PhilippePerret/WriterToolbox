@@ -3,8 +3,16 @@
 %>
 <%= Scenodico::titre_h1 %>
 <p>
-  Bienvenue dans le <strong>Scénodico</strong>, le parfait dictionnaire du scénariste et de l'auteur.
+  Bienvenue dans le <strong>Scénodico</strong> de la Boite à outils.
 </p>
-<p>Pour retrouver un mot, vous pouvez utiliser l'onglet <%= "Dictionnaire".in_a(href:'scenodico/list') %> ou l'onglet <%= "Recherche".in_a(href:'scenodico/search') %>. Si vous désirez proposer un mot inconnu du scénodico, utilisez l'onglet <%= "Proposer".in_a(href:'scenodico/proposer') %>.
+<p>
+  Si vous savez parfaitement ce qu'est le <em>test de bechdel</em>, ce qu'est une <em>dystopie</em>, une <em>tagline</em> ou une <em>lanterne rouge</em>, alors ce dictionnaire ne vous sera (presque) d'aucune utilité.
+</p>
+<p>
+  Dans le cas contraire, pour retrouver un mot, utilisez l'onglet <%= "Dictionnaire".in_a(class:'bold border', href:'scenodico/list') %></p>
+<p>
+  … ou l'onglet <%= "Recherche".in_a(class:'bold border', href:'scenodico/search') %>
+</p>
+<p>Si vous désirez proposer un mot inconnu du scénodico, utilisez l'onglet <%= "Proposer".in_a(href:'scenodico/proposer') %>.
 </p>
 <p class='small italic right'>Merci à Marion pour ses nombreuses corrections.</p>
