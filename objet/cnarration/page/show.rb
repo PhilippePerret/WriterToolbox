@@ -33,6 +33,10 @@ class Page
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
     end
+  rescue Exception => e
+    debug e
+    error e.message
+
   end
 
   # Le contenu de la page en fonction de l'abonnement

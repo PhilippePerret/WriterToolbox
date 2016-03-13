@@ -53,6 +53,10 @@ class SuperFile
     # faut l'appeler sur le code pour les transformer
     code = code.formate_balises_propres if "".respond_to?(:formate_balises_propres)
 
+    # Si une méthode de traitement des images existe,
+    # il faut l'appeler
+    code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
+
     #
     # = MAIN TRAITEMENT =
     #
