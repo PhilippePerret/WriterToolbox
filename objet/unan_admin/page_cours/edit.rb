@@ -5,12 +5,11 @@ class Unan
 class Program
 class PageCours
 #
-  EXTENSIONS_PATH_VALIDES = ['.erb', '.rb', '.txt', '.tex', '.html', '.htm']
+  EXTENSIONS_PATH_VALIDES = ['.md', '.erb', '.rb', '.txt', '.tex', '.html', '.htm']
 
   class << self
 
     def save
-      debug "Sauvegarde de #{new_page? ? 'la nouvelle' : 'l’ancienne'} page #{new_page? ? '' : '#'+page_id.to_s}…"
       check_values_page_cours || return
 
       # Au cas où, retirer les valeurs qui ne doivent

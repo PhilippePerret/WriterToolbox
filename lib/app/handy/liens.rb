@@ -30,6 +30,12 @@ class Lien
   def analyses titre = "analyses", options = nil
     analyses_de_films titre, options
   end
+  # Lien vers le collecteur online permettant de procéder
+  # à des collectes en bénéficiant des mêmes outils que dans
+  # TextMate
+  def collecteur_analyse titre = "collecteur d'analyse", options = nil
+    build("analyse/collecteur", titre, options)
+  end
 
   # Liste complète et détaillée des outils
   def outils titre = "liste des outils", options = nil

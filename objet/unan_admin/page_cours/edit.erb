@@ -41,23 +41,6 @@ else "" end
 
 %>
 <%
-# Javascript propre au formulaire
-%>
-<script type="text/javascript">
-window.PageCours = {
-  set_operation:function(ope, soumettre){
-    $('form#form_edit_page_cours input#operation').val(ope);
-    if(soumettre){$('form#form_edit_page_cours').submit()}
-  }
-}
-function set_href_lien_read(o){
-  var href_pref = "page_cours/" + o.value + "/";
-  var href_read = href_pref + "show?in=unan"  ;
-
-  $('a#lien_read_page').attr('href', href_read) ;
-}
-</script>
-<%
 # Formulaire d'édition de la page
 %>
 <%= Unan::titre_h1("Page de cours (édition data)") %>
@@ -71,10 +54,10 @@ function set_href_lien_read(o){
   <%= form.field_text("Handler", 'handler', "") %>
   <%= form.field_description("Choisir ce handler de 200 caractères maximum avec soin, car c'est lui qui sera utilisé pour retrouver la page à l'aide de l'idiome `program.page_cours(&lt;handler&gt;)`. Il doit être unique, mais ce sera vérifié si c'est une création de page.") %>
   <%= form.field_textarea("Description", 'description', "") %>
-  <%= form.field_text("Path", 'path', "") %>
+  <%= form.field_text("Path", 'path', "", {text_before:"".in_div(id:'folder_page_path')}) %>
   <%= form.field_description("Ce path <strong>avec extension</strong> est relatif et dépend du type (ci-dessous). Pour le moment, toutes les pages de cours doivent se trouver dans le dossier général `./data/unan/pages_cours/`.<br /><strong>Le full-path sera calculé avec `./data/unan/pages_cours/&lt;type&gt;/&lt;path&gt;`.</strong>.<br />Noter que ce fichier doit exister, pour pouvoir enregistrer la page, sauf si la case “Créer le fichier” est cochée.") %>
   <%= form.field_checkbox("Créer le fichier s'il n'existe pas", 'cb_create_file', nil) %>
-  <%= form.field_select("Type", 'type', "", {values:types_page}) %>
+  <%= form.field_select("Type", 'type', "", {values:types_page, onchange:"$.proxy(PageCours,'set_folder_path')()"}) %>
   <%= form.field_description("Le type détermine le dossier dans lequel se trouve le fichier, dans `./data/unan/pages_cours/` : pour `Programme Un An Un Script`, dans le dossier 'unan', pour `Livre narration` dans le dossier 'narration' et pour `Collection Narration` dans le dossier 'cnarration'. Cf. la description du champ path pour voir comment est calculé le fullpath du fichier.") %>
   <%= form.submit_button "Enregistrer", {onclick: "$('form#form_edit_page_cours input#operation').val('save_page_cours')"} %>
 </form>

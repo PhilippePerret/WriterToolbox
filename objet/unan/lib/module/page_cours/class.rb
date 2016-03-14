@@ -3,9 +3,14 @@ class Unan
 class Program
 class PageCours
 
+  # Le type de page
+  # Maintenant il n'y a plus que deux types : soit c'est une page
+  # qui appartient au programme UN AN UN SCRIPT (donc qui ne peut
+  # pas être une page de cours) soit c'est une page de la collection
+  # narration qui reprend toutes les anciennes pages du livre
+  # Narration
   TYPES_PAGE = {
-    program:      {hname:"Programme UN.AN.UN.SCRIPT"},
-    narration:    {hname:"Livre Narration"},
+    program:      {hname:"Programme UN AN UN SCRIPT"},
     cnarration:   {hname:"Collection Narration"}
   }
 
