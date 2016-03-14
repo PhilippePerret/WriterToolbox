@@ -48,14 +48,21 @@ module ModuleFeminines
     end
   end
 
+
+  # 1 LETTRE
   def f_e # censé/censée
     @f_e ||= (feminine? ? 'e' : '')
   end
+
+  # 2 LETTRES
   def f_ne # icarien/icarienne
     @f_ne ||= (feminine? ? 'ne' : '')
   end
   def f_te # cet/cette
     @f_te ||= (feminine? ? 'te' : '')
+  end
+  def f_ve # attent<f> / attent(ve) et veu<f> / veu<ve>
+    @f_ve ||= (feminine? ? 've' : 'f')
   end
 
   def f_la # le/la
@@ -65,6 +72,7 @@ module ModuleFeminines
     @f_La ||= f_la.capitalize
   end
 
+  # 4 LETTRES
   def f_iere # prem[ier] / prem[ière]
     @f_iere ||= (feminine? ? 'ière' : 'ier')
   end
@@ -78,5 +86,6 @@ module ModuleFeminines
   def f_trice # lec<teur> / lec<trice>
     @f_rice ||= (feminine? ? 'teur' : 'trice')
   end
+
 end
 include ModuleFeminines

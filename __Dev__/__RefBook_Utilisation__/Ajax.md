@@ -31,6 +31,10 @@ Donc :
       onreturn: $.proxy(la méthode pour poursuivre)
       })
 
+Noter que pour le moment l'url ne fonctionne pas avec les sous-objets. Donc on ne peut pas faire :
+
+    url: "livre/folders?in=cnarration"
+
 <a name='proprietesdefinissables'></a>
 
 ## Propriétés définissables

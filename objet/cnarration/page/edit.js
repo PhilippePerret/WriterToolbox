@@ -30,9 +30,62 @@ $.extend(window.Cnarration,{
     return true
   },
 
+  // Méthode appelée lorsqu'un livre est choisi
+  // On relève la hiérarchie de base des dossiers pour la proposer
+  on_choose_book:function(){
+    $('input#epage_handler').val('') ;
+    this.set_dossier_page();
+    this.set_hierarchie_dossiers('/');
+  },
+
+  // Méthode appelée lorsqu'un livre est choisi par exemple et
+  // que l'on règle le path de base des fichiers
   set_dossier_page:function(book_id){
     var dossier = $('select#epage_livre_id').find('option[value="'+book_id+'"]').attr("data-folder");
     $('span#dossier_page').html(dossier);
+  },
+
+  // Permet de régler le menu des sous-dossiers du livre
+  // choisi en les prenant sur l'ordinateur
+  set_hierarchie_dossiers:function(from, rajax){
+    if(undefined == rajax){
+      Ajax.send({
+        url: "cnarration/folders",
+        from: from,
+        book_id: this.livre_id,
+        onreturn: $.proxy(Cnarration, 'set_hierarchie_dossiers', from)
+      })
+    }else{
+      // Retour de la relève
+      var hier = rajax.hierarchie ;
+      if(hier == "") hier = [];
+      else{hier = hier.split('::')}
+      // +hier+ est maintenant la liste des noms de dossiers
+      // On va peupler le menu avec cette liste de dossier pour
+      // pouvoir en choisir une
+      var menu = $('select#noms_dossiers');
+      menu.html('<option value="">Choisir le dossier…</option>');
+      $(hier).each(function(i, e){
+        menu.append("<option value='"+e+"'>"+e+'</option>')
+      })
+    }
+  },
+
+  // Méthode appelée quand on choisit un dossier dans la liste
+  // des noms de dossiers actuels
+  // Cela produit l'écriture du dossier au bout de la path
+  // du fichier et ça demande le chargement de la liste des
+  // dossiers de ce dossier, if any
+  on_choose_folder_name:function(){
+    var folder_name = $('select#noms_dossiers').val();
+    var handler_field = $('input#epage_handler') ;
+    var handler = handler_field.val().trim() ;
+    handler += folder_name  + "/";
+    handler_field.val(handler) ;
+    handler_field.focus();
+    // Et on actualise le menu du dossier avec les nouvelles
+    // valeurs
+    this.set_hierarchie_dossiers("/" + handler);
   },
 
   // Méthode appelée quand on change le type de la page pour en

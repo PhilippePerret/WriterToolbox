@@ -57,19 +57,19 @@ options_books << Cnarration::LIVRES.collect do |bid, bdata|
   is_selected = bid.to_i == param(:epage)[:livre_id].to_i
   bdata[:hname].in_option(value:bid, selected:is_selected, 'data-folder'=>bdata[:folder])
 end.join
-menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id", onchange:"$.proxy(Cnarration,'set_dossier_page', this.value)()")
+menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id", onchange:"$.proxy(Cnarration,'on_choose_book', this.value)()")
 
 # OUTILS POUR LE MENU DES LIVRES
 # (pour voir la table des matières, etc.)
-boutons_books = "tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_book_tdm', this)()", target:'_blank') +
-"Edit Tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_edit_book_tdm', this)()", target:'_blank')
+boutons_books = ("tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_book_tdm', this)()", target:'_blank') +
+"Edit Tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_edit_book_tdm', this)()", target:'_blank')).in_span(class:'btns')
 
 %>
 <form id="form_edit_page" class="dim2080" action="page/edit?in=cnarration" method="POST" accept-charset="utf8">
   <%= 'edit_page'.in_hidden(name:'operation', id:'operation') %>
 
   <%# ID de la page %>
-  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit} #{bouton_show} #{bouton_init}"}) %>
+  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit}#{bouton_show}#{bouton_init}".in_span(class:'btns')}) %>
 
   <%# LIVRE %>
   <%= form.field_raw("Livre", 'livre_id', nil, {field: menu_books, text_after: boutons_books}) %>
@@ -81,8 +81,8 @@ boutons_books = "tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to
   <%= form.field_text("Titre", 'titre') %>
 
   <%# HANDLER %>
-  <%= form.field_text("Path fichier", 'handler', nil, {class:'milong', text_before:"./data/unan/pages_cours/cnarration/<span id='dossier_page'>structure</span>/".in_span(id:"dossier_page_cours", class:'tiny')}) %>
-  <%= form.field_description("Chemin relatif du fichier à partir du dossier `./data/unan/pages_cours/cnarration/&lt;dossier livre&gt;/affixe_fichier_sans_tm`.<br />Noter que c'est un fichier Markdown qui doit être produit et qu'on n'indique pas ici son extension, qui sera automatiquement ajoutée.") %>
+  <%= form.field_text("Path fichier", 'handler', nil, {class:'milong', text_before:"./data/unan/pages_cours/cnarration/<span id='dossier_page'>structure</span>/".in_span(id:"dossier_page_cours", class:'tiny') + "<select id='noms_dossiers' class='tiny' onchange=\"$.proxy(Cnarration, 'on_choose_folder_name')()\"><option value=''>Choisir le dossier…</option></select>"}) %>
+  <%= form.field_description("Chemin relatif du fichier à partir du dossier inscrit ci-dessus. Noter que c'est <strong>un fichier Markdown</strong> qui doit être produit et qu'<strong>on n'indique pas son extension</strong> ici, qui sera automatiquement ajoutée.") %>
 
   <%= form.field_checkbox("Créer le fichier s'il n'existe pas déjà.", 'create_file') %>
 
