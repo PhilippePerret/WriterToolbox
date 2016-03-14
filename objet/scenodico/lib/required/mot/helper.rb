@@ -3,7 +3,7 @@ class Scenodico
 class Mot
 
   def as_lien
-    @as_lien ||= mot.in_a(href:"scenodico/#{id}/show", class:'mot', target:'_new')
+    @as_lien ||= mot.in_a(href:"scenodico/#{id}/show", class:'mot', target:'_blank')
   end
 
   def formate str

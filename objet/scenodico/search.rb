@@ -49,7 +49,7 @@ class Scenodico
     # définition, et on met les mots cherchés en exergue.
     def mots_trouved_as_ul
       @found.collect do |mid, hmot|
-        c = hmot[:mot].in_a(href:"scenodico/#{mid}/show", target:'_new').in_div(class:'mot')
+        c = hmot[:mot].in_a(href:"scenodico/#{mid}/show", target:'_blank').in_div(class:'mot')
         if in_definition? && hmot[:definition].match(/#{text_searched}/i)
           c << ( hmot[:definition].formate_balises_propres.gsub(/(#{text_searched})/i, '<span class="found">\1</span>') ).in_div(class:'definition')
         end

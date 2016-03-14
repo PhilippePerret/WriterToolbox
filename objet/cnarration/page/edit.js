@@ -51,6 +51,23 @@ $.extend(window.Cnarration,{
     })
   },
 
+  // Méthode appelée quand on clique sur le bouton "Tdm" à côté
+  // du menu du livre, pour obtenir la table des matières du
+  // livre dans une nouvelle fenêtre.
+  got_to_book_tdm:function(lien){
+    var href = "livre/"+this.livre_id+"/tdm?in=cnarration" ;
+    $(lien).attr('href', href);
+    return true
+  },
+  // Méthode appelée quand on clique sur le bouton "Edit Tdm" à
+  // côté du menu du livre pour obtenir la table des matières
+  // du livre en édition dans une nouvelle fenêtre.
+  got_to_edit_book_tdm:function(lien){
+    var href = "livre/"+this.livre_id+"/edit?in=cnarration" ;
+    $(lien).attr('href', href);
+    return true
+  },
+
   reset_all:function(){
     var listes = {};
     listes.val = [
@@ -89,6 +106,9 @@ Object.defineProperties(window.Cnarration,{
   },
   'page_id':{
     get:function(){ return this.field_id.val() }
+  },
+  'livre_id':{
+    get:function(){return $('select#epage_livre_id').val()}
   }
 
 })

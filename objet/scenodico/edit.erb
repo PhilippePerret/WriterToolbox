@@ -22,7 +22,7 @@ end
 </p>
 <%
 bouton_edit = "Édit".in_a(class:'btn tiny', onclick:"$.proxy(Scenodico,'edit_mot_by_id')()")
-bouton_show = "Show".in_a(class:'btn tiny', href:"", onclick:"$.proxy(Scenodico,'for_show', this)();return true", target:'_new')
+bouton_show = "Show".in_a(class:'btn tiny', href:"", onclick:"$.proxy(Scenodico,'for_show', this)();return true", target:'_blank')
 bouton_new = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Scenodico, 'reset_form')()")
 
 onclick = "$.proxy(Scendocio,'on_choose_categorie', this.value)()"
@@ -51,7 +51,7 @@ def liste_relatifs type # :relatifs, :synonymes, :contraires
   return "" if rels.nil?
   liste_rels = rels.split(' ').collect do |mid|
     imot = Scenodico::get(mid.to_i)
-    "#{imot.mot} [#{mid}]".in_a(href:"scenodico/#{mid}/show", target:'_new', class:'small')
+    "#{imot.mot} [#{mid}]".in_a(href:"scenodico/#{mid}/show", target:'_blank', class:'small')
   end.join(' – ')
   form.field_raw("", '', nil, {field: "#{liste_rels}"})
 end

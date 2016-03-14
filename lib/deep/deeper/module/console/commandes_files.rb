@@ -7,7 +7,7 @@ class Console
     if File.exist? path
       # param(:pmd => path)
       # redirect_to 'admin/show_page_md'
-      sub_log "-> Cliquer ic pour voir le fichier".in_a(target:'_new', href:"admin/show_page_md?pmd=#{CGI::escape path}")
+      sub_log "-> Cliquer ic pour voir le fichier".in_a(target:'_blank', href:"admin/show_page_md?pmd=#{CGI::escape path}")
       "OK"
     else
       error "Le fichier `#{path}` est introuvable. Merci de vérifier le path."

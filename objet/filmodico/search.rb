@@ -58,7 +58,7 @@ class Filmodico
       @found = unless hfilms.nil? || hfilms.empty?
         "Nombre de films trouvés : <strong>#{hfilms.count}</strong>" +
         hfilms.collect do |hfilm|
-          hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_new').in_li
+          hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_blank').in_li
         end.join.in_ul
       else
         "Aucun film trouvé répondant à vos critères de recherche."

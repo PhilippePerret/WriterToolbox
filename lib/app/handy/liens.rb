@@ -60,7 +60,7 @@ class Lien
   # de ne pouvoir fournir que l'ID
   def mot mot_id, mot_str, options = nil
     options ||= Hash::new
-    options.merge!( class:'mot', target:'_new' )
+    options.merge!( class:'mot', target:'_blank' )
     build("scenodico/#{mot_id}/show", mot_str, options)
   end
 

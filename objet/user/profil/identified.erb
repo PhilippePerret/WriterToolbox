@@ -20,10 +20,10 @@ def mark_unanunscript
   "#{NON} #{lien.subscribe_unanunscript('(S’inscrire)', class:'small')}"
 end
 def info_unan
-  @info_unan ||= lien.unanunscript(picto_info, target:'_new', class:'fright')
+  @info_unan ||= lien.unanunscript(picto_info, target:'_blank', class:'fright')
 end
 def mark_forum
-  @mark_forum ||= lien.forum(picto_info, target:'_new', class:'fright')
+  @mark_forum ||= lien.forum(picto_info, target:'_blank', class:'fright')
 end
 def why_subscribe
   @why_subscribe ||= picto_info.in_a(href: "aide/why_subscribe", class:'fright')

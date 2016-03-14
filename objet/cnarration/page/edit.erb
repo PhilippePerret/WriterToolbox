@@ -51,12 +51,18 @@ values_niveau_developpement_select = [
   ['9', "Achevée"]
 ]
 
+# MENU DES LIVRES
 options_books = "<option value='0'>Aucun livre</option>"
 options_books << Cnarration::LIVRES.collect do |bid, bdata|
   is_selected = bid.to_i == param(:epage)[:livre_id].to_i
   bdata[:hname].in_option(value:bid, selected:is_selected, 'data-folder'=>bdata[:folder])
 end.join
 menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id", onchange:"$.proxy(Cnarration,'set_dossier_page', this.value)()")
+
+# OUTILS POUR LE MENU DES LIVRES
+# (pour voir la table des matières, etc.)
+boutons_books = "tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_book_tdm', this)()", target:'_blank') +
+"Edit Tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_edit_book_tdm', this)()", target:'_blank')
 
 %>
 <form id="form_edit_page" class="dim2080" action="page/edit?in=cnarration" method="POST" accept-charset="utf8">
@@ -66,7 +72,7 @@ menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id"
   <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit} #{bouton_show} #{bouton_init}"}) %>
 
   <%# LIVRE %>
-  <%= form.field_raw("Livre", 'livre_id', nil, {field: menu_books}) %>
+  <%= form.field_raw("Livre", 'livre_id', nil, {field: menu_books, text_after: boutons_books}) %>
 
   <%# TYPE (bit 1 des options) %>
   <%= form.field_select("Type", 'type', nil, {values: values_type_select, onchange:"$.proxy(Cnarration,'on_change_type_page', this.value)()" }) %>

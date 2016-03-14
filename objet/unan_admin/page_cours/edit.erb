@@ -25,7 +25,7 @@ else
 end
 # Formulaire pour lire la page
 lien_read_page = if page_id
-  "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_new', href:"page_cours/#{page_id}/show?in=unan")
+  "Lire la page".in_a(class:'small btn', id:"lien_read_page", target:'_blank', href:"page_cours/#{page_id}/show?in=unan")
 else
   "- no page_id -"
 end
