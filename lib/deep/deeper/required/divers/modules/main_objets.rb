@@ -6,6 +6,8 @@
 # La classe appelante doit IMPÉRATIVEMENT :
 #   * définir `folder`, le dossier de l'objet dans './objet'
 #     => {SuperFile}
+#     sauf si la classe minorisée a le même nom que le dossier
+#     p.e. class Cnarration => dossier './objet/cnarration/'
 #
 module MethodesMainObjets
 
@@ -55,4 +57,9 @@ module MethodesMainObjets
   def folder_lib
     @folder_lib ||= (folder + 'lib')
   end
+
+  def folder
+    @folder ||= site.folder_objet + "#{name.to_s.downcase}"
+  end
+
 end

@@ -50,6 +50,23 @@ ul, ol
   &.bordure
     list-style      : none
     border-left     : 1px solid 
+
+// Tout élément de class .hover réagit au passage de la
+// souris en mettant son opacité à 1 et en inversant sa
+// couleur de fond et de police, comme dans une liste
+.hover
+  &:hover
+    opacity               : 1
+    background-color      : #578088 !important
+    color                 : white !important
+    a
+      color                 : white !important
+// La version grise
+.hover2
+  &:hover
+    opacity               : 1
+    background-color      : #9E9E9E !important
+    color                 : white !important
     
 // Noter que les div.row sont définis en même temps que les 
 // formulaires dans form.sass

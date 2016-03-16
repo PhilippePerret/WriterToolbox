@@ -18,9 +18,9 @@ def schema_table_cnarration_pages
 
     # = Description de la page =
     description:  {type:"TEXT"},
-    
+
     # = Options =
-    # Cf. ./
+    # Cf. ./objet/cnarration/lib/required/page/options.rb
     options:  {type:"VARCHAR(32)"},
 
     created_at:{type:"INTEGER(10)", constraint:"NOT NULL"},
