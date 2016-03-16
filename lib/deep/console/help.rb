@@ -35,6 +35,25 @@ class Console
 <h4 onclick="$('dl#code_lines').toggle()">Lignes de codes utilisables</h4>
 <dl class='small' id="code_lines" style="display:none">
 
+  <dt>`goto &lt;endroit&gt;`</dt>
+  <dt>`aller&lt;endroit&gt;`</dt>
+  <dd>Pour se rendre rapidement dans une section de la boite</dd>
+  <dd>Cf. le fichier ./lib/deep/console/sub_methods/goto_methods.rb pour voir toutes les destinations possibles ou en ajouter d'autres.</dd>
+  <dd>
+    <ul>
+      <li>filmo|filmodico : Le filmodico</li>
+      <li>nouveau_film : Pour créer un nouveau film</li>
+      <li>sceno|scenodico : rejoindre le scénodico</li>
+      <li>nouveau_mot : Pour créer un nouveau mot (ou l'édition par son ID)</li>
+      <li>narration : Rejoindre l'accueil de la collection</li>
+      <li>new_page_narration : Création d'une nouvelle page de la collection</li>
+      <li>livres_narration   : Liste des livres</li>
+      <li>forum : Rejoindre le forum</li>
+      <li>unanunscript : Rejoindre la section du programme UN AN UN SCRIPT</li>
+    </ul>
+  </dd>
+
+
   <dt>`read debug` ou `show debug`</dt>
   <dd>Pour lire le fichier debug.log.</dd>
 
@@ -147,6 +166,23 @@ class Console
 
   <dt>`get \\<br />(work|pday|page_cours|exemple|quiz) \\<br /> of \\<br />(work|pday|page_cours|exemple|quiz) &lt;id&gt;`</dt>
   <dd>Donne la chose 1 de la chose 2 d'identifiant donné, c'est-à-dire tous les liens permettant de la gérer.</dd>
+
+  <dt>`Unan nouveau pday` ou `Unan new pday`</dt>
+  <dd>Conduit au formulaire pour créer un nouveau P-Day</dd>
+
+  <dt>`Unan nouveau work` ou `Unan new work`</dt>
+  <dd>Conduit au formulaire pour créer un nouveau travail (Word)</dd>
+
+  <dt>`unan nouvelle page` ou `Unan new page`</dt>
+  <dd>Conduit au formulaire pour créer une nouvelle page de cours</dd>
+
+  <dt>`unan new qcm` ou `Unan nouveau quiz`</dt>
+  <dd>Conduit au formulaire pour construire un nouveau Quiz</dd>
+
+  <dt>`unan nouvelle question` ou `Unan new question`</dt>
+  <dd>Conduit au formulaire pour créer une nouvelle question</dd>
+
+  <dt>`Unan new exemple` ou `Unan nouveau exemple`</dt>
 
   <dt>`Unan points`</dt>
   <dd>Affiche l'évolution des points sur l'année. Doit permettre de régler les différents grades et messages à obtenir.</dd>

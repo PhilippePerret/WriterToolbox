@@ -43,7 +43,9 @@ class Console
       when NilClass then "-- aucun retour --"
       else res.inspect
       end
-      add_code "##{'-'*50}\n# => " + res + "\n##{'-'*50}"
+      unless res == ""
+        add_code "##{'-'*50}\n# => " + res + "\n##{'-'*50}"
+      end
 
     end
 
@@ -61,6 +63,10 @@ class Console
   def execute_as_is line
     case line.downcase
 
+    # Aide générale
+    when 'help', 'aide'
+      sub_log help
+      "" # Pour ne rien renvoyer
     # ---------------------------------------------------------------------
     # Toutes les aides directes
     when 'aide analyse'
@@ -248,6 +254,8 @@ class Console
     end
 
     case sentence
+    when 'show', 'goto'
+      ( goto_section last_word )
     when 'balise film'
       ( give_balise_of_filmodico last_word )
     when 'balise mot'
@@ -256,7 +264,9 @@ class Console
       ( visualise_document_kramdown last_word )
     when 'affiche table'
       ( affiche_table_of_database last_word )
-    when 'Unan init program for'
+    when 'unan new', 'unan nouveau', 'unan nouvelle'
+      ( goto_section "unan_new_#{last_word}" )
+    when 'unan init program for'
       ( init_program_1an1script_for last_word )
     when 'detruire programmes de'
       ( detruire_programmes_de last_word )
