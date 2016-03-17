@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------
+#     AIDE PROPRE À L'APPLICATION
+# ---------------------------------------------------------------------
+
+
+# SCÉNODICO
+-
+  command:        `goto|aller sceno|scenodico`
+  description:    Permet de rejoindre le scénodico.
+  type:           GOTO
+-
+  command:        `goto|aller dico|dictionnaire`
+  description:    Permet de rejoindre directement la liste des mots.
+  type:           GOTO

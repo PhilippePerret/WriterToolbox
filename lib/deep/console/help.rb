@@ -1,4 +1,5 @@
 # encoding: UTF-8
+raise_unless_admin
 raise "Section interdite" unless user.admin?
 
 class SiteHtml
@@ -10,40 +11,46 @@ class Console
   # À REMPLIR À MESURE QUE DES MÉTHODES S'AJOUTENT
   #
   def help
-    <<-HTML
-<h4 onclick="$('dl#generalites').toggle()">Généralités</h4>
-<dl id="generalites" class='small' style="display:none">
+    require 'yaml'
+    # Le code total construit
+    c = String::new
+    # Pour incrémenter les parties fermées
+    iclosedpart = 1
+    # On traite l'aide commune à tous les RestSite
+    hdata = YAML::load_file(_("help.yml"))
+    hdata.each do |haide|
+      case haide['type']
+      when 'TITLE'
+        c << "</dl>" if iclosedpart > 1
+        iclosedpart += 1
+        dl_id = "description_list-#{iclosedpart}"
+        c << "<h4 onclick=\"$('dl##{dl_id}').toggle()\">#{haide['description']}</h4>"
+        c << "<dl id=\"#{dl_id}\" class=\"small\" style=\"display:none\">"
+      when 'GOTO'
+      when 'HELP'
+      else
+        c << haide['command'].in_dt
+        c << haide['description'].in_dd
+        c << haide['note'].in_dd(class:'note')      unless haide['note'].nil?
+        c << haide['implement'].in_dd(class:'imp')  unless haide['implement'].nil?
+      end
+    end
+    c << "</dl>" if iclosedpart > 1
 
-  <dt>Fonctionnement général</dt>
-  <dd>Taper une ligne de code puis presser “Entrée” comme dans une console pour exécuter le code.</dd>
-  <dd>Le code est exécuté, le résultat est transmis sous la ligne et le curseur se place pour une nouvelle invite.</dd>
-  <dd>Noter qu'à chaque exécution de ligne, <strong>tout le code</strong> sera exécuté dans son intégralité. Donc, afin d'éviter les erreurs et d'alléger la procédure, il est bon de ne garder que ce qui est important.</dd>
+    # debug "Help.yml: #{hdata.inspect}"
+    # On traite l'aide propre à l'application courante
 
-  <dt>Code exécutable</dt>
-  <dd>On peut exécuter n'importe quel code ruby pur, où les lignes spéciales présentées ci-dessous.</dd>
-  <dd>Noter qu'on peut notamment utiliser `site` pour interagir avec le site. Par exemple, le code `site.name` retournera le nom du site.</dd>
+    c + <<-HTML
 
-  <dt>Exécution du pur code Ruby</dt>
-  <dd>Le pur code ruby est interprété tel quel. Par exemple `debug "bonjour le monde !"` écrira "bonjour le monde !" dans le message de débug.</dd>
-  <dd>S'il renvoie un résultat, il sera écrit sous la console.</dd>
-
-  <dt>Traitement des variables</dt>
-  <dd>Pour le moment, on ne peut pas utiliser de variable. Ce qui signifie que chaque ligne doit s'employer pour elle-même.</dd>
-  <dd>Les variables devraient être traitées dans un très proche avenir.</dd>
-</dl>
-
-<h4 onclick="$('dl#code_lines').toggle()">Lignes de codes utilisables</h4>
 <dl class='small' id="code_lines" style="display:none">
 
-  <dt>`goto &lt;endroit&gt;`</dt>
-  <dt>`aller&lt;endroit&gt;`</dt>
-  <dd>Pour se rendre rapidement dans une section de la boite</dd>
-  <dd>Cf. le fichier ./lib/deep/console/sub_methods/goto_methods.rb pour voir toutes les destinations possibles ou en ajouter d'autres.</dd>
+  <dd></dd>
   <dd>
     <ul>
       <li>filmo|filmodico : Le filmodico</li>
       <li>nouveau_film : Pour créer un nouveau film</li>
       <li>sceno|scenodico : rejoindre le scénodico</li>
+      <li>dico|dictionnaire : Conduit directement à la liste des mots</li>
       <li>nouveau_mot : Pour créer un nouveau mot (ou l'édition par son ID)</li>
       <li>narration : Rejoindre l'accueil de la collection</li>
       <li>new_page_narration : Création d'une nouvelle page de la collection</li>
@@ -97,7 +104,10 @@ class Console
   <dd>La recherche se fait par ordre de précédence sur 1/ le film-id, 2/ le titre original et 3/ le titre français.</dd>
   <dt>`balise mot &lt;mot ou portion de mot&gt;`</dt>
   <dd>Retourne la balise MOT pour le mot demandé</dd>
-  <dd></dd>
+  <dt>`goto sceno` ou  `aller scenodico`</dt>
+  <dd>Conduit au scénodico</dd>
+  <dt>`goto dico` ou `aller dictionnaire`</dt>
+  <dd>Conduit directement à la liste des mots.</dd>
 </dl>
 
 <!-- FILMS ET ANALYSES -->

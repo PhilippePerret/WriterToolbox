@@ -5,49 +5,97 @@ class SiteHtml
 class Admin
 class Console
 
+  # = Sauf en mode "pur ruby" =
+  # Permet de créer une méthode d'instance qui va retourner
+  # la valeur d'une variable définie au cours du code.
+  # Par exemple, si on a :
+  #   > ma_variable = get :id of {pseudo: "Phil"} in :icariens
+  #   > debug "ma_variable vaut #{ma_variable}"
+  # puisque la seconde ligne va être interprétée en ruby (le premier mot
+  # n'est pas connu par le DSL qu'on utilise ici), il faut créer une
+  # méthode `ma_variable` qui va retourner la valeur définie dans la
+  # première ligne.
+  def self.create_method_variable var_name, var_return
+    define_method var_name do
+      var_return
+    end
+  end
+
+
   def execute_code
+
+    all_results = Array::new
 
     lines.each do |line|
 
-      # On marque la ligne pour pouvoir savoir ce qui a produit
-      # le résultat
-      log line, :code
+      next if line.strip.start_with?('#')
 
       # On ajoute toujours la ligne au code qui sera ré-affiché dans
       # la console
       add_code line
 
-      #
-      # DÈS QU'UNE LIGNE EST AJOUTÉE, IL FAUT RENSEIGNER
-      # LE FICHIER help.rb DE CONSOLE
-      #
-      res = false
+      split_line = line.split(' ')
+      second_word = split_line[1]
 
-      res ||= ( execute_as_regular_sentence line )
-
-      # On exécute la ligne telle quelle
-      res ||= ( execute_as_is line )
-
-      # On exécute la ligne de type dernier mot variable
-      res ||= ( execute_as_last_is_variable line )
-
-      # ON exécute la ligne de type get <foo> of <something> <id>
-      res ||= ( execute_as_get_of_line line )
-
-      # En dernier recours, on exécute la ligne comme du code
-      # ruby
-      res ||= execute_as_ruby( line )
-
-      res = case res
-      when String   then res
-      when NilClass then "-- aucun retour --"
-      else res.inspect
-      end
-      unless res == ""
-        add_code "##{'-'*50}\n# => " + res + "\n##{'-'*50}"
+      if second_word == "="
+        # => La ligne est une ligne d'affectation, il faut mettre
+        # le résultat du membre de droite dans la variable membre
+        # de gauche.
+        variable_name = split_line[0]
+        # result_line[:variable_name] = variable_name
+        line = split_line[2..-1].join(' ')
+      else
+        variable_name = nil
       end
 
+      resultat_eval = eval_line(line)
+
+      if variable_name.nil?
+        add_code("# => #{resultat_eval}")
+      else
+        # Affectation à une variable
+        self.class::create_method_variable variable_name, resultat_eval
+        add_code( "# => #{variable_name} = #{resultat_eval.inspect}"  )
+      end
+
+      all_results << resultat_eval
     end
+
+    return all_results.join("\n") # inscription dans console
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthode d'analyse de chaque ligne
+  # ---------------------------------------------------------------------
+  def eval_line line
+    # On marque la ligne pour pouvoir savoir ce qui a produit
+    # le résultat
+    log line, :code
+
+    #
+    # DÈS QU'UNE LIGNE EST AJOUTÉE, IL FAUT RENSEIGNER
+    # LE FICHIER help.rb DE CONSOLE
+    #
+    res = false
+
+    res ||= ( execute_as_regular_sentence line )
+
+    # On exécute la ligne telle quelle
+    res ||= ( execute_as_is line )
+
+    # On exécute la ligne de type dernier mot variable
+    res ||= ( execute_as_last_is_variable line )
+
+    # ON exécute la ligne de type get <foo> of <something> <id>
+    res ||= ( execute_as_get_of_line line )
+
+    # En dernier recours, on exécute la ligne comme du code
+    # ruby
+    res ||= execute_as_ruby( line )
+
+    # On doit retourner le résultat tel quel car il peut
+    # être affecté à une variable.
+    return res
 
   rescue Exception => e
     error e.message
