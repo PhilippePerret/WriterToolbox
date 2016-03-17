@@ -59,6 +59,11 @@ narration:
   -
     command:        goto|aller livres_narration
     description:    Rejoindre la section présentant la liste des livres
+  -
+    command:        goto|aller livre_&lt;livre-désignant&gt;
+    description:    Pour rejoindre directement la table des matières d'un livre.
+    note: |
+      Les valeurs du désignant peuvent être 'structure', 'personnage', 'dynamique', 'thematique', 'documents', 'travail_auteur', 'procedes', 'theorie', 'dialogue' et 'analyse'.
 
 # ANALYSE DE FILM
 analyse:

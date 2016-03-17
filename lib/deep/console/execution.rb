@@ -295,7 +295,7 @@ class Console
     case sentence
     when 'help', 'aide'
       ( affiche_aide_for last_word )
-    when 'show', 'goto'
+    when 'show', 'goto', 'aller'
       ( goto_section last_word )
     when 'balise film'
       ( give_balise_of_filmodico last_word )

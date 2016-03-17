@@ -18,7 +18,8 @@ class Console
     when "analyses", "analyse"      then 'analyse/home'
     when "narration", "cnarration"  then 'cnarration/home'
     when 'new_page_narration'       then 'page/edit?in=cnarration'
-    when 'livres_narration'         then 'livre/list?in=cnarration'
+    # Pour les livres, cf. ci-dessous, ils sont tous traités
+    # en même temps
     when 'forum'                    then 'forum/home'
     when 'unanunscript', '1a1s', 'unan'     then 'unan/home'
     when 'unan_admin', 'admin_unan' then 'unan_admin/dashboard'
@@ -31,8 +32,19 @@ class Console
     when 'unan_new_question'                    then 'question/edit?in=unan_admin/quiz'
     when 'unan_new_exemple'                     then 'exemple/edit?in=unan_admin'
     else
-      error "La section `#{section_name}` est inconnue où je ne sais pas comment m'y rendre."
-      nil
+      if section_name.start_with?('livre_')
+        book_ref = section_name[6..-1].to_sym
+        require './objet/cnarration/lib/required/constants.rb'
+        if Cnarration::SYM2ID.has_key?( book_ref )
+          book_id = Cnarration::SYM2ID[book_ref]
+          "livre/#{book_id}/tdm?in=cnarration"
+        else
+          error "Le livre de référence `#{book_ref}` est inconnu dans './objet/cnarration/lib/required/constants.rb'."
+        end
+      else
+        error "La section `#{section_name}` est inconnue où je ne sais pas comment m'y rendre."
+        nil
+      end
     end
     redirect_to redirection unless redirection.nil?
     ""

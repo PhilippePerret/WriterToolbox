@@ -1,4 +1,9 @@
 # encoding: UTF-8
+=begin
+Pour ne télécharger que ce fichier, sans charger tout narration :
+
+  require './objet/cnarration/lib/required/constants.rb'
+=end
 
 page.title = "Narration"
 
@@ -19,12 +24,14 @@ class Cnarration
   SYM2ID = {
     structure:          1,
     personnages:        2,
-    dynamiques:         3,
+    dynamique:          3,
     thematique:         4,
     documents:          5,
     travail_auteur:     6,
     procedes:           7,
     concepts_narratifs: 8,
+    concepts:           8,
+    theorie:            8,
     dialogue:           9,
     analyse:            10
   }
