@@ -2,177 +2,181 @@
 #     AIDE PROPRE À L'APPLICATION
 # ---------------------------------------------------------------------
 
-
 # SCÉNODICO
--
-  type:           TITLE
-  description:    Scénodico
--
-  command:        "balise mot &lt;mot ou portion de mot&gt;"
-  description:    Retourne la balise MOT pour le mot demandé.
-  note:           Si le mot commence par un accent ou un caractère diacritique, il faut supprimer cette lettre pour pouvoir trouver le mot.
--
-  command:        goto|aller sceno|scenodico
-  description:    Permet de rejoindre le scénodico.
-  type:           GOTO
--
-  command:        goto|aller dico|dictionnaire
-  description:    Permet de rejoindre directement la liste des mots.
-  type:           GOTO
+scenodico:
+  -
+    type:           TITLE
+    description:    Scénodico
+  -
+    command:        "balise mot &lt;mot ou portion de mot&gt;"
+    description:    Retourne la balise MOT pour le mot demandé.
+    note:           Si le mot commence par un accent ou un caractère diacritique, il faut supprimer cette lettre pour pouvoir trouver le mot.
+  -
+    command:        goto|aller sceno|scenodico
+    description:    Permet de rejoindre le scénodico.
+    type:           GOTO
+  -
+    command:        goto|aller dico|dictionnaire
+    description:    Permet de rejoindre directement la liste des mots.
+    type:           GOTO
 
--
-  command:        goto|aller nouveau_mot
-  description:    Rejoint le formulaire pour créer un nouveau mot du scénodico.
+  -
+    command:        goto|aller nouveau_mot
+    description:    Rejoint le formulaire pour créer un nouveau mot du scénodico.
 
 # FILMODICO
--
-  type:           TITLE
-  description:    Filmodico
--
-  command:        balise film &lt;titre ou portion de titre&gt;
-  description:    Retourne la balise FILM pour le film demandé, ou les balises si plusieurs films correspondent à la demande.
-  note:           "Attention : Si le titre du film commence par un accent ou un diacritique, il FAUT ne pas mettre cette lettre."
--
-  command:        goto|aller filmo|filmodico
-  description:    Permet de rejoindre l'accueil du filmodico
+filmodico:
+  -
+    type:           TITLE
+    description:    Filmodico
+  -
+    command:        balise film &lt;titre ou portion de titre&gt;
+    description:    Retourne la balise FILM pour le film demandé, ou les balises si plusieurs films correspondent à la demande.
+    note:           "Attention : Si le titre du film commence par un accent ou un diacritique, il FAUT ne pas mettre cette lettre."
+  -
+    command:        goto|aller filmo|filmodico
+    description:    Permet de rejoindre l'accueil du filmodico
 
--
-  command:        goto|aller nouveau_film
-  description:    Rejoint directement le formulaire de création d'un nouveau film
--
-  command:        list filmodico
-  description:    Affiche la liste des films du Filmodico, c'est-à-dire le contenu de la table.
+  -
+    command:        goto|aller nouveau_film
+    description:    Rejoint directement le formulaire de création d'un nouveau film
+  -
+    command:        list filmodico
+    description:    Affiche la liste des films du Filmodico, c'est-à-dire le contenu de la table.
 
 
 # NARRATION
--
-  type:           TITLE
-  description:    Collection Narration
--
-  command:        goto|aller narration
-  description:    Rejoindre l'accueil de la collection Narration
--
-  command:        goto|aller new_page_narration
-  description:    Création d'une nouvelle page de la collection
--
-  command:        goto|aller livres_narration
-  description:    Rejoindre la section présentant la liste des livres
+narration:
+  -
+    type:           TITLE
+    description:    Collection Narration
+  -
+    command:        goto|aller narration
+    description:    Rejoindre l'accueil de la collection Narration
+  -
+    command:        goto|aller new_page_narration
+    description:    Création d'une nouvelle page de la collection
+  -
+    command:        goto|aller livres_narration
+    description:    Rejoindre la section présentant la liste des livres
 
 # ANALYSE DE FILM
--
-  type:           TITLE
-  description:    Les Analyses de film
--
-  command:        aide analyse
-  description:    Affiche l'aide pour les analyses de film.
-  implement:      |
-    Ajouter les nouvelles aides au fichier '/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console_aides/analyse.rb'.
--
-  command:        list films
-  description:    Affiche le contenu de la table analyse.films.
-  note:           Noter qu'il s'agit de la table pour les films analysés, pas la table Filmodico, même si les deux tables sont synchronisés.
+analyse:
+  -
+    type:           TITLE
+    description:    Les Analyses de film
+  -
+    command:        aide analyse
+    description:    Affiche l'aide pour les analyses de film.
+    implement:      |
+      Ajouter les nouvelles aides au fichier '/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console_aides/analyse.rb'.
+  -
+    command:        list films
+    description:    Affiche le contenu de la table analyse.films.
+    note:           Noter qu'il s'agit de la table pour les films analysés, pas la table Filmodico, même si les deux tables sont synchronisés.
 
 # PROGRAMME UN AN UN SCRIPT
--
-  type:           TITLE
-  description:    Le Programme UN AN UN SCRIPT
--
-  command:        goto|aller unanunscript
-  description:    Rejoindre la section du programme UN AN UN SCRIPT
--
-  command:        Unan points
-  description: |
-    Affiche l'évolution des points sur l'année.
-    Doit permettre de régler les différents grades et messages à obtenir.
--
-  command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
-  description:    Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.
-  note:           Cette commande ne peut s'utiliser qu'en OFFLINE.
--
-  command:        set benoit to pday &lt;x p-day (1-start)&gt;
-  description:    |
-    Passe Benoit à ce jour-programme, en réglant tout ce qu'il faut régler.
--
-  command:        set benoit to pday &lt;x p-day&gt; with {&lt;params&gt;}
-  description:    "Même que précédente mais en définissant des paramètres supplémentaires."
-  note: |
-    Ces paramètres peuvent être : <ul>
-      <li>`rythme` : Le rythme choisi, de 1 à 9</li>
-      <li>`just_in_time` : Si true, l'heure sera mise juste au début du jour, ce qui fait que les travaux précédents devraient être en retard.</li>
-    </ul>
--
-  command:        get &lt;chose&gt; of &lt;autre_chose&gt; &lt;id&gt;
-  description: |
-    Obtient la chose (work, page de cours, p-day etc.) de l'autre chose (work, page de cours, p-day, etc.).
-    La chose ou l'autre chose peuvent être : work|pday|page_cours|exemple|quiz
-  note:           "En plus, produit une ligne qui permet d'éditer, d'afficher ou de détruire l'élément voulu."
--
-  command:        "`Unan état des lieux` ou `Unan inventory`"
-  description:    |
-    Procède à un état des lieux du programme UN AN UN SCRIPT, c'est-à-dire consulte les tables pour faire le rapport. C'est en quelques sortes une version simplifiée de l'affichage de toutes les tables.
--
-  command:        Unan repare
-  description:  |
-    Répare le programme UN AN UN SCRIPT. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.
--
-  command:        Unan init program for &lt;ID de user existant&gt;
-  description:    Pour initier un programme pour un utilisateur existant.
-  note:           La commande fait plusieurs vérification, notamment l'existence de l'utilisateur et le fait qu'il ne soit pas déjà en train de suivre un programme (qu'il faudrait arrêter avant de poursuivre).
--
-  command:        unan nouveau|new pday
-  description:    "Conduit au formulaire pour créer un nouveau P-Day."
--
-  command:        unan nouveau|new work
-  description:    "Conduit au formulaire pour créer un nouveau travail (Word)."
--
-  command:        unan nouvelle|new page
-  description:    Conduit au formulaire pour créer une nouvelle page de cours.
--
-  command:        unan nouveau|new qcm
-  description:    Conduit au formulaire pour construire un nouveau Quiz.
--
-  command:        unan nouvelle|new question
-  description:    Conduit au formulaire pour créer une nouvelle question
--
-  command:        unan nouveau|new exemple
-  description:    Conduit au formulaire pour créer un nouvel exemple.
--
-  command:        Autres commandes sur les tables
-  description: |
-    On peut trouver d'autres commandes à appliquer aux tables en utilisant les
-    commandes des tables générales. Ces commandes permettent notamment de
-    modifier si nécessaire le schéma des tables existantes en procédant à un
-    backup préliminaire et en modifiant ensuite les tables.
-  note: |
-    Pour le moment, ces commandes n'ont pas encore été mises en commandes
-    générales, on peut les trouver ci-dessous.
--
-  command:          unan affiche (table &lt;nom_table&gt;)
-  description:      Affiche le contenu de la table.
-  note:             Cf. ci-dessous les noms de table utilisables.
--
-  command:          unan backup data (table &lt;nom_table&gt;)
-  description:      Procède au backup de la table &lt;nom_table&gt;.
--
-  command:          unan retreive data (table &lt;nom_table&gt;)
-  description:      Procède à la récupération des données.
-  note: |
-    Avant d'appeler cette méthode il faut bien entendu définir les modications
-    qui doivent être faites sur les données backupées précédemment.
--
-  command:          Liste des tables connaissant le cycle ci-dessus.
-  description: |
-    <ul>
-      <li>programs</li>
-      <li>projets</li>
-      <li>pages cours # les pages de cours</li>
-      <li>exemples</li>
-      <li>quiz # les questionnaires</li>
-      <li>questions # les questions des questionnaires</li>
-      <li>absolute works # les travaux absolus</li>
-      <li>absolute pdays # les jours absolus</li>
-    </ul>
-  note: |
-    Noter que cette modification affecte les tables courantes mais
-    également toutes les tables des gels, en respectant leurs données
-    propres.
+unan:
+  -
+    type:           TITLE
+    description:    Le Programme UN AN UN SCRIPT
+  -
+    command:        goto|aller unanunscript
+    description:    Rejoindre la section du programme UN AN UN SCRIPT
+  -
+    command:        Unan points
+    description: |
+      Affiche l'évolution des points sur l'année.
+      Doit permettre de régler les différents grades et messages à obtenir.
+  -
+    command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
+    description:    Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.
+    note:           Cette commande ne peut s'utiliser qu'en OFFLINE.
+  -
+    command:        set benoit to pday &lt;x p-day (1-start)&gt;
+    description:    |
+      Passe Benoit à ce jour-programme, en réglant tout ce qu'il faut régler.
+  -
+    command:        set benoit to pday &lt;x p-day&gt; with {&lt;params&gt;}
+    description:    "Même que précédente mais en définissant des paramètres supplémentaires."
+    note: |
+      Ces paramètres peuvent être : <ul>
+        <li>`rythme` : Le rythme choisi, de 1 à 9</li>
+        <li>`just_in_time` : Si true, l'heure sera mise juste au début du jour, ce qui fait que les travaux précédents devraient être en retard.</li>
+      </ul>
+  -
+    command:        get &lt;chose&gt; of &lt;autre_chose&gt; &lt;id&gt;
+    description: |
+      Obtient la chose (work, page de cours, p-day etc.) de l'autre chose (work, page de cours, p-day, etc.).
+      La chose ou l'autre chose peuvent être : work|pday|page_cours|exemple|quiz
+    note:           "En plus, produit une ligne qui permet d'éditer, d'afficher ou de détruire l'élément voulu."
+  -
+    command:        "`Unan état des lieux` ou `Unan inventory`"
+    description:    |
+      Procède à un état des lieux du programme UN AN UN SCRIPT, c'est-à-dire consulte les tables pour faire le rapport. C'est en quelques sortes une version simplifiée de l'affichage de toutes les tables.
+  -
+    command:        Unan repare
+    description:  |
+      Répare le programme UN AN UN SCRIPT. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.
+  -
+    command:        Unan init program for &lt;ID de user existant&gt;
+    description:    Pour initier un programme pour un utilisateur existant.
+    note:           La commande fait plusieurs vérification, notamment l'existence de l'utilisateur et le fait qu'il ne soit pas déjà en train de suivre un programme (qu'il faudrait arrêter avant de poursuivre).
+  -
+    command:        unan nouveau|new pday
+    description:    "Conduit au formulaire pour créer un nouveau P-Day."
+  -
+    command:        unan nouveau|new work
+    description:    "Conduit au formulaire pour créer un nouveau travail (Word)."
+  -
+    command:        unan nouvelle|new page
+    description:    Conduit au formulaire pour créer une nouvelle page de cours.
+  -
+    command:        unan nouveau|new qcm
+    description:    Conduit au formulaire pour construire un nouveau Quiz.
+  -
+    command:        unan nouvelle|new question
+    description:    Conduit au formulaire pour créer une nouvelle question
+  -
+    command:        unan nouveau|new exemple
+    description:    Conduit au formulaire pour créer un nouvel exemple.
+  -
+    command:        Autres commandes sur les tables
+    description: |
+      On peut trouver d'autres commandes à appliquer aux tables en utilisant les
+      commandes des tables générales. Ces commandes permettent notamment de
+      modifier si nécessaire le schéma des tables existantes en procédant à un
+      backup préliminaire et en modifiant ensuite les tables.
+    note: |
+      Pour le moment, ces commandes n'ont pas encore été mises en commandes
+      générales, on peut les trouver ci-dessous.
+  -
+    command:          unan affiche (table &lt;nom_table&gt;)
+    description:      Affiche le contenu de la table.
+    note:             Cf. ci-dessous les noms de table utilisables.
+  -
+    command:          unan backup data (table &lt;nom_table&gt;)
+    description:      Procède au backup de la table &lt;nom_table&gt;.
+  -
+    command:          unan retreive data (table &lt;nom_table&gt;)
+    description:      Procède à la récupération des données.
+    note: |
+      Avant d'appeler cette méthode il faut bien entendu définir les modications
+      qui doivent être faites sur les données backupées précédemment.
+  -
+    command:          Liste des tables connaissant le cycle ci-dessus.
+    description: |
+      <ul>
+        <li>programs</li>
+        <li>projets</li>
+        <li>pages cours # les pages de cours</li>
+        <li>exemples</li>
+        <li>quiz # les questionnaires</li>
+        <li>questions # les questions des questionnaires</li>
+        <li>absolute works # les travaux absolus</li>
+        <li>absolute pdays # les jours absolus</li>
+      </ul>
+    note: |
+      Noter que cette modification affecte les tables courantes mais
+      également toutes les tables des gels, en respectant leurs données
+      propres.

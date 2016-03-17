@@ -14,6 +14,11 @@ raise_unless_admin
   <%= "Aide".in_a(onclick:"$('div#console_aide').toggle()") %>
 </div>
 <div id="console_aide" style="display:none">
-  <%= console.help %>
+  <p>
+    Pour obtenir de l'aide, taper `<code>help</code>` ou `<code>aide</code>` dans la console ou `<code>help|aide &lt;sujet&gt;</code>`.
+  </p>
+  <p>
+    Pour obtenir la liste des sujets, utiliser `<code>help|aide sujets</code>`.
+  </p>
 </div>
 <% debug "<- console.erb" %>

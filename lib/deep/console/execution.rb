@@ -51,7 +51,7 @@ class Console
       resultat_eval = eval_line(line)
 
       if variable_name.nil?
-        add_code("# => #{resultat_eval}")
+        add_code("# => #{resultat_eval}") unless resultat_eval == ""
       else
         # Affectation à une variable
         self.class::create_method_variable variable_name, resultat_eval
@@ -293,6 +293,8 @@ class Console
     end
 
     case sentence
+    when 'help', 'aide'
+      ( affiche_aide_for last_word )
     when 'show', 'goto'
       ( goto_section last_word )
     when 'balise film'

@@ -5,6 +5,49 @@ raise "Section interdite" unless user.admin?
 class SiteHtml
 class Admin
 class Console
+
+  def affiche_aide_for sujet
+    require 'yaml'
+
+    # Cas spécial quand +sujet+ = "sujets", on veut obtenir la
+    # liste de tous les sujets qui existent. On les trouve dans
+    # les fichiers YAML de l'application et des RestSites en
+    # générale
+    if sujet == "sujets"
+      affiche_liste_sujets_aide
+    else
+      hdata = YAML::load_file( _("help.yml") )
+      unless hdata.has_key?(sujet.to_s)
+        hdata = YAML::load_file( _("help_app.yml") )
+      end
+      if hdata.has_key?(sujet.to_s)
+        @iclosedpart = 1
+        sub_log ( miste_en_forme_liste_aides hdata[sujet.to_s], not_displayed=false )
+        ""
+      else
+        error "Le sujet `#{sujet}` est inconnu. Taper `aide sujets` ou `help sujets` pour obtenir la liste des sujets possibles."
+        "ERROR"
+      end
+    end
+
+  end
+
+  # Affiche la liste des sujets
+  # (répond à la commande `aide sujets`)
+  def affiche_liste_sujets_aide
+    c = String::new
+    c << "(il suffit de taper `<em>aide &lt;sujet&gt;</em>` pour obtenir l'aide)".in_p
+    c << "Sujets des RestSites en général".in_h3
+    hdata = YAML::load_file( _("help.yml") )
+    c << hdata.keys.join("<br />").in_div
+    c << "Sujets de l'application en particulier".in_h3
+    hdata = YAML::load_file( _("help_app.yml") )
+    c << hdata.keys.join("<br />").in_div
+    sub_log c
+    ""
+  end
+
+
   #
   # AIDE
   #
@@ -32,17 +75,24 @@ class Console
   # +iclosepart+ Indice de la partie courante, pour le numérotage des
   # section qui produiront des liens pour les ouvrir/fermer.
   def mise_en_forme_aide path
+    c = String::new
+    YAML::load_file( path ).each do |sujet, liste_sujet|
+      c << ( miste_en_forme_liste_aides liste_sujet )
+    end
+    return c
+  end
+
+  def miste_en_forme_liste_aides liste, not_displayed = true
     iclosepart_init = @iclosedpart.freeze
     c = String::new
-    hdata = YAML::load_file( path )
-    hdata.each do |haide|
+    liste.each do |haide|
       case haide['type']
       when 'TITLE'
         c << "</dl>" if @iclosedpart > 1
         @iclosedpart += 1
         dl_id = "description_list-#{@iclosedpart}"
         c << "<h4 onclick=\"$('dl##{dl_id}').toggle()\">#{haide['description']}</h4>"
-        c << "<dl id=\"#{dl_id}\" class=\"small\" style=\"display:none\">"
+        c << "<dl id=\"#{dl_id}\" class=\"small\" style=\"display:#{not_displayed ? 'none' : 'block'}\">"
       when 'GOTO'
       when 'HELP'
       else
