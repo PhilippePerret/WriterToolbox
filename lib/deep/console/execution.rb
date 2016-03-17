@@ -128,10 +128,10 @@ class Console
       read_debug
     when 'destroy debug', 'kill debug'
       destroy_debug
-    when "list films", "affiche table films"
+    when "list films"
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
-    when "list filmodico", "list Filmodico", "affiche table filmodico"
+    when "list filmodico", "list Filmodico"
       site.require_objet 'filmodico'
       Filmodico::films_in_table
     when "unan points"
@@ -272,15 +272,6 @@ class Console
       Unan::require_module 'quiz'
       User::get(2).change_pday pday_indice, params
       true
-    elsif (found=line.match(/^create film (\{(?:.*?)\})$/).to_a).count > 0
-      site.require_objet 'analyse'
-      FilmAnalyse::create_film(eval(found[1]))
-    elsif (found=line.match(/^update film ([0-9]+) (\{(?:.*?)\})$/).to_a).count > 0
-      site.require_objet 'analyse'
-      FilmAnalyse::update_film(found[1].to_i, eval(found[2]))
-    elsif (found=line.match(/^update film ([a-zA-Z_]+) (\{(?:.*?)\})$/).to_a).count > 0
-      site.require_objet 'analyse'
-      FilmAnalyse::update_film(found[1], eval(found[2]))
     else
       return false
     end
@@ -310,8 +301,12 @@ class Console
       ( give_balise_of_scenodico last_word )
     when 'kramdown'
       ( visualise_document_kramdown last_word )
-    when 'affiche table'
+    when 'affiche table', 'show table', 'montre table'
       ( affiche_table_of_database last_word )
+    when 'vide table'
+      ( vide_table_of_database last_word )
+    when 'kill table', 'destroy table'
+      ( destroy_table_of_database last_word )
     when 'unan new', 'unan nouveau', 'unan nouvelle'
       ( goto_section "unan_new_#{last_word}" )
     when 'unan init program for'

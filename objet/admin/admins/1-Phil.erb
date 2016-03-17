@@ -1,3 +1,26 @@
+<%
+raise_unless_admin
+raise_unless user.manitou?
+
+%>
 <h3>Bureau spécial de Phil</h3>
 
-[TODO : Reprendre les méthodes de Marion pour afficher ici les pages qui sont à corriger après lecture de Marion ou autre lecteur.]
+<h4>Page Narration à corriger après première lecture</h4>
+<%= Cnarration::pages_a_corriger %>
+<h4>Page Narration à finaliser complètement</h4>
+<%= Cnarration::pages_pour_bat %>
+
+<div class='right'>
+  <%= "Afficher autres bureaux".in_a(onclick:"$('div#autres_bureaux').toggle()") %>
+</div>
+<div id="autres_bureaux" style="display:none">
+  <% Dir["#{Admin::Dashboard::folder_admins}/*.erb"].each do |p| %>
+    <%
+      # On passe le bureau de l'user courant s'il a un bureau
+      # propre
+      uid = File.basename(p).split('-')[0].to_i
+      next if user.id == uid || uid == 1
+    %>
+    <%= Vue::new(p.sub(/^\.\/objet\//,'')).output %>
+  <% end %>
+</div>

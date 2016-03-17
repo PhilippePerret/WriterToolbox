@@ -39,26 +39,5 @@ raise_unless_admin
 #
 %>
 <% if user.has_own_dashboard? %>
-  <%= user.dashboard_path.deserb %>
-<% end %>
-
-<%
-# Si c'est un grand manitou, on affiche tous les bureaux propres
-if user.manitou?
-%>
-
-  <div class='right'>
-    <%= "Afficher autres bureaux".in_a(onclick:"$('div#autres_bureaux').toggle()") %>
-  </div>
-  <div id="autres_bureaux" style="display:none">
-    <% Dir["#{Admin::Dashboard::folder_admins}/*.erb"].each do |p| %>
-      <%
-        # On passe le bureau de l'user courant s'il a un bureau
-        # propre
-        uid = File.basename(p).split('-')[0].to_i
-        next if user.id == uid
-      %>
-      <%= Vue::new(p.sub(/^\.\/objet\//,'')).output %>
-    <% end %>
-  </div>
+  <%= Vue::new(user.dashboard_path.to_s.sub(/^\.\/objet\//,'')).output %>
 <% end %>

@@ -428,6 +428,7 @@ class BdD
       res = bdd.execute "DELETE FROM __column_names__ WHERE table_name = '#{name}'"
       return res
     end
+    alias :destroy :remove
 
     ##
     # Raccourci pour exécuter du code

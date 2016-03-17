@@ -33,7 +33,7 @@
 # ---------------------------------------------------------------------
 -
   command:      null
-  description:  Commandes de base
+  description:  Commandes fonctionnelles
   type:         TITLE
 -
   command:      help
@@ -45,6 +45,22 @@
   note:         La liste dépend de l'application. Cf. ci-dessous pour la programmation de cette aide.
   implement:    |
     Pour implémenter une aide sur un élément, il faut définir l'aide dans le fichier `help_app.yml` en définissant son type à `HELP`.
+
+# SYNCHRO
+-
+  command:      check synchro
+  description:  Permet de tester la synchronisation des fichiers entre serveur local et distant.
+  note:         Produit un fichier HTML qui permet de procéder à la synchro si nécessaire.
+
+# DÉBUG
+-
+  command:      read|show debug
+  description:  Affiche le fichier de débug (qui peut être très long).
+-
+  command:      destroy|kill debug
+  description:  Détruit le fichier de débug.
+
+# ALLER
 -
   command:      "`goto &lt;somewhere&gt;` ou `aller &lt;somewhere&gt;`"
   description:  Permet de rejoindre une section de l'application.
@@ -52,3 +68,63 @@
     Il existe deux types de lieu : les lieux “fixes”, communs à toute application RestSite, et les lieux propres à chaque application. Voir ci-dessous pour programmer un lieu propre.
   implement:    |
     Pour implémenter un lieu propre à l'application, il faut le définir dans `help_app.yml` en mettant son type à `GOTO`. Cf. le fichier ./lib/deep/console/sub_methods/goto_methods.rb pour voir toutes les destinations possibles ou en ajouter d'autres.
+
+# FORUM
+-
+  command:        goto|aller forum
+  description:    Rejoindre la section du forum
+
+# ---------------------------------------------------------------------
+#   BASES DE DONNÉES
+# ---------------------------------------------------------------------
+
+-
+  command:      null
+  type:         TITLE
+  description:  Bases de données
+-
+  command:      affiche|show|montre table &lt;base&gt;.&lt;table&gt;
+  description:  Affiche le contenu de la table &lt;table&gt; de la base &lt;base&gt;.
+  note:         "Par exemple, on peut voir tous les utilisateurs en tapant `affichage table users.users`"
+
+-
+  command:      vide table &lt;base&gt;.&lt;table&gt;
+  description:  Vide le contenu de la table spécifiée, sans la détruire.
+  note:         Noter que cela ne remet pas l'ID à 0 et que le prochain identifiant repartira à la même valeur.
+-
+  command:      kill|destroy table &lt;base&gt;.&lt;table&gt;
+  description:  Détruit complètement la table spécifiée. À utiliser avec la plus grande prudence donc.
+
+# ---------------------------------------------------------------------
+#   GELS ET DÉGELS
+# ---------------------------------------------------------------------
+-
+  type:         TITLE
+  description:  Gels et dégels
+-
+  command:      list gels
+  description:  Affiche la liste des gels existants.
+-
+  command:      gel '&lt;nom-du-gel&gt;'
+  description:  Produit ou actualise un gel de nom &lt;nom-du-gel&gt;.
+  note:         Il s'agit principalement des base de données et du dossier `./data`
+-
+  command:      degel '&lt;nom-du-gel&gt;'
+  description:  Remet le site dans l'état du gel '&lt;nom-du-gel&gt;'.
+  note:         Il s'agit principalement des base de données et du dossier `./data`
+-
+  command:      "site.require_module('gel'); Gel::gel('&lt;nom-gel&gt;', {options})"
+  description:  Procède à un gel avec des options.
+  note:         Tournure plus complexe à utiliser si des options doivent être transmises. Cf. le manuel sur les gels et les dégels pour plus de détails sur les options.
+# ---------------------------------------------------------------------
+#   FICHIERS ET DOSSIERS
+# ---------------------------------------------------------------------
+
+-
+  command:      null
+  type:         TITLE
+  description:  Fichiers & dossiers
+-
+  command:      "`kramdown &lt;./path/to/file.md`"
+  description:  Parse et affiche le fichier Markdown fourni en second argument.
+  note:         "Tip : Dans Atom, trouver le fichier, Ctrl-cliquer dessus et choisir “Copy full path” ou “Copy project path” pour utiliser le résultat en argument. Noter que si c'est le “project path” qui est choisi, il faut ajouter `./` devant."
