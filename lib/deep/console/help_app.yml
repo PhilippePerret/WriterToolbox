@@ -64,7 +64,21 @@ narration:
     description:    Pour rejoindre directement la table des matières d'un livre.
     note: |
       Les valeurs du désignant peuvent être 'structure', 'personnage', 'dynamique', 'thematique', 'documents', 'travail_auteur', 'procedes', 'theorie', 'dialogue' et 'analyse'.
-
+  -
+    command:        pages narration niveau &lt;niveau&gt;
+    description:    |
+      Affiche les pages dont le niveau de développement correspond à &lt;niveau&gt;.
+      <ul>
+        <li>1 : Page juste créée (donc vide)</li>
+        <li>3 : Page esquissée</li>
+        <li>4 : Page développée</li>
+        <li>5 : Page presque achevée</li>
+        <li>6 : Page à lire par le lecteur (Marion)</li>
+        <li>7 : Page à corriger par l'auteur</li>
+        <li>8 : Page corrigée à relire pour dernière correction</li>
+        <li>9 : Page à corriger pour BAT</li>
+        <li>a : BAT</li>
+      </ul>
 # ANALYSE DE FILM
 analyse:
   -

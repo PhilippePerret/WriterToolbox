@@ -36,4 +36,15 @@ class Cnarration
     analyse:            10
   }
 
+  NIVEAUX_DEVELOPPEMENT = {
+    1 => {hname:"Création de la page"},
+    3 => {hname:"Esquisse"},
+    4 => {hname:"Développée"},
+    5 => {hname:"Presque achevée"},
+    6 => {hname:"À lire par le lecteur"},
+    7 => {hname:"À corriger par le rédacteur"},
+    8 => {hname:"Relecture finale"},
+    9 => {hname:"Correction finale"},
+    'a' => {hname:"Achevée"},
+  }
 end #/Cnarration

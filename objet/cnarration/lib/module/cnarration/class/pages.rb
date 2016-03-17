@@ -57,5 +57,52 @@ class << self
     end
   end
 
+
+  # Retourne le code HTML d'un UL contenant la liste des pages
+  # répondant aux critères +options+
+  # +options+ contient/définit
+  #   :edition_buttons      Options pour les boutons d'édition.
+  #                         Si nil, tous les boutons, sinon, mettre
+  #                         :edit, :show, :text, :kill à true pour
+  #                         ajouter le bouton correspondant.
+  #   Tous les critères de `pages' ci-dessus, à commencer par la
+  #   requête `where`
+  def pages_as_ul options = nil
+    options ||= Hash::new
+    options_edit_btns = options.delete(:edition_buttons)
+    options.merge!(as: :array_data)
+    pages(options).collect do |hpage|
+      (
+        boutons_editions_for_page(hpage[:id], options_edit_btns) +
+        hpage[:titre]
+      ).in_li(class:'hover')
+    end.join.in_ul(class:'tdm')
+  end
+
+  # Retourne le span flottant à droite des boutons d'édition pour
+  # la page d'id +page_id+
+  # +options+ permet de définir les boutons à afficher
+  # Si nil, TOUS les boutons seront marqués
+  #   :edit       Si true, le bouton pour éditer les data de la page
+  #   :text       Si true, le bouton pour éditer le texte de la page
+  #   :kill       Si true, le bouton pour détruire la page
+  #   :show       Si true, le bouton pour afficher la page
+  def boutons_editions_for_page page_id, options = nil
+    bs = String::new
+    if options.nil? || options[:edit]
+      bs << "edit".in_a(class:'tiny', href:"page/#{page_id}/edit?in=cnarration", target:"_blank")
+    end
+    if options.nil? || options[:show]
+      bs << "show".in_a(class:'tiny', href:"page/#{page_id}/show?in=cnarration", target:"_blank")
+    end
+    if user.manitou? && ( options.nil? || options[:text] )
+      bs << lien.edit_file(Page::new(page_id).fullpath, titre: "texte", class:'tiny')
+    end
+    if user.manitou? && (options.nil? || options[:kill] )
+      bs << "destroy".in_a(class:'tiny', href:"page/#{page_id}/destroy?in=cnarration")
+    end
+    bs.in_span(class:'btns fright')
+  end
+
 end #/<< self
 end #/ Cnarration

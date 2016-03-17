@@ -321,6 +321,8 @@ class Console
       ( gel last_word )
     when 'degel'
       ( degel last_word )
+    when 'pages narration niveau'
+      ( liste_pages_narration_of_niveau last_word )
     else
       nil
     end
