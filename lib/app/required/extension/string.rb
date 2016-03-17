@@ -2,9 +2,13 @@
 class ::String
 
   def formate_balises_propres
+    debug "STRING DANS FORMATE BALISES PROPRES : #{self.inspect}"
     str = self.formate_balises_mots
     str = str.formate_balises_films
     str = str.formate_balises_personnages
+    str = str.formate_balises_realisateurs
+    str = str.formate_balises_producteurs
+    str = str.formate_balises_acteurs
     str = str.formate_balises_auteurs
     str = str.formate_termes_techniques
     return str
@@ -25,6 +29,18 @@ class ::String
 
   def formate_balises_personnages
     self.formate_balises_colon('personnage')
+  end
+
+  def formate_balises_acteurs
+    self.formate_balises_colon('acteur')
+  end
+
+  def formate_balises_realisateurs
+    self.formate_balises_colon('realisateur')
+  end
+
+  def formate_balises_producteurs
+    self.formate_balises_colon('producteur')
   end
 
   def formate_balises_auteurs
