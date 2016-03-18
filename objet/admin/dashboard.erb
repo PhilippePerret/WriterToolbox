@@ -1,6 +1,23 @@
 <%
 # Vue principale pour le tableau de bord d'administration
 raise_unless_admin
+
+def synchronisation_scenodico
+  return "" unless user.manitou?
+  "Synchronisation…".in_a(href:"scenodico/synchro")
+end
+def synchronisation_filmodico
+  return "" unless user.manitou?
+  "Synchronisation…".in_a(href:"filmodico/synchro")
+end
+def synchronisation_narration
+  return "" unless user.manitou?
+  "Synchronisation…".in_a(href:'cnarration/synchro')
+end
+def synchronisation_forum
+  return "" unless user.manitou?
+  "Synchronisation…".in_a(href:'forum/synchro')
+end
 %>
 <%= Admin::titre_h1 %>
 <p class='small italic discret'>Bienvenue dans le tableau de bord de l'administration du site.</p>
@@ -10,18 +27,22 @@ raise_unless_admin
   <%=
     (
       "Scénodico (édition)".in_a(href:'scenodico/edit') +
-      "Synchronisation…".in_a(href:"scenodico/synchro")
+      synchronisation_scenodico
     ).in_div(class:'admin_tool') %>
   <%=
     (
       "Filmodico (édition)".in_a(href:'filmodico/edit') +
-      "Synchronisation…".in_a(href:"filmodico/synchro")
+      synchronisation_filmodico
     ).in_div(class:'admin_tool') %>
-  <%= "Narration (page)".in_a(href:'page/edit?in=cnarration').in_div(class:'admin_tool') %>
+  <%=
+    (
+      "Narration (page)".in_a(href:'page/edit?in=cnarration') +
+      synchronisation_narration
+    ).in_div(class:'admin_tool') %>
   <%=
     (
       "Forum".in_a(href:'forum/dashboard') +
-      "Synchronisation…".in_a(href:'forum/synchro')
+      synchronisation_forum
     ).in_div(class:'admin_tool')
    %>
    <%=
