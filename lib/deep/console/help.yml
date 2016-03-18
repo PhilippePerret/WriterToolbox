@@ -103,6 +103,36 @@ databases:
     description:  Détruit complètement la table spécifiée. À utiliser avec la plus grande prudence donc.
 
 # ---------------------------------------------------------------------
+#   TACHES
+# ---------------------------------------------------------------------
+taches:
+  -
+    type:         TITLE
+    description:  Tâches
+  -
+    command:      list taches|tasks
+    description:  Affiche la liste des tâches
+  -
+    command:      list all taches|tasks
+    description: |
+      Affiche toutes les taches, même celles qui sont finies.
+  -
+    command:      "create|creer tache|task pour: &lt;pseudo|ID&gt; tache: ''&lt;ce qu'il y a à faire'', pour le: JJ MM AA"
+    description:  Créer une nouvelle tâche.
+    note: |
+      Les données peuvent être dans un autre indifférent.
+  -
+    command:      finir tache &lt;tache ID&gt;
+    description:  Termine une tache de façon normale.
+    note: |
+      Pour obtenir l'ID de la tache on peut utiliser `list taches`
+  -
+    command:      synchro taches
+    description: |
+      Synchronise le fichier distant avec le fichier local en utilisant
+      comme référence le plus vieux des deux fichiers.
+
+# ---------------------------------------------------------------------
 #   GELS ET DÉGELS
 # ---------------------------------------------------------------------
 gels:

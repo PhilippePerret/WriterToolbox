@@ -115,6 +115,10 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
+    when 'list taches', 'list tasks'
+      Taches::show_liste_taches
+    when 'list all tasks', 'list all taches'
+      Taches::show_liste_taches all: true
     # ---------------------------------------------------------------------
     # Toutes les aides directes
     when 'aide analyse'
@@ -260,7 +264,9 @@ class Console
 
   # On analyse la ligne comme une expression régulière connue
   def execute_as_regular_sentence line
-    if ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a ).count > 0
+    if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
+      Taches::create_tache found[3].freeze
+    elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a ).count > 0
       # Pour faire des tests avec Benoit à un PDay particulier
       # @exemple : set benoit to pday 5 with {rythme:4}
       (site.folder_lib_optional + 'console/pday_change/main.rb').require
@@ -297,6 +303,10 @@ class Console
       ( affiche_aide_for last_word )
     when 'show', 'goto', 'aller'
       ( goto_section last_word )
+    when 'finir tache', 'finir task', 'end task'
+      ( Taches::marquer_tache_finie last_word )
+    when 'detruire tache', 'destroy task'
+      ( Taches::detruire_tache last_word)
     when 'balise film'
       ( give_balise_of_filmodico last_word )
     when 'balise mot'
