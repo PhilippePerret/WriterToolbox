@@ -10,6 +10,8 @@ class Console
   def liste_pages_narration_of_niveau nivdev
     site.require_objet 'cnarration'
     Cnarration::require_module 'cnarration' # par Cnarration::pages
+    niveau_humain = Cnarration::NIVEAUX_DEVELOPPEMENT[nivdev.to_i][:hname]
+    sub_log "Pages narration de niveau de développement #{nivdev} : #{niveau_humain}".in_h3
     sub_log Cnarration::pages_as_ul(where:"options LIKE '1#{nivdev}%'")
     return "" # pour ne rien afficher dans la console sous la ligne
   end

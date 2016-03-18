@@ -1,14 +1,14 @@
 <%
 raise_unless_admin
 raise_unless user.manitou?
-
+raise_unless user.pseudo == 'Phil' && user.id == 1
 %>
 <h3>Bureau spécial de Phil</h3>
 
-<h4>Page Narration à corriger après première lecture</h4>
-<%= Cnarration::pages_a_corriger %>
-<h4>Page Narration à finaliser complètement</h4>
-<%= Cnarration::pages_pour_bat %>
+<h4>Pages Narration</h4>
+<p>
+  Pour les pages narration à corriger, relire, etc., utiliser la console et la commande `pages narration niveau X`.
+</p>
 
 <div class='right'>
   <%= "Afficher autres bureaux".in_a(onclick:"$('div#autres_bureaux').toggle()") %>
