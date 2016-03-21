@@ -28,6 +28,9 @@ class Console
       return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
     end
 
+    # Pour détruire la tache d'id +tache_id+
+    # Noter que la destruction détruit vraiment la tâche, ne la marque
+    # pas fini. Elle disparaitra complètement.
     def detruire_tache tache_id
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
@@ -40,12 +43,33 @@ class Console
       end
       return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
     end
+
+
     # Créer un nouvelle tache en partant des données string
     # +data_str+ envoyées en argument
     def create_tache data_str
-      flash "Création de la tache `#{data_str}`"
+      site.require_objet 'admin'
+      ::Admin::require_module 'taches'
+      data_str = " #{data_str} fin:"
+      data_tache = Hash::new
+      ['pour', 'echeance', 'tache', 'faire', 'task', 'description', 'state', 'statut'].each do |key|
+        data_str.sub!(/ #{key}\: (.*?) ([a-z]+\:)/){
+          data_tache.merge!(key.to_sym => $1.freeze)
+          " #{$2}"
+        }
+      end
+
+      data_tache.merge!(updated_at: NOW)
+      itache = ::Admin::Todolist::Tache::new
+      itache.instance_variable_set('@data2save', data_tache)
+      itache.data2save_valid? || return
+      # Les données sont valides, on peut enregistrer la tâche
+      # Note : C'est la méthode create qui affichera le message
+      # de réussite
+      itache.create
       return ""
     end
+
 
     # Affiche la liste de taches
     # +options+

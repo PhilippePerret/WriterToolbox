@@ -305,7 +305,7 @@ class Console
       ( goto_section last_word )
     when 'finir tache', 'finir task', 'end task'
       ( Taches::marquer_tache_finie last_word )
-    when 'detruire tache', 'destroy task'
+    when 'detruire tache', 'destroy task', 'destroy tache', 'kill task', 'kill tache'
       ( Taches::detruire_tache last_word)
     when 'balise film'
       ( give_balise_of_filmodico last_word )
