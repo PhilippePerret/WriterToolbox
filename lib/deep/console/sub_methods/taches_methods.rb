@@ -52,7 +52,7 @@ class Console
       ::Admin::require_module 'taches'
       data_str = " #{data_str} fin:"
       data_tache = Hash::new
-      ['pour', 'echeance', 'tache', 'faire', 'task', 'description', 'state', 'statut'].each do |key|
+      ['pour', 'echeance', 'tache', 'faire', 'task', 'description', 'state', 'statut', 'le'].each do |key|
         data_str.sub!(/ #{key}\: (.*?) ([a-z]+\:)/){
           data_tache.merge!(key.to_sym => $1.freeze)
           " #{$2}"
@@ -89,9 +89,13 @@ class Console
       end
       lt = task_list.collect do |itask|
         owner     = itask.admin.pseudo
-        echeance  = Time.at(itask.echeance).strftime("%d/%m/%y")
+        echeance  = if itask.echeance
+          ' - ' + Time.at(itask.echeance).strftime("%d/%m/%y")
+        else
+          ""
+        end
         (
-          "##{itask.id} #{itask.tache} (#{owner} - #{echeance})"
+          "##{itask.id} #{itask.tache} (#{owner}#{echeance})"
         ).in_li
       end.join.in_ul(class:'tdm')
       sub_log lt
