@@ -156,7 +156,6 @@ class Tache
     eche = case eche
     when "auj", "today", "aujourd'hui" then
       Time.now.strftime("%d %m %Y")
-      jour, mois, annee = lejour.day, lejour.month, lejour.year
     when "dem", "demain", "tomorrow" then
       (Time.now + 1.day).strftime("%d %m %Y")
     when "après-demain"

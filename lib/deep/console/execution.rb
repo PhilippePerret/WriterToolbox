@@ -115,9 +115,9 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
-    when 'list taches', 'list tasks'
+    when /liste? ta(che|sk)s/
       Taches::show_liste_taches
-    when 'list all tasks', 'list all taches'
+    when /liste? (all|toutes) ta(che|sk)s/
       Taches::show_liste_taches all: true
     # ---------------------------------------------------------------------
     # Toutes les aides directes
