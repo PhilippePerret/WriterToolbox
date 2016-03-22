@@ -93,7 +93,11 @@ class Page
   # Retourne les boutons de navigation pour atteindre
   # les pages précédente et suivante
   def boutons_navigation where = :top
-    ( lien_prev_page + lien_next_page ).in_div(class:"right nav #{where}")
+    ( lien_prev_page + lien_tdm + lien_next_page ).in_div(class:"right nav #{where}")
+  end
+
+  def lien_tdm
+    "T.d.M".in_a(href:"livre/#{livre_id}/tdm?in=cnarration").in_div(class:'lktdm')
   end
   def lien_prev_page
     visibility = prev_page_id.nil? ? 'hidden' : 'visible'

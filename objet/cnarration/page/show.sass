@@ -57,9 +57,13 @@ section#content
         height        : 16px
         width         : 24px
         a
-          top           : -11px
+          top           : -10px
           left          : 11px
           font-size     : 0.9em
+        &.lktdm
+          a
+            top           : -8px !important
+          
     &.bottom
       margin-top    : 4em
       > div
@@ -70,6 +74,10 @@ section#content
           left          : 18px
           font-size     : 1.4em
         
+        &.lktdm
+          a
+            top     : -4px !important
+            left    : 6px !important
     > div
       border-width  : 2px
       border-style  : solid
@@ -80,6 +88,10 @@ section#content
       border-color  : #CCC #979797 #979797 #CCC
       // Quand on passe la souris sur les boutons pour passer à la
       // page précédente et suivante.
+      &.lktdm
+        width         : 60px
+        a
+          font-size     : 20px !important
       &:hover
         background-color  : #E8FFDB
       &:active
