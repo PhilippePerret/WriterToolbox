@@ -54,7 +54,7 @@ class ::String
   def formate_balises_colon balise
     str = self
     str.gsub!(/#{balise}:\|(.*?)\|/, "<#{balise}>\\1</#{balise}>")
-    str.gsub!(/#{balise}:(.*?)([  ,\)])/, "<#{balise}>\\1</#{balise}>\\2")
+    str.gsub!(/#{balise}:(.*?)([\.…  ,\)])/, "<#{balise}>\\1</#{balise}>\\2")
     str
   end
 

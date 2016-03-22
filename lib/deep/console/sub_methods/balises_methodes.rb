@@ -114,16 +114,16 @@ class Console
     livre_ref = livre_ref.downcase
 
     suf_lien, livre_id = case livre_ref
-    when "structure", "la_structure" then ["la_structure", 1]
-    when "personnages", "personnage", "les_personnages" then ["les_personnages", 2]
-    when "dynamique", "dynamique_narrative", "la_dynamique_narrative", "elements_dynamiques" then ["la_dynamique_narrative", 3]
-    when "themes", "les_themes", "thematique", "thématique", "la_thematique" then ["la_thematique", 4]
-    when "documents", "les_documents", "document" then ["les_documents", 5]
-    when "travail", "travail_auteur", "le_travail_de_lauteur" then ["le_travail_de_lauteur", 6]
-    when "procédés", "procedes", "procedes_narratifs", "les_procedes", "les_procedes_narratif" then ["les_procedes", 7]
-    when "concepts", "theorie", "théorie", "les_concepts", "concepts_narratifs" then ["les_concepts_narratifs", 8]
-    when "dialogue", "le_dialogue" then ["le_dialogue", 9]
-    when "analyse", "analyse_film", "les_analyses", "analyses_films" then ["lanalyse_de_films", 10]
+    when /structure/  then ["la_structure", 1]
+    when /personnage/ then ["les_personnages", 2]
+    when /dynamique/  then ["la_dynamique_narrative", 3]
+    when /(theme|thème|thematique)/ then ["la_thematique", 4]
+    when /document/   then ["les_documents", 5]
+    when /(travail|auteur)/   then ["le_travail_de_lauteur", 6]
+    when /(procédé|procede)/  then ["les_procedes", 7]
+    when /(concept|theorie)/  then ["les_concepts_narratifs", 8]
+    when /dialogue/   then ["le_dialogue", 9]
+    when /analyse/    then ["lanalyse_de_films", 10]
     else
       [nil, "Impossible de trouver le lien pour le livre incconu #{livre_ref}"]
     end
