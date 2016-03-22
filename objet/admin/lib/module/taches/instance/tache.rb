@@ -107,7 +107,8 @@ class Tache
     d = data2save
     d[:admin_id]  = test_admin_tache( d[:admin_id] || d.delete(:pour) || d.delete(:admin) ) || ( return false )
     d[:tache]     = test_task_tache( d[:tache] || d.delete(:faire) || d.delete(:task)) || (return false)
-    d[:echeance]  = test_echeance_tache(d[:echeance]) || ( return false )
+    d[:echeance]  = test_echeance_tache(d[:echeance])
+    return false if d[:echeance] === false
     d[:state]     = test_statut_tache(d[:state] || d.delete(:statut)) || ( return false )
     @data2save = d
   end

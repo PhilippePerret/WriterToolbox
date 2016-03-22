@@ -79,6 +79,12 @@ narration:
         <li>9 : Page à corriger pour BAT</li>
         <li>a : BAT</li>
       </ul>
+  -
+    command:        balise livre &lt;référence livre&gt;
+    description:    Permet d'obtenir une balise avec un lien vers le livre.
+    note: |
+      La référence au livre peut être diverse, par exemple `balise livre documents` ou `balise livre auteur` ou `balise livre themes`.
+
 # ANALYSE DE FILM
 analyse:
   -

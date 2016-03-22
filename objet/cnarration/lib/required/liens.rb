@@ -1,6 +1,11 @@
 # encoding: UTF-8
 =begin
 Helper de liens pour la collection
+
+Pour les utiliser dans les pages utiliser :
+
+    <%= lien.livre_<le livre> %>
+    
 =end
 class Lien
 

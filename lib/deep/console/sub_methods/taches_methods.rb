@@ -62,7 +62,7 @@ class Console
       data_tache.merge!(updated_at: NOW)
       itache = ::Admin::Todolist::Tache::new
       itache.instance_variable_set('@data2save', data_tache)
-      itache.data2save_valid? || return
+      itache.data2save_valid? || ( return "Error" )
       # Les données sont valides, on peut enregistrer la tâche
       # Note : C'est la méthode create qui affichera le message
       # de réussite

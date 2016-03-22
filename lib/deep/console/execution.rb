@@ -264,9 +264,11 @@ class Console
 
   # On analyse la ligne comme une expression régulière connue
   def execute_as_regular_sentence line
-    if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
+    if (found = line.match(/^balise (livre|film|mot|user) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
+      ( main_traitement_balise found[1..-1] )
+    elsif (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
       Taches::create_tache found[3].freeze
-    elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a ).count > 0
+    elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
       # Pour faire des tests avec Benoit à un PDay particulier
       # @exemple : set benoit to pday 5 with {rythme:4}
       (site.folder_lib_optional + 'console/pday_change/main.rb').require
@@ -277,7 +279,6 @@ class Console
       site.require_objet 'unan'
       Unan::require_module 'quiz'
       User::get(2).change_pday pday_indice, params
-      true
     else
       return false
     end
@@ -307,10 +308,6 @@ class Console
       ( Taches::marquer_tache_finie last_word )
     when 'detruire tache', 'destroy task', 'destroy tache', 'kill task', 'kill tache'
       ( Taches::detruire_tache last_word)
-    when 'balise film'
-      ( give_balise_of_filmodico last_word )
-    when 'balise mot'
-      ( give_balise_of_scenodico last_word )
     when 'kramdown'
       ( visualise_document_kramdown last_word )
     when 'affiche table', 'show table', 'montre table'
