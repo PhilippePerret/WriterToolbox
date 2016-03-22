@@ -107,7 +107,7 @@ class Tache
     d = data2save
     d[:admin_id]  = test_admin_tache( d[:admin_id] || d.delete(:pour) || d.delete(:admin) ) || ( return false )
     d[:tache]     = test_task_tache( d[:tache] || d.delete(:faire) || d.delete(:task)) || (return false)
-    d[:echeance]  = test_echeance_tache(d[:echeance])
+    d[:echeance]  = test_echeance_tache(d[:echeance] || d.delete(:le))
     return false if d[:echeance] === false
     d[:state]     = test_statut_tache(d[:state] || d.delete(:statut)) || ( return false )
     @data2save = d
@@ -149,9 +149,22 @@ class Tache
 
   # Vérifie la validité de l'échéance définie et retourne
   # cette échéance sous forme de nombre de secondes
-  # +eche+ Échéance String sous la forme "JJ MM AA"
+  # +eche+ Échéance String sous la forme "JJ MM AA" ou alors sous
+  # un désignant comme "auj", "dem", "today", "aujourd'hui", etc.
   def test_echeance_tache eche
     return nil if eche.nil?
+    eche = case eche
+    when "auj", "today", "aujourd'hui" then
+      Time.now.strftime("%d %m %Y")
+      jour, mois, annee = lejour.day, lejour.month, lejour.year
+    when "dem", "demain", "tomorrow" then
+      (Time.now + 1.day).strftime("%d %m %Y")
+    when "après-demain"
+      (Time.now + 2.days).strftime("%d %m %Y")
+    else
+      eche
+    end
+    debug "eche transformé = #{eche.inspect}"
     jour, mois, annee = eche.split(' ').collect{ |e| e.to_i }
     if jour.nil? || mois.nil? || annee.nil?
       raise "L'échéance de la tâche doit être sous la forme JJ MM AA."
