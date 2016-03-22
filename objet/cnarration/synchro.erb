@@ -3,8 +3,28 @@
 # collection narration
 %>
 <%= Cnarration::titre_h1("Synchronisation") %>
-<%  site.require_module 'remote_file'  %>
-<%= RFile::new("./database/data/cnarration.db").
-    bloc_synchro(verbose: true) %>
+
+<%
+# OPÉRER LA SYNCHRONISATION 
+%>
+<% if param(:operation) == 'synchronise_database_narration' %>
+  <%= SynchroNarration::synchronise_database_narration %>
+<% end %>
+
 
 <p class='small italic discret'>Noter qu'on ne synchronise ici que la base de données générale de la collection, pas les pages elles-mêmes. On peut aussi synchroniser les fichiers texte en lançant une synchro complète du site (<%= lien.console %>   -> `check synchro`).</p>
+<p>
+  La synchronisation de la base de données de la Collection Narration est un peu complexe dans le sens où les données des pages et des livres sont modifiées en local mais que le <strong>statut des pages</strong> peut être changé sur le serveur distant par exemple par Marion qui lit les pages pour correction.
+</p>
+<p>
+  Donc, le bouton “Synchroniser” ci-dessous va procéder à cette opération :
+</p>
+<ul>
+  <li>Chargement du fichier cnarration.db DISTANT (download),</li>
+  <li>Comparaison des statuts des pages, tous les statuts supérieurs sont utilisés. Donc, si un statut distant est supérieur à un statut local, il est changé en local (note : c'est la base locale qui sera transmise),</li>
+  <li>Upload de la base de données local vers le serveur.</li>
+</ul>
+  <form class="air center" action="cnarration/synchro" method="POST">
+    <%= "synchronise_database_narration".in_hidden(name: 'operation') %>
+    <%= "Synchronise cnarration.db".in_submit(class:'btn') %>
+  </form>

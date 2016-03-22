@@ -740,3 +740,30 @@ route: "admin/console"
 ---> vue “./view/gabarit/footer.erb” (@already_required: nil)
 <- console.erb
 ---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+--- ERREUR : SIGTERM
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/synchronisation/synchronisation/required/Synchro.rb:63:in ``'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/synchronisation/synchronisation/required/Synchro.rb:63:in `check_folders_online'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/synchronisation/synchronisation/required/Synchro.rb:44:in `check_synchro'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/synchronisation/synchronisation.rb:37:in `<top (required)>'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console/commandes_system.rb:30:in `check_synchro'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/console/execution.rb:130:in `execute_as_is'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/console/execution.rb:84:in `eval_line'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/console/execution.rb:51:in `block in execute_code'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/console/execution.rb:29:in `each'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/console/execution.rb:29:in `execute_code'
+/Users/philippeperret/Sites/WriterToolbox/objet/admin/console.rb:12:in `<top (required)>'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/gem/superfile/lib/superfile/instance/actions.rb:77:in `require'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Vue/inst_methods.rb:22:in `require_ruby'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Vue/inst_methods.rb:15:in `require_all'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Site/route.rb:239:in `load_per_vue'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Site/route.rb:64:in `execute_route'
+/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/output.rb:30:in `output'
+/Users/philippeperret/Sites/WriterToolbox/index.rb:6:in `<main>'
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)

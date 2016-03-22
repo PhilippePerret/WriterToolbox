@@ -78,6 +78,11 @@ class RFile
     @message << "Contrôler/revenir".in_a(href:route_courante).in_p(class:'right')
   end
 
+  # Pour simplifier l'écriture
+  def download
+    distant.download
+  end
+
   def mtime
     @mtime ||= File.stat(path).mtime.to_i
   end
