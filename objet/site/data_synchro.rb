@@ -45,6 +45,7 @@ class Synchro
       './database/data/site_hot.db',
       './database/data/filmodico.db',
       './database/data/scenodico.db',
+      './database/data/cnarration.db',
       './database/data/cnarration_hot.db'
     ]
   end

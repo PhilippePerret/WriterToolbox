@@ -132,24 +132,21 @@ class Console
       read_debug
     when 'destroy debug', 'kill debug'
       destroy_debug
-    when "list films"
+    when /liste? films/
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
-    when "list filmodico", "list Filmodico"
+    when /liste? filmodico/
       site.require_objet 'filmodico'
       Filmodico::films_in_table
     when "unan points"
       unan_affiche_points_sur_lannee
 
-    when "vide table paiements", "vider table paiements"
+    when /vider? table paiements?/
       vide_table_paiements
-    when "remove table paiements"
+    when /(remove|détruire|kill) table paiements?/
       remove_table_paiements
-
-
     when "unan état des lieux", "unan inventory"
       faire_etat_des_lieux_programme
-
     when "unan répare", "unan repare"
       reparation_programme_unan
 
