@@ -3,8 +3,9 @@
 %>
 <%= Filmodico::titre_h1 %>
 <p class='exergue'>
-  Bienvenue dans le <strong>Filmodico</strong>, le dictionnaire des films.
+  Bienvenue dans le <strong>Filmodico</strong>, le <%= "Dictionnaire des films".in_a(href:"filmodico/list", class:'border') %>
 </p>
+<p>Les films présentés dans ce dictionnaire sont utilisés sur <%= site.name %> dans les <%= lien.analyses_films %> ou la <%= lien.collection_narration %>.</p>
 <p>
-  Utilisez les onglets ci-dessus pour voir la liste complète des films, faire ou recherche ou plus encore.
+  Utilisez l'onglet <%= "Recherche de film".in_a(href:"filmodico/search", class:'border') %> pour retrouver un film en particulier.
 </p>

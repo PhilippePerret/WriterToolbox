@@ -105,7 +105,7 @@ class Manuel
     # Titre de la page, avec le lien pour revenir à la
     # table des matières
     def titre
-      debug "subfolder: #{subfolder.inspect} / affixe: #{affixe.inspect}"
+      # debug "subfolder: #{subfolder.inspect} / affixe: #{affixe.inspect}"
       ( lien_tdm + map[subfolder][:items][affixe][:titre] ).in_h3
     end
 

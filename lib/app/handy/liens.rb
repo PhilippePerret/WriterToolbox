@@ -27,6 +27,8 @@ class Lien
   def analyses_de_films titre = "analyses de films", options = nil
     build("analyse/home", titre, options)
   end
+  alias :analyses_films :analyses_de_films
+
   def analyses titre = "analyses", options = nil
     analyses_de_films titre, options
   end
@@ -45,6 +47,7 @@ class Lien
   def cnarration titre = "Collection Narration", options = nil
     build("cnarration/home", titre, options)
   end
+  alias :collection_narration :cnarration
 
   def forum titre = "forum", options = nil
     build('forum/home', titre, options)
@@ -62,6 +65,26 @@ class Lien
     options ||= Hash::new
     options.merge!( class:'mot', target:'_blank' )
     build("scenodico/#{mot_id}/show", mot_str, options)
+  end
+
+  # Lien vers le filmodico
+  # @usage: lien.filmodico("TITRE")
+  def filmodico titre = nil, options = nil
+    options ||= Hash::new
+    titre ||= options.delete(:titre) || "Filmodico"
+    options.merge!(href: "filmodico/home")
+    options.merge!(target: "_blank") unless options.has_key?(:target)
+    titre.in_a(options)
+  end
+
+  # Liens vers le scénodico
+  # @usage: lien.scenodico("TITRE")
+  def scenodico titre = nil, options = nil
+    options ||= Hash::new
+    titre ||= options.delete(:titre) || "Scénodico"
+    options.merge!(href: "scenodico/home")
+    options.merge!(target: "_blank") unless options.has_key?(:target)
+    titre.in_a(options)
   end
 
   # Retourne un lien vers un film d'après la référence fournie

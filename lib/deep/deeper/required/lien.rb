@@ -6,10 +6,14 @@ class Lien
   # quelconque, pour éviter de répéter toujours le même code
   # +options+
   #   :distant    Si true, on transforme la route en URL complète
+  # NOTES
+  #   - Par défaut, le lien s'ouvre dans une nouvelle fenêtre.
+  #     ajouter options[:target] = nil pour empêcher ce comportement
   def build route, titre, options
     options ||= Hash::new
     route = "#{site.distant_url}/#{route}" if options.delete(:distant)
-    options.merge!( href: route )
+    options.merge!(href: route)
+    options.merge!(target:'_blank') unless options.has_key?(:target)
     titre.in_a(options)
   end
 
