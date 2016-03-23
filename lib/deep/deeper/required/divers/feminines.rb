@@ -53,6 +53,9 @@ module ModuleFeminines
   def f_e # censé/censée
     @f_e ||= (feminine? ? 'e' : '')
   end
+  def f_x # heureux/heureuse
+    @f_x ||= (feminine? ? 'se' : 'x')
+  end
 
   # 2 LETTRES
   def f_ne # icarien/icarienne

@@ -5,6 +5,7 @@ class ::String
     debug "STRING DANS FORMATE BALISES PROPRES : #{self.inspect}"
     str = self.formate_balises_mots
     str = str.formate_balises_films
+    str = str.formate_balises_livres
     str = str.formate_balises_personnages
     str = str.formate_balises_realisateurs
     str = str.formate_balises_producteurs
@@ -25,6 +26,10 @@ class ::String
     str.gsub!(/FILM\[(.*?)\]/){ lien.film($1.to_s) }
     str.gsub!(/film:([a-zA-Z0-9]+)/){ lien.film($1.to_s) }
     str
+  end
+
+  def formate_balises_livres
+    self.formate_balises_colon('livre')
   end
 
   def formate_balises_personnages

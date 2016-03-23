@@ -145,13 +145,18 @@ class Console
       vide_table_paiements
     when /(remove|détruire|kill) table paiements?/
       remove_table_paiements
+
+    when /(nouvelle|new) page narration/
+      goto_nouvelle_page_narration
+
+    # ---------------------------------------------------------------------
+    #   UN AN UN SCRIPT
+    # ---------------------------------------------------------------------
+
     when "unan état des lieux", "unan inventory"
       faire_etat_des_lieux_programme
     when "unan répare", "unan repare"
       reparation_programme_unan
-
-    # ---------------------------------------------------------------------
-
     when "unan affiche (table pages cours)"
       afficher_table_pages_cours
     when "unan backup data (table pages cours)"

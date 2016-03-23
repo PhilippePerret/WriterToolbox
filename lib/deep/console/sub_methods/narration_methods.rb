@@ -16,6 +16,11 @@ class Console
     return "" # pour ne rien afficher dans la console sous la ligne
   end
 
+  def goto_nouvelle_page_narration
+    redirect_to 'page/edit?in=cnarration'
+    ""
+  end
+
 end #/Console
 end #/Admin
 end #/SiteHtml

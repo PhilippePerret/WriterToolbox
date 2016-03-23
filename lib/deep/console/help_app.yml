@@ -54,6 +54,9 @@ narration:
     command:        goto|aller narration
     description:    Rejoindre l'accueil de la collection Narration
   -
+    command:        nouvelle|new page narration
+    description:    Conduit au formulaire pour créer une nouvelle page
+  -
     command:        goto|aller new_page_narration
     description:    Création d'une nouvelle page de la collection
   -
