@@ -34,9 +34,15 @@ class Console
   def main_traitement_balise bdata
     debug "bdata : #{bdata.inspect}"
     balises, message = case bdata[0]
-    when 'film'   then give_balise_of_filmodico(bdata[1])
-    when 'mot'    then give_balise_of_scenodico(bdata[1])
-    when 'livre'  then give_balise_of_livre(bdata[1])
+    when 'film'
+      console.require 'filmodico'
+      give_balise_of_filmodico(bdata[1])
+    when 'mot'
+      console.require 'scenodico'
+      give_balise_of_scenodico(bdata[1])
+    when 'livre'  then
+      console.require 'narration'
+      give_balise_of_livre(bdata[1])
     end
 
     as = case bdata[2]
@@ -70,74 +76,6 @@ class Console
       c << " #{hbalise[:after]}" unless hbalise[:after].nil?
       c.in_div
     end.join + '<script type="text/javascript">UI.auto_selection_text_fields()</script>'
-  end
-
-  # ---------------------------------------------------------------------
-  #
-  # ---------------------------------------------------------------------
-
-  # Méthode qui retourne les balises pour le film désigné par
-  # +fref+ qui peut être un titre tronqué, français, etc.
-  def give_balise_of_filmodico fref
-    site.require_objet 'filmodico'
-    # On récolte les films qui peuvent correspondre au titre original,
-    # au titre en français ou au film-id
-    res = Filmodico::table_films.select(where:"titre LIKE '%#{fref}%' OR titre_fr LIKE '%#{fref}%' OR film_id LIKE '%#{fref}%'", colonnes:[:film_id, :titre], nocase:true).values
-
-    if res.empty?
-      [nil, "Aucun film ne correspond à la référence #{fref}"]
-    else
-       balises = res.collect do |hfilm|
-        lien_fiche = hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_blank')
-        {value: "FILM[#{hfilm[:film_id]}]", after: " (#{lien_fiche})"}
-      end
-      [balises, "Nombre de films trouvés : #{balises.count}"]
-    end
-  end
-
-  def give_balise_of_scenodico mot_ref
-    site.require_objet 'scenodico'
-    res = Scenodico::table_mots.select(where:"mot LIKE '%#{mot_ref}%'", nocase: true, colonnes:[:mot]).values
-    if res.empty?
-      [nil, "Aucun mot n'a été trouvé correspondant à `#{mot_ref}`."]
-    else
-      balises = res.collect do |hmot|
-        {value: "MOT[#{hmot[:id]}|#{hmot[:mot].downcase}]"}
-      end
-      [balises, "Nombre de mots trouvés : #{balises.count}"]
-    end
-  end
-
-  def give_balise_of_livre livre_ref
-    site.require_objet 'cnarration'
-
-    livre_ref = livre_ref.downcase
-
-    suf_lien, livre_id = case livre_ref
-    when /structure/  then ["la_structure", 1]
-    when /personnage/ then ["les_personnages", 2]
-    when /dynamique/  then ["la_dynamique_narrative", 3]
-    when /(theme|thème|thematique)/ then ["la_thematique", 4]
-    when /document/   then ["les_documents", 5]
-    when /(travail|auteur)/   then ["le_travail_de_lauteur", 6]
-    when /(procédé|procede)/  then ["les_procedes", 7]
-    when /(concept|theorie)/  then ["les_concepts_narratifs", 8]
-    when /dialogue/   then ["le_dialogue", 9]
-    when /analyse/    then ["lanalyse_de_films", 10]
-    else
-      [nil, "Impossible de trouver le lien pour le livre incconu #{livre_ref}"]
-    end
-
-    # Livre introuvable
-    return [nil, livre_id] if suf_lien.nil?
-
-    # Lien inexistant
-    unless Lien.instance.respond_to?("livre_#{suf_lien}".to_sym)
-      return [nil, "`lien` ne répond pas à la méthode `livre_#{suf_lien}`, il y a un problème d'implémentation à régler avec la référence `#{livre_ref}`."]
-    end
-
-    lien_tdm = "Table des matières".in_a(href:"livre/#{livre_id}/tdm?in=cnarration")
-    [[{value:"lien.livre_#{suf_lien}", after: lien_tdm}], ""]
   end
 
 end #/Console

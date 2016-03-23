@@ -6,6 +6,15 @@ class SiteHtml
 class Admin
 class Console
 
+  # Chargement d'un module application
+  # Note : C'est un dossier qui doit se trouver dans le dossier
+  # ./lib/app/console/
+  # @usage : console.load('NOM_DOSSIER')
+  def require folder_name
+    (folder_app + folder_name).require
+  end
+  alias :load :require
+
   # Le nouveau code qui sera affiché dans la console
   def new_code
     @new_code.join("\n") + "\n"

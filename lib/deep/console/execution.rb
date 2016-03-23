@@ -26,6 +26,10 @@ class Console
 
     all_results = Array::new
 
+    # Il faut charger les exécutions de commandes propres
+    # à l'application.
+    console.require 'execution_commandes.rb'
+
     lines.each do |line|
 
       next if line.strip.start_with?('#')
@@ -132,123 +136,17 @@ class Console
       read_debug
     when 'destroy debug', 'kill debug'
       destroy_debug
-    when /liste? films/
-      site.require_objet 'analyse'
-      FilmAnalyse::films_in_table
-    when /liste? filmodico/
-      site.require_objet 'filmodico'
-      Filmodico::films_in_table
-    when "unan points"
-      unan_affiche_points_sur_lannee
-
     when /vider? table paiements?/
       vide_table_paiements
     when /(remove|détruire|kill) table paiements?/
       remove_table_paiements
-
-    when /(nouvelle|new) page narration/
-      goto_nouvelle_page_narration
-
-    # ---------------------------------------------------------------------
-    #   UN AN UN SCRIPT
-    # ---------------------------------------------------------------------
-
-    when "unan état des lieux", "unan inventory"
-      faire_etat_des_lieux_programme
-    when "unan répare", "unan repare"
-      reparation_programme_unan
-    when "unan affiche (table pages cours)"
-      afficher_table_pages_cours
-    when "unan backup data (table pages cours)"
-      backup_data_pages_cours
-    when "unan destroy (table pages cours)"
-      detruire_table_pages_cours
-    when "unan retreive data (table pages cours)"
-      retreive_data_pages_cours
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table exemples)"
-      afficher_table_exemples
-    when "unan backup data (table exemples)"
-      backup_data_exemples
-    when "unan destroy (table exemples)"
-      detruire_table_exemples
-    when "unan retreive data (table exemples)"
-      retreive_data_exemples
-
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table absolute pdays)"
-      afficher_table_absolute_pdays
-    when "unan backup data (table absolute pdays)"
-      backup_data_absolute_pdays
-    when "unan destroy (table absolute pdays)"
-      detruire_table_absolute_pdays
-    when "unan retreive data (table absolute pdays)"
-      retreive_data_absolute_pdays
-
-    when "unan affiche (table absolute works)"
-      afficher_table_absolute_works
-    when "unan backup data (table absolute works)"
-      backup_data_absolute_works
-    when "unan destroy (table absolute works)"
-      detruire_table_absolute_works
-    when "unan retreive data (table absolute works)"
-      retreive_data_absolute_works
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table projets)"
-      afficher_table_projets
-    when "unan backup data (table projets)"
-      backup_data_projets
-    when "unan destroy (table projets)"
-      detruire_table_projets
-    when "unan retreive data (table projets)"
-      retreive_data_projets
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table programs)"
-      afficher_table_programs
-    when "unan backup data (table programs)"
-      backup_data_programs
-    when "unan destroy (table programs)"
-      detruire_table_programs
-    when "unan retreive data (table programs)"
-      retreive_data_programs
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table questions)"
-      afficher_table_questions
-    when "unan backup data (table questions)"
-      backup_data_questions
-    when "unan destroy (table questions)"
-      detruire_table_questions
-    when "unan retreive data (table questions)"
-      retreive_data_questions
-
-    # ---------------------------------------------------------------------
-
-    when "unan affiche (table quiz)"
-      afficher_table_quiz
-    when "unan backup data (table quiz)"
-      backup_data_quiz
-    when "unan destroy (table quiz)"
-      detruire_table_quiz
-    when "unan retreive data (table quiz)"
-      retreive_data_quiz
-
-    # ---------------------------------------------------------------------
-
+    # GELS
     when "list gels"
       affiche_liste_des_gels
 
     else
-      nil # pour essayer autrement
+      # Méthodes propres à l'application
+      app_execute_as_is line
     end
   end
 
@@ -266,23 +164,10 @@ class Console
 
   # On analyse la ligne comme une expression régulière connue
   def execute_as_regular_sentence line
-    if (found = line.match(/^balise (livre|film|mot|user) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
-      ( main_traitement_balise found[1..-1] )
-    elsif (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
+    if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
       Taches::create_tache found[3].freeze
-    elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
-      # Pour faire des tests avec Benoit à un PDay particulier
-      # @exemple : set benoit to pday 5 with {rythme:4}
-      (site.folder_lib_optional + 'console/pday_change/main.rb').require
-      pday_indice = found[1].to_i
-      params = found[2]
-      params = eval(params) unless params.nil?
-      # debug "--> User::get(2).change_pday(pday_indice=#{pday_indice}, params=#{params.inspect})"
-      site.require_objet 'unan'
-      Unan::require_module 'quiz'
-      User::get(2).change_pday pday_indice, params
     else
-      return false
+      app_execute_as_regular_sentence line
     end
   end
 
@@ -318,22 +203,14 @@ class Console
       ( vide_table_of_database last_word )
     when 'kill table', 'destroy table'
       ( destroy_table_of_database last_word )
-    when 'unan new', 'unan nouveau', 'unan nouvelle'
-      ( goto_section "unan_new_#{last_word}" )
-    when 'unan init program for'
-      ( init_program_1an1script_for last_word )
-    when 'detruire programmes de'
-      ( detruire_programmes_de last_word )
     when 'affiche table'
       ( montre_table last_word )
     when 'gel'
       ( gel last_word )
     when 'degel'
       ( degel last_word )
-    when 'pages narration niveau'
-      ( liste_pages_narration_of_niveau last_word )
     else
-      nil
+      app_execute_as_last_is_variable sentence, last_word
     end
   end
 

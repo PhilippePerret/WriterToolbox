@@ -7,7 +7,7 @@ raise_unless_admin
 <textarea id="console" name="console" onreturn="this.form.submit()"><%= console.new_code %></textarea>
 </form>
 
-<%= console.output.nil_if_empty || "Penser à utiliser `aide &lt;sujet&gt;` pour obtenir de l'aide sur un sujet.".in_span(class:'tiny') %>
+<%= console.output.nil_if_empty || "Penser à utiliser `aide &lt;sujet&gt;` pour obtenir de l'aide sur un sujet, `aide sujets` pour obtenir la liste des sujets.".in_span(class:'tiny') %>
 <div id="special_output"><%= console.special_output %></div>
 
 <div class="right">
