@@ -31,6 +31,7 @@ bouton_edit = "Édit".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_ed
 bouton_show = "Show".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_show', this)()")
 bouton_init = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'reset_all')();return false")
 
+# Premier chiffre des `options`
 values_type_select = [
   ['1', "Page"],
   ['2', "Sous-chapitre"],
@@ -38,12 +39,7 @@ values_type_select = [
   ['5', "Texte type"]
 ]
 
-=begin
-Rappel :
-  1       Tout juste créée
-  9      Achevée
-=end
-
+# Deuxième chiffres des `options`
 values_niveau_developpement_select = Cnarration::NIVEAUX_DEVELOPPEMENT.collect do |nid, ndata|
   [nid.to_s, ndata[:hname]]
 end

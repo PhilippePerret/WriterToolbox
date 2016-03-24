@@ -1,8 +1,6 @@
 # encoding: UTF-8
 class Filmodico
 
-  extend MethodesMainObjets
-
   class << self
 
     DATA_ONGLETS = {

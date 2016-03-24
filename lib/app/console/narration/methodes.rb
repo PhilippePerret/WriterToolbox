@@ -13,6 +13,20 @@ class SiteHtml
 class Admin
 class Console
 
+  # Méthode générale fonctionnelle permettant d'obtenir une
+  # page en fonction de la référence donnée qui peut être
+  # l'ID (nombre) de la page ou une portion de son titre.
+  # Si plusieurs choix possibles, ils sont tous retournés
+  # @RETURN : {Array} d'identifiant, même s'il n'y en a qu'un
+  def pages_ids_from_page_ref page_ref
+    if page_ref.numeric?
+      return [page_ref.to_i]
+    else
+      site.require_objet 'cnarration'
+      Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", nocase: true, colonnes:[]).keys
+    end
+  end
+
   # Méthode retournant la balise pour se rendre à la table
   # des matières du livre de référence +livre_ref+
   def give_balise_of_livre livre_ref
@@ -63,6 +77,24 @@ class Console
     redirect_to 'page/edit?in=cnarration'
     ""
   end
+
+  def edit_page_narration page_ref
+    pages_ids = pages_ids_from_page_ref page_ref
+    debug "pages_ids: #{pages_ids.inspect}"
+    if pages_ids.count == 1
+      redirect_to "page/#{pages_ids.first}/edit?in=cnarration"
+    else
+      site.require_objet 'cnarration'
+      hpages = Cnarration::table_pages.select(where:"id IN (#{pages_ids.join(', ')})", colonnes:[:titre, :livre_id])
+      propositions = hpages.collect do |pid, pdata|
+        "#{pdata[:titre]} (livre ##{pdata[:livre_id]})".in_a(href:"page/#{pid}/edit?in=cnarration").in_li
+      end.join.in_ul(class:'tdm')
+      sub_log "Plusieurs pages de référence `#{page_ref}` ont été trouvées :".in_h3
+      sub_log propositions
+    end
+    return ""
+  end
+
 
 
 end #/Console

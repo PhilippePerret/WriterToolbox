@@ -67,6 +67,7 @@ class << self
 
     return sortie
   end
-end # /<< self
-end #/ Admin
-end #/ Cnarration
+
+end #/<<self
+end #/Admin
+end #/Cnarration

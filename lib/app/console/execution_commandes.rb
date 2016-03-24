@@ -19,8 +19,11 @@ class Console
     when /(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration
-    # PROGRAMME UN AN UN SCRIPT
+    when /^edit page narration (.*?)$/
+      console.require 'narration'
+      edit_page_narration line.downcase.sub(/^edit page narration /, '')
     when /^unan /
+      # PROGRAMME UN AN UN SCRIPT
       console.require 'unan_unscript'
       case line.downcase
       when "unan points"

@@ -9,7 +9,13 @@ case param(:operation)
   # Rappel : Les opérations ci-dessous doivent obligatoirement
   # retourner le code à écrire dans la page.
 when 'check_pages_out_tdm'
-  Cnarration::Admin::check_pages_out_tdm
+  debug "-> check_pages_out_tdm"
+  Cnarration::require_module 'admin/check_pages_out_tdm'
+  if Cnarration::Admin.respond_to?(:check_pages_out_tdm)
+    Cnarration::Admin::check_pages_out_tdm
+  else
+    error "Cnarration::Admin ne répond pas à :check_pages_out_tdm…"
+  end
 else ""
 end
 %>

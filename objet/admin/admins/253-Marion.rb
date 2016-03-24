@@ -18,7 +18,7 @@ class Cnarration
           (
             btns_page_edition(hpage, 7) +
             hpage[:titre]
-          ).in_option(value: hpage[:id], class:'hover')
+          ).in_li(value: hpage[:id], class:'hover')
         end.join.in_ul(class: 'tdm')
       end
     end

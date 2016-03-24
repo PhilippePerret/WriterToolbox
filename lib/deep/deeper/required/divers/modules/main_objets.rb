@@ -39,14 +39,25 @@ module MethodesMainObjets
   end
 
 
-  # Permet de requérir tout ce que contient un dossier du
-  # dossier des modules qui doit se trouver dans le dossier
-  # lib/module de l'objet. Par exemple, si l'objet est "analyse",
-  # le module à requérir doit se trouver dans :
-  #   ./objet/analyse/lib/module/-ici-
-  # Requérir un dossier du dossier .objet/analyse/lib/module
+  # Permet de requérir :
+  #   * Si c'est un dossier : tout ce que contient le dossier
+  #     du dossier des modules qui doit se trouver dans le dossier
+  #     lib/module de l'objet. Par exemple, si l'objet est "analyse",
+  #     le module à requérir doit se trouver dans :
+  #       ./objet/<objet courant>/lib/module/-ici-
+  #   * Si c'est un fichier : le fichier lui-même, qui doit se
+  #     trouver dans ./objet/<objet courrant>/lib/module/
+  #     Dans ce cas, +module_name+ peut être soit le path relatif
+  #     avec ou sans extension.
   def require_module module_name
-    site.require_all_in (folder_modules + module_name)
+    ptest = (folder_modules + module_name)
+    if ptest.exist? && ptest.folder?
+      site.require_all_in ptest
+    else
+      # Un simple fichier module
+      ptest = (folder_modules + "#{module_name}.rb") unless ptest.exist?
+      ptest.require
+    end
   end
 
   # Le dossier contenant les modules

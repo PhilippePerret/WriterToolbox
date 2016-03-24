@@ -1,13 +1,14 @@
 # encoding: UTF-8
 raise_unless_admin
-raise "Section interdite" unless user.admin?
-
+# require 'yaml'
+alias :top_require :require
 class SiteHtml
 class Admin
 class Console
 
+
   def affiche_aide_for sujet
-    require 'yaml'
+    top_require 'yaml'
 
     # Cas spécial quand +sujet+ = "sujets", on veut obtenir la
     # liste de tous les sujets qui existent. On les trouve dans
@@ -18,7 +19,7 @@ class Console
     else
       hdata = YAML::load_file( _("help.yml") )
       unless hdata.has_key?(sujet.to_s)
-        hdata = YAML::load_file( _("help_app.yml") )
+        hdata = YAML::load_file( (console.folder_app + "help_app.yml").to_s )
       end
       if hdata.has_key?(sujet.to_s)
         @iclosedpart = 1
