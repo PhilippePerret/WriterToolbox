@@ -4,25 +4,6 @@ raise_unless_admin
 %>
 <%= Cnarration::titre_h1("Aide administration") %>
 
-<%=
-case param(:operation)
-  # Rappel : Les opérations ci-dessous doivent obligatoirement
-  # retourner le code à écrire dans la page.
-when 'check_pages_out_tdm'
-  error "Obsolète, utiliser `check pages narration out` dans la console"
-else ""
-end
-%>
-
-<h3>Pages des cours</h3>
-
-<fieldset>
-  <legend>Outils pour les pages</legend>
-  <div>
-    <span>Pour vérifier que toutes les pages “physiques” (pages markdown) sont bien consignées dans la table des matières d'au moins un livre : `check pages narration out` en console.</span>
-  </div>
-</fieldset>
-
 <p>
   Les pages de cours de la collection Narration sont reprises (pour le moment) de la version MD de la collection, mais sont transformées en pages Markdown/Kramdown pour être ensuite transformées en fichier semi-dynamiques ERB.
 </p>

@@ -3,3 +3,15 @@
 raise_unless_admin
 %>
 <%= Cnarration::titre_h1("Administration") %>
+
+<%= "Fonctionnement".in_a(href:'admin/fonctionnement?in=cnarration') %>
+<%= "Aide".in_a(href:"admin/aide?in=cnarration") %>
+
+<h3>Pages des cours</h3>
+
+<fieldset>
+  <legend>Outils pour les pages</legend>
+  <div>
+    <span>Pour vérifier que toutes les pages “physiques” (pages markdown) sont bien consignées dans la table des matières d'au moins un livre : `check pages narration out` en console.</span>
+  </div>
+</fieldset>

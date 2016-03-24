@@ -11,7 +11,7 @@ class Console
     redirection = case section_name
     when "accueil", "home"          then '/'
     when 'forum'                    then 'forum/home'
-    when /(admin|dashboard)/        then 'admin/dashboard'
+    when /^(admin|dashboard)$/      then 'admin/dashboard'
     else
       # On essaie les directions de l'application
       console.require('optional/goto_methods.rb')

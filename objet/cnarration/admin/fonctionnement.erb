@@ -1,0 +1,11 @@
+<%
+# Page décrivant le fonctionnement de la collection Narration
+raise_unless_admin
+%>
+<%= Cnarration::titre_h1("Fonctionnement") %>
+<%=
+  site.require_module 'kramdown'
+  p = _('fonctionnement.md', __FILE__)
+  flash(p.inspect)
+  SuperFile::new(p).kramdown unless p.nil?
+%>

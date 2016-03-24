@@ -15,7 +15,7 @@ class Console
     when "nouveau_film"             then 'filmodico/edit'
     when "analyses", "analyse"      then 'analyse/home'
     when /^c?narration$/            then 'cnarration/home'
-    when /^(dashboard|admin) c?narration$/      then 'admin/dashboard?in=cnarration'
+    when /^(dashboard|admin) c?narration$/    then 'admin/dashboard?in=cnarration'
     when 'new_page_narration'       then 'page/edit?in=cnarration'
     # Pour les livres, cf. ci-dessous, ils sont tous traités
     # en même temps

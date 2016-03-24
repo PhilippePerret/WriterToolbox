@@ -22,9 +22,9 @@ class Cnarration
       donglets.merge!(DATA_ONGLETS)
       if user.admin?
         donglets.merge!(
-          "New page"      => "page/edit?in=cnarration",
-          "[Aide admin]"  => "admin/aide?in=cnarration",
-          "Synchro"       => "cnarration/synchro"
+          "New page"          => "page/edit?in=cnarration",
+          "[ADMINISTRATION]"  => "admin/dashboard?in=cnarration",
+          "Synchro"           => "cnarration/synchro"
           )
       end
       donglets
