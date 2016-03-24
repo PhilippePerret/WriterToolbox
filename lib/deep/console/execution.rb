@@ -131,20 +131,13 @@ class Console
       ::Console::Aide::analyse
 
     # ---------------------------------------------------------------------
-    when 'check synchro'
-      check_synchro
-    when 'read debug', 'show debug'
-      read_debug
-    when 'destroy debug', 'kill debug'
-      destroy_debug
-    when /vider? table paiements?/
-      vide_table_paiements
+    when 'check synchro'            then check_synchro
+    when /(read|show|affiche|afficher) debug/ then read_debug
+    when /(destroy|kill) debug/     then destroy_debug
+    when /vider? table paiements?/  then vide_table_paiements
     when /(remove|détruire|kill) table paiements?/
       remove_table_paiements
-    # GELS
-    when "list gels"
-      affiche_liste_des_gels
-
+    when /liste? gels?/               then affiche_liste_des_gels
     else
       # Méthodes propres à l'application
       app_execute_as_is line
@@ -167,6 +160,9 @@ class Console
   def execute_as_regular_sentence line
     if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
       Taches::create_tache found[3].freeze
+    elsif (found = line.match(/^(?:show|goto|go to|aller) (.*)$/).to_a).count > 0
+      flash "last_word: `#{found[1]}`"
+      ( goto_section found[1].strip )
     else
       app_execute_as_regular_sentence line
     end
@@ -190,8 +186,6 @@ class Console
     case sentence
     when 'help', 'aide'
       ( affiche_aide_for last_word )
-    when 'show', 'goto', 'aller'
-      ( goto_section last_word )
     when 'finir tache', 'finir task', 'end task'
       ( Taches::marquer_tache_finie last_word )
     when 'detruire tache', 'destroy task', 'destroy tache', 'kill task', 'kill tache'

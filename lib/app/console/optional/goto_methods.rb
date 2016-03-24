@@ -6,6 +6,7 @@ class Admin
 class Console
 
   def app_goto_section section_name
+    section_name = section_name.strip
     redirection = case section_name
     when "sceno", "scenodico"       then 'scenodico/home'
     when "dico", "dictionnaire"     then 'scenodico/list'
@@ -13,7 +14,8 @@ class Console
     when "filmo", "filmodico"       then 'filmodico/home'
     when "nouveau_film"             then 'filmodico/edit'
     when "analyses", "analyse"      then 'analyse/home'
-    when "narration", "cnarration"  then 'cnarration/home'
+    when /^c?narration$/            then 'cnarration/home'
+    when /^(dashboard|admin) c?narration$/      then 'admin/dashboard?in=cnarration'
     when 'new_page_narration'       then 'page/edit?in=cnarration'
     # Pour les livres, cf. ci-dessous, ils sont tous traités
     # en même temps

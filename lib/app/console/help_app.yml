@@ -61,6 +61,7 @@ narration:
     note: |
       On peut utiliser :
         <ul class='small'>
+          <li>goto|aller admin narration : Administration de la collection</li>
           <li>goto|aller narration : accueil</li>
           <li>goto|aller new_page_narration : formulaire de nouvelle page</li>
           <li>goto|aller livres_narration : liste des livres</li>
@@ -72,8 +73,7 @@ narration:
   -
     command:        check|vérifier pages narration out
     description: |
-      Vérifie que toutes les pages physiques (fichiers) de la collection narration se trouvent bien consignées dans la base de données `cnarration.db` et le cas échéant liste les fichiers qui ne s'y trouvent pas.<br>
-      Vérifie également que tous les enregistrements dans la base de données (donc toutes les pages et tous les titres) soient bien enregistrés dans la tdm d'un livre.
+      Vérifie 1/ que toutes les fichiers physiques (fichiers) sont consignés dans la DB et 2/ que tous les enregistrements de pages et de titres sont utilisés dans les livres.
   -
     command:        pages narration niveau &lt;niveau&gt;
     description:    |

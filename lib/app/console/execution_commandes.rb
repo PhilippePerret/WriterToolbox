@@ -19,7 +19,7 @@ class Console
     when /(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration
-    when /^edit page narration (.*?)$/
+    when /^(edit|éditer) page narration (.*?)$/
       console.require 'narration'
       edit_page_narration line.downcase.sub(/^edit page narration /, '')
     when /^(check|vérifier) pages narration out$/
