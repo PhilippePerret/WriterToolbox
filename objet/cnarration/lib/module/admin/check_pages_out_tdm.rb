@@ -26,7 +26,7 @@ class << self
       raise "livre_id inconnu pour #{livre_name}" if livre_id.nil?
 
       # On écrit le titre du livre
-      titre_id_livre = "Livre #{livre_name} (##{livre_id})".in_p
+      titre_id_livre = "Livre #{livre_name} (##{livre_id})".in_div(class:'underline')
       full_output << titre_id_livre
 
       # Pour les erreurs de ce livre
@@ -39,9 +39,18 @@ class << self
         page_is_in = Cnarration::table_pages.count(where:"livre_id = #{livre_id} AND handler = '#{page_handler}'") > 0
         page_is_out = !page_is_in
 
+
         if page_is_out
+          # La page physique peut ne pas exister pour le livre, mais peut avoir été
+          # enregistrée quand même (sans avoir été associée à un livre, ce qui est une erreur)
+          # Dans ce cas-là, on signale juste que la page n'est pas dans le livre auquel elle devrait appartenir.
+          record_existe = Cnarration::table_pages.count(where:"handler = '#{page_handler}'") > 0
           nombre_erreurs += 1
-          errs_output << "Handler : #{page_handler}".in_div
+          if record_existe
+            errs_output << "Handler : #{page_handler} (MAIS DÉJÀ CONSIGNÉE OK => AJOUTER AU LIVRE)".in_div
+          else
+            errs_output << "Handler : #{page_handler}".in_div
+          end
         end
 
         mark_in = page_is_in ? "OK" : "INCONNUE"
@@ -55,14 +64,95 @@ class << self
       end
     end
 
+    # ---------------------------------------------------------------------
+    #   CONTROLE DE L'APPARTENANCE À DES TDM DE LIVRE
+    # ---------------------------------------------------------------------
+    # Nombre de page ou titre non attribués à des livres
+    # ou hors table des matières
+    nombre_total_record_out_tdm = 0
+
+    # Note : prendre en compte le fait qu'un élément peut se trouver
+    # dans un livre, mais pas être classé dans la table des matières
+    # de ce livre.
+
+    # On récupère les TDM de tous les livres
+
+    # Liste de tous les IDs se trouvant dans les tables des
+    # matières.
+    liste_all_ids_titres_et_pages = Array::new
+    Cnarration::LIVRES.each do |bid, bd|
+      Cnarration::table_tdms.select(where:"id = #{bid}").each do |bid, bdata|
+        liste_all_ids_titres_et_pages += bdata[:tdm]
+      end
+    end
+    # debug "liste_all_ids_titres_et_pages: #{liste_all_ids_titres_et_pages.inspect}"
+
+    liste_pages_hors_livres = Array::new
+    liste_pages_hors_tdm    = Array::new
+    Cnarration::table_pages.select(colonnes:[:titre, :livre_id, :options]).each do |pid, pdata|
+      ptype = (pdata[:options][0]=="1" ? "page" : "titre")
+      if pdata[:livre_id].nil? || pdata[:livre_id] == 0
+        # => Page ou titre qui n'appartient pas à un livre
+        liste_pages_hors_livres << {id: pid, type: ptype, titre: pdata[:titre]}
+        nombre_total_record_out_tdm += 1
+      else
+        # La page/titre appartient bien à un livre, il faut vérifier qu'il/elle
+        # soit bien classé/e
+        unless liste_all_ids_titres_et_pages.include? pid
+          # => La page/titre est inconnu de la table des matières
+          # du livre auquel il appartient
+          nombre_total_record_out_tdm += 1
+          liste_pages_hors_tdm << {id: pid, type: ptype, titre: pdata[:titre], livre_id: pdata[:livre_id]}
+        end
+      end
+    end
+
+
+    # ---------------------------------------------------------------------
+    #   RAPPORT
+    # ---------------------------------------------------------------------
+
     sortie = ""
     if nombre_total_erreurs > 0
-      sortie << "<h3>ERREURS RENCONTRÉES</h3>"
+      sortie << "1. PAGES PHYSIQUES NON DATABASÉES".in_h3(class:'underline')
+      sortie << "Nombre de fichiers physiques à enregistrer : #{nombre_total_erreurs}"
       sortie << full_err_ouput
     else
-      sortie << "Aucune page narration “out” n'a été trouvée."
+      sortie << "Aucun fichier physique narration “hors database” n'a été trouvée. C'est-à-dire que tous les fichiers physiques sont consignés dans la base `cnarration.db`."
     end
-    sortie << "<h3>Rapport complet (#{nombre_total_pages} pages)</h3>"
+
+
+    sortie << "2. TITRES OU PAGES HORS TDM DE LIVRE".in_h3(class:'underline')
+    if nombre_total_record_out_tdm > 0
+      sortie << "(La liste ci-dessous présente tous les enregistrements qui ne sont utilisés par aucune tdm de livre. Il faut <strong>distinguer le cas</strong> d'une page qui appartient à un livre MAIS n'est pas placée dans sa table des matières d'une page qui n'appartient à aucun livre. Pour corriger le problème, il suffit d'éditer la page, de l'attribuer à un livre, puis d'éditer la TdM du livre pour placer la page.)".in_div(class:'tiny')
+
+      sortie << "2.1 Pages ou titre hors livres (#{liste_pages_hors_livres.count})".in_h4
+      if liste_pages_hors_livres.count > 0
+        sortie << "(Ces pages doivent être ajoutées aux livres — cf. les pages physiques non databasées pour trouver peut-être leur livre)".in_div(class:'tiny')
+        sortie << (
+          liste_pages_hors_livres.collect do |hpage|
+            hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration").in_div
+          end.join('')
+        )
+      end
+
+      sortie << "2.2 Pages ou titres hors tables des matières (#{liste_pages_hors_tdm.count})".in_h4
+      if liste_pages_hors_tdm.count > 0
+        sortie << "(ces pages ou titres, qui appartiennent à des livres, doivent être placées dans les tables des matières de ces livres)".in_div(class:'tiny')
+        sortie << (
+          liste_pages_hors_tdm.collect do |hpage|
+            lien_edit_page  = hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration")
+            lien_edit_tdm   = "Éditer Tdm livre".in_a(href:"livre/#{hpage[:livre_id]}/edit?in=cnarration")
+            ( "#{lien_edit_page} (#{lien_edit_tdm})" ).in_div
+          end.join('')
+        )
+      end
+
+    else
+      sortie << "Tous les titres et pages se trouvent bien classés dans les tables des matières des livres.".in_p
+    end
+
+    sortie << "<h3>RAPPORT COMPLET (#{nombre_total_pages} pages)</h3>"
     sortie << full_output
 
     return sortie

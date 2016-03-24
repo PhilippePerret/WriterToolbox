@@ -95,7 +95,17 @@ class Console
     return ""
   end
 
-
+  # Vérifie les pages physiques de narration qui ne se trouvent pas dans
+  # la table.
+  # Vérifie aussi que chaque enregistrement dans la table se trouve
+  # bien dans une table des matières.
+  # Produit le rapport complet et l'affiche dans le sub-log.
+  def check_pages_narration_out_tdm
+    site.require_objet 'cnarration'
+    Cnarration::require_module 'admin/check_pages_out_tdm'
+    sub_log Cnarration::Admin::check_pages_out_tdm
+    return ""
+  end
 
 end #/Console
 end #/Admin

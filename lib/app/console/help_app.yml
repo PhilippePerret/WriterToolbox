@@ -70,6 +70,11 @@ narration:
     command:        nouvelle|new page narration
     description:    Conduit au formulaire pour créer une nouvelle page
   -
+    command:        check|vérifier pages narration out
+    description: |
+      Vérifie que toutes les pages physiques (fichiers) de la collection narration se trouvent bien consignées dans la base de données `cnarration.db` et le cas échéant liste les fichiers qui ne s'y trouvent pas.<br>
+      Vérifie également que tous les enregistrements dans la base de données (donc toutes les pages et tous les titres) soient bien enregistrés dans la tdm d'un livre.
+  -
     command:        pages narration niveau &lt;niveau&gt;
     description:    |
       Affiche les pages dont le niveau de développement correspond à &lt;niveau&gt;.

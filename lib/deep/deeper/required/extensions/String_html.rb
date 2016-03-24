@@ -107,6 +107,7 @@ class String
   def in_h1       attrs = nil;  html_balise 'h1',       attrs end
   def in_h2       attrs = nil;  html_balise 'h2',       attrs end
   def in_h3       attrs = nil;  html_balise 'h3',       attrs end
+  def in_h4       attrs = nil;  html_balise 'h4',       attrs end
   def in_h niv;   attrs = nil;  html_balise "h#{niv}",  attrs end
   def in_div      attrs = nil;  html_balise 'div',      attrs end
   def in_pre      attrs = nil;  html_balise 'pre',      attrs end
@@ -124,7 +125,7 @@ class String
   def in_dl       attrs = nil;  html_balise 'dl',       attrs end
   def in_dt       attrs = nil;  html_balise 'dt',       attrs end
   def in_dd       attrs = nil;  html_balise 'dd',       attrs end
-  
+
   # On peut passer des query-strings par :
   #   query_string: "var=val&var=val etc."
   #   query_string: {var: val, var: val etc.}

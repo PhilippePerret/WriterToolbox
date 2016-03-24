@@ -22,6 +22,9 @@ class Console
     when /^edit page narration (.*?)$/
       console.require 'narration'
       edit_page_narration line.downcase.sub(/^edit page narration /, '')
+    when /^(check|vérifier) pages narration out$/
+      console.require 'narration'
+      check_pages_narration_out_tdm
     when /^unan /
       # PROGRAMME UN AN UN SCRIPT
       console.require 'unan_unscript'
