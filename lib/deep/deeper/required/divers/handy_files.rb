@@ -25,7 +25,7 @@ def _( relpath, base = nil )
     end
     error "Impossible de trouver le fichier relatif `#{relpath}`…"
     if user.admin?
-      error "Pour palier ce problème, essayer de transmettre un second argument `__FILE__` à la méthode `_`. Si l'appel se fait depuis un fichier ERB, c'est obligatoire."
+      error "Pour palier ce problème, essayer de transmettre un second argument `__FILE__` à la méthode `_`. Noter que l'appel ne peut pas se faire depuis une vue ERB."
     end
     return nil # non trouvé
   else

@@ -17,10 +17,14 @@ class Page
       return (error "Il faut choisir l'ID de la page à éditer.") if page_id.nil?
       flash "Édition de la page #{param(:epage)[:id]}"
     end
+
+    # Sauve la page courante et retourne l'instance
     def save_page
       ipage = new()
       ipage.save
+      return ipage
     end
+    
     def page_id
       @page_id ||= param(:epage)[:id].nil_if_empty.to_i_inn
     end

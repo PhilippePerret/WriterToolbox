@@ -16,9 +16,12 @@ class Console
     when /liste? filmodico/
       site.require_objet 'filmodico'
       Filmodico::films_in_table
-    when /(nouvelle|new) page narration/
+    when /^(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration
+    when /^(creer|create) (page|chapitre|chap|sous-chapitre|schap|sous_chapitre) narration (.*?)$/
+      console.require 'narration'
+      creer_page_ou_titre_narration line.downcase.sub(/^(creer|create) /,'')
     when /^(edit|éditer) page narration (.*?)$/
       console.require 'narration'
       edit_page_narration line.downcase.sub(/^edit page narration /, '')

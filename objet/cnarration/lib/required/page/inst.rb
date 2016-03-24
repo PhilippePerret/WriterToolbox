@@ -14,6 +14,7 @@ class Page
   # l'administrateur qui visite, on le crée.
   def create_page
     return unless user.admin?
+    return if path.exist?
     (path.write "<!-- Page: #{titre} -->\n\n")
   end
 

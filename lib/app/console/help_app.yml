@@ -56,6 +56,24 @@ narration:
     note: |
       Si plusieurs pages correspondent à la référence, la commande retourne une liste des pages avec leur titre et un lien permettant de les éditer.
   -
+    command:        creer|create page narration in[LIVRE_REF] handler[REL/PATH] titre[LE TITRE]
+    description: |
+      Créer la page dans le livre LIVRE_REF (id ou dossier) avec le path relatif REL/PATH et le titre donné.
+    note: |
+      On peut ajouter aussi `description[...]` pour la description et `after[ID_PAGE]` pour définir après quelle page mettre cette page.
+  -
+    command:        creer|create chapitre narration in[LIVRE_REF] titre[TITRE CHAPITRE]
+    description: |
+      Créer le chapitre de titre donné.
+    note: |
+      le LIVRE_REF est le nom du dossier ou l'ID du livre. Noter que la commande
+      produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
+  -
+    command:        creer|create sous-chapitre narration in[LIVRE_REF] titre[TITRE SOUS-CHAPITRE]
+    description:    Créer le sous-chapitre dans le livre donné en référence (nom dossier ou id).
+    note: |
+      Noter que la commande produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
+  -
     command:        goto|aller &lt;destination&gt;
     description:    Rejoindre une section de la collection narration. cf. ci-dessous les valeurs possibles.
     note: |
