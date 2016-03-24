@@ -10,7 +10,7 @@ class Console
   # ---------------------------------------------------------------------
   # Méthodes de récupération des données
   # (qui ont été backupées dans des PStores)
-  def retreive_data_pages_cours
+  def retreive_data_table_pages_cours
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -20,7 +20,7 @@ class Console
     retreive_data_from_all( 'unan_cold.db', 'page_cours', proc_modif )
   end
 
-  def retreive_data_exemples
+  def retreive_data_table_exemples
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -32,7 +32,7 @@ class Console
   end
   # Noter qu'il ne suffit pas de traiter les tables courantes mais
   # également celles de tous les gels…
-  def retreive_data_programs
+  def retreive_data_table_programs
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -42,7 +42,7 @@ class Console
     # La table courante
     retreive_data_from_all('unan_hot.db', 'programs', proc_modif)
   end
-  def retreive_data_absolute_works
+  def retreive_data_table_absolute_works
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -61,7 +61,7 @@ class Console
     end
     retreive_data_from_all('unan_cold.db', 'absolute_pdays', proc_modif)
   end
-  def retreive_data_projets
+  def retreive_data_table_projets
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -70,7 +70,7 @@ class Console
     end
     retreive_data_from_all('unan_hot.db', 'projets', proc_modif)
   end
-  def retreive_data_questions
+  def retreive_data_table_questions
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -80,7 +80,7 @@ class Console
     retreive_data_from_all('unan_cold.db', 'questions', proc_modif)
 
   end
-  def retreive_data_quiz
+  def retreive_data_table_quiz
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
       # NOUVELLE TABLE
@@ -220,28 +220,28 @@ class Console
   end
 
 
-  def backup_data_exemples
+  def backup_data_table_exemples
     backup_data_from_all('unan_cold.db', 'exemples')
   end
-  def backup_data_questions
+  def backup_data_table_questions
     backup_data_from_all('unan_cold.db', 'questions')
   end
-  def backup_data_quiz
+  def backup_data_table_quiz
     backup_data_from_all('unan_cold.db', 'quiz')
   end
-  def backup_data_absolute_pdays
+  def backup_data_table_absolute_pdays
     backup_data_from_all('unan_cold.db', 'absolute_pdays')
   end
-  def backup_data_pages_cours
+  def backup_data_table_pages_cours
     backup_data_from_all('unan_cold.db', 'pages_cours')
   end
-  def backup_data_programs
+  def backup_data_table_programs
     backup_data_from_all('unan_hot.db', 'programs')
   end
-  def backup_data_projets
+  def backup_data_table_projets
     backup_data_from_all('unan_hot.db', 'projets')
   end
-  def backup_data_absolute_works
+  def backup_data_table_absolute_works
     backup_data_from_all('unan_cold.db', 'absolute_works')
   end
 

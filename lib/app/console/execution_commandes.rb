@@ -21,6 +21,7 @@ class Console
       goto_nouvelle_page_narration
     # PROGRAMME UN AN UN SCRIPT
     when /^unan /
+      console.require 'unan_unscript'
       case line.downcase
       when "unan points"
         unan_affiche_points_sur_lannee
@@ -28,77 +29,30 @@ class Console
         faire_etat_des_lieux_programme
       when "unan répare", "unan repare"
         reparation_programme_unan
-      when "unan affiche (table pages cours)"
-        afficher_table_pages_cours
-      when "unan backup data (table pages cours)"
-        backup_data_pages_cours
-      when "unan destroy (table pages cours)"
-        detruire_table_pages_cours
-      when "unan retreive data (table pages cours)"
-        retreive_data_pages_cours
-      # ---------------------------------------------------------------------
-      when "unan affiche (table exemples)"
-        afficher_table_exemples
-      when "unan backup data (table exemples)"
-        backup_data_exemples
-      when "unan destroy (table exemples)"
-        detruire_table_exemples
-      when "unan retreive data (table exemples)"
-        retreive_data_exemples
-      # ---------------------------------------------------------------------
-      when "unan affiche (table absolute pdays)"
-        afficher_table_absolute_pdays
-      when "unan backup data (table absolute pdays)"
-        backup_data_absolute_pdays
-      when "unan destroy (table absolute pdays)"
-        detruire_table_absolute_pdays
-      when "unan retreive data (table absolute pdays)"
-        retreive_data_absolute_pdays
-      # ---------------------------------------------------------------------
-      when "unan affiche (table absolute works)"
-        afficher_table_absolute_works
-      when "unan backup data (table absolute works)"
-        backup_data_absolute_works
-      when "unan destroy (table absolute works)"
-        detruire_table_absolute_works
-      when "unan retreive data (table absolute works)"
-        retreive_data_absolute_works
-      # ---------------------------------------------------------------------
-      when "unan affiche (table projets)"
-        afficher_table_projets
-      when "unan backup data (table projets)"
-        backup_data_projets
-      when "unan destroy (table projets)"
-        detruire_table_projets
-      when "unan retreive data (table projets)"
-        retreive_data_projets
-      # ---------------------------------------------------------------------
-      when "unan affiche (table programs)"
-        afficher_table_programs
-      when "unan backup data (table programs)"
-        backup_data_programs
-      when "unan destroy (table programs)"
-        detruire_table_programs
-      when "unan retreive data (table programs)"
-        retreive_data_programs
-      # ---------------------------------------------------------------------
-      when "unan affiche (table questions)"
-        afficher_table_questions
-      when "unan backup data (table questions)"
-        backup_data_questions
-      when "unan destroy (table questions)"
-        detruire_table_questions
-      when "unan retreive data (table questions)"
-        retreive_data_questions
-      # ---------------------------------------------------------------------
-      when "unan affiche (table quiz)"
-        afficher_table_quiz
-      when "unan backup data (table quiz)"
-        backup_data_quiz
-      when "unan destroy (table quiz)"
-        detruire_table_quiz
-      when "unan retreive data (table quiz)"
-        retreive_data_quiz
+      when /^unan (afficher|affiche|backup data|destroy|retreive data) table (pages_cours|exemples|absolute_works|projets|absolute_pdays|programs|questions|quiz)$/
+        # Cette condition capte toutes les commandes de type :
+        # `Unan <action> table <table référence>`
+        # qui permettent d'afficher le contenu d'une table, de faire un
+        # backup, de détruire la table et de récupérer les données.
+        splitted_line = line.downcase.split(' ')
+        db_operation  = splitted_line[1]
+        table_name    = splitted_line.last
+
+        method_prefix = case db_operation
+        when /afficher?/    then "afficher"
+        when "backup"       then "backup_data"
+        when /(destroy|detruire|kill)/      then "detruire"
+        when "retreive" then "retreive_data"
+        end
+
+        # On invoque la méthode si elle existe
+        method = "#{method_prefix}_table_#{table_name}".to_sym
+        if respond_to? method
+          send(method)
+        else
+          raise "La méthode `#{method}` est inconnu… Impossible de traiter la commande."
+        end
+        return ""
       else
         nil # pour chercher la commande autrement
       end

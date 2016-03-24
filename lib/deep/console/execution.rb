@@ -29,6 +29,7 @@ class Console
     # Il faut charger les exécutions de commandes propres
     # à l'application.
     console.require 'execution_commandes.rb'
+    console.require 'common'
 
     lines.each do |line|
 
