@@ -29,9 +29,11 @@ class Console
     when 'unan_new_qcm', 'unan_new_quiz'        then 'quiz/edit?in=unan_admin'
     when 'unan_new_question'                    then 'question/edit?in=unan_admin/quiz'
     when 'unan_new_exemple'                     then 'exemple/edit?in=unan_admin'
-      if section_name.start_with?('livre_')
+    else
+      if section_name.start_with?('livre ')
+        flash "Je passe par ici"
         book_ref = section_name[6..-1].to_sym
-        require './objet/cnarration/lib/required/constants.rb'
+        top_require './objet/cnarration/lib/required/constants.rb'
         if Cnarration::SYM2ID.has_key?( book_ref )
           book_id = Cnarration::SYM2ID[book_ref]
           "livre/#{book_id}/tdm?in=cnarration"

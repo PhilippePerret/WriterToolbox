@@ -124,7 +124,7 @@ class Console
       Taches::show_liste_taches
     when /^liste? ta(che|sk)s (.+)$/
       Taches::show_liste_taches( admin: line.split(' ').last )
-    when /liste? (all|toutes) ta(che|sk)s/
+    when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
     # ---------------------------------------------------------------------
     # Toutes les aides directes
@@ -134,12 +134,12 @@ class Console
 
     # ---------------------------------------------------------------------
     when 'check synchro'            then check_synchro
-    when /(read|show|affiche|afficher) debug/ then read_debug
-    when /(destroy|kill) debug/     then destroy_debug
-    when /vider? table paiements?/  then vide_table_paiements
-    when /(remove|détruire|kill) table paiements?/
+    when /^(read|show|affiche|afficher) debug$/ then read_debug
+    when /^(destroy|kill) debug$/     then destroy_debug
+    when /^vider? table paiements?$/  then vide_table_paiements
+    when /(remove|détruire|kill) table paiements?$/
       remove_table_paiements
-    when /liste? gels?/               then affiche_liste_des_gels
+    when /^liste? gels?$/               then affiche_liste_des_gels
     else
       # Méthodes propres à l'application
       app_execute_as_is line

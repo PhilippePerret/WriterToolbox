@@ -135,6 +135,8 @@ class Console
           raise "Aucun user ne porte le pseudo #{options[:admin]}" if admin.nil?
           raise "#{admin.pseudo} n'est pas administrateur/trice" unless admin.admin?
           options[:admin] = admin.id # OK
+        else
+          admin = User::get(options[:admin].to_i)
         end
         sub_log "liste des taches de #{admin.pseudo}".in_h3
         ::Admin::Todolist::new().taches.collect do |itache|
