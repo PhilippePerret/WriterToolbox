@@ -44,35 +44,13 @@ class Console
       return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
     end
 
-    # Reçoit une chaine de données qui ressemble à :
-    #   " pour: Phil le: auj tache: Ceci est la tache à exécuter : pour voir"
-    # et retourne un Hash contenant :
-    #   {
-    #     pour: "Phil", le: "auj", tache: "Ceci est etc."
-    #   }
-    # Les clés (:pour, :le, etc.) doivent :
-    #     * ne contenir que des lettres maj/min et des chiffres
-    #     * doivent être collées aux ":"
-    #     * doivent être précédés par une espace
-    def semicolon_data_in data_str
-      # On ajoute une balise de fin "fin:" pour que l'expression
-      # régulière puisse capter le dernier élément de data_str
-      data_str = " #{data_str} fin:"
-      # Le hash de données qui sera revoyé
-      hdata = Hash::new
-      data_str.scan(/ ([a-zA-Z0-9]+)\:(.*?)(?= [a-zA-Z0-9]+\:)/).to_a.each do |paire|
-        key, value = paire
-        hdata.merge!(key.to_sym => value.freeze)
-      end
-      return hdata
-    end
 
     # Créer un nouvelle tache en partant des données string
     # +data_str+ envoyées en argument
     def create_tache data_str
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
-      data_tache = semicolon_data_in data_str
+      data_tache = Data::by_semicolon_in data_str
       data_tache.merge!(updated_at: NOW)
       itache = ::Admin::Todolist::Tache::new
       itache.instance_variable_set('@data2save', data_tache)
@@ -93,7 +71,7 @@ class Console
       raise "Cette tache est inconnue." unless itache.exist?
 
       # On transforme les données string en hash de données
-      htache = semicolon_data_in tache_data_str
+      htache = Data::by_semicolon_in tache_data_str
 
       # On fait quelques corrections et vérifications
       htache.merge!(echeance: htache.delete(:le)) if htache.has_key?(:le)
