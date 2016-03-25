@@ -15,11 +15,6 @@ class Console
   end
   alias :load :require
 
-  # Le nouveau code qui sera affiché dans la console
-  def new_code
-    @new_code.join("\n") + "\n"
-  end
-
   # Une ligne à ajouter au code exécuté, qui sera remis dans
   # la console
   def add_code line

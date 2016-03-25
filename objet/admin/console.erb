@@ -3,11 +3,21 @@
 #
 raise_unless_admin
 %>
-<form action="admin/console" method="POST" charset="UTF-8">
-<textarea id="console" name="console" onreturn="this.form.submit()"><%= console.new_code %></textarea>
-</form>
 
-<%= console.output.nil_if_empty || "Penser à utiliser `aide &lt;sujet&gt;` pour obtenir de l'aide sur un sujet, `aide sujets` pour obtenir la liste des sujets.".in_span(class:'tiny') %>
+<%
+# ---------------------------------------------------------------------
+#   LA CONSOLE
+reduite = console.special_output != ""
+%>
+<form action="admin/console" method="POST" charset="UTF-8">
+<textarea id="console" class='<%= reduite ? 'reduite' : '' %>' name="console" onreturn="this.form.submit()"><%= console.code_console %></textarea>
+</form>
+<%
+#
+# ---------------------------------------------------------------------
+%>
+
+<%= "Penser à utiliser `aide &lt;sujet&gt;` pour obtenir de l'aide sur un sujet, `aide sujets` pour obtenir la liste des sujets.".in_span(class:'tiny') %>
 <div id="special_output"><%= console.special_output %></div>
 
 <div class="right">

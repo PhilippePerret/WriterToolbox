@@ -4,12 +4,12 @@ class SiteHtml
 class Admin
 class Console
 
-  # Sortie pour afficher le résultat des opérations
-  def output
-    return "" # on ne retourne plus rien pour le moment
-    "Résultat de l'opération".in_h3 +
-    @messages.join('')
+
+  # Le nouveau code qui sera affiché dans la console
+  def code_console
+    @code_console ||= @new_code.join("\n") + "\n"
   end
+
 
   # Sortie spéciale qui ne se fait pas dans la console mais
   # en dessous. Utile pour les affichages un peu spéciaux, comme
@@ -24,6 +24,14 @@ class Console
     end
   end
   alias :sub_log :special_output
+
+  # Sortie pour afficher le résultat des opérations
+  def output
+    return "" # on ne retourne plus rien pour le moment
+    "Résultat de l'opération".in_h3 +
+    @messages.join('')
+  end
+
 
 end #/Console
 end #/Admin

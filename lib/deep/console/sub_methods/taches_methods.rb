@@ -113,7 +113,7 @@ class Console
       format_ligne = if options.has_key?(:admin)
         "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
       else
-        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny>'Pour : %{owner} - Échéance : %{echeance} — %{reste})</div>"
+        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny'>Pour : %{owner} - Échéance : %{echeance} — %{reste}</div>"
       end
 
       if task_list.count > 0
