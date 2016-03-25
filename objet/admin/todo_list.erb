@@ -2,4 +2,15 @@
 
 <%= Admin::titre_h1("Votre TODO list, #{user.pseudo}") %>
 
-<%= ::Admin::Todolist::new(admin_id: user.id).list_taches %>
+<%
+def todolist
+  @todolist ||= ::Admin::Todolist::new(admin_id: user.id)
+end
+%>
+
+<%= todolist.list_taches(true) %>
+
+
+<%= "Tâches des autres administrateurs".in_h3 %>
+
+<%= todolist.list_taches(false) %>

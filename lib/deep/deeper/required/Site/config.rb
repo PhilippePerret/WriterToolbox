@@ -57,6 +57,9 @@ class SiteHtml
   # Affichage des tâches pour un administrateur
   attr_accessor :display_taches_for_administrator
 
+  # Affichage des tâches (pastille) pour les user
+  attr_accessor :display_taches_for_user
+
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif
   def separateur_decimal; @separateur_decimal ||= "," end

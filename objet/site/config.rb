@@ -63,3 +63,8 @@ site.markdown_application = "TextMate" # "Mou"
 # Cette pastille est insérée dans la page :
 #   ./view/gabarit/header.erb
 site.display_taches_for_administrator = true
+
+# Si cette option est true, une pastille en haut à droite de
+# la page indiquera à l'user les tâches qu'il a à accomplir
+# si l'application le nécessite et le gère.
+site.display_taches_for_user = true

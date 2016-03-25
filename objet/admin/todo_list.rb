@@ -2,10 +2,6 @@
 raise_unless_admin
 Admin::require_module 'taches'
 
-def todolist
-  @todolist ||= Admin::Todolist::new()
-end
-
 def tache_id
   @tache_id ||= param(:tid).to_i_inn
 end

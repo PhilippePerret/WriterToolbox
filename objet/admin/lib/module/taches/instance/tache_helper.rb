@@ -58,6 +58,7 @@ class Tache
   end
 
   def admin_humain
+    return "" if admin_id == user.id
     @admin_humain ||= "#{admin.pseudo}".in_span(class:'owner')
   end
   def bouton_ok

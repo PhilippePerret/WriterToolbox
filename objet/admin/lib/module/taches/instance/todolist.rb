@@ -15,11 +15,36 @@ class Todolist
     @admin_id = data.delete(:admin_id)
   end
 
-  def list_taches
-    taches.collect do |tache|
-      tache.get_all
-      tache.as_li
-    end.join.in_ul(id:'taches')
+  def list_taches admin_current = true
+    if admin_current
+      liste_taches_admin_courant
+    else
+      liste_taches_autres_admins
+    end
+  end
+
+  def liste_taches_admin_courant
+    @liste_taches_admin_courant || liste_des_taches_dispatched
+    @liste_taches_admin_courant
+  end
+
+  def liste_taches_autres_admins
+    @liste_taches_autres_admins || liste_des_taches_dispatched
+    @liste_taches_autres_admins
+  end
+
+  def liste_des_taches_dispatched
+    @ladmin = Array::new
+    @lothers = Array::new
+    Admin::table_taches.select(where:'state < 9',order:"echeance ASC",colonnes:[:admin_id]).each do |tid, tdata|
+      owned_current = tdata[:admin_id] == admin_id
+      itache = Tache::new(tid)
+      itache.get_all
+      litache = itache.as_li
+      owned_current ? (@ladmin << litache) : (@lothers << litache)
+    end
+    @liste_taches_admin_courant = @ladmin.join.in_ul(class:'taches')
+    @liste_taches_autres_admins = @lothers.join.in_ul(class:'taches')
   end
 
   # Liste {Array} des instances Tache de la liste
