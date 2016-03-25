@@ -107,6 +107,21 @@ class Console
     return ""
   end
 
+
+  # Affiche en sub-log une aide indiquant les données de tous les
+  # livres, avec leur titre, leur ID et leur ID-symbolique
+  # Ça répond à `aide|help livres narration`
+  def aide_pour_les_livres_narration
+    site.require_objet 'cnarration'
+    str = Cnarration::LIVRES.collect do |bid, bdata|
+      bid.to_s.rjust(2) + " " +
+      bdata[:hname].ljust(34) +
+      bdata[:folder].rjust(20)
+    end.join("\n").in_pre
+    sub_log str
+    ""
+  end
+
 end #/Console
 end #/Admin
 end #/SiteHtml

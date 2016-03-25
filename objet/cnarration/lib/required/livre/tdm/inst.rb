@@ -24,9 +24,15 @@ class Tdm
     else
       pages_ids.collect do |page_id|
         dpage = pages[page_id]
+        debug "dpage: #{dpage.inspect}"
+        next if dpage.nil?
         titre = dpage[:titre]
         # Une page de la collection
-        titre = titre.in_a(href:"page/#{page_id}/show?in=cnarration") if dpage[:options][0] == "1"
+        if dpage[:options][0] == "1"
+          titre = titre.in_a(href:"page/#{page_id}/show?in=cnarration", title:"Page ##{page_id}")
+        elsif user.admin?
+          titre = titre.in_a(href:"page/#{page_id}/edit?in=cnarration", title:"Titre ##{page_id}")
+        end
         titre.in_li(class: "niv#{dpage[:options][0]}")
       end.join.in_ul(class: 'tdm livre_tdm')
     end

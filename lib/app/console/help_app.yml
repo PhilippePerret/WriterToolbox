@@ -60,16 +60,22 @@ narration:
     description: |
       Créer la page dans le livre LIVRE_REF (id ou dossier) avec le path relatif REL/PATH et le titre donné.
     note: |
-      On peut ajouter aussi `description[...]` pour la description et `after[ID_PAGE]` pour définir après quelle page mettre cette page.
+      On peut ajouter aussi :
+        <ul>
+          <li>`description[...]` pour la description</li>
+          <li>`after[ID_PAGE]` pour définir après quelle page mettre cette page</li>
+          <li>`niveau[NIVEAU_DE_0_A_9]` pour définir le niveau de développement</li>
+        </ul>
   -
-    command:        creer|create chapitre narration in[LIVRE_REF] titre[TITRE CHAPITRE]
+    command:        creer|create chapitre narration in[LIVRE_REF] titre[TITRE CHAPITRE] after[PAGE_ID_OPTIONNELLE]
     description: |
       Créer le chapitre de titre donné.
     note: |
-      le LIVRE_REF est le nom du dossier ou l'ID du livre. Noter que la commande
+      le LIVRE_REF est le nom du dossier ou l'ID du livre.<br>
+      Noter que la commande
       produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
   -
-    command:        creer|create sous-chapitre narration in[LIVRE_REF] titre[TITRE SOUS-CHAPITRE]
+    command:        creer|create sous-chapitre narration in[LIVRE_REF] titre[TITRE SOUS-CHAPITRE] after[PAGE_ID_OPTIONNELLE]
     description:    Créer le sous-chapitre dans le livre donné en référence (nom dossier ou id).
     note: |
       Noter que la commande produira un lien à cliquer pour ajouter le chapitre dans la table des matières.

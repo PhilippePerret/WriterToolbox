@@ -16,6 +16,9 @@ class Console
     when /liste? filmodico/
       site.require_objet 'filmodico'
       Filmodico::films_in_table
+    when /(help|aide) livres narration/
+      console.require 'narration'
+      aide_pour_les_livres_narration
     when /^(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration

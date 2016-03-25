@@ -41,8 +41,7 @@ Rejoindre la console et taper la commande :
         description[DESCRIPTION DE LA PAGE]
         after[ID_PAGE_OU_TITRE]
 
-
-
+Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table des matières du livre (`show livre &lt;référence&gt;`) et en glissant la souris sur le titre ou la page après laquelle il faut insérer le nouveau titre ou la nouvelle page.
 
 
 <a name='lestextes'></a>
