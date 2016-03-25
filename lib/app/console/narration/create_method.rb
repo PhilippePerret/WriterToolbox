@@ -24,11 +24,7 @@ class Console
     rien =  portionline.shift # "narration"
 
     # On décompose les données
-    data_chose = portionline.join(' ')
-    dchose = Hash::new
-    data_chose.scan(/([a-z]+)\[(.*?)\]/).to_a.each do |paire|
-      dchose.merge!( paire.first.to_sym => paire.last)
-    end
+    dchose = Data::by_semicolon_in portionline.join(' ')
 
     # Le livre
     livre_id = dchose[:in].numeric? ? dchose[:in].to_i : Cnarration::SYM2ID[dchose[:in].to_sym]

@@ -31,7 +31,7 @@ class << self
     hdata = Hash::new
     data_str.scan(/ ([a-zA-Z0-9]+)\:(.*?)(?= [a-zA-Z0-9]+\:)/).to_a.each do |paire|
       key, value = paire
-      hdata.merge!(key.to_sym => value.freeze)
+      hdata.merge!(key.to_sym => value.strip.freeze)
     end
     return hdata
   end

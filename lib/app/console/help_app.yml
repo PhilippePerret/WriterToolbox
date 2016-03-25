@@ -44,8 +44,9 @@ filmodico:
     command:        list filmodico
     description:    Affiche la liste des films du Filmodico, c'est-à-dire le contenu de la table.
 
-
-# NARRATION
+# ---------------------------------------------------------------------
+#   NARRATION
+# ---------------------------------------------------------------------
 narration:
   -
     type:           TITLE
@@ -56,18 +57,18 @@ narration:
     note: |
       Si plusieurs pages correspondent à la référence, la commande retourne une liste des pages avec leur titre et un lien permettant de les éditer.
   -
-    command:        creer|create page narration in[LIVRE_REF] handler[REL/PATH] titre[LE TITRE]
+    command:        creer|create page narration in:LIVRE_REF handler:REL/PATH titre:LE TITRE
     description: |
-      Créer la page dans le livre LIVRE_REF (id ou dossier) avec le path relatif REL/PATH et le titre donné.
+      Créer la page dans le livre LIVRE_REF (id ou dossier — on peut l'obtenir avec aide livres narration) avec le path relatif REL/PATH et le titre donné.
     note: |
       On peut ajouter aussi :
         <ul>
-          <li>`description[...]` pour la description</li>
-          <li>`after[ID_PAGE]` pour définir après quelle page mettre cette page</li>
-          <li>`niveau[NIVEAU_DE_0_A_9]` pour définir le niveau de développement</li>
+          <li>`description: ...` pour la description</li>
+          <li>`after: ID_PAGE` pour définir après quelle page mettre cette page</li>
+          <li>`niveau: NIVEAU_DE_0_A_9` pour définir le niveau de développement</li>
         </ul>
   -
-    command:        creer|create chapitre narration in[LIVRE_REF] titre[TITRE CHAPITRE] after[PAGE_ID_OPTIONNELLE]
+    command:        creer|create chapitre narration in:LIVRE_REF titre:TITRE CHAPITRE after:PAGE_ID_OPTIONNELLE
     description: |
       Créer le chapitre de titre donné.
     note: |
@@ -75,7 +76,7 @@ narration:
       Noter que la commande
       produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
   -
-    command:        creer|create sous-chapitre narration in[LIVRE_REF] titre[TITRE SOUS-CHAPITRE] after[PAGE_ID_OPTIONNELLE]
+    command:        creer|create sous-chapitre narration in:LIVRE_REF titre:TITRE SOUS-CHAPITRE after:PAGE_ID_OPTIONNELLE
     description:    Créer le sous-chapitre dans le livre donné en référence (nom dossier ou id).
     note: |
       Noter que la commande produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
