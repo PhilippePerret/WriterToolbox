@@ -163,10 +163,9 @@ class Tache
     else
       eche
     end
-    debug "eche transformé = #{eche.inspect}"
     jour, mois, annee = eche.split(' ').collect{ |e| e.to_i }
     if jour.nil? || mois.nil? || annee.nil?
-      raise "L'échéance de la tâche doit être sous la forme JJ MM AA."
+      raise "L'échéance de la tâche doit être sous la forme JJ MM AA ou être un identifiant comme `dem` pour demain, etc. (demander l'aide avec `aide taches`)."
     end
     raise "Le jour de l'échéance doit être inférieur à 31" if jour > 31
     raise "Le mois doit être un nombre entre 1 et 12" if mois > 12 || mois < 1

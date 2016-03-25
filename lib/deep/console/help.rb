@@ -42,7 +42,7 @@ class Console
     hdata = YAML::load_file( _("help.yml") )
     c << hdata.keys.join("<br />").in_div
     c << "Sujets de l'application en particulier".in_h3
-    hdata = YAML::load_file( _("help_app.yml") )
+    hdata = YAML::load_file( (console.folder_app+"help_app.yml").to_s )
     c << hdata.keys.join("<br />").in_div
     sub_log c
     ""

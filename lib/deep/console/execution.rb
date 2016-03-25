@@ -162,6 +162,8 @@ class Console
   def execute_as_regular_sentence line
     if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
       Taches::create_tache found[3].freeze
+    elsif (found = line.match(/^(update|actualise)r? (tache|task) ([0-9]+) (.*?)$/).to_a).count > 0
+      Taches::update_tache found[3].to_i, found[4].freeze
     elsif (found = line.match(/^(?:show|goto|go to|aller) (.*)$/).to_a).count > 0
       ( goto_section found[1].strip )
     else

@@ -129,6 +129,13 @@ taches:
       On peut utiliser `faire` ou `task` à la place de `tache`<br>
       On peut utiliser pour l'échéance des données comme `auj` ou `today` pour aujourd'hui, `dem`, `demain` ou `tomorrow` pour demain, `après-demain`.
   -
+    command:      update tache &lt;tache ID&gt; &lt;DATA MODIIFIÉES&gt;
+    description: |
+      Actualise les données d'une tache.<br>
+      DATA MODIFIÉES doit être sous la forme `pour: Admin le: dem` etc.<br>
+      Toutes les données peuvent être modifiées, l'échéance avec `echeance` ou `le`, l'administrateur avec `pour`; la tache avec `tache`, la description avec `description`.
+
+  -
     command:      finir tache &lt;tache ID&gt;
     description:  Termine une tache de façon normale.
     note: |

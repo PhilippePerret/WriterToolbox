@@ -44,21 +44,35 @@ class Console
       return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
     end
 
+    # Reçoit une chaine de données qui ressemble à :
+    #   " pour: Phil le: auj tache: Ceci est la tache à exécuter : pour voir"
+    # et retourne un Hash contenant :
+    #   {
+    #     pour: "Phil", le: "auj", tache: "Ceci est etc."
+    #   }
+    # Les clés (:pour, :le, etc.) doivent :
+    #     * ne contenir que des lettres maj/min et des chiffres
+    #     * doivent être collées aux ":"
+    #     * doivent être précédés par une espace
+    def semicolon_data_in data_str
+      # On ajoute une balise de fin "fin:" pour que l'expression
+      # régulière puisse capter le dernier élément de data_str
+      data_str = " #{data_str} fin:"
+      # Le hash de données qui sera revoyé
+      hdata = Hash::new
+      data_str.scan(/ ([a-zA-Z0-9]+)\:(.*?)(?= [a-zA-Z0-9]+\:)/).to_a.each do |paire|
+        key, value = paire
+        hdata.merge!(key.to_sym => value.freeze)
+      end
+      return hdata
+    end
 
     # Créer un nouvelle tache en partant des données string
     # +data_str+ envoyées en argument
     def create_tache data_str
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
-      data_str = " #{data_str} fin:"
-      data_tache = Hash::new
-      ['pour', 'echeance', 'tache', 'faire', 'task', 'description', 'state', 'statut', 'le'].each do |key|
-        data_str.sub!(/ #{key}\: (.*?) ([a-z]+\:)/){
-          data_tache.merge!(key.to_sym => $1.freeze)
-          " #{$2}"
-        }
-      end
-
+      data_tache = semicolon_data_in data_str
       data_tache.merge!(updated_at: NOW)
       itache = ::Admin::Todolist::Tache::new
       itache.instance_variable_set('@data2save', data_tache)
@@ -68,6 +82,51 @@ class Console
       # de réussite
       itache.create
       return ""
+    end
+
+    # Actualise la tache d'ID +tache_id+ avec les nouvelles
+    # données +tache_data+
+    def update_tache tache_id, tache_data_str
+      site.require_objet 'admin'
+      ::Admin::require_module 'taches'
+      itache = ::Admin::Todolist::Tache::new(tache_id)
+      raise "Cette tache est inconnue." unless itache.exist?
+
+      # On transforme les données string en hash de données
+      htache = semicolon_data_in tache_data_str
+
+      # On fait quelques corrections et vérifications
+      htache.merge!(echeance: htache.delete(:le)) if htache.has_key?(:le)
+      if htache.has_key?(:echeance)
+        htache[:echeance] = itache.test_echeance_tache(htache[:echeance])
+        raise "Impossible d'actualiser la tache." if htache[:echeance] == false
+      end
+      if htache.has_key?(:pour)
+        admin_id = htache.delete(:pour)
+        unless admin_id.numeric?
+          admin = User::get_by_pseudo(admin_id)
+          raise "L'administrateur #{admin_id} est inconnu" if admin.nil?
+          admin_id = admin.id
+        end
+        admin_id = admin_id.to_i
+        htache.merge!(admin_id: admin_id)
+      end
+      htache.merge!(state: htache.delete(:statut)) if htache.has_key?(:statut)
+      if htache.has_key?(:state)
+        htache[:state] = itache.test_statut_tache(htache[:state])
+        raise "Impossible d'actualiser la tache." if htache[:state] == false
+      end
+
+      # On peut actualiser la tache
+      # debug "htache: #{htache.pretty_inspect}"
+      itache.set(htache)
+
+    rescue Exception => e
+      debug e
+      error e.message
+      "ERROR"
+    else
+      "Tache #{itache.id} actualisée."
     end
 
 
@@ -147,11 +206,6 @@ class Console
       return ""
     end
 
-    # Synchronise les deux fichiers taches local et distant en
-    # prenant le plus vieux comme référence.
-    def synchronise
-
-    end
 
   end # << SELF
   end #/Taches
