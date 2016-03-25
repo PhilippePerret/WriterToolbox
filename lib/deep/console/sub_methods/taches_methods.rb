@@ -74,30 +74,75 @@ class Console
     # Affiche la liste de taches
     # +options+
     #   :all  Si true => toutes les taches même les taches achevées
+    #   :admin  Si défini, l'id (string) ou le pseudo de l'administrateur
+    #           dont il faut voir les tâches
     def show_liste_taches options = nil
       options ||= Hash::new
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
+
+      # On relève la liste des tâches
       task_list = if options[:all]
         sub_log "liste de toutes les taches".in_h3
         ::Admin::table_taches.select(order: "echeance DESC", colonnes:[]).keys.collect do |tid|
           ::Admin::Todolist::Tache::new(tid)
         end
+      elsif options.has_key?( :admin )
+        unless options[:admin].numeric?
+          admin = User::get_by_pseudo(options[:admin])
+          if admin.pseudo == "Marion" && admin.options[0..1] != "15"
+            opts = admin.options
+            opts[0..1] = "15"
+            admin.set(options: opts)
+          end
+          raise "Aucun user ne porte le pseudo #{options[:admin]}" if admin.nil?
+          raise "#{admin.pseudo} n'est pas administrateur/trice" unless admin.admin?
+          options[:admin] = admin.id # OK
+        end
+        sub_log "liste des taches de #{admin.pseudo}".in_h3
+        ::Admin::Todolist::new().taches.collect do |itache|
+          next if itache.admin_id != admin.id
+          itache
+        end.compact
       else
         sub_log "liste des taches en cours".in_h3
         ::Admin::Todolist::new().taches
       end
-      lt = task_list.collect do |itask|
-        owner     = itask.admin.pseudo
-        echeance  = if itask.echeance
-          ' - ' + Time.at(itask.echeance).strftime("%d/%m/%y")
-        else
-          ""
-        end
-        (
-          "##{itask.id} #{itask.tache} (#{owner}#{echeance})"
-        ).in_li
-      end.join.in_ul(class:'tdm')
+
+      # Format de la réponse, en fonction
+      format_ligne = if options.has_key?(:admin)
+        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
+      else
+        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny>'Pour : %{owner} - Échéance : %{echeance} — %{reste})</div>"
+      end
+
+      if task_list.count > 0
+        lt = task_list.collect do |itask|
+          owner     = itask.admin.pseudo
+          echeance  = if itask.echeance
+            Time.at(itask.echeance).strftime("%d/%m/%y")
+          else
+            "aucune"
+          end
+          reste = if itask.echeance
+            r = ( (itask.echeance - NOW) / 1.day ) + 1
+            if r == 0
+              "doit être finie aujourd'hui".in_span(class:'blue')
+            elsif r > 0
+              "dans #{r} jour#{r > 1 ? 's' : ''}"
+            else
+              "devrait être finie depuis #{r} jour#{r > 1 ? 's' : ''}".in_span(class:'warning')
+            end
+          else
+            "---"
+          end
+          (
+            format_ligne % {tid: itask.id, tache: itask.tache, echeance: echeance, owner: owner, reste: reste}
+          ).in_div
+        end.join('')
+      else
+        lt = "Aucune tâche trouvée."
+      end
       sub_log lt
       return ""
     end

@@ -120,8 +120,10 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
-    when /liste? ta(che|sk)s/
+    when /^liste? ta(che|sk)s$/
       Taches::show_liste_taches
+    when /^liste? ta(che|sk)s (.+)$/
+      Taches::show_liste_taches( admin: line.split(' ').last )
     when /liste? (all|toutes) ta(che|sk)s/
       Taches::show_liste_taches all: true
     # ---------------------------------------------------------------------

@@ -44,7 +44,7 @@ Si c'est un forum à haut degré de modération (avec n'importe qui ne pouvant p
 
 Bit 2 des options. Valeur de 0 à 9, depuis le simple lecteur qui ne peut pas laisser de message jusqu'au modérateur qui a tout pouvoir.
 
-Cf. le fichier forum/user/constants.rb pour les valeurs que peut prendre ce deuxième caractère.
+Cf. le fichier ./lib/deep/deeper/required/User/constants.rb pour les valeurs que peut prendre ce deuxième caractère.
 
 
 <a name='confirmationmail'></a>

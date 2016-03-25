@@ -113,6 +113,9 @@ taches:
     command:      list taches|tasks
     description:  Affiche la liste des tâches
   -
+    command:      list|liste taches|tasks &lgt;admin ID|Pseudo&gt;
+    description:  Retourne les tâches de l'administrateur spécifié.
+  -
     command:      list all taches|tasks
     description: |
       Affiche toutes les taches, même celles qui sont finies.

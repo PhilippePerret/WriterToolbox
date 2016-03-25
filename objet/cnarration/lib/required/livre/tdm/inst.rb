@@ -24,8 +24,6 @@ class Tdm
     else
       pages_ids.collect do |page_id|
         dpage = pages[page_id]
-        debug "dpage: #{dpage.inspect}"
-        next if dpage.nil?
         titre = dpage[:titre]
         # Une page de la collection
         if dpage[:options][0] == "1"
