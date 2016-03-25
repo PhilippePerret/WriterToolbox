@@ -1,0 +1,69 @@
+# encoding: UTF-8
+class Admin
+class Todolist
+class Tache
+
+  # Pour afficher la tâche dans un listing comme celui présenté
+  # sur la page admin/todo_list.erb de l'administrateur
+  def as_li
+    (
+      bouton_ok +
+      div_tache +
+      div_infos_tache
+    ).in_li(class:'tache')
+  end
+
+  def div_tache
+    @div_tache ||= "#{tache}".in_span(class:'tache')
+  end
+  def div_infos_tache
+    (
+      id_de_la_tache +
+      echeance_humaine +
+      admin_humain
+    ).in_div(class:'infos_tache')
+  end
+  def id_de_la_tache
+    "Tâche ##{id}".in_span
+  end
+  def echeance_humaine
+    @echeance_humaine ||= begin
+      if echeance.nil?
+        "Pas d'échéance".in_span
+      else
+        css_reste, message_reste = reste_humain
+        (
+          "Échoue le <strong>#{echeance.as_human_date}</strong>".in_span(class:'date') +
+          message_reste.in_span(class:"reste #{css_reste}")
+        ).in_span
+      end
+    end
+  end
+
+  # Renvoie le texte indiquant le nombre de jours restants ou
+  # le nombre de jour de dépassement en mettant la couleur suivant
+  # l'état de la tâche
+  def reste_humain
+    nb = nombre_jours_before_echeance.freeze
+    if nb.nil?
+      ['', ""]
+    elsif nb == 0
+      ['today', "aujourd'hui"]
+    elsif nb > 0
+      ['later', "à faire dans #{nb} jour#{nb>1 ? 's' : ''}"]
+    elsif nb < 0
+      nb = - nb
+      ['over', "la tâche aurait dû être faite depuis #{nb} jour#{nb > 1 ? 's' : ''}"]
+    end
+  end
+
+  def admin_humain
+    @admin_humain ||= "#{admin.pseudo}".in_span(class:'owner')
+  end
+  def bouton_ok
+    "OK".in_a(href:"admin/todo_list?op=stop_tache&tid=#{id}").in_span(class:'btnok')
+  end
+
+end #/Tache
+end #/Todolist
+end #/Admin

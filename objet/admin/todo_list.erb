@@ -1,26 +1,5 @@
-<%
-# TODO list
-raise_unless_admin
-%>
-<%= Admin::titre_h1("TODO list") %>
+<% raise_unless_admin %>
 
-<h3>Liste des tâches</h3>
+<%= Admin::titre_h1("Votre TODO list, #{user.pseudo}") %>
 
-  <%= todolist.list_taches %>
-
-<h3>Édition tâche</h3>
-<%
-site.require 'form_tools'
-form.prefix = 'todo'
-%>
-<form class="dim3070" action="admin/todo_list" method="POST" accept-charset="utf8">
-  <%= "save_tache".in_hidden(name:'operation', id:'operation') %>
-  <% if tache_id != nil %>
-    <%= tache_id.in_hidden(name:'todo[id]', id:'todo_id') %>
-  <% end %>
-  <%= form.field_text("Tâche", 'tache', nil) %>
-  <%= form.field_textarea("Description", 'description', nil) %>
-  <%= form.field_text("Échéance", 'echeance', nil, {class:'medium', text_after:"( JJ MM AAAA — ou timestamp)".in_span(class:'small')}) %>
-  <%= form.field_select("Responsable", 'admin_id', nil, {values: Admin::as_select_values}) %>
-  <%= form.submit_button("Enregistrer") %>
-</form>
+<%= ::Admin::Todolist::new(admin_id: user.id).list_taches %>

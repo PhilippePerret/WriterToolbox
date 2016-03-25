@@ -1,4 +1,14 @@
 # encoding: UTF-8
+=begin
+
+Pour ajouter des options, les ajouter aussi au fichier :
+    ./lib/deep/deeper/required/Site/config.rb
+
+On peut tester une valeur simplement par :
+
+    site.<propriété>
+
+=end
 
 # Désignation officielle du site, par exemple pour les
 # factures ou autre mail officiel
@@ -43,3 +53,13 @@ site.default_editor = :atom
 # contraire, c'est l'application par défaut de l'ordinateur
 # qui serait utilisée.
 site.markdown_application = "TextMate" # "Mou"
+
+# ---------------------------------------------------------------------
+# ADMINISTRATION
+
+# Si cette option est true, une pastille en haut à droite de la
+# page indiquera aux administrateurs les tâches qu'ils sont à
+# accomplir.
+# Cette pastille est insérée dans la page :
+#   ./view/gabarit/header.erb
+site.display_taches_for_administrator = true

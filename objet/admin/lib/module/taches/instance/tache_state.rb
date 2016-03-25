@@ -8,6 +8,12 @@ class Tache
   end
   alias :complete? :ended?
 
+  # Retourne true si la tache doit être faite
+  # aujourd'hui
+  def today?
+    @is_today ||= echeance >= Today.start && echeance <= Today.end
+  end
+
 end #/Tache
 end #/Todolist
 end #/Admin

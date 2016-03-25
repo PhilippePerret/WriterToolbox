@@ -11,34 +11,6 @@ class Tache
     @id = id
   end
 
-  def as_li
-    (
-      bouton_ok +
-      boutons_edition +
-      tache +
-      echeance_humaine +
-      admin_humain
-    ).in_li(class:'tache')
-  end
-
-  def echeance_humaine
-    @echeance_humaine ||= "Échoue le <strong>#{echeance.as_human_date}</strong>".in_span(class:'date')
-  end
-  def admin_humain
-    @admin_humain ||= "Responsable : #{admin.pseudo}".in_span(class:'owner')
-  end
-  def bouton_ok
-    "OK".in_a(href:"admin/todo_list?op=stop_tache&tid=#{id}").in_span(class:'btnok')
-  end
-  def boutons_edition
-    @boutons_edition ||= begin
-      (
-        "[édit]".in_a(href:"admin/todo_list?op=edit_tache&tid=#{id}", class:'tiny' ) +
-        "[–]".in_a(href:"admin/todo_list?op=destroy_tache&tid=#{id}", onclick:"if(confirm('Etes-vous certain de vouloir détruire cette tache plutôt que de la marquer finie ?')){return true}else{return false}", class:'tiny')
-      ).in_div(class:'btns_edition')
-    end
-  end
-
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
@@ -52,6 +24,21 @@ class Tache
   #   Data volatiles
   # ---------------------------------------------------------------------
   def admin ; @admin ||= User::get(admin_id) end
+
+  # Retourne :
+  #   NIL si la tâche n'a pas d'échéance
+  #   0 si l'échéance est aujourd'hui
+  #   Le nombre de jours POSITIF si l'échéance est future
+  #   Le nombre de jours NÉGATIF si l'échéance est passée
+  def nombre_jours_before_echeance
+    @nombre_jours_before_echeance ||= begin
+      if echeance.nil?
+        nil
+      else
+        ( (echeance - NOW) / 1.day ) + 1
+      end
+    end
+  end
 
   # ---------------------------------------------------------------------
   #   Méthodes
