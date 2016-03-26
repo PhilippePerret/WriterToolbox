@@ -2,6 +2,12 @@
 =begin
 
 Méthodes de base de données de Unan
+
+ATTENTION : Ce module peut être utilisé en version STANDALONE donc
+            il faut qu'il puisse fonctionner le plus possible tout
+            seul (l'utilisation de `site` est toujours possible,
+            cependant).
+
 =end
 class Unan
 class << self

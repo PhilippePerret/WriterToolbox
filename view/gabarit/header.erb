@@ -16,3 +16,13 @@
       ::Admin::Todolist::pastille_taches_administrator
     %>
 <% end %>
+<%
+  # Insertion de la pastille indiquant à un user suivant le
+  # programme UN AN UN SCRIPT qui veut qu'on lui indique
+  # toujours en entête le nombre de tâches qu'il a à
+  # exécuter.
+  if user.unanunscript? && user.preference(:pastille_taches)
+    require './objet/unan/lib/module/standalone/pastille_taches.rb'
+    %>
+    <%= user.set_pastille_taches %>
+<% end %>

@@ -59,6 +59,7 @@ class SiteHtml
   def folder_db
     @folder_db ||= get_and_build_folder(folder_database + 'data')
   end
+  alias :folder_data_database :folder_db
 
   # Dossier qui contient la définition des tables
   def folder_tables_definition

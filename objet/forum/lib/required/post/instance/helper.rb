@@ -38,7 +38,6 @@ class Post
     li << post_infos
     li << auteur_infos if full_message
     li << post_content if full_message
-    debug "-> as_li avec full_message = #{full_message.inspect}"
     li << "".in_div(style:'clear:both')
     # Code retourné
     li.in_li(class:'post', id:"post_#{id}")

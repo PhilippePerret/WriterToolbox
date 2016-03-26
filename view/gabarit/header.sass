@@ -20,13 +20,31 @@ section#header
       text-shadow     : inherit
       letter-spacing  : inherit
 
-a#pastille_taches_admin
+div.div_pastille_taches
   position          : fixed
   right             : 10px
   top               : 10px
+  height            : 25px
+  overflow          : hidden
+  z-index           : 500
+  text-align        : right
   font-size         : 10.5pt
-  padding           : 2px 8px 4px
   opacity           : 1
-  z-index           : 1000
-  border-radius     : 2em
-  color             : white
+  &:hover
+    height            : auto
+    z-index           : 1000
+    max-width         : 400px
+  a.pastille_taches
+    display           : inline-block
+    font-size         : 10.5pt
+    margin-bottom     : 4px
+    padding           : 2px 8px 4px
+    border-radius     : 2em
+    color             : white
+  div.taches
+    text-align        : left
+    font-size         : 9.5pt
+    border            : 1px solid
+    border-radius     : 4px
+    padding           : 1em
+    background-color  : white

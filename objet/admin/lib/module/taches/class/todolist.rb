@@ -45,7 +45,7 @@ class << self
     mess << "#{tache_s nombre_taches_nodat} sans échéance" if nombre_taches_nodat > 0
     mess = mess.pretty_join + " Cliquez pour les voir."
 
-    "#{nombre_taches}".in_a(href: "admin/todo_list", id:"pastille_taches_admin", style:"background-color:#{bkg}", title:mess)
+    "#{nombre_taches}".in_a(href: "admin/todo_list", class:"pastille_taches", style:"background-color:#{bkg}", title:mess).in_div(class:'div_pastille_taches')
   end
 
   def tache_s nombre
