@@ -6,6 +6,7 @@ Class Unan::Program::AbsWork
 Données absolues d'une travail du programme
 
 =end
+
 class Unan
 class Program
 class AbsWork

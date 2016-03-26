@@ -46,6 +46,8 @@ class User
     taches = Array::new
     taches << "TRAVAUX UN AN UN SCRIPT".in_span(class:'underline')
     taches << "#{travaux_s inv[:nombre_travaux]} en cours."
+    taches << "Pages de cours à lire : #{inv[:nombre_pages_cours]}."
+    taches << "Quiz à remplir : #{inv[:nombre_quiz]}."
     taches << if inv[:nombre_travaux_not_started] > 0
       "#{travaux_s inv[:nombre_travaux_not_started]} à démarrer.".in_span(class:'bold red')
     else
@@ -91,7 +93,11 @@ class User
       # Nombre de travaux OK
       nombre_travaux_ok: 0,
       # {Hash} Données des travaux en cours OK
-      travaux_ok: Hash::new
+      travaux_ok: Hash::new,
+      nombre_quiz: 0,
+      quiz: Hash::new,
+      nombre_pages_cours: 0,
+      pages_cours: Hash::new
     )
 
     # Pour obtenir les paths des bases de données et autres
@@ -124,7 +130,7 @@ class User
     # pour faire l'état des lieux
     abs_works_ids = hworks.collect { |wid, wdata| wdata[:abs_work_id] }
     where     = "id IN (#{abs_works_ids.join(', ')})"
-    colonnes  = [:titre, :duree]
+    colonnes  = [:titre, :duree, :type_w]
     habsworks = Unan::table_absolute_works.select(where:where, colonnes:colonnes)
 
     # Les travaux non démarrés
@@ -146,14 +152,32 @@ class User
       fin_travail_expected = full_wdata[:created_at] + duree_travail
       is_overtimed = NOW > fin_travail_expected
 
+      # Le type de travail, pour savoir si c'est un travail à démarrer,
+      # une page à lire, etc.
+      type_w = full_wdata[:type_w]
+      type_w = Unan::Program::AbsWork::TYPES[type_w][:id_list]
+      # => :tasks, :pages, :quiz, :forum
+
       @unan_inventory[:travaux_ids]     << wid
       @unan_inventory[:nombre_travaux]  += 1
 
       if wdata[:status] == 0
-        # <= Un travail non démarré
-        @unan_inventory[:nombre_travaux_not_started] += 1
-        @unan_inventory[:travaux_not_started].merge!(wid => full_wdata)
-      elsif is_overtimed
+        case type_w
+        when :tasks
+          # <= Un travail non démarré
+          @unan_inventory[:nombre_travaux_not_started] += 1
+          @unan_inventory[:travaux_not_started].merge!(wid => full_wdata)
+        when :quiz
+          # <= Un quiz à faire
+          @unan_inventory[:nombre_quiz] += 1
+          @unan_inventory[:quiz].merge!(wid => full_wdata)
+        when :pages
+          # <= Une page de cours à lire
+          @unan_inventory[:nombre_pages_cours] += 1
+          @unan_inventory[:pages_cours].merge!(wid => full_wdata)
+        end
+      end
+      if is_overtimed
         # <= Un travail dont l'échéance est dépassée
         @unan_inventory[:nombre_travaux_overtimed] += 1
         @unan_inventory[:travaux_overtimed].merge!(wid => full_wdata)
