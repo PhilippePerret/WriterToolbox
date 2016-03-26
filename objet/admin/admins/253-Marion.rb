@@ -10,34 +10,33 @@ class Cnarration
     # Retourne le code HTML d'une UL contenant les pages, avec
     # des boutons pour marquer les pages lues.
     def pages_a_relire options = nil
-      pars = pages(where: "options LIKE '16%'", as: :array_data, colonnes: [:titre])
+      pars = pages(where: "options LIKE '16%'", as: :array_data, colonnes: [:titre, :handler])
       if pars.empty?
         "Aucune page n'est à relire pour le moment. Super, non ? :-)".in_p
       else
-        pars.collect do |hpage|
-          (
-            btns_page_edition(hpage, 7) +
-            hpage[:titre]
-          ).in_li(value: hpage[:id], class:'hover')
-        end.join.in_ul(class: 'tdm')
+        pars.collect { |hpage| li_for_page( hpage, 7 )}.join.in_ul(class: 'tdm')
       end
     end
 
     # Pages qui doivent faire l'objet d'une toute dernière lecture
     # (niveau 8 de développement)
     def pages_derniere_lecture options = nil
-      pdls = pages(where: "options LIKE '18%'", as: :array_data, colonnes: [:titre])
+      pdls = pages(where: "options LIKE '18%'", as: :array_data, colonnes: [:titre, :handler])
       if pdls.empty?
         "Aucune page n'est à relire pour BAT pour le moment. Super, non ? :-)".in_p
       else
-        pdls.collect do |hpage|
-          (
-            btns_page_edition(hpage, 9) +
-            hpage[:titre]
-          ).in_option(value: hpage[:id], class:'hover')
-        end.join.in_ul(class: 'tdm')
+        pdls.collect { |hpage| li_for_page( hpage, 9 )}.join.in_ul(class: 'tdm')
       end
+    end
 
+    # Retourne le code HTML du LI pour une page à corriger
+    def li_for_page hpage, next_level
+      span_affixe = (
+        "<br>Nom (sans extension) du fichier de correction : ".in_span +
+        "p#{hpage[:id]}_#{hpage[:handler].gsub(/\//,'-')}_#{user.pseudo}".in_input_text(style:"width:320px", onfocus:"this.select()")
+        ).in_span(class:'tiny')
+      line_titre = ( hpage[:titre] + span_affixe ).in_span
+      (btns_page_edition(hpage, next_level)+line_titre).in_li(value: hpage[:id], class:'hover')
     end
 
     # Retourne le span HTML des boutons pour éditer
