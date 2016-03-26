@@ -6,6 +6,7 @@ class << self
   # Retourne la pastille à coller en haut de page indiquant à
   # un administrateur le nombre de tâches qu'il a à faire
   def pastille_taches_administrator
+
     todolist  = new(admin_id: user.id)
     nombre_taches_overl = 0
     nombre_taches_today = 0
@@ -38,14 +39,26 @@ class << self
       'blue'
     end
 
-    mess = Array::new
-    mess << "#{tache_s nombre_taches_overl} en retard." if nombre_taches_overl > 0
-    mess << (nombre_taches_today > 0 ? "#{tache_s nombre_taches_today} à effectuer aujourd'hui" : "Aucune tâche à effectuer aujourd'hui")
-    mess << "#{tache_s nombre_taches_later} à effectuer plus tard" if nombre_taches_later > 0
-    mess << "#{tache_s nombre_taches_nodat} sans échéance" if nombre_taches_nodat > 0
-    mess = mess.pretty_join + " Cliquez pour les voir."
+    taches = Array::new
+    taches << "#{tache_s nombre_taches_overl} en retard.".in_span(class:'red') if nombre_taches_overl > 0
+    taches << (nombre_taches_today > 0 ? "#{tache_s nombre_taches_today} à effectuer aujourd'hui." : "Aucune tâche à effectuer aujourd'hui.")
+    taches << "#{tache_s nombre_taches_later} à effectuer plus tard." if nombre_taches_later > 0
+    taches << "#{tache_s nombre_taches_nodat} sans échéance." if nombre_taches_nodat > 0
 
-    "#{nombre_taches}".in_a(href: "admin/todo_list", class:"pastille_taches", style:"background-color:#{bkg}", title:mess).in_div(class:'div_pastille_taches')
+    data_pastille = {
+      nombre:       nombre_taches,
+      href:         "admin/todo_list",
+      background:   bkg,
+      title:        "Cliquer ci-dessus pour voir la liste complète.",
+      taches:       taches
+    }
+
+    site.require_module 'pastille'
+    ipastille = SiteHtml::Pastille::new
+    ipastille.set data_pastille
+    ipastille.output
+
+
   end
 
   def tache_s nombre

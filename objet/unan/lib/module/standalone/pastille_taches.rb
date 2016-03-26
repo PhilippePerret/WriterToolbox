@@ -19,18 +19,12 @@ class User
     # QUESTION : Comment faire pour que ces tâches soient utilisables
     # sur n'importe quel site et pas seulement ici ?
 
+    site.require_module 'pastille'
+    ipastille = SiteHtml::Pastille::new
     # Procéder à l'état des lieux du programme UN AN UN SCRIPT et
     # retourner les valeurs utiles pour faire la pastille.
-    dp = data_pastille_etat_des_lieux
-    link_data = {
-      href: dp[:href], class: "pastille_taches",
-      style:"background-color:#{dp[:class]}"
-    }
-    link_data.merge!(title: dp[:title]) unless dp[:title].nil?
-    (
-      dp[:nombre].to_s.in_a(link_data) +
-      dp[:taches].in_div(class:'taches')
-    ).in_div(class:'div_pastille_taches').in_a(href:dp[:href])
+    ipastille.set data_pastille_etat_des_lieux
+    ipastille.output
   end
 
   # Méthode qui retourne les données pour la pastille, c'est-à-dire
@@ -60,7 +54,7 @@ class User
     else
       'green'
     end
-    {taches: taches.join('<br>'), title: nil, class: css, nombre: inv[:nombre_travaux], href:"bureau/home?in=unan"}
+    {taches: taches, title: nil, background: css, nombre: inv[:nombre_travaux], href:"bureau/home?in=unan"}
   end
   def travaux_s nombre
     "#{nombre} trava#{nombre > 1 ? 'ux' : 'il'}"
