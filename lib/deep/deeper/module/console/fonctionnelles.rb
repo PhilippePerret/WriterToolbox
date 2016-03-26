@@ -10,8 +10,14 @@ class Console
   # Note : C'est un dossier qui doit se trouver dans le dossier
   # ./lib/app/console/
   # @usage : console.load('NOM_DOSSIER')
+  # Note : pour pouvoir utiliser la méthode `require` normalement,
+  # on teste l'existence de `folder_name` et `folder_name.rb`
   def require folder_name
-    (folder_app + folder_name).require
+    if File.exist?(folder_name.to_s) || File.exist?("#{folder_name}.rb")
+      require folder_name.to_s
+    else
+      (folder_app + folder_name).require
+    end
   end
   alias :load :require
 

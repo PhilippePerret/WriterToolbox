@@ -27,7 +27,7 @@ class Console
       error "Le script de check de synchro local&lt;-&gt;distant ne peut s'utiliser qu'en OFFLINE."
       "SEULEMENT OFFLINE"
     elsif synchro_sfile.exist?
-      require synchro_sfile
+      top_require synchro_sfile
     else
       "Le fichier `#{synchro_sfile}` est introuvable. Impossible de lancer la synchro."
     end
