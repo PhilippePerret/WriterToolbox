@@ -26,7 +26,7 @@
 
   <% if user.admin? %>
     <hr />
-    <%= lien.console("Console") %>
+    <%= lien.console("Console", target:nil) %>
     <a href="admin/dashboard">Dashboard</a>
     <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
   <% end %>
