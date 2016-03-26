@@ -2,6 +2,18 @@
 class Unan
 class Bureau
 
+  # Les valeurs qu'il faut prendre en compte même si elles ne
+  # sont pas définies, ce qui survient lorsque ce sont des
+  # cases à cocher décochées. Si elles en sont pas définies, il
+  # faut mettre leur valeur à false
+  def user_preferences
+    @user_preferences ||= {
+      bureau_after_login:   false,
+      daily_summary:        false,
+      pastille_taches:      false
+    }
+  end
+
   # = main =
   #
   # Méthode principale, appelée à la soumission du panneau des
@@ -12,14 +24,6 @@ class Bureau
   # Certaines valeurs, cependant, doivent être traitées individuellement
   # ou de façon spéciale.
   def save_preferences
-    # Les valeurs qu'il faut prendre en compte même si elles ne
-    # sont pas définies, ce qui survient lorsque ce sont des
-    # cases à cocher décochées. Si elles en sont pas définies, il
-    # faut mettre leur valeur à false
-    prefs = {
-      bureau_after_login:   false,
-      daily_summary:        false
-    }
     page.params_cgi.each do |key, val|
       next unless key.to_s.start_with?('pref_')
       key = key[5..-1].to_sym
@@ -32,9 +36,9 @@ class Bureau
         else val
         end
       end
-      prefs.merge! key => def_value
+      user_preferences.merge! key => def_value
     end
-    user.set_preferences( prefs )
+    user.set_preferences( user_preferences )
     flash "Préférences enregistrées."
   end
 

@@ -47,3 +47,14 @@ Par exemple :
 On peut relever toutes les préférences d'un coup à l'aide de la méthode `User#preferences`. On peut faire ensuite appel à la méthode `User#preference` pour obtenir une valeur, de façon tout à fait normale.
 
 Note : En fait, faire appel à la méthode `User#preferences` évite simplement de faire des appels trop nombre d'affilée à la table `variables`, lorsque plusieurs préférences doivent être utilisées.
+
+* [Ajout d'une nouvelle préférence](#ajoutnouvellepreference)
+<a name='ajoutnouvellepreference'></a>
+
+## Ajout d'une nouvelle préférence
+
+Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :
+
+* lui définir un nom original,
+* ajouter un checkbox et une explication pour cette préférence dans la vue `./objet/unan/bureau/panneau/preferences.erb`,
+* l'ajouter à la liste des préférences de l'user dans le fichier `./objet/unan/bureau/panneau/preferences.rb` (méthode `user_preferences`)

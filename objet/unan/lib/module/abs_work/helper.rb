@@ -22,7 +22,10 @@ class AbsWork
 
   # Type de résultat au format humain
   # Rappel : type_resultat est une donnée sur 3 bit dont chaque bit
-  # de 0 à 9 définit une valeur
+  # de 0 à 9 définit une valeur du travail :
+  # Le bit 1 (0) concerne le support (par exemple : un document)
+  # Le bit 2 (1) concerne le destinataire (p.e. soi-même ou un producteur)
+  # Le bit 3 (2) concerne le niveau d'exigence attendu
   def human_type_resultat
     bit_res_support   = type_resultat[0].to_i
     bit_res_destina   = type_resultat[1].to_i
