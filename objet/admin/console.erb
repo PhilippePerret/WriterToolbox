@@ -10,7 +10,7 @@ raise_unless_admin
 reduite = console.special_output != ""
 %>
 <form action="admin/console" method="POST" charset="UTF-8">
-<textarea id="console" class='<%= reduite ? 'reduite' : '' %>' name="console" onreturn="this.form.submit()"><%= console.code_console %></textarea>
+<textarea onfocus="this.select()" id="console" class='<%= reduite ? 'reduite' : '' %>' name="console" onreturn="this.form.submit()"><%= console.code_console %></textarea>
 </form>
 <%
 #

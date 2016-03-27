@@ -113,6 +113,9 @@ taches:
     command:      list taches|tasks
     description:  Affiche la liste des tâches
   -
+    command:      "`liste mes taches` ou `mes taches`"
+    description:  Affiche la liste des tâches de l'administrateur courant.
+  -
     command:      list|liste taches|tasks &lgt;admin ID|Pseudo&gt;
     description:  Retourne les tâches de l'administrateur spécifié.
   -

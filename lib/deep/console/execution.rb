@@ -122,6 +122,8 @@ class Console
       "" # Pour ne rien renvoyer
     when /^liste? ta(che|sk)s$/
       Taches::show_liste_taches
+    when /^(liste? )?mes taches$/
+      Taches::show_liste_taches( admin: user.id.to_s)
     when /^liste? ta(che|sk)s (.+)$/
       Taches::show_liste_taches( admin: line.split(' ').last )
     when /^liste? (all|toutes) ta(che|sk)s$/
