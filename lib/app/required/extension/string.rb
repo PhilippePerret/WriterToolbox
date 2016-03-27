@@ -59,10 +59,7 @@ class ::String
   def formate_balises_colon balise
     str = self
     str.gsub!(/#{balise}:\|(.*?)\|/, "<#{balise}>\\1</#{balise}>")
-    # debug "str AVANT : \n#{str}\n\n" if balise == 'tt'
-    # str.gsub!(/#{balise}:(.*?)([ \.…  ,\)])/, "<#{balise}>\\1</#{balise}>\\2")
     str.gsub!(/#{balise}:(.+?)\b/, "<#{balise}>\\1</#{balise}>")
-    # debug "str APRÈS : \n#{str}\n\n" if balise == 'tt'
     str
   end
 
