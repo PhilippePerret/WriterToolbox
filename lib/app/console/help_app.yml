@@ -52,6 +52,12 @@ narration:
     type:           TITLE
     description:    Collection Narration
   -
+    command:        synchronize database narration
+    description: |
+      Synchronise le fichier `cnarration.db`, base de données des pages de la collection Narration, en conservant les niveaux de développement les plus grands, qui ont pu être modifiés en online ou en offline.
+    note: |
+      On peut faire également `synchro base narration`.
+  -
     command:        edit page narration &lt;Page Ref&gt;
     description:    Met la page donné en référence en édition. La référence peut être l'ID de la page ou une portion de titre.
     note: |

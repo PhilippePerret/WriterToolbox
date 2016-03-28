@@ -13,6 +13,16 @@ class SiteHtml
 class Admin
 class Console
 
+  # Commande complexe qui synchronise la base de données cnarration.db
+  # en vérifiant le niveau de développement des pages pour garder les
+  # modifications qui ont pu être faites online et offline.
+  def run_synchronize_database_narration
+    flash "Base de données Narration synchronisée."
+    require './objet/cnarration/synchro.rb'
+    SynchroNarration::synchronise_database_narration
+    return ""
+  end
+
   # Méthode générale fonctionnelle permettant d'obtenir une
   # page en fonction de la référence donnée qui peut être
   # l'ID (nombre) de la page ou une portion de son titre.

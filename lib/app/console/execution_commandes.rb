@@ -31,6 +31,9 @@ class Console
     when /^(check|vérifier) pages narration out$/
       console.require 'narration'
       check_pages_narration_out_tdm
+    when /^synchro(ni[zs]e)? (data)?base narration$/
+      console.require 'narration'
+      run_synchronize_database_narration
     when /^unan /
       # PROGRAMME UN AN UN SCRIPT
       console.require 'unan_unscript'

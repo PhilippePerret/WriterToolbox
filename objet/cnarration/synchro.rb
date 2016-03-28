@@ -26,7 +26,7 @@ class << self
 
     # On download le fichier distant
     log "* Copie de la base de données locale"
-    # download_distant_file
+    download_distant_file
 
     # On passe en revue chaque statut de page du fichier distant et
     # du fichier local pour garder le plus haut. C'est le fichier
