@@ -58,6 +58,12 @@ narration:
     note: |
       On peut faire également `synchro base narration`.
   -
+    command:        open page narration &lt;page ID|portion titre&gt;
+    description: |
+      Ouvrir le fichier physique (markdown) de la page d'ID ou de portion titre donné en argument.
+    note: |
+      On peut utiliser aussi les verbes `ouvre` ou `ouvrir`.<br>L'éditeur utilisé dépend de la définition de `site.markdown_application` dans le fichier `./objet/site/config.rb`.
+  -
     command:        edit page narration &lt;Page Ref&gt;
     description:    Met la page donné en référence en édition. La référence peut être l'ID de la page ou une portion de titre.
     note: |
@@ -73,12 +79,6 @@ narration:
           <li>`after: ID_PAGE` pour définir après quelle page mettre cette page</li>
           <li>`niveau: NIVEAU_DE_0_A_9` pour définir le niveau de développement</li>
         </ul>
-  -
-    command:        ouvre|ouvrir page narration &lt;page ID|portion titre&gt;
-    description: |
-      Ouvrir le fichier physique (markdown) de la page d'ID ou de portion titre donné en argument.
-    note: |
-      L'éditeur utilisé dépend de la définition de `site.markdown_application` dans le fichier `./objet/site/config.rb`.
   -
     command:        creer|create chapitre narration in:LIVRE_REF titre:TITRE CHAPITRE after:PAGE_ID_OPTIONNELLE
     description: |

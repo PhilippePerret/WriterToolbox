@@ -6,8 +6,14 @@ class << self
   # Méthode qui va checker que toutes les pages du dossier des
   # pages markdown de cours se trouvent bien enregistrées dans la
   # table des matières d'un livre.
-  # La méthode produit une liste des pages inconnues qui doivent
-  # être ajoutées.
+  #   1/ Que toutes les pages du dossier des pages markdown se
+  #      trouvent utilisées par un enregistrement.
+  #   2/ Que tous les enregistrements de pages ont un handler
+  #      défini.
+  #   3/ Que le handler défini, combiné au livre, possède bien
+  #      un fichier physique (ce n'est pas une erreur, mais on peut
+  #      le signaler)
+  # La méthode produit une liste des pages erronnées.
   def check_pages_out_tdm
 
     site.require_objet 'cnarration'
@@ -87,17 +93,39 @@ class << self
     end
     # debug "liste_all_ids_titres_et_pages: #{liste_all_ids_titres_et_pages.inspect}"
 
+    nombre_pages_sans_fichier = 0
+    liste_pages_sans_fichier = Array::new
+
+    nombre_pages_sans_handler = 0
+    liste_pages_sans_handler  = Array::new
+
     liste_pages_hors_livres = Array::new
     liste_pages_hors_tdm    = Array::new
-    Cnarration::table_pages.select(colonnes:[:titre, :livre_id, :options]).each do |pid, pdata|
+    Cnarration::table_pages.select(colonnes:[:titre, :livre_id, :options, :handler]).each do |pid, pdata|
       ptype = (pdata[:options][0]=="1" ? "page" : "titre")
       if pdata[:livre_id].nil? || pdata[:livre_id] == 0
         # => Page ou titre qui n'appartient pas à un livre
         liste_pages_hors_livres << {id: pid, type: ptype, titre: pdata[:titre]}
         nombre_total_record_out_tdm += 1
       else
-        # La page/titre appartient bien à un livre, il faut vérifier qu'il/elle
-        # soit bien classé/e
+        # La page/titre appartient bien à un livre
+
+        if ptype == "page"
+          # Si c'est une page, il faut qu'elle ait un handler défini et
+          #  que son fichier physique existe.
+          if pdata[:handler].to_s == ""
+            nombre_pages_sans_handler += 1
+            liste_pages_sans_handler <<  {id: pid, type: ptype, titre: pdata[:titre], livre_id: pdata[:livre_id]}
+          else
+            path_fichier = File.join(path_main_folder, Cnarration::LIVRES[pdata[:livre_id]][:folder], "#{pdata[:handler]}.md")
+            unless File.exist?(path_fichier)
+              nombre_pages_sans_fichier += 1
+              liste_pages_sans_fichier << {id: pid, type: ptype, titre: pdata[:titre], livre_id: pdata[:livre_id]}
+            end
+          end
+        end # / fin de si c'est une page (pas un titre)
+
+        # Il faut vérifier qu'elle soit bien classé/e
         unless liste_all_ids_titres_et_pages.include? pid
           # => La page/titre est inconnu de la table des matières
           # du livre auquel il appartient
@@ -131,8 +159,8 @@ class << self
         sortie << "(Ces pages doivent être ajoutées aux livres — cf. les pages physiques non databasées pour trouver peut-être leur livre)".in_div(class:'tiny')
         sortie << (
           liste_pages_hors_livres.collect do |hpage|
-            hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration").in_div
-          end.join('')
+            hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration").in_li
+          end.join('').in_ul
         )
       end
 
@@ -143,8 +171,8 @@ class << self
           liste_pages_hors_tdm.collect do |hpage|
             lien_edit_page  = hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration")
             lien_edit_tdm   = "Éditer Tdm livre".in_a(href:"livre/#{hpage[:livre_id]}/edit?in=cnarration")
-            ( "#{lien_edit_page} (#{lien_edit_tdm})" ).in_div
-          end.join('')
+            ( "#{lien_edit_page} (#{lien_edit_tdm})" ).in_li
+          end.join('').in_ul
         )
       end
 
@@ -152,6 +180,34 @@ class << self
       sortie << "Tous les titres et pages se trouvent bien classés dans les tables des matières des livres.".in_p
     end
 
+    sortie << "3 CONTRÔLE HANDLER/FICHIER PHYSIQUE".in_h3
+
+    sortie << "3.1 Fichiers sans handler défini".in_h3
+    if nombre_pages_sans_handler == 0
+      sortie << "Toutes les pages définissent leur `handler`".in_p
+    else
+      sortie << "Nombre de pages sans handler défini : #{nombre_pages_sans_handler}"
+      sortie << (
+        liste_pages_sans_handler.collect do |hpage|
+          hpage[:titre].in_a(href:"page/#{hpage[:id]}/edit?in=cnarration").in_li
+        end.join('').in_ul
+      )
+    end
+
+    sortie << "3.2 Fichiers sans fichier physique".in_h3
+    if nombre_pages_sans_fichier == 0
+      sortie << "Toutes les pages possèdent leur fichier physique".in_p
+    else
+      sortie << "Nombre de pages sans fichier physique : #{nombre_pages_sans_fichier}"
+      sortie << "(afficher la page — en cliquant le lien ci-dessous — créera automatiquement le fichier physique)".in_div(class:'tiny')
+      sortie << (
+        liste_pages_sans_fichier.collect do |hpage|
+          hpage[:titre].in_a(href:"page/#{hpage[:id]}/show?in=cnarration").in_li
+        end.join('').in_ul
+      )
+    end
+
+    sortie << "<hr />"
     sortie << "<h3>RAPPORT COMPLET (#{nombre_total_pages} pages)</h3>"
     sortie << full_output
 
