@@ -14,6 +14,10 @@ class Console
     when "filmo", "filmodico"       then 'filmodico/home'
     when "nouveau_film"             then 'filmodico/edit'
     when "analyses", "analyse"      then 'analyse/home'
+    when /^page narration (.*)$/
+      console.require 'narration'
+      aller_page_narration section_name.sub(/^page narration/, '').strip
+      return nil
     when /^c?narration$/            then 'cnarration/home'
     when /^(dashboard|admin) c?narration$/    then 'admin/dashboard?in=cnarration'
     when 'new_page_narration'       then 'page/edit?in=cnarration'
@@ -31,7 +35,6 @@ class Console
     when 'unan_new_exemple'                     then 'exemple/edit?in=unan_admin'
     else
       if section_name.start_with?('livre ')
-        flash "Je passe par ici"
         book_ref = section_name[6..-1].to_sym
         top_require './objet/cnarration/lib/required/constants.rb'
         if Cnarration::SYM2ID.has_key?( book_ref )

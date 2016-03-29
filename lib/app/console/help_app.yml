@@ -92,6 +92,7 @@ narration:
     note: |
       On peut utiliser :
         <ul class='small'>
+          <li>goto|aller page narration &lt;ID page|portion titre&gt;</li>
           <li>goto|aller admin narration : Administration de la collection</li>
           <li>goto|aller narration : accueil</li>
           <li>goto|aller new_page_narration : formulaire de nouvelle page</li>

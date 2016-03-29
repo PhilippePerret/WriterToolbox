@@ -13,6 +13,36 @@ class SiteHtml
 class Admin
 class Console
 
+
+  # Aller (afficher) la page narration de référence +page_ref+
+  # +page_ref+
+  #   {Fixnum} ID de la page (mais en string comme argument)
+  #   {String} Une portion du titre
+  # Note : Si c'est un fixnum, on affiche la page voulue
+  #        Si c'est une portion de titre et qu'on trouve un seul titre,
+  #        on affiche la page, sinon on affiche des liens pour les
+  #        rejoindre.
+  def aller_page_narration page_ref
+    if page_ref.numeric?
+      refs = [page_ref.to_i]
+    else
+      refs = Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre]).values
+    end
+
+    if refs.count == 1
+      refs = refs[:id] if refs.instance_of?(Hash)
+      redirect_to "page/#{refs.first}/show?in=cnarration"
+    elsif refs.count == 0
+      sub_log "Aucune page narration ne correspond à la référence `#{page_ref}`".in_span(class:'warning')
+    else
+      sub_log(
+        refs.collect do |hpage|
+          hpage[:titre].in_a(href:"page/#{hpage[:id]}/show?in=cnarration").in_li
+        end.join.in_ul(class:'tdm')
+      )
+    end
+    return ""
+  end
   # Commande complexe qui synchronise la base de données cnarration.db
   # en vérifiant le niveau de développement des pages pour garder les
   # modifications qui ont pu être faites online et offline.
