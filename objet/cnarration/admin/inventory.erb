@@ -1,0 +1,13 @@
+<%
+raise_unless_admin
+%>
+<%= Cnarration::titre_h1("État des lieux") %>
+<h3>Données statistiques</h3>
+<pre>
+<%= Cnarration::donnees_statistiques %>
+</pre>
+
+<h3>Pages classées par niveau de développement</h3>
+<div class='small'>
+  <%= Cnarration::pages_par_niveau_developpement %>
+</div>

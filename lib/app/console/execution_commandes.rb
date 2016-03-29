@@ -16,6 +16,9 @@ class Console
     when /liste? filmodico/
       site.require_objet 'filmodico'
       Filmodico::films_in_table
+    when /^(état des lieux|etat des lieux|inventory) narration$/
+      redirect_to "admin/inventory?in=cnarration"
+      return ""
     when /(help|aide) livres narration/
       console.require 'narration'
       aide_pour_les_livres_narration

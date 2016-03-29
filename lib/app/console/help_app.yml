@@ -88,6 +88,10 @@ narration:
       Noter que la commande
       produira un lien à cliquer pour ajouter le chapitre dans la table des matières.
   -
+    command:        "`etat des lieux narration` ou `inventory narration`"
+    description: |
+      Renvoie à la page de la collection qui affiche un état des lieux de la collection et notamment des pages.
+  -
     command:        creer|create sous-chapitre narration in:LIVRE_REF titre:TITRE SOUS-CHAPITRE after:PAGE_ID_OPTIONNELLE
     description:    Créer le sous-chapitre dans le livre donné en référence (nom dossier ou id).
     note: |
