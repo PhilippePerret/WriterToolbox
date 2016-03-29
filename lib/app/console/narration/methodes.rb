@@ -13,6 +13,48 @@ class SiteHtml
 class Admin
 class Console
 
+  # Reçoit la référence à la page +page_ref+ et retourne un
+  # Array dont les éléments sont des hash contenant :id, :titre
+  # +page_ref+
+  #   {Fixnum} ID de la page (mais en string ici)
+  #   {String} Titre ou portion du titre. Si plusieurs pages sont
+  #   trouvées, plusieurs hash de données sont retournés.
+  # RETURN {Array de Hash} des pages ou NIL si aucune page.
+  # Note : +page_ref+ est l'argument de fin de commande, la
+  # plupart du temps.
+  def pages_narration_from_page_ref page_ref
+    site.require_objet 'cnarration'
+    pages = if page_ref.numeric?
+      hpage = Cnarration::table_pages.get(page_ref.to_i, colonnes:[:titre, :livre_id])
+      [hpage]
+    else
+      Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre, :livre_id]).values
+    end
+
+    return pages unless pages.count == 0
+    sub_log "Aucune page narration ne correspond à la référence `#{page_ref}`".in_span(class:'warning')
+    return nil
+  end
+
+  def ouvrir_fichier_texte_page_narration page_ref
+    pages = pages_narration_from_page_ref page_ref
+    return "" if pages.nil?
+
+    site.require_objet 'cnarration'
+    if pages.count == 1
+      flash "ICI, page id = #{pages.first[:id]}"
+      ipage = Cnarration::Page::get(pages.first[:id])
+      flash "Instance de ipage : #{}"
+      `open -a #{site.markdown_application} "#{ipage.fullpath}"`
+    else
+      sub_log(pages.collect do |hpage|
+        ipage = Cnarration::Page::get(hpage[:id])
+        hpage[:titre].in_a(target:"_blank",href:"site/open_md_file?path=#{CGI::escape ipage.fullpath}").in_li
+      end.join.in_ul(class:'tdm'))
+    end
+
+    return ""
+  end
 
   # Aller (afficher) la page narration de référence +page_ref+
   # +page_ref+
@@ -23,21 +65,13 @@ class Console
   #        on affiche la page, sinon on affiche des liens pour les
   #        rejoindre.
   def aller_page_narration page_ref
-    if page_ref.numeric?
-      refs = [page_ref.to_i]
-    else
-      site.require_objet 'cnarration'
-      refs = Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre]).values
-    end
-
-    if refs.count == 1
-      refs = [refs.first[:id]] if refs.first.instance_of?(Hash)
-      redirect_to "page/#{refs.first}/show?in=cnarration"
-    elsif refs.count == 0
-      sub_log "Aucune page narration ne correspond à la référence `#{page_ref}`".in_span(class:'warning')
+    pages = pages_narration_from_page_ref page_ref
+    return "" if pages.nil?
+    if pages.count == 1
+      redirect_to "page/#{pages.first[:id]}/show?in=cnarration"
     else
       sub_log(
-        refs.collect do |hpage|
+        pages.collect do |hpage|
           hpage[:titre].in_a(href:"page/#{hpage[:id]}/show?in=cnarration").in_li
         end.join.in_ul(class:'tdm')
       )
@@ -52,20 +86,6 @@ class Console
     require './objet/cnarration/synchro.rb'
     SynchroNarration::synchronise_database_narration
     return ""
-  end
-
-  # Méthode générale fonctionnelle permettant d'obtenir une
-  # page en fonction de la référence donnée qui peut être
-  # l'ID (nombre) de la page ou une portion de son titre.
-  # Si plusieurs choix possibles, ils sont tous retournés
-  # @RETURN : {Array} d'identifiant, même s'il n'y en a qu'un
-  def pages_ids_from_page_ref page_ref
-    if page_ref.numeric?
-      return [page_ref.to_i]
-    else
-      site.require_objet 'cnarration'
-      Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", nocase: true, colonnes:[]).keys
-    end
   end
 
   # Méthode retournant la balise pour se rendre à la table
@@ -120,14 +140,12 @@ class Console
   end
 
   def edit_page_narration page_ref
-    pages_ids = pages_ids_from_page_ref page_ref
-    debug "pages_ids: #{pages_ids.inspect}"
-    if pages_ids.count == 1
-      redirect_to "page/#{pages_ids.first}/edit?in=cnarration"
+    pages = pages_narration_from_page_ref page_ref
+    if pages.count == 1
+      redirect_to "page/#{pages.first[:id]}/edit?in=cnarration"
     else
-      site.require_objet 'cnarration'
-      hpages = Cnarration::table_pages.select(where:"id IN (#{pages_ids.join(', ')})", colonnes:[:titre, :livre_id])
-      propositions = hpages.collect do |pid, pdata|
+      propositions = pages.collect do |pdata|
+        pid = pdata[:id]
         "#{pdata[:titre]} (livre ##{pdata[:livre_id]})".in_a(href:"page/#{pid}/edit?in=cnarration").in_li
       end.join.in_ul(class:'tdm')
       sub_log "Plusieurs pages de référence `#{page_ref}` ont été trouvées :".in_h3

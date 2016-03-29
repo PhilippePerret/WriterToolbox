@@ -74,6 +74,12 @@ narration:
           <li>`niveau: NIVEAU_DE_0_A_9` pour définir le niveau de développement</li>
         </ul>
   -
+    command:        ouvre|ouvrir page narration &lt;page ID|portion titre&gt;
+    description: |
+      Ouvrir le fichier physique (markdown) de la page d'ID ou de portion titre donné en argument.
+    note: |
+      L'éditeur utilisé dépend de la définition de `site.markdown_application` dans le fichier `./objet/site/config.rb`.
+  -
     command:        creer|create chapitre narration in:LIVRE_REF titre:TITRE CHAPITRE after:PAGE_ID_OPTIONNELLE
     description: |
       Créer le chapitre de titre donné.

@@ -22,6 +22,9 @@ class Console
     when /^(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration
+    when /^(ouvre|ouvrir) page narration (.*)$/
+      console.require 'narration'
+      ouvrir_fichier_texte_page_narration line.sub(/^(ouvre|ouvrir) page narration /i,'')
     when /^(creer|create) (page|chapitre|chap|sous-chapitre|schap|sous_chapitre) narration (.*?)$/
       console.require 'narration'
       creer_page_ou_titre_narration line.sub(/^(creer|create) /,'')
