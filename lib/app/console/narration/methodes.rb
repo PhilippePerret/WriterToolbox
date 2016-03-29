@@ -26,11 +26,12 @@ class Console
     if page_ref.numeric?
       refs = [page_ref.to_i]
     else
+      site.require_objet 'cnarration'
       refs = Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre]).values
     end
 
     if refs.count == 1
-      refs = refs[:id] if refs.instance_of?(Hash)
+      refs = [refs.first[:id]] if refs.first.instance_of?(Hash)
       redirect_to "page/#{refs.first}/show?in=cnarration"
     elsif refs.count == 0
       sub_log "Aucune page narration ne correspond à la référence `#{page_ref}`".in_span(class:'warning')
