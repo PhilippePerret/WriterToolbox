@@ -2,7 +2,13 @@
 raise_unless_admin
 %>
 <%= Cnarration::titre_h1("État des lieux") %>
-<h3>Données statistiques</h3>
+<h3>Données statistiques par livre</h3>
+<pre class='small'>
+  <%= Cnarration::data_statistiques_per_book %>
+</pre>
+
+
+<h3>Données statistiques générales</h3>
 <pre>
 <%= Cnarration::donnees_statistiques %>
 </pre>
