@@ -1,0 +1,82 @@
+// Module principal pour les types documents
+
+section.document, div.document_legend
+  margin-left       : 3.2em
+  margin-right      : 3.2em
+
+// La class principale
+section.document
+  margin-top        : 2em
+  margin-bottom     : 2em
+  padding           : 3em 4em
+  background-color  : #EDFDF2
+  border            : 1px solid #8d8d8d
+  font-size         : 12pt
+  line-height       : 1.3em !important
+  
+  &.events, &.evenemencier
+    font-family       : courier
+    font-size         : 0.85em
+  
+  h1, h2, h3
+    text-align      : left
+  h1
+    font-size       : 1.4em !important
+    margin          : 0.5em -1em 2em !important
+
+  h2
+    font-size       : 1.2em !important
+    margin          : 0.7em 0 0.5em !important
+    color           : black !important
+
+  h3
+    font-size       : 1.0em !important
+    font-weight     : bold !important
+    margin          : 0.5em 0 0.3em !important
+    color           : black !important
+  
+  p, div.p
+    margin-left     : 2em !important
+    
+  // Propre au type évènemencier
+  &.events
+    div.e
+      position        : relative
+    span.t
+      position        : absolute
+      left            : -1em
+      top             : 0
+      
+  // Propre au type SCÉNARIO
+  &.scenario
+    div.intitule, div.personnage
+      font-weight         : bold
+      font-variant        : capitals
+    div.intitule
+      margin-top          : 1.5em
+    div.personnage
+      margin-top          : 1em
+      margin-left         : 11em
+    div.dialogue
+      text-align          : left
+      margin-left         : 9em
+      width               : 17em
+    div.note_jeu
+      text-align          : left
+      margin-left         : 11em
+      font-style          : italic
+      &:before
+        content   : "("
+      &:after
+        content   : ")"
+    div.action
+      margin-left         : 1em
+      text-align          : justify
+      margin-top          : 1em
+      
+// La légende (optionnelle) du document
+div.document_legend
+  font-size           : 0.75em
+  font-style          : italic
+  text-align          : center
+  margin-top          : -2em

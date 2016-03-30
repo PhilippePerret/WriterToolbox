@@ -42,9 +42,7 @@ class Console
 
     site.require_objet 'cnarration'
     if pages.count == 1
-      flash "ICI, page id = #{pages.first[:id]}"
       ipage = Cnarration::Page::get(pages.first[:id])
-      flash "Instance de ipage : #{}"
       `open -a #{site.markdown_application} "#{ipage.fullpath}"`
     else
       sub_log(pages.collect do |hpage|

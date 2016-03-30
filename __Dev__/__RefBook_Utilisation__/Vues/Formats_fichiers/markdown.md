@@ -15,10 +15,12 @@ Ou plus exactement des fichiers `kramdow`.
 Le fichier doit être exprimé comme instance `SuperFile`.
 
     site.require_module 'kramdown'
-    
+
     <superfile>.kramdown
 
 Ce code retourne le contenu du fichier `<superfile>`, qui doit être au format kramdown, en code HTML.
+
+Noter que cette méthode `SuperFile#kramdown` traite plus de choses que le parseur kramdown normal. Voir le module `./lib/deep/deeper/module/kramdown` pour voir toutes les transformations possibles ou le fichier `markdown_extra.md` ci-contre.
 
 <a name='coderetourneouecrit'></a>
 

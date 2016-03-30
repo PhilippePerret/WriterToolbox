@@ -40,7 +40,9 @@ class SuperFile
     when :latex      then :to_latex
     end
 
-    code = self.read
+    # On lit le code du fichier en remplaçant les fins de
+    # lignes windows par quelque chose de correct, au cas où
+    code = self.read.gsub(/\r\n?/, "\n").chomp
 
     # Si le format de sortie est de l'ERB, il faut protéger les
     # balises ERB sinon, kramdown transformerait les pourcentages en
@@ -48,6 +50,11 @@ class SuperFile
     if options[:output_format] == :erb
       code = code.gsub(/<\%/,'ERB-').gsub(/\%>/,'-ERB')
     end
+
+    # Si le code contient "\nDOC/" c'est que des documents sont
+    # définis dans le code, on les traite avant tout autre
+    # traitement
+    code = code.mef_document if code.match(/\nDOC\//)
 
     # Si une méthode formate_balises_propres existe, il
     # faut l'appeler sur le code pour les transformer

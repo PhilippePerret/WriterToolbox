@@ -56,7 +56,7 @@ class Console
 
     if chose == 'page'
       ipage.create_page # pour créer le fichier physique (s'il n'existe pas)
-      flash "Fichier créé (#{ipage.path})"
+      flash "Fichier créé. Pour OUVRIR CE FICHIER, taper en console `ouvrir page narration #{ipage.id}`"
     end
 
 
