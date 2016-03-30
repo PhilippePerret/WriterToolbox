@@ -128,6 +128,7 @@ class << self
 
   # Niveau humain de développement
   def niveau_humain niveau
+    return "" if niveau.to_i == 0
     Cnarration::NIVEAUX_DEVELOPPEMENT[niveau.to_i][:hname]
   end
 
