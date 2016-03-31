@@ -27,6 +27,8 @@ class Console
     dchose = Data::by_semicolon_in portionline.join(' ')
 
     # Le livre
+    dchose[:in] ||= dchose[:livre]
+    raise "Il faut impérativement définir le livre (donnée `in` ou `livre`)" if dchose[:in].nil?
     livre_id = dchose[:in].numeric? ? dchose[:in].to_i : Cnarration::SYM2ID[dchose[:in].to_sym]
     raise "Le livre est mal défini (ID ou nom du dossier symbolique) — taper `aide livres narration` pour une aide" if livre_id.nil?
 
@@ -38,7 +40,7 @@ class Console
       titre:        dchose[:titre],
       description:  dchose[:description] || "",
       type:         type_chose.to_s,
-      nivdev:       dchose[:niveau]||dchose[:dev]||"0"
+      nivdev:       dchose[:niveau]||dchose[:dev] || "1"
     }
     if chose == 'page'
       epage.merge!(

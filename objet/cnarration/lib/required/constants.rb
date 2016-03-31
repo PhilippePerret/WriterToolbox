@@ -28,6 +28,7 @@ class Cnarration
     thematique:         4,
     documents:          5,
     travail_auteur:     6,
+    travail:            6,
     procedes:           7,
     concepts_narratifs: 8,
     concepts:           8,
@@ -37,6 +38,7 @@ class Cnarration
   }
 
   NIVEAUX_DEVELOPPEMENT = {
+    0 => {hname:"Niveau indéfini"},
     1 => {hname:"Création de la page"},
     3 => {hname:"Esquisse"},
     4 => {hname:"Développée"},
