@@ -121,7 +121,7 @@ class ::String
 
   def mef_document output_format = :html
     return self unless self.match(/\nDOC\//)
-    str = self.gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
+    str = (self + "\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
       classes_css = $1.freeze
       doc_content = $2.freeze
       MEFDocument::new(doc_content, classes_css).output(output_format)

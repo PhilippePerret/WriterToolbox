@@ -1,8 +1,12 @@
 // Module principal pour les types documents
 
 section.document, div.document_legend
-  margin-left       : 3.2em
-  margin-right      : 3.2em
+  &[not:plain]
+    margin-left       : 3.2em
+    margin-right      : 1.2em
+  &.plain
+    margin-left       : 0
+    margin-right      : 0
 
 // La class principale
 section.document
@@ -11,12 +15,15 @@ section.document
   padding           : 3em 4em
   background-color  : #EDFDF2
   border            : 1px solid #8d8d8d
-  font-size         : 12pt
+  font-size         : 14.2pt
   line-height       : 1.3em !important
+  
+  &.small
+    font-size         : 0.85em !important
   
   &.events, &.evenemencier
     font-family       : courier
-    font-size         : 0.85em
+    font-size         : 0.95em
   
   h1, h2, h3
     text-align      : left
@@ -36,7 +43,7 @@ section.document
     color           : black !important
   
   p, div.p
-    margin-left     : 2em !important
+    margin-left     : 0em !important
     
   // Propre au type évènemencier
   &.events

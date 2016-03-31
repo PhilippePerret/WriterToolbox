@@ -40,6 +40,12 @@ class SuperFile
     when :latex      then :to_latex
     end
 
+    # Pour extra_markdown par exemple
+    output_format = case options[:output_format]
+    when :html, :erb then :html
+    when :latex      then :latex
+    end
+
     # On lit le code du fichier en remplaçant les fins de
     # lignes windows par quelque chose de correct, au cas où
     code = self.read.gsub(/\r\n?/, "\n").chomp
@@ -64,6 +70,11 @@ class SuperFile
     # il faut l'appeler
     code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
 
+    # Traitement extra kramdown
+    # TODO: Dans l'idéal, il faudrait apprendre à les insérer
+    # dans le traitement Kramdown::Document ci-dessous…
+    code = ( code.extra_kramdown output_format )
+    
     #
     # = MAIN TRAITEMENT =
     #

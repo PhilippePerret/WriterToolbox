@@ -2,11 +2,29 @@
 
 > Avant tout il faut noter que si ces formatages sont définis pour les fichiers Markdown, ils peuvent tout à fait être utilisés par d'autre éléments puisque c'est la classe String qui les définit. Cf. les fichiers du module `./lib/deep/deeper/module/kramdown`.
 
+
+* [Mise en forme de type : Citation](#miseneformecitation)
 * [Mise en forme type : Document](#formatagedocument)
 * [Les types de document](#lestypesdedocuments)
   * [Cas particulier du scénario](#casparticulierduscenario)
 * [Titres et sous-titres](#titreetsoustitre)
 * [Légende au document](#ajouterlegendedocumenet)
+
+<a name='miseneformecitation'></a>
+
+## Mise en forme de type : Citation
+
+Syntaxe :
+
+    >> "LA CITATION" AUTEUR - SOURCE
+
+Noter que :
+
+* les guillemets doivent être normaux,
+* "AUTEUR - SOURCE" sera traité comme un bloc si ce n'est pas un tiret simple (moins) qui est utilisé.
+
+
+Le style se trouve défini dans le document SASS `markdown.sass`.
 
 <a name='formatagedocument'></a>
 

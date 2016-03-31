@@ -2,7 +2,6 @@
 class ::String
 
   def formate_balises_propres
-    debug "STRING DANS FORMATE BALISES PROPRES : #{self.inspect}"
     str = self.formate_balises_mots
     str = str.formate_balises_films
     str = str.formate_balises_livres
