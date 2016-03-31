@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Admin
-class Todolist
+class Taches
 
   # L'administrateur qui possède cette liste
   # Si défini, la todolist le concernera lui seulement.
@@ -48,6 +48,7 @@ class Todolist
   end
 
   # Liste {Array} des instances Tache de la liste
+  # Rappel : la table ne s'appelle pas 'taches' mais 'todolist'
   def taches options = nil
     @taches = nil if options != nil
     @taches ||= begin
@@ -61,5 +62,5 @@ class Todolist
     end
   end
 
-end #/ Todolist
+end #/ Taches
 end #/ Admin

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 raise_unless_admin
 class Admin
-class Todolist
+class Taches
 
   class << self
 
@@ -13,5 +13,5 @@ class Todolist
 
   end # << self
 
-end #/Todolist
+end #/Taches
 end #/Admin

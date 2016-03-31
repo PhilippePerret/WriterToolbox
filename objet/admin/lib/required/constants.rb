@@ -3,7 +3,7 @@ class Admin
 
   DATA_ONGLETS = {
     'admin/dashboard' => "Accueil",
-    'admin/todo_list' => "TODO list"
+    'admin/taches'    => "Tâches"
   }
 
 end #/Admin

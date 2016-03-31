@@ -14,7 +14,7 @@ class Console
     def marquer_tache_finie tache_id
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
-      itask = ::Admin::Todolist::Tache::new(tache_id.to_i)
+      itask = ::Admin::Taches::Tache::new(tache_id.to_i)
       mess = if itask.exist?
         if itask.ended?
           "La tache #{tache_id} est déjà terminée."
@@ -34,7 +34,7 @@ class Console
     def detruire_tache tache_id
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
-      itask = ::Admin::Todolist::Tache::new(tache_id.to_i)
+      itask = ::Admin::Taches::Tache::new(tache_id.to_i)
       mess = if itask.exist?
         itask.destroy
         "Tache #{tache_id} détruite avec succès."
@@ -52,7 +52,7 @@ class Console
       ::Admin::require_module 'taches'
       data_tache = Data::by_semicolon_in data_str
       data_tache.merge!(updated_at: NOW)
-      itache = ::Admin::Todolist::Tache::new
+      itache = ::Admin::Taches::Tache::new
       itache.instance_variable_set('@data2save', data_tache)
       itache.data2save_valid? || ( return "Error" )
       # Les données sont valides, on peut enregistrer la tâche
@@ -67,7 +67,7 @@ class Console
     def update_tache tache_id, tache_data_str
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
-      itache = ::Admin::Todolist::Tache::new(tache_id)
+      itache = ::Admin::Taches::Tache::new(tache_id)
       raise "Cette tache est inconnue." unless itache.exist?
 
       # On transforme les données string en hash de données
@@ -122,7 +122,7 @@ class Console
       task_list = if options[:all]
         sub_log "liste de toutes les taches".in_h3
         ::Admin::table_taches.select(order: "echeance DESC", colonnes:[]).keys.collect do |tid|
-          ::Admin::Todolist::Tache::new(tid)
+          ::Admin::Taches::Tache::new(tid)
         end
       elsif options.has_key?( :admin )
         unless options[:admin].numeric?
@@ -139,13 +139,13 @@ class Console
           admin = User::get(options[:admin].to_i)
         end
         sub_log "liste des taches de #{admin.pseudo}".in_h3
-        ::Admin::Todolist::new().taches.collect do |itache|
+        ::Admin::Taches::new().taches.collect do |itache|
           next if itache.admin_id != admin.id
           itache
         end.compact
       else
         sub_log "liste des taches en cours".in_h3
-        ::Admin::Todolist::new().taches
+        ::Admin::Taches::new().taches
       end
 
       # Format de la réponse, en fonction

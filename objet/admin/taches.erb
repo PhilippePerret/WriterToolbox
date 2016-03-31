@@ -4,7 +4,7 @@
 
 <%
 def todolist
-  @todolist ||= ::Admin::Todolist::new(admin_id: user.id)
+  @todolist ||= ::Admin::Taches::new(admin_id: user.id)
 end
 %>
 

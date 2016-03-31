@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Admin
-class Todolist
+class Taches
 class Tache
 
   def ended?
@@ -15,5 +15,5 @@ class Tache
   end
 
 end #/Tache
-end #/Todolist
+end #/Taches
 end #/Admin

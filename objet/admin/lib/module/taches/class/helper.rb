@@ -1,6 +1,7 @@
 # encoding: UTF-8
+raise_unless_admin
 class Admin
-class Todolist
+class Taches
 class << self
 
   # Retourne la pastille à coller en haut de page indiquant à
@@ -47,7 +48,7 @@ class << self
 
     data_pastille = {
       nombre:       nombre_taches,
-      href:         "admin/todo_list",
+      href:         "admin/taches",
       background:   bkg,
       title:        "Cliquer ci-dessus pour voir la liste complète.",
       taches:       taches
@@ -66,5 +67,5 @@ class << self
   end
 
 end #/<<self
-end #/Todolist
+end #/Taches
 end #/Admin

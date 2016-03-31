@@ -1,0 +1,20 @@
+<%
+raise_unless_admin
+%>
+<%= Admin::titre_h1("Synchronisation des tâches") %>
+
+<% if user.manitou? %>
+
+<pre>
+<% ::Admin::Taches::synchronize %>
+<%= ::Admin::Taches::suivi.join("\n") %>
+</pre>
+
+
+
+
+<%
+# ---------------------------------------------------------------------
+# Si l'user n'est pas grand manitou
+%>
+<% else %><p>Votre niveau d'administration n'est pas suffisant pour avoir accès à cette section.</p><% end %>

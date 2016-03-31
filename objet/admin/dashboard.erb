@@ -50,6 +50,13 @@ end
       "Analyses".in_a(href:'admin/dashboard?in=analyse')
     ).in_div(class:'admin_tool')
    %>
+   <% if OFFLINE %>
+    <%=
+      (
+        "Synchro taches".in_a(href:'admin/taches_synchro')
+      ).in_div(class:'admin_tool')
+    %>
+   <% end %>
 </div><%# div#admin_tools %>
 
 <%

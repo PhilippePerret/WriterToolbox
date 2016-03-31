@@ -19,8 +19,29 @@ données pour le filmodico et le scénodico
     rfile.upload
     # => Upload le fichier local vers le site distant
 
+
     rfile.distant.download
+    rfile.download            # racourci
     # => Download le fichier distant vers le site local
+
+    rfile.distant.downloaded_file_name <nouveau_nom.ext>
+    # => Quand le fichier distant sera downloadé, il
+    #    sera enregistré avec le nom défini au lieu du
+    #    nom original. Cela permet de conserver le file
+    #    local.
+    #    Le fichier se trouvera dans le même dossier que
+    #    le fichier original. Pour définir une toute autre
+    #    path, utiliser la méthode suivante.
+    # Note : Utiliser sans paramètre pour ré-initialiser
+    # et pouvoir vraiment downloader le fichier avec
+    # le même nom.
+
+    rfile.distant.downloaded_path <path/with/file.ext>
+    # => Idem que ci-dessus mais avec un path complet
+    # Note : Utiliser sans paramètre pour ré-initialiser
+    # et pouvoir vraiment downloader le fichier avec
+    # le même nom.
+
 
     rfile.exist?
     # => true si existe en local
@@ -129,63 +150,5 @@ class RFile
   def distant
     @distant ||= Distant::new(self)
   end
-
-  # ---------------------------------------------------------------------
-  #   Instance du fichier distant
-  # ---------------------------------------------------------------------
-  class Distant
-
-    # Instance RFile du fichier local
-    attr_reader :rfile
-
-    def initialize rfile
-      @rfile = rfile
-    end
-
-    def download
-      # Créer la hiérarchie de dossier en local si nécessaire
-      `ssh #{rfile.serveur_ssh} "mkdir -p #{path_no_dot}"`
-      `scp -p #{rfile.serveur_ssh}:#{path} #{rfile.path}`
-      success = File.exist? rfile.path
-      mess = "DOWNLOAD du fichier `#{path}` "
-      mess << ( success ? "opéré avec succès." : "manqué…")
-      mess = mess.in_span(class: (success ? nil : 'warning'))
-      mess << "Contrôler/revenir".in_a(href:route_courante).in_p(class:'right')
-      rfile.message = mess
-    end
-
-    # Date de dernière modification
-    def mtime
-      @mtime ||= begin
-        res = `ssh #{rfile.serveur_ssh} "ruby -e \\"STDOUT.write File.stat('#{path}').mtime.to_i\\""`
-        res.to_i
-      end
-    end
-
-    # Pour détruire le fichier distant
-    def destroy
-      mess = "DESTRUCTION du fichier distant `#{path}` "
-      res = `ssh #{rfile.serveur_ssh} "ruby -e \\"File.unlink('#{path}');STDOUT.write File.exist?('#{path}').inspect\\""`
-      @is_exist = nil
-      mess << ((false == exist?) ? "opérée avec succès" : "manquée…")
-      rfile.message = mess
-    end
-
-    def exist?
-      @is_exist ||= begin
-        "true" == `ssh #{rfile.serveur_ssh} "ruby -e \\"STDOUT.write File.exist?('#{path}').inspect\\""`
-      end
-    end
-
-    # Pour le fichier distant ça correspond à la même chose, normalement
-    def path_no_dot
-      @path_no_dot ||= path
-    end
-
-    def path
-      @path ||= "www/#{rfile.path_no_dot}"
-    end
-
-  end #/Distant
 
 end #/RFile

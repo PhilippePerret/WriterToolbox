@@ -1,10 +1,10 @@
 # encoding: UTF-8
 class Admin
-class Todolist
+class Taches
 class Tache
 
   # Pour afficher la tâche dans un listing comme celui présenté
-  # sur la page admin/todo_list.erb de l'administrateur
+  # sur la page admin/taches.erb de l'administrateur
   def as_li
     (
       bouton_ok +
@@ -62,9 +62,9 @@ class Tache
     @admin_humain ||= "#{admin.pseudo}".in_span(class:'owner')
   end
   def bouton_ok
-    "OK".in_a(href:"admin/todo_list?op=stop_tache&tid=#{id}").in_span(class:'btnok')
+    "OK".in_a(href:"admin/taches?op=stop_tache&tid=#{id}").in_span(class:'btnok')
   end
 
 end #/Tache
-end #/Todolist
+end #/Taches
 end #/Admin
