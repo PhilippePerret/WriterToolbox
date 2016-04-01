@@ -12,6 +12,9 @@ scenodico:
     description:    Retourne la balise MOT pour le mot demandé.
     note:           Si le mot commence par un accent ou un caractère diacritique, il faut supprimer cette lettre pour pouvoir trouver le mot.
   -
+    command:        "`nouveau mot` ou `new mot`"
+    description:    Conduit au formulaire pour entrer un nouveau mot.
+  -
     command:        goto|aller sceno|scenodico
     description:    Permet de rejoindre le scénodico.
     type:           GOTO

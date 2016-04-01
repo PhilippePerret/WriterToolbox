@@ -126,6 +126,9 @@ class Console
       Taches::show_liste_taches( admin: user.id.to_s)
     when /^liste? ta(che|sk)s (.+)$/
       Taches::show_liste_taches( admin: line.split(' ').last )
+    when /^synchro(nize|nise)? (taches|tasks)$/
+      redirect_to 'admin/taches_synchro'
+      ""
     when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
     # ---------------------------------------------------------------------
@@ -162,7 +165,7 @@ class Console
 
   # On analyse la ligne comme une expression régulière connue
   def execute_as_regular_sentence line
-    if (found = line.match(/^(creer|create) (tache|task) (.*?)$/).to_a).count > 0
+    if (found = line.match(/^(creer|create|new|nouvelle) (tache|task) (.*?)$/).to_a).count > 0
       Taches::create_tache found[3].freeze
     elsif (found = line.match(/^(update|actualise)r? (tache|task) ([0-9]+) (.*?)$/).to_a).count > 0
       Taches::update_tache found[3].to_i, found[4].freeze

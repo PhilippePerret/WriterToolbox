@@ -10,12 +10,20 @@ class Console
   def app_execute_as_is line
 
     case line.downcase
+      # FILMODICO
     when /liste? films/
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
     when /liste? filmodico/
       site.require_objet 'filmodico'
       Filmodico::films_in_table
+    when /^(nouveau|new) film$/
+      if OFFLINE then "ERROR : seulement en ONLINE"
+      else (redirect_to "filmodico/edit"); "" end
+      # SCENODICO
+    when /^(nouveau|new) mot$/
+      if OFFLINE then "ERROR : seulement en ONLINE"
+      else (redirect_to "scenodico/edit"); "" end
     when /^(état des lieux|etat des lieux|inventory) narration$/
       redirect_to "admin/inventory?in=cnarration"
       return ""

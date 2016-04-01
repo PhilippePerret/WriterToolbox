@@ -11,15 +11,15 @@ end
 <% if user.manitou? %>
 
 <%
-if site.current_route.route == 'admin/taches_synchro'
+if site.current_route.route == 'admin/taches_synchro' && param(:op) != nil
   if ::Admin::Taches::respond_to? param(:op).to_sym
     ::Admin::Taches::send(param(:op).to_sym)
   end
 end
 %>
-<pre>
-  <%= ::Admin::Taches::display_suivi %>
-</pre>
+<pre><%=
+  ::Admin::Taches::display_suivi
+%></pre>
 
 
 <div class="right tdms">

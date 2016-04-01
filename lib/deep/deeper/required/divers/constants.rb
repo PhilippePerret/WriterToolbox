@@ -40,6 +40,7 @@ PAYS = {
   'pt'  => "Portugal",
   'cz'  => "République Tchèque",
   'ru'  => "Russie",
+  'sw'  => "Suède",
   'ch'  => "Suisse",
   'cs'  => "Tchécoslovaquie"
 }

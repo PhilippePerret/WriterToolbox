@@ -116,6 +116,12 @@ taches:
     command:      "`liste mes taches` ou `mes taches`"
     description:  Affiche la liste des tâches de l'administrateur courant.
   -
+    command:      synchro taches
+    description:  Synchronise les tâches online et offline
+    note: |
+      Cette synchronisation est indispensable car les tâches peuvent être modifiées ONLINE ou OFFLINE.<br>
+      On peut aussi utiliser `synchronize taches` ou `tasks` à la place de `taches`.
+  -
     command:      list|liste taches|tasks &lgt;admin ID|Pseudo&gt;
     description:  Retourne les tâches de l'administrateur spécifié.
   -

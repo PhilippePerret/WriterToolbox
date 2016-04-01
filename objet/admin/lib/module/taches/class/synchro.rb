@@ -419,8 +419,28 @@ class << self
   # Noter que la méthode est toujours appelée, même lorsque
   # aucune opération n'est demandée.
   def display_suivi
-    return "" if suivi.nil?
-    suivi.join("\n")
+    if suivi.nil?
+      <<-HTML
+Cette section permet de synchroniser la liste des tâches locales et distantes,
+entendu qu'on peut modifier cette liste online ou offline.
+
+Le bouton “Comparer” permet de simplement comparer les deux fichiers et
+d'afficher les différences tandis que le bouton “Synchroniser” procède à la
+synchronisation proprement dite.
+
+La synchronisation consiste en:
+
+* Download du fichier site_hot.db,
+* Comparaison des deux tables `todolist`,
+* Ajout au fichier local des tâches n'existant que sur le fichier
+  distant,
+* Modification dans le fichier local des tâches modifiées dans le
+  fichier distant,
+* Upload du fichier local pour synchronisation.
+      HTML
+    else
+      suivi.join("\n")
+    end
   end
 
 end #/ << self
