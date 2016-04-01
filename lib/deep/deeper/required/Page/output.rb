@@ -21,7 +21,8 @@ class Page
 
   def head
     @head ||= begin
-      fonts_google = if ONLINE
+      with_fonts = true # Mettre ONLINE quand on ne peut pas avoir de connexion
+      fonts_google = if with_fonts
         <<-FONTS
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
         <!--[if lt IE 9]>

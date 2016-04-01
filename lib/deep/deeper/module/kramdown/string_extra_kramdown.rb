@@ -19,6 +19,7 @@ class ::String
       line = line_init.strip
       case line
       when /^>>/ then line.kramdown_citations(output_format)
+      when /^\[(.*?)\]$/ then line.kramdown_encart(output_format)
       else line_init
       end
     end.join("\n")
@@ -32,13 +33,30 @@ class ::String
   }
   def kramdown_citations output_format = :html
     matched = self.match(/>> ?"(.+?)" ?(.*?)(?: - (.*))?$/).to_a
-    debug "matched: #{matched.inspect}"
     citation  = matched[1]
     auteur    = matched[2]
     source    = matched[3]
     key = source.nil? ? :sans_source : :avec_source
     template = TEMPLATES_CITATIONS[output_format][key]
     template % {citation: citation, auteur: auteur, source: source}
+  end
+
+  # Traitement des exergues
+  REPLACEMENTS_PER_FORMAT = {
+    html: {
+      br: "<br />"
+    }
+  }
+  def kramdown_encart output_format = :html
+    str = self[1..-2].strip # pour enlever les croches
+    replacement = REPLACEMENTS_PER_FORMAT[output_format][:br]
+    str.gsub!(/\\n/, replacement)
+    case output_format
+    when :html
+      str.in_div(class:'encart')
+    else
+      str
+    end
   end
 
 end

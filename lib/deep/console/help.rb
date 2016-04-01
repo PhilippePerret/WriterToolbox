@@ -52,8 +52,6 @@ class Console
   #
   # AIDE
   #
-  # À REMPLIR À MESURE QUE DES MÉTHODES S'AJOUTENT
-  #
   def help
     require 'yaml'
     # Le code total construit
@@ -98,8 +96,8 @@ class Console
       when 'HELP'
       else
         c << haide['command'].in_dt
-        c << haide['description'].in_dd
-        c << haide['note'].in_dd(class:'note')      unless haide['note'].nil?
+        c << haide['description'].gsub(/\n/,'<br>').in_dd
+        c << haide['note'].gsub(/\n/,'<br>').in_dd(class:'note')      unless haide['note'].nil?
         c << haide['implement'].in_dd(class:'imp')  unless haide['implement'].nil?
       end
     end

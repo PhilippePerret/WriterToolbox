@@ -3,16 +3,18 @@
 > Avant tout il faut noter que si ces formatages sont définis pour les fichiers Markdown, ils peuvent tout à fait être utilisés par d'autre éléments puisque c'est la classe String qui les définit. Cf. les fichiers du module `./lib/deep/deeper/module/kramdown`.
 
 
-* [Mise en forme de type : Citation](#miseneformecitation)
+* [Mise en forme spéciale : Citation](#miseneformecitation)
+* [Mise en forme spéciale : Exergue](#misenformeexergue)
 * [Mise en forme type : Document](#formatagedocument)
 * [Les types de document](#lestypesdedocuments)
   * [Cas particulier du scénario](#casparticulierduscenario)
-* [Titres et sous-titres](#titreetsoustitre)
-* [Légende au document](#ajouterlegendedocumenet)
+  * [Titres et sous-titres](#titreetsoustitre)
+  * [Légende du document](#ajouterlegendedocumenet)
+  * [Gestion des retraits](#gestiondesretraits)
 
 <a name='miseneformecitation'></a>
 
-## Mise en forme de type : Citation
+## Mise en forme spéciale : Citation
 
 Syntaxe :
 
@@ -25,6 +27,18 @@ Noter que :
 
 
 Le style se trouve défini dans le document SASS `markdown.sass`.
+
+<a name='misenformeexergue'></a>
+
+## Mise en forme spéciale : Exergue
+
+Pour mettre tout un paragraphe ou plusieurs paragraphes en exergue, il suffit de les entourer de crochets.
+
+    [Un paragraphe mis en exergue.]
+
+Attention : il est impératif que ce soit bien les crochets soient bien sur le premier et le dernier caractère.
+
+Pour faire des retours à la ligne, utiliser `<br>` ou `\n` (marque brute).
 
 <a name='formatagedocument'></a>
 
@@ -75,7 +89,7 @@ Pour le scénario, on utilise la classe en début de ligne en mettant seulement 
 
 <a name='titreetsoustitre'></a>
 
-## Titres et sous-titres
+### Titres et sous-titres
 
 Les titres et les sous-titres se gèrent comme pour les documents markdown normaux, à l'aide des `#`.
 
@@ -85,7 +99,7 @@ Note : On commence à `# ` même si ce titre va paraitre gros dans le document.
 
 <a name='ajouterlegendedocumenet'></a>
 
-## Légende au document
+### Légende du document
 
 Pour ajouter une légende au document, on ajoute en dernière ligne :
 
@@ -99,3 +113,15 @@ Par exemple :
     /DOC
 
 Cette légende sera ajoutée en petit sous le document, en italique.
+
+<a name='gestiondesretraits'></a>
+
+### Gestion des retraits
+
+Pour faire des retraits (marge sur tout un paragraphe) il suffit d'utiliser les tabulations ou les espaces doubles.
+
+    DOC/synopsis
+    Un texte aligné normalement
+    [SPACE][SPACE]Un texte qui sera en premier retrait.
+
+On peut utiliser jusqu'à 6 retraits.

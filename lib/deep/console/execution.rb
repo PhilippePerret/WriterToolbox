@@ -136,7 +136,9 @@ class Console
     when 'aide analyse'
       (site.folder_module+'console_aides/analyse.rb').require
       ::Console::Aide::analyse
-
+    when /^aide (rédaction|redaction|markdown|kramdown)$/
+      aide_redaction_markdown
+      ""
     # ---------------------------------------------------------------------
     when 'check synchro'            then check_synchro
     when /^(read|show|affiche|afficher) debug$/ then read_debug

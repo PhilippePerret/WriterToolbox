@@ -195,3 +195,19 @@ files:
     command:      "`kramdown &lt;./path/to/file.md`"
     description:  Parse et affiche le fichier Markdown fourni en second argument.
     note:         "Tip : Dans Atom, trouver le fichier, Ctrl-cliquer dessus et choisir “Copy full path” ou “Copy project path” pour utiliser le résultat en argument. Noter que si c'est le “project path” qui est choisi, il faut ajouter `./` devant."
+
+# ---------------------------------------------------------------------
+#   RÉDACTION
+# ---------------------------------------------------------------------
+
+redaction:
+
+  -
+    command:      null
+    type:         TITLE
+    description:  Rédaction des fichiers
+    note: "C'est juste pour que 'redaction' apparaisse en sujet."
+
+  -
+    command:      aide redaction|rédaction|markdown|kramdown
+    description:  Affiche l'aide pour la rédaction des fichiers Markdown.
