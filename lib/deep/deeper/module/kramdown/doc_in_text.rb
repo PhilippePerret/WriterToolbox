@@ -54,6 +54,7 @@ class MEFDocument
     "\n#{traite_code}\n"
   end
 
+  # Traitement du code, ligne après ligne.
   def traite_code
     @codet = code
     analyse_code
@@ -166,18 +167,24 @@ class ::String
     str = self.split("\n")
     str.collect do |line|
       if line.start_with?("- ")
-        ("-".in_span(class:'t') + line[2..-1]).in_div(class:'e')
+        ("-".in_span(class:'t') + line[2..-1].traite_as_markdown_html).in_div(class:'e')
       else
         line.traite_as_line_of_document_html
-      end.traite_as_markdown_html
+      end
     end.join("")
   end
 
   # Traitement de toutes les lignes de texte, même celles traitées
   # en particulier (ligne d'évènemencier, de scénario, etc.)
+  #
+  # On retire les balises p qui ont été insérées par kramdown pour ne
+  # garder que le texte corrigé. C'est la méthode appelante elle-même
+  # qui doit insérer le code dans un container.
   def traite_as_markdown_html
-    self.gsub(/\*\*(.+?)\*\*/, '<strong>\1</strong>').
-    gsub(/\*(.+?)\*/, '<em>\1</em>')
+    # self.gsub(/\*\*(.+?)\*\*/, '<strong>\1</strong>').
+    # gsub(/\*(.+?)\*/, '<em>\1</em>')
+    res = Kramdown::Document.new(self.strip, {hard_wrap: false}).send(:to_html)
+    res.strip.sub(/^<p>(.*?)<\/p>$/,'\1')
   end
 
   # Traitement d'une ligne comme la ligne d'un document quand elle
@@ -185,13 +192,22 @@ class ::String
   def traite_as_line_of_document_html
     case self
     when /^(\#+) /
-      self.sub(/^(\#+) (.*?)$/){
-      niveau_titre = $1.length
-      ht = "h#{niveau_titre}"
-      "<#{ht}>#{$2}</#{ht}>"
-    }
+      tout, dieses, titre = self.match(/^(\#+) (.*?)$/).to_a
+      ht = "h#{dieses.length}"
+      "<#{ht}>#{titre.traite_as_markdown_html}</#{ht}>"
+    when /^(  |\t)/
+      # Ligne débutant par une tabulation ou un double espace
+      # => C'est un retrait, un texte qu'il faut mettre à la
+      #    marge.
+      # On regarde la longueur du retrait. Rappel : ce retrait
+      # peut se faire soit avec deux espaces soit avec une
+      # tabulation.
+      retrait = self.match(/^((?:  |\t)+)/).to_a[1].gsub(/  /,"\t").length
+      self.strip.traite_as_markdown_html.in_div(class:"p rtt#{retrait}")
+    when ""
+      "&nbsp;".in_div(class:'p')
     else
-      self.in_div(class:'p')
+      self.traite_as_markdown_html.in_div(class:'p')
     end
   end
 
