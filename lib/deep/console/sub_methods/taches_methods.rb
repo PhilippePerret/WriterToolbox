@@ -11,6 +11,9 @@ class Console
     def sub_log str; console.sub_log str end
 
     # Marquer une tache finie
+    #
+    # Note : Produit aussi l'affichage des tâches de
+    # l'admin courant.
     def marquer_tache_finie tache_id
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
@@ -25,7 +28,8 @@ class Console
       else
         "La tache #{tache_id} n'existe pas."
       end
-      return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
+      show_liste_taches( admin: user.id )
+      return "#{mess}\n# (`mes taches` => liste de vos taches)."
     end
 
     # Pour détruire la tache d'id +tache_id+
@@ -125,7 +129,7 @@ class Console
           ::Admin::Taches::Tache::new(tid)
         end
       elsif options.has_key?( :admin )
-        unless options[:admin].numeric?
+        unless options[:admin].to_s.numeric?
           admin = User::get_by_pseudo(options[:admin])
           if admin.pseudo == "Marion" && admin.options[0..1] != "15"
             opts = admin.options
