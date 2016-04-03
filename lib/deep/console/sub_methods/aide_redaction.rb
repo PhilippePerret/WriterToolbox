@@ -1,3 +1,4 @@
+# encoding: UTF-8
 =begin
 
   Aide complète pour la rédaction des fichiers Markdown qui seront

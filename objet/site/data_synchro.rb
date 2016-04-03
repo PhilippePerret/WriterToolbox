@@ -6,6 +6,10 @@ Définition des données de synchro
 PENSER À ACTUALISER CE FICHIER SI DES CHANGEMENT SONT FAITS car il
 sert aussi ONLINE.
 
+Pour utiliser ces données n'importe où, il faut :
+
+    require './objet/site/data_synchro.rb'
+
 =end
 
 # ---------------------------------------------------------------------

@@ -53,6 +53,11 @@ end
    <% if OFFLINE %>
     <%=
       (
+        "Synchro générale".in_a(href:"admin/sync")
+      ).in_div(class:'admin_tool')
+    %>
+    <%=
+      (
         "Synchro taches".in_a(href:'admin/taches_synchro')
       ).in_div(class:'admin_tool')
     %>

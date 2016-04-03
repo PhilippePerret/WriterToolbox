@@ -161,10 +161,10 @@ class String
   # Ajouter :file => true dans +attrs+ pour une formulaire avec upload fichier
   def in_form     attrs = nil
     attrs ||= Hash::new
-    attrs = attrs.merge( method: 'POST' ) unless attrs.has_key?(:method)
-    if attrs.has_key?( :file ) && attrs[:file] == true
-      attrs = attrs.merge(:enctype => 'multipart/form-data')
-      attrs.delete(:file)
+    attrs.merge!( method: 'POST' ) unless attrs.has_key?(:method)
+    attrs.merge!( 'accept-charset' => "UTF-8") unless attrs.has_key?('accept-charset')
+    if attrs.has_key?( :file ) && attrs.delete(:file) == true
+      attrs.merge!(:enctype => 'multipart/form-data')
     end
     html_balise 'form', attrs
   end

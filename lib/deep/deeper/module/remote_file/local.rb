@@ -140,6 +140,7 @@ class RFile
   end
 
   # Adresse du serveur SSH sous la forme "<user>@<adresse ssh>"
+  # Note : Défini dans './objet/site/data_synchro.rb'
   def serveur_ssh
     @serveur_ssh ||= Synchro::new().serveur_ssh
   end

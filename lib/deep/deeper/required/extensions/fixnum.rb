@@ -95,8 +95,13 @@ class ::Fixnum
     ahd.strip
   end
 
-  def as_duree
-    self.s2h(usec: "\"", umin: "'", uhour: "h", ujour:"jour")
+  def as_duree options = nil
+    options ||= Hash::new
+    options[:usec] ||= "\""
+    options[:umin] ||= "'"
+    options[:uhour] ||= "h"
+    options[:ujour] = "jour" unless options.has_key?(:ujour)
+    self.s2h(options)
   end
 
   def as_horloge
@@ -110,6 +115,10 @@ class ::Fixnum
   #     :ujour    L'unité pour les jours (if any)
   #     :hour_required    Si true, les heures sont toujours affichées,
   #                       même si elle valent 0
+  #     :no_days  Si true, on n'utilise pas le nombre de jours, on
+  #               le convertit en heures.
+  #               On peut le mettre implicitement à true en mettant
+  #               :ujour à nil
   #     Par défaut, ce sera une horloge "h:mm:ss" avec toujours les
   #     heures.
   def s2h options = nil
@@ -117,6 +126,7 @@ class ::Fixnum
         usec: '', umin:':', uhour:':', ujour:'jrs',
         hour_required: true
       }
+    options[:no_days] = true if options[:ujour].nil?
 
     mns = self / 60
     sec = (self % 60).to_s.rjust(2,'0')
@@ -124,8 +134,13 @@ class ::Fixnum
       hrs = mns / 60
       mns = (mns % 60).to_s.rjust(2,'0')
       if hrs > 24
-        jrs = "#{hrs / 24} #{options[:ujour]} "
-        hrs = hrs % 24
+        nombre_jours = hrs / 24
+        jrs = if options[:no_days]
+          ""
+        else
+          "#{nombre_jours} #{options[:ujour]} "
+        end
+        hrs = hrs % 24 + ( options[:no_days] ? nombre_jours * 24 : 0)
       end
       hrs = "#{hrs}#{options[:uhour]}"
     else

@@ -1,0 +1,27 @@
+<%
+# Panneau de gestion de toutes les synchronisations
+#
+# Ce panneau permet de voir les fichiers à synchroniser et à gérer
+# leur synchronisation.
+# Seuls les fichiers de l'application ne sont pas testés par ce programme
+raise_unless_admin
+%>
+<%= ::Admin::titre_h1("Synchronisation") %>
+
+<%
+# ---------------------------------------------------------------------
+#   Boutons
+#   permettant d'obtenir l'état de la synchronisation et de lancer
+#   les synchronisation nécessaire.
+# ---------------------------------------------------------------------
+%>
+
+<%
+# ---------------------------------------------------------------------
+#   État de la synchronisation
+#   Produit par les méthodes du fichier ruby
+#   L'état des lieux est fait une fois par heure et doit être réitéré
+#   à l'aide du bouton si nécessaire.
+# ---------------------------------------------------------------------
+%>
+<%= sync.etat_des_lieux %>
