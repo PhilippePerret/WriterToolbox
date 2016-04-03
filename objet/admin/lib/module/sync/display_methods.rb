@@ -40,7 +40,7 @@ class Sync
 
     form = String::new
 
-    form << "synchronise".in_hidden(name:'operation')
+    form << "synchronize".in_hidden(name:'operation')
 
     form << (FILES2SYNC.collect do |fid, fdata|
       fdata.merge!(

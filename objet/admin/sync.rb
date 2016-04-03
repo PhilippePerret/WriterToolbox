@@ -1,4 +1,19 @@
 # encoding: UTF-8
+=begin
+
+À FAIRE :
+
+  1. Implémenter la synchronisation proprement dite
+      - ne pas oublier de détruire les fichiers de synchronisation
+        mais après l'opération
+      - les affiches
+      - chaque fichier avec son traitement spécial
+      
+  2. Incorporer les fichiers de Narration dans le check, mais il
+     faut au préalable voir comment ils fonctionnent sur Icare et
+     synchroniser le fonctionnement.
+
+=end
 
 # Ce module peut être appelé en standalone pour le check
 # des synchros.
@@ -11,13 +26,6 @@ else
   # module
   raise_unless_admin
   ::Admin::require_module 'sync'
-
-  # Si une opération est à faire, il faut l'invoquer
-  #
-  if site.current_route.route == "admin/sync" && param(:operation) != nil
-    methode = param(:operation).to_sym
-    sync.send(methode) if sync.respond_to?( mathode )
-  end
 end
 
 =begin

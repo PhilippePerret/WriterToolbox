@@ -5,6 +5,14 @@
 # leur synchronisation.
 # Seuls les fichiers de l'application ne sont pas testés par ce programme
 raise_unless_admin
+
+# Si une opération est à faire, il faut l'invoquer
+#
+if site.current_route.route == "admin/sync" && param(:operation) != nil
+  methode = param(:operation).to_sym
+  sync.send(methode) if sync.respond_to?( methode )
+end
+
 %>
 <%= ::Admin::titre_h1("Synchronisation") %>
 
