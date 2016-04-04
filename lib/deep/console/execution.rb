@@ -127,7 +127,7 @@ class Console
     when /^liste? ta(che|sk)s (.+)$/
       Taches::show_liste_taches( admin: line.split(' ').last )
     when /^synchro(nize|nise)? (taches|tasks)$/
-      redirect_to 'admin/taches_synchro'
+      redirect_to 'admin/sync'
       ""
     when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
@@ -139,8 +139,8 @@ class Console
     when /^aide (rédaction|redaction|markdown|kramdown)$/
       aide_redaction_markdown
       ""
-    # ---------------------------------------------------------------------
-    when 'check synchro'            then check_synchro
+      # ---------------------------------------------------------------------
+    when /^check (site|synchro)$/     then check_synchro
     when /^(read|show|affiche|afficher) debug$/ then read_debug
     when /^(destroy|kill) debug$/     then destroy_debug
     when /^vider? table paiements?$/  then vide_table_paiements

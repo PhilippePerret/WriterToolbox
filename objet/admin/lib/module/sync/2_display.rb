@@ -66,18 +66,59 @@ class Sync
       explication_force_synchro_narration
     ).in_p
 
-    # Ici, on vérifie les affiches pour narration
+
+    form << display_etat_des_lieux_affiches_films
+
+    # Le bouton pour lancer la synchronisation
+    form << "Synchroniser".in_submit(class:'btn').in_div(class:'buttons')
+
+    c << form.in_form(action: "admin/sync")
+
+    # /fin du formulaire de synchronisation
+
+    # Enregistrer les données de synchronisation à faire
+    # dans le fichier adéquat, qui sera utilisé si la
+    # synchronisation est demandée.
+    # debug "\n\ndatasync : #{datasync.pretty_inspect}\n\n"
+    self.data_synchronisation = datasync
+
+
+    c << "<hr><div class='right btns'>"
+    c << "Données de synchronisation".in_a(onclick:"$('pre#data_sync').toggle()", class:'small')
+    c << " | "
+    c << "Données retournées par le check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
+    c << " | "
+    c << "Suivi des opérations".in_a(onclick:"$('pre#suivi_operation').toggle()", class:'small')
+    c << "</div>"
+
+    c << datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
+    c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
+    c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
+
+    # On écrit tout ce code dans le fichier temporaire pour qu'il soit
+    # relu facilement.
+    display_path.write(c)
+  end
+
+  def display_etat_des_lieux_affiches_films
+    # Ensuite, on peut fabriquer l'affichage des synchros
+    # à faire au niveau des affiches de films.
+    # Mais seulement s'il y a du boulot à faire, sinon une
+    # simple phrase pour expliquer que tout est à jour.
+    daf = diff_affiches
+
+    if daf[:nombre_actions] == 0
+      return "• Les affiches de films sont à jour sur BOA comme sur ICARE".in_div(class:'tiny')
+    end
+
     form << "Affiches de films".in_h3
 
     # On fait l'analyse des listes d'affiches qui ont été
     # retournées et on enregistre le résultat — i.e. les
     # affiches à synchroniser et à détruire — dans le hash
     # contenant toutes les données de synchronisation.
-    datasync.merge!( affiches: diff_affiches )
+    datasync.merge!( affiches: daf )
 
-    # Ensuite, on peut fabriquer l'affichage des synchros
-    # à faire au niveau des affiches de films.
-    daf = diff_affiches
 
     nb_upl_ica = daf[:icare][:nombre_uploads].to_s.rjust(5)
     nb_del_ica = daf[:icare][:nombre_deletes].to_s.rjust(5)
@@ -112,46 +153,7 @@ class Sync
     if daf[:nombre_actions] > 0
       form << "Synchroniser les affiches".in_checkbox(name: 'cb_synchronize_affiches', id: 'cb_synchronize_affiches', checked:true).in_p
     end
-
-    # TODO
-
-    # TODO: Traiter les pages de narration pour qu'elles soient aussi
-    # synchronisées sur l'atelier icare (comme les affiches)
-    # NOTE: IL FAUDRA METTRE icare: true à narration dans les constantes
-    # pour synchroniser aussi cnarration mais ATTENTION : POUR LE MOMENT
-    # CES DEUX BASES SONT CERTAINEMENTS RADICALEMENT DIFFÉRENTES
-
-    # Le bouton pour lancer la synchronisation
-    form << "Synchroniser".in_submit(class:'btn').in_div(class:'buttons')
-
-    c << form.in_form(action: "admin/sync")
-
-    # /fin du formulaire de synchronisation
-
-    # Enregistrer les données de synchronisation à faire
-    # dans le fichier adéquat, qui sera utilisé si la
-    # synchronisation est demandée.
-    # debug "\n\ndatasync : #{datasync.pretty_inspect}\n\n"
-    self.data_synchronisation = datasync
-
-
-    c << "<hr><div class='right btns'>"
-    c << "Données de synchronisation".in_a(onclick:"$('pre#data_sync').toggle()", class:'small')
-    c << " | "
-    c << "Données retournées par le check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
-    c << " | "
-    c << "Suivi des opérations".in_a(onclick:"$('pre#suivi_operation').toggle()", class:'small')
-    c << "</div>"
-
-    c << datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
-    c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
-    c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
-
-    # On écrit tout ce code dans le fichier temporaire pour qu'il soit
-    # relu facilement.
-    display_path.write(c)
   end
-
 
   def explication_force_synchro_narration
     <<-HTML

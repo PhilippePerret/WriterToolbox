@@ -55,7 +55,7 @@ synchro:
     description:  Permet de rejoindre le tableau de bord de la synchronisation qui permet de synchroniser les fichiers spéciaux (en fonction de l'application).
     note:         Cette synchronisation est bien à distinguer de `check synchro` qui concerne les fichiers systémique de l'application, pour faire simple : les fichiers ruby.
   -
-    command:      check synchro
+    command:      check (synchro|site)
     description:  Permet de tester la synchronisation des fichiers entre serveur local et distant.
     note:         Produit un fichier HTML qui permet de procéder à la synchro si nécessaire.
 
