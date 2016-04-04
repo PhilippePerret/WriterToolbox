@@ -51,9 +51,18 @@ class Fichier
   # ---------------------------------------------------------------------
 
   def synchronized?
-    @is_synchronized ||= synchro_on_boa? && ( icare? == synchro_on_icare? )
+    @is_synchronized ||= begin
+      t = synchro_on_boa?
+      t = ( t && synchro_on_icare? ) if icare?
+      t
+    end
   end
   def synchro_on_boa?
+    if id == :taches
+      debug "--> synchro_on_boa?"
+      debug "  loc_mtime = #{loc_mtime.inspect}"
+      debug "  boa_mtime = #{boa_mtime.inspect}"
+    end
     loc_mtime == boa_mtime
   end
   def synchro_on_icare?
@@ -144,7 +153,7 @@ class Fichier
 
   def checkbox_synchro
     cb_id = "cb_synchronize_#{id}"
-    "".in_checkbox(name: cb_id, id: cb_id, checked: !(synchro_on_boa? && synchro_on_icare?))
+    "".in_checkbox(name: cb_id, id: cb_id, checked: !synchronized?)
   end
 
   def span_diff_if_loc_plus_vieux
@@ -181,7 +190,7 @@ class Fichier
 
   # LES VOYANTS
   def main_voyant_synchro
-    voyant_synchro( synchro_on_boa? && synchro_on_icare? )
+    voyant_synchro( synchronized? )
   end
   def voyant_synchro_local
     # Le voyant est rouge si la date du fichier local

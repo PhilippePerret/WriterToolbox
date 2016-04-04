@@ -9,16 +9,10 @@ class Sync
       Synchro::new().serveur_ssh
     end
   end
+  alias :serveur_ssh_boa :serveur_ssh
 
   def serveur_ssh_icare
     @serveur_ssh_icare ||= "icare@ssh-icare.alwaysdata.net"
-  end
-
-  def script_to_command script
-    script.split("\n").collect do |line|
-      next nil if line.start_with?('#')
-      line.strip
-    end.compact.join(';')
   end
 
   # Script pour checker la synchro sur BOA distant et

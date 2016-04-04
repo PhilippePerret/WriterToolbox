@@ -24,10 +24,12 @@ class Sync
   # ce fichier est relu directement dans le fichier.
   def build_inventory
 
+
     # TODO: REMETTRE QUAND CE SERA OK POUR NE PAS RECONSTRUIRE À
     # CHAQUE FOIS
     # return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
 
+    @suivi << "* Construction de l'inventaire à afficher"
     display_path.remove if display_path.exist?
 
     # La donnée dans laquelle on va conserver les données de
@@ -58,6 +60,12 @@ class Sync
       ifile.output
     end.join.in_pre(id:'sync_check'))
 
+    form << (
+      "Explication".in_a(onclick:"$('div#explication_force_synchro_narration').toggle()", class:'tiny fright') +
+      "Forcer la synchronisation distante de cnarration.db".in_checkbox(id: 'cb_force_synchro_narration', name:'cb_force_synchro_narration').in_div +
+      explication_force_synchro_narration
+    ).in_p
+
     # Ici, on vérifie les affiches pour narration
     form << "Affiches de films".in_h3
 
@@ -70,8 +78,6 @@ class Sync
     # Ensuite, on peut fabriquer l'affichage des synchros
     # à faire au niveau des affiches de films.
     daf = diff_affiches
-
-    debug "diff_affiches : #{diff_affiches.pretty_inspect}"
 
     nb_upl_ica = daf[:icare][:nombre_uploads].to_s.rjust(5)
     nb_del_ica = daf[:icare][:nombre_deletes].to_s.rjust(5)
@@ -125,20 +131,39 @@ class Sync
     # Enregistrer les données de synchronisation à faire
     # dans le fichier adéquat, qui sera utilisé si la
     # synchronisation est demandée.
-    data_synchronisation= datasync
+    # debug "\n\ndatasync : #{datasync.pretty_inspect}\n\n"
+    self.data_synchronisation = datasync
 
 
     c << "<hr><div class='right btns'>"
     c << "Données de synchronisation".in_a(onclick:"$('pre#data_sync').toggle()", class:'small')
     c << " | "
     c << "Données retournées par le check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
+    c << " | "
+    c << "Suivi des opérations".in_a(onclick:"$('pre#suivi_operation').toggle()", class:'small')
     c << "</div>"
 
     c << datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
     c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
+    c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
 
+    # On écrit tout ce code dans le fichier temporaire pour qu'il soit
+    # relu facilement.
     display_path.write(c)
   end
 
+
+  def explication_force_synchro_narration
+    <<-HTML
+<div id='explication_force_synchro_narration' class="small italic" style="display:none;margin-left:2em">
+  Dans la synchronisation normale de Narration, on compare les niveaux de développement des deux bases locales et distantes, pour garder toujours la plus haute. Mais parfois, suite à une erreur, il peut être nécessaire de rabaisser le niveau de développement. Pour le faire, il faut forcer l'upload en cochant cette case.<br>Par prudence, l'opération complète à faire est :
+  <ul>
+    <li>Synchroniser normalement la base — si nécessaire (voyant rouge) — pour récupérer les toute dernières valeurs,</li>
+    <li>Modifier le niveau de développement en local,</li>
+    <li>Synchroniser les deux bases en forçant la synchro online (en cochant cette case).</li>
+  </ul>
+</div>
+    HTML
+  end
 
 end #/Sync

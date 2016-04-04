@@ -39,19 +39,19 @@ class Sync
         # fichier est trop vieux, soit par qu'il n'existe pas
         @suivi << "* Check SSH des fichiers distantes"
 
-        # Sur le site de la boite à outils
-        # commands = script_to_command(script_check_synchro)
+        # Sur la boite à outils
+        # ----------------------
         # debug "COMMANDS ENVOYÉES À BOA :\n#{commands}"
         res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_boa}\\""`
         res_boa = Marshal.load(res_boa)
 
         # Sur le site Icare
+        # ------------------
         # On vérifie les mêmes fichiers +
         #   - La liste des affiches
         #   - la liste des fichiers narration ? (pas fait encore)
-        commands = script_to_command(script_check_icare)
         res_icare = `ssh #{serveur_ssh_icare} "ruby -e \\"#{script_check_icare}\\""`
-        debug "Retour BRUT de res_icare : #{res_icare.inspect}"
+        # debug "Retour BRUT de res_icare : #{res_icare.inspect}"
         res_icare = Marshal.load(res_icare)
         # On merge les résultats
         res = res_boa.merge(icare: res_icare)
@@ -132,7 +132,7 @@ class Sync
     # Les affiches restant dans affiches_on_icare n'existent pas en
     # local
 
-    # On retourne les deux listes
+    # On retourne les deux listes avec leur nombre d'items
     {
       uploads:        not_on_distant,
       nombre_uploads: not_on_distant.count,

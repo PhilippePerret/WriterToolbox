@@ -1,43 +1,12 @@
 <%
 raise_unless_admin
-
-def bouton titre, ope
-  titre.in_a( href: "admin/taches_synchro?op=#{ope}", class:'btn small', onclick:"$.proxy(TSynchro,'on_ope', this)()")
-end
-
 %>
 <%= Admin::titre_h1("Synchronisation des tâches") %>
 
 <% if user.manitou? %>
-
-<%
-if site.current_route.route == 'admin/taches_synchro' && param(:op) != nil
-  if ::Admin::Taches::respond_to? param(:op).to_sym
-    ::Admin::Taches::send(param(:op).to_sym)
-  end
-end
-%>
-<pre><%=
-  ::Admin::Taches::display_suivi
-%></pre>
-
-
-<div class="right tdms">
-  <div>
-    <span class='small'>
-      <input type="checkbox" id="keep_distant_taches" />
-      <label for="keep_distant_taches">Garder le fichier distant downloadé</label>
-    </span>
-    <span class='small'>
-      <input type="checkbox" id="reload_distant_taches" />
-      <label for="reload_distant_taches">Recharger le fichier distant</label>
-    </span>
-  </div>
-  <div>
-    <%= bouton("Compare fichiers", 'compare_fichiers') %>
-    <%= bouton("Synchronise les tâches", 'synchronize_taches') %>
-  </div>
-</div>
+<p>
+  Pour synchroniser les tâches, utiliser <%= "la tableau de bord de synchronisation".in_a(href:"admin/sync") %>
+</p>
 <%
 # ---------------------------------------------------------------------
 # Si l'user n'est pas grand manitou

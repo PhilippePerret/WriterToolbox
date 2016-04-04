@@ -9,9 +9,10 @@ class Console
     # Pour ajouter des descriptions (nouveaux paramètres) au manuel,
     # les ajouter dans le fichier ./lib/deep/console/help.rb
     redirection = case section_name
-    when "accueil", "home"          then '/'
-    when 'forum'                    then 'forum/home'
-    when /^(admin|dashboard)$/      then 'admin/dashboard'
+    when "accueil", "home"                  then '/'
+    when 'forum'                            then 'forum/home'
+    when /^(admin|dashboard)$/              then 'admin/dashboard'
+    when /^(sync|synchro|synchronisation)$/ then 'admin/sync'
     else
       # On essaie les directions de l'application
       console.require('optional/goto_methods.rb')

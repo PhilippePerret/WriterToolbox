@@ -1,6 +1,9 @@
 # encoding: UTF-8
 class Sync
 
+  # {Array} Liste de messages de suivi d'opération
+  attr_reader :suivi
+
   # Retourne le code de l'état des lieux des synchros
   # à afficher dans la page.
   #
@@ -13,7 +16,7 @@ class Sync
   # à checker.
   #
   def etat_des_lieux
-    @suivi = Array::new
+    @suivi ||= Array::new
     if ONLINE
       etat_des_lieux_online
     else
