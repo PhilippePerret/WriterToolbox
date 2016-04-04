@@ -37,7 +37,7 @@ Au début de la vue, placer :
 Cela chargera des méthodes pratique qui permettront de définir facilement les formulaires en utilisant des méthodes-raccourcis :
 
 
-    Form::input_text("<libelle>", "<propriété>", "<value>"[, options])
+    form.field_text("<libelle>", "<propriété>", "<value>"[, options])
 
 Si aucun préfixe n'est défini (cf. [Définir un préfix pour NAME et ID](#definirunprefixpourlesnameetid)) alors `NAME` et `ID` vaudront `propriété`.
 
@@ -122,7 +122,7 @@ La différence par rapport à la case unique se fera à la définition des `valu
 
 On peut définir au début le préfixe qui permettre de définir les `id` et les `name` :
 
-    Form::prefix = "<le préfixe>"
+    form.prefix = "<le préfixe>"
 
 Par exemple :
 

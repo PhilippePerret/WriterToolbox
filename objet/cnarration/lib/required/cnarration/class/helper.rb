@@ -2,8 +2,9 @@
 class Cnarration
 
   DATA_ONGLETS = {
-    "Accueil" => "cnarration/home",
-    "Livres"  => "livre/list?in=cnarration"
+    "Accueil"   => "cnarration/home",
+    "Livres"    => "livre/list?in=cnarration",
+    "Recherche" => 'cnarration/search'
   }
 
   extend MethodesMainObjets

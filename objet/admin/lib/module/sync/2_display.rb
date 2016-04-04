@@ -24,10 +24,7 @@ class Sync
   # ce fichier est relu directement dans le fichier.
   def build_inventory
 
-
-    # TODO: REMETTRE QUAND CE SERA OK POUR NE PAS RECONSTRUIRE À
-    # CHAQUE FOIS
-    # return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
+    return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
 
     @suivi << "* Construction de l'inventaire à afficher"
     display_path.remove if display_path.exist?

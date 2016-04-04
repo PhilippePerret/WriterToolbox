@@ -27,9 +27,12 @@ class Console
     when /^(état des lieux|etat des lieux|inventory) narration$/
       redirect_to "admin/inventory?in=cnarration"
       return ""
+      # --- NARRATION ---
     when /(help|aide) livres narration/
       console.require 'narration'
       aide_pour_les_livres_narration
+    when /^(recherche|search) narration$/
+      redirect_to 'cnarration/search'; ""
     when /^(nouvelle|new) page narration/
       console.require 'narration'
       goto_nouvelle_page_narration

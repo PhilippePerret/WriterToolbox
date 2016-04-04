@@ -83,6 +83,9 @@ narration:
           <li>`niveau: NIVEAU_DE_0_A_9` pour définir le niveau de développement</li>
         </ul>
   -
+    command:        recherche narration
+    description:    Rejoindre le formulaire de recherche dans la collection Narration.
+  -
     command:        creer|create chapitre narration in:LIVRE_REF titre:TITRE CHAPITRE after:PAGE_ID_OPTIONNELLE
     description: |
       Créer le chapitre de titre donné.
