@@ -5,15 +5,23 @@ class Sync
   #
   # Méthode principale appelée lorsque l'on demande la synchronisation
   # des fichiers cochés.
+  #
+  # RETURN Rien, mais puisque la méthode détruit les fichiers
+  # temporaire à la fin, la méthode principale `etat_des_lieux`
+  # procèdera à un nouvel état des lieux.
+  #
   def synchronize
     @suivi = Array::new
 
-    flash "Je synchronise tout ce qu'il y a à synchroniser."
     return
 
     # Faut-il synchroniser les affiches sur Icare ?
     synchronize_affiches_on_icare if param(:cb_synchronize_affiches)
 
+    # À la fin, on peut détruire tous les fichiers pour forcer
+    # un prochain check. Cela entrainera l'affichage d'un
+    # état des lieux (demandé par la vue erb) actualisé.
+    reset_all
   end
 
   # Relève le données de synchronisation dans le

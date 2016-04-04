@@ -23,7 +23,7 @@ class Sync
 
   # Script pour checker la synchro sur BOA distant et
   # retourner le résultat.
-  def script_check_synchro
+  def script_check_boa
     <<-CODE
 VIA_SSH = true
 res = nil
@@ -33,13 +33,16 @@ begin
 rescue Exception => e
   res = {err_time:Time.now.to_i, err_mess:e.message, err_backtrace:e.backtrace}
 end
+# On prend aussi les affiches, comme sur Icare
+liste_affiches = Dir['./www/view/img/affiches/*.jpg'].collect{|p| File.basename(p)}.join(',')
+res.merge!(affiches: liste_affiches)
 res.merge!('.' => File.expand_path('.'), 'folders' => Dir['./**'].collect{|p| File.basename(p)}.join(','))
 STDOUT.write Marshal::dump( res )
     CODE
   end
 
   # Script pour checker sur icare les affiches, les bases
-  # 
+  #
   def script_check_icare
     <<-CODE
 errors = Array::new

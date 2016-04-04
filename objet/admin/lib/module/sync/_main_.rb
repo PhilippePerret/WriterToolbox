@@ -21,4 +21,11 @@ class Sync
     end
   end
 
+  # Méthode qui détruit tous les fichiers provisoires (pour
+  # forcer le check)
+  def reset_all
+    folder_tmp.remove
+    folder_tmp.build unless folder_tmp.exist?
+  end
+
 end #/Sync

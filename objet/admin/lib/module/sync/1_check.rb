@@ -42,7 +42,7 @@ class Sync
         # Sur le site de la boite à outils
         # commands = script_to_command(script_check_synchro)
         # debug "COMMANDS ENVOYÉES À BOA :\n#{commands}"
-        res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_synchro}\\""`
+        res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_boa}\\""`
         res_boa = Marshal.load(res_boa)
 
         # Sur le site Icare
@@ -65,6 +65,33 @@ class Sync
     end
   end
 
+  # Méthode principale qui compare les affiches sur la boite
+  # online et sur Icare et retourne les données à enregistrer
+  # pour la synchronisation future
+  def diff_affiches
+    @diff_affiches ||= begin
+      resaff = Hash::new
+      resaff.merge! nombre_actions: 0
+      resaff.merge! boa:   diff_affiches_boa
+      resaff[:nombre_actions] += diff_affiches_boa[:nombre_uploads] + diff_affiches_boa[:nombre_deletes]
+      resaff.merge! icare: diff_affiches_icare
+      resaff[:nombre_actions] += diff_affiches_icare[:nombre_uploads] + diff_affiches_icare[:nombre_deletes]
+      resaff
+    end
+  end
+
+  # Méthode qui compare la liste des affiches de la boite online
+  # avec la liste offline.
+  #
+  # Cette méthode est appelée lorsque la synchro fabrique
+  # l'affichage et la différence sera enregistrée dans les données
+  # pour procéder à la synchronisation
+  def diff_affiches_boa
+    @diff_affiches_boa ||= begin
+      affiches_on_boa = online_sync_state[:affiches].split(',')
+      diff_affiches_in_listes liste_affiches_locales, affiches_on_boa
+    end
+  end
   # Méthode qui compare la liste des affiches de l'atelier Icare
   # avec la liste des affiches en local et donne la différence (les
   # affiches qui se trouvent en local et pas sur Icare et inversement,
@@ -77,31 +104,41 @@ class Sync
   def diff_affiches_icare
     @diff_affiches_icare ||= begin
       affiches_on_icare = online_sync_state[:icare][:affiches].split(',')
-      affiches_locales  = Dir['./view/img/affiches/*.jpg'].collect{|p| File.basename(p)}
-
-      not_on_icare = Array::new
-      not_on_local = Array::new
-
-      # Vérification des affiches locales qui ne sont pas sur Icare
-      affiches_locales.each do |affiche_name|
-        if affiches_on_icare.index(affiche_name).nil?
-          not_on_icare << affiche_name
-        else
-          affiches_on_icare.delete(affiche_name)
-        end
-      end
-
-      # Les affiches restant dans affiches_on_icare n'existent pas en
-      # local
-
-      # On retourne les deux listes
-      {
-        upload_on_icare: not_on_icare,
-        nombre_uploads:  not_on_icare.count,
-        delete_on_icare: affiches_on_icare,
-        nombre_deletes:  affiches_on_icare.count
-      }
+      diff_affiches_in_listes liste_affiches_locales, affiches_on_icare
     end
+  end
+
+  # Liste des affiches en local
+  def liste_affiches_locales
+    @liste_affiches_locales ||= Dir['./view/img/affiches/*.jpg'].collect{|p| File.basename(p)}
+  end
+
+  # Méthode commune checkant la liste des affiches et retournant
+  # un hash définissant les affiches à uploader, les affiches à
+  # détruire et leur nombre.
+  def diff_affiches_in_listes arr_loc, arr_dis
+    not_on_distant  = Array::new
+    not_on_local    = Array::new
+
+    # Vérification des affiches locales qui ne sont pas sur Icare
+    arr_loc.each do |affiche_name|
+      if arr_dis.index(affiche_name).nil?
+        not_on_distant << affiche_name
+      else
+        arr_dis.delete(affiche_name)
+      end
+    end
+
+    # Les affiches restant dans affiches_on_icare n'existent pas en
+    # local
+
+    # On retourne les deux listes
+    {
+      uploads:        not_on_distant,
+      nombre_uploads: not_on_distant.count,
+      deletes:        arr_dis,
+      nombre_deletes: arr_dis.count
+    }
   end
 
 end #/Sync

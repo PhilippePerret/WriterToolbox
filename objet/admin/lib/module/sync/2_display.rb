@@ -7,9 +7,11 @@ class Sync
   # fichiers locaux et distant, sur la boite à outils et sur
   # l'atelier Icare
   #
+  # Noter que la méthode peut être appelée soit directement
+  # soit à la fin d'une synchronisation, pour vérifier
+  # l'état de synchro.
   def etat_des_lieux_offline
     build_inventory
-    # retourne le code de l'inventaire
     display_path.read
   end
 
@@ -57,29 +59,52 @@ class Sync
     end.join.in_pre(id:'sync_check'))
 
     # Ici, on vérifie les affiches pour narration
-    form << "Affiches de films à uploader sur Icare".in_h3
-    datasync.merge!(affiches_icare: diff_affiches_icare)
-    nombre_aff_uploads = diff_affiches_icare[:nombre_uploads]
-    mess = if nombre_aff_uploads == 0
-      "Aucune affiche à mettre sur Icare"
-    else
-      s = nombre_aff_uploads > 1 ? 's' : ''
-      "#{nombre_aff_uploads} affiche#{s} à uploader sur Icare : #{diff_affiches_icare[:upload_on_icare].pretty_join}"
-    end
-    form << mess.in_p
+    form << "Affiches de films".in_h3
 
-    nombre_aff_deletes = diff_affiches_icare[:nombre_deletes]
-    mess = if nombre_aff_deletes == 0
-      "Aucune affiche à détruire sur Icare"
-    else
-      s = nombre_aff_deletes > 1 ? 's' : ''
-      "#{nombre_aff_deletes} affiche#{s} à détruire sur Icare : #{diff_affiches_icare[:delete_on_icare].pretty_join}"
+    # On fait l'analyse des listes d'affiches qui ont été
+    # retournées et on enregistre le résultat — i.e. les
+    # affiches à synchroniser et à détruire — dans le hash
+    # contenant toutes les données de synchronisation.
+    datasync.merge!( affiches: diff_affiches )
+
+    # Ensuite, on peut fabriquer l'affichage des synchros
+    # à faire au niveau des affiches de films.
+    daf = diff_affiches
+
+    debug "diff_affiches : #{diff_affiches.pretty_inspect}"
+
+    nb_upl_ica = daf[:icare][:nombre_uploads].to_s.rjust(5)
+    nb_del_ica = daf[:icare][:nombre_deletes].to_s.rjust(5)
+    nb_upl_boa = daf[:boa][:nombre_uploads].to_s.rjust(5)
+    nb_del_boa = daf[:boa][:nombre_deletes].to_s.rjust(5)
+
+    form << (<<-HTML)
+<pre class='small'>
+ -----------------------------
+|        | Uploads | Deletes |
+|--------|---------|---------|
+| ICARE  |#{nb_upl_ica}    |#{nb_del_ica}    |
+| B.O.A. |#{nb_upl_boa}    |#{nb_del_boa}    |
+ -----------------------------
+</pre>
+    HTML
+
+
+    [ ["Icare", :icare], ["B.O.A.", :boa]
+    ].each do |darr|
+      lieu, ident = darr
+      data_aff = daf[ident]
+      [:uploads, :deletes].each do |key_s|
+        mess = "#{key_s.to_s.capitalize} sur #{lieu} : "
+        key_nb = "nombre_#{key_s}".to_sym
+        mess << (data_aff[key_nb] > 0 ? data_aff[key_s].pretty_join : "aucune")
+        form << mess.in_div(class:'small')
+      end
     end
-    form << mess.in_p
 
     # Une case à cocher pour stipuler de synchroniser les affiches
-    if (nombre_aff_uploads + nombre_aff_deletes) > 0
-      form << "Synchroniser les affiches sur Icare".in_checkbox(name: 'cb_synchronize_affiches', id: 'cb_synchronize_affiches', checked:true).in_p
+    if daf[:nombre_actions] > 0
+      form << "Synchroniser les affiches".in_checkbox(name: 'cb_synchronize_affiches', id: 'cb_synchronize_affiches', checked:true).in_p
     end
 
     # TODO
@@ -95,16 +120,22 @@ class Sync
 
     c << form.in_form(action: "admin/sync")
 
+    # /fin du formulaire de synchronisation
+
     # Enregistrer les données de synchronisation à faire
     # dans le fichier adéquat, qui sera utilisé si la
     # synchronisation est demandée.
     data_synchronisation= datasync
 
-    c << "Données de synchronisation".in_h3
-    c << datasync.pretty_inspect.in_pre
 
-    c << "Données retournées par le check".in_h3
-    c << online_sync_state.pretty_inspect.in_pre
+    c << "<hr><div class='right btns'>"
+    c << "Données de synchronisation".in_a(onclick:"$('pre#data_sync').toggle()", class:'small')
+    c << " | "
+    c << "Données retournées par le check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
+    c << "</div>"
+
+    c << datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
+    c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
 
     display_path.write(c)
   end
