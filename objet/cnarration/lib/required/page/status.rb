@@ -16,7 +16,7 @@ class Page
 
   # Retourne true si l'utilisateur courant peut
   # consulter la page en entier, retourne false
-  # s'il ne peut en consulter que le tier.
+  # s'il ne peut en consulter que le tiers.
   def consultable?
     return true if user.subscribed? || user.admin?
   end

@@ -9,7 +9,7 @@ class Page
   end
 
   # BIT 2
-  # Détermine le niveau de développement, de 1 à 9
+  # Détermine le niveau de développement, de 1 à 'a'
   # 9 = Page achevée
   # 8 = Lecteur finale
   # 7 = Page à corriger par le rédacteur

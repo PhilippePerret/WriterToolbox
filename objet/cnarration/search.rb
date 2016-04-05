@@ -17,8 +17,9 @@ class Search
         form.field_text("Rechercher", :content) +
         form.field_checkbox("Chercher dans les titres", :search_in_titre) +
         form.field_checkbox("Chercher dans les textes", :search_in_texte) +
-        form.field_checkbox("Recherche “régulière”", :regular_search) +
+        form.field_checkbox("Recherche par expression régulière", :regular_search) +
         form.field_checkbox("Rechercher l'expression exacte (min/maj)", :search_exact) +
+        form.field_checkbox("Recherches les mots entiers", :search_whole_word) +
         form.submit_button("Chercher")
       ).in_form(id:'search_form', action: "cnarration/search", class:'dim3070', display: current_search.nil?)
     end
@@ -63,8 +64,9 @@ class Search
   #   Méthodes de recherche
   # ---------------------------------------------------------------------
 
+
   # Méthode qui recherche le texte dans les titres de la
-  # base de données
+  # base de données (si nécessaire)
   def search_in_base_duplicat
     unless regular?
       # Recherche non régulière
@@ -75,19 +77,50 @@ class Search
       }
       request_data.merge!(nocase: true) unless exact?
       table_pages.select( request_data ).each do |pid, pdata|
-        debug "Page ##{pid} : #{pdata[:titre]}"
+        ipage = Cnarration::Page::get(pid)
+        next if ipage.page? && ipage.developpement < developpement_minimum
+        # Sinon, on prend la page
+        add_found ipage, :titre
       end
     else
       # Recherche régulière
     end
   end
 
+  # Recherche dans les textes
+  #
+  # Ruby étant plutôt lent pour rechercher dans les fichiers, on
+  # utilise la commande bash `grep` en cherchant récursivement
+  # dans tous les fichiers puis on analyse le résultat.
   def search_in_textes
-
+    ::Cnarration::Search::Grep::new(self).proceed
   end
+
   # ---------------------------------------------------------------------
   #   Méthodes fonctionnelles
   # ---------------------------------------------------------------------
+
+  # Méthode qui ajoute un "found" au résultat
+  # +ipage+   {Cnarration::Page} Instance de la page
+  # +type_f+  {Symbol} :titre quand trouvé dans le titre et :texte
+  #           quand trouvé dans le texte de la page.
+  def add_found ipage, type_found
+    @result[:nombre_founds]   += 1
+    key_type = "nombre_in_#{type_found}s".to_sym
+    @result[key_type]         += 1
+
+    return
+
+
+    unless @result[:founds].has_key? ipage.id
+      fdata = {
+        page:  ipage,
+        fois:  nombre_occurences,
+      }
+      @result[:founds].merge!( ipage.id => fdata )
+    else
+    end
+  end
 
   # Méthode pour initialiser les résultats
   def init_result
@@ -96,7 +129,7 @@ class Search
       nombre_founds:    0,             # Nombre d'occurrences trouvées
       nombre_in_titres: 0,
       nombre_in_textes: 0,
-      founds: Array::new,  # Instances Cnarration::Search::Found
+      founds: Hash::new,
 
 
       start_time:   Time.now.to_f,
@@ -111,6 +144,7 @@ class Search
   #   2. Une cible (titre et/ou texte) soit définie
   def check_data
     raise "Il faut définir le texte à chercher." if searched.nil?
+    raise "Il faut faire une recherche sur des mots d'au moins trois lettres" if searched.length < 3
     raise "Il faut choisir où chercher (titres et/ou textes)" unless in_titres? || in_textes?
   rescue Exception => e
     error e.message
@@ -206,6 +240,20 @@ class Search
     @search_exact = data[:search_exact] == 'on' if @search_exact === nil
     @search_exact
   end
+  def whole_word?
+    @whole_word = data[:search_whole_word] == 'on' if @whole_word === nil
+    @whole_word
+  end
+
+  # Le développement minimum de la page pour qu'elle soit consultable
+  # par le visiteur.
+  # Pour un administrateur, toutes les pages sans exception.
+  def developpement_minimum
+    @developpement_minimum ||= (user.admin? ? 0 : 7)
+  end
+
+
+
 
   # ---------------------------------------------------------------------
   #   Class Cnarration::Search::Found
@@ -219,3 +267,7 @@ class Search
 
 end #/Search
 end #/Cnarration
+
+# Requérir le dossier qui contient tous les modules de
+# recherche.
+Cnarration::require_module 'search'
