@@ -52,6 +52,12 @@ class << self
     tableau_stats << "| ".ljust(27)      + "| min |#{celm}| max |        |       |"
     tableau_stats << sep_tableau
 
+    total_fichiers  = 0
+    total_pages_max = 0
+    total_pages_min = 0
+    total_pages_moy = 0
+    total_signes    = 0
+
     curseur_nombre_pages = Cnarration::LIVRES.collect do |livre_id, dbook|
       arr_book = pages_per_book[livre_id]
       book_name = livre_humain livre_id
@@ -71,11 +77,20 @@ class << self
           nombre_signes += ipage.nombre_signes
         end
       end
+
+      # Ajouter aux totaux (avant transformation en string)
+      total_fichiers  += nombre_fichiers.to_i
+      total_pages_max += nombre_pages_max.to_i
+      total_pages_min += nombre_pages_min.to_i
+      total_pages_moy += nombre_pages_moy.to_i
+      total_signes    += nombre_signes.to_i
+
       nombre_pages_min = nombre_pages_min.to_i.to_s.rjust(4)
       nombre_pages_max = nombre_pages_max.to_i.to_s.rjust(4)
       nombre_pages_moy = nombre_pages_moy.to_i.to_s.rjust(4).in_span(class:'bold')
       nombre_signes   = nombre_signes.to_s.rjust(7)
       nombre_fichiers = nombre_fichiers.to_s.rjust(6)
+
 
       celmoy = "|"+" #{nombre_pages_moy}  ".in_span(class:'cell_col')+"|"
       tableau_stats << "| " + "#{book_name}".ljust(25) + "|#{nombre_pages_min} #{celmoy}#{nombre_pages_max} |#{nombre_signes} |#{nombre_fichiers} |"
@@ -84,9 +99,21 @@ class << self
       nb_reel = arr_book.nil? ? 0 : arr_book.count
       curseur  = increments_curseur( nb_reel, nombre_max_pages_per_book )
       "| #{book_name}".ljust(25) + "|" + "#{curseur}"
-    end.join("\n")
+    end.join("\n") # / boucle sur tous les livres
 
     tableau_stats << sep_tableau_bords
+
+    # --- LIGNE DES TOTAUX ---
+    total_pages_min = total_pages_min.to_s.rjust(4)
+    total_pages_max = total_pages_max.to_s.rjust(4)
+    total_pages_moy = total_pages_moy.to_s.rjust(4)
+    total_fichiers  = total_fichiers.to_s.rjust(6)
+    total_signes    = total_signes.to_s.rjust(7)
+    tableau_stats << ("| " + "TOTAL ".rjust(25) + "|#{total_pages_min} | #{total_pages_moy}  |#{total_pages_max} |#{total_signes} |#{total_fichiers} |")
+
+    tableau_stats << sep_tableau_bords
+
+    # Finalisation du tableau de statistiques
     tableau_stats = "\n" + tableau_stats.join("\n") + "\n"
 
 

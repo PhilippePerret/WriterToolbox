@@ -3,7 +3,8 @@ class Cnarration
 class Search
 class Grep
 
-  DELIMITEUR_FICHIERS = "\n--\n"
+  # DELIMITEUR_FOUNDS = "\n--\n" # Si plusieurs lignes avant/après
+  DELIMITEUR_FOUNDS = "\n"
 
   # {Cnarration::Search} Instance de la recherche qui
   # contient cette instance Grep
@@ -21,12 +22,61 @@ class Grep
   # Méthode appelée pour procéder à la recherche dans les
   # textes de la collection Narration
   def proceed
-    build_resultat
+    analyse_resultat
   end
 
-  def build_resultat
-    founds = raw_founds.split(DELIMITEUR_FICHIERS)
-    flash "#{founds.count} résultats"
+  # Analyse des résultats obtenus avec la recherche dans
+  # les textes et renseignement du résultat global.
+  #
+  # La méthode crée autant de `gfile` que nécessaire ou
+  # utilise ceux que les titres ont déjà créés si une
+  # recherche dans les titres a été demandée.
+  def analyse_resultat
+    every_founds.each_with_index do |pfound, i|
+      debug "\n\n\n\nFOUND ##{i}\n\n"
+      # debug "#{pfound}"
+      ifound = ::Cnarration::Search::Found::new( search, pfound )
+      ifound.igrep = self
+      ifound.parse # ce qu'on ne fait pas avec un titre
+
+      # L'ID de la page visée par ce found
+      page_id = ifound.page_id
+      # Si
+      ifile = search.result[:by_file][page_id]
+      ifile || begin
+        # Il faut instancier un nouveau fichier de recherche
+        # Rappel : Un fichier de recherche (ou de found) est
+        # directement lié à un fichier narration.
+        ifile = ::Cnarration::Search::SFile::new(search, page_id)
+        ifile.page_titre    = ifound.page_titre
+        ifile.livre_id      = ifound.livre_id
+        ifile.relative_path = ifound.relative_path
+        search.result[:by_file].merge!(page_id => ifile)
+      end
+
+      ifile.occurrences += ifound.iterations
+      ifile.weight      += ifound.iterations    # Les occurrences dans les textes ont un poids de 1
+      ifile.founds_in_textes << ifound
+
+    end
+
+    nombre_founds = every_founds.count
+    search.result[:nombre_founds]     += nombre_founds
+    search.result[:nombre_in_textes]  += nombre_founds
+  end
+
+  def every_founds
+    @every_founds ||= purified_founds.split(DELIMITEUR_FOUNDS)
+  end
+
+  # Résultat brut où toutes les balises html ont été
+  # supprimées ainsi que quelques autres petites choses
+  def purified_founds
+    @purified_founds ||= begin
+      str = raw_founds
+      str.gsub!(/<(.+?)>/,'')
+      str
+    end
   end
 
   # Résultat de la recherche sur tous les textes, brute,
@@ -50,8 +100,12 @@ class Grep
   # les textes de la collection.
   def command_line
     cmd = "grep "
-    cmd << "-E " if search.regular?
-    cmd << "-2 "  # Pour afficher 2 lignes avant et après
+    cmd << "-#{search.regular? ? 'E' : 'F'} " # F = Fast
+    # Ci-dessus, F permet d'obtenir un traitement vraiment sans
+    # expression régulière car par défaut grep fonctionne avec
+    # des régulières et l'option E lui ajoute simplement les
+    # expressions régulières étendues.
+    # cmd << "-1 "  # Pour afficher N lignes avant et après
     # Options
     #   -r    Récursif
     #   -n    Numéro de ligne
@@ -66,7 +120,7 @@ class Grep
     options_min = options_min.join("")
     cmd << "-#{options_min} "
     cmd << "#{grep_searched} "
-    cmd << "\"#{fullpath_cnarration_folder}/\""
+    cmd << "\"#{fullpath_cnarration_folder}\""
   end
 
   # Raccourci : l'expression à trouver

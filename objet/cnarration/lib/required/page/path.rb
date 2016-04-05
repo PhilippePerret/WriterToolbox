@@ -2,12 +2,15 @@
 class Cnarration
 class Page
 
+  def relative_affixe
+    @relative_affixe ||= "#{livre_folder}/#{handler}"
+  end
   def livre_folder
     @livre_folder ||= Cnarration::LIVRES[livre_id][:folder]
   end
   def path
     @path ||= begin
-      p = site.folder_data+"unan/pages_cours/cnarration/#{livre_folder}/#{handler}.md"
+      p = site.folder_data+"unan/pages_cours/cnarration/#{relative_affixe}.md"
       p.folder.build unless p.folder.exist?
       p
     end
@@ -16,7 +19,7 @@ class Page
 
   def path_semidyn
     @path_semidyn ||= begin
-      p = site.folder_data+"unan/pages_semidyn/cnarration/#{livre_folder}/#{handler}.erb"
+      p = site.folder_data+"unan/pages_semidyn/cnarration/#{relative_affixe}.erb"
       p.folder.build unless p.folder.exist?
       p
     end

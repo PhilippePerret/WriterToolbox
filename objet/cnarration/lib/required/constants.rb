@@ -21,20 +21,22 @@ class Cnarration
     10  => {id:10,  hname: "L'Analyse de films", folder:'analyse', stitre:"Méthodologie d'analyse pour tirer le maximum de sa vision des films"}
   }
 
+  # Symbole du livre vers son ID
+  # Comprend les noms des dossiers
   SYM2ID = {
-    structure:          1,
-    personnages:        2,
-    dynamique:          3,
-    thematique:         4,
-    documents:          5,
-    travail_auteur:     6,
-    travail:            6,
-    procedes:           7,
+    analyse:            10,
     concepts_narratifs: 8,
     concepts:           8,
-    theorie:            8,
     dialogue:           9,
-    analyse:            10
+    documents:          5,
+    dynamique:          3,
+    personnages:        2,
+    procedes:           7,
+    structure:          1,
+    thematique:         4,
+    theorie:            8,
+    travail_auteur:     6,
+    travail:            6
   }
 
   NIVEAUX_DEVELOPPEMENT = {
