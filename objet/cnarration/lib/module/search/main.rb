@@ -9,16 +9,16 @@ class Search
     # La recherche courante
     attr_reader :current_search
 
-    # Retourne le code HTML pour la recherche effectuée
-    def result
-      return "" if current_search.nil?
-      current_search.output
-    end
-
     # Procède à la recherche d'après les éléments définis
     def proceed
       @current_search = new()
       @current_search.proceed
+    end
+
+    # Retourne le code HTML pour la recherche effectuée
+    def result
+      return "" if current_search.nil?
+      current_search.output
     end
 
   end # / << self

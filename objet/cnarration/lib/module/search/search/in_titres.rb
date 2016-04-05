@@ -24,10 +24,16 @@ class Search
       end
     else
       # Recherche régulière
+      debug "-> recherche régulière dans les titres"
+      debug "   reg_searched : #{reg_searched.inspect}"
       Cnarration::table_pages.select(colonnes:[:titre, :handler, :livre_id, :options]).each do |pid, pdata|
         ipage = Cnarration::Page::get(pid)
-        next if ipage.page? && ipage.developpement < developpement_minimum
-
+        next if ipage.page? && ( ipage.developpement < developpement_minimum )
+        debug "   - check de #{pdata[:titre]}"
+        unless pdata[:titre].match(reg_searched).nil?
+          debug "    Trouvé !"
+          add_found_in_titre ipage
+        end
       end
     end
   end

@@ -10,6 +10,15 @@ class Search
   def searched
     @searched ||= data[:content].nil_if_empty
   end
+  # Que la recherche soit régulière ou non, on aura besoin
+  # de cette expression pour remplacer les textes dans
+  # le texte des titres ou des textes (cf. class Found).
+  def reg_searched
+    @reg_searched ||= begin
+      str = regular? ? searched : Regexp::escape(searched)
+      exact? ? (whole_word? ? /\b#{str}\b/ : /#{str}/) : (whole_word? ? /\b#{str}\b/i : /#{str}/i)
+    end
+  end
   def in_titres?
     @search_in_titres = data[:search_in_titre] == 'on' if @search_in_titres === nil
     @search_in_titres
@@ -19,7 +28,7 @@ class Search
     @search_in_textes
   end
   def regular?
-    @regular_search = data[:regular_search] == 'on' if @regular_search === nil
+    @regular_search = ( data[:regular_search] == 'on' || whole_word? ) if @regular_search === nil
     @regular_search
   end
   def exact?

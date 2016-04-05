@@ -58,7 +58,6 @@ class Found
   # son identifiant pour accélérer les choses.
   def output in_texte
     @in_texte = in_texte
-    debug "@in_texte est #{@in_texte.inspect}"
     c = "#{text_line_with_exergue}".in_span(class:'text')
     if in_texte == true
       # ERROR: C'EST INCOMPRÉHENSIBLE, MÊME LORSQUE C'EST UN
@@ -74,8 +73,7 @@ class Found
   def text_line_with_exergue
     @text_line_with_exergue ||= begin
       iterations = 0
-      # TODO: Tenir compte de -i et -w
-      formated = text_line.gsub(/(#{search.searched})/){
+      formated = text_line.gsub(/(#{search.reg_searched})/){
         iterations += 1
         "<span class='found'>#{$1}</span>"
       }
