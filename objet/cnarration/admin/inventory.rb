@@ -19,11 +19,11 @@ class << self
     # -----------------------------
     separator +
     "=== Données générales ===\n\n" +
-    "Nombre de pages      : #{pages.count}\n" +
+    "Nombre de fichiers   : #{pages.count}\n" +
     "Nombre de chapitres  : #{chapitres.count}\n" +
     "Nombre de sous-chaps : #{sous_chapitres.count}" +
     separator +
-    "=== Nombre de pages par niveau de développement ===\n\n" +
+    "=== Nombre de fichiers par niveau de développement ===\n\n" +
     pages_per_niveau.sort_by{|niveau| niveau}.collect do |niveau, arr_pages|
       nb_reel = arr_pages.count
       curseur = increments_curseur nb_reel, nombre_max_pages_per_niveau

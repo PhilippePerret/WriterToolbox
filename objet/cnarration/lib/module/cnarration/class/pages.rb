@@ -18,7 +18,14 @@ class << self
   #   :ul               Comme une liste HTML dans UL
   #   :select           Comme un menu select avec en titre le titre de
   #                     la page et en valeur l'id
-  #
+  #   :sorted           Si true, les pages sont classées par livre
+  #                     et par table des matières
+  #                     ATTENTION ! Si :sorted est true, la méthode
+  #                     retourne toujours un hash avec en clé l'id
+  #                     des livres et en valeur un hash contenant
+  #                     :pages      Array des Hash de page CLASSÉES
+  #                     :tdm        Liste des Ids de pages (tdm)
+  #                     :livre      Instance Cnarration::Livre du livre
   # Ces pages peuvent être filtrées par le paramètre params[:where]
   # ce paramètre sera mis telle quelle dans le where du select pour
   # trouver les pages.
@@ -33,6 +40,8 @@ class << self
       params[:colonnes] = [:titre]
     end
 
+    params[:colonnes] << :livre_id if params[:sorted]
+
     data_requete = Hash::new
     data_requete.merge!( where: params.delete(:where) )
     data_requete.merge!( colonnes:params.delete(:colonnes) ) unless params[:colonnes].nil?
@@ -40,6 +49,40 @@ class << self
     data_requete.merge!(order: params.delete(:order)) unless params[:order].nil?
 
     pgs = table_pages.select(data_requete)
+
+    # S'il faut classer les pages par livre et par table
+    # des matières
+    if params[:sorted]
+      hsorted = Hash::new
+      pgs.sort_by{|pid, pdata| pdata[:livre_id]}.each do |pid, pdata|
+        livre_id = pdata[:livre_id]
+        unless hsorted.has_key?(livre_id)
+          # Un nouveau livre dont il faut prendre les informations
+          ilivre = Cnarration::Livre::get(livre_id)
+          livre_data = {
+            pages:  Array::new,
+            tdm:    ilivre.tdm.pages_ids,
+            livre:  ilivre
+          }
+          hsorted.merge!(livre_id => livre_data)
+        end
+
+        # On ajoute cette page au livre, on ajoutant son index
+        # dans la table des matières
+        index_page = hsorted[livre_id][:tdm].index( pid )
+        debug "Index de la page #{pdata[:titre]} : #{index_page}"
+        pdata.merge!( numero: index_page)
+        hsorted[livre_id][:pages] << pdata
+      end
+
+      # On classe les pages de chaque livre retenu
+      hsorted.each do |livre_id, livre_data|
+        hsorted[livre_id][:pages] = hsorted[livre_id][:pages].sort_by{|hpage| hpage[:numero]}
+      end
+
+      # ! C'est toujours ce hash qui est retourné !
+      return hsorted
+    end
 
     case params[:as]
     when :hash_data       then pgs

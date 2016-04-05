@@ -10,23 +10,40 @@ class Cnarration
     # Retourne le code HTML d'une UL contenant les pages, avec
     # des boutons pour marquer les pages lues.
     def pages_a_relire options = nil
-      pars = pages(where: "options LIKE '16%'", as: :array_data, colonnes: [:titre, :handler])
+      pars = pages(where: "options LIKE '16%'", as: :array_data, colonnes: [:titre, :handler], sorted: true)
       if pars.empty?
         "Aucune page n'est à relire pour le moment. Super, non ? :-)".in_p
       else
-        pars.collect { |hpage| li_for_page( hpage, 7 )}.join.in_ul(class: 'tdm')
+        # pars.collect { |hpage| li_for_page( hpage, 7 )}.join.in_ul(class: 'tdm')
+        build_page_list pars, 9
+        # pars.collect do |bid, bdata|
+        #   "Livre : #{bdata[:livre].titre}".in_li(class:'book_title') +
+        #   bdata[:pages].collect { |hpage| li_for_page( hpage, 7 ) }.join('')
+        # end.join.in_ul(class: 'tdm pages books_discrets')
       end
     end
 
     # Pages qui doivent faire l'objet d'une toute dernière lecture
     # (niveau 8 de développement)
     def pages_derniere_lecture options = nil
-      pdls = pages(where: "options LIKE '18%'", as: :array_data, colonnes: [:titre, :handler])
+      pdls = pages(where: "options LIKE '18%'", as: :array_data, colonnes: [:titre, :handler], sorted: true)
       if pdls.empty?
         "Aucune page n'est à relire pour BAT pour le moment. Super, non ? :-)".in_p
       else
-        pdls.collect { |hpage| li_for_page( hpage, 9 )}.join.in_ul(class: 'tdm')
+        # pdls.collect { |hpage| li_for_page( hpage, 9 )}.join.in_ul(class: 'tdm')
+        build_page_list pdls, 9
+        # pars.collect do |bid, bdata|
+        #   "Livre : #{bdata[:livre].titre}".in_li(class:'book_title') +
+        #   bdata[:pages].collect { |hpage| li_for_page( hpage, 9 ) }.join('')
+        # end.join.in_ul(class: 'tdm pages books_discrets')
       end
+    end
+
+    def build_page_list hdata, next_level
+      hdata.collect do |bid, bdata|
+        "Livre : #{bdata[:livre].titre}".in_li(class:'book_title') +
+        bdata[:pages].collect { |hpage| li_for_page( hpage, next_level ) }.join('')
+      end.join.in_ul(class: 'tdm pages books_discrets')
     end
 
     # Retourne le code HTML du LI pour une page à corriger
