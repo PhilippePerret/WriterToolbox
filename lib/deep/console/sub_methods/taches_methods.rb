@@ -45,6 +45,7 @@ class Console
       else
         "La tache #{tache_id} n'existe pas."
       end
+      show_liste_taches( admin: user.id )
       return "#{mess}\n# (taper `list taches` pour voir la liste des taches)."
     end
 
@@ -63,7 +64,8 @@ class Console
       # Note : C'est la méthode create qui affichera le message
       # de réussite
       itache.create
-      return ""
+      show_liste_taches( admin: user.id )
+      return "`mes taches` => votre liste de tâches / `list taches` => liste des tâches à faire."
     end
 
     # Actualise la tache d'ID +tache_id+ avec les nouvelles
@@ -100,7 +102,6 @@ class Console
       end
 
       # On peut actualiser la tache
-      # debug "htache: #{htache.pretty_inspect}"
       itache.set(htache)
 
     rescue Exception => e
@@ -108,6 +109,7 @@ class Console
       error e.message
       "ERROR"
     else
+      show_liste_taches( admin: user.id )
       "Tache #{itache.id} actualisée."
     end
 
