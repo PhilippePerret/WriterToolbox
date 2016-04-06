@@ -94,16 +94,27 @@ class SFile
 
   def occurrences_in_textes
     return "" if founds_in_textes.count == 0
-    founds_in_textes.collect { |ifound| ifound.output(true) }.join("<br>")
+    founds_in_textes.collect { |ifound| ifound.output(true) }.join("")
   end
   def occurrences_in_titres
     return "" if founds_in_titres.count == 0
-    founds_in_titres.collect { |ifound| ifound.output(false) }.join('<br>')
+    founds_in_titres.collect { |ifound| ifound.output(false) }.join('')
   end
 
   def full_titre_linked_to_file
     @full_titre_linked_to_file ||= begin
-      titre_complet.in_a(href:"page/#{page_id}/show?in=cnarration").in_div(class:'titre')
+      titre_complet.in_a(href:href, target:'_blank').in_div(class:'titre')
+    end
+  end
+  # Href pour le lien pour voir le fichier
+  def href
+    @href ||= begin
+      c = "page/#{page_id}/show?in=cnarration"
+      c << "&xmotex=#{CGI::escape search.searched}"
+      c << "&xreg=1"    if search.regular?
+      c << "&xww=1"     if search.whole_word?
+      c << "&xexact=1"  if search.exact?
+      c
     end
   end
   def titre_complet

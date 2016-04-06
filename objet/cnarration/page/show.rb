@@ -42,20 +42,42 @@ class Page
   # Le contenu de la page en fonction de l'abonnement
   # de l'user
   def page_content_by_user
-    full_page = path_semidyn.deserb
+    @full_page = path_semidyn.deserb
     # Si l'user est abonné ou que le texte fait moins de 3000
     # signes, on retourne le texte tel quel
-    return full_page if consultable? || full_page.length < 2000
+    return (full_page_with_exergue || @full_page) if consultable? || @full_page.length < 2000
     # Si l'utilisateur n'est pas abonné, on tronque la page
     # et on ajoute un message l'invitant à s'abonner.
-    tiers_longueur = (full_page.length / 3) - 100
+    tiers_longueur = (@full_page.length / 3) - 100
     # Si le tiers n'est pas assez long, on l'augmente
     tiers_longueur = 1900 if tiers_longueur < 1900
     # On cherche le premier double retour chariot suivant
-    offset = full_page.index("\n\n", tiers_longueur)
+    offset = @full_page.index("\n\n", tiers_longueur)
     # Si on en trouve pas, on garde 2900
     offset = 1900 if offset.nil?
-    return message_abonnement_required + full_page[0..offset] + " […]" + message_abonnement_required
+
+    @full_page = @full_page[0..offset]
+    return message_abonnement_required + (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
+  end
+
+  # Si les paramètres contiennent :xmotex, c'est un mot
+  # à mettre en exergue dans la page. Sinon, on retourne
+  # le texte normal de la page normalement
+  def full_page_with_exergue
+    return false if param(:xmotex).nil?
+    debug "-> full_page_with_exergue (avec traitement)"
+    is_regular    = param(:xreg)    == '1'
+    is_whole_word = param(:xww)     == '1'
+    is_exact      = param(:xexact)  == '1'
+    # On construit l'expression qu'on va envoyer à
+    # with_exergue
+    reg = "#{param(:xmotex)}"
+    if is_exact || is_regular || is_whole_word
+      reg = {content: reg, exact:is_exact, whole_word:is_whole_word, not_regular:!is_regular}
+    else
+      reg
+    end
+    @full_page.with_exergue( reg )
   end
 
   # Le message d'abonnement demandé pour que l'user puisse lire

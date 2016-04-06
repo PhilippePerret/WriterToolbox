@@ -36,9 +36,37 @@ class String
   # remplacées dans @iterations_motex qu'on peut obtenir
   # à l'aide de String#instance_variable_get('@iterations_motex')
   #
+  # +searched+
+  #     {String}  L'expression exacte à chercher
+  #     {Regexp}  L'expression régulière à évaluer sur self
+  #     {Hash}    Hash définissant la recherche.
+  #               {:content, :exact, :whole_word, :not_regular}
+  # 
+  # Voir le fichier ./__Dev__/__RefBook_Utilisation__/Vues/Textes.md
+  # pour le détail.
+  #
   def with_exergue searched
-    iterations = 0
-    str = self.gsub(/(#{searched})/, "<span class='motex'>\\1</span>")
+    if searched.instance_of?( Hash )
+
+      is_exact        = searched[:exact]        || false
+      is_whole_word   = searched[:whole_word]   || false
+      is_not_regular  = searched[:not_regular]  || false
+      is_regular      = !is_not_regular
+
+      reg = "#{searched[:content]}"
+      reg = Regexp::escape( reg ) if is_not_regular
+
+      searched = case true
+      when !(is_exact || is_regular || is_whole_word) then /(#{reg})/
+      when !is_exact && !is_whole_word  then /(#{reg})/i
+      when !is_exact && is_whole_word   then /\b(#{reg})\b/i
+      when is_whole_word                then /\b(#{reg})\b/
+      else /(#{reg})/
+      end
+    else
+      searched = /(#{searched})/
+    end
+    str = self.gsub(searched, "<span class='motex'>\\1</span>")
     str.instance_variable_set('@iterations_motex', self.scan(searched).count)
     return str
   end
