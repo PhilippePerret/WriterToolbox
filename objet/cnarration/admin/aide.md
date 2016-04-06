@@ -1,13 +1,48 @@
 # Aide pour la collection Narration
 
+* [Les livres de la collection](#leslivresnarration)
+  * [Estimation du nombre de pages et autres valeurs](#estimationdunombredepagesetautres)
 * [Les Pages narration](#lespagesnarration)
+  * [Recherche des TODOs](#recherchedestodo)
+  * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
 * [Images](#utilisationduneimage)
 
+<a name='leslivresnarration'></a>
+
+## Les livres de la collection
+
+<a name='estimationdunombredepagesetautres'></a>
+
+### Estimation du nombre de pages et autres valeurs
+
+Pour estimer le nombre de page de chaque livre, ainsi que le nombre de signes et autres, on peut utiliser l'une de ces commandes dans la [console](admin/console) :
+
+    inventory narration
+
+    etat des lieux narration
+
+
 <a name='lespagesnarration'></a>
 
 ## Les Pages narration
+
+
+<a name='recherchedestodo'></a>
+
+### Recherche des TODOs
+
+Pour trouver tous les `TODO` des choses à faire sur les pages, on peut utiliser [la recherche](cnarration/search) avec le texte `todo` non exact et dans les textes.
+
+<a name='checkdespagesout'></a>
+
+### Check des pages “out” des TDMs
+
+Pour checker les fichiers physiques qui pourraient ne pas se trouver dans les tables des matières ou les titres, etc. on peut utiliser la commande suivante dans la [console](admin/console) :
+
+    check pages narration out
+
 
 <a name='creationdunenouvellepage'></a>
 
@@ -42,6 +77,7 @@ Rejoindre la console et taper la commande :
         after[ID_PAGE_OU_TITRE]
 
 Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table des matières du livre (`show livre &lt;référence&gt;`) et en glissant la souris sur le titre ou la page après laquelle il faut insérer le nouveau titre ou la nouvelle page.
+
 
 
 <a name='lestextes'></a>
