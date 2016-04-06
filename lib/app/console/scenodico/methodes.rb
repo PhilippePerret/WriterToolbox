@@ -10,7 +10,9 @@ class Console
       [nil, "Aucun mot n'a été trouvé correspondant à `#{mot_ref}`."]
     else
       balises = res.collect do |hmot|
-        {value: "MOT[#{hmot[:id]}|#{hmot[:mot].downcase}]"}
+        # Note : Il faut remplacer les apostrophes simples car le texte
+        # sera mis dans un code entre apostrophes simples.
+        {value: "MOT[#{hmot[:id]}|#{hmot[:mot].downcase.gsub(/\'/, '’')}]"}
       end
       [balises, "Nombre de mots trouvés : #{balises.count}"]
     end
