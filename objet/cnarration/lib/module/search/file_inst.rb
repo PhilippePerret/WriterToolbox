@@ -48,6 +48,45 @@ class SFile
     "<span class='ocs'>#{occurrences} occurrence#{occurrences > 1 ? 's' : ''}</span> <span class='poids'>(poids : #{weight})</span>".in_div(class:'divoc')
   end
 
+  # Retourne la valeur de poids d'une itération du mot.
+  # Par défaut, il vaut 1, mais si le titre de la page
+  # contient le texte recherché (min/maj) ce poids passe
+  # à 3. Et si le titre du livre contient aussi la
+  # recherche, ça passe à 5
+  def poids_iteration
+    @poids_iteration ||= begin
+      pds = 1
+      pds += 2 if titre_contient_searched?
+      pds += 2 if titre_livre_contient_searched?
+      pds
+    end
+  end
+
+  # Retourne true si le titre de la page contient la
+  # recherche, en minuscule ou en majuscule.
+  def titre_contient_searched?
+    @titre_contient_searched ||= begin
+      if occurrences > 0 # <= traité par les titres
+        true
+      else
+        page_titre.match(search.searched) != nil
+      end
+    end
+  end
+
+  def titre_livre_contient_searched?
+    @titre_livre_contient_searched ||= begin
+      # On enregistre provisoirement la valeur dans le Hash des
+      # données des livres pour ne pas avoir à la recalculer pour
+      # chaque page.
+      unless ::Cnarration::LIVRES[livre_id].has_key?(:contient_search)
+        ::Cnarration::LIVRES[livre_id].merge!( contient_search: (livre_titre.match(search.searched) != nil))
+      end
+      ::Cnarration::LIVRES[livre_id][:contient_search]
+    end
+  end
+
+
   def occurrences_in_textes
     return "" if founds_in_textes.count == 0
     founds_in_textes.collect { |ifound| ifound.output(true) }.join("<br>")

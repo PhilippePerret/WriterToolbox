@@ -19,11 +19,24 @@ class Search
     make_base_duplicat
     search_in_titres  if in_titres?
     search_in_textes  if in_textes?
-    @result[:end_time] = Time.now.to_f
-    @result[:duration] = @result[:end_time] - @result[:start_time]
+    finir_recherche
     destroy_base_duplicat
   end
 
+  def finir_recherche
+    @result[:end_time] = Time.now.to_f
+    @result[:duration] = @result[:end_time] - @result[:start_time]
+    # Calcul du nombre d'éléments cherchés en fonction de
+    # titres et/ou pages
+    @result[:nombre_searched] = if in_titres?
+      table_pages.count
+    else
+      table_pages.count(where:"options LIKE '1%'")
+    end
+  rescue Exception => e
+    debug e
+    error e.message
+  end
 
   # Recherche dans les textes
   #
@@ -42,6 +55,12 @@ class Search
   def init_result
     @result = {
       summary: human_search_summary,  # Résumé humain de la recherche
+      # Nombre d'éléments checkés
+      # Si on doit faire une recherche sur les titres (avec ou sans
+      # recherche dans les textes), ça correspond au nombre d'éléments
+      # dans la table. Sinon, sans recherche sur les titres, c'est le
+      # nombre de pages réelles dans la table.
+      nombre_searched:  0,
       nombre_founds:    0,             # Nombre d'occurrences trouvées
       nombre_in_titres: 0,
       nombre_in_textes: 0,
@@ -99,29 +118,6 @@ class Search
   end
   def base_duplicat_path
     @base_duplicat_path ||= site.folder_tmp + "cnarration-#{NOW}-#{user.id}.db"
-  end
-
-  # ---------------------------------------------------------------------
-  #   Méthodes d'helper
-  # ---------------------------------------------------------------------
-
-
-  # Résumé humain de la recherche
-  def human_search_summary
-    @human_search_summary ||= begin
-      t = String::new
-      t << "Rechercher "
-      t << "exactement " if exact?
-      t << "“#{searched}”".in_span(class:'bold')
-      where = Array::new
-      where << "les <span class='bold'>titres</span>" if in_titres?
-      where << "les <span class='bold'>textes</span>" if in_textes?
-      t << " dans #{where.pretty_join}"
-      t << " sans se soucier de la casse" unless exact?
-      t << " comme expression régulière" if regular?
-      t << "."
-      t.in_div(class:'green small')
-    end
   end
 
 

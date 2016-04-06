@@ -32,12 +32,29 @@ class Grep
   # utilise ceux que les titres ont déjà créés si une
   # recherche dans les titres a été demandée.
   def analyse_resultat
+    # Certaines recherches peuvent être supprimées car
+    # entre des balises de commentaires (comme les titres
+    # en première ligne de toute page)
+    # Cette variable permet de compter le nombre réel
+    # d'occurrences trouvées.
+    real_nombre_founds = 0
+
     every_founds.each_with_index do |pfound, i|
       debug "\n\n\n\nFOUND ##{i}\n\n"
+      debug "#{pfound.gsub(/</,'&lt;').inspect}"
       # debug "#{pfound}"
       ifound = ::Cnarration::Search::Found::new( search, pfound )
       ifound.igrep = self
       ifound.parse # ce qu'on ne fait pas avec un titre
+
+      # Le texte peut être pris entre des balises de commentaires
+      # comme cela arrive avec les titres, toujours en première
+      # ligne d'une page. Dans ce cas, on n'enregistre pas cette
+      # trouvaille.
+      next if ifound.text_line == ""
+
+      # On incrémente le nombre réel de founds pour cette page
+      real_nombre_founds += 1
 
       # L'ID de la page visée par ce found
       page_id = ifound.page_id
@@ -55,14 +72,13 @@ class Grep
       end
 
       ifile.occurrences += ifound.iterations
-      ifile.weight      += ifound.iterations    # Les occurrences dans les textes ont un poids de 1
+      ifile.weight      += ifound.iterations * ifile.poids_iteration
       ifile.founds_in_textes << ifound
 
     end
 
-    nombre_founds = every_founds.count
-    search.result[:nombre_founds]     += nombre_founds
-    search.result[:nombre_in_textes]  += nombre_founds
+    search.result[:nombre_founds]     += real_nombre_founds
+    search.result[:nombre_in_textes]  += real_nombre_founds
   end
 
   def every_founds

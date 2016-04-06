@@ -27,6 +27,8 @@ class Search
     @search_in_textes = data[:search_in_texte] == 'on' if @search_in_textes === nil
     @search_in_textes
   end
+  alias :in_pages? :in_textes?
+  
   def regular?
     @regular_search = ( data[:regular_search] == 'on' || whole_word? ) if @regular_search === nil
     @regular_search
