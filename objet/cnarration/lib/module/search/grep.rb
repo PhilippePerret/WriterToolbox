@@ -85,6 +85,7 @@ class Grep
   def raw_founds
     @raw_founds ||= begin
       begin
+        debug "command_line : #{command_line.inspect}"
         res = `#{command_line}`
         res = res.force_encoding('utf-8')
         res
@@ -99,28 +100,31 @@ class Grep
   # Ligne de commande pour rechercher +searched+ dans tous
   # les textes de la collection.
   def command_line
-    cmd = "grep "
-    cmd << "-#{search.regular? ? 'E' : 'F'} " # F = Fast
-    # Ci-dessus, F permet d'obtenir un traitement vraiment sans
-    # expression régulière car par défaut grep fonctionne avec
-    # des régulières et l'option E lui ajoute simplement les
-    # expressions régulières étendues.
-    # cmd << "-1 "  # Pour afficher N lignes avant et après
-    # Options
-    #   -r    Récursif
-    #   -n    Numéro de ligne
-    #   -b    Indiquer le décalage au sein du fichier
-    #   ---------
-    #   Optionnelles
-    #   -i    Case insensitive
-    #   -w    Recherche de mots entiers
-    options_min = ['n', 'r', 'b']
-    options_min << 'i' unless search.exact?
-    options_min << 'w' if search.whole_word?
-    options_min = options_min.join("")
-    cmd << "-#{options_min} "
-    cmd << "#{grep_searched} "
-    cmd << "\"#{fullpath_cnarration_folder}\""
+    @command_line ||= begin
+      cmd = "grep "
+      cmd << "-#{search.regular? ? 'E' : 'F'} " # F = Fast
+      # Ci-dessus, F permet d'obtenir un traitement vraiment sans
+      # expression régulière car par défaut grep fonctionne avec
+      # des régulières et l'option E lui ajoute simplement les
+      # expressions régulières étendues.
+      # cmd << "-1 "  # Pour afficher N lignes avant et après
+      # Options
+      #   -r    Récursif
+      #   -n    Numéro de ligne
+      #   -b    Indiquer le décalage au sein du fichier
+      #   ---------
+      #   Optionnelles
+      #   -i    Case insensitive
+      #   -w    Recherche de mots entiers
+      options_min = ['n', 'r', 'b']
+      options_min << 'i' unless search.exact?
+      options_min << 'w' if search.whole_word?
+      options_min = options_min.join("")
+      cmd << "-#{options_min} "
+      cmd << "#{grep_searched} "
+      cmd << "\"#{fullpath_cnarration_folder}\""
+      cmd
+    end
   end
 
   # Raccourci : l'expression à trouver
@@ -131,8 +135,14 @@ class Grep
   # Expression à mettre dans la commande grep pour rechercher dans
   # les fichiers en fonction du fait que c'est une expression
   # régulière ou non.
+  #
+  # Noter qu'on ne peut pas prendre search.reg_searched qui est
+  # une instance RegExp alors que là il faut un texte simple.
   def grep_searched
-    @grep_searched ||= (search.regular? ? /#{searched}/ : "\"#{searched}\"" )
+    @grep_searched ||= begin
+      reg = "#{searched}"
+      reg
+    end
   end
 
   def fullpath_cnarration_folder

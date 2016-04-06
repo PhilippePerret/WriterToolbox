@@ -110,8 +110,13 @@ class Found
   def page_id
     @page_id ||= begin
       res = igrep.search.table_pages.select(where:"livre_id = #{livre_id} AND handler = '#{file_handler}'", colonnes:[:titre])
-      self.page_titre = res.values.first[:titre]
-      res.keys.first
+      unless res.values.first.nil?
+        self.page_titre = res.values.first[:titre]
+        res.keys.first
+      else
+        self.page_titre = "Page introuvable (livre ##{livre_id.inspect}, handler : #{file_handler.inspect})"
+        0
+      end
     end
   end
 
