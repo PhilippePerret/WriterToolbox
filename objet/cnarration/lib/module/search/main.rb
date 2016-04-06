@@ -12,7 +12,11 @@ class Search
     # Procède à la recherche d'après les éléments définis
     def proceed
       @current_search = new()
-      @current_search.proceed
+      if @current_search.proceed
+        # OK
+      else
+        @current_search = nil
+      end
     end
 
     # Retourne le code HTML pour la recherche effectuée

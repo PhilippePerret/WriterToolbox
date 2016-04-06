@@ -14,13 +14,14 @@ class Search
   # Procède à la recherche. C'est la méthode principale appelée par
   # la méthode Cnarration::Search::proceed
   def proceed
-    check_data || return
+    check_data || (return false)
     init_result
     make_base_duplicat
     search_in_titres  if in_titres?
     search_in_textes  if in_textes?
     finir_recherche
     destroy_base_duplicat
+    return true
   end
 
   def finir_recherche
@@ -83,6 +84,7 @@ class Search
   #   2. Une cible (titre et/ou texte) soit définie
   def check_data
     raise "Il faut définir le texte à chercher." if searched.nil?
+    raise "Impossible d'injecter le signe '&lt;' dans la recherche…" if searched.index('<') != nil
     raise "Il faut faire une recherche sur des mots d'au moins trois lettres" if searched.length < 3
     raise "Il faut choisir où chercher (titres et/ou textes)" unless in_titres? || in_textes?
   rescue Exception => e
