@@ -28,6 +28,21 @@ class String
     str.gsub(/"(.*?)"/, '“\1”')
   end
 
+  # Met le texte +searched+ en exergue dans le self.
+  # C'est-à-dire que tous les textes sont mis dans des
+  # span de class `motex` (mot-exergue)
+  #
+  # La méthode met également le nombre d'itérations
+  # remplacées dans @iterations_motex qu'on peut obtenir
+  # à l'aide de String#instance_variable_get('@iterations_motex')
+  #
+  def with_exergue searched
+    iterations = 0
+    str = self.gsub(/(#{searched})/, "<span class='motex'>\\1</span>")
+    str.instance_variable_set('@iterations_motex', self.scan(searched).count)
+    return str
+  end
+
   # {Fixnum} Quand le string est une horloge, la transforme en
   # secondes
   def h2s

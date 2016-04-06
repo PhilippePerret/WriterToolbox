@@ -25,7 +25,14 @@ thin
   font-style    : italic
   display       : inline-block
   margin-right  : 0.4em
-  
+
+// Pour les mots en exergue dans les textes.
+// Ce sélecteur est utilisé par la méthode String#with_exergue(<exergue>)
+// qui entoure toutes les occurrences trouvées de balises span.motex
+span.motex
+  color           : red
+  font-weight     : bold
+
 .warning
   color       : #D60000
   &.fort

@@ -59,26 +59,16 @@ class Found
   def output in_texte
     @in_texte = in_texte
     c = "#{text_line_with_exergue}".in_span(class:'text')
-    if in_texte == true
-      # ERROR: C'EST INCOMPRÉHENSIBLE, MÊME LORSQUE C'EST UN
-      # TITRE LE SPECS_FOUND EST ÉCRIT…………………………
-      # DONC, POUR LE MOMENT, JE PRÉFÈRE SUPPRIMER CETTE LIGNE
-      # c += specs_found
-    end
-
+    c += specs_found if in_texte
     c.in_div(class:'found')
   end
 
   # Retourne le texte avec les mots mis en exergue
+  # En profite aussi pour définir le nombre d'itérations
   def text_line_with_exergue
     @text_line_with_exergue ||= begin
-      iterations = 0
-      formated = text_line.gsub(/(#{search.reg_searched})/){
-        iterations += 1
-        "<span class='found'>#{$1}</span>"
-      }
-      @iterations = iterations
-      debug "@in_texte est #{@in_texte.inspect}"
+      formated = text_line.with_exergue( search.reg_searched)
+      @iterations = formated.instance_variable_get('@iterations_motex')
       (@in_texte ? "" : "TITRE : ") + formated
     end
   end
