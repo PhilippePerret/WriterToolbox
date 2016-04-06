@@ -53,9 +53,14 @@ class SFile
   # contient le texte recherché (min/maj) ce poids passe
   # à 3. Et si le titre du livre contient aussi la
   # recherche, ça passe à 5
+  #
+  # Note : Ça n'est valable que pour une page, pas
+  # pour les titres qui ont leur propre méthode,
+  # `weight` qui dépend du nombre d'occurrences
+  # dans le texte.
   def poids_iteration
     @poids_iteration ||= begin
-      pds = 1
+      pds  = 1
       pds += 2 if titre_contient_searched?
       pds += 2 if titre_livre_contient_searched?
       pds
