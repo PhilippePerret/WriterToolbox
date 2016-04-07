@@ -57,7 +57,6 @@ $.extend(window.Analyse, {
 
   save_films_options:function(){
     var data = JSON.stringify(this.modifications) ;
-    console.log(data)
     var data_ajax = {
       url: "admin/save_options?in=analyse",
       film_options: data,
@@ -71,6 +70,60 @@ $.extend(window.Analyse, {
       this.set_modified( false ) ;
       this.modifications = {} ;
     }
+  },
+
+
+  /** ---------------------------------------------------------------------
+    *   Méthodes de filtrage
+    *
+    * Méthodes réagissant aux cases à cocher de l'interface
+    * --------------------------------------------------------------------- */
+
+  TABLE_CBS: {
+    'analyzed': {bit: 0, reg: "1"},
+    'tm':       {bit: 3, reg: "(1|3)"}
+  },
+  TABLE_BITS_OPTIONS: {
+    0: 'analyzed',
+    1: null,
+    2: null,
+    3: 'tm'
+  },
+  // Méthode principale
+  filtre_liste_films:function(){
+
+    var hash = new Object() ;
+    $(['tm', 'analyzed']).each(function(i, sym){
+      hash[sym] = $('input[type="checkbox"]#cb_only_' + sym)[0].checked ;
+    })
+
+    // On construit l'expression régulière qui va permettre de
+    // filtrer les films voulus.
+    var reg_options_req = "";
+    var sym, reg ;
+    for(var index_bit in this.TABLE_BITS_OPTIONS){
+      sym = this.TABLE_BITS_OPTIONS[index_bit] ;
+      if (sym != null){
+        reg_options_req += hash[sym] == true ? this.TABLE_CBS[sym].reg : '.' ;
+      } else {
+        reg_options_req += '.'
+      }
+    }
+
+    reg_options_req = new RegExp("^" + reg_options_req)
+
+    var o, opts, concerned ;
+    $('div#films > div.film').each(function(){
+      o = $(this) ;
+      opts = o.attr('data-options') ;
+      concerned = opts.match(reg_options_req) != null ;
+      if(concerned){o.show()}else{o.hide()}
+    })
+  },
+
+  // Décoche tout
+  filtre_none:function(){
+    $('div#films > li.film').each(function(){$(this).show()})
   }
 
 })

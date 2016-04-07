@@ -203,6 +203,10 @@ analyse:
     type:           TITLE
     description:    Les Analyses de film
   -
+    command:        fonctionnement analyses
+    description:    Un rappel du fonctionnement des analyses de film sur le site.
+    note:           Ce rappel s'adresse aux administrateurs, pas aux lecteurs.
+  -
     command:        aide analyse
     description:    Affiche l'aide pour les analyses de film.
     implement:      |

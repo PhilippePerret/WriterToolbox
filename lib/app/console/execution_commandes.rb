@@ -53,8 +53,11 @@ class Console
       run_synchronize_database_narration
       # --- ANALYSES DE FILM ---
     when /^(inventory|etat des lieux|état des lieux) analyses$/
+      redirect_to "admin/dashboard?in=analyse"
+      return ""
+    when /^fonctionnement analyses$/
       console.require 'analyses'
-      run_etat_des_lieux_analyses
+      affiche_rappel_fonctionnement
     when /^unan /
       # --- PROGRAMME UN AN UN SCRIPT ---
       console.require 'unan_unscript'

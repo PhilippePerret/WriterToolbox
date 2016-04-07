@@ -48,6 +48,18 @@ raise_unless_admin
 <div class="right air">
   <%= "Appliquer".in_a(id:"btn_apply", class:'btn medium', onclick:"$.proxy(Analyse,'save_films_options')()", style:"display:none") %>
 </div>
+<fieldset class='small'>
+<legend>Filtre</legend>
+<%
+[
+  ["Seulement les films analysés", 'only_analyzed'],
+  ["Type TM (TextMate)", 'only_tm']
+].each do |titre, sym|
+%>
+  <%= titre.in_checkbox(id:"cb_#{sym}", onchange:"$.proxy(Analyse,'filtre_liste_films')()") %>
+<% end %>
+</fieldset>
+
 <p class='small discret'>
   <table>
     <colgroup>

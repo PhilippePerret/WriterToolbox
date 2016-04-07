@@ -2,6 +2,8 @@
 class FilmAnalyse
 class Film
 
+  # Méthode d'helper qui produit la ligne LI pour l'affichage
+  # du film.
   def as_admin_li
     (
       intitule.in_span(class:'tbl_inner filmvalue') +

@@ -8,60 +8,16 @@ class Console
   # Méthode principale appelée pour faire l'état des lieux
   # des analyses de film
   #
-  def run_etat_des_lieux_analyses
+  def affiche_rappel_fonctionnement
     c = Array::new
-    c << "État des lieux des analyses".in_h3
-    c << Analyses.instance.inventory
+    c << Analyses.instance.rappels_fonctionnement
     c = c.join('')
-    sub_log "=> Etat des lieux des analyses</div>#{c}<div>"
+    sub_log "=> Rappel fonctionnement des analyses</div>#{c}<div>"
     return ""
   end
 
   class Analyses
     include Singleton
-
-    # = main =
-    #
-    # Procède à l'inventaire/état des lieux de narration
-    #
-    def inventory
-      c = Array::new
-      c << rappels_fonctionnement
-      c << etat_des_lieux_films
-      # c << infos_films.pretty_inspect.in_pre(class:'small')
-      c.join
-    end
-
-    def etat_des_lieux_films
-      films_lisibles = Array::new
-      films_courants = Array::new
-      films_en_lecture = Array::new
-      films_termined = Array::new
-
-      ligne_entete +
-      infos_films.collect do |fid, fdata|
-        is_lisible    = options[4].to_i == 1
-        is_courante   = options[5].to_i == 1
-        is_en_lecture = options[6].to_i == 1
-        # Construction du texte
-        fdata[:titre][0..29].ljust(30) +        # titre
-        case options[3].to_i                    # type
-        when 1 then " TM"
-        when 2 then "MYE"
-        when 3 then "MIX"
-        end + "  " +
-        (is_lisible ? "  OUI   " : "  NON   ") +      # lisible
-        (is_courante ? "   OUI   " : "   NON   " ) +  # en cours
-        (is_en_lecture ? "  OUI   " : "  NON   ") +   # en lecture
-      end.join("\n").in_pre(class:'small')
-    end
-    def ligne_entete
-      "TITRE".ljust(30) +
-      "Type " +
-      "Lisible " +
-      "En cours " +
-      "Lecture "
-    end
 
     def infos_films
       @infos_films ||= table_films.select(where:"options IS NOT NULL AND options LIKE `1%`")
