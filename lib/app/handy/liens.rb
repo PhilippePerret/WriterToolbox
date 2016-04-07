@@ -44,10 +44,29 @@ class Lien
     build("tool/list", titre, options)
   end
 
-  def cnarration titre = "Collection Narration", options = nil
-    build("cnarration/home", titre, options)
+  LIENS_CNARRATION = {
+    home:       ["Collection Narration", 'cnarration/home'],
+    recherche:  ["Formulaire de recherche dans les pages", "cnarration/search"],
+    livres:     ["Tous les livres", 'livre/tdm?in=cnarration'],
+    books:      ["Tous les livres", 'livre/tdm?in=cnarration']
+  }
+  # Pour atteindre la collection Narration.
+  # En utilisant options[:at] on peut définir une sous-rubrique
+  # +options+
+  #   :to       Pour envoyer dans une partie particulière (cf.
+  #             LIENS_CNARRATION ci-dessus)
+  def cnarration titre = nil, options = nil
+    if titre.instance_of? Hash
+      options   = titre
+      titre     = nil
+    end
+    options ||= Hash::new
+    options[:to] ||= :home
+    titre, href = LIENS_CNARRATION[ options.delete(:to) ]
+    build(href, titre, options)
   end
   alias :collection_narration :cnarration
+  alias :narration :cnarration
 
   def forum titre = "forum", options = nil
     build('forum/home', titre, options)
