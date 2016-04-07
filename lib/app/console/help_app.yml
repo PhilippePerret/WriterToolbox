@@ -2,6 +2,58 @@
 #     AIDE PROPRE À L'APPLICATION
 # ---------------------------------------------------------------------
 
+# LIENS
+# Ce sont tous les liens qu'on peut insérer dans les textes
+# à l'aide de `lien.<something>`
+liens:
+  -
+    type:           TITLE
+    description: |
+      "Liens `lien.&lt;something&gt;`"
+  -
+    command:        lien.&lt;methode&gt;[ {String} TITRE][, {Hash} OPTIONS]
+    description: |
+      Hormis les commandes précisées, toutes ces méthodes peuvent recevoir
+      les deux arguments ci-dessus, en premier le titre et en second un
+      hash d'options qui permet de renseigner les attributs de la balise.
+
+      Parfois, on peut même n'envoyer que l'attribut OPTIONS.
+  -
+    command:        "`lien.cnarration` ou `lien.cnarration OPTIONS`"
+    description:    Un lien vers la collection Narration
+    note: |
+      OPTIONS peut contenir `:to` qui peut avoir la valeur : :recherche, :home, :livres
+  -
+    command:        lien.unanunscript
+    description:    Lien vers le programme UN AN UN SCRIPT
+  -
+    command:        lien.unanunscript_subscribe
+    description:    Souscription au programme un an un script
+  -
+    command:        "`lien.analyses_de_films` ou `lien.analyses`"
+    description:    Analyses de film
+  -
+    command:        lien.collecteur_analyse
+    description:    Collecteur de l'analyse de film.
+  -
+    command:        "`lien.outils`"
+    description:    Lien pour rejoindre la liste des outils
+  -
+    command:        "`lien.forum` ou `lien.forum_de_discussion`"
+    description:    Lien vers le forum de discussion.
+  -
+    command:        lien.scenodico
+    description:    Lien pour rejoindre le scénodico
+  -
+    command:        "`balise mot &lt;extrait mot &gt;`"
+    description:    Retourne les liens vers les mots correspondant à l'extrait.
+  -
+    command:        lien.filmodico
+    description:    Lien vers le filmodico
+  -
+    command:        "`balise film &lt;extrait de titre&gt;`"
+    description:    Retourne les liens vers les films correspondant à l'extrait de titre.
+
 # SCÉNODICO
 scenodico:
   -

@@ -17,7 +17,6 @@ def _( relpath, base = nil )
   # debug "caller : #{caller.inspect}"
   if base.nil?
     caller.each do |tripath|
-      debug "tripath: #{tripath}"
       dpath = File.dirname( tripath.split(":").first )
       ptest = File.join( dpath, relpath )
       # debug "ptest: #{ptest}"

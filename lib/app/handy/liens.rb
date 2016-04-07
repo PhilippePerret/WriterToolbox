@@ -1,6 +1,9 @@
 # encoding: UTF-8
 =begin
 
+# Si un lien est ajouté, il faut l'ajouter aussi à la section
+# liens de l'aide : ./lib/app/console/help_app.yml
+
 Extension de la classe Lien, pour l'application courante
 
 Rappel : c'est un singleton, on appelle les méthodes par :
@@ -80,11 +83,16 @@ class Lien
   # Pour le moment, il faut obligatoirement fournir l'ID du mot et
   # le mot lui-même. Plus tard, on pourra voir s'il est intéressant
   # de ne pouvoir fournir que l'ID
+  #
+  # C'est la méthode qui est utilisée pour formater les liens
+  # qui sont définis par `MOT[<mot_id>, <mot>]` dans les textes.
+  #
   def mot mot_id, mot_str, options = nil
     options ||= Hash::new
     options.merge!( class:'mot', target:'_blank' )
     build("scenodico/#{mot_id}/show", mot_str, options)
   end
+
 
   # Lien vers le filmodico
   # @usage: lien.filmodico("TITRE")
@@ -109,6 +117,10 @@ class Lien
   # Retourne un lien vers un film d'après la référence fournie
   # +film_ref+ qui peut être l'ID dans la table des films ou l'ID string
   # tel qu'il est connu ailleurs (par exemple `DancerInTheDark2001`)
+  #
+  # C'est la méthode qui est utilisée pour formater les liens
+  # qui sont définis par `FILM[<film_id>]` dans les textes.
+  #
   def film film_ref, options = nil
     options ||= Hash::new
     # On mémorise les films déjà cités pour ne pas mettre plusieurs
@@ -132,9 +144,7 @@ class Lien
 
     # Cas du film introuvable, on retourne la référence en indiquant
     # dans le texte que ce film est introuvable.
-    if hfilm.nil?
-      return "#{film_ref} [INTROUVABLE]"
-    end
+    return "#{film_ref} [INTROUVABLE]" if hfilm.nil?
 
     film_id = hfilm[:id]
 
