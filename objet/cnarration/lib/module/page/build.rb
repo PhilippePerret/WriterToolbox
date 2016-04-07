@@ -15,10 +15,10 @@ class SuperFile
   def formate_balises_images_in code
     code.gsub(/IMAGE\[(.*?)(?:\|(.*?))?\]/){
       imgpath = imgpath_init = $1.to_s
+      imgpath = imgpath.sub(/^"(.*?)"$/, '\1')
       debug "imgpath: '#{imgpath}'"
       imgpath += ".png" if File.extname(imgpath) == ""
       imgpath = seek_image_path_of(imgpath)
-      debug "imgpath: '#{imgpath}'"
       titalt  = $2.gsub(/'/, "’") unless titalt.nil?
       if imgpath != nil
         "<center><img src='#{imgpath}' alt='Image: #{titalt}' /></center>"

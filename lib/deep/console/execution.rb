@@ -120,6 +120,7 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
+      # --- TACHES ---
     when /^liste? ta(che|sk)s$/
       Taches::show_liste_taches
     when /^(liste? )?mes taches$/
@@ -131,6 +132,9 @@ class Console
       ""
     when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
+      # --- IMAGES ---
+    when /^balise image/
+      Images::balise_image line.sub(/^balise image/,'').strip
     # ---------------------------------------------------------------------
     # Toutes les aides directes
     when 'aide analyse'

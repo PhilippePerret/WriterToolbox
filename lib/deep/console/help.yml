@@ -165,6 +165,19 @@ taches:
     note: |
       Pour obtenir l'identifiant de la tache il suffit de jouer `list taches`.
 
+# IMAGES
+images:
+  -
+    type:         TITLE
+    description:  Images
+  -
+    command:      balise image
+    description:  Retourne l'explication pour obtenir une balise image à insérer dans un texte.
+  -
+    command:      balise image &lt;path/to/image&gt;
+    description:  Crée une balise simple pour l'image de path relatif donné.
+    note:         "Le path relatif se calcule à partir du dossier './view/img/'."
+
 # ---------------------------------------------------------------------
 #   GELS ET DÉGELS
 # ---------------------------------------------------------------------
