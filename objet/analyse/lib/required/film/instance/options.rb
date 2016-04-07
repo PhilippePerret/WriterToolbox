@@ -21,7 +21,13 @@ class Film
   end
   # BIT 4 C'est une analyse TM
   def analyse_tm?
-    options[3].to_i == 1
+    (options[3].to_i & 1) > 0
+  end
+  def analyse_mye?
+    (options[3].to_i & 2) > 0
+  end
+  def analyse_mixte?
+    (options[3].to_i & 3) > 0
   end
   # BIT 5 Lisible / non lisible
   def lisible?

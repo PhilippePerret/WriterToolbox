@@ -195,7 +195,9 @@ narration:
     note: |
       La référence au livre peut être diverse, par exemple `balise livre documents` ou `balise livre auteur` ou `balise livre themes`.
 
-# ANALYSE DE FILM
+# ---------------------------------------------------------------------
+#   ANALYSE DE FILM
+# ---------------------------------------------------------------------
 analyse:
   -
     type:           TITLE
@@ -209,7 +211,12 @@ analyse:
     command:        list films
     description:    Affiche le contenu de la table analyse.films.
     note:           Noter qu'il s'agit de la table pour les films analysés, pas la table Filmodico, même si les deux tables sont synchronisés.
-
+  -
+    command:        (inventory|etat des lieux|état des lieux) analyses
+    description:  |
+      Produit un état des lieux des analyses pour voir où en sont les
+      analyses en cours, etc.
+# ---------------------------------------------------------------------
 # PROGRAMME UN AN UN SCRIPT
 unan:
   -

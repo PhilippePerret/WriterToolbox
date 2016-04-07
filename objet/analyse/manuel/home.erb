@@ -13,3 +13,9 @@
 <p>
   Pour pouvoir rédiger des analyses, vous devez au préalable <%= FilmAnalyse::lien_participer("proposer votre candidature") %>.
 </p>
+<% if user.manitou? %>
+<p class='small'>
+  En tant que grand manitou, vous pouvez rejoindre le
+  <%= "Tableau de bord des analyses".in_a(href:"admin/dashboard?in=analyse") %>
+</p>
+<% end %>

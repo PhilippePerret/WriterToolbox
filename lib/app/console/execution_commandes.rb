@@ -20,7 +20,7 @@ class Console
     when /^(nouveau|new) film$/
       if OFFLINE then "ERROR : seulement en ONLINE"
       else (redirect_to "filmodico/edit"); "" end
-      # SCENODICO
+      # --- SCENODICO ---
     when /^(nouveau|new) mot$/
       if OFFLINE then "ERROR : seulement en ONLINE"
       else (redirect_to "scenodico/edit"); "" end
@@ -51,8 +51,12 @@ class Console
     when /^synchro(ni[zs]e)? (data)?base narration$/
       console.require 'narration'
       run_synchronize_database_narration
+      # --- ANALYSES DE FILM ---
+    when /^(inventory|etat des lieux|état des lieux) analyses$/
+      console.require 'analyses'
+      run_etat_des_lieux_analyses
     when /^unan /
-      # PROGRAMME UN AN UN SCRIPT
+      # --- PROGRAMME UN AN UN SCRIPT ---
       console.require 'unan_unscript'
       case line.downcase
       when "unan points"

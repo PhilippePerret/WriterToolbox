@@ -22,13 +22,15 @@ class Film
   def duree
     @duree ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:duree])[:duree]
   end
+  def auteurs
+    @auteurs  ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:auteurs])[:auteurs]
+  end
 
   def titre         ; @titre        ||= get(:titre)       end
   def titre_fr      ; @titre_fr     ||= get(:titre_fr)    end
   def annee         ; @annee        ||= get(:annee)       end
   def pays          ; @pays         ||= get(:pays)        end
   def realisateur   ; @realisateur  ||= get(:realisateur) end
-  def auteurs       ; @auteurs      ||= get(:auteurs)     end
   def options       ; @options      ||= get(:options)||"" end
   def sym           ; @sym          ||= get(:sym)         end
 
