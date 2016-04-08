@@ -99,7 +99,6 @@ class Filmodico
       titre_fr:         @titre_fr,
       annee:            @annee,
       film_id:          @film_id,
-      sym:              @sym,
       resume:           @resume,
       duree:            @duree,
       duree_generique:  @duree_generique,
@@ -118,7 +117,7 @@ class Filmodico
       annee:        annee,
       film_id:      @film_id,
       sym:          @sym,
-      options:      "00000000",
+      # options:      "00000000",
       realisateur:  @realisateur_analyse,
       updated_at:   NOW
     }

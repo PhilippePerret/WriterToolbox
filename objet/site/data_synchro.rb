@@ -45,6 +45,7 @@ class Synchro
       # Ici la liste des paths de fichiers à ignorer
       "./database/data/users.db",
       "./database/data/forum.db",
+      "./database/data/analyse.db",
       "./database/data/unan_hot.db",
       './database/data/site_hot.db',
       './database/data/filmodico.db',

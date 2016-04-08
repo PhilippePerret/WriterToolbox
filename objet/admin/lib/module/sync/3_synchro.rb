@@ -26,6 +26,8 @@ class Sync
 
     synchronize_filmodico   if param(:cb_synchronize_filmodico)
 
+    synchronize_analyses    if param(:cb_synchronize_analyses)
+
     # À la fin, on peut détruire tous les fichiers pour forcer
     # un prochain check. Cela entrainera l'affichage d'un
     # état des lieux (demandé par la vue erb) actualisé.
@@ -83,6 +85,34 @@ class Sync
       @suivi << "= Synchronisation de la collection Narration OK"
     else
       @suivi << "  # Problème avec la synchronisation de la collection Narration"
+    end
+  rescue Exception => e
+    debug e
+    @suivi << "ERROR : #{e.message}"
+    @errors << e.message
+  end
+
+  # Synchornisation de la base de données des analyses de films.
+  #
+  # La méthode a été inaugurée car la table `films` peut être modifiée
+  # en local comme en distant.
+  # LOCAL : C'est principalement les options (qui vont déterminer l'état
+  #         de l'analyse, sa visibilité, etc.)
+  # DISTANT :   Pour le moment, seul le `sym` du film peut être modifé,
+  #             lorsque la fiche filmodico du film est modifiée ou créée.
+  #
+  def synchronize_analyses
+    @suivi << "* Synchronisation de la base des Analyses"
+    # Le sym peut avoir été modifié
+    # Il peut s'agir d'un nouveau film
+    SuperFile::new('./objet/analyse/lib/module/sync').require
+    synan = SynchroAnalyse.instance
+    resultat_ok = synan.synchronize
+    @suivi << (synan.suivi.collect{|p| "  #{p}"}.join("\n"))
+    if resultat_ok
+      @suivi << "= Synchronisation des analyses OK"
+    else
+      @suivi << "  # Problème avec la synchronisation des analyses"
     end
   rescue Exception => e
     debug e

@@ -2,47 +2,6 @@
 # Vue de confirmation du rapatriement de la Database distante
 %>
 <%= Filmodico::titre_h1("Download base de données") %>
-<%
-site.require_module 'remote_file'
-def rfile
-  @rfile ||= RFile::new("./database/data/filmodico.db")
-end
-%>
-
-<p class='small italic'>Attention : quand on synchronise d'un endroit vers un autre, <strong>les deux</strong> fichiers donnent l'impression de se synchroniser mais en fait il n'en est rien. La démarche à suivre est la suivante :
-  <ul>
-    <li>charger le fichier distant (modifié) vers local,</li>
-    <li>lancer le contrôle de synchro,</li>
-    <li>charger le fichier local vers l'atelier Icare,</li>
-    <li>penser également à charger l'affiche dans les deux locations.</li>
-  </ul>
-</p>
-
-<h3>Check synchro du fichier <%= rfile.path.inspect %></h3>
-<h4>Sur la Boite à Outils de l'Auteur</h4>
-<%= rfile.bloc_synchro(verbose:true) %>
-<h4>Sur l'atelier Icare</h4>
-<%
-# Charger les données de synchronisation pour l'atelier Icare
-# (site.folder_objet+'site/data_synchro_icare.rb').require
-def rfile_icare
-  @rfile_icare ||= begin
-    rf = RFile::new("./database/data/filmodico.db")
-    # Régler le serveur SSH particulier à Icare
-    rf.instance_variable_set('@serveur_ssh', 'icare@ssh-icare.alwaysdata.net')
-    # Régler le path particulier à la base de données sur Icare
-    rf.distant.instance_variable_set("@path", "www/storage/db/filmodico.db")
-    rf
-  end
-end
-%>
 <p>
-  Serveur : <%= rfile_icare.serveur_ssh %><br />
-  Path distant : <%= rfile_icare.distant.path %>
-</p>
-<%= rfile_icare.bloc_synchro(verbose:true) %>
-
-<h3>Check de synchro des affiches</h3>
-<p>
-  Pour les nouvelles affiches, il faut lancer le `check synchro` dans la console et télécharger les images. Le faire aussi sur l'atelier Icare à l'aide de Cyberduck.
+  Obsolète. Utiliser maintenant le <%= "tableau de bord des synchronisations".in_a(href:"admin/sync") %>.
 </p>
