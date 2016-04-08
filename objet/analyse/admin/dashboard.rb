@@ -19,8 +19,25 @@ class Film
   # Boutons pour modifier l'état du film
   def boutons_edition
     (0..7).collect do |bit|
-      bit_yes = options[bit].to_i == 1
-      ( bit_yes ? "OUI" : "NON" ).in_a(class:"colvalue #{bit_yes ? 'bgblue' : 'bgred'}", id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
+      bit_val = options[bit].to_i
+      bit_yes = bit_val == 1
+      classes_css = ['colvalue']
+      # Cas spécial du 3e bit, le type de l'analyse, qui peut être :
+      # TM, MYE ou MIX des deux
+      tit = if bit == 3
+        classes_css << (bit_val == 0 ? 'bgred' : 'bgblue')
+        case bit_val
+        when 0 then "???"
+        when 1 then "TM"
+        when 2 then "MYE"
+        when 3 then "MIX"
+        end
+      else
+        classes_css << (bit_yes ? 'bgblue' : 'bgred')
+        bit_yes ? "OUI" : "NON"
+      end
+
+      tit.in_a(class:classes_css.join(' '), id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
     end.join
   end
 
