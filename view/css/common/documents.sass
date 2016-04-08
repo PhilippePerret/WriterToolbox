@@ -8,19 +8,32 @@ section.document, div.document_legend
     margin-left       : 0
     margin-right      : 0
 
-// La class principale
 section.document
+  &:not(.tiny, .small)
+    font-size         : 14.2pt
+
+pre.document.brut
+  line-height       : 1.1em !important
+  padding           : 20px
+  &.plain
+    margin-left     : 0 !important
+    margin-right    : 0 !important
+  &.small
+    font-size       : 11.5pt
+  &.tiny
+    font-size       : 9pt
+
+section.document, pre.document
   margin-top        : 2em
   margin-bottom     : 2em
-  padding           : 2.1em 2.4em
   background-color  : #EDFDF2
+  
+// La class principale
+section.document
+  padding           : 2.1em 2.4em
   border            : 1px solid #8d8d8d
-  font-size         : 14.2pt
   line-height       : 1.3em !important
-  
-  &.small
-    font-size         : 0.85em !important
-  
+    
   &.events, &.evenemencier
     font-family       : courier
     font-size         : 0.95em

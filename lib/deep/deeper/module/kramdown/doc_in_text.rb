@@ -60,13 +60,19 @@ class MEFDocument
     analyse_code
     @codet = case output_format
     when :html
-      if events?
+      return @codet.in_pre(class:classes.join(' ')) if brut?
+      res = if events?
         @codet.traite_as_events_html
       elsif scenario?
         @codet.traite_as_script_html
       else
         lines.collect{ |l| l.traite_as_line_of_document_html }.join('')
-      end.traite_as_document_content_html
+      end
+      unless brut?
+        res.traite_as_document_content_html
+      else
+        res
+      end
     end
     # Le code entièrement traité
     self.in_section + self.legend
@@ -108,6 +114,9 @@ class MEFDocument
   end
   def events?
     @is_events ||= classes.include?('events')
+  end
+  def brut?
+    @is_pre ||= classes.include?('brut')
   end
 
   # Définition du code entier, on en profite pour
