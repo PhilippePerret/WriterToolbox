@@ -15,6 +15,12 @@ class Film
     par << realisateur
     par << annee
     par = "(#{par.join(', ')})".in_span(class:'small')
+    if user.admin?
+      types = Array::new
+      types << "TM" if analyse_tm?
+      types << "MYE" if analyse_mye?
+      par += " [type : #{types.join(' & ')}]".in_span(class:'tiny')
+    end
     "#{t} #{par}"
   end
 

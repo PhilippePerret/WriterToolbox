@@ -25,6 +25,9 @@ class Film
   def auteurs
     @auteurs  ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:auteurs])[:auteurs]
   end
+  def sym
+    @sym ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:sym])[:sym]
+  end
 
   def titre         ; @titre        ||= get(:titre)       end
   def titre_fr      ; @titre_fr     ||= get(:titre_fr)    end
@@ -32,7 +35,6 @@ class Film
   def pays          ; @pays         ||= get(:pays)        end
   def realisateur   ; @realisateur  ||= get(:realisateur) end
   def options       ; @options      ||= get(:options)||"" end
-  def sym           ; @sym          ||= get(:sym)         end
 
 end #/Film
 end #/FilmAnalyse

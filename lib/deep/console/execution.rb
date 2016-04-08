@@ -120,6 +120,9 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
+    when 'sync'
+      redirect_to 'admin/sync'
+      ""
       # --- TACHES ---
     when /^liste? ta(che|sk)s$/
       Taches::show_liste_taches

@@ -30,6 +30,7 @@ end
 # frame puisque c'est un fichier complet.
 if film.analyse_tm?
 
+if film.html_file.exist?
 %>
   <iframe
     id="frame_analyse"
@@ -47,7 +48,20 @@ $(document).ready(function(){
   $('section#content').show();
 })
 </script>
-
+<%
+else
+  # Si le fichier HTML est introuvable
+%>
+<p class='warning'>
+  Désolé, cette analyse du film “<%= film.titre %>” est actuellement introuvable…
+</p>
+<% if user.admin? %>
+  <p class='small'>Fichier recherché : <%= film.html_file.to_s %></p>
+<% end %>
+<%
+# TODO: Il faudrait faire une alerte administrateur
+end # Fin de test si le fichier HTML existe
+%>
 <%
 
 else
