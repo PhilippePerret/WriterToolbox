@@ -33,10 +33,4 @@ lib/deep/deeper/gem/
 lib/deep/deeper/module/synchronisation/synchronisation/output/
 
 xdata/
-tmp/sync/
-
-tmp/sync/check_data.msh
-
-tmp/sync/synchro_data.msh
-
-tmp/sync/display.html
+tmp/
