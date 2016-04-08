@@ -156,6 +156,8 @@ class << self
   # Niveau humain de développement
   def niveau_humain niveau
     Cnarration::NIVEAUX_DEVELOPPEMENT[niveau.to_i][:hname]
+  rescue Exception => e
+    "Cnarration::NIVEAUX_DEVELOPPEMENT ne connait pas le niveau #{niveau.inspect}…"
   end
 
   # Titre humain du livre
@@ -231,21 +233,13 @@ class Page
 
   # Pour le calcul de pages suivant le format
   def nombre_pages signes_per_page = 1500
-    (nombre_signes.to_f / signes_per_page).round(2)
+    @content_stripped ||= content.strip_tags
+    @content_length   ||= @content_stripped.length.to_f
+    (@content_length.to_f / signes_per_page).round(2)
   end
 
   def nombre_signes
-    @nombre_signes ||= content_epured.length
-  end
-
-  # Le contenu du fichier, épuré des commentaires et autres
-  # textes pour administrateur, pour comptage de la longueur
-  def content_epured
-    @content_epured ||= begin
-      c = content.gsub(/<\!--(.*?)--\>/,'')
-      c.gsub!(/<adminonly>(.*?)<\/adminonly>/,'')
-      c
-    end
+    @nombre_signes ||= content.nombre_signes
   end
 
 end #/Page

@@ -16,6 +16,27 @@ class String
 
   end # << self
 
+  # Retire toutes les balises du string
+  def strip_tags
+    str = self
+    str = str.gsub(/<(.+?)>/,'')
+    str.gsub!(/<adminonly>(.*?)<\/adminonly>/,'')
+    return str
+  end
+
+  # Renvoie le nombre de pages dans self après la
+  # suppression de toutes les balises HTML et en considérant
+  # qu'il y a +signes_per_page+ signes par page
+  def nombre_pages signes_per_page = 1500, options = nil
+    (self.strip_tags.length.to_f / signes_per_page).round(2)
+  end
+
+  # Renvoie le nombre de signes dans le self après la
+  # suppression de toutes les balises HTML
+  def nombre_signes
+    self.strip_tags.length
+  end
+
   # ---------------------------------------------------------------------
 
   # Pour "épurer" le string, c'est-à-dire :
@@ -41,7 +62,7 @@ class String
   #     {Regexp}  L'expression régulière à évaluer sur self
   #     {Hash}    Hash définissant la recherche.
   #               {:content, :exact, :whole_word, :not_regular}
-  # 
+  #
   # Voir le fichier ./__Dev__/__RefBook_Utilisation__/Vues/Textes.md
   # pour le détail.
   #
