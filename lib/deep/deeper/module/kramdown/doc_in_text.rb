@@ -60,7 +60,9 @@ class MEFDocument
     analyse_code
     @codet = case output_format
     when :html
-      return @codet.in_pre(class:classes.join(' ')) if brut?
+      if brut?
+        return (@codet.in_pre(class:classes.join(' ')) + self.legend)
+      end
       res = if events?
         @codet.traite_as_events_html
       elsif scenario?
@@ -84,7 +86,7 @@ class MEFDocument
   end
   def legend
     return "" if @legend_content.nil? || @legend_content == ""
-    @legend_content.in_div(class: 'document_legend')
+    @legend_content.traite_as_markdown_html.in_div(class: 'document_legend')
   end
 
   # Première analyse du code, pour voir s'il a un grand titre
