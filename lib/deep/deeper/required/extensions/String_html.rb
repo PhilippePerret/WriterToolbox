@@ -267,6 +267,7 @@ class String
   #         legend_class:     Nouvelle class CSS pour le div légend
   #         div_class:        Nouvelle class CSS pour le div général
   #
+  # Alias : def in_img
   def in_image attrs = nil
     attrs ||= Hash::new
     attrs.merge!( src: self ) unless self == "" || attrs.has_key?(:src)

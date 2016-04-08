@@ -92,7 +92,9 @@ Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table 
 
 ## Images
 
-    IMAGE[path/relatif|titre optionnel]
+    IMAGE[path/relatif|titre optionnel OU 'inline']
+
+Mettre `inline` pour que l'image soit en ligne, `fleft` pour "floattant à gauche" ou `fright` pour "flottant à droite". Dans le cas contraire, elle apparaitra toujours au milieu, sur un paragraphe.
 
 Le `path relatif` est traité de cette façon : on s'attend à trouver l'image dans un dossier du dossier `img` du dossier du livre au même niveau que le fichier lui même.
 

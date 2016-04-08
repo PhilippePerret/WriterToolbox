@@ -15,13 +15,23 @@ class SuperFile
   def formate_balises_images_in code
     code.gsub(/IMAGE\[(.*?)(?:\|(.*?))?\]/){
       imgpath = imgpath_init = $1.to_s
+      titalt_or_style = $2.to_s
       imgpath = imgpath.sub(/^"(.*?)"$/, '\1')
       debug "imgpath: '#{imgpath}'"
       imgpath += ".png" if File.extname(imgpath) == ""
       imgpath = seek_image_path_of(imgpath)
-      titalt  = $2.gsub(/'/, "’") unless titalt.nil?
+      titalt_or_style  = titalt_or_style.gsub(/'/, "’") unless titalt_or_style.nil?
       if imgpath != nil
-        "<center><img src='#{imgpath}' alt='Image: #{titalt}' /></center>"
+        imgpath = imgpath.to_s
+        case titalt_or_style
+        when 'inline'
+          imgpath.in_img()
+        when 'fright', 'fleft'
+          imgpath.in_img(class: titalt_or_style)
+        else
+          img_tag = "<img src='#{imgpath}' alt='Image: #{titalt_or_style}' />"
+          "<center>#{img_tag}</center>"
+        end
       else
         "IMAGE MANQUANTE: #{imgpath_init}"
       end

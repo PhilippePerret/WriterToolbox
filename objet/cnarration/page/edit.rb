@@ -24,7 +24,7 @@ class Page
       ipage.save
       return ipage
     end
-    
+
     def page_id
       @page_id ||= param(:epage)[:id].nil_if_empty.to_i_inn
     end
@@ -101,18 +101,31 @@ class Page
     end
   end
 
-  def options
-    @options ||= "#{type}#{nivdev}"
-  end
   def livre_id
     @livre_id ||= data_params[:livre_id].to_i # 0 si aucun
-   end
-  def nivdev
-    @nivdev ||= data_params[:nivdev].to_i
   end
+
+  # ---------------------------------------------------------------------
+  #   Définition des options
+  # ---------------------------------------------------------------------
+  def options
+    @options ||= "#{type}#{nivdev}#{enligne}"
+  end
+  # Options, Bit 1
   def type
     @type ||= data_params[:type].to_i
   end
+  # Options, Bit 2
+  def nivdev
+    @nivdev ||= data_params[:nivdev].to_i
+  end
+  # Options, Bit 3
+  def enligne
+    @enligne ||= data_params[:enligne].to_i
+  end
+  # / fin définition options
+  # ---------------------------------------------------------------------
+
   def chose
     @chose ||= begin
       case type

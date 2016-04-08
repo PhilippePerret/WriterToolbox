@@ -44,6 +44,12 @@ values_niveau_developpement_select = Cnarration::NIVEAUX_DEVELOPPEMENT.collect d
   [nid.to_s, ndata[:hname]]
 end
 
+# Troisième chiffre des options
+values_only_enligne = [
+  ['0', 'Version papier et en ligne'],
+  ['1', 'Version en ligne seulement']
+]
+
 # MENU DES LIVRES
 options_books = "<option value='0'>Aucun livre</option>"
 options_books << Cnarration::LIVRES.collect do |bid, bdata|
@@ -69,7 +75,7 @@ boutons_books = ("tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_t
 
   <%# TYPE (bit 1 des options) %>
   <%= form.field_select("Type", 'type', nil, {values: values_type_select, onchange:"$.proxy(Cnarration,'on_change_type_page', this.value)()" }) %>
-
+  <%= form.field_select("En ligne/papier", 'enligne', nil, {values: values_only_enligne}) %>
   <%# TITRE %>
   <%= form.field_text("Titre", 'titre') %>
 
