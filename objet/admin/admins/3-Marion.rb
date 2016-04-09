@@ -14,12 +14,7 @@ class Cnarration
       if pars.empty?
         "Aucune page n'est à relire pour le moment. Super, non ? :-)".in_p
       else
-        # pars.collect { |hpage| li_for_page( hpage, 7 )}.join.in_ul(class: 'tdm')
-        build_page_list pars, 9
-        # pars.collect do |bid, bdata|
-        #   "Livre : #{bdata[:livre].titre}".in_li(class:'book_title') +
-        #   bdata[:pages].collect { |hpage| li_for_page( hpage, 7 ) }.join('')
-        # end.join.in_ul(class: 'tdm pages books_discrets')
+        build_page_list pars, 7
       end
     end
 
@@ -30,12 +25,7 @@ class Cnarration
       if pdls.empty?
         "Aucune page n'est à relire pour BAT pour le moment. Super, non ? :-)".in_p
       else
-        # pdls.collect { |hpage| li_for_page( hpage, 9 )}.join.in_ul(class: 'tdm')
         build_page_list pdls, 9
-        # pars.collect do |bid, bdata|
-        #   "Livre : #{bdata[:livre].titre}".in_li(class:'book_title') +
-        #   bdata[:pages].collect { |hpage| li_for_page( hpage, 9 ) }.join('')
-        # end.join.in_ul(class: 'tdm pages books_discrets')
       end
     end
 

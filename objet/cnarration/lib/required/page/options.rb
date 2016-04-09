@@ -13,6 +13,7 @@ class Page
   end
 
   # BIT 2
+  #
   # Détermine le niveau de développement, de 1 à 'a'
   # 9 = Page achevée
   # 8 = Lecteur finale
@@ -24,16 +25,19 @@ class Page
   end
 
   # BIT 3 - seulement version en ligne
+  #
   # Détermine si la page doit être imprimée par la
   # collection ou si c'est seulement une page pour
   # la version en ligne.
+  #
   # Quand le bit est à 1 c'est seulement une version
   # en ligne
   #
   # Cette option permet de calculer les statistiques et
   # également de sortir la version papier de la collection
-  def only_enligne?
-    @only_enligne ||= options[2].to_i == 1
+  #
+  def printed_version
+    @printed_version ||= options[2].to_i
   end
 
 end #/Page

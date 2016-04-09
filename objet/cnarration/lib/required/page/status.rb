@@ -21,5 +21,16 @@ class Page
     return true if user.subscribed? || user.admin?
   end
 
+  def only_enligne?
+    @only_enligne ||= printed_version == 1
+  end
+  alias :online :only_enligne?
+
+  def papier?
+    @is_version_papier = printed_version == 0 if @is_version_papier === nil
+    @is_version_papier
+  end
+
+
 end #/Page
 end #/Cnarration
