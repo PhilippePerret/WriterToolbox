@@ -139,7 +139,7 @@ class Tache
   # +eche+ Échéance String sous la forme "JJ MM AA" ou alors sous
   # un désignant comme "auj", "dem", "today", "aujourd'hui", etc.
   def test_echeance_tache eche
-    return nil if eche.nil?
+    return nil if eche.nil_if_empty.nil? || eche == "null"
     eche = case eche
     when "auj", "today", "aujourd'hui" then
       Time.now.strftime("%d %m %Y")

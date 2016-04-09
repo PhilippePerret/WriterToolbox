@@ -83,7 +83,7 @@ class Console
       htache.merge!(echeance: htache.delete(:le)) if htache.has_key?(:le)
       if htache.has_key?(:echeance)
         htache[:echeance] = itache.test_echeance_tache(htache[:echeance])
-        raise "Impossible d'actualiser la tache." if htache[:echeance] == false
+        raise "Impossible d'actualiser la tache." if htache[:echeance] === false
       end
       if htache.has_key?(:pour)
         admin_id = htache.delete(:pour)

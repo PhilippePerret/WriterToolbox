@@ -155,17 +155,10 @@ class << self
     # Finalisation du tableau de statistiques
     tableau_stats = "\n" + tableau_stats.join("\n") + "\n"
 
-    tableau_stats << explication_tableau_stats
     # On retourne le texte résultat
     tableau_stats
   end
 
-  def explication_tableau_stats
-    <<-HTML
-<div class='tiny discret'>La colonne “MOY” (verte) indique le nombre de pages <u>papier</u>, c'est-à-dire les pages qui seront vraiment insérrées dans la collection. La colonne suivante
-</div>
-    HTML
-  end
 
   # Reçoit un nombre quelconque et un nombre max et retourne le
   # nombre d'incréments curseur. Pour l'affichage des nombres
