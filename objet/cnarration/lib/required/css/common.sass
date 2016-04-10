@@ -1,3 +1,4 @@
+// Pour les styles quand le fichier est placé sur Icare  
 div#panneaux_tdms
   width         : 1200px !important
   min-width     : 1200px !important
@@ -21,7 +22,9 @@ div#panneaux_tdms
     float         : left
 
 ul.livre_tdm
-  list-style      : none
+  font-family   : "Open Sans",Tahoma,Arial
+  font-size     : 15.9pt
+  list-style      : none !important
   border          : 1px solid
   border-radius   : 4px
   display         : inline-block
@@ -33,6 +36,10 @@ ul.livre_tdm
     line-height     : 1.3em
     a
       color         : inherit !important
+    // Les pages qui ne sont pas encore consultables
+    span.unreadable
+      color         : #777
+      font-style    : italic
   // Une page
   li.niv1
     margin-left     : 4em

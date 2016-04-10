@@ -24,7 +24,8 @@ class Sync
   # ce fichier est relu directement dans le fichier.
   def build_inventory
 
-    return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
+    # TODO: REMETTRE QUAND OK
+    # return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
 
     @suivi << "* Construction de l'inventaire à afficher"
     display_path.remove if display_path.exist?
@@ -63,7 +64,7 @@ class Sync
       explication_force_synchro_narration
     ).in_p
 
-
+    form << display_etat_des_lieux_fichiers_narration_icare
     form << display_etat_des_lieux_affiches_films
 
     # Le bouton pour lancer la synchronisation
@@ -97,8 +98,21 @@ class Sync
     display_path.write(c)
   end
 
+  # Retourne le code HTML à insérer dans le formulaire présentant
+  # l'état des synchronisation concernant tous les fichiers à
+  # synchroniser sur Icare pour la collection narration, c'est-à-dire :
+  #   - les fichiers css utiles
+  #   - tous les fichiers textes.
+  # Note : La base est déjà checkée avant
+  #
+  def display_etat_des_lieux_fichiers_narration_icare
+    dnic = diff_narration_icare
+
+    "Fichiers CSS : #{dnic[:css][:all]}"
+  end
+
   def display_etat_des_lieux_affiches_films
-    # Ensuite, on peut fabriquer l'affichage des synchros
+    # On peut fabriquer l'affichage des synchros
     # à faire au niveau des affiches de films.
     # Mais seulement s'il y a du boulot à faire, sinon une
     # simple phrase pour expliquer que tout est à jour.

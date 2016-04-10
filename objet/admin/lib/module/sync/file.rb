@@ -58,11 +58,6 @@ class Fichier
     end
   end
   def synchro_on_boa?
-    if id == :taches
-      debug "--> synchro_on_boa?"
-      debug "  loc_mtime = #{loc_mtime.inspect}"
-      debug "  boa_mtime = #{boa_mtime.inspect}"
-    end
     loc_mtime == boa_mtime
   end
   def synchro_on_icare?

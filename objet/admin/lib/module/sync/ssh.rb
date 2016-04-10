@@ -53,10 +53,39 @@ res = {errors: Array::new}
     res[:errors] << ('Problème avec ' + rpath + ' : ' + e.message)
   end
 end
+
 # On vérifie les affiches en prenant la liste des
 # affiches
 liste_affiches = Dir['./www/img/affiches/*.jpg'].collect{|p| File.basename(p)}.join(',')
 res.merge!(affiches: liste_affiches)
+
+# La donnée générale concernant la collection narration, exceptée
+# la base qui est checkée ci-dessus
+data_cnarration = Hash::new
+
+# On vérifie les fichiers CSS du dossier ce la collection Narration
+h_css = Hash::new
+Dir['./www/ruby/_apps/Cnarration/view/css/**/*.css'].each do |pcss|
+  h_css.merge!(File.basename(pcss) => File.stat(pcss).mtime.to_i)
+end
+data_cnarration.merge!( :css => h_css )
+
+# On vérifie tous les fichiers Narration.
+begin
+  h_files = Hash::new
+  './www/storage/narration/cnarration'
+  main_folder = './www/storage/narration/cnarration'
+  Dir[main_folder + '/**/*.*'].collect do |pany|
+    relpath = pany.sub(/^\\.\\/www\\/storage\\/narration\\/cnarration\\//,'')
+    h_files.merge!( relpath => File.stat(pany).mtime.to_i )
+  end
+  data_cnarration.merge!( :files => h_files )
+rescue Exception => e
+  errors << e.message
+end
+res.merge!(cnarration: data_cnarration)
+res.merge!(errors: errors)
+
 # On retourne le hash de données marshalisé
 (STDOUT.write Marshal::dump res)
     CODE

@@ -8,7 +8,7 @@ class Sync
   # Cette clé servira à nommer la case à cocher :cb_synchronize_analyses
   # qui permettra de tester s'il faut synchroniser la base en question et
   # appeler la méthode particulière dans ./objet/admin/lib/module/sync/3_synchro.rb
-  # 
+  #
   # Note : Pour fpath, ne pas se servir de données du site (site.folder_database
   # ou autre) car cette constante est utilisée aussi en online sans charger
   # aucun autre fichier (ou presque).
@@ -25,7 +25,7 @@ class Sync
     narration: {
       hname: "Database Narration",
       fpath:  "./database/data/cnarration.db",
-      icare: false # true
+      icare: true
       },
     scenodico:  {
       hname:  "Scénodico",

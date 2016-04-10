@@ -28,9 +28,11 @@ class Sync
   def online_sync_state
     @online_sync_state ||= begin
 
-      # Si le fichier existe et qu'il n'a pas encore une heure,
-      # on utilise ses données au lieu de recommencer le check
-      if check_data_path.exist? && check_data_path.mtime.to_i > (NOW - 3600)
+      # Si le fichier du test de synchro existe et qu'il n'a pas
+      # encore une heure, on utilise ses données au lieu de recommencer
+      # le check
+      # TODO: REMETTRE QUAND OK
+      if false # check_data_path.exist? && check_data_path.mtime.to_i > (NOW - 3600)
         # On prend les données dans le fichier
         @suivi << "- Data checkées récupérées dans `#{check_data_path}`"
         Marshal::load(check_data_path.read)
@@ -49,10 +51,15 @@ class Sync
         # ------------------
         # On vérifie les mêmes fichiers +
         #   - La liste des affiches
-        #   - la liste des fichiers narration ? (pas fait encore)
+        #   - la liste des fichiers narration
+        #   - la base cnarration.db (mtime)
+        #   - les fichiers CSS propres à la collection
         res_icare = `ssh #{serveur_ssh_icare} "ruby -e \\"#{script_check_icare}\\""`
+        debug "\n\nscript_check_icare:#{script_check_icare}\n\n"
+        debug "res_icare non démarshalisé: #{res_icare.inspect}\n\n"
         # debug "Retour BRUT de res_icare : #{res_icare.inspect}"
         res_icare = Marshal.load(res_icare)
+        debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
         # On merge les résultats
         res = res_boa.merge(icare: res_icare)
 
@@ -63,6 +70,55 @@ class Sync
         res
       end
     end
+  end
+
+  # Méthode principale qui compare les fichiers narration sur
+  # Icare avec les fichiers Locaux pour savoir ceux qui devront
+  # être actualisés
+  #
+  # RETURN {Hash} des données contenant :
+  #   :css => {
+  #     all:            Liste de tous les fichiers
+  #     suppressions:   Liste des fichiers à ajouter
+  #     ajouts:         Liste des fichiers à ajouter
+  #     synchros:       Liste des fichiers à synchroniser
+  #   }
+  def diff_narration_icare
+    dnar = online_sync_state[:cnarration]
+
+    diff_naric = Hash::new
+    diff_naric = {
+      css: {
+        all: Array::new
+      },
+      files: {
+
+      }
+    }
+
+    # === Check des fichiers CSS ===
+    files_loc = Array::new
+    folder_css_common = File.join('.', 'view', 'css', 'common')
+    folder_css_narration = File.join('.', 'objet','cnarration','lib','required','css')
+    ['titres.css', 'textes.css', 'documents.css', 'markdown.css'].each do |ncss|
+      pcss = File.join(folder_css_common, ncss)
+      files_loc << [pcss, ncss, File.stat(pcss).mtime.to_i]
+    end
+    Dir["#{folder_css_narration}/*.css"].each do |pcss|
+      ncss = File.basename(pcss)
+      files_loc << [pcss, ncss, File.stat(pcss).mtime.to_i]
+    end
+    # files_dis = dnar[:css]
+
+    files_loc.each do |pcss, ncss, mtime|
+      diff_naric[:css][:all] << ncss
+    end
+
+
+    # === Check des fichiers ERB ===
+
+
+    return diff_naric
   end
 
   # Méthode principale qui compare les affiches sur la boite
