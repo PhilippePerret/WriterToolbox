@@ -31,8 +31,7 @@ class Sync
       # Si le fichier du test de synchro existe et qu'il n'a pas
       # encore une heure, on utilise ses données au lieu de recommencer
       # le check
-      # TODO: REMETTRE QUAND OK
-      if false # check_data_path.exist? && check_data_path.mtime.to_i > (NOW - 3600)
+      if check_data_path.exist? && check_data_path.mtime.to_i > (NOW - 3600)
         # On prend les données dans le fichier
         @suivi << "- Data checkées récupérées dans `#{check_data_path}`"
         Marshal::load(check_data_path.read)
@@ -55,11 +54,11 @@ class Sync
         #   - la base cnarration.db (mtime)
         #   - les fichiers CSS propres à la collection
         res_icare = `ssh #{serveur_ssh_icare} "ruby -e \\"#{script_check_icare}\\""`
-        debug "\n\nscript_check_icare:#{script_check_icare}\n\n"
-        debug "res_icare non démarshalisé: #{res_icare.inspect}\n\n"
+        # debug "\n\nscript_check_icare:#{script_check_icare}\n\n"
+        # debug "res_icare non démarshalisé: #{res_icare.inspect}\n\n"
         # debug "Retour BRUT de res_icare : #{res_icare.inspect}"
         res_icare = Marshal.load(res_icare)
-        debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
+        # debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
         # On merge les résultats
         res = res_boa.merge(icare: res_icare)
 
@@ -84,12 +83,15 @@ class Sync
   #     synchros:       Liste des fichiers à synchroniser
   #   }
   def diff_narration_icare
-    dnar = online_sync_state[:cnarration]
+    dnar = online_sync_state[:icare][:cnarration]
 
     diff_naric = Hash::new
     diff_naric = {
       css: {
-        all: Array::new
+        all:              Array::new,
+        synchro_required: Array::new,
+        distant_unknown:  Array::new,
+        local_unknown:    Array::new
       },
       files: {
 
@@ -108,17 +110,79 @@ class Sync
       ncss = File.basename(pcss)
       files_loc << [pcss, ncss, File.stat(pcss).mtime.to_i]
     end
-    # files_dis = dnar[:css]
+    files_dis = dnar[:css]
 
-    files_loc.each do |pcss, ncss, mtime|
-      diff_naric[:css][:all] << ncss
-    end
-
+    diff_naric[:css] = check_liste_icare_narration(files_loc, files_dis, 1)
 
     # === Check des fichiers ERB ===
 
+    files_dis = dnar[:files]
+
+    main_folder = File.join('.','data','unan','pages_semidyn','cnarration')
+    files_loc = Dir["#{main_folder}/**/*.*"].collect do |pfile|
+      nfile = File.basename(pfile)
+      rfile = pfile.sub(/^#{main_folder}\//,'')
+      mtime = File.stat(pfile).mtime.to_i
+      [rfile, nfile, mtime]
+    end
+
+    diff_naric[:files] = check_liste_icare_narration(files_loc, files_dis, 0)
+
+    # Nombre d'opérations totale à exécuter
+    diff_naric[:nombre_operations] = diff_naric[:files][:nombre_operations] + diff_naric[:css][:nombre_operations]
+
+    # debug "\n\ndiff_naric: #{diff_naric.pretty_inspect}\n\n"
+
 
     return diff_naric
+  end
+
+  def check_liste_icare_narration files_loc, files_dis, indice_ref
+    hres = {
+      all:                  Array::new,
+      nombre_total:         nil,
+      distant_unknown:      Array::new,
+      nombre_unknown_dis:   nil,
+      synchro_required:     Array::new,
+      nombre_synchro_req:   nil,
+      local_unknown:        Array::new,
+      nombre_unknown_loc:   nil,
+      # Nombre d'opérations totale qui seront à faire
+      nombre_operations:    nil
+    }
+    # On check les synchros par rapport aux fichiers locaux
+    files_loc.each do |path_loc, nfile, mtime_loc|
+      item_ref = indice_ref == 0 ? path_loc : nfile
+      hres[:all] << item_ref
+      mtime_dis = files_dis.delete(item_ref)
+      if mtime_dis.nil?
+        #  => Fichier distant n'existe pas
+        hres[:distant_unknown] << [path_loc, nfile]
+      elsif mtime_dis == mtime_loc
+        # => Fichier OK
+      elsif mtime_dis > mtime_loc
+        # ERREUR : C'EST NORMALEMENT IMPOSSIBLE
+      elsif mtime_loc > mtime_dis
+        hres[:synchro_required] << [path_loc, nfile]
+      end
+    end
+
+    # Est-ce qu'il y a des fichiers distants à supprimer ?
+    # Puisqu'on a retiré les fichiers à mesure du check ci-dessus
+    # dans +files_dis+ il ne doit rester dans ce hash que les
+    # fichiers à détruire.
+    unless files_dis.empty?
+      hres[:all]           += files_dis.keys
+      hres[:local_unknown] = files_dis.keys
+    end
+
+    hres[:nombre_total]       = hres[:all].count
+    hres[:nombre_unknown_dis] = hres[:distant_unknown].count
+    hres[:nombre_unknown_loc] = hres[:local_unknown].count
+    hres[:nombre_synchro_req] = hres[:synchro_required].count
+    hres[:nombre_operations]  = hres[:nombre_unknown_dis]+hres[:nombre_unknown_loc]+hres[:nombre_synchro_req]
+
+    return hres
   end
 
   # Méthode principale qui compare les affiches sur la boite

@@ -32,7 +32,7 @@ class Sync
 
     # La donnée dans laquelle on va conserver les données de
     # la synchronisation à opérer
-    datasync = Hash::new
+    @datasync = Hash::new
 
     # On prend les données de la synchro (soit dans le fichier s'il n'est
     # pas trop vieux soit en les relevant à nouveau)
@@ -53,7 +53,7 @@ class Sync
       )
       ifile = Fichier::new(fdata)
       # On mémorise les synchronisation qui devront être faites
-      datasync.merge!( fid => ifile.data_synchro )
+      @datasync.merge!( fid => ifile.data_synchro )
       # On retourne le code HTML pour ce fichier
       ifile.output
     end.join.in_pre(id:'sync_check'))
@@ -77,8 +77,8 @@ class Sync
     # Enregistrer les données de synchronisation à faire
     # dans le fichier adéquat, qui sera utilisé si la
     # synchronisation est demandée.
-    # debug "\n\ndatasync : #{datasync.pretty_inspect}\n\n"
-    self.data_synchronisation = datasync
+    # debug "\n\n@datasync : #{@datasync.pretty_inspect}\n\n"
+    self.data_synchronisation = @datasync
 
 
     c << "<hr><div class='right btns'>"
@@ -89,7 +89,7 @@ class Sync
     c << "Suivi des opérations".in_a(onclick:"$('pre#suivi_operation').toggle()", class:'small')
     c << "</div>"
 
-    c << datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
+    c << @datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
     c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
     c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
 
@@ -108,7 +108,34 @@ class Sync
   def display_etat_des_lieux_fichiers_narration_icare
     dnic = diff_narration_icare
 
-    "Fichiers CSS : #{dnic[:css][:all]}"
+    # On enregistre le résultat du check
+    @datasync.merge!(cnarration: dnic)
+
+    if dnic[:nombre_operations] == 0
+      return "Aucune opération à faire sur les fichier Narration sur Icare".in_div(class:'tiny')
+    end
+
+    form = String::new
+    form << "#{dnic[:nombre_operations]} opérations à exécuter.".in_div
+    if dnic[:css][:nombre_operations] == 0
+      form << "Aucun fichier CSS à synchroniser".in_div(class:'tiny')
+    else
+      form << ("Fichiers CSS à synchroniser : #{dnic[:css][:nombre_operations]} sur #{dnic[:css][:nombre_total]} : " +
+              (dnic[:css][:synchro_required]+dnic[:css][:distant_unknown]).collect do |pfile,nfile|
+        nfile
+      end.pretty_join.in_span(class:'tiny')).in_div
+    end
+
+    if dnic[:files][:nombre_operations] == 0
+      form << "Aucun fichier texte (ERB) à synchroniser".in_div(class:'tiny')
+    else
+      form << ("Fichiers ERB à synchroniser : #{dnic[:files][:nombre_operations]} sur #{dnic[:files][:nombre_total]} : " +
+              (dnic[:files][:synchro_required]+dnic[:files][:distant_unknown]).collect do |pfile, nfile|
+        nfile
+      end.pretty_join.in_span(class:'tiny')).in_div
+    end
+
+    return form.in_fieldset(legend: "Fichiers Narration sur Icare")
   end
 
   def display_etat_des_lieux_affiches_films
@@ -119,16 +146,15 @@ class Sync
     daf = diff_affiches
 
     if daf[:nombre_actions] == 0
-      return "• Les affiches de films sont à jour sur BOA comme sur ICARE".in_div(class:'tiny')
+      return "• Les affiches de films sont à jour sur BOA comme sur ICARE".in_div(class:'small')
     end
 
-    form << "Affiches de films".in_h3
+    form = String::new
 
-    # On fait l'analyse des listes d'affiches qui ont été
-    # retournées et on enregistre le résultat — i.e. les
+    # On enregistre le résultat — i.e. les
     # affiches à synchroniser et à détruire — dans le hash
     # contenant toutes les données de synchronisation.
-    datasync.merge!( affiches: daf )
+    @datasync.merge!( affiches: daf )
 
 
     nb_upl_ica = daf[:icare][:nombre_uploads].to_s.rjust(5)
@@ -164,6 +190,8 @@ class Sync
     if daf[:nombre_actions] > 0
       form << "Synchroniser les affiches".in_checkbox(name: 'cb_synchronize_affiches', id: 'cb_synchronize_affiches', checked:true).in_p
     end
+
+    return form.in_fieldset(legend: "Affiches de films")
   end
 
   def explication_force_synchro_narration
