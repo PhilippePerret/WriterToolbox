@@ -116,6 +116,9 @@ class Sync
     end
 
     form = String::new
+    if dnic[:nombre_operations] > 0
+      form << "Synchroniser tous les fichiers Narration (collection) sur ICARE".in_checkbox(id:'cb_synchro_narration_icare', name:'cb_synchro_narration_icare', checked:true)
+    end
     form << "#{dnic[:nombre_operations]} opérations à exécuter.".in_div
     if dnic[:css][:nombre_operations] == 0
       form << "Aucun fichier CSS à synchroniser".in_div(class:'tiny')

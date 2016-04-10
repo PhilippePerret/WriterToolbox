@@ -78,7 +78,7 @@ class Sync
     # Il faut requérir le module qui contient toutes les méthodes
     # pour synchroniser les sites
     SuperFile::new('./objet/cnarration/lib/module/sync').require
-    resultat_ok = SynchroNarration::synchronize_all(param(:cb_force_synchro_narration) == 'on')
+    resultat_ok = SynchroNarration::synchronize_all(self)
     @suivi << (SynchroNarration::suivi.collect{|p| "  #{p}"}.join("\n"))
 
     if resultat_ok

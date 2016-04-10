@@ -6,10 +6,18 @@ class << self
   # générale pour synchroniser la collection Narration aussi bien
   # sur BOA distant que sur Narration
   #
-  # +force_online+ Si true, on ne vérifie pas les
+  # Si force_online est true, on ne vérifie pas les
   # niveau de développement online, on uploade la base
   # telle quelle sur BOA et sur Icare.
-  def synchronize_all force_online = false
+  #
+  # Si +synchro_icare+ est true (case à cocher), alors la
+  # synchronisation est faite avec les fichiers Narration sur
+  # ICARE
+  #
+  # +isync+
+  def synchronize_all isync
+    force_online  = param(:cb_force_synchro_narration) == 'on'
+    synchro_icare = param(:cb_synchro_narration_icare) == 'on'
     @suivi = Array::new
 
     @suivi << (force_online ? "Synchronisation forcée" : "Synchronisation intelligente")
@@ -24,9 +32,11 @@ class << self
     end
 
     # On peut uploader la base du BOA et sur Icare
-    # TODO: Pour le moment, c'est court-circuité sur Icare
-    @suivi << "* Upload de la base cnarration.db"
+    @suivi << "* Upload de la base cnarration.db sur BOA et ICARE"
     upload_base
+
+    # On synchronise les fichiers sur ICARE si nécessaire
+    synchronise_on_icare if synchro_icare
 
   rescue Exception => e
     debug e
@@ -57,18 +67,20 @@ class << self
     end
   end
 
-  # Upload de la base sur BOA
+  # Upload de la base cnarration.db sur BOA
   def upload_base_on_boa
     cmd = "scp -p #{base_local_path.expanded_path} #{serveur_ssh_boa}:#{base_distant_path_boa}"
     res = `#{cmd}`
   end
+  # Upload de la base cnarration.db sur ICARE
   def upload_base_on_icare
-    return
-    raise "Pour le moment, il ne faut pas le faire, les deux bases ne sont pas construites pareil."
     cmd = "scp -p #{base_local_path.expanded_path} #{serveur_ssh_icare}:#{base_distant_path_icare}"
     res = `#{cmd}`
   end
 
+  def synchronise_on_icare
+
+  end
 
 end #/<< self
 end #/SynchroNarration
