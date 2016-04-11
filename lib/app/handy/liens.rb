@@ -51,21 +51,36 @@ class Lien
     home:       ["Collection Narration", 'cnarration/home'],
     recherche:  ["Formulaire de recherche dans les pages", "cnarration/search"],
     livres:     ["Tous les livres", 'livre/tdm?in=cnarration'],
-    books:      ["Tous les livres", 'livre/tdm?in=cnarration']
+    books:      ["Tous les livres", 'livre/tdm?in=cnarration'],
+    page:       ["Une page", '']
   }
   # Pour atteindre la collection Narration.
   # En utilisant options[:at] on peut définir une sous-rubrique
   # +options+
   #   :to       Pour envoyer dans une partie particulière (cf.
   #             LIENS_CNARRATION ci-dessus)
+  #   :id       ID de la page si    :to = page
+  #   :titre    TITRE de la page si :to = page. S'il n'est pas fourni,
+  #             il est recherché dans la table.
   def cnarration titre = nil, options = nil
     if titre.instance_of? Hash
       options   = titre
       titre     = nil
     end
     options ||= Hash::new
-    options[:to] ||= :home
-    titre, href = LIENS_CNARRATION[ options.delete(:to) ]
+
+    to = options.delete(:to) || :home
+    titre, href = if to == :page
+      pid   = options[:id]
+      titre = options[:titre].nil_if_empty || begin
+        # Il faut rechercher le titre dans la table des pages
+        site.require_objet 'cnarration'
+        Cnarration::table_pages.get(pid, colonnes:[:titre])[:titre]
+      end
+      [titre, "page/#{pid}/show?in=cnarration"]
+    else
+      LIENS_CNARRATION[ to ]
+    end
     build(href, titre, options)
   end
   alias :collection_narration :cnarration

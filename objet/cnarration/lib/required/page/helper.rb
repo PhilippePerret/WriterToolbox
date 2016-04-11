@@ -22,7 +22,7 @@ class Page
   end
   def lien_give_code
     tit = titre.gsub(/'/,'’')
-    "[&lt;-&gt;]".in_a(onclick:"UI.clip({'Sur Icare':'collection::#{id}', 'Balise':'PAGE[#{id}::#{tit}]'})")
+    "[&lt;-&gt;]".in_a(onclick:"UI.clip({'Sur Icare':'collection::#{id}', 'Balise':'PAGE[#{id}|#{tit}]'})")
   end
   # Code HTML pour le code du lien permanent
   def permanent_link

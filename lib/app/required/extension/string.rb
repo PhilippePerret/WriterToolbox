@@ -2,7 +2,9 @@
 class ::String
 
   def formate_balises_propres
-    str = self.formate_balises_mots
+    str = self
+    str = str.formate_balises_pages
+    str = str.formate_balises_mots
     str = str.formate_balises_films
     str = str.formate_balises_livres
     str = str.formate_balises_personnages
@@ -12,6 +14,12 @@ class ::String
     str = str.formate_balises_auteurs
     str = str.formate_termes_techniques
     return str
+  end
+
+  def formate_balises_pages
+    str = self
+    str.gsub!(/PAGE\[([0-9]+)(?:\|(.*?))?\]/){ lien.cnarration(to: :page, id: $1.to_i, titre:$2) }
+    str
   end
 
   def formate_balises_mots
