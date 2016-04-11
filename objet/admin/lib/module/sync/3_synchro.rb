@@ -20,7 +20,7 @@ class Sync
 
     synchronize_taches      if param(:cb_synchronize_taches)
 
-    synchronize_narration   if param(:cb_synchronize_narration)
+    synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
 
     synchronize_scenodico   if param(:cb_synchronize_scenodico)
 
@@ -65,13 +65,13 @@ class Sync
   #   Méthodes de synchronisation
   # ---------------------------------------------------------------------
 
-  # Synchronisation de la base narration, sur BOA et sur ICARE
+  # Synchronisation de la collection NARRATION sur ICARE
   #
-  # Pour le moment, on ne s'occupe que du fichier base sur
-  # BOA distant.
-  # TODO: Plus tard, on fera aussi un check des pages qui
-  # doivent être actualisées quand Icare et Boa fonctionneront
-  # pareil au niveau de la collection.
+  # Synchronise :
+  #   * la base de données cnarration.db
+  #   * tous les fichiers ERB
+  #   * les images
+  #
   def synchronize_narration
     @suivi << "* Synchronisation de la collection Narration"
 

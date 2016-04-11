@@ -31,6 +31,33 @@ end
 liste_affiches = Dir['./www/view/img/affiches/*.jpg'].collect{|p| File.basename(p)}.join(',')
 res.merge!(affiches: liste_affiches)
 res.merge!('.' => File.expand_path('.'), 'folders' => Dir['./**'].collect{|p| File.basename(p)}.join(','))
+
+# On regarde aussi les fichiers Narration, comme sur ICARE
+# La donnée générale concernant la collection narration, exceptée
+# la base qui est checkée ci-dessus
+data_cnarration = Hash::new
+
+# On vérifie les fichiers CSS du dossier ce la collection Narration
+h_css = Hash::new
+Dir['./objet/Cnarration/lib/required/css/**/*.css'].each do |pcss|
+  h_css.merge!(File.basename(pcss) => File.stat(pcss).mtime.to_i)
+end
+data_cnarration.merge!( :css => h_css )
+
+# On vérifie tous les fichiers Narration.
+begin
+  h_files = Hash::new
+  main_folder = './www/data/unan/pages_semidyn/cnarration'
+  Dir[main_folder + '/**/*.*'].collect do |pany|
+    relpath = pany.sub(/^\\.\\/www\\/data\\/unan\\/pages_semidyn\\/cnarration\\//,'')
+    h_files.merge!( relpath => File.stat(pany).mtime.to_i )
+  end
+  data_cnarration.merge!( :files => h_files )
+rescue Exception => e
+  errors << e.message
+end
+res.merge!(cnarration: data_cnarration)
+
 STDOUT.write Marshal::dump( res )
     CODE
   end

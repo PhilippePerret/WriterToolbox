@@ -28,6 +28,8 @@ class Sync
   def online_sync_state
     @online_sync_state ||= begin
 
+      toutres = Hash::new
+
       # Si le fichier du test de synchro existe et qu'il n'a pas
       # encore une heure, on utilise ses données au lieu de recommencer
       # le check
@@ -38,13 +40,14 @@ class Sync
       else
         # Il faut checker vraiment les fichiers, soit parce que le
         # fichier est trop vieux, soit par qu'il n'existe pas
-        @suivi << "* Check SSH des fichiers distantes"
+        @suivi << "* Check SSH des fichiers distants"
 
         # Sur la boite à outils
         # ----------------------
         # debug "COMMANDS ENVOYÉES À BOA :\n#{commands}"
         res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_boa}\\""`
         res_boa = Marshal.load(res_boa)
+        toutres.merge!(boa: res_boa)
 
         # Sur le site Icare
         # ------------------
@@ -60,42 +63,35 @@ class Sync
         res_icare = Marshal.load(res_icare)
         # debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
         # On merge les résultats
-        res = res_boa.merge(icare: res_icare)
+        toutres.merge!(icare: res_icare)
 
         # On enregistre ces données dans le fichier des données
         # checkées
-        check_data_path.write Marshal::dump(res)
+        check_data_path.write Marshal::dump(toutres)
 
-        res
+        # Et on le met dans `online_sync_state`
+        toutres
       end
     end
   end
 
-  # Méthode principale qui compare les fichiers narration sur
-  # Icare avec les fichiers Locaux pour savoir ceux qui devront
+  # Méthode principale qui compare les fichiers NARRATION sur
+  # BOA avec les fichiers Locaux pour savoir ceux qui devront
   # être actualisés
   #
   # RETURN {Hash} des données contenant :
   #   :css => {
-  #     all:            Liste de tous les fichiers
-  #     suppressions:   Liste des fichiers à ajouter
-  #     ajouts:         Liste des fichiers à ajouter
-  #     synchros:       Liste des fichiers à synchroniser
+  #     all:                Liste de tous les fichiers
+  #     distant_unknown:    Liste des fichiers à ajouter
+  #     local_unknown:      Liste des fichiers à supprimer
+  #     synchro_required:   Liste des fichiers à synchroniser
   #   }
-  def diff_narration_icare
-    dnar = online_sync_state[:icare][:cnarration]
+  def diff_narration_boa
+    dnar = online_sync_state[:boa][:cnarration]
 
-    diff_naric = Hash::new
     diff_naric = {
-      css: {
-        all:              Array::new,
-        synchro_required: Array::new,
-        distant_unknown:  Array::new,
-        local_unknown:    Array::new
-      },
-      files: {
-
-      }
+      css:    nil,
+      files:  nil
     }
 
     # === Check des fichiers CSS ===
@@ -133,6 +129,64 @@ class Sync
 
     # debug "\n\ndiff_naric: #{diff_naric.pretty_inspect}\n\n"
 
+    return diff_naric
+  end
+
+
+
+  # Méthode principale qui compare les fichiers NARRATION sur
+  # ICARE avec les fichiers Locaux pour savoir ceux qui devront
+  # être actualisés
+  #
+  # RETURN {Hash} des données contenant :
+  #   :css => {
+  #     all:                Liste de tous les fichiers
+  #     distant_unknown:    Liste des fichiers à ajouter
+  #     local_unknown:      Liste des fichiers à supprimer
+  #     synchro_required:   Liste des fichiers à synchroniser
+  #   }
+  def diff_narration_icare
+    dnar = online_sync_state[:icare][:cnarration]
+
+    diff_naric = {
+      css:    nil,
+      files:  nil
+    }
+
+    # === Check des fichiers CSS ===
+    files_loc = Array::new
+    folder_css_common = File.join('.', 'view', 'css', 'common')
+    folder_css_narration = File.join('.', 'objet','cnarration','lib','required','css')
+    ['titres.css', 'textes.css', 'documents.css', 'markdown.css'].each do |ncss|
+      pcss = File.join(folder_css_common, ncss)
+      files_loc << [pcss, ncss, File.stat(pcss).mtime.to_i]
+    end
+    Dir["#{folder_css_narration}/*.css"].each do |pcss|
+      ncss = File.basename(pcss)
+      files_loc << [pcss, ncss, File.stat(pcss).mtime.to_i]
+    end
+    files_dis = dnar[:css]
+
+    diff_naric[:css] = check_liste_icare_narration(files_loc, files_dis, 1)
+
+    # === Check des fichiers ERB ===
+
+    files_dis = dnar[:files]
+
+    main_folder = File.join('.','data','unan','pages_semidyn','cnarration')
+    files_loc = Dir["#{main_folder}/**/*.*"].collect do |pfile|
+      nfile = File.basename(pfile)
+      rfile = pfile.sub(/^#{main_folder}\//,'')
+      mtime = File.stat(pfile).mtime.to_i
+      [rfile, nfile, mtime]
+    end
+
+    diff_naric[:files] = check_liste_icare_narration(files_loc, files_dis, 0)
+
+    # Nombre d'opérations totale à exécuter
+    diff_naric[:nombre_operations] = diff_naric[:files][:nombre_operations] + diff_naric[:css][:nombre_operations]
+
+    # debug "\n\ndiff_naric: #{diff_naric.pretty_inspect}\n\n"
 
     return diff_naric
   end
@@ -177,11 +231,13 @@ class Sync
     end
 
     hres[:nombre_total]       = hres[:all].count
+    hres[:all] = nil # pour ne pas encombrer
     hres[:nombre_unknown_dis] = hres[:distant_unknown].count
     hres[:nombre_unknown_loc] = hres[:local_unknown].count
     hres[:nombre_synchro_req] = hres[:synchro_required].count
     hres[:nombre_operations]  = hres[:nombre_unknown_dis]+hres[:nombre_unknown_loc]+hres[:nombre_synchro_req]
 
+    # debug "\n\n\nhres:#{hres.pretty_inspect}\n\n\n"
     return hres
   end
 
@@ -192,7 +248,7 @@ class Sync
     @diff_affiches ||= begin
       resaff = Hash::new
       resaff.merge! nombre_actions: 0
-      resaff.merge! boa:   diff_affiches_boa
+      resaff.merge!( boa:   diff_affiches_boa )
       resaff[:nombre_actions] += diff_affiches_boa[:nombre_uploads] + diff_affiches_boa[:nombre_deletes]
       resaff.merge! icare: diff_affiches_icare
       resaff[:nombre_actions] += diff_affiches_icare[:nombre_uploads] + diff_affiches_icare[:nombre_deletes]
@@ -208,7 +264,7 @@ class Sync
   # pour procéder à la synchronisation
   def diff_affiches_boa
     @diff_affiches_boa ||= begin
-      affiches_on_boa = online_sync_state[:affiches].split(',')
+      affiches_on_boa = online_sync_state[:boa][:affiches].split(',')
       diff_affiches_in_listes liste_affiches_locales, affiches_on_boa
     end
   end

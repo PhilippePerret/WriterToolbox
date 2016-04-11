@@ -48,7 +48,7 @@ class Sync
       fdata.merge!(
         id:         fid,
         loc_mtime:  File.stat(fdata[:fpath]).mtime.to_i,
-        boa_mtime:  (dsync[fid].nil? ? nil : dsync[fid][:mtime]),
+        boa_mtime:  (dsync[:boa][fid].nil? ? nil : dsync[:boa][fid][:mtime]),
         ica_mtime:  (dsync[:icare][fid].nil? ? nil : dsync[:icare][fid][:mtime])
       )
       ifile = Fichier::new(fdata)
@@ -106,39 +106,81 @@ class Sync
   # Note : La base est déjà checkée avant
   #
   def display_etat_des_lieux_fichiers_narration_icare
+
+    # Les différences avec ce qui se trouve sur ICARE
     dnic = diff_narration_icare
+    # Les différences avec ce qui se trouve sur BOA
+    dboa = diff_narration_boa
+
+    nombre_total_operations = dnic[:nombre_operations] + dboa[:nombre_operations]
 
     # On enregistre le résultat du check
-    @datasync.merge!(cnarration: dnic)
+    @datasync.merge!(cnarration_icare:  dnic)
+    @datasync.merge!(cnarration_boa:    dboa)
 
     if dnic[:nombre_operations] == 0
-      return "Aucune opération à faire sur les fichier Narration sur Icare".in_div(class:'tiny')
+      return "• Aucune opération à faire sur les fichier Narration sur ICARE et BOA".in_div(class:'small')
     end
 
     form = String::new
-    if dnic[:nombre_operations] > 0
-      form << "Synchroniser tous les fichiers Narration (collection) sur ICARE".in_checkbox(id:'cb_synchro_narration_icare', name:'cb_synchro_narration_icare', checked:true)
+    if nombre_total_operations > 0
+      # La case à cocher pour synchroniser les fichiers narration
+      form << "Synchroniser tous les fichiers Narration (collection) sur ICARE et BOA".in_checkbox(id:'cb_synchro_files_narration', name:'cb_synchro_files_narration', checked:true)
     end
-    form << "#{dnic[:nombre_operations]} opérations à exécuter.".in_div
+    form << "#{nombre_total_operations} opérations à exécuter.".in_div
+
+    form << execute_operations_narration_with( dnic, :icare )
+    form << execute_operations_narration_with( dboa, :boa )
+
+    form.in_fieldset(class:'small', legend: "Fichiers Narration sur ICARE et BOA")
+  end
+
+  def execute_operations_narration_with dnic, lieu
+
+    form = String::new
+
+    on_icare  = lieu == :icare
+    on_boa    = lieu == :boa
+
+    lieu_str = on_boa ? "BOA" : "ICARE"
+
     if dnic[:css][:nombre_operations] == 0
-      form << "Aucun fichier CSS à synchroniser".in_div(class:'tiny')
+      form << "Aucun fichier CSS à synchroniser sur #{lieu_str}".in_div(class:'tiny')
     else
-      form << ("Fichiers CSS à synchroniser : #{dnic[:css][:nombre_operations]} sur #{dnic[:css][:nombre_total]} : " +
+      nb = dnic[:css][:nombre_synchro_req] + dnic[:css][:nombre_unknown_dis]
+      if nb > 0
+        form << ("Fichiers CSS à synchroniser sur #{lieu_str} : #{nb} sur #{dnic[:css][:nombre_total]} : " +
               (dnic[:css][:synchro_required]+dnic[:css][:distant_unknown]).collect do |pfile,nfile|
-        nfile
-      end.pretty_join.in_span(class:'tiny')).in_div
+                nfile
+              end.pretty_join.in_span(class:'tiny')).in_div
+      else
+        form << "Aucun fichier CSS à synchroniser sur #{lieu_str}".in_div(class:'small')
+      end
+      if dnic[:css][:nombre_unknown_loc] > 0
+        form << ("Fichiers CSS à supprimer sur #{lieu_str} : #{dnic[:css][:nombre_unknown_loc]} : " +
+        dnic[:css][:local_unknown].collect { |nfile| nfile }.pretty_join.in_span(class:'tiny')).in_div
+      end
     end
 
     if dnic[:files][:nombre_operations] == 0
-      form << "Aucun fichier texte (ERB) à synchroniser".in_div(class:'tiny')
+      form << "Aucun fichier texte (ERB) à synchroniser sur #{lieu_str}".in_div(class:'tiny')
     else
-      form << ("Fichiers ERB à synchroniser : #{dnic[:files][:nombre_operations]} sur #{dnic[:files][:nombre_total]} : " +
-              (dnic[:files][:synchro_required]+dnic[:files][:distant_unknown]).collect do |pfile, nfile|
-        nfile
-      end.pretty_join.in_span(class:'tiny')).in_div
+      nb = dnic[:files][:nombre_synchro_req] + dnic[:files][:nombre_unknown_dis]
+      if nb > 0
+        form << ("Fichiers ERB à synchroniser (#{dnic[:files][:synchro_required].count}) et ajouter (#{dnic[:files][:distant_unknown].count}) sur #{lieu_str} : #{nb} sur #{dnic[:files][:nombre_total]} : " +
+                (dnic[:files][:synchro_required]+dnic[:files][:distant_unknown]).collect do |pfile, nfile|
+          nfile
+        end.pretty_join.in_span(class:'tiny')).in_div
+      else
+        form << "Aucun fichier ERB à synchroniser sur #{lieu_str}".in_div(class:'small')
+      end
+      if dnic[:files][:nombre_unknown_loc] > 0
+        form << ("Fichiers ERB à supprimer sur #{lieu_str} : #{dnic[:files][:nombre_unknown_loc]} : " +
+        dnic[:files][:local_unknown].collect { |nfile| nfile }.pretty_join.in_span(class:'tiny')).in_div
+      end
     end
 
-    return form.in_fieldset(legend: "Fichiers Narration sur Icare")
+    return form
   end
 
   def display_etat_des_lieux_affiches_films

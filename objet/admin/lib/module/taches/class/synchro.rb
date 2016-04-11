@@ -207,7 +207,6 @@ class << self
     # ------------------------------------
     tlocs.each do |tid, tloc|
 
-      @suivi << "Contrôle tache local #{tid}"
       tdis = tdiss[tid]
 
       data_row = {
@@ -228,7 +227,6 @@ class << self
       data_row[:cloc]  = data_loc
 
       if tdis != nil
-        @suivi << "Le fichier distant connait cet ID de tâche."
         data_row[:cdis] = "Exist"
         # Le fichier distant connait cet id de tache
         # C'est la même si elle a été créée en même temps
@@ -237,28 +235,25 @@ class << self
           # =>  On doit vérifier si des changements ont été faits
           #     et prendre la date de modification pour savoir le
           #     plus récent
-          @suivi << "C'est la même tâche (comparaison des changements)"
           data_row[:cdis] << " - Même tâche"
           if tdis[:updated_at] == tloc[:updated_at]
             # => Tâche strictement identique
-            @suivi << "Tâche distante identique"
             data_dis = nil
           elsif tdis[:updated_at] > tloc[:updated_at]
             # => La tâche distante a été modifiée en dernier
             # => Il faut reporter ses modifications sur la
             #     tache locale.
-            @suivi << "Tâche distante modifiée en dernier => prendre ses données."
+            @suivi << "Tâche distante ##{tid} modifiée en dernier => prendre ses données."
             @report[:modified_taches] << tdis
           else
             # => La tâche locale a été modifiée en dernier, il
             #    n'y a rien à faire.
-            @suivi << "Tâche locale modifiée en dernier => rien à faire"
             data_dis = "Données anciennes"
           end
         else
           # => C'est une autre tâche (ajoutée en ONLINE)
           # => Il faut l'ajouter au fichier local
-          @suivi << "La tâche distant de même ID est différente => il faut l'ajouter au fichier local (avec ID différent)."
+          @suivi << "La tâche distante ##{tid} de même ID est différente => il faut l'ajouter au fichier local (avec ID différent)."
           data_row[:cdis] << " - AUTRE => ADD"
           # Il faut supprimer l'identifiant pour en obtenir un nouveau
           tdis.delete(:id)
@@ -268,7 +263,6 @@ class << self
         # Le fichier distant ne connait pas cette tache
         # => On doit l'ajouter telle quelle (donc ne rien faire… puisque
         # c'est le fichier local qu'on va ensuite synchroniser online
-        @suivi << "Le fichier distant ne connait pas cette tache."
         data_row[:cdis] = "Unknown"
       end
 
@@ -292,7 +286,7 @@ class << self
       # locale.
       next if tlocs.has_key? tid
       # Toutes les autres tâches doivent être ajoutées
-      @suivi << "Ajout de la tache distante #{tid}"
+      @suivi << "Ajout de la tache distante ##{tid}"
       # Note : Ici, on peut garder le même identifiant pour
       # la tâche puisqu'elle n'existe pas dans le fichier
       # local.
