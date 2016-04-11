@@ -14,5 +14,13 @@ class Page
     ).in_div(class:'fright small')
   end
 
+  # Code HTML pour le code du lien permanent
+  def permanent_link
+    style = "font-size:11pt;width:500px"
+    (
+      "Lien permanent ".in_span(class:'tiny') +
+      "#{site.distant_url}/page/#{id}/show?in=cnarration".in_input_text(style:style, onfocus:"this.select()")
+    ).in_div
+  end
 end #/Page
 end #/Cnarration

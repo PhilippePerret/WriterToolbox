@@ -130,13 +130,13 @@ class Synchro
   end
 
   def ignored_subfolder? subfolder
+    subfolder += "/" unless subfolder.end_with?('/')
     ignored_folders.each do |ignored_folder|
       return true if subfolder.start_with? ignored_folder
     end
     return false
   end
   def ignored_file? pfile
-    # puts "ignored_file?(#{pfile}) #{(!!ignored_files[pfile]).inspect}"
     !!ignored_files[pfile]
   end
 
