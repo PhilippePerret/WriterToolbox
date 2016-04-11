@@ -10,7 +10,7 @@ class Page
     return "" unless user.admin?
     (
       lien_edit_text + lien_edit_data + lien_give_code
-    ).in_div(class:'fright small')
+    ).in_div(class:'btns fright small')
   end
 
   def lien_edit_text
