@@ -171,6 +171,12 @@ narration:
     command:        nouvelle|new page narration
     description:    Conduit au formulaire pour créer une nouvelle page
   -
+    command:        Narration sur Icare, version livre
+    description: |
+      On peut maintenant rediriger les pages de la version livre de Narration sur icare en définissant le résumé de la page à : <code>collection::&lt;id de la page de la collection&gt;.
+
+      Il suffit ensuite de synchroniser la table sur le site distant.
+  -
     command:        check|vérifier pages narration out
     description: |
       Vérifie 1/ que toutes les fichiers physiques (fichiers) sont consignés dans la DB et 2/ que tous les enregistrements de pages et de titres sont utilisés dans les livres.

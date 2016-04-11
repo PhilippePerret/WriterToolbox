@@ -9,11 +9,21 @@ class Page
   def liens_edition_if_admin
     return "" unless user.admin?
     (
-      (page? ? lien.edit_file( fullpath, { titre:"[Edit text]" }) : "") +
-      "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration")
+      lien_edit_text + lien_edit_data + lien_give_code
     ).in_div(class:'fright small')
   end
 
+  def lien_edit_text
+    return "" unless page?
+    lien.edit_file( fullpath, { titre:"[Edit text]" })
+  end
+  def lien_edit_data
+    "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration")
+  end
+  def lien_give_code
+    tit = titre.gsub(/'/,'’')
+    "[&lt;-&gt;]".in_a(onclick:"UI.clip({'Sur Icare':'collection::#{id}', 'Balise':'PAGE[#{id}::#{tit}]'})")
+  end
   # Code HTML pour le code du lien permanent
   def permanent_link
     style = "font-size:11pt;width:500px"
