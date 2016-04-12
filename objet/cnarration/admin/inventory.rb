@@ -19,6 +19,8 @@ class << self
     pages_version_papier = 0
     pages_version_online = 0
     # -----------------------------
+    #     Texte à retourner
+    # -----------------------------
     separator +
     "=== Données générales ===\n\n" +
     "Nombre total de fichiers  : #{pages.count}\n" +
