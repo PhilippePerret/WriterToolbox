@@ -2,18 +2,6 @@
 # Vue principale pour le tableau de bord d'administration
 raise_unless_admin
 
-def synchronisation_scenodico
-  return "" unless user.manitou?
-  "Synchronisation…".in_a(href:"scenodico/synchro")
-end
-def synchronisation_filmodico
-  return "" unless user.manitou?
-  "Synchronisation…".in_a(href:"filmodico/synchro")
-end
-def synchronisation_narration
-  return "" unless user.manitou?
-  "Synchronisation…".in_a(href:'cnarration/synchro')
-end
 def synchronisation_forum
   return "" unless user.manitou?
   "Synchronisation…".in_a(href:'forum/synchro')
@@ -30,21 +18,6 @@ end
        "Dashboard<br>SYNCHRONISATION".in_a(href:"admin/sync")
      ).in_div(class:'admin_tool')
    %>
-  <%=
-    (
-      "Scénodico (édition)".in_a(href:'scenodico/edit') +
-      synchronisation_scenodico
-    ).in_div(class:'admin_tool') %>
-  <%=
-    (
-      "Filmodico (édition)".in_a(href:'filmodico/edit') +
-      synchronisation_filmodico
-    ).in_div(class:'admin_tool') %>
-  <%=
-    (
-      "Narration (page)".in_a(href:'page/edit?in=cnarration') +
-      synchronisation_narration
-    ).in_div(class:'admin_tool') %>
   <%=
     (
       "Forum".in_a(href:'forum/dashboard') +
