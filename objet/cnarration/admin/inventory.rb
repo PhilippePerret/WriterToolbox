@@ -42,6 +42,8 @@ class << self
     nombre_max_pages_per_book = pages_per_book.collect{|bid,barr|barr.count}.max
 
     tableau_stats = Array::new
+    @rapport_string = Array::new
+
     sep_tableau_bords = "-"*85
     # sep_tableau = ("-"*34) + ("-"*7).in_span(class:'cell_col')+("-"*38)
     sep_tableau = ("-"*25) + ("-"*7).in_span(class:'cell_col')+("-"*38)
@@ -73,6 +75,7 @@ class << self
     # dans le hash +pages_per_book+ (qui contient toutes les
     # pages, versions papier et version online)
     curseur_nombre_pages = Cnarration::LIVRES.collect do |livre_id, dbook|
+      @rapport_string << "\n\n*** LIVRE #{dbook[:hname]} ***"
       arr_book  = pages_per_book[livre_id]
       book_name = livre_humain livre_id
 
@@ -88,16 +91,21 @@ class << self
       unless arr_book.nil?
         nombre_fichiers = arr_book.count
         arr_book.each do |hpage|
+          @rapport_string << "  - #{dbook[:folder]}/#{hpage[:handler]}"
           ipage = Cnarration::Page::get(hpage[:id])
           nb_pgs_moy = ipage.nombre_pages_1750
           if ipage.papier?
             # C'est une page qui doit être affichée dans la
             # version papier de la collection.
             nombre_fichiers_papier += 1
-            nombre_pages_max  += ipage.nombre_pages_1500
-            nombre_pages_min  += ipage.nombre_pages_2000
-            nombre_papes_pap_moy  += nb_pgs_moy
+            max = ipage.nombre_pages_1500
+            min = ipage.nombre_pages_2000
+            moy = nb_pgs_moy
+            nombre_pages_max      += max
+            nombre_pages_min      += min
+            nombre_papes_pap_moy  += moy
             nombre_signes     += ipage.nombre_signes
+            @rapport_string << "    = min:#{min.round(2)} moy:#{moy.round(2)} max:#{max.round(2)}"
           else
             # C'est une page qui n'est affichée qu'en
             # version online de la collection
@@ -105,6 +113,7 @@ class << self
           end
           nombre_pages_moy      += nb_pgs_moy
         end
+        @rapport_string << "  NOMBRE FICHIERS #{nombre_fichiers}"
       end
 
       # Ajouter aux totaux (avant transformation en string)
@@ -154,6 +163,10 @@ class << self
 
     # Finalisation du tableau de statistiques
     tableau_stats = "\n" + tableau_stats.join("\n") + "\n"
+
+    debug "\n\n=== RAPPORT D'ÉVALUATION ==="
+    debug @rapport_string.join("\n")
+    debug "\n#{'='*70}\n\n"
 
     # On retourne le texte résultat
     tableau_stats
@@ -278,11 +291,22 @@ class Page
   def nombre_pages signes_per_page = 1500
     @content_stripped ||= content.strip_tags
     @content_length   ||= @content_stripped.length.to_f
-    (@content_length.to_f / signes_per_page).round(2)
+    @content_length.to_f / signes_per_page
   end
 
+  # Nombre de signes dans le fichier semi-dynamique à
+  # charger.
+  #
+  # Si le fichier semi-dynamique n'existe pas encore, on
+  # le construit.
   def nombre_signes
-    @nombre_signes ||= content.nombre_signes
+    @nombre_signes ||= begin
+      unless path_semidyn.exist?
+        Cnarration.require_module 'page'
+        build(quiet: true)
+      end
+      path_semidyn.read.nombre_signes
+    end
   end
 
 end #/Page

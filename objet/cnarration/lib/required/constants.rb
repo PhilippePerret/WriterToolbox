@@ -5,7 +5,7 @@ Pour ne télécharger que ce fichier, sans charger tout narration :
   require './objet/cnarration/lib/required/constants.rb'
 =end
 
-page.title = "Narration"
+page.title = "Narration" if (defined?(page))
 
 class Cnarration
   LIVRES = {

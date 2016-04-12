@@ -15,7 +15,7 @@ class Page
   def create_page
     return unless user.admin?
     return if path.exist?
-    (path.write "<!-- Page: #{titre} -->\n\n")
+    (path.write "<!-- Page: ##{id} #{titre} -->\n\n")
   end
 
   def table

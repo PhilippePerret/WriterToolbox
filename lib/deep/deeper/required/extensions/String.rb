@@ -33,8 +33,11 @@ class String
 
   # Renvoie le nombre de signes dans le self après la
   # suppression de toutes les balises HTML
+  #
+  # Pour les code ERB qui retourne quelque chose à marquer,
+  # on met un texte fictif.
   def nombre_signes
-    self.strip_tags.length
+    self.gsub(/<%=(.*?)%>/,'CODE-ERB-FICTIF').strip_tags.length
   end
 
   # ---------------------------------------------------------------------

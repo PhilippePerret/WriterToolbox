@@ -1,6 +1,6 @@
 # encoding: UTF-8
 =begin
-Constructeur d'une page .str vers la page semi-dynamique qui sera
+Constructeur d'une page .md vers la page semi-dynamique qui sera
 affichée sur le site.
 
 Pour la construire, on se sert du module de la collection version MD.
@@ -70,13 +70,17 @@ class Cnarration
 class Page
 
   # Construit la page semi-dynamique
+  #
+  # +options+
+  #   :quiet      Si TRUE, pas de message flash pour indiquer l'actualisation
   def build options = nil
     options ||= Hash::new
+    options[:quiet]    = !!ONLINE unless options.has_key?(:quiet) # toujours silencieux en online
     options[:format] ||= :erb # peut être aussi :latex
     path_semidyn.remove if path_semidyn.exist?
     create_page unless path.exist?
     path.kramdown(in_file: path_semidyn.to_s, output_format: options[:format])
-    flash "Page actualisée."
+    flash "Page actualisée." unless options[:quiet]
   end
 
 end #/Page
