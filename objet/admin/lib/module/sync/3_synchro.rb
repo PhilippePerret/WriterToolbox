@@ -14,6 +14,10 @@ class Sync
     @suivi  ||= Array::new
     @errors ||= Array::new
 
+    # On fait des backups en fonction des synchronisations
+    # à faire
+    build_backups_per_synchro
+
     # Toutes les synchronisation à faire
 
     synchronize_affiches    if param(:cb_synchronize_affiches)
@@ -38,6 +42,37 @@ class Sync
     else
       error "Malheureusement, des erreurs se sont produites : #{@errors.join('<br>')}"
     end
+  end
+
+  def build_backups_per_synchro
+    @suivi << "*** Backup des bases ***"
+    array_backup = Array::new
+    array_backup << "./database/data/site_hot.db"   if param(:cb_synchronize_taches)
+    array_backup << "./database/data/cnarration.db" if param(:cb_synchronize_narration)
+    array_backup << "./database/data/scenodico.db"  if param(:cb_synchronize_scenodico)
+    array_backup << "./database/data/filmodico.db"  if param(:cb_synchronize_filmodico)
+    array_backup << "./database/data/analyse.db"    if param(:cb_synchronize_analyses)
+
+    folder_backup = SuperFile::new('./tmp/backups')
+    folder_backup.build unless folder_backup.exist?
+    folder_backup_now = folder_backup + "backup-#{Time.now.strftime('%Y%m%d-%H%M')}"
+    folder_backup_now.build
+    array_backup.each do |pbase|
+      @suivi << "  * backup de #{pbase}"
+      sfbase = SuperFile::new(pbase)
+      if sfbase.exist?
+        pdest = folder_backup_now + sfbase.name
+        FileUtils::cp sfbase.to_s, pdest.to_s
+        if pdest.exist?
+          @suivi << "    BACKUP dans #{pdest} OK"
+        else
+          @suivi << "    PROBLÈME : Backup introuvable".in_span(class:'warning')
+        end
+      else
+        @suivi << "    PROBLÈME : CETTE BASE EST INTROUVABLE"
+      end
+    end
+
   end
 
   # Relève le données de synchronisation dans le
