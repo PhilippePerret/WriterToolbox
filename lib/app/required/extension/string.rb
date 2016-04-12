@@ -3,7 +3,7 @@ class ::String
 
   def formate_balises_propres
     str = self
-    str = str.formate_balises_pages
+    str = str.formate_balises_references
     str = str.formate_balises_mots
     str = str.formate_balises_films
     str = str.formate_balises_livres
@@ -16,9 +16,16 @@ class ::String
     return str
   end
 
-  def formate_balises_pages
+  def formate_balises_references
     str = self
-    str.gsub!(/PAGE\[([0-9]+)(?:\|(.*?))?\]/){ lien.cnarration(to: :page, id: $1.to_i, titre:$2) }
+    str.gsub!(/REF\[(.*?)\]/){
+      pid, ancre, titre = $1.split('|')
+      if titre.nil? && ancre != nil
+        titre = ancre
+        ancre = nil
+      end
+      lien.cnarration(to: :page, from_book:$narration_book_id, id: pid.to_i, ancre:ancre, titre:titre)
+    }
     str
   end
 

@@ -113,7 +113,7 @@ narration:
     note: |
       On peut faire également `synchro base narration`.
   -
-    command:        open page narration &lt;page ID|portion titre&gt;
+    command:        (open|ouvrir) page narration &lt;page ID|portion titre&gt;
     description: |
       Ouvrir le fichier physique (markdown) de la page d'ID ou de portion titre donné en argument.
     note: |

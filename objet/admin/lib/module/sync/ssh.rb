@@ -19,6 +19,7 @@ class Sync
   # retourner le résultat.
   def script_check_boa
     <<-CODE
+begin
 VIA_SSH = true
 res = nil
 begin
@@ -58,6 +59,12 @@ rescue Exception => e
 end
 res.merge!(cnarration: data_cnarration)
 
+# Le rescue principal
+rescue Exception => e
+  res ||= Hash::new
+  res.merge!(error: {err_message: e.message, err_backtrace:e.backtrace})
+end
+
 STDOUT.write Marshal::dump( res )
     CODE
   end
@@ -69,6 +76,7 @@ STDOUT.write Marshal::dump( res )
 errors = Array::new
 res = Hash::new
 res = {errors: Array::new}
+begin
 {
   narration:'narration/cnarration.db',
   scenodico:'db/scenodico.db',
@@ -113,6 +121,10 @@ end
 res.merge!(cnarration: data_cnarration)
 res.merge!(errors: errors)
 
+# Rescue du begin principal
+rescue Exception => e
+  res.merge!(error: {err_message:e.message, err_backtrace:e.backtrace})
+end
 # On retourne le hash de données marshalisé
 (STDOUT.write Marshal::dump res)
     CODE

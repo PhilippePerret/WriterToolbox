@@ -7,7 +7,8 @@
   * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
-* [Images](#utilisationduneimage)
+  * [Référence vers autre page](#placerunereferenceaautrepage)
+  * [Images](#utilisationduneimage)
 
 <a name='leslivresnarration'></a>
 
@@ -86,6 +87,24 @@ Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table 
 
 [Aide Kramdown](http://kramdown.gettalong.org)
 
+<a name='placerunereferenceaautrepage'></a>
+
+### Référence vers autre page
+
+Quand il y a l'ancre, il faut obligatoirement le titre
+=>  Si 4 élément => avec ancre
+    Si 3 éléments => le titre en dernier
+    Si 2 éléments => le titre ou le livre en dernier
+
+@usage
+
+    REF[page_id[|ancre][|titre]]
+
+    REF[page_id]                # Référence par simple ID de page
+    REF[page_id|titre]          # Idem avec un titre fourni
+    REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
+
+Pour obtenir facilement une référence à une page, rejoindre la page et cliquer sur le bouton `&lt;-&gt`.
 
 
 <a name='utilisationduneimage'></a>
@@ -134,3 +153,5 @@ Si l'image doit avoir un autre format que `png` il suffit de l'indiquer dans le 
 On peut préciser le titre alternatif par :
 
     IMAGE[image|Mon titre alternatif]
+
+Il sera ajouter en légende.

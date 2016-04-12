@@ -62,6 +62,11 @@ class Lien
   #   :id       ID de la page si    :to = page
   #   :titre    TITRE de la page si :to = page. S'il n'est pas fourni,
   #             il est recherché dans la table.
+  #             Si la page se trouve dans un autre livre que le livre
+  #             de la page courante (:from_livre), alors le livre est
+  #             ajouté au titre à afficher.
+  #   :ancre    Une ancre éventuelle
+  #   :from_book  ID du livre pour lequel le lien est créé.
   def cnarration titre = nil, options = nil
     if titre.instance_of? Hash
       options   = titre
@@ -71,11 +76,21 @@ class Lien
 
     to = options.delete(:to) || :home
     titre, href = if to == :page
+      # ID de la page
       pid   = options[:id]
+      site.require_objet 'cnarration'
+      hpage = Cnarration::table_pages.get(pid, colonnes:[:titre, :livre_id])
+      livre_id = hpage[:livre_id]
+      # ID du livre
       titre = options[:titre].nil_if_empty || begin
         # Il faut rechercher le titre dans la table des pages
-        site.require_objet 'cnarration'
-        Cnarration::table_pages.get(pid, colonnes:[:titre])[:titre]
+        hpage[:titre]
+      end
+      if options[:from_book] != livre_id
+        # C'est un lien pour un autre livre, il faut donc indiquer
+        # le titre du livre
+        titre_livre = Cnarration::LIVRES[livre_id][:hname]
+        titre += " (in “#{titre_livre}”)"
       end
       [titre, "page/#{pid}/show?in=cnarration"]
     else

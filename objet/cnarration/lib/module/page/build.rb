@@ -30,7 +30,12 @@ class SuperFile
           imgpath.in_img(class: titalt_or_style)
         else
           img_tag = "<img src='#{imgpath}' alt='Image: #{titalt_or_style}' />"
-          "<center>#{img_tag}</center>"
+          legend = if titalt_or_style.nil?
+            ""
+          else
+            "<div class='img_legend'>#{titalt_or_style}</div>"
+          end
+          "<center><div>#{img_tag}</div>#{legend}</center>"
         end
       else
         "IMAGE MANQUANTE: #{imgpath_init}"
@@ -44,6 +49,8 @@ class SuperFile
     return in_img_book.to_s if in_img_book.exist?
     in_img_collection = path_image_in_folder_img_narration prelimg
     return in_img_collection if in_img_collection.exist?
+    in_folder_book_in_img_col = path_image_in_folder_book_in_img_narration(prelimg)
+    return in_folder_book_in_img_col if in_folder_book_in_img_col!=nil && in_folder_book_in_img_col.exist?
     in_img_site = path_image_in_folder_img_site prelimg
     return in_img_site if in_img_site.exist?
     nil
@@ -59,6 +66,11 @@ class SuperFile
   end
   def path_image_in_folder_img_narration prelimg
     SuperFile::new(["./data/unan/pages_semidyn/cnarration/img", prelimg])
+  end
+  def path_image_in_folder_book_in_img_narration prelimg
+    return nil if $narration_book_id.nil?
+    folder_livre = Cnarration::LIVRES[$narration_book_id][:folder]
+    SuperFile::new(["./data/unan/pages_semidyn/cnarration/img", folder_livre, prelimg])
   end
   def path_image_in_folder_img_site prelimg
     site.folder_images + prelimg
@@ -79,7 +91,16 @@ class Page
     options[:format] ||= :erb # peut être aussi :latex
     path_semidyn.remove if path_semidyn.exist?
     create_page unless path.exist?
+    # Pour les balises références, il faut ces deux variables
+    # globale (impossible de les passer autrement, ou trop compliqué)
+    # Cf. dans ./lib/app/required/extension/string.rb
+    $narration_page_id = self.id
+    $narration_book_id = self.livre_id
+    # CONSTRUCTION
     path.kramdown(in_file: path_semidyn.to_s, output_format: options[:format])
+    # ré-initialiser ces variables
+    $narration_page_id = nil
+    $narration_book_id = nil
     flash "Page actualisée." unless options[:quiet]
   end
 

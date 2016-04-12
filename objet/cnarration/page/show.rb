@@ -65,7 +65,6 @@ class Page
   # le texte normal de la page normalement
   def full_page_with_exergue
     return false if param(:xmotex).nil?
-    debug "-> full_page_with_exergue (avec traitement)"
     is_regular    = param(:xreg)    == '1'
     is_whole_word = param(:xww)     == '1'
     is_exact      = param(:xexact)  == '1'

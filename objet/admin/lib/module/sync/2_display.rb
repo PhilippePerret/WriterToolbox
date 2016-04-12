@@ -64,7 +64,7 @@ class Sync
       explication_force_synchro_narration
     ).in_p
 
-    form << display_etat_des_lieux_fichiers_narration_icare
+    form << (display_etat_des_lieux_fichiers_narration_icare || "")
     form << display_etat_des_lieux_affiches_films
 
     # Le bouton pour lancer la synchronisation
@@ -111,6 +111,8 @@ class Sync
     dnic = diff_narration_icare
     # Les différences avec ce qui se trouve sur BOA
     dboa = diff_narration_boa
+
+    return if dnic.nil? || dboa.nil? # problème avec le check online
 
     nombre_total_operations = dnic[:nombre_operations] + dboa[:nombre_operations]
 
@@ -189,6 +191,8 @@ class Sync
     # Mais seulement s'il y a du boulot à faire, sinon une
     # simple phrase pour expliquer que tout est à jour.
     daf = diff_affiches
+
+    return "[PROBLÈME AVEC LES AFFICHES]" if daf.nil? # problème à la relève
 
     if daf[:nombre_actions] == 0
       return "• Les affiches de films sont à jour sur BOA comme sur ICARE".in_div(class:'small')

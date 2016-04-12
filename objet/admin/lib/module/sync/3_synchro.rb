@@ -219,7 +219,7 @@ class Sync
       # Détruire les affiches
       # ---------------------
       unless deletes.empty?
-        res = `ssh #{serveur} "ruby -e \\"#{script_deletions_affiches deletes}\\""`
+        res = `ssh #{serveur} "ruby -e \\"#{script_deletions_affiches dis_folder, deletes}\\""`
         @suivi << "Retour de delete affiches #{lieu} : #{res.inspect}"
       end
 
@@ -231,7 +231,7 @@ class Sync
     @errors << e.message
   end
 
-  def script_deletions_affiches deletes
+  def script_deletions_affiches dis_folder, deletes
     deletes_str = deletes.collect { |aname| "'#{aname}'"}.join(', ')
     <<-CODE
 errors = Array::new

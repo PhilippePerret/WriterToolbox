@@ -46,7 +46,19 @@ class Sync
         # ----------------------
         # debug "COMMANDS ENVOYÉES À BOA :\n#{commands}"
         res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_boa}\\""`
-        res_boa = Marshal.load(res_boa)
+        if res_boa != ""
+          res_boa = Marshal.load(res_boa)
+          if res_boa[:error]
+            debug "ERREUR RETOURNÉE PAR SCRIPT_CHECK_BOA: #{res_boa[:error].pretty_inspect}"
+            error res_boa[:error]
+          end
+        else
+          debug "script_check_boa : #{script_check_boa}"
+          debug "retour brut du script ci-dessus : #{res_boa.inspect}"
+          error "Problème avec le script de check BOA. Consulter le log."
+          toutres.merge!(boa: nil)
+          res_boa = {}
+        end
         toutres.merge!(boa: res_boa)
 
         # Sur le site Icare
@@ -57,14 +69,21 @@ class Sync
         #   - la base cnarration.db (mtime)
         #   - les fichiers CSS propres à la collection
         res_icare = `ssh #{serveur_ssh_icare} "ruby -e \\"#{script_check_icare}\\""`
-        # debug "\n\nscript_check_icare:#{script_check_icare}\n\n"
-        # debug "res_icare non démarshalisé: #{res_icare.inspect}\n\n"
-        # debug "Retour BRUT de res_icare : #{res_icare.inspect}"
-        res_icare = Marshal.load(res_icare)
-        # debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
+        if res_icare == ""
+          debug "\n\nscript_check_icare:#{script_check_icare}\n\n"
+          debug "res_icare non démarshalisé: #{res_icare.inspect}\n\n"
+          debug "Retour BRUT de res_icare : #{res_icare.inspect}"
+          res_icare = {}
+        else
+          res_icare = Marshal.load(res_icare)
+          if res_icare[:error]
+            debug "ERREUR RETOURNÉE PAR SCRIPT_CHECK_ICARE: #{res_icare[:error].pretty_inspect}"
+            error res_icare[:error]
+          end
+          # debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
+        end
         # On merge les résultats
         toutres.merge!(icare: res_icare)
-
         # On enregistre ces données dans le fichier des données
         # checkées
         check_data_path.write Marshal::dump(toutres)
@@ -88,6 +107,8 @@ class Sync
   #   }
   def diff_narration_boa
     dnar = online_sync_state[:boa][:cnarration]
+
+    return if dnar.nil? # en cas d'erreur avec le check online
 
     diff_naric = {
       css:    nil,
@@ -147,6 +168,8 @@ class Sync
   #   }
   def diff_narration_icare
     dnar = online_sync_state[:icare][:cnarration]
+
+    return if dnar.nil? # en cas d'erreur
 
     diff_naric = {
       css:    nil,
@@ -246,13 +269,17 @@ class Sync
   # pour la synchronisation future
   def diff_affiches
     @diff_affiches ||= begin
-      resaff = Hash::new
-      resaff.merge! nombre_actions: 0
-      resaff.merge!( boa:   diff_affiches_boa )
-      resaff[:nombre_actions] += diff_affiches_boa[:nombre_uploads] + diff_affiches_boa[:nombre_deletes]
-      resaff.merge! icare: diff_affiches_icare
-      resaff[:nombre_actions] += diff_affiches_icare[:nombre_uploads] + diff_affiches_icare[:nombre_deletes]
-      resaff
+      if online_sync_state[:boa].nil? || online_sync_state[:icare].nil?
+        nil
+      else
+        resaff = Hash::new
+        resaff.merge! nombre_actions: 0
+        resaff.merge!( boa:   diff_affiches_boa )
+        resaff[:nombre_actions] += diff_affiches_boa[:nombre_uploads] + diff_affiches_boa[:nombre_deletes]
+        resaff.merge! icare: diff_affiches_icare
+        resaff[:nombre_actions] += diff_affiches_icare[:nombre_uploads] + diff_affiches_icare[:nombre_deletes]
+        resaff
+      end
     end
   end
 
