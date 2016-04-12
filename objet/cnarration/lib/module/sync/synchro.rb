@@ -116,10 +116,21 @@ class << self
   #
   def build_commands_narration_and_execute_on lieu
 
+    # Si true, on n'exécute pas les commandes, on les place
+    # seulement dans le débug
+    mode_debuggage = false
+
+    if mode_debuggage && @alerte_mode_debuggage.nil?
+      flash "Synchronisation de Narration en mode debuggage. Aucun fichier ne sera synchronisé. Regarder dans le debug les codes exécutés."
+      @alerte_mode_debuggage = true
+    end
+
     on_boa    = lieu == :boa
     on_icare  = lieu == :icare
 
     dnar = isync.data_synchronisation["cnarration_#{lieu}".to_sym]
+
+    debug "\n\n\ndnar: #{dnar.pretty_inspect}\n\n" if mode_debuggage
 
     # Liste des commandes qui seront envoyés par SSH
     command_scp = Array::new
@@ -149,12 +160,13 @@ class << self
 
     # === Synchroniser les fichiers ERB ===
     dfiles = dnar[:files]
-    folder_erb = on_boa ? "data/unan/pages_semidyn/cnarration" : "www/storage/narration/cnarration"
+    folder_loc = "./data/unan/pages_semidyn/cnarration"
+    folder_erb = on_boa ? "www/data/unan/pages_semidyn/cnarration" : "www/storage/narration/cnarration"
 
     # Fichiers à ajouter et synchroniser
     (dfiles[:synchro_required] + dfiles[:distant_unknown]).each do |rpath_loc, nfile|
-      pfile = File.expand_path("./#{folder_erb}/#{rpath_loc}")
-      pnar = "./#{folder_erb}/#{rpath_loc}"
+      pfile = File.expand_path("#{folder_loc}/#{rpath_loc}")
+      pnar = "#{folder_erb}/#{rpath_loc}"
       fnar = File.dirname(pnar)
       command_mkd << fnar unless command_mkd.include?(fnar)
       command_scp << "scp -pv '#{pfile}' #{serveur}:#{pnar}"
@@ -162,7 +174,7 @@ class << self
 
     # Fichiers ERB/IMG à détruire
     dfiles[:local_unknown].each do |rpath_loc|
-      command_ssh << "  f = %q{./#{folder_erb}/#{rpath_loc}}"
+      command_ssh << "  f = %q{#{folder_erb}/#{rpath_loc}}"
       command_ssh << "  File.unlink(f) if File.exist?(f)"
     end
 
@@ -171,23 +183,13 @@ class << self
     #
     unless command_mkd.empty?
       command_mkd = command_mkd.collect do |dir|
-        " %x(mkdir -p #{dir})"
-      end.join("\n")
-      command_mkd = <<-CMD
-res = {error:nil}
-begin
-#{command_mkd}
-rescue Exception => e
-  res[:error] = {err_mess:e.message, err_bc: e.backtrace}
-end
-STDOUT.write Marshal::dump(res)
-      CMD
-      debug "\n\ncommand_mkd: #{command_mkd}"
-      res = `ssh #{serveur} "ruby -e \\\"#{command_mkd}\\\""`
-      debug "RETOUR BRUT : #{res.inspect}"
-      if res != ""
-        res = Marshal::load(res)
-        debug "RETOUR DÉMARSHALISÉ : #{res.pretty_inspect}"
+        "mkdir -p #{dir}"
+      end.join(";")
+      command_mkd = "ssh #{serveur} \"#{command_mkd}\""
+      unless mode_debuggage
+        res = `#{command_mkd}`
+      else
+        debug "\n\ncommand_mkd: #{command_mkd}"
       end
     end
 
@@ -200,8 +202,12 @@ STDOUT.write Marshal::dump(res)
     command_scp.each do |cmd_scp|
       debug "COMMAND_SCP :\n#{cmd_scp}"
       begin
-        res = `#{cmd_scp}`
-        debug "-> #{res.inspect}"
+        unless mode_debuggage
+          res = `#{cmd_scp}`
+          debug "-> #{res.inspect}"
+        else
+          debug "CMD SCP JOUÉE : #{cmd_scp}"
+        end
       rescue Exception => e
         debug "-> ERROR : #{e.message}"
       end
@@ -224,13 +230,16 @@ else
 end
 STDOUT.write Marshal::dump(res)
       CMD
-      command_ssh = "ssh #{serveur} \"ruby -e \\\"#{command_ssh}\\\"\""
-      debug "\n\nCOMMAND SSH :\n#{command_ssh}\n\n"
-      res = `#{command_ssh}`
-      debug "RETOUR BRUT : #{res.inspect}"
-      if res != ""
-        res = Marshal::load(res)
-        debug "\n\nRETOUR DE COMMANDE SSH :\n #{res.inspect}"
+      unless mode_debuggage
+        command_ssh = "ssh #{serveur} \"ruby -e \\\"#{command_ssh}\\\"\""
+        res = `#{command_ssh}`
+        debug "RETOUR BRUT : #{res.inspect}"
+        if res != ""
+          res = Marshal::load(res)
+          debug "\n\nRETOUR DE COMMANDE SSH :\n #{res.inspect}"
+        end
+      else
+        debug "\n\nCOMMAND SSH :\n#{command_ssh}\n\n"
       end
     end
 

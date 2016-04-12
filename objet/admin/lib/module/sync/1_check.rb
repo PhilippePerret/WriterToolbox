@@ -80,15 +80,24 @@ class Sync
             debug "ERREUR RETOURNÉE PAR SCRIPT_CHECK_ICARE: #{res_icare[:error].pretty_inspect}"
             error res_icare[:error]
           end
-          # debug "res_icare démarshalisé : #{res_icare.pretty_inspect}\n\n"
         end
-        # On merge les résultats
+
+        # On merge les résultats du check sur Icare avec tous les
+        # résultats de check
         toutres.merge!(icare: res_icare)
+
         # On enregistre ces données dans le fichier des données
         # checkées
         check_data_path.write Marshal::dump(toutres)
 
-        # Et on le met dans `online_sync_state`
+        debug "toutres (online_sync_state) : #{toutres.pretty_inspect}"
+
+        # Les données initiales, avant épuration pendant
+        # le check
+        @online_sync_state_init = toutres.freeze
+
+        # Et on le met dans `online_sync_state` (qui est le nom
+        # de la propriété méthode dans laquelle on se trouve ici)
         toutres
       end
     end

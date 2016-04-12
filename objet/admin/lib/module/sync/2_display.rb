@@ -84,13 +84,15 @@ class Sync
     c << "<hr><div class='right btns'>"
     c << "Données de synchronisation".in_a(onclick:"$('pre#data_sync').toggle()", class:'small')
     c << " | "
-    c << "Données retournées par le check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
+    c << "Données du check".in_a(onclick:"$('pre#online_sync_state').toggle()", class:'small')
     c << " | "
     c << "Suivi des opérations".in_a(onclick:"$('pre#suivi_operation').toggle()", class:'small')
     c << "</div>"
 
+    debug "\n\n\n@datasync: #{@datasync.pretty_inspect}\n\n\n"
     c << @datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
-    c << online_sync_state.pretty_inspect.in_pre(id: "online_sync_state", display: false)
+    debug "\n\n\nonline_sync_state LORS ÉCRITURE DANS SUIVI :#{online_sync_state.pretty_inspect}\n\n\n"
+    c << @online_sync_state_init.pretty_inspect.in_pre(id: "online_sync_state", display: false)
     c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
 
     # On écrit tout ce code dans le fichier temporaire pour qu'il soit
