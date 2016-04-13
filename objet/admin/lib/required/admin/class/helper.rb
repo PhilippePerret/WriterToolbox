@@ -1,5 +1,4 @@
 # encoding: UTF-8
-raise_unless_admin
 class Admin
   class << self
 

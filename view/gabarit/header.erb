@@ -10,12 +10,14 @@
   # La valeur `display_taches_for_administrator` est défini
   # dans le fichier config  : ./objet/site/config.rb
   if site.display_taches_for_administrator && user.admin? %>
+    <% debug "dans header.erb, user.identified? est #{user.identified?.inspect}"%>
     <%=
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
       ::Admin::Taches::pastille_taches_administrator
     %>
 <% end %>
+
 <%
   # Insertion de la pastille indiquant à un user suivant le
   # programme UN AN UN SCRIPT qui veut qu'on lui indique

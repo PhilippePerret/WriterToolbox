@@ -8,3 +8,6 @@ Méthodes pratiques pour la classe User
 def user
   @user ||= User::current
 end
+def reset_user_current
+  @user = nil
+end

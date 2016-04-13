@@ -48,16 +48,16 @@ class Console
 
   # Pour faire le rapport du programme de données {Hash} +hprog+
   def rapport_programme_unan hprog
-    user = User::get(hprog[:auteur_id])
-    prog = user.program
+    u = User::get(hprog[:auteur_id])
+    prog = u.program
     add_rap "Programme ID", hprog[:id]
-    add_rap "Auteur", "#{user.pseudo} (#{hprog[:auteur_id]})"
+    add_rap "Auteur", "#{u.pseudo} (#{hprog[:auteur_id]})"
     add_rap "Commencé le", hprog[:created_at].as_human_date(true, true)
     add_rap "Modifié le", hprog[:updated_at].as_human_date(true, true)
     add_rap "Rythme", prog.rythme
     add_rap "Jour-programme courant", prog.current_pday.inspect
     @rapport << "<strong>Liste des travaux courants (variable `:works_ids`)</strong>"
-    user.get_var(:works_ids, Array::new).each do |wid|
+    u.get_var(:works_ids, Array::new).each do |wid|
       work  = Unan::Program::Work::get(prog, wid)
       titre = work.abs_work.titre
       type  = work.human_type
@@ -70,10 +70,10 @@ class Console
       @rapport << "    Work #{wid} - #{titre} - #{type} - du <b>#{depart}</b> au <b>#{fin}</b> "
     end.join
     @rapport << "<strong>Détails des IDs par type de travail</strong>"
-    add_rap "  Quiz     :quiz_ids", user.get_var(:quiz_ids,[]).pretty_join
-    add_rap "  Cours    :pages_ids", user.get_var(:pages_ids,[]).pretty_join
-    add_rap "  Tâches   :task_ids", user.get_var(:tasks_ids,[]).pretty_join
-    add_rap "  Messages :forum_ids", user.get_var(:forum_ids,[]).pretty_join
+    add_rap "  Quiz     :quiz_ids", u.get_var(:quiz_ids,[]).pretty_join
+    add_rap "  Cours    :pages_ids", u.get_var(:pages_ids,[]).pretty_join
+    add_rap "  Tâches   :task_ids", u.get_var(:tasks_ids,[]).pretty_join
+    add_rap "  Messages :forum_ids", u.get_var(:forum_ids,[]).pretty_join
 
   end
 

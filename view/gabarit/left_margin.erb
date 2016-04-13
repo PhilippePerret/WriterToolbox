@@ -5,30 +5,34 @@
 %>
 <section id="left_margin">
 
-<%= "OUTILS".in_a(href:"tool/list", id:'lk_outils') %>
-<% if user.identified? %>
-  <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
-<% end %>
-<%= "Accueil".in_a(href: '') %>
-<%= "Forum".in_a(href:'forum/home') %>
-
-<% if false == user.identified? %>
-  <%= "".in_div(class:'air') %>
-  <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: route_courante) %>
-  <%= "S'inscrire".in_a(href:'user/signup', style:'letter-spacing:3.3px') %>
-<%
-  else
-    # Si le visiteur est identifié
-%>
-
-  <%= "1 an, 1 script".in_a(href:'unan/home') %>
-  <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
-
-  <% if user.admin? %>
-    <hr />
-    <%= lien.console("Console", target:nil) %>
-    <a href="admin/dashboard">Dashboard</a>
-    <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
+  <%= "OUTILS".in_a(href:"tool/list", id:'lk_outils') %>
+  <% if user.identified? %>
+    <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
   <% end %>
-<% end %>
+  <%= "Accueil".in_a(href: '') %>
+  <%= "Forum".in_a(href:'forum/home') %>
+
+  <% if false == user.identified? %>
+    <%= "".in_div(class:'air') %>
+    <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: route_courante) %>
+    <%= "S'inscrire".in_a(href:'user/signup', style:'letter-spacing:3.3px') %>
+  <%
+    else
+      # Si le visiteur est identifié
+  %>
+
+    <%= "1 an, 1 script".in_a(href:'unan/home') %>
+    <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
+
+    <% if user.admin? %>
+      <hr />
+      <%= lien.console("Console", target:nil) %>
+      <a href="admin/dashboard">Dashboard</a>
+      <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
+    <% end %>
+  <% end %>
 </section>
+<%
+  debug "Avant <- left_margin.erb, user.identified? #{user.identified?.inspect}"
+  debug "<- left_margin.erb"
+%>

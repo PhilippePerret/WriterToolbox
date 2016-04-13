@@ -1,5 +1,6 @@
 <%
 # Vue affichée lorsque l'user vient de se logguer avec succès
+debug "-> vue user/login.erb (user.identified? #{user.identified?.inspect})"
 %>
 <h1>Bienvenue <%= user.pseudo %> !</h1>
 <% if user.admin? %>
@@ -12,3 +13,6 @@
     <p>Vous n'êtes pas ou plus abonné au site. Vous pouvez régulariser votre situtation en rejoignant la <a href="user/paiement">section de paiment</a>.</p>
   <% end %>
 <% end %>
+<%
+debug "<- vue user/login.erb"
+%>

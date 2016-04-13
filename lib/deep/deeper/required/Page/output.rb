@@ -46,12 +46,26 @@ class Page
 
   def body
     @body ||= begin
-      page.header         +
-      page.left_margin    +
-      page.content        +
-      page.footer         +
-      app.div_flash       +
-      page.section_debug
+      # page.header         +
+      # page.left_margin    +
+      # page.content        +
+      # page.footer         +
+      # app.div_flash       +
+      # page.section_debug
+      c = String::new
+      debug "avant page.header : user.identified? #{user.identified?.inspect}"
+      c << page.header
+      debug "avant page.left_margin : user.identified? #{user.identified?.inspect}"
+      c << page.left_margin
+      debug "avant page.content : user.identified? #{user.identified?.inspect}"
+      c << page.content
+      debug "avant page.footer : user.identified? #{user.identified?.inspect}"
+      c << page.footer
+      debug "avant page.div_flash : user.identified? #{user.identified?.inspect}"
+      c << app.div_flash
+      debug "avant page.section_debug : user.identified? #{user.identified?.inspect}"
+      c << page.section_debug
+      c
     end
   end
 end

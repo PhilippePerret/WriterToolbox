@@ -60,7 +60,7 @@ feature "Inscription d'un nouveau membre" do
     puts "L'auteur n'est pas encore validé"
 
     # Le dernier user créé donc celui-ci
-    user = User::get(last_user[:id])
+    u = User::get(last_user[:id])
 
     # Un ticket a été créé pour lui
     site.require_module 'ticket'

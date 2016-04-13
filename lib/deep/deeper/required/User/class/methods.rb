@@ -6,11 +6,13 @@ class User
     # Identification
     def login
       unless login_ok?
-        error "Je ne vous remets pas…"
+        error "Je ne vous reconnais pas… Pouvez-vous ré-essayer ?"
         redirect_to :home
       end
     end
 
+    # RETURN True si l'identification est réussie
+    #
     def login_ok?
       login_data = param(:login)
       mail = login_data[:mail]
@@ -20,10 +22,7 @@ class User
       expected = res[:cpassword]
       compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
       ok = expected == compared
-      if ok
-        u = User::new( res[:id] )
-        u.login
-      end
+      User::new( res[:id] ).login if ok
       return ok
     end
 

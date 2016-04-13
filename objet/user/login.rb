@@ -10,7 +10,10 @@ class User
   # une redirection et rien d'autre.
   def redirect_after_login
     if true == preference(:bureau_after_login, false)
+      debug "[User#redirect_after_login] Redirection vers 'bureau/hom?in=unan'"
       redirect_to 'bureau/home?in=unan'
+    else
+      debug "[User#redirect_after_login] Aucune redirection"
     end
   end
 
