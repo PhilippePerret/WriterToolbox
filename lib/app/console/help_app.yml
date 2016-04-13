@@ -201,6 +201,22 @@ narration:
     note: |
       La référence au livre peut être diverse, par exemple `balise livre documents` ou `balise livre auteur` ou `balise livre themes`.
 
+  -
+    command:        "`balise question`"
+    description:    Retourne le code CHECKUP[&lt;question&gt;] pour placer une question dans le document qui sera reprise dans le checkup.
+    note:   |
+      Utiliser la commande `balise checkup` pour obtenir la balise à placer dans la page checkup.
+
+      Noter qu'on peut utiliser le snippet `q` dans TextMate pour obtenir ce code.
+  -
+    command:        "`balise checkup`"
+    description: |
+      Produit la balise `PRINT_CHECKUP[&lt;groupe&gt;]` à placer dans la page de checkup à la fin des livres.
+    note: |
+      Le &lt;groupe&gt; est déterminé par le second argument des balises CHECKUP qui permettent d'entrer les questions.
+
+      Noter qu'on peut utiliser le snippet `checkup` dans TextMate pour obtenir ce code.
+
 # ---------------------------------------------------------------------
 #   ANALYSE DE FILM
 # ---------------------------------------------------------------------

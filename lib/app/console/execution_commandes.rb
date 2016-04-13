@@ -55,6 +55,11 @@ class Console
     when /^(inventory|etat des lieux|état des lieux) analyses$/
       redirect_to "admin/dashboard?in=analyse"
       return ""
+    when /^balise question$/
+      console.require 'narration'
+      bals, retour = give_balise_of_question
+      sub_log liste_built_balises(bals)
+      return retour
     when /^fonctionnement analyses$/
       console.require 'analyses'
       affiche_rappel_fonctionnement
@@ -130,7 +135,7 @@ class Console
   # Exécution comme une expression régulière propre à
   # l'application
   def app_execute_as_regular_sentence line
-    if (found = line.match(/^balise (livre|film|mot|user) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
+    if (found = line.match(/^balise (livre|film|mot|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
       ( main_traitement_balise found[1..-1] )
     elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
       (site.folder_lib_optional + 'console/pday_change/main.rb').require

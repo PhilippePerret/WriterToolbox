@@ -7,7 +7,9 @@
   * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
+  * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Référence vers autre page](#placerunereferenceaautrepage)
+
   * [Images](#utilisationduneimage)
 
 <a name='leslivresnarration'></a>
@@ -106,6 +108,42 @@ Quand il y a l'ancre, il faut obligatoirement le titre
 
 Pour obtenir facilement une référence à une page, rejoindre la page et cliquer sur le bouton `&lt;-&gt`.
 
+<a name='listedequestionspourcheckup'></a>
+
+### Liste des questions des CHECKUPS
+
+L'idée est que ces checkups soient automatiques, qu'ils rassemblent toutes les questions qui sont posées au fil des pages.
+
+Pour enregistrer une nouvelle question, on la marque dans le texte par :
+
+    CHECKUP["<la question>"<|options>]
+
+Les `&lt;options&gt;` permettent de la classer dans la page en mettant les questions dans des groupes. Par exemple :
+
+    CHECKUP["Ceci est une question générale"|'generalites']
+
+Une page checkup est une page qui contient le code :
+
+    PRINT_CHECKUP
+    # => Affiche toutes les questions, dans l'ordre où elles
+    # apparaissent dans le livre, sans classement.
+
+Pour grouper les questions :
+
+    ## Questions générales
+
+    PRINT_CHECKUP['generalites']
+
+    ## Questions sur les personnages
+
+    PRINT_CHECKUP['personnages']
+
+    ## Autres questions
+
+    PRINT_CHECKUP
+    <!--
+      Affichera les questions qui restent à afficher.
+    -->
 
 <a name='utilisationduneimage'></a>
 

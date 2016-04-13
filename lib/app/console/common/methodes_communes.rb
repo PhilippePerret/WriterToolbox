@@ -33,6 +33,7 @@ class Console
   # +bdata+
   def main_traitement_balise bdata
     debug "bdata : #{bdata.inspect}"
+    bdata[1] = bdata[1].gsub(/^["'](.*?)["']$/,'\1')
     balises, message = case bdata[0]
     when 'film'
       console.require 'filmodico'
@@ -43,6 +44,12 @@ class Console
     when 'livre'  then
       console.require 'narration'
       give_balise_of_livre(bdata[1])
+    when 'question' then
+      console.require 'narration'
+      give_balise_of_question(bdata[1])
+    when 'checkup' then
+      console.require 'narration'
+      give_balise_of_checkup(bdata[1])
     end
 
     as = case bdata[2]
@@ -69,10 +76,10 @@ class Console
   # Chaque élément de {Array} +arr_balises+ doit contenir au
   # moins :value, la valeur à donner et peut contenir :
   # :after    Texte à écrire après le champ
-  def liste_built_balises arr_balises, as
+  def liste_built_balises arr_balises, as = 'md'
     arr_balises.collect do |hbalise|
       hbalise[:value] = "<%= #{hbalise[:value]} %>" if as == 'erb'
-      c = "<input type='text' value='#{hbalise[:value]}' />"
+      c = "<input type='text' value='#{hbalise[:value]}' style='width:400px'/>"
       c << " #{hbalise[:after]}" unless hbalise[:after].nil?
       c.in_div
     end.join + '<script type="text/javascript">UI.auto_selection_text_fields()</script>'

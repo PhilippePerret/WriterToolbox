@@ -120,6 +120,21 @@ class Console
     [[{value:"lien.livre_#{suf_lien}", after: lien_tdm}], ""]
   end
 
+  def give_balise_of_question question = nil
+    question = "LA_QUESTION" if question.nil_if_empty.nil?
+    [[{value:"CHECKUP[#{question}]"}], "Pour obtenir la balise pour écrire les questions, taper `balise checkup[ &lt;groupe&gt;]`"]
+  end
+
+  def give_balise_of_checkup groupe = nil
+    groupe = groupe.nil_if_empty
+    bal = if groupe.nil?
+      "PRINT_CHECKUP"
+    else
+      "PRINT_CHECKUP[#{groupe}]"
+    end
+    [[{value:bal}], "Pour obtenir une balise question, taper `balise question[ &lt;la question&gt;]`"]
+  end
+
   # Affiche (dans sub_log) les pages de la collection narration
   # qui sont des pages et dont le niveau de développement est
   # +nivdev+, de "1" à "a" en passant par "9"
