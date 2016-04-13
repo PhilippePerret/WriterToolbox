@@ -68,3 +68,16 @@ site.display_taches_for_administrator = true
 # la page indiquera à l'user les tâches qu'il a à accomplir
 # si l'application le nécessite et le gère.
 site.display_taches_for_user = true
+
+# Détermine les alertes administration lors du login d'un
+# utilisateur. Les valeurs peuvent être :
+# :never / :jamais        Aucune alerte n'est donnée.
+# :now / :tout_de_suite   Alerte immédiate : dès que l'user se
+#                         connecte au site, l'administion est avertie
+# :one_a_day / :une_par_jour
+#     Résumé quotidien des connexions de la journée
+# :one_a_week / :une_par_semaine
+#     Résumé hebdomadaire des connexions de la semaine
+# :one_a_month / :une_par_mois
+#     Résumé mensuel des connexions du mois
+site.alert_apres_login = :tout_de_suite

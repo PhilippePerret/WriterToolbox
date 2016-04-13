@@ -36,7 +36,9 @@ require './lib/deep/deeper/output'
 #   Quelques initialisations et vérification
 # ---------------------------------------------------------------------
 
-site.require_module('ajax') if site.ajax?
-
-require './lib/preambule'
-execute_preambule
+if site.ajax?
+  site.require_module('ajax')
+else
+  require './lib/preambule'
+  execute_preambule
+end

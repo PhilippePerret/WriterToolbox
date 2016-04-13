@@ -10,6 +10,8 @@ class User
 
   include MethodesObjetsBdD
 
+  IP =
+
   # Identifiant de l'user dans la table
   attr_reader :id
 
@@ -31,4 +33,8 @@ class User
   def created_at  ; @created_at ||= get(:created_at)  end
   def updated_at  ; @updated_at ||= get(:updated_at)  end
 
+
+  def ip
+    @ip ||= ENV["REMOTE_ADDR"] || ENV['HTTP_CLIENT_IP'] || ENV["HTTP_X_FORWARDED_FOR"]
+  end
 end

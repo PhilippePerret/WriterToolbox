@@ -21,6 +21,13 @@ class User
     # éléments annexes de l'interface)
     app.session['user_nombre_pages'] = 1
     User::current= self
+
+    # Si une méthode doit être appelée après le login, on
+    # l'appelle.
+    if self.respond_to? :do_after_login
+      self.send(:do_after_login)
+    end
+
     set(session_id: app.session.session_id)
     if param(:login)[:back_to]
       # Une redirection est demandée

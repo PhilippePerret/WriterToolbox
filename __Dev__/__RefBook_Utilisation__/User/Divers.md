@@ -5,6 +5,7 @@
   * [Grade du forum](#gradeforumeuser)
   * [Confirmation du mail](#confirmationmail)
 * [Redirection après l'identification (login)](#redirectionapreslogin)
+* [Opérations après identification](#operationsapreslidentification)
 * [Destruction d'un utilisateur](#destructionuser)
 
 <a name='optionsuser'></a>
@@ -84,6 +85,25 @@ Si on doit reconduire à la route courante (une page qui nécessite une identifi
       lien.signin "vous identifier", back_to: current_route
     %>
 
+<a name='operationsapreslidentification'></a>
+
+## Opérations après identification
+
+Pour définir les choses à faire, propres à l'application, après le login d'un user, il suffit d'implémenter la méthode :
+
+    User#do_after_login
+
+Cette méthode peut par exemple être définie dans un fichier :
+
+    ./lib/app/required/user/do_after_login.rb
+
+    # in ./lib/app/required/user/do_after_login.rb
+    # encoding: UTF-8
+    class User
+      def do_after_login
+        ... code ...
+      end
+    end
 
 <a name='destructionuser'></a>
 
