@@ -24,8 +24,7 @@ class Sync
   # ce fichier est relu directement dans le fichier.
   def build_inventory
 
-    # TODO: REMETTRE QUAND OK
-    # return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
+    return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
 
     @suivi << "* Construction de l'inventaire à afficher"
     display_path.remove if display_path.exist?
@@ -96,6 +95,17 @@ class Sync
     # On écrit tout ce code dans le fichier temporaire pour qu'il soit
     # relu facilement.
     display_path.write(c)
+  rescue Exception => e
+    if @retried
+      # On a déjà réessayer
+      debug e
+      error "Impossible de procéder à l'opération, même en détruisant les fichiers."
+    else
+      error "Un problème est survenu. Je détruis les fichiers sync pour ré-essayer."
+      reset_all
+      @retried = true
+      build_inventory
+    end
   end
 
   # Retourne le code HTML à insérer dans le formulaire présentant
@@ -169,7 +179,12 @@ class Sync
     else
       nb = dnic[:files][:nombre_synchro_req] + dnic[:files][:nombre_unknown_dis]
       if nb > 0
-        form << ("Fichiers ERB à synchroniser (#{dnic[:files][:synchro_required].count}) et ajouter (#{dnic[:files][:distant_unknown].count}) sur #{lieu_str} : #{nb} sur #{dnic[:files][:nombre_total]} : " +
+        arrmess = Array::new
+        nb_synchro = dnic[:files][:synchro_required].count
+        nb_ajouts  = dnic[:files][:distant_unknown].count
+        arrmess << "synchroniser (#{nb_synchro})" if nb_synchro > 0
+        arrmess << "ajouter (#{nb_ajouts})"       if nb_ajouts > 0
+        form << ("Fichiers ERB à #{arrmess.pretty_join} sur #{lieu_str} : #{nb} sur #{dnic[:files][:nombre_total]} : " +
                 (dnic[:files][:synchro_required]+dnic[:files][:distant_unknown]).collect do |pfile, nfile|
           nfile
         end.pretty_join.in_span(class:'tiny')).in_div
