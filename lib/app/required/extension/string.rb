@@ -43,7 +43,12 @@ class ::String
   end
 
   def formate_balises_livres
-    self.formate_balises_colon('livre')
+    str = self
+    str.gsub!(/LIVRE\[(.*?)\]/){
+      ref, titre = $1.split('|')
+      lien.livre(titre, ref)
+    }
+    str.formate_balises_colon('livre')
   end
 
   def formate_balises_personnages

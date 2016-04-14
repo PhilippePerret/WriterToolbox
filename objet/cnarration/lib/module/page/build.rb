@@ -169,8 +169,8 @@ class SuperFile
     # à la fin du code
     unless @table_checkup.empty?
       flash "Des groupes de questions checkup ne sont pas traités (#{@table_checkup.keys.pretty_join}), je les ai ajoutés à la fin dans une rubrique “Autres questions”. Si tu veux les placer à un endroit précis, utilise les balises `PRINT_CHECKUP[&lt;groupe&gt;]` et un titre au-dessus."
-      code += "Autres questions".in_h2 + @table_checkup.collect do |grp, arr_question|
-          ul_questions_checkup(arr_question, grp, options)
+      code += "Autres questions".in_h2 + @table_checkup.collect do |grp, arr_questions|
+          ul_questions_checkup(arr_questions, grp, options)
         end.join('')
     end
 
@@ -190,6 +190,7 @@ class SuperFile
   #     {String} Optionnellement, le nom du groupe
   #
   def ul_questions_checkup questions, groupe = nil, options = nil
+    return "" if questions.nil?
     options ||= Hash::new
 
     # Liste des fichiers déjà mis en commentaire (ils servent à

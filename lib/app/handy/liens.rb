@@ -204,4 +204,12 @@ class Lien
     build("filmodico/#{film_id}/show", titre, options )
   end
 
+  # Balise pour des livres avec référence
+  # SRPS1998 pour le SRPS
+  # GDS1998|Le Guide du scénariste
+  # TODO
+  def livre titre, ref = nil
+    "<span class='livre'>#{titre.gsub(/ /,' ')}</span>"
+  end
+
 end
