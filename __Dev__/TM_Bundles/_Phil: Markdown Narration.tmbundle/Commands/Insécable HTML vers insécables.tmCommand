@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+# 
+# CMD + T ("T" comme "Transforme")
+
+contenu = STDIN.read
+
+contenu.gsub!(/\&amp;nbsp\;/, ' ')
+['tt', 'em'].each do |tag|
+  contenu.gsub!(/&lt;#{tag}&gt;(.*?)&lt;\/#{tag}&gt;/){
+    str = $1
+    if str.index(/[ \/\-]/).nil?
+      "#{tag}:#{str}"
+    else
+      "#{tag}:|#{str}|"
+    end
+  }
+end
+
+puts contenu
+
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@T</string>
+	<key>name</key>
+	<string>Correction old analyses</string>
+	<key>outputCaret</key>
+	<string>heuristic</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>replaceDocument</string>
+	<key>scope</key>
+	<string>text.html.markdown</string>
+	<key>uuid</key>
+	<string>A01F177B-17DE-46F8-8C62-001A115D957F</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

@@ -114,13 +114,19 @@ Pour obtenir facilement une référence à une page, rejoindre la page et clique
 
 L'idée est que ces checkups soient automatiques, qu'ils rassemblent toutes les questions qui sont posées au fil des pages.
 
+#### Ajout d'une question dans un fichier
+
 Pour enregistrer une nouvelle question, on la marque dans le texte par :
 
-    CHECKUP["<la question>"<|options>]
+    CHECKUP["<la question>"<|groupe>]
 
-Les `&lt;options&gt;` permettent de la classer dans la page en mettant les questions dans des groupes. Par exemple :
+Les `&lt;groupe&gt;` permettent de la classer dans la page en mettant les questions dans des groupes. Par exemple :
 
     CHECKUP["Ceci est une question générale"|'generalites']
+
+> Note : On peut très bien utiliser aussi ce système pour une liste de consignes par exemple.
+
+#### Affichage des questions du checkup
 
 Une page checkup est une page qui contient le code :
 
@@ -128,8 +134,9 @@ Une page checkup est une page qui contient le code :
     # => Affiche toutes les questions, dans l'ordre où elles
     # apparaissent dans le livre, sans classement.
 
-Pour grouper les questions :
+Pour grouper les questions par leur groupe :
 
+    <!-- On met le titre au-dessus de la balise -->
     ## Questions générales
 
     PRINT_CHECKUP['generalites']
@@ -143,7 +150,19 @@ Pour grouper les questions :
     PRINT_CHECKUP
     <!--
       Affichera les questions qui restent à afficher.
+      Ce fait automatiquement, avec le titre "Autres questions"
+      s'il reste des questions dans la liste complète.
     -->
+
+#### Style CSS des questions et de la liste
+
+Les styles pour les questions sont définis dans :
+
+    ./objet/cnarration/lib/required/css/show.sass
+
+#### Actualisation
+
+Dès qu'un fichier contenant une question est modifié, le programme cherche dans quel fichier de checkup la question doit apparaitre et détruit son fichier ERB pour forcer sa reconstruction la prochaine fois qu'il sera affiché (un lien permet de le faire tout de suite).
 
 <a name='utilisationduneimage'></a>
 

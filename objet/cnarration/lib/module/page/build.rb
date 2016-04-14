@@ -22,17 +22,55 @@ class SuperFile
   # des pages de la collection Narration.
   #
   def formatages_additionnels code, options = nil
-    code = formate_balises_question_checkup_in code
+
+    # Si le fichier contient des balises CHECKUP, il
+    # faut les traiter pour qu'elles puissent
+    # apparaitre à la fin.
+    # Et puis on cherche aussi le(s) fichier(s) checkup
+    # qui contient/iennent les questions de ce fichier
+    # pour forcer leur actualisation
+    if code.match(/[^_]CHECKUP/)
+      code = formate_balises_question_checkup_in code
+      rechercher_fichier_checkup_with_question
+    end
 
     # Si c'est un fichier qui doit écrire les
     # questions de checkup
     if code.match("PRINT_CHECKUP")
-      debug "-> traiter PRINT_CHECKUP"
       code = formate_balises_print_checkup code
     end
 
     return code
   end
+
+
+  # Méthode qui recherche où le fichier en traitement ici, qui
+  # contient des questions de checkup (automatique), place
+  # ses questions (le ou les fichiers checkup affichant) les
+  # questions pour pouvoir forcer leur actualisation.
+  #
+  # La méthode détruit les fichier ERB semidyn des checkups et
+  # retourne un lien dans le message pour afficher ces fichiers
+  #
+  def rechercher_fichier_checkup_with_question
+    ipage = $narration_current_page
+    pbook = ipage.livre.folder_semidyn.expanded_path
+    grep_cmd = "grep -r -F \"<!-- #{ipage.handler}\.erb -->\" #{pbook}"
+    evaluation = `#{grep_cmd}`
+    evaluation = evaluation.force_encoding('utf-8')
+    liens = evaluation.split("\n").collect do |found|
+      pfile   = found.split(':').first
+      File.unlink(pfile) if File.exist?(pfile)
+      handler = pfile.sub(/^#{pbook}\//,'')[0..-5]
+      where = "handler = '#{handler}' AND livre_id = #{ipage.livre_id}"
+      hpage = Cnarration::table_pages.select(where:where).values.first
+      # Lien à retourner à mettre dans le message
+      "#{hpage[:titre]}".in_a(href:"page/#{hpage[:id]}/show?in=cnarration", target:'_blank')
+    end.join("<br />")
+    flash "Les fichiers checkup suivants sont à actualiser :<br>#{liens}"
+  end
+
+
   # Traitement particulier des questions de checkup dans
   # les pages de la collection Narration.
   #
@@ -104,13 +142,31 @@ class SuperFile
       # questions qui restent
       if groupe.nil?
         # Pour la marque PRINT_CHECKUP seule, sans argument
-        @table_checkup.collect do |grp, arr_question|
-          ul_questions_checkup(arr_question, grp)
-        end.join('')
+        # (on met toutes les questions)
+        # @table_checkup.collect do |grp, arr_question|
+        allq = String::new
+        while grp_and_arr = @table_checkup.shift
+          debug "grp_and_arr: #{grp_and_arr.inspect}"
+          grp, arr_question = grp_and_arr
+          allq << ul_questions_checkup(arr_question, grp)
+        end
+        allq
       else
         ul_questions_checkup(@table_checkup.delete(groupe), groupe)
       end
     }
+
+    # Il peut arriver qu'il reste des questions ou des groupes
+    # de question qui n'ont pas été inscrites. Donc on fait comme
+    # si un groupe "Autres questions" existait et on les écrit
+    # à la fin du code
+    unless @table_checkup.empty?
+      flash "Des groupes de questions checkup ne sont pas traités (#{@table_checkup.keys.pretty_join}), je les ai ajoutés à la fin dans une rubrique “Autres questions”. Si tu veux les placer à un endroit précis, utilise les balises `PRINT_CHECKUP[&lt;groupe&gt;]` et un titre au-dessus."
+      code += "Autres questions".in_h2 + @table_checkup.collect do |grp, arr_question|
+          ul_questions_checkup(arr_question, grp)
+        end.join('')
+    end
+
 
     return code
   end
@@ -127,10 +183,34 @@ class SuperFile
   #     {String} Optionnellement, le nom du groupe
   #
   def ul_questions_checkup questions, groupe = nil
+    # Liste des fichiers déjà mis en commentaire (ils servent à
+    # savoir si le fichier doit être actualisé après modification
+    # de la question ou du fichier la contenant)
+    @files_checkups_traited ||= Hash::new
+
+    # Boucle sur chaque question
     questions.collect do |hquestion|
 
+      # La marque pour savoir que le fichier de la question est
+      # utilisé ici et que s'il a été modifié il faut modifier aussi
+      # ce fichier
+      mark_file = unless @files_checkups_traited.has_key?(hquestion[:file])
+        @files_checkups_traited.merge!(hquestion[:file] => true)
+        "<!-- #{hquestion[:file]} -->"
+      else
+        ""
+      end
+
+      # Le lien pour rejoindre la question dans son fichier
+      lien_vers_question = "-&gt;&nbsp;voir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
+      lien_vers_question = " (#{lien_vers_question})"
+
       # Mise en forme de la question affichée dans le checkup
-      hquestion[:question].in_li(id: hquestion[:id])
+      (
+        hquestion[:question] +
+        mark_file +
+        lien_vers_question
+      ).in_li(id: hquestion[:id])
 
     end.join.in_ul(
       id:     "checkup_groupe_#{groupe || '__autre__'}",
@@ -280,16 +360,18 @@ class Page
     # Pour les balises références, il faut ces deux variables
     # globale (impossible de les passer autrement, ou trop compliqué)
     # Cf. dans ./lib/app/required/extension/string.rb
-    $narration_page_id = self.id
-    $narration_book_id = self.livre_id
+    $narration_current_page = self
+    $narration_page_id      = self.id
+    $narration_book_id      = self.livre_id
 
     # *** CONSTRUCTION DE LA PAGE ***
     path.kramdown( in_file: path_semidyn.to_s, output_format: options[:format] )
 
     # ré-initialiser ces variables pour éviter tout
     # problème.
-    $narration_page_id = nil
-    $narration_book_id = nil
+    $narration_current_page = nil
+    $narration_page_id      = nil
+    $narration_book_id      = nil
     flash "Page actualisée." unless options[:quiet]
   end
 

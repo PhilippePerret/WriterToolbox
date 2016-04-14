@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>DOC/${1|events,scenario,synopsis,brut plain,rapport|}
+${2:# ${3:GRAND TITRE}
+}${4:## ${5:TITRE NORMAL}
+}$0
+${6:/ ${7:LÉGENDE SOUS DOCUMENT}}
+/DOC</string>
+	<key>name</key>
+	<string>Env Document</string>
+	<key>tabTrigger</key>
+	<string>doc</string>
+	<key>uuid</key>
+	<string>AF8317AB-5132-4D9E-9D6B-EE60315BD8D0</string>
+</dict>
+</plist>

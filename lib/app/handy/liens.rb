@@ -80,6 +80,7 @@ class Lien
       pid   = options[:id]
       site.require_objet 'cnarration'
       hpage = Cnarration::table_pages.get(pid, colonnes:[:titre, :livre_id])
+      raise "La page ##{pid.inspect} est introuvable" if hpage.nil?
       livre_id = hpage[:livre_id]
       # ID du livre
       titre = options[:titre].nil_if_empty || begin
@@ -97,6 +98,10 @@ class Lien
       LIENS_CNARRATION[ to ]
     end
     build(href, titre, options)
+  rescue Exception => e
+    debug e
+    error e.message
+    "#{titre.inspect}"
   end
   alias :collection_narration :cnarration
   alias :narration :cnarration
