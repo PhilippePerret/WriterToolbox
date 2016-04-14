@@ -37,7 +37,7 @@ class SuperFile
     # Si c'est un fichier qui doit écrire les
     # questions de checkup
     if code.match("PRINT_CHECKUP")
-      code = formate_balises_print_checkup code
+      code = formate_balises_print_checkup code, options
     end
 
     return code
@@ -82,13 +82,8 @@ class SuperFile
   # du livre, qui doit pour se construire récolter toutes
   # les questions de tous les fichiers.
   #
-  # TODO: Quand la marque est trouvée, il faudrait indiquer
-  # qu'il faut actualiser peut-être le fichier checkup ?
-  # Mais comment trouver le fichier checkup ? => En faisant
-  # une recherche rapide sur PRINT_CHECKUP
-  #
   REG_QUESTION_CHECKUP = /(^)?[^_]CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
-  def formate_balises_question_checkup_in code
+  def formate_balises_question_checkup_in code, options = nil
     q_indice = 0
     code.gsub(REG_QUESTION_CHECKUP){
       first_chr = $1.freeze
@@ -124,7 +119,20 @@ class SuperFile
   # cas contraire, une alerte est donnée.
   #
   REG_PRINT_CHECKUP  = /PRINT_CHECKUP(?:\[(.*?)\])?/
-  def formate_balises_print_checkup code
+  def formate_balises_print_checkup code, options = nil
+
+    options ||= Hash::new
+
+    # Il faut peut être ajouter l'explication sur les
+    # checkups
+    explication_checkup = Cnarration::texte_type('explication_checkups', options)
+    explication_checkup = case options[:output_format]
+    when :latex
+      explication_checkup
+    else
+      explication_checkup.in_div(class:'small italic border')
+    end
+    code = code.sub(/EXPLICATION_CHECKUPS?/, explication_checkup)
 
     # Dans un premier temps on relève toutes les questions qui
     # sont disséminées dans tous les fichiers du livre.
@@ -146,7 +154,6 @@ class SuperFile
         # @table_checkup.collect do |grp, arr_question|
         allq = String::new
         while grp_and_arr = @table_checkup.shift
-          debug "grp_and_arr: #{grp_and_arr.inspect}"
           grp, arr_question = grp_and_arr
           allq << ul_questions_checkup(arr_question, grp)
         end
@@ -163,7 +170,7 @@ class SuperFile
     unless @table_checkup.empty?
       flash "Des groupes de questions checkup ne sont pas traités (#{@table_checkup.keys.pretty_join}), je les ai ajoutés à la fin dans une rubrique “Autres questions”. Si tu veux les placer à un endroit précis, utilise les balises `PRINT_CHECKUP[&lt;groupe&gt;]` et un titre au-dessus."
       code += "Autres questions".in_h2 + @table_checkup.collect do |grp, arr_question|
-          ul_questions_checkup(arr_question, grp)
+          ul_questions_checkup(arr_question, grp, options)
         end.join('')
     end
 
@@ -182,14 +189,16 @@ class SuperFile
   # +groupe+
   #     {String} Optionnellement, le nom du groupe
   #
-  def ul_questions_checkup questions, groupe = nil
+  def ul_questions_checkup questions, groupe = nil, options = nil
+    options ||= Hash::new
+
     # Liste des fichiers déjà mis en commentaire (ils servent à
     # savoir si le fichier doit être actualisé après modification
     # de la question ou du fichier la contenant)
     @files_checkups_traited ||= Hash::new
 
     # Boucle sur chaque question
-    questions.collect do |hquestion|
+    all_questions = questions.collect do |hquestion|
 
       # La marque pour savoir que le fichier de la question est
       # utilisé ici et que s'il a été modifié il faut modifier aussi
@@ -201,21 +210,37 @@ class SuperFile
         ""
       end
 
-      # Le lien pour rejoindre la question dans son fichier
-      lien_vers_question = "-&gt;&nbsp;voir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
-      lien_vers_question = " (#{lien_vers_question})"
+      lien_vers_question = case options[:output_format]
+      when :latex
+        "\\ref{#{hquestion[:id]}}"
+      else
+        # Le lien pour rejoindre la question dans son fichier
+        lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
+        " (#{lien_vers_question})"
+      end
 
       # Mise en forme de la question affichée dans le checkup
-      (
-        hquestion[:question] +
-        mark_file +
-        lien_vers_question
-      ).in_li(id: hquestion[:id])
+      case options[:output_format]
+      when :latex
+        "\\item #{hquestion[:question]} #{lien_vers_question}"
+      else
+        (
+          hquestion[:question] +
+          mark_file +
+          lien_vers_question
+        ).in_li(id: hquestion[:id])
+      end
+    end
 
-    end.join.in_ul(
-      id:     "checkup_groupe_#{groupe || '__autre__'}",
-      class:  'checkup_groupe'
+    case options[:output_format]
+    when :latex
+      all_questions.join("\n")
+    else
+      all_questions.join('').in_ul(
+        id:     "checkup_groupe_#{groupe || '__autre__'}",
+        class:  'checkup_groupe'
       )
+    end
   end
 
   # Méthode qui relève toutes les questions dans le livre

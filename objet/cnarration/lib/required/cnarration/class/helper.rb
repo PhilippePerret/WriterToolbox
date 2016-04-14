@@ -30,5 +30,34 @@ class Cnarration
       end
       donglets
     end
+
+    # Retourne le texte type de nom +nom+
+    #
+    # Ce texte doit se trouver dans un fichier de nom
+    # +nom+ dans le dossier des textes type de narration :
+    #   ./data/unan/texte_type/cnarration
+    #
+    # Le fichier peut être de plusieurs types différents mais
+    # c'est le type Markdown qui est préféré.
+    #
+    # +options+
+    #   :output_format    Format de sorte (:erb, :html ou :latex)
+    #
+    # TODO: Prendre en compte le format
+    def texte_type nom, options = nil
+      nom += ".md" unless nom.end_with?('.md')
+      sf = (folder_textes_types+nom)
+      case sf.extension
+      when 'md'
+        sf.kramdown
+      when 'rb'
+        require sf
+      when 'txt', 'html'
+        sf.read
+      end
+    end
+    def folder_textes_types
+      @folder_textes_types ||= site.folder_data+"unan/texte_type/cnarration"
+    end
   end #/ << self
 end #/Cnarration

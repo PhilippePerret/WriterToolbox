@@ -7,9 +7,10 @@
   * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
+  * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Référence vers autre page](#placerunereferenceaautrepage)
-
+  * [Textes types](#lestextestypes)
   * [Images](#utilisationduneimage)
 
 <a name='leslivresnarration'></a>
@@ -89,6 +90,20 @@ Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table 
 
 [Aide Kramdown](http://kramdown.gettalong.org)
 
+<a name='lestextestypes'></a>
+
+### Textes types
+
+Des textes-types, de préférable en Markdown, insérable n'importe où peuvent être définis dans le dossier :
+
+    ./data/unan/texte_type/cnarration/
+
+Pour les insérer il suffit d'utiliser :
+
+    Cnarration::texte_type "path/relatif/to/file.md"
+
+Le chemin relatif se calcule depuis le dossier `./data/unan/texte_type/cnarration/`.
+
 <a name='placerunereferenceaautrepage'></a>
 
 ### Référence vers autre page
@@ -107,6 +122,34 @@ Quand il y a l'ancre, il faut obligatoirement le titre
     REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
 
 Pour obtenir facilement une référence à une page, rejoindre la page et cliquer sur le bouton `&lt;-&gt`.
+
+<a name='environnementsdocuments'></a>
+
+### Les environnements documents
+
+Ces environnements permettent de simuler une page de document dans la page.
+
+Dans TextMate, utiliser le snippet `doc->|` pour générer le texte type :
+
+    DOC/<type de document>[ plain]
+    # Un titre
+    ## Un sous-titre
+    ...
+    / Légende du document
+    /DOC
+
+On trouve comme type de document :
+
+    events      Évènemencier
+    synopsis    Synopsis ou document général.
+    raw         Document brut (pre)
+    rapport     Type rapport
+    scenario    Scénario
+                On peut alors commencer les lignes par des :
+                <LETTRE>:<texte>
+                pour formater dans le style d'un scénario à l'aide
+                des lettres I (intitulé) A (action), D (dialogue),
+                P (nom du personnage) J (note de jeu)
 
 <a name='listedequestionspourcheckup'></a>
 
@@ -159,6 +202,16 @@ Pour grouper les questions par leur groupe :
 Les styles pour les questions sont définis dans :
 
     ./objet/cnarration/lib/required/css/show.sass
+
+#### Explication des checkups
+
+On peut insérer un texte type sur l'explication des checkups en insérant à l'endroit voulu (en général en haut du fichier) la balise :
+
+    EXPLICATION_CHECKUPS
+
+Le texte est un texte type se trouvant dans :
+
+    ./data/unan/texte_type/cnarration/explication_checkups.md
 
 #### Actualisation
 
