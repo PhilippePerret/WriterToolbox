@@ -9,6 +9,7 @@ section#content.narration
   
   h2, h3, h4
     margin-left     : 0
+    
   // Div des boutons de navigation vers la page avant et la page
   // après
   div.btnsnav
@@ -20,14 +21,21 @@ section#content.narration
       font-size     : 19pt
       margin-left   : 12px
 
-// section#page_narration => sur Icare
+// section#content.narration => sur Icare
 section#content
   font-family   : "Open Sans",Tahoma,Arial
   font-size     : 15.9pt
+  
+  
+  div#page_titre, div#page_cours
+    width         : 820px
+    margin        : 3em 0 2em 1em
+    border        : 1px solid #ccc
+  
+  // La page contenant les titres de chapitre et de
+  // sous-chapitre
   div#page_titre
-    padding       : 8em 0 15em
-    border        : 1px solid #959595
-    margin        : 1em 6em 2em
+    padding       : 8em 2em
     div.libelle_titre
       font-style    : italic
       color         : #b9b9b9
@@ -43,12 +51,14 @@ section#content
       padding       : 6px 0 8px 12px
       border-left   : 12px solid #578088
       
+  // Une page de cours normale donc de texte, pas un
+  // titre de chapitre ou de sous-chapitre
   div#page_cours
-    width         : 780px
-    margin-left   : 3em
-    margin-top    : 3em
-    margin-bottom : 4em
-  
+    padding       : 2.7em 2em 3em   
+    h1
+      margin-bottom    : 2em
+      color             : #303030 !important
+    
     h3
       font-size      : 1.4em
     
@@ -131,6 +141,17 @@ section#content
       a
         position      : absolute
 
+  // Pour les questions de checkup (celles qui se trouvent
+  // dans les textes, donc pas les questions rassemblées dans le
+  // fichier checkup final)
+  span.qcheckup.iso
+    font-family     : Arial,Helvetica
+    font-size       : 13.2pt
+    line-height     : 1.2em
+    margin-left     : 15em
+    &.iso
+      display: block
+  
   div#bloc_evaluation
     display       : inline-block
     text-align    : left

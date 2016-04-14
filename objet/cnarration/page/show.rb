@@ -28,7 +28,7 @@ class Page
     end
     if path_semidyn.exist?
       (
-        titre.in_h3 + page_content_by_user
+        titre.in_h1 + page_content_by_user
       ).in_div(id:'page_cours')
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."

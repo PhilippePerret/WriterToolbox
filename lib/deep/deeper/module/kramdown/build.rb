@@ -70,11 +70,15 @@ class SuperFile
     # il faut l'appeler
     code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
 
+    # Si une méthode de traitement additionnel existe,
+    # il faut lui envoyer le code
+    code = formatages_additionnels(code, options) if self.respond_to?(:formatages_additionnels)
+
     # Traitement extra kramdown
     # TODO: Dans l'idéal, il faudrait apprendre à les insérer
     # dans le traitement Kramdown::Document ci-dessous…
     code = ( code.extra_kramdown output_format )
-    
+
     #
     # = MAIN TRAITEMENT =
     #

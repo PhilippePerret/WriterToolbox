@@ -2,14 +2,14 @@
 # Affichage d'une page de la collection Narration
 %>
 <%
-def page
-  @page ||= site.objet
+def ipage
+  @ipage ||= site.objet
 end
 %>
-<%= Cnarration::titre_h1 page.livre.titre %>
-<%= page.liens_edition_if_admin %>
-<%= page.boutons_navigation(:top) %>
-<%= page.output %>
-<%= page.permanent_link %>
-<%= page.bloc_evaluation %>
-<%= page.boutons_navigation(:bottom) %>
+<%= Cnarration::titre_h1 ipage.livre.titre %>
+<%= ipage.liens_edition_if_admin %>
+<%= ipage.boutons_navigation(:top) %>
+<%= ipage.output %>
+<%= ipage.boutons_navigation(:bottom) %>
+<%= ipage.permanent_link %>
+<%= ipage.bloc_evaluation if ipage.page? %>
