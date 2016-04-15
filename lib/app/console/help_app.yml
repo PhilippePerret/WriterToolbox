@@ -206,6 +206,11 @@ narration:
       Par exemple `balise livre SRPS` pour le SRPS.
 
   -
+    command:        balise page &lt;portion du titre&gt;
+    description: |
+      Retourne une balise référence à copier-coller dans le texte
+      d'une page.
+  -
     command:        "`balise question`"
     description:    Retourne le code CHECKUP[&lt;question&gt;] pour placer une question dans le document qui sera reprise dans le checkup.
     note:   |

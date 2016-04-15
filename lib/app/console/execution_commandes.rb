@@ -138,7 +138,7 @@ class Console
   # Exécution comme une expression régulière propre à
   # l'application
   def app_execute_as_regular_sentence line
-    if (found = line.match(/^balise (livre|film|mot|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
+    if (found = line.match(/^balise (livre|film|mot|page|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
       ( main_traitement_balise found[1..-1] )
     elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
       (site.folder_lib_optional + 'console/pday_change/main.rb').require

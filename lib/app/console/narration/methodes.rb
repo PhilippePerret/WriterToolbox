@@ -96,6 +96,27 @@ class Console
     return ""
   end
 
+  # RETURN La balise pour insérer une référence à
+  # la page dans le document pour la page de référence
+  # +page_ref+ qui est une portion du titre.
+  def give_balise_of_page page_ref
+    hpages = pages_narration_from_page_ref page_ref
+    return if hpages.nil?
+    balises = Array::new
+    hpages.each do |pdata|
+      pid = pdata[:id]
+      balises << ["REF[#{pid}|#{pdata[:titre]}]", pid]
+      balises << ["REF[#{pid}]", pid]
+      balises << ["REF[#{pid}|ANCRE|#{pdata[:titre]}]", pid]
+    end
+    # Array retourné
+    arr_balises = balises.collect do |balise, pid|
+      {value:balise, after:"voir".in_a(href:"page/#{pid}/show?in=cnarration")}
+    end
+    flash "Trois sortes de balises ont été générées par page.<br>La première est la meilleure."
+    return [arr_balises, ""]
+  end
+
   # Méthode retournant la balise pour se rendre à la table
   # des matières du livre de référence +livre_ref+
   #

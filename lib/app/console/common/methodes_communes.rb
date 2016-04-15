@@ -41,13 +41,16 @@ class Console
     when 'mot'
       console.require 'scenodico'
       give_balise_of_scenodico(bdata[1])
-    when 'livre'  then
+    when 'livre'
       console.require 'narration'
       give_balise_of_livre(bdata[1])
-    when 'question' then
+    when 'page'
+      console.require 'narration'
+      give_balise_of_page(bdata[1])
+    when 'question'
       console.require 'narration'
       give_balise_of_question(bdata[1])
-    when 'checkup' then
+    when 'checkup'
       console.require 'narration'
       give_balise_of_checkup(bdata[1])
     end
