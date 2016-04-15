@@ -197,9 +197,13 @@ narration:
       </ul>
   -
     command:        balise livre &lt;référence livre&gt;
-    description:    Permet d'obtenir une balise avec un lien vers le livre.
+    description:    Permet d'obtenir une balise avec un lien vers le livre de la collection OU un livre de bibliographie.
     note: |
       La référence au livre peut être diverse, par exemple `balise livre documents` ou `balise livre auteur` ou `balise livre themes`.
+
+      Pour un livre de la bibliographie (Cnarration::BIBLIOGRPAHIE), la référence donnée
+      peut être indifféremment un bout de l'ID, du titre ou de l'auteur.
+      Par exemple `balise livre SRPS` pour le SRPS.
 
   -
     command:        "`balise question`"

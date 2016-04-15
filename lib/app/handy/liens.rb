@@ -205,10 +205,18 @@ class Lien
   end
 
   # Balise pour des livres avec référence
-  # SRPS1998 pour le SRPS
-  # GDS1998|Le Guide du scénariste
-  # TODO
+  #
+  # Ces livres doivent être définis dans Cnarration::BIBLIOGRAPHIE
+  # Cf. l'adresse ci-dessous.
+  # 
   def livre titre, ref = nil
+    if titre.nil_if_empty.nil?
+      unless defined?(Cnarration)
+        require './objet/cnarration/lib/required/bibliographie.rb'
+      end
+      hlivre  = Cnarration::BIBLIOGRAPHIE[ref]
+      titre   = hlivre[:titre]
+    end
     "<span class='livre'>#{titre.gsub(/ /,' ')}</span>"
   end
 

@@ -7,6 +7,7 @@
   * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
+  * [Obtenir des balises vers film, livre, mot, etc.](#obtenirbalisesverschoses)
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Référence vers autre page](#placerunereferenceaautrepage)
@@ -123,7 +124,33 @@ Quand il y a l'ancre, il faut obligatoirement le titre
     REF[page_id|titre]          # Idem avec un titre fourni
     REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
 
-Pour obtenir facilement une référence à une page, rejoindre la page et cliquer sur le bouton `&lt;-&gt`.
+Pour obtenir facilement une référence à une page, rejoindre la page et cliquer sur le bouton `&lt;-&gt`. Ou utiliser la commande `balise page ...`
+
+<a name='obtenirbalisesverschoses'></a>
+
+## Obtenir des balises vers film, livre, mot, etc.
+
+Pour obtenir ces balises à insérer dans les textes, utiliser la console avec les commandes suivantes :
+
+@syntaxe pour un film
+
+    balise film <portion du titre fr ou original>
+
+@syntaxe pour un mot du scénodico
+
+    balise mot <portion du mot>
+
+@syntaxe pour un livre de la collection
+
+    balise livre <ref book>
+
+@syntaxe pour un livre de la bibliographie
+
+    balise livre <portion de l'id, du titre ou de l'auteur>
+
+@syntaxe pour une page de la collection
+
+    balise page <portion du titre>
 
 <a name='environnementsdocuments'></a>
 

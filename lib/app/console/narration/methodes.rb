@@ -98,6 +98,10 @@ class Console
 
   # Méthode retournant la balise pour se rendre à la table
   # des matières du livre de référence +livre_ref+
+  #
+  # ATTENTION : Il peut s'agir ici soit d'un livre de la collection
+  # Narration soit d'un livre de la bibliographie.
+  #
   def give_balise_of_livre livre_ref
     site.require_objet 'cnarration'
 
@@ -108,18 +112,26 @@ class Console
     when /personnage/ then ["les_personnages", 2]
     when /dynamique/  then ["la_dynamique_narrative", 3]
     when /(theme|thème|thematique)/ then ["la_thematique", 4]
-    when /document/   then ["les_documents", 5]
+    when /^documents?$/   then ["les_documents", 5]
     when /(travail|auteur)/   then ["le_travail_de_lauteur", 6]
     when /(procédé|procede)/  then ["les_procedes", 7]
     when /(concept|theorie)/  then ["les_concepts_narratifs", 8]
     when /dialogue/   then ["le_dialogue", 9]
     when /analyse/    then ["lanalyse_de_films", 10]
     else
-      [nil, "Impossible de trouver le lien pour le livre incconu #{livre_ref}"]
+      [nil, "Impossible de trouver le lien pour le livre de référence #{livre_ref}"]
     end
 
     # Livre introuvable
-    return [nil, livre_id] if suf_lien.nil?
+    # On va le rechercher dans la bibliographie
+    if suf_lien.nil?
+      liens_livres = liens_livres_bibliographie(livre_ref)
+      if liens_livres.nil?
+        return [nil, livre_id]
+      else
+        return [liens_livres, ""]
+      end
+    end
 
     # Lien inexistant
     unless Lien.instance.respond_to?("livre_#{suf_lien}".to_sym)
@@ -128,6 +140,26 @@ class Console
 
     lien_tdm = "Table des matières".in_a(href:"livre/#{livre_id}/tdm?in=cnarration")
     [[{value:"lien.livre_#{suf_lien}", after: lien_tdm}], ""]
+  end
+
+
+  # RETURN un {Array} des liens qui ont pu être trouvé dans la bibliographie
+  # à partir de la référence +bref+ (pour "book référence") qui sera
+  # recherché aussi bien dans l'identifiant, le titre que les auteurs
+  def liens_livres_bibliographie bref
+    require './objet/cnarration/lib/required/bibliographie.rb' unless defined?(Cnarration)
+    founds = Array::new
+    breg = /#{bref}/i
+    Cnarration::BIBLIOGRAPHIE.each do |bid, bdata|
+      if bid.match(breg) || bdata[:titre].match(breg) || bdata[:auteur].match(breg)
+        founds << bdata
+      end
+    end
+    return nil if founds.empty?
+    # Sinon, on construit les liens et on les renvoie
+    founds.collect do |bdata|
+      {value: "LIVRE[#{bdata[:id]}|#{bdata[:titre]}]", after:nil}
+    end
   end
 
   def give_balise_of_question question = nil
