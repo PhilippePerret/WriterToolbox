@@ -1,0 +1,25 @@
+\pagestyle{fancy}
+
+% Effacer tout dans le pied de page et l'entête
+\fancyhead{}
+\fancyfoot{}
+
+% = Haut de page =
+\fancyhead[LE,RO]{\bfseries \leftmark} % Avec capitales
+\renewcommand{\headrulewidth}{0.4pt} % Filet
+% = Pied de page =
+\fancyfoot[RE,LO]{\nouppercase{\small\rightmark}}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\footrulewidth}{0.4pt} % Filet
+
+
+% Pour que les pages de chapitre soient bien formatées
+% Le style est le même que pour les autres pages, sauf l'entête qui
+% reste vide.
+\fancypagestyle{plain}{%
+  \fancyhead{}
+  \renewcommand{\headrulewidth}{0pt} % Pas de filet
+  \fancyfoot[RE,LO]{\nouppercase{\small \rightmark}}
+  \fancyfoot[LE,RO]{\thepage}
+  \renewcommand{\footrulewidth}{0.4pt}%
+}

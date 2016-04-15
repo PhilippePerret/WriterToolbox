@@ -1,0 +1,37 @@
+%
+% Préambule commun à tous les livres
+%
+
+% Packages
+\input{../commons/packages}
+
+% % Bases de données
+% \bibliography{../bdd/filmographie} % filmographie
+% % Mise en forme des citations
+% \input{../commons/mef/citations}
+
+% Raccourcis textuels
+\input{../commons/textes/_Raccourcis_textuels}
+\input{../commons/textes/_Titres_livres} % `\Titre<Livre>' => titre du livre
+
+% Définitions des entêtes et pied de page (avec fancyhdr)
+\input{../commons/mef/header_footer}
+
+% = Styles des éléments =
+\input{../commons/mef/toc} % Table des matières
+\input{../commons/mef/styles} % Toutes les feuilles de styles
+\input{../commons/mef/textes_speciaux} % Toutes les feuilles de styles
+\input{../commons/mef/tableaux} % Pour les tableaux-type
+
+% = Titres =
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % Pas de "Chapitre" dans les titres
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+% Première de couverture
+% =================
+\author{Philippe Perret}
+\date{} % Pas de date
+
+% Construction de l'index
+% Si l'index ne bouge plus, cette ligne peut être ex-commentée
+\makeindex

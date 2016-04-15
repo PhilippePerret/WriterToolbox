@@ -8,9 +8,8 @@ class Livre
     @id = book_id
   end
 
-  def titre
-    @titre ||= data[:hname]
-  end
+  def titre ;       @titre        ||= data[:hname]  end
+  def folder_name;  @folder_name  ||= data[:folder] end
 
   def tdm params = nil
     @tdm ||= Tdm::new(self)

@@ -12,6 +12,8 @@
   * [Référence vers autre page](#placerunereferenceaautrepage)
   * [Textes types](#lestextestypes)
   * [Images](#utilisationduneimage)
+* [Sortie des livres de la collection](#sortiedulivrenarration)
+  * [Sortie LaTex de la collection](#sortielatexcollection)
 
 <a name='leslivresnarration'></a>
 
@@ -265,3 +267,27 @@ On peut préciser le titre alternatif par :
     IMAGE[image|Mon titre alternatif]
 
 Il sera ajouter en légende.
+
+<a name='sortiedulivrenarration'></a>
+
+## Sortie des livres de la collection
+
+Par défaut, la collection est créée en HTML et sort sur le site de LA BOITE À OUTILS DE L'AUTEUR. Il suffit de charger une page pour qu'elle se construise le cas échéant.
+
+<a name='sortielatexcollection'></a>
+
+### Sortie LaTex de la collection
+
+
+
+Pour faire une sortie Latex, exécuter la commande :
+
+    narration sortie latex[ ref_book]
+
+Tous les livres :
+
+    narration sortie latex
+
+Le livre documents :
+
+    narration sortie latex documents

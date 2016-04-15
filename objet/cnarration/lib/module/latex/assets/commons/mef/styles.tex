@@ -1,0 +1,198 @@
+% Définition des styles propres à la série Narration
+%
+
+% Police par défaut
+\usepackage{times}
+
+% Utiliser "\indentationNormale" pour revenir à l'indentation
+% normale définie ici
+\newcommand{\indentationNormale}{%
+  \setlength{\parindent}{1em}%
+}
+
+% \indentationNormale
+
+
+% Appeler cette commande à la fin d'un environnement pour revenir à
+% l'environnement normal
+\newcommand{\valeursEnvironnementDefaut}{%
+  \indentationNormale%
+  \fontfamily{}%
+  \selectfont%
+}
+
+
+% ---------------------------------------------------------------------
+%   Définition des couleurs
+% ---------------------------------------------------------------------
+\definecolor{fondexemple}{rgb}{0.98,0.98,0.99}
+\definecolor{bordexemple}{rgb}{0.7,0.7,0.7}
+\definecolor{fondleger}{rgb}{0.99,0.99,0.99}
+
+% ---------------------------------------------------------------------
+%   Définition des termes spéciaux
+% ---------------------------------------------------------------------
+% Voir le fichier "textes_speciaux.tex"
+
+% ---------------------------------------------------------------------
+% Mise en forme des références (package varioref)
+\labelformat{chapter}{chapitre~#1}
+\labelformat{section}{section~#1}
+\labelformat{subsection}{sous-section~#1}
+\labelformat{table}{le tableau~#1}
+
+
+% ---------------------------------------------------------------------
+%   Divers
+% ---------------------------------------------------------------------
+
+\newcommand{\expo}[1]{\textsuperscript{#1}}
+
+% ---------------------------------------------------------------------
+%   Styles de boites
+% ---------------------------------------------------------------------
+
+% Pour une note dans un cadre
+\newcommand{\cadreNote}[1]{%
+  \noindent
+  \setlength{\parindent}{0em}%
+  \vspace{12pt}\par
+  \fcolorbox{fondleger}{fondleger}{%
+    \begin{minipage}{1\textwidth}
+      \vspace{12pt}%
+      #1%
+      \vspace{12pt}%
+    \end{minipage}%
+  }
+  \vspace{8pt}\par%
+  \valeursEnvironnementDefaut%
+}
+
+% ---------------------------------------------------------------------
+%   Environnements
+% ---------------------------------------------------------------------
+
+
+
+
+% === Main Environnement ===
+% L'environnement que doit appeler tout environnement pour un
+% document d'écriture en exemple, même de type scénario.
+% Cf. les environnements généraux définis ci-dessous.
+% 
+\newcommand{\docAuteur}[1]{%
+  \noindent
+  \setlength{\parindent}{0em}%
+  \vspace{12pt}\par
+  \fcolorbox{bordexemple}{fondexemple}{%
+    \begin{minipage}{1\textwidth}
+      \vspace{12pt}%
+      #1%
+      \vspace{12pt}%
+    \end{minipage}%
+  }
+  \vspace{8pt}\par%
+  % Remettre la config initiale
+  \valeursEnvironnementDefaut%
+}
+
+
+% --- Environnement Scénario ---
+% Elle modifie simplement la font et est utilisé
+% Par tout environnement scénario
+\newcommand{\docScenario}[1]{%
+  \fontfamily{phv}
+  \selectfont % pour que la font soit prise en compte
+  \docAuteur{#1}%
+}
+
+% --- Environnement Synopsis ---
+\newcommand{\docSynopsis}[1]{
+  \docAuteur{#1}%
+}
+
+% --- Environnement évènemencier ---
+\newcommand{\docEvenemencier}[1]{
+  \docAuteur{#1}%
+}
+% Un évènement dans l'évènemencier
+\newcommand{\evt}[1]{
+  \begin{OffText}{1cm}{0pt}%
+    \begin{flushleft}%
+      \vspace{-6pt}%
+      – #1%
+    \end{flushleft}%
+  \end{OffText}%
+}
+
+% ---------------------------------------------------------------------
+%   Méthodes générales
+% ---------------------------------------------------------------------
+
+% Sous-environnement permettant de définir les 
+% décalage de texte dans tous les autres environnements.
+% Notes
+%   * Usage : \OffText{<marge gauche>}{<marge droite>}
+%   * On peut définir les polices dans l'environnement principal
+%     cf. \docScenario ci-dessus
+% 
+\newenvironment{OffText}[2]{%
+\begin{list}{}{%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+}
+\setlength{\parskip}{0pt}%
+\indentationNormale%
+\scriptsize\item[]%
+}{%
+\end{list}
+}
+
+% ==================================
+%		Styles pour les SCÉNARIOS
+% ==================================
+% 
+% @usage
+%
+% 	\docScenario{
+%     		\scenarioIntitule{....}
+%     		\scenarioAction{....}
+%     		\scenarioPersonnage{...}
+%     		\scenarioNoteJeu{...}
+%     		\scenarioDialogue{...}
+% 	}
+%
+%
+% @Notes
+%   * Ces commandes sont incluses dans l'environnement \docScenario
+%     cf. ci-dessus
+% ---------------------------------------------------------------------
+\newcommand{\scenarioIntitule}[1]{%
+  \begin{OffText}{12pt}{12pt}
+    {\bfseries #1}
+  \end{OffText}%
+}
+\newcommand{\scenarioPersonnage}[1]{%
+  \begin{OffText}{4cm}{12pt}
+    {\bfseries #1}
+  \end{OffText}%
+}
+\newcommand{\scenarioNoteJeu}[1]{%
+  \begin{OffText}{4cm}{3cm}
+    \vspace{-6pt}
+    {\itshape #1}
+  \end{OffText}%
+}
+\newcommand{\scenarioDialog}[1]{%
+  \begin{OffText}{2.5cm}{2cm}
+    \begin{flushleft}
+      \vspace{-6pt}
+      #1
+    \end{flushleft}
+  \end{OffText}%
+}
+\newcommand{\scenarioAction}[1]{%
+  \begin{OffText}{22pt}{24pt}
+    #1
+  \end{OffText}%
+}  

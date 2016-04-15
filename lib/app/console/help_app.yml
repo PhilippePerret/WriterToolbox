@@ -217,6 +217,18 @@ narration:
 
       Noter qu'on peut utiliser le snippet `checkup` dans TextMate pour obtenir ce code.
 
+  -
+    command:        narration (sortie|output|export) latex[ ref_book]
+    description: |
+      Permet d'exporter la collection en version Latex à partir des
+      fichiers établis en Markdown/kramdown.
+      Si `ref_book` est défini, c'est un ID ou le nom symbolique du
+      livre qui doit être sorti.
+    note: |
+      La commande crée un dossier où sont déposés tous les fichiers
+      latex et il suffit de les compiler pour obtenir le PDF.
+      Plus tard, peut-être que la compilation sera faite automatiquement.
+
 # ---------------------------------------------------------------------
 #   ANALYSE DE FILM
 # ---------------------------------------------------------------------

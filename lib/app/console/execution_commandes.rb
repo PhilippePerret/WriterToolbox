@@ -28,6 +28,9 @@ class Console
       redirect_to "admin/inventory?in=cnarration"
       return ""
       # --- NARRATION ---
+    when /^narration (sortie|output|export) latex(.*?)$/
+      console.require 'narration'
+      sortie_latex line.sub(/^narration (sortie|output|export) latex/,'')
     when /(help|aide) livres narration/
       console.require 'narration'
       aide_pour_les_livres_narration

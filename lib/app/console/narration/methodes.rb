@@ -76,6 +76,16 @@ class Console
     end
     return ""
   end
+
+  # Commande exécutant la sortie latex de la collection
+  def sortie_latex ref_book = nil
+    ref_book = ref_book.nil_if_empty
+    site.require_objet 'cnarration'
+    Cnarration::require_module 'latex'
+    Cnarration::exporter_collection_vers_latex ref_book
+    return ""
+  end
+
   # Commande complexe qui synchronise la base de données cnarration.db
   # en vérifiant le niveau de développement des pages pour garder les
   # modifications qui ont pu être faites online et offline.
