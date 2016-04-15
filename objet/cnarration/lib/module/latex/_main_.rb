@@ -16,9 +16,8 @@ class << self
 
     @suivi << "Référence du livre : #{ref_book.nil? ? 'aucune' : ref_book}"
 
-    livres_a_traiter.each do |livre_id|
-      export_livre_vers_latex livre_id
-    end
+    # Export de tous les livres à traiter
+    livres_a_traiter.each { |livre_id| Livre::new(livre_id).export_latex }
 
     if defined?(console)
       console.sub_log @suivi.join("<br>\n")
@@ -57,45 +56,6 @@ class << self
     end
   end
 
-  # = main =
-  #
-  # Méthode principale pour l'export LaTex d'un livre
-  # en fournissant son ID
-  def export_livre_vers_latex livre_id
-    @dbook = Cnarration::LIVRES[livre_id]
-
-    ilivre = Livre::new(livre_id)
-
-    # Créer un dossier principal pour le livre (:folder)
-    # C'est dans ce dossier que se trouvera l'intégralité des
-    # élément du livre LaTex
-    ilivre.init_latex_folder
-
-    # Créer un dossier pour les _sources (toutes au même niveau)
-    ilivre.latex_source_folder.build
-
-    # Créer un fichier principal Latex
-    ilivre.latex_main_file.init
-
-    # Faire toutes les pré-corrections du texte pour que Kramdonw
-    # le transforme bien.
-
-    # Transformer toutes les sources en fichiers LaTex (Kramdown)
-
-    # Faire toutes les post-corrections du texte kramdowné
-    # s'il en reste
-
-    # Prendre la table des matières du livre et créer les titres
-    # et les inclusions dans le fichier principal LaTex
-
-    # On peut terminer le fichier latex principal du
-    # livre
-    # Noter qu'il reste ouvert en écriture (ilivre.latex_main_file.write)
-    # et que le fermer consiste juste à "ender" le document.
-    ilivre.latex_main_file.close
-
-    @suivi << "*** Export vers latex du livre “#{@dbook[:hname]}”"
-  end
 end #/<< self
 
 end #/Cnarration
