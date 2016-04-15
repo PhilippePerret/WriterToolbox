@@ -1,7 +1,6 @@
 # encoding: UTF-8
 class User
   def do_after_login
-    return
     # Suivant les préférences du site, on prévient l'administration
     # d'une connexion au site.
     case site.alert_apres_login
@@ -16,7 +15,6 @@ class User
 
   # À faire après un chargement de page
   def do_after_load
-    return
     # debug "-> do_after_load"
     # Si cet utilisateur a déjà été signalé, on ne fait rien
     if param(:user_already_signaled) == "1"

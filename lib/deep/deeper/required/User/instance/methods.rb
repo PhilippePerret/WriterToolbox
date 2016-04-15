@@ -51,10 +51,11 @@ class User
     elsif self.respond_to?(:redirect_after_login)
       # Sinon, une redirection est peut-être définie
       # par défaut par les préférences ou l'application
-      debug "  Redirection après login (appel de User#redirect_after_login)"
+      debug "  Appel de User#redirect_after_login"
       self.send(:redirect_after_login)
     end
     debug "<- login"
+    return true
   end
 
   # On déconnecte l'user
