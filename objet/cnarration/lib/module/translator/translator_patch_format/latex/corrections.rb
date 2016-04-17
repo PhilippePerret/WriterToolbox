@@ -39,6 +39,21 @@ class Translator
       $narration_page_id = nil
     end
 
+    # Mis en forme des documents si le texte contient DOC
+    #
+    # Noter que dans ce premier temps ça n'est pas du pur code
+    # latex qui est construit, car les antislahs et les crochets
+    # seraient traités par Kramdown. Voir la méthode
+    # `String#traite_antislash_et_crochets_latex` dans le fichier
+    # './lib/deep/deeper/module/kramdown/doc_in_text.rb' qui
+    # explique comment on procède.
+    #
+    if @content.match(/DOC\//)
+      @content = @content.mef_document(:latex)
+      if page_id == 15
+        debug "@content après mef_document : #{@content}"
+      end
+    end
   end
 
   # Corrections finales sur le texte Kramdowné
@@ -47,11 +62,15 @@ class Translator
 
     # debug "content dans post_corrections : #{content}\n\n\n"
 
+    # On finalise les balises LaTex des environnements
+    # document et peut-être d'autres choses aussi.
+    @content = content.traite_antislash_et_crochets_latex
+
     # On traite les balises propres. Pour modifier le comportement
     # d'une méthode (comme par exemple celle qui gère les REF[...])
     # il suffit de la surclasser dans le module `string_extension`
     # de ce fichier
-    @content = content.formate_balises_propres
+    @content = @content.formate_balises_propres
 
     # Correction des questions de checkup
     #

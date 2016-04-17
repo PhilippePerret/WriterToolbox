@@ -40,7 +40,7 @@ class Cnarration
     def li_for_page hpage, next_level
       span_affixe = (
         "<br>Nom (sans extension) du fichier de correction : ".in_span +
-        "p#{hpage[:id]}_#{hpage[:handler].gsub(/\//,'-')}_#{user.pseudo}".in_input_text(style:"width:320px", onfocus:"this.select()")
+        "p#{hpage[:id]}_#{hpage[:handler].gsub(/\//,'-')}-#{next_level - 1}_#{user.pseudo}".in_input_text(style:"width:320px", onfocus:"this.select()")
         ).in_span(class:'tiny')
       line_titre = ( hpage[:titre] + span_affixe ).in_span
       (btns_page_edition(hpage, next_level)+line_titre).in_li(value: hpage[:id], class:'hover')

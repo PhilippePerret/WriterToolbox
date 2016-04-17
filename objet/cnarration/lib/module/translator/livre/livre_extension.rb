@@ -73,7 +73,8 @@ class Livre
         hpage = Cnarration::table_pages.get(pid, colonnes:[:titre, :options])
         ischapter = hpage[:options][0] == "3"
         titre = hpage[:titre].gsub(/ /, '~{}')
-        latex_main_file.write "\\#{ischapter ? 'chapter' : 'section'}{#{titre}}"
+        subdiv = ['', 'subsection', 'section','chapter'][hpage[:options][0].to_i]
+        latex_main_file.write "\\#{subdiv}{#{titre}}"
       else
         # => handler
         latex_main_file.write "\\include{sources/#{chose}}"

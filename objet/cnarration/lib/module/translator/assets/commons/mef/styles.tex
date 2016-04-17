@@ -21,6 +21,23 @@
   \selectfont%
 }
 
+% Pour mettre un texte en retrait avec N valeurs
+% de retrait
+\newcommand{\retrait}[2]{
+  % #1 = le texte à mettre en retrait
+  % #2 = la valeur du retrait, en "unité de marge" (1 à x)
+  \noindent
+  \setlength{\parindent}{#2em}%
+  % \vspace{12pt}\par%
+  \begin{minipage}{1\textwidth}
+    % \vspace{12pt}%
+    #1%
+    % \vspace{12pt}%
+  \end{minipage}%
+  % \vspace{8pt}\par%
+  \valeursEnvironnementDefaut%
+}
+
 
 % ---------------------------------------------------------------------
 %   Définition des couleurs
@@ -72,14 +89,20 @@
 %   Environnements
 % ---------------------------------------------------------------------
 
-
+% Titres à l'intérieur des documents
+\newcommand{\titredoc}[2]{
+  % TODO: Traiter le nombre d'arguments pour mettre des
+  % titre de différents niveaux (à partir de 1)
+  % Pour le moment, on met simplement le titre en gras
+  {\bfseries #1}
+}
 
 
 % === Main Environnement ===
 % L'environnement que doit appeler tout environnement pour un
 % document d'écriture en exemple, même de type scénario.
 % Cf. les environnements généraux définis ci-dessous.
-% 
+%
 \newcommand{\docAuteur}[1]{%
   \noindent
   \setlength{\parindent}{0em}%
@@ -113,29 +136,34 @@
 
 % --- Environnement évènemencier ---
 \newcommand{\docEvenemencier}[1]{
-  \docAuteur{#1}%
+	\docAuteur{#1}
+  \vspace{-1.0em}
 }
 % Un évènement dans l'évènemencier
 \newcommand{\evt}[1]{
-  \begin{OffText}{1cm}{0pt}%
-    \begin{flushleft}%
-      \vspace{-6pt}%
-      – #1%
-    \end{flushleft}%
-  \end{OffText}%
+\begin{OffText}{1cm}{0pt}%
+  \begin{flushleft}%
+    % Le vspace ci-dessous est ajouté pour rétrécir l'écartement entre
+  	% les paragraphes d'un évènemencier, parce que ça ne fonctionne pas
+  	% avec les autres choses que j'ai essayées, à commencer parskip.
+    \vspace{-1.0em}
+    \hspace{-1.5em}{- }
+    \texttt{ #1 } %
+  \end{flushleft} %
+\end{OffText}
 }
 
 % ---------------------------------------------------------------------
 %   Méthodes générales
 % ---------------------------------------------------------------------
 
-% Sous-environnement permettant de définir les 
+% Sous-environnement permettant de définir les
 % décalage de texte dans tous les autres environnements.
 % Notes
 %   * Usage : \OffText{<marge gauche>}{<marge droite>}
 %   * On peut définir les polices dans l'environnement principal
 %     cf. \docScenario ci-dessus
-% 
+%
 \newenvironment{OffText}[2]{%
 \begin{list}{}{%
 \setlength{\leftmargin}{#1}%
@@ -151,7 +179,7 @@
 % ==================================
 %		Styles pour les SCÉNARIOS
 % ==================================
-% 
+%
 % @usage
 %
 % 	\docScenario{
@@ -183,7 +211,7 @@
     {\itshape #1}
   \end{OffText}%
 }
-\newcommand{\scenarioDialog}[1]{%
+\newcommand{\scenarioDialogue}[1]{%
   \begin{OffText}{2.5cm}{2cm}
     \begin{flushleft}
       \vspace{-6pt}
@@ -195,4 +223,4 @@
   \begin{OffText}{22pt}{24pt}
     #1
   \end{OffText}%
-}  
+}

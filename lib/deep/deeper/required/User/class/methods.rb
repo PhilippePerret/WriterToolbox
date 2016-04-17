@@ -6,7 +6,7 @@ class User
     # Identification
     def login
       unless login_ok?
-        error "Je ne vous reconnais pas… Pouvez-vous ré-essayer ?"
+        error "Je ne vous reconnais pas… Voulez-vous bien réessayer ?"
         redirect_to :home
       end
     end
