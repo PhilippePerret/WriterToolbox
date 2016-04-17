@@ -22,5 +22,10 @@ class Translator
 
   end
 
+  # Finalisation du contenu du fichier
+  def finalise_content
+
+  end
+
 end #/Translator
 end #/Cnarration

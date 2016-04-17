@@ -61,6 +61,8 @@ class Translator
     # === / 3 phases de la correction ===
 
 
+    finalise_content
+
     suivi << "    -> Production fichier #{output_format}\n" +
              "       #{file_dest.to_s.in_span(class:'tiny')})"
     write_file_dest
@@ -68,14 +70,16 @@ class Translator
     return true
   end
 
+
   # Kramdownage du fichier (suivant le format de sortie désiré)
   def kramdown
     suivi << "    -> kramdown du fichier"
-    debug "content dans kramdown : #{content}\n\n\n"
+    # debug "content dans kramdown : #{content}\n\n\n"
     options = {
       auto_ids:false,
       # html_to_native:true,
-      remove_block_html_tags: false
+      remove_block_html_tags: false,
+      header_offset: 1 # Pour commencer à \subsection si c'est ##
       }
     @content = Kramdown::Document.new(content, options).send(kramdown_method)
   end
@@ -96,7 +100,13 @@ class Translator
     @content ||= sfile.read
   end
 
-  # {Fixnume} ID de la page correspondant au fichier
+  # {Cnarration::Page} Instance de la page du fichier
+  # courant translaté
+  def page
+    @page ||= Cnarration::Page::get(page_id.to_i)
+  end
+
+  # {Fixnum} ID de la page correspondant au fichier
   # Pour le suivi et également pour connaitre le placement
   # du fichier dans la table des matières.
   def page_id

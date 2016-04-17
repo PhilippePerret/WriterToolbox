@@ -27,6 +27,11 @@
 % Acteur dans le texte
 \newcommand{\acteur}[1]{#1}
 
+% Un livre en bibliographie, mais autre qu'ouvrage de la
+% collection (en tout cas pour le moment)
+\newcommand{\livre}[1]{
+  \small \textit{\MakeTextUppercase{#1}}
+}
 % Un volume de la collection cité dans le texte
 \newcommand{\bookserie}[1]{%
   livre \enquote{#1} de la série%

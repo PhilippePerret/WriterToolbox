@@ -40,7 +40,7 @@ class Livre
     # Pour passer les pages progressivement (une à une), afin de
     # corriger les erreurs au fur et à mesure.
     # Mettre à 1000 pour les passer toutes
-    max_sources = 4
+    max_sources = 30
 
     # Passer en revue toutes les sources (tous les fichiers) et
     # les traiter.

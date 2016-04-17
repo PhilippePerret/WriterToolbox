@@ -51,8 +51,10 @@ class << self
   #
   REG_QUESTION_CHECKUP = /(^)?[^_]CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
   def formate_balises_question_checkup_in code, options = nil
+    options ||= Hash::new
     output_format = options[:format] || options[:output_format] || :html
     q_indice = 0
+
     code.gsub(REG_QUESTION_CHECKUP){
       first_chr = $1.freeze
       debut_n   = first_chr != nil
@@ -63,7 +65,7 @@ class << self
       q_indice  += 1
       q_id      = "qckup#{$narration_page_id}-#{q_indice}"
 
-
+      # debug "question : '#{question}' / groupe: '#{groupe}'"
       lineq = case output_format
       when :html
         repere = <<-HTML
@@ -72,7 +74,13 @@ class << self
         ancre = "<a name='#{q_id}'></a>"
         "#{ancre}#{repere}<span id='#{q_id}' class='qcheckup#{isoled ? ' iso' : ''}'>#{question}</span>"
       when :latex
-        "\\questioncheckup{#{question}}\\label{#{q_id}}"
+        # Note : En Latex, puisque ces corrections arrivent AVANT
+        # le traitement par Kramdown, il faut mettre du code qui
+        # ne sera pas changé par Kramdown, d'où les crochets.
+        # Note de note : le traitement doit se faire AVANT le traitement
+        # de kramdown, sinon les | sont remplacés par des longtables
+        # intempestives.
+        "LABEL[#{q_id}]QUESTIONCHKP[#{question}]"
       end
 
       # Texte final
