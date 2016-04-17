@@ -36,9 +36,27 @@ class LatexMainFile
     sfile.append "#{str}\n"
   end
   def sfile
-    @sfile ||= livre.latex_folder + "Livre_#{livre.folder_name}.tex"
+    @sfile ||= livre.latex_folder + name
   end
   alias :path :sfile
+
+  def name
+    @name ||= "#{affixe}.tex"
+  end
+  def affixe
+    @affixe ||= "Livre_#{livre.folder_name}"
+  end
+  def affixe_path
+    @affixe_path ||= (sfile.folder + affixe).expanded_path
+  end
+  def full_path
+    @full_path ||= begin
+      debug "sfile.to_s = #{sfile.to_s}"
+      fp = sfile.expanded_path
+      debug "full path : #{fp}"
+      fp
+    end
+  end
 
 
   LATEX_MARKS = {

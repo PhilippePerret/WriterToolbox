@@ -35,15 +35,45 @@ class Livre
     # le fichier latex principal
     @liste_inclusions = Array::new
 
+    # ========== CORE =============
+
+    # Pour passer les pages progressivement (une à une), afin de
+    # corriger les erreurs au fur et à mesure.
+    # Mettre à 1000 pour les passer toutes
+    max_sources = 2
+
     # Passer en revue toutes les sources (tous les fichiers) et
     # les traiter.
-    sources.each { |source| traite_source source }
+    sources.each do |source|
+
+      itranslator = Cnarration::Translator::new self, source
+
+      # Méthode qui traite le fichier en profondeur. Si la
+      # méthode réussit, on poursuit en enregistrant le
+      # handler pour l'inclure dans le fichier
+      next unless itranslator.translate(:latex)
+      # Pour ne laisser passer qu'un certain nombre de fichiers
+      max_sources -= 1
+      # On ajoute ce fichier à la liste des includes qu'il
+      # faudra faire dans le fichier principal LaTex, en fonction
+      # de l'index de la page
+      @liste_inclusions[itranslator.tdm_index] = itranslator.handler
+
+      break if max_sources < 1
+    end
+
+    # ========== /CORE =============
 
     # Prendre la table des matières du livre et créer les titres
     # et les inclusions dans le fichier principal LaTex
     @liste_inclusions.each_with_index do |chose, index|
       if chose.nil?
         # => titre ou erreur
+        pid = tdm.pages_ids[index]
+        hpage = Cnarration::table_pages.get(pid, colonnes:[:titre, :options])
+        ischapter = hpage[:options][0] == "3"
+        titre = hpage[:titre].gsub(/ /, '~{}')
+        latex_main_file.write "\\#{ischapter ? 'chapter' : 'section'}{#{titre}}"
       else
         # => handler
         latex_main_file.write "\\include{sources/#{chose}}"
@@ -58,43 +88,14 @@ class Livre
 
     suivi << "  = Export du livre “#{data[:hname]}” OK"
 
+    # On peut maintenant produire le fichier PDF ou autre
+    compile :latex
+
+
   end
 
   def suivi
     @suivi ||= Cnarration::suivi
-  end
-
-  # = main =
-  #
-  # Méthode principale pour traiter la source +psrc+ qui est
-  # le path du fichier Markdown/kramdown
-  def traite_source src_path
-
-    # === Définition des données du fichier source ===
-    src_path = SuperFile::new(src_path) unless src_path.instance_of?(SuperFile)
-    # Chemin relatif au fichier
-    src_relpath = src_path.to_s.sub(/^#{folder}\//,'')
-    # handler du fichier (qui permettra d'en trouver l'ID)
-    src_handler = src_relpath[0..-4]
-    # ID du fichier source
-    src_id = Cnarration::table_pages.select(where:"handler = '#{src_handler}' AND livre_id = #{id}").keys.first
-    raise "Impossible d'obtenir l'ID de la page source de path : #{src_path} (avec le handler '#{src_handler}')" if src_id.nil?
-    # Index du fichier dans la table des matières
-    src_index = tdm.pages_ids.index(src_id)
-    # On ajoute ce fichier à la liste suivant son index
-    @liste_inclusions[src_index] = src_handler
-
-    suivi << "* Traitement de #{src_handler} (index: #{src_index})"
-
-    # === Création du fichier source ===
-
-    # Le fichier latex final
-    src_dest = latex_source_folder+"#{src_handler}.tex"
-    src_dest.folder.build unless src_dest.folder.exist?
-
-    # Traitement par latex
-    src_dest.write Kramdown::Document.new(src_path.read).send(:to_latex)
-
   end
 
   # Toutes les sources du livre
@@ -116,8 +117,8 @@ class Livre
   # assets qui seront utiles à tous les livres.
   def init_latex_folder
     latex_folder.build
-    fassets = Cnarration::folder+"lib/module/latex/assets/."
-    FileUtils::cp_r fassets.to_s, "#{latex_folder.folder}/"
+    fassets = Cnarration::Translator::folder + "assets"
+    FileUtils::cp_r "#{fassets.to_s}/.", "#{latex_folder.folder}/"
     # Il faut détruire le fichier READ_ME qui sert pour le
     # dossier asset mais pas pour les livres exportés
     (latex_folder.folder+'_read_me_.md').remove

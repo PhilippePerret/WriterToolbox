@@ -81,7 +81,7 @@ class Console
   def sortie_latex ref_book = nil
     ref_book = ref_book.nil_if_empty
     site.require_objet 'cnarration'
-    Cnarration::require_module 'latex'
+    Cnarration::require_module 'translator'
     Cnarration::exporter_collection_vers_latex ref_book
     return ""
   end

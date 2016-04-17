@@ -16,11 +16,15 @@ class << self
 
     @suivi << "Référence du livre : #{ref_book.nil? ? 'aucune' : ref_book}"
 
+    # -----------------------------------
     # Export de tous les livres à traiter
-    livres_a_traiter.each { |livre_id| Livre::new(livre_id).export_latex }
+    # -----------------------------------
+    livres_a_traiter.each do |livre_id|
+      Livre::new(livre_id).export_latex
+    end
 
     if defined?(console)
-      console.sub_log @suivi.join("<br>\n")
+      console.sub_log @suivi.join("\n").force_encoding('utf-8').in_pre(class:'small')
     else
       debug @suivi.join("\n")
     end
