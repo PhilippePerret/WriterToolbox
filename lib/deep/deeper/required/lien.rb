@@ -68,6 +68,8 @@ class Lien
         "atm://open?url=file://#{path}"
       when :textmate
         "txmt://open/?url=file://#{path}"
+      else
+        "site/open_file?path=#{path}&app=#{editor}" 
       end
       # On compose le lien et on le renvoie
     end

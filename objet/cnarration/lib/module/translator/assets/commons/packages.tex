@@ -4,6 +4,12 @@
 
 % Packages
 \usepackage[french]{babel}
+
+% Pour demander à frenchb de ne pas s'occuper des listes à
+% puce.
+\frenchbsetup{StandardLists=true}
+
+
 \usepackage[a5paper]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{fourier}
@@ -15,6 +21,17 @@
 \usepackage{xcolor}
 \usepackage{makeidx}
 \usepackage{fancyhdr}
+
+% Pour les hyperliens dans le texte
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=false, % Pour ne pas mettre les liens en couleur
+linkcolor=blue,
+}
+% Avec :
+% \usepackage[dvips]{hyperref}
+% … une erreur est produite disant : Wrong DVI mode driver option `dvips',
+% because pdfTeX or LuaTeX is running in PDF mode.
 
 % == Pour les textes ==
 \usepackage{textcase} % Pour \MakeTextUppercase
@@ -38,3 +55,14 @@
 % Pour pouvoir définir la mise en forme des références, par exemple un
 % "p." avant le numéro de page.
 \usepackage{varioref}
+
+% Kramdown transforme certains truc en longtable, c'est-à-dire
+% en environnement permettant de faire des tableaux sur plusieurs
+% page. Il faut le package longtable pour faire ça
+\usepackage{longtable}
+
+
+
+% Pour pouvoir utiliser la font Zapf dingbats qui permet de
+% modifier les puces des listes
+\usepackage{pifont}

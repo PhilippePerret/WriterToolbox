@@ -43,19 +43,25 @@ class Translator
   # +output_format+ {Symbol} peut définir le format de sortie
   # s'il n'a pas été défini à l'instanciation du translator
   def translate output_format = nil
+    suivi << "*** Traitement de #{handler} (index: #{tdm_index})"
 
+    # Charger si nécessaire les librairies en fonction du
+    # format de sortie voulu.
     @output_format = output_format unless output_format.nil?
     self.class::load_librairies_if_needed(output_format)
 
-    suivi << "*** Traitement de #{handler} (index: #{tdm_index})"
+    # === Les 3 phases de la correction ===
 
-    suivi << "    -> pré-corrections"
     pre_corrections
-    suivi << "    -> kramdown du fichier"
+
     kramdown
-    suivi << "    -> post-corrections"
+
     post_corrections
-    suivi << "    -> Production fichier latex\n" +
+
+    # === / 3 phases de la correction ===
+
+
+    suivi << "    -> Production fichier #{output_format}\n" +
              "       #{file_dest.to_s.in_span(class:'tiny')})"
     write_file_dest
 
@@ -64,7 +70,14 @@ class Translator
 
   # Kramdownage du fichier (suivant le format de sortie désiré)
   def kramdown
-    @content = Kramdown::Document.new(content).send(kramdown_method)
+    suivi << "    -> kramdown du fichier"
+    debug "content dans kramdown : #{content}\n\n\n"
+    options = {
+      auto_ids:false,
+      # html_to_native:true,
+      remove_block_html_tags: false
+      }
+    @content = Kramdown::Document.new(content, options).send(kramdown_method)
   end
   def kramdown_method
     @kramdown_method ||= "to_#{output_format}".to_sym

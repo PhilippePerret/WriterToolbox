@@ -43,16 +43,21 @@ class Cnarration
     # +options+
     #   :output_format    Format de sorte (:erb, :html ou :latex)
     #
-    # TODO: Prendre en compte le format
     def texte_type nom, options = nil
-      nom += ".md" unless nom.end_with?('.md')
-      sf = (folder_textes_types+nom)
+      if File.extname(nom) == ""
+        nom += case options[:output_format]
+        when :latex then ".tex"
+        when :html  then ".html"
+        else ".md"
+        end
+      end
+      sf = (folder_textes_types + nom)
       case sf.extension
       when 'md'
         sf.kramdown
       when 'rb'
         require sf
-      when 'txt', 'html'
+      when 'txt', 'html', 'tex'
         sf.read
       end
     end

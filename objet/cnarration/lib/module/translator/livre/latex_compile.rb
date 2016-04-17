@@ -7,6 +7,10 @@ Méthode de compilation du fichier du livre vers PDF ou PostScript
 class Cnarration
 class Livre
 
+  # {Hash} contenant les options pour le suivi de la compilation
+  # latex
+  attr_reader :options_suivi_latex
+
   # Le dossier où doivent se trouver les scripts latex, biber et
   # compagnie.
   def texlive_folder
@@ -16,8 +20,11 @@ class Livre
   # Méthode qui réceptionne le retour d'une compilation
   # en ligne de commande
   def suivre_exec command
-    debug "Commande exécutée : #{command}"
-    suivi << `#{texlive_folder}#{command} 2>&1`.force_encoding('utf-8')
+    res = `#{texlive_folder}#{command} 2>&1`.force_encoding('utf-8')
+    if verbose?
+      debug "Commande exécutée : #{command}"
+      debug "Résultat commande : #{res}"
+    end
   end
 
   # = main =
@@ -26,18 +33,11 @@ class Livre
   # en latex ou ?
   # +options+
   #   :open_pdf     Si true, ouvre le PDF (true par défaut)
+  #   :verbose      Si true, le suivi est affiché en sub_log
+  #                 (false par défaut)
   def compile as = :latex, options = nil
 
-    options = compile_default_options options
-
-    # # Pour fonctionner avec un fichier bash contenant
-    # # toutes les commandes
-    # bash_file.write compilation_code
-    # File.chmod(0777, bash_file.path)
-    # Dir.chdir(latex_folder.to_s) do
-    #   debug "On se trouve dans : #{File.expand_path('.')}"
-    #   suivi << `./bash_script.sh 2>&1`
-    # end
+    compile_default_options options
 
     # Il faut définir les paths avant de se déplacer dans le
     # dossier (ci-dessous) sinon ils seraient calculés par
@@ -55,31 +55,39 @@ class Livre
       suivre_exec "pdflatex \"#{maintex_full_path}\""
       suivre_exec "dvips \"#{maintex_affx_path}.dvi\""
     end
-    "open -a Preview \"#{maintex_affx_path}.pdf\"" if options[:open_pdf]
+
+    if open_pdf?
+      if pdf_main_file.exist?
+        lien_open = lien.edit_file "#{pdf_main_file}", {editor: 'Preview', titre: "#{pdf_main_file}"}
+        flash "L'ouverture du document #{lien_open} est demandée (cliquer sur le path ci-contre si le document ne s'ouvre page)."
+        `open \"#{pdf_main_file}\"`
+      else
+        error "Malheureusement, le fichier PDF n'a pas pu être construit. Consulter le fichier log."
+      end
+    end
+
     suivi << "    = Compilation latex OK"
   end
 
-#   def bash_file
-#     @bash_file ||= latex_folder + "bash_script.sh"
-#   end
-#   def compilation_code
-#     <<-CODE
-# #!/bin/bash
-#
-# #{texlive_folder}latex \"#{latex_main_file.full_path}\"
-# #{texlive_folder}biber \"#{latex_main_file.affixe_path}\"
-# #{texlive_folder}latex \"#{latex_main_file.full_path}\"
-# #{texlive_folder}makeindex \"#{latex_main_file.affixe_path}\"
-# #{texlive_folder}pdflatex \"#{latex_main_file.full_path}\"
-# open \"#{latex_main_file.affixe_path}.pdf\"
-#     CODE
-#   end
-
+  # On règle les options par défaut avant la
+  # compilation.
   def compile_default_options options
     options ||= Hash::new
     options[:open_pdf] = true unless options.has_key?(:open_pdf)
-    return options
+    @options_suivi_latex = options
+    if verbose?
+      suivi << "Options Cnarration::Livre pour la compilation : #{options.inspect}"
+    end
   end
 
+  # ---------------------------------------------------------------------
+  #   Méthodes en fonction des options
+  # ---------------------------------------------------------------------
+  def open_pdf?
+    @need_open_pdf ||= options_suivi_latex[:open_pdf]
+  end
+  def verbose?
+    @is_verbose ||= options_suivi_latex[:verbose]
+  end
 end #/Livre
 end #/Cnarration

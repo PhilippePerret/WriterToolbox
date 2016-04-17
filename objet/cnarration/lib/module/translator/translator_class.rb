@@ -9,7 +9,7 @@ class Translator
     # latex ou html
     def load_librairies_if_needed output_format
       return if @libraries_already_added
-      pfolder = folder + "patch_format/#{output_format}"
+      pfolder = folder + "translator_patch_format/#{output_format}"
       Dir["#{pfolder}/**/*.rb"].each { |p| load p }
       @libraries_already_added = true
     end

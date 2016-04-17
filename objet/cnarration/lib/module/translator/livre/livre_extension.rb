@@ -40,7 +40,7 @@ class Livre
     # Pour passer les pages progressivement (une à une), afin de
     # corriger les erreurs au fur et à mesure.
     # Mettre à 1000 pour les passer toutes
-    max_sources = 2
+    max_sources = 4
 
     # Passer en revue toutes les sources (tous les fichiers) et
     # les traiter.
@@ -109,6 +109,11 @@ class Livre
     @latex_main_file ||= begin
       Cnarration::LatexMainFile::new(self)
     end
+  end
+
+  # {SuperFile} du fichier PDF final qui doit être produit
+  def pdf_main_file
+    @pdf_main_file ||= SuperFile::new("#{latex_main_file.affixe_path}.pdf")
   end
 
   # Préparation du dossier Latex principal dans les

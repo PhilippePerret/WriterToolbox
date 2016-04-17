@@ -13,10 +13,12 @@ class Cnarration
 class Translator
 
   def pre_corrections
+    suivi << "    -> pré-corrections"
 
   end
 
   def post_corrections
+    suivi << "    -> post-corrections"
 
   end
 

@@ -51,6 +51,7 @@ class << self
   #
   REG_QUESTION_CHECKUP = /(^)?[^_]CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
   def formate_balises_question_checkup_in code, options = nil
+    output_format = options[:format] || options[:output_format] || :html
     q_indice = 0
     code.gsub(REG_QUESTION_CHECKUP){
       first_chr = $1.freeze
@@ -62,13 +63,20 @@ class << self
       q_indice  += 1
       q_id      = "qckup#{$narration_page_id}-#{q_indice}"
 
-      repere = <<-HTML
-<!-- CHECKUP[#{$narration_page_id}|#{q_id}|#{question}|#{groupe}] -->
-      HTML
-      ancre = "<a name='#{q_id}'></a>"
+
+      lineq = case output_format
+      when :html
+        repere = <<-HTML
+  <!-- CHECKUP[#{$narration_page_id}|#{q_id}|#{question}|#{groupe}] -->
+        HTML
+        ancre = "<a name='#{q_id}'></a>"
+        "#{ancre}#{repere}<span id='#{q_id}' class='qcheckup#{isoled ? ' iso' : ''}'>#{question}</span>"
+      when :latex
+        "\\questioncheckup{#{question}}\\label{#{q_id}}"
+      end
 
       # Texte final
-      (isoled ? "\n" : "") + "#{ancre}#{repere}<span id='#{q_id}' class='qcheckup#{isoled ? ' iso' : ''}'>#{question}</span>"
+      (isoled ? "\n" : "") + lineq
     }
   end
 
@@ -85,21 +93,21 @@ class << self
   # peut déterminer de mettre toutes les questions restantes. Dans le
   # cas contraire, une alerte est donnée.
   #
-  REG_PRINT_CHECKUP  = /PRINT_CHECKUP(?:\[(.*?)\])?/
+  REG_PRINT_CHECKUP  = /PRINT\\?_CHECKUP(?:\[(.*?)\])?/
   def formate_balises_print_checkup code, options = nil
 
     options ||= Hash::new
 
+    # Le format de sortie pour lequel il faut faire le traitement.
+    output_format = options[:format] || options[:output_format] || :html
+    # On aura besoin plus bas de passer l'attribut options
+    # à une méthode donc :
+    options[:output_format] = output_format
+
     # Il faut peut être ajouter l'explication sur les
     # checkups
-    explication_checkup = Cnarration::texte_type('explication_checkups', options)
-    explication_checkup = case options[:output_format]
-    when :latex
-      explication_checkup
-    else
-      explication_checkup.in_div(class:'small italic border')
-    end
-    code = code.sub(/EXPLICATION_CHECKUPS?/, explication_checkup)
+    explication_checkup = Cnarration::texte_type("explication_checkups", options)
+    code = code.sub(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
 
     # Dans un premier temps on relève toutes les questions qui
     # sont disséminées dans tous les fichiers du livre.
@@ -126,7 +134,7 @@ class << self
         end
         allq
       else
-        ul_questions_checkup(@table_checkup.delete(groupe), groupe)
+        ul_questions_checkup(@table_checkup.delete(groupe), groupe, options)
       end
     }
 
@@ -158,6 +166,7 @@ class << self
   def ul_questions_checkup questions, groupe = nil, options = nil
     return "" if questions.nil?
     options ||= Hash::new
+    output_format = options[:output_format]
 
     # Liste des fichiers déjà mis en commentaire (ils servent à
     # savoir si le fichier doit être actualisé après modification
@@ -177,7 +186,7 @@ class << self
         ""
       end
 
-      lien_vers_question = case options[:output_format]
+      lien_vers_question = case output_format
       when :latex
         "\\ref{#{hquestion[:id]}}"
       else
@@ -187,7 +196,7 @@ class << self
       end
 
       # Mise en forme de la question affichée dans le checkup
-      case options[:output_format]
+      case output_format
       when :latex
         "\\item #{hquestion[:question]} #{lien_vers_question}"
       else
@@ -199,9 +208,11 @@ class << self
       end
     end
 
-    case options[:output_format]
+    case output_format
     when :latex
-      all_questions.join("\n")
+      "\\begin{itemize}\n" +
+      all_questions.join("\n") + "\n" +
+      "\\end{itemize}"
     else
       all_questions.join('').in_ul(
         id:     "checkup_groupe_#{groupe || '__autre__'}",
