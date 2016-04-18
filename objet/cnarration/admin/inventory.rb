@@ -18,6 +18,8 @@ class << self
 
     pages_version_papier = 0
     pages_version_online = 0
+
+
     # -----------------------------
     #     Texte à retourner
     # -----------------------------
@@ -42,6 +44,13 @@ class << self
   # Produit un code HTML pour
   def data_statistiques_per_book
     nombre_max_pages_per_book = pages_per_book.collect{|bid,barr|barr.count}.max
+
+    # On prépare une table pour conserver les données générales
+    # qui vont permettre de faire un rapport statistique pour
+    # l'accueil de la collection sur le site, visible par tout
+    # visiteur. Principalement, le nombre de pages par livre,
+    # en tablant sur 120 pages par livre.
+    @table_per_book = Hash::new
 
     tableau_stats = Array::new
     @rapport_string = Array::new
@@ -80,7 +89,15 @@ class << self
       @rapport_string << "\n\n*** LIVRE #{dbook[:hname]} ***"
       arr_book  = pages_per_book[livre_id]
       book_name = livre_humain livre_id
+      book_name = "#{book_name[0..21]}[…]" if book_name.length > 25
 
+      @table_per_book.merge!( livre_id => {
+        name:     livre_humain( livre_id),
+        pages:    nil,
+        signes:   nil,
+        sections: nil, # = fichiers
+        expected: dbook[:nbp_expected]
+        })
       # Pour le nombre de pages et de caractères
       nombre_fichiers         = 0
       nombre_fichiers_online  = 0
@@ -128,6 +145,10 @@ class << self
       total_pages_pap_moy += nombre_papes_pap_moy.to_i
       total_signes        += nombre_signes.to_i
 
+      @table_per_book[livre_id][:sections]= nombre_fichiers_papier
+      @table_per_book[livre_id][:pages]   = nombre_pages_moy.to_i
+      @table_per_book[livre_id][:signes]  = nombre_signes.to_i
+
       nb_pages_online_j = nombre_fichiers_online.to_i.to_s.rjust(5)
       nb_pages_papier_j = nombre_fichiers_papier.to_i.to_s.rjust(5)
       nombre_pages_min = nombre_pages_min.to_i.to_s.rjust(4)
@@ -170,10 +191,43 @@ class << self
     debug @rapport_string.join("\n")
     debug "\n#{'='*70}\n\n"
 
+    # On produit le petit code qui va écrire sur la page
+    # d'accueil de la collection l'état actuel du livre
+    # en ligne, de façon graphique
+    graphe_pour_accueil_etat_collection
+
     # On retourne le texte résultat
     tableau_stats
   end
 
+  # Produit et écrit le graphe de l'état actuel de la collection
+  # pour l'accueil de la collection
+  def graphe_pour_accueil_etat_collection
+    code = @table_per_book.collect do |bid, bdata|
+      bname    = bdata[:name]
+      expected = bdata[:expected]
+      sections = bdata[:sections]
+      pages    = bdata[:pages]
+      signes   = bdata[:signes]
+
+      # Pourcentage exécuté
+      pct_done  = ((pages.to_f / expected) * 100).to_i
+      pct_done = 100 if pct_done > 100
+      pct_reste = 100 - pct_done
+
+      coef_longueur = 4
+      row_height    = '18px'
+
+      (
+        bname.in_span(style:"padding-right:12px;text-align:right;display:inline-block;width:300px;overflow:hidden") +
+        "".in_span(style:"display:inline-block;width:#{pct_done*coef_longueur}px;background-color:green;height:#{row_height}") +
+        "".in_span(style:"display:inline-block;width:#{pct_reste*coef_longueur}px;background-color:mediumaquamarine;height:#{row_height}") +
+        "#{pages}/#{expected}".in_span(style:"padding-left:12px;font-size:8.5pt;vertical-align:super;")
+      ).in_div(class:'bookrang', style:'font-size:11pt;vertical-align:middle', onclick:"document.location.href='livre/#{bid}/tdm?in=cnarration'")
+    end.join.in_div(id:"cnarration_inventory", style:"line-height:1em")
+
+    (Cnarration::folder+"cnarration_inventory.html").write code
+  end
 
   # Reçoit un nombre quelconque et un nombre max et retourne le
   # nombre d'incréments curseur. Pour l'affichage des nombres
