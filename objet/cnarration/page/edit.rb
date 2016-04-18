@@ -117,7 +117,7 @@ class Page
   end
   # Options, Bit 2
   def nivdev
-    @nivdev ||= data_params[:nivdev].to_i
+    @nivdev ||= data_params[:nivdev]
   end
   # Options, Bit 3
   def enligne

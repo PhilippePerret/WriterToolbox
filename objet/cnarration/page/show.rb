@@ -50,7 +50,11 @@ class Page
     # et on ajoute un message l'invitant à s'abonner.
     tiers_longueur = (@full_page.length / 3) - 100
     # Si le tiers n'est pas assez long, on l'augmente
-    tiers_longueur = 1900 if tiers_longueur < 1900
+    tiers_longueur = case true
+    when tiers_longueur < 1900 then 1900
+    when tiers_longueur > 2500 then 2500
+    else tiers_longueur
+    end
     # On cherche le premier double retour chariot suivant
     offset = @full_page.index("\n\n", tiers_longueur)
     # Si on en trouve pas, on garde 2900
@@ -87,9 +91,9 @@ class Page
 <div class='center'>
   <div class='border air small inline left warning' style="width:60%">
 <p>
-  Veuillez noter qu'<b>un tiers seulement de la page</b> est affiché. Seuls les abonnés peuvent consulter les pages de la collection en intégralité.
+  Veuillez noter qu'<b>une partie seulement de la page</b> est affichée. Seuls les abonnés peuvent consulter les pages de la collection en intégralité.
 </p>
-<p class="center">
+<p class="right">
   #{lien.subscribe('S’ABONNER')} (pour #{site.tarif_humain}/an)
 </p>
   </div>

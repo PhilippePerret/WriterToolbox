@@ -1071,3 +1071,17 @@ dans header.erb, user.identified? est true
 /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/output.rb:30:in `output'
 /Users/philippeperret/Sites/WriterToolbox/index.rb:6:in `<main>'
 ---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+dans header.erb, user.identified? est true
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+dans header.erb, user.identified? est true
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)

@@ -248,7 +248,7 @@ class << self
       arr.collect do |hpage|
         (
           div_boutons(hpage) +
-          "#{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
+          "[#{hpage[:id]}] #{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
         ).in_li(class:'hover')
       end.join.in_ul
     end.join
@@ -263,7 +263,10 @@ class << self
 
   # Niveau humain de développement
   def niveau_humain niveau
-    Cnarration::NIVEAUX_DEVELOPPEMENT[niveau.to_i][:hname]
+    niveau = niveau.to_s(11)
+    niv = niveau.to_s == "a" ? "a" : niveau.to_i
+    debug "NIV : #{niv.inspect}"
+    Cnarration::NIVEAUX_DEVELOPPEMENT[niv][:hname]
   rescue Exception => e
     "Cnarration::NIVEAUX_DEVELOPPEMENT ne connait pas le niveau #{niveau.inspect}…"
   end
@@ -281,7 +284,7 @@ class << self
     @pages_per_niveau ||= begin
       h = Hash::new
       pages.each do |pid, hpage|
-        niveau = hpage[:options][1]
+        niveau = hpage[:options][1].to_i(11)
         h.merge!(niveau => Array::new) unless h.has_key?(niveau)
         h[niveau] << hpage
       end
