@@ -91,7 +91,7 @@ class MEFDocument
     when events?    then 'docEvenemencier'
     when scenario?  then 'docScenario'
     when synopsis?  then 'docSynopsis'
-    else 'docAuteur'
+    else 'asDocument'
     end
 
     res = if events?

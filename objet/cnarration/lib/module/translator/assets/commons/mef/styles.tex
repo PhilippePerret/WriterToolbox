@@ -103,21 +103,40 @@
 % document d'écriture en exemple, même de type scénario.
 % Cf. les environnements généraux définis ci-dessous.
 %
-\newcommand{\docAuteur}[1]{%
+\newcommand{\asDocument}[1]{%
   \noindent
   \setlength{\parindent}{0em}%
-  \vspace{12pt}\par
+  \par
   \fcolorbox{bordexemple}{fondexemple}{%
     \begin{minipage}{1\textwidth}
-      \vspace{12pt}%
-      #1%
-      \vspace{12pt}%
+      \vspace{12pt}
+      {#1} %
+	\vspace{0pt}%
     \end{minipage}%
   }
-  \vspace{8pt}\par%
+  \vspace{16pt}\par%
   % Remettre la config initiale
   \valeursEnvironnementDefaut%
 }
+
+
+% \legend ou \legende
+%
+% Pour mettre une légende sous un document asDocument
+% Noter qu'il ne faut pas mettre cette commande dans l'environnement
+% asDocument, mais en dessous :
+% @syntax:
+%     \asDocument{ ... mon document ... }
+%     \legend{Ma légende sous le document précédent}
+\newcommand{\legend}[1]{%
+	\vspace{-8pt} %
+	\hspace{0.25\linewidth} \parbox{0.5\linewidth}{%
+	\setstretch{0.5}%
+	{\tiny \it #1}%
+	}%
+	\vspace{12pt}%
+}
+\newcommand{\legende}[1]{\legend{#1}}
 
 
 % --- Environnement Scénario ---
@@ -126,17 +145,22 @@
 \newcommand{\docScenario}[1]{%
   \fontfamily{phv}
   \selectfont % pour que la font soit prise en compte
-  \docAuteur{#1}%
+  \asDocument{#1}%
 }
 
 % --- Environnement Synopsis ---
 \newcommand{\docSynopsis}[1]{
-  \docAuteur{#1}%
+  \asDocument{#1}%
 }
 
 % --- Environnement évènemencier ---
 \newcommand{\docEvenemencier}[1]{
-	\docAuteur{#1}
+  % Le vspace ci-dessous permet de redescendre le texte
+  % qui, pour un évènemencier, est toujours remonté pour
+  % réduire artificiellement l'interparagraphe.
+  \asDocument{\vspace{12pt} #1}
+  % Le vspace ci-dessous permet de remonter le texte qui suit
+  % le document.
   \vspace{-1.0em}
 }
 % Un évènement dans l'évènemencier
@@ -148,7 +172,7 @@
   	% avec les autres choses que j'ai essayées, à commencer parskip.
     \vspace{-1.0em}
     \hspace{-1.5em}{- }
-    \texttt{ #1 } %
+    \texttt{#1} %
   \end{flushleft} %
 \end{OffText}
 }

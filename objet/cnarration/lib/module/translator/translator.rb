@@ -44,7 +44,7 @@ class Translator
   # s'il n'a pas été défini à l'instanciation du translator
   def translate output_format = nil
 
-    return false unless page_id == 15 # pour ne traiter que cette page
+    # return false unless page_id == 15 # pour ne traiter que cette page
 
     suivi << "*** Traitement de #{handler} (index: #{tdm_index})"
 
