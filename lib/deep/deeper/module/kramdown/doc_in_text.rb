@@ -88,7 +88,7 @@ class MEFDocument
   end
   def traite_code_as_latex
     envi = case true
-    when events?    then 'docEvenemencier'
+    when events?    then 'docEvents'
     when scenario?  then 'docScenario'
     when synopsis?  then 'docSynopsis'
     else 'asDocument'
@@ -113,7 +113,9 @@ class MEFDocument
       res
     end
 
-    @codet.in_command_latex(envi)
+    # On retourne le document et sa légende s'il y en
+    # a une.
+    @codet.in_command_latex(envi) + legend
   end
 
   def in_section
@@ -122,7 +124,13 @@ class MEFDocument
   end
   def legend
     return "" if @legend_content.nil? || @legend_content == ""
-    @legend_content.traite_as_markdown_per_format.in_div(class: 'document_legend')
+    @legend_content = @legend_content.traite_as_markdown_per_format
+    case output_format
+    when :latex
+      @legend_content.in_command_latex('legend')
+    else
+      @legend_content.in_div(class: 'document_legend')
+    end
   end
 
   # Première analyse du code, pour voir s'il a un grand titre

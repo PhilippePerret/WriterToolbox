@@ -134,7 +134,7 @@
 	\setstretch{0.5}%
 	{\tiny \it #1}%
 	}%
-	\vspace{12pt}%
+  \vspace{5.0pt}%
 }
 \newcommand{\legende}[1]{\legend{#1}}
 
@@ -154,24 +154,23 @@
 }
 
 % --- Environnement évènemencier ---
-\newcommand{\docEvenemencier}[1]{
+\newcommand{\docEvents}[1]{
   % Le vspace ci-dessous permet de redescendre le texte
   % qui, pour un évènemencier, est toujours remonté pour
   % réduire artificiellement l'interparagraphe.
   \asDocument{\vspace{12pt} #1}
-  % Le vspace ci-dessous permet de remonter le texte qui suit
-  % le document.
   \vspace{-1.0em}
 }
+
 % Un évènement dans l'évènemencier
 \newcommand{\evt}[1]{
-\begin{OffText}{1cm}{0pt}%
+\begin{OffText}{0.5cm}{0pt}%
   \begin{flushleft}%
     % Le vspace ci-dessous est ajouté pour rétrécir l'écartement entre
   	% les paragraphes d'un évènemencier, parce que ça ne fonctionne pas
-  	% avec les autres choses que j'ai essayées, à commencer parskip.
-    \vspace{-1.0em}
-    \hspace{-1.5em}{- }
+  	% avec les autres choses que j'ai essayées, à commencer par parskip.
+	  \vspace{-1.2em}
+    \hspace{-0.7em}{-}
     \texttt{#1} %
   \end{flushleft} %
 \end{OffText}

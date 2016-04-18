@@ -11,6 +11,12 @@ code LaTex conforme.
 =end
 class ::String
 
+  def as_latex
+    str = self.gsub(/ /,'~{}')
+    str.gsub!(/\&/, '\\\\&')
+    str
+  end
+
   def formate_balises_mots
     str = self
     str.gsub!(/MOT\[([0-9]+)\|(.*?)\]/){
@@ -27,11 +33,35 @@ class ::String
     str.gsub!(/film:([a-zA-Z0-9]+)/){ traite_film $1.freeze }
     str
   end
-  # TODO: Il faudrait directement les traiter autrement pour
-  # qu'ils soient bien formaté, et gérer ici le fait qu'il
-  # s'agit d'une première ou d'une autre apparition
+  class << self
+    attr_reader :liste_films_already_traited
+    def titre_for_film film_id
+      @liste_films_already_traited ||= begin
+        site.require_objet 'filmodico'
+        Hash::new
+      end
+      first_apparition = false
+      dtitres = @liste_films_already_traited[film_id] ||= begin
+        first_apparition = true
+        ifilm = Filmodico::get(film_id)
+        titre_simple = "{\\it \\small #{ifilm.titre.upcase.as_latex}}"
+        tc = "#{titre_simple} {\\small ("
+        tc << ifilm.titre_fr.as_latex + " – " if ifilm.titre_fr.to_s != ""
+        realisateur = ifilm.realisateur.collect do |hreal|
+          "#{hreal[:prenom]} #{hreal[:nom]}"
+        end.pretty_join
+        tc << "#{realisateur}, #{ifilm.annee}"
+        tc << ")}"
+        {
+          complet:  tc,
+          simple:   titre_simple
+        }
+      end
+      first_apparition ? dtitres[:complet] : dtitres[:simple]
+    end
+  end #/<< self
   def traite_film film_id
-    "\\film{#{film_id}}"
+    "\\film{#{self.class::titre_for_film film_id}}"
   end
 
   # Balises REF[...] qui vont référence à une autre page
