@@ -15,13 +15,15 @@ class Page
   # BIT 2
   #
   # Détermine le niveau de développement, de 1 à 'a'
-  # 9 = Page achevée
-  # 8 = Lecteur finale
-  # 7 = Page à corriger par le rédacteur
-  # 6 = Page à relire par le lecteur
-  # 0 = Page tout juste créée
+  # 10 = Page achevée (mais c'est en 'a', base 11)
+  # 9  = Page achevée
+  # 8  = Lecteur finale
+  # 7  = Page à corriger par le rédacteur
+  # 6  = Page à relire par le lecteur
+  # 1  = Page tout juste créée
+  # 0  = Donnée initiée
   def developpement
-    @developpement ||= options[1].to_i
+    @developpement ||= options[1].to_i(11)
   end
 
   # BIT 3 - seulement version en ligne
