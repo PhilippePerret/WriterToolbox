@@ -36,7 +36,7 @@ class SiteHtml
       "Un site entièrement dévolu au ".in_span(class:'bold') +
       "développement de vos histoires".in_span(class:'bold darkcharte') +
       "."
-    ).in_p(class:'small')
+    ).in_p(class:'small', id:'incipit')
   end
 
   def cadre_independance_flottant

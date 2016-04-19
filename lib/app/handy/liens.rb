@@ -208,7 +208,7 @@ class Lien
   #
   # Ces livres doivent être définis dans Cnarration::BIBLIOGRAPHIE
   # Cf. l'adresse ci-dessous.
-  # 
+  #
   def livre titre, ref = nil
     if titre.nil_if_empty.nil?
       unless defined?(Cnarration)
@@ -217,7 +217,7 @@ class Lien
       hlivre  = Cnarration::BIBLIOGRAPHIE[ref]
       titre   = hlivre[:titre]
     end
-    "<span class='livre'>#{titre.gsub(/ /,' ')}</span>"
+    "<span class='livre'>#{titre}</span>"
   end
 
 end

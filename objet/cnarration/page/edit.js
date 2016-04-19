@@ -165,3 +165,22 @@ Object.defineProperties(window.Cnarration,{
   }
 
 })
+
+$(document).ready(function(){
+
+  // Par défaut, quand on clique sur la touche retour alors que
+  // l'on est dans un champ du formulaire #form_edit_page, ça
+  // provoque l'enregistrement de la page, ce qui est "dangereux"
+  // quand on a changé l'ID pour éditer une autre page.
+  // Par prudence, par défaut, quand on clique sur la touche
+  // retour, ça ne fera rien
+  $('form#form_edit_page').bind('keypress', function(evt){
+    if(evt.keyCode == 13){
+      evt.stopPropagation();
+      evt.preventDefault();
+      F.show("Par prudence, la touche retour ne peut pas être utilisée.");
+      return false;
+    }
+  })
+
+})

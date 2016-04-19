@@ -1,6 +1,16 @@
 # encoding: UTF-8
 class SiteHtml
 
+  # Pour le moment, je mets ici les dernières actualités générales
+  # qui apparaissent sur la page d'accueil, en attendant d'avoir
+  # une table qui les consigne et les archive.
+  def dernieres_actualites_generales
+    [
+      ["Ouverture officieuse du site", "20 04 2016"],
+      ["Corrections diverses", "17 04 2016"]
+    ]
+  end
+
   def section_hot_news
     (
 
@@ -99,20 +109,39 @@ SELECT id, film_id, titre
   def derniere_nouvelles_unan
     @db_programs_unan = SQLite3::Database::new('./database/data/unan_hot.db')
     # Les dernières inscriptions (if any)
-    unan_derniers_inscriptions +
+    unan_dernieres_inscriptions +
     # Les dernières activités sur le programme
     unan_dernieres_activites
     # Des actualités "forcées"
   end
-  def unan_derniers_inscriptions
+  def unan_dernieres_inscriptions
     @db_programs_unan.execute(request_derniers_programmes_unan).collect do |arrdata|
       uid, pid, created_at = arrdata
       upseudo = User::get(uid).pseudo
-      "☛ Inscription #{upseudo}, #{created_at.as_human_date}"
-    end.join(', ')
+      "☛ Inscription #{upseudo}#{as_small_date created_at}"
+    end.join(', ') + ", "
   end
   def unan_dernieres_activites
-    ""
+    @db_programs_unan.execute(request_dernieres_activites_unan).collect do |arrdata|
+      pid, puser, pprojet, pupdate = arrdata
+      puser = User::get(puser).pseudo
+      pupdate = pupdate.as_human_date
+      "☛ Projet de #{puser}, #{pupdate}"
+    end.join(", ")
+  end
+  # Requête SQL pour récupérer les dernières activités dans
+  # les programmes UN AN UN SCRIPT.
+  # Pour ça, on relève simplement les derniers programmes
+  # modifiés.
+  def request_dernieres_activites_unan
+    req = <<-SQL
+SELECT
+  id, auteur_id, projet_id, updated_at
+  FROM programs
+  ORDER BY updated_at DESC
+  LIMIT 3
+    SQL
+    req.gsub(/\t/, ' ').gsub(/\n/, ' ')
   end
   def request_derniers_programmes_unan
     req = <<-SQL
@@ -158,10 +187,10 @@ SELECT
       db = SQLite3::Database::new('./database/data/forum.db')
       db.execute(request_forum.gsub(/\n/,'')).collect do |dpost|
         pid, puser, pcontent = dpost
-        puser     = User::get(puser).pseudo
-        pcontent  = pcontent[0..30] + "[…]"
+        puser     = " (#{User::get(puser).pseudo})".in_span(class:'tiny')
+        pcontent  = pcontent[0..30] + " […]"
         plink     = "post/#{pid}/read?in=forum"
-        "☛ “#{pcontent}” (#{puser})".in_a(href: plink, target:"_blank")
+        "☛ “#{pcontent}”#{puser}".in_a(href: plink, target:"_blank")
       end.join(', ')
     end
   end
@@ -182,7 +211,16 @@ SELECT
   # ---------------------------------------------------------------------
   def bloc_actualite_divers
     titre_bloc_actu("Divers") +
-    "Dernières actualités :".in_span(class:'label')
+    "Dernières actualités :".in_span(class:'label') +
+    dernieres_actualites_divers
+  end
+  def dernieres_actualites_divers
+    dernieres_actualites_generales.collect do |arrdata|
+      message, hdate = arrdata
+      djour, dmois, dannee = hdate.split(/[ \/]/)
+      t = Time.new(dannee.to_i, dmois.to_i, djour.to_i).to_i
+      "☛ #{message}#{as_small_date t}"
+    end.join(', ')
   end
 
 
@@ -197,6 +235,12 @@ SELECT
       "News".in_span(class:'fright italic') +
       "#{titre}"
     ).in_div(class:'title')
+  end
+
+  # On envoie le timestamp et la méthode retourne le span
+  # avec la date entre parenthèse en tiny
+  def as_small_date ti = NOW
+    " (#{ti.as_human_date})".in_span(class:'tiny')
   end
 
 end #/SiteHtml
