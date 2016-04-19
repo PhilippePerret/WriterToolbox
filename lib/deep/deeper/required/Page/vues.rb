@@ -115,6 +115,9 @@ class Page
     self.vue('user/login_form', site.folder_deeper_view)
   end
 
+  # Pour charger une vue
+  #
+  # @syntaxe    page.view(<file name>, <dossier objet>, <bindee>)
   def view relpath, dossier = nil, bindee = nil
     Vue::new(relpath, dossier, bindee).output
   end

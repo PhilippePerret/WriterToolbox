@@ -23,9 +23,12 @@ class Film
   def analyse_tm?
     (options[3].to_i & 1) > 0
   end
+  # BIT 4 C'est une analyse de type MYE, c'est-à-dire
+  # Markdown, Yaml et Evt
   def analyse_mye?
     (options[3].to_i & 2) > 0
   end
+  # BIT 4 C'est une analyse TM et MYE
   def analyse_mixte?
     (options[3].to_i & 3) > 0
   end

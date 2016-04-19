@@ -16,6 +16,19 @@ class SiteHtml
     @distant_url ||= "http://#{self.distant_host}"
   end
 
+  # Destruction de la page d'accueil pour forcer son
+  # actualisation (suite à une nouvelle actualité du site)
+  def destroy_home
+    file_home_page_content.destroy if file_home_page_content.exist?
+  end
+  
+  # {SuperFile} Fichier contenant le code HTML de la
+  # page d'accueil, qui doit être reconstruit dès qu'une
+  # actualité a été générée.
+  def file_home_page_content
+    @file_home_page_content ||= folder_objet+'site/home.html'
+  end
+
   # ---------------------------------------------------------------------
   #   Méthodes utiles pour les paths
   # ---------------------------------------------------------------------

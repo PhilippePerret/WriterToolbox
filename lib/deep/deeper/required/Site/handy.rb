@@ -16,6 +16,12 @@ def current_route
 end
 alias :route_courante :current_route
 
+# Pour détruire le code HTML de la page d'accueil suite à
+# une nouvelle actualité pour contraindre à l'actualiser
+def destroy_home
+  site.destroy_home
+end
+
 
 # ---------------------------------------------------------------------
 #   Barrières de protection des vues et modules

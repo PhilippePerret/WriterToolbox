@@ -1,49 +1,13 @@
 <%
 # Page d'accueil du site
 %>
-<p class='warning center fleft'>
-  <span class='bold'>SITE EN CONSTRUCTION</span><br /><span class='small italic'>Vous pouvez le découvrir en avant-première mais attention : la peinture est encore fraiche !</span>
-</p>
-<div style='clear:both'></div>
-
-<div class="fright w300 air_autour cadre" style="background-color:#8cff5b;">
-  <p class='bold'>
-    <ul class='center' style='list-style:none;margin:0;padding:0;'>
-      <li style='margin:0'>
-        <%=
-          (
-          "S’inscrire " +
-          "(gratuit)".in_span(class:'small')
-          ).in_a(href:"user/signup", class:'btn', style:'padding:0.4em 1.0em')
-         %>
-      </li>
-    </ul>
-  </p>
-  <p class='small'>
-    Pour pouvoir demeurer <strong>indépendant</strong>, pour n'afficher <strong>aucune publicité</strong> et être néanmoins en mesure de proposer un <strong>contenu de qualité</strong> dont la conception demande du temps, l'utilisation de certains outils du site requiert un paiement modique d'un montant de <strong><%= site.tarif_humain %> pour une année</strong> (<%= site.tarif_humain_par_mois %>).
-  </p>
-  <p class='bold center'>
-    <ul class='center' style='list-style:none;margin:0;padding:0;'>
-      <li style='height:8px'>&nbsp;</li>
-      <li>
-        <%=
-          (
-            "S’abonner " +
-            "(#{site.tarif_humain}/an)".in_span(class:'small')
-          ).in_a(href:"user/paiement", class:'btn', style:'padding:0.4em 1.0em')
-        %>
-      </li>
-    </ul>
-  </p>
-</div>
-
-<p class='small'>Bienvenue dans…</p>
-<div class='border center' style='width:40%'>
-  <p style="font-family:Verdana;font-weight:bold;font-size:1.2em;">LA BOITE À OUTILS<br />DE L'AUTEUR</p>
-  <%= image('divers/logo.png', width:"340px").in_div(class:'center') %>
-
-</div>
-
-<p class='small'>Un site entièrement consacré au développement d'histoires en tout genre. Si vous êtes déjà inscrit, vous pouvez vous <%= "identifier".in_a(href:"user/signin") %> grâce au lien de la marge gauche. Si vous n'êtes pas inscrit, alors… qu'attendez-vous pour <%= "le faire".in_a(href:"user/signup") %> ? :-)
-</p>
-<div style='clear:both'></div>
+<%=
+# Il y a certainement une page home définie dans le
+# dossier objet/site
+home_file = site.folder_objet+'site/home.erb'
+if home_file.exist?
+  page.view('home.erb', site.folder_objet+'site', site)
+else
+  ""
+end
+%>

@@ -25,4 +25,15 @@ class SiteHtml
     end
   end
 
+  # Pour pouvoir utiliser la syntaxe `site.require_module ...` et
+  # charger un module se trouvant dans ./objet/site/lib/module/
+  def require_module_objet module_name
+    p = site.folder_objet+"site/lib/module/#{module_name}"
+    if p.exist?
+      p.require
+    else
+      error "Impossible de trouver le module #{p}…"
+    end
+  end
+
 end

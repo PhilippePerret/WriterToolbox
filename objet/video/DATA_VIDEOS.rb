@@ -31,21 +31,23 @@ class Video
     # },
 
     1 => {
-      id:     1,
-      titre:  "Écriture organique (première partie)",
-      ref:    'z8p2_EofjQs',
-      type:   :youtube,
-      date:   "Mars 2015",
-      level:  1
+      id:           1,
+      titre:        "Écriture organique (première partie)",
+      ref:          'z8p2_EofjQs',
+      type:         :youtube,
+      date:         "Mars 2015",
+      created_at:   1425164400,
+      level:        1
     },
 
     2 => {
-      id:     2,
-      titre:  "Les Raccourcis-clavier indispensables",
-      ref:    'XjaO9kcnGOU',
-      type:   :youtube,
-      date:   "Juillet 2015",
-      level:  2
+      id:           2,
+      titre:        "Les Raccourcis-clavier indispensables",
+      ref:          'XjaO9kcnGOU',
+      type:         :youtube,
+      date:         "Juillet 2015",
+      created_at:   1436133600,
+      level:        2
     }
 
   }
