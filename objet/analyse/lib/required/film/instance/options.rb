@@ -6,7 +6,6 @@ la gestion des options
 class FilmAnalyse
 class Film
 
-
   # BIT 1 Analysé / Non analysé
   def analyzed?
     options[0].to_i == 1

@@ -94,7 +94,7 @@ class SuperFile
     end
   end
 
-  # Traitement le contenu yam comme une liste de choses
+  # Traite le contenu YAML comme une liste de choses
   # Par exemple une liste de commentaires.
   # Les "listes de choses" sont des Hash dont la clé est un ID numérique
   # et la valeur un Hash où on prendra la clé pour faire le libellé et la
