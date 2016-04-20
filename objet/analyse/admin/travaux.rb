@@ -86,6 +86,7 @@ class << self
       form.field_description("Préciser ci-dessus par exemple le nom du fichier concerné par ce travail, s'il a déjà un nom (ce serait préférable).") +
       form.field_textarea("Description", :description) +
       form.field_textarea("note", :note) +
+      "+ Nouveau".in_a(href:"admin/travaux?in=analyse").in_div(class:'fleft') +
       form.submit_button(travail_id.nil? ? "Créer le travail" : "Modifier le travail")
     ).in_form(id:"travail_form", class:'dim2080', style:"display:#{travail.id.nil? ? 'none' : 'block'}")
     .in_fieldset(legend:"Édition travail".in_span(onclick:"$('form#travail_form').toggle()"))
