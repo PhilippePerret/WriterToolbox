@@ -1,16 +1,6 @@
 # encoding: UTF-8
 class SiteHtml
 
-  # Pour le moment, je mets ici les dernières actualités générales
-  # qui apparaissent sur la page d'accueil, en attendant d'avoir
-  # une table qui les consigne et les archive.
-  def dernieres_actualites_generales
-    [
-      ["Ouverture officieuse du site", "20 04 2016"],
-      ["Corrections diverses", "17 04 2016"]
-    ]
-  end
-
   def section_hot_news
     (
 
@@ -43,20 +33,21 @@ class SiteHtml
   def narration_liste_three_last_pages
     require './objet/cnarration/lib/required/constants.rb'
     narration_dernieres_pages_cours.collect do |arr_dpage|
-      page_id, titre_page, livre_id, niveau_dev = arr_dpage
+      page_id, titre_page, livre_id, niveau_dev, updated_at = arr_dpage
       livre_id = livre_id.to_i
       livre = begin
         titre_livre = Cnarration::LIVRES[livre_id][:short_hname]
         titre_livre = titre_livre.in_a(href:"livre/#{livre_id}/tdm?in=cnarration", target:"_blank")
         " (#{titre_livre})".in_span(class:'tiny')
       end
-      titre_page = titre_page.in_a(href:"page/#{page_id}/show?in=cnarration", target:"_blank")
+      title = "Cliquez ici pour lire la page de cours “#{titre_page}” achevée le #{updated_at.as_human_date(true, false, ' ')}"
+      titre_page = titre_page.in_a(href:"page/#{page_id}/show?in=cnarration", target:"_blank", title:title)
       "☛ “#{titre_page}”#{livre}"
     end.pretty_join
   end
   def narration_dernieres_pages_cours
     request = <<-SQL
-SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev
+SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, updated_at
   FROM pages
   WHERE nivdev > 6
   ORDER BY updated_at DESC
@@ -79,17 +70,37 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev
     p = './database/data/analyse.db'
     request = request_analyses_film.gsub(/\t/,' ').gsub(/\n/,' ')
     SQLite3::Database::new(p).execute(request).collect do |dana|
-      fid, film_id, titre = dana
-      titre_film = titre.in_a(href:"analyse/#{fid}/show", target:"_blank")
+      fid, film_id, titre, updated_at = dana
+      title = "Cliquez ici pour consulter l'analyse du film “#{titre}” produite et achevée par #{analystes_of fid} le #{updated_at.as_human_date(true,false,' ')}"
+      titre_film = titre.in_a(href:"analyse/#{fid}/show", target:"_blank", title:title)
       "☛ #{titre_film}"
     end.join(', ')
   end
+
+  # Retourne la liste des analyses du film d'identifiant +fid+
+  # TODO: Implémenter la vrai procédure une fois que la table
+  # analyse.travaux sera mise en place et fonctionnelle.
+  def analystes_of fid
+    return "Phil"
+    @db_travaux ||= SQLite3::Database::new('./database/data/analyse.db')
+    request = <<-SQL
+SELECT user_id
+  FROM travaux
+  INNER JOIN films
+  ON travaux.film_id = films.id
+  WHERE films.id = #{fid}
+    SQL
+    @db_travaux.execute(request).collect do |fdata|
+      User::get(fdata[:user_id]).pseudo
+    end.pretty_join
+  end
+
   # Requête pour relever les dernières analyses de film
   # On prend seulement les 3 dernières lisibles en les classant
   # par dernière modification
   def request_analyses_film
     <<-SQL
-SELECT id, film_id, titre
+SELECT id, film_id, titre, updated_at
   FROM  films
   WHERE SUBSTR(options, 5, 1) = '1'
   ORDER BY updated_at DESC
@@ -169,7 +180,8 @@ SELECT
   def derniers_tutoriels_videos
     require './objet/video/DATA_VIDEOS.rb'
     Video::DATA_VIDEOS.sort_by{|vid, vdata| vdata[:created_at]}[0..2].collect do |vid, vdata|
-      "☛ #{vdata[:titre]}".in_a(href:"video/#{vid}/show", target:"_blank")
+      title = "Visualiser le tutoriel vidéo  “#{vdata[:titre]}” conçu le #{vdata[:created_at].as_human_date(true, false, ' ')}."
+      "☛ #{vdata[:titre]}".in_a(href:"video/#{vid}/show", target:"_blank", title:title)
     end.join(', ')
   end
 
@@ -186,18 +198,23 @@ SELECT
     @derniers_messages_forum ||= begin
       db = SQLite3::Database::new('./database/data/forum.db')
       db.execute(request_forum.gsub(/\n/,'')).collect do |dpost|
-        pid, puser, pcontent = dpost
-        puser     = " (#{User::get(puser).pseudo})".in_span(class:'tiny')
+        pid, puser, pcontent, dcreated = dpost
+        puser     = User::get(puser)
+        pseudo    = puser.pseudo
+        puser     = " (#{pseudo})".in_span(class:'tiny')
+        plongcontent = pcontent[0..200]
+        plongcontent += " […]" if pcontent.length > 200
         pcontent  = pcontent[0..30] + " […]"
         plink     = "post/#{pid}/read?in=forum"
-        "☛ “#{pcontent}”#{puser}".in_a(href: plink, target:"_blank")
+        title     = "Cliquer ici pour lire le dernier message de #{pseudo}, datant du #{dcreated.as_human_date(true, true, ' ')} : #{plongcontent.purified.gsub(/\n/,' ')}"
+        "☛ “#{pcontent}”#{puser}".in_a(href: plink, target:"_blank", title: title)
       end.join(', ')
     end
   end
   def request_forum
     <<-SQL
 SELECT
-  posts.id, posts.user_id, posts_content.content
+  posts.id, posts.user_id, posts_content.content, posts.created_at
   FROM posts
   INNER JOIN posts_content
   WHERE SUBSTR(posts.options,1,1) = '1'
@@ -209,12 +226,16 @@ SELECT
   # ---------------------------------------------------------------------
   #     DIVERS ACTUALITÉS
   # ---------------------------------------------------------------------
+
+  # Les dernières actualités diverses sont consignées
+  # dans le fichier : ./hot/last_actualites.rb
   def bloc_actualite_divers
     titre_bloc_actu("Divers") +
     "Dernières actualités :".in_span(class:'label') +
     dernieres_actualites_divers
   end
   def dernieres_actualites_divers
+    require './hot/last_actualites'
     dernieres_actualites_generales.collect do |arrdata|
       message, hdate = arrdata
       djour, dmois, dannee = hdate.split(/[ \/]/)

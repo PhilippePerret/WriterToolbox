@@ -1,5 +1,4 @@
 # encoding: UTF-8
-page.title = "Analyses de films"
 
 class FilmAnalyse
   class << self
