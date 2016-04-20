@@ -9,6 +9,7 @@ class Travail
 
   # Instanciation à l'aide d' l'ID du travail
   def initialize tid
+    tid = nil if tid == 0
     @id = tid
   end
 
@@ -16,6 +17,6 @@ class Travail
   def table
     @table ||= FilmAnalyse::table_travaux
   end
-  
+
 end #/Travail
 end #/FilmAnalyse

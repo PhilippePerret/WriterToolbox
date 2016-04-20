@@ -6,6 +6,8 @@ $.extend( window.Timeline, {
   timeline_built: false,
 
   show_scenes:function( scenes_ids ){
+    F.clean();
+    F.show("Pour le moment, la visualisation des scènes n'est pas encore possible.")
     this.show();
   },
 
