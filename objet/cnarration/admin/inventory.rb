@@ -35,7 +35,7 @@ class << self
     pages_per_niveau.sort_by{|niveau| niveau}.collect do |niveau, arr_pages|
       nb_reel = arr_pages.count
       curseur = increments_curseur nb_reel, nombre_max_pages_per_niveau
-      "Niveau #{niveau} | #{curseur}"
+      "Niveau #{niveau.rjust(2)} | #{curseur}"
     end.join("\n") +
     separator
   end

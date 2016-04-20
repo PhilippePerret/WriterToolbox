@@ -23,7 +23,7 @@ class Page
     if false == path_semidyn.exist? || out_of_date?
       # La page semi-dynamique n'est pas encore construite, il
       # faut la construire. Pour ça, on utilise kramdown.
-      (site.folder_objet+'cnarration/lib/module/page/build.rb').require
+      Cnarration::require_module 'page'
       build
     end
     if path_semidyn.exist?

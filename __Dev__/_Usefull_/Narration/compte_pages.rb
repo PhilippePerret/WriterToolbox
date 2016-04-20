@@ -15,15 +15,6 @@ L'idée est de lancer ce script, de lancer la commande
 require 'singleton'
 require 'sqlite3'
 
-class Fixnum
-  def rjust params ; self.to_s.rjust params end
-  # def ljust params ; self.to_s.ljust params end
-end
-class Float
-  def rjust params ; self.to_i.to_s.rjust params end
-  # def ljust params ; self.to_s.ljust params end
-end
-
 class Report
   include Singleton
   # Ouvre le fichier dans Firefox

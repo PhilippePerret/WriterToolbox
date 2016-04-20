@@ -16,6 +16,9 @@ class ::Float
     end
   end # << self
 
+  def rjust( len, remp = " "); self.round(2).to_s.rjust(len, remp) end
+  def ljust( len, remp = " "); self.round(2).to_s.ljust(len, remp) end
+
   # Retourne le float à la française, avec une virgule en
   # séparateur. NOter que si le float se termine par ".0", la
   # virgule et le zéro sont supprimés

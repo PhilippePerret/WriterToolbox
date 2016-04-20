@@ -15,6 +15,11 @@ class ::Fixnum
   #   Instance
   # ---------------------------------------------------------------------
 
+  # Pour ne pas avoir à toujours passer des nombres
+  # en string avant de les aligner
+  def rjust( len, remp = " ") ; self.to_s.rjust(len, remp) end
+  def ljust( len, remp = " ") ; self.to_s.ljust(len, remp) end
+
   # Pour compatiblité avec autres objets
   def to_i_inn
     self
