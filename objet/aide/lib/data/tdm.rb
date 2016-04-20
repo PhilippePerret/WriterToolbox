@@ -9,6 +9,7 @@ class Aide
   DATA_TDM = {
     # ---------------------------------------------------------------------
     'site' => {hname:"Le Site", titre:true},
+    'aide/why_signup'           => {hname:"Pourquoi s'inscrire ?"},
     'aide/why_subscribe'        => {hname:"Pourquoi s'abonner ?"},
     # ---------------------------------------------------------------------
     'interface' => {hname:"L'Interface", titre:true},
