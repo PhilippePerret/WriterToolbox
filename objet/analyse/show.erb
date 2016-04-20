@@ -1,7 +1,6 @@
 <%
 # Affiche l'analyse du film courant, qu'elle soit "TM" ou normale
 
-page.title = "Analyses de films"
 
 # FilmAnalyse::require_module 'evc'
 # ievc = Evc::new('./data/analyse/film_MYE/TheStraightStory1999/evc/_evenements.yml')
@@ -10,26 +9,8 @@ page.title = "Analyses de films"
 
 %>
 <%
-def film ; @film ||= FilmAnalyse::Film::current end
-
-if false == film.exist?
-  raise "Ce film n'existe pas, désolé."
-elsif false == film.consultable? # sous-entendu: par le visiteur courant
-
-  # On construit le message d'interdiction en fonction du film et
-  # du statut de l'user
-  statut_required, actionlink = case true
-  when film.need_subscribed?
-    ["abonné", lien.subscribe("#{DOIGT_ROUGE}S'ABONNER (pour #{site.tarif_humain}/AN)").in_span(class:'small')]
-  when film.need_signedup?
-    ["inscrit", lien.signup("#{DOIGT_ROUGE}S'INSCRIRE (gratuitement)").in_div(class:'small')]
-  end
-
-  errmess = "Désolé, cette analyse de film nécessite d'être #{statut_required} pour être consultée."
-  errmess += actionlink.in_div(class:'right')
-  raise_unless film.consultable?, errmess
-end
 %>
+<%= FilmAnalyse::Show::output %>
 
 <%
 # ---------------------------------------------------------------------

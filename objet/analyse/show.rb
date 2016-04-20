@@ -1,5 +1,48 @@
 # encoding: UTF-8
+
+page.title = "Analyses de films"
+
+def film; @film ||= FilmAnalyse::Film::current end
+
 class FilmAnalyse
+# Spécialement pour l'affichage de cette page
+class Show
+class << self
+
+  # = main =
+  #
+  # Sortie du code de la page à afficher
+  def output
+    if ! film.exist?
+      return message_film_doesnt_exist
+    elsif ! film.consultable?
+      return message_film_non_consultable_par_user
+  end
+
+
+
+  def message_film_doesnt_exist
+    "Ce film n'existe pas, désolé.".in_div(class:'big air warning')
+  end
+
+  def message_film_non_consultable_par_user
+    # On construit le message d'interdiction en fonction du film et
+    # du statut de l'user
+    statut_required, actionlink = case true
+    when film.need_subscribed?
+      ["abonné", lien.subscribe("#{DOIGT_ROUGE}S'ABONNER (pour #{site.tarif_humain}/AN)").in_span(class:'small')]
+    when film.need_signedup?
+      ["inscrit", lien.signup("#{DOIGT_ROUGE}S'INSCRIRE (gratuitement)").in_div(class:'small')]
+    end
+
+    errmess = "Désolé, cette analyse de film nécessite d'être #{statut_required} pour être consultée."
+    errmess += actionlink.in_div(class:'right')
+    errmess.in_div(class:'big air')    
+  end
+
+end #/<<self
+end #/Show
+
 class Film
 
   require 'yaml'

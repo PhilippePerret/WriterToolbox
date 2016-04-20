@@ -51,7 +51,8 @@ class Synchro
       './database/data/filmodico.db',
       './database/data/scenodico.db',
       './database/data/cnarration.db',
-      './database/data/cnarration_hot.db'
+      './database/data/cnarration_hot.db',
+      './objet/site/home.html'
     ]
   end
   def app_ignored_folders
@@ -82,6 +83,7 @@ class Synchro
       'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s },
       'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s },
       'data'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'hot'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'data/analyse' => {extensions:['htm', 'png', 'jpg', 'css', 'js'], dir: :l2s},
       'database'  => {extensions: ['db', 'rb'], dir: :l2s}
     }
