@@ -4,6 +4,9 @@
 # ou non par des inscrits/abonnés
 raise_unless_admin
 %>
+<div class="right small">
+  <%= "Gestion des travaux".in_a(href:"admin/travaux?in=analyse") %>
+</div>
 <div class="small italic">État des lieux des analyses.</div>
 <%
 # La rangée du haut, indiquant les libellés car les données contiendront

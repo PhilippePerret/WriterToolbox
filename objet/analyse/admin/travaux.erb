@@ -1,0 +1,19 @@
+<%
+# Affichage et édition des travaux sur les analyses
+raise_unless user.analyste? || user.admin?
+%>
+<%= FilmAnalyse::titre_h1("Travaux") %>
+<p class='italic small discret'>
+  Cette section permet de visualiser et d'éditer les travaux en cours sur les analyses de film. En fonction de votre grade, vous pouvez accomplir différentes actions.
+</p>
+
+<% if user.admin? %>
+  <%
+    if param(:operation) == "save_travail"
+      FilmAnalyse::Travail::save
+    end
+  %>
+  <%= FilmAnalyse::Travail::formulaire %>
+<% end %>
+
+<%= FilmAnalyse::Travail::list %>

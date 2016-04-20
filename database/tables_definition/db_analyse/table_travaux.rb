@@ -34,13 +34,11 @@ def schema_table_analyse_travaux
     # Désignation de l'élément qui est visé par ce travail. Ça peut
     # être un film en général, mais ça peut être également un fichier
     # en particulier.
+    #
+    # Voir aussi les premiers bits des options qui définissent la
+    # cible.
+    # 
     target_ref:   {type:"VARCHAR(255)"},
-
-    # Type de la cible
-    # ----------------
-    # Permet de préciser si la cible est le film lui-même, ou un
-    # fichier particulier, la collecte, etc.
-    target_type:  {type:"VARCHAR(4)"},
 
     # Options
     # -------
