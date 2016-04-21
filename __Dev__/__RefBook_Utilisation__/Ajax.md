@@ -40,7 +40,6 @@ Noter que pour le moment l'url ne fonctionne pas avec les sous-objets. Donc on n
 ## Propriétés définissables
 
 
-
     onreturn:       Méthode de retour
 
     message_on_operation:   Message d'opération

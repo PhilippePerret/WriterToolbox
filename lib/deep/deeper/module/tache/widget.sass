@@ -1,0 +1,60 @@
+@import '../../../../../view/css/common/charte'
+
+#taches_widget
+  position          : fixed
+  top               : 60px
+  left              : 180px
+  z-index           : 1000
+  font-size         : 9pt
+  padding           : 4px
+  background-color  : $greencharte
+  border-radius     : 4px
+  width             : 50px
+  color             : white
+  opacity           : 0.4
+  
+  span#span_titre
+    color             : white
+  
+  // Le bouton pour créer la tâche
+  a#btn_create_tache
+    // Non affiché par défaut (il ne le sera que lorsqu'on survolera
+    // le widget)
+    display           : none
+    color             : white
+  // Le div pour ajouter le détail
+  textarea#tache_detail
+    display           : none
+    
+  // Quand on survole le widget
+  &:hover
+    width   : auto
+    opacity : 1
+    // On masque le titre
+    span#span_titre
+      display         : none
+    // On affiche le menu des types de tâche
+    select#tache_id
+      display : block
+      padding : 0
+      margin  : 0
+      option
+        padding   : 0
+        margin    : 0
+
+    // On affiche le bouton pour créer la tache
+    a#btn_create_tache
+      display         : inline-block
+      text-align      : right
+      margin          : 4px 8px 4px 0
+      border          : 1px solid
+      padding         : 4px
+    // Le div détail quand on le voit
+    textarea#tache_detail
+      display         : block
+      width           : 98%
+      height          : 34px
+        
+  select#tache_id
+    display       : none
+    
