@@ -2,6 +2,14 @@
 class Lien
   include Singleton
 
+  # Pour définir le format de sortie général.
+  # Utilisé par l'export en LaTex de la collection Narration
+  #
+  attr_writer :output_format
+  def output_format
+    @output_format || :html
+  end
+
   # Méthode principale permettant de construire un lien
   # quelconque, pour éviter de répéter toujours le même code
   # +options+
@@ -11,10 +19,16 @@ class Lien
   #     ajouter options[:target] = nil pour empêcher ce comportement
   def build route, titre, options
     options ||= Hash::new
-    route = "#{site.distant_url}/#{route}" if options.delete(:distant)
-    options.merge!(href: route)
-    options.merge!(target:'_blank') unless options.has_key?(:target)
-    titre.in_a(options)
+    case output_format
+    when :latex
+      # TODO améliorer les choses ensuite
+      titre
+    else
+      route = "#{site.distant_url}/#{route}" if options.delete(:distant)
+      options.merge!(href: route)
+      options.merge!(target:'_blank') unless options.has_key?(:target)
+      titre.in_a(options)
+    end
   end
 
   # Lien pour s'inscrire sur le site
@@ -69,7 +83,7 @@ class Lien
       when :textmate
         "txmt://open/?url=file://#{path}"
       else
-        "site/open_file?path=#{path}&app=#{editor}" 
+        "site/open_file?path=#{path}&app=#{editor}"
       end
       # On compose le lien et on le renvoie
     end

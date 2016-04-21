@@ -5,7 +5,7 @@ Helper de liens pour la collection
 Pour les utiliser dans les pages utiliser :
 
     <%= lien.livre_<le livre> %>
-    
+
 =end
 class Lien
 
@@ -42,7 +42,12 @@ class Lien
 
   def link_livre_id livre_id
     dlivre = Cnarration::LIVRES[livre_id]
-    dlivre[:hname].in_a(class:'livre', href:"livre/#{livre_id}/tdm?in=cnarration")
+    case output_format
+    when :latex
+      "#{dlivre[:hname]}\\cite{NarrationID#{livre_id}}"
+    else
+      dlivre[:hname].in_a(class:'livre', href:"livre/#{livre_id}/tdm?in=cnarration")
+    end
   end
 
 

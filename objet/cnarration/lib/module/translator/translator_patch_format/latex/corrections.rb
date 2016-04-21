@@ -25,9 +25,20 @@ class Translator
 
     @content = content
 
+    # Il faut évaluer tous les code ERB contenu dans les documents.
+    # Il faut le faire en deux temps. Dans un premier temps, au cours
+    # de ces pré-corrections, il faut "protéger" les balises ERB pour
+    # qu'elles ne soient pas interprétées par kramdown (on ne peut
+    # pas évaluer le code tout de suite car il produira des balises
+    # liens qui seraient supprimées).
+    # Dans un deuxième temps, en post-correction, on évalue vraiment
+    # les balises ERB pour les mettre dans le code final.
+    @content.gsub!(/<%=?(.+?)%>/, "ERB-- \\1 --ERB")
+
     # 'tt' est une commande réservée dans LaTex, il faut donc transformer
     # les tt en tterm
     @content.gsub!(/\btt:/, 'tterm:')
+    @content.gsub!(/tterm :/, 'tterm:') # il y en a, I don't know why
 
     # Tous les textes entre :|...| doivent être transformés pour
     # ne pas être interprétés par Kramdown comme des tableaux (longtable)
@@ -66,6 +77,11 @@ class Translator
     # document et peut-être d'autres choses aussi.
     @content = content.traite_antislash_et_crochets_latex
 
+    # On traie les balise ERB après les avoir protégées dans
+    # les pré-corrections (cf. les pré-corrections où tout est
+    # expliqué)
+    evaluate_balises_erb
+
     # On traite les balises propres. Pour modifier le comportement
     # d'une méthode (comme par exemple celle qui gère les REF[...])
     # il suffit de la surclasser dans le module `string_extension`
@@ -73,25 +89,10 @@ class Translator
     @content = @content.formate_balises_propres
 
     # Correction des questions de checkup
-    #
-    if content.match(/PRINT\\_CHECKUP/) || content.match(/EXPLICATION\\_CHECKUP/)
-      # debug "PRINT_CHECKUP trouvé !"
-      $narration_book_id = livre.id
-      @content = String::formate_balises_print_checkup( @content, {format: :latex} )
-      # debug "\n\n@content après traitement de print-chekcup : #{@content}\n\n"
-      $narration_book_id = nil
-    end
+    correction_questions_checkup
 
     # Deuxième temps de la correction des questions des checkups
-    # Cf. le fichier ./objet/cnarration/lib/module/page/string_extension.rb où
-    # est expliqué pourquoi il faut procéder en deux temps.
-    if @content.match(/QUESTIONCHKP/)
-      @content.gsub!(/LABEL\[(.+?)\]QUESTIONCHKP\[(.+?)\]/){
-        label     = $1.freeze
-        question  = $2.freeze
-        "\\label{#{label}}\n\\questioncheckup{#{question}}"
-      }
-    end
+    correction_listing_checkup
 
     # Latex mettant des tirets longs pour les listes itemize,
     # ce qui est normal avec la package french, on peut utiliser
@@ -113,6 +114,56 @@ class Translator
 
     # debug "content À LA FIN DE post_corrections : #{content}\n\n\n"
 
+  end
+
+  # Évaluation des balises ERB
+  def evaluate_balises_erb
+    @content.gsub!(/ERB--(.+?)--ERB/){
+      code_erb = $1.strip
+      begin
+        # Il faut traiter le code ERB/ruby qui a pu être
+        # transformé par kramdown
+        code_erb.gsub!(/\\_/, '_')
+        # Traitement de cas particuliers
+        case code_erb
+        when "user.pseudo" then "Ernest"
+        else
+          debug "Évaludation de : #{code_erb.inspect}"
+          res = eval( code_erb )
+          res = res.purified # il faut supprimer toute balise HTML
+        end
+      rescue Exception => e
+        debug e
+        "[CODE ERB IMPOSSIBLE À ÉVALUER : #{code_erb}]"
+      end
+    }
+
+  end
+
+  # Correction des questions qui vont être rassemblées dans le
+  # checkup final du livre (annexes)
+  #
+  # Note : ces deux méthodes s'exécutent dans la post-correction
+  def correction_questions_checkup
+    if content.match(/PRINT\\_CHECKUP/) || content.match(/EXPLICATION\\_CHECKUP/)
+      # debug "PRINT_CHECKUP trouvé !"
+      $narration_book_id = livre.id
+      @content = String::formate_balises_print_checkup( @content, {format: :latex} )
+      # debug "\n\n@content après traitement de print-chekcup : #{@content}\n\n"
+      $narration_book_id = nil
+    end
+  end
+
+  def correction_listing_checkup
+    # Cf. le fichier ./objet/cnarration/lib/module/page/string_extension.rb où
+    # est expliqué pourquoi il faut procéder en deux temps.
+    if @content.match(/QUESTIONCHKP/)
+      @content.gsub!(/LABEL\[(.+?)\]QUESTIONCHKP\[(.+?)\]/){
+        label     = $1.freeze
+        question  = $2.freeze
+        "\\label{#{label}}\n\\questioncheckup{#{question}}"
+      }
+    end
   end
 
   # Finalisation du contenu du fichier

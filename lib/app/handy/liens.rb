@@ -134,9 +134,14 @@ class Lien
   def filmodico titre = nil, options = nil
     options ||= Hash::new
     titre ||= options.delete(:titre) || "Filmodico"
-    options.merge!(href: "filmodico/home")
-    options.merge!(target: "_blank") unless options.has_key?(:target)
-    titre.in_a(options)
+    case output_format
+    when :latex
+      "#{titre} sur le site LA BOITE À OUTILS DE L'AUTEUR"
+    else
+      options.merge!(href: "filmodico/home")
+      options.merge!(target: "_blank") unless options.has_key?(:target)
+      titre.in_a(options)
+    end
   end
 
   # Liens vers le scénodico
@@ -144,9 +149,14 @@ class Lien
   def scenodico titre = nil, options = nil
     options ||= Hash::new
     titre ||= options.delete(:titre) || "Scénodico"
-    options.merge!(href: "scenodico/home")
-    options.merge!(target: "_blank") unless options.has_key?(:target)
-    titre.in_a(options)
+    case output_format
+    when :latex
+      "#{titre} sur le site LA BOITE À OUTILS DE L'AUTEUR"
+    else
+      options.merge!(href: "scenodico/home")
+      options.merge!(target: "_blank") unless options.has_key?(:target)
+      titre.in_a(options)
+    end
   end
 
   # Retourne un lien vers un film d'après la référence fournie
@@ -217,7 +227,12 @@ class Lien
       hlivre  = Cnarration::BIBLIOGRAPHIE[ref]
       titre   = hlivre[:titre]
     end
-    "<span class='livre'>#{titre}</span>"
+    case output_format
+    when :latex
+      "\\livre{#{titre}}\\cite{#{ref}}"
+    else
+      "<span class='livre'>#{titre}</span>"
+    end
   end
 
 end

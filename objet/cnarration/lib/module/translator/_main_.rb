@@ -21,6 +21,10 @@ class << self
     # élément du livre LaTex
     Cnarration::Latex::init_latex_folder
 
+    # Il faut dire à la méthode `lien` que tous les liens
+    # doivent être donnés pour LaTex
+    lien.output_format = :latex
+
     # -----------------------------------
     # Export de tous les livres à traiter
     # -----------------------------------
@@ -34,6 +38,11 @@ class << self
       debug @suivi.join("\n")
     end
     flash "Export vers Latex terminé avec succès"
+
+    # Remettre l'ancien format des fois qu'une page
+    # devrait être tout de suite affichée
+    lien.output_format = nil
+
   rescue Exception => e
     debug e
     error e.message
