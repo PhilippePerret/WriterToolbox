@@ -23,11 +23,15 @@ class Taches
     #
     # Retourne le "gadget" à insérer dans la page
     def widget
+      r = case site.current_route
+      when nil then ""
+      else site.current_route.route
+      end
       (
         menu_types_taches +
         "Tâche…".in_span(id:"span_titre") +
         "admin/add_tache".in_hidden(name:'url') + # pour soumettre le formulaire
-        site.current_route.route.in_hidden(name:"tache[current_route]") +
+        r.in_hidden(name:"tache[current_route]") +
         SiteHtml::Route::last.in_hidden(name:"tache[last_route]") +
         ENV['QUERY_STRING'].in_hidden(name:"tache[query_string]") +
         "".in_hidden(id:'tache_titre_page', name:'tache[titre_page]') + # sera défini par javascript

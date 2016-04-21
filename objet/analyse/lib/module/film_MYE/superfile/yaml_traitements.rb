@@ -25,6 +25,7 @@ class SuperFile
 
   KEY_SYM_TO_HUMAN = {
     cdv:                    "Clé de voûte",
+    categorie:              "Catégorie",
     contre_objectif:        "Contre-objectif",
     denouement:             "Dénouement",
     idees:                  "Idées",
@@ -59,8 +60,8 @@ class SuperFile
   # TODO Pour le moment, pas d'interactivité, on indique simplement
   # la nature de l'élément et son identifiant
   def traite_relatifs arr_rels
-    return "---" if arr_rels.nil? || arr_rels.empty?
-    arr_rels.collect do |hrel|
+    return "" if arr_rels.nil? || arr_rels.empty?
+    l = arr_rels.collect do |hrel|
       (
         case hrel[:type]
         when :qrd  then "Question & réponse dramatique"
@@ -68,6 +69,7 @@ class SuperFile
         end + " ##{hrel[:id]}"
       ) # .in_a(href:"##{hrel[:type]}-#{hrel[:id]}")
     end.pretty_join
+    libnval("Relatifs", l)
   end
 
   def traite_hash_value hvalue
@@ -136,22 +138,41 @@ class SuperFile
   #   Traitement par type de fichier
   # ---------------------------------------------------------------------
 
-  def traite_content_as_qrds
-    yaml_content.collect do |qid, qdata|
-      debug "qdata: #{qdata.pretty_inspect}"
-      "##{qid} #{qdata[:question]}".in_dt +
+  def traite_content_as_procedes
+    explication_procedes +
+    yaml_content.collect do |pid, pdata|
+      idpid = "PROC ##{pid}".in_div(class:'fright tiny italic')
+      "#{idpid}#{pdata[:titre]}".in_dt +
       (
-        libnval("Réponse", qdata[:reponse]) +
-        libnval("Description", qdata[:description]) +
-        libnval("Relatifs", traite_relatifs(qdata[:relatifs]))
-      )
+        categorie_of(pdata)   +
+        description_of(pdata) +
+        explication_of(pdata) +
+        produit_of(pdata)     +
+        traite_relatifs(pdata[:relatifs])
+      ).in_dd
     end.join.in_dl
   end
-  def traite_content_as_notes
-    traite_hash_in_liste_definition yaml_content
+
+  def explication_procedes
+    ""
   end
 
-  def traite_content_as_procedes
+  def traite_content_as_qrds
+    explication_questions_reponses_dramatiques +
+    yaml_content.collect do |qid, qdata|
+      idqid = "QRD ##{qid}".in_div(class:'fright tiny italic')
+      "#{idqid}#{qdata[:question]}".in_dt +
+      (
+        reponse_of(qdata) +
+        description_of(qdata) +
+        traite_relatifs(qdata[:relatifs])
+      ).in_dd
+    end.join.in_dl
+  end
+  def explication_questions_reponses_dramatiques
+    "Quelques questions et réponses dramatiques tirées du film (ce ci n'est pas, sauf indication contraire, une liste exhaustive)".in_div(class:'italic small discret')
+  end
+  def traite_content_as_notes
     traite_hash_in_liste_definition yaml_content
   end
 
@@ -198,10 +219,18 @@ class SuperFile
   # Traitement du contenu dans c'est un fichier YAML contenant
   # des commentaires
   def traite_content_as_commentaires
-    traite_hash_in_liste_definition yaml_content
-    # yaml_content.collect do |key, hvalue|
-    #   ( hvalue[:titre].in_dt + hvalue[:texte].in_dd )
-    # end.join.in_dl
+    presentation_liste_commentaires +
+    yaml_content.collect do |key, hvalue|
+      hid = "Commentaires ##{key}".in_div(class:'fright italic tiny')
+      ( ("#{hid}#{hvalue[:titre]}").in_dt + hvalue[:texte].in_dd )
+    end.join.in_dl
+  end
+  def presentation_liste_commentaires
+    @presentation_liste_commentaires ||= begin
+      <<-HTML
+<div class='italic discret small'>Les commentaires suivants sont comme des notes prises rapidement au cours de la vision d'un film. Ils ne sont pas développés et s'intègrent parfois à une discussion plus générale. Ce sont en quelque sorte de simples “points à noter” qui peuvent être repris dans des fiches de commentaires textuels.</div>
+      HTML
+    end
   end
 
   PROPERTIES_PP_TRAITED = [
@@ -222,9 +251,10 @@ class SuperFile
         error "Les propriétés #{hcheck.keys.join(', ')} ne sont pas traitées dans les préparations/paiements. #{lien.edit_file(__FILE__, titre:'Ouvrir ce fichier', line:__LINE__)} pour ajouter leur traitement" unless hcheck.empty?
         @properties_irdr_traited = true
       end
+      ppid = "P/P ##{key}".in_div(class:'fright tiny italic')
       <<-HTML
 <a name="pp-#{key}"></a>
-<dt>##{key} #{hvalue[:libelle]}</dt>
+<dt>#{ppid}#{hvalue[:libelle]}</dt>
 <dd>
   #{description_of  hvalue}
   #{installation_of hvalue}
@@ -261,14 +291,15 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
         error "Les propriétés #{hcheck.keys.join(', ')} ne sont pas traitées dans les ironies dramatiques. #{lien.edit_file(__FILE__, titre:'Ouvrir ce fichier', line:__LINE__)} pour ajouter leur traitement" unless hcheck.empty?
         @properties_irdr_traited = true
       end
+      idid = "Ironie dramatique ##{key}".in_div(class:'tiny fright italic')
       <<-HTML
 <a name="ironie_dramatique-#{key}"></a>
-<dt>##{key} #{hvalue[:libelle]}</dt>
+<dt>#{idid}#{hvalue[:libelle]}</dt>
 <dd>
-  #{description_of  hvalue}
   #{installation_of hvalue}
   #{exploitation_of hvalue}
   #{resolution_of   hvalue}
+  #{description_of  hvalue}
   #{libnval("Auteur",   hvalue[:auteur])}
   #{libnval("Victime",  hvalue[:victime])}
   #{libnval("Produit", hvalue[:produit] || "- non défini -")}
@@ -351,8 +382,23 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
   alias :libnval :libelle_and_value
 
+  def categorie_of h
+    libnval("Catégorie", h[:categorie].in_span(class:'bold'))
+  end
   def description_of h
     libnval( "Description", h[:description] )
+  end
+  def explication_of h
+    libnval("Explication", h[:explication])
+  end
+  def exploitation_of h
+    libnval("Exploitation", h[:exploitation])
+  end
+  def facteur_u_of h
+    libnval("Facteur U", h[:facteurU] || h[:facteur_u])
+  end
+  def facteur_o_of h
+    libnval("Facteur O", h[:facteurO] || h[:facteur_o])
   end
   def intitule_of h
     libnval("Intitulé", h[:intitule])
@@ -360,17 +406,17 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   def installation_of h
     libnval("Installation", h[:installation])
   end
-  def exploitation_of h
-    libnval("Exploitation", h[:exploitation])
+  def produit_of h
+    libnval("Produit", h[:produit])
+  end
+  def question_of h
+    libnval("Question", h[:question])
+  end
+  def reponse_of h
+    libnval("Réponse", h[:reponse])
   end
   def resolution_of h
     libnval("Résolution", h[:resolution])
-  end
-  def facteur_u_of h
-    libnval("Facteur U", h[:facteurU] || h[:facteur_u])
-  end
-  def facteur_o_of h
-    libnval("Facteur O", h[:facteurO] || h[:facteur_o])
   end
   def scenes_of h
     return "" if h[:scenes].to_s == ""
@@ -482,7 +528,7 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
           libnval("Description", dyndata[:description]) +
           libnval("Catégorie", CATEGORIE_OBJECTIF[dyndata[:obj_categorie]]) +
           libnval("Nature", NATURE_OBJECTIF[dyndata[:obj_nature]])+
-          libnval("Relatifs", traite_relatifs(dyndata[:relatifs]))
+          traite_relatifs(dyndata[:relatifs])
         ).in_dd
       ).in_dl
     end.join
