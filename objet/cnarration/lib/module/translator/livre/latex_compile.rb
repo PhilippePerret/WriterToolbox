@@ -59,7 +59,7 @@ class Livre
     if open_pdf?
       if pdf_main_file.exist?
         lien_open = lien.edit_file "#{pdf_main_file}", {editor: 'Preview', titre: "#{pdf_main_file}"}
-        flash "L'ouverture du document #{lien_open} est demandée (cliquer sur le path ci-contre si le document ne s'ouvre page)."
+        flash "L'ouverture du document #{lien_open} est demandée (cliquer sur le path ci-contre si le document ne s'ouvre pas)."
         `open \"#{pdf_main_file}\"`
       else
         error "Malheureusement, le fichier PDF n'a pas pu être construit. Consulter le fichier log."

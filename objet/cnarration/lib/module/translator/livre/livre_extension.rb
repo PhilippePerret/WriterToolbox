@@ -16,12 +16,12 @@ class Livre
 
     suivi << "*** Export vers latex du livre “#{data[:hname]}”"
 
-    # Créer un dossier principal pour le livre (:folder)
-    # C'est dans ce dossier que se trouvera l'intégralité des
-    # élément du livre LaTex
-    init_latex_folder
+    # Construire le dossier LaTex principal du livre
+    latex_folder.build
 
-    # Créer un dossier pour les _sources (toutes au même niveau)
+    # Créer un dossier pour les _sources (on reproduit la
+    # hiérarchie de la collect pour n'avoir aucune collision
+    # de nom)
     latex_source_folder.build
 
     # Créer un fichier principal Latex et le préparer
@@ -117,19 +117,6 @@ class Livre
     @pdf_main_file ||= SuperFile::new("#{latex_main_file.affixe_path}.pdf")
   end
 
-  # Préparation du dossier Latex principal dans les
-  # dossiers temporaires.
-  # On copie dans ce dossier tous les éléments du dossier
-  # assets qui seront utiles à tous les livres.
-  def init_latex_folder
-    latex_folder.build
-    fassets = Cnarration::Translator::folder + "assets"
-    FileUtils::cp_r "#{fassets.to_s}/.", "#{latex_folder.folder}/"
-    # Il faut détruire le fichier READ_ME qui sert pour le
-    # dossier asset mais pas pour les livres exportés
-    (latex_folder.folder+'_read_me_.md').remove
-  end
-
   def latex_source_folder
     @latex_source_folder ||= begin
       d = latex_folder+'sources'
@@ -138,14 +125,7 @@ class Livre
     end
   end
   def latex_folder
-    @latex_folder ||= tmp_latex_folder+"BOOK_#{folder_name.upcase}"
-  end
-  def tmp_latex_folder
-    @tmp_latex_folder ||= begin
-      d = site.folder_tmp+"latex"
-      d.remove if d.exist?
-      d
-    end
+    @latex_folder ||= Cnarration::Latex::tmp_latex_folder+"BOOK_#{folder_name.upcase}"
   end
 
 end #/Livre

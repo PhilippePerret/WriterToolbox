@@ -3,14 +3,15 @@
 
 Ce module contient :
 
-Toutes les méthodes de transformation des textes origignaux en
+Toutes les méthodes de transformation des textes originaux en
 (Markdown/Kramdown) transformés en fichiers LaTex conformes grâce
 à la class Cnarration::Translator où l'instance est en fait un
 fichier qui sera transformé.
 
 Class Cnarration::Translator
 ----------------------------
-L'idée est de passer
+L'idée est de passer le path du fichier à Translator, qui est donc
+aussi un "fichier" et il traite la transformation
 =end
 class Cnarration
 class Translator

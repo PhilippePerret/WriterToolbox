@@ -16,6 +16,11 @@ class << self
 
     @suivi << "Référence du livre : #{ref_book.nil? ? 'aucune' : ref_book}"
 
+    # Créer un dossier principal pour le livre (:folder)
+    # C'est dans ce dossier que se trouvera l'intégralité des
+    # élément du livre LaTex
+    Cnarration::Latex::init_latex_folder
+
     # -----------------------------------
     # Export de tous les livres à traiter
     # -----------------------------------
