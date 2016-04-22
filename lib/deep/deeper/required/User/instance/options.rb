@@ -15,6 +15,7 @@ class User
   def admin?    ; get_option(:admin) & 1 > 0 end
   def super?    ; get_option(:admin) & 2 > 0 end
   def manitou?  ; get_option(:admin) & 4 > 0 end
+  def phil?     ; manitou? && id == 1         end
   def set_admin bit_admin
     raise_unless_admin # seul un administrateur peut faire ça
     set_option(:admin, get_option(:admin)|bit_admin)

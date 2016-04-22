@@ -22,7 +22,8 @@
     ------------------------------------------------------------------------------
     Unan
     Program
-    PDay        Un "jour-programme", c'est-à-dire un vrai jour de programme sans
+    PDay        Un "jour-programme", c'est-à-dire un vrai jour de
+                programme sans
                 tenir compte du rythme. Un jour-programme vaut un jour réel lorsque
                 le rythme est de 5, c'est-à-dire le rythme moyen/normal.
                 Il s'agit ici de l'instance pour l'auteur, qui définit comment

@@ -6,16 +6,63 @@
 <%= Unan::titre_h1 %>
 <h2>Plan général du programme</h2>
 
+
+
+<%
+# ------- BOUTONS ADMINISTRATION -----------
+
+# Si c'est moi qui visite, on lui indique un lien pour
+# pouvoir modifier ces informations.
+#   - le texte de ce fichier (donc ce fichier)
+#   - les infos contenues
+if user.phil?
+  this_file = CGI::escape(File.expand_path('./objet/unan/program/abs_pday/cal.erb'))
+  data_file = CGI::escape(File.expand_path('./data/unan/data/cal_pday.yaml'))
+  data_filed = CGI::escape(File.expand_path('./data/unan/data/cal_pday_detail.yaml'))
+
+%>
+<div class="tiny right btns">
+  <span class="libelle">Modifier…</span>
+  <%= "ce texte".in_a(href:"site/open_file?file=#{this_file}&app=TextMate") %>
+  <%= "les données générales".in_a(href:"site/open_file?file=#{data_file}&app=Atom") %>
+  <%= "les descriptions".in_a(href:"site/open_file?file=#{data_filed}&app=Atom") %>
+</div>
+<%
+end
+# -----------/FIN BOUTONS ADMINISTRATION ----------
+%>
+
+<%
+#
+# Types d'affichages
+# (pour ne faire qu'un seul menu avec les différens affichages possibles,
+#  en produisant un HTML peut-être au lieu de tout refaire)
+#   VISION D'ENSEMBLE
+#     Correspond à vision d'ensemble et titre des étapes
+#   VISION D'ENSEMBLE DÉTAILLÉE
+#     Correspond à vision d'ensemble et description
+#   VISION D'ENSEMBLE COURS
+#     Correspond à vision d'ensemble et cours
+#   VISION MÉDIANE
+#     Vision médiane (donc le niveau 2) et titre des étapes
+#   VISION MÉDIANE DÉTAILLÉE
+#     Niveau 2 et description abrégée
+#   VISION 
+%>
+
 <form class="" action="<%= route_courante %>" method="POST">
 <p class='small'>
-  Vous pouvez vous faire, grâce à cette visualisation de l'intégralité du programme “Un An Un Script”, une idée plus précise du travail au cours de ce programme de développement d'histoire unique en son genre.
-  <p class="small"><%= Unan::Program::PDayMap::menu_echelle %>
-  En réglant ce <strong>menu d'échelle</strong>, vous pouvez visualiser ce plan plus ou moins précisément.</p>
-  <p class='small'><%= Unan::Program::PDayMap::menu_content %>
-  Ce <strong>menu de contenu</strong> vous permet de déterminer de choisir entre les différents contenus à afficher. “Titres des étapes” affiche seulement les titres, “Description” donne un aperçu plus précis du contenu de ces étapes et “Aspect pédagogique” précise le contenu des connaissances qui sont acquises en parallèle ou au cours de chaque étape de travail.</p>
-  <p class='small'><%= Unan::Program::PDayMap::menu_rythme %>
-  Les indications de durées sont fonctions du <strong>rythme général</strong> que vous avez adopté ou celui choisi dans le menu ci-dessous. Utilisez ce menu si vosu voulez avoir une vision juste de la durée des étapes en fonction du rythme choisi. Noter que ce rythme n'affecte pas les cases des “jours-programme” numérotées de 1 à 364.</p>
+  Vous pouvez vous faire, grâce à cette visualisation de l'intégralité du programme “Un An Un Script”, une idée plus précise du travail au cours de ce programme de développement unique en son genre.
 </p>
+<dl class="tiny">
+  <dt><%= Unan::Program::PDayMap::menu_echelle %></dt>
+  <dd>En réglant ce <strong>menu d'échelle</strong>, vous pouvez visualiser ce plan plus ou moins précisément.</dd>
+  <dt><%= Unan::Program::PDayMap::menu_content %></dt>
+  <dd>Ce <strong>menu de contenu</strong> vous permet de déterminer de choisir entre les différents contenus à afficher. “Titres des étapes” affiche seulement les titres, “Description” donne un aperçu plus précis du contenu de ces étapes et “Aspect pédagogique” précise le contenu des connaissances qui sont acquises en parallèle ou au cours de chaque étape de travail.</dd>
+  <dt><%= Unan::Program::PDayMap::menu_rythme %></dt>
+  <dd>Les indications de durées sont fonctions du <strong>rythme général</strong> que vous avez adopté ou celui choisi dans le menu ci-dessous. Utilisez ce menu si vosu voulez avoir une vision juste de la durée des étapes en fonction du rythme choisi. Noter que ce rythme n'affecte pas les cases des “jours-programme” numérotées de 1 à 364.</dd>
+</dl>
+
 </form>
 
 <%

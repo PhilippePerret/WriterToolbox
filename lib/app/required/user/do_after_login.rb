@@ -23,6 +23,8 @@ class User
     end
 
     require './data/secret/known_ips.rb'
+    # ATTENTION ! Une adresse peut être connue sans que ce
+    # soit un user inscrit. Dans ce cas, user_id est nil
     detail = if KNOWN_IPS.has_key?(self.ip)
       "\nDetail  : #{KNOWN_IPS[self.ip][:detail]}"
     else
