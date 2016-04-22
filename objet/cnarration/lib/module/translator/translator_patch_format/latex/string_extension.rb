@@ -16,6 +16,7 @@ class ::String
     str.gsub!(/\&/, '\\\\&')
     str
   end
+  alias :to_latex :as_latex
 
   def formate_balises_mots
     str = self
@@ -61,7 +62,7 @@ class ::String
     end
   end #/<< self
   def traite_film film_id
-    "\\film{#{self.class::titre_for_film film_id}}"
+    "\\film{#{self.class::titre_for_film film_id}}\\cite{#{film_id}}"
   end
 
   # Balises REF[...] qui vont référence à une autre page

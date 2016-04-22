@@ -41,12 +41,12 @@ class << self
   # base de données
   def code_film hfilm
     <<-CODE
-@Book{#{hfilm[:film_id]},
-  title     = {#{hfilm[:titre]}},
-  titlefr   = {#{hfilm[:titre_fr] || ""}},
+@movie{#{hfilm[:film_id]},
+  title     = {#{hfilm[:titre].to_latex}},
+  titlefr   = {#{(hfilm[:titre_fr] || "").to_latex}},
   year      = {#{hfilm[:annee]}},
   country   = {#{hfilm[:pays].join(', ')}},
-  author    = {#{hfilm[:auteurs]}},
+  author    = {#{hpeople hfilm[:auteurs]}},
   director  = {#{hpeople hfilm[:realisateur]}},
   publisher = {#{hpeople hfilm[:producteurs]}},
   id        = {#{hfilm[:film_id]}}

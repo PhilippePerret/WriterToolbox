@@ -206,7 +206,7 @@ class << self
         # " (\\cref{#{hquestion[:id]}})"
         # " (\\labelcref{#{hquestion[:id]}})" # => rien…
         " (\\cpageref{#{hquestion[:id]}})"
-      else
+      else # :html
         # Le lien pour rejoindre la question dans son fichier
         lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
         " (#{lien_vers_question})"
