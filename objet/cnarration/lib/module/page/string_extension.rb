@@ -196,7 +196,7 @@ class << self
 
       lien_vers_question = case output_format
       when :latex
-        "\\ref{#{hquestion[:id]}}"
+        " (\\ref{#{hquestion[:id]}})"
       else
         # Le lien pour rejoindre la question dans son fichier
         lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")

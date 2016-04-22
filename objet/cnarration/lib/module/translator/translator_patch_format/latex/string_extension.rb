@@ -93,9 +93,6 @@ class ::String
   # Surclassement de la méthode originale
   def formate_balises_colon balise
     str = self
-    # Original:
-    # str.gsub!(/#{balise}:\|(.*?)\|/, "<#{balise}>\\1</#{balise}>")
-    # str.gsub!(/#{balise}:(.+?)\b/, "<#{balise}>\\1</#{balise}>")
     str.gsub!(/#{balise}:\|(.*?)\|/, "\\#{balise}{\\1}")
     str.gsub!(/#{balise}:(.+?)\b/, "\\#{balise}{\\1}")
     str
