@@ -61,10 +61,36 @@ class Translator
     #
     if @content.match(/DOC\//)
       @content = @content.mef_document(:latex)
-      if page_id == 15
-        debug "@content après mef_document : #{@content}"
-      end
     end
+
+    # Protection des crochets et des traits droits avant
+    # d'envoyer à kramdown pour ne pas qu'ils soit corrigés
+    # en tableau.
+    # NOTE: Pour le moment, j'essaie de ne traiter que
+    # les traits droits qui ne se trouvent pas dans une
+    # ligne commençant par '|' car je crois que c'est seulement
+    # ceux-là qui posent problème.
+    # En tout cas, on ne peut pas se permettre de tous les
+    # corriger car les tableaux seraient perdus
+    # Comme je ne trouve pas l'expression régulière à utiliser
+    # je procède par ligne
+    # @content = @content.split("\n").collect do |line|
+    #   if line.start_with?('|')
+    #     line
+    #   else
+    #     line.gsub(/\|/,'TRAITDROITPROTECTED')
+    #   end
+    # end.join("\n")
+    # NON : C'est trop long, je vais cibler aux seuls cas
+    # qui peuvent se produire :
+    #   MOT
+    #   LIVRE
+    #   REF
+    @content.gsub!(/\b(MOT|REF|LIVRE)\[(.+?)\]/){
+      tag   = $1.freeze
+      inner = $2.dup
+      "#{tag}[#{inner.gsub(/\|/,'TRAITDROITPROTECTED')}]"
+    }
   end
 
   # Corrections finales sur le texte Kramdowné
@@ -72,6 +98,11 @@ class Translator
     suivi << "    -> post-corrections"
 
     # debug "content dans post_corrections : #{content}\n\n\n"
+
+    # On déprotège tous les crochets et tous les |
+    @content = @content.gsub(/CROCHETOPROTECTED/,'[')
+      .gsub(/CROCHETFPROTECTED/,']')
+      .gsub(/TRAITDROITPROTECTED/,'|')
 
     # On finalise les balises LaTex des environnements
     # document et peut-être d'autres choses aussi.
@@ -111,6 +142,9 @@ class Translator
     # Il faut traiter les [--...--] qui ont remplacé les :|...| pour
     # revenir à une commande latex normale
     @content.gsub!(/\b([a-zA-Z]+)\[\-\-(.+?)\-\-\]/){"\\#{$1}{#{$2}}"}
+
+    # Il reste des tterm:UNMot dans le texte, il faut les corriger
+    @content.gsub!(/\btterm:(.+?)\b/,"\\tterm{\\1}")
 
     # debug "content À LA FIN DE post_corrections : #{content}\n\n\n"
 

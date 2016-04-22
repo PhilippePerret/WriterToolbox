@@ -21,9 +21,17 @@ class ::String
   def formate_balises_mots
     str = self
     str.gsub!(/MOT\[([0-9]+)\|(.*?)\]/){
-      mot_id = $1.to_i
-      mot = $2.freeze
-      "#{mot}\\index{#{mot}}"
+      mot_id  = $1.to_i
+      mot     = $2
+      # Le mot indexé ne doit pas comporter d'accent ni de
+      # caractères spéciaux
+      mot_indexed = mot.normalized
+      mot_indexed = if mot == mot_indexed
+        mot
+      else
+        "#{mot_indexed}@#{mot}"
+      end
+      "#{mot}\\index{#{mot_indexed}}"
     }
     str
   end

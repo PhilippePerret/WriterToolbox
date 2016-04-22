@@ -48,7 +48,7 @@ class << self
   def code_livre hlivre
     <<-CODE
 @book{#{hlivre[:id]},
-  title     = {#{hlivre[:titre]}},
+  title     = {#{hlivre[:titre].to_latex}},
   author    = {#{hlivre[:auteur]}},
   year      = {#{hlivre[:annee]}},
   publisher = {#{hlivre[:editeur]}},

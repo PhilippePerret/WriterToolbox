@@ -52,6 +52,7 @@ class Livre
       suivre_exec "biber \"#{maintex_affx_path}\""
       suivre_exec "latex \"#{maintex_full_path}\""
       suivre_exec "makeindex \"#{maintex_affx_path}\""
+      suivre_exec "latex \"#{maintex_full_path}\"" # ajouté pour l'index
       suivre_exec "pdflatex \"#{maintex_full_path}\""
       suivre_exec "dvips \"#{maintex_affx_path}.dvi\""
     end

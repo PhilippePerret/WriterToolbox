@@ -58,7 +58,8 @@ class << self
   def hpeople arr
     arr.collect do |hperson|
       c = "#{hperson[:nom]}, #{hperson[:prenom]}"
-      c += " (hperson[:fonction].downcase)" unless hperson[:fonction].nil?
+      # Pour la filmographie, il ne faut pas indiquer de fonction
+      # c += " (#{hperson[:fonction].downcase})" unless hperson[:fonction].nil?
       c
     end.pretty_join.sub(/ et /, ' and ')
   end

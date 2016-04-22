@@ -14,7 +14,7 @@ class Livre
   #
   def export_latex
 
-    suivi << "*** Export vers latex du livre “#{data[:hname]}”"
+    suivi << "*** Export vers latex du livre “#{data[:hname]}” (#{NOW.as_human_date(true, true)})"
 
     # Construire le dossier LaTex principal du livre
     latex_folder.build
@@ -40,7 +40,10 @@ class Livre
     # Pour passer les pages progressivement (une à une), afin de
     # corriger les erreurs au fur et à mesure.
     # Mettre à 1000 pour les passer toutes
-    max_sources = 30
+    max_sources = nil #30
+    if max_sources != nil
+      suivi << "NOMBRE DE SOURCES TRAITÉES LIMITÉ À #{max_sources}"
+    end
 
     # Passer en revue toutes les sources (tous les fichiers) et
     # les traiter.
@@ -53,13 +56,13 @@ class Livre
       # handler pour l'inclure dans le fichier
       next unless itranslator.translate(:latex)
       # Pour ne laisser passer qu'un certain nombre de fichiers
-      max_sources -= 1
+      max_sources -= 1 unless max_sources.nil?
       # On ajoute ce fichier à la liste des includes qu'il
       # faudra faire dans le fichier principal LaTex, en fonction
       # de l'index de la page
       @liste_inclusions[itranslator.tdm_index] = itranslator.handler
 
-      break if max_sources < 1
+      break if max_sources != nil && max_sources < 1
     end
 
     # ========== /CORE =============
