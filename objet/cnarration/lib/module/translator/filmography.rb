@@ -11,7 +11,7 @@ class << self
   #      filmodico.db
   #
   def build_if_needed
-    return if bib_file.exist? && bib_file.mtime > base_filmodico.mtime
+    return if Cnarration::force_update_biblios.nil? && bib_file.exist? && bib_file.mtime > base_filmodico.mtime
     # Sinon il faut reconstruire la bibliographie
     debug "LE FICHIER #{bib_file} (filmographie) doit être actualisé."
     build
@@ -90,7 +90,7 @@ class << self
   # au format LaTex
   def bib_file
     @bib_file ||= begin
-      Cnarration::Translator::folder + "assets/filmography.bib"
+      Cnarration::Translator::folder + "assets/commons/filmography.bib"
     end
   end
 

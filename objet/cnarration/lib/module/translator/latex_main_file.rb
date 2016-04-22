@@ -26,7 +26,10 @@ class LatexMainFile
   end
 
   # Ferme le fichier latex principal
+  # Avant de le fermer, il écrit la bibliographie
+  # et la quatrième de couverture.
   def close
+    write latex_mark(:bibliographies)
     write latex_mark(:fin_livre)
     write latex_mark(:end_document)
   end
@@ -65,6 +68,10 @@ class LatexMainFile
     begin_document:   "\\begin{document}",
     # Début commun à tous les livres
     debut_livre:      "\\input{../commons/books_start.tex}",
+    # Pour bibtex
+    # bibliographies:   "\\bibliographystyle{plain}\n\\bibliography{../commons/filmography,../commons/bibliography}",
+    # Pour biblatex:
+    bibliographies:   "\\printbibliography",
     fin_livre:        "\\input{../commons/books_end.tex}",
     end_document:     "\\end{document}"
   }

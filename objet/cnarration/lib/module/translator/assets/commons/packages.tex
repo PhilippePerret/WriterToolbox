@@ -52,8 +52,20 @@ linkcolor=blue,
 % "\citet" pour écrire le titre
 % \usepackage{natbib}
 % biblatex plutôt que bibtex ou natbib
-%\usepackage[style=apa, natbib]{biblatex}
-\usepackage[backend=biber, bibencoding=utf8, natbib]{biblatex}
+
+% Le style 'apa' ne fonctionne pas avec les données
+% que j'ai
+% \usepackage[style=apa, natbib]{biblatex}
+
+\usepackage[bibencoding=utf8, natbib]{biblatex}
+
+% \usepackage[backend=biber, bibencoding=utf8, natbib]{biblatex}
+% Définition des bibliographies pour biblatex
+% AVANT mais déprécié :
+% \bibliography{../commons/filmography,../commons/bibliography}
+% Nouveau format :
+\addbibresource{../commons/filmography.bib}
+\addbibresource{../commons/bibliography.bib}
 
 % Pour les guillemets français
 \usepackage[babel=true]{csquotes}

@@ -14,8 +14,16 @@ class << self
   def init_latex_folder
 
     # S'il faut actualiser le fichier filmographie, il faut
-    # le faire
+    # le faire.
+    # Note : On peut forcer l'actualisation en réglant la
+    # valeur Cnarration::force_update_biblios à true
     Cnarration::Filmography::build_if_needed
+
+    # S'il faut actualiser le fichier bibliographie, il faut
+    # le faire.
+    # Note : On peut forcer l'actualisation en réglant la
+    # valeur Cnarration::force_update_biblios à true
+    Cnarration::Bibliography::build_if_needed
 
     # On peut ensuite construire le dossier principal en
     # y copiant tous les fichiers

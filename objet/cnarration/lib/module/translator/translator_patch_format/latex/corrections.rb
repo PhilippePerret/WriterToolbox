@@ -128,7 +128,7 @@ class Translator
         case code_erb
         when "user.pseudo" then "Ernest"
         else
-          debug "Évaludation de : #{code_erb.inspect}"
+          # debug "Évaludation de : #{code_erb.inspect}"
           res = eval( code_erb )
           res = res.purified # il faut supprimer toute balise HTML
         end

@@ -2,6 +2,10 @@
 class Cnarration
 class << self
 
+  # {NilClass|TrueClass} Si true, on force l'actualisation
+  # des fichiers bibliographiques, les livres et les films
+  attr_accessor :force_update_biblios
+
   # {Array} Pour le suivi des opérations
   attr_reader :suivi
 
@@ -15,6 +19,10 @@ class << self
     @ref_book = ref_book
 
     @suivi << "Référence du livre : #{ref_book.nil? ? 'aucune' : ref_book}"
+
+    # Pour forcer chaque fois l'actualisation des fichiers
+    # bibliographiques, jusqu'à ce que tout soit bien en place
+    # @force_update_biblios = true
 
     # Créer un dossier principal pour le livre (:folder)
     # C'est dans ce dossier que se trouvera l'intégralité des
