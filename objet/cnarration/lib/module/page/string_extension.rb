@@ -196,7 +196,16 @@ class << self
 
       lien_vers_question = case output_format
       when :latex
-        " (\\ref{#{hquestion[:id]}})"
+        # " (\\ref{#{hquestion[:id]}} p.\\pageref{#{hquestion[:id]}})"
+        # Avec hyperef
+        # " (\\nameref{#{hquestion[:id]}} p.)"
+        # Avec varioref
+        # L'astérisque permet de ne pas ajouter d'espace avant
+        # " (\\vref*{#{hquestion[:id]}})"
+        # Avec varioref+cleveref
+        # " (\\cref{#{hquestion[:id]}})"
+        # " (\\labelcref{#{hquestion[:id]}})" # => rien…
+        " (\\cpageref{#{hquestion[:id]}})"
       else
         # Le lien pour rejoindre la question dans son fichier
         lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")

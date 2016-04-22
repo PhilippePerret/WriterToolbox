@@ -31,6 +31,7 @@
 \usepackage{setspace}
 
 % Pour les hyperliens dans le texte
+% Note : Doit impérativement être placé AVANT cleveref
 \usepackage{hyperref}
 \hypersetup{
 colorlinks=false, % Pour ne pas mettre les liens en couleur
@@ -74,7 +75,13 @@ linkcolor=blue,
 \usepackage{xr}
 % Pour pouvoir définir la mise en forme des références, par exemple un
 % "p." avant le numéro de page.
-\usepackage{varioref}
+\usepackage{varioref} % => \vref au lieu de \ref
+\usepackage{cleveref} % => \cref au lieu de \vref
+
+% Pour pouvoir utiliser \nameref pour les références et donc
+% définir le titre plutôt que le nombre.
+% Je préfère varioref pour le moment (cf. ci-dessus)
+% \usepackage{hyperref}
 
 % Kramdown transforme certains truc en longtable, c'est-à-dire
 % en environnement permettant de faire des tableaux sur plusieurs

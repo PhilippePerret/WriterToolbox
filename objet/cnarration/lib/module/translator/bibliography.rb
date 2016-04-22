@@ -42,6 +42,9 @@ class << self
   # Code pour un film
   # +hfilm+ {Hash} des données du film telles que lues dans la
   # base de données
+  #
+  # volumes
+  # series + number
   def code_livre hlivre
     <<-CODE
 @book{#{hlivre[:id]},
@@ -50,6 +53,7 @@ class << self
   year      = {#{hlivre[:annee]}},
   publisher = {#{hlivre[:editeur]}},
   isbn      = {#{hlivre[:isbn]}},
+  series    = {#{hlivre[:series]}},
   id        = {#{hlivre[:id]}}
 }
 
@@ -76,6 +80,7 @@ class << self
             id:       nid,
             auteur:   "Perret, Philippe",
             editeur:  "Encres de Siagne",
+            series:   "Collection Narration",
             annee:    Time.now.year
         ) )
       end
