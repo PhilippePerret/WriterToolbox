@@ -13,7 +13,8 @@
     Program     Le programme lui-même. Chaque auteur possède une instance de
                 cette classe (Unan::Program).
 
-    Cal         Le calendrier. Il contient tous les jours du programme et tient
+    Cal         Le calendrier. Il contient tous les jours du programme
+                et tient
                 compte du rythme pour connaitre le nombre de jours réels possède
                 le programme.
 

@@ -319,6 +319,9 @@ sup {
 <li><a href="#bureaudelauteur">Bureau de l'auteur</a></li>
 </ul>
 </li>
+<li><a href="#programmedelauteur">Programme de l'auteur</a></li>
+<li><a href="#rythmedelauteur">Rythme de l'auteur</a></li>
+<li><a href="#calendrierduprogramme">Calendrier du programme</a></li>
 <li><a href="#travaildelauteur">Travaux de l'auteur</a>
 
 <ul>
@@ -362,6 +365,75 @@ sup {
 
 <p>Chaque auteur inscrit au programme possède un bureau, son centre de travail névralgique d'où il peut accomplir toutes les actions et voir où il en est de son travail.</p>
 
+<hr />
+
+<p><a name='programmedelauteur'></a></p>
+
+<h2>Programme de l'auteur</h2>
+
+<p>Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance <code>Unan::Program</code> consignée dans la table <code>programs</code> de <code>unan.db</code>.</p>
+
+<hr />
+
+<p><a name='rythmedelauteur'></a></p>
+
+<h2>Rythme de l'auteur</h2>
+
+<p>Le rythme auquel on suit le programme UN AN UN SCRIPT est une donnée fondamentale du programme.</p>
+
+<p>Ce rythme a une valeur de <strong>5</strong> quand il est <em>moyen</em>, c'est-à-dire qu'un jour-réel correspond à un <em>jour-programme</em>.</p>
+
+<pre><code>    RYTHME = 5
+    =&gt;  UN JOUR RÉEL = UN JOUR-PROGRAMME
+</code></pre>
+
+<p>Cette valeur s'obtient par différents moyens&nbsp;:</p>
+
+<pre><code>    user.rythme
+
+    user.program.rythme
+</code></pre>
+
+<hr />
+
+<p><a name='calendrierduprogramme'></a></p>
+
+<h2>Calendrier du programme</h2>
+
+<p>À chaque programme correspond à calendrier (<code>Unan::Program::Cal</code>) propre au programme de l'user qui possède le programme.</p>
+
+<p>On instancie ce calendrier seulement avec l'instance programme&nbsp;:</p>
+
+<pre><code>    program = Unan::Program::new(&lt;prog id&gt;)
+    ou 
+    program = user.program
+
+    calend  = Unan::Program::Cal::new(program)
+
+    ou
+
+    program.cal # TODO: Voir si on peut l'avoir comme ça
+</code></pre>
+
+<p>Donc pour obtenir le calendrier depuis l'user :</p>
+
+<pre><code>    calendrier = user.program.cal
+</code></pre>
+
+<hr />
+
+<ul>
+<li><a href="#lespdaysduprogramme">Les P-Days</a>
+<a name='lespdaysduprogramme'></a></li>
+</ul>
+
+
+<h2>Les P-Days</h2>
+
+<p>Les <code>P-Days</code> sont des <code>jours-programme</code>. Ils peuvent être réels (correspondre au jour réel) ou non suivant la valeur du <a href="#rythmedelauteur" title="Le rythme de l'auteur">rythme</a> du programme.</p>
+
+<hr />
+
 <p><a name='travaildelauteur'></a></p>
 
 <h2>Travaux de l'auteur</h2>
@@ -378,8 +450,44 @@ sup {
 <li>questionnaire à remplir,</li>
 <li><p>réponse ou message à passer sur le forum.</p>
 
-<pre><code>  Chaque type de travail est consigné dans une "variable-auteur"
-  user.variable("")
+<pre><code>  WORKS désigne n'importe lequel de ces travaux dans le programme.
+
+  Les types, au niveau du programme, sont :
+
+      TASK      Une tâche à accomplir
+      QUIZ      Un questionnaire à répondre
+      COURS
+
+  Chaque type de travail est consigné dans une "variable-user"
+  qu'on peut obtenir et modifier par :
+
+      user.set_var(&lt;:nom variable&gt;, &lt;valeur variable&gt;)
+      user.get_var(&lt;:nom variable&gt;) # =&gt; retourne sa valeur
+
+  Ces variables-user porte comme nom :
+
+      works_ids       Pour tous les travaux (dont ceux ci-dessous)
+      ------------------------------------------------------------
+      tasks_ids       Pour les tasks
+      pages_ids       Pour les pages de cours à lire
+      quiz_ids        Pour les questionnaires à répondre
+
+  Les IDs contenus dans ces listes sont des identifiants de :
+
+      Unan::Program::Work
+
+  Un work s'instancie à l'aide de :
+
+      Unan::Program::Work::new(&lt;user&gt;.program, &lt;work id&gt;)
+
+  L'instance Work possède une propriété `item_id` qui définit
+  l'ID de l'item en fonction du type de work :
+
+      Si le type est          Alors item_id est
+      ------------------------------------------------------------
+      task                    l'ID d'une tâche
+      quiz                    l'ID d'un questionnaire
+      page                    l'ID d'une page de cours
 </code></pre></li>
 </ul>
 

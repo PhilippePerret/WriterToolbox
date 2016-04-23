@@ -46,12 +46,30 @@ class Bureau
   # {Array de User::UPage} Retourne une liste d'instances des pages de
   # cours à lire
   def new_pages_cours
-    @new_pages_cours ||= upages.select{ |upage| upage.not_vue?}
+    @new_pages_cours ||= begin
+      upages.select do |upage|
+        if upage.nil?
+          raise "Une page est nil dans `new_pages_cours`" if OFFLINE
+          false
+        else
+          upage.not_vue?
+        end
+      end
+    end
   end
 
   # Les pages qui ont été vues mais pas encore marquées lues
   def pages_cours
-    @pages_cours ||= upages.select{ |upage| upage.vue? && upage.not_lue? }
+    @pages_cours ||= begin
+      upages.select do |upage|
+        if upage.nil?
+          raise "Une page est nil dans `pages_cours`" if OFFLINE
+          false
+        else
+          upage.vue? && upage.not_lue?
+        end
+      end
+    end
   end
 
   # Les dernières pages lues (ou relues)
