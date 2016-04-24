@@ -75,5 +75,3 @@ qu'attendez-vous pour
   end
 
 end #/SiteHtml
-
-debug "-> build est chargé"

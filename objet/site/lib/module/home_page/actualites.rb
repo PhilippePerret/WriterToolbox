@@ -1,4 +1,13 @@
 # encoding: UTF-8
+=begin
+
+Module de construction du bloc des "hot news" en bas
+de la page d'accueil du site.
+
+Ce module n'est chargé que s'il faut actualisé ce bloc, après
+un changement dans les informations.
+
+=end
 class SiteHtml
 
   def section_hot_news
