@@ -1,0 +1,61 @@
+<%
+raise_unless_admin
+#
+# Page permettant d'afficher le programme jour après jour comme si
+# on le suivait de façon rapide.
+#
+%>
+
+<%
+# Fenêtre d'affichage
+%>
+<div id="dad_content">
+  <div class='pday'>
+    <%= ipday.edit_buttons %>
+    <h3>
+      <%= ipday.id %><sup><%= ipday.id == 1 ? 'er' : 'e' %></sup> P-Day :
+      <%= ipday.titre %>
+    </h3>
+    <%= (ipday.description || "PAS DE DESCRIPTION").in_div(class:'description') %>
+    <% ipday.works(:as_instances).each do |iwork| %>
+      <%= iwork.as_card %>
+    <% end %>
+  </div>
+</div>
+
+
+<%
+# Bandeau de navigation, sous la fenetre
+
+%>
+<div id="dad_navigation">
+  <%=
+    (
+      Unan::DAD::lien_works_map +
+      Unan::DAD::lien_pdays_map +
+      Unan::DAD::checkbox_fenetre_fixe
+    ).in_div(class:'btns fleft small') %>
+  <%
+  prev_ipday = ipday.id - 1
+  prev_visibility = prev_ipday > 0 ? "visible" : "hidden"
+  iem = prev_ipday == 1 ? "er" : "e"
+  prev_num = "#{prev_ipday}<sup>#{iem}</sup>".in_span(class:'tiny')
+  next_ipday = ipday.id + 1
+  next_visibility = next_ipday < 366 ? "visible" : "hidden"
+  next_num = "#{next_ipday}<sup>e</sup>".in_span(class:'tiny')
+  %>
+  <%= "#{prev_num} ◀️".in_a(class:'btnnav', style:"visibility:#{prev_visibility}", href:"unan_admin/day_after_day?pday=#{prev_ipday}") %>
+  <%= Unan::DAD::menu_jours %>
+  <%= "▶️ #{next_num}".in_a(class:'btnnav', style:"visibility:#{next_visibility}",href:"unan_admin/day_after_day?pday=#{next_ipday}") %>
+</div>
+
+
+<%
+# Si les paramètres le demandent il faut bloquer la fenêtre
+# au rechargement
+%>
+<script type="text/javascript">
+$(document).ready(function(){
+  UI.bloquer_la_page(true)
+})
+</script>
