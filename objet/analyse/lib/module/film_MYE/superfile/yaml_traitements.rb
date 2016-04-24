@@ -170,7 +170,7 @@ class SuperFile
     end.join.in_dl
   end
   def explication_questions_reponses_dramatiques
-    "Quelques questions et réponses dramatiques tirées du film (ce ci n'est pas, sauf indication contraire, une liste exhaustive)".in_div(class:'italic small discret')
+    "Quelques questions et réponses dramatiques tirées du film (ce n'est pas, sauf indication contraire, une liste exhaustive)".in_div(class:'italic small discret')
   end
   def traite_content_as_notes
     traite_hash_in_liste_definition yaml_content

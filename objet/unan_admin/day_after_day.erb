@@ -7,6 +7,13 @@ raise_unless_admin
 %>
 
 <%
+# Section qui contient les données actuelles en fonction du jour
+# à commencer par le nombre de points
+%>
+<div id="dad_state">
+  <%= Unan::DAD::total_points_upto %>
+</div>
+<%
 # Fenêtre d'affichage
 %>
 <div id="dad_content">
@@ -16,7 +23,8 @@ raise_unless_admin
       <%= ipday.id %><sup><%= ipday.id == 1 ? 'er' : 'e' %></sup> P-Day :
       <%= ipday.titre %>
     </h3>
-    <%= (ipday.description || "PAS DE DESCRIPTION").in_div(class:'description') %>
+    <%  def warning_non_defini; "CE JOUR-PROGRAMME N'EST PAS DÉFINI.".in_span(class:'warning') end %>
+    <%= (ipday.description || warning_non_defini).in_div(class:'description') %>
     <% ipday.works(:as_instances).each do |iwork| %>
       <%= iwork.as_card %>
     <% end %>

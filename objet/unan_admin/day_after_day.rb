@@ -23,6 +23,51 @@ end
 class Unan
 class DAD # Pour D(ay) A(fter) D(ay)
 class << self
+
+  # ---------------------------------------------------------------------
+  #   Méthodes fonctionnelles
+  # ---------------------------------------------------------------------
+
+  def total_points_upto
+    totpoints_hier = 0
+    (1..(ipday.id - 1)).each do |ij|
+      totpoints_hier += points_of(ij)
+    end
+    sitoutreussi = "(si tout réussit)".in_span(style:"font-size:0.75em")
+    pointsdujour = points_of(ipday.id)
+    totpoints = (totpoints_hier + pointsdujour).to_s.in_span(class:'bold')
+    pointsdujour = pointsdujour == 0 ? "#{pointsdujour} points".in_span(class:'warning bold') : "#{pointsdujour} points"
+    "Total des points #{sitoutreussi} : #{totpoints} = #{totpoints_hier} + #{pointsdujour} ce jour."
+  end
+
+  def points_of ij
+    @works_per_pday ||= begin
+      res = Unan::table_absolute_pdays.select(colonnes:[:works])
+      h = {}; res.each do |pid, pdata|
+        h.merge! pid => pdata[:works].split.collect{|i| i.to_i}
+      end; h
+    end
+    @points_per_work ||= begin
+      h = {}; Unan::table_absolute_works.select(colonnes:[:points]).each do |wid, wdata|
+        h.merge! wid => wdata[:points].to_i
+      end; h
+    end
+
+    # if ij == 1
+    #   debug "@works_per_pday : #{@works_per_pday.inspect}"
+    #   debug "@points_per_work : #{@points_per_work.inspect}"
+    # end
+
+    # Pour calculer le nombre de points max gagnés au cours
+    # du jour +ij+
+    nb = 0
+    (@works_per_pday[ij]||[]).each do |wid|
+      nb += @points_per_work[wid]
+    end
+    debug "ij=#{ij} / nb = #{nb}"
+    return nb
+  end
+
   # ---------------------------------------------------------------------
   #   Helper méthods
   # ---------------------------------------------------------------------
