@@ -59,7 +59,8 @@ class Synchro
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
       "./database/data/unan/",
-      "./database/data/user/"
+      "./database/data/user/",
+      "./lib/deep/deeper/module/synchronisation/"
     ]
   end
 end

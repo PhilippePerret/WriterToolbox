@@ -8,8 +8,12 @@ def synchronisation_forum
 end
 %>
 <%= Admin::titre_h1 %>
-<p class='small italic discret'>Bienvenue dans le tableau de bord de l'administration du site.</p>
+<p class='small italic discret'>Bienvenue dans le tableau de bord d'administration du site.</p>
 
+<%
+# On affiche les différents outils OFFLINE que si c'est moi
+if user.phil?
+  %>
 <div id="admin_tools">
   <%= "Console".in_a(href:'admin/console').in_div(class:'admin_tool') %>
   <% if OFFLINE %>
@@ -34,11 +38,17 @@ end
 </div><%# div#admin_tools %>
 
 <%
+end # si user.phil?
+%>
+
+<%
 # ---------------------------------------------------------------------
 #
 # Partie propre à chaque administrateur s'il possède un fichier dans
 # le dossier ./objet/admin/admins/<user-id>-<pseudo>
 #
+# Note : Je ne la mets pas dans un elsif pour pouvoir la voir
+# aussi.
 %>
 <% if user.has_own_dashboard? %>
   <%= Vue::new(user.dashboard_path.to_s.sub(/^\.\/objet\//,'')).output %>
