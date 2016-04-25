@@ -24,6 +24,7 @@ class Unan
 class DAD # Pour D(ay) A(fter) D(ay)
 class << self
 
+
   # ---------------------------------------------------------------------
   #   Méthodes fonctionnelles
   # ---------------------------------------------------------------------
@@ -41,12 +42,7 @@ class << self
   end
 
   def points_of ij
-    @works_per_pday ||= begin
-      res = Unan::table_absolute_pdays.select(colonnes:[:works])
-      h = {}; res.each do |pid, pdata|
-        h.merge! pid => pdata[:works].split.collect{|i| i.to_i}
-      end; h
-    end
+    @works_per_pday ||= works_per_pday
     @points_per_work ||= begin
       h = {}; Unan::table_absolute_works.select(colonnes:[:points]).each do |wid, wdata|
         h.merge! wid => wdata[:points].to_i
@@ -64,8 +60,15 @@ class << self
     (@works_per_pday[ij]||[]).each do |wid|
       nb += @points_per_work[wid]
     end
-    debug "ij=#{ij} / nb = #{nb}"
+    # debug "ij=#{ij} / nb = #{nb}"
     return nb
+  end
+
+  def works_per_pday
+    res = Unan::table_absolute_pdays.select(colonnes:[:works])
+    h = {}; res.each do |pid, pdata|
+      h.merge! pid => pdata[:works].split.collect{|i| i.to_i}
+    end; h
   end
 
   # ---------------------------------------------------------------------
@@ -97,6 +100,90 @@ end #/Unan
 
 class Unan
 class Program
+
+class AbsPDay
+
+
+  # RETURN un hash ordonné avec :
+  #   clé : ID du work
+  #   valeur :
+  #     :instance     L'instance Unan::Programm::AbsWork de l'instance
+  #     :pday_indice  L'indice du pday absolu qui porte ce travail
+  #
+  # Méthode retournant les travaux
+  # qui se poursuivent sur le jour courant. Par exemple, un travail
+  # commencé deux jours plus tôt et durant trois jours se poursuit
+  # sur le jour courant.
+  #
+  # Pour procéder à l'opération, on part du jour courant et on
+  # remonte jusqu'au départ (car un travail peut durer plusieurs
+  # mois)
+  def continuing_works
+
+    @works_per_pday   = Unan::DAD::works_per_pday
+    @durees_per_work  = Unan::Program::Work::durees_per_work
+
+    @continuing_works = Hash::new
+
+    return @continuing_works if id == 1
+
+    # On boucle sur tous les jours avant le jour courant
+    # debug "Recherche des travaux perdurant sur le jour #{id}"
+    (1..(id-1)).each do |ij|
+      debug "Test du jour #{ij}"
+      diff_jours = (id - ij).freeze
+      # debug "   Différence de jours avec le jour #{id} : #{diff_jours}"
+      ij_works = @works_per_pday[ij] || []
+      next if ij_works.empty?
+      # Des works existent, on regarde s'ils peuvent perdurer
+      # jusqu'au jour courant.
+      # debug "   Test des travaux : #{ij_works.join}"
+      ij_works.each do |wid|
+        wduree = @durees_per_work[wid]
+        # debug "   Durée du travail #{wid} : #{wduree}"
+        # Si la durée du travail est supérieure ou égale à la
+        # différence de jours entre le pday courant et le pday
+        # testé, alors ce travail dure encore sur ce jour.
+        if wduree >= diff_jours
+          # debug "   = IL FAUT LE PRENDRE"
+          # Donnée qui sera retournée
+          @continuing_works.merge!(
+            wid => {
+              instance:     Unan::Program::AbsWork::get(wid),
+              pday_indice:  ij,
+              diff:         diff_jours,
+              reste:        diff_jours - wduree
+            }
+          )
+        end
+      end
+    end
+    return @continuing_works
+  end
+
+end #/PDay
+
+class Work
+class << self
+
+  # Méthode qui relève et renvoie toutes les durées de
+  # tous les travaux. C'est un Hash avec simplement en
+  # clé l'ID du work et en valeur la durée en nombre de
+  # jours
+  #
+  # Note : La méthode ne doit s'appeler qu'une seule fois
+  # @usage :    @durees_per_works ||= Unan::Program::Work::durees_per_work
+  def durees_per_work
+    h = Hash::new
+    Unan::table_absolute_works.select(colonnes:[:duree]).each do |wid, wdata|
+      h.merge! wid => wdata[:duree]
+    end
+    return h
+  end
+
+end #/<< self
+end #/Work
+
 class AbsPDay
 
   def edit_buttons

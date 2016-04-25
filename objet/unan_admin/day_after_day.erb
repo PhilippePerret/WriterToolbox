@@ -25,9 +25,42 @@ raise_unless_admin
     </h3>
     <%  def warning_non_defini; "CE JOUR-PROGRAMME N'EST PAS DÉFINI.".in_span(class:'warning') end %>
     <%= (ipday.description || warning_non_defini).in_div(class:'description') %>
-    <% ipday.works(:as_instances).each do |iwork| %>
-      <%= iwork.as_card %>
-    <% end %>
+
+    <%
+    # D'abord, on affiche les works qui démarrent vraiment au p-day
+    # courant.
+    %>
+    <h4>Nouveaux travaux</h4>
+    <div id="works_OF_pday">
+      <% ipday.works(:as_instances).each do |iwork| %>
+        <%= iwork.as_card(from: 0) %>
+                    <%
+                      # Le `from:0` ci-dessus permet d'ajouter la class
+                      # 'first_day' au div du travail pour indiquer qu'il
+                      # commence maintenant
+                    %>
+      <% end %>
+    </div>
+    <%
+    # Ensuite, on affiche les works qui continuent sur le p-day
+    # en fonction de leur durée.
+    #
+    # On distingue les travaux s'achevant et les travaux se
+    # poursuivant.
+    continuing = ipday.continuing_works
+    acheving  = continuing.select{|wid,wdata| wdata[:reste] == 0}
+    poursuing = continuing.reject{|wid,wdata| wdata[:reste] == 0}
+    %>
+    <div id="works_ON_pday">
+      <h4>Travaux s'achevant aujourd'hui</h4>
+      <% acheving.each do |wid, wdata| %>
+        <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+      <% end %>
+      <h4>Travaux se poursuivant</h4>
+      <% poursuing.each do |wid, wdata| %>
+        <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -67,3 +100,19 @@ $(document).ready(function(){
   UI.bloquer_la_page(true)
 })
 </script>
+
+<div class="small">
+  <h3>Explications</h3>
+  <p>
+    Ce module permet de consulter le programme UN AN UN SCRIPT jour
+    après jour.
+  </p>
+  <p>
+    Les tâches (works) entourées d'un cadre vert sont les tâches démarrées
+    le jour courant.
+  </p>
+  <p>
+    Les tâches entourées d'un cadre rouge sont les tâches commencées les
+    jours précédants et qui doivent être achevées le jour courant.
+  </p>
+</div>

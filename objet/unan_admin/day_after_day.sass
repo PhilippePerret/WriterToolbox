@@ -14,9 +14,28 @@ div#dad_content
       margin-left     : 0
       font-size       : 0.8em
       line-height     : 1.3em
-      div.div_titre:before
-        top             : -11px
-
+      
+      &.last_day
+        border          : 2px solid red
+      &.first_day
+        border          : 2px solid green
+      
+      div.div_titre
+        span.titre
+          font-weight   : bold
+        &:before
+          top             : -11px
+      div.travail
+        margin-left       : 4em
+  // DIV contenant les works qui commencent vraiment le jour
+  // courant
+  div#works_OF_pday
+    border              : 1px solid #9ae99a
+  // DIV contenant les works qui ont commencé les jours 
+  // précédents.
+  div#works_ON_pday
+    border              : 1px solid #FFCFCF
+    
 // Fenêtre supérieure indiquant l'état au jour affiché
 div#dad_state
   font-size           : 11pt

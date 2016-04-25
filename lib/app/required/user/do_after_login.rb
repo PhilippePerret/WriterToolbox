@@ -23,6 +23,9 @@ class User
     end
 
     require './data/secret/known_ips.rb'
+
+    exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." ) if BLACK_IPS_LIST.has_key?(self.ip)
+
     # ATTENTION ! Une adresse peut être connue sans que ce
     # soit un user inscrit. Dans ce cas, user_id est nil
     detail = if KNOWN_IPS.has_key?(self.ip)

@@ -20,11 +20,21 @@ class Exemple
     hsujet
   end
 
+  def liens_editions
+    (
+      lien_edit
+    ).in_div(class:'small right')
+  end
   def lien_show atitre = nil, options = nil
     atitre ||= "Visualiser l'exemple ##{id}"
     options ||= Hash::new
     options.merge!(href: "exemple/#{id}/show?in=unan")
     atitre.in_a(options)
+  end
+
+  def lien_edit atitre = nil, options = nil
+    atitre ||= "Éditer l'exemple"
+    atitre.in_a(href:"exemple/#{id}/edit?in=unan_admin")
   end
 
 end #/Exemple

@@ -1,7 +1,6 @@
 # encoding: UTF-8
 if user.admin?
   site.require_objet 'unan_admin'
-  UnanAdmin::require_module 'abs_work'
 end
 
 class Unan
@@ -73,17 +72,39 @@ class AbsWork
   end
 
   # Pour l'affichage du work sous forme de carte. Pour le moment,
-  # ne sert que pour l'affichage du p-day par show.erb
+  # ne sert que pour l'affichage du p-day par show.erb et pour
+  # l'affichage jour-par-jour de l'administration (et peut-être
+  # aussi de l'auteur, pourquoi pas ?).
+  #
+  # +params+
+  #   :from       S'il est indiqué, précise le jour pour lequel
+  #               ce travail est affiché. Par exemple, ça peut
+  #               être le jour 3 jours plus tard que le jour où
+  #               ce travail doit être joué. Dans ce cas, on donne
+  #               plus (+) d'indications, comme par exemple le
+  #               nombre de jours déjà pris sur le travail et le
+  #               nombre de jours restant.
   def as_card params = nil
+    params ||= Hash::new
+    classes_css = ['work']
+    if params[:from]
+      if (duree - params[:from] == 0)
+        classes_css << 'last_day'
+      elsif params[:from] == 0
+        classes_css << 'first_day'
+      end
+    end
+
+    # Composition de la carte
     (
       (
         human_type_w.in_span(class:'type') +
         titre.in_span(class:'titre')
       ).in_div(class:'div_titre') +
-      div_travail +
-      autres_infos_travail +
+      div_travail + # avec exemples
+      autres_infos_travail(params[:from]) +
       buttons_edit
-    ).in_div(class:'work')
+    ).in_div(class:classes_css.join(' '))
   end
 
   def div_travail
@@ -99,17 +120,51 @@ class AbsWork
       ""
     end
     (
-      travail + item_link
+      travail + item_link + div_exemples
     ).in_div(class:'travail')
   end
-  def autres_infos_travail
-    s_duree = duree > 1 ? "s" : ""
+
+  # Retourne le code HTML pour le div contenant les exemples,
+  # à placer dans la carte du work. Chaque exemple est un lien
+  # permettant de l'afficher.
+  def div_exemples
+    return "" if exemples_ids.empty?
+
     (
-      ("Type projet :".in_span(class:'libelle') + type_projet[:hname]).in_span(class:'info') +
-      ("Sujet :".in_span(class:'libelle') + "#{human_narrative_target}").in_span(class:'info') +
-      ("Durée :".in_span(class:'libelle') + "#{duree}#{ESPACE_FINE}jour#{s_duree}-programme").in_span(class:'info') +
-      ("Points :".in_span(class:'libelle') + "#{points}".in_span).in_span(class:'info')
+      "Exemples :".in_span(class:'libelle') +
+      exemples_ids.collect do |exid|
+        "Exemple ##{exid}".in_a(href:"exemple/#{exid}/show?in=unan")
+      end.pretty_join
+    ).in_span(class:'info block')
+  end
+
+  # +from+ Cf. l'explicaiton dans la méthode principale `as_card`
+  def autres_infos_travail from = nil
+    s_duree = duree > 1 ? "s" : ""
+    first_infos = [
+      ["Type projet", type_projet[:hname],      nil],
+      ["Sujet",       human_narrative_target,   nil],
+      ["Points",      points,                   nil]
+    ].collect do |libelle, valeur, unite|
+      ("#{libelle} :".in_span(class:'libelle') + "#{valeur}#{unite}").in_span(class:'info')
+    end.compact.join
+
+    (
+      first_infos +
+      infos_durees_travail(from)
     ).in_div(class:'autres_infos')
+  end
+  # +from+ Cf. l'explicaiton dans la méthode principale `as_card`
+  def infos_durees_travail from = nil
+    s_duree = duree > 1 ? "s" : ""
+    pars = [["Durée", duree, "&nbsp;p-jour#{s_duree}"]]
+    unless from.nil?
+      pars << ["PDays travaillés", from , ""]
+      pars << ["PDays restant", duree - from, ""]
+    end
+    pars.collect do |libelle, valeur, unite|
+      ("#{libelle} :".in_span(class:'libelle') + "#{valeur}#{unite}").in_span(class:'info')
+    end.join
   end
   def buttons_edit
     return "" unless user.admin?
