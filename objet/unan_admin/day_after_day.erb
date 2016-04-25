@@ -29,16 +29,21 @@ raise_unless_admin
     <%
     # D'abord, on affiche les works qui démarrent vraiment au p-day
     # courant.
+    works_today = ipday.works(:as_instances)
     %>
     <h4>Nouveaux travaux</h4>
     <div id="works_OF_pday">
-      <% ipday.works(:as_instances).each do |iwork| %>
-        <%= iwork.as_card(from: 0) %>
-                    <%
-                      # Le `from:0` ci-dessus permet d'ajouter la class
-                      # 'first_day' au div du travail pour indiquer qu'il
-                      # commence maintenant
-                    %>
+      <% if works_today.count == 0 %>
+        <p class='retrait4'>Aucun nouveau travail aujourd'hui.</p>
+      <% else %>
+        <% works_today.each do |iwork| %>
+          <%= iwork.as_card(from: 0) %>
+                      <%
+                        # Le `from:0` ci-dessus permet d'ajouter la class
+                        # 'first_day' au div du travail pour indiquer qu'il
+                        # commence maintenant
+                      %>
+        <% end %>
       <% end %>
     </div>
     <%
@@ -53,12 +58,20 @@ raise_unless_admin
     %>
     <div id="works_ON_pday">
       <h4>Travaux s'achevant aujourd'hui</h4>
-      <% acheving.each do |wid, wdata| %>
-        <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+      <% if acheving.count == 0 %>
+        <p class='retrait4'>Aucun travail ne s'achève aujourd'hui.</p>
+      <% else %>
+        <% acheving.each do |wid, wdata| %>
+          <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+        <% end %>
       <% end %>
       <h4>Travaux se poursuivant</h4>
-      <% poursuing.each do |wid, wdata| %>
-        <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+      <% if poursuing.count == 0 %>
+        <p class='retrait4'>Aucun travail ne se poursuit aujourd'hui.</p>
+      <% else %>
+        <% poursuing.each do |wid, wdata| %>
+          <%= wdata[:instance].as_card(from: wdata[:diff]) %>
+        <% end %>
       <% end %>
     </div>
   </div>
