@@ -101,7 +101,7 @@ class AbsWork
         human_type_w.in_span(class:'type') +
         titre.in_span(class:'titre')
       ).in_div(class:'div_titre') +
-      div_travail + # avec exemples
+      div_travail + # avec exemples et pages cours
       autres_infos_travail(params[:from]) +
       buttons_edit
     ).in_div(class:classes_css.join(' '))
@@ -120,7 +120,7 @@ class AbsWork
       ""
     end
     (
-      travail + item_link + div_exemples
+      travail + item_link + div_exemples + div_pages_cours
     ).in_div(class:'travail')
   end
 
@@ -134,6 +134,23 @@ class AbsWork
       "Exemples :".in_span(class:'libelle') +
       exemples_ids.collect do |exid|
         "Exemple ##{exid}".in_a(href:"exemple/#{exid}/show?in=unan")
+      end.pretty_join
+    ).in_span(class:'info block')
+  end
+
+  # Retourne le DIV avec les liens vers des pages-cours s'il y
+  # en a qui sont spécifiées.
+  # Noter que ces pages ne sont pas les pages obligatoires pour
+  # suivre le programme (celles qui sont en elles-mêmes des works)
+  # mais les pages suggérées, souvent des pages Narration, en
+  # rapport avec le travail courant.
+  def div_pages_cours
+    return "" if pages_cours_ids.empty?
+    (
+      "Suggestion de lecture : ".in_span(class:'libelle') +
+      pages_cours_ids.collect do |pcid|
+        pagec = Unan::Program::PageCours::get(pcid)
+        "#{pagec.titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
       end.pretty_join
     ).in_span(class:'info block')
   end

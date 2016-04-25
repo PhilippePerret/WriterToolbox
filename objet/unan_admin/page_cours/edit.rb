@@ -68,10 +68,6 @@ class PageCours
       # si ce n'est pas une page narration qui est définie)
       mandatory_props = [:titre, :description]
 
-      # Si narration_id est défini (ID d'une page de la collection
-      # narration) alors il faut récupérer les données pour compléter
-      # l'enregistrement
-      debug "dans `check_values_page_cours`, data_page[:narration_id] = #{data_page[:narration_id].inspect}"
 
       is_narration = !data_page[:narration_id].nil?
 
@@ -85,6 +81,10 @@ class PageCours
 
         # SI DÉFINITION D'UNE PAGE NARRATION
 
+        # Si narration_id est défini (ID d'une page de la collection
+        # narration) alors il faut récupérer les données pour compléter
+        # l'enregistrement
+
         nid = data_page[:narration_id].to_i
         site.require_objet 'cnarration'
         pagen = Cnarration::Page::get(nid)
@@ -93,15 +93,28 @@ class PageCours
           nid = nil
         else
 
-          # Il faut s'assurer que cette page Narration n'existe pas
-          # encore en tant que page de cours UN AN UN SCRIPT
-          where = "narration_id = #{nid}"
-          if table_pages_cours.count(where:where) > 0
-            pcid = table_pages_cours.select(where:where,colonnes:[]).values.first[:id]
-            raise "#{pagen.hletype.capitalize} Narration #{pagen.titre} est déjà mémorisé dans la page-cours #{pcid}"
+          if new_page?
+            # En cas de nouvelle page
+            # Il faut s'assurer que cette page Narration n'existe pas
+            # encore en tant que page de cours UN AN UN SCRIPT
+            where = "narration_id = #{nid}"
+            if table_pages_cours.count(where:where) > 0
+              pcid = table_pages_cours.select(where:where,colonnes:[]).values.first[:id]
+              raise "#{pagen.hletype.capitalize} Narration #{pagen.titre} est déjà mémorisé dans la page-cours #{pcid}"
+            end
           end
+
+          # On force le type
           @data_page[:type]     = 'cnarration'
-          @data_page[:titre]    = pagen.titre if @data_page[:titre].nil?
+
+          if @data_page[:titre].nil?
+            # Composer un titre du genre "Chapitre “” dans la collection Narration"
+            tit = case pagen.stype
+            when :page then ""
+            when :chapitre, :sous_chapitre then "#{pagen.htype.capitalize} "
+            end + "“#{pagen.titre}”" + " (collection Narration)".in_span(class:'tiny')
+            @data_page[:titre]    = "#{tit}"
+          end
 
           if pagen.page?
             @data_page[:handler]  = pagen.handler

@@ -43,7 +43,7 @@ class AbsWork
   # Noter que la donnée est enregistrée en String mais qu'elle
   # est transformée ici pour retourner un Array
   def pages_cours_ids
-    @pages_cours_ids ||= (get(:pages_cours_ids)||"").split(' ')
+    @pages_cours_ids ||= (get(:pages_cours_ids)||"").split(' ').collect{|e| e.to_i}
   end
 
   # ---------------------------------------------------------------------

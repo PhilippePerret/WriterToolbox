@@ -33,7 +33,6 @@ def iwork
     abs_work_id = site.current_route.objet_id
     w = Unan::Program::Work::new(benoit.program, abs_work_id)
     w.instance_variable_set('@abs_work_id', abs_work_id)
-    # w.abs_work.get_all
     w
   end
 end
