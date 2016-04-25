@@ -11,7 +11,7 @@ class SiteHtml
   #
   def home_page_content
     if home_page_out_of_date?
-      flash "Actualisation de la page d'accueil"
+      # flash "Actualisation de la page d'accueil"
       site.require_module_objet('home_page')
       site.build_home_page_content
     end

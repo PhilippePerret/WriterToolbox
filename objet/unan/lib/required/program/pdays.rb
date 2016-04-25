@@ -7,7 +7,7 @@ class Program
   #   :nombre     Sous la forme `2`
   #   :instance   Instance Unan::Program::PDay
   #
-  # NOTE : C'est c'est l'instance qui est demandée et que le
+  # NOTE : Si c'est l'instance qui est demandée et que le
   # jour-programme courant n'est pas défini (premier), la méthode
   # retourne NIL. Dans les autres formats, elle retourne 1 ou
   # "1er jour".

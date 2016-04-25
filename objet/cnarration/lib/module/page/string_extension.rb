@@ -114,8 +114,10 @@ class << self
 
     # Il faut peut être ajouter l'explication sur les
     # checkups
-    explication_checkup = Cnarration::texte_type("explication_checkups", options)
-    code = code.sub(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
+    if code.match(/EXPLICATION\\?_CHECKUPS?/)
+      explication_checkup = Cnarration::texte_type("explication_checkups.html", options)
+      code = code.sub(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
+    end
 
     # Dans un premier temps on relève toutes les questions qui
     # sont disséminées dans tous les fichiers du livre.
