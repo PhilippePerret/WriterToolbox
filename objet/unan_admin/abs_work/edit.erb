@@ -14,11 +14,11 @@ Unan::require_data
 # Le préfix des champs
 form.prefix = 'work'
 
-debug "-"*70
-debug "Data transmises à form.objet juste avant le formulaire (if any) :"
+# debug "-"*70
+# debug "Data transmises à form.objet juste avant le formulaire (if any) :"
 
 data = if param(:work)
-  debug "-- param(:work) est défini"
+  # debug "-- param(:work) est défini"
   # Si param(:work) est défini, il peut s'agit de deux choses :
   # Soit les données sont ré-affichées suite à un enregistrement ou
   # une erreur de données. Dans ce cas, il faut prendre les données
@@ -27,16 +27,16 @@ data = if param(:work)
   # données :travail (qui est normalement obligatoire), alors il
   # faut éditer l'abs_work de cet identifiant
   if param(:work)[:id] != nil && param(:work)[:travail].to_s == ""
-    debug "-- param(:work)[:id] est défini, pas param[:work][:travail]"
-    debug "-- => Je vais prendre l'instance ##{param(:work)[:id]}"
+    # debug "-- param(:work)[:id] est défini, pas param[:work][:travail]"
+    # debug "-- => Je vais prendre l'instance ##{param(:work)[:id]}"
     # Par exemple lorsque l'on met un ID dans le champ ID et
     # qu'on clique sur le lien "Éditer" pour éditer le travail
     # voulu
     Unan::Program::AbsWork::new(param(:work)[:id].to_i).get_all
   else
     # En cas d'erreur sur les données ou d'enregistrement normal
-    debug "-- param(:work)[:travail] est défini => ON PREND LES DATA DANS LES PARAMÈTRES"
-    debug "-- param(:work) : #{param(:work).pretty_inspect}"
+    # debug "-- param(:work)[:travail] est défini => ON PREND LES DATA DANS LES PARAMÈTRES"
+    # debug "-- param(:work) : #{param(:work).pretty_inspect}"
     param(:work)
   end
 elsif site.current_route.objet == "abs_work" && site.current_route.objet_id != nil
@@ -46,10 +46,12 @@ elsif site.current_route.objet == "abs_work" && site.current_route.objet_id != n
   # Attention : ici, il s'agit d'une instance UnanAdmin::AbsWork et
   # non pas d'une instance Unan::Program::AbsWork comme pour l'user
   # dans le programme normal
-  debug "-- La route définit l'objet abs_work et l'identifiant #{site.current_route.objet_id}"
+
+  # debug "-- La route définit l'objet abs_work et l'identifiant #{site.current_route.objet_id}"
   site.current_route.instance.get_all
 else
-  debug "-- Rien n'est défini, on initie un Hash vite pour les données"
+
+  # debug "-- Rien n'est défini, on initie un Hash vite pour les données"
   nil
 end
 
@@ -83,6 +85,27 @@ lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"i
 
 lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", class:'small btn')
 
+lien_vers_liste_all_pages_cours = "Liste".in_a(href:'page_cours/list?in=unan_admin')
+lien_vers_all_exemples = "Liste".in_a(href:'exemple/list?in=unan_admin', target:'_list_exemples_')
+iwork = nil
+liens_vers_work_exemples    = ""
+liens_vers_work_pages_cours = ""
+unless data[:id].nil?
+  iwork = Unan::Program::AbsWork::get(data[:id])
+  # Liens pour afficher les exemples donnés pour ce work
+  liens_vers_work_exemples = (
+    "Voir exemple : " + iwork.exemples_ids.collect do |exid|
+      "##{exid}".in_a(href:"exemple/#{exid}/show?in=unan")
+    end.join(' ')
+    ).in_span(class:'small')
+
+  # Liens pour afficher les pages de cours suggérées pour ce
+  # work
+  liens_vers_work_pages_cours = ("Lire page : " + iwork.pages_cours_ids.each_with_index.collect do |pid,i|
+    "##{pid}".in_a(href:"page_cours/#{pid}/show?in=unan")
+  end.join(' ')).in_span(class:'small')
+end
+
 %>
 <h2>Absolute Work</h2>
 
@@ -107,10 +130,10 @@ lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", cla
   <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans ./data/unan/data/listes.rb") %>
 
   <%
-  # Item ID
-  # -------
-  # Par exemple, si le travail consiste à lire une page de cours, ce
-  # champ contiendra la (ou les ?) ID des pages de cours à lire.
+    # Item ID
+    # -------
+    # Par exemple, si le travail consiste à lire une page de cours, ce
+    # champ contiendra la (ou les ?) ID des pages de cours à lire.
   %>
   <%
     # Un lien pour éditer l'élément work en fonction du type d'item
@@ -181,9 +204,14 @@ lien_to_init_new = "Init new".in_a(onclick:"$.proxy(AbsWork, 'init_new')()", cla
   <%= form.field_description("Le niveau d'exigence définit en quelque sort le niveau de développement à obtenir sur le document à produire. Pour bien faire comprendre le principe des quatre vis et le gérer au cours du développement. C'est le 3e bit de la donnée `type_resultat`.") %>
 
   <%# Exemples %>
-  <%= form.field_text("Exemples",'exemples', nil) %>
+  <%= form.field_text("Exemples",'exemples', nil, {placeholder: "X Y Z ...", class:'medium', text_after: "#{lien_vers_all_exemples} | #{liens_vers_work_exemples}"}) %>
   <%= form.field_description("Liste d'IDs d'exemples illustrant ce travail à accomplir. Prendre ces identifiants dans la table des exemples. Séparés par des espaces simples.") %>
-  <%= form.field_raw('', '', '', {field: "Liste des exemples".in_a(href:'exemple/list?in=unan_admin', target:'_list_exemples_')}) %>
+
+  <%# Pages de cours suggérées%>
+  <%= form.field_text("Pages cours", 'pages_cours_ids', nil, {placeholder:'X Y Z ...', class:'medium', text_after:"#{lien_vers_liste_all_pages_cours} | #{liens_vers_work_pages_cours}"}) %>
+  <%= form.field_description("Liste d'IDs de pages de cours qui <strong>sont simplement suggérées</strong> à la lecture. Ne pas les confondre avec les pages que l'auteur DOIT lire.<br>D'autre part, il s'agit ici d'ID d'<strong>instance `Unan::Program::PageCours`</strong> PAS l'ID dans la collection Narration.") %>
+
+
   <%= form.field_text("Points", 'points', nil, {class:'short'}) %>
   <%= form.field_description("Nombre de points de 1 à 999 pour ce travail. Pour le moment, il est difficile d'estimer combien doit valeur un travail, mais commencer à attribuer des points au feeling.") %>
 

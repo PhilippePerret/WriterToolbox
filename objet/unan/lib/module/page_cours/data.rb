@@ -12,12 +12,13 @@ class PageCours
   #   Data enregistrées
   # ---------------------------------------------------------------------
 
-  def id          ; @id           ||= get_id            end
-  def handler     ; @handler      ||= get(:handler)     end
-  def titre       ; @titre        ||= get(:titre)       end
-  def description ; @description  ||= get(:description) end
-  def path        ; @path         ||= get(:path)        end
-  def type        ; @type         ||= get(:type)        end
+  def id          ; @id           ||= get_id              end
+  def handler     ; @handler      ||= get(:handler)       end
+  def titre       ; @titre        ||= get(:titre)         end
+  def description ; @description  ||= get(:description)   end
+  def path        ; @path         ||= get(:path)          end
+  def type        ; @type         ||= get(:type)          end
+  def narration_id; @narration_id ||= get(:narration_id)  end
 
   # ---------------------------------------------------------------------
   #   Data volatile de la page

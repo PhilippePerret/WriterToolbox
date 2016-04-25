@@ -10,6 +10,7 @@ class PageCours
   class << self
 
     def save
+      debug "data_page : #{data_page.pretty_inspect}"
       check_values_page_cours || return
 
       # Au cas où, retirer les valeurs qui ne doivent
@@ -29,8 +30,20 @@ class PageCours
       flash "Page ##{@page_id} enregistrée avec succès."
       param(page_cours: data_page)
     end
+
+    # Les données de la page telles qu'elles se présentent
+    # dans le formulaire.
+    # Noter que les valeurs vides sont remplacées par des
+    # valeurs NIL (nécessaire pour plus bas dans le check des
+    # valeurs.)
     def data_page
-      @data_page ||= param(:page_cours)
+      @data_page ||= begin
+        h = Hash::new
+        param(:page_cours).collect do |k,v|
+          h.merge!(k => v.nil_if_empty )
+        end
+        h
+      end
     end
     def page_id
       @page_id ||= begin
@@ -50,31 +63,90 @@ class PageCours
 
     # Méthode qui vérifie les valeurs de la page de cours
     def check_values_page_cours
+
+      # Propriété non nil (première définition, sera redéfini ci-dessous
+      # si ce n'est pas une page narration qui est définie)
+      mandatory_props = [:titre, :description]
+
+      # Si narration_id est défini (ID d'une page de la collection
+      # narration) alors il faut récupérer les données pour compléter
+      # l'enregistrement
+      debug "dans `check_values_page_cours`, data_page[:narration_id] = #{data_page[:narration_id].inspect}"
+
+      is_narration = !data_page[:narration_id].nil?
+
+      if !is_narration
+
+        # SI PAS DÉFINITION D'UNE PAGE NARRATION
+
+        mandatory_props += [:path, :handler]
+
+      else
+
+        # SI DÉFINITION D'UNE PAGE NARRATION
+
+        nid = data_page[:narration_id].to_i
+        site.require_objet 'cnarration'
+        pagen = Cnarration::Page::get(nid)
+        if pagen.nil?
+          raise "La page Narration #{nid} est inconnue…"
+          nid = nil
+        else
+
+          # Il faut s'assurer que cette page Narration n'existe pas
+          # encore en tant que page de cours UN AN UN SCRIPT
+          where = "narration_id = #{nid}"
+          if table_pages_cours.count(where:where) > 0
+            pcid = table_pages_cours.select(where:where,colonnes:[]).values.first[:id]
+            raise "#{pagen.hletype.capitalize} Narration #{pagen.titre} est déjà mémorisé dans la page-cours #{pcid}"
+          end
+          @data_page[:type]     = 'cnarration'
+          @data_page[:titre]    = pagen.titre if @data_page[:titre].nil?
+
+          if pagen.page?
+            @data_page[:handler]  = pagen.handler
+            @data_page[:path]     = "#{pagen.handler}.md"
+          else
+            @data_page[:handler]  = nil
+            @data_page[:path]     = nil
+          end
+
+          if @data_page[:description].nil?
+            @data_page[:description]  = "#{pagen.lehtype.capitalize} “#{pagen.titre}” du livre “#{pagen.livre.titre}” de la #{lien.narration 'Collection Narration'}."
+          end
+        end
+        @data_page[:narration_id] = nid
+        debug "@data_page APRÈS ajouts narration : #{@data_page.pretty_inspect}"
+      end
+
       # Les propriétés qui ne doivent absolument pas être
       # vides.
-      properties_not_nil([:titre, :description, :path, :handler])
+      properties_not_nil(mandatory_props)
+
       # L'handler doit être unique si c'est une nouvelle page
-      if new_page?
+      if new_page? && data_page[:narration_id].nil?
         handler = data_page[:handler]
-        debug "handler : #{handler}"
         raise "l'handler doit être unique" if table_pages_cours.count(where:"handler = '#{handler}'") > 0
       end
       # Contrôle du path de la page de cours
       path = data_page[:path]
-      # Le path doit posséder une extension valide
-      unless EXTENSIONS_PATH_VALIDES.include?(File.extname(path))
-        raise "Le path ne possède pas une extension valide. L'extension doit appartenir à #{EXTENSIONS_PATH_VALIDES.join(', ')}."
-      end
-      # La page doit exister dans le dossier du type
-      fullpath = site.folder_data + "unan/pages_cours/#{data_page[:type]}/#{path}"
-      unless fullpath.exist?
-        if creer_fichier_is_inexistant?
-          create_file_page_cours(fullpath)
-        else
-          raise "Le fichier `#{fullpath.to_s}` est introuvable… Il faut le créer avant d'enregistrer la donnée.<br/>Noter qu'il suffit pour ça de cocher la case pour créer le fichier s'il n'existe pas."
+      unless is_narration
+        # Le path doit posséder une extension valide
+        unless EXTENSIONS_PATH_VALIDES.include?(File.extname(path))
+          raise "Le path ne possède pas une extension valide. L'extension doit appartenir à #{EXTENSIONS_PATH_VALIDES.join(', ')}."
         end
-      end
+        # La page doit exister dans le dossier du type
+        fullpath = site.folder_data + "unan/pages_cours/#{data_page[:type]}/#{path}"
+        unless fullpath.exist?
+          if creer_fichier_is_inexistant?
+            create_file_page_cours(fullpath)
+          else
+            raise "Le fichier `#{fullpath.to_s}` est introuvable… Il faut le créer avant d'enregistrer la donnée.<br/>Noter qu'il suffit pour ça de cocher la case pour créer le fichier s'il n'existe pas."
+          end
+        end
+      end #/fin si ce n'est pas une page narration
     rescue Exception => e
+      debug e
       error e.message
     else
       return true # <= pour enregistrer la page

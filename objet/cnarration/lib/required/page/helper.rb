@@ -2,6 +2,16 @@
 class Cnarration
 class Page
 
+  def hletype
+    @hletype ||= begin
+      case stype
+      when :page then "la page"
+      when :chapitre, :sous_chapitre then "le #{htype}"
+      end
+    end
+  end
+  alias :lehtype :hletype
+  
   # Si c'est l'administrateur, cette méthode retourne les liens
   # pour éditer le texte ou les données de la page.
   # Le lien pour éditer le texte n'est présent que si c'est vraiment

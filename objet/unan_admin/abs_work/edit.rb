@@ -123,6 +123,7 @@ class AbsWork
           type_resultat:    type_resultat,
           item_id:          data[:item_id],
           exemples:         data[:exemples],
+          pages_cours_ids:  data[:pages_cours_ids],
           points:           data[:points],
           updated_at:       NOW.to_i
         }

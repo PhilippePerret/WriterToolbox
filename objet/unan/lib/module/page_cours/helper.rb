@@ -8,6 +8,44 @@ class Unan
 class Program
 class PageCours
 
+  # = main =
+  #
+  # Méthode appelée (indirectement) par la fenêtre show.erb
+  #
+  # {String} Retourne le code HTML de la page en fonction
+  # de son type (extension)
+  #
+  def read
+    if narration?
+      # Pour une page-cours faisant référence à un titre ou
+      # une page narration
+      redirect_to "page/#{narration_id}/show?in=cnarration"
+      site.require_objet 'cnarration'
+      npage = Cnarration::Page::get(narration_id)
+      site.instance_variable_set("@objet", npage)
+      return Vue::new('cnarration/page/show.erb').output
+
+      # Ça, ça marche, mais ça n'affiche que la page, pas les
+      # boutons de navigation et autre.
+      # npage.output
+    else
+      # Pour une page-cours ne faisant pas référence à une
+      # page de la collection narration
+      case extension
+      when 'erb'
+        if fullpath_semidyn.exist?
+          fullpath_semidyn.deserb(self)
+        else
+          flash "Il faudrait construire la page semi-dynamique de cette page, qui ne l'est pas encore."
+          fullpath.deserb(self)
+        end
+      when 'html', 'htm'  then fullpath.read
+      when 'txt', 'text'  then fullpath.read.to_html
+      when 'tex'          then "[LaTex n'est pas encode traité comme page de cours]"
+      end
+    end
+  end
+
   def lien_show titre = nil, options = nil
     options ||= Hash::new
     options.merge!(show:true, titre:titre)
@@ -37,22 +75,6 @@ class PageCours
   end
   alias :lien :link
 
-  # {String} Retourne le code HTML de la page en fonction
-  # de son type (extension)
-  def read
-    case extension
-    when 'erb'
-      if fullpath_semidyn.exist?
-        fullpath_semidyn.deserb(self)
-      else
-        flash "Il faudrait construire la page semi-dynamique de cette page, qui ne l'est pas encore."
-        fullpath.deserb(self)
-      end
-    when 'html', 'htm'  then fullpath.read
-    when 'txt', 'text'  then fullpath.read.to_html
-    when 'tex'          then "[LaTex n'est pas encode traité comme page de cours]"
-    end
-  end
 
 end #/PageCours
 end #/Program

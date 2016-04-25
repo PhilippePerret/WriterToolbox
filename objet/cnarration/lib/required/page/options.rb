@@ -8,6 +8,8 @@ class Page
   #
   # Un chapitre ou sous-chapitre s'appelle aussi une page car
   # il s'affiche aussi sur une page dans le livre en ligne.
+  #
+  # Cf. aussi `htype`
   def type
     @type ||= options[0].to_i
   end

@@ -26,6 +26,7 @@ http = "http://localhost/WriterToolbox"
   <fieldset class='inline-block'>
     <legend>Pages de cours</legend>
     <li><a href="page_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
+    <li><%= "Liste des pages de cours".in_a(href:"page_cours/list?in=unan_admin") %> </li>
     <li>
       <form action="" method="POST" onsubmit="$(this).attr('action', 'page_cours/'+$('input#page_id_to_read').val()+'/show?in=unan')">
         <div class='row buttons' style="text-align:left"><span class='value'><input type="submit" value="Lire la page de cours : " />

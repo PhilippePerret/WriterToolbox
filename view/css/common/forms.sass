@@ -68,6 +68,8 @@ form, div
         width : 45%
       span.value
         width : 50%
+        input[type="text"], textarea, input[type="password"]
+          width   : 46%
 
   &.dim4060
     div.row
@@ -75,12 +77,16 @@ form, div
         width : 40%
       span.value
         width : 55%
+        input[type="text"], textarea, input[type="password"]
+          width   : 56%
   &.dim3070
     div.row
       span.libelle
         width : 30%
       span.value
         width : 65%
+        input[type="text"], textarea, input[type="password"]
+          width   : 66%
   &.dim2080
     div.row
       width: 100%
@@ -88,6 +94,8 @@ form, div
         width : 20%
       span.value
         width : 75%
+        input[type="text"], textarea, input[type="password"]
+          width   : 76%
   // Quand il n'y a pas de libellé
   &.dim0100
     div.row
@@ -96,6 +104,8 @@ form, div
         display     : none
       span.value
         width       : 95%
+      input[type="text"], textarea, input[type="password"]
+        width       : 96%
 form
   
   // Pour séparer deux rangées row avec une ligne
@@ -139,8 +149,8 @@ form
       span + span
         margin-left       : 0.5em
         
-      input[type="text"], input[type="password"], textarea
-        width             : 95%
+      // input[type="text"], input[type="password"], textarea
+      //   width             : 95%
       
       textarea
         min-height        : 160px

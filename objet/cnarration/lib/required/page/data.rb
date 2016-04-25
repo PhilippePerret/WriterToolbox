@@ -19,5 +19,14 @@ class Page
     @content ||= path.read
   end
 
+  # Le type symbole de la page, :page, :chapitre ou :sous_chapitre
+  def stype
+    @stype ||= [nil, :page, :sous_chapitre, :chapitre][type]
+  end
+  # Le type humain
+  def htype
+    @htype ||= [nil, "page", "sous-chapitre", "chapitre"][type]
+  end
+
 end #/Page
 end #/Cnarration

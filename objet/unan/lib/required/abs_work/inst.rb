@@ -38,6 +38,13 @@ class AbsWork
   def exemples      ; @exemples       ||= get(:exemples)      end
   def type_resultat ; @type_resultat  ||= get(:type_resultat) end
   def points        ; @points         ||= get(:points)        end
+  # IDs des pages de cours d'aide qui peuvent être associées au
+  # travail (pas obligatoires)
+  # Noter que la donnée est enregistrée en String mais qu'elle
+  # est transformée ici pour retourner un Array
+  def pages_cours_ids
+    @pages_cours_ids ||= (get(:pages_cours_ids)||"").split(' ')
+  end
 
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
