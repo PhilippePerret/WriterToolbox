@@ -7,7 +7,7 @@ inspirés de films ou totalement invnentés.
 Permet d'alimenter la propriété `exemples` des étapes absolues
 =end
 def schema_table_unan_cold_exemples
-  @schema_table_unan_exemples ||= {
+  @schema_table_unan_cold_exemples ||= {
 
     # ID de l'exemple
     # ---------------

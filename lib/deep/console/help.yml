@@ -106,7 +106,29 @@ databases:
   -
     command:      kill|destroy table &lt;base&gt;.&lt;table&gt;
     description:  Détruit complètement la table spécifiée. À utiliser avec la plus grande prudence donc.
+    note:         Il est plus prudent de faire un backup de la table avant (cf. ci-dessous)
 
+  -
+    command:      backup table &lt;base&gt;.&lt;table&gt;
+    description:  |
+      Procède à un backup de la table spécifiée. La `base` doit être
+      désignée par son path relatif dans `./database/data`.
+    note:         Ce backup est fait pour tous les gels aussi.
+
+  -
+    command:      retrieve data table &lt;base&gt;.&lt;table&gt;
+    description: |
+      Récupère les données qui ont été précédemment backupée (cf.
+      ci-dessus) en leur appliquant si nécessaire une transformation
+      en fonction de la transformation de la table.
+      Avant d'utiliser cette commande, il est <strong class='warning'>IMPÉRATIF</strong>
+      de définir la procédure de transformation des données :
+        `db_procedure_transformation_data`
+      dans le fichier :
+        <a href="site/open_file?file=.%2Flib%2Fdeep%2Fconsole%2Fsub_methods%2Fdb_procedure_retreive_data.rb&app=Atom">`./lib/deep/console/sub_methods/db_procedure_retreive_data.rb`</a>
+    note: |
+      Cette méthode s'utilise dans la combinaison de commandes :
+        <ul><li>backup table ...</li><li>destroy table ...</li><li>(définition de la procédure de transformation)</li><li>retreive data table ...</li></ul>
 # ---------------------------------------------------------------------
 #   TACHES
 # ---------------------------------------------------------------------

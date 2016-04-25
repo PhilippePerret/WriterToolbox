@@ -135,6 +135,17 @@ class Console
       ""
     when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
+
+      # --- BASES DE DONNÉES ---
+    when /^backup table ([^\.]+)\.(.+?)$/
+      db, tbl = line.scan(/^backup table ([^\.]+)\.(.+?)$/).first
+      backup_data_from_all "#{db}.db", tbl
+      return ""
+    when /^retrieve data(?: from)? table ([^\.]+)\.(.+?)$/
+      db, tbl = line.scan(/^retrieve data(?: from)? table ([^\.]+)\.(.+?)$/).first
+      retrieve_data_from_all( "#{db}.db", tbl )
+      return ""
+
       # --- IMAGES ---
     when /^balise image/
       Images::balise_image line.sub(/^balise image/,'').strip
@@ -148,7 +159,7 @@ class Console
       ""
       # ---------------------------------------------------------------------
     when /^check (site|synchro)$/     then check_synchro
-    when /^(read|show|affiche|afficher) debug$/ then read_debug
+    when /^(read|show|afficher|affiche) debug$/ then read_debug
     when /^(destroy|kill) debug$/     then destroy_debug
     when /^vider? table paiements?$/  then vide_table_paiements
     when /(remove|détruire|kill) table paiements?$/
@@ -205,18 +216,16 @@ class Console
       ( affiche_aide_for last_word )
     when 'finir tache', 'finir task', 'end task'
       ( Taches::marquer_tache_finie last_word )
-    when 'detruire tache', 'destroy task', 'destroy tache', 'kill task', 'kill tache'
+    when /^(detruire|destroy|kill) (tache|task)/
       ( Taches::detruire_tache last_word)
     when 'kramdown'
       ( visualise_document_kramdown last_word )
-    when 'affiche table', 'show table', 'montre table'
+    when /^(afficher|affiche|show|montre) table/
       ( affiche_table_of_database last_word )
     when 'vide table'
       ( vide_table_of_database last_word )
-    when 'kill table', 'destroy table'
+    when /^(kill|detruire|destroy) table/
       ( destroy_table_of_database last_word )
-    when 'affiche table'
-      ( montre_table last_word )
     when 'gel'
       ( gel last_word )
     when 'degel'

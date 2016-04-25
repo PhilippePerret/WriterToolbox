@@ -117,6 +117,17 @@ def schema_table_unan_cold_absolute_works
     # d'action à accomplir.
     exemples:       {type:"BLOB"},
 
+    # Pages cours
+    # -----------
+    # Page de cours associées. Noter qu'elles n'ont rien à voir
+    # avec les pages que l'apprenti-auteur doit lire au cours de
+    # son programme, elles sont simplement données en aide.
+    # Noter également qu'il ne s'agit pas d'ID dans la collection
+    # Narration mais d'ID de pages de cours dans le programme
+    # donc d'instance Unan::Program::PageCours (qui peuvent bien
+    # entendu faire référence à des pages de Narration)
+    pages_cours_ids:    {type:"BLOB"},
+
     # Valeur en Points
     # ----------------
     # Nombre de points que rapporte ce travail. Pour savoir si

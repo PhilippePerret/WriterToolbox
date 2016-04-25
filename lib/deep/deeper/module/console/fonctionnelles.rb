@@ -12,9 +12,10 @@ class Console
   # @usage : console.load('NOM_DOSSIER')
   # Note : pour pouvoir utiliser la méthode `require` normalement,
   # on teste l'existence de `folder_name` et `folder_name.rb`
+  alias :top_require :require
   def require folder_name
     if File.exist?(folder_name.to_s) || File.exist?("#{folder_name}.rb")
-      require folder_name.to_s
+      top_require folder_name.to_s
     else
       (folder_app + folder_name).require
     end

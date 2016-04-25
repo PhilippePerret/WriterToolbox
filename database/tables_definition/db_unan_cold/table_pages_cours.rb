@@ -7,10 +7,9 @@ et sert notamment à gérer les handlers de page
 
 =end
 def schema_table_unan_cold_pages_cours
-  @schema_table_unan_pages_cours ||= {
+  @schema_table_unan_cold_pages_cours ||= {
 
-    # Identifiant unique (mais seulement pour cette table propre
-    # à l'auteur)
+    # Identifiant unique (mais seulement pour cette table
     id: {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
 
     # Pointeur
@@ -29,8 +28,16 @@ def schema_table_unan_cold_pages_cours
     # Le chemin d'accès
     # -----------------
     # Ce chemin d'accès doit être défini en fonction du type
-    # de page de cours.
-    path:{type:"VARCHAR(255)", constraint:"NOT NULL"},
+    # de page de cours. Il peut être nil si c'est une page
+    # de la collection Narration. Dans ce cas, il faut fournir
+    # la donnée ci-dessous.
+    path:{type:"VARCHAR(255)"},
+
+    # ID de la collection narration
+    # -----------------------------
+    # Si la page de cours est une page de la collection narration,
+    # il faut renseigner cette données
+    narration_id:{type:"INTEGER"},
 
     # Type de la page
     # ---------------

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 def schema_table_unan_cold_questions
-  @schema_table_unan_flying_qcms ||= {
+  @schema_table_unan_cold_questions ||= {
     id:         {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
 
     # La question
