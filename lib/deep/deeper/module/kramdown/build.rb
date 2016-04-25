@@ -50,6 +50,7 @@ class SuperFile
     # lignes windows par quelque chose de correct, au cas où
     code = self.read.gsub(/\r\n?/, "\n").chomp
 
+
     # Si le format de sortie est de l'ERB, il faut protéger les
     # balises ERB sinon, kramdown transformerait les pourcentages en
     # signe pourcentage.
@@ -65,6 +66,8 @@ class SuperFile
     # Si une méthode formate_balises_propres existe, il
     # faut l'appeler sur le code pour les transformer
     code = code.formate_balises_propres if "".respond_to?(:formate_balises_propres)
+
+    debug "\n\ncode après formate_balises_propres : #{code} \n\n"
 
     # Si une méthode de traitement des images existe,
     # il faut l'appeler

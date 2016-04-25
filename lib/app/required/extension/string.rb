@@ -3,6 +3,9 @@ class ::String
 
   def formate_balises_propres
     str = self
+
+    debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
+
     str = str.formate_balises_references
     str = str.formate_balises_mots
     str = str.formate_balises_films
@@ -13,6 +16,8 @@ class ::String
     str = str.formate_balises_acteurs
     str = str.formate_balises_auteurs
     str = str.formate_termes_techniques
+
+      debug "STRING APRÈS = #{str.gsub(/</,'&lt;').inspect}"
     return str
   end
 
@@ -38,7 +43,6 @@ class ::String
   def formate_balises_films
     str = self
     str.gsub!(/FILM\[(.*?)\]/){ lien.film($1.to_s) }
-    str.gsub!(/film:([a-zA-Z0-9]+)/){ lien.film($1.to_s) }
     str
   end
 
