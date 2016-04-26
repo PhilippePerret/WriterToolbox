@@ -55,7 +55,7 @@ class SuperFile
     # balises ERB sinon, kramdown transformerait les pourcentages en
     # signe pourcentage.
     if options[:output_format] == :erb
-      code = code.gsub(/<\%/,'ERB-').gsub(/\%>/,'-ERB')
+      code = code.gsub(/<\%/,'ERBtag').gsub(/\%>/,'gatBRE')
     end
 
     # Si le code contient "\nDOC/" c'est que des documents sont
@@ -66,8 +66,6 @@ class SuperFile
     # Si une méthode formate_balises_propres existe, il
     # faut l'appeler sur le code pour les transformer
     code = code.formate_balises_propres if "".respond_to?(:formate_balises_propres)
-
-    debug "\n\ncode après formate_balises_propres : #{code} \n\n"
 
     # Si une méthode de traitement des images existe,
     # il faut l'appeler
@@ -83,14 +81,48 @@ class SuperFile
     code = ( code.extra_kramdown output_format )
 
     #
-    # = MAIN TRAITEMENT =
+    # = MAIN TRAITEMENT MARKDOWN (KRAMDOWN) =
     #
+
+    # debug "\n\ncode AVANT kramdown : #{code.gsub(/</,'&lt;').inspect} \n\n"
+
+    # Pour une raison inconnue mais qui doit être propre à Kramdown,
+    # les balises <personnages>...</personnages> en début de ligne
+    # sont toujours agrémentées d'un <p> derrière après traitement par
+    # kramdown.
+    # Il faut donc, ci-dessous, "protéger" ces balises puis les
+    # remettre après le kramdownage.
+    # Note : J'ai essayé de changer les options de Kramdown mais ça
+    # n'a rien changé. Dans l'idéal je pense qu'il ne faudrait pas
+    # du tout de balise HTML avant de kramdowner.
+    code.gsub!(/<personnage>(.+?)<\/personnage>/, 'PERStag\1gatSREP')
+
+    # === KRAMDOWNAGE ===
     code_final = Kramdown::Document.new(code).send(mdown_method)
 
-    if options[:output_format] == :erb
-      code_final = code_final.gsub(/ERB-/,'<%').gsub(/-ERB/,'%>')
-    end
+    # Déprotéger ce qui a été protégé avant Kramdown
+    code_final.gsub!(/PERStag(.+?)gatSREP/,'<personnage>\1</personnage>')
 
+    # debug "\n\ncode APRÈS kramdown : #{code_final.gsub(/</,'&lt;').inspect} \n\n"
+
+    if code_final.match(/ERBtag/)
+      if options[:output_format] == :erb
+        code_final = code_final.gsub(/ERBtag/,'<%').gsub(/gatBRE/,'%>')
+      else
+        # Si la sortie n'est pas en :erb, il faut interpréter
+        # le code
+        code_final.gsub!(/ERBtag(.+?)gatBRE/){
+          begin
+            c = $1
+            c = c[1..-1].string if c.start_with?('=')
+            eval c
+          rescue Exception => e
+            debug e
+            "[ERREUR EN INTERPRÉTANT `#{c}` : #{e.message}]"
+          end
+        }
+      end
+    end
     if options[:in_file]
       # Écrire le code dans ce fichier
       dest_path = case options[:in_file]

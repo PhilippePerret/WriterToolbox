@@ -4,7 +4,7 @@ class ::String
   def formate_balises_propres
     str = self
 
-    debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
+    # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
 
     str = str.formate_balises_references
     str = str.formate_balises_mots
@@ -17,7 +17,7 @@ class ::String
     str = str.formate_balises_auteurs
     str = str.formate_termes_techniques
 
-      debug "STRING APRÈS = #{str.gsub(/</,'&lt;').inspect}"
+      # debug "STRING APRÈS = #{str.gsub(/</,'&lt;').inspect}"
     return str
   end
 

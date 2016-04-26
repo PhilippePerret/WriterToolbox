@@ -64,7 +64,7 @@ class User
   # programme UN AN UN SCRIPT
   # Permet de définir des propriétés volatiles contenant tous
   # les résultats dans @unan_inventory
-  # Noter que cet état des lieux peut se faire dans que l'objet
+  # Noter que cet état des lieux peut se faire sans que l'objet
   # unan soit chargé, puisque le module travail en standalone
   def etat_des_lieux_programme_unan
 
@@ -114,11 +114,11 @@ class User
     # sont programmés dans le futur.
     where     = "status < 9 AND created_at <= #{NOW}"
     hworks = BdD::new(path_db.to_s).table('works').select(where:where, colonnes:colonnes)
-    debug "Travaux relevés dans base : #{hworks.pretty_inspect}"
+    # debug "Travaux relevés dans base : #{hworks.pretty_inspect}"
 
     # Le rythme courant de l'user
-    debug "Rythme programme de l'user ##{id} : #{iprogram.rythme}"
-    debug "Coefficiant durée : #{iprogram.coefficient_duree}"
+    # debug "Rythme programme de l'user ##{id} : #{iprogram.rythme}"
+    # debug "Coefficiant durée : #{iprogram.coefficient_duree}"
 
     # On récupère quelques données des travaux absolues qui serviront
     # pour faire l'état des lieux
@@ -126,6 +126,11 @@ class User
     where     = "id IN (#{abs_works_ids.join(', ')})"
     colonnes  = [:titre, :duree, :type_w]
     habsworks = Unan::table_absolute_works.select(where:where, colonnes:colonnes)
+
+    # Requérir le module qui contient de nombreuses listes
+    # et hash en constante, et notamment, utile ci-dessous :
+    # Unan::Program::AbsWork::TYPES
+    require './data/unan/data/listes.rb'
 
     # Les travaux non démarrés
     hworks.each do |wid, wdata|
@@ -148,6 +153,8 @@ class User
 
       # Le type de travail, pour savoir si c'est un travail à démarrer,
       # une page à lire, etc.
+      # La donnée TYPES ci-dessous est définies dans
+      # './data/unan/data/listes.rb'
       type_w = full_wdata[:type_w]
       type_w = Unan::Program::AbsWork::TYPES[type_w][:id_list]
       # => :tasks, :pages, :quiz, :forum
@@ -182,7 +189,7 @@ class User
       end
     end # / fin boucle sur tous les travaux en cours de l'user
 
-    debug "\n\n@unan_inventory total : #{@unan_inventory.pretty_inspect}\n\n"
+    # debug "\n\n@unan_inventory total : #{@unan_inventory.pretty_inspect}\n\n"
   end
 
   # {Fixnum} Retourne l'ID du programme actuellement suivi par

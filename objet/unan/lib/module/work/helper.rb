@@ -16,9 +16,9 @@ class Work
       date_fin_attendue +
       form_pour_marquer_started_or_fini +
       details_tache +
-      section_exemples
-    ).
-    in_div(class:'work')
+      section_exemples +
+      suggestions_lectures
+    ).in_div(class:'work')
   end
 
   # ---------------------------------------------------------------------
@@ -82,6 +82,24 @@ class Work
     abs_work.exemples_ids.collect do |eid|
       "Exemple ##{eid}".in_a(href:"exemple/#{eid}/show?in=unan", target:'_exemple_work_').in_span
     end.join.in_div(class:'exemples')
+  end
+
+  # Retourne la section DIV contenant les suggestions de
+  # lecture (pages cours) s'il y en a
+  def suggestions_lectures
+    return "" if abs_work.pages_cours_ids.empty?
+    where = "id IN (#{abs_work.pages_cours_ids.join(',')})"
+    hpagescours = Unan::table_pages_cours.select(where:where, colonnes:[:titre])
+    listepages = abs_work.pages_cours_ids.collect do |pcid|
+      titre = hpagescours[pcid][:titre]
+      "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
+    end.pretty_join.in_span
+
+    s = abs_work.pages_cours_ids.count > 1 ? 's' : ''
+    (
+      "Suggestion#{s} de lecture#{s} : ".in_span(class:'libelle') +
+      listepages
+    ).in_div(class:'suggestions_lectures')
   end
 
 
