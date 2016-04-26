@@ -85,7 +85,15 @@ Pour le scénario, on utilise la classe en début de ligne en mettant seulement 
     P:Idem, un nom de personnage qui parle
     J:(Note de jeu)
     D:Le dialogue du personnage.
+    T:Traduction du texte précédent si c'est en anglais.
     /DOC
+
+Note : On peut aussi utiliser un "/" à la place des ":" :
+
+    DOC/scenario
+    I/INT. JOUR
+    A/Il rentre dans le bureau
+    etc.
 
 <a name='titreetsoustitre'></a>
 

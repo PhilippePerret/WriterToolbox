@@ -233,16 +233,18 @@ class ::String
   def traite_as_script_per_format output_format
     self.split("\n").collect do |line|
       css, line = case line
-      when /^I:/ then
+      when /^I[:\/]/i then
         ['intitule', line[2..-1].strip]
-      when /^A:/
+      when /^A[:\/]/i
         ['action', line[2..-1].strip]
-      when /^(N|P):/
+      when /^(N|P)[:\/]/i
         ['personnage', line[2..-1].strip]
-      when /^J:/
+      when /^J[:\/]/i
         ['note_jeu', line[2..-1].strip]
-      when /^D:/
+      when /^D[:\/]/i
         ['dialogue', line[2..-1].strip]
+      when /^T[:\/]/i
+        ['traduction', line[2..-1].strip]
       when /\/(.*?)$/
         # Ne pas traiter la dernière ligne, qui peut être
         # une légende

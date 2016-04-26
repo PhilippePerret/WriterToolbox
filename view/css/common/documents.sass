@@ -111,6 +111,18 @@ section.document
       margin-left         : 1em
       text-align          : justify
       margin-top          : 1em
+    // Pour la traduction du texte si le scénario est en
+    // anglais
+    div.traduction
+      margin-left         : 10em
+      font-size           : 0.80em
+      font-style          : italic
+      margin-top          : 1em
+      &:before
+        content     : "(traduction : "
+        color       : #777
+      &:after
+        content     : ")"
       
 // La légende (optionnelle) du document ou d'une image
 div.document_legend, div.img_legend
