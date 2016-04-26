@@ -19,7 +19,7 @@ class Console
       if relpath.nil?
         # => Il faut donner la syntaxe
         mess = <<-HTML
-@syntaxe
+@syntaxe (console)
 
     balise image &lt;path/to/image.ext&gt;[ erb]
 
@@ -28,6 +28,32 @@ class Console
 
     Si `erb` (ou `ERB`) à la fin, c'est une balise ERB
     qui est retournée.
+
+POUR INSÉRER UN LIEN DANS UNE PAGE :
+
+    IMAGE[path/to/image|title ou position|legend|subfolder]
+
+    Seul le path est une donnée obligatoire.
+    Il peut se trouver, dans l'ordre :
+      1. Tel quel (le path fourni est le path depuis la base du site)
+      2. Dans le dossier image du site : ./view/img/
+      3. Dans le dossier narration : ./unan/pages_demisyn/cnarration/img
+      4. Dans un dossier livre si `subfolder` est fourni
+      5. Dans le dossier analyses : ./data/analyse/image/
+      6. Dans un dossier d'une analyse si `subfolder` est fourni.
+
+    Si title est :
+      - inline  => image inline
+      - fright  => flottant à droite
+      - fleft   => flottant à gauche
+      - autre chose => Un titre alternatif (qui pourra aussi servir
+      de légende)
+
+    Si légende est :
+      - nil (vraiment non défini, donc sans le "|") => pas de légende
+      - "null" => pas de légende (utile pour quand il y a un sous-dossier)
+      - "=" => le titre est mis en légende
+      - explicitement définie après le "|"
 
         HTML
 

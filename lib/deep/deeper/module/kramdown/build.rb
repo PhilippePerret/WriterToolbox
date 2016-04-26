@@ -63,13 +63,17 @@ class SuperFile
     # traitement
     code = code.mef_document if code.match(/\nDOC\//)
 
+    # Si une méthode de traitement des images existe,
+    # il faut l'appeler.
+    # Noter qu'il faut appeler cette méthode AVANT la
+    # suivante, car la suivante traite aussi les balises
+    # IMAGE mais de façon plus générale (et sans pouvoir
+    # définir des sous-dossiers).
+    code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
+
     # Si une méthode formate_balises_propres existe, il
     # faut l'appeler sur le code pour les transformer
     code = code.formate_balises_propres if "".respond_to?(:formate_balises_propres)
-
-    # Si une méthode de traitement des images existe,
-    # il faut l'appeler
-    code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
 
     # Si une méthode de traitement additionnel existe,
     # il faut lui envoyer le code

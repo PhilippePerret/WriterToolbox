@@ -250,7 +250,7 @@ Dès qu'un fichier contenant une question est modifié, le programme cherche dan
 
 ## Images
 
-    IMAGE[path/relatif|titre optionnel OU 'inline']
+    IMAGE[path/relatif|titre optionnel OU 'inline'|legende]
 
 Mettre `inline` pour que l'image soit en ligne, `fleft` pour "floattant à gauche" ou `fright` pour "flottant à droite". Dans le cas contraire, elle apparaitra toujours au milieu, sur un paragraphe.
 

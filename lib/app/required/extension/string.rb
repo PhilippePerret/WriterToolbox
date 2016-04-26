@@ -7,6 +7,7 @@ class ::String
     # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
 
     str = str.formate_balises_references
+    str = str.formate_balises_images
     str = str.formate_balises_mots
     str = str.formate_balises_films
     str = str.formate_balises_livres
@@ -32,6 +33,49 @@ class ::String
       lien.cnarration(to: :page, from_book:$narration_book_id, id: pid.to_i, ancre:ancre, titre:titre)
     }
     str
+  end
+
+  # Formate les balises images
+  #
+  # +subfolder+ {String} Un nom de dossier qui peut être transmis
+  # parfois pour indiquer un dossier narration ou un dossier
+  # d'analyse.
+  def formate_balises_images subfolder = nil
+    return self unless self.match(/IMAGE\[/)
+    self.gsub!(/IMAGE\[(.+?)\]/){
+      path, title, legend, expfolder = $1.split('|')
+      imgpath = String::seek_image_path_of( path, subfolder || expfolder)
+      title  = title.gsub(/'/, "’") unless title.nil?
+      if imgpath != nil
+        # Soit title est un titre alternatif (qui pourra
+        # servir de légende si légende non définie) ou bien
+        # est un indicateur de position de l'image.
+        img_tag = case title
+        when 'inline'
+          imgpath.in_img()
+        when 'fright', 'fleft'
+          imgpath.in_img(class: title)
+        else
+          img_tag = "<img src='#{imgpath}' alt='Image: #{title}' />"
+        end
+        # La légend, if any
+        # La légende peut avoir trois valeur :
+        #   1. être nil   => Rien
+        #   2. être ""    => On prend le titre comme légende
+        #   3. être définie comme telle
+        legend = case legend
+        when "="          then title
+        when nil, "null"  then nil
+        else legend
+        end
+        legend = legend.nil? ? "" : "<div class='img_legend'>#{legend}</div>"
+        # Le texte construit retourné
+        "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
+      else
+        "IMAGE MANQUANTE: #{imgpath} (avec #{path} fourni)"
+      end
+
+    }
   end
 
   def formate_balises_mots
@@ -84,6 +128,43 @@ class ::String
     str.gsub!(/#{balise}:\|(.*?)\|/, "<#{balise}>\\1</#{balise}>")
     str.gsub!(/#{balise}:(.+?)\b/, "<#{balise}>\\1</#{balise}>")
     str
+  end
+
+
+  # Méthodes utiles pour trouver comment interpréter
+  # le path (relatif) fourni en argument pour une
+  # balise IMAGE
+  #
+  # Cf. aide
+  #
+  # Dans l'ordre, le path relatif peut être :
+  #
+  #   - Un path depuis la racine (on le garde tel quel)
+  #   - Un path depuis le dossier général ./view/img/
+  #   - Un path depuis le dossier img général Narration
+  #     ./data/unan/pages_semidyn/cnarration/img
+  #   - Un path depuis un dossier img d'un livre Narration
+  #     Le folder doit alors être fourni en argument
+  #   - Un path depuis le dossier img général Analyse
+  #     ./data/analyse/image
+  #   - Un path depuis le dossier img d'une analyse en particulier
+  #     Le `folder` doit alors être fourni en 2nd argument
+  #
+  def self.seek_image_path_of relpath, folder = nil
+    [
+      '',
+      './view/img/',
+      "./data/unan/pages_semidyn/cnarration/img/",
+      "./data/unan/pages_semidyn/cnarration/#{folder}/img/",
+      "./data/unan/pages_semidyn/cnarration/img/#{folder}/",
+      "./data/analyse/image/",
+      "./data/analyse/#{folder}/img/",
+      "#{folder}" # narration ou autre
+    ].each do |prefix_path|
+      goodpath = "#{prefix_path}#{relpath}"
+      return goodpath if File.exist? goodpath
+    end
+    return nil
   end
 
 end #/String
