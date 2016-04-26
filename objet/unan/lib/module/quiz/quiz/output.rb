@@ -41,6 +41,10 @@ class Quiz
 
   # Méthode appelée par la vue quiz/show.erb, c'est-à-dire lorsque
   # l'user veut revoir un de ses quiz.
+  #
+  # Noter que lorsque le quiz est "re-usable" (multi?) il peut
+  # être recommencé.
+  # 
   def output_archives
     @for_correction = true
     code_corrections_et_commentaires

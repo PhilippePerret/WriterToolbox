@@ -60,6 +60,8 @@ class Program
   # programme courant en appliquant le filtre +filtre+ s'il est
   # défini. Noter que les travaux sont toujours en ordre inverse,
   # les derniers en premier.
+  #
+  # @usage    <auteur>.program.works
   # +filtre+
   #   :completed    Si true, les travaux terminés (status 9)
   #                 Si false, seulement les non terminés

@@ -122,9 +122,9 @@ div.panneau_onglet
       border-top        : 1px solid white
         
 section#completed_works
-  opacity       : 0.55
   margin-top    : 2em
   div.work
+    opacity       : 0.55
     div.buttons
       // Il faut masquer la barre des boutons pour empêcher de faire des bêtises
       // SAUF pour les pages de cours (cf. ci-dessous)
@@ -132,11 +132,13 @@ section#completed_works
   strong, span.exbig, div.titre
     color       : #555
 
-section#completed_works
   &.pages_cours
     div.work
       div.buttons
         display     : block !important
+  ul#last_quizes
+    li.quiz.quiz_corrected
+      opacity       : 0.55
     
 div#div_mark_pday_points
   margin-bottom     : 2em

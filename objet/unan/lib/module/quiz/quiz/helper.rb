@@ -3,17 +3,52 @@ require 'json'
 class Unan
 class Quiz
 
+  # = main =
+  #
+  # Méthode principale utilisé pour afficher un questionnaire
+  # rempli et soumis.
+  #
   def code_corrections_et_commentaires
     raise "Questionnaire inexistant" unless exist?
+    classes_css = ['quiz']
+    # Si ce n'est pas un questionnaire re-utilisable, on
+    # lui met une classe pour le rendre moins apparent
+    classes_css << 'quiz_corrected' unless multi?
     @code_corrections_et_commentaires ||= begin
       html = ""
       html << titre.in_div(class:'titre') unless no_titre?
       (
         html +
         commented_output        + # Les questions/réponses + commentaires
-        code_for_regle_reponses   # Le code JS pour resélectionner les réponses
-      ).in_div(class:'quiz quiz_corrected')
+        code_for_regle_reponses + # Le code JS pour resélectionner les réponses
+        boutons_sup               # Inauguré pour le bouton "Refaire" quand multi?
+      ).in_div(class:classes_css.join(' '))
     end
+  end
+
+  # Les boutons supplémentaires pour un questionnaire
+  # affiché
+  def boutons_sup
+    btns = ""
+    # Si le questionnaire est re-usable (multi?) on offre
+    # à l'utilisateur la possibilité de le recommencer
+    btns << form_reuse if multi?
+
+    return btns.in_div(class:'right btns')
+  end
+
+  # Formulaire proposant le bouton "Recommencer ce quiz" pour
+  # les questionnaires multi? (donc remplissables autant de
+  # fois qu'on le désire)
+  def form_reuse
+    (
+      "quiz_reuse".in_hidden(name:'operation') +
+      "quiz".in_hidden(name:'cong') +
+      "1".in_hidden(name:'qru')+
+      id.in_hidden(name:'qid') +
+      work.id.in_hidden(name:'wid') +
+      "Recommencer ce quiz".in_submit(class:'btn')
+    ).in_form(action:"bureau/home?in=unan", class:'inline')
   end
 
   def unless_not_exists

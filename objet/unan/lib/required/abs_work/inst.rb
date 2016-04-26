@@ -65,7 +65,15 @@ class AbsWork
 
   # Le type de liste, :pages, :quiz, etc.
   def id_list_type
-    @id_list_type ||= data_type_w[:id_list]
+    @id_list_type ||= begin
+      data_type_w[:id_list]
+    rescue Exception => e
+      error "PROBLÈME AVEC LE type_w : #{type_w.inspect}. Je mets 0 (indéfini)"
+      debug e
+      @type_w = 0
+      @data_type_w = nil
+      retry
+    end
   end
 
 

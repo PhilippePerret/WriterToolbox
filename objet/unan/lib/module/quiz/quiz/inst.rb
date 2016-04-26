@@ -45,6 +45,22 @@ class Quiz
       w = Unan::Program::Work::new(auteur.program, wid)
       return w if w.quiz? && w.abs_work.item_id == self.id
     end
+    # Si le travail n'a pas pu être trouvé par le moyen
+    # ci-dessus (parce que le questionnaire n'est plus un
+    # questionnaire courant) alors il faut le chercher dans
+    # tous les travail de l'auteur
+    #
+    # On boucle sur tous les travaux de l'auteur
+    # de type quiz pour retrouver celui qui
+    # correspond à ce quiz-ci. C'est ce quiz si le `item_id`
+    # du travail absolu est l'id du quiz courant.
+    auteur.program.works(type: :quiz).each do |hw|
+      absw_id = hw[:abs_work_id]
+      if Unan::Program::AbsWork::get(absw_id).item_id == id
+        # Donc c'est ce work
+        return Unan::Program::Work::new(auteur.program, hw[:id])
+      end
+    end
     return nil
   end
 

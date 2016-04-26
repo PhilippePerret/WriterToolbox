@@ -50,6 +50,7 @@ class Work
   # de ce travail. C'est utile par exemple pour les pages de cours,
   # qu'il suffirait de lire et de remettre à lire en boucle pour ajouter
   # chaque fois les points de la lecture.
+  # C'est utile aussi pour les questionnaires ré-utilisable (multi?)
   def set_complete(must_add_point = true)
     # Il faut le retirer des listes
     # On ajoute la clé :works pour traiter aussi la liste

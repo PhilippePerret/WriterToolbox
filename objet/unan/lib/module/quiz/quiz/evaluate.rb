@@ -25,11 +25,15 @@ class Quiz
 
   # Les données à enregistrer dans la table de l'auteur,
   # de ses réponses au questionnaire courant
+  #
+  # Pour le moment, si c'est un questionnaire de type
+  # "multi" (ré-utilisable), on n'enregistre pas les
+  # réponses.
   def data2save
     @data2save ||= {
       quiz_id:    id,
       type:       type,
-      reponses:   auteur_reponses.to_json,
+      reponses:   (multi? ? nil : auteur_reponses.to_json),
       points:     auteur_points,
       max_points: max_points,
       created_at: NOW
@@ -40,22 +44,37 @@ class Quiz
   #
   # Méthode principale appelée lorsque l'auteur soumet son
   # questionnaire.
+  #
   # La méthode appelle l'évaluation du questionnaire (`evaluate`,
   # cf. plus bas), enregistre le résultat dans la table des quiz
   # de l'auteur et affiche un message de fin de questionnaire en
   # fonction du résultat.
   def evaluate_and_save
     if evaluate == true
+
       # Barrière pour voir si le questionnaire ne vient pas
-      # d'être soumis
-      existe_deja = auteur.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.days}") > 0
-      return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if existe_deja
+      # d'être soumis.
+      # Pour un questionnaire "multi", le temps doit être
+      # réduit car on peut le soumettre à nouveau dans un temps
+      # assez court correspondant à son remplissage.
+      if quiz_existe_deja? && false == multi?
+        soumis_recemment = auteur.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.day}") > 0
+        return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if soumis_recemment
+      end
+
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
       auteur.table_quiz.insert(data2save)
-      # Enregistrer le score dans le programme de l'utilisateur
-      unless quiz_points.nil?
-        debug "quiz_points : #{quiz_points.inspect}"
+
+      # Enregistrer le score dans le programme de l'utilisateur,
+      # sauf si c'est un questionnaire multi et qu'il a déjà
+      # été enregistré
+      #
+      # Attention : ça, ce sont les points pour le quiz, par
+      # pour le travail qui peut en ajouter par ailleurs. Je
+      # ne sais pas si c'est une bonne chose, mais elle peut
+      # se produire en tout cas.
+      unless quiz_points.nil? || (multi? && quiz_existe_deja?)
         auteur.add_points( quiz_points.freeze )
       end
       # Marquer le travail (qui a généré le questionnaire) comme
@@ -90,14 +109,22 @@ class Quiz
     debug e
   end
 
+  def quiz_existe_deja?
+    @quiz_existe_deja ||= auteur.table_quiz.count(where:"quiz_id = #{id}") > 0
+  end
+
   # Marquer le travail qui a conduit à ce questionnaire comme
   # exécuté. Noter qu'on le fait même quand c'est par exemple
   # une validation des acquis et qu'elle n'est pas réussie. Cela
   # reposera simplement le questionnaire plus tard, mais un questionnaire
   # est toujours enregistré comme record.
+  #
+  # Noter qu'on ne compte les points, dans le cas où c'est un
+  # questionnaire ré-utilisable, que la première fois
   def mark_work_done
     return error( "Impossible de trouver le travail de ce questionnaire…" ) if work.nil?
-    work.set_complete
+    doit_ajouter_points = !(multi? && quiz_existe_deja?)
+    work.set_complete( doit_ajouter_points )
   end
 
   # Méthode qui reprogramme le questionnaire pour plus tard lorsqu'il

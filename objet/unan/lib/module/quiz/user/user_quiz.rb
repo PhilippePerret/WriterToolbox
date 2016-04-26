@@ -85,9 +85,17 @@ class User
         "#{quiz.titre}".in_a(href:"quiz/#{id}/show?in=unan", target:'_quiz_', class:'inherit').in_div(class:'bold')  +
         (
           "#{points} points sur #{max_points}&nbsp;" +
-          "—&nbsp;<strong class='notesur20'>#{note_sur_vingt.as_fr} / 20</strong>"
+          "—&nbsp;<strong class='notesur20'>#{note_sur_vingt.as_fr} / 20</strong>" +
+          bouton_recommencer
         ).in_div(class:'small right')
       ).in_li(class:'quiz')
+    end
+
+    # Si c'est un questionnaire re-utilisable, il faut mettre
+    # un bouton pour le recommencer.
+    def bouton_recommencer
+      return "" unless quiz.multi?
+      quiz.form_reuse.in_div(class:'right small btns air')
     end
 
     # {Float} Retourne la note sur vingt pour ce quiz
