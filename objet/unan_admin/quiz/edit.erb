@@ -52,7 +52,7 @@ lien_new_question = "Créer une nouvelle question".in_a(href:'question/edit?in=u
 
 %>
 
-<form id="form_quiz_edit" class="dim3070" action="quiz/edit?in=unan_admin" method="POST">
+<form id="form_quiz_edit" class="dim2080" action="quiz/edit?in=unan_admin" method="POST">
 
   <%= "edit_quiz".in_hidden(name:'operation', id:'operation') %>
 
@@ -89,7 +89,7 @@ lien_new_question = "Créer une nouvelle question".in_a(href:'question/edit?in=u
   <%# LISTE QUESTIONS %>
   <%= form.field_text("Questions", 'questions_ids', nil) %>
   <%= form.field_description("Liste des IDs de questions, séparées par des espaces.") %>
-  <%= form.field_raw( "", '', nil, {field: lien_new_question} ) %>
+  <%= form.field_raw( nil, '', nil, {field: lien_new_question} ) %>
 
   <%# NOMBRE DE POINTS QUAND SUCCÈS %>
   <%= form.field_text("Points", 'points', nil, {class:'short'}) %>
@@ -101,6 +101,10 @@ lien_new_question = "Créer une nouvelle question".in_a(href:'question/edit?in=u
   <%= form.field_textarea("Description", 'description', nil) %>
   <%= form.field_checkbox("Afficher la description", 'option_description', nil) %>
   <%= form.field_description("Si la case ci-dessus est cochée, la description du questionnaire pourra être affichée (par exemple en information sous le titre).") %>
+
+  <%# OPTION MULTI %>
+  <%= form.field_checkbox("Quiz re-usable (à répéter)", 'option_multi', nil) %>
+  <%= form.field_description("Si cette case est cochée, le questionnaire pourra être recommencé (multi? = true) autant de fois que l'auteur le veut (mais seule la première rapportera des points). Utile pour les quiz qui doivent être répétés sur différentes choses, comme des pitchs.") %>
 
   <%= form.submit_button("Enregistrer", {onclick:"$('form#form_quiz_edit input#operation').val('save_quiz')"}) %>
 </form>

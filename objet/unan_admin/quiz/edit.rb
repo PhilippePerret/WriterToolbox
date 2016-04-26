@@ -89,17 +89,13 @@ class Quiz
   def options
     @options ||= begin
       # Construction des options
-      opts = String::new
-      [
-        'description',
-        'no_point_question',
-        'no_titre',
-        'desordre'
-      ].each do |k|
-        option_ok = dinp["option_#{k}".to_sym] == "on"
-        opts << (option_ok ? "1" : "0")
+      opts = Array::new
+      Unan::Quiz::OPTIONS.each do |k, odata|
+        ok = dinp["option_#{k}".to_sym] == "on"
+        opts[odata[:bit]] = ok ? "1" : "0"
       end
-      debug "opts : #{opts}"
+      opts = opts.collect{|e| e.nil? ? '0' : e}.join('')
+      debug "OPTIONS pour le quiz : #{opts}"
       opts
     end
   end
@@ -107,8 +103,8 @@ class Quiz
   def description?
     dinp[:option_description] == 'on'
   end
-  def no_point_question?
-    dinp[:option_no_point_question] == 'on'
+  def only_points_quiz?
+    dinp[:option_only_points_quiz] == 'on'
   end
 
 
@@ -128,7 +124,7 @@ class Quiz
     raise "Le titre doit être défini (même s'il n'est pas affiché)." if titre.nil?
     raise "Les IDs des questions doivent être donnés." if questions_ids.nil?
     raise "La description doit être donnée, pour être affichée." if description? && description.nil?
-    raise "Il faut fixer le nombre de points, si les réponses n'en apportent pas." if no_point_question? && points.nil?
+    raise "Il faut fixer le nombre de points, si les réponses n'en apportent pas." if only_points_quiz? && points.nil?
   rescue Exception => e
     error e
   else

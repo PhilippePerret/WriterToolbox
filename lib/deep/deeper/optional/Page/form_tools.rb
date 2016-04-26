@@ -149,7 +149,7 @@ class Page
         @raw_options    = opts
         @property       = prop
         @field_value    = set_field_value(prop, default)
-        @libelle        = libelle
+        @libelle        = libelle || '&nbsp;'
 
         # Les gestionnaires d'évènement
         unless opts.nil?
@@ -385,7 +385,7 @@ class Page
       def cb_label
         @cb_label ||= begin
           lib = libelle.to_s.freeze
-          @libelle = options[:libelle] || ""
+          @libelle = options[:libelle] || "&nbsp;"
           lib
         end
       end
