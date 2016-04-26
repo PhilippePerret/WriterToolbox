@@ -39,7 +39,7 @@ class Quiz
   # l'user vient de faire le questionnaire, soit dans sa table
   # quiz.
   def auteur_note_sur_vingt
-    debug "auteur_points: #{auteur_points.inspect}"
+    # debug "auteur_points: #{auteur_points.inspect}"
     @auteur_note_sur_vingt ||= note_sur_20_for(auteur_points)
   end
 

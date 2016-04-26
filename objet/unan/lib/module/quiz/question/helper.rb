@@ -67,7 +67,13 @@ class Question
         # Les points pour cette réponse.
         # On en a besoin si c'est un affichage des réponses au
         # questionnaire.
-        points = hr[:points].freeze
+        # ATTENTION : Ici, j'ai ajouté un `to_i` parce que
+        # certaines valeurs étaient NIL, mais je ne suis pas
+        # sûr du tout que ce soit pertinent (surtout parce que
+        # certaines valeurs peuvent être négatives et qu'en
+        # conséquence, une valeur NIL ici sera supérieure à
+        # cette valeur négative, ce qui peut fausser les résultats)
+        points = hr[:points].to_i.freeze
         # Pour le moment, quel que soit le type de réponse, on
         # mémorise cette réponse comme bonne ou mauvaise réponse
         # en fonction de son nombre de points.
@@ -91,9 +97,15 @@ class Question
       # Maintenant qu'on a récupéré la ou les bonnes réponses, on
       # les indique dans les réponses en indiquant aussi si c'est
       # une mauvaise réponse de l'utilisateur.
+      #
+      # Il se produit un bug de temps en temps (je ne sais pas
+      # pourquoi) avec user_reponse qui peut se retrouver nil.
+      # Si c'est le cas, il faut lui donner une valeur pour ne
+      # pas avoir de problème.
+      user_reponse ||= {value: nil}
       hreponses.each do |rid, rdata|
 
-        # On "marque" la bonne ou la meilleure réponse
+        # On "marque" la *bonne* ou la *meilleure* réponse
         if rid == good_or_best[:id]
           hreponses[rid].merge!(
             label:  "#{une_seule_bonne_reponse ? 'bonne' : 'meilleure'} réponse",
