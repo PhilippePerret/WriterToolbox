@@ -46,7 +46,10 @@ class Livre
     end
 
     # Passer en revue toutes les sources (tous les fichiers) et
-    # les traiter.
+    # les traiter. Noter qu'il faut procéder dans l'ordre de la
+    # table des matières du livre, pour, par exemple, que la
+    # première apparition d'un film soit une citation complète
+    # du titre avec auteurs et année.
     sources.each do |source|
 
       itranslator = Cnarration::Translator::new self, source
@@ -102,10 +105,15 @@ class Livre
     @suivi ||= Cnarration::suivi
   end
 
-  # Toutes les sources du livre
+  # Toutes les sources du livre, classées dans l'ordre de la
+  # table des matières.
   def sources
     @sources ||= begin
-      Dir["#{folder}/**/*.md"]
+      tdm.pages.collect do |pid, pdata|
+        next nil if pdata[:handler].nil?
+        (folder + "#{pdata[:handler]}.md").to_s
+      end.compact
+      # Dir["#{folder}/**/*.md"]
     end
   end
   # {Cnarration::LatexMainFile} Instance du fichier main latex

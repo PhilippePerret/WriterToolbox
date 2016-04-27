@@ -61,7 +61,7 @@ class << self
       # Pour la filmographie, il ne faut pas indiquer de fonction
       # c += " (#{hperson[:fonction].downcase})" unless hperson[:fonction].nil?
       c
-    end.pretty_join.sub(/ et /, ' and ')
+    end.join(' and ')
   end
 
   # {Hash} de tous les films du filmodico avec en clé l'identifiant

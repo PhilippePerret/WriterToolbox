@@ -10,15 +10,19 @@
 \frenchbsetup{StandardLists=true}
 
 
-\usepackage[a5paper]{geometry}
+% \usepackage[a5paper]{geometry}
 \usepackage[utf8]{inputenc}
-\usepackage{fourier}
+% \usepackage{fourier}
 \usepackage[OT1,T1]{fontenc}
-\usepackage[cyr]{aeguill}
+% \usepackage[cyr]{aeguill}
 \usepackage[dvips]{graphicx}
-\usepackage{epsfig}
-\usepackage{float}
+% \usepackage{epsfig}
+% \usepackage{float}
 \usepackage{xcolor}
+
+% Pour ne plus avoir les plaintes sur les polices
+% Ça ne change rien, en fait
+% \usepackage{lmodern}
 
 % Pour la fabrication de l'index
 \usepackage{makeidx}
@@ -61,15 +65,32 @@ linkcolor=blue,
 % que j'ai
 % \usepackage[style=apa, natbib]{biblatex}
 
-\usepackage[bibencoding=utf8, natbib]{biblatex}
+% -------- BIBLIOGRAPHIE AVEC BIBLATEX ----------
+% \usepackage[backend=biber
+%             hyperref=true,
+%             url=false,      % pas d'URL dans la bibliographie
+%             isbn=false,     % Pas d'ISBN dans la bibliographie
+%             backref=true,   % Indication du numéro de page
+%             % style=custom-numeric-comp, % Style (ne fonctionne pas)
+%             % style=custom-numeric, % ne fonctionne pas
+%             % style=numeric,   % fonctionne, mais pas de nombre…
+%             style=numeric-comp,
+%             % citereset=chapter,
+%             maxcitenames=3,   % Nombre max d'auteurs dans le cite
+%             maxbibnames=100,  % Idem dans la bibliographie
+%             block=none        % Contrôle des champs entre citations
+%             ]{biblatex}
+% \usepackage[bibencoding=utf8,backend=biber,style=numeric,citestyle=numeric]{biblatex}
 
-% \usepackage[backend=biber, bibencoding=utf8, natbib]{biblatex}
-% Définition des bibliographies pour biblatex
-% AVANT mais déprécié :
-% \bibliography{../commons/filmography,../commons/bibliography}
-% Nouveau format :
+\usepackage{biblatex}
 \addbibresource{../commons/filmography.bib}
 \addbibresource{../commons/bibliography.bib}
+
+% % --- BIBLIOGRAPHIE AVEC NATBIB -----
+% \usepackage[
+% super,            % Numérique exposant
+% longnamesfirst    % Première citation longue
+% ]{natbib}
 
 % Pour les guillemets français
 \usepackage[babel=true]{csquotes}
@@ -81,16 +102,10 @@ linkcolor=blue,
 \usepackage{varioref} % => \vref au lieu de \ref
 \usepackage{cleveref} % => \cref au lieu de \vref
 
-% Pour pouvoir utiliser \nameref pour les références et donc
-% définir le titre plutôt que le nombre.
-% Je préfère varioref pour le moment (cf. ci-dessus)
-% \usepackage{hyperref}
-
 % Kramdown transforme certains truc en longtable, c'est-à-dire
 % en environnement permettant de faire des tableaux sur plusieurs
 % page. Il faut le package longtable pour faire ça
 \usepackage{longtable}
-
 
 
 % Pour pouvoir utiliser la font Zapf dingbats qui permet de

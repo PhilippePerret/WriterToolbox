@@ -1,6 +1,8 @@
 %
 % Mise en forme pour les citations et références
 %
+% ELLES NE SONT PAS ENCORE UTILISÉES DANS LE NOUVEAU TRAITEMENT
+%
 
 
 % Apparence des "\cite{<clé du film>}"
@@ -18,7 +20,7 @@
 % Apparence pour une référence externe (i.e. dans un autre livre de la collection)
 % Argument 1 : le titre du livre
 % Argument 2 : le \ref (la référence)
-% Note : la page n'est pas fournie, puisque les livres seront écrits de façon 
+% Note : la page n'est pas fournie, puisque les livres seront écrits de façon
 % asynchrone, seule la table des matières sera figée au moment de l'impression du
 % premier livre.
 \newcommand{\extrefpart}[2]{%
@@ -30,3 +32,5 @@
 \newcommand{\extrefsection}[2]{%
 \bookserie{#1}, Chapitre \ref{#2} %
 }
+
+\renewcommand{\cite}[1]{{\small #1}}

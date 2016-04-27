@@ -27,8 +27,12 @@ class ::String
 
   TEMPLATES_CITATIONS = {
     html: {
-      avec_source: "<div class='quote'><span class='content'>%{citation}</span><span class='ref'><span class='auteur'>%{auteur}</span> - <span class='source'>%{source}</span></span></div>",
-      sans_source: "<div class='quote'><span class='content'>%{citation}</span><span class='ref'><span class='auteur'>%{auteur}</span></span></div>"
+      sans_source: "<div class='quote'><span class='content'>%{citation}</span><span class='ref'><span class='auteur'>%{auteur}</span></span></div>",
+      avec_source: "<div class='quote'><span class='content'>%{citation}</span><span class='ref'><span class='auteur'>%{auteur}</span> - <span class='source'>%{source}</span></span></div>"
+    },
+    latex: {
+      sans_source: "\\citation_auteur{%{citation}}",
+      avec_source: "\\citation_auteur[%{source}]{%{citation}}"
     }
   }
   def kramdown_citations output_format = :html

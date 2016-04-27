@@ -13,7 +13,7 @@ tout fichier markdown/kramdown).
 site.require_module 'kramdown'
 # Librairie qui contient les méthodes pour corriger par
 # exemple les PRINT_CHECKUP
-require './objet/cnarration/lib/module/page/string_extension.rb'
+require './objet/cnarration/lib/module/page/string_checkups.rb'
 
 class Cnarration
 class Translator

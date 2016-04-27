@@ -45,18 +45,18 @@ class Livre
     maintex_full_path = latex_main_file.full_path
     maintex_affx_path = latex_main_file.affixe_path
 
+    maintex_affixe = latex_main_file.affixe
+    maintex_nfile  = latex_main_file.name
+
     # Il faut se placer dans le dossier pour pouvoir exécuter
     # les commandes de compilation
     Dir.chdir(latex_folder.to_s) do
-      # suivre_exec "latex \"#{maintex_full_path}\""
-      # suivre_exec "biber \"#{maintex_affx_path}\""
-      # suivre_exec "latex \"#{maintex_full_path}\""
-      suivre_exec "pdflatex \"#{maintex_full_path}\""
-      suivre_exec "biber \"#{maintex_affx_path}\""
-      suivre_exec "pdflatex \"#{maintex_full_path}\""
-      suivre_exec "makeindex \"#{maintex_affx_path}.idx\""
-      suivre_exec "pdflatex \"#{maintex_full_path}\""
-      suivre_exec "dvips \"#{maintex_affx_path}.dvi\""
+      suivre_exec "pdflatex #{maintex_nfile}"
+      suivre_exec "biber #{maintex_nfile}"
+      suivre_exec "makeindex -s ../commons/index_mef.ist #{maintex_affixe}.idx"
+      suivre_exec "pdflatex #{maintex_nfile}"
+      suivre_exec "pdflatex #{maintex_nfile}"
+      suivre_exec "dvips #{maintex_affixe}.dvi"
     end
 
     if open_pdf?

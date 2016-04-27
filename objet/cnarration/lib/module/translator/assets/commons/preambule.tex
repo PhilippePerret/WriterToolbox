@@ -5,8 +5,6 @@
 % Packages
 \input{../commons/packages}
 
-% % Bases de données
-% \bibliography{../bdd/filmographie} % filmographie
 % % Mise en forme des citations
 % \input{../commons/mef/citations}
 
@@ -27,11 +25,11 @@
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}} % Pas de "Chapitre" dans les titres
 \renewcommand{\sectionmark}[1]{\markright{#1}}
 
+% Construction de l'index
+% Si l'index ne bouge plus, cette ligne peut être ex-commentée
+\makeindex
+
 % Première de couverture
 % =================
 \author{Philippe Perret}
 \date{} % Pas de date
-
-% Construction de l'index
-% Si l'index ne bouge plus, cette ligne peut être ex-commentée
-\makeindex

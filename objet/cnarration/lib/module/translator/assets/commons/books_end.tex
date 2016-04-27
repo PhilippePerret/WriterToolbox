@@ -4,16 +4,24 @@
 % Pour ne garder que les numéros de page pour la suite
 \thispagestyle{plain}
 
-%\bibliographystyle{plain}
+% Ils disent de mettre ça pour utiliser les styles
+% biblatex mais ça ne fonctionne pas, ça génère une erreur
+% \bibliographystyle{plain}
 
+% ---- BIBLIOGRAPHIE AVEC BIBLATEX --------
 % Inscription de la bibliographie
-% \defbibheading{bibliography}{Bibliographie} % biblatex
 \printbibliography[type=book,title={Bibliographie}]
-
 % Inscription de la filmographie
 \printbibliography[type=movie,title={Filmographie}]
-% \defbibheading{bibliography}{Filmographie} % biblatex
-% \printbibliography % biblatex
+
+% % ----- BIBLIOGRAPHIE AVEC NATLIB ------------
+% \bibliographystyle{unsrtnat}
+% % Inscription de la bibliographie
+% \section{Bibliographie}
+% \bibliography{../commons/bibliography}
+% % Inscription de la filmographie
+% \section{Filmographie}
+% \bibliography{../commons/filmography}
 
 % Inscription de l'index
 \printindex

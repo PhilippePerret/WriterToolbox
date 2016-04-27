@@ -38,9 +38,9 @@ class Tdm
 
   # {Hash} des pages du livre de cette table des matières, avec en clé
   # l'identifiant de la page et en valeur un Hash ne contenant que :
-  #   {:titre, :id, :options}
+  #   {:titre, :id, :options, :handler}
   def pages
-    @pages ||= Cnarration::table_pages.select(where:"livre_id = #{id}", colonnes:[:titre, :options])
+    @pages ||= Cnarration::table_pages.select(where:"livre_id = #{id}", colonnes:[:titre, :handler, :options])
   end
 
   def pages_ids
