@@ -23,3 +23,35 @@
   \fancyfoot[LE,RO]{\thepage}
   \renewcommand{\footrulewidth}{0.4pt}%
 }
+
+% Redéfinition de l'apparence des chapitres
+\makeatletter
+% Pour définir la ligne en dessous et au-dessus (je ne l'utilise pas)
+% \def\thickhrule{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+% Pour définir \position
+% \def\position{\centering}
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{10\p@}%
+  % {\parindent \z@ \position \reset@font
+  {\parindent \z@ \reset@font
+        % % Le numéro du chapitre
+        % {\Huge \scshape  \thechapter }
+        % \par\nobreak
+        % \vspace*{10\p@}%
+        % \interlinepenalty\@M
+        % \thickhrule
+        % \par\nobreak
+        % \vspace*{2\p@}%
+        {\Huge \bfseries #1\par\nobreak}
+        \par\nobreak
+        % \vspace*{2\p@}%
+        % \thickhrule
+    \vskip 40\p@
+    % \vskip 100\p@
+  }
+}
+
+% \makeatletter
+\renewcommand{\@makesectionhead}[1]{%
+  {\bfseries #1\par\nobreau}
+}

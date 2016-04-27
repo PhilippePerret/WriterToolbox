@@ -51,8 +51,9 @@ class Livre
     # Il faut se placer dans le dossier pour pouvoir exécuter
     # les commandes de compilation
     Dir.chdir(latex_folder.to_s) do
-      suivre_exec "pdflatex #{maintex_nfile}"
+      suivre_exec "latex #{maintex_nfile}"
       suivre_exec "biber #{maintex_nfile}"
+      suivre_exec "latex #{maintex_nfile}"
       suivre_exec "makeindex -s ../commons/index_mef.ist #{maintex_affixe}.idx"
       suivre_exec "pdflatex #{maintex_nfile}"
       suivre_exec "pdflatex #{maintex_nfile}"

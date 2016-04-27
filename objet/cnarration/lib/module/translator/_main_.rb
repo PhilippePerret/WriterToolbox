@@ -46,6 +46,7 @@ class << self
       debug @suivi.join("\n")
     end
     flash "Export vers Latex terminé avec succès"
+    flash "Note : Si la bibliographie n'a pas été générée correctement, il suffit :<ol><li>Ouvrir le fichier .tex principal dans TextMate</li><li>Lancer la commande `Tool > Create Bibliographye`</li><li>Lancer la commande `Tool > Create Index` (si nécessaire)</li><li>Relancer la construction du livre avec CMD+R</li></ol>".in_span(class:'small')
 
     # Remettre l'ancien format des fois qu'une page
     # devrait être tout de suite affichée
