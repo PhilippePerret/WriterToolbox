@@ -30,6 +30,13 @@ class Console
   # `balise <chose> etc.`. Produit des champs de saisie où on peut
   # récupérer le code fourni.
   #
+  # Chaque méthode appelée doit retourner un Array avec en
+  # premier élément :
+  #   Un {Array} content des Hash (un par balise à proposer)
+  #   contenant :value (valeur à proposer), :after (texte quelconque
+  #   à ajouter après)
+  # Et en second élément :
+  #   Le message à retourne ("" si nil)
   # +bdata+
   def main_traitement_balise bdata
     debug "bdata : #{bdata.inspect}"
@@ -47,6 +54,9 @@ class Console
     when 'page'
       console.require 'narration'
       give_balise_of_page(bdata[1])
+    when /analyses?/
+      console.require 'analyses'
+      Analyses.instance.liens_balises_vers(bdata[1])
     when 'question'
       console.require 'narration'
       give_balise_of_question(bdata[1])
@@ -59,6 +69,8 @@ class Console
     when '', nil then nil
     else bdata[2].downcase
     end
+
+    message ||= ""
 
     return message if balises.nil? # aucune trouvée
 

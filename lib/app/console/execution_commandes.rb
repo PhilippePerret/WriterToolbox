@@ -54,20 +54,33 @@ class Console
     when /^synchro(ni[zs]e)? (data)?base narration$/
       console.require 'narration'
       run_synchronize_database_narration
-      # --- ANALYSES DE FILM ---
-    when /^(inventory|etat des lieux|état des lieux) analyses$/
-      redirect_to "admin/dashboard?in=analyse"
-      return ""
     when /^balise question$/
       console.require 'narration'
       bals, retour = give_balise_of_question
       sub_log liste_built_balises(bals)
       return retour
+
+      # --- ANALYSES DE FILM ---
+
+    when /^(inventory|etat des lieux|état des lieux) analyses$/
+      redirect_to "admin/dashboard?in=analyse"
+      return ""
     when /^fonctionnement analyses$/
       console.require 'analyses'
       affiche_rappel_fonctionnement
-    when /^unan /
+    when /^(afficher|affiche|show|montre) analyse (.+)$/
+      console.require 'analyses'
+      Analyses.instance.redirect_to_analyse_of(line.sub(/^(afficher|affiche|show|montre) analyse /,'').strip)
+    when /^(lien|balise) analyse$/
+      console.require 'analyses'
+      affiche_aide_balise_analyses
+    # when /^(lien|balise) analyse (.+)$/
+    #   console.require 'analyses'
+    #   Analyses.instance.liens_balises_vers(line.sub(/^(lien|balise) analyse /,'').strip)
+
       # --- PROGRAMME UN AN UN SCRIPT ---
+
+    when /^unan /
       console.require 'unan_unscript'
       case line.downcase
       when "unan points"
@@ -138,7 +151,7 @@ class Console
   # Exécution comme une expression régulière propre à
   # l'application
   def app_execute_as_regular_sentence line
-    if (found = line.match(/^balise (livre|film|mot|page|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
+    if (found = line.match(/^(?:balise|lien) (livre|film|analyse|mot|page|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
       ( main_traitement_balise found[1..-1] )
     elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
       (site.folder_lib_optional + 'console/pday_change/main.rb').require

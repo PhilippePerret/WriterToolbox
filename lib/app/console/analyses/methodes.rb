@@ -16,8 +16,70 @@ class Console
     return ""
   end
 
+  def affiche_aide_balise_analyses
+    "Ajouter à la commande `(lien|balise) analyse` le titre ou seulement une portion du titre (original ou français) ou de l'identifiant."
+    return ""
+  end
+
   class Analyses
     include Singleton
+
+
+    # Produit une liste des balises pour conduire
+    # aux analyses voulues
+    def liens_balises_vers portion_titre
+      site.require_objet 'analyse'
+      console.require 'filmodico'
+      hfilms = console.get_all_films_of_ref(portion_titre)
+
+      liste_balises = Array::new
+      if hfilms.count == 0
+        return [nil, "AUCUN FILM TROUVÉ AVEC LES RÉFÉRENCES DONNÉES"]
+      else
+        hfilms.each do |hfilm|
+          ifilm = FilmAnalyse::Film::get(hfilm[:id])
+          if ifilm.analyzed?
+            relative_url = "analyse/#{ifilm.id}/show"
+            absolute_url = "#{site.distant_url}/#{relative_url}"
+            lien = hfilm[:titre].in_a(href:"analyse/#{hfilm[:id]}/show")
+            liste_balises << {value:"[#{ifilm.titre}](#{relative_url})", after:"Markdown #{lien}"}
+            liste_balises << {value:relative_url, after: "Brut"}
+            liste_balises << {value:"<a href=\"#{absolute_url}\">#{ifilm.titre}</a>", after:"Lien mail"}
+          else
+            liste_balises << {value:"", after:"#{hfilm[:titre]} n'est pas analysé."}
+          end
+        end
+        return [liste_balises, ""]
+      end
+    end
+
+    # Redirige vers l'analyse correspondant à la référence
+    # +portion_titre
+    def redirect_to_analyse_of portion_titre
+      site.require_objet 'analyse'
+      console.require 'filmodico'
+      hfilms = console.get_all_films_of_ref(portion_titre)
+      if hfilms.count == 1
+        hfilm = hfilms.first
+        ifilm = FilmAnalyse::Film::get(hfilm[:id])
+        if ifilm.analyzed?
+          redirect_to "analyse/#{hfilm[:id]}/show"
+        else
+          return "Ce film n'est pas analysé"
+        end
+      elsif hfilms.empty?
+        return "AUCUN FILM TROUVÉ AVEC LES RÉFÉRENCES DONNÉES"
+      else
+        res = hfilms.collect do |hfilm|
+          ifilm = FilmAnalyse::Film::get(hfilm[:id])
+          next unless ifilm.analyzed?
+          hfilm[:titre].in_a(href:"analyse/#{hfilm[:id]}/show").in_div
+        end.join('').in_div
+        console.sub_log res
+      end
+      return ""
+    end
+
 
     def infos_films
       @infos_films ||= table_films.select(where:"options IS NOT NULL AND options LIKE `1%`")

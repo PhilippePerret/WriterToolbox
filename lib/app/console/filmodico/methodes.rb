@@ -3,13 +3,21 @@ class SiteHtml
 class Admin
 class Console
 
+  # Retourne une liste de Hash de données des films qui
+  # correspondent à la référence +fref+ qui peut être une
+  # portion du titre original/français ou de l'identifiant
+  # type Harvard du film
+  def get_all_films_of_ref fref
+    site.require_objet 'filmodico'
+    Filmodico::table_films.select(where:"titre LIKE '%#{fref}%' OR titre_fr LIKE '%#{fref}%' OR film_id LIKE '%#{fref}%'", colonnes:[:film_id, :titre], nocase:true).values
+  end
+
   # Retourne la balise pour le film de référence
   # +fref+ qui peut être une portion seulement du film
   def give_balise_of_filmodico fref
-    site.require_objet 'filmodico'
     # On récolte les films qui peuvent correspondre au titre original,
     # au titre en français ou au film-id
-    res = Filmodico::table_films.select(where:"titre LIKE '%#{fref}%' OR titre_fr LIKE '%#{fref}%' OR film_id LIKE '%#{fref}%'", colonnes:[:film_id, :titre], nocase:true).values
+    res = get_all_films_of_ref fref
 
     if res.empty?
       [nil, "Aucun film ne correspond à la référence #{fref}"]

@@ -263,6 +263,22 @@ analyse:
     description:  |
       Produit un état des lieux des analyses pour voir où en sont les
       analyses en cours, etc.
+  -
+    command:        (lien|balise) analyse &lt;portion titre&gt;
+    description: |
+      Produit des liens pour rejoindre l'analyse voulue.
+    note: |
+      La portion peut être celle du titre, du titre français ou
+      de l'identifiant du film voulu.<br>
+      La sortie se fait sous plusieurs formats (markdown et mail)
+  -
+    command:        (affiche|afficher) analyse &lt;portion titre&gt;
+    description:  |
+      Affiche l'analyse demandée.
+    note: |
+      La portion peut être celle du titre, du titre français ou
+      de l'identifiant du film voulu.
+
 # ---------------------------------------------------------------------
 # PROGRAMME UN AN UN SCRIPT
 unan:

@@ -17,20 +17,29 @@ class << self
 
 OBTENIR LA LISTE DES FILMS
 
-    $ list films
+    $> list films
 
     Note : Ça n'est pas la liste des films du filmodico qu'on
     obtient par `list filmodico`.
 
+AFFICHER UNE ANALYSE
+
+    Utiliser la commande :
+
+    $> affiche analyse xxxxx
+
+    Où "xxxx" peut être une portion du titre, du titre français
+    ou de l'identifiant.
+
 MODIFIER LES OPTIONS D'UN FILM ANALYSÉ
 
     Dans une fenêtre console :
-    $ list films
+    $> list films
 
     Repérer l'ID du film à modifier, puis, dans une autre
     fenêtre :
-    $ site.require_objet 'analyse'
-    $ FilmAnalyse::table_films.update( &lt;FILM ID>, {options: "&lt;NEW VALEUR>" })
+    $> site.require_objet 'analyse'
+    $> FilmAnalyse::table_films.update( &lt;FILM ID>, {options: "&lt;NEW VALEUR>" })
 
     Note : Cette opération est nécessaire pour pouvoir consulter ou
     publier l'analyse du film.
@@ -58,7 +67,7 @@ OBTENIR LE LIEN VERS UN FICHIER D'UNE ANALYSE
     Note : Seulement pour les analyses MYE (pas TM)
 
     IL suffit d'afficher l'analyse (par exemple en utilisant la
-    commande ci-dessus) puis de cliquer le bouton &lt;lien&gt;
+    commande plus haut) puis de cliquer le bouton &lt;lien&gt;
     à côté du lien “Ouvrir” du titre de la page (plusieurs pages
     par analyse) pour obtenir différentes version du lien vers
     le fichier/la section courant/e.
@@ -68,7 +77,7 @@ OBTENIR LE LIEN VERS UN FICHIER D'UNE ANALYSE
     tous les fichiers qui la constitue, suivant le fichier
     tdm.yaml
 
-OBTENIR LE LIEN VERS UNE PARTIE D'UN
+OBTENIR LE LIEN VERS UNE PARTIE D'UNE ANALYSE
 
     Note : Seulement pour les analyses MYE (pas TM)
 
@@ -82,8 +91,7 @@ OBTENIR LE LIEN VERS UNE PARTIE D'UN
       question.
 
     Note : Si c'est pour un fichier Markdown, le mieux est la
-    version “MARKDOWN” du lien (qui sera relative si on est
-    administrateur et absolue si on est simple visiteur).
+    version “MARKDOWN” du lien.
 
 </pre>
     CODE
