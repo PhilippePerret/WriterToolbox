@@ -58,7 +58,8 @@ class SuperFile
   # :type peut être :qrd, :objectif, :note etc. et :id est l'identifiant
   # de l'élément en relation.
   # TODO Pour le moment, pas d'interactivité, on indique simplement
-  # la nature de l'élément et son identifiant
+  # la nature de l'élément et son identifiant, mais on ne peut pas
+  # le rejoindre dans la page
   def traite_relatifs arr_rels
     return "" if arr_rels.nil? || arr_rels.empty?
     l = arr_rels.collect do |hrel|

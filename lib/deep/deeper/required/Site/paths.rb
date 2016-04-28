@@ -12,8 +12,15 @@ class SiteHtml
   def local_url
     @local_url ||= "http://#{self.local_host}"
   end
+  alias :url_locale :local_url
   def distant_url
     @distant_url ||= "http://#{self.distant_host}"
+  end
+  alias :url_distante :distant_url
+
+  # URL en fonction de où on consulte le site
+  def url
+    ONLINE ? distant_url : local_url
   end
 
   # Destruction de la page d'accueil pour forcer son
@@ -21,7 +28,7 @@ class SiteHtml
   def destroy_home
     file_home_page_content.destroy if file_home_page_content.exist?
   end
-  
+
   # {SuperFile} Fichier contenant le code HTML de la
   # page d'accueil, qui doit être reconstruit dès qu'une
   # actualité a été générée.

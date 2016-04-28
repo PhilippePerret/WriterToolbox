@@ -30,9 +30,15 @@ Afficher les données dans l'ordre où le programme listerait les fichiers donne
 
 ## Affichage des données MD
 
+C'est un traitement "normal" qui est appliqué, par `SuperFile`, comme tout fichier Markdown sur le site.
+
 <a name='affichagedesyaml'></a>
 
 ## Affichage des fichiers YAML
+
+Le fichier est traité par le module :
+
+    ./objet/analyse/lib/module/film_MYE/superfile/yaml_traitements.rb
 
 <a name='affichagedesevc'></a>
 
