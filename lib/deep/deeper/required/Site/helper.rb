@@ -24,6 +24,7 @@ class SiteHtml
       "#{parmois}#{suffix}"
     end
   end
+  alias :tarif_par_mois :tarif_humain_par_mois
 
   # Pour pouvoir utiliser la syntaxe `site.require_module ...` et
   # charger un module se trouvant dans ./objet/site/lib/module/

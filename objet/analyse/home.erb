@@ -5,21 +5,26 @@ page.title = "Analyses de films"
 
 %>
 <%
+# Le lien conduisant à la section pour poser sa participation
+# aux analyses de films.
 def participer_aux_analyses
-  FilmAnalyse::lien_participer "participer aux analyses"
+  FilmAnalyse::lien_participer( "participer aux analyses", {class:'border'})
 end
 %>
 <%= FilmAnalyse::titre_h1 %>
 
 <p>
-  Section du site consacrée aux <strong>analyses de films</strong>, où sont exploités des outils informatiques et statistiques originaux et infiniment éclairants pour l'écriture et la narration en général.
+  Section du site consacrée aux <%= "Analyses de films".in_a(href:"analyse/list", class:'border') %>
+</p>
+<p class='small'>
+  Dans cette section sont exploités des outils informatiques et statistiques originaux et infiniment éclairants pour l'écriture et la narration en général.
 </p>
 <% if user.subscribed? %>
   <p>En tant qu'abonné<%= user.f_e %>, vous pouvez consulter l'intégralité des analyses de film, et vous pouvez également <%= participer_aux_analyses %> (et gagner par là-même des points d'abonnement).</p>
 <% elsif user.identified? %>
-  <p>Seuls les abonné<%= user.f_e %>s ont accès à l'intégralité des outils d'analyse et des analyses de film (<%= user.pseudo %>, vous pouvez bien sûr <%= lien.abonnement("vous abonner") %>).</p>
-  <p>Vous pouvez aussi <%= participer_aux_analyses %> pour gagner des points d'abonnement.</p>
+  <p><strong>Seuls les abonné<%= user.f_e %>s ont accès à toutes les analyses de film</strong> (<%= user.pseudo %>, vous pouvez bien sûr <%= lien.abonnement("vous abonner") %> pour seulement <%= site.tarif_humain %> par an soit à peine <%= site.tarif_par_mois %>).</p>
+  <p>Vous pouvez aussi <%= participer_aux_analyses %> <span class='small'>(et gagner des points d'abonnement)</span>.</p>
 <% else %>
   <p>Pour consulter les analyses, en intégralité ou en partie, vous devez impérativement <%= lien.signup("être inscrit/e") %> ou <%= lien.abonnement("être abonné/e") %>.</p>
-  <p>En étant inscrit/e, vous pourrez également <%= participer_aux_analyses %> produites afin de gagner des points d'abonnement.</p>
+  <p>En étant inscrit/e, vous pourrez également <%= participer_aux_analyses %> <span class='small'>(et gagner des points d'abonnement)</span>.</p>
 <% end %>
