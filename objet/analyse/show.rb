@@ -121,6 +121,22 @@ class Film
       ""
     end
 
+    # Un lien pour obtenir la balise conduisant
+    # à cette analyse
+    relative_url = "analyse/#{id}/show"
+    absolute_url = "#{site.distant_url}/#{relative_url}"
+    clips = Array::new
+    permanent_link = if user.admin?
+      clips << "'Mardown':'[Analyse de “#{titre}”](#{relative_url})'"
+      clips << "'Mail/Forum':'ALINK[#{absolute_url}, Analyse de #{titre}]'"
+      onclick = "UI.clip({#{clips.join(',')}})"
+      "&lt;lien vers cette analyse&gt;".in_a(onclick:"#{onclick}")
+    else
+      "Lien permanent : " + absolute_url.in_input_text(name:'permanent_link', style:'font-size:9pt;width:300px', onfocus:"this.select()")
+    end
+    permanent_link = permanent_link.in_div(class:'right', style:'font-size:9pt')
+
+
     #  Table des matières
     # ====================
     # Fabrication de la table des matières. Cette table des matières
@@ -191,10 +207,12 @@ class Film
 
     # L'intégralité de la page d'analyse
     return (
+        permanent_link +
         intro +
         "Table des matières".in_h3 +
         table_of_content +
-        whole_content
+        whole_content +
+        permanent_link
       ).in_section
   end
 
