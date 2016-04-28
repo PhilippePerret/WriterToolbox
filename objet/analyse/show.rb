@@ -63,6 +63,8 @@ $(document).ready(function(){
   end
 
 
+  # Note : La méthode <film>.analyse_display est implémentée
+  # plus bas dans ce fichier.
   def output_as_analyse_mye
     FilmAnalyse::require_module 'film_MYE'
     <<-HTML
@@ -156,23 +158,17 @@ class Film
       frelpath = fdata[:path]
       fpath   = folder_in_films_mye + frelpath
       sfile = ( SuperFile::new fpath )
+      fdata.merge!( sfile: sfile )
 
       # Titre du document
       ftitre  = fdata[:titre].nil? ? "" : "<h3>#{fdata[:titre]}</h3>"
 
-      # Un lien pour éditer le fichier si c'est l'administrateur
-      # ou un analyse
-      lien_edit_file = if user.admin? || user.analyste?
-        lien.edit_file(sfile.expanded_path).in_div(class:'right')
-      else
-        ""
-      end
 
       (
         "<a name='#{fdata[:anchor]}'></a>\n" +
         ftitre +
         (
-          lien_edit_file +
+          box_edition(fdata) +
           case sfile.extension
           when 'md'   then sfile.as_kramdown
           when 'yaml' then sfile.as_yaml
@@ -187,6 +183,12 @@ class Film
       ).in_section
     end.join
 
+    # Pour terminer, si c'est l'administrateur ou un
+    # analyste qui visite la page, je vais placer en regard des
+    # titre un lien pour obtenir le tag à cette partie, à partir
+    # de l'identifiant attribué par Kramdown
+    whole_content = place_boutons_pour_balise_in(whole_content) if user.admin?
+
     # L'intégralité de la page d'analyse
     return (
         intro +
@@ -194,6 +196,52 @@ class Film
         table_of_content +
         whole_content
       ).in_section
+  end
+
+  # Ajoute des liens-boutons pour obtenir un lien ou une
+  # balise vers les sous-parties de l'analyse
+  def place_boutons_pour_balise_in code
+    file_url = "analyse/#{id}/show"
+    code.gsub(/<(h[2-6])(?:.*?)id="(.+?)"(?:.*?)>(.+?)<\/\1>/){
+      tout      = $&.freeze
+      titre_id  = $2.freeze
+      titre_nom = $3.freeze
+      titre_complet = "Analyse de #{titre} > #{titre_nom}"
+      relative_url = "#{file_url}##{titre_id}"
+      absolute_url = "#{site.distant_url}/#{relative_url}"
+      if user.admin?
+        clips = ["'BRUT': '#{relative_url}'"]
+        clips << "'MD Loc': '[#{titre_nom}](#{relative_url})'"
+        clips << "'MD Dist':'[#{titre_complet}](#{absolute_url})'"
+      else
+        clips << "'Markdown': '[#{titre_complet}](#{absolute_url})'"
+      end
+      clips << "'Mail': 'ALINK[#{absolute_url},#{titre_complet}]'"
+      clips = "{#{clips.join(',')}}"
+      box = "&lt;lien&gt;".in_a(onclick:"UI.clip(#{clips})").in_div(class:'fright small')
+      "#{box}#{tout}"
+    }
+  end
+  # Boite de boutons d'édition pour la page courante, si c'est
+  # un administrateur ou un analyste.
+  def box_edition fdata
+    return "" unless user.admin? || user.analyste?
+    # Le lien pour ouvrir le fichier Markdown (dans TextMate)
+    lkeditfile = lien.edit_file(fdata[:sfile].expanded_path)
+    # Le lien pour obtenir une balise vers ce fichier
+    # d'analyse
+    ancre = "##{fdata[:anchor]}"
+    clips = ["'Ici':'#{ancre}'"]
+    url   = "analyse/#{id}/show#{ancre}"
+    clips << "'Site': '#{url}'"
+    clips << "'URL Loc': '#{site.url_locale}/#{url}'"
+    clips << "'URL Dist': '#{site.url_distante}/#{url}'"
+    lkbalise = "&lt;tag&gt;".in_a(onclick:"UI.clip({#{clips.join(', ')}})")
+
+    # On construit la boite et on la renvoie
+    (
+      lkeditfile + lkbalise
+    ).in_div(class:'small right btns')
   end
 
   def require_module_evc_if_needed

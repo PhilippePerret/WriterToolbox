@@ -57,9 +57,33 @@ OBTENIR LE LIEN VERS UN FICHIER D'UNE ANALYSE
 
     Note : Seulement pour les analyses MYE (pas TM)
 
+    IL suffit d'afficher l'analyse (par exemple en utilisant la
+    commande ci-dessus) puis de cliquer le bouton &lt;lien&gt;
+    à côté du lien “Ouvrir” du titre de la page (plusieurs pages
+    par analyse) pour obtenir différentes version du lien vers
+    le fichier/la section courant/e.
+
+    Rappel : Quand on consulte une analye de type MYE, elle est
+    constituée d'une longue page sur laquelle sont rassemblés
+    tous les fichiers qui la constitue, suivant le fichier
+    tdm.yaml
+
 OBTENIR LE LIEN VERS UNE PARTIE D'UN
 
     Note : Seulement pour les analyses MYE (pas TM)
+
+    * S'identifier comme administrateur (pour obtenir toutes les
+      sortes de liens),
+    * Charger l'analyse voulue (par exemple en utilisant la commande
+      ci-dessus),
+    * Rejoindre la section voulue
+    * En face du titre doit se trouver un bouton &lt;lien&gt; qui
+      affiche les formes de liens pour rejoindre la partie en
+      question.
+
+    Note : Si c'est pour un fichier Markdown, le mieux est la
+    version “MARKDOWN” du lien (qui sera relative si on est
+    administrateur et absolue si on est simple visiteur).
 
 </pre>
     CODE
