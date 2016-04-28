@@ -206,7 +206,7 @@ class Film
       tout      = $&.freeze
       titre_id  = $2.freeze
       titre_nom = $3.freeze
-      titre_complet = "Analyse de #{titre} > #{titre_nom}"
+      titre_complet = "Analyse de #{titre}, #{titre_nom}"
       relative_url = "#{file_url}##{titre_id}"
       absolute_url = "#{site.distant_url}/#{relative_url}"
       if user.admin?
@@ -225,23 +225,34 @@ class Film
   # Boite de boutons d'édition pour la page courante, si c'est
   # un administrateur ou un analyste.
   def box_edition fdata
-    return "" unless user.admin? || user.analyste?
-    # Le lien pour ouvrir le fichier Markdown (dans TextMate)
-    lkeditfile = lien.edit_file(fdata[:sfile].expanded_path)
+    btns = ""
+
+    if user.admin? || user.analyste?
+      # Le lien pour ouvrir le fichier Markdown (dans TextMate)
+      btns += lien.edit_file(fdata[:sfile].expanded_path)
+    end
+
+    # debug "fdata : #{fdata.inspect}"
+    titre_complet = "Analyse de #{titre}, #{fdata[:titre]}"
+
     # Le lien pour obtenir une balise vers ce fichier
     # d'analyse
     ancre = "##{fdata[:anchor]}"
-    clips = ["'Ici':'#{ancre}'"]
-    url   = "analyse/#{id}/show#{ancre}"
-    clips << "'Site': '#{url}'"
-    clips << "'URL Loc': '#{site.url_locale}/#{url}'"
-    clips << "'URL Dist': '#{site.url_distante}/#{url}'"
-    lkbalise = "&lt;tag&gt;".in_a(onclick:"UI.clip({#{clips.join(', ')}})")
+    clips = Array::new
+    if user.admin? || user.analyste?
+      clips = ["'Ici':'#{ancre}'"]
+      url   = "analyse/#{id}/show#{ancre}"
+      clips << "'Site': '#{url}'"
+      clips << "'URL Loc': '#{site.url_locale}/#{url}'"
+    end
+    url_distante = "#{site.url_distante}/#{url}"
+    clips << "'HREF': '#{url_distante}'"
+    clips << "'Lien': 'ALINK[#{url_distante},#{titre_complet}]'"
+
+    btns += "&lt;lien&gt;".in_a(onclick:"UI.clip({#{clips.join(', ')}})")
 
     # On construit la boite et on la renvoie
-    (
-      lkeditfile + lkbalise
-    ).in_div(class:'small right btns')
+    btns.in_div(class:'small right btns')
   end
 
   def require_module_evc_if_needed
