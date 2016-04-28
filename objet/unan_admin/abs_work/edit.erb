@@ -93,11 +93,13 @@ liens_vers_work_pages_cours = ""
 unless data[:id].nil?
   iwork = Unan::Program::AbsWork::get(data[:id])
   # Liens pour afficher les exemples donnés pour ce work
-  liens_vers_work_exemples = (
+  liens_vers_work_exemples = unless iwork.exemples_ids.nil?
+   (
     "Voir exemple : " + iwork.exemples_ids.collect do |exid|
       "##{exid}".in_a(href:"exemple/#{exid}/show?in=unan")
     end.join(' ')
     ).in_span(class:'small')
+else "" end
 
   # Liens pour afficher les pages de cours suggérées pour ce
   # work
