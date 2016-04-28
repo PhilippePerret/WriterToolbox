@@ -145,7 +145,6 @@ class String
         when Array  then qs.collect{|paire| "#{paire.first}=#{CGI::escape paire.last}"}.join('&')
         when String then qs
         end
-        debug "href: #{href.inspect}"
         attrs[:href] = href
       end
     else

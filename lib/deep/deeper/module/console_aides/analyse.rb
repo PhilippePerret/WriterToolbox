@@ -4,7 +4,12 @@ class Aide
 class << self
 
   def analyse
+    p = CGI::escape './lib/deep/deeper/module/console_aides/analyse.rb'
+    linkmodify = "Modifier ce fichier".in_a(href:"site/open_file?path=#{p}&app=Atom")
     console.sub_log( <<-CODE)
+<div class='small right'>
+ #{linkmodify}
+</div>
 <pre>
 ---------------------------------------------------------------------
   AIDE ANALYSE DE FILM
@@ -41,7 +46,21 @@ AJOUTER UN FILM ANALYSÉ
     ATTENTION : S'assure que le film définisse bien son `sym` et que
     le fichier HTML de l'analyse porte bien ce sym comme affiche
     de nom de fichier.
-    
+
+OBTENIR LE LIEN VERS UNE ANALYSE
+
+  Dans la console, taper :
+
+  $> lien|balise analyse <portion du titre>
+
+OBTENIR LE LIEN VERS UN FICHIER D'UNE ANALYSE
+
+    Note : Seulement pour les analyses MYE (pas TM)
+
+OBTENIR LE LIEN VERS UNE PARTIE D'UN
+
+    Note : Seulement pour les analyses MYE (pas TM)
+
 </pre>
     CODE
     ""

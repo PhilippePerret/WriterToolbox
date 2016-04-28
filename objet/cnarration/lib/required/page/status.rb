@@ -17,8 +17,10 @@ class Page
   # Retourne true si l'utilisateur courant peut
   # consulter la page en entier, retourne false
   # s'il ne peut en consulter que le tiers.
+  # Les bots google peuvent consulter aussi les
+  # pages.
   def consultable?
-    return true if user.subscribed? || user.admin?
+    return true if user.subscribed? || user.admin? || user.google?
   end
 
   def only_enligne?

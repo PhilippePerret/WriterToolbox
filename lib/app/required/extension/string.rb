@@ -47,17 +47,7 @@ class ::String
       imgpath = String::seek_image_path_of( path, subfolder || expfolder)
       title  = title.gsub(/'/, "’") unless title.nil?
       if imgpath != nil
-        # Soit title est un titre alternatif (qui pourra
-        # servir de légende si légende non définie) ou bien
-        # est un indicateur de position de l'image.
-        img_tag = case title
-        when 'inline'
-          imgpath.in_img()
-        when 'fright', 'fleft'
-          imgpath.in_img(class: title)
-        else
-          img_tag = "<img src='#{imgpath}' alt='Image: #{title}' />"
-        end
+
         # La légend, if any
         # La légende peut avoir trois valeur :
         #   1. être nil   => Rien
@@ -69,8 +59,20 @@ class ::String
         else legend
         end
         legend = legend.nil? ? "" : "<div class='img_legend'>#{legend}</div>"
+
+        # Soit title est un titre alternatif (qui pourra
+        # servir de légende si légende non définie) ou bien
+        # est un indicateur de position de l'image.
         # Le texte construit retourné
-        "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
+        case title
+        when 'inline'
+          imgpath.in_img()
+        when 'fright', 'fleft'
+          (imgpath.in_img + legend).in_div(class:"image_#{title}")
+        else
+          img_tag = "<img src='#{imgpath}' alt='Image: #{title}' />"
+          "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
+        end
       else
         "IMAGE MANQUANTE: #{imgpath} (avec #{path} fourni)"
       end

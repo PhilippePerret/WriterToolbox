@@ -6,47 +6,39 @@ la gestion des options
 class FilmAnalyse
 class Film
 
-  # BIT 1 Analysé / Non analysé
-  def analyzed?
-    options[0].to_i == 1
+  def gbit x
+    options[x].to_i
   end
-  # BIT 2 A besoin d'être inscrit
-  def need_signedup?
-    options[1].to_i == 1
-  end
-  # BIT 3 À besoin d'être abonné
-  def need_subscribed?
-    options[2].to_i == 1
-  end
-  # BIT 4 C'est une analyse TM
-  def analyse_tm?
-    (options[3].to_i & 1) > 0
-  end
-  # BIT 4 C'est une analyse de type MYE, c'est-à-dire
-  # Markdown, Yaml et Evt
-  def analyse_mye?
-    (options[3].to_i & 2) > 0
-  end
-  # BIT 4 C'est une analyse TM et MYE
-  def analyse_mixte?
-    (options[3].to_i & 3) > 0
-  end
-  # BIT 5 Lisible / non lisible
-  def lisible?
-    options[4].to_i == 1
-  end
-  # BIT 6 Analyse en cours / pas en cours
-  def en_cours?
-    options[5].to_i == 1
-  end
-  # BIT 7 Analyse en lecture / pas en lecture
-  def en_lecture?
-    options[6].to_i == 1
-  end
-  # BIT 8 Analyse achevée / non achevée
-  def complete?
-    options[7].to_i == 1
-  end
+
+  # BIT 1 (analysé)
+  # Mis à 1 si le film eset analysé
+  def bit_analyzed; @bit_analyzed ||= gbit(0) end
+  # BIT 2 (signup)
+  # Est mis à 1 si l'user a besoin d'être inscrit
+  # pour consulter l'analyse
+  def bit_signup; @bit_signup ||= gbit(1) end
+  # BIT 3 (abonné)
+  # Mis à 1 s'il faut que l'user soit abonné pour
+  # consulter le film
+  def bit_subscribed; @bit_subscribed ||= gbit(2) end
+  # BIT 4
+  # Définit le type de l'analyse (comparaison de bit)
+  #   1 => TM
+  #   2 => MYE
+  #   1+2 => TM et MYE
+  def bit_type_analyse; @bit_type_analyse ||= gbit(3) end
+  # BIT 5 (lisible)
+  # Mis à 1 si l'analyse est lisible
+  def bit_lisible; @bit_lisible ||= gbit(4) end
+  # BIT 6 (en cours)
+  # Mis à 1 si l'analyse est en cours
+  def bit_encours; @bit_encours ||= gbit(5) end
+  # BIT 7 (en lecture)
+  # Mis à 1 si l'analyse est en cours de relecture
+  def bit_enlecture; @bit_enlecture ||= gbit(6) end
+  # BIT 8 (achevée)
+  # Mis à 1 si l'analyse est achevée
+  def bit_complete; @bit_complete ||= gbit(7) end
 
 end #/Film
 end #/FilmAnalyse

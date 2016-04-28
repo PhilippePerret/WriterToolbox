@@ -1,4 +1,4 @@
-SAFED LOG DU 27 04 2016 - 13:00
+SAFED LOG DU 28 04 2016 - 08:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -21,16 +21,8 @@ SAFED LOG DU 27 04 2016 - 13:00
 -> Cron::run
     * [Cron::run] Requérir toutes les librairies du site
      -> Cron::requerir_les_librairies_du_site
-     <- Cron::requerir_les_librairies_du_site
-    * [Cron::run] Traitement du programme UN AN UN SCRIPT
-     -> Cron::traitement_programme_un_an_un_script
-    * [Cron::run] Traitement des messages forum
-     -> Cron::traitement_messages_forum
-     <- Cron::traitement_messages_forum
-    = Fin Cron::run =
-= STEP 2 OK =
 <- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (27 04 2016 - 13:00) ---
+--- FIN DU SAFED LOG (28 04 2016 - 08:00) ---

@@ -14,18 +14,21 @@ class User
   end
 
   # À faire après un chargement de page
+  #
   def do_after_load
-    # debug "-> do_after_load"
+
+    # On passe les adresses des moteurs de recherche
+    return if google?
+
     # Si cet utilisateur a déjà été signalé, on ne fait rien
-    if param(:user_already_signaled) == "1"
-      # debug "   Visiteur déjà checké => rien à faire"
-      return
-    end
+    return if param(:user_already_signaled) == "1"
 
     require './data/secret/known_ips.rb'
 
-    exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." ) if BLACK_IPS_LIST.has_key?(self.ip)
-
+    if BLACK_IPS_LIST.has_key?(self.ip)
+      exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." )
+    end
+    
     # ATTENTION ! Une adresse peut être connue sans que ce
     # soit un user inscrit. Dans ce cas, user_id est nil
     detail = if KNOWN_IPS.has_key?(self.ip)
