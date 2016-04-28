@@ -12,17 +12,14 @@ class User
   # de gérer la transparence de l'interface (il doit disparaitre
   # petit à petit à mesure que l'utilisateur visite les pages)
   def login
-    debug "-> login"
     unless mail_confirmed? || admin? || for_paiement?
       return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
     end
     app.session['user_id'] = id
 
     # On met l'utilisateur en utilisateur courant
-    debug "Je mets User::current à l'user ##{id}"
     User::current= self
     reset_user_current
-    debug "J'ai mmis user (User::current) à l'id : ##{user.id}"
 
     # Variable session permettant de savoir combien de pages a
     # déjà visité l'utilisateur (pour baisser l'opacité des
@@ -46,15 +43,12 @@ class User
 
     if param(:login)[:back_to].nil_if_empty
       # Une redirection est demandée
-      debug "   Redirection demandée : #{param(:login)[:back_to].inspect}"
       redirect_to param(:login)[:back_to]
     elsif self.respond_to?(:redirect_after_login)
       # Sinon, une redirection est peut-être définie
       # par défaut par les préférences ou l'application
-      debug "  Appel de User#redirect_after_login"
       self.send(:redirect_after_login)
     end
-    debug "<- login"
     return true
   end
 

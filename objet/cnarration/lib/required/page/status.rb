@@ -20,7 +20,7 @@ class Page
   # Les bots google peuvent consulter aussi les
   # pages.
   def consultable?
-    return true if user.subscribed? || user.admin? || user.google?
+    return user.subscribed? || user.admin? || user.google?
   end
 
   def only_enligne?
