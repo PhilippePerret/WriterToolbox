@@ -74,7 +74,6 @@ class User
   def google?
     if @is_google === nil
       @is_google  = !!ip.match(REG_DNS_GOOGLE)
-      debug "@is_google : #{@is_google.inspect}"
       if @is_google
         @pseudo     = "Google"
         @id         = 10

@@ -9,23 +9,84 @@
 <%
 http = "http://localhost/WriterToolbox"
 %>
+<fieldset class='tools'>
+  <legend>CARTES</legend>
+  <%= "WORKS ****".in_a(href:"abs_work/map?in=unan_admin", class:'larger') %>
+  <%= "P-Days".in_a(href:'abs_pday/map?in=unan_admin') %>
+  <%= "Jour par jour".in_a(href:'unan_admin/day_after_day', class:'larger') %>
+</fieldset>
+<fieldset class='tools'>
+  <legend>CRÉER</legend>
+    <%= "P-DAY".in_a(href:"abs_pday/edit?in=unan_admin", target:'_creation_pday_') %>
+    <%= "WORK".in_a(href:"abs_work/edit?in=unan_admin") %>
+    <%= "PAGE COURS".in_a(href:"page_cours/edit?in=unan_admin", class:'larger') %>
+    <%= "QUIZ".in_a(href:"quiz/edit?in=unan_admin") %>
+    <%= "QUESTION".in_a(href:"question/edit?in=unan_admin/quiz") %>
+    <%= "EXEMPLE".in_a(href:"exemple/edit?in=unan_admin") %>
+</fieldset>
+<fieldset class='tools'>
+  <legend>LISTES</legend>
+  <%= "P-Days".in_a(href:'abs_pday/map?in=unan_admin') %>
+  <%= "Works".in_a(href:'abs_work/list?in=unan_admin') %>
+  <%= "Pages cours".in_a(href:'page_cours/list?in=unan_admin', class:'larger') %>
+  <%= "Quiz".in_a(href:'quiz/list?in=unan_admin') %>
+  <%= "Questions".in_a(href:'question/list?in=unan_admin/quiz') %>
+  <%= "Exemples".in_a(href:'exemple/list?in=unan_admin') %>
+</fieldset>
+<pre>
+Rappel de configuration
+
+  PDAY
+        C'est un jour-programme, il y en a 366
+        Un jour-programme est constitué de WORKS
+
+        Un p-day peut définir un minimum de points pour être considéré
+        comme achevé (pas encore en place)
+
+        PDAY  <- WORK
+              <- WORK
+              <- WORK
+
+  PDAY <- WORK
+      C’est la base des travaux d’un jour-programme et la seule base,
+      i.e. tout est un “work”, que ce soit un document à écrire, une
+      page de cours à lire ou un message de forum à remplir.
+
+      DOCUMENT À PRODUIRE
+      PAGE DE COURS À LIRE
+        - Définir un work
+        -
+
+  PAGE NARRATION À LIRE
+      Se définit par :
+
+        PDAY <- WORK <- PAGE COURS <- PAGE NARRATION
+
+        Dans le détail : il faut créer une "page cours"
+
+
+  WORK <- EXEMPLE
+      Un work peut avoir besoin d’exemples pour être illustré
+      concrètement. C’est un exemple
+
+  WORK <- PAGE COURS SUGGÉRÉES
+      Un work peut définir des pages de cours suggérées : ATTENTION,
+      elles n’ont rien à voir avec les travaux de type page de cours
+      qui sont obligatoire à lire. Ici, ce sont de simples suggestions
+      comme les exemples.
+</pre>
 <ul style="list-style:none">
   <fieldset class='inline-block'>
     <legend>P-Days</legend>
-    <li><%= "Création/édition".in_a(href:"abs_pday/edit?in=unan_admin", target:'_creation_pday_') %></li>
     <li><%= "Carte complète".in_a(href:'abs_pday/map?in=unan_admin', target:'_map_pdays_') %></li>
-    <li><%= "Consultation jour par jour".in_a(href:'unan_admin/day_after_day', target:'_blank') %> </li>
   </fieldset>
   <fieldset class='inline-block'>
     <legend>Travaux</legend>
-    <li><%= "Liste (filtrable) des travaux".in_a(href:'abs_work/list?in=unan_admin', target:'_list_abs_work_') %></li>
-    <li><a href="abs_work/edit?in=unan_admin">Créer/éditer un travail</a></li>
-    <li><a href="abs_work/map?in=unan_admin" class='bold'>Carte des travaux</a> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
+    <li><%= "Carte des travaux".in_a(href:"abs_work/map?in=unan_admin", class:'bold') %> <span class='small'>(c'est un plan complet qui présente tous les travaux sur une ligne horizontale allant du premier jour au dernier. On peut notamment y voir tous les chevauchements de travaux, ainsi que l'avancée des points maximum)</span></li>
   </fieldset>
 
   <fieldset class='inline-block'>
     <legend>Pages de cours</legend>
-    <li><a href="page_cours/edit?in=unan_admin">Éditer les données d'une page de cours</a></li>
     <li><%= "Liste des pages de cours".in_a(href:"page_cours/list?in=unan_admin") %> </li>
     <li>
       <form action="" method="POST" onsubmit="$(this).attr('action', 'page_cours/'+$('input#page_id_to_read').val()+'/show?in=unan')">
@@ -43,13 +104,10 @@ http = "http://localhost/WriterToolbox"
     <legend>Quiz et questionnaires</legend>
     <li><%= "Liste des QCM".in_a(href:"quiz/list?in=unan_admin") %> </li>
     <li><%= "Liste des questions".in_a(href:"question/list?in=unan_admin/quiz") %></li>
-    <li><%= "Édition QCM".in_a(href:"quiz/edit?in=unan_admin") %> </li>
-    <li><%= "Question QCM".in_a(href:"question/edit?in=unan_admin/quiz") %></li>
   </fieldset>
   <fieldset class='inline-block'>
     <legend>Exemples</legend>
     <li><a href="exemple/list?in=unan_admin">Liste des exemples</a></li>
-    <li><a href="exemple/edit?in=unan_admin">Créer/éditer un exemple</a></li>
   </fieldset>
   <li>Gérer une inscription</li>
 </ul>
