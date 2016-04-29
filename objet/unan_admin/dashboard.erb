@@ -34,8 +34,41 @@ http = "http://localhost/WriterToolbox"
   <%= "Exemples".in_a(href:'exemple/list?in=unan_admin') %>
 </fieldset>
 <pre>
-Rappel de configuration
+RAPPEL DE PROCÉDURE COURANTE
 
+    Pour créer une page Narration
+    -----------------------------
+    Il suffit de
+    * cliquer sur le bouton "CRÉER Pages cours" ci-dessus
+    * Entrer l'ID de la page Narration dans le champ Narration ID
+    * Cocher "Créer le work associé"
+    * Enregistrer
+
+    Tout le reste se fait tout seul, à savoir :
+    - Création d'une instance page_cours associée à la page narration
+    - Création d'un work associé à la page_cours
+
+    Il suffit ensuite d'insérer le work dans le p-day voulu.
+
+RAPPEL DE LA CONFIGURATION GÉNÉRAL DU PROGRAMME
+
+  L'année d'un programme est constituée de
+  366 P-DAYS (366 "jours-programme"). C'est un p-day qui définit
+  chaque jour le travail à accomplir.
+
+  Un PROGRAM est constitué de P-DAYS
+  Un P-DAYS  est constitué de WORKS
+  Un WORKS peut être
+      - un travail à accomplir
+        TASK
+      - un questionnaire à remplir
+        QUIZ
+      - une page de cours à lire (ou une page Narration)
+        PAGE_COURS
+      - un message de forum à répondre
+        FORUM
+
+  -----------------------------------------------------------------
   PDAY
         C'est un jour-programme, il y en a 366
         Un jour-programme est constitué de WORKS

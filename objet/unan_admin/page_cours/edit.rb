@@ -195,10 +195,15 @@ class PageCours
 
           if @data_page[:titre].nil?
             # Composer un titre du genre "Chapitre “” dans la collection Narration"
+            #
+            # Note : Ci-dessous, je définis explicitement la balise span
+            # plutôt que d'utiliser la méthode `in_span` pour pouvoir utiliser
+            # des guillemets simples, car la valeur aura à se retrouver dans
+            # des champs d'édition.
             tit = case pagen.stype
             when :page then ""
             when :chapitre, :sous_chapitre then "#{pagen.htype.capitalize} "
-            end + "“#{pagen.titre}”" + " (collection Narration)".in_span(class:'tiny')
+            end + "“#{pagen.titre}”" + "<span class='tiny'> (collection Narration)</span>"
             @data_page[:titre]    = "#{tit}"
           end
 
