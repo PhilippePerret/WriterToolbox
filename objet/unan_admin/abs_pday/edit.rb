@@ -68,8 +68,8 @@ class AbsPDay
   def definition_values
     {
       titre:          {type: :string, hname:"titre",        defined:true},
-      description:    {type: :string, hname:"description",  defined:true},
-      works:          {type: :string, hname:"travaux",      defined:true},
+      description:    {type: :string, hname:"description",  defined:false},
+      works:          {type: :string, hname:"travaux",      defined:false},
       minimum_points: {type: :fixnum, hname:"minimum de points"}
     }
   end

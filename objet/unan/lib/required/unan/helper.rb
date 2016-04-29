@@ -59,7 +59,11 @@ class Unan
 
         graduation_jours_styles(data) +
         (count_days + 1).times.collect do |itime|
-          (itime+1).to_s.in_span.in_li
+          ijour = (itime + 1).to_s
+          # (itime+1).to_s.in_span.in_li
+          href = "abs_pday/#{ijour}/edit?in=unan_admin"
+          # (itime+1).to_s.in_a(href:href).in_li
+          ijour.to_s.in_span.in_li(onclick:"window.open('#{href}');")
         end.join.in_ul(class:'dayruler')
       end
       # Les styles dynamiques pour la règle

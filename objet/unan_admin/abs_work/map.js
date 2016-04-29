@@ -2,34 +2,13 @@ if(undefined==window.MapWorks){window.MapWorks = {}}
 
 $.extend(window.MapWorks, {
 
-  // Appelé quand le document est prêt, pour bloquer
-  // la page, qui ne pourra plus que se déplacer horizontalement
-  bloquer_la_page:function(){
-    // UI.bloquer_la_page(true);
-    // $('section#content').css({
-    //   'position':(bloquer ? 'fixed' : 'relative'),
-    //   'top':(bloquer ? '0' : 'none')
-    // })
-    // $('section#content').css({
-    //   'margin-left':'10px',
-    //   'padding-left':'0',
-    //   'position': 'absolute',
-    //   'left':'auto'
-    // })
-    // // Cacher les titres (pour remonter le tableau)
-    // var los = ['form#taches_widget', 'section#content h1',
-    //   'section#content h2'];
-    //
-    // $(los).each(function(i,e){$(e).hide()});
-  },
-
   on_click_work:function(ev){
-    var o = $(this);
-    if(o.hasClass('collapsed')){
-      o.removeClass('collapsed')
-    }else{
-      o.addClass('collapsed')
-    }
+    // var o = $(this);
+    // if(o.hasClass('collapsed')){
+    //   o.removeClass('collapsed')
+    // }else{
+    //   o.addClass('collapsed')
+    // }
   },
 
   // Méthode appelée en survolant les div des travaux

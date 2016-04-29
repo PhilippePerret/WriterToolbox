@@ -130,7 +130,7 @@ class AbsPDay
     top   = free_row * (UnanAdmin::Program::AbsPDay::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
-    displayed_infos.in_a(href:"abs_pday/#{id}/edit?in=unan_admin", target:"_new", 'data-id' => id.to_s, onclick:"$.proxy(PDays,'onclick',this)()").in_div(class:'pday', id:"pday-#{id}", style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    displayed_infos.in_a(href:"abs_pday/#{id}/edit?in=unan_admin", target:"_blank", 'data-id' => id.to_s, onclick:"$.proxy(PDays,'onclick',this)()").in_div(class:'pday', id:"pday-#{id}", style:"top:#{top}px;left:#{left}px;width:#{width}px")
   end
 
   def displayed_infos
