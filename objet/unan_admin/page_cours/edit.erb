@@ -54,6 +54,8 @@ else "" end
   <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_read_page} #{lien_open_page}", onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>
+  <%= form.field_checkbox("Créer le Work associé (si nouvelle page)", 'cb_create_work', nil) %>
+  <%= form.field_description("Une page-cours est toujours associée à un work pour pouvoir être introduit dans un p-day. Ce bouton permet de créer ce work automatiquement à la création de la page-cours. Noter que dans le cas contraire, il faudra faire manuellement cette association (créer un work et mettre en item_id l'ID de cette page).") %>
   <%= form.field_description("Le titre de la page, qui n'est pas forcément le titre exact, mais servira pour les différents affichages dans le programme “Un An Un Script”, à commencer sur la page du travail du jour de l'auteur.") %>
   <%= form.field_text("Handler", 'handler', "") %>
   <%= form.field_description("Choisir ce handler de 200 caractères maximum avec soin, car c'est lui qui sera utilisé pour retrouver la page à l'aide de `program.page_cours(&lt;handler&gt;)`. Il doit être unique, mais ce sera vérifié si c'est une création de page.") %>
@@ -63,8 +65,6 @@ else "" end
   <%= form.field_text("Path", 'path', "", {text_before:"".in_div(id:'folder_page_path', placeholder:'path (si narration_id n’est pas spécifié)')}) %>
   <%= form.field_description("<strong>Donnée INUTILE si `narration_id` ci-dessus est spécifié</strong>. Ce path <strong>avec extension</strong> est relatif et dépend du type (ci-dessous). Pour le moment, toutes les pages de cours doivent se trouver dans le dossier général `./data/unan/pages_cours/`.<br /><strong>Le full-path sera calculé avec `./data/unan/pages_cours/&lt;type&gt;/&lt;path&gt;`.</strong>.<br />Noter que ce fichier doit exister, pour pouvoir enregistrer la page, sauf si la case “Créer le fichier” est cochée.") %>
   <%= form.field_checkbox("Créer le fichier s'il n'existe pas", 'cb_create_file', nil) %>
-  <%= form.field_checkbox("Créer le Work associé (si nouvelle page)", 'cb_create_work', nil) %>
-  <%= form.field_description("Une page-cours est toujours associée à un work pour pouvoir être introduit dans un p-day. Ce bouton permet de créer ce work automatiquement à la création de la page-cours. Noter que dans le cas contraire, il faudra faire manuellement cette association (créer un work et mettre en item_id l'ID de cette page).") %>
   <%= form.field_select("Type", 'type', "", {values:types_page, onchange:"$.proxy(PageCours,'set_folder_path')()"}) %>
   <%= form.field_description("Le type détermine le dossier dans lequel se trouve le fichier, dans `./data/unan/pages_cours/` : pour `Programme Un An Un Script`, dans le dossier 'unan', pour `Livre narration` dans le dossier 'narration' et pour `Collection Narration` dans le dossier 'cnarration'. Cf. la description du champ path pour voir comment est calculé le fullpath du fichier.") %>
   <%= form.submit_button "Enregistrer", {onclick: "$('form#form_edit_page_cours input#operation').val('save_page_cours')"} %>
