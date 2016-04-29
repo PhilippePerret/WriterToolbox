@@ -99,7 +99,6 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, cr
   # TODO: Implémenter la vrai procédure une fois que la table
   # analyse.travaux sera mise en place et fonctionnelle.
   def analystes_of fid
-    return "Phil"
     @db_travaux ||= SQLite3::Database::new('./database/data/analyse.db')
     request = <<-SQL
 SELECT user_id
@@ -109,7 +108,7 @@ SELECT user_id
   WHERE films.id = #{fid}
     SQL
     @db_travaux.execute(request).collect do |fdata|
-      User::get(fdata[:user_id]).pseudo
+      User::get(fdata[:user_id] || 1).pseudo
     end.pretty_join
   end
 
@@ -147,15 +146,19 @@ SELECT id, film_id, titre, updated_at
     @db_programs_unan.execute(request_derniers_programmes_unan).collect do |arrdata|
       uid, pid, created_at = arrdata
       upseudo = User::get(uid).pseudo
-      "#{DOIGT}Inscription #{upseudo}#{as_small_date created_at}"
+      # TODO: Pour le moment, on n'indique pas la date
+      # "#{DOIGT}Inscription #{upseudo} #{as_small_date created_at}"
+      "#{DOIGT}Inscription #{upseudo}"
     end.join(', ') + ", "
   end
   def unan_dernieres_activites
     @db_programs_unan.execute(request_dernieres_activites_unan).collect do |arrdata|
       pid, puser, pprojet, pupdate = arrdata
       puser = User::get(puser).pseudo
-      # pupdate = pupdate.as_human_date
-      "#{DOIGT}Projet de #{puser} #{as_small_date pupdate}"
+      # TODO: Pour le moment on n'indique pas la date, on le
+      # fera lorsqu'il y aura pas mal d'auteurs en travail
+      # "#{DOIGT}Projet de #{puser} #{as_small_date pupdate}"
+      "#{DOIGT}Projet de #{puser}"
     end.join(", ")
   end
   # Requête SQL pour récupérer les dernières activités dans
