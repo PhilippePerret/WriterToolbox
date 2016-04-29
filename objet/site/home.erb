@@ -5,3 +5,6 @@
 # ./objet/site/lib/module/home_page/build.rb
 %>
 <%= home_page_content %>
+<% if user.manitou? %>
+  <%= "Updater<br>Home".in_a(id:'btnhomeupdate', href:"site/home?update_home_page=1") %>
+<% end %>

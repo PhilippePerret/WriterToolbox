@@ -10,35 +10,36 @@ class SiteHtml
   # du module 'home_page' qui se trouve dans ce dossier objet
   #
   def home_page_content
-    if home_page_out_of_date?
-      # flash "Actualisation de la page d'accueil"
-      site.require_module_objet('home_page')
+    if home_page_out_of_date? || (user.manitou? && param(:update_home_page)=="1")
+      flash "Actualisation de la page d'accueil"
+      site.require_module_objet 'home_page'
       site.build_home_page_content
     end
     file_home_page_content.read.force_encoding('utf-8')
   end
 
   def home_page_out_of_date?
-    debug "Home Page out-of-date ?"
+    debugit = false
+    debug "Home Page out-of-date ?" if debugit
     # On retourne true si le fichier HTML n'existe pas
     return true if false == file_home_page_content.exist?
-    debug "   = Le fichier HTML home page existe"
+    debug "   = Le fichier HTML home page existe" if debugit
     mtime = file_home_page_content.mtime
-    debug "   = mtime = #{mtime}"
+    debug "   = mtime = #{mtime}" if debugit
     # On retourne true si la base de données des analyses
     # est plus vieille que le fichier HTML
     return true if mtime < db_analyse.mtime
-    debug "   = Base analyse : #{db_analyse.mtime} (OK)"
+    debug "   = Base analyse : #{db_analyse.mtime} (OK)" if debugit
     return true if mtime < db_cnarration.mtime
-    debug "   = Base Narration : #{db_cnarration.mtime} (OK)"
+    debug "   = Base Narration : #{db_cnarration.mtime} (OK)" if debugit
     return true if mtime < db_forum.mtime
-    debug "   = Base Forum : #{db_forum.mtime} (OK)"
+    debug "   = Base Forum : #{db_forum.mtime} (OK)" if debugit
     return true if mtime < db_unan_hot.mtime
-    debug "   = Base Un an un script : #{db_unan_hot.mtime} (OK)"
+    debug "   = Base Un an un script : #{db_unan_hot.mtime} (OK)" if debugit
     return true if mtime < data_videos.mtime
-    debug "   = Données vidéos : #{data_videos.mtime} (OK)"
+    debug "   = Données vidéos : #{data_videos.mtime} (OK)" if debugit
     return true if mtime < data_divers_actus.mtime
-    debug "   = Données actus diverses : #{data_divers_actus.mtime} (OK)"
+    debug "   = Données actus diverses : #{data_divers_actus.mtime} (OK)" if debugit
     return false # donc up-to-date
   end
 

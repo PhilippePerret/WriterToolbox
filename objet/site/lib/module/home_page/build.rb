@@ -11,7 +11,10 @@ class SiteHtml
   end
 
   def home_page_content_code
-    cadre_independance_flottant +
+    (
+      section_spotlight +
+      cadre_independance_flottant
+    ).in_div(class:'fright') +
     incipit +
     image_accueil +
     '<div style="clear:both"></div>' +
@@ -52,8 +55,7 @@ class SiteHtml
 #{signup_link}
 <p>
   Pour n'afficher <strong>aucune publicité</strong> et proposer néanmoins un
-   <strong>contenu de qualité</strong>, l'utilisation de certains outils du
-   site requiert un abonnement modique d'un montant de
+   <strong>contenu de qualité</strong>, certains outils requièrent un abonnement d'un montant de
    <strong>#{site.tarif_humain} pour une année</strong>
    (soit #{site.tarif_humain_par_mois}).
 </p>

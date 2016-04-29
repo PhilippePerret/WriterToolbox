@@ -10,6 +10,18 @@ un changement dans les informations.
 =end
 class SiteHtml
 
+  # Voir le fichier home_spotlight.rb qui défini SPOTLIGHT
+  def section_spotlight
+    require _('home_spotlight.rb')
+    lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
+    (
+      "⚡️⚡️⚡️ COUP DE PROJECTEUR ⚡️⚡️⚡️".in_div(class:'bold tiny') +
+      "#{DOIGT}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
+    ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
+  end
+
+  # Section des dernières actualités, en bas de la page
+  # d'accueil.
   def section_hot_news
     (
 
@@ -96,9 +108,10 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, cr
   end
 
   # Retourne la liste des analyses du film d'identifiant +fid+
-  # TODO: Implémenter la vrai procédure une fois que la table
+  # TODO: Implémenter la vraie procédure une fois que la table
   # analyse.travaux sera mise en place et fonctionnelle.
   def analystes_of fid
+    return "Phil"
     @db_travaux ||= SQLite3::Database::new('./database/data/analyse.db')
     request = <<-SQL
 SELECT user_id
@@ -275,7 +288,7 @@ SELECT
     titre = titre.upcase
     titre = titre.in_a( href: url ) unless url.nil?
     (
-      "News".in_span(class:'fright italic') +
+      "News 📌".in_span(class:'fright italic') +
       "#{titre}"
     ).in_div(class:'title')
   end
