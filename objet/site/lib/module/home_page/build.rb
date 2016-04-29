@@ -14,7 +14,7 @@ class SiteHtml
     (
       section_spotlight +
       cadre_independance_flottant
-    ).in_div(class:'fright') +
+    ).in_div(class:'fright', style:'margin-top:20px') +
     incipit +
     image_accueil +
     '<div style="clear:both"></div>' +

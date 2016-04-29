@@ -11,7 +11,7 @@ class SiteHtml
   #
   def home_page_content
     if home_page_out_of_date? || (user.manitou? && param(:update_home_page)=="1")
-      flash "Actualisation de la page d'accueil"
+      # flash "Actualisation de la page d'accueil"
       site.require_module_objet 'home_page'
       site.build_home_page_content
     end
@@ -26,6 +26,11 @@ class SiteHtml
     debug "   = Le fichier HTML home page existe" if debugit
     mtime = file_home_page_content.mtime
     debug "   = mtime = #{mtime}" if debugit
+    # On retourne true si le fichier définissant le coup de
+    # projecteur est plus jeune que le fichier home page
+    spotlight_mtime = SuperFile::new(_('home_spotlight.rb')).mtime
+    return true if mtime < spotlight_mtime
+    debug "   = ome_spotlight.rb : #{spotlight_mtime} (OK)" if debugit
     # On retourne true si la base de données des analyses
     # est plus vieille que le fichier HTML
     return true if mtime < db_analyse.mtime
