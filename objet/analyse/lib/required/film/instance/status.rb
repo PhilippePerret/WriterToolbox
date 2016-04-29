@@ -68,6 +68,10 @@ class Film
   def complete?
     bit_complete == 1
   end
+  # BIT 9 Seulement quelques notes
+  def quelques_notes?
+    bit_small == 1
+  end
 
 
 end #/Film

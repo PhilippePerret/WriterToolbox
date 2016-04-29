@@ -140,6 +140,7 @@ class SuperFile
   # ---------------------------------------------------------------------
 
   def traite_content_as_procedes
+    debug "yaml_content: #{yaml_content.inspect}"
     explication_procedes +
     yaml_content.collect do |pid, pdata|
       idpid = "PROC ##{pid}".in_div(class:'fright tiny italic')
@@ -152,6 +153,26 @@ class SuperFile
         traite_relatifs(pdata[:relatifs])
       ).in_dd
     end.join.in_dl
+  rescue Exception => e
+    debug e
+    debug aide_formatage_procedes
+    error "# ERREUR EN FORMATANT LE DOCUMENT YAML PROCÉDÉS : #{e.message} (voir en débug l'erreur et le formatage attendu)"
+  end
+
+  def aide_formatage_procedes
+    <<-HTML
+
+AIDE FORMATAGE DOCUMENT PROCÉDÉS
+
+:id:
+  :titre:         Le titre du procédé     [MANDATORY]
+  :categorie:     La catégorie du procédé [MANDATORY]
+  :description:   Description du procédé  [MANDATORY]
+  :explication:   Explication du procédé
+  :produit:       L'effet ou les effets produits
+  :relatifs:      Liste de relatifs, if any
+  
+    HTML
   end
 
   def explication_procedes

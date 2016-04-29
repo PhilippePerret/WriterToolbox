@@ -16,9 +16,26 @@ class Film
       )
   end
 
+
+  ORDER_PER_BIT = [0,1,2,3,8,4,5,6,7]
+  horder = Hash::new
+  ORDER_PER_BIT.each_with_index do |bit, iaff|
+    horder.merge!( bit => iaff )
+  end
+  HORDER_PER_BIT = horder
+
   # Boutons pour modifier l'état du film
   def boutons_edition
-    (0..7).collect do |bit|
+    # Liste des boutons, qui seront rangés dans l'ordre
+    # de ORDER_PER_BIT. Cela permet d'avoir un autre ordre
+    # d'affichage que celui des bit. Par exemple, le bit 8,
+    # qui correspond à analyse complète/simple note se met
+    # dans le listing après
+    allboutons = Array::new
+
+    # Le dernier chiffre du rang doit correspondre au
+    # dernier bit défini dans les :options du film
+    (0..8).each do |bit|
       bit_val = options[bit].to_i
       bit_yes = bit_val == 1
       classes_css = ['colvalue']
@@ -34,11 +51,15 @@ class Film
         end
       else
         classes_css << (bit_yes ? 'bgblue' : 'bgred')
-        bit_yes ? "OUI" : "NON"
+        bit_yes ? "O" : "N"
       end
 
-      tit.in_a(class:classes_css.join(' '), id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
-    end.join
+      # On ajoute le bouton à la liste des boutons, à l'endroit
+      # voulu par ORDER_PER_BIT ci-dessus
+      bouton = tit.in_a(class:classes_css.join(' '), id:"btn_f#{id}-b#{bit}", onclick:"$.proxy(Analyse,'change_bit', #{id}, #{bit})()")
+      allboutons[HORDER_PER_BIT[bit]] = bouton
+    end
+    allboutons.join
   end
 
   def bouton_analyzed

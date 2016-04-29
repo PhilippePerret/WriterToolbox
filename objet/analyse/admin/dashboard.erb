@@ -17,7 +17,8 @@ raise_unless_admin
   <span class='colvalue'>Analysé</span>
   <span class='colvalue'>Inscrit</span>
   <span class='colvalue'>Abonné</span>
-  <span class='colvalue'>Type</span>
+  <span class='colvalue large'>Type</span>
+  <span class='colvalue'>Petite</span>
   <span class='colvalue'>Lisible</span>
   <span class='colvalue'>En cours</span>
   <span class='colvalue'>Lecture</span>
@@ -59,6 +60,7 @@ raise_unless_admin
   ["Analysé", 'analyzed'],
   ["de type TM", 'tm'],
   ["de type MYE", 'mye'],
+  ["petite", 'small'],
   ["Lisible", 'lisible'],
   ["En cours", 'encours'],
   ["En lecture", 'lecture'],
@@ -104,6 +106,10 @@ raise_unless_admin
       <tr>
         <td class='bold'>Type MYE&nbsp;&nbsp;</td>
         <td>Mettre à "oui" si l'analyse est de type MYE, c'est-à-dire Mardown, Yaml et Evc, donc ce que j'appelle les “anciennes” analyses, mais ça peut être aussi des nouvelles.</td>
+      </tr>
+      <tr>
+        <td class='bold'>Petite&nbsp;&nbsp;</td>
+        <td>Mettre à "oui" si ce sont juste quelques notes sur un film et pas une analyse à proprement parler.</td>
       </tr>
       <tr>
         <td class='bold'>Lisible&nbsp;&nbsp;</td>

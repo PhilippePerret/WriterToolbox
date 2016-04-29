@@ -99,7 +99,8 @@ $.extend(window.Analyse, {
     'lisible':  {bit: 4, reg: "1"},
     'encours':  {bit: 5, reg: "1"},
     'lecture':  {bit: 6, reg: "1"},
-    'finie':    {bit: 7, reg: "1"}
+    'finie':    {bit: 7, reg: "1"},
+    'small':    {bit: 8, reg: "1"}
   },
   TABLE_BITS_OPTIONS: {
     0: 'analyzed',
@@ -109,7 +110,8 @@ $.extend(window.Analyse, {
     4: 'lisible',
     5: 'encours',
     6: 'lecture',
-    7: 'finie'
+    7: 'finie',
+    8: 'small'
   },
   // Méthode principale
   filtre_liste_films:function(){

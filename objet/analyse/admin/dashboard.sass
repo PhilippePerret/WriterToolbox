@@ -5,8 +5,8 @@ div#table_header, div#films
   // Span du titre
   span.filmvalue
     display         : inline-block !important
-    width           : 420px
-    max-width       : 420px
+    width           : 480px
+    max-width       : 480px
     overflow        : hidden
     white-space     : nowrap
     vertical-align  : middle
@@ -24,8 +24,10 @@ div#table_header, div#films
 div#table_header
   border-bottom    : 1px solid #555
   span.colvalue
-    width           : 57px
     font-size       : 9pt !important
+    width             : 40px
+    &.large
+      width           : 53px
   
 div#films
   overflow          : auto
@@ -36,9 +38,10 @@ div#films
     &:hover, &:hover a
       background-color  : #578088
       color             : white !important
-    span.colvalue, a.colvalue
-      width             : 58px
+    a.colvalue
+      width             : auto
       margin            : 1px 2px
+      padding           : 0px 14px
   
   
   

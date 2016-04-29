@@ -39,6 +39,8 @@ class Film
   # BIT 8 (achevée)
   # Mis à 1 si l'analyse est achevée
   def bit_complete; @bit_complete ||= gbit(7) end
+  # BIT 9 (quelques notes)
+  def bit_small;    @bit_small ||= gbit(8)    end
 
 end #/Film
 end #/FilmAnalyse
