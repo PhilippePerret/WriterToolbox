@@ -13,11 +13,33 @@ class Page
 
       # Définition et restitution du prefixe qui servira pour les
       # NAME et ID des champs d'édition
-      def prefix
-        @prefix
-      end
+      def prefix; @prefix end
       def prefix= value
         @prefix = value
+      end
+
+      # Définition des champs à mettre en exergue (une
+      # exergue "douce", pas comme error_fields)
+      def exergue_fields; @exergue_fields ||= [] end
+      # +value+ {Array} des clés de champs à mettre en
+      # exergue simple
+      def exergue_fields= value
+        @exergue_fields = value
+      end
+      # Retourne ' exergue' si le champ +nfield+ doit
+      # être mis en exergue
+      def exergue_field? nfield
+        exergue_fields.include?(nfield) ? " exergue" : ""
+      end
+
+      # Définition des champs à mettre en exergue forte,
+      # comme après une erreur (rouge)
+      def error_fields;  @error_fields ||= [] end
+      def error_fields= value
+        @error_fields = value
+      end
+      def error_field? nfield
+        error_fields.include?(nfield) ? " error" : ""
       end
 
       # Définition de l'objet qui contient actuellement
@@ -141,6 +163,7 @@ class Page
       attr_reader :exergue
       attr_reader :warning
       attr_reader :confirmation
+      attr_reader :row_class
 
       # Instanciation
       # +prop+ {String} La propriété
@@ -159,6 +182,7 @@ class Page
           @exergue      = opts.delete(:exergue)
           @warning      = opts.delete(:warning)
           @confirmation = opts.delete(:confirmation)
+          @row_class    = opts.delete(:row_class)
         end
         # Pour supprimer le libellé et le mettre en label dans un
         # checkbox
@@ -223,7 +247,16 @@ class Page
           span_value   +
           code_javascript # if any
         )
-        .in_div(class:'row') + confirmation_field
+        .in_div(class:form_row_css) + confirmation_field
+      end
+
+      def form_row_css
+        (
+          "row" +
+          Page::FormTools::exergue_field?(property) +
+          Page::FormTools::error_field?(property) +
+          (row_class || "")
+        ).strip
       end
 
       # Si les options contiennent confirmation:true,

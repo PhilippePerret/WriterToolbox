@@ -108,12 +108,26 @@ else "" end
   end.join(' ')).in_span(class:'small')
 end
 
+# 'exfields' signifie "exergue-fields", ce sont les champs qui
+# sont à mettre en exergue.
+# Cette fonctionnalité a été inauguré pour la création automatique du
+# work (abs_work) à la création d'une page de cours. Un lien permet
+# d'éditer l'abs_work pour le régler et il envoie des champs à mettre
+# en exergue pour savoir quel champ particulièrement sont à régler
+exfields  = (param(:exfields)||"").split(',')
+errfields = (param(:errfields)||"").split(',')
+
+form.exergue_fields = exfields unless exfields.empty?
+form.error_fields   = errfields unless errfields.empty?
+
 %>
 <h2>Absolute Work</h2>
 
 <form id="form_edit_work_unan" class="dim2080" action="abs_work/edit?in=unan_admin" method="POST">
 
   <%= "save_abs_work".in_hidden(name:'operation', id:'operation') %>
+
+  <%= (param(:exfields)||"").in_hidden(name:'exfields', id:'exfields') %>
 
   <%# id %>
   <%= form.field_text("Numéro/ID", "id", nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current} #{lien_to_init_new}".in_span(class:'small')}) %>
@@ -123,7 +137,8 @@ end
   <%= form.field_text("Titre", "titre", nil, {placeholder: 'Titre du travail'}) %>
 
   <%# duree %>
-  <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours"}) %>
+  <!-- <% classes_duree = ['short']; classes_duree << 'exergue' if exfields.include?('duree')%> -->
+  <%= form.field_text("Durée", 'duree', "", {class:'short', text_after:"jours" }) %>
 
   <%# type (bit 5) -- bit 6 pourra servir, mais inutilisé pour le moment %>
   <%= form.field_select("Type Projet", 'typeP', data[:typeP], {values: UnanAdmin::types_projets_for_select}) %>

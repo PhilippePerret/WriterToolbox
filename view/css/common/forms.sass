@@ -108,6 +108,18 @@ form, div
           width       : 91%
 form
   
+  // Pour mettre des champs en exergue.
+  // Il y a deux types d'exergue : l'exergue d'erreur (rouge) et
+  // l'exergue simple (bleu)
+  div.row
+    &.exergue
+      background-color      : #efefff
+      border                : 1px solid #A4A4FF
+    &.error
+      background-color      : #ffefef
+      border                : 1px solid #FFA4A4
+    
+      
   // Pour séparer deux rangées row avec une ligne
   div.separator
     border-bottom         : 1px solid

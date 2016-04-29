@@ -16,6 +16,7 @@ class PageCours
       # Au cas où, retirer les valeurs qui ne doivent
       # pas être enregistrées dans la table de données
       data_page.delete(:cb_create_file)
+      creer_work? # pour retirer et définir cb_create_work
       data_page.delete(:id) if data_page[:id].nil?
       data_page.merge!(updated_at: NOW.to_i)
 
@@ -23,12 +24,88 @@ class PageCours
 
       if new_page?
         data_page.merge!(created_at: NOW.to_i)
+
+        # ===> CRÉATION ICI <===
         data_page[:id] = @page_id = table_pages_cours.insert(data_page)
+
+        # Si on doit associer tout de suite cette nouvelle
+        # page de cours à un work.
+        if creer_work?
+          work_id = associate_to_new_work(@page_id)
+          unless work_id.nil?
+            # Si le work a pu être créé avec succès, on met
+            # dans le message un lien pour l'éditer aussitôt
+            #
+            # Noter que le lien ci-dessous ajoute le paramètre
+            # `exfields` pour indiquer que les champs fournis en
+            # argument doivent être réglés.
+            fields2set = "duree,typeP,narrative_target,points"
+            lien_edit_work = "ÉDITER LE WORK ##{work_id}".in_a(href:"abs_work/#{work_id}/edit?in=unan_admin&exfields=#{fields2set}", target:'_blank')
+            flash "Work créé avec succès pour la page. Tu peux l'#{lien_edit_work}. Les champs à renseigner sont mis en exergue."
+          end
+        end
+
       else
+
+        # ===> UPDATE ICI <===
         table_pages_cours.set(page_id, data_page)
+
       end
       flash "Page ##{@page_id} enregistrée avec succès."
       param(page_cours: data_page)
+    end
+
+    # Méthode qui associe la page-cours à un work
+    # de façon automatique en créant ce work.
+    #
+    # RETURN l'IDentifiant du nouveau travail créé
+    #
+    # Noter qu'une vérication est toujours opérée pour
+    # que la page-cours ne soit pas associée deux fois à un
+    # work (mais n'est-ce pas possible ?…)
+    #
+    # +pcid+    {Fixnum} IDentifiant de la nouvelle page
+    #
+    def associate_to_new_work pcid
+      typeP   = "0"   # Tous les types de projets
+      flash "Type de projet peut-être à régler."
+      targetP = "1-"  # Projet en général
+      flash "Cible du travail à définir dans le work (pour le moment réglé sur projet en général)."
+
+      supportW  = "8" # aucun support de résultat
+      destW     = "1" # L'auteur lui-même
+      nivdevW   = "0" # Niveau de développement
+
+      work_data = {
+          titre:            data_page[:titre],
+          item_id:          pcid, # association ici
+          type_w:           20,   # page
+          type:             "00#{targetP}#{typeP}0",
+          type_resultat:    "#{supportW}#{destW}#{nivdevW}",
+
+          travail:          "Lecture de la page de cours",
+          resultat:         nil,
+
+          # Valeurs par défaut
+          duree:            7,
+          points:           10,
+          parent:           nil,
+          prev_work:        nil,
+          pages_cours_ids:  nil, # Les suggestions de lecture
+          exemples:         nil,
+
+          created_at:       NOW,
+          updated_at:       NOW
+        }
+      # On insert la donnée dans la table
+      work_id = Unan::table_absolute_works.insert(work_data)
+
+    rescue Exception => e
+      debug e
+      error "# ERREUR EN CRÉANT LE WORK : #{e.message} (consulter le debug pour le détail)"
+      return nil # Pour ne pas poursuivre
+    else
+      return work_id
     end
 
     # Les données de la page telles qu'elles se présentent
@@ -59,6 +136,15 @@ class PageCours
         @creer_fichier_is_inexistant = data_page.delete(:cb_create_file) == 'on'
       end
       @creer_fichier_is_inexistant
+    end
+    # Pour savoir s'il faut créer le work associé à la page-cours
+    # automatiquement.
+    #
+    def creer_work?
+      if @creer_work_of_page === nil
+        @creer_work_of_page = data_page.delete(:cb_create_work) == 'on'
+      end
+      @creer_work_of_page
     end
 
     # Méthode qui vérifie les valeurs de la page de cours
@@ -181,15 +267,18 @@ class PageCours
     # case à cocher "créer le fichier" est coché
     def create_file_page_cours sfile
       return if sfile.exist?
+      idandtitre = "##{data_page[:id]} #{data_page[:titre]}"
       content = case sfile.extension
       when 'txt'
         "[Contenu de la page #{data_page[:titre]}]"
       when 'tex'
-        "% Page #{data_page[:titre]}\n\n[Contenu de la page #{data_page[:titre]}]"
+        "% Page #{data_page[:titre]}\n\n[Contenu de la page #{idandtitre}]"
       when 'erb'
-        "<%\n# Page de cours #{data_page[:titre]}\n%>\n<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
+        "<%\n# #{idandtitre} \n%>\n<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
       when 'html', 'htm'
         "<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
+      when 'md'
+        "<!-- Contenu de la page #{idandtitre} -->\n\n"
       else
         flash "l'extension #{sfile.extension} n'est pas traitée dans la création automatique des fichiers."
         nil

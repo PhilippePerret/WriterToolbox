@@ -6,6 +6,7 @@
 * [Méthodes de construction des champs](#methodesdechamp)
 * [Options pour les champs](#optionspourleschamps)
 * [Définir un préfix pour NAME et ID](#definirunprefixpourlesnameetid)
+* [Mise en exergue des champs](#mettreneexerguedeschamps)
 
 <a name='dimensionsdeuxcolonnes'></a>
 
@@ -100,6 +101,8 @@ La différence par rapport à la case unique se fera à la définition des `valu
 
     :class                  Class CSS à ajouter au champ d'édition quel
                             qu'il soit
+    :row_class              Class CSS à ajouter au div.row contenant la
+                            rangée du formulaire.
     :text_after             Texte à placer après le champ (dans un span)
     :text_before            Texte à placer avant le champ (dans un span)
     :libelle_width          Largeur en pixels des libellés (100 par défaut)
@@ -131,3 +134,25 @@ Par exemple :
     Alors le champ aura :
       name  = "user[name]"
       id    = "user_name"
+
+<a name='mettreneexerguedeschamps'></a>
+
+## Mise en exergue des champs
+
+Deux types d'exergues sont possibles : simple, en bleu et error, en rouge. Pour mettre en exergue des champs, il suffit de fournir la liste des propriétés respectivement aux méthodes :
+
+    form.exergue_fields = [... liste.....]
+    form.error_fields   = [... liste ....]
+
+Par exemple, on ajoute à l'url une liste de champs à exerguer à l'aide de `exfields=nom,prenom,adresse`. Dans le fichier ERB qui construit le formulaire, on ajoute :
+
+    site.require 'form_tools'
+
+    form.exergue_fields = (param(:exfields) || "").split(',')
+
+C'est tout ! Les champs "nom", "prenom" et "adresse" seront automatiquement mis en exergue.
+
+Pour une erreur sur les mêmes champs :
+
+    site.require 'form_tools'
+    form.error_fields = (param(:errfields)||"").split(',')
