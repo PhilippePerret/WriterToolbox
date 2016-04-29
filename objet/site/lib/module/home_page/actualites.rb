@@ -47,7 +47,7 @@ class SiteHtml
   #     NARRATION
   # ---------------------------------------------------------------------
   def bloc_actualite_narration
-    titre_bloc_actu("Collection Narration", "cnarration/home") +
+    titre_bloc_actu("Col. Narration", "cnarration/home") +
     "Derniers cours :".in_span(class:'label') +
     narration_liste_three_last_pages
   end
@@ -68,7 +68,7 @@ class SiteHtml
       simple_modification = updated_at - created_at < 31.days
       est = (simple_modification ? "" : "(création) ".in_span(class:'tiny'))
 
-      title = "Cliquez ici pour lire la page de cours “#{titre_page}” achevée le #{updated_at.as_human_date(true, false, ' ')}"
+      title = "Cliquez ici pour lire la page de cours “#{titre_page}” achevée le #{updated_at.as_human_date(true, false, ' ')}".strip_tags
       titre_page = "#{DOIGT}#{est}“#{titre_page}”".in_a(href:"page/#{page_id}/show?in=cnarration", target:"_blank", title:title)
       "#{titre_page}#{livre}".in_div(class:'actu')
     end.join('')
@@ -102,7 +102,7 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, cr
     SQLite3::Database::new(p).execute(request).collect do |dana|
       fid, film_id, titre, updated_at = dana
       title = "Cliquez ici pour consulter l'analyse du film “#{titre}” produite et achevée par #{analystes_of fid} le #{updated_at.as_human_date(true,false,' ')}"
-      titre_film = "#{DOIGT}#{titre}".in_a(href:"analyse/#{fid}/show", target:"_blank", title:title)
+      titre_film = "#{DOIGT}#{titre}".in_a(href:"analyse/#{fid}/show", target:"_blank", title:title.strip_tags)
       "#{titre_film}".in_div(class:'actu')
     end.join('')
   end
@@ -215,7 +215,7 @@ SELECT
     require './objet/video/DATA_VIDEOS.rb'
     Video::DATA_VIDEOS.sort_by{|vid, vdata| vdata[:created_at]}[0..2].collect do |vid, vdata|
       title = "Visualiser le tutoriel vidéo  “#{vdata[:titre]}” conçu le #{vdata[:created_at].as_human_date(true, false, ' ')}."
-      "#{DOIGT}#{vdata[:titre]}".in_a(href:"video/#{vid}/show", target:"_blank", title:title).in_div(class:'actu')
+      "#{DOIGT}#{vdata[:titre]}".in_a(href:"video/#{vid}/show", target:"_blank", title:title.strip_tags).in_div(class:'actu')
     end.join('')
   end
 
@@ -241,7 +241,7 @@ SELECT
         pcontent  = pcontent[0..30] + " […]"
         plink     = "post/#{pid}/read?in=forum"
         title     = "Cliquer ici pour lire le dernier message de #{pseudo}, datant du #{dcreated.as_human_date(true, true, ' ')} : #{plongcontent.purified.gsub(/\n/,' ')}"
-        "#{DOIGT}“#{pcontent}”#{puser}".in_a(href: plink, target:"_blank", title: title).in_div(class:'actu')
+        "#{DOIGT}“#{pcontent}”#{puser}".in_a(href: plink, target:"_blank", title: title.strip_tags).in_div(class:'actu')
       end.join('')
     end
   end

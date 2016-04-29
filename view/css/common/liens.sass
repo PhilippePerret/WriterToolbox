@@ -1,10 +1,10 @@
 *[onclick]
   cursor        : pointer
-  
+
 a, a:hover, a:link, a:visited
   text-decoration       : none
   font-family           : inherit
-  color                 : #8fa07f //#4f606f
+  color                 : #4f606f // sera modifié ci-dessous pour les flash
   font-weight           : normal
   font-size             : inherit
   
@@ -18,6 +18,14 @@ a, a:hover, a:link, a:visited
       font-size           : 11.3pt !important
       padding             : 0.9px 11px 2.9px !important
       letter-spacing      : 1px !important
+
+flash
+  div.messages
+    a
+      color     : #8fa07f
+  div.errors
+    a
+      color     : white
 strong 
   a
     font-weight : bold
