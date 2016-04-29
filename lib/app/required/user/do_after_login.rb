@@ -18,7 +18,7 @@ class User
   def do_after_load
 
     # On passe les adresses des moteurs de recherche
-    return if google?
+    return if moteur_recherche?
 
     # Si cet utilisateur a déjà été signalé, on ne fait rien
     return if param(:user_already_signaled) == "1"
@@ -28,7 +28,7 @@ class User
     if BLACK_IPS_LIST.has_key?(self.ip)
       exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." )
     end
-    
+
     # ATTENTION ! Une adresse peut être connue sans que ce
     # soit un user inscrit. Dans ce cas, user_id est nil
     detail = if KNOWN_IPS.has_key?(self.ip)

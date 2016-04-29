@@ -4,10 +4,6 @@ Méthodes de statut pour l'utilisateur (courant ou autre)
 =end
 class User
 
-  # Pour savoir si c'est googlebot qui visite le
-  # site
-  REG_DNS_GOOGLE = /^66\.249\.6[0-9]\.([0-9]{1,3})$/
-
   # Pour admin?, super? et manitou?,
   # cf. le fichier inst_options.rb
   # Rappel : Seuls les bits de 0 à 15 peuvent être utilisés par
@@ -34,14 +30,14 @@ class User
   end
 
   def identified?
-    (@id != nil) || google?
+    (@id != nil) || moteur_recherche?
   end
 
   # Retourne true si l'user est à jour de ses paiements
   # Pour qu'il soit à jour, il faut qu'il ait un paiement qui
   # remonte à moins d'un an.
   def paiements_ok?
-    return true   if google?  # Le bot de google
+    return true   if moteur_recherche?
     return false  if @id.nil? # Un simple visiteur
     now = Time.now
     anprev = Time.new(now.year - 1, now.month, now.day).to_i
@@ -71,15 +67,5 @@ class User
     last_abonnement > (NOW.to_i - (30.5*nombre_mois).to_i.days)
   end
 
-  def google?
-    if @is_google === nil
-      @is_google  = !!ip.match(REG_DNS_GOOGLE)
-      if @is_google
-        @pseudo     = "Google"
-        @id         = 10
-      end
-    end
-    @is_google
-  end
 
 end

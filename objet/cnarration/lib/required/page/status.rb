@@ -17,10 +17,10 @@ class Page
   # Retourne true si l'utilisateur courant peut
   # consulter la page en entier, retourne false
   # s'il ne peut en consulter que le tiers.
-  # Les bots google peuvent consulter aussi les
-  # pages.
+  # Les bots google ou des moteurs de recherche
+  # connus peuvent consulter aussi les pages.
   def consultable?
-    return user.subscribed? || user.admin? || user.google?
+    return user.subscribed? || user.admin? || user.moteur_recherche?
   end
 
   def only_enligne?
