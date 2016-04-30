@@ -14,12 +14,12 @@ class Film
     par << titre_fr.in_span(class:'italic') unless titre_fr.to_s == ""
     par << realisateur
     par << annee
-    par = "(#{par.join(', ')})".in_span(class:'small')
+    par = "(#{par.join(', ')})".in_span(class:'tiny discret')
     if user.admin?
       types = Array::new
       types << "TM" if analyse_tm?
       types << "MYE" if analyse_mye?
-      par += " [type : #{types.join(' & ')}]".in_span(class:'tiny')
+      par += " [type : #{types.join(' & ')}]".in_span(class:'tiny discret')
     end
     "#{t} #{par}"
   end

@@ -2,39 +2,11 @@
 # Vue de la liste des analyses
 #
 # Ouvert à tout visiteur même non identifié ou non abonné.
-=begin
-RÉFLEXION :
-Comment répartir et trouver les analyses.
-- Il ne faut prendre que les films analysés, en sachant que tous les films du
-  Filmodico se trouvent dans la table (premier bit = 1)
-- Ne lier que les films que l'user peut voir :
-  - s'il est inscrit, les films pour inscrit
-  - s'il est abonné, analyste ou admin, tous les films
-- Faire la distinction entre : analyse terminée / analyse en cours
-- Indiquer les analyses de type TM
-
-ANALYSES TERMINÉES "_______1%"
-
-  FILMS AUTORISÉS
-
-  FILMS NON AUTORISÉS
-
-ANALYSES EN COURS "_____1%"
-
-  FILMS AUTORISÉS
-
-  FILMS NON AUTORISÉS
-
-ANALYSES NON TERMINÉES "_______0%"
-
-=end
-
 # Relève des films
-# Note : On pourrait ne relever que les films accessibles à l'user
-# en fonction de ses privilèges, mais il faut qu'il puisse voir aussi
-# les films qu'il pourrait voir en étant abonné ou inscrit, donc on
-# les relève tous et la différence se fera au niveau des films accessibles
-# ou non.
+#
+# Note : Tous les films lisibles sont affichés, même pour un
+# user n'ayant pas les privilèges de lire les analyses, afin qu'il
+# puissse se faire une idée des avantages de l'inscription/abonnement.
 
 page.title = "Analyses de films"
 
@@ -50,16 +22,38 @@ page.title = "Analyses de films"
   end
   %> vous avez un accès complet aux analyses de films.
   <% elsif user.identified? %>
-  En tant que simple inscrit, vous avez un accès limité aux analyses de film. Pour un accès complet, merci de vous abonner.
+  En tant que simple inscrit, vous avez un accès limité aux analyses de film. Pour un accès complet, merci de <%= lien.subscribe("vous abonner") %>.
   <% else %>
-  En tant que simple visiteur, votre accès aux analyses de films est limité à quelques films seulement.
+  En tant que simple visiteur, votre accès aux analyses de films est limité à quelques films seulement. Pour un accès supérieur, merci de <%= lien.signup("#{DOIGT}vous inscrire") %> et pour <strong>un accès complet aux analyses</strong> merci de <%= lien.subscribe("#{DOIGT}soutenir le site en vous abonnant") %>.
   <% end %>
 </p>
-<h3>Analyses achevées</h3>
-<%= FilmAnalyse::TDM::traite :complete %>
 
-<h3>Analyses en cours</h3>
-<%= FilmAnalyse::TDM::traite :en_cours %>
+<div class="two_columns small">
+  <div class="left_column">
+    <%
+      # ANALYSES ACHEVÉES
+    %>
+    <h4>Analyses achevées</h4>
+    <p class='tiny italic'>Ici se trouvent toutes les analyses achevées et presque complètes.</p>
+    <%= FilmAnalyse::TDM::traite :complete %>
+  </div>
+  <div class="right_column">
+    <%
+      # SIMPLES NOTES SUR DES FILMS
+    %>
+    <h4>Simples notes sur des films</h4>
+    <p class='tiny italic'>Quelques notes prises sur des films.</p>
+    <%= FilmAnalyse::TDM::traite :small %>
+  </div>
+</div>
 
-<h3>Analyses non achevées</h3>
-<%= FilmAnalyse::TDM::traite :inacheves %>
+<div class="two_columns small">
+  <div class="left_column">
+    <h4>Analyses en cours</h4>
+    <%= FilmAnalyse::TDM::traite :en_cours %>
+  </div>
+  <div class="right_column">
+    <h4>Analyses en projet</h4>
+    <%= FilmAnalyse::TDM::traite :inacheves %>
+  </div>
+</div>

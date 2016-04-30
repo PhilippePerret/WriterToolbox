@@ -67,3 +67,21 @@ center.image
   margin    : 3em 0
   div.img_legend
     width     : 50%
+
+// Affichage en double colonnes égales quel que soit
+// la largeur de la section
+div.two_columns
+  vertical-align  : top
+  div.left_column, div.right_column
+    width           : 40%
+    padding         : 0 2.5%
+    display         : inline-block
+    min-height      : 100px
+    vertical-align  : top
+    ul
+      margin-left     : 16px
+      padding-left    : 0
+  div.left_column
+    // border      : 1px dashed green
+  div.right_column
+    // border      : 1px dashed purple

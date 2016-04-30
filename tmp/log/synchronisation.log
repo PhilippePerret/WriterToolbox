@@ -1211,3 +1211,10 @@ Avant <- left_margin.erb, user.identified? true
 ---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
 ---> vue “./view/gabarit/header.erb” (@already_required: nil)
 dans header.erb, user.identified? est true
+dans header.erb, user.identified? est true
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb
