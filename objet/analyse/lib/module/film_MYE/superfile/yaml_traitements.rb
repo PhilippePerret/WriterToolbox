@@ -171,7 +171,7 @@ AIDE FORMATAGE DOCUMENT PROCÉDÉS
   :explication:   Explication du procédé
   :produit:       L'effet ou les effets produits
   :relatifs:      Liste de relatifs, if any
-  
+
     HTML
   end
 
@@ -195,7 +195,16 @@ AIDE FORMATAGE DOCUMENT PROCÉDÉS
     "Quelques questions et réponses dramatiques tirées du film (ce n'est pas, sauf indication contraire, une liste exhaustive)".in_div(class:'italic small discret')
   end
   def traite_content_as_notes
-    traite_hash_in_liste_definition yaml_content
+    # traite_hash_in_liste_definition yaml_content
+    yaml_content.collect do |nid, ndata|
+      idnote = "Note ##{nid}".in_div(class:'fright tiny italic')
+      "#{idnote}#{ndata[:titre]}".in_dt +
+      (
+        intitule_of(ndata)      +
+        description_of(ndata)   +
+        traite_relatifs( ndata[:relatifs] )
+      ).in_dd
+    end.join.in_dl
   end
 
   # Traitement d'un fichier YAML contenant une liste des
@@ -405,7 +414,7 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   alias :libnval :libelle_and_value
 
   def categorie_of h
-    libnval("Catégorie", h[:categorie].in_span(class:'bold'))
+    libnval("Catégorie", (h[:categorie]||"").in_span(class:'bold'))
   end
   def description_of h
     libnval( "Description", h[:description] )

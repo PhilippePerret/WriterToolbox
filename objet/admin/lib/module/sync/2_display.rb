@@ -64,6 +64,7 @@ class Sync
     ).in_p
 
     form << (display_etat_des_lieux_fichiers_narration_icare || "")
+    form << display_etat_des_lieux_analyse_files_boa
     form << display_etat_des_lieux_affiches_films
 
     # Le bouton pour lancer la synchronisation
@@ -108,6 +109,27 @@ class Sync
     end
   end
 
+  # Retourne le code HTML à insérer dans le formulaire qui
+  # présente l'état des synchronisation, en ce qui concerne
+  # les fichiers d'analyses de film et fichiers associés (comme
+  # les CSS, les images, etc.)
+  def display_etat_des_lieux_analyse_files_boa
+    dboa = diff_analyse_files_boa
+    @datasync.merge!(analyse_files: dboa)
+    if (dboa[:nombre_destroy] + dboa[:nombre_uploads]) == 0
+      "• Aucun fichier analyses de film à uploader".in_div(class:'small')
+    else
+      form = String::new
+      form << "Synchroniser les fichiers analyse de film".in_checkbox(name:'cb_sync_analyse_files', checked: true)
+      if dboa[:nombre_uploads] > 0
+        form << "#{'FICHIERS ANALYSES À SYNCHRONISER'.in_span(class:'bold')} : #{dboa[:to_upload].join(', ')}".in_div(class:'tiny')
+      end
+      if dboa[:nombre_destroy] > 0
+        form << "#{'FICHIERS ANALYSES À DÉTRUIRE ONLINE'.in_span(class:'bold')} : #{dboa[:to_destroy].join(', ')}".in_div(class:'tiny')
+      end
+      return form
+    end
+  end
   # Retourne le code HTML à insérer dans le formulaire présentant
   # l'état des synchronisation concernant tous les fichiers à
   # synchroniser sur Icare pour la collection narration, c'est-à-dire :

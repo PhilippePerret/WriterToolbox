@@ -14,6 +14,8 @@ class User
   REG_DNS_EXABOT      = /178\.255\.215\.86/
   # MAJESTIC 12
   REG_DNS_MAJESTIC_12 = /144\.76\.61\.21/
+  # JUPITER FASTWEBSER ?
+  REG_DNS_JUPITER_FW  = /89\.163\.148\.58/
 
   # Retourne true si l'user courant est un moteur
   # de recherche connu.
@@ -57,11 +59,12 @@ class User
     when REG_DNS_GOOGLE       then ["Google", 10]
     when REG_DNS_EXABOT       then ["Exabot", 11]
     when REG_DNS_MAJESTIC_12  then ["Majestic 12", 12]
+    when REG_DNS_JUPITER_FW   then ["Jupiter Fastwebserver", 13]
     else [nil, nil]
     end
     unless pse.nil?
       @pseudo = pse
-      @id     = uid 
+      @id     = uid
     end
     return pse != nil
   end

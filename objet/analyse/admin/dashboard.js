@@ -36,7 +36,7 @@ $.extend(window.Analyse, {
     if( ibit != 3 ){
       devient_actif = opts[ibit] == "0" ;
       opts[ibit] = devient_actif ? "1" : "0" ;
-      btn_name  = devient_actif ? "OUI" : "NON" ;
+      btn_name  = devient_actif ? "O" : "N" ;
     } else {
       // Cas spécial du bit 3 qui peut avoir la valeur 1, 2 ou 3
       // contrairement aux autres bits qui sont de simples

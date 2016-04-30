@@ -11,12 +11,36 @@ class Sync
   #
   def etat_des_lieux_online
     res = file_mtimes
+    # Relevé des données online des fichiers
+    # d'analyse (sur BOA)
+    res.merge!(analyse_files: {online: nil, offline: nil})
+    res[:analyse_files][:online] = analyse_files_mtimes
+    return res
   rescue Exception => e
     res = {
       date:           Time.now.to_i,
       err_mess:       e.message,
       err_backtrace:  e.backtrace
     }
+  end
+
+  # Méthode qui relève le mtime de tous les fichiers
+  # d'analyse locaux ou distants.
+  #
+  # Tous les fichiers sont traités, les css comme les
+  # fichiers md ou yaml, etc.
+  #
+  def analyse_files_mtimes
+    # On vérifie tous les fichiers d'analyse
+    data_analyse = Hash::new
+    basesite = ONLINE ? './www' : '.'
+    folderpath = "#{basesite}/data/analyse/"
+    folderpath_escaped = Regexp::escape(folderpath)
+    Dir["#{folderpath}**/*.*"].each do |p|
+      relp = p.sub(/^#{folderpath_escaped}/o,'')
+      data_analyse.merge! relp => File.stat(p).mtime.to_i
+    end
+    return data_analyse
   end
 
   # Méthode OFFLINE line qui :
@@ -52,6 +76,7 @@ class Sync
             debug "ERREUR RETOURNÉE PAR SCRIPT_CHECK_BOA: #{res_boa[:error].pretty_inspect}"
             error res_boa[:error]
           end
+          debug "RETOUR BOA (res_boa): #{res_boa.pretty_inspect}"
         else
           debug "script_check_boa : #{script_check_boa}"
           debug "retour brut du script ci-dessus : #{res_boa.inspect}"
@@ -101,6 +126,63 @@ class Sync
         toutres
       end
     end
+  end
+
+  # Méthode principale qui compare les fichiers d'analyse
+  # sur BOA avec les fichiers locaux
+  #
+  # RETURN {Hash} des données contenant :
+  #   :files => {
+  #     to_upload: [liste des fichiers à uploader],
+  #     to_destroy: [liste des fichiers à détruire]
+  #   }
+  # Note : c'est le chemin relatif des fichiers dans ./data/analyse
+  # qui est consigné dans les listes.
+  #
+  def diff_analyse_files_boa
+    # debug "-> diff_analyse_files_boa"
+    dfiles_dis  = online_sync_state[:boa][:analyse_files][:online]
+    dfiles_loc  = analyse_files_mtimes
+
+    res = {
+      # Fichiers à uploader, soit parce qu'il n'existe pas
+      # sur le serveur distant soit parce qu'il n'est pas à jour
+      to_upload:      Array::new,
+      nombre_uploads: 0,
+      # Fichiers à détruire sur le serveur distant parce qu'il
+      # n'existe plus en local (le local a toujours raison)
+      to_destroy:     Array::new,
+      nombre_destroy: 0
+    }
+
+    # Boucle sur tous les fichiers locaux
+    dfiles_loc.each do |rpath, mtime_loc|
+      need_upload = false
+      if dfiles_dis.has_key?(rpath)
+        mtime_dis = dfiles_dis.delete(rpath)
+        need_upload = mtime_dis < mtime_loc
+      else
+        need_upload = true
+      end
+      res[:to_upload] << rpath if need_upload
+    end
+
+    # Les fichiers qui restent dans dfiles_dis sont donc des
+    # fichiers à détruire puisqu'ils n'existent plus en local
+    res[:to_destroy] = dfiles_dis.keys
+
+    res[:nombre_uploads] = res[:to_upload].count
+    res[:nombre_destroy] = res[:to_destroy].count
+
+    # debug "Fichiers d'analyse à synchroniser : "
+    # debug "#{res.pretty_inspect}"
+    # debug "<- diff_analyse_files_boa"
+
+  rescue Exception => e
+    debug e
+    error "# ERREUR DANS diff_analyse_files_boa : #{e.message}"
+  ensure
+    return res # là où il en est
   end
 
   # Méthode principale qui compare les fichiers NARRATION sur

@@ -28,6 +28,7 @@ begin
 rescue Exception => e
   res = {err_time:Time.now.to_i, err_mess:e.message, err_backtrace:e.backtrace}
 end
+
 # On prend aussi les affiches, comme sur Icare
 liste_affiches = Dir['./www/view/img/affiches/*.jpg'].collect{|p| File.basename(p)}.join(',')
 res.merge!(affiches: liste_affiches)

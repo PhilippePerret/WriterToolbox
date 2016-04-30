@@ -15,6 +15,8 @@ class Fichier
   #   :loc_mtime    {Fixnum} mtime du fichier local
   #   :boa_mtime    {Fixnum} mtime du fichier sur la boite à outils
   #   :ica_mtime    {Fixnum} mtime du fichier sur l'atelier Icare
+  #   :icare        {TrueClass} True si le fichier se trouve sur Icare
+  #                 aussi.
   def initialize data
     @data = data
   end

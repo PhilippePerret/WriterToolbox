@@ -30,7 +30,8 @@ class Sync
 
     synchronize_filmodico   if param(:cb_synchronize_filmodico)
 
-    synchronize_analyses    if param(:cb_synchronize_analyses)
+    synchronize_analyses    if param(:cb_synchronize_analyses) || param(:cb_sync_analyse_files)
+
 
     # À la fin, on peut détruire tous les fichiers pour forcer
     # un prochain check. Cela entrainera l'affichage d'un
@@ -127,7 +128,10 @@ class Sync
     @errors << e.message
   end
 
-  # Synchornisation de la base de données des analyses de films.
+  # Synchornisation de la base de données des analyses de films
+  # + les fichiers des analyses (tous, c'est-à-dire aussi bien les
+  # fichiers d'analyse proprement dits que les fichiers css, les
+  # images, etc.)
   #
   # La méthode a été inaugurée car la table `films` peut être modifiée
   # en local comme en distant.
@@ -137,18 +141,65 @@ class Sync
   #             lorsque la fiche filmodico du film est modifiée ou créée.
   #
   def synchronize_analyses
-    @suivi << "* Synchronisation de la base des Analyses"
-    # Le sym peut avoir été modifié
-    # Il peut s'agir d'un nouveau film
-    SuperFile::new('./objet/analyse/lib/module/sync').require
-    synan = SynchroAnalyse.instance
-    resultat_ok = synan.synchronize
-    @suivi << (synan.suivi.collect{|p| "  #{p}"}.join("\n"))
-    if resultat_ok
-      @suivi << "= Synchronisation des analyses OK"
-    else
-      @suivi << "  # Problème avec la synchronisation des analyses"
+    @suivi << "* Synchronisation des Analyses"
+
+    if param(:cb_synchronize_analyses) == 'on'
+      @suivi << "  ** Base de données des analyses"
+
+      # Le sym peut avoir été modifié
+      # Il peut s'agir d'un nouveau film
+      SuperFile::new('./objet/analyse/lib/module/sync').require
+      synan = SynchroAnalyse.instance
+      resultat_ok = synan.synchronize
+      @suivi << (synan.suivi.collect{|p| "  #{p}"}.join("\n"))
+      if resultat_ok
+        @suivi << "= Synchronisation des analyses OK"
+      else
+        @suivi << "  # Problème avec la synchronisation des analyses"
+      end
     end
+
+    if param(:cb_sync_analyse_files) == 'on'
+      @suivi << "  ** Synchronisation des fichiers d'analyse "
+      dsync = data_synchronisation[:analyse_files]
+      debug "Fichiers à synchroniser : #{dsync.pretty_inspect}"
+
+      # Fichiers à uploader
+      dsync[:to_upload].each do |prel|
+        path_loc = "./data/analyse/#{prel}"
+        path_dis = "./www/data/analyse/#{prel}"
+        cmd = "scp -p #{path_loc} #{serveur_ssh_boa}:#{path_dis}"
+        res = `#{cmd} 2>&1`
+        if res != ""
+          err_mess "# ERREUR UPLOAD ANALYSE #{prel} : #{res}"
+          error err_mess
+          debug err_mess
+        end
+      end
+
+      # Fichiers à détruire
+      to_destroy_as_list = dsync[:to_destroy].collect{|p| "'#{p}'"}.join(', ')
+      cmd = <<-CODE
+errors = Array::new
+[#{to_destroy_as_list}].each do |prel|
+  begin
+    File.unlink File.join('./www/data/analyse', prel)
+  rescue Exception => e
+    errors << ('- ' + e.message)
+  end
+end
+STDOUT.write Marshal::dump(errors: errors)
+      CODE
+      debug "COMMANDE DESTRUCTION FILES ANALYSE : #{cmd}"
+      # Exécuter la commande SSH pour détruire les fichiers ONLINE
+      ret_destroy = `ssh #{serveur_ssh_boa} "ruby -e \\"#{cmd}\\""`
+      ret_destroy = Marshal::load(ret_destroy)
+      if ret_destroy[:errors].count > 0
+        error "# ERREURS EN DÉTRUISANT DES FICHIERS D'ANALYSE : #{ret_destroy[:errors].join('<br>')}"
+      end
+    end
+
+
   rescue Exception => e
     debug e
     @suivi << "ERROR : #{e.message}"
