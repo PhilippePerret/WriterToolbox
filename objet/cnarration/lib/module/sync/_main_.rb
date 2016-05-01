@@ -22,18 +22,19 @@ class << self
     # On boucle seulement sur les pages (pas sur les chapitres et
     # sous-chapitres)
     table_dis.select(where:"options LIKE '1%'", colonnes:[:options]).each do |pid, pdata|
-      statut_dis  = pdata[:options][1].to_i
+      statut_dis_str = pdata[:options][1]
+      statut_dis  = statut_dis_str.to_i(11)
       hpage_loc   = table_loc.get(pid, colonnes:[:options])
       if hpage_loc.nil?
         @suivi << "ERROR : Page locale ##{pid} inexistante…"
         next
       end
       options_loc = hpage_loc[:options]
-      statut_loc  = options_loc[1].to_i
+      statut_loc  = options_loc[1].to_i(11)
 
       if statut_dis > statut_loc
         opts = options_loc
-        opts[1] = statut_dis.to_s
+        opts[1] = statut_dis_str
         table_loc.update(pid, { options: opts })
         @suivi << "Statut page ##{pid} monté de #{statut_loc} à #{statut_dis} en local"
       elsif statut_loc > statut_dis
