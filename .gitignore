@@ -36,3 +36,5 @@ xdata/
 tmp/
 
 hot/
+
+*.log
