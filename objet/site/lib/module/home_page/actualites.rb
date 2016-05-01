@@ -15,8 +15,8 @@ class SiteHtml
     require _('home_spotlight.rb')
     lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
     (
-      "⚡️⚡️⚡️ COUP DE PROJECTEUR ⚡️⚡️⚡️".in_div(class:'bold tiny') +
-      "#{DOIGT}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
+      "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
+      "#{DOIGT_WHITE}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
     ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
   end
 
@@ -161,8 +161,8 @@ SELECT id, film_id, titre, updated_at
       upseudo = User::get(uid).pseudo
       # TODO: Pour le moment, on n'indique pas la date
       # "#{DOIGT}Inscription #{upseudo} #{as_small_date created_at}"
-      "#{DOIGT}Inscription #{upseudo}"
-    end.join(', ') + ", "
+      "#{DOIGT}Inscription #{upseudo}".in_div(class:'actu')
+    end.join('')
   end
   def unan_dernieres_activites
     @db_programs_unan.execute(request_dernieres_activites_unan).collect do |arrdata|
@@ -171,8 +171,8 @@ SELECT id, film_id, titre, updated_at
       # TODO: Pour le moment on n'indique pas la date, on le
       # fera lorsqu'il y aura pas mal d'auteurs en travail
       # "#{DOIGT}Projet de #{puser} #{as_small_date pupdate}"
-      "#{DOIGT}Projet de #{puser}"
-    end.join(", ")
+      "#{DOIGT}Projet de #{puser}".in_div(class:'actu')
+    end.join('')
   end
   # Requête SQL pour récupérer les dernières activités dans
   # les programmes UN AN UN SCRIPT.
@@ -288,7 +288,7 @@ SELECT
     titre = titre.upcase
     titre = titre.in_a( href: url ) unless url.nil?
     (
-      "News 📌".in_span(class:'fright italic') +
+      "#{PUNAISE_ROUGE}".in_span(class:'relative') +
       "#{titre}"
     ).in_div(class:'title')
   end
