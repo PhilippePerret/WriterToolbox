@@ -7,21 +7,7 @@ ul.tdm
   // h3
   li
     margin-left       : 2em
-    
-// Liste de définitions
-dl
-  font-size           : 0.85em
-  color               : black
-  margin-left         : 2em
-  margin-right        : 4em
-  line-height         : 1.6em
-  dt
-    color               : black !important
-    font-family         : Verdana !important
-    font-size           : 1.15em
-    margin-top          : 1em
-    margin-bottom       : 0.5em
-
+//
 ul, ol
   margin-left   : 2em
   
@@ -50,6 +36,25 @@ ul, ol
   &.bordure
     list-style      : none
     border-left     : 1px solid 
+
+// Liste de définitions
+dl
+  font-size           : 0.85em
+  color               : black
+  margin-left         : 2em
+  margin-right        : 4em
+  line-height         : 1.6em
+  dt
+    color               : black !important
+    font-family         : Verdana !important
+    font-size           : 1.15em
+    margin-top          : 1em
+    margin-bottom       : 0.5em
+  dd
+    ul, ol
+      margin          : 0
+      padding         : 0 40px
+
 
 // Tout élément de class .hover réagit au passage de la
 // souris en mettant son opacité à 1 et en inversant sa

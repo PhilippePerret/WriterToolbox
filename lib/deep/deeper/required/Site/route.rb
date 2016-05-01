@@ -352,7 +352,7 @@ class SiteHtml
     def instance
       # debug "-> Route::instance"
       @instance ||= begin
-        if objet_id.nil? || classe.nil?
+        if objet_id.nil? || classe.nil? || classe.name == "Admin"
           nil
         else
           begin

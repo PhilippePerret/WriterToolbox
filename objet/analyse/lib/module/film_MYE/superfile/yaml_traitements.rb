@@ -406,6 +406,115 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     return stt
   end
 
+  # Traitement d'une fiche YAML "fondamentales.yaml"
+  def traite_content_as_fondamentales
+    <<-HTML
+<dl>
+  #{dsection_fond1}
+  #{dsection_fond2}
+  #{dsection_fond3}
+  #{dsection_fond4}
+  #{dsection_fond5}
+</dl>
+    HTML
+  end
+  def dsection_fond1
+    fd1 = yaml_content[:personnage_fondamental]
+    return "Pas de première Fondamentale définie.".in_p(class:'italic') if fd1.nil? || fd1.empty?
+    patronyme = "#{fd1[:prenom]} #{fd1[:nom]}".strip
+    <<-HTML
+<dt>Personnage Fondamental (Fd. 1)</dt>
+<dd>
+  #{libnval("Nom", patronyme)}
+  #{description_of(fd1)}
+  #{libnval("Atouts", fd1[:atouts] )}
+  #{libnval("Handicaps", fd1[:handicaps])}
+  #{facteur_u_of(fd1)}
+  #{facteur_o_of(fd1)}
+</dd>
+    HTML
+  end
+  def dsection_fond2
+    fd2 = yaml_content[:question_fondamentale]
+    return "Pas de deuxième Fondamentale définie.".in_p(class:'italic') if fd2.nil? || fd2.empty?
+    <<-HTML
+<dt>Question Dramatique Fondamentale (Fd. 2)</dt>
+<dd>
+  #{intitule_of(fd2)}
+  #{description_of(fd2)}
+  #{libnval( "Objectif", fd2[:objectif])}
+  #{facteur_u_of(fd2)}
+  #{facteur_o_of(fd2)}
+</dd>
+    HTML
+  end
+  def dsection_fond3
+    fd3 = yaml_content[:opposition_fondamentale]
+    return "Pas de troisième Fondamentale définie.".in_p(class:'italic') if fd3.nil? || fd3.empty?
+    <<-HTML
+<dt>Opposition Fondamentale (Fd. 3)</dt>
+<dd>
+  #{intitule_of(fd3)}
+  #{description_of(fd3)}
+  #{facteur_u_of(fd3)}
+  #{facteur_o_of(fd3)}
+</dd>
+    HTML
+  end
+  def dsection_fond4
+    fd4 = yaml_content[:reponse_fondamentale]
+    return "Pas de quatrième Fondamentale définie.".in_p(class:'italic') if fd4.nil? || fd4.empty?
+    <<-HTML
+<dt>Réponse Dramatique Fondamentale (Fd. 4)</dt>
+<dd>
+  #{intitule_of(fd4)}
+  #{description_of(fd4)}
+  #{facteur_u_of(fd4)}
+  #{facteur_o_of(fd4)}
+</dd>
+    HTML
+  end
+  def dsection_fond5
+    fd5 = yaml_content[:concept_fondamental]
+    return "Pas de cinquième Fondamentale définie.".in_p(class:'italic') if fd5.nil? || fd5.empty?
+    <<-HTML
+<dt>Concept Fondamental (Fd. 5)</dt>
+<dd>
+  #{intitule_of(fd5)}
+  #{description_of(fd5)}
+  #{facteur_u_of(fd5)}
+  #{facteur_o_of(fd5)}
+</dd>
+    HTML
+  end
+
+  NATURE_OBJECTIF = {
+    'cc'  => "Concret",
+    'ab'  => "Abstrait"
+  }
+  CATEGORIE_OBJECTIF = {
+    'objf'  => "Objectif fondamental",
+    'objv'  => "Objectif de vie",
+    'sobj'  => "Sous-objectif",
+    'objl'  => "Objectif local"
+  }
+
+  def traite_content_as_dynamique
+    yaml_content.collect do |dynid, dyndata|
+      debug dyndata.inspect
+      (
+        "Objectif ##{dynid} : #{dyndata[:libelle]}".in_dt +
+        (
+          libnval("Description", dyndata[:description]) +
+          libnval("Catégorie", CATEGORIE_OBJECTIF[dyndata[:obj_categorie]]) +
+          libnval("Nature", NATURE_OBJECTIF[dyndata[:obj_nature]])+
+          traite_relatifs(dyndata[:relatifs])
+        ).in_dd
+      ).in_dl
+    end.join
+  end
+
+
   def libelle_and_value libelle, value
     return "" if value.to_s == ""
     (
@@ -460,111 +569,5 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
 
 
-  def dsection_fond1
-    fd1 = yaml_content[:personnage_fondamental]
-    return "Pas de première Fondamentale définie.".in_p(class:'italic') if fd1.nil? || fd1.empty?
-    patronyme = "#{fd1[:prenom]} #{fd1[:nom]}".strip
-    <<-HTML
-<dt>Personnage Fondamental (Fd. 1)</dt>
-<dd>
-  #{libnval("Nom", patronyme)}
-  #{description_of(fd1)}
-  #{libnval("Atouts", fd1[:atouts] )}
-  #{libnval("Handicaps", fd1[:handicaps])}
-  #{facteur_u_of(fd1)}
-  #{facteur_o_of(fd1)}
-</dd>
-    HTML
-  end
-  def dsection_fond2
-    fd2 = yaml_content[:question_fondamentale]
-    return "Pas de deuxième Fondamentale définie.".in_p(class:'italic') if fd2.nil? || fd2.empty?
-    <<-HTML
-<dt>Question Dramatique Fondamentale (Fd. 2)</dt>
-<dd>
-  #{intitule_of(fd2)}
-  #{description_of(fd2)}
-  #{facteur_u_of(fd2)}
-  #{facteur_o_of(fd2)}
-</dd>
-    HTML
-  end
-  def dsection_fond3
-    fd3 = yaml_content[:opposition_fondamentale]
-    return "Pas de troisième Fondamentale définie.".in_p(class:'italic') if fd3.nil? || fd3.empty?
-    <<-HTML
-<dt>Opposition Fondamentale (Fd. 3)</dt>
-<dd>
-  #{intitule_of(fd3)}
-  #{description_of(fd3)}
-  #{facteur_u_of(fd3)}
-  #{facteur_o_of(fd3)}
-</dd>
-    HTML
-  end
-  def dsection_fond4
-    fd4 = yaml_content[:reponse_fondamentale]
-    return "Pas de quatrième Fondamentale définie.".in_p(class:'italic') if fd4.nil? || fd4.empty?
-    <<-HTML
-<dt>Réponse Dramatique Fondamentale (Fd. 4)</dt>
-<dd>
-  #{intitule_of(fd4)}
-  #{description_of(fd4)}
-  #{facteur_u_of(fd4)}
-  #{facteur_o_of(fd4)}
-</dd>
-    HTML
-  end
-  def dsection_fond5
-    fd5 = yaml_content[:concept_fondamental]
-    return "Pas de cinquième Fondamentale définie.".in_p(class:'italic') if fd5.nil? || fd5.empty?
-    <<-HTML
-<dt>Concept Fondamental (Fd. 5)</dt>
-<dd>
-  #{intitule_of(fd5)}
-  #{description_of(fd5)}
-  #{facteur_u_of(fd5)}
-  #{facteur_o_of(fd5)}
-</dd>
-    HTML
-  end
-
-  def traite_content_as_fondamentales
-    <<-HTML
-<dl>
-  #{dsection_fond1}
-  #{dsection_fond2}
-  #{dsection_fond3}
-  #{dsection_fond4}
-  #{dsection_fond5}
-</dl>
-    HTML
-  end
-
-  NATURE_OBJECTIF = {
-    'cc'  => "Concret",
-    'ab'  => "Abstrait"
-  }
-  CATEGORIE_OBJECTIF = {
-    'objf'  => "Objectif fondamental",
-    'objv'  => "Objectif de vie",
-    'sobj'  => "Sous-objectif",
-    'objl'  => "Objectif local"
-  }
-
-  def traite_content_as_dynamique
-    yaml_content.collect do |dynid, dyndata|
-      debug dyndata.inspect
-      (
-        "Objectif ##{dynid} : #{dyndata[:libelle]}".in_dt +
-        (
-          libnval("Description", dyndata[:description]) +
-          libnval("Catégorie", CATEGORIE_OBJECTIF[dyndata[:obj_categorie]]) +
-          libnval("Nature", NATURE_OBJECTIF[dyndata[:obj_nature]])+
-          traite_relatifs(dyndata[:relatifs])
-        ).in_dd
-      ).in_dl
-    end.join
-  end
 
 end #/SuperFile
