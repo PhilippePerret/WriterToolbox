@@ -33,27 +33,35 @@ page.title = "Analyses de films"
     <%
       # ANALYSES ACHEVÉES
     %>
-    <h4>Analyses achevées</h4>
-    <p class='tiny italic'>Ici se trouvent toutes les analyses achevées et presque complètes.</p>
-    <%= FilmAnalyse::TDM::traite :complete %>
+    <% films_complete = FilmAnalyse::TDM::traite :complete %>
+    <h4><%= films_complete.count %> analyses achevées</h4>
+    <%= films_complete.as_ul %>
   </div>
   <div class="right_column">
     <%
       # SIMPLES NOTES SUR DES FILMS
     %>
-    <h4>Simples notes sur des films</h4>
-    <p class='tiny italic'>Quelques notes prises sur des films.</p>
-    <%= FilmAnalyse::TDM::traite :small %>
+    <%
+      films_small = FilmAnalyse::TDM::traite :small
+      s = films_small.count > 1 ? "s" : ""
+    %>
+    <h4>Simples notes sur <%= films_small.count %> film<%= s %></h4>
+    <%= films_small.as_ul %>
   </div>
 </div>
 
 <div class="two_columns small">
   <div class="left_column">
-    <h4>Analyses en cours</h4>
-    <%= FilmAnalyse::TDM::traite :en_cours %>
+    <%
+      films_en_cours = FilmAnalyse::TDM::traite( :en_cours )
+      s = films_en_cours.count > 1 ? "s" : ""
+    %>
+    <h4><%= films_en_cours.count %> analyse<%= s %> en cours</h4>
+    <%= films_en_cours.as_ul %>
   </div>
   <div class="right_column">
-    <h4>Analyses en projet</h4>
-    <%= FilmAnalyse::TDM::traite :inacheves %>
+    <% films_inacheves = FilmAnalyse::TDM::traite :inacheves %>
+    <h4><%= films_inacheves.count %> analyses en projet</h4>
+    <%= films_inacheves.as_ul %>
   </div>
 </div>

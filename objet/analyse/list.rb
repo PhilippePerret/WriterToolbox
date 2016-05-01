@@ -6,8 +6,11 @@ class FilmAnalyse
 class TDM
   class << self
 
+    attr_reader :by_type
+
     def traite type
-      new(type).as_ul
+      @by_type ||= Hash::new
+      @by_type[type] ||= new(type)
     end
   end # /self FilmAnalyse::TDM
   # ---------------------------------------------------------------------
@@ -43,10 +46,14 @@ class TDM
       when :complete  then "1______1%"
       when :en_cours  then "1____1%"
       when :inacheves then "1____0_0%"
-      when :small     then "1_______1%"
+      when :small     then "1______11%"
       end
       FilmAnalyse::table_films.select(where:"options LIKE '#{flag}'", order:"annee DESC")
     end
+  end
+
+  def count
+    @count ||= films.count
   end
 
 end #/TDM
