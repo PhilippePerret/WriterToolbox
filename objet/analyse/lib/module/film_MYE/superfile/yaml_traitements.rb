@@ -370,7 +370,9 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
       deuxtiers:  {hname:"2 / 3"},
       quatre5ie:  {hname:"4 / 5<sup>e</sup>"},
       crise:      {hname:"Crise"},
-      climax:     {hname:"Climax"}
+      climax:     {hname:"Climax"},
+      end:        {hname:"Fin"},
+      fin:        {hname:"Fin"}
     }.each do |kpart, dpart|
 
       # Définition dans la structure

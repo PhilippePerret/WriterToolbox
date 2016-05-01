@@ -18,7 +18,18 @@ class ::Array
 end
 class Filmodico
 
-  def as_card
+  # = main =
+  #
+  # Méthode principale pour obtenir la carte/fiche du film.
+  #
+  # +with_css+ Si true, la méthode charge aussi le fichier show.css
+  # qui permet d'obtenir les styles utiles pour le bon affichage de
+  # la carte.
+  #
+  def as_card with_css = false
+    if with_css
+      page.add_css (Filmodico::folder + 'show.css')
+    end
     (affiche.in_div(class:'affiche') +
     boutons_edition +
     titre.in_div(class:'titre') +

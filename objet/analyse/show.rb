@@ -23,17 +23,24 @@ class << self
     if ! film.exist?
       message_film_doesnt_exist
     elsif ! film.consultable?
-      message_film_non_consultable_par_user
+      message_film_non_consultable_par_user +
+      fiche_film
     elsif film.analyse_tm? && !film.analyse_mye?
       # Analyse de film de type "TM"
       output_as_analyse_tm
     elsif film.analyse_mye?
+      fiche_film +
       output_as_analyse_mye
     else
       "Analyse mixte"
     end
   end
 
+  # Retourne le code HTML de la fiche du film pour
+  def fiche_film
+    site.require_objet 'filmodico'
+    Filmodico::get(film.id).as_card(css = true)
+  end
   # ---------------------------------------------------------------------
   #   TYPES DE SORTIE
   # ---------------------------------------------------------------------
