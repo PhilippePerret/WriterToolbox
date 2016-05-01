@@ -20,6 +20,12 @@ div#table_header, div#films
   span.colvalue, a.colvalue
     display         : inline-block !important
     text-align      : center
+    // Pour les cellules qui contiennent le type de l'analyse (TM,
+    // MYE, etc) il faut élargir la cellule
+  a[id$="-b3"]
+    width         : 50px !important
+    max-width     : 50px !important
+    padding       : 0 !important
 
 div#table_header
   border-bottom    : 1px solid #555
