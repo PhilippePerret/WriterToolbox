@@ -192,10 +192,20 @@ class Film
       # Titre du document
       ftitre  = fdata[:titre].nil? ? "" : "<h3>#{fdata[:titre]}</h3>"
 
+      # Incipit
+      fincipit = fdata[:incipit].nil? ? "" : fdata[:incipit].in_p(class:'italic small')
+
+      # Introduction
+      fintroduction = fdata[:introduction].nil? ? "" : fdata[:introduction].in_div(class:'small')
+
+      # Conclusion
+      fconclusion = fdata[:conclusion].nil? ? "" : fdata[:conclusion].in_div(class:'small')
 
       (
         "<a name='#{fdata[:anchor]}'></a>\n" +
         ftitre +
+        fincipit +
+        fintroduction +
         (
           box_edition(fdata) +
           case sfile.extension
@@ -208,7 +218,8 @@ class Film
             # Extension inconnue, on lit le fichier tel quel
             sfile.read
           end
-        ).in_section
+        ).in_section +
+        fconclusion
       ).in_section
     end.join
 

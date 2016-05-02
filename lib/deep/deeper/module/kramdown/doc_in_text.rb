@@ -151,7 +151,11 @@ class MEFDocument
     @lines = lines
   end
 
-  def lines ; @lines ||= @codet.strip.split("\n") end
+  def lines
+    @lines ||= begin
+      brut? ? @codet.split("\n") : @codet.strip.split("\n")
+    end
+  end
 
   def scenario?
     @is_scenario ||= classes.include?('scenario')
@@ -166,7 +170,7 @@ class MEFDocument
   # Définition du code entier, on en profite pour
   # rationnaliser les retours à la ligne
   def set_code code
-    @code = code.gsub(/\r\n?/,"\n").chomp.strip
+    @code = code.gsub(/\r\n?/,"\n").chomp
   end
 
 end
