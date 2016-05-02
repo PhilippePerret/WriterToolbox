@@ -1,4 +1,4 @@
-Ce dossier 'module/archives' a été initié pour traiter les anciennes analyses de film qui viennent de Scenariopole. Noter qu'on pourra tout à fait produire de nouvelles analyses selon ce principe.
+Ce dossier 'module/archives' a été initié pour traiter les anciennes analyses de film qui viennent de Scenariopole. Noter qu'on pourra tout à fait produire de nouvelles analyses selon ce principe, car elles sont pratiques dans le traitement de nombreux types de fichiers.
 
 Ces analyses s'appellent des “Analyse M.Y.E.”  ou “Analyses MD-YAML-EVC” du nom des trois types de fichiers qu'elles utilisent, Markdown (MD), YAML et EVC (mon format pour les évènemencier). Noter qu'on utilise aussi le format EVC
 

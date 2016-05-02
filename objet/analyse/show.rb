@@ -117,6 +117,7 @@ class Film
   # Méthode principale qui affiche un film de type MYE (Md/YAML/EVC)
   #
   def analyse_display
+    page.title = "Analyse de film (#{titre})"
     site.require_module 'kramdown'
 
     #  Fichier d'introduction
@@ -158,15 +159,20 @@ class Film
     table_of_content = if tdm_file.exist? || @alerte_tdm_pas_etablie_necessaire.nil?
       ""
     else
-      "La table des matières de cette analyse n'est pas encore établie. Les fichiers sont dont affichés “tels quels” ici.".in_div(class:'grand air warning')
+      "La table des matières de cette analyse n'est pas encore établie. Les fichiers sont donc affichés “tels quels” ici.".in_div(class:'grand air warning')
     end
 
-    ititre = 0
-    table_of_content << tdm.collect do |fdata|
-      ititre += 1
-      fdata.merge!(anchor: "titre#{ititre.to_s.rjust(4,'0')}")
-      fdata[:titre].in_a(href:"#{route_courante}##{fdata[:anchor]}").in_li(class:'tdm_item')
-    end.join.in_ul(class:'tdm')
+    # On ne met la table des matières que s'il y a plus de
+    # deux fichiers d'analyse
+    unless tdm.count < 2
+      table_of_content << "Table des matières".in_h3
+      ititre = 0
+      table_of_content << tdm.collect do |fdata|
+        ititre += 1
+        fdata.merge!(anchor: "titre#{ititre.to_s.rjust(4,'0')}")
+        fdata[:titre].in_a(href:"#{route_courante}##{fdata[:anchor]}").in_li(class:'tdm_item')
+      end.join.in_ul(class:'tdm')
+    end
 
     #  L'analyse intégrale
     # =====================
@@ -216,7 +222,6 @@ class Film
     return (
         permanent_link +
         intro +
-        "Table des matières".in_h3 +
         table_of_content +
         whole_content +
         permanent_link

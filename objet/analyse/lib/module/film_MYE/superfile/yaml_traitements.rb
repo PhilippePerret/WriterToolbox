@@ -10,6 +10,7 @@ class SuperFile
   def as_yaml
     methode = "traite_content_as_#{affixe}".to_sym
     if respond_to? methode
+      # flash "-> #{methode}"
       send(methode)
     else
       # Traitement comme une liste de choses, par exemple comme une
@@ -135,6 +136,17 @@ class SuperFile
     end.join.in_dl
   end
 
+  # Parfois, la donnée est un array alors qu'il faudrait que ce
+  # soit un Hash. On corrige l'erreur en la signalant
+  def convert_array_to_hash arr
+    h = {
+      titre:        "ÉLÉMENT NON DÉFINI #{1}",
+      description:  arr.first
+    }
+    return 1, h
+  end
+
+
   # ---------------------------------------------------------------------
   #   Traitement par type de fichier
   # ---------------------------------------------------------------------
@@ -143,10 +155,14 @@ class SuperFile
     debug "yaml_content: #{yaml_content.inspect}"
     explication_procedes +
     yaml_content.collect do |pid, pdata|
+      if pdata.instance_of?(Array)
+          nid, pdata = convert_array_to_hash(pdata)
+          error "Problème de formatage avec le fichier #{self.to_s}"
+        end
       idpid = "PROC ##{pid}".in_div(class:'fright tiny italic')
-      "#{idpid}#{pdata[:titre]}".in_dt +
+      "#{idpid}#{pdata[:titre]||pdata[:libelle]}".in_dt +
       (
-        categorie_of(pdata)   +
+        categorie_of(pdata, :famille)   +
         description_of(pdata) +
         explication_of(pdata) +
         produit_of(pdata)     +
@@ -195,8 +211,12 @@ AIDE FORMATAGE DOCUMENT PROCÉDÉS
     "Quelques questions et réponses dramatiques tirées du film (ce n'est pas, sauf indication contraire, une liste exhaustive)".in_div(class:'italic small discret')
   end
   def traite_content_as_notes
-    # traite_hash_in_liste_definition yaml_content
     yaml_content.collect do |nid, ndata|
+      debug "(#{nid}) ndata : #{ndata.inspect}"
+      if ndata.instance_of?(Array)
+        nid, ndata = convert_array_to_hash(ndata)
+        error "Problème de formatage avec le fichier #{self.to_s}"
+      end
       idnote = "Note ##{nid}".in_div(class:'fright tiny italic')
       "#{idnote}#{ndata[:titre]}".in_dt +
       (
@@ -524,8 +544,9 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
   alias :libnval :libelle_and_value
 
-  def categorie_of h
-    libnval("Catégorie", (h[:categorie]||"").in_span(class:'bold'))
+  def categorie_of h, key_alt = nil
+    val = h[:categorie] || h[key_alt] || "" unless key_alt.nil?
+    libnval("Catégorie", val.in_span(class:'bold'))
   end
   def description_of h
     libnval( "Description", h[:description] )
@@ -542,8 +563,9 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   def facteur_o_of h
     libnval("Facteur O", h[:facteurO] || h[:facteur_o])
   end
-  def intitule_of h
-    libnval("Intitulé", h[:intitule])
+  def intitule_of h, key_alt = nil
+    value = h[:intitule] || h[key_alt] || "" unless key_alt.nil?
+    libnval("Intitulé", value)
   end
   def installation_of h
     libnval("Installation", h[:installation])
