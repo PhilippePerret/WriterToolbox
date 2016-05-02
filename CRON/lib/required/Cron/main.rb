@@ -17,11 +17,17 @@ class Cron
     # exécuter toutes les opérations
     Dir.chdir("#{APP_FOLDER}") do
 
+
       # On requiert tout ce qu'il faut requérir
       # Noter que si on n'y parvient pas, l'erreur est fatale,
       # on doit forcément s'arrêter là.
       safed_log "    * [Cron::run] Requérir toutes les librairies du site"
       requerir_les_librairies_du_site
+
+      # Voir s'il faut faire un résumé des connexions
+      # par IP (en fonction des fréquences)
+      safed_log "    * [Cron::run] Traitement des connexions par IP"
+      SiteHtml::Connexions::resume
 
       safed_log "    * [Cron::run] Traitement du programme UN AN UN SCRIPT"
       traitement_programme_un_an_un_script

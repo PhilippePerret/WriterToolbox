@@ -23,7 +23,7 @@ class SiteHtml
   attr_reader :current_route
 
   def route
-    @route ||= SiteHtml::Route
+    @route ||= SiteHtml::Route::new
   end
 
   # Exécution de la route, si elle est définie
@@ -168,6 +168,13 @@ class SiteHtml
     #   Méthodes utilitaires
     # ---------------------------------------------------------------------
 
+    # Pour pouvoir utiliser la syntaxe `site.route` dans un
+    # string et toujours retourner une valeur, même lorsqu'aucune
+    # route n'est définie
+    def to_str
+      route.nil_if_empty || "site/home"
+    end
+
     # Méthode qui charge, les choses utiles en fonction de la route demandée.
     # Les choses chargées doivent se trouver dans un dossier 'lib/required'
     # dans le dossier de la chose à charger.
@@ -267,14 +274,13 @@ class SiteHtml
     def method_sym  ; @method_sym ||= get_method_sym        end
     def context     ; @context    ||= param(:in)            end
 
+
     # La route reconstituée
     def route
       @route ||= begin
         route_sans_context.to_s + (context.nil? ? "" : "?in=#{context}")
       end
     end
-    # Pour obtenir la route en faisant current_route.route
-    alias :to_str :route
 
     # La route, sans le contexte (i.e. sans querystring ?in=...)
     def route_sans_context

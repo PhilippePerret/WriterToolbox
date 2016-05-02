@@ -17,6 +17,9 @@ class User
   #
   def do_after_load
 
+    # On ajoute toujours une connexion
+    site.add_connexion( ip )
+
     # On passe les adresses des moteurs de recherche
     return if moteur_recherche?
 

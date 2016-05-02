@@ -80,4 +80,4 @@ site.display_taches_for_user = true
 #     Résumé hebdomadaire des connexions de la semaine
 # :one_a_month / :une_par_mois
 #     Résumé mensuel des connexions du mois
-site.alert_apres_login = :tout_de_suite
+site.alert_apres_login = :one_a_day
