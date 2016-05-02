@@ -38,7 +38,8 @@ DATA_MANUEL_REDACTION = {
     titre: "Analyses",
     items: {
       protocole: {titre:"Protocole d’analyse de film"},
-      creation_new_analyse: {titre:"Création d'une nouvelle analyse"}
+      creation_new_analyse: {titre:"Création d'une nouvelle analyse"},
+      analyse_mye: {titre: "Analyse MYE"}
     }
   },
   collecte: {

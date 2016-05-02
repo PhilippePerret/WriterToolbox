@@ -24,6 +24,9 @@ class User
     return if moteur_recherche?
 
     # Si cet utilisateur a déjà été signalé, on ne fait rien
+    # Noter qu'il faut mettre ça ici et pas avec le
+    # `site.add_connexion` car la méthode add_connexion doit
+    # fonctionner en toute circonstance
     return if param(:user_already_signaled) == "1"
 
     require './data/secret/known_ips.rb'
@@ -32,26 +35,6 @@ class User
       exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." )
     end
 
-    # ATTENTION ! Une adresse peut être connue sans que ce
-    # soit un user inscrit. Dans ce cas, user_id est nil
-    detail = if KNOWN_IPS.has_key?(self.ip)
-      "\nDetail  : #{KNOWN_IPS[self.ip][:detail]}"
-    else
-      ""
-    end
-    # debug "   * Avertir Phil de la nouvelle arrivée"
-    User::get(1).send_mail(
-      subject: "Nouvelle arrivée sur BOA",
-      formated:true,
-      message: <<-MAIL
-  <p>Phil, je t'informe de l'arrivée d'un nouveau visiteur sur BOA.</p>
-  <pre style="font-size:11pt">
-    Session : #{app.session.session_id}
-    IP      : #{ip}#{detail}
-    Date    : #{NOW.as_human_date(true, true, ' ')}
-  </pre>
-      MAIL
-    )
     app.session['user_already_signaled'] = "1"
   end
 

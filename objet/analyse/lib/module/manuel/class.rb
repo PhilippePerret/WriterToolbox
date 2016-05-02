@@ -99,7 +99,38 @@ class Manuel
 
     # Contenu de la page
     def content
-      ( FilmAnalyse::folder_manuel+"#{manuel_folder}/#{relpath}.erb" ).deserb
+      case type
+      when :erb
+        path_as_erb.deserb
+      when :markdown
+        site.require_module 'kramdown'
+        path_as_markdown.kramdown
+      else
+        error "Type #{type} inconnu."
+      end
+    end
+
+    # Le type (:erb ou :markdown ou MD) en fonction du fichier
+    def type
+      @type = begin
+        if path_as_markdown.exist?
+          :markdown
+        elsif path_as_erb.exist?
+          :erb
+        else
+          :unknown
+        end
+      end
+    end
+
+    def path_as_markdown
+      @path_as_md ||= folder + "#{relpath}.md"
+    end
+    def path_as_erb
+      @path_as_erb ||= folder + "#{relpath}.erb"
+    end
+    def folder
+      @folder ||= FilmAnalyse::folder_manuel+manuel_folder
     end
 
     # Titre de la page, avec le lien pour revenir à la
