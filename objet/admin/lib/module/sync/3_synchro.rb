@@ -171,7 +171,7 @@ class Sync
         cmd = "scp -p #{path_loc} #{serveur_ssh_boa}:#{path_dis}"
         res = `#{cmd} 2>&1`
         if res != ""
-          err_mess "# ERREUR UPLOAD ANALYSE #{prel} : #{res}"
+          err_mess = "# ERREUR UPLOAD ANALYSE #{prel} : #{res}"
           error err_mess
           debug err_mess
         end

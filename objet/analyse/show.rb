@@ -220,7 +220,7 @@ class Film
           end
         ).in_section +
         fconclusion
-      ).in_section
+      ).formate_balises_propres.in_section
     end.join
 
     # Pour terminer, si c'est l'administrateur ou un
