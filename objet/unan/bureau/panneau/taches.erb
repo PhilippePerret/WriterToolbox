@@ -11,7 +11,7 @@
 # ---------------------------------------------------------------------
 %>
 <% if tasks.count > 0 %>
-  <%= tasks.collect { |iwork| iwork.output }.join %>
+  <%= tasks.collect { |iabswork| iabswork.as_card }.join %>
 <% else %>
   <p class='small discret'>Vous n'avez aucun travail courant.</p>
   <%= message_si_aucun_travail %>

@@ -12,15 +12,18 @@ class User
   end
   def projet_id; @projet_id ||= projet.id end
 
+
+  # Instance Unan::Program::CurPDay de l'auteur courant
+  #
+  # Permet notamment d'obtenir les travaux inachevés, etc.
+  def cur_pday
+    @cur_pday ||= Unan::Program::CurPDay::new(program.current_pday)
+  end
+
   # Retourne le nombre de +quoi+ de l'user (nombre de
   # messages forum, de pages de cours à lire, etc.)
-  # Note : Toutes les variables qu'on relève par ici sont
-  # des listes d'identifiants. Par exemple des identifiants
-  # de pages de cours, ou de questionnaires, ou de messages
-  # de forum, etc.
-  # Cf. les fichier User > Variables.md
   def nombre_de quoi
-    get_var("#{quoi}_ids".to_sym, Array::new ).count
+    cur_pday.undone_of_type(quoi).count
   end
 
   def total_points

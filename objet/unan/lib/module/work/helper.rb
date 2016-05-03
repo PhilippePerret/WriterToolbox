@@ -8,6 +8,9 @@ class Work
   # au programme UN AN UN SCRIPT.
   # Elle sert aussi pour l'affichage du travail absolu
   # de ce travail
+  # DOIT DEVENIR OBSOLÈTE CAR LE WORK N'EXISTE PAS
+  # FORCÉMENT, MAINTENANT.
+
   def as_card
     (
       nombre_de_points +
@@ -25,35 +28,7 @@ class Work
   #   Sous-méthodes
   # ---------------------------------------------------------------------
 
-  def nombre_de_points
-    return "" if completed?
-    "#{abs_work.points} points".in_div(class:'nbpoints')
-  end
 
-  def date_fin_attendue
-    return "" if completed?
-    doit = depassement? ? "aurait dû" : "doit"
-    avez = depassement? ? "aviez" : "avez"
-    mess_duree = "Ce travail #{doit} être accompli en #{duree_relative.as_jours}."
-    css  = ['exbig']
-    css << "warning" if depassement?
-
-    mess_echeance = "Il a débuté le #{created_at.as_human_date(true, true)}, il #{doit} être achevé le <span class='#{css.join(' ')}'>#{expected_end.as_human_date(true, true)}</span>."
-    mess_reste_jours = if depassement?
-      "Vous êtes en dépassement de <span class='exbig'>#{temps_humain_depassement}</span>.".in_div(class:'warning').in_div(class:'depassement')
-    else
-      (
-        "Reste".in_span(class:'libelle va_bottom')      +
-        temps_humain_restant.in_span(class:'mark_fort')
-      ).in_div(class:'right air')
-    end
-
-    (
-      mess_duree.in_div     +
-      mess_echeance.in_div  +
-      mess_reste_jours
-    ).in_div(class:'dates')
-  end
 
   # Un lien pour soit marquer le travail démarré (s'il n'a pas encore été
   # démarré) soit pour le marquer fini (s'il a été fini). Dans les deux cas,
@@ -83,25 +58,6 @@ class Work
       "Exemple ##{eid}".in_a(href:"exemple/#{eid}/show?in=unan", target:'_exemple_work_').in_span
     end.join.in_div(class:'exemples')
   end
-
-  # Retourne la section DIV contenant les suggestions de
-  # lecture (pages cours) s'il y en a
-  def suggestions_lectures
-    return "" if abs_work.pages_cours_ids.empty?
-    where = "id IN (#{abs_work.pages_cours_ids.join(',')})"
-    hpagescours = Unan::table_pages_cours.select(where:where, colonnes:[:titre])
-    listepages = abs_work.pages_cours_ids.collect do |pcid|
-      titre = hpagescours[pcid][:titre]
-      "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
-    end.pretty_join.in_span
-
-    s = abs_work.pages_cours_ids.count > 1 ? 's' : ''
-    (
-      "Suggestion#{s} de lecture#{s} : ".in_span(class:'libelle') +
-      listepages
-    ).in_div(class:'suggestions_lectures')
-  end
-
 
   # ---------------------------------------------------------------------
   #   Sous-sous-méthodes

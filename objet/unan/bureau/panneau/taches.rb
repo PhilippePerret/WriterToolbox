@@ -31,8 +31,15 @@ class Bureau
 
   def tasks
     @tasks ||= begin
-      works # pour le moment, tous les travaux
-      # works_ids.collect{ |wid| Unan::Program::Work::get(user.program, wid) }
+      current_pday.undone_tasks.collect do |wdata|
+        inst = Unan::Program::AbsWork::get( wdata[:id] )
+        inst.relative_data = {
+          indice_pday:          wdata[:indice_pday],
+          indice_current_pday:  current_pday.indice,
+          user_id:              wdata[:user_id]
+        }
+        inst
+      end
     end
   end
   # Raccourci

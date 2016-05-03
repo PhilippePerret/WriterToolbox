@@ -84,7 +84,21 @@ class AbsWork
   #               plus (+) d'indications, comme par exemple le
   #               nombre de jours déjà pris sur le travail et le
   #               nombre de jours restant.
+  #
+  # TODO: Si @relative_data n'est pas nil, c'est un hash qui
+  # contient des données permettant d'adapter très exactement
+  # l'affichage pour un auteur particulier un jour-programme
+  # particulier.
+  # TODO: Cf. l'affichage as_card de Work pour reprendre la
+  # même forme (ou presque) ici. Consulter aussi les CSS
+  #
   def as_card params = nil
+
+    unless relative_data.nil?
+      debug "abs_work.relative_data = #{relative_data.inspect}"
+      return as_card_relative
+    end
+
     params ||= Hash::new
     classes_css = ['work']
     if params[:from]
@@ -95,7 +109,9 @@ class AbsWork
       end
     end
 
-    # Composition de la carte
+
+    # Composition de la carte (attention, c'est la version
+    # "absolue", celle qui est affichée pour l'administrateur)
     (
       (
         human_type_w.in_span(class:'type') +
@@ -106,6 +122,75 @@ class AbsWork
       buttons_edit
     ).in_div(class:classes_css.join(' '))
   end
+
+  # Affichage de la carte quand elle doit être
+  # propre à un travail et un auteur (c'était avant une
+  # méthode de Work)
+  def as_card_relative
+    (
+      nombre_de_points +
+      "#{titre}".in_div(class:'titre')     +
+      "#{travail}".in_div(class:'travail') +
+      # date_fin_attendue +
+      # form_pour_marquer_started_or_fini +
+      # details_tache +
+      # section_exemples +
+      suggestions_lectures
+    ).in_div(class:'work')
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes d'helper pour `as_card_relative`
+  # ---------------------------------------------------------------------
+  def nombre_de_points
+    "#{points} points".in_div(class:'nbpoints')
+  end
+
+  # Retourne la section DIV contenant les suggestions de
+  # lecture (pages cours) s'il y en a
+  def suggestions_lectures
+    return "" if pages_cours_ids.empty?
+    where = "id IN (#{pages_cours_ids.join(',')})"
+    hpagescours = Unan::table_pages_cours.select(where:where, colonnes:[:titre])
+    listepages = pages_cours_ids.collect do |pcid|
+      titre = hpagescours[pcid][:titre]
+      "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
+    end.pretty_join.in_span
+
+    s = pages_cours_ids.count > 1 ? 's' : ''
+    (
+      "Suggestion#{s} de lecture#{s} : ".in_span(class:'libelle') +
+      listepages
+    ).in_div(class:'suggestions_lectures')
+  end
+  def date_fin_attendue
+    return "" if relatif_completed?
+    doit = relatif_depassement? ? "aurait dû" : "doit"
+    avez = relatif_depassement? ? "aviez" : "avez"
+    mess_duree = "Ce travail #{doit} être accompli en #{relatif_duree_relative.as_jours}."
+    css  = ['exbig']
+    css << "warning" if depassement?
+
+    mess_echeance = "Il a débuté le #{relatif_started_at.as_human_date(true, true)}, il #{doit} être achevé le <span class='#{css.join(' ')}'>#{relative_expected_at.as_human_date(true, true)}</span>."
+    mess_reste_jours = if depassement?
+      "Vous êtes en dépassement de <span class='exbig'>#{temps_humain_depassement}</span>.".in_div(class:'warning').in_div(class:'depassement')
+    else
+      (
+        "Reste".in_span(class:'libelle va_bottom')      +
+        temps_humain_restant.in_span(class:'mark_fort')
+      ).in_div(class:'right air')
+    end
+
+    (
+      mess_duree.in_div     +
+      mess_echeance.in_div  +
+      mess_reste_jours
+    ).in_div(class:'dates')
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes d'helper pour `as_card`
+  # ---------------------------------------------------------------------
 
   def div_travail
     item_link = if item_id

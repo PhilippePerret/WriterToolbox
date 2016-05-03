@@ -42,10 +42,8 @@ class Bureau
   # l'auteur
   def works_ids
     @works_ids ||= begin
-
       debug "Liste des Travaux non accomplis : #{current_pday.works_undone.inspect}"
-
-      [] # POUR LE MOMENT
+      current_pday.works_undone.keys
     end
   end
 
@@ -120,9 +118,9 @@ class Bureau
     ONGLETS = {
       state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
       projet:       {id: :projet,       titre:"Projet"},
-      taches:       {id: :taches,       titre:"Tâches",   knombre: :tasks},
-      pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :pages},
-      forum:        {id: :forum,        titre:"Forum",    knombre: :messages},
+      taches:       {id: :taches,       titre:"Tâches",   knombre: :task},
+      pages_cours:  {id: :pages_cours,  titre:"Cours",    knombre: :page},
+      forum:        {id: :forum,        titre:"Forum",    knombre: :forum},
       quiz:         {id: :quiz,         titre:"Quiz",     knombre: :quiz},
       preferences:  {id: :preferences,  titre:"Préférences"},
       aide:         {id: :aide,         titre:"Aide"}
@@ -204,7 +202,13 @@ class Bureau
       @has_travaux ||= (nombre_travaux > 0)
     end
     def nombre_travaux
-      @nombre_travaux ||= user.nombre_de(data[:knombre])
+      @nombre_travaux ||= begin
+        if data[:knombre].nil?
+          0
+        else
+          user.nombre_de(data[:knombre])
+        end
+      end
     end
 
     # Données de l'onglet (dans ONGLETS)

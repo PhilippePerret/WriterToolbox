@@ -57,6 +57,37 @@ class CurPDay
     end
   end
 
+  def undone_tasks
+    @undone_tasks ||= undone_of_type(:task)
+  end
+  def undone_pages
+    @undone_pages ||= undone_of_type(:page)
+  end
+  def undone_quiz
+    @undone_quiz ||= undone_of_type(:quiz)
+  end
+  def undone_forum
+    @undone_forum ||= undone_of_type(:forum)
+  end
+
+  # Retourne la liste {Array} des Hash de données
+  # des travaux non réalisés de type +type+
+  def undone_of_type type
+    @undone_by_type ||= begin
+      h = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new
+      }
+      works_undone(as: :hdata).each do |wid, wdata|
+        h[wdata[:type]] << wdata
+      end
+      h
+    end
+    @undone_by_type[type]
+  end
+
   # Retourne la liste des travaux non accomplis par l'auteur
   # courant au jour-programme courant
   #
@@ -72,14 +103,23 @@ class CurPDay
     options ||= Hash::new
     options[:as] = :hdata unless options.has_key?(:as)
 
-    non_accomplis = works_until_now(as: :hash_ids).dup
-    debug "non_accomplis au départ : #{non_accomplis.inspect}"
-    debug "works_done : #{works_done.inspect}"
-    works_done.each do |idpaire, vrai|
-      non_accomplis.delete(idpaire)
+    case options[:as]
+    when :hdata
+      return @works_undone_as_hdata unless @works_undone_as_hdata.nil?
+    when :ids
+      return @works_undone_as_ids unless @works_undone_as_ids.nil?
     end
-    "non_accomplis à la fin : #{non_accomplis.inspect}"
-    non_accomplis
+
+    @non_accomplis ||= begin
+      undone = works_until_now(as: :hash_ids).dup
+      debug "non_accomplis au départ : #{undone.inspect}"
+      debug "works_done : #{works_done.inspect}"
+      works_done.each do |idpaire, vrai|
+        undone.delete(idpaire)
+      end
+      "non_accomplis à la fin : #{undone.inspect}"
+      undone
+    end
 
     # Première opération : pour certains :as, on doit
     # déjà récupérer l'identifiant seul (entendu que la
@@ -87,20 +127,38 @@ class CurPDay
     # d'un double-point et de l'indice du jour-programme)
     ids = case options[:as]
     when :ids, :hdata
-      non_accomplis.collect {|idpaire, vrai| idpaire.split(':').first.to_i }
+      @last_pday_of_abswork = Hash::new
+      @non_accomplis.collect do |idpaire, vrai|
+        wid, indice_pday = idpaire.split(':')
+
+        wid = wid.to_i
+        # Associer le pday au wid. Noter que ce sera toujours
+        # seulement le dernier pday qui sera associé, même
+        # lorsque l'abs_work est utilisé plusieurs fois
+        @last_pday_of_abswork.merge!( wid => indice_pday.to_i )
+        # Retourner l'identifiant du work
+        wid
+      end
     end
 
+    # Le retour renvoyé en fonction du :as
     case options[:as]
-    when :ids then ids
+    when :ids
+      @works_undone_as_ids = ids
     when :hdata
       res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
-      # On ajoute certaines données utiles
+      # On ajoute certaines données utiles, dont :
+      #   Le type de travail (:task, :page, :forum ou :quiz)
+      #   Le jour-programme où se travail était programmé (en espérant
+      #   qu'il n'y en a qu'un seul, même lorsque le même abs-work est
+      #   utilisé plusieurs fois)
       res.each do |wid, wdata|
         res[wid].merge!(
-          type: Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type]
+          type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
+          indice_pday:  @last_pday_of_abswork[wid]
           )
       end
-      res
+      @works_undone_as_hdata = res
     end
   end
 
