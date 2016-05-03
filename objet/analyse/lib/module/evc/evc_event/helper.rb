@@ -9,7 +9,8 @@ class Event
   # {StringHTML} Ligne de l'évènement pour affichage
   # +options+
   #     duree:      Si true, on ajoute la durée si elle définie
-  #     notes:      Si true, on ajoute les notes qui existent
+  #     note:       Si false, on n'inscrit pas les notes qui existent
+  #                 Donc, par défaut, on les inscrit.
   def as_li options = nil
     options ||= Hash::new
     li = ""
@@ -20,6 +21,9 @@ class Event
       li << human_duree.in_span(class:'d') # li.ev span.d
     end
     li << resume.in_span(class:'r') # li.ev span.r
+    unless note.nil? || options[:note] === false
+      li << note.formate_balises_propres.in_span(class:'n')
+    end
     li.in_li(class:'ev')
   end
 
