@@ -27,7 +27,18 @@ class Program
   def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
 
   # {Fixnum} Jour-programme courant
-  def current_pday;       @current_pday       ||= get(:current_pday)        end
+  # On peut le définir par <auteur>.program.current_pday = <i jour programme>
+  def current_pday
+    return 1
+    @current_pday ||= get(:current_pday)
+  end
+  # Définit le nouveau jour-programme (en définissant également
+  # sa date de démarrage)
+  def current_pday= valeur
+    set(current_pday: valeur, current_pday_start: NOW)
+    @current_pday       = valeur
+    @current_pday_start = NOW
+  end
   # {Fixnum} Timestamp du démarrage du jour-programme courant
   def current_pday_start; @current_pday_start ||= get(:current_pday_start)  end
 

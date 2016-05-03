@@ -38,7 +38,7 @@ class Unan
     end
 
     def tarif
-      @tarif ||= 29.80
+      @tarif ||= 19.80
     end
 
     # Permet d'écrire le titre "Un An Un Script" de façon

@@ -31,10 +31,7 @@ class Program
 
   def nombre_pdays_restants as = :nombre
     @nombre_pdays_restants ||= begin
-      jrs = 366 - current_pday
-      # On ajoute un jour sauf si on est en fin de journée
-      jrs += 1 unless Time.now.hour > 16
-      jrs
+      366 - self.current_pday
     end
     case as
     when :human

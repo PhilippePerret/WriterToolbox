@@ -31,8 +31,8 @@ def schema_table_unan_hot_programs
     # current_pday (entendu que la date du démarrage du programme ne
     # suffit pas puisque l'utilisateur peut modifier son rythme quand
     # il le veut).
-    pday_started_at: {type:"INTEGER(10)", constraint:"NOT NULL"},
-    
+    current_pday_start: {type:"INTEGER(10)", constraint:"NOT NULL"},
+
 
     # Options
     # -------

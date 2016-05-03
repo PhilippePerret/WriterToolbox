@@ -13,6 +13,12 @@ class Work
     @is_page_cours ||= abs_work.page_cours?
   end
 
+  # Return true si le travail a été démarré par l'auteur
+  # Noter que le chrono tourne même quand le travail n'a pas été
+  # démarré.
+  def started?
+    status > 0
+  end
   # Retourne true si le travail est terminé. On peut
   # aussi utiliser completed?
   def ended?
@@ -36,12 +42,6 @@ class Work
     @depassement ||= NOW - (self.created_at + self.duree_relative)
   end
 
-  # Return true si le travail a été démarré par l'auteur
-  # Noter que le chrono tourne même quand le travail n'a pas été
-  # démarré.
-  def started?
-    status > 0
-  end
 
 end #/Work
 end #/Program

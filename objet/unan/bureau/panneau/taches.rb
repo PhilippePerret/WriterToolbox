@@ -18,10 +18,6 @@ class Bureau
 
   def save_travail
     flash "Je sauve les données travail"
-
-    # TODO Sauver la nouvelle liste de travaux
-    # set_var(:travaux_ids, travaux_ids)
-
   end
 
   # cf. l'explication dans le fichier home.rb
@@ -35,12 +31,14 @@ class Bureau
 
   def tasks
     @tasks ||= begin
-      user.get_var(:tasks_ids, Array::new).collect{ |wid| Unan::Program::Work::get(user.program, wid) }
+      works # pour le moment, tous les travaux
+      # works_ids.collect{ |wid| Unan::Program::Work::get(user.program, wid) }
     end
   end
   # Raccourci
   def last_tasks
-    @last_tasks ||= user.program.last_tasks
+    []
+    # @last_tasks ||= user.program.last_tasks
   end
 
 end # /Bureau

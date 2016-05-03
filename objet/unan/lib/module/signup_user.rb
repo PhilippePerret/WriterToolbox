@@ -33,12 +33,8 @@ class ::User
     end
 
     # Définition du premier p-day (jour-programme)
-    begin
-      instancier_premier_jour_programme
-    rescue Exception => e
-      @errors << "Le premier jour-programme n'a pas pu être instancié."
-      debug "# IMPOSSIBLE D'INSTANCIER LE PREMIER JOUR-PROGRAMME : #{e.message}\n\n"+e.backtrace.join("\n")
-    end
+    # Obsolète, il est défini dès la création de l'instance
+    # du programme.
 
     # Envoi des mails à l'user pour lui confirmer les
     # choses
@@ -88,17 +84,6 @@ class ::User
     rescue Exception => e
       @errors << "Impossible de créer le projet : #{e.message}"
     end
-  end
-
-  # Instancier le premier jour programme
-  def instancier_premier_jour_programme
-    debug "user.get_var(:current_pday) = #{user.get_var(:current_pday).inspect}"
-    Unan::require_module 'start_pday'
-    Unan::Program::StarterPDay::new(program).activer_first_pday
-    debug "P-Day courant du user : #{self.program.current_pday.inspect}"
-    raise "Le jour courant de l'user devrait être 1" unless self.program.current_pday == 1
-  rescue Exception => e
-    @errors << "Impossible d'instancier le premier jour-programme : #{e.message}"
   end
 
   # Envoyer les mails de confirmation d'inscription à l'user et

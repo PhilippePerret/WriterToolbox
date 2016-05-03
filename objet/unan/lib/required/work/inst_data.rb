@@ -11,18 +11,11 @@ class Work
     @id = table.insert( data2save )
   end
 
-  # Sauvegarde de toutes les données du travail
-  # Normalement, ne doit pas être utilisé, car toutes les
-  # données après création sont enregistrées de façon
-  # séparées par 'set'
-  def save
-    table.set( id, data2save )
-  end
-
   # ---------------------------------------------------------------------
   #   Data bdd
   # ---------------------------------------------------------------------
   def abs_work_id ; @abs_work_id  ||= get(:abs_work_id) end
+  def abs_pday    ; @abs_pday     ||= get(:abs_pday)    end
   def status      ; @status       ||= get(:status)||0   end
   def options     ; @options      ||= get(:options)||"" end
   def ended_at    ; @ended_at     ||= get(:ended_at)    end
@@ -33,6 +26,7 @@ class Work
     @data2save ||= {
       program_id:   program.id  ,
       abs_work_id:  abs_work_id ,
+      abs_pday:     abs_pday,
       status:       status      ,
       options:      options     ,
       updated_at:   NOW

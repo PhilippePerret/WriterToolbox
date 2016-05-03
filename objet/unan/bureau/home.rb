@@ -41,7 +41,21 @@ class Bureau
   # {Array} Liste ordonnée des IDs de travaux à accomplir par
   # l'auteur
   def works_ids
-    @works_ids ||= user.get_var(:works_ids, Array::new)
+    @works_ids ||= begin
+
+      debug "Liste des Travaux non accomplis : #{current_pday.works_undone.inspect}"
+
+      [] # POUR LE MOMENT
+    end
+  end
+
+  # Instance {Unan::Program::CurPDay} du jour-programme courant
+  def current_pday
+    @current_pday ||= Unan::Program::CurPDay::new(current_pday_id)
+  end
+
+  def current_pday_id
+    @current_pday_id ||= user.program.current_pday
   end
 
   def table_travaux

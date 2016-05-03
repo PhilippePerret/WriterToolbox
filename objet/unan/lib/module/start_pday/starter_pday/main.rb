@@ -42,8 +42,6 @@ class StarterPDay
   #
   # Méthode qui démarre le programme
   def activer_first_pday
-    # @next_pday = 0
-    # @current_pday = 0
     proceed_changement_pday
   end
 
@@ -74,72 +72,15 @@ class StarterPDay
 
 
   # Méthode qui procède réellement au changement de jour-programme
-  # du programme, qu'il y ait ou non des travaux définis
+  # du programme, qu'il y ait ou non des travaux définis.
+  # Il consiste simplement à :
+  #   - définir la donnée `current_pday` du program
+  #   - définir la donnée `current_pday_start` du program
+  #     (ça se fait automatiquement quand on change le pday
+  #      courant dans le programme)
   def proceed_changement_pday
 
-    # À faire qu'il y ait ou non un jour-programme défini
-    # MAIS : En implémentant la méthode, j'obtiens une erreur sur
-    # Benoit alors qu'il est clairement au premier jour (l'état des
-    # lieux précédent en témoigne) donc je voudrais savoir ce qui
-    # foire ici. D'où la raison de tous ces logs avant de procéder
-    # au changement proprement dit.
-
-    log "\n\n=== Contrôle dans Unan::Program::StarterPDay::proceed_changement_pday ==="
-    log "= Auteur : ##{auteur.id} / #{auteur.pseudo}"
-    # @reparation_count = 0
-    # begin
-    #   raise if auteur.get_var(:current_pday).nil?
-    # rescue Exception => e
-    #   @reparation_count += 0
-    #   if @reparation_count > 1
-    #     raise "Impossible de passer l'auteur ##{auteur.id} (#{auteur.pseudo}) au jour-programme suivant, car son current_pday n'est pas défini dans ses variables et il n'a malheureusement pas pu être réparé."
-    #   else
-    #     # Problème de définition de current_pday…
-    #     # Je dois réparer ce problème pour pouvoir poursuivre. Sur quoi pourrais-je
-    #     # me base pour savoir à quel jour-programme peut en être l'auteur ?
-    #     reparer_error_current_pday_nil
-    #     retry
-    #   end
-    # end
-    log "= Current pday (avec get_var) : #{auteur.get_var(:current_pday).inspect}"
-    thenext_pday = nil
-    begin
-      thenext_pday = auteur.get_var(:current_pday, 0) + 1
-      log "= Next pday calculé normalement : #{thenext_pday}"
-    rescue Exception => e
-      log "# Impossible de calculer next_pday : #{e.message} (je le mets à 2 pour pouvoir poursuivre)"
-      thenext_pday = 2
-    end
-
-    # Il se peut que le jour-programme enregistré dans la variable
-    # :current_pday soit en désaccord avec les enregistrements dans la
-    # table des pdays de l'auteur. On s'en assure ici et, le cas
-    # échéant, on modifie la valeurs du jour-programme suivant.
-    if auteur.table_pdays.count(where:{id: thenext_pday}) > 0
-      # Il faut prendre le dernier
-      log "= Ce next-pday existe déjà en tant que jour dans la table pdays de l'auteur. Je dois prendre le dernier."
-      last_pdays = auteur.table_pdays.select(limit:1, order:"id DESC").keys.first
-      thenext_pday = (last_pdays + 1).freeze
-      log "= L'ultime next-pday défini est : #{thenext_pday}"
-    end
-
-    auteur.set_var(current_pday: thenext_pday)
-    program.current_pday = thenext_pday
-
-    # Les méthodes `pday' et `abs_pday` utilisent la variable
-    # d'instance `next_pday` pour se régler (dans `prepare_program_pday`)
-    # donc il faut les définir.
-    # Mais garder en tête qu'à partir de là, `current_pday' et `next_pday`
-    # ont la même valeur (TODO: Réfléchir pour savoir si c'est vraiment
-    # rationnel)
-    self.next_pday = thenext_pday
-
-    return true unless has_new_works?
-
-    # Il ne faut créer le p-day propre au programme et ne faire
-    # les procédures suivantes que si ce jour-programme possède
-    # un programme, donc des travaux.
-    prepare_program_pday
+    auteur.program.current_pday= auteur.program.current_pday + 1
 
   rescue Exception => e
     @errors << e.message

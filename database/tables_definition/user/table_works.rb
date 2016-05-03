@@ -31,6 +31,9 @@ def schema_table_user_works
     # ID du travail absolu correspondant
     abs_work_id: {type:"INTEGER", constraint:"NOT NULL"},
 
+    # Indice du jour-programe de ce travail
+    abs_pday: {type:"INTEGER", constraint: "NOT NULL"},
+
     # État du travail
     # ---------------
     # Nombre de 0 à 9 qui indique où en est le travail.
