@@ -39,7 +39,10 @@ class << self
     ireport = new
     ireport.prepare_rapport
     ireport.build_report
-    ireport.send_report
+    if ireport.has_connexions?
+      ireport.consigne_report
+      ireport.send_report
+    end
     ireport.reset_databases_connexions
     log "  = Résumé des connexions OK"
     log "<- SiteHtml::Connexions::resume"
@@ -57,17 +60,21 @@ class << self
     now = Time.now
     premiere_heure = ( now.hour == 0 )
     code = p.read
-    freq = code.scan(/^site\.alert_apres_login ?= ?(.*?)$/).to_a[0][0]
+    freq = code.scan(/^site\.alert_apres_login ?=(.*?)$/).to_a[0][0]
+    freq = freq.strip unless freq.nil?
+    safed_log "Fréquence de rapport connexion : #{freq.inspect}"
     case freq
     when nil
     when ":tout_de_suite", ":now"
       false # c'est géré autrement
-    when ":one_a_day", "une_page_jour"
+    when ":one_an_hour", ":une_par_heure"
+      return true # puisque c'est le cron horaire
+    when ":one_a_day", ":une_page_jour"
       # Retourne true si on est dans la première heure du jour
       return premiere_heure
-    when "one_a_week", ":une_par_semaine"
+    when ":one_a_week", ":une_par_semaine"
       return now.wday == 1 && premiere_heure
-    when "one_a_month", ":une_par_mois"
+    when ":one_a_month", ":une_par_mois"
       return now.mday == 1 && premiere_heure
     else
       return false
@@ -93,6 +100,13 @@ end # << self SiteHtmlConnexions
 
   def log m
     self.class.log m
+  end
+
+  # Retourne TRUE si des connexions ont été trouvées. Dans le
+  # cas contraire, aucun mail n'est envoyé et aucun rapport
+  # n'est à consigner.
+  def has_connexions?
+    report[:by_ip].count > 0
   end
 
   # Préparation du rapport
@@ -135,7 +149,19 @@ end # << self SiteHtmlConnexions
       last_str  = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
       duree  = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
       duree_str = duree.to_s.ljust(5)
-      whois_str = (ipdata[:whois].nil? ? "- unknown -" : ipdata[:whois] ).ljust(30)
+      whois_str = if ipdata[:whois].nil?
+        "- unknown -"
+      else
+        if ipdata[:whois].has_key?(:pseudo)
+          ipdata[:whois][:pseudo]
+        elsif ipdata[:whois].has_key?(:id)
+          User::get(ipdata[:whois][:id]).pseudo
+        elsif ipdata[:whois].has_key?(:user_id)
+          User::get(ipdata[:whois][:user_id]).pseudo
+        else
+          "INCONNU AVEC CLÉS #{ipdata[:whois].keys.join(', ')}"
+        end
+      end.ljust(30)
       routes_str = ipdata[:nombre_routes].to_s.rjust(5)
       "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
     end.join("\n")
@@ -150,15 +176,18 @@ end # << self SiteHtmlConnexions
     end.join("\n\n")
 
     # Constitution finale du rapport administrateur
-    mess = "<pre>\n#{titre}\n\n#{entete}\n#{mess}\n</pre>"
+    mess = "<pre style='font-size:9pt'>\n#{titre}\n\n#{entete}\n#{mess}\n</pre>"
     @report[:message] = mess + message_sous_rapport
     @report[:titre]   = titre
+
+    log "RÉSULTATS À ENVOYER :\nTitre : #{@report[:titre]}\nMessage :\n#{@report[:message]}"
+
   end
 
   def message_sous_rapport
     <<-HTML
-<p>La durée est exprimée en secondes.
-</p>
+<p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
     HTML
   end
   # Rationalisation des résultats
@@ -228,13 +257,37 @@ end # << self SiteHtmlConnexions
 
   # Envoi du rapport à l'administration
   def send_report
-    site.send_mail(
+    log "   -> Envoi du rapport de connexion à l'administration"
+    log "      Mail : #{site.mail}"
+    res = site.send_mail(
       to:         site.mail,
       from:       site.mail,
       subject:    report[:titre],
       message:    report[:message],
       formated:   true
     )
+    if res === true
+      log "    <- OK Rapport envoyé avec succès"
+    else
+      mess_err = ["# ERREUR EN TRANSMETTANT LE RAPPORT :"]
+      mess_err << res.message
+      mess_err += res.backtrace
+      mess_err = "    " + mess_err.join("\n    ")
+      log mess_err
+      log "    <- SiteHtml::Connexions::send_report"
+    end
+  end
+  
+  # On enregistre le rapport dans un fichier
+  def consigne_report
+    folder_rapports = "/home/boite-a-outils/www/CRON/rapports_connexions"
+    `mkdir -p #{folder_rapports}`
+    ntime = Time.now.strftime("%d_%m_%Y-%H-%M")
+    path_rapport = File.join(folder_rapports, "connexions-#{ntime}")
+    File.open(path_rapport, 'wb'){ |f| 
+      f.puts report[:titre]
+      f.puts report[:message]
+    }
   end
   # Destruction des bases actuelles
   # Noter qu'elles ont été mises de côté pour ne

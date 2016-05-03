@@ -19,6 +19,21 @@ def schema_table_unan_hot_programs
     # Pour avoir un aperçu de tous les jours
     days_overview:   {type:"CLOB(230)"},
 
+    # Jour-programme courant
+    # ----------------------
+    # L'identifiant de 1 à 366 du jour-programme
+    # actuel de l'auteur.
+    current_pday:  {type:"INTEGER(3)", constraint:"NOT NULL", default:1},
+
+    # Démarrage du jour-programme courant
+    # -----------------------------------
+    # Timestamp (nombre de secondes) du démarrage du jour-programme
+    # current_pday (entendu que la date du démarrage du programme ne
+    # suffit pas puisque l'utilisateur peut modifier son rythme quand
+    # il le veut).
+    pday_started_at: {type:"INTEGER(10)", constraint:"NOT NULL"},
+    
+
     # Options
     # -------
     # Pour la définition de chaque bit des options, cf. le

@@ -64,7 +64,6 @@ class Translator
 
     # === / 3 phases de la correction ===
 
-
     finalise_content
 
     suivi << "    -> Production fichier #{output_format}\n" +
@@ -82,7 +81,7 @@ class Translator
     options = {
       auto_ids:false,
       # html_to_native:true,
-      remove_block_html_tags: false,
+      # remove_block_html_tags: true,
       header_offset: 1 # Pour commencer à \subsection si c'est ##
       }
     @content = Kramdown::Document.new(content, options).send(kramdown_method)

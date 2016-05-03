@@ -70,7 +70,7 @@ class << self
         # On ajoute cette page au livre, on ajoutant son index
         # dans la table des matières
         index_page = hsorted[livre_id][:tdm].index( pid )
-        debug "Index de la page #{pdata[:titre]} : #{index_page}"
+        # debug "Index de la page #{pdata[:titre]} : #{index_page}"
         pdata.merge!( numero: index_page)
         hsorted[livre_id][:pages] << pdata
       end

@@ -1,3 +1,19 @@
+# Réflexion sur une simplification du programme
+
+Pour simplifier, on pourrait ne rien enregistrer dans les données de l'auteur à part ce qu'il fait. Je m'explique : On en resterait à définir son jour-programme courant (qui serait variable, s'il change plusieurs fois de rythme).
+
+Puis, connaissant son jour-programme, on ferait la liste de ses travaux à faire : on remonterait depuis ce jour-programme jusqu'à un jour-programme où il a encore du travail. Ça correspond à deux choses :
+  1. Les jours-programme qui définissent des travaux longs, qui s'étalent
+     encore sur le jour-programme courant.
+  2. Les travaux qui auraient dû être terminés avant mais qui ne le sont pas
+
+Ensuite, on n'enregistre seulement les travaux exécutés.
+
+On doit aussi enregistrer les questionnaires, ça on ne change rien.
+
+On doit trouver un système pour les travaux reprogrammés. Mais est-ce que ça n'est pas prévisible ? Je veux dire, si un questionnaire doit être reproposé plus tard, ce "plus tard" pourrait être déjà connu, il pourrait déjà être enregistré en tant que work dans un p-day défini.
+
+
 # Réflexion sur le fonctionnement des P-Day
 
 - Un P-Day est un jour-programme
@@ -28,4 +44,4 @@ Comment calculer le prochaine pday d'un auteur ?
 
 => Il faudrait en fait lancer le CRON toutes les heures pour vraiment que les jours-programme suivent le rythme.
 
-coef_rythme = 5.0 / cR # p.e. 
+coef_rythme = 5.0 / cR # p.e.

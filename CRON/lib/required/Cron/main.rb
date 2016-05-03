@@ -11,12 +11,22 @@ class Cron
 
   def self.run
 
+    sleep 1
+    
     safed_log "-> Cron::run"
-
+    safed_log "Racine courante = #{File.expand_path('.')}"
+    if defined?(APP_FOLDER)
+      safed_log "APP_FOLDER = #{APP_FOLDER.inspect}"
+    else
+      safed_log "APP_FOLDER n'est pas défini…"
+    end
+    
     # On se place à la racine de l'application pour
     # exécuter toutes les opérations
-    Dir.chdir("#{APP_FOLDER}") do
+    # Dir.chdir("/home/boite-a-outils/www/") do
+    Dir.chdir(APP_FOLDER) do
 
+      safed_log "Racine dans le Dir.chdir = #{File.expand_path('.')}"
 
       # On requiert tout ce qu'il faut requérir
       # Noter que si on n'y parvient pas, l'erreur est fatale,
@@ -37,11 +47,15 @@ class Cron
 
       safed_log "    = Fin Cron::run ="
     end
+  rescue Exception => e
+    safed_log "# ERREUR FATALE : #{e.message}"  rescue nil
+    safed_log e.backtrace.join("\n")            rescue nil
   ensure
 
     # Dans tous les cas, il faut s'assurer que le rapport soit créé et
     # envoyé à l'administrateur.
     # TODO Mettre plutôt le rapport dans Cron que dans Unan
+    safed_log "* Traitement du rapport admin"
     Cron::rapport_admin.traite
 
   end #/run

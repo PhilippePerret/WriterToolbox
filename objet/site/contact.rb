@@ -40,7 +40,7 @@ class SiteHtml
 
     def data_mail
       @data_mail ||= {
-        to:       mail_phil,
+        to:       site.mail,
         from:     sender,
         subject:  subject,
         message:  message,
@@ -73,10 +73,5 @@ class SiteHtml
       @captcha ||= data[:captcha].nil_if_empty.to_i_inn
     end
 
-    def mail_phil
-      @mail_phil ||= begin
-        User.get(1).mail
-      end
-    end
   end
 end

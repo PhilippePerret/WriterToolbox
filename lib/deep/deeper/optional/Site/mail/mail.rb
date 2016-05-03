@@ -14,11 +14,14 @@ class SiteHtml
   #     message:  "<le message>"
   #   })
   #
+  # RETURN True si tout s'est bien passé et l'instance
+  # de l'erreur dans le cas contraire.
+  # 
   def exec_send_mail data_mail
-    # debug "data mail :#{data_mail}"
     Mail::new(data_mail).send
   rescue Exception => e
     error e.message
+    return e
   else
     true # pour confirmer que l'envoi a pu se faire
   end
@@ -239,7 +242,11 @@ class SiteHtml
 
       def online?
         @is_online ||= begin
-          (ENV['HTTP_HOST'] != nil && ENV['HTTP_HOST'] != 'localhost' && ENV['HTTP_HOST'] != '127.0.0.1')
+          if defined?(ONLINE)
+            ONLINE
+          else
+            (ENV['HTTP_HOST'] != nil && ENV['HTTP_HOST'] != 'localhost' && ENV['HTTP_HOST'] != '127.0.0.1')
+          end
         end
       end
       def offline?

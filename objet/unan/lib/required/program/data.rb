@@ -26,6 +26,11 @@ class Program
   # ATTENTION : c'est une préférence, pas une donnée du programme
   def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
 
+  # {Fixnum} Jour-programme courant
+  def current_pday;       @current_pday       ||= get(:current_pday)        end
+  # {Fixnum} Timestamp du démarrage du jour-programme courant
+  def current_pday_start; @current_pday_start ||= get(:current_pday_start)  end
+
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
   # ---------------------------------------------------------------------

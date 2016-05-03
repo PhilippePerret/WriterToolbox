@@ -4,9 +4,8 @@ class SiteHtml
   # @usage:   site.send_mail(data_mail)
   # Cf. optional/Site/mail.rb pour le détail
   def send_mail data_mail
-    # puts "J'envoie le mail à #{data_mail[:to]}"
     app.require_optional 'Site/mail'
-    exec_send_mail data_mail
+    return exec_send_mail( data_mail )
   end
 
   # Envoi d'un mail à l'administration par

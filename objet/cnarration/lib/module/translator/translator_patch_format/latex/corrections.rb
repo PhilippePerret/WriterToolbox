@@ -63,6 +63,27 @@ class Translator
       @content = @content.mef_document(:latex)
     end
 
+    # Des textes peuvent avoir été mis en HTML, comme par
+    # exemple les introductions des pages de check. Il faut
+    # les remplacer par des balises
+    if @content.match(/<(div|p)/)
+      debug "@content contient bien une balise div ou p"
+      @content = @content.gsub(/<(div|p)(.*?)>(.*?)<\/\1>/m){
+        tag = $1.upcase.freeze
+        gat = tag.split('').reverse.join('')
+        inner_tag = $2
+        classes_css = nil
+        if inner_tag.match(/class=/)
+          inner_tag.sub(/class="(.+?)"/){
+            classes_css = $1.freeze
+          }
+        end
+        classes_css = classes_css.nil? ? "" : "CLASS--#{classes_css}--SSALC"
+        content   = $3.freeze
+        "#{tag}--#{classes_css}#{content}--#{gat}"
+      }
+    end
+
     # Protection des crochets et des traits droits avant
     # d'envoyer à kramdown pour ne pas qu'ils soit corrigés
     # en tableau.

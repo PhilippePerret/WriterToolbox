@@ -10,7 +10,7 @@ class << self
 
   # Puisque `create` ci-dessous est une méthode de classe, le
   # @program_id qu'elle définit sera une variable de classe que la
-  # création de projet devra lire par Unan::Program::program_id
+  # création de projet pourra lire par Unan::Program::program_id
   attr_reader :program_id
 
   # Création d'un nouveau programme
@@ -23,12 +23,14 @@ class << self
     # On crée un nouvel enregistrement pour l'user courant
     # dans la table des programmes
     data_program = {
-      auteur_id:  user.id,
-      options:    "1" + ("0"*31), # actif
-      points:     0,
-      rythme:     5,
-      created_at:  NOW.to_i,
-      updated_at:  NOW.to_i
+      auteur_id:          user.id,
+      options:            "1" + ("0"*31), # actif
+      points:             0,
+      rythme:             5,
+      current_pday:       1, # toujours le premier jour
+      current_pday_start: NOW, # commencé maintenant
+      created_at:         NOW.to_i,
+      updated_at:         NOW.to_i
     }
     @program_id = Unan::table_programs.insert(data_program)
   end

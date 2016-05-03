@@ -52,7 +52,7 @@ class Livre
     # du titre avec auteurs et année.
     sources.each do |source|
 
-      itranslator = Cnarration::Translator::new self, source
+      itranslator = Cnarration::Translator::new( self, source )
 
       # Méthode qui traite le fichier en profondeur. Si la
       # méthode réussit, on poursuit en enregistrant le

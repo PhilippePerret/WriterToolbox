@@ -31,30 +31,23 @@ class Program
     end
   end
 
-  # Timestamp du jours suivant
+  # Timestamp du jour-programme suivant. C'est le temps
+  # en seconde où l'auteur courant doit passer au jour-programme
+  # suivant, en fonction de son rythme de travail.
   def next_pday_time
-    @next_pday_time ||= last_pday_time + pday_duration
+    @next_pday_time ||= current_pday_start + pday_duration
   end
 
-  # Durée d'un jour-programme en fonction du rythme choisi
-  # par l'auteur.
-  def pday_duration ; @pday_duration ||= Fixnum::DUREE_JOUR * coefficient_duree end
-
-  # Timestamp du jour-programme courant, donc du dernier
-  # jour-programme du programme courant. Si aucun pday
-  # n'est encore défini, on retourne la date de démarrage
-  # du programme courant. Mais normalement, un pday a été
-  # créé au démarrage du programme (cf. signup_user.rb)
-  def last_pday_time
-    @last_pday_time ||= begin
-      tm = ( icurrent_pday.nil? ? self.created_at : icurrent_pday.start )
-      tm || self.created_at
-    end
+  # Durée en seconde d'un jour-programme en fonction du
+  # rythme choisi actuellement par l'auteur.
+  def pday_duration
+    @pday_duration ||= Fixnum::DUREE_JOUR * coefficient_duree
   end
 
   # Retourne le jour-programme courant, mais au format
   # d'instance Unan::Program::PDay
   # C'est un raccourci pour la formule `current_pday(:instance)`
+  # OBSOLETE : NE DOIT PLUS SERVIR
   def icurrent_pday ; @icurrent_pday ||= current_pday(:instance) end
 
 end #/Program

@@ -20,6 +20,8 @@ class SiteHtml
   # dans la deuxième base ou la troisième et les crée si
   # nécessaire.
   def add_connexion ip
+    # Ne pas enregistrement le cron job qui se connecte au site
+    return if defined?(CRONJOB) && CRONJOB
     (1..10).each do |ibase|
       pbase = folder_connexions_by_ip + "connexions#{ibase}.db"
       unless pbase.exist?

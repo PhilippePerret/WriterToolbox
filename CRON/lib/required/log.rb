@@ -35,8 +35,8 @@ class Log
     # Dossier ./CRON/log/
     def folder
       @folder ||= begin
-        d = File.join(THIS_FOLDER, 'log')
-        Dir.mkdir(d, 0755) unless File.exist?(d)
+        d = File.join('.', 'www', 'CRON', 'log')
+        `mkdir -p #{d}`
         d
       end
     end

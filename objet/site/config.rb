@@ -24,7 +24,7 @@ site.title_separator  = " | "
 
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site
-site.mail                 = "boite-a-outils@alwaysdata.net"
+site.mail                 = "phil@laboiteaoutilsdelauteur.fr"
 site.mail_before_subject  = "La Boite à Outils de l'Auteur — "
 site.mail_signature       = "<p>#{site.name}</p>"
 
@@ -74,10 +74,11 @@ site.display_taches_for_user = true
 # :never / :jamais        Aucune alerte n'est donnée.
 # :now / :tout_de_suite   Alerte immédiate : dès que l'user se
 #                         connecte au site, l'administion est avertie
+# :one_an_hour / :une_par_heure
 # :one_a_day / :une_par_jour
 #     Résumé quotidien des connexions de la journée
 # :one_a_week / :une_par_semaine
 #     Résumé hebdomadaire des connexions de la semaine
 # :one_a_month / :une_par_mois
 #     Résumé mensuel des connexions du mois
-site.alert_apres_login = :one_a_day
+site.alert_apres_login = :one_an_hour

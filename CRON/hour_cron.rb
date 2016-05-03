@@ -7,7 +7,7 @@ NOTE : Il doit être exécutable.
 
 =end
 def safed_log mess
-  File.open("#{THIS_FOLDER}/safed_log.log", 'a') do |f|
+  File.open("/home/boite-a-outils/www/CRON/safed_log.log", 'a') do |f|
     f.write "#{mess}\n"
   end rescue nil
 end

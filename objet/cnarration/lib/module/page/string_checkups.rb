@@ -115,8 +115,13 @@ class << self
     # Il faut peut être ajouter l'explication sur les
     # checkups
     if code.match(/EXPLICATION\\?_CHECKUPS?/)
-      explication_checkup = Cnarration::texte_type("explication_checkups.html", options)
-      code = code.sub(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
+      explication_checkup = case output_format
+      when :html, :erb
+        Cnarration::texte_type("explication_checkups.html", options)
+      when :latex
+        Cnarration::texte_type("explication_checkups.tex", options)
+      end
+      code.sub!(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
     end
 
     # Dans un premier temps on relève toutes les questions qui
