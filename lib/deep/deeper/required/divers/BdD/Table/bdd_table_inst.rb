@@ -451,6 +451,7 @@ class BdD
             arr_index         << col_name if col_data[:index]
             arr_index_uniques << col_name if col_data[:unique_index]
             typetconst = "#{col_data[:type]} #{col_data[:constraint]}".strip
+            col_data[:default] = "''" if col_data[:default] == ""
             typetconst << " DEFAULT #{col_data[:default]}" unless col_data[:default].nil?
             typetconst << " UNIQUE" if col_data[:index] || col_data[:unique_index]
             "#{col_name} #{typetconst}"
