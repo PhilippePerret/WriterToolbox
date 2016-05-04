@@ -31,11 +31,6 @@ class Work
     @id       = wid
   end
 
-  # Marque un travail démarré
-  def set_started
-    set( status:1, updated_at:NOW )
-  end
-
   # Marque un travail terminé.
   #
   # La méthode est appelée par la route "work/<id>/complet?in=unan/program"
@@ -43,37 +38,16 @@ class Work
   # Elle produit :
   #   - met le travail au statut 9 (status)
   #   - ajoute les points au programme de l'user
-  #   - retire le travail de la liste de ses :works_ids
-  #   - retire le travail de la liste des ses :<choses>_ids particulières,
-  #     comme les quiz, etc.
   # +must_add_point+ permet de définir s'il faut ajouter ou non les points
   # de ce travail. C'est utile par exemple pour les pages de cours,
   # qu'il suffirait de lire et de remettre à lire en boucle pour ajouter
   # chaque fois les points de la lecture.
   # C'est utile aussi pour les questionnaires ré-utilisable (multi?)
   def set_complete(must_add_point = true)
-    # Il faut le retirer des listes
-    # On ajoute la clé :works pour traiter aussi la liste
-    # :works_ids à laquelle appartient forcément le travail
-    # puisque cette liste contient tous les travaux courants
-    liste_retraits = Array::new
-    hliste = Unan::Program::AbsWork::CODES_BY_TYPE
-    hliste.merge(works: nil).each do |lid, ldata|
-      key_list = "#{lid}_ids".to_sym
-      liste = program.auteur.get_var(key_list, Array::new).uniq
-      if liste.include? id
-        liste.delete( id )
-        user.set_var(key_list => liste )
-        liste_retraits << key_list
-      end
-    end
-    if (OFFLINE || user.admin?) && liste_retraits.count < 2
-      error "Bizarrement, le travail n'a été retiré que de la liste #{liste_retraits.pretty_join}… Il aurait dû être retiré de deux listes."
-    end
     set(status: 9, updated_at:NOW, ended_at:NOW)
     add_mess_points = if must_add_point && abs_work.points.to_i > 0
       user.add_points( abs_work.points )
-      " (#{abs_work.points} nouveaux points :-))"
+      " (#{abs_work.points} nouveaux points)"
     else
       ""
     end

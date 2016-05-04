@@ -45,7 +45,7 @@ def schema_table_user_works
     # Options
     # -------
     # Cf. le document Program > Works.md du RefBook
-    options:    {type:"VARCHAR(64)"},
+    options:    {type:"VARCHAR(64)", default:""},
 
     # Nombre de points actuels
     # ------------------------

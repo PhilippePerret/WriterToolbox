@@ -3,13 +3,6 @@ class Unan
 class Program
 class Work
 
-  # La méthode qui crée la donnée
-  def create
-    unless data2save.has_key?(:created_at)
-      data2save.merge!( created_at: NOW )
-    end
-    @id = table.insert( data2save )
-  end
 
   # ---------------------------------------------------------------------
   #   Data bdd
@@ -21,19 +14,6 @@ class Work
   def ended_at    ; @ended_at     ||= get(:ended_at)    end
   def created_at  ; @created_at   ||= get(:created_at)  end
   def updated_at  ; @updated_at   ||= get(:updated_at)  end
-
-  def data2save
-    @data2save ||= {
-      program_id:   program.id  ,
-      abs_work_id:  abs_work_id ,
-      abs_pday:     abs_pday,
-      status:       status      ,
-      options:      options     ,
-      updated_at:   NOW
-    }
-  end
-  # Pour définir les données à enregistrer à la création
-  def data2save= hdata; @data2save = hdata end
 
   # ---------------------------------------------------------------------
   #   Data volatile

@@ -13,7 +13,7 @@ Dir["./data/unan/data/**/*.rb"].each{|m| require m}
 RYTHME_STANDARD = 5
 
 # Le nombre de jours d'une année virtuelle
-# Lorsqu'on divise ce nombre par le rythme, on obtient 365, le nombre
+# Lorsqu'on divise ce nombre par le rythme, on obtient 366, le nombre
 # de jours d'une année réelle.
-DUREE_ANNEE_VIRTUELLE   = 365 * RYTHME_STANDARD
+DUREE_ANNEE_VIRTUELLE   = 366 * RYTHME_STANDARD
 DUREE_SEMAINE_VIRTUELLE = DUREE_ANNEE_VIRTUELLE / 7

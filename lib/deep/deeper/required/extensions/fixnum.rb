@@ -91,11 +91,13 @@ class ::Fixnum
     'septembre', 'octobre', 'novembre', 'décembre']
   MOIS_COURT = ['','jan', 'fév', 'mars', 'avr', 'mai', 'juin', 'juil', 'août',
     'sept', 'oct', 'nov', 'déc']
-  def as_human_date mois_long = true, with_clock = false, thin = "<thin></thin>"
+  def as_human_date mois_long = true, with_clock = false, thin = nil, delim_hours = nil
+    thin        ||= "<thin></thin>"
+    delim_hours ||= "-"
     mois = mois_long ? MOIS_LONG[Time.at(self).month] : MOIS_COURT[Time.at(self).month]
     self_time = Time.at(self)
     ahd = self_time.strftime("%e") + thin + mois + thin + self_time.strftime("%Y")
-    ahd << "#{thin}-#{thin}" + self_time.strftime("%H:%M") if with_clock
+    ahd << "#{thin}#{delim_hours}#{thin}" + self_time.strftime("%H:%M") if with_clock
     ahd.strip
   end
 

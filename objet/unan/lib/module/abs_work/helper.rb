@@ -131,9 +131,9 @@ class AbsWork
       nombre_de_points +
       "#{titre}".in_div(class:'titre')     +
       "#{travail}".in_div(class:'travail') +
-      # date_fin_attendue +
-      # form_pour_marquer_started_or_fini +
-      # details_tache +
+      rwork.div_echeance +
+      form_pour_marquer_started_or_fini +
+      details_tache +
       # section_exemples +
       suggestions_lectures
     ).in_div(class:'work')
@@ -163,29 +163,45 @@ class AbsWork
       listepages
     ).in_div(class:'suggestions_lectures')
   end
-  def date_fin_attendue
-    return "" if relatif_completed?
-    doit = relatif_depassement? ? "aurait dû" : "doit"
-    avez = relatif_depassement? ? "aviez" : "avez"
-    mess_duree = "Ce travail #{doit} être accompli en #{relatif_duree_relative.as_jours}."
-    css  = ['exbig']
-    css << "warning" if depassement?
 
-    mess_echeance = "Il a débuté le #{relatif_started_at.as_human_date(true, true)}, il #{doit} être achevé le <span class='#{css.join(' ')}'>#{relative_expected_at.as_human_date(true, true)}</span>."
-    mess_reste_jours = if depassement?
-      "Vous êtes en dépassement de <span class='exbig'>#{temps_humain_depassement}</span>.".in_div(class:'warning').in_div(class:'depassement')
+  # Un lien pour soit marquer le travail démarré (s'il n'a pas encore été
+  # démarré) soit pour le marquer fini (s'il a été fini). Dans les deux cas,
+  # c'est un lien normal qui exécute une action avant de revenir ici.
+  def form_pour_marquer_started_or_fini
+    return "" if rwork.completed?
+    if rwork.started?
+      "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches")
     else
-      (
-        "Reste".in_span(class:'libelle va_bottom')      +
-        temps_humain_restant.in_span(class:'mark_fort')
-      ).in_div(class:'right air')
-    end
+      "Démarrer ce travail".in_a(href:"work/start?in=unan/program&cong=taches&awork=#{id}&wpday=#{rwork.indice_pday}")
+    end.in_div(class:'buttons')
+  end
 
+  # Les détails de la tâche
+  def details_tache
+    return "" if rwork.completed?
     (
-      mess_duree.in_div     +
-      mess_echeance.in_div  +
-      mess_reste_jours
-    ).in_div(class:'dates')
+      span_type_tache +
+      span_resultat
+    ).in_div(class:'details')
+  end
+
+  # Retourne la section contenant les exemples s'ils existent
+  def section_exemples
+    return "" if exemples.empty?
+    exemples_ids.collect do |eid|
+      "Exemple ##{eid}".in_a(href:"exemple/#{eid}/show?in=unan", target:'_exemple_work_').in_span
+    end.join.in_div(class:'exemples')
+  end
+
+  def span_type_tache
+    ("Type".in_span(class:'libelle') + human_type_w.in_span).in_span
+  end
+  def span_resultat
+    return "" if resultat.empty?
+    c = ""
+    c << ("Résultat".in_span(class:'libelle') + resultat).in_span
+    c << human_type_resultat
+    return c
   end
 
   # ---------------------------------------------------------------------
