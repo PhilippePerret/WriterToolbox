@@ -177,9 +177,17 @@ class Bureau
     # ou nom des travaux dans cet onglet
     def titre_onglet
       @titre_onglet ||= begin
-        data[:titre] + (has_travaux? ? " (#{nombre_travaux})".in_span(class:'nombre') : '')
+        data[:titre] + nombre_travaux_human
       end
     end
+
+    def nombre_travaux_human
+      return '' unless has_travaux?
+      css = ['nombre']
+      css << 'warning bold' if has_travaux_to_start?
+      " (#{nombre_travaux})".in_span(class:css.join(' '))
+    end
+
     def titre_panneau
       @titre_panneau ||= (data[:plain_titre]||data[:titre]).in_h3
     end
@@ -200,6 +208,13 @@ class Bureau
     def has_travaux?
       @has_travaux ||= (nombre_travaux > 0)
     end
+    def has_travaux_to_start?
+      @has_travaux_ot_start ||= begin
+        bureau.current_pday.nombre_tostart_of_type( data[:knombre] ) > 0
+      end
+    end
+    # Si des travaux sont à démarrer, le nombre est mis
+    # en rouge.
     def nombre_travaux
       @nombre_travaux ||= begin
         if data[:knombre].nil?

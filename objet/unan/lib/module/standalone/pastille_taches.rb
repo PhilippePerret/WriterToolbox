@@ -1,7 +1,9 @@
 # encoding: UTF-8
 =begin
-Module “standalone” : il se trouve défini dans un objet mais
-il peut être appelé sans que l'objet lui-même ne soit appelé.
+
+  Module “standalone” : il se trouve défini dans un objet mais
+  il peut être appelé sans que l'objet lui-même ne soit appelé.
+
 =end
 class User
 
@@ -16,10 +18,6 @@ class User
   # chargé à chaque chargement de page même lorsque l'utilisateur
   # ne se trouve pas dans la section du programme)
   def set_pastille_taches
-    # return ""
-    # QUESTION : Comment faire pour que ces tâches soient utilisables
-    # sur n'importe quel site et pas seulement ici ?
-
     site.require_module 'pastille'
     ipastille = SiteHtml::Pastille::new
     # Procéder à l'état des lieux du programme UN AN UN SCRIPT et
@@ -36,53 +34,46 @@ class User
   #   :css      La classe à donner à la pastille (en fait : la couleur du fond)
   #   :href     L'URL qu'il faut rejoindre pour voir les tâches.
   def data_pastille_etat_des_lieux
-    # MAINTENANT, j'essaie de me débrouiller seulement avec
-    # l'instance Unan::Program::CurPDay qui peut tout
-    # calculer
-
-    # etat_des_lieux_programme_unan
-    # inv = @unan_inventory
-    # taches = Array::new
-    # taches << "TRAVAUX UN AN UN SCRIPT".in_span(class:'underline')
-    # taches << "#{travaux_s inv[:nombre_travaux]} en cours."
-    # taches << "Pages de cours à lire : #{inv[:nombre_pages_cours]}."
-    # taches << "Quiz à remplir : #{inv[:nombre_quiz]}."
-    # taches << if inv[:nombre_travaux_not_started] > 0
-    #   "#{travaux_s inv[:nombre_travaux_not_started]} à démarrer.".in_span(class:'bold red')
-    # else
-    #   "Aucun travail à démarrer."
-    # end
-    # taches << "Échéance dépassée pour #{travaux_s inv[:nombre_travaux_overtimed]}.".in_span(class:'bold red') if inv[:nombre_travaux_overtimed] > 0
-
     # Pour obtenir les méthodes qui permettent de comparer
     # les travaux exécutés aux travaux non démarrés en utilisant
     # l'instance Unan::Program::CurPDay (current_pday)
     SuperFile::new('./objet/unan/lib/required/cur_pday').require
     SuperFile::new('./objet/unan/lib/required/program').require
 
-    icurpday = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
+    icp = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
 
-    nombre_travaux = icurpday.nombre_travaux_courant
-    nombre_tasks_encours  = icurpday.undone_tasks.count
-    nombre_pages_encours  = icurpday.undone_pages.count
-    nombre_quiz_encours   = icurpday.undone_quiz.count
-    nombre_unstarted      = icurpday.works_undone.count - icurpday.works_started.count
+    nombre_travaux = icp.nombre_travaux_courant
+    nombre_tasks_encours  = icp.undone_tasks.count
+    nombre_pages_encours  = icp.undone_pages.count
+    nombre_quiz_encours   = icp.undone_quiz.count
+    nombre_tostart        = icp.works_undone.count - icp.works_started.count
     nombre_depassements = 0 # TODO: À RÉGLER
 
     taches = Array::new
-    taches << "TRAVAUX UN AN UN SCRIPT".in_span(class:'underline')
-    taches << "#{travaux_s nombre_travaux} en cours."
-    taches << "Tâches quelconques : #{nombre_tasks_encours}"
-    taches << "Pages de cours à lire : #{nombre_pages_encours}."
-    taches << "Quiz à remplir : #{nombre_quiz_encours}."
-    taches << if nombre_unstarted > 0
-      "#{travaux_s nombre_unstarted} à démarrer.".in_span(class:'bold red')
+    taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
+    taches << "#{travaux_s nombre_travaux} en cours.".in_div(class:'bold') +
+              "Tâches quelconques : #{nombre_tasks_encours}".in_div +
+              "Pages de cours à lire : #{nombre_pages_encours}.".in_div +
+              "Quiz à remplir : #{nombre_quiz_encours}.".in_div
+    taches << if nombre_tostart > 0
+      nombre_tasks_tostart  = icp.undone_tasks.count - icp.tasks_started.count
+      nombre_pages_tostart  = icp.undone_pages.count - icp.pages_started.count
+      nombre_quiz_tostart   = icp.undone_quiz.count - icp.quiz_started.count
+      nombre_forum_tostart  = icp.undone_forum.count - icp.forum_started.count
+      (
+        "#{travaux_s nombre_tostart} à amorcer :".in_div(class:'bold') +
+        (nombre_tasks_tostart > 0 ? "  - Tâches à démarrer : #{nombre_tasks_tostart}".in_div : "") +
+        (nombre_pages_tostart > 0 ? "  - Cours à marquer “vu” : #{nombre_pages_tostart}".in_div : '') +
+        (nombre_forum_tostart > 0 ? "  - Messages       : #{nombre_forum_tostart}".in_div : '') +
+        (nombre_quiz_tostart  > 0 ? "  - Quiz à remplir : #{nombre_quiz_tostart}".in_div : '')
+      ).in_div(class:'red')
+
     else
       "Aucun travail à démarrer."
     end
     taches << "Échéance dépassée pour #{travaux_s nombre_depassements}.".in_span(class:'bold red') if nombre_depassements > 0
 
-    css = if (nombre_unstarted + nombre_depassements) > 0
+    css = if (nombre_tostart + nombre_depassements) > 0
       'red'
     else
       'green'

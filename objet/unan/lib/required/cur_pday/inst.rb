@@ -235,6 +235,52 @@ class CurPDay
     end
   end
 
+  # Nombre de travaux à démarrer par +type+
+  def nombre_tostart_of_type type
+    debug "type: #{type.inspect}"
+    debug "undone_of_type(#{type}) : #{undone_of_type(type).count}"
+    debug "started_by_type[#{type}]: #{started_by_type[type].count}"
+    undone_of_type(type).count - started_by_type[type].count
+  end
+
+  # Calculées ci-dessous dans works_started
+  def tasks_started ; @tasks_started  end
+  def pages_started ; @pages_started  end
+  def quiz_started  ; @quiz_started   end
+  def forum_started ; @forum_started  end
+
+  def started_by_type
+    @started_by_type ||= begin
+      h = Hash::new
+      uworks = auteur.table_works.select(where: "status < 9")
+      sbt = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new
+      }
+      uworks.each do |wid, wdata|
+        type_w = wdata[:options][0..1].to_i
+        wdata.merge!(
+          type_w:     type_w,
+          type:       Unan::Program::AbsWork::TYPES[type_w][:type]
+          )
+        sbt[wdata[:type]] << wdata
+        h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
+      end
+
+      # On définit les variables @tasks_started, etc.
+      sbt.each do |type, liste|
+        type_plur = case type
+        when :quiz, :forum then type
+        else "#{type}s".to_sym
+        end
+        instance_variable_set("@#{type_plur}_started", liste)
+      end
+      @works_started = h
+      sbt
+    end
+  end
   # Retourne un Hash des travaux en cours qui ont été
   # démarrés mais pas encore finis. Ça correspond aux
   # travaux vraiment en cours
@@ -246,19 +292,7 @@ class CurPDay
   # fois le même abs-work qui est utilisé plusieurs jours
   # différents.
   def works_started options = nil
-    @works_started ||= begin
-      h = Hash::new
-      uworks = auteur.table_works.select(where: "status < 9")
-      uworks.each do |wid, wdata|
-        type_w = wdata[:options][0..1].to_i
-        wdata.merge!(
-          type_w: type_w,
-          type:   Unan::Program::AbsWork::TYPES[type_w][:type]
-          )
-        h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
-      end
-      h
-    end
+    @works_started || started_by_type
 
     options ||= Hash::new
     options[:as] = :hdata unless options.has_key?(:as)

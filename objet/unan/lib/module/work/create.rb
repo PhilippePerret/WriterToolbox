@@ -33,6 +33,14 @@ def create_new_work_for_user wdata
   # debug "work.data2save : #{work.data2save.pretty_inspect}"
   iwork.create
 
+  # J'essaie ça pour forcer la réactualisation mais ce n'est pas
+  # certain que ce soit ça qu'il faille faire
+  # En tout cas, si ça marche, ça ne fonctionnera pas pour la
+  # pastille des tâches
+  if respond_to?(:bureau) && bureau.respond_to?(:current_pday)
+    bureau.instance_variable_set('@current_pday', nil)
+  end
+
   return iwork
 end
 
