@@ -16,6 +16,7 @@ class User
   # chargé à chaque chargement de page même lorsque l'utilisateur
   # ne se trouve pas dans la section du programme)
   def set_pastille_taches
+    # return ""
     # QUESTION : Comment faire pour que ces tâches soient utilisables
     # sur n'importe quel site et pas seulement ici ?
 
@@ -67,15 +68,14 @@ class User
   # Noter que cet état des lieux peut se faire sans que l'objet
   # unan soit chargé, puisque le module travail en standalone
   def etat_des_lieux_programme_unan
-
     # La variable d'instance qui contiendra tous les états
     @unan_inventory = Hash::new
     @unan_inventory.merge!(
-      # Le nombre total de travaux en cours
+      # Le nombre total de travaux en cours (démarrés ou non)
       nombre_travaux: 0,
       # La liste des identifiants des travaux en cours
       travaux_ids: Array::new,
-      # Nombre de travaux non démarrés
+      # Nombre de travaux non démarrés (tout confondu)
       nombre_travaux_not_started: 0,
       # {Hash} Données des travaux non démarrés
       # Clé = ID du travail, Value = Hash des données du travail
@@ -102,28 +102,42 @@ class User
     require './objet/unan/lib/required/program/inst.rb'
     require './objet/unan/lib/required/program/data.rb'
 
+    # Pour obtenir les méthodes qui permettent de comparer
+    # les travaux exécutés aux travaux non démarrés en utilisant
+    # l'instance Unan::Program::CurPDay (current_pday)
+    SuperFile::new('./objet/unan/lib/required/cur_pday').require
+
     raise "Vous n'avez aucun programme courant, étrange…" if programme_id.nil?
-    debug "ID programme UN AN UN SCRIPT user ##{id} : #{programme_id}"
+    # debug "ID programme UN AN UN SCRIPT user ##{id} : #{programme_id}"
     iprogram = Unan::Program::new(programme_id)
     path_db = site.folder_db + "unan/user/#{user.id}/programme#{programme_id}.db"
     raise "La db de votre programme courant est introuvable… (#{path_db})" unless path_db.exist?
 
-    # Ici, on a toutes les informations pour récupérer les travaux
-    colonnes  = [:status, :abs_work_id, :created_at]
+
+    # Instance {Unan::Program:CurPDay} qui permet de gérer les
+    # travaux avec la nouvelle formule qui n'enregistre des
+    # instances Work que lorsque l'auteur démarre le travail
+    # Permettra d'utiliser :
+    #   icurpday.undone_tasks et compagnie
+    icurpday = Unan::Program::CurPDay::new(iprogram.current_pday, self.id)
+
+
+    # Ici, on a toutes les informations pour récupérer les travaux.
+    # Noter que maintenant, seuls les travaux commencés (démarrés)
+    # possèdent une instance Work. Donc il faut vérifier les travaux
+    # qui existent au moment où on appelle ce module.
+    colonnes  = [:status, :abs_work_id, :abs_pday, :created_at]
     # Note : dans la clause WHERE, il faut passer les travaux qui
     # sont programmés dans le futur.
     where     = "status < 9 AND created_at <= #{NOW}"
     hworks = BdD::new(path_db.to_s).table('works').select(where:where, colonnes:colonnes)
-    # debug "Travaux relevés dans base : #{hworks.pretty_inspect}"
+    debug "Travaux relevés dans base : #{hworks.pretty_inspect}"
 
-    # Le rythme courant de l'user
-    # debug "Rythme programme de l'user ##{id} : #{iprogram.rythme}"
-    # debug "Coefficiant durée : #{iprogram.coefficient_duree}"
 
-    # On récupère quelques données des travaux absolues qui serviront
+    # On récupère quelques données absolues des travaux qui serviront
     # pour faire l'état des lieux
-    abs_works_ids = hworks.collect { |wid, wdata| wdata[:abs_work_id] }
-    where     = "id IN (#{abs_works_ids.join(', ')})"
+    aworks_ids = hworks.collect { |wid, wdata| wdata[:abs_work_id] }
+    where     = "id IN (#{aworks_ids.join(', ')})"
     colonnes  = [:titre, :duree, :type_w]
     habsworks = Unan::table_absolute_works.select(where:where, colonnes:colonnes)
 
@@ -132,12 +146,12 @@ class User
     # Unan::Program::AbsWork::TYPES
     require './data/unan/data/listes.rb'
 
-    # Les travaux non démarrés
+    # Les travaux non terminés
     hworks.each do |wid, wdata|
-      abs_work_id = wdata[:abs_work_id]
+      awork_id = wdata[:abs_work_id]
       # Les données complètes, avec le titre du travail et la durée
       # récupérée dans les données absolues du travail.
-      full_wdata = wdata.merge(habsworks[abs_work_id])
+      full_wdata = wdata.merge(habsworks[awork_id])
 
       # Est-ce que l'échéance de ce travail est dépassée ?
       # Noter qu'il faut tenir compte du rythme de travail
@@ -162,22 +176,6 @@ class User
       @unan_inventory[:travaux_ids]     << wid
       @unan_inventory[:nombre_travaux]  += 1
 
-      if wdata[:status] == 0
-        case type_w
-        when :tasks
-          # <= Un travail non démarré
-          @unan_inventory[:nombre_travaux_not_started] += 1
-          @unan_inventory[:travaux_not_started].merge!(wid => full_wdata)
-        when :quiz
-          # <= Un quiz à faire
-          @unan_inventory[:nombre_quiz] += 1
-          @unan_inventory[:quiz].merge!(wid => full_wdata)
-        when :pages
-          # <= Une page de cours à lire
-          @unan_inventory[:nombre_pages_cours] += 1
-          @unan_inventory[:pages_cours].merge!(wid => full_wdata)
-        end
-      end
       if is_overtimed
         # <= Un travail dont l'échéance est dépassée
         @unan_inventory[:nombre_travaux_overtimed] += 1
@@ -189,7 +187,24 @@ class User
       end
     end # / fin boucle sur tous les travaux en cours de l'user
 
+    # On ajoute tous les travaux non démarrés
+    @unan_inventory[:nombre_travaux_not_started] += icurpday.works_undone(as: :ids).count
+
+    @unan_inventory[:nombre_travaux] += @unan_inventory[:nombre_travaux_not_started]
+    # # icurpday.undone_tasks.each do |hwork|
+    # #   @unan_inventory[:travaux_not_started].merge!(hwork[:id] => hwork)
+    # # end
+    # @unan_inventory[:nombre_quiz] += icurpday.undone_quiz.count
+    # # @unan_inventory[:quiz].merge!(wid => wdata)
+    # @unan_inventory[:nombre_pages_cours] += icurpday.undone_pages.count
+    # # @unan_inventory[:pages_cours].merge!(wid => wdata)
+    # @unan_inventory[:nombre_forum] + icurpday.undone_forum.count
+
+
     # debug "\n\n@unan_inventory total : #{@unan_inventory.pretty_inspect}\n\n"
+  rescue Exception => e
+    debug e
+    ""
   end
 
   # {Fixnum} Retourne l'ID du programme actuellement suivi par

@@ -62,9 +62,9 @@ class User
   def create_tables_1a1s
     # debug "-> create_tables_1a1s"
     # debug "Dossier de définition de table : #{folder_tables_definitions.to_s}"
-    Dir["#{folder_tables_definitions.to_s}/*.rb"].each do |schema_path|
+    Dir["#{folder_tables_definitions.to_s}/*.rb"].reverse.each do |schema_path|
       table_name = File.basename(schema_path)[6..-4]
-      # debug "Nom de la table : '#{table_name}'"
+      # debug "[create_tables_1a1s] Nom de la table : '#{table_name}'"
       require schema_path
       schema_method = "schema_table_user_#{table_name}"
       table_schema = send( schema_method.to_sym )

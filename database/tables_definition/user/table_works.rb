@@ -32,7 +32,7 @@ def schema_table_user_works
     abs_work_id: {type:"INTEGER", constraint:"NOT NULL"},
 
     # Indice du jour-programe de ce travail
-    abs_pday: {type:"INTEGER", constraint: "NOT NULL"},
+    abs_pday:   {type:"INTEGER", constraint: "NOT NULL"},
 
     # État du travail
     # ---------------
@@ -40,7 +40,7 @@ def schema_table_user_works
     # Noter que chaque élément de l'user possède cette propriété
     # `status` pour savoir où il en est. Elle renvoie chaque fois à
     # une liste propre décrivant le status.
-    status: {type:"INTEGER(1)", contraint:"NOT NULL", default:0},
+    status: {type:"INTEGER(1)", constraint:"NOT NULL", default:0},
 
     # Options
     # -------
@@ -55,7 +55,7 @@ def schema_table_user_works
     # pouvoir passer au travail suivant.
     # Ces points sont notamment gagnés grâce aux questionnnaires et
     # grâce aux questions "à la volée" posées
-    points: {type:"INTEGER(3)",constraint:"NOT NULL", default:0},
+    points: {type:"INTEGER(3)", constraint:"NOT NULL", default:0},
 
     # Les temps
     # ---------

@@ -3,6 +3,18 @@
 
 Instance CurPDay pour gérer le pday courant
 
+Ce module doit pouvoir être chargé en standalone, par exemple
+par le traitement de la pastille qui indique à l'auteur
+les taches qu'il a à faire, etc.
+
+Une fois chargé par :
+
+  SuperFile::new('./objet/unan/lib/required/cur_pday').require
+
+On peut l'instancier avec :
+
+  icurday = Unan::Program::CurPDay::new( <{Fixnum} indice pday>, <{User} auteur> )
+
 =end
 class Unan
 class Program
@@ -57,6 +69,8 @@ class CurPDay
     end
   end
 
+  # Retourne des listes {Array} contenant des
+  # Hash des données de travaux
   def undone_tasks
     @undone_tasks ||= undone_of_type(:task)
   end
@@ -112,12 +126,9 @@ class CurPDay
 
     @non_accomplis ||= begin
       undone = works_until_now(as: :hash_ids).dup
-      debug "non_accomplis au départ : #{undone.inspect}"
-      debug "works_done : #{works_done.inspect}"
       works_done.each do |idpaire, vrai|
         undone.delete(idpaire)
       end
-      "non_accomplis à la fin : #{undone.inspect}"
       undone
     end
 
