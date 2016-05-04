@@ -152,6 +152,10 @@ class CurPDay
   # Retourne la liste des travaux non accomplis par l'auteur
   # courant au jour-programme courant
   #
+  # Note : Si c'est un travail qui a été commencé, le hash
+  # de données retourné (if any) définit également `work_id`
+  # l'identifiant du travail dont il est question.
+  #
   # :options:
   #   :as   Détermine le format du retour
   #       :ids    Simple liste des identifiants d'abs_work
@@ -185,38 +189,52 @@ class CurPDay
     # d'un double-point et de l'indice du jour-programme)
     ids = case options[:as]
     when :ids, :hdata
-      @last_pday_of_abswork = Hash::new
-      @non_accomplis.collect do |idpaire, vrai|
-        wid, indice_pday = idpaire.split(':')
+      @last_pday_of_abswork ||= begin
+        h = Hash::new
+        @non_accomplis.collect do |idpaire, vrai|
+          wid, indice_pday = idpaire.split(':')
 
-        wid = wid.to_i
-        # Associer le pday au wid. Noter que ce sera toujours
-        # seulement le dernier pday qui sera associé, même
-        # lorsque l'abs_work est utilisé plusieurs fois
-        @last_pday_of_abswork.merge!( wid => indice_pday.to_i )
-        # Retourner l'identifiant du work
-        wid
+          wid = wid.to_i
+          # Associer le pday au wid. Noter que ce sera toujours
+          # seulement le dernier pday qui sera associé, même
+          # lorsque l'abs_work est utilisé plusieurs fois
+          h.merge!( wid => indice_pday.to_i )
+          # Retourner l'identifiant du work
+          wid
+        end
+        h
       end
     end
 
     # Le retour renvoyé en fonction du :as
     case options[:as]
     when :ids
-      @works_undone_as_ids = ids
+      @works_undone_as_ids ||= ids
     when :hdata
-      res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
-      # On ajoute certaines données utiles, dont :
-      #   Le type de travail (:task, :page, :forum ou :quiz)
-      #   Le jour-programme où se travail était programmé (en espérant
-      #   qu'il n'y en a qu'un seul, même lorsque le même abs-work est
-      #   utilisé plusieurs fois)
-      res.each do |wid, wdata|
-        res[wid].merge!(
-          type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
-          indice_pday:  @last_pday_of_abswork[wid]
-          )
+      @works_undone_as_hdata ||= begin
+        res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
+        # On ajoute certaines données utiles, dont :
+        #   Le type de travail (:task, :page, :forum ou :quiz)
+        #   Le jour-programme où ce travail était programmé (pour composer
+        #   le `pairid` qui permet de voir si un travail a été démarré pour
+        #   ce travail)
+        res.each do |wid, wdata|
+          idpday = @last_pday_of_abswork[wid]
+          pairid = "#{wid}:#{idpday}"
+          # Est-ce qu'un travail existe ?
+          work_id = if works_started.has_key?(pairid)
+            works_started[pairid][:id]
+          else
+            nil
+          end
+          res[wid].merge!(
+            type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
+            indice_pday:  idpday,
+            work_id:      work_id
+            )
+        end
+        res
       end
-      @works_undone_as_hdata = res
     end
   end
 

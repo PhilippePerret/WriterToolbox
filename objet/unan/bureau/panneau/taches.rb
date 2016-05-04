@@ -35,10 +35,11 @@ class Bureau
         inst = Unan::Program::AbsWork::get( wdata[:id] )
         # Les données relatives qui doivent être passées à
         # AbsWork pour déterminer son `rwork` (RelatifWork)
-        inst.relative_data = {
+        inst.relative_data= {
           indice_pday:          wdata[:indice_pday],
           indice_current_pday:  current_pday.indice,
-          user_id:              auteur.id
+          user_id:              auteur.id,
+          work_id:              wdata[:work_id]
         }
         inst
       end
