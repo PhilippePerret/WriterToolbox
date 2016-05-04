@@ -16,10 +16,10 @@ class Program
   #   Data du programme
   # ---------------------------------------------------------------------
   # {User} Auteur du programme
-  def auteur_id     ; @auteur_id ||= get(:auteur_id)    end
+  def auteur_id     ; @auteur_id  ||= get(:auteur_id)    end
   # {String} Options du programme
-  def options       ; @options ||= get(:options) || ""  end
-  def points        ; @points   ||= get(:points) || 0   end
+  def options       ; @options    ||= get(:options) || ""  end
+  def points        ; @points     ||= get(:points) || 0   end
   def created_at    ; @created_at ||= get(:created_at)  end
   def updated_at    ; @updated_at ||= get(:updated_at)  end
   # {Fixnum} Le rythme
@@ -29,7 +29,6 @@ class Program
   # {Fixnum} Jour-programme courant
   # On peut le définir par <auteur>.program.current_pday = <i jour programme>
   def current_pday
-    return 1
     @current_pday ||= get(:current_pday)
   end
   # Définit le nouveau jour-programme (en définissant également

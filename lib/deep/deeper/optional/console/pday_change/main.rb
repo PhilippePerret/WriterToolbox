@@ -28,31 +28,9 @@ class User
     # debug "-> change_pday(pday_indice=#{pday_indice.inspect}, params=#{params.inspect})"
     params ||= Hash::new
 
-    # Initialiser toutes les valeurs de l'user
-    # ----------------------------------------
-    # Effacer tous les pdays propres enregistrés
-    ( table_pdays.delete nil, true )
-    # Effacer tous les enregistrements de works
-    ( table_works.delete nil, true )
-    # Effacer tous les enregistrements de lecture de page
-    ( table_pages_cours.delete nil, true )
-    # Effacer tous les enregistrements de quiz
-    ( table_quiz.delete nil, true )
     # Le total de ses points mis à zéro
     set_var(:total_points => 0)
     set_var(:total_points_program => 0)
-    # Toutes les listes des travaux vidées
-    ids_lists = {
-      works:  Array::new(), # contient tous les travaux
-      pages:  Array::new(),
-      quiz:   Array::new(),
-      tasks:  Array::new(),
-      forum:  Array::new(),
-      none:   Array::new()  # ?
-    }
-    ids_lists.each do |id_list, val_list|
-      set_var("#{id_list}_ids".to_sym => Array::new)
-    end
 
     # Réglage et analyse des options
     # Le rythme adopté par l'user, soit dans les paramètres
@@ -63,9 +41,8 @@ class User
     # de jour
     just_in_time = !!params.delete(:just_in_time)
 
-    # Changer le current_pday de l'user
-    set_var(:current_pday, pday_indice)
-
+    # Changer le current_pday du programme de l'user
+    program.current_pday= pday_indice
 
     # Par précaution, on enregistre toujours le rythme du programme
     # dans les données du programme.
@@ -85,184 +62,6 @@ class User
     # ça corresponde au rythme et au jour choisi
     debut_time = faux_now - ( coef_duree * ( pday_indice.days - 1000 ) ).to_i
     program.set(created_at: debut_time, updated_at: debut_time + 4000)
-
-    # Remonter les pdays depuis le premier jour jusqu'à la VEILLE
-    # du jour voulu pour :
-    #   1. Faire les enregistrements de pdays (-> table_pdays)
-    #   2. Faire les enregistrements de works (-> table_works)
-    (1..pday_indice).each do |pday_id|
-
-      is_current_pday = pday_id == pday_indice
-
-      iabs_pday = ( Unan::Program::AbsPDay::get pday_id )
-      iusr_pday = ( Unan::Program::PDay::new program, pday_id )
-
-      # Le temps où a dû être créé le jour-programme (en tenant compte
-      # du rythme qui a pu être défini par les paramètres.
-      pday_time = (faux_now - ( coef_duree * (pday_indice - pday_id + 1).days )).to_i
-      # debug "NOW        : #{NOW}\n" +
-      #       "pday_time  : #{pday_time}"
-
-      # Le statut du p-day. Il est à 1 quand le PDay est en cours
-      # 1: Déclenché par le programme
-      # 2: Déclenché par l'user lui-même
-      # 4: Achevé
-      # Mais ce statut va être décidé en fonction des travaux, suivant le
-      # fait qu'il faut laisser des travaux inachevés ou non.
-      pday_status = 1
-      # pday_status += 2 unless is_current_pday
-      pday_status += 4 unless is_current_pday
-
-      # Les points
-      # Ces points dépendent des works. Si les paramètres l'exigent
-      # certaines travaux peuvent avoir été remis en retard et donc ne
-      # pas avoir apportés autant de points que voulus à l'auteur. Dans le cas
-      # contraire, on additionne simplement tous les points des travaux.
-      # Note : On met aussi à 0 pour le jour courant
-      pday_points = 0
-
-
-      # --------------------------------------------------
-      # Les travaux du jour absolu traités
-      # (tous les jours-absolus jusqu'au jour voulu sont
-      #  traités par cette méthode)
-      #
-      # Deux traitements différents en fonction du fait que
-      # c'est le jour courant ou non. Si ce n'est pas le
-      # jour courant, on enregistre ce travail comme s'il
-      # avait été fait. Sinon, on l'enregistre dans les
-      # travaux à faire.
-      # --------------------------------------------------
-      iabs_pday.works(:as_instances).each do |iabswork|
-
-        # La durée du travail, approximativement, en fonction
-        # du rythme choisi. Pour le moment, on prend le parti
-        # que le travail a été exécuté en temps et en heure.
-        # Note : Pour le jour courant, bien entendu, le travail
-        # n'a pas encore de durée, dont la donnée updated_at est
-        # égale à created_at.
-        # TODO Tenir compte des paramètres qui peuvent décider qu'on
-        # n'est pas ok sur ce travail.
-        duree_work = is_current_pday ? 0 : ((iabswork.duree.days * coef_duree) - rand(3600*4)).to_i
-
-        # La date de fin du travail en fonction de sa durée
-        work_end_time = pday_time + ( coef_duree * iabswork.duree.days ).to_i
-
-        # Est-ce que c'est un travail fini a priori. Un travail
-        # n'est pas fini si sa date de fin `work_end_time` est
-        # supérieure à maintenant
-        work_is_completed = work_end_time < NOW
-        work_is_not_completed = !work_is_completed
-
-        # debug "NOW            : #{faux_now}\n"+
-        #       "work_end_time  : #{work_end_time}\n"+
-        #       "work_is_completed : #{work_is_completed.inspect}"
-
-
-        # Pour le moment, le status est mis à 9 pour dire
-        # que le travail a été terminé. Plus tard, on pourra modifier
-        # cette donnée pour faire des travaux en retard, etc.
-        work_status = work_is_completed ? 9 : 0
-
-        # Une instance iwork provisoire, juste pour récupérer
-        # les data2save
-        iwork_prov = ( Unan::Program::Work::new program, nil )
-
-        # Il faut enregistrer un record work dans la table
-        # des works de l'auteur
-        data2save = iwork_prov.data2save
-        data2save.merge!(
-          abs_work_id:  iabswork.id,
-          status:       work_status,
-          created_at:   pday_time,
-          updated_at:   pday_time + duree_work
-        )
-        work_id = self.table_works.insert( data2save )
-        # debug "= Création du work ##{work_id} : #{data2save.inspect}"
-
-        # On (RE)prend l'instance du work user, on en aura besoin
-        # juste ci-dessous
-        iwork = Unan::Program::Work::new( program, work_id )
-
-        # Les points supplémentaires
-        # Pour les questionnaires, ce sont les points marqués ou
-        # retirés suivant les réponses
-        # Note : Cette donnée ne sert pas pour le jour courant
-        extra_points = 0
-
-        # Si c'est le jour courant ou que le travail n'est pas
-        # terminé, on doit définir les variables
-        # de travail de l'user (les vars :tasks, :pages, etc.)
-        if is_current_pday || work_is_not_completed
-          ids_lists[:works]                 << work_id
-          ids_lists[iabswork.id_list_type]  << work_id
-        else
-          # Si ce n'est pas le jour courant, il faut simuler qu'on
-          # a fait ce travail.
-          #
-          # On fonction du type de travail, on peut avoir d'autres
-          # enregistrement à faire :
-          # - Si c'est une page de cours à lire => un enregistrement dans
-          #   la table des pages de cours de l'user avec les lectures
-          # - Si c'est un quiz => un enregistrement dans la table des quiz
-          #   de l'user avec les résultats (faut-il vraiment le faire ?)
-          # - Autre ?
-          case iabswork.id_list_type
-          when :pages then fakes_lectures_pages( iabswork, iwork)
-          when :quiz  then extra_points += fakes_reponses_quiz( iabswork, iwork)
-          when :forum then
-            # Ne rien faire pour le moment
-          else
-            # Ne rien faire pour le moment
-          end
-
-          # Sans autre forme de procès, on peut ajouter les points
-          # de ce travail aux points finaux du pday
-          # TODO SI les paramètres le demandent, il faut pondérer les
-          # points avec quelques retards.
-          pday_points += (iabswork.points || 0) + extra_points
-        end # / fin de si ce n'est pas un jour programme (dans le `else`)
-
-      end #/loop sur chaque travail du pday courant
-
-      # -----------------------------------------------------
-      # Finalisation de la donnée pday pour l'user
-      # -----------------------------------------------------
-
-      # On récupère les données pour pouvoir faire les
-      # ajustement dans le pday de l'user
-      dprov = iusr_pday.data2save
-
-      # Il faut calculer le temps auquel aurait été créé
-      # ce jour-programme (notamment pour le modifier dans la
-      # donnée enregistrée)
-      dprov.merge!(
-        id:           iabs_pday.id,
-        program_id:   program_id,
-        status:       pday_status,
-        points:       pday_points,
-        updated_at:   pday_time,
-        created_at:   pday_time
-      )
-      iusr_pday.instance_variable_set('@data2save', dprov)
-      # debug "* Création du pday ##{iusr_pday.id} : #{iusr_pday.data2save.inspect}"
-      iusr_pday.create
-
-      # On ajoute les points à l'auteur courant
-      self.add_points pday_points unless is_current_pday
-
-    end
-
-    # On enregistre les listes :tasks_ids, quiz_ids etc. dans les
-    # variables de l'auteur.
-    ids_lists.each do |key_list, arr_works|
-      next if arr_works.empty?
-      key = "#{key_list}_ids".to_sym.freeze
-      list = self.get_var(key, Array::new)
-      list += arr_works
-      self.set_var( key, list)
-      # debug "=== Liste #{key.inspect} mise à #{list.inspect}"
-    end
 
     unless just_in_time
       sub_log "Noter que le temps choisi est <strong>une heure avant la fin du #{pday_indice}<sup>e</sup> jour</strong>. Donc les travaux de la veille doivent être encore activés."

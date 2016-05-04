@@ -230,9 +230,9 @@ class AbsWork
       mess_reste_jours = message_jours_restants_or_depassement
 
       (
+        mess_reste_jours      +
         mess_duree.in_div     +
-        mess_echeance.in_div  +
-        mess_reste_jours
+        mess_echeance.in_div
       ).in_div(class:'dates')
     end
 
@@ -259,7 +259,7 @@ class AbsWork
       start_h = "#{started_at.as_human_date(true, start_with_hour, nil, 'à')}"
       end_h   = "#{expected_at.as_human_date(true, expec_with_hour, nil, 'à')}"
       end_h   = end_h.in_span(class: css.join(' '))
-      "Il a débuté le #{start_h}, il #{@doit} être achevé le #{end_h}."
+      "Il a débuté le #{start_h}<br>Il #{@doit} être achevé le #{end_h}."
     end
     def message_jours_restants_or_depassement
       @message_jours_restants_or_depassement ||= begin
@@ -267,9 +267,9 @@ class AbsWork
           "Vous êtes en dépassement de <span class='exbig'>#{depassement.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
         else
           (
-            "Reste".in_span(class:'libelle va_bottom')      +
+            "Reste".in_span(class:'libelle va_bottom') +
             human_reste.in_span(class:'mark_fort')
-          ).in_div(class:'right air')
+          ).in_span(class:'fright', style:'margin-top:4px;display:inline-block;margin-left:1em;vertical-align:middle')
         end
 
       end

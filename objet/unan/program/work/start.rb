@@ -45,6 +45,8 @@ begin
     raise "Aucun travail de ce type dans le jour-programme spécifié"
   end
 
+  awork = Unan::Program::AbsWork::get(abs_work_id)
+
 
   # Instance du nouveau travail
   work = Unan::Program::Work::new( user.program, nil )
@@ -53,11 +55,11 @@ begin
     abs_work_id:  abs_work_id,
     abs_pday:     work_pday,
     status:       1,  # pour le marquer démarré
-    options:      "",
+    options:      "#{awork.type_w}",
     created_at:   NOW,
     updated_at:   NOW
   }
-  debug "work.data2save : #{work.data2save.pretty_inspect}"
+  # debug "work.data2save : #{work.data2save.pretty_inspect}"
   work.create
 
   raise "Le travail devrait avoir été marqué démarré…" unless work.started?

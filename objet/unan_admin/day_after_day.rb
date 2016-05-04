@@ -67,6 +67,7 @@ class << self
   def works_per_pday
     res = Unan::table_absolute_pdays.select(colonnes:[:works])
     h = {}; res.each do |pid, pdata|
+      next if pdata[:works].nil?
       h.merge! pid => pdata[:works].split.collect{|i| i.to_i}
     end; h
   end

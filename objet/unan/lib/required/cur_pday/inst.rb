@@ -16,6 +16,8 @@ On peut l'instancier avec :
   icurday = Unan::Program::CurPDay::new( <{Fixnum} indice pday>, <{User} auteur> )
 
 =end
+require './objet/unan/lib/required/user/database.rb'
+
 class Unan
 class Program
 class CurPDay
@@ -36,6 +38,14 @@ class CurPDay
   def initialize indice, auteur = nil
     @indice = indice
     @auteur = auteur || user
+    @auteur = User::get(@auteur) if @auteur.instance_of?(Fixnum)
+  end
+
+
+  def nombre_travaux_courant
+    @nombre_travaux_courant ||= begin
+      works_undone.count
+    end
   end
 
   # Retourne absolument tous les travaux qui sont à faire
@@ -69,23 +79,60 @@ class CurPDay
     end
   end
 
-  # Retourne des listes {Array} contenant des
-  # Hash des données de travaux
-  def undone_tasks
-    @undone_tasks ||= undone_of_type(:task)
-  end
-  def undone_pages
-    @undone_pages ||= undone_of_type(:page)
-  end
-  def undone_quiz
-    @undone_quiz ||= undone_of_type(:quiz)
-  end
-  def undone_forum
-    @undone_forum ||= undone_of_type(:forum)
+  # Retourne les listes {Array} contenant des
+  # hash de données de travaux EXÉCUTÉS
+  def done_tasks  ; @done_tasks ||= done_of_type(:task)   end
+  def done_pages  ; @done_pages ||= done_of_type(:page)   end
+  def done_quiz   ; @done_quiz  ||= done_of_type(:quiz)   end
+  def done_forum  ; @done_forum ||= done_of_type(:forum)  end
+  # Retourne la liste {Array} des Hash de données
+  # des travaux DÉMARRÉS de type +type+
+  def done_of_type type
+    @done_of_type ||= begin
+      h = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new
+      }
+      works_done(as: :hdata).each do |wid, wdata|
+        h[wdata[:type]] << wdata
+      end
+      h
+    end
+    @done_of_type[type]
   end
 
+  # Les tâches en cours, par type
+  def tasks_encours   ; @tasks_encours  ||= encours_of_type(:task)  end
+  def pages_encours   ; @pages_encours  ||= encours_of_type(:page)  end
+  def quiz_encours    ; @quiz_encours   ||= encours_of_type(:quiz)  end
+  def forum_encours   ; @forum_encours  ||= encours_of_type(:forum) end
+  def encours_of_type type
+    @encours_of_type ||= begin
+      h = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new
+      }
+      works_started(as: :hdata).each do |wid, wdata|
+        h[wdata[:type]] << wdata
+      end
+      h
+    end
+    @encours_of_type[type]
+  end
+
+  # Retourne des listes {Array} contenant des
+  # Hash des données de travaux NON DÉMARRÉS
+  # par l'auteur
+  def undone_tasks  ; @undone_tasks ||= undone_of_type(:task)   end
+  def undone_pages  ; @undone_pages ||= undone_of_type(:page)   end
+  def undone_quiz   ; @undone_quiz  ||= undone_of_type(:quiz)   end
+  def undone_forum  ; @undone_forum ||= undone_of_type(:forum)  end
   # Retourne la liste {Array} des Hash de données
-  # des travaux non réalisés de type +type+
+  # des travaux NON TERMINÉS de type +type+
   def undone_of_type type
     @undone_by_type ||= begin
       h = {
@@ -173,20 +220,60 @@ class CurPDay
     end
   end
 
+  # Retourne un Hash des travaux en cours qui ont été
+  # démarrés mais pas encore finis. Ça correspond aux
+  # travaux vraiment en cours
+  #
+  # Noter qu'avec l'option :hdata, il y a en clé ce
+  # que j'appelle le `pairid` du travail c'est-à-dire un
+  # identifiant composé de "<abs work id>:<pday du travail>"
+  # pour pouvoir le retrouver exactement quand il y a plusieurs
+  # fois le même abs-work qui est utilisé plusieurs jours
+  # différents.
+  def works_started options = nil
+    @works_started ||= begin
+      h = Hash::new
+      uworks = auteur.table_works.select(where: "status < 9")
+      uworks.each do |wid, wdata|
+        type_w = wdata[:options][0..1].to_i
+        wdata.merge!(
+          type_w: type_w,
+          type:   Unan::Program::AbsWork::TYPES[type_w][:type]
+          )
+        h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
+      end
+      h
+    end
+
+    options ||= Hash::new
+    options[:as] = :hdata unless options.has_key?(:as)
+
+    case options[:as]
+    when :hdata then @works_started
+    end
+  end
   # Retourne un {Hash} avec en clé une clé composée par :
   #   '<abswork id>:<abspday>'
   # et en valeur true
   #
-  def works_done
+  def works_done options = nil
     @works_done ||= begin
       h = Hash::new
-      uworks = user.table_works.select(where: "status = 9", colonnes:[:abs_work_id, :abs_pday, :status])
+      uworks = auteur.table_works.select(where: "status = 9")
       uworks.each do |wid, wdata|
-        h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => true )
+        h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
       end
       h
     end
+
+    options ||= Hash::new
+    options[:as] = :hdata unless options.has_key?(:as)
+
+    case options[:as]
+    when :hdata then @works_done
+    end
   end
+
   # On relève tous les travaux qui ont été à faire
   # jusqu'au jour-programme courant.
   # Noter qu'il peut y en avoir des milliers si nous

@@ -7,6 +7,24 @@ class Unan
 class Program
 class AbsWork
 
+
+  # Affichage de la carte quand elle doit être
+  # propre à un travail et un auteur (c'était avant une
+  # méthode de Work). C'est la carte qui est affichée dans
+  # le bureau de l'auteur.
+  def as_card_relative
+    (
+      nombre_de_points +
+      "#{titre}".in_div(class:'titre')      +
+      "#{travail}".in_div(class:'travail')  +
+      rwork.div_echeance                    +
+      form_pour_marquer_started_or_fini     +
+      details_tache                         +
+      section_exemples                      +
+      suggestions_lectures
+    ).in_div(class:'work')
+  end
+
   # ---------------------------------------------------------------------
   #   Propriétés au format humain
   # ---------------------------------------------------------------------
@@ -94,10 +112,8 @@ class AbsWork
   #
   def as_card params = nil
 
-    unless relative_data.nil?
-      debug "abs_work.relative_data = #{relative_data.inspect}"
-      return as_card_relative
-    end
+    # cas du bureau normal de l'auteur d'un programme UAUS
+    return as_card_relative unless relative_data.nil?
 
     params ||= Hash::new
     classes_css = ['work']
@@ -121,22 +137,6 @@ class AbsWork
       autres_infos_travail(params[:from]) +
       buttons_edit
     ).in_div(class:classes_css.join(' '))
-  end
-
-  # Affichage de la carte quand elle doit être
-  # propre à un travail et un auteur (c'était avant une
-  # méthode de Work)
-  def as_card_relative
-    (
-      nombre_de_points +
-      "#{titre}".in_div(class:'titre')     +
-      "#{travail}".in_div(class:'travail') +
-      rwork.div_echeance +
-      form_pour_marquer_started_or_fini +
-      details_tache +
-      # section_exemples +
-      suggestions_lectures
-    ).in_div(class:'work')
   end
 
   # ---------------------------------------------------------------------

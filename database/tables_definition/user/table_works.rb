@@ -45,7 +45,10 @@ def schema_table_user_works
     # Options
     # -------
     # Cf. le document Program > Works.md du RefBook
-    options:    {type:"VARCHAR(64)", default:""},
+    # BIT 1-2 Type du travail
+    #         Pour ne pas avoir à charger le travail absolu
+    #         pour connaitre le type du travail.
+    options:    {type:"VARCHAR(32)", default:""},
 
     # Nombre de points actuels
     # ------------------------
