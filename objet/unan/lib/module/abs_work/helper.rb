@@ -172,7 +172,7 @@ class AbsWork
     if rwork.started?
       "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches")
     else
-      "Démarrer ce travail".in_a(href:"work/start?in=unan/program&cong=taches&awork=#{id}&wpday=#{rwork.indice_pday}")
+      "Démarrer ce travail".in_a(class:'warning',href:"work/start?in=unan/program&cong=taches&awork=#{id}&wpday=#{rwork.indice_pday}")
     end.in_div(class:'buttons')
   end
 

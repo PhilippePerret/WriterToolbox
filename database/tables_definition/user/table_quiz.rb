@@ -25,6 +25,16 @@ def schema_table_user_quiz
     # par la suite, ce qui arrivera fatalement.
     quiz_id:{type:"INTEGER", constraint:"NOT NULL"},
 
+    # ID du travail de l'auteur
+    # --------------------------
+    # ID du travail Unan::Program::Work correspondant à ce
+    # questionnaire précisément.
+    # Noter un point important :
+    #   * Cet ID peut ne pas être défini, quand le quiz n'a pas encore été
+    #     marqué "démarré".
+    #
+    work_id: {type:"INTEGER"},
+
     # Type du questionnaire
     # ---------------------
     # Pour simplification du traitement des questionnaires. Avec ce

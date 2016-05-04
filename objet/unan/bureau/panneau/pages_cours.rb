@@ -23,20 +23,22 @@ class Bureau
   def upages
     @upages ||= begin
       good_list = Array::new() # pour correction éventuelle
-      curr_list = user.get_var(:pages_ids, Array::new)
-      pages = curr_list.uniq.compact.collect do |wid|
-        work = user.program.work(wid)
-        next if work.abs_work.id == nil       # problème
-        next if work.abs_work.item_id == nil  # problème
-        good_list << wid
-        upage = User::UPage::get(user, work.abs_work.item_id)
-        upage.create unless upage.exist?
+      curr_list = current_pday.undone_pages
+      debug "curr_list : #{curr_list.inspect}"
+      pages = curr_list.compact.collect do |wdata|
+        absw_id = wdata[:id]
+        item_id = wdata[:item_id]
+        # work = user.program.work(awid)
+        next if absw_id == nil  # problème
+        next if item_id == nil  # problème
+        good_list << absw_id
+        upage = User::UPage::get(user, item_id)
+        # upage.create unless upage.exist?
         upage
       end
       # Corriger les problèmes si on en trouve
       if good_list != curr_list
         debug "La liste des :pages_ids a dû être corrigée (originale : #{curr_list.inspect} / corrigée : #{good_list.inspect})"
-        user.set_var(pages_ids: good_list)
       end
       # Finalement, on donne la liste des instances de pages
       pages
@@ -137,6 +139,7 @@ class UPage
 
   # Lien pour lire la page dans
   def lien_read
+    return "" unless vue?
     " Lire la page ".in_a(href:"page_cours/#{id}/show?in=unan", class:'inwork', target:'_page_cours_')
   end
 
@@ -144,8 +147,8 @@ class UPage
   def boutons_page
     # Suivant le status de la UPage, il faut présenter un bouton différent
     lien_marquer_page = if not_vue? # <= toute nouvelle page
-      title = "Marquer cette page comme vue (elle restera à marquer lue)"
-      "Marquer cette page vue".in_a(title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=markvue")
+      title = "Marquer cette page comme vue (elle restera à marquer lue quand vous l'aurez consultée entièrement)"
+      "Démarrer cette lecture".in_a(class:'warning', title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=markvue")
     elsif not_lue? # <= page déjà prise en compte, mais pas encore lu deux fois
       title = "Marquer cette page comme lue"
       "Marquer la page lue".in_a(title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=marklue")
@@ -170,12 +173,12 @@ upage = User::UPage::get(user, param(:pid).to_i) unless param(:pid).nil?
 case param(:op)
 when 'markvue'
   upage.set_vue
-  flash "Page marquée vue."
+  flash "Page marquée vue, vous pouvez à présent la lire."
 when 'marklue'
   upage.marquer_lue
 when 'unmarklue'
   upage.remarquer_a_lire
 when 'addtdmperso'
   upage.set_in_tdm
-  flash "Page ajoutée à la table des matières personnelle."
+  flash "Cette page a été ajoutée à votre table des matières personnelle."
 end

@@ -187,22 +187,18 @@ class CurPDay
     # déjà récupérer l'identifiant seul (entendu que la
     # "paire" est constituée pour le moment de l'identifiant,
     # d'un double-point et de l'indice du jour-programme)
-    ids = case options[:as]
+    case options[:as]
     when :ids, :hdata
-      @last_pday_of_abswork ||= begin
-        h = Hash::new
-        @non_accomplis.collect do |idpaire, vrai|
-          wid, indice_pday = idpaire.split(':')
-
-          wid = wid.to_i
-          # Associer le pday au wid. Noter que ce sera toujours
-          # seulement le dernier pday qui sera associé, même
-          # lorsque l'abs_work est utilisé plusieurs fois
-          h.merge!( wid => indice_pday.to_i )
-          # Retourner l'identifiant du work
-          wid
-        end
-        h
+      @last_pday_of_abswork = Hash::new
+      ids = @non_accomplis.collect do |idpaire, vrai|
+        wid, indice_pday = idpaire.split(':')
+        wid = wid.to_i
+        # Associer le pday au wid. Noter que ce sera toujours
+        # seulement le dernier pday qui sera associé, même
+        # lorsque l'abs_work est utilisé plusieurs fois
+        @last_pday_of_abswork.merge!( wid => indice_pday.to_i )
+        # Retourner l'identifiant du work
+        wid
       end
     end
 
@@ -223,7 +219,8 @@ class CurPDay
           pairid = "#{wid}:#{idpday}"
           # Est-ce qu'un travail existe ?
           work_id = if works_started.has_key?(pairid)
-            works_started[pairid][:id]
+            work_id = works_started[pairid][:id]
+            work_id
           else
             nil
           end

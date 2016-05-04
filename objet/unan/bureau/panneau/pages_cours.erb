@@ -36,6 +36,8 @@
   <% pages_cours.each do |upage| %>
     <%= upage.output_bureau %>
   <% end %>
+<% elsif new_pages_cours.count > 0 %>
+  <p style="margin-left:4em">Aucune page à lire pour le moment, mais vous en avez à marquer “VUE” ci-dessus.</p>
 <% else %>
   <%# Aucune page de cours à lire %>
   <p style="margin-left:4em">Vous n'avez aucune page de cours à lire. Vous pouvez peut-être en profiter pour feuilleter les livres en ligne de la <%= Unan::lien_collection_narration %><% if last_pages_cours.count > 0 %> ou revoir une des pages précédentes<% end %>.</p>

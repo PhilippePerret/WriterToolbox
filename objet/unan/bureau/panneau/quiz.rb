@@ -28,19 +28,9 @@ class Bureau
   # Retourne un Array de Unan::Quiz (questionnaires à remplir)
   def quizes
     @quizes ||= begin
-      user.get_var(:quiz_ids, []).collect do |wid|
-        # ATTENTION : Les IDs de :quiz_ids sont des ids de
-        # travaux, pas des ids de quiz. Il faut rechercher
-        # l'id du quiz dans la propriété `item_id` du work
-        # absolu.
-        quiz_id = Unan::Program::Work::new(user.program, wid).abs_work.item_id
-        iquiz = Unan::Quiz::get(quiz_id)
-        # TODO Ici, on pourrait préciser certaines données volatiles
-        # du questionnaire, par exemple pour savoir s'il est en
-        # retard ou non. Il suffirait d'avoir des accessors de propriétés
-        # et de les renseigner en fonction du travail.
-        # [Plus tard:] Rien compris à ce que je dis ci-dessus.
-        iquiz
+      current_pday.undone_quiz.collect do |hdata|
+        debug "hdata: #{hdata.inspect}"
+        Unan::Quiz::get(hdata[:item_id])
       end
     end
   end

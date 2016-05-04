@@ -9,28 +9,11 @@ la procédure de changement de jour-programme de l'auteur)
 =end
 raise_unless user.unanunscript? || user.admin?
 
-class Unan
-class Program
-class Work
-
-  attr_reader :data2save
-  def data2save= value; @data2save = value end
-
-  # La méthode qui crée le work dans la table
-  def create
-    @id = table.insert( data2save )
-  end
-
-
-end #/Work
-end #/Program
-end #/Unan
-
 begin
-
   # L'user courant doit avoir un programme actif, sinon, ça n'a aucun sens
   raise "Piratage" unless user.program
 
+  require './objet/unan/lib/module/work/create.rb'
 
   abs_work_id = param(:awork).to_i
   raise "Ce work absolu est impossible" if abs_work_id == 0
@@ -45,22 +28,12 @@ begin
     raise "Aucun travail de ce type dans le jour-programme spécifié"
   end
 
-  awork = Unan::Program::AbsWork::get(abs_work_id)
-
-
   # Instance du nouveau travail
-  work = Unan::Program::Work::new( user.program, nil )
-  work.data2save= {
-    program_id:   user.program.id,
+  work = create_new_work_for_user(
+    user:         user,
     abs_work_id:  abs_work_id,
-    abs_pday:     work_pday,
-    status:       1,  # pour le marquer démarré
-    options:      "#{awork.type_w}",
-    created_at:   NOW,
-    updated_at:   NOW
-  }
-  # debug "work.data2save : #{work.data2save.pretty_inspect}"
-  work.create
+    indice_pday:  work_pday,
+  )
 
   raise "Le travail devrait avoir été marqué démarré…" unless work.started?
 

@@ -16,10 +16,6 @@ Unan::require_module 'abs_work'
 class Unan
 class Bureau
 
-  def save_travail
-    flash "Je sauve les données travail"
-  end
-
   # cf. l'explication dans le fichier home.rb
   def missing_data
     @missing_data ||= begin
@@ -48,6 +44,7 @@ class Bureau
   # Raccourci
   def last_tasks
     []
+    # TODO: IL FAUT REMETTRE LES ANCIENNES TÂCHES
     # @last_tasks ||= user.program.last_tasks
   end
 

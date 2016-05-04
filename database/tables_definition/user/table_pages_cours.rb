@@ -13,6 +13,8 @@ def schema_table_user_pages_cours
     # à l'auteur)
     # Correspond à l'IDentifiant de la page de cours absolue. Donc
     # il doit impérativement être fourni à la création de la donnée.
+    # En sachant donc qu'une page de cours peut être lue plusieurs
+    # fois
     id: {type:"INTEGER", constraint:"PRIMARY KEY"},
 
     #  Statut
@@ -40,6 +42,17 @@ def schema_table_user_pages_cours
     # page, par exemple pour se souvenir de ce qu'elle contient, pour
     # lui.
     comments: {type:"TEXT"},
+
+    # ID du travail de l'auteur
+    # --------------------------
+    # ID du travail Unan::Program::Work
+    # Noter deux choses importantes ici :
+    #   * Une page pouvant servir à plusieurs lectures, donc à plusieurs
+    #     travaux, ce work_id concerne toujours LE DERNIER.
+    #   * Cet ID peut ne pas être défini, quand la page n'a pas encore été
+    #     marquée "vue".
+    # 
+    work_id: {type:"INTEGER"},
 
     # Noter que cette date de création de la donnée ne correspond pas
     # à la date de lecture.

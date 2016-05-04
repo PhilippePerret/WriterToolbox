@@ -42,7 +42,6 @@ class Bureau
   # l'auteur
   def works_ids
     @works_ids ||= begin
-      debug "Liste des Travaux non accomplis : #{current_pday.works_undone.inspect}"
       current_pday.works_undone.keys
     end
   end

@@ -13,7 +13,6 @@ class UPage
     self.set_lue
     # Marquer le travail terminé (ce qui le retirera des listes
     # d'identifiants)
-    wids = auteur.get_var(:pages_ids)
     wids.each do |wid|
       work = auteur.program.work(wid)
       if work.abs_work.item_id == id
