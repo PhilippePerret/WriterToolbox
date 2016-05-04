@@ -51,10 +51,10 @@ class Hash
     self.each do |k, v|
       v = case k
       when :created_at, :updated_at
-        unless v.nil?
-          v.as_human_date(true, true) + " (real: #{v})"
-        else
-          nil
+        case v
+        when NilClass then nil
+        when Fixnum   then v.as_human_date(true, true) + " (real: #{v})"
+        else v
         end
       else v end
       v = case v
