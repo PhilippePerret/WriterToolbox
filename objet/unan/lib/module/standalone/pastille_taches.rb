@@ -43,23 +43,23 @@ class User
     icp = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
 
     nombre_travaux = icp.nombre_travaux_courant
-    nombre_tasks_encours  = icp.undone_tasks.count
-    nombre_pages_encours  = icp.undone_pages.count
-    nombre_quiz_encours   = icp.undone_quiz.count
-    nombre_tostart        = icp.works_undone.count - icp.works_started.count
+    nombre_tasks_undone = icp.undone(:task).count
+    nombre_pages_undone = icp.undone(:page).count
+    nombre_quiz_undone  = icp.undone(:quiz).count
+    nombre_tostart      = icp.undone(:all).count - icp.started(:all).count
     nombre_depassements = 0 # TODO: À RÉGLER
 
     taches = Array::new
     taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
     taches << "#{travaux_s nombre_travaux} en cours.".in_div(class:'bold') +
-              "Tâches quelconques : #{nombre_tasks_encours}".in_div +
-              "Pages de cours à lire : #{nombre_pages_encours}.".in_div +
-              "Quiz à remplir : #{nombre_quiz_encours}.".in_div
+              "Tâches quelconques : #{nombre_tasks_undone}".in_div +
+              "Pages de cours à lire : #{nombre_pages_undone}.".in_div +
+              "Quiz à remplir : #{nombre_quiz_undone}.".in_div
     taches << if nombre_tostart > 0
-      nombre_tasks_tostart  = icp.undone_tasks.count - icp.tasks_started.count
-      nombre_pages_tostart  = icp.undone_pages.count - icp.pages_started.count
-      nombre_quiz_tostart   = icp.undone_quiz.count - icp.quiz_started.count
-      nombre_forum_tostart  = icp.undone_forum.count - icp.forum_started.count
+      nombre_tasks_tostart  = icp.undone(:task).count  - icp.started(:task).count
+      nombre_pages_tostart  = icp.undone(:page).count  - icp.started(:page).count
+      nombre_quiz_tostart   = icp.undone(:quiz).count  - icp.started(:quiz).count
+      nombre_forum_tostart  = icp.undone(:forum).count - icp.started(:forum).count
       (
         "#{travaux_s nombre_tostart} à amorcer :".in_div(class:'bold') +
         (nombre_tasks_tostart > 0 ? "  - Tâches à démarrer : #{nombre_tasks_tostart}".in_div : "") +

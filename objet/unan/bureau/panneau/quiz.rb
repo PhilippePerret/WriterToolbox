@@ -28,7 +28,7 @@ class Bureau
   # Retourne un Array de Unan::Quiz (questionnaires à remplir)
   def quizes
     @quizes ||= begin
-      current_pday.undone_quiz.collect do |hdata|
+      current_pday.undone(:quiz).collect do |hdata|
         debug "hdata: #{hdata.inspect}"
         Unan::Quiz::get(hdata[:item_id])
       end

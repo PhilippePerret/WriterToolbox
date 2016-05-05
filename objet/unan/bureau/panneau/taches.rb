@@ -27,7 +27,7 @@ class Bureau
 
   def tasks
     @tasks ||= begin
-      current_pday.undone_tasks.collect do |wdata|
+      current_pday.undone(:task).collect do |wdata|
         inst = Unan::Program::AbsWork::get( wdata[:id] )
         # Les données relatives qui doivent être passées à
         # AbsWork pour déterminer son `rwork` (RelatifWork)

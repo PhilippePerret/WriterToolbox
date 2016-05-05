@@ -23,7 +23,7 @@ class User
   # Retourne le nombre de +quoi+ de l'user (nombre de
   # messages forum, de pages de cours à lire, etc.)
   def nombre_de quoi
-    cur_pday.undone_of_type(quoi).count
+    cur_pday.undone(quoi).count
   end
 
   def total_points

@@ -23,7 +23,7 @@ class Bureau
   def upages
     @upages ||= begin
       good_list = Array::new() # pour correction éventuelle
-      curr_list = current_pday.undone_pages
+      curr_list = current_pday.undone(:page)
       debug "curr_list : #{curr_list.inspect}"
       pages = curr_list.compact.collect do |wdata|
         absw_id = wdata[:id]
