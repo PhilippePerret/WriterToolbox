@@ -25,7 +25,7 @@
 <hr />
 <section id="completed_works">
 <% if last_tasks.count > 0 %>
-  <h3>Tâches récemment achevées</h3>
+  <h4>Tâches récemment achevées</h4>
   <%= last_tasks.collect{ |iabswork| iabswork.as_card_relative(as_recent: true) }.join %>
 <% else %>
   <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>

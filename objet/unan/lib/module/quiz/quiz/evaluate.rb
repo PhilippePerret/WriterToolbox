@@ -23,8 +23,9 @@ class Quiz
     end
   end
 
-  # Les données à enregistrer dans la table de l'auteur,
-  # de ses réponses au questionnaire courant
+  # Les données du questionnaire à enregistrer dans la
+  # table de l'auteur, de ses réponses au questionnaire
+  # courant
   #
   # Pour le moment, si c'est un questionnaire de type
   # "multi" (ré-utilisable), on n'enregistre pas les
@@ -32,6 +33,7 @@ class Quiz
   def data2save
     @data2save ||= {
       quiz_id:    id,
+      work_id:    nil, # sera défini ci-dessous
       type:       type,
       reponses:   (multi? ? nil : auteur_reponses.to_json),
       points:     auteur_points,
@@ -62,9 +64,45 @@ class Quiz
         return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if soumis_recemment
       end
 
+      # Si aucun travail n'existe pour ce quiz, c'est qu'il
+      # vient d'être rempli et il faut créer un travail pour lui
+      if work.nil?
+        # Il faut retrouver l'identifiant absolu du abs_work
+        # et le jour-programme correspondant au quiz (qui n'est
+        # pas forcément aujourd'hui)
+        # Noter que la tournure ci-dessous part du principe
+        # qu'il ne peut pas y avoir 2 questionnaires identiques
+        # en même temps.
+        abs_work_id = nil
+        indice_pday = nil
+        bureau.current_pday.undone(:quiz).each do |wdata|
+          if wdata[:item_id] == id
+            abs_work_id = wdata[:id]
+            indice_pday = wdata[:indice_pday]
+            break
+          end
+        end
+        if abs_work_id.nil? || indice_pday.nil?
+          if OFFLINE
+            error "Consulter le débug pour récolter certaines informations"
+            debug "### ERREUR : Impossible de déterminer le travail absolu et le jour-programme"
+            debug "Liste des travaux absolus inachevés au jour courant :\n #{bureau.current_pday.undone(:quiz).pretty_inspect}"
+            debug "User : #{auteur.pseudo} (##{auteur.id})"
+            debug "Travaux non"
+          end
+          raise "Impossible de déterminer le travail absolu et le jour-programme de ce questionnaire."
+        end
+        require './objet/unan/lib/module/work/create.rb'
+        @work = create_new_work_for_user(
+          user:         auteur,
+          abs_work_id:  abs_work_id,
+          indice_pday:  indice_pday
+        )
+      end
+
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
-      auteur.table_quiz.insert(data2save)
+      auteur.table_quiz.insert(data2save.merge(work_id: work.id))
 
       # Enregistrer le score dans le programme de l'utilisateur,
       # sauf si c'est un questionnaire multi et qu'il a déjà

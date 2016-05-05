@@ -71,6 +71,7 @@ class User
 
     # ID du questionnaire de référence
     def quiz_id     ; @quiz_id    ||= get(:quiz_id)     end
+    def work_id     ; @work_id    ||= get(:work_id)     end
     def created_at  ; @created_at ||= get(:created_at)  end
     def points      ; @points     ||= get(:points)      end
     def max_points  ; @max_points ||= get(:max_points)  end

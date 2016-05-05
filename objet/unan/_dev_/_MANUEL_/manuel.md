@@ -15,12 +15,13 @@
 * [Travaux de l'auteur](#travaildelauteur)
   * [L'instance `work`](#instanceworkauteur)
   * [Liste des travaux de l'auteur](#listedestravauxdelauteur)
+  * [Class Unan::Program::CurPDay](#laclassecurpday)
   * [Types de travaux](#typesdetravaux)
 * [Suivi de l'auteur](#suividelauteur)
   * [Cron toutes les heures](#crontouteslesheures)
 
 <!--
-  RACCOURCIS Utiliser [texte][identifiant] ou [identifiant][] 
+  RACCOURCIS Utiliser [texte][identifiant] ou [identifiant][]
   Ces raccourcis n'apparaitront pas dans le texte final
   Rappel: les IDs sont case-insensitives
   -->
@@ -40,7 +41,7 @@
 
 ### Description du programme
 
-Ce programme est censé accompagner un auteur sur une année dans :
+Ce programme accompagne un auteur sur une année dans :
 
 * son approche de la narration (aspect pédagogique)
 * l'écriture d'un premier scénario ou manuscrit (aspect pratique)
@@ -63,7 +64,7 @@ Chaque auteur inscrit au programme possède un bureau, son centre de travail né
 
 ## Programme de l'auteur
 
-Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance `Unan::Program` consignée dans la table `programs` de `unan.db`.
+Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance `Unan::Program` consignée dans la table `programs` de `unan_hot.db`.
 
 <a name='nombredepointsdelauteur'></a>
 
@@ -75,9 +76,9 @@ Les points sont conservés dans les [instances `works`][work] du programme. On p
 
         iwork = Unan::Program::Work::get(program_id, work_id)
         nombre_points = iwork.points
-        
+
         Ou, si c'est le programme courant de l'auteur :
-        
+
         nombre_points = user.work(work_id).points
 
 
@@ -97,7 +98,7 @@ Ce rythme a une valeur de **5** quand il est *moyen*, c'est-à-dire qu'un jour-r
 Cette valeur s'obtient par différents moyens&nbsp;:
 
         user.rythme
-        
+
         user.program.rythme
 
 ---------------------------------------------------------------------
@@ -112,15 +113,15 @@ Cette valeur s'obtient par différents moyens&nbsp;:
 On instancie ce calendrier seulement avec l'instance programme&nbsp;:
 
         program = Unan::Program::new(<prog id>)
-        ou 
-        program = user.program
-        
-        calend  = Unan::Program::Cal::new(program)
-        
         ou
-        
+        program = user.program
+
+        calend  = Unan::Program::Cal::new(program)
+
+        ou
+
         program.cal # TODO: Voir si on peut l'avoir comme ça
-        
+
 Donc pour obtenir le calendrier depuis l'user :
 
         calendrier = user.program.cal
@@ -136,13 +137,7 @@ Les `P-Days` sont des `jours-programme`. Ils peuvent être réels (correspondre 
 
 Quel que soit le [rythme][], il y a toujours 365/366 `p-day` dans une année du [programme][], donc dans le temps du programme.
 
-Le `p-day` est une instance&nbsp;:
-
-        Unan::Program::PDay
-        
-… propre à un programme.
-
-Les données absolues de ce `p-day` sont définies dans un [`p-day absolu`][AbsPDay]&nbsp;:
+Les données absolues de ce `p-day` sont définies dans un [`p-day absolu`][AbsPDay] de classe&nbsp;:
 
         Unan::Program::AbsPDay
 
@@ -155,6 +150,10 @@ Les `p-days` absolus, instance de class `Unan::Program::AbsPDay`, définissent p
 Ces p-days absolus sont définis dans la table&nbsp;:
 
         unan_cold.absolute_pdays
+
+Ils sont principalement composés de travaux-absolus, les `AbsWorks` :
+
+        Unan::Program::AbsWork
 
 ---------------------------------------------------------------------
 
@@ -189,6 +188,13 @@ Ils sont consignés dans la table&nbsp;:
         TABLE
           works
 
+Noter un point important : ces “works”, la plupart du temps, ne sont créés que lorsque le travail est marqué démarré par l'auteur. Plus précisément, pour créer le work, il faut que :
+
+* une “tâche” doit être marquée “démarrée” par l'auteur,
+* une “page de cours” doit être marquée "vue" par l'auteur,
+* un “quiz” soit rempli par l'auteur,
+* (les choses ne sont pas encore définis pour les messages de forum).
+
 <a name='obtenirlinstancework'></a>
 
 #### Obtenir l'instance `Work`
@@ -197,7 +203,7 @@ Ils sont consignés dans la table&nbsp;:
 Pour obtenir une instance d'un travail en particulier et donc lire ses données ou la manipuler&nbsp;:
 
         Unan::Program::Work::get(<program>, <work-id>)
-        
+
         <program> est une instance Unan::Program qu'on peut obtenir par :
         user.program
 
@@ -213,15 +219,22 @@ Si c'est le programme courant de l'auteur, on peut l'obtenir par&nbsp;:
 Cette instance possède ces propriétés :
 
         id            {Fixnum} Identifiant propre au travail
-        program_id    {Fixnum} Identifiant du programme auquel appartient le work
+        program_id    {Fixnum} Identifiant du programme auquel appartient le
+                               work
         abs_work_id   {Fixnum} Identifiant du travail absolu correspondant
+        indice_pday   {Fixnum} L'indice du jour-programme de ce travail.
+                               Noter qu'il correspond au jour-programme du
+                               travail absolu, même si le travail a été
+                               démarré plus tard.
+        type_w        {Fixnum(2)} Type de travail (pour raccourci)
         status        {Fixnum} Statut actuel du travail, de 0 à 9
-        options       {String} Options sur 64 octets du travail. Cf. ci-dessous
+        options       {String} Options sur 64 octets du travail.
+                               Cf. ci-dessous.
         points        {Fixnum} Nombre de points gagnés pour ce travail.
         ended_at      {Fixnum} Timestamp de la fin du travail
         created_at
         updated_at
-        
+
 Pour les points, cf. [Gestion du nombre de points de l'auteur][points].
 
 Pour les particularités de `created_at`, cf. [Programmation dans le futur d'un travail](#programmationfuturedunwork) ci-dessous.
@@ -237,7 +250,8 @@ Les deux propriétés permettant de suivre un travail sont&nbsp;:
 
 Valeurs du status
 
-        0   Travail créé/instancié
+        0   Travail créé/instancié (inutilisé maintenant que le travail
+            est seulement créé lorsque l'auteur le marque démarré/vu)
         1   Travail marqué démarré par l'auteur, c'est-à-dire qu'il l'a
             vu et pris en compte. Il se marque démarré depuis le bureau
             Noter que ça ne s'applique qu'aux "vrais" travaux, pas aux
@@ -249,12 +263,11 @@ Valeurs du status
             Interroger la méthode `completed?` pour savoir si le travail
             est fini.
 
-Quand le `work` est terminé, il sort de la liste des travaux de l'auteur.
-
 <a name='programmationfuturedunwork'></a>
 
 #### Programmation future d'un `work`
 
+CETTE PARTIE DOIT DEVENIR OBSOLÈTE AVEC LE NOUVEAU FONCTIONNEMENT PAR “RECHERCHE ABSOLUE” (cf. [Liste des travaux de l'auteur](#listedestravauxdelauteur)). MAIS COMMENT LA REMPLACER ?
 Un `work` peut être programmé à l'avance. C'est le cas par exemple lorsqu'un questionnaire n'a pas été rempli correctement et qu'il doit être re-proposé plus tard à l'auteur. Dans ce cas, on utilise la propriété `created_at`  et `updated_at` synchronisé pour définir que le travail doit être commencé plus tard.
 
         iwork.set( created_at: <date dans le future>, updated_at: <date future> )
@@ -265,32 +278,50 @@ Un `work` peut être programmé à l'avance. C'est le cas par exemple lorsqu'un 
 
 ### Liste des travaux de l'auteur
 
-Chaque [type de travail](#typesdetravaux) est consigné dans une "variable-user" qu'on peut obtenir et modifier par :
-        
-            user.set_var(<:nom variable>, <valeur variable>)
-            user.get_var(<:nom variable>) # => retourne sa valeur
+NOTE : La liste des travaux ne fonctionne plus par liste d'identifiants consignant les travaux courants de l'auteur. Cela rendait la gestion des changements de jours infornale.
 
-Ces variables-user porte comme nom :
-        
-            works_ids       Pour tous les travaux (dont ceux ci-dessous)
-            
-            tasks_ids       Pour les tasks
-            pages_ids       Pour les pages de cours à lire
-            quiz_ids        Pour les questionnaires à répondre
-            forum_ids       Pour les messages forum et autre
-        
-Les IDs contenus dans ces listes sont tous des identifiants d'instances :
-        
-            Unan::Program::Work
+Maintenant, on consulte simplement les travaux à faire dans l'absolu de cette façon :
 
-… qu'on peut obtenir par&nbsp;:
+        Soit le jour-programme courant PD
+        * On relève tous les travaux absolus de tout type à faire jusqu'à
+          ce PD (ce qui peut être très "long" vers la fin, mais il n'y
+          aura que 366 jours de toute façon)
+        * On relève tous les travaux finis et non finis de l'auteur
+          (donc ses "works")
+        * On retire de la liste des travaux absolus tous les travaux
+          qui ont été achevés par l'auteur.
+        * Il ne reste alors dans la liste des travaux absolus que les
+          travaux courants, dont certains peuvent avoir été démarrés
+          (un "work" auteur existe, alors) et d'autres non démarrés (dans
+          ce cas, ils ne possèdent pas de "work" auteur)
 
-        # Si c'est le programme courant de l'user :
-        user.work(<work-id>)
-        
-        # Si ça n'est pas le programme courant de l'user :
-        Unan::Progam::Work::get(<user program>, <work-id>)
- 
+<a name='laclassecurpday'></a>
+
+## Class Unan::Program::CurPDay
+
+Une classe est spécialement dédiée à la gestion des travaux au jour courant :
+
+        Unan::Program::CurPDay
+
+Dans le bureau central de l'auteur, on peut obtenir l'instance de cette classe par :
+
+        bureau.current_pday
+
+Pour obtenir les travaux non achevés de type `task` :
+
+        bureau.current_pday.undone(:task)
+        # => {Array} de {Hash} contenant les données des
+        # travaux absolus + les données du work si le travail
+        # a été démarré
+
+Les trois méthodes principales sont :
+
+        done(type)        # Liste des data de travaux accomplis
+        undone(type)      # Liste des data de travaux inachevés
+        encours(type)     # idem
+        started(type)     # Liste des data de travaux démarrés
+                          # mais non achevés
+
 <a name='typesdetravaux'></a>
 
 ### Types de travaux
@@ -303,9 +334,9 @@ L'auteur peut avoir ces types de travaux :
 * réponse ou message à passer sur le forum.
 
         WORKS désigne n'importe lequel de ces travaux dans le programme.
-        
+
         Les types, au niveau du programme, sont :
-        
+
             TASK      Une tâche à accomplir
             QUIZ      Un questionnaire à répondre
             PAGE      Une page de cours (Narration) à lire.
@@ -314,14 +345,15 @@ L'auteur peut avoir ces types de travaux :
                       puisqu'il s'agit ici d'un work.
 
 Pour le détail sur les listes de travaux, cf. la [liste des travaux de l'auteur][].
-       
+
 Un work s'instancie à l'aide de :
-        
+
         Unan::Program::Work::new(<user>.program, <work id>)
-        
+        # (ou get)
+
         L'instance Work possède une propriété `item_id` qui définit
         l'ID de l'item en fonction du type de work :
-        
+
             Si le type est          Alors item_id est
             ------------------------------------------------------------
             task                    l'ID d'une tâche
@@ -345,5 +377,3 @@ Toutes les heures, un `cron-job` est lancé, conséquent, qui permet de contrôl
 * leur signaler tout retard,
 * les encourager à poursuivre,
 * leur accorder des bonus en cas de bon comportement.
-
-

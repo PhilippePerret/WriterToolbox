@@ -45,7 +45,7 @@ class Quiz
 
   # L'indice du jour courant pour l'auteur courant
   def auteur_pday_courant
-    @auteur_pday_courant ||= auteur.program.current_pday(:nombre).freeze # => p.e. 36
+    @auteur_pday_courant ||= auteur.program.current_pday.freeze # => p.e. 36
   end
 
   # Note moyenne dynamique

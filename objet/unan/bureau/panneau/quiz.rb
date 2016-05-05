@@ -29,7 +29,6 @@ class Bureau
   def quizes
     @quizes ||= begin
       current_pday.undone(:quiz).collect do |hdata|
-        debug "hdata: #{hdata.inspect}"
         Unan::Quiz::get(hdata[:item_id])
       end
     end

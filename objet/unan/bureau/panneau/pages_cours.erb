@@ -17,7 +17,9 @@
 #   Section des pages à marquer vues (nouvelles)
 #
 %>
-<h3>Nouvelles pages de cours</h3>
+<section class='pages_cours'>
+
+<h4>Nouvelles pages de cours</h4>
 <% if new_pages_cours.count > 0 %>
   <% new_pages_cours.each do |upage| %>
     <%= upage.output_bureau %>
@@ -31,7 +33,7 @@
 #
 %>
 <hr />
-<h3>Pages à lire</h3>
+<h4>Pages à lire</h4>
 <% if pages_cours.count > 0 %>
   <% pages_cours.each do |upage| %>
     <%= upage.output_bureau %>
@@ -46,6 +48,8 @@
   <% end %>
 <% end %>
 
+</section>
+
 <%
 # ---------------------------------------------------------------------
 #   Section des pages récemment lues
@@ -53,7 +57,7 @@
 %>
 <section id="completed_works" class="pages_cours">
   <hr />
-  <h3>Dernières pages de cours lues</h3>
+  <h4>Dernières pages de cours lues</h4>
   <% if last_pages_cours.count > 0 %>
     <% last_pages_cours.each do |upage| %>
       <%= upage.output_bureau %>

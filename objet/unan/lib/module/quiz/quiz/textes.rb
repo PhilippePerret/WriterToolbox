@@ -103,8 +103,8 @@ class Quiz
       "Une note sous la moyenne n'est jamais une bonne chose. "+
       "Nous espérons que vous en conviendrez et que vous prendrez la décision de travailler plus sérieusement afin de parvenir à des résultats quelque peu meilleurs."
     when auteur_note_sur_vingt < 12 # de 10 à 12
-      "<strong>C'est honorable</strong>. ".+
-      "Vous avez la moyenne et c'est pour le moins honorable. " +
+      "<strong>C'est honorable</strong>. " +
+      "Vous avez la moyenne et effectivement c'est pour le moins <em>honorable</em>. " +
       "Cependant, nous vous conseillons de ne pas viser la moyenne si vous souhaitez réellement parvenir à quelque chose dans votre écriture. En effet, ce ne sont jamais les artistes <em>dans la moyenne</em> qui parviennent à vivre de leur métier, si tel était votre souhait. " +
       "Bon courage à vous !"
     when auteur_note_sur_vingt < 15 # de 12 à 15

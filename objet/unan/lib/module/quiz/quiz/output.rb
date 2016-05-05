@@ -28,6 +28,9 @@ class Quiz
       form = String::new
       form << 'bureau_save_quiz'.in_hidden(name:'operation')
       form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
+      if work != nil
+        form << work.id.to_s.in_hidden(name:'quiz[work_id]', id:"quiz_work_id-#{id}")
+      end
       form << output(forcer = !!options[:forcer])
       form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
       form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
@@ -44,7 +47,7 @@ class Quiz
   #
   # Noter que lorsque le quiz est "re-usable" (multi?) il peut
   # être recommencé.
-  # 
+  #
   def output_archives
     @for_correction = true
     code_corrections_et_commentaires

@@ -1,3 +1,10 @@
+# Relecture de tous les scripts pour voir si c'est conforme
+# à la nouvelle forme (sans liste d'identifiants)
+
+* Manuel de développement OK (unan/_dev_/_MANUEL_)      OK
+* unan/abs_pday
+
+
 # Processus de travail
 
 * Un nouveau jour-programme commence

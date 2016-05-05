@@ -7,10 +7,6 @@ Méthodes d'helper pour le panneau "État" du bureau de programme
 class Unan
 class Program
 
-  def coef_rythme
-    @coef_rythme ||= ( rythme.to_f / 5 )
-  end
-
   # Calcul de la fin approximative du programme
   #
   # Le calcul se fait de cette façon : on prend le
@@ -19,7 +15,7 @@ class Program
   # rythme courant et on ajoute à la date courante
   def fin_approximative as = :nombre
     @fin_approximative ||= begin
-      NOW.to_i + (nombre_pdays_restants * 1.days / coef_rythme).to_i
+      NOW.to_i + (nombre_pdays_restants * 1.days * coefficient_duree).to_i
     end
     case as
     when :human
@@ -47,8 +43,8 @@ class Program
       Unan::Program::RYTHMES[rythme][:hname].in_span +
       case true
       when rythme == 5 then "&nbsp;(1 jour réel = 1 jour-programme)"
-      when rythme > 5  then "&nbsp;(1 jour réel = #{(1 /coef_rythme).round(2)} jours-programme)"
-      when rythme < 5  then "&nbsp;(1 jour-programme = #{(1 /coef_rythme).round(2)} jours réels)"
+      when rythme > 5  then "&nbsp;(1 jour réel = #{(coefficient_duree).round(2)} jours-programme)"
+      when rythme < 5  then "&nbsp;(1 jour-programme = #{(coefficient_duree).round(2)} jours réels)"
       end.in_span()
     end
   end
@@ -57,7 +53,7 @@ class Program
   # début du programme
   def nombre_jour_reels_from_start as = :nombre
     @jrs ||= begin
-      ((NOW.to_i - created_at) / 1.days) + 1
+      ((NOW.to_i - created_at) / 1.days)
     end
     case as
     when :human, :humain

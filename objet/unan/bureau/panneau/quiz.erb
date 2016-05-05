@@ -22,6 +22,9 @@
       # maintenant le supprimer. Rappel : Si on le fait avant, il ne
       # se trouverait plus dans la liste des quizes et la version corrigée
       # du questionnaire ne serait donc pas affichée ici.
+      #
+      # Noter que le work a été créé au moment de l'enregistrement
+      # du questionnaire (pour le moment).
       iquiz.mark_work_done if iquiz.correction?
     %>
   <% end %>
@@ -29,7 +32,7 @@
   <%# Aucun quiz (mais d'autres travaux) %>
   <p class='big air'>Vous n'avez aucun questionnaire ni aucun quiz à remplir. Mais rassurez-vous, <%= user.pseudo %>, le prochain ne saurait tarder bien longtemps…</p>
   <%
-  # TODO Proposer quelques questions.
+  # TODO Proposer quelques questions quand il n'y a pas de corrections
   %>
 <% end %>
 <section id="completed_works">
