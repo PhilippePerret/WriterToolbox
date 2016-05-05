@@ -12,13 +12,20 @@ class AbsWork
   # propre à un travail et un auteur (c'était avant une
   # méthode de Work). C'est la carte qui est affichée dans
   # le bureau de l'auteur.
-  def as_card_relative
+  #
+  # +options+
+  #   :as_recent    Si TRUE, c'est pour un affichage comme
+  #                 travail effectué.
+  #
+  def as_card_relative options = nil
+    options ||= Hash::new
+    as_recent = !!options[:as_recent]
     (
       nombre_de_points +
       "#{titre}".in_div(class:'titre')      +
       "#{travail}".in_div(class:'travail')  +
-      rwork.div_echeance                    +
-      form_pour_marquer_started_or_fini     +
+      (as_recent ? '' : rwork.div_echeance)                    +
+      (as_recent ? '' : form_pour_marquer_started_or_fini)     +
       details_tache                         +
       section_exemples                      +
       suggestions_lectures
@@ -170,7 +177,7 @@ class AbsWork
   def form_pour_marquer_started_or_fini
     return "" if rwork.completed?
     if rwork.started?
-      "Marquer ce travail fini".in_a(href:"work/#{id}/complete?in=unan/program&cong=taches")
+      "Marquer ce travail fini".in_a(href:"work/#{rwork.id}/complete?in=unan/program&cong=taches")
     else
       "Démarrer ce travail".in_a(class:'warning',href:"work/start?in=unan/program&cong=taches&awork=#{id}&wpday=#{rwork.indice_pday}")
     end.in_div(class:'buttons')

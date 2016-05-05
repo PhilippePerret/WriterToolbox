@@ -79,7 +79,7 @@ class AbsWork
     def indice_pday         ; @indice_pday          ||= data[:indice_pday]  end
     def indice_current_pday ; @indice_current_pday  ||= data[:indice_current_pday] end
     def work_id             ; @work_id              ||= data[:work_id]      end
-
+    alias :id :work_id
     # ---------------------------------------------------------------------
     #   Données du abs_work (raccourcis)
     # ---------------------------------------------------------------------

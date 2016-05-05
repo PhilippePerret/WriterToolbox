@@ -177,6 +177,7 @@ class CurPDay
         type_w = wdata[:options][0..1].to_i
         type = Unan::Program::AbsWork::TYPES[type_w][:type]
         rbt[type] << wdata
+        rbt[:all] << wdata
       end
 
       # On trie chaque liste de type par date, les plus récents

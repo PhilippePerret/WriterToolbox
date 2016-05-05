@@ -56,6 +56,37 @@ class Program
     end
   end
 
+  # Retourne un Hash des travaux de type +type+ respectant
+  # le filtre +options+
+  #
+  # En clé : l'identifiant du work (propre à l'auteur)
+  # En valeur : le hash de toutes les données
+  # 
+  # +type+    Le type, donc :task, :page, :quiz ou :forum
+  # +options+ Filtre suplémentaire
+  #   :complete     Si True, les works terminés
+  #   :current      Si True, seulement les works courants
+  #   :ended_after  Si défini, le timestamp. Les works doivent avoir
+  #                 été terminés après ou à cette date
+  #                 Met automatiquement :complete à true
+  #   :ended_before Si défini, le timestamp. Les works doivent aovir
+  #                 été terminés AVANT cette date (strictement)
+  #                 Met automatiquement :complete à true
+  #   :started_after  Idem pour le commencement
+  #   :started_before Idem pour le commencement
+  def works_by_type type, options = nil
+    codes_by_type = Unan::Program::AbsWork::CODES_BY_TYPE[type]
+    where = ["(CAST(SUBSTR(options,1,2) as INTEGER) IN (#{codes_by_type.join(',')}))"]
+    where << "(status = 9)" if options[:complete] || options[:ended_before] || options[:ended_after]
+    where << "(status < 9)" if options[:current]
+    where << "(ended_at < #{options[:ended_before]})" if options[:ended_before]
+    where << "(ended_at >= #{options[:ended_after]})" if options[:ended_after]
+    where << "(created_at < #{options[:started_before]})" if options[:started_before]
+    where << "(created_at >= #{options[:started_after]})" if options[:started_after]
+    where = where.join(' AND ')
+    table_works.select(where: where)
+  end
+
   # {Array of Hash} Liste des travaux propres du
   # programme courant en appliquant le filtre +filtre+ s'il est
   # défini. Noter que les travaux sont toujours en ordre inverse,

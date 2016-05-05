@@ -2,6 +2,7 @@
 class User
 class UPage
 
+
   # Marque la page comme lue
   # ------------------------
   # Cela la passe au statut 3 (status) et la retire des :pages_ids de
@@ -11,11 +12,9 @@ class UPage
   # page lue depuis les pages elles-mêmes.
   def marquer_lue
     self.set_lue
-    # Marquer le travail terminé (ce qui le retirera des listes
-    # d'identifiants)
-    wids.each do |wid|
-      work = auteur.program.work(wid)
-      if work.abs_work.item_id == id
+    # Marquer le travail terminé.
+    auteur.program.works_by_type(:page, {current: true}).each do |wid, wdata|
+      if wid == id
         # Est-ce qu'il faut ajouter les points, où ont-ils déjà
         # été attribués au cours d'une autre lecture.
         must_add_point = if self.points_affected?
@@ -24,7 +23,7 @@ class UPage
           set_points_affected
           true
         end
-        work.set_complete(must_add_point)
+        auteur.program.work(wid).set_complete(must_add_point)
         break
       end
     end

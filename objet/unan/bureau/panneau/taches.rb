@@ -57,6 +57,7 @@ class Bureau
           user_id:              auteur.id,
           work_id:              wdata[:id]
         }
+        inst
       end
     end
   end
