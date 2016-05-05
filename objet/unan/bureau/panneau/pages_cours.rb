@@ -6,6 +6,12 @@ Unan::require_module 'page_cours'
 class Unan
 class Bureau
 
+  def reset_all
+    debug "-> Je passe dans reset_all bureau dans page_cours.rb"
+    ['current_pday', 'updages', 'new_pages_cours', 'pages_cours'].each do |k|
+      instance_variable_set("@#{k}", nil)
+    end
+  end
   # {Array de User::UPage} Liste des instances User::UPage
   # des pages à lire. C'est la liste principale qui permettra
   # de dispatcher les pages entre les trois sections, la section
@@ -22,23 +28,26 @@ class Bureau
   # lue ou à marquer vue.
   def upages
     @upages ||= begin
-      good_list = Array::new() # pour correction éventuelle
+      good_list_ids = Array::new() # pour correction éventuelle
       curr_list = current_pday.undone(:page)
-      debug "curr_list : #{curr_list.inspect}"
+      curr_list_ids = curr_list.collect{|h| h[:id]}
+      # debug "curr_list : #{curr_list.inspect}"
       pages = curr_list.compact.collect do |wdata|
         absw_id = wdata[:id]
         item_id = wdata[:item_id]
+        debug "absw_id = #{absw_id.inspect}/ item_id = #{item_id.inspect}"
         # work = user.program.work(awid)
         next if absw_id == nil  # problème
         next if item_id == nil  # problème
-        good_list << absw_id
-        upage = User::UPage::get(user, item_id)
-        # upage.create unless upage.exist?
+        good_list_ids << absw_id
+        upage = User::UPage::new(user, item_id)
         upage
       end
       # Corriger les problèmes si on en trouve
-      if good_list != curr_list
-        debug "La liste des :pages_ids a dû être corrigée (originale : #{curr_list.inspect} / corrigée : #{good_list.inspect})"
+      if good_list_ids != curr_list_ids
+        debug "### La liste des :pages_ids a dû être corrigée"
+        debug "ORIGINALE (seulement ids) : #{curr_list_ids.join(', ')}"
+        debug "CORRIGÉE  (seulement ids) : #{good_list_ids.join(', ')}"
       end
       # Finalement, on donne la liste des instances de pages
       pages
@@ -173,6 +182,7 @@ upage = User::UPage::get(user, param(:pid).to_i) unless param(:pid).nil?
 case param(:op)
 when 'markvue'
   upage.set_vue
+  bureau.reset_all
   flash "Page marquée vue, vous pouvez à présent la lire."
 when 'marklue'
   upage.marquer_lue
