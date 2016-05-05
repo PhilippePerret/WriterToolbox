@@ -57,6 +57,10 @@ class CurPDay
   alias :encours :started
   # def encours type; encours_by_type[type] end
 
+  # {Array of Hash} TOUS LES TRAVAUX RÉCEMMENT FINIS
+  # Récent = Fini dans les 10 jours-programme précédents
+  def recent type = :all; recent_by_type[type] end
+
   # ---------------------------------------------------------------------
   #   Méthodes de nombre
   # ---------------------------------------------------------------------
@@ -141,24 +145,53 @@ class CurPDay
     end
   end
 
-  # # Méthode de construction de la table des travaux qui
-  # # sont en cours, c'est-à-dire les travaux démarrés
-  # def encours_by_type type
-  #   @encours_by_type ||= begin
-  #     h = {
-  #       task:   Array::new,
-  #       page:   Array::new,
-  #       quiz:   Array::new,
-  #       forum:  Array::new,
-  #       all:    Array::new
-  #     }
-  #     works_started(as: :hdata).each do |wid, wdata|
-  #       h[wdata[:type]] << wdata
-  #       h[:all] << wdata
-  #     end
-  #     h
-  #   end
-  # end
+  # Méthode de construction de la table des travaux récents
+  # Un travail récent est un travail qui a été terminé dans
+  # les 7 jours-programme mais on ne met que :
+  #   - tous les travaux des 3 derniers jours
+  #   - On ajoute les autres jusqu'à 10 travaux par type
+  #
+  # Note : contrairement aux autres listes, ces listes là sont
+  # classées par date (par jour-programme).
+  def recent_by_type
+    @recent_by_type ||= begin
+      rbt = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new,
+        all:    Array::new
+      }
+      # On commence par récupérer tous les travaux finis qui datent
+      # de moins de 10 jours (précisément : ceux qui ont été FINIS dans
+      # les dix jours précédents)
+      # On relève le hash des données travail.
+      il_y_a_dix_pdays = (NOW - (10.days * auteur.program.coefficient_duree)).to_i
+      where = "status = 9 AND ended_at > #{il_y_a_dix_pdays}"
+      # debug "Rythme : #{auteur.program.rythme}"
+      # debug "Coefficient durée : #{auteur.program.coefficient_duree}"
+      # debug "il_y_a_dix_pdays = #{il_y_a_dix_pdays}::#{il_y_a_dix_pdays.class} (#{il_y_a_dix_pdays.as_human_date(true, true)})"
+      auteur.table_works.select(where: where).each do |wid, wdata|
+        awork_id = wdata[:abs_work_id]
+        apday_id = wdata[:abs_pday]
+        type_w = wdata[:options][0..1].to_i
+        type = Unan::Program::AbsWork::TYPES[type_w][:type]
+        rbt[type] << wdata
+      end
+
+      # On trie chaque liste de type par date, les plus récents
+      # en premier
+      #
+      # Note : Ça n'est pas ici qu'on réduit la liste à ses seuls
+      # 10 premiers éléments. Il faudra le faire au besoin.
+      rbt.each do |type, liste|
+        rbt[type] = liste.sort_by{|h| - h[:ended_at]}
+      end
+      debug "table des travaux récents : #{rbt.pretty_inspect}"
+      # On rend finalement la liste
+      rbt
+    end
+  end
 
   # ---------------------------------------------------------------------
   #   /Fin des méthodes de construction des tables des travaux

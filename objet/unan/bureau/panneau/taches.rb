@@ -41,11 +41,24 @@ class Bureau
       end
     end
   end
-  # Raccourci
+
+  # Tâches récentes
+  #
   def last_tasks
-    []
-    # TODO: IL FAUT REMETTRE LES ANCIENNES TÂCHES
-    # @last_tasks ||= user.program.last_tasks
+    @last_tasks ||= begin
+      # Attention, ici, contrairement à `tasks`, ce sont des
+      # hash avec les données du work (Unan::Program::Work) pas
+      # avec les données du
+      current_pday.recent(:task).collect do |wdata|
+        inst = Unan::Program::AbsWork::get( wdata[:abs_work_id] )
+        inst.relative_data= {
+          indice_pday:          wdata[:abs_pday],
+          indice_current_pday:  current_pday.indice,
+          user_id:              auteur.id,
+          work_id:              wdata[:id]
+        }
+      end
+    end
   end
 
 end # /Bureau
