@@ -19,6 +19,8 @@ class Cron
       safed_log "APP_FOLDER n'est pas défini…"
     end
 
+    separation = "\n\n" + "-"*70 + "\n"
+
     # On se place à la racine de l'application pour
     # exécuter toutes les opérations
     # Dir.chdir("/home/boite-a-outils/www/") do
@@ -26,24 +28,25 @@ class Cron
 
       safed_log "Racine dans le Dir.chdir = #{File.expand_path('.')}"
 
-      safed_log "   * [Cron::run] Nettoyage des lieux"
+      safed_log "#{separation}[Cron::run] Nettoyage des lieux"
       nettoyage
 
       # On requiert tout ce qu'il faut requérir
       # Noter que si on n'y parvient pas, l'erreur est fatale,
       # on doit forcément s'arrêter là.
-      safed_log "    * [Cron::run] Requérir toutes les librairies du site"
+      safed_log "#{separation}[Cron::run] Requérir toutes les librairies du site"
       requerir_les_librairies_du_site
 
       # Voir s'il faut faire un résumé des connexions
       # par IP (en fonction des fréquences)
-      safed_log "    * [Cron::run] Traitement des connexions par IP"
+      safed_log "#{separation}[Cron::run] Traitement des connexions par IP"
       SiteHtml::Connexions::resume
 
-      safed_log "    * [Cron::run] Traitement du programme UN AN UN SCRIPT"
+
+      safed_log "#{separation}[Cron::run] Traitement du programme UN AN UN SCRIPT"
       traitement_programme_un_an_un_script
 
-      safed_log "    * [Cron::run] Traitement des messages forum"
+      safed_log "#{separation}[Cron::run] Traitement des messages forum"
       traitement_messages_forum
 
       safed_log "    = Fin Cron::run ="
@@ -126,37 +129,6 @@ class Cron
       end
     end
   end # /traitement_programme_un_an_un_script
-
-  # Nettoyage
-  def self.nettoyage
-
-    # Nettoyage des vieux rapports de connexions
-    #
-    safed_log "    - Nettoyage des vieux rapports de connexion"
-    nombre = 0
-    il_y_a_trois_heures = Time.now - ( 3 * 3600 )
-    Dir["#{RACINE}/CRON/rapports_connexions/*"].each do |p|
-      next if File.stat(p).mtime > il_y_a_trois_heures
-      File.unlink p
-      nombre += 1
-    end
-    safed_log "    = OK (#{nombre} destructions)"
-
-    # Nettoyage du debug principal s'il existe
-    #
-    safed_log "    - Nettoyage du debug.log"
-    p = "#{RACINE}/debug.log"
-    if File.exist?(p)
-      File.unlink(p)
-      safed_log "    = OK"
-    else
-      safed_log "    - Inexistant -"
-    end
-
-  rescue Exception => e
-    safed_log "# ERREUR AU COURS DU NETTOYAGE : #{e.message}"
-    safed_log e.backtrace.join("\n")
-  end
 end
 
 safed_log "<- #{__FILE__}"

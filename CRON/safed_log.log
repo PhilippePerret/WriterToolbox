@@ -1,4 +1,4 @@
-SAFED LOG DU 06 05 2016 - 13:30
+SAFED LOG DU 06 05 2016 - 13:55
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -22,15 +22,26 @@ SAFED LOG DU 06 05 2016 - 13:30
 Racine courante = /Users/philippeperret
 APP_FOLDER = "/Users/philippeperret/Sites/WriterToolbox"
 Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
-   * [Cron::run] Nettoyage des lieux
+
+
+----------------------------------------------------------------------
+[Cron::run] Nettoyage des lieux
     - Nettoyage des vieux rapports de connexion
     = OK (0 destructions)
     - Nettoyage du debug.log
     - Inexistant -
-    * [Cron::run] Requérir toutes les librairies du site
+    - Nettoyage des logs cron (un an un script)
+     = 1 fichiers-log détruits
+
+
+----------------------------------------------------------------------
+[Cron::run] Requérir toutes les librairies du site
      -> Cron::requerir_les_librairies_du_site
      <- Cron::requerir_les_librairies_du_site
-    * [Cron::run] Traitement des connexions par IP
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement des connexions par IP
 Fréquence de rapport connexion : ":one_an_hour"
 			   rapport_needed? : true
 Fréquence de rapport connexion : ":one_an_hour"
@@ -38,10 +49,10 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-06 13:30:00 +0200
+Titre : Rapport des connexions du 2016-05-06 13:55:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-06 13:30:00 +0200
+Rapport des connexions du 2016-05-06 13:55:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
 
@@ -53,10 +64,16 @@ IP                   Nb   Durée Whois                          De       à     
 
 			  = Résumé des connexions OK
 			<- SiteHtml::Connexions::resume
-    * [Cron::run] Traitement du programme UN AN UN SCRIPT
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
      <- Cron::traitement_programme_un_an_un_script
-    * [Cron::run] Traitement des messages forum
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement des messages forum
      -> Cron::traitement_messages_forum
      <- Cron::traitement_messages_forum
     = Fin Cron::run =
@@ -66,4 +83,4 @@ IP                   Nb   Durée Whois                          De       à     
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (06 05 2016 - 13:30) ---
+--- FIN DU SAFED LOG (06 05 2016 - 13:55) ---

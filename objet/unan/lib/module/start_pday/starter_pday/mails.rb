@@ -6,10 +6,9 @@ Extention pour la gestion des messages
 =end
 class Unan
 class Program
-class StarterPDay
 
   # ---------------------------------------------------------------------
-  #   Instance, donc l'auteur pour le starter du programme en particulier
+  #   Instance, donc l'auteur pour le programme en particulier
   #   On utilise notamment mail_auteur.send_mail pour envoyer le mail
   #   final à l'auteur, si nécessaire.
   #   Noter que ce mail est exclusivement réservé pour les annonces de
@@ -20,20 +19,25 @@ class StarterPDay
     @mail_auteur ||= MailAuteur::new(self)
   end
 
+  # ---------------------------------------------------------------------
+  #   Class Unan::Program::MailAuteur
+  # ---------------------------------------------------------------------
+  
   class MailAuteur
 
-    # Le starter-pday
-    attr_reader :starter
+    # Le program
+    attr_reader :program
 
-    def initialize starter
-      @starter = starter
+
+    def initialize program
+      @program = program
     end
 
     # Méthode principale pour envoyer le mail à l'auteur
     def send_mail
       auteur.send_mail(
-        subject: "Rapport journalier du #{NOW.as_human_date}",
-        message: content,
+        subject:  "Rapport journalier du #{NOW.as_human_date}",
+        message:  content,
         formated: true
       )
     rescue Exception => e
@@ -79,7 +83,7 @@ class StarterPDay
       end
     end
 
-    def auteur ; @auteur ||= starter.auteur end
+    def auteur ; @auteur ||= program.auteur end
 
     # Pour gérer les sections du mail
     class Section
@@ -106,6 +110,6 @@ class StarterPDay
       end
     end
   end #/Mail
-end #/StarterPDay
+
 end #/Program
 end #/Unan

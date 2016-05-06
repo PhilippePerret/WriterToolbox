@@ -84,7 +84,8 @@ class User
         # Noter que le mail est toujours construit car il fabrique un
         # panneau d'alerte qui sera aussi affiché dans le bureau de
         # l'auteur lorsqu'il rejoindra son bureau.
-        if resultat == nil && Time.now.hour == 13 # mettre 0
+        # [METTRE TRUE ICI POUR FORCER LE RAPPORT]
+        if true # resultat == nil && Time.now.hour == 0
           log "--- État des lieux de première heure nécessaire"
           auteur.program.etat_des_lieux
         end

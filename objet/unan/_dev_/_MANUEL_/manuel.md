@@ -845,7 +845,10 @@ Si on essaie d'appeler le fichier CRON par son adresse comme un module Ruby norm
 
 * Attendre le moment et vérifier dans le dossier `./CRON/log/`.
 
-Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay.
+Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay. Pour forcer un état des lieux (avec un auteur qui demande un rapport quotidien de son état de programme), il suffit de mettre un true à la balise `[METTRE TRUE ICI POUR FORCER LE RAPPORT]` dans le fichier :
+
+        ./CRON/lib/required/UnAnUnScript/User/traite_users.rb
+        [METTRE TRUE ICI POUR FORCER LE RAPPORT]
 
 ---------------------------------------------------------------------
 
