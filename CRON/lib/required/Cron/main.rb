@@ -135,7 +135,7 @@ class Cron
     safed_log "    - Nettoyage des vieux rapports de connexion"
     nombre = 0
     il_y_a_trois_heures = Time.now - ( 3 * 3600 )
-    Dir["./CRON/rapports_connexions/*"].each do |p|
+    Dir["#{RACINE}/CRON/rapports_connexions/*"].each do |p|
       next if File.stat(p).mtime > il_y_a_trois_heures
       File.unlink p
       nombre += 1
@@ -145,7 +145,7 @@ class Cron
     # Nettoyage du debug principal s'il existe
     #
     safed_log "    - Nettoyage du debug.log"
-    p = "./debug.log"
+    p = "#{RACINE}/debug.log"
     if File.exist?(p)
       File.unlink(p)
       safed_log "    = OK"

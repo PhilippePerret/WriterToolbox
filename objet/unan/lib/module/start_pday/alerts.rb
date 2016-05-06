@@ -10,8 +10,8 @@ class << self
 
   # {String} Retourne le message d'avertissement pour le mail
   # de l'auteur en fonction du niveau d'avertissement
-  def message_alerte_depassement
-    case niveau_avertissement
+  def message_alerte_depassement niv_alert
+    case niv_alert
     when nil then nil
     when 1 then "Léger dépassement de moins de 3 jours."
     when 2 then "Dépassement de près d'une semaine. Attention de ne pas vous laisser distancer."

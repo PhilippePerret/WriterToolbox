@@ -39,6 +39,7 @@
   * [Méthodes d'instance de la classe `User::UQuiz`](#methodesdinstancesuquiz)
 * [Suivi de l'auteur](#suividelauteur)
   * [Cron-job horaire](#crontouteslesheures)
+  * [Tester le CRON-Job en local](#testercronlocal)
 * [Les Pages de cours](#lespagesdecours)
   * [Dossier des pages de cours](#dossierdespagesdecours)
   * [Les Pointeurs de page](#leshandlersdepage)
@@ -777,7 +778,7 @@ Instance `Unan::Quiz` du questionnaire original.
 
 <a name='descriptioncronrun'></a>
 
-## Description de Cron::run
+### Description de Cron::run
 
 Toutes les heures, un `cron-job` est lancé, conséquent, qui permet de contrôler les auteurs et, principalement, de :
 
@@ -821,13 +822,30 @@ Le fichier `./lib/required.rb` charge des librairies de cron puis appelle la mé
 
 <a name='fichierlogsure'></a>
 
-## Fichier log sûr
+### Fichier log sûr
 
 Pendant tout le processus, on peut utiliser la méthode :
 
   safed_log message
 
 … pour enregistrer un message qui le sera à tout moment.
+
+<a name='testercronlocal'></a>
+
+### Tester le CRON-Job en local
+
+Si on essaie d'appeler le fichier CRON par son adresse comme un module Ruby normal, ça ne peut pas fonctionner car CGI n'aura aucune valeur. Plutôt, il faut faire :
+
+* Éditer le fichier crontab pour modifier la fréquence
+
+          $> crontab -e
+          Taper "a" pour passer en édition
+          Mettre par exemple */10 pour un check toutes les 10 minutes
+          :wq pour écrire et quitter le crontab
+
+* Attendre le moment et vérifier dans le dossier `./CRON/log/`.
+
+Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay.
 
 ---------------------------------------------------------------------
 

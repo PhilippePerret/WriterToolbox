@@ -24,7 +24,7 @@ class Program
 
     # S'il n'y a aucun travail à faire (tous exécutés), on peut
     # s'en retourner tout de suite.
-    return true if nombre_travaux_courants == 0
+    return true if cur_pday.undone(:all).count == 0
 
     # Pour consigner le nombre d'avertissements par niveau en
     # enregistrant les instances travaux dans les listes.

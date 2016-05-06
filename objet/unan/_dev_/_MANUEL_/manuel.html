@@ -317,27 +317,98 @@ sup {
 <li><a href="#descriptiongeneraleduprogramme">Description du programme</a></li>
 <li><a href="#fonctionnementgeneral">Fonctionnement général</a></li>
 <li><a href="#bureaudelauteur">Bureau de l'auteur</a></li>
+<li><a href="#troisbasesdedonnees">Bases de données</a></li>
+<li><a href="#aidepourlauteur">Aide pour l'auteur</a></li>
 </ul>
 </li>
-<li><a href="#programmedelauteur">Programme de l'auteur</a></li>
+<li><a href="#synopsistravailauteur">Synopsis du parcours d'un auteur</a>
+
+<ul>
+<li><a href="#demarrageduprogramme">Démarrage du programme UN AN UN SCRIPT</a></li>
+<li><a href="#changementdesjoursprogramme">Changement des jours-program</a></li>
+</ul>
+</li>
+<li><a href="#lespreferencesdelauteur">Les Préférences de l'auteur</a>
+
+<ul>
+<li><a href="#conventionpourlesnoms">Convention de nommage</a></li>
+<li><a href="#lamethodepreferences">Méthodes <code>preference</code> et <code>preference=</code></a></li>
+<li><a href="#relevedetouteslesprefs">Relève de toutes les préférences</a></li>
+<li><a href="#ajoutnouvellepreference">Ajout d'une nouvelle préférence</a></li>
+</ul>
+</li>
+<li><a href="#variablesprogrammedelauteur">Variables programme de l'auteur</a>
+
+<ul>
+<li><a href="#listingcompletdesvariables">Listing complet des variables courantes</a></li>
+<li><a href="#jourprogrammecourant">Indice du jour-programme (p-day) courant</a></li>
+</ul>
+</li>
+<li><a href="#helpersdeliensdivers">Helpers de liens</a>
+
+<ul>
+<li><a href="#liensverslespanneauxprincipaux">Liens vers les panneaux principaux</a></li>
+</ul>
+</li>
+<li><a href="#programmedelauteur">Programme de l'auteur</a>
+
+<ul>
+<li><a href="#nombredepointsdelauteur">Gestion du nombre de points de l'auteur</a></li>
+<li><a href="#changementdejourprogramme">Changement de jour-programme de l'auteur</a></li>
+</ul>
+</li>
 <li><a href="#rythmedelauteur">Rythme de l'auteur</a></li>
 <li><a href="#calendrierduprogramme">Calendrier du programme</a></li>
+<li><a href="#lespdayabsolus">P-Days absolus</a></li>
 <li><a href="#travaildelauteur">Travaux de l'auteur</a>
 
 <ul>
+<li><a href="#instanceworkauteur">L'instance <code>work</code></a></li>
+<li><a href="#listedestravauxdelauteur">Liste des travaux de l'auteur</a></li>
+<li><a href="#laclassecurpday">Class Unan::Program::CurPDay</a></li>
 <li><a href="#typesdetravaux">Types de travaux</a></li>
 </ul>
 </li>
-<li><a href="#suividel'auteur">Suivi de l'auteur</a>
+<li><a href="#lesquestionnaires">Les Questionnaires (Quiz)</a>
 
 <ul>
-<li><a href="#crontouteslesheures">Cron toutes les heures</a></li>
+<li><a href="#classeabsolueetauteur">Classe absolue (<code>Unan::Quiz</code>) et auteur (<code>User::UQuiz</code>)</a></li>
+<li><a href="#requirelibrairiequiz">Requérir la librairie <code>quiz</code></a></li>
+<li><a href="#chargerlesquizdelauteur">Questionnaires de l'auteur</a></li>
+<li><a href="#methodesdinstancesuquiz">Méthodes d'instance de la classe <code>User::UQuiz</code></a></li>
+</ul>
+</li>
+<li><a href="#suividelauteur">Suivi de l'auteur</a>
+
+<ul>
+<li><a href="#crontouteslesheures">Cron-job horaire</a></li>
+<li><a href="#testercronlocal">Tester le CRON-Job en local</a></li>
+</ul>
+</li>
+<li><a href="#lespagesdecours">Les Pages de cours</a>
+
+<ul>
+<li><a href="#dossierdespagesdecours">Dossier des pages de cours</a></li>
+<li><a href="#leshandlersdepage">Les Pointeurs de page</a></li>
+<li><a href="#lienpourafficherunepagedecours">Lien pour afficher/éditer/détruire une page de cours</a></li>
+<li><a href="#instancedepagedecours">Instance de page de cours (<code>page_cours()</code>)</a></li>
+<li><a href="#mapdespagesdecours">Map des pages de cours</a></li>
+<li><a href="#lecturesdelapagedecours">Enregistrement des LECTURES de la page de cours</a></li>
+<li><a href="#constructiondesvues">Construction des vues</a></li>
 </ul>
 </li>
 </ul>
 
 
-<p><a name='generalitessurleprogramme'></a></p>
+<!--
+  RACCOURCIS Utiliser [texte][identifiant] ou [identifiant][]
+  Ces raccourcis n'apparaitront pas dans le texte final
+  Rappel: les IDs sont case-insensitives
+  -->
+
+
+<p>[liste des travaux de l'auteur] #listedestravauxdelauteur "Liste des travaux de l'auteur"
+<a name='generalitessurleprogramme'></a></p>
 
 <h2>Généralités</h2>
 
@@ -345,7 +416,7 @@ sup {
 
 <h3>Description du programme</h3>
 
-<p>Ce programme est censé accompagner un auteur sur une année dans :</p>
+<p>Ce programme accompagne un auteur sur une année dans :</p>
 
 <ul>
 <li>son approche de la narration (aspect pédagogique)</li>
@@ -365,13 +436,276 @@ sup {
 
 <p>Chaque auteur inscrit au programme possède un bureau, son centre de travail névralgique d'où il peut accomplir toutes les actions et voir où il en est de son travail.</p>
 
+<p><a name='troisbasesdedonnees'></a></p>
+
+<h3>Bases de données</h3>
+
+<p>Il existe trois types de base de données dans le programme UN AN UN SCRIPT :</p>
+
+<ol>
+<li><strong>unan_cold</strong>.</li>
+</ol>
+
+
+<p>  Ce sont les données “froides”, i.e. la définition des travaux, des jours-programmes, etc. Ce sont en quelque sorte des <em>données fixes</em>.
+2. <strong>unan_hot</strong>.</p>
+
+<p>  Ce sont les données “chaudes”, i.e. la définition des programmes qui ont déjà eu lieu ou ont lieu, les données sur les projets, etc. Ce sont des données dynamiques qui peuvent être modifiées à tout moment et, surtout, qui concernent les auteurs impliqués dans le programme.
+3. <strong>user/program<program ID>.db</strong>.</p>
+
+<p>  Ce sont les bases de données propre à chaque auteur, qui consigne ses travaux, ses réponses aux questionnaires, etc., i.e. toutes les informations concernant le programme concerné.</p>
+
+<p><a name='aidepourlauteur'></a></p>
+
+<h2>Aide pour l'auteur</h2>
+
+<p>Toute l'aide pour l'auteur doit se trouver dans un unique fichier PDF qui peut être chargé dans une autre page.</p>
+
+<p>Ce fichier se trouve à l'adresse :</p>
+
+<pre><code>    ./objet/unan/aide/manuel_utilisateur/manuel_utilisateur.pdf
+</code></pre>
+
+<p>Il est composé en Latex mais on pourra imaginer le faire en Markdown aussi.</p>
+
+<hr />
+
+<p><a name='synopsistravailauteur'></a></p>
+
+<h2>Synopsis du parcours d'un auteur</h2>
+
+<p><a name='demarrageduprogramme'></a></p>
+
+<h3>Démarrage du programme UN AN UN SCRIPT</h3>
+
+<p>Un programme UN AN UN SCRIPT se démarre lorsque l'auteur s'inscrit au programme, c'est-à-dire au moment précis où il revient du site PayPal après le paiement de son inscription.</p>
+
+<blockquote><p>Note : Le montant de ce paiement est défini dans le fichier <code>./objet/unan/lib/required/unan/class.rb</code> dans la méthode <code>tarif</code>.</p></blockquote>
+
+<p><em>Vue et module <code>on_ok</code></em></p>
+
+<p>Il passe alors par la vue <code>./objet/unan/paiement/on_ok.erb</code> et le module <code>./objet/unan/paiement/on_ok.rb</code>.</p>
+
+<p><em>Module signup_user.rb</em></p>
+
+<p>on_ok.rb charge le module <code>./objet/unan/lib/module/signup_user.rb</code> et appelle dans ce module la méthode <code>User#signup_program_uaus</code>.</p>
+
+<p><em>signup_program_uaus</em></p>
+
+<p>Cette méthode :</p>
+
+<ul>
+<li>Crée le programme UN AN UN SCRIPT de l'auteur</li>
+<li>Crée le projet de l'auteur</li>
+<li>Crée ses tables dans la base de données propre au programme (chaque programme possède sa propre base de données, même lorsqu'il est suivi par le même auteur).</li>
+<li>Instancie le premier "jour-programme" de l'auteur, ce qui va avoir pour conséquence de définir son travail (cf. program.start_pday ci-dessous).</li>
+<li>Envoie les messages de confirmation d'inscription, de premières explications, etc. à l'auteur et d'avertissement à l'administration.</li>
+</ul>
+
+
+<p><a name='changementdesjoursprogramme'></a></p>
+
+<h3>Changement des jours-programme (P-Days)</h3>
+
+<p>Tous les jours-programme, donc tous les jours pour un rythme de 5 et plus ou moins un jour réel pour les autres rythmes, le jour-programme des auteurs change.</p>
+
+<p>Ce changement est produit par le <a href="#crontouteslesheures" title="Le Cron-job horaire">cronjob horaire</a> qui travaille toutes les heures.</p>
+
+<p><code>Program#start_pday</code> est la méthode appelée pour démarrer un nouveau jour de travail.</p>
+
+<blockquote><p>Noter que cette cette méthode qui est appelée au tout premier démarrage du programme (après le paiement).</p></blockquote>
+
+<hr />
+
+<p><a name='lespreferencesdelauteur'></a></p>
+
+<h2>Les Préférences de l'auteur</h2>
+
+<p><a name='conventionpourlesnoms'></a></p>
+
+<h3>Convention de nommage</h3>
+
+<p>Par convention, tous les noms de préférence sont enregistrées dans la table <code>variables</code> avec <strong>un nom commençant par “pref_”</strong>.</p>
+
+<p>L'identifiant de cette préférence, utilisé par et dans les méthodes fait abstraction de ce “pref_”.</p>
+
+<p>Par exemple, on utilise dans le code la préférence <code>bureau_after_login</code> mais dans la table <code>variables</code> la donnée est enregistrée au nom de <code>pref_bureau_after_login</code>.</p>
+
+<p><strong>Note : Cela permet simplement de reconnaitre ce type de variable dans la table et de, par exemple, pouvoir toutes les relever d'un coup lorsque ce sont les préférences qu'on doit régler.</strong></p>
+
+<p><a name='lamethodepreferences'></a></p>
+
+<h3>Méthodes <code>preference</code> et <code>preference=</code></h3>
+
+<p>Les méthodes <code>User#preference</code> et <code>User#preferences=</code> permettent d'enregistrer les préférences de l'user :</p>
+
+<pre><code>user.preference= &lt;pref id&gt;, &lt;pref value&gt;
+
+ou
+
+user.preference= &lt;pref id&gt; =&gt; &lt;pref_value&gt;
+</code></pre>
+
+<p>Pour récupérer la valeur :</p>
+
+<pre><code>user.preference(&lt;:pref id&gt;[, valeur défaut])
+</code></pre>
+
+<p>Par exemple :</p>
+
+<pre><code>user.preference(:bureau_after_login)
+# =&gt; true s'il faut rejoindre le bureau "Un an un script" après
+# l'identification.
+</code></pre>
+
+<p><a name='relevedetouteslesprefs'></a></p>
+
+<h3>Relève de toutes les préférences</h3>
+
+<p>On peut relever toutes les préférences d'un coup à l'aide de la méthode <code>User#preferences</code>. On peut faire ensuite appel à la méthode <code>User#preference</code> pour obtenir une valeur, de façon tout à fait normale.</p>
+
+<p>Note : En fait, faire appel à la méthode <code>User#preferences</code> évite simplement de faire des appels trop nombre d'affilée à la table <code>variables</code>, lorsque plusieurs préférences doivent être utilisées.</p>
+
+<p><a name='ajoutnouvellepreference'></a></p>
+
+<h3>Ajout d'une nouvelle préférence</h3>
+
+<p>Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :</p>
+
+<ul>
+<li>lui définir un nom original,</li>
+<li>ajouter un checkbox et une explication pour cette préférence dans la vue <code>./objet/unan/bureau/panneau/preferences.erb</code>,</li>
+<li>l'ajouter à la liste des préférences de l'user dans le fichier <code>./objet/unan/bureau/panneau/preferences.rb</code> (méthode <code>user_preferences</code>)</li>
+</ul>
+
+
+<hr />
+
+<p><a name='variablesprogrammedelauteur'></a></p>
+
+<h2>Variables programme de l'auteur</h2>
+
+<p><a name='listingcompletdesvariables'></a></p>
+
+<h3>Listing complet des variables courantes</h3>
+
+<p><strong>Cette liste doit tenir à jour la liste complète des variables dans la table <code>variables</code> d'un user inscrit au programme UN AN UN SCRIPT.</strong></p>
+
+<p><strong>Noter que les variables sont classées dans leur ordre d'importance et donc qu'on trouve pêle-mêle des préférences et des variables normales.</strong></p>
+
+<pre><code>pref_rythme
+
+    {Fixnum} Le rythme courant de l'auteur, de 1 à 9
+    &lt;- user.rythme
+    &lt;- user.preference(:rythme)
+
+current_pday
+
+    {Fixnum 1-start} Le jour-programme courant de l'auteur.
+    &lt;- user.get_var :current_pday
+    &lt;- user.pday
+
+pref_daily_summary
+
+    {Boolean} True si l'auteur veut recevoir des récapilatifs
+    journaliers même lorsqu'il n'a pas de nouveau travail.
+    Défault : false
+
+pref_sharing
+
+    {Fixnum} Niveau de partage du projet de l'auteur
+    &lt;- user.preference(:sharing)
+
+total_points_projet
+
+    {Fixnum} Total des points courants sur le projet courant.
+    C'est cette valeur qui est utilisée pour connaitre le grade
+    de l'user dans Unan::Program::DATA_POINTS
+
+total_points
+
+    {Fixnum} Total des points de l'auteur, tous programmes
+    confondus.
+</code></pre>
+
+<p><a name='jourprogrammecourant'></a></p>
+
+<h3>Indice du jour-programme (p-day) courant</h3>
+
+<p>On obtient le jour-programme courant de l'auteur par :</p>
+
+<pre><code>    &lt;user&gt;.program.current_pday
+</code></pre>
+
+<blockquote><p>Note : On pourrait faire un raccourci <code>user.current_pday</code> mais je préfère que le jour-programme courant soit toujours associé au programme de l'auteur.</p></blockquote>
+
+<hr />
+
+<p><a name='helpersdeliensdivers'></a></p>
+
+<h2>Helpers de liens</h2>
+
+<p><a name='liensverslespanneauxprincipaux'></a></p>
+
+<h3>Liens vers les panneaux principaux</h3>
+
+<p>Utiliser ces liens pour rejoindre les panneaux principaux du bureau :</p>
+
+<pre><code>&lt;%= bureau.lien_etat %&gt;         # L'état des lieux
+&lt;%= bureau.lien_travail %&gt;      # Vers le travail à faire
+&lt;%= bureau.lien_quiz %&gt;         # Vers les questionnaires, checklist, etc.
+&lt;%= bureau.lien_messages %&gt;     # Vers les messages forum
+&lt;%= bureau.lien_pages_cours %&gt;  # Vers les pages de cours à lire
+</code></pre>
+
+<p>On peut ajouter en <strong>premier argument</strong> le titre à donner au lien :</p>
+
+<pre><code>&lt;%= bureau.lien_travail "votre travail du jour" %&gt;
+</code></pre>
+
+<p>On peut définir en <strong>second argument</strong> les options à utiliser, c'est-à-dire les attributs à ajouter à la balise :</p>
+
+<pre><code>    &lt;%= bureau.lien_travail nil, {target: `_new', class:`monlienspecial'} %&gt;
+</code></pre>
+
+<p>Note : Ces liens sont définis dans le fichier <code>./objet/unan/lib/required/Bureau/helper.rb</code></p>
+
 <hr />
 
 <p><a name='programmedelauteur'></a></p>
 
 <h2>Programme de l'auteur</h2>
 
-<p>Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance <code>Unan::Program</code> consignée dans la table <code>programs</code> de <code>unan.db</code>.</p>
+<p>Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance <code>Unan::Program</code> consignée dans la table <code>programs</code> de <code>unan_hot.db</code>.</p>
+
+<p><a name='nombredepointsdelauteur'></a></p>
+
+<h3>Gestion du nombre de points de l'auteur</h3>
+
+<p>Pour encourager l'auteur, un nombre de points lui est accordé chaque fois qu'il achève un travail.</p>
+
+<p>Les points sont conservés dans les <a href="#instanceworkauteur" title="Les instances travail">instances <code>works</code></a> du programme. On peut donc obtenir les points d'un travail en particulier par&nbsp;:</p>
+
+<pre><code>    iwork = Unan::Program::Work::get(program_id, work_id)
+    nombre_points = iwork.points
+
+    Ou, si c'est le programme courant de l'auteur :
+
+    nombre_points = user.work(work_id).points
+</code></pre>
+
+<p><a name='changementdejourprogramme'></a></p>
+
+<h2>Changement de jour-programme de l'auteur</h2>
+
+<p>Avec le nouveau fonctionnement, il suffit de changer le <code>current_pday</code> du programme de l'auteur pour le faire changer de programme. Tout le reste s'effectue tout seul puisque les travaux sont calculés à la volée lorsqu'il vient sur son bureau. Donc passer l'user au jour suivant revient simplement à faire :</p>
+
+<pre><code>    - Prendre le rythme du programme de l'auteur
+    - Calculer s'il y a un changement de rythme
+    - Passer l'auteur au jour-programme suivant si nécessaire
+</code></pre>
+
+<p>Ce changement se fait par le <a href="#crontouteslesheures">Cron-job horaire</a></p>
 
 <hr />
 
@@ -405,7 +739,7 @@ sup {
 <p>On instancie ce calendrier seulement avec l'instance programme&nbsp;:</p>
 
 <pre><code>    program = Unan::Program::new(&lt;prog id&gt;)
-    ou 
+    ou
     program = user.program
 
     calend  = Unan::Program::Cal::new(program)
@@ -422,21 +756,257 @@ sup {
 
 <hr />
 
+<p><a name='lespdayabsolus'></a></p>
+
+<h2>P-Days absolus</h2>
+
 <ul>
-<li><a href="#lespdaysduprogramme">Les P-Days</a>
-<a name='lespdaysduprogramme'></a></li>
+<li><a href="#principesgenerateurs">Principes générateurs des PDays</a></li>
+<li><a href="#organisationdespdays">Organisation d'un P-Day</a></li>
 </ul>
 
 
-<h2>Les P-Days</h2>
+<p>Les <code>p-days</code> absolus, instance de class <code>Unan::Program::AbsPDay</code>, définissent précisément le travail à faire ou amorcer un jour précis du calendrier, quel que soit le <a href="#rythmedelauteur" title="Le rythme de l'auteur">rythme</a> du programme.</p>
 
-<p>Les <code>P-Days</code> sont des <code>jours-programme</code>. Ils peuvent être réels (correspondre au jour réel) ou non suivant la valeur du <a href="#rythmedelauteur" title="Le rythme de l'auteur">rythme</a> du programme.</p>
+<p>Ces p-days absolus sont définis dans la table&nbsp;:</p>
+
+<pre><code>    unan_cold.absolute_pdays
+</code></pre>
+
+<p>… qu'on peut obtenir par :</p>
+
+<pre><code>    Unan::table_absolute_pdays
+</code></pre>
+
+<p><a name='principesgenerateurs'></a></p>
+
+<h3>Principes générateurs des P-Days</h3>
+
+<ul>
+<li><p><strong>Un p-day est absolu</strong></p>
+
+<p>Il est immuable et définit le plus justement ce que doit être la journée de travail de l'auteur.</p>
+
+<p>En revanche, il peut être constitué de parties dynamique en fonction des points de l'auteur, de son support final (roman, film, etc.) ou de toute autre donnée de l'auteur qui peut influencer son travail.</p></li>
+<li><p>Quel que soit le rythme de travail choisi, il y aura toujours 366 p-days dans un cycle complet de programme.</p>
+
+<p>Simplement, plus le rythme de travail est lent et plus il y aura de jours réels dans un p-day. Inversement, plus le rythme de travail est important et plus il y aurait de jours réels dans un p-day.</p></li>
+<li><p>Ces 366 PDays définissent la composition de la version 2 d'un scénario/manuscrit et la lecture complète de Narration.</p></li>
+<li><p>Un p-day définit tout le travail à accomplir</p>
+
+<p>C'est le "point central" du programme, le point d'où on envoie vers les pages de cours, vers les questionnaires, etc.</p>
+
+<p>Il est constitué de <code>travaux</code> (instances de classe <code>Unan::Program::AbsWork</code>), travaux qui renvoient à ces pages de cours, ces questionnaires, etc.</p></li>
+<li><p><a href="#organisationdespdays">Organisation d'un P-Day</a></p></li>
+</ul>
+
+
+<p><a name='organisationdespdays'></a></p>
+
+<h3>Organisation d'un P-Day</h3>
+
+<p>Le P-Day est constitué de tâches (des “works” ou instances de classe <code>Unan::Program::AbsWork</code>) à accomplir :</p>
+
+<pre><code>P-Day --&gt; Work  --&gt; Page cours
+      --&gt; Work  --&gt; Page cours
+      --&gt; Work  --&gt; Questionnaire
+      --&gt; Work  --&gt; Action à accomplir
+</code></pre>
 
 <hr />
 
 <p><a name='travaildelauteur'></a></p>
 
 <h2>Travaux de l'auteur</h2>
+
+<p><a name='instanceworkauteur'></a></p>
+
+<h3>L'instance <code>work</code></h3>
+
+<ul>
+<li><a href="#linstancework">L'instance <code>Unan::Program::Work</code></a></li>
+<li><a href="#obtenirlinstancework">Obtenir l'instance <code>Work</code></a></li>
+<li><a href="#proprietesdework">Propriétés de l'instance <code>Unan::Program::Work</code></a></li>
+<li><a href="#suividutravaildelauteur">Suivi du travail</a></li>
+<li><a href="#programmationfuturedunwork">Programmation future d'un <code>work</code></a></li>
+</ul>
+
+
+<p><a name='linstancework'></a></p>
+
+<h4>L'instance <code>Unan::Program::Work</code></h4>
+
+<p>Les travaux de l'auteur sont des instances&nbsp;:</p>
+
+<pre><code>    Unan::Program::Work
+</code></pre>
+
+<p>Ils sont consignés dans la table&nbsp;:</p>
+
+<pre><code>    DATABASE
+      ./database/data/unan/user/&lt;user-id&gt;/programme&lt;program-id&gt;.db
+    TABLE
+      works
+</code></pre>
+
+<p>Noter un point important : ces “works”, la plupart du temps, ne sont créés que lorsque le travail est marqué démarré par l'auteur. Plus précisément, pour créer le work, il faut que :</p>
+
+<ul>
+<li>une “tâche” doit être marquée “démarrée” par l'auteur,</li>
+<li>une “page de cours” doit être marquée "vue" par l'auteur,</li>
+<li>un “quiz” soit rempli par l'auteur,</li>
+<li>(les choses ne sont pas encore définis pour les messages de forum).</li>
+</ul>
+
+
+<p><a name='obtenirlinstancework'></a></p>
+
+<h4>Obtenir l'instance <code>Work</code></h4>
+
+<p>Pour obtenir une instance d'un travail en particulier et donc lire ses données ou la manipuler&nbsp;:</p>
+
+<pre><code>    Unan::Program::Work::get(&lt;program&gt;, &lt;work-id&gt;)
+
+    &lt;program&gt; est une instance Unan::Program qu'on peut obtenir par :
+    user.program
+</code></pre>
+
+<p>Si c'est le programme courant de l'auteur, on peut l'obtenir par&nbsp;:</p>
+
+<pre><code>    user.work(&lt;work-id&gt;)
+</code></pre>
+
+<p><a name='proprietesdework'></a></p>
+
+<h4>Propriétés de l'instance <code>Unan::Program::Work</code></h4>
+
+<p>Cette instance possède ces propriétés :</p>
+
+<pre><code>    id            {Fixnum} Identifiant propre au travail
+    program_id    {Fixnum} Identifiant du programme auquel appartient le
+                           work
+    abs_work_id   {Fixnum} Identifiant du travail absolu correspondant
+    indice_pday   {Fixnum} L'indice du jour-programme de ce travail.
+                           Noter qu'il correspond au jour-programme du
+                           travail absolu, même si le travail a été
+                           démarré plus tard.
+    type_w        {Fixnum(2)} Type de travail (pour raccourci)
+    status        {Fixnum} Statut actuel du travail, de 0 à 9
+    options       {String} Options sur 64 octets du travail.
+                           Cf. ci-dessous.
+    points        {Fixnum} Nombre de points gagnés pour ce travail.
+    ended_at      {Fixnum} Timestamp de la fin du travail
+    created_at
+    updated_at
+</code></pre>
+
+<p>Pour les points, cf. <a href="#nombredepointsdelauteur" title="Les points du programme">Gestion du nombre de points de l'auteur</a>.</p>
+
+<p>Pour les particularités de <code>created_at</code>, cf. <a href="#programmationfuturedunwork">Programmation dans le futur d'un travail</a> ci-dessous.</p>
+
+<p><a name='suividutravaildelauteur'></a></p>
+
+<h4>Suivi du travail</h4>
+
+<p>Les deux propriétés permettant de suivre un travail sont&nbsp;:</p>
+
+<pre><code>    status        {Fixnum} Nombre de 0 à 9
+    options       {String} Chaine de 64 "bits"
+</code></pre>
+
+<p>Valeurs du status</p>
+
+<pre><code>    0   Travail créé/instancié (inutilisé maintenant que le travail
+        est seulement créé lorsque l'auteur le marque démarré/vu)
+    1   Travail marqué démarré par l'auteur, c'est-à-dire qu'il l'a
+        vu et pris en compte. Il se marque démarré depuis le bureau
+        Noter que ça ne s'applique qu'aux "vrais" travaux, pas aux
+        pages de cours ou autres quiz.
+        Interroger la méthode `started?` pour savoir si le travail a
+        été démarré.
+
+    9   Travail terminé
+        Interroger la méthode `completed?` pour savoir si le travail
+        est fini.
+</code></pre>
+
+<p><a name='programmationfuturedunwork'></a></p>
+
+<h4>Programmation future d'un <code>work</code></h4>
+
+<p>CETTE PARTIE DOIT DEVENIR OBSOLÈTE AVEC LE NOUVEAU FONCTIONNEMENT PAR “RECHERCHE ABSOLUE” (cf. <a href="#listedestravauxdelauteur">Liste des travaux de l'auteur</a>). MAIS COMMENT LA REMPLACER ?
+Un <code>work</code> peut être programmé à l'avance. C'est le cas par exemple lorsqu'un questionnaire n'a pas été rempli correctement et qu'il doit être re-proposé plus tard à l'auteur. Dans ce cas, on utilise la propriété <code>created_at</code>  et <code>updated_at</code> synchronisé pour définir que le travail doit être commencé plus tard.</p>
+
+<pre><code>    iwork.set( created_at: &lt;date dans le future&gt;, updated_at: &lt;date future&gt; )
+    # rappel : date est un fixnum correspondant au nombre de secondes
+</code></pre>
+
+<p><a name='listedestravauxdelauteur'></a></p>
+
+<h3>Liste des travaux de l'auteur</h3>
+
+<p>NOTE : La liste des travaux ne fonctionne plus par liste d'identifiants consignant les travaux courants de l'auteur. Cela rendait la gestion des changements de jours infornale.</p>
+
+<p>Maintenant, on consulte simplement les travaux à faire dans l'absolu de cette façon :</p>
+
+<pre><code>    Soit le jour-programme courant PD
+    * On relève tous les travaux absolus de tout type à faire jusqu'à
+      ce PD (ce qui peut être très "long" vers la fin, mais il n'y
+      aura que 366 jours de toute façon)
+    * On relève tous les travaux finis et non finis de l'auteur
+      (donc ses "works")
+    * On retire de la liste des travaux absolus tous les travaux
+      qui ont été achevés par l'auteur.
+    * Il ne reste alors dans la liste des travaux absolus que les
+      travaux courants, dont certains peuvent avoir été démarrés
+      (un "work" auteur existe, alors) et d'autres non démarrés (dans
+      ce cas, ils ne possèdent pas de "work" auteur)
+</code></pre>
+
+<p><a name='laclassecurpday'></a></p>
+
+<h2>Class Unan::Program::CurPDay</h2>
+
+<p>Une classe est spécialement dédiée à la gestion des travaux au jour courant :</p>
+
+<pre><code>    Unan::Program::CurPDay
+</code></pre>
+
+<p>Elle est définie dans :</p>
+
+<pre><code>    ./objet/unan/lib/required/cur_pday/inst.rb
+</code></pre>
+
+<p>Dans le bureau central de l'auteur, on peut obtenir l'instance de cette classe par :</p>
+
+<pre><code>    bureau.current_pday
+</code></pre>
+
+<p>Pour obtenir les travaux non achevés de type <code>task</code> :</p>
+
+<pre><code>    bureau.current_pday.undone(:task)
+    # =&gt; {Array} de {Hash} contenant les données des
+    # travaux absolus + les données du work si le travail
+    # a été démarré
+</code></pre>
+
+<p>Les méthodes principales sont :</p>
+
+<pre><code>    done(type)        # Liste des data de travaux accomplis
+                      # Data des Works, pas des AbsWorks
+    undone(type)      # Liste des data de travaux inachevés
+                      # Data des AbsWorks + quelques autres
+    started(type)     # Liste des data de travaux démarrés
+                      # mais non achevés
+                      # Data des Works pas des AbsWorks
+    encours(type)     # idem
+</code></pre>
+
+<p>Ces méthodes retourne un <code>Array</code> de <code>Hash</code> qui sont les données enregistrées soit du travail absolu (<code>Unan::Program::AbsWork</code>) soit du travail propre à l'auteur (<code>Unan::Program::Work</code>) auxquelles sont ajoutées quelques autres données comme :</p>
+
+<pre><code>    work_id       L'ID du work de l'auteur, if any
+    indice_pday   L'indice du jour-programme
+</code></pre>
 
 <p><a name='typesdetravaux'></a></p>
 
@@ -456,49 +1026,150 @@ sup {
 
       TASK      Une tâche à accomplir
       QUIZ      Un questionnaire à répondre
-      COURS
-
-  Chaque type de travail est consigné dans une "variable-user"
-  qu'on peut obtenir et modifier par :
-
-      user.set_var(&lt;:nom variable&gt;, &lt;valeur variable&gt;)
-      user.get_var(&lt;:nom variable&gt;) # =&gt; retourne sa valeur
-
-  Ces variables-user porte comme nom :
-
-      works_ids       Pour tous les travaux (dont ceux ci-dessous)
-      ------------------------------------------------------------
-      tasks_ids       Pour les tasks
-      pages_ids       Pour les pages de cours à lire
-      quiz_ids        Pour les questionnaires à répondre
-
-  Les IDs contenus dans ces listes sont des identifiants de :
-
-      Unan::Program::Work
-
-  Un work s'instancie à l'aide de :
-
-      Unan::Program::Work::new(&lt;user&gt;.program, &lt;work id&gt;)
-
-  L'instance Work possède une propriété `item_id` qui définit
-  l'ID de l'item en fonction du type de work :
-
-      Si le type est          Alors item_id est
-      ------------------------------------------------------------
-      task                    l'ID d'une tâche
-      quiz                    l'ID d'un questionnaire
-      page                    l'ID d'une page de cours
+      PAGE      Une page de cours (Narration) à lire.
+                Noter qu'il ne s'agit pas de l'id de la page dans
+                Narration mais d'un identifiant propre à Unan,
+                puisqu'il s'agit ici d'un work.
 </code></pre></li>
 </ul>
 
 
-<p><a name='suividel'auteur'></a></p>
+<p>Pour le détail sur les listes de travaux, cf. la [liste des travaux de l'auteur][].</p>
+
+<p>Un work s'instancie à l'aide de :</p>
+
+<pre><code>    Unan::Program::Work::new(&lt;user&gt;.program, &lt;work id&gt;)
+    # (ou get)
+
+    L'instance Work possède une propriété `item_id` qui définit
+    l'ID de l'item en fonction du type de work :
+
+        Si le type est          Alors item_id est
+        ------------------------------------------------------------
+        task                    l'ID d'une tâche
+        quiz                    l'ID d'un questionnaire
+        page                    l'ID d'une page de cours
+        forum                   l'ID d'un travail de forum
+
+
+    abs_work_id         ID de l abswork du travail
+    indice_pday         Indice du jour-programme du travail
+</code></pre>
+
+<p>Noter que l <code>indice_pday</code> n'est pas le jour-programme auquel le travail a été commencé, mais le jour absolu pour lequel le travail a été programmé, même s'il est démarré seulement le lendemain ou surlendemain de ce jour.</p>
+
+<p><a name='lesquestionnaires'></a></p>
+
+<h2>Les Questionnaires (Quiz)</h2>
+
+<p><a name='classeabsolueetauteur'></a></p>
+
+<h3>Classe absolue (<code>Unan::Quiz</code>) et auteur (<code>User::UQuiz</code>)</h3>
+
+<p>Il faut comprendre qu'il y a deux classes pour les quiz :</p>
+
+<p>La classe qui contient les données absolues :</p>
+
+<pre><code>Unan::Quiz
+</code></pre>
+
+<p>La classe qui contient les résultats de l'auteur au quiz :</p>
+
+<pre><code>User::UQuiz
+</code></pre>
+
+<p>Dans les deux cas, il faut <a href="#requirelibrairiequiz">requérir la librairie <code>quiz</code></a>.</p>
+
+<p><a name='requirelibrairiequiz'></a></p>
+
+<h3>Requérir la librairie <code>quiz</code></h3>
+
+<pre><code>site.require_objet 'unan'
+Unan::require_module 'quiz'
+</code></pre>
+
+<p><a name='chargerlesquizdelauteur'></a></p>
+
+<h3>Questionnaires de l'auteur</h3>
+
+<p>On peut récupérer les questionnaires de l'auteur à l'aide de la propriété :</p>
+
+<pre><code>user.quizes
+# =&gt; Hash avec en clé l'ID qui UQuiz et en valeur
+# l'instance User::UQuiz.
+</code></pre>
+
+<p>Cette méthode peut recevoir un filtre pour ne retourner que les instances de quiz voulues.</p>
+
+<pre><code>user.quizes(
+  created_after:
+  created_before:
+  max_points:            Ne doit pas avoir plus de points que ça
+  min_points:            Doit avoir au moins ce nombre de points
+  quiz_id:           {Fixnum} ID du questionnaire Unan::Quiz absolu
+  )
+</code></pre>
+
+<p><a name='methodesdinstancesuquiz'></a></p>
+
+<h3>Méthodes d'instance de la classe <code>User::UQuiz</code></h3>
+
+<h4><code>&lt;uquiz&gt;.reponses</code></h4>
+
+<p><code>{Hash}</code> des réponses données au questionnaire. Avec en clé l'ID de la question et en valeur un Hash contenant :</p>
+
+<pre><code>qid:        {Fixnum} ID de la question dans la table des questions
+
+type:       {String(3)} Pour que JS puisse afficher les réponses
+points:     {Fixnum} Total des points marqués
+max:        {Fixnum} Maximum de points qu'il est possible de marquer
+            pour cette question.
+value:      {Fixnum|Array de Fixnum} ID de la réponse donnée,  ou liste
+            des IDs si c'est une question à réponses multiples.
+</code></pre>
+
+<p>Instance <code>Unan::Quiz</code> du questionnaire de référence.</p>
+
+<h4><code>&lt;uquiz&gt;.points</code></h4>
+
+<p>Le nombre de points marqués à ce questionnaire. Ou nil.</p>
+
+<h4><code>&lt;uquiz&gt;.max_points</code></h4>
+
+<p><code>Fixnum</code>. Le nombre de points maximum qu'on peut gagner à ce questionnaire.</p>
+
+<h4><code>&lt;uquiz&gt;.note_sur_vingt</code></h4>
+
+<p><code>Float</code>. La note sur vingt pour le questionnaire.</p>
+
+<blockquote><p>Calculée avec la méthode d'<code>Array</code> <code>sur_vingt</code> qui prend en premier argument la note totale et en deuxième argument le maximum de moints :</p></blockquote>
+
+<pre><code>[points, max_points].sur_vingt(1)
+</code></pre>
+
+<h4><code>&lt;uquiz&gt;.quiz</code></h4>
+
+<p>Instance <code>Unan::Quiz</code> du questionnaire original.</p>
+
+<hr />
+
+<p><a name='suividelauteur'></a></p>
 
 <h2>Suivi de l'auteur</h2>
 
 <p><a name='crontouteslesheures'></a></p>
 
-<h3>Cron toutes les heures</h3>
+<h3>Cron-job horaire</h3>
+
+<ul>
+<li><a href="#descriptioncronrun">Description de Cron::run</a></li>
+<li><a href="#fichierlogsure">Fichier log sûr</a></li>
+</ul>
+
+
+<p><a name='descriptioncronrun'></a></p>
+
+<h3>Description de Cron::run</h3>
 
 <p>Toutes les heures, un <code>cron-job</code> est lancé, conséquent, qui permet de contrôler les auteurs et, principalement, de :</p>
 
@@ -509,5 +1180,217 @@ sup {
 <li>leur accorder des bonus en cas de bon comportement.</li>
 </ul>
 
+
+<blockquote><p>Noter que ce cron-job n'est pas exclusivement réservé au programme UN AN UN SCRIPT, il sert à toutes les tâches du site. Mais il est toujours lancé en “mode sans échec” pour ne jamais s'interrompre.</p></blockquote>
+
+<p>Ce fichier décrit le travail du cron-job qui suit les auteurs suivant le programme UN AN UN SCRIPT.</p>
+
+<p>Tous les éléments du cron-job se trouvent dans le dossier <code>./CRON</code> qui doit être placé à la racine complète de l'hébergement (pas du site, donc avant le <code>www</code>).</p>
+
+<p>Le cron est lancé par la ligne de commande :</p>
+
+<pre><code>0 * * * * ruby ./CRON/hour_cron.rb &gt; /dev/null
+</code></pre>
+
+<p>C'est le fichier <code>hour_cron.rb</code> qui est le fichier <code>main.rb</code>.</p>
+
+<p>Ce fichier appelle le module <code>./lib/required.rb</code>.</p>
+
+<pre><code>./hour_cron.rb -&gt; ./lib/required.rb
+</code></pre>
+
+<p>Le fichier <code>./lib/required.rb</code> charge des librairies de cron puis appelle la méthode générale :</p>
+
+<pre><code>Cron::run
+</code></pre>
+
+<p><strong>Synopsis</strong> :</p>
+
+<pre><code>    * Le Cron se place sur la racine du site.
+    * Il charge toutes les librairies du site, comme si on chargeait
+      la page.
+    * Il appelle ensuite la méthode
+      `traitement_programme_un_an_un_script` qui va se charger du
+      traitement des programmes UN AN UN SCRIPT.
+      Cf. [Traitement des programmes un an un script](#traitementprogrammesunanunscript)
+    * Il appelle ensuite la méthode `traitement_messages_forum` qui va
+      se charger du traitement des messages de forum, pour avertir des
+      nouvelles publications. Cf. [Traitement des messages du forum](#traitementmessagesforum)
+</code></pre>
+
+<p><a name='fichierlogsure'></a></p>
+
+<h3>Fichier log sûr</h3>
+
+<p>Pendant tout le processus, on peut utiliser la méthode :</p>
+
+<p>  safed_log message</p>
+
+<p>… pour enregistrer un message qui le sera à tout moment.</p>
+
+<p><a name='testercronlocal'></a></p>
+
+<h3>Tester le CRON-Job en local</h3>
+
+<p>Si on essaie d'appeler le fichier CRON par son adresse comme un module Ruby normal, ça ne peut pas fonctionner car CGI n'aura aucune valeur. Plutôt, il faut faire :</p>
+
+<ul>
+<li><p>Éditer le fichier crontab pour modifier la fréquence</p>
+
+<pre><code>    $&gt; crontab -e
+    Taper "a" pour passer en édition
+    Mettre par exemple */10 pour un check toutes les 10 minutes
+    :wq pour écrire et quitter le crontab
+</code></pre></li>
+<li><p>Attendre le moment et vérifier dans le dossier <code>./CRON/log/</code>.</p></li>
+</ul>
+
+
+<p>Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay.</p>
+
+<hr />
+
+<p><a name='lespagesdecours'></a></p>
+
+<h2>Les Pages de cours</h2>
+
+<p><a name='lienpourafficherunepagedecours'></a></p>
+
+<h3>Lien pour afficher/éditer/détruire une page de cours</h3>
+
+<p>Fonctionnellement, suivant le principe restfull du site, on utilise pour afficher une page de cours, pour l'éditer ou pour la détruire, ou pour modifier son texte, respectivement :</p>
+
+<pre><code>href="page_cours/&lt;id&gt;/show?in=unan"
+
+href="page_cours/&lt;id&gt;/edit?in=unan_admin"
+
+href="page_cours/&lt;id&gt;/destroy?in=unan_admin"
+
+href="page_cours/&lt;id&gt;/edit_content?in=unan_admin"
+</code></pre>
+
+<p>Mais on préfèrera utiliser la méthode pratique utilisant <a href="#leshandlersdepage">les pointeurs</a> :</p>
+
+<pre><code>page_cours(&lt;hanlder&gt;).link[ "&lt;titre&gt;"]
+</code></pre>
+
+<p>On obtient les liens par :</p>
+
+<pre><code>page_cours(&lt;ref&gt;).link            # lien pour afficher la page
+                                  # read.erb
+page_cours(&lt;ref&gt;).link(:edit)     # =&gt; lien pour éditer la page
+                                  # edit.erb
+page_cours(&lt;ref&gt;).link(:destroy)  # =&gt; lien pour détruire la page
+                                  # destroy.erb
+</code></pre>
+
+<p>Cf. <a href="#instancedepagedecours">Instance de page de cours</a> pour le détail de cette méthode pratique.</p>
+
+<p><strong>Noter qu'on peut aussi utiliser les ID avec cette méthode, mais que c'est moins parlant. Par exemple :</strong></p>
+
+<pre><code>page_cours(:introduction_au_programme).link
+</code></pre>
+
+<p>… est + parlant que :</p>
+
+<pre><code>page_cours(12).link
+</code></pre>
+
+<p>D'autre part, si on modifie la table des pages de cours, il suffira de changer la <a href="#mapdespagesdecours">map des pages de cours</a> pour corriger tous les liens d'un coup.</p>
+
+<p><a name='instancedepagedecours'></a></p>
+
+<h3>Instance de page de cours</h3>
+
+<p>Pour obtenir une instance de page de cours (<code>{Unan::Program::PageCours}</code>), on peut utiliser la méthode pratique <code>page_cours</code>.</p>
+
+<p>Elle est définie dans le fichier principal des méthodes pratiques :</p>
+
+<pre><code>./objet/unan/lib/required/handy.rb
+</code></pre>
+
+<p>OBSOLÈTE. <code>page_cours</code> est maintenant une méthode-propriété qui retourne la page de cours définie d'après l'id de la rest-route.</p>
+
+<p><a name='mapdespagesdecours'></a></p>
+
+<h3>Map des pages de cours</h3>
+
+<p>Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre le handler (Symbol explicite) et l'ID de la table. C'est dans les données de la page, dans la base de données (unan_cold.pages_cours), qu'est définie cette correspondance.</p>
+
+<p><a name='leshandlersdepage'></a></p>
+
+<h3>Les Pointeurs de page</h3>
+
+<p><a name='dossierdespagesdecours'></a></p>
+
+<h3>Dossier des pages de cours</h3>
+
+<p>Pour le moment, toutes les pages de cours, qu'elles soient propre au programme ou qu'elle provienne du livre ou de la collection Narration, se trouvent respectivement dans les dossiers :</p>
+
+<pre><code>./data/unan/ pages_cours/   unan/        Pages propres au programme
+                            narration/   Pages du livre
+                            cnarration/  Pages de la collection
+             pages_semidyn/ (même hiérarchie mais avec les pages semi-
+                             dynamiques qui seront vraiment chargées)
+</code></pre>
+
+<p><a name='lecturesdelapagedecours'></a></p>
+
+<h3>Enregistrement des LECTURES de la page de cours</h3>
+
+<p>Les lectures sont enregistrées dans la donnée <code>lectures</code> de la page (table <code>pages_cours</code> de l'user). Pour le moment, c'est un simple Hash dont les clés sont les heures de lecture en secondes et la valeur est la même chose. Plus tard, on pourra imaginer que la valeur soit la fin de la lecture.</p>
+
+<p><a name='constructiondesvues'></a></p>
+
+<h3>Construction des vues</h3>
+
+<ul>
+<li><a href="#emplacementdespages">Emplacement des pages</a></li>
+<li><a href="#constructeurdepage">Constructeur de page</a></li>
+</ul>
+
+
+<p>Toutes les vues sont dynamiques car elles contiennent souvent des éléments personnalisés, comme par exemple les exemples avec l'user courant.</p>
+
+<p>Cependant, il y a certains traitements qui peuvent être lourds, comme par exemple le système de balisage (liens vers un exercice, vers un questionnaire, vers une autre page de cours, vers une tâche).</p>
+
+<p>Faut-il imaginer des fichiers intermédiaires qui ne conserveraient que les éléments dynamiques.</p>
+
+<pre><code>PAGE ORIGINALE (le plus souvent ERB)
+
+      ||
+      ||      Traitement des liens-balises, etc. Ils sont remplacés par
+      ||      des vrais liens.
+      \/
+
+PAGE SEMI-DYNAMIQUE (peut-être du contenu avec %{variable})
+
+      ||
+      ||      Traitement des quelques éléments dynamiques comme les
+      ||      dates où les pseudos du lecteur de la page.
+      \/
+
+PAGE FINALE ENVOYÉE
+</code></pre>
+
+<p>Aucun contrôle n'est fait pour actualiser les pages semi-automatiques. Il faut le faire explicitement.</p>
+
+<p>=> Un bouton-lien pour construire la page semi-dynamique.</p>
+
+<p><a name='emplacementdespages'></a></p>
+
+<h4>Emplacement des pages</h4>
+
+<p>Les pages <strong>originales</strong> se trouvent dans le dossier <code>./data/unan/page_cours</code>.</p>
+
+<p>Les pages <strong>semi-dynamiques</strong> se trouvent dans le dossier <code>./data/unan/page_semi_dyna</code>.</p>
+
+<p>Les pages <strong>finales</strong> sont toujours envoyées à la volée.</p>
+
+<p><a name='constructeurdepage'></a></p>
+
+<h4>Constructeur de page</h4>
+
+<p>C'est le module <code>./objet/unan_admin/page_cours/build.rb</code> qui se charge de construire la page semi-dynamique. Puis il redirige vers la page précédente, qui est certainement l'édition du contenu de la page.</p>
 </body>
 </html>

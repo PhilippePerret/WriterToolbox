@@ -277,8 +277,9 @@ class CurPDay
             nil
           end
           # Y a-t-il dépassement ?
-          depassement = wdata[:duree] - (self.indice - indice_pday)
+          depassement = wdata[:duree] - (self.indice - idpday)
           depassement = nil if depassement <= 0
+          # Ajout des valeurs
           res[wid].merge!(
             type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
             indice_pday:  idpday,

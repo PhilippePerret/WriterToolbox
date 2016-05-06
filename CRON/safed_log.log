@@ -1,4 +1,4 @@
-SAFED LOG DU 06 05 2016 - 12:00
+SAFED LOG DU 06 05 2016 - 13:30
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -29,3 +29,41 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
     - Inexistant -
     * [Cron::run] Requérir toutes les librairies du site
      -> Cron::requerir_les_librairies_du_site
+     <- Cron::requerir_les_librairies_du_site
+    * [Cron::run] Traitement des connexions par IP
+Fréquence de rapport connexion : ":one_an_hour"
+			   rapport_needed? : true
+Fréquence de rapport connexion : ":one_an_hour"
+			* Résumé des connexions par IP
+			. = /Users/philippeperret/Sites/WriterToolbox
+			-> rationalise_connexions
+			RÉSULTATS À ENVOYER :
+Titre : Rapport des connexions du 2016-05-06 13:30:00 +0200
+Message :
+<pre style='font-size:9pt'>
+Rapport des connexions du 2016-05-06 13:30:00 +0200
+
+IP                   Nb   Durée Whois                          De       à        Routes
+
+
+=== ROUTES PAR IPS ===
+
+</pre><p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
+
+			  = Résumé des connexions OK
+			<- SiteHtml::Connexions::resume
+    * [Cron::run] Traitement du programme UN AN UN SCRIPT
+     -> Cron::traitement_programme_un_an_un_script
+     <- Cron::traitement_programme_un_an_un_script
+    * [Cron::run] Traitement des messages forum
+     -> Cron::traitement_messages_forum
+     <- Cron::traitement_messages_forum
+    = Fin Cron::run =
+* Traitement du rapport admin
+= STEP 2 OK =
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
+
+
+=== FIN DU SAFED LOG SANS ERREUR FATALE ===
+--- FIN DU SAFED LOG (06 05 2016 - 13:30) ---

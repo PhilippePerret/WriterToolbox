@@ -4,7 +4,7 @@ class Program
 
   # Instance {Unan::Program::CurPDay} du programme courant
   def cur_pday
-    @current_pday ||= Unan::Program::CurPDay::new(current_pday, auteur)
+    @cur_pday ||= Unan::Program::CurPDay::new(current_pday, auteur)
   end
 
   # Méthode qui checke si les travaux courants de l'user ont
