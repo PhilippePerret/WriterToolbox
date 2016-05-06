@@ -1,5 +1,7 @@
 # Aperçu par bits
 
+NOTE : CE SYSTEME EST INSTALLÉ MAIS IL N'EST PAS VRAIMENT UTILISÉ.
+
 * [Présentation du principe général](#principegeneralepresentation)
 * [Les classes `DaysOverview` et `DaysOverview::Day`](#classedaysoverview)
 * [Constantes Bits et valeur](#valeurdesbitesetconstantes)

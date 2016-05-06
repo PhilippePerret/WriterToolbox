@@ -50,7 +50,7 @@ class User
           log "= L'ID programme de #{auteur.pseudo} est : ##{auteur.program.id}"
         end
 
-        log "= Jour-programme courant de #{auteur.pseudo} : #{auteur.get_var(:current_pday).inspect}"
+        log "= Jour-programme courant de #{auteur.pseudo} : #{auteur.program.current_pday.inspect}"
 
         # On regarde si l'auteur a des travaux de plus de deux jours qui
         # n'ont pas encore été démarrés ou marqués vus. Si c'est le cas, il
@@ -76,7 +76,7 @@ class User
         resultat = auteur.program.test_if_next_pday
         if resultat != nil
           if resultat[:errors].empty?
-            log "--- #{entete_message} a été passé au jour-programme suivant avec succès (P-Day #{auteur.get_var(:current_pday)})."
+            log "--- #{entete_message} a été passé au jour-programme suivant avec succès (P-Day #{auteur.program.current_pday})."
           else
             log "--- #{entete_message} N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
           end
