@@ -32,6 +32,12 @@ class CurPDay
   # qu'administrateur
   attr_reader :auteur
 
+  # {Hash} Utile uniquement pour le CRON pour consigner les
+  # avertissements qui sont donnés.
+  # Cf. le fichier :
+  # ./objet/unan/lib/module/start_pday/program/etat_des_lieux.rb
+  attr_accessor :avertissements
+
   # +indice+ {Fixnum} Le numéro du jour-programme
   # courant.
   # +auteur+ {User} Auteur de ce jour-programme courant
@@ -47,19 +53,22 @@ class CurPDay
   # ---------------------------------------------------------------------
 
   # {Array of Hash} TOUS LES TRAVAUX TERMINÉS
-  def done type = :all; done_by_type[type] end
-
+  def done type = :all      ; done_by_type[type]        end
   # {Array of Hash} TOUS LES TRAVAUX NON TERMINÉS
-  def undone type = :all; undone_by_type[type] end
-
+  def undone type = :all    ; undone_by_type[type]      end
   # {Array of Hash} TOUS LES TRAVAUX DÉMARRÉS NON FINIS
-  def started type; started_by_type[type]  end
+  def started type = :all   ; started_by_type[type]     end
   alias :encours :started
-  # def encours type; encours_by_type[type] end
-
   # {Array of Hash} TOUS LES TRAVAUX RÉCEMMENT FINIS
   # Récent = Fini dans les 10 jours-programme précédents
-  def recent type = :all; recent_by_type[type] end
+  def recent type = :all    ; recent_by_type[type]      end
+  # {Array of Hash} TOUS LES NOUVEAUX TRAVAUX
+  def nouveaux type = :all  ; nouveaux_by_type[type]    end
+  # {Array of Hash} TOUS LES TRAVAUX EN DÉPASSEMENT
+  def overtimed type = :all ; overtimed_by_type[type]   end
+  # {Array of Hash} TOUS LES TRAVAUX POURSUIVIS
+  # (donc pas nouveaux et pas en dépassement)
+  def poursuivis type = :all ; poursuivis_by_type[type] end
 
   # ---------------------------------------------------------------------
   #   Méthodes de nombre
@@ -143,6 +152,26 @@ class CurPDay
       @works_started = h
       sbt
     end
+  end
+
+  # Méthode de construction de la table des nouveaux
+  # travaux
+  #
+  # Est considéré comme "nouveau" un travail dont le pday est
+  # inférieur d'1 au pday courant
+  def nouveaux_by_type
+    works_undone(as: :hdata) if @nouveaux_by_type == nil
+    @nouveaux_by_type
+  end
+
+  def overtimed_by_type
+    works_undone(as: :hdata) if @overtimed_by_type == nil
+    @overtimed_by_type
+  end
+
+  def poursuivis_by_type
+    works_undone(as: :hdata) if @poursuivis_by_type == nil
+    @poursuivis_by_type
   end
 
   # Méthode de construction de la table des travaux récents
@@ -258,6 +287,27 @@ class CurPDay
     when :ids
       @works_undone_as_ids ||= ids
     when :hdata
+      @nouveaux_by_type = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new,
+        all:    Array::new
+      }
+      @overtimed_by_type = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new,
+        all:    Array::new
+      }
+      @poursuivis_by_type = {
+        task:   Array::new,
+        page:   Array::new,
+        quiz:   Array::new,
+        forum:  Array::new,
+        all:    Array::new
+      }
       @works_undone_as_hdata ||= begin
         res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
         # On ajoute certaines données utiles, dont :
@@ -267,8 +317,9 @@ class CurPDay
         #     ce travail)
         #   * Le nombre de jours de dépassement (if any) ou nil (en jour)
         res.each do |wid, wdata|
-          idpday = @last_pday_of_abswork[wid]
-          pairid = "#{wid}:#{idpday}"
+          idpday  = @last_pday_of_abswork[wid]
+          pairid  = "#{wid}:#{idpday}"
+          type    = Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type]
           # Est-ce qu'un travail existe ?
           work_id = if works_started.has_key?(pairid)
             work_id = works_started[pairid][:id]
@@ -276,12 +327,32 @@ class CurPDay
           else
             nil
           end
+          # Est-ce un travail du jour. Si c'est le cas, on
+          # l'enregistre dans la liste des nouveaux travaux
+          is_nouveau = (self.indice - idpday) <= 1
+          if is_nouveau
+            @nouveaux_by_type[type] << wdata
+            @nouveaux_by_type[:all] << wdata
+          end
           # Y a-t-il dépassement ?
           depassement = wdata[:duree] - (self.indice - idpday)
           depassement = nil if depassement <= 0
+          is_overtimed = depassement != nil
+          # S'il y a dépassement, on enregistre le travail dans
+          # les dépassements par type
+          if is_overtimed
+            @overtimed_by_type[type] << wdata
+            @overtimed_by_type[:all] << wdata
+          end
+          # Un travail qui n'est ni nouveau ni en dépassement
+          # est un travail poursuivi
+          if !is_nouveau && !is_overtimed
+            @poursuivis_by_type[type] << wdata
+            @poursuivis_by_type[:all] << wdata
+          end
           # Ajout des valeurs
           res[wid].merge!(
-            type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
+            type:         type,
             indice_pday:  idpday,
             work_id:      work_id,
             depassement:  depassement

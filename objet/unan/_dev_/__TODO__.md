@@ -18,6 +18,8 @@
                     standalone  OK
                     start_pday/ mail          OK
                                 starter_pday  ---
+                    work        OK
+* unan/lib/required/  abs_pday    OK
 
 # Processus de travail
 

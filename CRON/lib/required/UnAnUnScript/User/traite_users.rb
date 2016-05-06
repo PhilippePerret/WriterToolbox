@@ -52,13 +52,6 @@ class User
 
         log "= Jour-programme courant de #{auteur.pseudo} : #{auteur.program.current_pday.inspect}"
 
-        # On regarde si l'auteur a des travaux de plus de deux jours qui
-        # n'ont pas encore été démarrés ou marqués vus. Si c'est le cas, il
-        # faut leur envoyer une alerte ainsi qu'à l'administrateur.
-        # En fait, à l'administrateur, on enregistre le message dans son
-        # rapport, dans les alertes importantes
-        auteur.program.test_if_works_not_started
-
         # On teste pour savoir si l'auteur doit passer au jour-programme
         # suivant, en fonction de l'heure et de son rythme d'avancée.
         # Si nécessaire (i.e. s'il y a changement de jour, nouveaux travaux,
@@ -84,14 +77,24 @@ class User
         # Noter que le mail est toujours construit car il fabrique un
         # panneau d'alerte qui sera aussi affiché dans le bureau de
         # l'auteur lorsqu'il rejoindra son bureau.
+        # 
         # [METTRE TRUE ICI POUR FORCER LE RAPPORT]
         if true # resultat == nil && Time.now.hour == 0
           log "--- État des lieux de première heure nécessaire"
+          log "    * État des lieux"
           auteur.program.etat_des_lieux
+          log "    * Envoi du mail"
+          if auteur.report.send_by_mail
+            log "    = État des lieux de première heure et envoi mail OK"
+          else
+            errors_auteur = auteur.errors.join("\n")
+            log "    # Problème au cours de l'envoi du mail de l'état des lieux : #{errors_auteur}"
+          end
+        else
+          # On envoie le mail de l'auteur que si nécessaire
+          auteur.send_mail_if_needed
         end
 
-        # Si nécessaire, envoyer le mail à l'auteur
-        auteur.send_mail_if_needed
 
       end # / fin de boucle sur tous les auteurs en activité
 

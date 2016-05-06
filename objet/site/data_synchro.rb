@@ -60,7 +60,9 @@ class Synchro
     [
       "./database/data/unan/",
       "./database/data/user/",
-      "./lib/deep/deeper/module/synchronisation/"
+      "./lib/deep/deeper/module/synchronisation/",
+      "./CRON/log/",
+      "./CRON/rapports_connexions/"
     ]
   end
 end
@@ -80,6 +82,7 @@ end
 class Synchro
   def folders_2_check
     {
+      'CRON'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'lib'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s },
       'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s },

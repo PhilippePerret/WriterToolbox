@@ -1,4 +1,4 @@
-SAFED LOG DU 06 05 2016 - 13:55
+SAFED LOG DU 06 05 2016 - 22:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -49,10 +49,10 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-06 13:55:01 +0200
+Titre : Rapport des connexions du 2016-05-06 22:00:00 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-06 13:55:01 +0200
+Rapport des connexions du 2016-05-06 22:00:00 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
 
@@ -69,7 +69,24 @@ IP                   Nb   Durée Whois                          De       à     
 ----------------------------------------------------------------------
 [Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
-     <- Cron::traitement_programme_un_an_un_script
+Traitement de la liste :overtimed
+ - ltype = :task
+   cur_pday.send(kliste, ltype) = [{:id=>8, :titre=>"R\u00E9glage des informations sur le projet", :duree=>4, :type_w=>40, :type=>:task, :travail=>"R\u00E9gler les informations g\u00E9n\u00E9ral sur le projet. Il suffit de passer en revue les onglets du bureau et de r\u00E9gler les champs indiqu\u00E9s.\r\nCela permet notamment de r\u00E9gler le titre de travail du projet ou encore le rythme g\u00E9n\u00E9ral adopt\u00E9.", :parent=>nil, :prev_work=>nil, :resultat=>"Renseignement des informations sur le projet.", :type_resultat=>"410", :item_id=>nil, :exemples=>nil, :pages_cours_ids=>nil, :points=>10, :created_at=>1452956857, :updated_at=>1454741369, :indice_pday=>1, :work_id=>nil, :depassement=>3, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s d'une semaine. Attention de ne pas vous laisser distancer."}, {:id=>9, :titre=>"Recherches, brainstormings et choix de l'histoire", :duree=>27, :type_w=>50, :type=>:task, :travail=>"Faire des recherches et des brainstormings afin de pouvoir d\u00E9terminer et choisir l'histoire qui sera d\u00E9velopp\u00E9e au cours du programme.", :parent=>nil, :prev_work=>nil, :resultat=>"Une histoire dans sa g\u00E9n\u00E9ralit\u00E9, pr\u00EAte pour le d\u00E9veloppement.", :type_resultat=>"112", :item_id=>nil, :exemples=>nil, :pages_cours_ids=>nil, :points=>100, :created_at=>1453138512, :updated_at=>1461528250, :indice_pday=>2, :work_id=>nil, :depassement=>27, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s qu'un mois. Vous \u00EAtes s\u00E9rieusement en retard."}, {:id=>12, :titre=>"Pitch d'une nouvelle histoire", :duree=>1, :type_w=>10, :type=>:task, :travail=>"Concevoir le plus rapidement possible le pitch d'une histoire. Ce pitch doit faire clairement apparaitre un protagoniste, un contexte, un objectif ou une question dramatique fondamentale. Il doit \u00EAtre int\u00E9gral, c'est-\u00E0-dire pr\u00E9senter un d\u00E9but, un milieu et une fin.", :parent=>nil, :prev_work=>nil, :resultat=>"Le pitch lui-m\u00EAme.", :type_resultat=>"111", :item_id=>nil, :exemples=>"2 3", :pages_cours_ids=>"7", :points=>20, :created_at=>1453302861, :updated_at=>1461590246, :indice_pday=>2, :work_id=>nil, :depassement=>1, :css=>"warning", :message_alerte=>"L\u00E9ger d\u00E9passement de moins de 3 jours."}]
+ - ltype = :page
+   cur_pday.send(kliste, ltype) = [{:id=>10, :titre=>"Recherche et choix de l'histoire (programme un an un script)", :duree=>3, :type_w=>20, :type=>:page, :travail=>"Lire la page de cours", :parent=>9, :prev_work=>nil, :resultat=>nil, :type_resultat=>"000", :item_id=>3, :exemples=>nil, :pages_cours_ids=>nil, :points=>10, :created_at=>1453141727, :updated_at=>1454743510, :indice_pday=>2, :work_id=>nil, :depassement=>3, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s d'une semaine. Attention de ne pas vous laisser distancer."}]
+ - ltype = :quiz
+   cur_pday.send(kliste, ltype) = []
+ - ltype = :forum
+   cur_pday.send(kliste, ltype) = []
+Traitement de la liste :overtimed
+ - ltype = :task
+   cur_pday.send(kliste, ltype) = [{:id=>8, :titre=>"R\u00E9glage des informations sur le projet", :duree=>4, :type_w=>40, :type=>:task, :travail=>"R\u00E9gler les informations g\u00E9n\u00E9ral sur le projet. Il suffit de passer en revue les onglets du bureau et de r\u00E9gler les champs indiqu\u00E9s.\r\nCela permet notamment de r\u00E9gler le titre de travail du projet ou encore le rythme g\u00E9n\u00E9ral adopt\u00E9.", :parent=>nil, :prev_work=>nil, :resultat=>"Renseignement des informations sur le projet.", :type_resultat=>"410", :item_id=>nil, :exemples=>nil, :pages_cours_ids=>nil, :points=>10, :created_at=>1452956857, :updated_at=>1454741369, :indice_pday=>1, :work_id=>nil, :depassement=>3, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s d'une semaine. Attention de ne pas vous laisser distancer."}, {:id=>9, :titre=>"Recherches, brainstormings et choix de l'histoire", :duree=>27, :type_w=>50, :type=>:task, :travail=>"Faire des recherches et des brainstormings afin de pouvoir d\u00E9terminer et choisir l'histoire qui sera d\u00E9velopp\u00E9e au cours du programme.", :parent=>nil, :prev_work=>nil, :resultat=>"Une histoire dans sa g\u00E9n\u00E9ralit\u00E9, pr\u00EAte pour le d\u00E9veloppement.", :type_resultat=>"112", :item_id=>nil, :exemples=>nil, :pages_cours_ids=>nil, :points=>100, :created_at=>1453138512, :updated_at=>1461528250, :indice_pday=>2, :work_id=>nil, :depassement=>27, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s qu'un mois. Vous \u00EAtes s\u00E9rieusement en retard."}, {:id=>12, :titre=>"Pitch d'une nouvelle histoire", :duree=>1, :type_w=>10, :type=>:task, :travail=>"Concevoir le plus rapidement possible le pitch d'une histoire. Ce pitch doit faire clairement apparaitre un protagoniste, un contexte, un objectif ou une question dramatique fondamentale. Il doit \u00EAtre int\u00E9gral, c'est-\u00E0-dire pr\u00E9senter un d\u00E9but, un milieu et une fin.", :parent=>nil, :prev_work=>nil, :resultat=>"Le pitch lui-m\u00EAme.", :type_resultat=>"111", :item_id=>nil, :exemples=>"2 3", :pages_cours_ids=>"7", :points=>20, :created_at=>1453302861, :updated_at=>1461590246, :indice_pday=>2, :work_id=>nil, :depassement=>1, :css=>"warning", :message_alerte=>"L\u00E9ger d\u00E9passement de moins de 3 jours."}]
+ - ltype = :page
+   cur_pday.send(kliste, ltype) = [{:id=>10, :titre=>"Recherche et choix de l'histoire (programme un an un script)", :duree=>3, :type_w=>20, :type=>:page, :travail=>"Lire la page de cours", :parent=>9, :prev_work=>nil, :resultat=>nil, :type_resultat=>"000", :item_id=>3, :exemples=>nil, :pages_cours_ids=>nil, :points=>10, :created_at=>1453141727, :updated_at=>1454743510, :indice_pday=>2, :work_id=>nil, :depassement=>3, :css=>"warning", :message_alerte=>"D\u00E9passement de pr\u00E8s d'une semaine. Attention de ne pas vous laisser distancer."}]
+ - ltype = :quiz
+   cur_pday.send(kliste, ltype) = []
+ - ltype = :forum
+   cur_pday.send(kliste, ltype) = []
 
 
 ----------------------------------------------------------------------
@@ -83,4 +100,4 @@ IP                   Nb   Durée Whois                          De       à     
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (06 05 2016 - 13:55) ---
+--- FIN DU SAFED LOG (06 05 2016 - 22:00) ---

@@ -100,11 +100,8 @@ class StarterPDay
     # ne veut pas être averti quotidiennement
     return true unless has_new_works? || mail_journalier?
 
-    # Sinon, un mail lui est envoyé, qu'on construit à partir
-    # des données de `mail_auteur` (qui est une instance qui
-    # a permis de constituer les sections du mail — cf. mails.rb)
-    mail_auteur.send_mail
-
+    auteur.report.send_by_mail
+    
   rescue Exception => e
     @errors << e.message
     log "# ERROR DANS send_mail_auteur_if_needed : #{e.message}"

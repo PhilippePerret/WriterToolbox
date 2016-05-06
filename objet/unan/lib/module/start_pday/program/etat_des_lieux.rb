@@ -56,14 +56,16 @@ class Program
         avertissements[niv_alerte] << wdata
         avertissements[:total] += 1
         avertissements[:greater_than_four] += 1 if niv_alerte > 4
-        wdata.merge!(css: 'warning')
         message_alerte = Unan::Program::Alerts::message_alerte_depassement(niv_alerte)
-        wdata[:titre] += " (#{message_alerte})"
+        wdata.merge!(
+          css:            'warning',
+          message_alerte: message_alerte
+          )
       end
-      # On ajoute le travail à la liste des travaux courants dans
-      # le mail
-      mail_auteur.travaux_courants << wdata[:titre].in_li(class: wdata[:css])
     end
+
+    # On passe les avertissements au CurPDay du programme
+    cur_pday.avertissements= avertissements
 
     # S'il y a plus de 5 travaux en niveau d'avertissement
     # supérieur à 4 (:greater_than_four) il faut avertir

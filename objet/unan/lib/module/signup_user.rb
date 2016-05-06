@@ -1,11 +1,6 @@
 # encoding: UTF-8
 class ::User
 
-  # Pour ajouter une erreur
-  def add_error mess_err
-    @errors << mess_err
-  end
-
   # Procédure principale qui inscrit l'user au programme UN AN UN SCRIPT
   # tout de suite après le paiement de son module.
   #
