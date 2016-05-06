@@ -1,2 +1,31 @@
-SAFED LOG DU 06 05 2016 - 09:00
+SAFED LOG DU 06 05 2016 - 12:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
+* STEP 1
+- Require log.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
+- Require toutes les librairies cron
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/__constantes__.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/__constantes__.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/forum.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/forum.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
+= STEP 1 OK =
+* STEP 2 (Cron::run)
+-> Cron::run
+Racine courante = /Users/philippeperret
+APP_FOLDER = "/Users/philippeperret/Sites/WriterToolbox"
+Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
+   * [Cron::run] Nettoyage des lieux
+    - Nettoyage des vieux rapports de connexion
+    = OK (0 destructions)
+    - Nettoyage du debug.log
+    - Inexistant -
+    * [Cron::run] Requérir toutes les librairies du site
+     -> Cron::requerir_les_librairies_du_site

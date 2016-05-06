@@ -59,15 +59,6 @@ class User
         # rapport, dans les alertes importantes
         auteur.program.test_if_works_not_started
 
-        # On teste pour savoir si l'auteur doit avoir des travaux
-        # ultérieur ré-injectés dans le courant de ses travaux.
-        # Pour le faire, on regarde les travaux qui ont été créé depuis
-        # maintenant jusqu'à 2 heures plus tard que maintenant. Si le
-        # programme en trouve, il les ré-injecte dans le flux des travaux
-        # en changeant leur created_at pour qu'ils ne soient pas traités
-        # plusieurs fois.
-        auteur.program.check_if_ulteriors_works
-
         # On teste pour savoir si l'auteur doit passer au jour-programme
         # suivant, en fonction de l'heure et de son rythme d'avancée.
         # Si nécessaire (i.e. s'il y a changement de jour, nouveaux travaux,
@@ -82,6 +73,19 @@ class User
           end
         else
           log "--- #{entete_message} n'a pas eu besoin d'être passé au jour-programme suivant."
+        end
+
+        # Si l'auteur n'a pas été passé au jour suivant, mais que l'on est
+        # la première heure d'un nouveau jour et que l'auteur a demandé à
+        # avoir un rapport quotidien, alors il faut faire l'état des lieux de
+        # son programme.
+        # Cet état des lieux lui récapitulera son travail en l'alertant si
+        # des choses sont en retard.
+        # Noter que le mail est toujours construit car il fabrique un
+        # panneau d'alerte qui sera aussi affiché dans le bureau de
+        # l'auteur lorsqu'il rejoindra son bureau.
+        if Time.now.hour == 0 && resultat == nil
+          auteur.program.etat_des_lieux
         end
 
         # Si nécessaire, envoyer le mail à l'auteur

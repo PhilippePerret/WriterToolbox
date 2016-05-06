@@ -20,7 +20,7 @@ class Program
   # l'avantage d'envoyer les mails au bon moment.
   def test_if_next_pday
     if NOW < next_pday_time
-      # => Pas l'heure pour passer au jours suivant
+      # => Pas l'heure pour passer au jour suivant
       return nil
     else
       # Il est temps pour ce programme de passer au jour suivant
@@ -43,12 +43,6 @@ class Program
   def pday_duration
     @pday_duration ||= Fixnum::DUREE_JOUR * coefficient_duree
   end
-
-  # Retourne le jour-programme courant, mais au format
-  # d'instance Unan::Program::PDay
-  # C'est un raccourci pour la formule `current_pday(:instance)`
-  # OBSOLETE : NE DOIT PLUS SERVIR
-  def icurrent_pday ; @icurrent_pday ||= current_pday(:instance) end
 
 end #/Program
 end #/Unan

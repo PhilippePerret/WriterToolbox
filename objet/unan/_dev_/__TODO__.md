@@ -2,8 +2,22 @@
 # à la nouvelle forme (sans liste d'identifiants)
 
 * Manuel de développement OK (unan/_dev_/_MANUEL_)      OK
-* unan/abs_pday
-
+* unan/abs_pday       OK
+* unan/abs_work       OK
+* unan/aide           OK
+* unan/bureau         OK
+* unan/exemple        OK
+* unan/lib/module/  abs_pday  OK
+                    abs_work  OK
+                    bureau    OK
+                    exemple   OK
+                    mail      OK
+                    page_cours  OK
+                    quiz        OK
+                    signup      OK
+                    standalone  OK
+                    start_pday/ mail          OK
+                                starter_pday  ---
 
 # Processus de travail
 

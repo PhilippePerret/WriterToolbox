@@ -29,6 +29,7 @@ class UPage
   def data2save
     @data2save ||= {
       id:           id,
+      work_id:      work_id,
       status:       0,
       lectures:     nil,
       comments:     nil,
@@ -44,6 +45,7 @@ class UPage
   def comments  ; @comments   ||= get(:comments)  end
   def lectures  ; @lectures   ||= (get(:lectures) || Array::new)  end
   def index_tdm ; @index_tdm  ||= get(:index_tdm) end
+  def work_id   ; @work_id    ||= get(:work_id)   end
 
   # ---------------------------------------------------------------------
   #   Data volatiles

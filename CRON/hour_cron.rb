@@ -2,15 +2,26 @@
 =begin
 Module qui doit être appelé toutes les heures par le cron-job.
 
-NOTE Cf. le manuel dans ./objet/unan/_dev_/RefBook/Program/Cron_job.md
 NOTE : Il doit être exécutable.
 
 =end
+RACINE = if Dir["./*"].include?('www')
+  # ONLINE
+  File.expand_path('./www')
+else
+  # OFFLINE
+  File.join(Dir.home, "Sites", "WriterToolbox")
+end
+
 def safed_log mess
-  File.open("/home/boite-a-outils/www/CRON/safed_log.log", 'a') do |f|
+  File.open(safed_log_path, 'a') do |f|
     f.write "#{mess}\n"
   end rescue nil
 end
+def safed_log_path
+  @safed_log_path ||= "#{RACINE}/CRON/safed_log.log"
+end
+
 THIS_FOLDER = File.dirname(__FILE__)
 File.open("#{THIS_FOLDER}/safed_log.log", 'wb') do |f|
   f.write "SAFED LOG DU #{Time.now.strftime('%d %m %Y - %H:%M')}\n(Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)\n"

@@ -1,5 +1,8 @@
-ONLINE  = ENV['HTTP_HOST'] != "localhost"
-OFFLINE = !ONLINE
+
+unless defined?(ONLINE)
+  ONLINE  = ENV['HTTP_HOST'] != "localhost"
+  OFFLINE = !ONLINE
+end
 
 def require_folder dossier
   Dir["#{dossier}/**/*.rb"].each { |m| require m }

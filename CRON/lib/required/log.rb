@@ -35,7 +35,7 @@ class Log
     # Dossier ./CRON/log/
     def folder
       @folder ||= begin
-        d = File.join('.', 'www', 'CRON', 'log')
+        d = File.join(RACINE, 'CRON', 'log')
         `mkdir -p #{d}`
         d
       end

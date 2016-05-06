@@ -205,6 +205,8 @@ class CurPDay
   # de données retourné (if any) définit également `work_id`
   # l'identifiant du travail dont il est question.
   #
+  # La méthode définit aussi le dépassement du travail.
+  #
   # :options:
   #   :as   Détermine le format du retour
   #       :ids    Simple liste des identifiants d'abs_work
@@ -259,10 +261,11 @@ class CurPDay
       @works_undone_as_hdata ||= begin
         res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
         # On ajoute certaines données utiles, dont :
-        #   Le type de travail (:task, :page, :forum ou :quiz)
-        #   Le jour-programme où ce travail était programmé (pour composer
-        #   le `pairid` qui permet de voir si un travail a été démarré pour
-        #   ce travail)
+        #   * Le type de travail (:task, :page, :forum ou :quiz)
+        #   * Le jour-programme où ce travail était programmé (pour composer
+        #   * le `pairid` qui permet de voir si un travail a été démarré pour
+        #     ce travail)
+        #   * Le nombre de jours de dépassement (if any) ou nil (en jour)
         res.each do |wid, wdata|
           idpday = @last_pday_of_abswork[wid]
           pairid = "#{wid}:#{idpday}"
@@ -273,10 +276,14 @@ class CurPDay
           else
             nil
           end
+          # Y a-t-il dépassement ?
+          depassement = wdata[:duree] - (self.indice - indice_pday)
+          depassement = nil if depassement <= 0
           res[wid].merge!(
             type:         Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type],
             indice_pday:  idpday,
-            work_id:      work_id
+            work_id:      work_id,
+            depassement:  depassement
             )
         end
         res

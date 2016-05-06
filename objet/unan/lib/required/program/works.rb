@@ -61,7 +61,7 @@ class Program
   #
   # En clé : l'identifiant du work (propre à l'auteur)
   # En valeur : le hash de toutes les données
-  # 
+  #
   # +type+    Le type, donc :task, :page, :quiz ou :forum
   # +options+ Filtre suplémentaire
   #   :complete     Si True, les works terminés
@@ -86,6 +86,7 @@ class Program
     where = where.join(' AND ')
     table_works.select(where: where)
   end
+  alias :works_of_type :works_by_type
 
   # {Array of Hash} Liste des travaux propres du
   # programme courant en appliquant le filtre +filtre+ s'il est

@@ -70,8 +70,11 @@ class Cron
       require "./lib/required"
       safed_log "     <- Cron::requerir_les_librairies_du_site"
     rescue Exception => e
-      log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
-      lob "### JE DOIS RENONCER"
+      log "# Impossible de charger les librairies du site : #{e.message}"
+      log e.backtrace.join("\n")
+      safed_log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
+      safed_log "### JE DOIS RENONCER"
+      safed_log e.backtrace.join("\n")
       exit(1)
     end
   end
@@ -88,8 +91,8 @@ class Cron
       Forum::check_new_messages
       safed_log "     <- Cron::traitement_messages_forum"
     rescue Exception => e
-      log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
-      log e.backtrace.join("\n")
+      safed_log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
+      safed_log e.backtrace.join("\n")
     end
   end
 

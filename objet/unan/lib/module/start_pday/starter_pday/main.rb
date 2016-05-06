@@ -35,7 +35,7 @@ class StarterPDay
   end
 
   # ---------------------------------------------------------------------
-  #   Méthodes de passage (au jour suivant)
+  #   Méthodes de passage au jour suivant
   # ---------------------------------------------------------------------
 
   # = main =
@@ -50,10 +50,10 @@ class StarterPDay
   # Méthode principale qui va passer le programme du jour-programme
   # current_pday au jour-programme next_pday
   def activer_next_pday
-    check_validite_program      || raise(ERRORS[:check_validite_program])
-    etat_des_lieux_program      || raise(ERRORS[:etat_des_lieux_program])
-    proceed_changement_pday     || raise(ERRORS[:proceed_changement_pday])
-    send_mail_auteur_if_needed  || raise(ERRORS[:send_mail_auteur_if_needed])
+    check_validite_program        || raise(ERRORS[:check_validite_program])
+    auteur.program.etat_des_lieux || raise(ERRORS[:etat_des_lieux_program])
+    proceed_changement_pday       || raise(ERRORS[:proceed_changement_pday])
+    send_mail_auteur_if_needed    || raise(ERRORS[:send_mail_auteur_if_needed])
   rescue Exception => e
     @errors << "# ERREUR FATALE : #{e.message}"
     log "# ERREUR FATALE : #{e.message}"

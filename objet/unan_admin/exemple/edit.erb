@@ -39,8 +39,12 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
 
   <%# CONTENU DE L'EXEMPLE %>
   <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
+  <%= form.field_checkbox("Syntaxe markdown", 'cb_markdown') %>
+  <p>
+    ATTENTION : ÇA N'EST PAS ENCORE FONCTIONNEL (MARKDOWN)
+  </p>
 
-  <%# CONTENU DE L'EXEMPLE %>
+  <%# NOTES SUR L'EXEMPLE %>
   <%= form.field_textarea("Notes", 'notes', nil) %>
   <%= form.field_description("Des notes ou un note qui sera ajoutée à l'affichage de l'exemple, par exemple pour préciser la nature de l'exemple, s'il est simplifié ou non.") %>
 

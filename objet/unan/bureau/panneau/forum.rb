@@ -21,7 +21,7 @@ class Bureau
   # Tous les messages forum, sans exception
   def messages_forum
     @messages_forum ||= begin
-      Array::new
+      current_pday.undone(:forum)
     end
   end
 

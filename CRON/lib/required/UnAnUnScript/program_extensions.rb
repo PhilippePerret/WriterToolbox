@@ -2,12 +2,18 @@
 class Unan
 class Program
 
+  # Instance {Unan::Program::CurPDay} du programme courant
+  def cur_pday
+    @current_pday ||= Unan::Program::CurPDay::new(current_pday, auteur)
+  end
+
   # Méthode qui checke si les travaux courants de l'user ont
   # bien été démarrés. Ils doivent avoir le status > 0 (en tout
   # cas pour les tasks)
   # Pour les pages de cours, elles doivent avoir été marquées
   # vues (pas lues)
   def test_if_works_not_started
+    return
     Unan::require_module 'page_cours'
     deux_jours_avant = NOW - 2.days
     current_works(as: :instances).each do |iwork|
@@ -58,65 +64,6 @@ class Program
       "Il y a près d'un moins que le #{spec_work} aurait dû être démarré. Malheureusement, je dois vous compter comme démissionnaire…"
     end
     auteur.add_alerte_mail alerte
-  end
-
-  # On teste si des messages reprogrammés sont trouvés dans les
-  # deux heures suivantes et on les réinjecte dans le flux de
-  # travail courant si c'est le cas.
-  def check_if_ulteriors_works
-    dans_deux_heures = NOW + ( 2 * 3600 )
-    works_ids = self.table_works.select(where:"created_at > #{NOW} AND created_at < #{dans_deux_heures}", colonnes:[]).keys
-    return if works_ids.empty?
-    log "--- Des travaux reprogrammés sont à réinjecter dans le flux de travail de #{auteur.pseudo} (##{auteur.id}) : #{works_ids.inspect}"
-    lists_ids = {
-      works_ids: auteur.get_var(:works_ids),
-      tasks_ids: auteur.get_var(:tasks_ids),
-      pages_ids: auteur.get_var(:pages_ids),
-      forum_ids: auteur.get_var(:forum_ids),
-      quiz_ids:  auteur.get_var(:quiz_ids),
-      works_ids_nombre_init: nil,
-      tasks_ids_nombre_init: nil,
-      pages_ids_nombre_init: nil,
-      forum_ids_nombre_init: nil,
-      quiz_ids_nombre_init: nil
-    }
-    # On prend le nombre initial de travaux de chaque type pour voir ceux
-    # qu'il faudra ré-enregistrer (ceux modifiés)
-    [:works_ids, :tasks_ids, :pages_ids, :quiz_ids, :forum_ids].each do |key|
-      lists_ids["#{key}_nombre_init".to_sym] = (lists_ids[key]||Array::new).count.freeze
-    end
-
-    # On ajoute les travaux aux listes
-    works_ids.each do |wid|
-
-      iwork = Work::new(self, wid)
-      # On ajoute toujours le travail à la liste des travaux
-      lists_ids[:works_ids] << wid
-      # Ensuite, on regarde le type du travail pour savoir
-      # dans quelle liste l'ajouter aussi.
-      case true
-      when iwork.abs_work.page_cours? then lists_ids[:pages] << wid
-      when iwork.abs_work.quiz?       then lists_ids[:quiz] << wid
-      when iwork.abs_work.forum?      then lists_ids[:forum] << wid
-      else lists_ids[:tasks_ids] << wid
-      end
-
-      # Il faut également modifier la date de création du travail
-      # juste pour qu'il ne soit pas traité deux fois au prochain
-      # check dans une heure.
-      iwork.set(created_at: NOW)
-
-    end #/Fin de boucle sur tous les travaux reprogrammés
-
-    # On enregistre les listes, mais seulement celles qui ont été
-    # modifiées
-    [:works_ids, :tasks_ids, :pages_ids, :quiz_ids, :forum_ids].each do |key|
-      if lists_ids["#{key}_nombre_init".to_sym] < (lists_ids[key]||Array::new).count
-        auteur.set_var( key => lists_ids[key] )
-        log " == Liste #{key} actualisée"
-      end
-    end
-
   end
 
 end #/Program

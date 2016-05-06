@@ -3,8 +3,10 @@ safed_log "-> #{__FILE__}"
 APP_FOLDER  = File.expand_path( File.dirname(THIS_FOLDER) )
 
 # Pour que le mail soit envoyé
-ONLINE      = true
-OFFLINE     = false
+unless defined?(ONLINE)
+  ONLINE      = true
+  OFFLINE     = false
+end
 
 safed_log "<- #{__FILE__}"
 
