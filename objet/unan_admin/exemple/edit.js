@@ -14,6 +14,22 @@ $.extend(window.Exemple,{
       "exemple_sujet", "exemple_source_src", "exemple_source_pays"
     ];
     UI.init_form(hfields);
+  },
+
+  /** Méthode appelée quand on clique sur la case à cocher
+    * 'Syntaxe markdown'
+    * Elle ajoute ou retire la balise "<!-- MARKDOWN -->" pour
+    * indiquer que le code est en markdown (ou non)
+    */
+  toggle_markdown:function(is_markdown){
+    var o = $('textarea#exemple_content');
+    var content ;
+    if (is_markdown) {
+      content = "<!-- MARKDOWN -->\n\n" + o.val();
+    } else {
+      content = o.val().replace(/^<!-- MARKDOWN -->/, '').trim();
+    }
+    o.val(content);
   }
 
 })

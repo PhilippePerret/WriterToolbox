@@ -89,6 +89,7 @@ class UAUSReport
     (c << avertissements_serieux) rescue nil
     (c << avertissements_mineurs) rescue nil
     (c << titre_rapport.in_h2)    rescue nil
+    (c << numero_jour_programme)  rescue nil
     (c << nombre_points)          rescue nil
     (c << css)                    rescue nil
     return c
@@ -104,7 +105,7 @@ class UAUSReport
     c = String::new
     (c << message_general)              rescue nil
     (c << section_travaux_overtimed)    rescue nil
-    (c << section_travaux_non_started) # rescue nil
+    (c << section_travaux_non_started)  rescue nil
     (c << section_nouveaux_travaux)     rescue nil
     (c << section_travaux_poursuivis)   rescue nil
     (c << section_liens)                rescue nil
@@ -151,6 +152,9 @@ class UAUSReport
 
   def nombre_points
     "Votre compte actuel de points est : #{auteur.program.points}".in_div(id:'div_nombre_points')
+  end
+  def numero_jour_programme
+    "Vous êtes dans votre <strong>#{cur_pday.indice}<sup>e</sup> jour-programme</strong>".in_div
   end
 
   # ---------------------------------------------------------------------

@@ -17,21 +17,31 @@ avec Kramdown.
 
 site.require_deeper_gem "kramdown-1.9.0"
 
-class SuperFile
-
+class ::String
   DATA_OUTPUT_FORMAT = {
     :html   => {extension: '.html'},
     :latex  => {extension: ".tex" },
     :erb    => {extension: ".erb"}
   }
 
-  # Retourne le code du fichier, kramdowné
+  # Kramdownise un string c'est-à-dire prend un code au format
+  # markdown et le transforme en un autre code
   #
-  # :alias: def as_kramdown
+  # +options+
+  #     :output_format:
+  #         Format de sortie du code (HTML par défaut)
+  #
+  #     :owner    DONNÉE TRÈS IMPORTANTE qui détermine par exemple
+  #               si le code vient d'un SuperFile. Dans ce cas, ce
+  #               possesseur peut déterminer des méthodes supplémentaires
+  #               de traitement
+  #
   def kramdown options = nil
-    options ||= Hash::new
 
-    options[:output_format] ||= :erb
+    options ||= Hash::new
+    options[:output_format] = :html unless options.has_key?(:output_format)
+
+    owner = options[:owner]
 
     # La méthode de transformation, suivant le format
     # de sortie voulu
@@ -46,10 +56,7 @@ class SuperFile
     when :latex      then :latex
     end
 
-    # On lit le code du fichier en remplaçant les fins de
-    # lignes windows par quelque chose de correct, au cas où
-    code = self.read.gsub(/\r\n?/, "\n").chomp
-
+    code = self
 
     # Si le format de sortie est de l'ERB, il faut protéger les
     # balises ERB sinon, kramdown transformerait les pourcentages en
@@ -69,15 +76,17 @@ class SuperFile
     # suivante, car la suivante traite aussi les balises
     # IMAGE mais de façon plus générale (et sans pouvoir
     # définir des sous-dossiers).
-    code = formate_balises_images_in(code) if self.respond_to?(:formate_balises_images_in)
+    code = code.formate_balises_images(options[:folder_image]) if self.respond_to?(:formate_balises_images)
 
     # Si une méthode formate_balises_propres existe, il
     # faut l'appeler sur le code pour les transformer
-    code = code.formate_balises_propres if "".respond_to?(:formate_balises_propres)
+    code = code.formate_balises_propres if self.respond_to?(:formate_balises_propres)
 
     # Si une méthode de traitement additionnel existe,
     # il faut lui envoyer le code
-    code = formatages_additionnels(code, options) if self.respond_to?(:formatages_additionnels)
+    if owner && owner.respond_to?(:formatages_additionnels)
+      code = formatages_additionnels(code, options)
+    end
 
     # Traitement extra kramdown
     # TODO: Dans l'idéal, il faudrait apprendre à les insérer
@@ -127,6 +136,38 @@ class SuperFile
         }
       end
     end
+
+    return code_final
+  end
+
+end
+
+class SuperFile
+
+  DATA_OUTPUT_FORMAT = {
+    :html   => {extension: '.html'},
+    :latex  => {extension: ".tex" },
+    :erb    => {extension: ".erb"}
+  }
+
+  # Retourne le code du fichier, kramdowné
+  #
+  # :alias: def as_kramdown
+  def kramdown options = nil
+    options ||= Hash::new
+
+    # On doit produire un code ERB
+    options[:output_format] ||= :erb
+    options[] = folder.to_s
+
+    options.merge!(
+      owner:        self,
+      # Pour trouver un dossier image, if any
+      folder_image: folder.to_s
+    )
+
+    code_final = self.read.gsub(/\r\n?/, "\n").chomp.kramdown(options)
+
     if options[:in_file]
       # Écrire le code dans ce fichier
       dest_path = case options[:in_file]

@@ -2,6 +2,10 @@
 
 
 * [Styles de mise en forme](#stylesdemiseenforme)
+* [Exergue de mots](#exerguedemots)
+* [Texte en Markdown](#texteenmarkdown)
+
+
 <a name='stylesdemiseenforme'></a>
 
 ## Styles de mise en forme
@@ -16,7 +20,6 @@ Parmi ceux-là, on peut noter :
                       Par exemple, si on veut un libellé de 140px, on peut faire :
                       <span class='libelle w140'>Mon lib</span>
 
-* [Exergue de mots](#exerguedemots)
 <a name='exerguedemots'></a>
 
 ## Exergue de mots
@@ -49,3 +52,37 @@ Noter que la méthode va mettre dans la variable `@iterations_motex` du string r
     str = str.with_exergue("un mot")
     iterations = str.instance_variable_get('@iterations_motex')
     # => Nombre d'itérations de "un mot" dans str
+
+<a name='texteenmarkdown'></a>
+
+## Texte en Markdown
+
+On peut transformer n'importe quel texte au format Markdown à l'aide de la méthode :
+
+        String#markdown
+
+Par exemple :
+
+        code = <<-MD
+        ### Un titre
+
+        Pour voir
+        : Une liste de description
+
+        Autre titre
+        : Un autre titre
+
+        ^
+        MD
+
+        code.kramdown
+        # => Produira
+
+        <h3>Un titre</h3>
+
+        <dl>
+          <dt>Pour voir</dt>
+          <dd>Une liste de description</dd>
+          <dt>Autre titre</dt>
+          <dd>Un autre titre</dd>
+        </dl>

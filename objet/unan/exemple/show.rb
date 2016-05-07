@@ -31,7 +31,15 @@ class Exemple
     notes.in_div(class:'notes')
   end
   def div_content
-    content.in_div(class:'content')
+    content_formated.in_div(class:'content')
+  end
+  def content_formated
+    if content.start_with?("<!-- MARKDOWN -->")
+      site.require_module 'kramdown'
+      content[17..-1].kramdown
+    else
+      content
+    end
   end
   def div_infos
     (

@@ -39,10 +39,7 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
 
   <%# CONTENU DE L'EXEMPLE %>
   <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
-  <%= form.field_checkbox("Syntaxe markdown", 'cb_markdown') %>
-  <p>
-    ATTENTION : ÇA N'EST PAS ENCORE FONCTIONNEL (MARKDOWN)
-  </p>
+  <%= form.field_checkbox("Syntaxe markdown", 'cb_markdown', form.objet[:content].start_with?('<!-- MARKDOWN -->'), {onclick:"$.proxy(Exemple,'toggle_markdown', this.checked)()"}) %>
 
   <%# NOTES SUR L'EXEMPLE %>
   <%= form.field_textarea("Notes", 'notes', nil) %>
