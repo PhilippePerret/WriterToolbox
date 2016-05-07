@@ -3,6 +3,9 @@
 
 Instance CurPDay pour gérer le pday courant
 
+C'est une classe ESSENTIELLE qui permet de savoir où se trouve
+l'auteur.
+
 Ce module doit pouvoir être chargé en standalone, par exemple
 par le traitement de la pastille qui indique à l'auteur
 les taches qu'il a à faire, etc.
@@ -69,6 +72,10 @@ class CurPDay
   # {Array of Hash} TOUS LES TRAVAUX POURSUIVIS
   # (donc pas nouveaux et pas en dépassement)
   def poursuivis type = :all ; poursuivis_by_type[type] end
+  # {Array of Hash} TRAVAUX NON DÉMARRÉS
+  # (attention : ne prend en compte que les travaux du
+  #  jour-programme précédent)
+  def unstarted type = :all ; unstarted_by_type[type]   end
 
   # ---------------------------------------------------------------------
   #   Méthodes de nombre
@@ -157,6 +164,16 @@ class CurPDay
       @works_started = h
       sbt
     end
+  end
+
+  # Est considéré comme "unstarted" un travail programmé
+  # pour la veille au moins et pas encore démarré ou marqué
+  # vu pour les pages.
+  # Noter que les questionnaires sont exclus pour le moment
+  # de cette liste
+  def unstarted_by_type
+    works_undone(as: :hdata) if @unstarted_by_type == nil
+    @unstarted_by_type
   end
 
   # Méthode de construction de la table des nouveaux
@@ -313,6 +330,13 @@ class CurPDay
         forum:  Array::new,
         all:    Array::new
       }
+      @unstarted_by_type = {
+        task:   Array::new,
+        page:   Array::new,
+        # quiz:   Array::new,
+        forum:  Array::new,
+        all:    Array::new
+      }
       @works_undone_as_hdata ||= begin
         res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
         # On ajoute certaines données utiles, dont :
@@ -332,6 +356,7 @@ class CurPDay
           else
             nil
           end
+          is_started = work_id != nil
           # Est-ce un travail du jour. Si c'est le cas, on
           # l'enregistre dans la liste des nouveaux travaux
           is_nouveau = (self.indice - idpday) <= 1
@@ -353,11 +378,20 @@ class CurPDay
             @overtimed_by_type[type] << wdata
             @overtimed_by_type[:all] << wdata
           end
+
           # Un travail qui n'est ni nouveau ni en dépassement
           # est un travail poursuivi
           if !is_nouveau && !is_overtimed
             @poursuivis_by_type[type] << wdata
             @poursuivis_by_type[:all] << wdata
+          end
+
+          # Un travail qui n'est ni nouveau ni démarré
+          # est un travail unstarted (sauf si c'est un
+          # questionnaire)
+          if type != :quiz && !is_nouveau && !is_started
+            @unstarted_by_type[type] << wdata
+            @unstarted_by_type[:all] << wdata
           end
 
           # # Débug des valeurs

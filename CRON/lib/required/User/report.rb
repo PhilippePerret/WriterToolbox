@@ -72,10 +72,15 @@ class UAUSReport
   def send_by_mail
     auteur.send_mail(
       subject:        "Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
-      message:        introduction + built_report,
+      message:        assemblage_rapport,
       formated:       true,
       force_offline:  true # même offline, on envoie le rapport
     )
+  end
+
+  def assemblage_rapport
+    introduction +
+    built_report
   end
 
   def introduction
@@ -83,21 +88,27 @@ class UAUSReport
     (c << welcome)                rescue nil
     (c << avertissements_serieux) rescue nil
     (c << avertissements_mineurs) rescue nil
+    (c << titre_rapport.in_h2)    rescue nil
     (c << nombre_points)          rescue nil
+    (c << css)                    rescue nil
     return c
+  end
+
+  def titre_rapport
+    @titre_rapport ||= "Rapport du #{NOW.as_human_date(true, false, ' ')}"
   end
 
   # Construction du rapport de l'état des lieux de l'auteur
   # RETURN Le code HTML du rapport construit
   def built_report
-    css + (
-      "Rapport du #{NOW.as_human_date(true, false, ' ')}".in_h2 +
-      message_general             +
-      section_travaux_overtimed   +
-      section_nouveaux_travaux    +
-      section_travaux_poursuivis  +
-      section_liens
-    ).in_section(id:'unan_inventory')
+    c = String::new
+    (c << message_general)              rescue nil
+    (c << section_travaux_overtimed)    rescue nil
+    (c << section_travaux_non_started) # rescue nil
+    (c << section_nouveaux_travaux)     rescue nil
+    (c << section_travaux_poursuivis)   rescue nil
+    (c << section_liens)                rescue nil
+    c.in_section(id:'unan_inventory')
   end
 
 
@@ -174,20 +185,52 @@ class UAUSReport
   # listes de travaux, nouveaux, poursuivis ou en dépassement
   # ci-dessous.
   #
+  # La liste finale est composée ainsi :
+  #     - Titre du type (tâche, page, quiz ou forum)
+  #       - travail 1
+  #       - travail 2
+  #       ...
+  #       - travail N
+  #     - Titre du type
+  #       - travail 1
+  #       - travail 2
+  #     etc.
+  #
   def traite_liste_travaux kliste
     safed_log "Traitement de la liste #{kliste.inspect}"
     max_depassement = 0
     liste_tous_travaux = [:task, :page, :quiz, :forum].collect do |ltype|
-      cur_pday.send(kliste, ltype).collect do |wdata|
+
+      # La liste des travaux (Array de Hash)
+      #
+      liste_travaux = cur_pday.send(kliste, ltype)
+
+      # S'il n'y a aucun travail de ce type, on peut s'en
+      # retourner pour passer au type suivant
+      next if liste_travaux.empty?
+
+      # Le titre sous-section, en fonction du type (tâche,
+      # page, etc.)
+      titre_sous_section =
+      case kliste
+      when :unstarted
+        case ltype
+        when :task  then "Tâches à démarrer"
+        when :page  then "Cours à marquer “vus”"
+        when :forum then "Actions Forum prendre en compte"
+        end
+      else
+        case ltype
+        when :task  then "Tâches à accomplir"
+        when :page  then "Pages de cours à lire ou relire"
+        when :quiz  then "Questionnaires à remplir"
+        when :forum then "Actions Forum à faire"
+        end
+      end
+
+      sous_lis = liste_travaux.sort_by{|wdata| wdata[:reste]}.collect do |wdata|
 
         titre = wdata[:titre]
-
-        data_type = Unan::Program::AbsWork::TYPES[wdata[:type_w]]
-        if data_type.nil?
-          safed_log "# PROBLÈME DE TYPE : :type_w non défini ou introuvable dans #{wdata.inspect}"
-        else
-          titre = "#{data_type[:hname]} : “#{titre}”"
-        end
 
         dep   = wdata[:depassement]
         reste = wdata[:reste]
@@ -203,9 +246,18 @@ class UAUSReport
         elsif dep == 1
           "Petit dépassement d'un jour.".in_div(class:'warning')
         end.in_div(class:'info_end')
+
         # Construction de la ligne pour ce travail
         (titre + info_end).in_li(class: wdata[:css])
+
       end.join
+
+      (
+        titre_sous_section.in_span(class:'sous_titre_section') +
+        sous_lis.in_ul
+      ).in_li
+
+
     end.join.in_ul(id:"liste_travaux_#{kliste}", class:'liste_travaux')
 
     liste_tous_travaux
@@ -263,14 +315,22 @@ class UAUSReport
     retards = retards_as_array.collect{|r| r.nil? ? '0': r}.join('') # utilisé aussi plus bas
     auteur.program.set(retards: retards)
 
-    # Est-ce un accident ? Compter le nombre de fois où
+    # FRÉQUENCE DES RETARDS
+    #
+    # S'il y a un problème, est-ce un accident ou l'auteur est-il
+    # coutumier du fait ? Compter le nombre de fois où
     # l'auteur est passé au même niveau ou au-dessus pour
     # déterminer le pourcentage de retard
+    #
     # Noter que ça peut être également un accident de n'avoir
     # aucun retard ;-) si l'auteur en a toujours eu.
     #
     # Cette procédure n'est faite que si l'auteur est
-    # depuis plus d'un mois dans son programme.
+    # depuis plus d'un mois dans son programme. Elle est inutile
+    # avant car ça produirait des résultats aberrants comme, par
+    # exemple, des valeurs de 100% lorsqu'il n'a qu'un jour de
+    # programme dans les pattes.
+    #
     if cur_pday.indice > 30 && retard > 0
       nombre_retards_egal_ou_sup = 0
       nombre_retards = retards_as_array.count
@@ -298,7 +358,7 @@ class UAUSReport
     safed_log "    = frequence ? #{frequence.inspect}"
 
     # Si le retard est conséquent, le signaler à l'administration
-    if retard > 6
+    if retard > 3
       message_admin_retard = <<-ERB
 <div class='warning'>DÉPASSEMENT TROP CONSÉQUENT DE #{auteur.pseudo} (##{auteur.id}) :</div>
 <pre>
@@ -337,6 +397,28 @@ class UAUSReport
     @data_messages ||= YAML::load_file(_('messages_retards.yaml'))
   end
 
+  # Section avec la liste des travaux qui auraient dû
+  # être démarrés mais qui ne l'ont pas été.
+  # Note :
+  #   - Les travaux du jour ne sont pas considérés par unstarted_by_type
+  #   - Les questionnaires ne sont pas considérés
+  def section_travaux_non_started
+    return "" if nombre_unstarted == 0
+    c = String::new
+    c << "Travaux à prendre en compte (#{nombre_unstarted})".in_legend(class:'red')
+    c << explication_travaux_non_started
+    c << traite_liste_travaux( :unstarted )
+    c.in_fieldset(class:'fs_liste_travaux')
+  end
+  def nombre_unstarted
+    @nombre_unstarted ||= cur_pday.unstarted.count
+  end
+  def explication_travaux_non_started
+    dunewworks = nombre_nouveaux > 1 ? "des #{nombre_nouveaux} nouveaux travaux" : "du nouveau travail"
+    sonteux = nombre_nouveaux > 1 ? "sont eux" : "est lui"
+    "(notez que ces travaux, qui auraient dû être “démarrés” ou marqués “vus”, ne tiennent pas compte #{dunewworks} qui #{sonteux} aussi à prendre en considération)".in_div(class:'small red')
+  end
+
   def section_nouveaux_travaux
     return "Aucun nouveau travail.".in_p if nombre_nouveaux == 0
     c = String::new
@@ -345,7 +427,7 @@ class UAUSReport
     return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_nouveaux
-    @nombre_nouveaux ||= cur_pday.nouveaux(:all).count
+    @nombre_nouveaux ||= cur_pday.nouveaux.count
   end
 
   def section_travaux_poursuivis
@@ -356,7 +438,7 @@ class UAUSReport
     return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_poursuivis
-    @nombre_poursuivis ||= cur_pday.poursuivis(:all).count
+    @nombre_poursuivis ||= cur_pday.poursuivis.count
   end
 
   def section_travaux_overtimed
@@ -367,7 +449,7 @@ class UAUSReport
     return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_overtimed
-    @nombre_overtimed ||= cur_pday.overtimed(:all).count
+    @nombre_overtimed ||= cur_pday.overtimed.count
   end
 
   # CSS à ajouter au rapport (noter qu'il servira aussi bien pour
