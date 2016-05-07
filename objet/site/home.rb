@@ -28,9 +28,9 @@ class SiteHtml
     debug "   = mtime = #{mtime}" if debugit
     # On retourne true si le fichier définissant le coup de
     # projecteur est plus jeune que le fichier home page
-    spotlight_mtime = SuperFile::new(_('home_spotlight.rb')).mtime
+    spotlight_mtime = SuperFile::new('./hot/spotlight.rb').mtime
     return true if mtime < spotlight_mtime
-    debug "   = ome_spotlight.rb : #{spotlight_mtime} (OK)" if debugit
+    debug "   = Home_spotlight.rb : #{spotlight_mtime} (OK)" if debugit
     # On retourne true si la base de données des analyses
     # est plus vieille que le fichier HTML
     return true if mtime < db_analyse.mtime

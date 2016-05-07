@@ -79,6 +79,7 @@ module ModuleFeminines
   def f_iere # prem[ier] / prem[ière]
     @f_iere ||= (feminine? ? 'ière' : 'ier')
   end
+  alias :f_ier :f_iere
   def f_elle
     @f_elle ||= (feminine? ? 'elle' : 'il')
   end

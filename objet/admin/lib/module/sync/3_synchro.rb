@@ -57,6 +57,7 @@ class Sync
     folder_backup = SuperFile::new('./tmp/backups')
     folder_backup.build unless folder_backup.exist?
     folder_backup_now = folder_backup + "backup-#{Time.now.strftime('%Y%m%d-%H%M')}"
+    folder_backup_now.remove if folder_backup_now.exist?
     folder_backup_now.build
     array_backup.each do |pbase|
       @suivi << "  * backup de #{pbase}"

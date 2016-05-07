@@ -118,6 +118,7 @@ class String
   def in_li       attrs = nil;  html_balise 'li',       attrs end
   def in_label    attrs = nil;  html_balise 'label',    attrs end
   def in_section  attrs = nil;  html_balise 'section',  attrs end
+  def in_legend   attrs = nil;  html_balise 'legend',   attrs end
   def in_table    attrs = nil;  html_balise 'table',    attrs end
   def in_tr       attrs = nil;  html_balise 'tr',       attrs end
   def in_td       attrs = nil;  html_balise 'td',       attrs end

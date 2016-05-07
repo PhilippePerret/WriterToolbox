@@ -23,7 +23,7 @@ class Cron
 
     # SI true, ne reçoit le rapport qu'une fois par jour
     # Si false, reçoit le rapport toutes les heures
-    RAPPORT_ADMIN_ONCE_A_DAY = false
+    RAPPORT_ADMIN_ONCE_A_DAY = true
 
     attr_accessor :rapport_administration
     attr_accessor :depassements

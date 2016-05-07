@@ -14,11 +14,11 @@ require 'yaml'
 # Pour les féminines, qu'il faut ajouter à la classe user
 # Noter que c'est nécessaire ici pour tenir compte des différents
 # auteurs traités.
-require File.join(RACINE,'lib/deep/deeper/required/divers/feminines.rb')
+# require File.join(RACINE,'lib/deep/deeper/required/divers/feminines.rb')
 
 class User
 
-  include ModuleFeminines
+  # include ModuleFeminines
 
   def report
     @report ||= UAUSReport::new(self)
@@ -87,6 +87,20 @@ class UAUSReport
     return c
   end
 
+  # Construction du rapport de l'état des lieux de l'auteur
+  # RETURN Le code HTML du rapport construit
+  def built_report
+    css + (
+      "Rapport du #{NOW.as_human_date(true, false, ' ')}".in_h2 +
+      message_general             +
+      section_travaux_overtimed   +
+      section_nouveaux_travaux    +
+      section_travaux_poursuivis  +
+      section_liens
+    ).in_section(id:'unan_inventory')
+  end
+
+
   def welcome
     <<-HTML
 <p>Bonjour #{pseudo},</p>
@@ -132,19 +146,25 @@ class UAUSReport
   #   Méthodes de construction du rapport
   # ---------------------------------------------------------------------
 
-  # Construction du rapport de l'état des lieux de l'auteur
-  # RETURN Le code HTML du rapport construit
-  def built_report
-    css + (
-      "Rapport du #{NOW.as_human_date(true, false, ' ')}".in_h2 +
-      message_general +
-      section_travaux_overtimed   +
-      section_nouveaux_travaux    +
-      section_travaux_poursuivis
-    ).in_section(id:'unan_inventory')
+  def section_liens
+    <<-HTML
+<fieldset>
+  <legend>Liens utiles</legend>
+  <ul class='small'>
+    <li><a href="#{url_bureau_unan}">Rejoindre votre bureau</a></li>
+    <li><a href="#{url_bureau_unan}&cong=preferences">Régler vos préférences</a></li>
+    <li><a href="#{url_bureau_unan}&cong=aide">Aide pour le programme</a></li>
+  </ul>
+</fieldset>
+    HTML
   end
 
-  # Traite une liste de travaux par type.
+  def url_bureau_unan
+    @url_bureau_unan ||= "#{site.distant_url}/bureau/home?in=unan"
+  end
+
+  # Traite toutes les listes de travaux par type
+  #
   # +kliste+ est le nom de la méthode qui définit les travaux,
   # par exemple :nouveaux pour les nouveaux ou :overtimed pour
   # les travaux en dépassement. Cette méthode est une méthode
@@ -173,16 +193,16 @@ class UAUSReport
         reste = wdata[:reste]
         max_depassement = dep if dep != nil && dep > max_depassement
         info_end = if reste == 0
-          "Ce travail doit être effectué aujourd'hui".in_div(class:'orange')
+          "Ce travail doit être effectué aujourd'hui".in_span(class:'orange')
         elsif reste > 1
-          "Travail à effectuer dans les #{reste} jours.".in_div(class:'blue')
+          "Travail à effectuer dans les #{reste} jours.".in_span(class:'blue')
         elsif reste == 1
-          "Ce travail doit être effectué aujourd'hui ou demain".in_div
+          "Ce travail doit être effectué aujourd'hui ou demain".in_span
         elsif dep > 1
-          "Travail en dépassement de #{dep} jours.".in_div(class:'warning')
+          "Travail en dépassement de #{dep} jours.".in_span(class:'warning')
         elsif dep == 1
           "Petit dépassement d'un jour.".in_div(class:'warning')
-        end
+        end.in_div(class:'info_end')
         # Construction de la ligne pour ce travail
         (titre + info_end).in_li(class: wdata[:css])
       end.join
@@ -295,12 +315,19 @@ class UAUSReport
     # L'ajout du message de fréquence
     mess += data_messages[frequence][stade_programme] if frequence != nil
 
+    class_message = case true
+    when retard == 0  then 'blue'
+    when retard < 4   then 'paleblue'
+    when retard < 7   then 'orange'
+    else 'red'
+    end
+
     # On retourne le message après avoir corrigé certaines
     # variables dynamique, à commencer par le pseudo.
-    return mess % {
+    return (mess % {
       pseudo: auteur.pseudo,
       f_ier:  auteur.f_ier
-    }
+    }).in_div(id:'message_general', class: class_message)
   end
 
   # Grande table contenant les messages en fonction du retard
@@ -313,9 +340,9 @@ class UAUSReport
   def section_nouveaux_travaux
     return "Aucun nouveau travail.".in_p if nombre_nouveaux == 0
     c = String::new
-    c << "Nouveaux travaux (#{nombre_nouveaux})".in_h3
+    c << "Nouveaux travaux (#{nombre_nouveaux})".in_legend
     c << traite_liste_travaux( :nouveaux )
-    return c
+    return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_nouveaux
     @nombre_nouveaux ||= cur_pday.nouveaux(:all).count
@@ -324,9 +351,9 @@ class UAUSReport
   def section_travaux_poursuivis
     return "Aucun travail à poursuivre.".in_p if nombre_poursuivis == 0
     c = String::new
-    c << "Travaux à poursuivre (#{nombre_poursuivis})".in_h3
+    c << "Travaux à poursuivre (#{nombre_poursuivis})".in_legend
     c << traite_liste_travaux( :poursuivis )
-    return c
+    return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_poursuivis
     @nombre_poursuivis ||= cur_pday.poursuivis(:all).count
@@ -335,9 +362,9 @@ class UAUSReport
   def section_travaux_overtimed
     return "" if nombre_overtimed == 0
     c = String::new
-    c << "Travaux en dépassement".in_h3
+    c << "Travaux en dépassement".in_legend
     c << traite_liste_travaux( :overtimed )
-    return c
+    return c.in_fieldset(class:'fs_liste_travaux')
   end
   def nombre_overtimed
     @nombre_overtimed ||= cur_pday.overtimed(:all).count

@@ -10,9 +10,9 @@ un changement dans les informations.
 =end
 class SiteHtml
 
-  # Voir le fichier home_spotlight.rb qui défini SPOTLIGHT
+  # Voir le fichier ./hot/spotlight.rb qui définit SPOTLIGHT
   def section_spotlight
-    require _('home_spotlight.rb')
+    require './hot/spotlight'
     lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
     (
       "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
