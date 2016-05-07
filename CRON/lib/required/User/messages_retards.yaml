@@ -1,0 +1,76 @@
+:mes_change_rythme: &mess_change_rythme "Pensez à changer votre rythme de travail (dans vos préférences) si nécessaire."
+
+# Les messages suivant la fréquence des retards
+#
+:accident:
+  :debut:   "Mais puisque c'est un accident, ça n'est pas trop grave. Attention cependant à ne pas les multiplier."
+  :milieu:  "C'est un accident somme toute rare, donc nous n'en tiendrons pas compte."
+  :fin:     "C'est un accident tellement rare que je ne devrais même pas vous le signaler !"
+:rare:
+  :commun: &com_rare "Mais puisque c'est somme toute assez rare, ça n'est pas trop grave."
+  :debut:   *com_rare
+  :milieu:  *com_rare
+  :fin:     *com_rare
+:frequent:
+  :commun:  &com_frequent "Vous me direz que ça n'est pas grave puisque vous êtes somme toute coutumi%{f_ier} du fait…"
+  :debut:   *com_frequent
+  :milieu:  *com_frequent
+  :fin:     *com_frequent
+:souvent:
+  :commun:  &com_souvent "Mais vous êtes tellement souvent en retard qu'on ne va pas s'inquiéter outre mesure…"
+  :debut:   *com_souvent
+  :milieu:  *com_souvent
+  :fin:     *com_souvent
+:systematique:
+  :commun:  &com_syst "Vous devriez peut-être faire quelque chose pour ne pas être systématiquement en retard."
+  :debut:   *com_syst
+  :milieu:  *com_syst
+  :fin:     *com_syst
+
+# Les messages suivant le degré du retard (de 0 à 9) et le moment
+# du programme où se trouve l'auteur.
+0:
+  :debut:   "Bravo %{pseudo}, vous n'avez aucun travail en retard."
+  :milieu:  "Bravo %{pseudo}, nous sommes déjà bien avancés dans le programme mais vous êtes à jour de vos travaux."
+  :fin:     "Excellent,  %{pseudo} ! Vous tenez merveilleusement bien le rythme !"
+1:
+  :commun:  &commes_1 "Quelques petits retards sans conséquence ne sont jamais trop dommages."
+  :debut:   *commes_1
+  :milieu:  *commes_1
+  :fin:     *commes_1
+2:
+  :commun:  &commes_2 "Attention les petits retards s'accumulent…"
+  :debut:   *commes_2
+  :milieu:  *commes_2
+  :fin:     *commes_2
+3:
+  :commun:  &commes_3 "Vous commencez à avoir des retards sérieux, attention."
+  :debut:   *commes_3
+  :milieu:  *commes_3
+  :fin:     *commes_3
+4:
+  :commun:  &commes_4 "Les retards sérieux s'accumulent, attention de ne pas trop vous laisser distancer."
+  :debut:   *commes_4
+  :milieu:  *commes_4
+  :fin:     *commes_4
+5:
+  :commun:  &commes_5 ""
+6:
+  :commun:  &commes_6 "Vous décrochez complètement du programme…"
+  :debut:   *commes_6
+  :milieu:  *commes_6
+  :fin:     *commes_6
+7:
+  :debut:   "Si vous comptez parvenir au bout du chemin, il serait temps de vous reprendre en main."
+  :milieu:  "Vous avez déjà accompli un bon bout du chemin, il est encore temps de vous reprendre."
+  :fin:     "Franchement, ça serait dommage de renoncer alors que vous avez fait le plus gros du travail, non ?"
+8:
+  message_commun: &commes_8 "Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir lâcher l'affaire. C'est vraiment dommage."
+  :debut:   *commes_8
+  :milieu:  *commes_8
+  :fin:     *commes_8
+9:
+  message_commun: &commes_9 "Franchement, vous feriez mieux de jeter l'éponge."
+  :debut:   *commes_9
+  :milieu:  *commes_9
+  :fin:     *commes_9

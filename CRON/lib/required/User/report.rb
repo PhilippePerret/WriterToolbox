@@ -9,7 +9,11 @@ utilisée pour construire un rapport à l'user qui sera :
   * affiché dans le bureau de l'auteur
 
 =end
+require 'yaml'
+
 class User
+
+  include ModuleFeminines
 
   def report
     @report ||= UAUSReport::new(self)
@@ -99,9 +103,10 @@ class UAUSReport
   # Retourne le code pour les avertissements mineurs.
   # Noter que rien n'est affiché s'il y a des avertissements sérieux
   def avertissements_mineurs
-    return "" if nombre_avertissements_serieux > 0
+    return "" if nombre_avertissements_serieux > 0 || nombre_avertissements_mineurs == 0
+    safed_log "nombre_avertissements_mineurs : #{nombre_avertissements_mineurs.inspect}::#{nombre_avertissements_mineurs.class}"
     s = nombre_avertissements_mineurs > 1 ? 's' : ''
-    "Notez, #{pseudo}, que vous avez #{nombre_avertissements_mineurs} avertissement#{s} mineur#{s}."
+    "Notez, #{pseudo}, que vous avez #{nombre_avertissements_mineurs} avertissement#{s} mineur#{s}.".in_span(class:'warning')
   end
 
   def nombre_avertissements
@@ -127,6 +132,7 @@ class UAUSReport
   def built_report
     css + (
       "Rapport du #{NOW.as_human_date(true, false, ' ')}".in_h2 +
+      message_general +
       section_travaux_overtimed   +
       section_nouveaux_travaux    +
       section_travaux_poursuivis
@@ -177,7 +183,6 @@ class UAUSReport
       end.join
     end.join.in_ul(id:"liste_travaux_#{kliste}", class:'liste_travaux')
 
-    alerte_depassement(max_depassement) +
     liste_tous_travaux
   end
 
@@ -187,9 +192,8 @@ class UAUSReport
   # Retourne le message à afficher au-dessus de toutes les listes
   # de travaux en fonction de LA PLUS GRANDE VALEUR DE DÉPASSEMENT
   # +max_overtime+ {Fixnum} de 0 à 6
-  def alerte_depassement max_overtime
-    safed_log "    max overtime = #{max_overtime}"
-    return "" if max_overtime == 0
+  def message_general
+
     # Nombre d'avertissements par niveau 1 à 6
     av = cur_pday.avertissements
     nombre_un = av[1].count
@@ -204,11 +208,6 @@ class UAUSReport
     nombre_trqu = nombre_tr + nombre_qu
     nombre_cisi = nombre_ci + nombre_si
 
-    badness  = 0
-    badness += 5 * nombre_unde
-    badness += 10 * nombre_trqu
-    badness += 20 * nombre_cisi
-
     # Le message dépend aussi du stade où en est l'auteur,
     # différent si c'est au début du programme ou à la fin
     stade_programme = if cur_pday.indice < 100
@@ -218,29 +217,6 @@ class UAUSReport
     elsif cur_pday.indice > 260
       :fin
     end
-
-    # La variable "retard" sera enregistrée dans la données
-    # "retards" du programme
-    # retard : 0
-    aucun_retard = (nombre_unde + nombre_trqu + nombre_cisi) == 0
-    # 1
-    seulement_petits_retards  = nombre_unde > 0 && (nombre_trqu + nombre_cisi) == 0  # 1
-    # 2
-    beaucoup_petits_retards   = nombre_unde > 10
-    # 3
-    trop_de_petits_retards    = nombre_unde > 20
-    # 4
-    seulement_moyens_retards  = nombre_cisi == 0
-    # 5
-    beaucoup_moyens_retards   = nombre_trqu > 10
-    # 6
-    trop_de_moyens_retards    = nombre_trqu > 20
-    # 7
-    de_gros_retards           = nombre_cisi > 0
-    # 8
-    beaucoup_gros_retards     = nombre_cisi > 10
-    # 9
-    trop_de_gros_retards      = nombre_cisi > 20
 
     retard = case true
     when nombre_cisi > 20 then 9
@@ -257,17 +233,48 @@ class UAUSReport
 
     # Enregistrement de la valeur de retard dans le
     # programme de l'auteur
-    retards = (auteur.program.retards || "").split('')
-    retards[cur_pday.indice] = retard
-    retards = retards.join('') # utilisé aussi plus bas
+    retards_as_array = (auteur.program.retards || "").split('')
+    retards_as_array[cur_pday.indice] = retard
+    retards = retards_as_array.collect{|r| r.nil? ? '0': r}.join('') # utilisé aussi plus bas
     auteur.program.set(retards: retards)
+
+    # Est-ce un accident ? Compter le nombre de fois où
+    # l'auteur est passé au même niveau ou au-dessus pour
+    # déterminer le pourcentage de retard
+    # Noter que ça peut être également un accident de n'avoir
+    # aucun retard ;-) si l'auteur en a toujours eu.
+    #
+    # Cette procédure n'est faite que si l'auteur est
+    # depuis plus d'un mois dans son programme.
+    if cur_pday.indice > 30 && retard > 0
+      nombre_retards_egal_ou_sup = 0
+      nombre_retards = retards_as_array.count
+      retards.split('').each do |r|
+        r = r.to_i
+        nombre_retards_egal_ou_sup += 0 if r >= retard
+      end
+
+      pct_retards_egaux_ou_sup = ((nombre_retards_egal_ou_sup.to_f / nombre_retards) * 100).to_i
+
+      frequence = case true
+      when pct_retards_egaux_ou_sup < 10  then :accident
+      when pct_retards_egaux_ou_sup < 30  then :rare
+      when pct_retards_egaux_ou_sup < 50  then :frequent
+      when pct_retards_egaux_ou_sup < 70  then :souvent
+      else :systematique
+      end
+    else
+      # Trop tôt ou pas de retard
+      frequence = nil
+    end
 
     safed_log "    = retard   = #{retard}"
     safed_log "    = retards  = #{auteur.program.retards}"
+    safed_log "    = frequence ? #{frequence.inspect}"
 
     # Si le retard est conséquent, le signaler à l'administration
     if retard > 6
-      message_retard = <<-ERB
+      message_admin_retard = <<-ERB
 <div class='warning'>DÉPASSEMENT TROP CONSÉQUENT DE #{auteur.pseudo} (##{auteur.id}) :</div>
 <pre>
       Retard aujourd'hui  : #{retard}
@@ -275,43 +282,31 @@ class UAUSReport
       Jour-programme      : #{auteur.program.current_pday}
 </pre>
       ERB
-      Cron::Admin::report << message_retard
-
+      Cron::Admin::report << message_admin_retard
     end
 
-    # Message retourné
-    if trop_de_gros_retards
-      "Franchement, vous feriez mieux de jeter l'éponge et de laisser votre place à quelqu'un de plus motivé que vous…"
-    elsif beaucoup_gros_retards
-      "Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir lâcher l'affaire. C'est vraiment dommage."
-    elsif de_gros_retards
-      case stade_programme
-      when :debut
-        "Si vous comptez parvenir au bout du chemin, il serait temps de vous reprendre en main."
-      when :milieu
-        "Vous avez déjà accompli un bon bout du chemin, il est encore temps de vous reprendre."
-      when :fin
-        "Franchement, ça serait dommage de renoncer alors que vous avez fait le plus gros du travail, non ?"
-      end
-    elsif trop_de_moyens_retards
-    elsif beaucoup_moyens_retards
-    elsif seulement_moyens_retards
-    elsif beaucoup_petits_retards
-    elsif seulement_petits_retards
-    else
-      case stade_programme
-      when :debut
-        "Vous êtes à jour de tous vos travaux, c'est excellent."
-      when :milieu
-        "Bravo, nous sommes déjà bien avancés dans le programme mais vous êtes à jour de vos travaux."
-      when :fin
-        "Excellent ! Vous tenez merveilleusement bien le rythme."
-      end
-    end
+    # Le message principal
+    mess = data_messages[retard][stade_programme]
+    # L'ajout du message de fréquence
+    mess += data_messages[frequence][stade_programme] if frequence != nil
+
+    # On retourne le message après avoir corrigé certaines
+    # variables dynamique, à commencer par le pseudo.
+    return mess % {
+      pseudo: auteur.pseudo,
+      f_ier:  auteur.f_ier
+    }
+  end
+
+  # Grande table contenant les messages en fonction du retard
+  # et du fait qu'on se trouve au début, au milieu ou à la fin
+  # du programme.
+  def data_messages
+    @data_messages ||= YAML::load_file(_('messages_retards.yaml'))
   end
 
   def section_nouveaux_travaux
-    return "Aucun nouveau travail".in_p if nombre_nouveaux == 0
+    return "Aucun nouveau travail.".in_p if nombre_nouveaux == 0
     c = String::new
     c << "Nouveaux travaux (#{nombre_nouveaux})".in_h3
     c << traite_liste_travaux( :nouveaux )
@@ -322,7 +317,7 @@ class UAUSReport
   end
 
   def section_travaux_poursuivis
-    return "Aucun travail à poursuivre".in_p if nombre_poursuivis == 0
+    return "Aucun travail à poursuivre.".in_p if nombre_poursuivis == 0
     c = String::new
     c << "Travaux à poursuivre (#{nombre_poursuivis})".in_h3
     c << traite_liste_travaux( :poursuivis )
@@ -333,7 +328,7 @@ class UAUSReport
   end
 
   def section_travaux_overtimed
-    return message_felicitations if nombre_overtimed == 0
+    return "" if nombre_overtimed == 0
     c = String::new
     c << "Travaux en dépassement".in_h3
     c << traite_liste_travaux( :overtimed )
@@ -341,10 +336,6 @@ class UAUSReport
   end
   def nombre_overtimed
     @nombre_overtimed ||= cur_pday.overtimed(:all).count
-  end
-
-  def message_felicitations
-    "Bravo, #{pseudo}, vous n'avez aucun travail en retard, c'est un très bon boulot !".in_p(class:'blue')
   end
 
   # CSS à ajouter au rapport (noter qu'il servira aussi bien pour

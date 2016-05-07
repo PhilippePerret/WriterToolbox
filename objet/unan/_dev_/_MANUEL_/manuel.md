@@ -8,6 +8,8 @@
   * [Bureau de l'auteur](#bureaudelauteur)
   * [Bases de données](#troisbasesdedonnees)
   * [Aide pour l'auteur](#aidepourlauteur)
+* [Helpers de liens](#helpersdeliensdivers)
+  * [Liens vers les panneaux principaux](#liensverslespanneauxprincipaux)
 * [Synopsis du parcours d'un auteur](#synopsistravailauteur)
   * [Démarrage du programme UN AN UN SCRIPT](#demarrageduprogramme)
   * [Changement des jours-programme](#changementdesjoursprogramme)
@@ -20,11 +22,13 @@
   * [Listing complet des variables courantes](#listingcompletdesvariables)
   * [Indice du jour-programme (p-day) courant](#jourprogrammecourant)
   * [Gestion des retards des travaux](#retardsdestravaux)
-* [Helpers de liens](#helpersdeliensdivers)
-  * [Liens vers les panneaux principaux](#liensverslespanneauxprincipaux)
 * [Programme de l'auteur](#programmedelauteur)
   * [Gestion du nombre de points de l'auteur](#nombredepointsdelauteur)
   * [Changement de jour-programme de l'auteur](#changementdejourprogramme)
+* [Suivi de l'auteur](#suividelauteur)
+  * [Cron-job horaire](#crontouteslesheures)
+  * [Message envoyé à l'auteur](#messagecronauteur)
+  * [Tester le CRON-Job en local](#testercronlocal)
 * [Rythme de l'auteur](#rythmedelauteur)
 * [Calendrier du programme](#calendrierduprogramme)
 * [P-Days absolus](#lespdayabsolus)
@@ -38,9 +42,6 @@
   * [Requérir la librairie `quiz`](#requirelibrairiequiz)
   * [Questionnaires de l'auteur](#chargerlesquizdelauteur)
   * [Méthodes d'instance de la classe `User::UQuiz`](#methodesdinstancesuquiz)
-* [Suivi de l'auteur](#suividelauteur)
-  * [Cron-job horaire](#crontouteslesheures)
-  * [Tester le CRON-Job en local](#testercronlocal)
 * [Les Pages de cours](#lespagesdecours)
   * [Dossier des pages de cours](#dossierdespagesdecours)
   * [Les Pointeurs de page](#leshandlersdepage)
@@ -118,8 +119,36 @@ Ce fichier se trouve à l'adresse :
 
 Il est composé en Latex mais on pourra imaginer le faire en Markdown aussi.
 
+
 ---
 
+<a name='helpersdeliensdivers'></a>
+
+## Helpers de liens
+
+<a name='liensverslespanneauxprincipaux'></a>
+
+### Liens vers les panneaux principaux
+
+Utiliser ces liens pour rejoindre les panneaux principaux du bureau :
+
+    <%= bureau.lien_etat %>         # L'état des lieux
+    <%= bureau.lien_travail %>      # Vers le travail à faire
+    <%= bureau.lien_quiz %>         # Vers les questionnaires, checklist, etc.
+    <%= bureau.lien_messages %>     # Vers les messages forum
+    <%= bureau.lien_pages_cours %>  # Vers les pages de cours à lire
+
+On peut ajouter en **premier argument** le titre à donner au lien :
+
+    <%= bureau.lien_travail "votre travail du jour" %>
+
+On peut définir en **second argument** les options à utiliser, c'est-à-dire les attributs à ajouter à la balise :
+
+        <%= bureau.lien_travail nil, {target: `_new', class:`monlienspecial'} %>
+
+Note : Ces liens sont définis dans le fichier `./objet/unan/lib/required/Bureau/helper.rb`
+
+---
 
 <a name='synopsistravailauteur'></a>
 
@@ -310,33 +339,9 @@ Cette valeur est calculée et enregistrée dans le module :
 
         ./CRON/lib/required/User/report.rb
 
----
+Les messages sont définis dans le fichier YAML :
 
-<a name='helpersdeliensdivers'></a>
-
-## Helpers de liens
-
-<a name='liensverslespanneauxprincipaux'></a>
-
-### Liens vers les panneaux principaux
-
-Utiliser ces liens pour rejoindre les panneaux principaux du bureau :
-
-    <%= bureau.lien_etat %>         # L'état des lieux
-    <%= bureau.lien_travail %>      # Vers le travail à faire
-    <%= bureau.lien_quiz %>         # Vers les questionnaires, checklist, etc.
-    <%= bureau.lien_messages %>     # Vers les messages forum
-    <%= bureau.lien_pages_cours %>  # Vers les pages de cours à lire
-
-On peut ajouter en **premier argument** le titre à donner au lien :
-
-    <%= bureau.lien_travail "votre travail du jour" %>
-
-On peut définir en **second argument** les options à utiliser, c'est-à-dire les attributs à ajouter à la balise :
-
-        <%= bureau.lien_travail nil, {target: `_new', class:`monlienspecial'} %>
-
-Note : Ces liens sont définis dans le fichier `./objet/unan/lib/required/Bureau/helper.rb`
+        ./CRON/lib/required/User/messages_retards.yaml
 
 ---
 
@@ -373,6 +378,115 @@ Avec le nouveau fonctionnement, il suffit de changer le `current_pday` du progra
         - Passer l'auteur au jour-programme suivant si nécessaire
 
 Ce changement se fait par le [Cron-job horaire](#crontouteslesheures)
+
+---------------------------------------------------------------------
+
+
+
+<a name='suividelauteur'></a>
+
+## Suivi de l'auteur
+
+<a name='crontouteslesheures'></a>
+
+### Cron-job horaire
+
+* [Description de Cron::run](#descriptioncronrun)
+* [Fichier log sûr](#fichierlogsure)
+
+<a name='descriptioncronrun'></a>
+
+### Description de Cron::run
+
+Toutes les heures, un `cron-job` est lancé, conséquent, qui permet de contrôler les auteurs et, principalement, de :
+
+* leur envoyer les nouveaux travaux,
+* leur signaler tout retard,
+* les encourager à poursuivre,
+* leur accorder des bonus en cas de bon comportement.
+
+> Noter que ce cron-job n'est pas exclusivement réservé au programme UN AN UN SCRIPT, il sert à toutes les tâches du site. Mais il est toujours lancé en “mode sans échec” pour ne jamais s'interrompre.
+
+Ce fichier décrit le travail du cron-job qui suit les auteurs suivant le programme UN AN UN SCRIPT.
+
+Tous les éléments du cron-job se trouvent dans le dossier `./CRON` qui doit être placé à la racine complète de l'hébergement (pas du site, donc avant le `www`).
+
+Le cron est lancé par la ligne de commande :
+
+    0 * * * * ruby ./CRON/hour_cron.rb > /dev/null
+
+C'est le fichier `hour_cron.rb` qui est le fichier `main.rb`.
+
+Ce fichier appelle le module `./lib/required.rb`.
+
+    ./hour_cron.rb -> ./lib/required.rb
+
+Le fichier `./lib/required.rb` charge des librairies de cron puis appelle la méthode générale :
+
+    Cron::run
+
+**Synopsis** :
+
+        * Le Cron se place sur la racine du site.
+        * Il charge toutes les librairies du site, comme si on chargeait
+          la page.
+        * Il appelle ensuite la méthode
+          `traitement_programme_un_an_un_script` qui va se charger du
+          traitement des programmes UN AN UN SCRIPT.
+          Cf. [Traitement des programmes un an un script](#traitementprogrammesunanunscript)
+        * Il appelle ensuite la méthode `traitement_messages_forum` qui va
+          se charger du traitement des messages de forum, pour avertir des
+          nouvelles publications. Cf. [Traitement des messages du forum](#traitementmessagesforum)
+
+<a name='fichierlogsure'></a>
+
+### Fichier log sûr
+
+Pendant tout le processus, on peut utiliser la méthode :
+
+  safed_log message
+
+… pour enregistrer un message qui le sera à tout moment.
+
+<a name='messagecronauteur'></a>
+
+### Message envoyé à l'auteur
+
+Suivant les préférences, l'auteur reçoit un mail quotidiennement ou seulement lorsqu'il change de jour-programme et qu'il a de nouveaux travaux.
+
+Tous les tests sont faits principalement dans le fichier :
+
+        ./CRON/lib/required/User/report.rb
+
+Le message dépend pour le moment de trois choses :
+
+* le degré de dépassement (`retard`)
+* le stade où on se trouve dans le programme (début, milieu ou fin)
+* la fréquence des retards de l'auteur
+
+Le `degré de dépassement` (`retard`) est une valeur de 0 à 9 calculée en fonction du nombre de travaux en retard et de la durée de ce retard. La valeur 0 signifie qu'il n'y a aucun travail en retard tandis que la valeur 9 indique que plus de 20 travaux on plus d'un mois et demi de retard (donc que l'auteur a lâché l'affaire…).
+
+La fréquence des retards de l'auteur est consignée dans la propriété `retards` du programme de l'auteur, où chaque bit est la valeur du jour-programme correspondant.
+
+<a name='testercronlocal'></a>
+
+### Tester le CRON-Job en local
+
+Si on essaie d'appeler le fichier CRON par son adresse comme un module Ruby normal, ça ne peut pas fonctionner car CGI n'aura aucune valeur. Plutôt, il faut faire :
+
+* Éditer le fichier crontab pour modifier la fréquence
+
+          $> crontab -e
+          Taper "a" pour passer en édition
+          Mettre par exemple */10 pour un check toutes les 10 minutes
+          :wq pour écrire et quitter le crontab
+
+* Attendre le moment et vérifier dans le dossier `./CRON/log/`.
+
+Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay. Pour forcer un état des lieux (avec un auteur qui demande un rapport quotidien de son état de programme), il suffit de mettre un true à la balise `[METTRE TRUE ICI POUR FORCER LE RAPPORT]` dans le fichier :
+
+        ./CRON/lib/required/UnAnUnScript/User/traite_users.rb
+        [METTRE TRUE ICI POUR FORCER LE RAPPORT]
 
 ---------------------------------------------------------------------
 
@@ -785,94 +899,6 @@ Le nombre de points marqués à ce questionnaire. Ou nil.
 
 Instance `Unan::Quiz` du questionnaire original.
 
-
----------------------------------------------------------------------
-
-
-<a name='suividelauteur'></a>
-
-## Suivi de l'auteur
-
-<a name='crontouteslesheures'></a>
-
-### Cron-job horaire
-
-* [Description de Cron::run](#descriptioncronrun)
-* [Fichier log sûr](#fichierlogsure)
-
-<a name='descriptioncronrun'></a>
-
-### Description de Cron::run
-
-Toutes les heures, un `cron-job` est lancé, conséquent, qui permet de contrôler les auteurs et, principalement, de :
-
-* leur envoyer les nouveaux travaux,
-* leur signaler tout retard,
-* les encourager à poursuivre,
-* leur accorder des bonus en cas de bon comportement.
-
-> Noter que ce cron-job n'est pas exclusivement réservé au programme UN AN UN SCRIPT, il sert à toutes les tâches du site. Mais il est toujours lancé en “mode sans échec” pour ne jamais s'interrompre.
-
-Ce fichier décrit le travail du cron-job qui suit les auteurs suivant le programme UN AN UN SCRIPT.
-
-Tous les éléments du cron-job se trouvent dans le dossier `./CRON` qui doit être placé à la racine complète de l'hébergement (pas du site, donc avant le `www`).
-
-Le cron est lancé par la ligne de commande :
-
-    0 * * * * ruby ./CRON/hour_cron.rb > /dev/null
-
-C'est le fichier `hour_cron.rb` qui est le fichier `main.rb`.
-
-Ce fichier appelle le module `./lib/required.rb`.
-
-    ./hour_cron.rb -> ./lib/required.rb
-
-Le fichier `./lib/required.rb` charge des librairies de cron puis appelle la méthode générale :
-
-    Cron::run
-
-**Synopsis** :
-
-        * Le Cron se place sur la racine du site.
-        * Il charge toutes les librairies du site, comme si on chargeait
-          la page.
-        * Il appelle ensuite la méthode
-          `traitement_programme_un_an_un_script` qui va se charger du
-          traitement des programmes UN AN UN SCRIPT.
-          Cf. [Traitement des programmes un an un script](#traitementprogrammesunanunscript)
-        * Il appelle ensuite la méthode `traitement_messages_forum` qui va
-          se charger du traitement des messages de forum, pour avertir des
-          nouvelles publications. Cf. [Traitement des messages du forum](#traitementmessagesforum)
-
-<a name='fichierlogsure'></a>
-
-### Fichier log sûr
-
-Pendant tout le processus, on peut utiliser la méthode :
-
-  safed_log message
-
-… pour enregistrer un message qui le sera à tout moment.
-
-<a name='testercronlocal'></a>
-
-### Tester le CRON-Job en local
-
-Si on essaie d'appeler le fichier CRON par son adresse comme un module Ruby normal, ça ne peut pas fonctionner car CGI n'aura aucune valeur. Plutôt, il faut faire :
-
-* Éditer le fichier crontab pour modifier la fréquence
-
-          $> crontab -e
-          Taper "a" pour passer en édition
-          Mettre par exemple */10 pour un check toutes les 10 minutes
-          :wq pour écrire et quitter le crontab
-
-* Attendre le moment et vérifier dans le dossier `./CRON/log/`.
-
-Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il change de PDay. Pour forcer un état des lieux (avec un auteur qui demande un rapport quotidien de son état de programme), il suffit de mettre un true à la balise `[METTRE TRUE ICI POUR FORCER LE RAPPORT]` dans le fichier :
-
-        ./CRON/lib/required/UnAnUnScript/User/traite_users.rb
-        [METTRE TRUE ICI POUR FORCER LE RAPPORT]
 
 ---------------------------------------------------------------------
 
