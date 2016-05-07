@@ -335,8 +335,12 @@ class CurPDay
             @nouveaux_by_type[:all] << wdata
           end
           # Y a-t-il dépassement ?
-          depassement = wdata[:duree] - (self.indice - idpday)
-          depassement = nil if depassement <= 0
+          reste = wdata[:duree] - (self.indice - idpday)
+          if reste >= 0
+            depassement = nil
+          else
+            depassement = - reste # => nombre positif
+          end
           is_overtimed = depassement != nil
           # S'il y a dépassement, on enregistre le travail dans
           # les dépassements par type
@@ -350,12 +354,23 @@ class CurPDay
             @poursuivis_by_type[type] << wdata
             @poursuivis_by_type[:all] << wdata
           end
+
+          # # Débug des valeurs
+          # safed_log "\tself.indice = #{self.indice.inspect}\n"+
+          # "\tidpday       = #{idpday.inspect}\n"+
+          # "\tduree        = #{wdata[:duree].inspect}\n"+
+          # "\tdepassement  = #{depassement.inspect}\n"+
+          # "\tis_overtimed = #{is_overtimed.inspect}\n"+
+          # "\tis_nouveau   = #{is_nouveau.inspect}\n"+
+          # "\t    (est nouveau si (self.indice - idpday) <= 1)\n"
+
           # Ajout des valeurs
           res[wid].merge!(
             type:         type,
             indice_pday:  idpday,
             work_id:      work_id,
-            depassement:  depassement
+            depassement:  depassement,
+            reste:        reste
             )
         end
         res

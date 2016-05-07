@@ -59,8 +59,13 @@ class Cron
     # Dans tous les cas, il faut s'assurer que le rapport soit créé et
     # envoyé à l'administrateur.
     # TODO Mettre plutôt le rapport dans Cron que dans Unan
-    safed_log "* Traitement du rapport admin"
-    Cron::rapport_admin.traite
+    safed_log "#{separation}[Cron::run] Traitement du rapport admin"
+    begin
+      Cron::rapport_admin.traite
+    rescue Exception => e
+      safed_log "# Impossible de traiter le rapport administration : #{e.message}"
+      safed_log e.backtrace.join("\n")
+    end
 
   end #/run
 

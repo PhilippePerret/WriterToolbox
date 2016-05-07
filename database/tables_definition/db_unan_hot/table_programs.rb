@@ -44,6 +44,15 @@ def schema_table_unan_hot_programs
     # ----------------
     points:       {type:"INTEGER(8)"},
 
+    # Retards
+    # --------
+    # Variable qui consigne les retards de l'auteur. Chaque octet
+    # est un jour du programme, avec une valeur qui peut aller
+    # de 0 (aucun retard) à 8 (trop de gros retards)
+    # Cette variable permet de savoir comment l'auteur a travaillé
+    # jusque-là.
+    retards:      {type:"TEXT"},
+
     # Rythme adopté
     # -------------
     # Le rythme adopté pour le programme, de 1 à 10 (en fait de 0 à 9).

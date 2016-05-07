@@ -10,7 +10,7 @@
   * [Aide pour l'auteur](#aidepourlauteur)
 * [Synopsis du parcours d'un auteur](#synopsistravailauteur)
   * [Démarrage du programme UN AN UN SCRIPT](#demarrageduprogramme)
-  * [Changement des jours-program](#changementdesjoursprogramme)
+  * [Changement des jours-programme](#changementdesjoursprogramme)
 * [Les Préférences de l'auteur](#lespreferencesdelauteur)
   * [Convention de nommage](#conventionpourlesnoms)
   * [Méthodes `preference` et `preference=`](#lamethodepreferences)
@@ -19,6 +19,7 @@
 * [Variables programme de l'auteur](#variablesprogrammedelauteur)
   * [Listing complet des variables courantes](#listingcompletdesvariables)
   * [Indice du jour-programme (p-day) courant](#jourprogrammecourant)
+  * [Gestion des retards des travaux](#retardsdestravaux)
 * [Helpers de liens](#helpersdeliensdivers)
   * [Liens vers les panneaux principaux](#liensverslespanneauxprincipaux)
 * [Programme de l'auteur](#programmedelauteur)
@@ -247,12 +248,6 @@ Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :
         <- user.rythme
         <- user.preference(:rythme)
 
-    current_pday
-
-        {Fixnum 1-start} Le jour-programme courant de l'auteur.
-        <- user.get_var :current_pday
-        <- user.pday
-
     pref_daily_summary
 
         {Boolean} True si l'auteur veut recevoir des récapilatifs
@@ -285,6 +280,35 @@ On obtient le jour-programme courant de l'auteur par :
 
 > Note : On pourrait faire un raccourci `user.current_pday` mais je préfère que le jour-programme courant soit toujours associé au programme de l'auteur.
 
+<a name='retardsdestravaux'></a>
+
+## Gestion des retards des travaux
+
+La propriété `retards` d'un programme permet de consigner les retards au cours du programme.
+
+    <auteur>.program.retards
+
+C'est une donnée `String` où chaque bit représente un jour-programme.
+
+Chaque bit peut prendre une valeur de 0 à 8 correspondant à :
+
+        0     Aucun retard
+        = Seulement des petits retards =
+        1     Moins de 10 petits retards
+        2     Entre 10 et 20 petits retards
+        3     Plus de 20 petits retards
+        = Seulement des retards moyens (ou petits) =
+        4     Moins de 10 retards moyens
+        5     Entre 10 et 20 retards moyens
+        6     Plus de 20 retards moyens
+        = De gros retards =
+        7     Moins de 10 long retards
+        8     Entre 10 et 20 gros retards
+        9     Plus de 20 gros retards
+
+Cette valeur est calculée et enregistrée dans le module :
+
+        ./CRON/lib/required/User/report.rb
 
 ---
 

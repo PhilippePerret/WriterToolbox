@@ -19,9 +19,27 @@ class User
 #   Class User::Report
 # ---------------------------------------------------------------------
 class UAUSReport
+  class << self
+
+    # {Array of String} Messages qui devront être envoyés
+    # à l'administration
+    attr_reader :messages_administration
+
+    # Pour ajouter un message à envoyer à l'administration
+    # @syntaxe :    User::UAUSReport::warn_admin <message>
+    def warn_admin mess
+      @messages_administration ||= Array::new
+      @messages_administration << mess
+    end
+
+    # S'il y a des messages à transmettre à l'administration
+    # il faut le faire
+
+  end # / << self
 
   # {User} Auteur qui possède le rapport courant
   attr_reader :auteur
+
 
   def initialize auteur
     @auteur = auteur
@@ -44,7 +62,7 @@ class UAUSReport
   # Envoi du rapport par mail
   def send_by_mail
     auteur.send_mail(
-      subject:        "Rapport journalier du #{NOW.as_human_date}",
+      subject:        "Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
       message:        introduction + built_report,
       formated:       true,
       force_offline:  true # même offline, on envoie le rapport
@@ -129,8 +147,6 @@ class UAUSReport
     safed_log "Traitement de la liste #{kliste.inspect}"
     max_depassement = 0
     liste_tous_travaux = [:task, :page, :quiz, :forum].collect do |ltype|
-      safed_log " - ltype = #{ltype.inspect}"
-      safed_log "   cur_pday.send(kliste, ltype) = #{cur_pday.send(kliste, ltype).inspect}"
       cur_pday.send(kliste, ltype).collect do |wdata|
 
         titre = wdata[:titre]
@@ -142,19 +158,22 @@ class UAUSReport
           titre = "#{data_type[:hname]} : “#{titre}”"
         end
 
-        alerte = if wdata[:depassement].nil?
-          ""
-        else
-          dep = wdata[:depassement]
-          max_depassement = dep if dep > max_depassement
-          if dep > 1
-            "Travail en dépassement de #{dep} jours."
-          else
-            "Petit dépassement d'un jour."
-          end.in_div(class:'warning')
+        dep   = wdata[:depassement]
+        reste = wdata[:reste]
+        max_depassement = dep if dep != nil && dep > max_depassement
+        info_end = if reste == 0
+          "Ce travail doit être effectué aujourd'hui".in_div(class:'orange')
+        elsif reste > 1
+          "Travail à effectuer dans les #{reste} jours.".in_div(class:'blue')
+        elsif reste == 1
+          "Ce travail doit être effectué aujourd'hui ou demain".in_div
+        elsif dep > 1
+          "Travail en dépassement de #{dep} jours.".in_div(class:'warning')
+        elsif dep == 1
+          "Petit dépassement d'un jour.".in_div(class:'warning')
         end
         # Construction de la ligne pour ce travail
-        (titre + alerte).in_li(class: wdata[:css])
+        (titre + info_end).in_li(class: wdata[:css])
       end.join
     end.join.in_ul(id:"liste_travaux_#{kliste}", class:'liste_travaux')
 
@@ -169,14 +188,125 @@ class UAUSReport
   # de travaux en fonction de LA PLUS GRANDE VALEUR DE DÉPASSEMENT
   # +max_overtime+ {Fixnum} de 0 à 6
   def alerte_depassement max_overtime
+    safed_log "    max overtime = #{max_overtime}"
     return "" if max_overtime == 0
-    case max_overtime
-    when 1 then "Petit dépassement"
-    when 2 then ""
-    when 3 then ""
-    when 4 then ""
-    when 5 then ""
-    when 6 then ""
+    # Nombre d'avertissements par niveau 1 à 6
+    av = cur_pday.avertissements
+    nombre_un = av[1].count
+    nombre_de = av[2].count
+    nombre_tr = av[3].count
+    nombre_qu = av[4].count
+    nombre_ci = av[5].count
+    nombre_si = av[6].count
+    nombre_total = av[:total]
+
+    nombre_unde = nombre_un + nombre_de
+    nombre_trqu = nombre_tr + nombre_qu
+    nombre_cisi = nombre_ci + nombre_si
+
+    badness  = 0
+    badness += 5 * nombre_unde
+    badness += 10 * nombre_trqu
+    badness += 20 * nombre_cisi
+
+    # Le message dépend aussi du stade où en est l'auteur,
+    # différent si c'est au début du programme ou à la fin
+    stade_programme = if cur_pday.indice < 100
+      :debut
+    elsif cur_pday.indice <= 260
+      :milieu
+    elsif cur_pday.indice > 260
+      :fin
+    end
+
+    # La variable "retard" sera enregistrée dans la données
+    # "retards" du programme
+    # retard : 0
+    aucun_retard = (nombre_unde + nombre_trqu + nombre_cisi) == 0
+    # 1
+    seulement_petits_retards  = nombre_unde > 0 && (nombre_trqu + nombre_cisi) == 0  # 1
+    # 2
+    beaucoup_petits_retards   = nombre_unde > 10
+    # 3
+    trop_de_petits_retards    = nombre_unde > 20
+    # 4
+    seulement_moyens_retards  = nombre_cisi == 0
+    # 5
+    beaucoup_moyens_retards   = nombre_trqu > 10
+    # 6
+    trop_de_moyens_retards    = nombre_trqu > 20
+    # 7
+    de_gros_retards           = nombre_cisi > 0
+    # 8
+    beaucoup_gros_retards     = nombre_cisi > 10
+    # 9
+    trop_de_gros_retards      = nombre_cisi > 20
+
+    retard = case true
+    when nombre_cisi > 20 then 9
+    when nombre_cisi > 10 then 8
+    when nombre_cisi > 0  then 7
+    when nombre_trqu > 20 then 6
+    when nombre_trqu > 10 then 5
+    when nombre_trqu > 0  then 4
+    when nombre_unde > 20 then 3
+    when nombre_unde > 10 then 2
+    when nombre_unde > 0  then 1
+    else 0
+    end
+
+    # Enregistrement de la valeur de retard dans le
+    # programme de l'auteur
+    retards = (auteur.program.retards || "").split('')
+    retards[cur_pday.indice] = retard
+    retards = retards.join('') # utilisé aussi plus bas
+    auteur.program.set(retards: retards)
+
+    safed_log "    = retard   = #{retard}"
+    safed_log "    = retards  = #{auteur.program.retards}"
+
+    # Si le retard est conséquent, le signaler à l'administration
+    if retard > 6
+      message_retard = <<-ERB
+<div class='warning'>DÉPASSEMENT TROP CONSÉQUENT DE #{auteur.pseudo} (##{auteur.id}) :</div>
+<pre>
+      Retard aujourd'hui  : #{retard}
+      Données des retards : #{retards}
+      Jour-programme      : #{auteur.program.current_pday}
+</pre>
+      ERB
+      Cron::Admin::report << message_retard
+
+    end
+
+    # Message retourné
+    if trop_de_gros_retards
+      "Franchement, vous feriez mieux de jeter l'éponge et de laisser votre place à quelqu'un de plus motivé que vous…"
+    elsif beaucoup_gros_retards
+      "Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir lâcher l'affaire. C'est vraiment dommage."
+    elsif de_gros_retards
+      case stade_programme
+      when :debut
+        "Si vous comptez parvenir au bout du chemin, il serait temps de vous reprendre en main."
+      when :milieu
+        "Vous avez déjà accompli un bon bout du chemin, il est encore temps de vous reprendre."
+      when :fin
+        "Franchement, ça serait dommage de renoncer alors que vous avez fait le plus gros du travail, non ?"
+      end
+    elsif trop_de_moyens_retards
+    elsif beaucoup_moyens_retards
+    elsif seulement_moyens_retards
+    elsif beaucoup_petits_retards
+    elsif seulement_petits_retards
+    else
+      case stade_programme
+      when :debut
+        "Vous êtes à jour de tous vos travaux, c'est excellent."
+      when :milieu
+        "Bravo, nous sommes déjà bien avancés dans le programme mais vous êtes à jour de vos travaux."
+      when :fin
+        "Excellent ! Vous tenez merveilleusement bien le rythme."
+      end
     end
   end
 
@@ -220,21 +350,10 @@ class UAUSReport
   # CSS à ajouter au rapport (noter qu'il servira aussi bien pour
   # le mail que pour )
   def css
-    <<-CSS
-<style type="text/css">
-.small {font-size: 11pt}
-.italic{font-style: italic}
-section#unan_inventory{font-size:13pt}
-section#unan_inventory ul.liste_travaux{
-  border: 1px dashed blue;
-}
-/* Spécialement pour la liste des travaux en dépassement */
-section#unan_inventory ul#liste_travaux_overtimed {
-  color: red;
-}
-</style>
-    CSS
+    "<style type='text/css'>#{SuperFile::new(_('report.css')).read}</style>"
+  rescue Exception => e
+    safed_log "    # Impossible de charger la feuille de style pour le mail rapport."
+    ""
   end
-
 end #/Report
 end #/User

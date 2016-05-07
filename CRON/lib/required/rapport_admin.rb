@@ -6,9 +6,12 @@ require 'singleton'
 class Cron
 
   class << self
+
     def rapport_admin
       @rapport_admin ||= RapportAdmin.instance
     end
+    alias :report :rapport_admin
+
   end # << self
 
   # ---------------------------------------------------------------------
@@ -25,19 +28,29 @@ class Cron
     attr_accessor :rapport_administration
     attr_accessor :depassements
 
+
+    # Pour pouvoir utiliser la syntaxe :
+    #   Cron::Admin::report << message
+    # Noter que le texte est ajouté à un fichier Markdown pour le moment
+    # donc qu'on peut envoyer du code markdown
+    def << message
+      path_mail_erb.append( "#{message}\n\n")
+    end
+
     # = main =
+    #
+    # Méthode appelée par le main du cron-job pour envoyer le
+    # message administration si nécessaire.
     #
     # Traitement du rapport. Soit on l'envoie, soit on l'enregistre
     # dans un fichier en attendant de l'envoyer en début de journée
     def traite
+
       # Noter que même si le rapport courant est nil, il faut
       # traiter la méthode, car il est peut-être temps d'envoyer
       # tous les rapports qui ont été consignés dans le fichier
       # au cours de la journée.
-      # Sauf, donc, si le rapport est vide et qu'il faut envoyer
-      # les rapports au fur et à mesure. Dans ce cas-là uniquement
-      # il n'y a rien à faire.
-      return if false == RAPPORT_ADMIN_ONCE_A_DAY && rapport_mis_en_forme.empty?
+      return if RAPPORT_ADMIN_ONCE_A_DAY && Time.now.hour != 0
 
       # On enregistre le rapport mis en forme dans le fichier,
       # s'il existe, car c'est ce fichier qui sera lu et mis
@@ -45,41 +58,37 @@ class Cron
       # Noter qu'il existe toujours puisqu'on ajoute au
       # bout le log. Ce log témoigne de tout ce qui a
       # été fait au cours du cron job.
-      File.open(path_rapport_admin.to_s, 'a') do |f|
-        f.write "\n\n#{rapport_mis_en_forme}"
-      end
+      path_rapport_admin.write rapport_mis_en_forme
       log "Rapport administration consigné dans un fichier"
 
-      # S'il faut envoyer le rapport seulement une fois par
-      # jour et qu'on est dans la première heure de la journée
-      # alors il faut envoyer le rapport.
-      if RAPPORT_ADMIN_ONCE_A_DAY && Time.now.hour == 0
-        send_rapport
-        log "Rapport journalier envoyé à l'administration"
-        path_rapport_admin.remove
-      else
-        # On doit envoyer le rapport toutes les heures
-        fullpath = File.expand_path(path_mail.to_s)
-        log "Fullpath du mail : #{fullpath}"
-        log "Fullpath existe ? #{File.exist?(fullpath).inspect}"
-        message_mail = path_mail.deserb( self )
-        log "Rapport horaire envoyé à l'administration"
+      # Envoyer le rapport
+      if send_rapport
+        safed_log "    = Rapport administrateur envoyé."
+
+        path_rapport_admin.remove if path_rapport_admin.exist?
+        path_mail_erb.remove      if path_mail_erb.exist?
       end
+
     end
 
     # {String} Retourn le rapport mis en forme
     def rapport_mis_en_forme
       @rapport_mis_en_forme ||= begin
         c = ""
-        unless depassements.empty?
-          c << "<h3>Dépassements</h3>"
-          c << depassements.collect{|k, v| v.in_li}.join.in_ul
+
+        # Tous les messages consignés au cours des cron-jobs
+        # successifs
+        suivi = if path_mail_erb.exist?
+          path_mail_erb.deserb
+        else
+          ""
         end
 
-        # On ajoute un titre général et le dernier log au
-        # mail qui sera envoyé
-        "<h2>Rapport administration du cronjob du #{NOW.as_human_date(true, true)}</h2>#{c}<hr /><pre>\n#{log_content}\n</pre>"
-
+        # Message assemblé
+        "<h2>Rapport administration du cronjob du #{NOW.as_human_date(true, true, ' ')}</h2>"+
+        suivi +
+        "<hr />" +
+        log_content.in_pre(class:'small')
       end
     end
 
@@ -98,9 +107,15 @@ class Cron
       site.send_mail(
         to:       site.mail,
         from:     site.mail,
-        subject:  "Rapport administration du #{NOW.as_human_date}",
-        message:  path_mail.deserb(self)
+        subject:  "Rapport administration du #{NOW.as_human_date(true, true, ' ')}",
+        message:  path_rapport_admin.read
       )
+    rescue Exception => e
+      safed_log "    # Impossible d'envoyer le rapport administration : #{e.message}"
+      safed_log e.backtrace.join("\n")
+      false
+    else
+      true
     end
 
     # Initialisation du rapport administration
@@ -108,7 +123,6 @@ class Cron
     # programmes.
     def init
       @rapport_administration = String::new
-      self.depassements       = Hash::new
       return self # pour le chainage
     end
 
@@ -116,8 +130,8 @@ class Cron
 
     # Path au mail (vue ERB) contenant le code pour le mail
     # à utiliser pour le rapport
-    def path_mail
-      @path_mail ||= SuperFile::new([APP_FOLDER, "objet/unan/lib/module/start_pday/mail/admin_rapport.erb"])
+    def path_mail_erb
+      @path_mail ||= SuperFile::new([Log::folder, "rapport_admin.erb"])
     end
 
     # Path du fichier qui contient l'enregistrement des

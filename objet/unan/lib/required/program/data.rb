@@ -41,6 +41,10 @@ class Program
   # {Fixnum} Timestamp du démarrage du jour-programme courant
   def current_pday_start; @current_pday_start ||= get(:current_pday_start)  end
 
+  # Variable qui consigne les retards
+  # Cf. le manuel
+  def retards ; @retards ||= get(:retards) end
+
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
   # ---------------------------------------------------------------------
