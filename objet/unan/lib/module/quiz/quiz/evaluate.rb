@@ -168,7 +168,10 @@ class Quiz
   # Méthode qui reprogramme le questionnaire pour plus tard lorsqu'il
   # n'a pas été rempli correctement (pour le type :validation_acquis)
   #
+  # OBSOLÈTE : Pour le moment, on ne peut plus reprogrammer un
+  # travail.
   def reprogrammer_questionnaire nombre_jours = 7
+    return
     hnew_work = {
       program_id:   work.program.id,
       abs_work_id:  work.abs_work_id,

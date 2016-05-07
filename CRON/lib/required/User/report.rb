@@ -11,6 +11,11 @@ utilisée pour construire un rapport à l'user qui sera :
 =end
 require 'yaml'
 
+# Pour les féminines, qu'il faut ajouter à la classe user
+# Noter que c'est nécessaire ici pour tenir compte des différents
+# auteurs traités.
+require File.join(RACINE,'lib/deep/deeper/required/divers/feminines.rb')
+
 class User
 
   include ModuleFeminines

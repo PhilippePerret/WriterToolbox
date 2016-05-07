@@ -1,4 +1,4 @@
-SAFED LOG DU 07 05 2016 - 13:15
+SAFED LOG DU 07 05 2016 - 13:40
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -16,101 +16,28 @@ SAFED LOG DU 07 05 2016 - 13:15
 <- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
 <- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
-= STEP 1 OK =
-* STEP 2 (Cron::run)
--> Cron::run
-Racine courante = /Users/philippeperret
-APP_FOLDER = "/Users/philippeperret/Sites/WriterToolbox"
-Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
-
-
-----------------------------------------------------------------------
-[Cron::run] Nettoyage des lieux
-    - Nettoyage des vieux rapports de connexion
-    = OK (0 destructions)
-    - Nettoyage du debug.log
-    = OK
-    - Nettoyage des logs cron (un an un script)
-     = 1 fichiers-log détruits
-
-
-----------------------------------------------------------------------
-[Cron::run] Requérir toutes les librairies du site
-     -> Cron::requerir_les_librairies_du_site
-     <- Cron::requerir_les_librairies_du_site
-
-
-----------------------------------------------------------------------
-[Cron::run] Traitement des connexions par IP
-Fréquence de rapport connexion : ":one_an_hour"
-			   rapport_needed? : true
-Fréquence de rapport connexion : ":one_an_hour"
-			* Résumé des connexions par IP
-			. = /Users/philippeperret/Sites/WriterToolbox
-			-> rationalise_connexions
-			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-07 13:15:01 +0200
-Message :
-<pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-07 13:15:01 +0200
-
-IP                   Nb   Durée Whois                          De       à        Routes
-::1                  10   554   - unknown -                    13:04:46 13:14:00     5
-
-=== ROUTES PAR IPS ===
-::1
-	- admin/console
-	- user/signin
-	- user/login
-	- bureau/home?in=unan
-	- unan/home
-</pre><p class='small'>La durée est exprimée en secondes.</p>
-<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
-
-			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-07_05_2016-13-15
-			/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `initialize'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `open'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `consigne_report'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:43:in `resume'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:43:in `block in run'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:27:in `chdir'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:27:in `run'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:40:in `<top (required)>'
+### IMPOSSIBLE DE CHARGER LES LIBRAIRIES CRON : cannot load such file -- ./lib/deep/deeper/required/divers/feminines.rb
+### JE DOIS RENONCER À LANCER LE CRON-JOB
+### BACKTRACE
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/User/report.rb:17:in `<top (required)>'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:20:in `block in <top (required)>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:20:in `each'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:20:in `<top (required)>'
 /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
 /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
 /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:31:in `<main>'
 
 
-----------------------------------------------------------------------
-[Cron::run] Traitement du programme UN AN UN SCRIPT
-     -> Cron::traitement_programme_un_an_un_script
-    = retard   = 0
-    = retards  = 000
-    = frequence ? nil
-messages_by_retard : {:mes_change_rythme=>"Pensez \u00E0 changer votre rythme de travail (dans vos pr\u00E9f\u00E9rences) si n\u00E9cessaire.", :accident=>"Mais puisque c'est un accident, \u00E7a n'est pas trop grave.", :rare=>"Mais puisque c'est somme toute assez rare, \u00E7a n'est pas trop grave.", :frequent=>"Vous me direz que \u00E7a n'est pas grave puisque vous \u00EAtes somme toute coutumi%{f_ier} du fait\u2026", :souvent=>"Mais vous \u00EAtes tellement souvent en retard qu'on ne va pas s'inqui\u00E9ter outre mesure\u2026", :systematique=>"Vous devriez peut-\u00EAtre faire quelque chose pour ne pas \u00EAtre syst\u00E9matiquement en retard.", 0=>{:debut=>"Bravo %{pseudo}, vous n'avez aucun travail en retard.", :milieu=>"Bravo %{pseudo}, nous sommes d\u00E9j\u00E0 bien avanc\u00E9s dans le programme mais vous \u00EAtes \u00E0 jour de vos travaux.", :fin=>"Excellent,  %{pseudo}\u00A0! Vous tenez merveilleusement bien le rythme."}, 1=>{:commun=>"Quelques petits retards sans cons\u00E9quence ne sont jamais trop dommages.", :debut=>"Quelques petits retards sans cons\u00E9quence ne sont jamais trop dommages.", :milieu=>"Quelques petits retards sans cons\u00E9quence ne sont jamais trop dommages.", :fin=>"Quelques petits retards sans cons\u00E9quence ne sont jamais trop dommages."}, 2=>{:commun=>"Attention les petits retards s'accumulent\u2026", :debut=>"Attention les petits retards s'accumulent\u2026", :milieu=>"Attention les petits retards s'accumulent\u2026", :fin=>"Attention les petits retards s'accumulent\u2026"}, 3=>{:commun=>"Vous commencez \u00E0 avoir des retards s\u00E9rieux, attention.", :debut=>"Vous commencez \u00E0 avoir des retards s\u00E9rieux, attention.", :milieu=>"Vous commencez \u00E0 avoir des retards s\u00E9rieux, attention.", :fin=>"Vous commencez \u00E0 avoir des retards s\u00E9rieux, attention."}, 4=>{:commun=>"Les retards s\u00E9rieux s'accumulent, attention de ne pas trop vous laisser distancer.", :debut=>"Les retards s\u00E9rieux s'accumulent, attention de ne pas trop vous laisser distancer.", :milieu=>"Les retards s\u00E9rieux s'accumulent, attention de ne pas trop vous laisser distancer.", :fin=>"Les retards s\u00E9rieux s'accumulent, attention de ne pas trop vous laisser distancer."}, 5=>{:commun=>""}, 6=>{:commun=>"Vous d\u00E9crochez compl\u00E8tement du programme\u2026", :debut=>"Vous d\u00E9crochez compl\u00E8tement du programme\u2026", :milieu=>"Vous d\u00E9crochez compl\u00E8tement du programme\u2026", :fin=>"Vous d\u00E9crochez compl\u00E8tement du programme\u2026"}, 7=>{:debut=>"Si vous comptez parvenir au bout du chemin, il serait temps de vous reprendre en main.", :milieu=>"Vous avez d\u00E9j\u00E0 accompli un bon bout du chemin, il est encore temps de vous reprendre.", :fin=>"Franchement, \u00E7a serait dommage de renoncer alors que vous avez fait le plus gros du travail, non\u00A0?"}, 8=>{"message_commun"=>"Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir l\u00E2cher l'affaire. C'est vraiment dommage.", :debut=>"Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir l\u00E2cher l'affaire. C'est vraiment dommage.", :milieu=>"Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir l\u00E2cher l'affaire. C'est vraiment dommage.", :fin=>"Je ne sais plus quoi faire pour vous motiver, mais vous semblez avoir l\u00E2cher l'affaire. C'est vraiment dommage."}, 9=>{"message_commun"=>"Franchement, vous feriez mieux de jeter l'\u00E9ponge.", :debut=>"Franchement, vous feriez mieux de jeter l'\u00E9ponge.", :milieu=>"Franchement, vous feriez mieux de jeter l'\u00E9ponge.", :fin=>"Franchement, vous feriez mieux de jeter l'\u00E9ponge."}}
+ERREUR FATALE : exit
 
-
-----------------------------------------------------------------------
-[Cron::run] Traitement des messages forum
-     -> Cron::traitement_messages_forum
-     <- Cron::traitement_messages_forum
-    = Fin Cron::run =
-
-
-----------------------------------------------------------------------
-[Cron::run] Traitement du rapport admin
-    # Impossible d'envoyer le rapport administration : undefined method `exec_send_mail' for #<SiteHtml:0x007fa7b08b09c0>
-/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Site/mail.rb:8:in `send_mail'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb:107:in `send_rapport'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb:65:in `traite'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:64:in `run'
-/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:40:in `<top (required)>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:34:in `exit'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:34:in `rescue in <top (required)>'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:13:in `<top (required)>'
 /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
 /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
 /Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:31:in `<main>'
-= STEP 2 OK =
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
-
-
-=== FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (07 05 2016 - 13:15) ---
+--- FIN DU SAFED LOG (07 05 2016 - 13:40) ---

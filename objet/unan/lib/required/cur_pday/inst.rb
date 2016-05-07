@@ -131,7 +131,12 @@ class CurPDay
   def started_by_type
     @started_by_type ||= begin
       h = Hash::new
-      uworks = auteur.table_works.select(where: "status < 9")
+      where = "status < 9 AND created_at < #{NOW}"
+      # Note : Le "created_at < NOW" ci-dessus permet de ne
+      # pas tenir compte des travaux reprogrammés.
+      # Mais pour le moment, on ne peut plus reprogrammer un
+      # travail.
+      uworks = auteur.table_works.select(where: where)
       sbt = {
         task:   Array::new,
         page:   Array::new,
