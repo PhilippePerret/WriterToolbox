@@ -1,4 +1,4 @@
-SAFED LOG DU 07 05 2016 - 11:00
+SAFED LOG DU 07 05 2016 - 11:10
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -49,10 +49,10 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-07 11:00:01 +0200
+Titre : Rapport des connexions du 2016-05-07 11:10:00 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-07 11:00:01 +0200
+Rapport des connexions du 2016-05-07 11:10:00 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
 
@@ -89,4 +89,4 @@ Traitement de la liste :nouveaux
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (07 05 2016 - 11:00) ---
+--- FIN DU SAFED LOG (07 05 2016 - 11:10) ---

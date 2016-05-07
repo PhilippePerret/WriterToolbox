@@ -16,7 +16,7 @@ class SiteHtml
   #
   # RETURN True si tout s'est bien passé et l'instance
   # de l'erreur dans le cas contraire.
-  # 
+  #
   def exec_send_mail data_mail
     Mail::new(data_mail).send
   rescue Exception => e
@@ -157,7 +157,7 @@ module MailModuleMethods
   end
 
   def signature
-    set_class(:signature, site.mail_signature ? site.mail_signature : "") if get_class(:signature).nil?
+    set_class(:signature, (site.mail_signature ? site.mail_signature.in_span(id:'signature') : "")) if get_class(:signature).nil?
     get_class :signature
   end
 
