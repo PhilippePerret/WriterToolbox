@@ -46,7 +46,7 @@ else "" end
 <%= Unan::titre_h1("Page de cours (édition data)") %>
 
 <div class="small italic right" style="width:70%;margin-left:30%">
-  Noter que pour une page de la collection Narration <strong>il suffit de renseigner le champ `narration_id`</strong> ci-dessous avec l'identifiant dans la collection.<span class='tiny'>Si une page existe déjà avec cet ID, une erreur sera générée et donnera le numéro de la page-cours à utiliser.</span>
+  Noter que pour une page de la collection Narration <strong>il suffit de 1/ renseigner le champ `narration_id` et 2/ cocher la case “créer le work associé”</strong> ci-dessous avec l'identifiant dans la collection.<span class='tiny'>Si une page existe déjà avec cet ID, une erreur sera générée et donnera le numéro de la page-cours à utiliser.</span>
 </div>
 
 <form id="form_edit_page_cours" class="dim2080" action="page_cours/edit?in=unan_admin" method="POST">
@@ -54,12 +54,13 @@ else "" end
   <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_read_page} #{lien_open_page}", onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>
-  <%= form.field_checkbox("Créer le Work associé (si nouvelle page)", 'cb_create_work', nil) %>
+  <% value_cb_associer = param(:pn) ? true : nil %>
+  <%= form.field_checkbox("Créer le Work associé (si nouvelle page)", 'cb_create_work', value_cb_associer) %>
   <%= form.field_description("Une page-cours est toujours associée à un work pour pouvoir être introduit dans un p-day. Ce bouton permet de créer ce work automatiquement à la création de la page-cours. Noter que dans le cas contraire, il faudra faire manuellement cette association (créer un work et mettre en item_id l'ID de cette page).") %>
   <%= form.field_description("Le titre de la page, qui n'est pas forcément le titre exact, mais servira pour les différents affichages dans le programme “Un An Un Script”, à commencer sur la page du travail du jour de l'auteur.") %>
   <%= form.field_text("Handler", 'handler', "") %>
   <%= form.field_description("Choisir ce handler de 200 caractères maximum avec soin, car c'est lui qui sera utilisé pour retrouver la page à l'aide de `program.page_cours(&lt;handler&gt;)`. Il doit être unique, mais ce sera vérifié si c'est une création de page.") %>
-  <%= form.field_text("ID Narration", 'narration_id', '', {class:'short'}) %>
+  <%= form.field_text("ID Narration", 'narration_id', param(:pn), {class:'short'}) %>
   <%= form.field_description("Si la page de cours du programme fait référence à une page de la collection Narration, il suffit d'indiquer son numéro ici (inutile, alors d'indiquer le handler ou le type, ils seront automatiquement réglés).") %>
   <%= form.field_textarea("Description", 'description', "") %>
   <%= form.field_text("Path", 'path', "", {text_before:"".in_div(id:'folder_page_path', placeholder:'path (si narration_id n’est pas spécifié)')}) %>
