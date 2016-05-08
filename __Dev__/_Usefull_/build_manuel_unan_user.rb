@@ -19,5 +19,4 @@ rescue Exception => e
   puts e.backtrace.join("\n")
 else
   puts "\n\nManuel actualisé avec succès"
-  `open ./objet/unan/aide/manuel/UAUS_Manuel_auteur.pdf`
 end

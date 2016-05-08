@@ -58,6 +58,11 @@ class ::String
 
     code = self
 
+    # Au format LaTex, quelques corrections obligées
+    if output_format == :latex
+      code.gsub!(/ /, '&nbsp;') # insécables
+    end
+
     # Si le format de sortie est de l'ERB, il faut protéger les
     # balises ERB sinon, kramdown transformerait les pourcentages en
     # signe pourcentage.
@@ -110,10 +115,32 @@ class ::String
     # du tout de balise HTML avant de kramdowner.
     code.gsub!(/<personnage>(.+?)<\/personnage>/, 'PERStag\1gatSREP')
 
+    # Si c'est une transformation vers LaTex,
+    # on protège les accolades et les backslaches qui
+    # correspondent à des commandes (\commande{...})
+    if output_format == :latex
+      code.gsub!(/\\([a-z0-9]+?)\{(.*?)\}/){
+        commande  = $1.freeze
+        arguments = $2.freeze
+        "PROTECTEDBACKSLASHES#{commande}ACCO--#{arguments}--OCCA"
+      }
+    end
+
     # === KRAMDOWNAGE ===
-    code_final = Kramdown::Document.new(code).send(mdown_method)
+    kramdown_options = {
+      header_offset:    0, # pour que '#' fasse un chapter
+      # Ordre (6 valeurs obligatoires)
+      latex_headers:  ['chapter','section','subsection','subsubsection','paragraph','subparagraph']
+    }
+    code_final = Kramdown::Document.new(code, kramdown_options).send(mdown_method)
+
 
     # Déprotéger ce qui a été protégé avant Kramdown
+    if output_format == :latex
+      code_final = code_final.
+          gsub(/PROTECTEDBACKSLASHES/, "\\").
+          gsub(/ACCO--/,'{').gsub(/--OCCA/,'}')
+    end
     code_final.gsub!(/PERStag(.+?)gatSREP/,'<personnage>\1</personnage>')
 
     # debug "\n\ncode APRÈS kramdown : #{code_final.gsub(/</,'&lt;').inspect} \n\n"

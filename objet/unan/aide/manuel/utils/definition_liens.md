@@ -16,4 +16,6 @@
     [autre texte pour le lien][un texte identifiant]
 
   -->
-[préférences]:  #preferences-auteur "Les préférences de l'auteur"
+[préférences]:      #preferences-auteur "Les préférences de l'auteur"
+[jour-programme]:   #explicationjourprogrammejourreel  "Explication sur ce qu'est un jour-programme"
+[jours-programme]:  #explicationjourprogrammejourreel  "Explication sur ce qu'est un jour-programme"

@@ -1,6 +1,7 @@
 # Manuel de l'auteur
 
 * [Reconstruction du manuel](#reconstructiondumanuel)
+  * [Ordre d'inclusion des fichiers](#ordredesfichiers)
 * [Titres des chapitres, sections etc.](#titredessections)
   * [Spécifier un ID/Label propre pour un titre](#specifierunlabelidpropre)
   * [Les labels de titre automatiques](#labelautomatiques)
@@ -18,6 +19,28 @@ Pour le moment, il faut lancer la construction du manuel à l'aide du script se 
         ./__Dev__/_Usefull_/build_manuel_unan_user.rb
 
 Utiliser plutôt TextMate.
+
+
+<a name='ordredesfichiers'></a>
+
+### Ordre d'inclusion des fichiers
+
+L'ordre d'inclusion des fichiers est défini dans un fichier table-des-matières situé à la racine du dossier principal (au même niveau que ce fichier d'aide).
+
+Il peut avoir indifféremment les noms suivants :
+
+        tdm.yaml
+        TDM.yaml
+        _tdm_.yaml
+        _TDM_.yaml
+
+C'est une simple liste définition l'ordre, avec le **path relatif** des affixes des fichiers à partir de `./sources_md/` (qui n'est donc pas à indiquer) :
+
+        - path/to/fichier1
+        - path/to/fichiers2
+        etc.
+
+Noter que, bien sûr, seuls des fichiers `Markdown` doivent être consignés dans cette table des matières.
 
 <a name='titredessections'></a>
 
