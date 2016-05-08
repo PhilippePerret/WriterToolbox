@@ -36,9 +36,13 @@ Il peut avoir indifféremment les noms suivants :
 
 C'est une simple liste définition l'ordre, avec le **path relatif** des affixes des fichiers à partir de `./sources_md/` (qui n'est donc pas à indiquer) :
 
-        - path/to/fichier1
-        - path/to/fichiers2
-        etc.
+        nom_dossier:
+          - fichier
+          - fichier
+          - fichier
+        nom_dossier:
+          - fichier
+          etc.
 
 Noter que, bien sûr, seuls des fichiers `Markdown` doivent être consignés dans cette table des matières.
 

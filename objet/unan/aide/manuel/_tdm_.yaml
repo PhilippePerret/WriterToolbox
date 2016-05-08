@@ -2,17 +2,29 @@
 # Définition de la table des matières du livre à produire en
 # PDF
 #
-- 01_program/introduction
-- 01_program/presentation
-- 01_program/rythme
-- 01_program/mail_quotidien
+01_introduction:
+  - introduction
+  - overview
 
-- 04_bureau/introduction
-- 04_bureau/preferences
+05_program:
+  - introduction
+  - presentation
+  - premiers_pas
+  - rythme
+  - mail_quotidien
+  - vision_densemble
 
-- 80_langage/introduction
-- 80_langage/jour_programme
+15_quotidien:
+  - introduction
+25_bureau:
+  - introduction
+  - preferences
 
-- 99_annexes/introduction
-- 99_annexes/foire_aux_questions
-- 99_annexes/operations_courantes
+80_langage:
+  - introduction
+  - jour_programme
+
+99_annexes:
+  - introduction
+  - foire_aux_questions
+  - operations_courantes

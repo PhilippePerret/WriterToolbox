@@ -119,7 +119,7 @@ class ::String
     # on protège les accolades et les backslaches qui
     # correspondent à des commandes (\commande{...})
     if output_format == :latex
-      code.gsub!(/\\([a-z0-9]+?)\{(.*?)\}/){
+      code.gsub!(/\\([a-zA-Z\*]+?)\{(.*?)\}/){
         commande  = $1.freeze
         arguments = $2.freeze
         "PROTECTEDBACKSLASHES#{commande}ACCO--#{arguments}--OCCA"

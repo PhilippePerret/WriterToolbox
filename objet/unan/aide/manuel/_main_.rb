@@ -98,13 +98,18 @@ class << self
     # Les fichiers à traiter
     # Si un fichier table des matières existe, on le prend, sinon,
     # on prend tous les fichiers dans le dossier, dans leur ordre
-    liste_files = if tdm_file.exist?
-      YAML::load_file(tdm_file.to_s).collect do |affixe|
-        affixe += ".md" unless affixe.end_with?('md')
-        (folder_markdown + affixe).to_s
+    if tdm_file.exist?
+      liste_files = Array::new
+      # STDOUT.write YAML::load_file(tdm_file.to_s).inspect
+      # return
+      YAML::load_file(tdm_file.to_s).each do |dossier, affixe_list|
+        affixe_list.each do |affixe|
+          affixe += ".md" unless affixe.end_with?('md')
+          liste_files << (folder_markdown + "#{dossier}/#{affixe}").to_s
+        end
       end
     else
-      Dir["#{folder_markdown}/**/*.md"]
+      liste_files = Dir["#{folder_markdown}/**/*.md"]
     end
 
     # ATTTENTION : SEULEMENT SI ON UTILISE LE SCRIPT DANS TEXTMATE
