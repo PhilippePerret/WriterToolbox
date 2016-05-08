@@ -17,7 +17,7 @@ class Unan
   class << self
 
     def exec_send_mail data_mail
-      app.require_optional 'Site/mail'
+      site.require_module 'mail'
       SiteHtml::Mail::new(data_mail).send
     end
 

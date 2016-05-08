@@ -74,6 +74,7 @@ class UAUSReport
       subject:        "Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
       message:        assemblage_rapport,
       formated:       true,
+      signature:      false, # signature inutile
       force_offline:  true # même offline, on envoie le rapport
     )
   end

@@ -13,6 +13,12 @@ class SiteHtml
   #     subject:  "<le sujet>",
   #     message:  "<le message>"
   #   })
+  # Paramètres supplémentaires :
+  #     :formated         Si true, le message n'est pas traité
+  #     :force_offline    Si true, le mail est envoyé même en OFFLINE
+  #     :signature        Si FALSE, la signature n'est pas apposée.
+  #                       True par défaut
+  #     :data             Hash de données à utiliser pour le message
   #
   # RETURN True si tout s'est bien passé et l'instance
   # de l'erreur dans le cas contraire.
@@ -35,18 +41,7 @@ module MailModuleMethods
   # Initialize a new mail
   #
   # * PARAMS
-  #   :data::     Provided data
-  #               :from::           Sender
-  #               :to::             Receiver
-  #               :subject::        Subject of the mail
-  #               :message::        Code of the message to send
-  #               :force_offline    Si TRUE, envoie même en offline
-  #               :formated         Si TRUE, le message est considéré comme
-  #                                 formaté
-  #               :format::         Si :text, le message est laissé en code
-  #                                 brut (pas HTML)
-  #               :data::           Data to use with type-messages. Every
-  #                                 key will be turn into its value.
+  #   Cf. plus haut
   #
   def initialize data = nil
     @data = data
@@ -118,7 +113,11 @@ module MailModuleMethods
 
   # Le corps du message du mail
   def body
-    c = "#{header}<div id='message_content'>#{ message_formated + signature + footer }</div>"
+    c = header + (
+        message_formated  +
+        signature         +
+        footer
+      ).in_div(id:'message_content')
     # Si le body style est défini, on met le code dans un div
     # contenant ce body style.
     c = c.in_div(style: SiteHtml::Mail::body_style) if SiteHtml::Mail::respond_to?(:body_style)
@@ -157,6 +156,7 @@ module MailModuleMethods
   end
 
   def signature
+    return "" if @signature === false # in data
     set_class(:signature, (site.mail_signature ? site.mail_signature.in_span(id:'signature') : "")) if get_class(:signature).nil?
     get_class :signature
   end
