@@ -1,6 +1,7 @@
 # Fichiers Markdown
 
 * [Transformer un fichier Markdown en code HTML](#transformerundocumentencodehtml)
+* [Ajouter un code Markdown commun avant tous les fichiers](#ajoutercodeavantcodefichier)
 * [Code retourné ou écrit dans un fichier](#coderetourneouecrit)
   * [Note sur code ERB](#notesurcodeerb)
 * [Autre formats en sortie](#autreformatdesortie)
@@ -21,6 +22,33 @@ Le fichier doit être exprimé comme instance `SuperFile`.
 Ce code retourne le contenu du fichier `<superfile>`, qui doit être au format kramdown, en code HTML.
 
 Noter que cette méthode `SuperFile#kramdown` traite plus de choses que le parseur kramdown normal. Voir le module `./lib/deep/deeper/module/kramdown` pour voir toutes les transformations possibles ou le fichier `markdown_extra.md` ci-contre.
+
+<a name='ajoutercodeavantcodefichier'></a>
+
+## Ajouter un code Markdown commun avant tous les fichiers
+
+Typiquement, ça peut servir pour ajouter des définitions de liens qui seront utilisés par tous les fichiers source d'un livre PDF à produire d'après Markdown (cf. par exemple l'utilisation pour le manuel de l'auteur du programme UN AN UN SCRIPT — ./objet/unan/manuel/)
+
+Il suffit, avant d'appeler la méthode `<superfile>.kramdown` d'insérer le code :
+
+        SuperFile::before_markdown_code = <code à insérer>
+
+Par exemple, si ce code vient d'un fichier :
+
+        SuperFile::before_markdown_code = SuperFile::new(pathajout).read
+
+> Rappels : les liens se définissent par :
+
+        [texte du lien et id]:    path/to/the/cible    "Titre optionnel"
+        [texte vers titre]:       #ancre-du-document    "Titre optionnel"
+
+    Et s'utilisent par :
+
+          C'est un [texte du lien et id] pour voir.
+
+    ou :
+
+          C'est un [autre texte du lien][texte du lien et id] pour voir.
 
 <a name='coderetourneouecrit'></a>
 

@@ -1,0 +1,19 @@
+<!--
+  CE FICHIER CONTIENT LES DÉFINITIONS GÉNÉRALES DES LIENS
+
+  DÉFINITION :
+
+  [un texte identifiant]:  une/path/to/cible  "Le titre optionnel"
+
+  UTILISATION
+
+  avec le texte identique :
+
+    [un texte identifiant][]
+
+  avec un autre texte :
+
+    [autre texte pour le lien][un texte identifiant]
+
+  -->
+[préférences]:  #preferences-auteur "Les préférences de l'auteur"

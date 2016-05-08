@@ -49,6 +49,9 @@ class ::String
   REPLACEMENTS_PER_FORMAT = {
     html: {
       br: "<br />"
+    },
+    latex:{
+      br:"---"
     }
   }
   def kramdown_encart output_format = :html

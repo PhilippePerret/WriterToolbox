@@ -1,4 +1,4 @@
-SAFED LOG DU 08 05 2016 - 11:00
+SAFED LOG DU 08 05 2016 - 15:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -29,7 +29,7 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
     - Nettoyage des vieux rapports de connexion
     = OK (0 destructions)
     - Nettoyage du debug.log
-    = OK
+    - Inexistant -
     - Nettoyage des logs cron (un an un script)
      = 1 fichiers-log détruits
 
@@ -49,28 +49,21 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-08 11:00:00 +0200
+Titre : Rapport des connexions du 2016-05-08 15:00:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-08 11:00:00 +0200
+Rapport des connexions du 2016-05-08 15:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  62   3560  - unknown -                    10:00:19 10:59:39     8
+                     15   3222  - unknown -                    14:05:15 14:58:57     1
 
 === ROUTES PAR IPS ===
-::1
-	- admin/console
-	- admin/sync
-	- unan_admin/dashboard
-	- page_cours/list?in=unan_admin
-	- page_cours/list?in=unan_program
-	- page_cours/7/edit?in=unan_admin
-	- page/247/show?in=cnarration
-	- page_cours/edit?in=unan_admin
+
+	- site/home
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
-			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-08_05_2016-11-00
+			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-08_05_2016-15-00
 			/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `initialize'
 /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `open'
 /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `consigne_report'
@@ -93,7 +86,12 @@ IP                   Nb   Durée Whois                          De       à     
 Traitement de la liste :unstarted
 Traitement de la liste :nouveaux
 Traitement de la liste :poursuivis
-     <- Cron::traitement_programme_un_an_un_script
+    = retard   = 0
+    = retards  = 0000
+    = frequence ? nil
+Traitement de la liste :unstarted
+Traitement de la liste :nouveaux
+Traitement de la liste :poursuivis
 
 
 ----------------------------------------------------------------------
@@ -110,4 +108,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (08 05 2016 - 11:00) ---
+--- FIN DU SAFED LOG (08 05 2016 - 15:00) ---

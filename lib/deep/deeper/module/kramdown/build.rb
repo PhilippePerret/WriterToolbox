@@ -144,21 +144,41 @@ end
 
 class SuperFile
 
+  class << self
+
+    # Pour ajouter au(x) fichier(s) traité(s) un code
+    # markdown avant leur code.
+    # Typiquement, ça peut servir par exemple pour définir
+    # des liens "[texte]: mon/lien/cible"
+    attr_accessor :before_markdown_code
+
+  end #/ << self
+
   DATA_OUTPUT_FORMAT = {
     :html   => {extension: '.html'},
     :latex  => {extension: ".tex" },
     :erb    => {extension: ".erb"}
   }
 
+
   # Retourne le code du fichier, kramdowné
   #
   # :alias: def as_kramdown
+  #
+  # +options+
+  #     Cf. la méthode String#kramdown ci-dessus
+  #     + autres propriétés :
+  #       :in_file    Si fourni, c'est un path dans lequel le code
+  #                   transformé sera enregistré. Sinon, le code est
+  #                   simplement retourné.
+  #                   Ça peut être un SuperFile
+  #
   def kramdown options = nil
     options ||= Hash::new
 
     # On doit produire un code ERB
     options[:output_format] ||= :erb
-    options[] = folder.to_s
+    options[:folder_image] = folder.to_s
 
     options.merge!(
       owner:        self,
@@ -166,22 +186,34 @@ class SuperFile
       folder_image: folder.to_s
     )
 
-    code_final = self.read.gsub(/\r\n?/, "\n").chomp.kramdown(options)
+    code = self.read.gsub(/\r\n?/, "\n").chomp
+
+    # Ajouter si nécessaire un code au code du
+    # fichier (cf. ci-dessus)
+    unless self.class::before_markdown_code.nil?
+      code = self.class::before_markdown_code + "\n\n"+ code
+    end
+
+    # ATTENTION, ÇA NE FONCTIONNE QUE SI ON LANCE LE SCRIPT
+    # TEXTMATE
+    # STDOUT.write( code )
+
+    code_final = code.kramdown(options)
 
     if options[:in_file]
       # Écrire le code dans ce fichier
       dest_path = case options[:in_file]
-      when String     then options[:in_file]
+      when String, SuperFile then options[:in_file]
       when TrueClass  then (self.folder + self.affixe).to_s
       end
-      if File.extname(dest_path) == ""
+      if File.extname(dest_path.to_s) == ""
         dest_path += DATA_OUTPUT_FORMAT[options[:output_format]][:extension]
       end
-      SuperFile::new(dest_path).write code_final
-    else
-      # Retourner ce code
-      return code_final
+      dest_path = SuperFile::new(dest_path) unless dest_path.instance_of?(SuperFile)
+      dest_path.write code_final
     end
+    # Retourner ce code dans tous les cas
+    return code_final
   end
   alias :as_kramdown :kramdown
 
