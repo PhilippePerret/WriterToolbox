@@ -1,11 +1,19 @@
 \select@language {french}
 \contentsline {chapter}{\numberline {1}Votre programme}{3}{chapter.1}
 \contentsline {section}{\numberline {1.1}Introduction}{3}{section.1.1}
-\contentsline {section}{\numberline {1.2}Rythme de travail}{3}{section.1.2}
-\contentsline {section}{\numberline {1.3}Introduction}{3}{section.1.3}
-\contentsline {chapter}{\numberline {2}Pr\IeC {\'e}f\IeC {\'e}rences}{5}{chapter.2}
-\contentsline {chapter}{\numberline {3}\IeC {\'E}l\IeC {\'e}ments de langage}{6}{chapter.3}
-\contentsline {section}{\numberline {3.1}Introduction}{6}{section.3.1}
-\contentsline {section}{\numberline {3.2}Jour-programme}{6}{section.3.2}
-\contentsline {chapter}{\numberline {4}Annexes}{7}{chapter.4}
-\contentsline {section}{\numberline {4.1}Foire aux questions}{7}{section.4.1}
+\contentsline {section}{\numberline {1.2}Pr\IeC {\'e}sentation du programme}{3}{section.1.2}
+\contentsline {section}{\numberline {1.3}Rythme de travail}{3}{section.1.3}
+\contentsline {section}{\numberline {1.4}Mail quotidien}{4}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}\IeC {\'E}tat des lieux de votre programme}{4}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Mail seulement si nouveaux travaux}{4}{subsection.1.4.2}
+\contentsline {section}{\numberline {1.5}Introduction}{4}{section.1.5}
+\contentsline {chapter}{\numberline {2}Pr\IeC {\'e}f\IeC {\'e}rences}{6}{chapter.2}
+\contentsline {chapter}{\numberline {3}\IeC {\'E}l\IeC {\'e}ments de langage}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introduction}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}Jour-programme}{7}{section.3.2}
+\contentsline {chapter}{\numberline {4}Annexes}{8}{chapter.4}
+\contentsline {section}{\numberline {4.1}Foire aux questions}{8}{section.4.1}
+\contentsline {section}{\numberline {4.2}Op\IeC {\'e}rations courantes}{8}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Rejoindre le site}{9}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}S'identifier au site}{9}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Rejoindre son bureau de travail}{9}{subsection.4.2.3}

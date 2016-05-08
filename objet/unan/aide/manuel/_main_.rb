@@ -24,11 +24,21 @@ class Unan
 class UManuel
 class << self
 
+  # Soit true/false pour faire la version homme ou femme
+  # du manuel
+  attr_accessor :version_femme
+
   # = main =
   #
   # Méthode principale de construction du manuel
   #
   def build
+
+    # Si ça n'est pas défini, on fait la version femme du
+    # manuel
+    # Pour la définir :
+    #   Unan::UManuel::version_femme = true/false
+    @version_femme = true if @version_femme === nil
 
     # On nettoie les fichiers auxiliaire du dossier LaTex pour
     # être sûr de repartir à zéro
@@ -37,6 +47,16 @@ class << self
     # On détruit le fichier PDF s'il existe, pour être sûr
     # d'avoir une nouvelle version
     manuel_pdf.remove if manuel_pdf.exist?
+
+    # On définit le fichier de version sexuée pour
+    # définir s'il faudra faire la version homme ou femme
+    # du manuel
+    p = folder_assets+"define_version_sexuee.tex"
+    p.write <<-TEX
+% === Définition de la verion homme/femme ===
+\\newboolean{pourfille}
+\\setboolean{pourfille}{#{version_femme ? 'true' : 'false'}}
+    TEX
 
     # On construit le fichier all_sources
     build_all_sources_file
@@ -131,14 +151,13 @@ class << self
 
   # Le fichier LaTex est prêt, on peut le compiler
   def compile_manuel_utilisateur
-    maintex_affixe  = "UAUS_Manuel_auteur"
     Dir.chdir("#{folder_latex}") do
-      suivre_exec "latex #{maintex_affixe}.tex"
-      suivre_exec "biber #{maintex_affixe}.tex"
-      suivre_exec "latex #{maintex_affixe}.tex"
-      suivre_exec "makeindex #{maintex_affixe}.idx"
-      suivre_exec "pdflatex #{maintex_affixe}.tex"
-      suivre_exec "pdflatex #{maintex_affixe}.tex"
+      suivre_exec "latex #{affixe}.tex"
+      suivre_exec "biber #{affixe}.tex"
+      suivre_exec "latex #{affixe}.tex"
+      suivre_exec "makeindex #{affixe}.idx"
+      suivre_exec "pdflatex #{affixe}.tex"
+      suivre_exec "pdflatex #{affixe}.tex"
       # suivre_exec "dvips #{maintex_affixe}.dvi"
     end
   end
@@ -168,7 +187,7 @@ class << self
     @all_sources_file ||= folder_latex + "all_sources.tex"
   end
   def manuel_pdf
-    @manuel_pdf ||= folder + "#{affixe}.pdf"
+    @manuel_pdf ||= folder + "#{affixe}_v#{version_femme ? 'F' : 'H'}.pdf"
   end
   def manuel_pdf_in_latex
     @manuel_pdf_in_latex ||= folder_latex + "#{affixe}.pdf"
@@ -178,6 +197,9 @@ class << self
   end
   def folder_markdown
     @folder_markdown ||= folder + "sources_md"
+  end
+  def folder_assets
+    @folder_assets ||= folder_latex+"assets"
   end
   def folder_latex
     @folder_latex ||= folder + "latex"
