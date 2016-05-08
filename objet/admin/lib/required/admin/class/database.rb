@@ -17,5 +17,9 @@ class Admin
     end
     alias :table_todolist :table_taches
 
+    def table_taches_cold
+      @table_taches_cold ||= site.db.create_table_if_needed('site_cold', 'todolist')
+    end
+
   end #/ << self
 end #/Admin

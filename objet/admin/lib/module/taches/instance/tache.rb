@@ -54,9 +54,31 @@ class Tache
     debug "data2save: #{data2save.pretty_inspect}"
     flash "Tache ##{id} actualisée."
   end
+
+  # Arrêter la tâche
+  #
+  # Cela consiste maintenant à mettre la tâche en archive,
+  # i.e. dans la base `site_cold`
+  #
+  # Noter que l'identifiant en archives reste le même
+  # que celui dans la base.
+  #
   def stop
-    set( updated_at:NOW, state:9 )
+    data_cold = {
+      id: id,
+      tache: tache,
+      admin_id: admin_id,
+      description: description,
+      created_at:  created_at,
+      ended_at:     NOW
+    }
+    table_cold.insert(data_cold)
+    table.delete(id)
   end
+
+  # Noter que la destruction, si elle doit vraiment être opérationnelle,
+  # doit se faire online et offline, sinon la synchronisation remettra
+  # toujours la tâche (sauf si elle est enregistrée dans la table cold).
   def destroy
     table.delete( id )
   end
@@ -85,6 +107,9 @@ class Tache
 
   def table
     @table ||= Admin::table_taches
+  end
+  def table_cold
+    @table_cold ||= Admin::table_taches_cold
   end
 
   # Return true si les données sont valides

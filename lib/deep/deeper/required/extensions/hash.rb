@@ -50,10 +50,10 @@ class Hash
     str = "#{retrait_str}{\n"
     self.each do |k, v|
       v = case k
-      when :created_at, :updated_at
+      when :created_at, :updated_at, :ended_at
         case v
         when NilClass then nil
-        when Fixnum   then v.as_human_date(true, true) + " (real: #{v})"
+        when Fixnum   then v.as_human_date(true, true, ' ') + " (real: #{v})"
         else v
         end
       else v end
