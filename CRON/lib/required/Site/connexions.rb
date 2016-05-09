@@ -277,14 +277,14 @@ end # << self SiteHtmlConnexions
       log "    <- SiteHtml::Connexions::send_report"
     end
   end
-  
+
   # On enregistre le rapport dans un fichier
   def consigne_report
-    folder_rapports = "/home/boite-a-outils/www/CRON/rapports_connexions"
+    folder_rapports = "#{RACINE}/CRON/rapports_connexions"
     `mkdir -p #{folder_rapports}`
     ntime = Time.now.strftime("%d_%m_%Y-%H-%M")
     path_rapport = File.join(folder_rapports, "connexions-#{ntime}")
-    File.open(path_rapport, 'wb'){ |f| 
+    File.open(path_rapport, 'wb'){ |f|
       f.puts report[:titre]
       f.puts report[:message]
     }

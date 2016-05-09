@@ -48,6 +48,7 @@ class Synchro
       "./database/data/analyse.db",
       "./database/data/unan_hot.db",
       './database/data/site_hot.db',
+      './database/data/site_cold.db',
       './database/data/filmodico.db',
       './database/data/scenodico.db',
       './database/data/cnarration.db',
@@ -82,10 +83,10 @@ end
 class Synchro
   def folders_2_check
     {
-      'CRON'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'CRON/lib'  => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'lib'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
-      'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s },
-      'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s },
+      'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
+      'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'data'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'hot'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'data/analyse' => {extensions:['htm', 'png', 'jpg', 'css', 'js'], dir: :l2s},
@@ -93,12 +94,13 @@ class Synchro
     }
   end
   def files_2_check
-    # {
+    {
+      './CRON/hour_cron.rb' => {dir: :both}
     #   './database/filmodico.db'   => {dir: :both},
     #   './database/cnarration.db'  => {dir: :both},
     #   './database/scenodico.db'   => {dir: :both},
     #   './'
-    # }
+    }
   end
 end
 
