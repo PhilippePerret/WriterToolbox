@@ -1,6 +1,10 @@
 # encoding: UTF-8
 =begin
 Module principal de construction du manuel utilisateur
+
+Note : À présent, on pourrait faire un module autonome de ce
+module pour construire n'importe quel livre.
+
 =end
 require 'yaml'
 site.require_module 'kramdown'
@@ -11,6 +15,8 @@ class SuperFile
 
     # Pour que les listes de définition s'affichent bien
     # c'est-à-dire avec la définition sous le mot
+    # Car kramdown ne met pas de \hfill \\ donc la définition
+    # se met au même niveau que le mot défini.
     code.gsub!(/\\item\[(.*?)\]/){
       "\\item[#{$1}] \\hfill \\\\\n"
     }
@@ -280,7 +286,7 @@ class << self
     @folder_assets_compilation ||= folder_compilation+"assets"
   end
   def folder_assets
-    @folder_assets ||= folder_latex+"assets"
+    @folder_assets ||= folder+"assets_latex"
   end
   def folder_compilation
     @folder_compilation ||= folder_latex+"compilation"
