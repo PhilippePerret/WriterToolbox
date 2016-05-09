@@ -1,6 +1,6 @@
-SAFED LOG DU 09 05 2016 - 15:00
+SAFED LOG DU 09 05 2016 - 16:05
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
+RACINE : /Users/philippeperret/Sites/WriterToolbox-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
 - Require log.rb
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
@@ -51,24 +51,19 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-09 15:00:00 +0200
+Titre : Rapport des connexions du 2016-05-09 16:05:00 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-09 15:00:00 +0200
+Rapport des connexions du 2016-05-09 16:05:00 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  18   1231  Phil (en local)                14:36:18 14:56:49     4
-                     3    559   - unknown -                    14:49:19 14:58:38     1
+::1                  3    95    Phil (en local)                16:02:50 16:04:25     3
 
 === ROUTES PAR IPS ===
 ::1
-	- unan_admin/dashboard
-	- unan/home
-	- overview/home?in=unan/aide
-	- aide/home?in=unan
-
-
-	- site/home
+	- abs_pday/cal?in=unan/program
+	- site/open_file
+	- admin/console
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
@@ -83,12 +78,7 @@ IP                   Nb   Durée Whois                          De       à     
 [Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
     = retard   = 0
-    = retards  = 00000
-    = frequence ? nil
-Traitement de la liste :nouveaux
-Traitement de la liste :poursuivis
-    = retard   = 0
-    = retards  = 00000
+    = retards  = 000000
     = frequence ? nil
 Traitement de la liste :nouveaux
 Traitement de la liste :poursuivis
@@ -109,4 +99,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (09 05 2016 - 15:00) ---
+--- FIN DU SAFED LOG (09 05 2016 - 16:05) ---

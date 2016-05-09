@@ -47,23 +47,40 @@ end
 #     Vision médiane (donc le niveau 2) et titre des étapes
 #   VISION MÉDIANE DÉTAILLÉE
 #     Niveau 2 et description abrégée
-#   VISION 
+#   VISION
 %>
 
-<form class="" action="<%= route_courante %>" method="POST">
 <p class='small'>
   Vous pouvez vous faire, grâce à cette visualisation de l'intégralité du programme “Un An Un Script”, une idée plus précise du travail au cours de ce programme de développement unique en son genre.
 </p>
-<dl class="tiny">
-  <dt><%= Unan::Program::PDayMap::menu_echelle %></dt>
-  <dd>En réglant ce <strong>menu d'échelle</strong>, vous pouvez visualiser ce plan plus ou moins précisément.</dd>
-  <dt><%= Unan::Program::PDayMap::menu_content %></dt>
-  <dd>Ce <strong>menu de contenu</strong> vous permet de déterminer de choisir entre les différents contenus à afficher. “Titres des étapes” affiche seulement les titres, “Description” donne un aperçu plus précis du contenu de ces étapes et “Aspect pédagogique” précise le contenu des connaissances qui sont acquises en parallèle ou au cours de chaque étape de travail.</dd>
-  <dt><%= Unan::Program::PDayMap::menu_rythme %></dt>
-  <dd>Les indications de durées sont fonctions du <strong>rythme général</strong> que vous avez adopté ou celui choisi dans le menu ci-dessous. Utilisez ce menu si vosu voulez avoir une vision juste de la durée des étapes en fonction du rythme choisi. Noter que ce rythme n'affecte pas les cases des “jours-programme” numérotées de 1 à 364.</dd>
-</dl>
-
+<form class="" action="<%= route_courante %>" method="POST">
+<%
+# MENUS POUR CHANGER L'AFFICHAGE
+%>
+<div class='btns'>
+  <%= Unan::Program::PDayMap::menu_echelle %>
+  <%= "?".in_a(onclick:"$('div#explication_menu_echelle').toggle()", class:'small') %>
+  <%= Unan::Program::PDayMap::menu_content %>
+  <%= "?".in_a(onclick:"$('div#explication_menu_content').toggle()", class:'small') %>
+  <%= Unan::Program::PDayMap::menu_rythme %>
+  <%= "?".in_a(onclick:"$('div#explication_menu_rythme').toggle()", class:'small') %>
+</div>
 </form>
+<%
+# EXPLICATION DES MENUS
+%>
+<div class="small">
+  <div id="explication_menu_echelle" style="display:none">
+    En réglant ce <strong>menu d'échelle</strong>, vous pouvez visualiser ce plan plus ou moins précisément.
+  </div>
+  <div id="explication_menu_content" style="display:none">
+    Ce <strong>menu de contenu</strong> vous permet de choisir entre les différents contenus à afficher. “Titres des étapes” affiche seulement les titres, “Description” donne un aperçu plus précis du contenu de ces étapes et “Aspect pédagogique” précise le contenu des connaissances qui sont acquises en parallèle ou au cours de chaque étape de travail.
+  </div>
+  <div id="explication_menu_rythme" style="display:none">
+    Les indications de durées sont fonctions du <strong>rythme général</strong> que vous avez adopté ou celui choisi dans le menu ci-dessous. Utilisez ce menu si vosu voulez avoir une vision juste de la durée des étapes en fonction du rythme choisi. Noter que ce rythme n'affecte pas les cases des “jours-programme” numérotées de 1 à 364.
+  </div>
+</div>
+
 
 <%
   content_type = param(:content_type) || 'titre'
