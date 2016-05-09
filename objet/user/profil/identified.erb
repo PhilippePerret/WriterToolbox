@@ -51,19 +51,6 @@ end
 
 <h3>Programme <%= UN_AN_UN_SCRIPT %></h3>
 <% if unanunscript? %>
-  <p>
-    <%
-      nombre_travaux = get_var(:works_ids)
-      travaux = nombre_travaux > 1 ? 'travaux' : 'travail'
-    %>
-    <%=
-    if nombre_travaux > 0
-      "Vous avez #{nombre_travaux} #{travaux} en cours."
-    else
-      "Vous n'avez aucun travail à faire."
-    end
-     %>
-  </p>
   <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
 
 <% else %>
@@ -73,3 +60,9 @@ end
 <% end %>
 
 <% if user.admin? %><%= sous_vue('admin') %><% end %>
+
+<h3>Destruction du compte</h3>
+
+<div class="right air air">
+  <%= "Détruire votre compte".in_a(href:"user/#{id}/destroy", class:'btn warning discret') %>
+</div>

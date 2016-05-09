@@ -1,0 +1,29 @@
+<h1>Destruction de compte</h1>
+
+<% if user.id == site.route.objet_id %>
+<p>
+  <%= user.pseudo %>, nous sommes navrés d'apprendre que vous voulez détruire votre compte sur <%= site.name %>.
+</p>
+<%
+
+else
+  # On passe ici quand on n'est pas l'user en question et qu'on
+  # ne peut donc pas détruire le compte. Mais on va le laisser faire
+  # histoire de faire croire au hacker qu'il a trouvé une faille.
+  # Au bout du 50e passage, on lui dit ce qu'on en pense.
+
+  nb = if app.session['hacker_variable_kill'].nil?
+    1
+  else
+    app.session['hacker_variable_kill'].to_i
+  end
+  nb += 1
+  app.session['hacker_variable_kill'] = nb.to_s
+
+  if nb > 50
+    
+  end
+%>
+<p>Le compte de l'user #<%= site.route.objet_id %> a été DÉTRUIT avec succès.</p>
+
+<% end %>
