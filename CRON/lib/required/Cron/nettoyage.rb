@@ -13,6 +13,11 @@ class Cron
     #
     nettoyage_log_debug
 
+    # Nettoyage des fichiers de synchronisation
+    # (seulement en local, mais on le fait de façon indicrect)
+    #
+    nettoyage_rapports_synchronisation
+
     # Nettoyage des logs CRON
     #
     nettoyage_logs_cron
@@ -56,6 +61,31 @@ class Cron
       nombre += 1
     end
     safed_log "     = #{nombre} fichiers-log détruits"
+  end
+
+  def self.nettoyage_rapports_synchronisation
+    safed_log "    - Nettoyage des rapports de synchronisation générale"
+    pfolder = File.join(RACINE, 'lib/deep/deeper/module/synchronisation/synchronisation/output')
+    nombre = 0
+    il_y_a_une_heure = Time.now - 3600
+    Dir["#{pfolder}/*.html"].each do |p|
+      begin
+        # Si le fichier a moins d'une heure (c'est peut-être un fichier
+        # courant) on ne le détruit pas, au cas où.
+        next if File.stat(p).mtime > il_y_a_une_heure
+        File.unlink p
+      rescue Exception => e
+        safed_log "    # Problème avec le fichier #{p} : #{e.message}"
+      else
+        nombre += 1
+      end
+    end #/fin de boucle sur tous les fichiers
+  rescue Exception => e
+    safed_log "    # PROBLÈME : #{e.message}"
+    safed_log e.backtrace.join("\n")
+  else
+    safed_log "     = #{nombre} fichiers rapport de synchronisation détruits" +
+              "     = Nettoyage OK"
   end
 
 end #/Cron

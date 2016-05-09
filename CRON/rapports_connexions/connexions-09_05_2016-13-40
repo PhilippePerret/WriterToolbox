@@ -1,0 +1,17 @@
+Rapport des connexions du 2016-05-09 13:40:00 +0200
+<pre style='font-size:9pt'>
+Rapport des connexions du 2016-05-09 13:40:00 +0200
+
+IP                   Nb   Durée Whois                          De       à        Routes
+::1                  19   628   - unknown -                    13:19:13 13:29:41     6
+
+=== ROUTES PAR IPS ===
+::1
+	- admin/console
+	- user/signin
+	- user/login
+	- site/home
+	- admin/dashboard
+	- admin/sync
+</pre><p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
