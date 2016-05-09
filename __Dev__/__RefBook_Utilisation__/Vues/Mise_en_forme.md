@@ -1,12 +1,13 @@
 # Mise en forme des vues
 
 * [Mise en forme de TEXTE](#misteenformedetexte)
-  * [Différentes mises en forme fréquentes](#differentesmisesenformeparcss)
+  * [Différentes mises en forme fréquentes (.small, .fleft, etc.)](#differentesmisesenformeparcss)
   * [Espace insécable et constante entre mots](#espaceinsecablentremot)
   * [Messages d'alerte (warning)](#messagedewrarning)
   * [Rendre un texte/élément plus discret](#rendreuntexteplusdiscret)
   * [Style spécial pour l'administrateur](#stylespecialadminonly)
 * [Mise en forme de SECTIONs/DIVs](#miseenformedesectionsdetexte)
+  * [Double colonnes](#doublecolonnes)
   * [Dimensionnement par la classe](#dimensionnementparlaclasse)
   * [Données tabulaires](#donneestabulaires)
 * [Mise en forme des FORMULAIRES](#miseenformedesformulaires)
@@ -112,7 +113,21 @@ Noter que cette discrétion joue sur l'opacité et que le texte sera rendu plus 
 
 ## Mise en forme de section/divisions
 
+<a name='doublecolonnes'></a>
 
+### Double colonnes
+
+On peut mettre l'affichage en double colonnes à l'aide de :
+
+        <div class="double_colonnes">
+          <div class="left_colonne">
+            ...
+          </div>
+          <div class="right_colonne">
+            ...
+          </div>
+        </div>
+        
 <a name='stylespecialadminonly'></a>
 
 ## Style spécial pour l'administrateur

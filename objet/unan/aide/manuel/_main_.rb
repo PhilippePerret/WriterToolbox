@@ -50,14 +50,15 @@ class << self
   #
   def build
 
-    # Au cas où il ne serait pas défini
-    @pdf_name ||= "UAUS_Manuel_Auteur-#{Time.now.year}"
 
     # On indique aux méthodes de lien que la sortie doit
     # se faire en markdown (cela produira des liens que
     # kramdown saura interpréter et mettre en forme pour
     # LaTex)
     lien.output_format = :markdown
+
+    # Au cas où il ne serait pas défini
+    @pdf_name ||= "UAUS_Manuel"
 
     # Si ça n'est pas défini, on fait la version femme du
     # manuel

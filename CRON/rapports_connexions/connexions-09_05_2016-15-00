@@ -1,0 +1,19 @@
+Rapport des connexions du 2016-05-09 15:00:00 +0200
+<pre style='font-size:9pt'>
+Rapport des connexions du 2016-05-09 15:00:00 +0200
+
+IP                   Nb   Durée Whois                          De       à        Routes
+::1                  18   1231  Phil (en local)                14:36:18 14:56:49     4
+                     3    559   - unknown -                    14:49:19 14:58:38     1
+
+=== ROUTES PAR IPS ===
+::1
+	- unan_admin/dashboard
+	- unan/home
+	- overview/home?in=unan/aide
+	- aide/home?in=unan
+
+
+	- site/home
+</pre><p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
