@@ -22,3 +22,5 @@
 [preferences]:      #preferences-auteur                 "Les préférences de l'auteur"
 [jour-programme]:   #explicationjourprogrammejourreel   "Explication sur ce qu'est un jour-programme"
 [jours-programme]:  #explicationjourprogrammejourreel   "Explication sur ce qu'est un jour-programme"
+[nombre de points]: #explication-nombre-points          "Explication du nombre de points"
+[points]:           #explication-nombre-points          "Explication du nombre de points"

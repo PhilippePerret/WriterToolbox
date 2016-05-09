@@ -11,12 +11,13 @@
   - presentation
   - premiers_pas
   - rythme
-  - mail_quotidien
+  - points
   - vision_densemble
 
 15_quotidien:
   - introduction
   - pastille_taches
+  - mail_quotidien
 
 25_bureau:
   - introduction

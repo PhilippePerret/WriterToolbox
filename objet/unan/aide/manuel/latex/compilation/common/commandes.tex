@@ -1,5 +1,8 @@
 % Commandes communes
 
+% Définition du dossier où se trouvent les images
+\graphicspath{{../../img/}}
+
 % Pour ajouter le plus simplement du monde une image
 % @syntaxe
 %   \image{path/to/image}
@@ -10,4 +13,11 @@
 % caractères spéciaux.
 % Le fait de NE PAS METTRE D'EXTENSION permet de choisir le
 % meilleur format (jpg, ps, btm, etc.)
-\newcommand{\image}[1]{\includegraphics{../../img/#1}}
+\newcommand{\image}[2][scale=1]{\includegraphics[#1]{#2}}
+
+% Pour une image centrée dans la page
+\newcommand{\imagecenter}[2][1]{%
+\begin{center}
+  \image[#1]{#2}
+\end{center}%
+}

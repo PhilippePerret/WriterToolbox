@@ -140,10 +140,12 @@ class ::String
     # on protège les accolades et les backslaches qui
     # correspondent à des commandes (\commande{...})
     if output_format == :latex
-      code.gsub!(/\\([a-zA-Z\*]+?)\{(.*?)\}/){
-        commande  = $1.freeze
-        arguments = $2.freeze
-        "PROTECTEDBACKSLASHES#{commande}ACCO--#{arguments}--OCCA"
+      code.gsub!(/\\([a-zA-Z\*]+?)(?:\[(.+?)\])?\{(.*?)\}/){
+        commande    = $1.freeze
+        parameters  = $2.freeze
+        arguments   = $3.freeze
+        parameters = parameters.nil? ? "" : "PARS--#{parameters}--SRAP"
+        "PROTECTEDBACKSLASHES#{commande}#{parameters}ACCO--#{arguments}--OCCA"
       }
     end
 
@@ -160,7 +162,8 @@ class ::String
     if output_format == :latex
       code_final = code_final.
           gsub(/PROTECTEDBACKSLASHES/, "\\").
-          gsub(/ACCO--/,'{').gsub(/--OCCA/,'}')
+          gsub(/ACCO--/,'{').gsub(/--OCCA/,'}').
+          gsub(/PARS--/,'[').gsub(/--SRAP/,']')
     end
     code_final.gsub!(/PERStag(.+?)gatSREP/,'<personnage>\1</personnage>')
 

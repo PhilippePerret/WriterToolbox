@@ -1,4 +1,4 @@
-SAFED LOG DU 09 05 2016 - 11:10
+SAFED LOG DU 09 05 2016 - 13:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -49,21 +49,25 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-09 11:10:01 +0200
+Titre : Rapport des connexions du 2016-05-09 13:00:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-09 11:10:01 +0200
+Rapport des connexions du 2016-05-09 13:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  3    388   - unknown -                    11:02:08 11:08:36     1
+                     4    335   - unknown -                    12:09:48 12:15:23     1
+::1                  4    43    - unknown -                    12:17:33 12:18:16     1
 
 === ROUTES PAR IPS ===
+
+	- site/home
+
 ::1
 	- admin/console
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
-			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-09_05_2016-11-10
+			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-09_05_2016-13-00
 			/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `initialize'
 /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `open'
 /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `consigne_report'
@@ -105,4 +109,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (09 05 2016 - 11:10) ---
+--- FIN DU SAFED LOG (09 05 2016 - 13:00) ---

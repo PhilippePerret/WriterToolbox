@@ -298,13 +298,16 @@ class << self
   end
   # {SuperFile} Table des matières
   # Le fichier peut s'appeler tdm.yaml, _tdm_.yaml ou avec des
-  # capitales.
+  # capitales et se trouver soit à la racine du dossier du
+  # livre à construire soit dans le dossier des sources markdown
   def tdm_file
     @tdm_file ||= begin
       p = nil
       ["tdm", "TDM", "_tdm_", "_TDM_"].each do |affixe|
-        p = folder + "#{affixe}.yaml"
-        break if p.exist?
+        [folder, folder_markdown].each do |dossier|
+          p = dossier + "#{affixe}.yaml"
+          break if p.exist?
+        end
       end
       p
     end
