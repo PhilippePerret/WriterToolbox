@@ -17,7 +17,7 @@ class User
     end
   end
   # ID du programme de l'user
-  # Noter que ça ne fonctionne comme habituellement : ici, la
+  # Noter que ça ne fonctionne pas comme habituellement : ici, la
   # propriété ne permettra pas de définir l'instance, c'est au
   # contraire l'instance (program ci-dessus) qui permet de
   # définir la propriété.
@@ -26,6 +26,12 @@ class User
   # servira aussi pour les tables personnelles à construire sans
   # que le programme doive être chargé.
   def program_id; @program_id ||= program.id end
+  # Utile après la modification importante d'un user, par exemple
+  # l'abandon ou la fin de son programme
+  def reset_program
+    @program    = nil
+    @program_id = nil
+  end
 
   # Données de la table `variables`
   def travaux_ids=        arr_ids; set_var :travaux => arr_ids end

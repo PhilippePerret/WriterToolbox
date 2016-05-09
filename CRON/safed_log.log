@@ -1,6 +1,8 @@
-SAFED LOG DU 09 05 2016 - 16:05
+SAFED LOG DU 09 05 2016 - 18:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
-RACINE : /Users/philippeperret/Sites/WriterToolbox-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
+RACINE : /Users/philippeperret/Sites/WriterToolbox
+
+-> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
 - Require log.rb
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
@@ -27,11 +29,11 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Nettoyage des lieux
     - Nettoyage des vieux rapports de connexion
-    = OK (0 destructions)
+    = OK (2 destructions)
     - Nettoyage du debug.log
     = OK
     - Nettoyage des rapports de synchronisation générale
-     = 0 fichiers rapport de synchronisation détruits     = Nettoyage OK
+     = 1 fichiers rapport de synchronisation détruits     = Nettoyage OK
     - Nettoyage des logs cron (un an un script)
      = 1 fichiers-log détruits
 
@@ -51,19 +53,17 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-09 16:05:00 +0200
+Titre : Rapport des connexions du 2016-05-09 18:00:00 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-09 16:05:00 +0200
+Rapport des connexions du 2016-05-09 18:00:00 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  3    95    Phil (en local)                16:02:50 16:04:25     3
+::1                  47   3241  Phil (en local)                17:00:23 17:54:24     1
 
 === ROUTES PAR IPS ===
 ::1
-	- abs_pday/cal?in=unan/program
-	- site/open_file
-	- admin/console
+	- program/stop?in=unan
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
@@ -99,4 +99,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (09 05 2016 - 16:05) ---
+--- FIN DU SAFED LOG (09 05 2016 - 18:00) ---

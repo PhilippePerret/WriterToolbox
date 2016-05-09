@@ -22,5 +22,14 @@ class Program
   # Pour ERB
   def bind; binding() end
 
+  # Procédure d'abandon du programme
+  def abandonne
+    opts    = options.split('')
+    opts[2] = 1
+    set(options: opts.join(''))
+    user.reset_program
+  end
+
+
 end #/Program
 end #/Unan

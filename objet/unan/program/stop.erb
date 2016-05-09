@@ -1,0 +1,47 @@
+<%= Unan::titre_h1("Abandonner le programme") %>
+<%
+raise_unless( user.admin? || user.unanunscript? )
+%>
+<p>
+  <%= user.pseudo %>, nous sommes vraiment désolés d'apprendre que vous voulez renoncer au programme UN AN UN SCRIPT.
+</p>
+<p class='small'>
+  Pour confirmer votre abandon, veuillez cliquer sur le bouton de confirmation ci-dessous.
+</p>
+<p>
+  Noter que l'abandon de ce programme fera disparaitre toute votre inscription, c'est-à-dire vos points, les réponses à vos questionnaires de validation, les informations sur votre projet, etc. Cette suppression sera du reste <em>définitive</em>, <strong>il sera impossible de revenir en arrière</strong>.
+</p>
+<form action="program/stop" method="POST">
+  <%= "unan".in_hidden(name:'in') %>
+  <%= "kill".in_hidden(name:'killing[operation]') %>
+  <%= "1".in_hidden(name:'killing[confirmation_kill]') %>
+  <%
+  # Un listing pour définir les raisons de l'abandon
+  %>
+  <p class='small center'>
+    <span>Merci d'indiquer la principale raison de votre abandon :</span>
+    <%= Unan::Program::menu_raison_abandon %>
+  </p>
+
+  <%
+  # Un champ pour définir des raisons textuelles
+  %>
+  <p class='mg10pc'>
+    <span class='libelle small'>Raisons détaillées</span><br>
+    <textarea name="killing[raison_detailed]" id="killing_raison_detailed" class='small' rows="4" style="width:100%" placeholder="Pour compléter la réponse ci-dessus, pourriez-vous indiquer ici les raisons plus précises de votre abandon ?"></textarea>
+  </p>
+  <p class='mg10pc'>
+    <span class='libelle small'>Suggestions</span><br>
+    <textarea name="killing[suggestions]" id="killing_suggestions" rows="4" style="width:100%" class='small' placeholder="Si vous avez DES SUGGESTIONS pour améliorer ce programme, n'hésitez surtout pas à les soumettre ici !"></textarea>
+  </p>
+  <p class='center'>
+    <%= "Je confirme mon abandon".in_submit(class:'warning btn big red') %>
+  </p>
+  <% if user.program.current_pday < 11 %>
+    <div class='small mg25pc justify'>
+      <%= "Remboursement de l'inscription".in_checkbox(name:'killing[remboursement]', id:'killing_remboursement').in_div %>
+      Notez que puisque vous êtes dans vos 10 premiers jours de programme, vous pouvez encore demander le remboursement partielle de votre inscription. Il vous suffit pour cela de cocher la case ci-dessus.
+    </div>
+  <% end %>
+
+</form>

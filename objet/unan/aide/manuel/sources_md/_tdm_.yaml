@@ -13,6 +13,7 @@
   - rythme
   - points
   - vision_densemble
+  - arreter
 
 15_quotidien:
   - introduction
@@ -26,7 +27,7 @@
 40_travaux:
   - introduction
   - types
-  
+
 80_langage:
   - introduction
   - jour_programme

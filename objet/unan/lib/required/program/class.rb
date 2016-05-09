@@ -23,7 +23,7 @@ class Program
         # debug "auteur_id est nil, get_current_program_of return nil"
         return nil
       end
-      hdata = Unan::table_programs.select(where:"auteur_id = #{auteur_id} AND options LIKE '1%'", colonnes:[:id]).values.first
+      hdata = Unan::table_programs.select(where:"(auteur_id = #{auteur_id}) AND (options LIKE '1%') AND (options NOT LIKE '1_1%')", colonnes:[:id]).values.first
       if hdata.nil? # Aucun programme trouvé
         # debug "hdata est nil, get_current_program_of return NIL"
         return nil

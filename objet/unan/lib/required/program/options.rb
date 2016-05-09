@@ -18,6 +18,10 @@ class Program
   def pause     ; @pause ||= options[1].to_i end
   def pause?    ; pause == 1 end
 
+  # BIT 3 (index 2) ABANDON (0: pas abandonné)
+  def abandon   ; @abandon ||= options[2].to_i end
+  def abandon?  ; abandon == 1 end
+
 
 end #/Program
 end #/Unan

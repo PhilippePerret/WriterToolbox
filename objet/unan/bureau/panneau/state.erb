@@ -42,3 +42,6 @@
     <span class="value"><%= user.program.current_pday_humain %>, reste <%= user.program.nombre_pdays_restants(:human) %></span>
   </div>
 </div>
+<div class="air right">
+  <%= "Abandonner le programme".in_a(class:'discret btn small warning', href:"program/stop?in=unan&conf=0") %>
+</div>
