@@ -14,4 +14,7 @@ Puis-je soumettre mon travail à quelqu'un ?
 Peut-on contacter d'autres auteurs du programme ?
 : Tout à fait ! À partir du moment où ils ont réglé leurs \preferences{} pour permettre d'être contacté par d'autres auteurs du programme.
 
+Où peut-on joindre Philippe Perret ?
+: Vous pouvez le joindre en utilisant son mail : \mailphil{phil@laboiteaoutilsdelauteur.fr} ou en passant par l'\mailadmin{administration}.
+
 ^

@@ -24,6 +24,15 @@ class Unan
 class UManuel
 class << self
 
+  # Le dossier où doivent se trouver les scripts latex, biber et
+  # compagnie.
+  TEXLIVE_FOLDER = "/usr/local/texlive/2015/bin/x86_64-darwin/"
+
+  # Le nom final du fichier PDF
+  # Pour le régler :
+  #   Unan::UManuel::pdf_name = "le-nom"
+  attr_accessor :pdf_name
+
   # Soit true/false pour faire la version homme ou femme
   # du manuel ou :both pour sortir les deux versions d'un
   # seul coup.
@@ -34,6 +43,9 @@ class << self
   # Méthode principale de construction du manuel
   #
   def build
+
+    # Au cas où il ne serait pas défini
+    @pdf_name ||= "UAUS_Manuel_Auteur-#{Time.now.year}"
 
     # On indique aux méthodes de lien que la sortie doit
     # se faire en markdown (cela produira des liens que
@@ -50,6 +62,11 @@ class << self
     # On nettoie les fichiers auxiliaire du dossier LaTex pour
     # être sûr de repartir à zéro
     nettoie_fichiers_auxiliaires
+
+    # On construit le fichier des assets inclus (un fichier
+    # qui va charger tous les fichiers du dossier latex/assets)
+    # dans le fichier principal
+    build_file_inclusions_assets
 
     # On construit le fichier all_sources en transposant
     # tous les fichiers sources en LaTex
@@ -93,16 +110,44 @@ class << self
         `open "#{manuel_pdf.to_s}"`
       else
         # Le fichier PDF n'existe pas, c'est qu'il y a eu un problème,
-        # on affiche le fichier log
-        STDOUT.write (folder_latex + "#{affixe}.log").read
+        # on affiche le fichier log en sortie standard
+        STDOUT.write (folder_compilation + "_main_.log").read
         raise "Impossible de construire le PDF… Consulter le log"
       end
 
     end # /fin boucle sur chaque version (homme/femme/les deux)
   end
 
+  # Commandes pour les inclusions des fichiers assets propre
+  # au livre courant.
+  # Ces fichiers se trouvent dans ./latex/assets
+  # Noter que tous ces fichiers seront copiés dans le dossier
+  # ./latex/compilation/assets pour ne pas ajouter de fichiers
+  # auxiliaire ici et aussi pour que l'application puisse le
+  # faire tout simplement (histoire de droits)
+  def build_file_inclusions_assets
+    p = folder_compilation+"assets/propres.tex"
+    paux = folder_compilation+"assets/propres.aux"
+    p.remove if p.exist?
+    paux.remove if paux.exist?
+    includes = Array::new
+    Dir["#{folder_assets}/**/*.tex"].collect do |p|
+      relpath = p.sub(/^#{Regexp::escape folder_assets.to_s}\//o,'')
+      # On copie le fichier dans le dossier compilation/asset
+      dest_path = folder_compilation+"assets/#{relpath}"
+      dest_path.remove if dest_path.exist?
+      FileUtils::cp p, dest_path.to_s
+      # Si c'est la couverture, c'est plus tard qu'elle doit être
+      # inclusion, quand on sera déjà dans le begin{document}
+      next if File.basename(p) == "cover.tex"
+      # Sinon, pour un autre fichier, on l'inclut
+      relpath = relpath[0..-5]
+      includes << "\\input{assets/#{relpath}}"
+    end
+    p.write includes.join("\n")
+  end
   def build_file_definition_sexe_lecteur
-    p = folder_assets+"define_version_sexuee.tex"
+    p = folder_compilation+"assets/define_version_sexuee.tex"
     p.write <<-TEX
 % === Définition de la verion homme/femme ===
 \\newboolean{pourfille}
@@ -182,62 +227,63 @@ class << self
   # être certain de repartir à zéro et de tout refaire
   def nettoie_fichiers_auxiliaires
     return if false == folder_latex.exist?
-    Dir["#{folder_latex}/**/*.aux"].each do |paux|
+    Dir["#{folder_compilation}/**/*.aux"].each do |paux|
       File.unlink paux
     end
   end
 
   # Le fichier LaTex est prêt, on peut le compiler
   def compile_manuel_utilisateur
-    Dir.chdir("#{folder_latex}") do
-      suivre_exec "latex #{affixe}.tex"
-      suivre_exec "biber #{affixe}.tex"
-      suivre_exec "latex #{affixe}.tex"
-      suivre_exec "makeindex #{affixe}.idx"
-      suivre_exec "pdflatex #{affixe}.tex"
-      suivre_exec "pdflatex #{affixe}.tex"
-      # suivre_exec "dvips #{maintex_affixe}.dvi"
+    Dir.chdir("#{folder_compilation}") do
+      suivre_exec "latex _main_.tex"
+      suivre_exec "biber _main_.tex"
+      suivre_exec "latex _main_.tex"
+      suivre_exec "makeindex _main_.idx"
+      suivre_exec "pdflatex _main_.tex"
+      suivre_exec "pdflatex _main_.tex"
+      # suivre_exec "dvips _main_.dvi"
     end
   end
 
   # Méthode qui réceptionne le retour d'une compilation
   # en ligne de commande
   def suivre_exec command
-    res = `#{texlive_folder}#{command} 2>&1`.force_encoding('utf-8')
+    res = `#{TEXLIVE_FOLDER}#{command} 2>&1`.force_encoding('utf-8')
     debug "Commande exécutée : #{command}"
     debug "Résultat commande : #{res}"
-  end
-  # Le dossier où doivent se trouver les scripts latex, biber et
-  # compagnie.
-  def texlive_folder
-    "/usr/local/texlive/2015/bin/x86_64-darwin/"
   end
 
   # ---------------------------------------------------------------------
   #   Méthodes de path
   # ---------------------------------------------------------------------
   def affixe
-    @affixe ||= "UAUS_Manuel_auteur"
+    @affixe ||= "_main_"
   end
   # Le fichier qui rassemble toutes les sources (c'est celui-là qu'il
   # faut updater chaque fois)
   def all_sources_file
-    @all_sources_file ||= folder_latex + "all_sources.tex"
+    @all_sources_file ||= folder_compilation + "all_sources.tex"
   end
   def manuel_pdf
-    @manuel_pdf ||= folder + "#{affixe}_v#{version_femme ? 'F' : 'H'}.pdf"
+    @manuel_pdf ||= folder + "#{pdf_name}_v#{version_femme ? 'F' : 'H'}.pdf"
   end
   def manuel_pdf_in_latex
-    @manuel_pdf_in_latex ||= folder_latex + "#{affixe}.pdf"
+    @manuel_pdf_in_latex ||= folder_compilation + "_main_.pdf"
   end
   def manuel_latex
-    @manuel_latex ||= folder_latex + "#{affixe}.tex"
+    @manuel_latex ||= folder_compilation + "#{affixe}.tex"
   end
   def folder_markdown
     @folder_markdown ||= folder + "sources_md"
   end
+  def folder_assets_compilation
+    @folder_assets_compilation ||= folder_compilation+"assets"
+  end
   def folder_assets
     @folder_assets ||= folder_latex+"assets"
+  end
+  def folder_compilation
+    @folder_compilation ||= folder_latex+"compilation"
   end
   def folder_latex
     @folder_latex ||= folder + "latex"
