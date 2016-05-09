@@ -212,7 +212,7 @@ class << self
       # Nom du fichier Markdown (juste pour info)
       nfile   = File.basename(pathmd)
       # Le path du fichier Latex qu'on va fabriquer
-      path_latex = folder_latex + "sources/#{relpath}.tex"
+      path_latex = folder_compilation + "sources/#{relpath}.tex"
       # Le dossier du fichier latex
       doslatex = File.expand_path(File.dirname(path_latex))
       # On crée la hiérarchie de dossier si nécessaire
@@ -242,8 +242,10 @@ class << self
   def compile_manuel_utilisateur
     Dir.chdir("#{folder_compilation}") do
       suivre_exec "latex _main_.tex"
+      # suivre_exec "pdflatex _main_.tex"
       suivre_exec "biber _main_.tex"
       suivre_exec "latex _main_.tex"
+      # suivre_exec "pdflatex _main_.tex"
       suivre_exec "makeindex _main_.idx"
       suivre_exec "pdflatex _main_.tex"
       suivre_exec "pdflatex _main_.tex"

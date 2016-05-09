@@ -16,6 +16,8 @@
     [autre texte pour le lien][un texte identifiant]
 
   -->
+[bureau de travail]:    #bureau                         "Votre bureau de travail"
+[bureau]:               #bureau                         "Votre bureau de travail"
 [préférences]:      #preferences-auteur                 "Les préférences de l'auteur"
 [preferences]:      #preferences-auteur                 "Les préférences de l'auteur"
 [jour-programme]:   #explicationjourprogrammejourreel   "Explication sur ce qu'est un jour-programme"

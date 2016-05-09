@@ -17,7 +17,8 @@
 \contentsline {subsection}{\numberline {2.5.2}Mail seulement si nouveaux travaux}{8}{subsection.2.5.2}
 \contentsline {section}{\numberline {2.6}Vision d'ensemble du programme}{8}{section.2.6}
 \contentsline {chapter}{\numberline {3}Le programme au quotidien}{9}{chapter.3}
-\contentsline {section}{\numberline {3.1}Introduction}{9}{section.3.1}
+\contentsline {section}{\numberline {3.1}La \IeC {\textquotedblleft }pastille de t\IeC {\^a}ches\IeC {\textquotedblright }}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Introduction}{10}{section.3.2}
 \contentsline {chapter}{\numberline {4}Pr\IeC {\'e}f\IeC {\'e}rences}{11}{chapter.4}
 \contentsline {section}{\numberline {4.1}R\IeC {\'e}glage de vos pr\IeC {\'e}f\IeC {\'e}rences}{11}{section.4.1}
 \contentsline {subsection}{\numberline {4.1.1}R\IeC {\'e}gler le rythme du programme}{11}{subsection.4.1.1}

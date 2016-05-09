@@ -34,8 +34,8 @@
   :milieu:  "Bravo %{pseudo}, nous sommes déjà bien avancés dans le programme mais vous êtes à jour de vos travaux."
   :fin:     "Excellent,  %{pseudo} ! Vous tenez merveilleusement bien le rythme !"
 1:
-  :commun:  &commes_1 "Quelques petits retards sans conséquence ne sont jamais trop dommages."
-  :debut:   *commes_1
+  :commun:  &commes_1 "Quelques petits retards sans conséquence ne sont jamais trop dommageables."
+  :debut:   "Quelques petits retards sans conséquence ne sont jamais trop dommageables. Attention néanmoins à ne pas prendre de mauvaises habitues."
   :milieu:  *commes_1
   :fin:     *commes_1
 2:

@@ -4,8 +4,9 @@ Méthodes de customisation des messages
 =end
 class SiteHtml
 
+  # Path du dossier qui contient ce module
   def folder_module_mail
-    @folder_module_mail ||= site.folder_lib_optional + 'Site/mail'
+    @folder_module_mail ||= site.folder_deeper_module + 'mail'
   end
 
 class Mail

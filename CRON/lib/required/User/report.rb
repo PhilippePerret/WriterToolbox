@@ -127,9 +127,9 @@ class UAUSReport
   def avertissements_serieux
     return "" if nombre_avertissements_serieux == 0
     s = nombre_avertissements_serieux > 1 ? 's' : ''
-    c = "Attention, #{pseudo} vous avez #{nombre_avertissements_serieux} avertissement#{s} sérieux à prendre en compte"
+    c = "Attention, #{pseudo} vous avez #{nombre_avertissements_serieux} alerte#{s} sérieuse#{s} à prendre en compte"
     s = nombre_avertissements_mineurs > 1 ? 's' : ''
-    c = " (et #{nombre_avertissements_mineurs} avertissement#{s} mineur#{s})."
+    c = " (et #{nombre_avertissements_mineurs} alerte#{s} mineure#{s})."
     c.in_div(class:'warning air')
   end
   # Retourne le code pour les avertissements mineurs.
@@ -138,7 +138,7 @@ class UAUSReport
     return "" if nombre_avertissements_serieux > 0 || nombre_avertissements_mineurs == 0
     safed_log "nombre_avertissements_mineurs : #{nombre_avertissements_mineurs.inspect}::#{nombre_avertissements_mineurs.class}"
     s = nombre_avertissements_mineurs > 1 ? 's' : ''
-    "Notez, #{pseudo}, que vous avez #{nombre_avertissements_mineurs} avertissement#{s} mineur#{s}.".in_span(class:'warning')
+    "Notez, #{pseudo}, que vous avez #{nombre_avertissements_mineurs} alerte#{s} mineure#{s}.".in_span(class:'warning')
   end
 
   def nombre_avertissements

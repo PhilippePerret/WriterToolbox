@@ -1,5 +1,6 @@
-## Introduction {#introduction-bureau}
+# Le bureau de travail {#bureau}
 
+## Introduction {#introduction-bureau}
 
 Le **bureau de travail** est le centre névralgique des opérations d'un auteur inscrit au programme \unan{} sur le site \boa{}.
 

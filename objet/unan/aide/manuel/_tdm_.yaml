@@ -16,6 +16,8 @@
 
 15_quotidien:
   - introduction
+  - pastille_taches
+
 25_bureau:
   - introduction
   - preferences

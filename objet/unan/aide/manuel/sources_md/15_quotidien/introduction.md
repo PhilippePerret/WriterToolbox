@@ -1,6 +1,8 @@
 # Le programme au quotidien {#programme-quotidien}
 
-La journée d'un\fem{e} auteur\fem{e} suivant le programme \unan{} commence généralement par la *réception d'un mail* indiquant le travail à accomplir dans  la journée.
+## Introduction
+
+La journée d'un\fem{e} auteur\fem{e} qui suit le programme \unan{} commence généralement, après un bon café ou un thé, par la *réception d'un mail* indiquant le travail à accomplir dans  la journée.
 
 Noter que ce mail peut n'être envoyé qu'aux changements de travaux si les [préférences][] sont réglées dans ce sens. Nous y reviendrons.
 
