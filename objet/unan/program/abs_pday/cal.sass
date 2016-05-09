@@ -29,13 +29,13 @@ div#calendrier_abspday
         border            : 1px solid #828282
         height            : 8px
         position          : relative
-        width             : calc(364*2px + 2px)
+        width             : calc(366*2px + 2px)
         span
           display           : inline-block
           position          : absolute
           height            : calc(100%)
           background-color  : #00F
-        
+
   // Le span contenant le libellé de l'étape, l'intitulé
   // Noter qu'il ne se trouve pas dans le div.dmap, pour pouvoir
   // ne pas être sujet à l'opacité faible
@@ -81,6 +81,7 @@ div#calendrier_abspday
     width               : 48px
     height              : 28px
     margin              : 1px
+    text-align          : center
     span.numday
       font-size       : 10pt
       vertical-align  : top
@@ -88,14 +89,14 @@ div#calendrier_abspday
   // Marque des semaines
   // Noter qu'il ne s'agit pas d'un div contenant les jours, mais un
   // div posé en valeurs absolues sous les jours
-  // Ses widths et heights sont calculés en fonction des dimensions 
+  // Ses widths et heights sont calculés en fonction des dimensions
   // données aux jours.
   div.week
     z-index           : -1
     background-color  : #CCFBD1
     position          : absolute
     height            : 30px
-  
+
   // border          : 2px solid #999
   // margin          : 2em 0
   // div.row

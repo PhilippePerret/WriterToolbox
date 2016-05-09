@@ -14,11 +14,11 @@ NOTE : CE SYSTEME EST INSTALLÉ MAIS IL N'EST PAS VRAIMENT UTILISÉ.
 
 ## Présentation du principe général
 
-`days_overview` est une donnée d'une instance `Unan::Program` (un programme “Un An Un Script”) qui permet d'avoir un aperçu général de chacun des 364 (365) jours de travail du programme suivi par un auteur.
+`days_overview` est une donnée d'une instance `Unan::Program` (un programme “Un An Un Script”) qui permet d'avoir un aperçu général de chacun des 365 (366) jours de travail du programme suivi par un auteur.
 
 Chaque jour est représenté par un nombre sur deux caractères, en base 32, donc des valeurs de "00" à "vv" (de 0 à 1023 en décimal).
 
-Il y a donc 365 x 2 caractères (730) dans la valeur de `days_overview`.
+Il y a donc 366 x 2 caractères (732) dans la valeur de `days_overview`.
 
 En binaire, chaque "valeur-jour" (les 2 caractères du jour) contient 10 bits :
 

@@ -114,6 +114,11 @@ class PDayMap
       end.join
     end
 
+    # Trace des jours-programme
+    # Si le rythme est de 5 (moyen), un jour-programme est égal à
+    # un jour réel, donc aucun problème. Sinon, il faut compter
+    # le vrai jour réel (ce sont les jours réels qu'on doit
+    # afficher ici)
     def trace_pdays
       ijour = 0
       # Chaque rangée de quinzaine
@@ -122,9 +127,34 @@ class PDayMap
         # Chaque quinzaine
         (0..13).collect do |iday|
           left = iday * DAY_WIDTH
-          "#{ijour += 1}".in_span(class:'numday').in_span(class:'day', style:"left:#{left}px;top:#{top}px;")
+          "#{day_real_for(ijour += 1)}".in_span(class:'numday').in_span(class:'day', style:"left:#{left}px;top:#{top}px;")
         end.join
       end.join
+    end
+
+    # Retourne le vrai jour (jour réel) du jour-programme +jp+ en
+    # fonction du rythme choisi par le menu.
+    #
+    # Principe : pour obtenir une marque assez juste, on calcule en
+    # heure puis on transpose la valeur.
+    def day_real_for jp
+      @coefficient_duree ||= 5.0 / current_rythme
+      hjr = ((jp * 24).to_f * @coefficient_duree).to_i # => nombre d'heures
+      nombre_jours = hjr / 24
+      nombre_hours = hjr % 24
+      case true
+      when nombre_hours == 0 then return nombre_jours
+      when nombre_hours.between?(0, 6)  then "#{nombre_jours}&frac14;"
+      when nombre_hours.between?(6,12)  then "#{nombre_jours}&frac12;"
+      when nombre_hours.between?(12,16) then "#{nombre_jours}&frac34;"
+      when nombre_hours.between?(16,24) then "±#{nombre_jours}"
+      else
+        error "Impossible de traiter le nombre d'heures #{nombre_hours}"
+      end
+    end
+
+    def current_rythme
+      @current_rythme ||= (param(:rythme) || program.rythme || 5).to_i
     end
 
   end # << self
