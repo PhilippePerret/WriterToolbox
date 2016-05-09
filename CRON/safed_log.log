@@ -1,4 +1,4 @@
-SAFED LOG DU 08 05 2016 - 21:00
+SAFED LOG DU 09 05 2016 - 08:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
 * STEP 1
@@ -29,7 +29,7 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
     - Nettoyage des vieux rapports de connexion
     = OK (0 destructions)
     - Nettoyage du debug.log
-    - Inexistant -
+    = OK
     - Nettoyage des logs cron (un an un script)
      = 1 fichiers-log détruits
 
@@ -49,21 +49,40 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport des connexions du 2016-05-08 21:00:01 +0200
+Titre : Rapport des connexions du 2016-05-09 08:00:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport des connexions du 2016-05-08 21:00:01 +0200
+Rapport des connexions du 2016-05-09 08:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-
+                     3    2268  - unknown -                    07:04:39 07:42:27     1
+::1                  8    102   - unknown -                    07:06:09 07:07:51     5
 
 === ROUTES PAR IPS ===
 
+	- site/home
+
+::1
+	- site/home
+	- user/signin
+	- user/login
+	- unan_admin/dashboard
+	- abs_pday/cal?in=unan/program
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
-			  = Résumé des connexions OK
-			<- SiteHtml::Connexions::resume
+			# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : No such file or directory - /home/boite-a-outils/www/CRON/rapports_connexions/connexions-09_05_2016-08-00
+			/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `initialize'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `open'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:287:in `consigne_report'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Site/connexions.rb:43:in `resume'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:43:in `block in run'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:27:in `chdir'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb:27:in `run'
+/Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb:40:in `<top (required)>'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+/Users/philippeperret/Sites/WriterToolbox/CRON/hour_cron.rb:31:in `<main>'
 
 
 ----------------------------------------------------------------------
@@ -93,4 +112,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (08 05 2016 - 21:00) ---
+--- FIN DU SAFED LOG (09 05 2016 - 08:00) ---

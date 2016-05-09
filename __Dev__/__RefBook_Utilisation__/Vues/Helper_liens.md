@@ -1,6 +1,7 @@
 # Helper de liens
 
 * [Introduction](#introductionhelperliens)
+* [Liens de forme route](#liendeformeroute)
 * [Liens RestSite par défaut](#lienspardefautsrestsite)
 * [Liens propres à l'application](#liensproprealapplication)
 * [Liens pour éditer des fichiers dans un éditeur](#liendeditiondefichier)
@@ -16,6 +17,39 @@ On utilise la class `Lien` (singleton) pour obtenir tous les liens de l'applicat
 Par exemple, pour obtenir un lien vers l'inscription :
 
     Pour vous <%= lien.signup "inscrire" %> sur le site.
+
+<a name='liendeformeroute'></a>
+
+## Liens de forme *route*
+
+@syntaxe
+
+        lien.route <titre>, <route>, <options>
+
+@exemple
+
+        lien.route("Accueil", "site/home", {distant: true})
+
+@produit
+
+*(L'url réelle — laboiteaoutilsdelauteur.fr — a été volontairement raccourcie pour l'exemple)*
+
+        # Si lien.output_format = :html (défaut)
+        # => <a href="http://wwww.boa.fr/site/home"
+                target="_blank">Accueil</a>
+
+        # Si lien.output_format = :markdown
+        # => [Accueil](http://www.boa.fr/site/home){:target="_blank"}
+
+        # Si lien.output_format = :latex
+        # (pour le moment)
+        # => "Accueil"
+
+La méthode est souple et peut s'appeler aussi avec :
+
+        lien.route <route>
+
+        lien.route <route>, <options>
 
 <a name='lienspardefautsrestsite'></a>
 
@@ -79,7 +113,7 @@ Par défaut, le fichier s'ouvrira dans l'[éditeur par défaut](#choixediteurpar
 Par défaut, le lien aura le titre “Ouvrir”. Pour mettre un titre propre utiliser :
 
     lien.edit_file "path/to/file.erb", {titre: "Mon titre"}
-    
+
 On peut bien sûr ajouter aux `options` toutes les valeurs pour la balise finale.
 
 <a name='choixediteurpardefaut'></a>

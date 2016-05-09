@@ -25,7 +25,8 @@ class UManuel
 class << self
 
   # Soit true/false pour faire la version homme ou femme
-  # du manuel
+  # du manuel ou :both pour sortir les deux versions d'un
+  # seul coup.
   attr_accessor :version_femme
 
   # = main =
@@ -33,6 +34,12 @@ class << self
   # Méthode principale de construction du manuel
   #
   def build
+
+    # On indique aux méthodes de lien que la sortie doit
+    # se faire en markdown (cela produira des liens que
+    # kramdown saura interpréter et mettre en forme pour
+    # LaTex)
+    lien.output_format = :markdown
 
     # Si ça n'est pas défini, on fait la version femme du
     # manuel
@@ -44,37 +51,63 @@ class << self
     # être sûr de repartir à zéro
     nettoie_fichiers_auxiliaires
 
-    # On détruit le fichier PDF s'il existe, pour être sûr
-    # d'avoir une nouvelle version
-    manuel_pdf.remove if manuel_pdf.exist?
+    # On construit le fichier all_sources en transposant
+    # tous les fichiers sources en LaTex
+    build_all_sources_file
 
-    # On définit le fichier de version sexuée pour
-    # définir s'il faudra faire la version homme ou femme
-    # du manuel
+    # On définit les versions qu'il faut faire (version_femme)
+    # La valeur de `version_femme` peut être :
+    #   - true      => Sortir la version femme
+    #   - false     => Sortir la version homme
+    #   - :both     => Sortir les deux versions
+    versions = if version_femme === true
+      [true]
+    elsif version_femme === false
+      [false]
+    else
+      [true, false]
+    end
+
+    versions.each do |version|
+
+      @version_femme = version
+
+      # Pour forcer le renommage de ce fichier
+      @manuel_pdf = nil
+
+      # On détruit le fichier PDF s'il existe, pour être sûr
+      # d'avoir une version fraiche
+      manuel_pdf.remove if manuel_pdf.exist?
+
+      # On définit le fichier de version sexuée pour
+      # définir s'il faudra faire la version homme ou femme
+      # du manuel
+      build_file_definition_sexe_lecteur
+
+      # On demande la compilation du fichier Latex
+      compile_manuel_utilisateur
+
+      if manuel_pdf_in_latex.exist?
+        # On copie le PDF latex vers le dossier principal
+        FileUtils::cp manuel_pdf_in_latex.to_s, manuel_pdf.to_s
+        `open "#{manuel_pdf.to_s}"`
+      else
+        # Le fichier PDF n'existe pas, c'est qu'il y a eu un problème,
+        # on affiche le fichier log
+        STDOUT.write (folder_latex + "#{affixe}.log").read
+        raise "Impossible de construire le PDF… Consulter le log"
+      end
+
+    end # /fin boucle sur chaque version (homme/femme/les deux)
+  end
+
+  def build_file_definition_sexe_lecteur
     p = folder_assets+"define_version_sexuee.tex"
     p.write <<-TEX
 % === Définition de la verion homme/femme ===
 \\newboolean{pourfille}
 \\setboolean{pourfille}{#{version_femme ? 'true' : 'false'}}
     TEX
-
-    # On construit le fichier all_sources
-    build_all_sources_file
-
-    # On demande la compilation du fichier Latex
-    compile_manuel_utilisateur
-
-    if manuel_pdf_in_latex.exist?
-      # On copie le PDF latex vers le dossier principal
-      FileUtils::cp manuel_pdf_in_latex.to_s, manuel_pdf.to_s
-      `open "#{manuel_pdf.to_s}"`
-    else
-      # Le fichier PDF n'existe pas, c'est qu'il y a eu un problème,
-      # on affiche le fichier log
-      STDOUT.write (folder_latex + "#{affixe}.log").read
-      raise "Impossible de construire le PDF… Consulter le log"
-    end
-
   end
 
   def build_all_sources_file

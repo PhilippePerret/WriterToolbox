@@ -1,8 +1,8 @@
-## Rapide aperçu du programme {#overview}
+## Aperçu rapide du programme {#overview}
 
 Une fois inscrit\fem{e} au programme \unan{}, vous entrez dans un processus de développement de projet et d'apprentissage de la narration. Cet apprentissage vous conduit, en une année-programme, à parachever la deuxième version d'un scénario ou d'un manuscrit et terminer un cycle complet d'enseignement théorique et pratique de la dramaturgie, art de transformer une *histoire* en *récit*.
 
-Dès l'inscription un \bureau{} vous est attribué\fem{e} sur le site \boa{}, qui est votre centre de travail principal. Vous y trouvez tout ce qu'il faut pour suivre votre programme.
+Dès l'inscription un \bureau{} vous est attribué sur le site \boa{}, qui est votre centre de travail principal. Vous y trouvez tout ce qu'il faut pour suivre votre programme.
 
 Quotidiennement — ou suivant vos [préférences][] —, vous recevez un mail vous informant très précisément du travail que vous devez accomplir dans la journée, dans la semaine ou dans les semaines à venir.
 

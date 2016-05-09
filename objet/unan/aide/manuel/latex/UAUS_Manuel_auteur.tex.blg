@@ -1,5 +1,5 @@
 [0] Config.pm:324> INFO - This is Biber 2.1
 [0] Config.pm:327> INFO - Logfile is 'UAUS_Manuel_auteur.tex.blg'
-[68] biber-darwin:276> INFO - === Sun May  8, 2016, 18:51:52
-[69] Utils.pm:162> ERROR - Cannot find control file 'UAUS_Manuel_auteur.tex.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[69] Biber.pm:110> INFO - ERRORS: 1
+[55] biber-darwin:276> INFO - === Mon May  9, 2016, 08:54:31
+[56] Utils.pm:162> ERROR - Cannot find control file 'UAUS_Manuel_auteur.tex.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
+[56] Biber.pm:110> INFO - ERRORS: 1

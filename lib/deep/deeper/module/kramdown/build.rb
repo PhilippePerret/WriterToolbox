@@ -66,8 +66,29 @@ class ::String
     # Si le format de sortie est de l'ERB, il faut protéger les
     # balises ERB sinon, kramdown transformerait les pourcentages en
     # signe pourcentage.
+    # Si le format n'est pas de l'ERB, mais qu'il existe des balises
+    # ERB dans le document (comme dans ma version markdown) alors
+    # il faut évaluer ce code avant de passer à la suite
     if options[:output_format] == :erb
       code = code.gsub(/<\%/,'ERBtag').gsub(/\%>/,'gatBRE')
+    elsif code.match(/<\%/)
+      code = code.gsub(/<\%(= )?(.+?)\%>/){
+        egal = $1.freeze
+        code = $2.strip.freeze
+        begin
+          res = eval(code)
+        rescue Exception => e
+          "# ERREUR EN ÉVALUANT : #{code} : #{e.message}"
+        else
+          if egal != nil
+            res
+          else
+            # Simple évaluation du code (mais pour le moment, je
+            # ne pense pas que ça serve à grand chose…)
+            ""
+          end
+        end
+      }
     end
 
     # Si le code contient "\nDOC/" c'est que des documents sont

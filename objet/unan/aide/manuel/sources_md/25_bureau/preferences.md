@@ -1,6 +1,6 @@
 # Préférences {#preferences-auteur}
 
-Ici vous trouverez toutes les explications concernant vos préférences.
+Cette section décrit toutes vos préférences pour le programme \unan{} et comment les régler.
 
 ## Réglage de vos préférences {#reglage-preferences}
 

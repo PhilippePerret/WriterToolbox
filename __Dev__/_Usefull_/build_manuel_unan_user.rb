@@ -13,7 +13,7 @@ pmodule = "./objet/unan/aide/manuel/_main_.rb"
 require './lib/required'
 begin
   require pmodule
-  Unan::UManuel::version_femme = true
+  Unan::UManuel::version_femme = true # :both
   Unan::UManuel::build
 rescue Exception => e
   puts "# ERREUR : #{e.message}"

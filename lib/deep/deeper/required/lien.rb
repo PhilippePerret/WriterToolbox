@@ -4,6 +4,8 @@ class Lien
 
   # Pour définir le format de sortie général.
   # Utilisé par l'export en LaTex de la collection Narration
+  # Utilisé par la construction du manuel (Markdown) d'utilisation
+  # du programme UN AN UN SCRIPT.
   #
   attr_writer :output_format
   def output_format
@@ -19,16 +21,54 @@ class Lien
   #     ajouter options[:target] = nil pour empêcher ce comportement
   def build route, titre, options
     options ||= Hash::new
+    route = "#{site.distant_url}/#{route}" if options.delete(:distant)
     case output_format
     when :latex
       # TODO améliorer les choses ensuite
       titre
+    when :markdown
+      # En markdown, on a deux solutions : si le titre est fourni,
+      # on retourne un lien complet [titre](liens){... options ....}
+      # Sinon, on ne retourne que l'url, sans les parenthèses
+      if titre == nil
+        route
+      else
+        options = options.collect{|k,v| "{:#{k}=\"#{v}\"}"}.join('')
+        "[#{titre}](#{route})#{options}"
+      end
     else
-      route = "#{site.distant_url}/#{route}" if options.delete(:distant)
       options.merge!(href: route)
       options.merge!(target:'_blank') unless options.has_key?(:target)
       titre.in_a(options)
     end
+  end
+
+  # Similaire à `build` mais avec un nom plus parlant et l'ordre
+  # est celui de Markdown. Les arguments sont également plus
+  # souples :
+  #   - si les deux premiers arguments sont des strings, c'est le
+  #     titre et la route
+  #   - si le second argument est un Hash, le premier est la route,
+  #     c'est-à-dire que le titre n'est pas fourni (on ne veut par
+  #     exemple qu'obtenir un href distant)
+  #   - s'il n'y a qu'un seul argument, c'est la route
+  #
+  # Si lien.output_format est :markdown, et que le titre est défini,
+  # la méthode retourne un texte de la forme "[titre](lien){...options...}"
+  # Sinon, retourne simplement le "lien" sans les parenthèses.
+  # Mettre en options {distant: true} pour obtenir un lien vers le site
+  # distant.
+  def route titre, route = nil, options = nil
+    case true
+    when route.nil? && options.nil? then
+      route = titre.dup.freeze
+      titre = nil
+    when options.nil? && route.instance_of?(Hash)
+      options = route.dup
+      route   = titre.dup.freeze
+      titre   = nil
+    end
+    build route, titre, options
   end
 
   # Lien pour s'inscrire sur le site
