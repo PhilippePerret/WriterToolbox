@@ -99,7 +99,9 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, cr
   def dernieres_analyses_films
     p = './database/data/analyse.db'
     request = request_analyses_film.gsub(/\t/,' ').gsub(/\n/,' ')
-    SQLite3::Database::new(p).execute(request).collect do |dana|
+    res = SQLite3::Database::new(p).execute(request)
+    debug "DERNIÈRES ANALYSES : \n #{res.inspect}"
+    res.collect do |dana|
       fid, film_id, titre, updated_at = dana
       title = "Cliquez ici pour consulter l'analyse du film “#{titre}” produite et achevée par #{analystes_of fid} le #{updated_at.as_human_date(true,false,' ')}"
       titre_film = "#{DOIGT}#{titre}".in_a(href:"analyse/#{fid}/show", target:"_blank", title:title.strip_tags)
