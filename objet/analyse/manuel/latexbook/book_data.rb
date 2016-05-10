@@ -8,3 +8,6 @@ sources `markdown`.
 =end
 livre.pdf_name        = "Manuel_Analyste-#{Time.now.year}"
 livre.sources_folder  = (site.folder_objet+'analyse/manuel/sources_md').to_s
+
+# Pour l'ouvrir après compilation
+livre.open_it = true

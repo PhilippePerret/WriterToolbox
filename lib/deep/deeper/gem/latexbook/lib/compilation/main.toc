@@ -1,0 +1,11 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}R\IeC {\'e}daction d'une analyse}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Pr\IeC {\'e}sentation des analyses MYE}{4}{section.2.1}
+\contentsline {subsubsection}{R\IeC {\'e}alisation d'un fichier de table des mati\IeC {\`e}res}{4}{section*.2}
+\contentsline {section}{\numberline {2.2}Fichier d'introduction de l'analyse}{5}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Cr\IeC {\'e}ation d'une nouvelle analyse}{5}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}1. Collecte}{5}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}2. Analyse objective de la collecte}{6}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}3. Analyse subjective}{6}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.5}4. La le\IeC {\c c}on tir\IeC {\'e}e du film}{6}{subsection.2.2.5}

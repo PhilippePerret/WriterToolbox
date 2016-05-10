@@ -28,7 +28,10 @@ data/analyse/films/etoiles_contraires.htm
 
 data/analyse/films/7pounds.htm
 
-lib/deep/deeper/gem/
+lib/deep/deeper/gem/kramdown-1.7.0/
+lib/deep/deeper/gem/kramdown-1.9.0/
+lib/deep/deeper/gem/redcarpet/
+
 
 lib/deep/deeper/module/synchronisation/synchronisation/output/
 

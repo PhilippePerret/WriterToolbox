@@ -5,12 +5,13 @@ Module pour la construction du manuel PDF
 
 =end
 site.require_gem 'latexbook'
+lien.output_format = :markdown
 ibook = LaTexBook::new((site.folder_objet+"analyse/manuel/latexbook"))
 okbuild = ibook.build
 debug "\n\n#{ibook.suivi}\n\n"
 
 if okbuild == true
-  flash "Manuel analyse construit avec succès."
+  flash ibook.message
 else
-  error "Problème en construisant le manuel (consulter le log)"
+  error ibook.error
 end
