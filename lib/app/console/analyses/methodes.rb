@@ -16,6 +16,12 @@ class Console
     return ""
   end
 
+  def build_manuel_analyste
+    site.require_objet 'analyse'
+    (FilmAnalyse::folder+"manuel/build.rb").require
+    return ""
+  end
+
   def affiche_aide_balise_analyses
     "Ajouter à la commande `(lien|balise) analyse` le titre ou seulement une portion du titre (original ou français) ou de l'identifiant."
     return ""

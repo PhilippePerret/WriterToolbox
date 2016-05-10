@@ -1,0 +1,15 @@
+Rapport OFFLINE des connexions du 2016-05-10 09:00:00 +0200
+<pre style='font-size:9pt'>
+Rapport OFFLINE des connexions du 2016-05-10 09:00:00 +0200
+
+IP                   Nb   Durée Whois                          De       à        Routes
+::1                  10   981   Phil (en local)                08:32:59 08:49:20     4
+
+=== ROUTES PAR IPS ===
+::1
+	- site/home
+	- user/signin
+	- user/login
+	- admin/console
+</pre><p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>

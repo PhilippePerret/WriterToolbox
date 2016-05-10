@@ -255,6 +255,10 @@ analyse:
     implement:      |
       Ajouter les nouvelles aides au fichier '/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/console_aides/analyse.rb'.
   -
+    command:        build manuel analyse(s)
+    description:    Construit le manuel PDF de l'analyste
+    
+  -
     command:        list films
     description:    Affiche le contenu de la table analyse.films.
     note:           Noter qu'il s'agit de la table pour les films analysés, pas la table Filmodico, même si les deux tables sont synchronisés.

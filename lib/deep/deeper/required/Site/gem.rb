@@ -1,5 +1,8 @@
 # encoding: UTF-8
 class SiteHtml
+
+  # Requérir un gem dans le dossier .gems (qui se trouve
+  # hors de la racine du site, en local comme sur alwaysdata)
   def require_gem gem_name, version = nil
     FakeGem::new(gem_name, version).require_gem
   rescue Exception => e

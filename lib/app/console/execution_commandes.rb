@@ -10,7 +10,7 @@ class Console
   def app_execute_as_is line
 
     case line.downcase
-      # FILMODICO
+      # --- FILMODICO ---
     when /liste? films/
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
@@ -65,6 +65,9 @@ class Console
     when /^(inventory|etat des lieux|état des lieux) analyses$/
       redirect_to "admin/dashboard?in=analyse"
       return ""
+    when /^(build|construire) manuel (analyse|analyses|analyste)$/
+      console.require 'analyses'
+      build_manuel_analyste
     when /^fonctionnement analyses$/
       console.require 'analyses'
       affiche_rappel_fonctionnement
