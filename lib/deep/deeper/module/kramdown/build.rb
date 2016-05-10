@@ -112,7 +112,7 @@ class ::String
     # Si une méthode de traitement additionnel existe,
     # il faut lui envoyer le code
     if owner && owner.respond_to?(:formatages_additionnels)
-      code = formatages_additionnels(code, options)
+      code = owner.formatages_additionnels(code, options)
     end
 
     # Traitement extra kramdown

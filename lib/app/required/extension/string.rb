@@ -62,7 +62,7 @@ class ::String
 
         # Soit title est un titre alternatif (qui pourra
         # servir de légende si légende non définie) ou bien
-        # est un indicateur de position de l'image.
+        # c'est un indicateur de position de l'image.
         # Le texte construit retourné
         case title
         when 'inline'
@@ -70,7 +70,12 @@ class ::String
         when 'fright', 'fleft'
           (imgpath.in_img + legend).in_div(class:"image_#{title}")
         else
-          img_tag = "<img src='#{imgpath}' alt='Image: #{title}' />"
+          style, title = if title == 'plain'
+            [" style=\"width:100%\"", ""]
+          else
+            ["", " alt=\"Image : #{title}\""]
+          end
+          img_tag = "<img src='#{imgpath}'#{title}#{style} />"
           "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
         end
       else

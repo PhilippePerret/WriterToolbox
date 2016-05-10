@@ -1,9 +1,9 @@
-Rapport OFFLINE des connexions du 2016-05-10 12:00:00 +0200
+Rapport OFFLINE des connexions du 2016-05-10 15:00:01 +0200
 <pre style='font-size:9pt'>
-Rapport OFFLINE des connexions du 2016-05-10 12:00:00 +0200
+Rapport OFFLINE des connexions du 2016-05-10 15:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  6    2485  Phil (en local)                11:00:31 11:41:56     1
+::1                  13   1023  Phil (en local)                14:29:00 14:46:03     1
 
 === ROUTES PAR IPS ===
 ::1
