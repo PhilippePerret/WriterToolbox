@@ -10,7 +10,9 @@ class Console
   def app_execute_as_is line
 
     case line.downcase
+
       # --- FILMODICO ---
+
     when /liste? films/
       site.require_objet 'analyse'
       FilmAnalyse::films_in_table
@@ -20,14 +22,18 @@ class Console
     when /^(nouveau|new) film$/
       if OFFLINE then "ERROR : seulement en ONLINE"
       else (redirect_to "filmodico/edit"); "" end
+
       # --- SCENODICO ---
+
     when /^(nouveau|new) mot$/
       if OFFLINE then "ERROR : seulement en ONLINE"
       else (redirect_to "scenodico/edit"); "" end
     when /^(état des lieux|etat des lieux|inventory) narration$/
       redirect_to "admin/inventory?in=cnarration"
       return ""
+
       # --- NARRATION ---
+
     when /^narration (sortie|output|export) latex(.*?)$/
       console.require 'narration'
       sortie_latex line.sub(/^narration (sortie|output|export) latex/,'')
@@ -86,6 +92,8 @@ class Console
     when /^unan /
       console.require 'unan_unscript'
       case line.downcase
+      when /^unan (build|construire|construis) manuel auteur(e|s)?$/
+        return unan_build_manuel(line.split(' ').last)
       when "unan points"
         unan_affiche_points_sur_lannee
       when "unan état des lieux", "unan inventory"

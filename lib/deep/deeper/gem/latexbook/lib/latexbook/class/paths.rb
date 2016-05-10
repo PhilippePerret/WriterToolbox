@@ -15,6 +15,10 @@ class << self
     @main_log_file ||= compilation_folder + 'main.log'
   end
 
+  def images_folder
+    @images_folder ||= compilation_folder + 'img'
+  end
+
   # {SuperFile} Fichier all_sources.tex
   def all_sources_tex_file
     @all_sources_tex_file ||= compilation_folder + 'all_sources.tex'

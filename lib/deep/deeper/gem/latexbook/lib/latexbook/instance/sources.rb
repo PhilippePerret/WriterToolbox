@@ -39,6 +39,16 @@ class Source
       end
     end
 
+    def pre_code_markdown
+      @pre_code_markdown ||= begin
+        if book.pre_code_markdown_file.exist?
+          book.pre_code_markdown_file.read + "\n\n"
+        else
+          ""
+        end
+      end
+    end
+
     # Raccourcis
     def book; @book ||= LaTexBook::current end
     def log mess; book.log( mess ) end
@@ -79,7 +89,7 @@ class Source
   #
   def to_source_latex
     log "    -> Markdown vers LaTex"
-    markdown_file.kramdown(output_format: :latex, in_file: latex_file)
+    markdown_file.kramdown(output_format: :latex, in_file: latex_file, pre_code: self.class::pre_code_markdown)
     # Quelques corrections après avoir kramdowné le fichier
     latex_file.corrections_latex
   end

@@ -257,7 +257,7 @@ analyse:
   -
     command:        build manuel analyse(s)
     description:    Construit le manuel PDF de l'analyste
-    
+
   -
     command:        list films
     description:    Affiche le contenu de la table analyse.films.
@@ -297,6 +297,16 @@ unan:
     description: |
       Affiche l'évolution des points sur l'année.
       Doit permettre de régler les différents grades et messages à obtenir.
+  -
+    command:        unan build manuel auteur(e|s)?
+    description:    Produit les manuels pour les auteurs
+    note: |
+      C'est la fin de "auteur" qui détermine ce qu'il faudra produire
+      exactement :<ul>
+      <li>auteur => Manuel pour les hommes,</li>
+      <li>auteure => Manuel pour les femmes,</li>
+      <li>auteurs => Manuel pour les deux sexes.</li>
+      </ul>
   -
     command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
     description:    Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.

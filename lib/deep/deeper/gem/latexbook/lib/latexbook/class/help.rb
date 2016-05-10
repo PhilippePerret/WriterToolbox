@@ -27,6 +27,9 @@ REQUIS :
 FICHIER book_data.rb
   (utiliser la variable `livre` pour définir les données du livre
    ou la variable `book`)
+  (Noter que toutes les données ci-dessous peuvent être transmises
+   par le biais des options envoyées à `build` - ce fichier peut
+   donc ne pas exister si toutes les données sont envoyées.)
 
   # Nom (affixe) du fichier PDF final
   livre.pdf_name        = "nom du fichier pdf SANS EXTENSION"
@@ -44,7 +47,9 @@ FICHIER book_data.rb
   # Si on veut faire une version féminine du livre (il faut pour
   # cela que le code markdown contiennne des commandes LaTex de
   # la forme `\fem{}`)
-  # Faux par défaut
+  # Nil par défaut => nom normal du PDF
+  # Si false => version homme donc "_vH" ajouté au nom
+  # Si true  => version femme donc "_vF" ajouté au nom
   # livre.version_femme = true
 
   # Pour ouvrir le pdf à la fin de la compilation
@@ -57,6 +62,7 @@ DOSSIER DES SOURCES
   - Contient le fichier table des matières qui détermine l'ordre
     d'entrée des fichiers.
     tdm.yaml ou _tdm_.yaml ou TDM.yaml ou _TDM_.yaml
+  - Contient le dossier "img" des images
 
 FICHIER tdm.yaml
   (s'il n'existe pas, les fichiers seront introduit dans l'ordre
@@ -86,12 +92,24 @@ FICHIER tdm.yaml
     # Pour formater correctement les liens
     lien.output_format = :markdown
 
+    # Si on veut redéfinir des choses à la volée
+    options = {
+      version_femme:  true,
+      open_it:        false
+    }
     ibook = LaTexBook::new("path/to/main/folder")
-    if ibook.build
+    if ibook.build(options)
       flash ibook.message
     else
       error ibook.error
     end
+
+### IMAGES
+
+  Les images doivent être mises dans le dossier `img` dans
+  le dossier des sources markdown.
+  Pour les spécifier dans les documents, préciser le path
+  depuis ce dossier "img" (sans indiquer "img")
 </pre>
     CODE
   end

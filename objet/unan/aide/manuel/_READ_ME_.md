@@ -14,12 +14,11 @@
 
 ## Reconstruction du manuel
 
-Pour le moment, il faut lancer la construction du manuel à l'aide du script se trouvant à l'adresse :
+Utiliser la commande console :
 
-        ./__Dev__/_Usefull_/build_manuel_unan_user.rb
+        $> unan build manuel auteur(e|s)?
 
-Utiliser plutôt TextMate.
-
+Si `auteur` => version homme, si `auteure` => version femme, si `auteurs` => version homme et version femme.
 
 <a name='ordredesfichiers'></a>
 

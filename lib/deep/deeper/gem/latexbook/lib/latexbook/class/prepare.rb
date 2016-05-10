@@ -19,6 +19,9 @@ class << self
     log "  * Nettoyage du dossier des assets propres au livre"
     assets_folder.remove if assets_folder.exist?
     assets_folder.build
+    log "  * Nettoyage du dossier des images"
+    images_folder.remove if images_folder.exist?
+    images_folder.build
     log "  * Nettoyage des fichiers auxiliaires"
     nettoie_fichiers_auxiliaires
     if main_pdf_file.exist?

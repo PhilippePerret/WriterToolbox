@@ -35,6 +35,7 @@ class ::String
   #               si le code vient d'un SuperFile. Dans ce cas, ce
   #               possesseur peut déterminer des méthodes supplémentaires
   #               de traitement
+  #     :pre_code Du code markdown à ajouter avant le code
   #
   def kramdown options = nil
 
@@ -195,16 +196,6 @@ end
 
 class SuperFile
 
-  class << self
-
-    # Pour ajouter au(x) fichier(s) traité(s) un code
-    # markdown avant leur code.
-    # Typiquement, ça peut servir par exemple pour définir
-    # des liens "[texte]: mon/lien/cible"
-    attr_accessor :before_markdown_code
-
-  end #/ << self
-
   DATA_OUTPUT_FORMAT = {
     :html   => {extension: '.html'},
     :latex  => {extension: ".tex" },
@@ -224,6 +215,10 @@ class SuperFile
   #                   simplement retourné.
   #                   Ça peut être un SuperFile
   #
+  #       :pre_code   Code Markdown à ajouter avant le code du
+  #                   fichier. Par exemple pour définir des définitions
+  #                   de liens.
+  #
   def kramdown options = nil
     options ||= Hash::new
 
@@ -239,11 +234,7 @@ class SuperFile
 
     code = self.read.gsub(/\r\n?/, "\n").chomp
 
-    # Ajouter si nécessaire un code au code du
-    # fichier (cf. ci-dessus)
-    unless self.class::before_markdown_code.nil?
-      code = self.class::before_markdown_code + "\n\n"+ code
-    end
+    code = options[:pre_code] + code if options[:pre_code]
 
     # ATTENTION, ÇA NE FONCTIONNE QUE SI ON LANCE LE SCRIPT
     # TEXTMATE

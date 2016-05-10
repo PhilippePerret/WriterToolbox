@@ -13,13 +13,30 @@ class LaTexBook
   #
   # RETURN True en cas de succès et False en cas d'erreur
   #
-  def build
+  # +options+ {Hash} permettant de redéfinir toutes les
+  # données du fichier `book_data.rb` (qui peut même ne
+  # pas exister si toutes les données sont transmises)
+  def build options = nil
     site.require_module 'kramdown'
+
+    # La même instance LaTexBook peut servir à produire
+    # plusieurs livre différents (qui partagent presque
+    # les mêmes sources), à commencer par les versions
+    # sexuées, il faut donc réinitialiser un certain
+    # nombre de variable d'instance pour en tenir compte.
+    reset_variables
+
     log "=== LaTexBook #{self.class::version} ==="
     log "* Date : #{Time.now}"
 
-    # Chargement des données du livre
-    file_book_data.require
+    # Chargement des données du livre (si le fichier
+    # existe)
+    file_book_data.require if file_book_data.exist?
+    # Surclassement des données si un argument est
+    # envoyé à la méthode
+    if options != nil
+      options.each{|k,v| instance_variable_set("@#{k}", v)}
+    end
 
     log "* Construction du livre #{pdf_file}"
 
@@ -95,6 +112,11 @@ class LaTexBook
   # Méthode qui copie dans le dossier du gem compilation les
   # fichiers utiles du livre, comme par exemple les assets
   def copie_usefull_files
+    copie_assets
+    copie_images
+  end
+
+  def copie_assets
     log "  * Copie des fichiers assets propres au livre"
     dassets = self.class::assets_folder
     ownfile = dassets+"propres.tex"; ownfile.remove if ownfile.exist?
@@ -113,11 +135,19 @@ class LaTexBook
       relpath = relpath[0..-5]
       includes << "\\input{assets/#{relpath}}"
     end
-
     ownfile.write includes.join("\n") unless includes.empty?
-
     log "  = #{includes.count} fichiers assets copiés"
+  end
 
+  def copie_images
+    return unless images_folder.exist?
+    images = Dir["#{images_folder}/**/*.*"] # pour le nombre
+    return if images.count == 0
+    log "  * Copie des images"
+    # Note : si jamais j'ajoute une extension, penser qu'il y a
+    # aussi des images au type PDF (.pdf)
+    FileUtils::cp_r "#{images_folder.to_s}/", "#{LaTexBook::images_folder.folder}"
+    log "  = #{images.count} fichiers images copiés"
   end
 
 end #/LaTexBook

@@ -1,4 +1,4 @@
-SAFED LOG DU 10 05 2016 - 12:00
+SAFED LOG DU 10 05 2016 - 14:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
@@ -53,17 +53,19 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport OFFLINE des connexions du 2016-05-10 12:00:00 +0200
+Titre : Rapport OFFLINE des connexions du 2016-05-10 14:00:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport OFFLINE des connexions du 2016-05-10 12:00:00 +0200
+Rapport OFFLINE des connexions du 2016-05-10 14:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  6    2485  Phil (en local)                11:00:31 11:41:56     1
+::1                  5    54    Phil (en local)                13:50:40 13:51:34     3
 
 === ROUTES PAR IPS ===
 ::1
 	- admin/console
+	- user/signin
+	- user/login
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
@@ -99,4 +101,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (10 05 2016 - 12:00) ---
+--- FIN DU SAFED LOG (10 05 2016 - 14:00) ---

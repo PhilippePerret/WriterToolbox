@@ -4,6 +4,27 @@ class SiteHtml
 class Admin
 class Console
 
+
+  def unan_build_manuel pour
+    site.require_gem 'latexbook'
+    ibook = LaTexBook::new((site.folder_objet+'unan/aide/manuel/latexbook').to_s)
+    versions = case pour
+    when "auteurs" # => Home et femme
+      [true, false]
+    when "auteure"  # => Femme
+      [true]
+    when "auteur"   # => Homme
+      [false]
+    end
+    versions.each do |version|
+      if ibook.build(version_femme: version, open_it: true)
+        flash ibook.message
+      else
+        error ibook.error
+      end
+    end
+    return ""
+  end
   # Méthode qui affichage dans le sublog la valeur des points
   # jour après jour dans le programme UN AN UN SCRIPT
   def unan_affiche_points_sur_lannee

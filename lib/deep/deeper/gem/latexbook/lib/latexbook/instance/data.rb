@@ -37,4 +37,13 @@ class LaTexBook
   def version_femme= value
     @version_femme = value
   end
+
+  def reset_variables
+    @pre_code_markdown_file = nil
+    @version_femme          = nil
+    @pdf_name               = nil
+    @pdf_file               = nil
+    @suffixe_version        = nil
+    @main_folder            = nil
+  end
 end #/LaTexBook
