@@ -49,7 +49,7 @@ class << self
   # du livre, qui doit pour se construire récolter toutes
   # les questions de tous les fichiers.
   #
-  REG_QUESTION_CHECKUP = /(^)?[^_]CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
+  REG_QUESTION_CHECKUP = /((?:^)?[^_])CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
   def formate_balises_question_checkup_in code, options = nil
     options ||= Hash::new
     output_format = options[:format] || options[:output_format] || :html
@@ -72,7 +72,7 @@ class << self
   <!-- CHECKUP[#{$narration_page_id}|#{q_id}|#{question}|#{groupe}] -->
         HTML
         ancre = "<a name='#{q_id}'></a>"
-        "#{ancre}#{repere}<span id='#{q_id}' class='qcheckup#{isoled ? ' iso' : ''}'>#{question}</span>"
+        "#{first_chr}#{ancre}#{repere}<span id='#{q_id}' class='qcheckup#{isoled ? ' iso' : ''}'>#{question}</span>"
       when :latex
         # Note : En Latex, puisque ces corrections arrivent AVANT
         # le traitement par Kramdown, il faut mettre du code qui
@@ -80,7 +80,7 @@ class << self
         # Note de note : le traitement doit se faire AVANT le traitement
         # de kramdown, sinon les | sont remplacés par des longtables
         # intempestives.
-        "LABEL[#{q_id}]QUESTIONCHKP[#{question}]"
+        "#{first_chr}LABEL[#{q_id}]QUESTIONCHKP[#{question}]"
       end
 
       # Texte final

@@ -1,4 +1,4 @@
-SAFED LOG DU 10 05 2016 - 15:00
+SAFED LOG DU 10 05 2016 - 19:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
@@ -53,17 +53,25 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport OFFLINE des connexions du 2016-05-10 15:00:01 +0200
+Titre : Rapport OFFLINE des connexions du 2016-05-10 19:00:01 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport OFFLINE des connexions du 2016-05-10 15:00:01 +0200
+Rapport OFFLINE des connexions du 2016-05-10 19:00:01 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  13   1023  Phil (en local)                14:29:00 14:46:03     1
+::1                  12   126   Phil (en local)                18:57:13 18:59:19     9
 
 === ROUTES PAR IPS ===
 ::1
+	- page/edit?in=cnarration
+	- user/signin
+	- user/login
+	- livre/6/tdm?in=cnarration
 	- admin/console
+	- livre/6/edit?in=cnarration
+	- livre/6/save_tdm?in=cnarration
+	- page/279/show?in=cnarration
+	- site/open_md_file
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
@@ -77,14 +85,11 @@ IP                   Nb   Durée Whois                          De       à     
 ----------------------------------------------------------------------
 [Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
-    = retard   = 0
-    = retards  = 000000
+nombre_avertissements_mineurs : 1::Fixnum
+    = retard   = 1
+    = retards  = 0000001
     = frequence ? nil
-Traitement de la liste :nouveaux
-Traitement de la liste :poursuivis
-    = retard   = 0
-    = retards  = 000000
-    = frequence ? nil
+Traitement de la liste :overtimed
 Traitement de la liste :nouveaux
 Traitement de la liste :poursuivis
      <- Cron::traitement_programme_un_an_un_script
@@ -104,4 +109,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (10 05 2016 - 15:00) ---
+--- FIN DU SAFED LOG (10 05 2016 - 19:00) ---
