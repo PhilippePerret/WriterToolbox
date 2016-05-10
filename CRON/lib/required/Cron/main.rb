@@ -8,8 +8,9 @@ appelé par ./lib/required.rb en premier).
 safed_log "-> #{__FILE__}"
 
 class Cron
+class << self
 
-  def self.run
+  def run
 
     safed_log "-> Cron::run"
     safed_log "Racine courante = #{File.expand_path('.')}"
@@ -69,10 +70,18 @@ class Cron
 
   end #/run
 
+  def online?
+    @is_online = !offline? if @is_online === nil
+  end
+  def offline?
+    @is_offline = RACINE.split('/').last == "WriterToolbox" if @is_offline === nil
+    @is_offline
+  end
+
   # « Tout est dans le titre. »
   # Noter que c'est la même chose qui est requise par le site au démarrage,
   #
-  def self.requerir_les_librairies_du_site
+  def requerir_les_librairies_du_site
     safed_log "     -> Cron::requerir_les_librairies_du_site"
     begin
       require "./lib/required"
@@ -88,7 +97,7 @@ class Cron
   end
 
   # Gestion des nouveaux messages sur le forum
-  def self.traitement_messages_forum
+  def traitement_messages_forum
     log "\n\n\n---> cron.traitement_messages_forum"
     safed_log "     -> Cron::traitement_messages_forum"
     # Toutes les heures, on vérifie s'il y de nouveaux
@@ -106,7 +115,7 @@ class Cron
 
   # Toute la partie pour gérer les inscrits au programme
   # UN AN UN SCRIPT
-  def self.traitement_programme_un_an_un_script
+  def traitement_programme_un_an_un_script
     log "---> cron.traitement_programme_un_an_un_script"
     safed_log "     -> Cron::traitement_programme_un_an_un_script"
     # L'objet Unan doit être requis pour traiter tout ce qui
@@ -134,6 +143,8 @@ class Cron
       end
     end
   end # /traitement_programme_un_an_un_script
-end
+
+end #/<<self Cron
+end #/Cron
 
 safed_log "<- #{__FILE__}"

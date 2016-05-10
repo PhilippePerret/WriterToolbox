@@ -3,11 +3,6 @@
 
 UN AN UN SCRIPT
 
-TODO: Ce module et la classe User::Report (user.report) doit être
-utilisée pour construire un rapport à l'user qui sera :
-  * envoyé par mail si c'est le début de la journée
-  * affiché dans le bureau de l'auteur
-
 =end
 require 'yaml'
 

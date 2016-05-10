@@ -1,9 +1,9 @@
 # encoding: UTF-8
 class Cron
-
+class << self
 
   # Nettoyage
-  def self.nettoyage
+  def nettoyage
 
     # Nettoyage des vieux rapports de connexions
     #
@@ -27,7 +27,7 @@ class Cron
     safed_log e.backtrace.join("\n")
   end
 
-  def self.nettoyage_rapports_connexions
+  def nettoyage_rapports_connexions
     safed_log "    - Nettoyage des vieux rapports de connexion"
     nombre = 0
     il_y_a_trois_heures = Time.now - ( 3 * 3600 )
@@ -39,7 +39,7 @@ class Cron
     safed_log "    = OK (#{nombre} destructions)"
   end
 
-  def self.nettoyage_log_debug
+  def nettoyage_log_debug
     safed_log "    - Nettoyage du debug.log"
     p = "#{RACINE}/debug.log"
     if File.exist?(p)
@@ -50,7 +50,7 @@ class Cron
     end
   end
 
-  def self.nettoyage_logs_cron
+  def nettoyage_logs_cron
     safed_log "    - Nettoyage des logs cron (un an un script)"
     fp = "#{RACINE}/CRON/log"
     files = Dir["#{fp}/*.log"]
@@ -63,7 +63,7 @@ class Cron
     safed_log "     = #{nombre} fichiers-log détruits"
   end
 
-  def self.nettoyage_rapports_synchronisation
+  def nettoyage_rapports_synchronisation
     safed_log "    - Nettoyage des rapports de synchronisation générale"
     pfolder = File.join(RACINE, 'lib/deep/deeper/module/synchronisation/synchronisation/output')
     nombre = 0
@@ -88,4 +88,5 @@ class Cron
               "     = Nettoyage OK"
   end
 
+end #/<< self Cron
 end #/Cron
