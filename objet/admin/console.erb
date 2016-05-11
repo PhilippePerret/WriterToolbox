@@ -12,6 +12,7 @@ reduite = console.special_output != ""
 <form action="admin/console" method="POST" charset="UTF-8">
 <textarea onfocus="this.select()" id="console" class='<%= reduite ? 'reduite' : '' %>' name="console" onreturn="this.form.submit()"><%= console.code_console %></textarea>
 </form>
+<span id="longueur_code"></span>
 <%
 #
 # ---------------------------------------------------------------------
