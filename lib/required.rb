@@ -1,3 +1,4 @@
+# encoding: UTF-8
 
 unless defined?(ONLINE)
   ONLINE  = ENV['HTTP_HOST'] != "localhost"
@@ -16,6 +17,7 @@ if ONLINE
     $LOAD_PATH << "#{fpath}/lib"
   end
 end
+
 
 
 # On peut maintenant requérir tous les gems

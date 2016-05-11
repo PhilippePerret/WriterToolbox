@@ -1,4 +1,4 @@
-SAFED LOG DU 10 05 2016 - 20:00
+SAFED LOG DU 11 05 2016 - 14:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
@@ -29,9 +29,9 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Nettoyage des lieux
     - Nettoyage des vieux rapports de connexion
-    = OK (2 destructions)
+    = OK (1 destructions)
     - Nettoyage du debug.log
-    = OK
+    - Inexistant -
     - Nettoyage des rapports de synchronisation générale
      = 0 fichiers rapport de synchronisation détruits     = Nettoyage OK
     - Nettoyage des logs cron (un an un script)
@@ -53,32 +53,19 @@ Fréquence de rapport connexion : ":one_an_hour"
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
 			RÉSULTATS À ENVOYER :
-Titre : Rapport OFFLINE des connexions du 2016-05-10 20:00:01 +0200
+Titre : Rapport OFFLINE des connexions du 2016-05-11 14:00:00 +0200
 Message :
 <pre style='font-size:9pt'>
-Rapport OFFLINE des connexions du 2016-05-10 20:00:01 +0200
+Rapport OFFLINE des connexions du 2016-05-11 14:00:00 +0200
 
 IP                   Nb   Durée Whois                          De       à        Routes
-::1                  28   866   Phil (en local)                19:01:25 19:15:51    10
+
 
 === ROUTES PAR IPS ===
-::1
-	- page/279/show?in=cnarration
-	- livre/6/tdm?in=cnarration
-	- page/edit?in=cnarration
-	- livre/6/edit?in=cnarration
-	- livre/6/save_tdm?in=cnarration
-	- page/280/edit?in=cnarration
-	- page/282/show?in=cnarration
-	- site/open_md_file
-	- page/282/edit?in=cnarration
-	- admin/console
+
 </pre><p class='small'>La durée est exprimée en secondes.</p>
 <p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
 
-			   -> Envoi du rapport de connexion à l'administration
-			      Mail : phil@laboiteaoutilsdelauteur.fr
-			    <- OK Rapport envoyé avec succès
 			  = Résumé des connexions OK
 			<- SiteHtml::Connexions::resume
 
@@ -110,4 +97,4 @@ Traitement de la liste :poursuivis
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (10 05 2016 - 20:00) ---
+--- FIN DU SAFED LOG (11 05 2016 - 14:00) ---

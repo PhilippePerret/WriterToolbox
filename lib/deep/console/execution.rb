@@ -88,6 +88,9 @@ class Console
     # On exécute la ligne telle quelle
     res ||= ( execute_as_is line )
 
+    # On exécute la ligne de type premier mot commande
+    res ||= ( execute_as_first_word_command line )
+
     # On exécute la ligne de type dernier mot variable
     res ||= ( execute_as_last_is_variable line )
 
@@ -171,6 +174,15 @@ class Console
     end
   end
 
+  def execute_as_first_word_command line
+    words = line.split(' ')
+    first_word = words.shift
+    reste_line = words.join(' ')
+    case first_word
+    when /^(twitter|twitte|twit|tweet)$/
+      return ( envoyer_tweet reste_line )
+    end
+  end
   # On exécute la ligne (si on peut) comme une ligne composée
   # de `get <something> of <something else> <id something else>`
   # Par exemple, c'est ce qui est utilisé pour UN AN UN SCRIPT

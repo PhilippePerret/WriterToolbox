@@ -35,6 +35,8 @@ class Page
       <<-HEAD
 <meta content="text/html; charset=utf-8" http-equiv="Content-type">
 <title>#{page.title}</title>
+<link rel="shortcut icon" href="view/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="view/img/favicon.ico" type="image/x-icon">
 <base href="#{site.base}" />
 #{fonts_google}
 #{page.javascript}

@@ -85,6 +85,14 @@ forum:
     command:        goto|aller forum
     description:    Rejoindre la section du forum
 
+# TWITTER
+twitter:
+  -
+    command:        (twitte|twit|tweet) &lt;message&gt;
+    description: |
+      Pour envoyer un tweet sur twitter. Le message n'a pas besoin
+      d'être entre guillemets.
+
 # ---------------------------------------------------------------------
 #   BASES DE DONNÉES
 # ---------------------------------------------------------------------
