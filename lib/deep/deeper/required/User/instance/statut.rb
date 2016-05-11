@@ -13,7 +13,12 @@ class User
 
   def exist?
     return false if @id.nil?
-    table.count(where:{id: id}) > 0
+    where = "(id = #{id}) AND (options NOT LIKE '___1%')"
+    table.count(where:where) > 0
+  end
+
+  def destroyed?
+    bit_destroyed == 1
   end
 
   def guest?

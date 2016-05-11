@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-Table pour maintenant le contenu des messages
+Table pour consigner le contenu des messages
 
 =end
 def schema_table_forum_posts_content

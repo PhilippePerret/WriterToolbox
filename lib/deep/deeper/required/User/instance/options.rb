@@ -40,6 +40,11 @@ class User
     get_option(:confirm_mail) == 1
   end
 
+  # OPTION 4 (indice 3)
+  def bit_destroyed
+    get_option(:destroyed)
+  end
+
   # Retourne un Array à deux éléments dont le premier est
   # l'index de l'option de clé +key_option+ (par exemple :admin, :grade)
   # et le second est le nom de la variable d'instance qui conserve
@@ -55,6 +60,7 @@ class User
       when :admin         then [0, nil]
       when :grade         then [1, '@grade']
       when :confirm_mail  then [2, nil]
+      when :destroyed     then [3, nil]
       else
         # Peut-être défini en propre pour l'application courante dans
         # le fichier `./objet/site/config.rb`
