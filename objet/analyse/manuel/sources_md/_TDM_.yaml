@@ -1,7 +1,29 @@
 introduction:
   - introduction
+consulter:
+  - divers/new_window.md
+  - onglets/fonctionnement
+  - onglets/plan_structurel
+  - onglets/paradigme_field
+  - onglets/timeline_scenes
+  - onglets/fondamentales
+  - onglets/scenes
+  - onglets/diag_drama
+  - onglets/time_sorted
+  - onglets/synopsis
+  - onglets/personnages
+  - onglets/brins
+  - onglets/notes
+  - onglets/informations
+  - onglets/procedes
+  - onglets/qrds
 rediger:
   - introduction
   - analyse/analyse_mye
   - analyse/creation_new_analyse
   - analyse/protocole
+  - collecte/main_file
+  - collecte/tm_bundle
+  - collecte/tutoriel_textmate
+  - collecte/en_ligne
+  - collecte/tutoriel_en_ligne
