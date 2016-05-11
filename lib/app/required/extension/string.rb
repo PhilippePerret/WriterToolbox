@@ -1,5 +1,6 @@
 # encoding: UTF-8
-class ::String
+
+class String
 
   def formate_balises_propres
     str = self

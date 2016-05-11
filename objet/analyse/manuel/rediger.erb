@@ -2,13 +2,5 @@
 # Vue principale du manuel pour la rédaction des analyses
 %>
 <%= FilmAnalyse::titre_h1("Manuel de rédaction") %>
-<% FilmAnalyse::require_module 'manuel' %>
 
-<% if param(:manp).nil? %>
-  <%= FilmAnalyse::Manuel::table_of_content(:rediger) %>
-
-<% else %>
-
-  <%= FilmAnalyse::Manuel::page(param( :manp ), :rediger) %>
-
-<% end %>
+<iframe src="./objet/analyse/manuel/Manuel_Analyste-2016.pdf" width="100%" height="800px"></iframe>

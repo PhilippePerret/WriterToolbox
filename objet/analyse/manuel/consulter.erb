@@ -1,16 +1,8 @@
 <%
-# Vue principale pour le manuel de consultation des analyses
-
+# Vue principale du manuel pour la rédaction des analyses
 %>
 <%= FilmAnalyse::titre_h1("Manuel de consultation") %>
-<% FilmAnalyse::require_module 'manuel' %>
 
-<% if param(:manp).nil? %>
+<a href="./objet/analyse/manuel/Manuel_Analyste-2016.pdf">Manuel de consultation des analyses</a>
 
-  <%= FilmAnalyse::Manuel::table_of_content(:consulter) %>
-
-<% else %>
-
-  <%= FilmAnalyse::Manuel::page(param( :manp ), :consulter) %>
-
-<% end %>
+<iframe src="objet/analyse/manuel/Manuel_Analyste-2016.pdf" width="100%" height="800px"></iframe>

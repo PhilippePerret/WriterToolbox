@@ -1,12 +1,36 @@
 # encoding: UTF-8
 
+# Méthodes qu'on peut utiliser au chargement (avant que les
+# librairies de débug soient en place) pour laisser des messages
+# de débug.
+#
+# @usage      safed_log <message>
+#
+# Il faut ensuite aller charger le fichier ./safed.log par
+# FTP
+def safed_log mess
+  ref_log.puts mess
+end
+def ref_log
+  @ref_log ||= File.open(safe_log_path, 'a')
+end
+def safe_log_path
+  @safe_log_path ||= "./safed.log"
+end
+
+
+
 unless defined?(ONLINE)
   ONLINE  = ENV['HTTP_HOST'] != "localhost"
   OFFLINE = !ONLINE
 end
 
 def require_folder dossier
-  Dir["#{dossier}/**/*.rb"].each { |m| require m }
+  # safed_log "Require dossier #{dossier}"
+  Dir["#{dossier}/**/*.rb"].each do |m|
+    # safed_log "Module : #{m}"
+    require m
+  end
 end
 
 # On essaie ça : si on est ONLINE, on met tous les dossier GEMS
