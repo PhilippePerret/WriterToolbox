@@ -1,3 +1,5 @@
+### Fonctionnement des onglets {#fonctionnement-onglets}
+
 Les “onglets” se trouvent dans la bande supérieure de la fenêtre d'une analyse de film.
 
 Ils fonctionnent comme des interrupteurs, c'est-à-dire que la partie qu'ils concernent est affichée si l'onglet est activé, ou masquée si l'onglet est désactivé. Ce comportement a été choisi pour permettre de juxtaposer divers éléments d'analyse même éloignés.

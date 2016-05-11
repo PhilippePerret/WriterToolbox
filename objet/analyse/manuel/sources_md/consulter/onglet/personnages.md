@@ -1,3 +1,5 @@
+### Onglet “Personnages” {#onglet-personnages}
+
 Cet onglet affiche les données sur les personnages du film, avec des informations principalement temporelles sur le personnage :
 
 * son entrée en scène ;

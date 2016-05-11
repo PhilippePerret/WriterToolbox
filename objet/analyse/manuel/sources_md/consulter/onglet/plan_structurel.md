@@ -1,3 +1,5 @@
+### Onglet “Plan structurel” {#onglet-plan-structurel}
+
 L'onglet “plan structurel” permet d'afficher le plan général de la structure du film, c'est-à-dire ses grands actes (EXPOSITION, DÉVELOPPEMENT, DÉNOUEMENT) ainsi que ses scènes-clés (ou *scènes formelles*).
 
 Sur ce plan structurel, les scènes formelles parfaitement placées selon le Paradigme de Field sont en verts, les scènes décalées sont en rouge.

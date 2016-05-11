@@ -1,3 +1,5 @@
+### Onglet “Scène classées” {#onglet-scenes-classees}
+
 Cet onglet affiche le classement des scènes par durée, les scènes les plus longues en premier, les scènes les plus courtes en dernier.
 
 Un encart en haut du panneau donne une description statistique concernant les scènes :

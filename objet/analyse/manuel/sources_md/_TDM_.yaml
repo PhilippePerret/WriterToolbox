@@ -1,22 +1,22 @@
 introduction:
   - introduction
 consulter:
-  - divers/new_window.md
-  - onglets/fonctionnement
-  - onglets/plan_structurel
-  - onglets/paradigme_field
-  - onglets/timeline_scenes
-  - onglets/fondamentales
-  - onglets/scenes
-  - onglets/diag_drama
-  - onglets/time_sorted
-  - onglets/synopsis
-  - onglets/personnages
-  - onglets/brins
-  - onglets/notes
-  - onglets/informations
-  - onglets/procedes
-  - onglets/qrds
+  - divers/new_window
+  - onglet/fonctionnement
+  - onglet/plan_structurel
+  - onglet/paradigme_field
+  - onglet/timeline_scenes
+  - onglet/fondamentales
+  - onglet/scenes
+  - onglet/diag_drama
+  - onglet/time_sorted
+  - onglet/synopsis
+  - onglet/personnages
+  - onglet/brins
+  - onglet/notes
+  - onglet/informations
+  - onglet/procedes
+  - onglet/qrds
 rediger:
   - introduction
   - analyse/analyse_mye
