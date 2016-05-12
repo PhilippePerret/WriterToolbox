@@ -181,8 +181,18 @@ class Console
     case first_word
     when /^(twitter|twitte|twit|tweet)$/
       return ( envoyer_tweet reste_line )
+
     when /^test$/
+
+      # --- TESTS ---
+
       return ( run_a_test reste_line )
+
+    when /^rspec$/
+
+      # --- RSPEC ---
+      
+      return ( run_a_rspec_test reste_line)
     end
   end
   # On exécute la ligne (si on peut) comme une ligne composée

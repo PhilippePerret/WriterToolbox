@@ -6,6 +6,10 @@ class Console
   RSPEC_COMMAND = site.rspec_command #.sub(/\/bin\//, '/wrappers/')
 
   def run_a_test args
+    site.require_module 'test'
+    SiteHtml::Test::run
+  end
+  def run_a_rspec_test args
     unless RSPEC_COMMAND!=nil && ( File.exist? RSPEC_COMMAND )
       raise "Pour pouvoir jourer les tests, vous devez spécifier l'emplacement du binaire `rspec` dans le fichier de configuration `./site/config.rb` avec `site.rspec_command = ...`."
     end
@@ -16,7 +20,6 @@ class Console
     where = nil # :offline ou :online
     dossier_test = if args != ""
       dargs = args.split(' ')
-
       # Où doivent se faire les tests ? En online ou en
       # offline ?
       where = if dargs.count > 1
@@ -32,6 +35,8 @@ class Console
       # existant dans les tests
       File.join('.', 'spec', "#{where}", dargs.first)
     else
+      # Dans le cas où la commande `test` a été jouée toute
+      # seule
       where = :offline
       File.join('.','spec','offline')
     end
@@ -43,6 +48,7 @@ class Console
      tell application "Terminal"
        activate
        activate
+       do script "clear" in front window
        do script "cd #{app_folder}" in front window
        do script "rspec #{dossier_test}"  in front window
      end tell

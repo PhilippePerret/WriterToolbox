@@ -65,6 +65,16 @@ synchro:
 # ---------------------------------------------------------------------
 test:
   -
+    command:      rspec (&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
+    description: |
+      Joue un test ou un ensemble de tests avec RSpec.
+      <br>Soit le test dans le dossier spécifié (à partir de `path/dossier`)
+      <br>Soit le `type` (À DÉFINIR) qui correspond à certains tests comme : <ul>
+      <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
+      </ul>
+    note: |
+      Pour cURL, cf. le site <a href="https://curl.haxx.se/docs/manual.html">https://curl.haxx.se/docs/manual.html</a>
+  -
     command:      test (&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
     description: |
       Exécute le test voulu.
