@@ -3,7 +3,9 @@
 * [Introduction](#introductionteststest)
 * [Hiérarchie des éléments](#hierarchiedeselements)
 * [Messages de succès ou de failure](#ajoutermessagefailuresuccess)
-* [Méthodes de tests de route](#methodesdetestderoute)
+* [Les méthodes de test](#lesmethodesdetests)
+  * [Méthodes de tests de route](#methodesdetestderoute)
+* [Aide pour cUrl](#aidepourcurl)
 
 Deux formes de tests sont possibles :
 
@@ -71,14 +73,19 @@ Où `args` est un `Hash` contenant :
                       ici, c'est un fichier, ça n'est pas à confondre avec
                       le "Case", le cas.
 
+<a name='lesmethodesdetests'></a>
+
+## Les méthodes de test
+
+
 <a name='methodesdetestderoute'></a>
 
 
-## Méthodes de tests de route
+### Méthodes de tests de route
 
-* [respond](#methoderesponds)
-* [has_title](#methodehastitle)
-* [has_tag](#methodtesthastag)
+Ce que j'appelle les "méthodes de tests de route", ce sont les méthodes qui testent une page particulière appelée par une route, donc une URL moins la partie local.
+
+Par exemple, si l'url complète est `http://www.atelier-icare.net/overview/temoignages` alors la route est `overview/temoignagnes`. Cette route peut également définir des variables après un "?".
 
 La formule de base du test d'une route est la suivante :
 
@@ -86,6 +93,13 @@ La formule de base du test d'une route est la suivante :
           r.<methode>
           r.<methode> <parametres>
         end
+
+Liste des méthodes :
+
+* [respond](#methoderesponds)
+* [has_title](#methodehastitle)
+* [has_tag](#methodtesthastag)
+
 
 <a name='methoderesponds'></a>
 
@@ -138,7 +152,28 @@ Négatif :
         r.has_not_tag "span", {text: /Bienvenue !/}
 
 
-* [Aide pour cUrl](#aidepourcurl)
+* [Méthodes de test de formulaire](#methodesdetestsdeformulaire)
+<a name='methodesdetestsdeformulaire'></a>
+
+## Méthodes de test de formulaire
+
+L'autre grande chose à faire avec les pages, c'est le remplissage de formulaires. La méthode ci-dessous est la méthode principale qui s'en charge :
+
+        test_form "la/route", <data> do |f|
+
+          f.<methode>
+
+        end
+
+Les `data` doivent permettre de remplir les champs du formulaire avec les valeurs proposées, sous la forme :
+
+        {
+          'id ou name de champ' => {value: <valeur à donner> },
+          'id ou name de champ' => {value: <valeur à donner> }
+        }
+
+---------------------------------------------------------------------
+
 <a name='aidepourcurl'></a>
 
 ## Aide pour cUrl
