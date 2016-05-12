@@ -7,8 +7,11 @@
   utilisables dans les tests, cf. le module `test_methods.rb`
 
 =end
+require 'nokogiri'
+require 'open-uri'
+
 class SiteHtml
-class Test
+class TestSuite
 class Route
 
   attr_reader :raw_route
@@ -19,11 +22,11 @@ class Route
   end
 
   def url
-    @url ||= "#{SiteHtml::Test::base_url}/#{raw_route}"
+    @url ||= "#{SiteHtml::TestSuite::current::base_url}/#{raw_route}"
   end
 
   def request req
-    SiteHtml::Test::Request::new(nil, req).execute
+    SiteHtml::TestSuite::Request::new(nil, req).execute
   end
   def request_only_header
     @request_only_header  ||= "curl -I #{url}"
@@ -33,9 +36,20 @@ class Route
   end
 
   def code_page
-    @code_page ||= request(request_whole_page).content
+    @code_page ||= begin
+      request(request_whole_page).content
+    end
+  end
+
+  def nokogiri_page
+    @nokogiri_page ||= Nokogiri::HTML( open url )
+  end
+
+  # Inverse le comportement de la méthode +method_name+
+  def not method_name, options = nil
+    send(method_name, *options, inverser = true)
   end
 
 end #/Route
-end #/Test
+end #/TestSuite
 end #/SiteHtml

@@ -12,7 +12,7 @@ class Console
     @args = args
     opts = parse_arguments
     site.require_module 'test'
-    SiteHtml::Test::run( opts )
+    SiteHtml::TestSuite::new(opts).run
   end
 
   def parse_arguments

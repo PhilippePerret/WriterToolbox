@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class SiteHtml
-class Test
+class TestSuite
 class Request
 
   # Instance {SiteHtml::Test} du test (~fichier)
@@ -45,5 +45,5 @@ class Request
   end
 
 end #/Request
-end #/Test
+end #/TestSuite
 end #/SiteHtml

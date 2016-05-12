@@ -1,4 +1,4 @@
-SAFED LOG DU 12 05 2016 - 13:00
+SAFED LOG DU 12 05 2016 - 19:00
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
@@ -29,7 +29,7 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Nettoyage des lieux
     - Nettoyage des vieux rapports de connexion
-    = OK (0 destructions)
+    = OK (1 destructions)
     - Nettoyage du debug.log
     = OK
     - Nettoyage des rapports de synchronisation générale
