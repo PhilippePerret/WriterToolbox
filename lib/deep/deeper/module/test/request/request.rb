@@ -21,17 +21,20 @@ class Request
   # RETURN L'instance requête courante {SiteHtml::Test::Request}
   def execute
     @content = `#{request}`.force_encoding('utf-8')
-    debug "RETOUR DE #{request}:\n#{@content}"
-    debug "header : #{header.inspect}"
+    # debug "RETOUR DE #{request}:\n#{@content}"
+    # debug "header : #{header.inspect}"
     return self
   end
   def ok?
     code_retour == 200 && texte_retour == "OK"
   end
+  def error_404?
+    code_retour == 404
+  end
   def content; @content end
   def header
     @header ||= begin
-      content.match(/^HTTP\/(?:[0-9\.]+) ([0-9]{,3}) (.+?)Date/m).to_a
+      content.match(/^HTTP\/(?:[0-9\.]+) ([0-9]{,3}) (.+?)Date/m).to_a.collect{|e| e.strip}
     end
   end
   def code_retour

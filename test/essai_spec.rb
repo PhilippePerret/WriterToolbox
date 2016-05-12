@@ -18,18 +18,24 @@
 # Fichier uploadé :
 # curl -F "web=@index.html;type=text/html" example.com
 
-req = 'curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"'
+# req = 'curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"'
 
 # res = `curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"`
 
-# Il faudrait pouvoir faire un truc comme :
-test "La page bad/one.html" do
-  r = route("bad/one.htm")
+test_route "" do |r|
   r.respond
-  r.has_title("Le titre", 3)
 end
-
-test_route "bad/one.html" do |r|
-  r.respond
-  r.has_title("Le titre", 3)
-end
+#
+# test_route "scenodico/32/show" do |r|
+#   r.respond
+#   r.has_title(/Scénodico/, 1)
+# end
+#
+# # Il faudrait pouvoir faire un truc comme :
+# test_route "bad/one.html", __LINE__ do |r|
+#   r.respond
+# end
+#
+# test_route "bad/one.html", __LINE__ do |r|
+#   r.has_title("Le titre", 3)
+# end

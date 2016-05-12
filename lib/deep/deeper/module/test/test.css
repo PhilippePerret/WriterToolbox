@@ -1,1 +1,1 @@
-div.atest{line-height:1.2em;margin-bottom:1em}div.atest div.tname{color:blue;font-size:13pt}div.atest div.pfile{font-size:11.2pt;margin-left:2em}div.atest div.mess{font-style:italic;margin-left:2em}div.atest.err *{color:red}div.atest.suc *{color:green}
+div.atest{line-height:0.9em;margin-bottom:1em}div.atest div.tname{color:blue;font-size:13pt}div.atest div.pfile{font-size:11.2pt;margin-left:2em}div.atest div.mess{font-style:italic;margin-left:2em;font-size:12pt}div.atest.err *{color:red}div.atest.suc *{color:green}div#test_infos{font-size:12.5px}
