@@ -22,6 +22,11 @@ def destroy_home
   site.destroy_home
 end
 
+def osascript script
+  site.osascript script
+end
+
+
 
 # ---------------------------------------------------------------------
 #   Barrières de protection des vues et modules

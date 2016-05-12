@@ -15,8 +15,8 @@
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
 
-require 'rspec-steps'
-require 'rspec-steps/monkeypatching'
+# require 'rspec-steps'
+# require 'rspec-steps/monkeypatching'
 
 # require 'capybara/rspec'
 # Pour les tests avec have_tag etc.

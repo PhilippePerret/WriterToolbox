@@ -181,6 +181,8 @@ class Console
     case first_word
     when /^(twitter|twitte|twit|tweet)$/
       return ( envoyer_tweet reste_line )
+    when /^test$/
+      return ( run_a_test reste_line )
     end
   end
   # On exécute la ligne (si on peut) comme une ligne composée

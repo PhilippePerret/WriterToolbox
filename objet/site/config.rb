@@ -10,6 +10,8 @@ On peut tester une valeur simplement par :
 
 =end
 
+HOME = "/Users/philippeperret"
+
 # Désignation officielle du site, par exemple pour les
 # factures ou autre mail officiel
 site.official_designation = "La Boite à Outils de l'Auteur" # "Writer's Toolbox"
@@ -82,3 +84,10 @@ site.display_taches_for_user = true
 # :one_a_month / :une_par_mois
 #     Résumé mensuel des connexions du mois
 site.alert_apres_login = :one_an_hour
+
+# ---------------------------------------------------------------------
+# TESTS
+# Chemin d'accès au binaire `rpsec` pour lancer les tests
+# façon console. Pour l'obtenir, taper `which rspec` dans le
+# Terminal.
+site.rspec_command = File.join(HOME, '.rvm/rubies/ruby-2.0.0-p643/bin/rspec')

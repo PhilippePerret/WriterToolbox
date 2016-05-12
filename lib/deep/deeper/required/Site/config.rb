@@ -62,6 +62,11 @@ class SiteHtml
 
   attr_accessor :alert_apres_login
 
+  # {String} Path au bin rspec pour jouer les tests
+  # RSpec
+  attr_accessor :rspec_command
+
+
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif
   def separateur_decimal; @separateur_decimal ||= "," end

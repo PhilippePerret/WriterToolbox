@@ -28,7 +28,6 @@ generalites:
       On peut utiliser les variables normalement : `ma_variable = &lgt;code à évaluer&gt;`
     note:         Il faut juste veiller à ce qu'il y ait bien des espaces avant et après le signe égal.
 
-
 # ---------------------------------------------------------------------
 #   COMMANDES DE BASE
 # ---------------------------------------------------------------------
@@ -47,8 +46,9 @@ commandes:
     note:         La liste dépend de l'application. Cf. ci-dessous pour la programmation de cette aide.
     implement:    |
       Pour implémenter une aide sur un élément, il faut définir l'aide dans le fichier `help_app.yml` en définissant son type à `HELP`.
-
+# ---------------------------------------------------------------------
 # SYNCHRO
+# ---------------------------------------------------------------------
 synchro:
   -
     command:      "`goto|aller sync|synchro|synchronisation`"
@@ -59,6 +59,24 @@ synchro:
     command:      check (synchro|site)
     description:  Permet de tester la synchronisation des fichiers entre serveur local et distant.
     note:         Produit un fichier HTML qui permet de procéder à la synchro si nécessaire.
+
+# ---------------------------------------------------------------------
+#   TESTS
+# ---------------------------------------------------------------------
+test:
+  -
+    command:      test (&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
+    description: |
+      Exécute le test voulu.
+      <br>Soit le test dans le dossier spécifié (à partir de `path/dossier`)
+      <br>Soit le `type` (À DÉFINIR) qui correspond à certains tests comme : <ul>
+      <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
+      </ul>
+  -
+    command:      test mini online
+    description: |
+      Si un dossier ./spec/online/mini/ existe, alors tous les tests à
+      l'intérieur seront joués par cette commande.
 
 # DÉBUG
 debug:
