@@ -13,8 +13,8 @@ class Html
   # {String} Le code tel qu'il est soumis à l'instanciation
   attr_reader :raw_code
 
-  # {Nokogiri::HTML::Document}
-  # Utliser `page` plutôt
+   # {Nokogiri::HTML::Document}
+  # Utiliser `page` plutôt
   attr_reader :nokogiri_html_doc
 
   # Argument : Soit du code HTML brut, soit (meilleur) un

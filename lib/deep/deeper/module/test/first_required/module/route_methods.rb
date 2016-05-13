@@ -23,7 +23,19 @@ module ModuleRouteMethods
   # RETURN Une instance SiteHtml::TestSuite::Html qui permettra
   # de faire tous les tests sur le code HTML avec Nokogiri
   def instance_test_html
-    @instance_test_html ||= SiteHtml::TestSuite::Html::new(nokogiri_page)
+    @instance_test_html ||= SiteHtml::TestSuite::Html::new(nokogiri_html)
+  end
+
+  def nokogiri_html
+    @nokogiri_html ||= Nokogiri::HTML( open url )
+  end
+
+  # Redéfinir le Nokogiri::HTML suite à une nouvelle requête,
+  # pour prendre en compte le nouveau code.
+  def nokogiri_html= valeur
+    @nokogiri_html = valeur
+    # Pour forcer l'actualisation du code
+    @instance_test_html = nil
   end
 
   def responds? options = nil
@@ -124,16 +136,6 @@ module ModuleRouteMethods
   end
   def request_whole_page
     @request_whote_page   ||= "curl #{url}"
-  end
-
-  def code_page
-    @code_page ||= begin
-      request(request_whole_page).content
-    end
-  end
-
-  def nokogiri_page
-    @nokogiri_page ||= Nokogiri::HTML( open url )
   end
 
 end

@@ -71,3 +71,7 @@ else
   require './lib/preambule'
   execute_preambule
 end
+
+
+debug "param(:tested) = #{param(:tested).inspect}"
+debug "param(:login) = #{param(:login).inspect}"

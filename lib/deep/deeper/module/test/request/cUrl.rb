@@ -36,9 +36,19 @@ class CURL
     @request_data = request_data
   end
 
-  # Exécution de la requête
+  # Exécution de la requête, qui retourne le code obtenu
   def execute
+    debug "-> CURL#execute"
     request.execute
+    # Après l'exécution du code, on doit modifier l'instance
+    # Nokogiri::HTML du propriétaire en utilisant sa méthode
+    # `nokogiri_html` qui contient l'instance.
+    # Le propriétaire doit posséder cette méthode
+    unless owner.respond_to?(:nokogiri_html)
+      raise "Le propriétaire de classe #{owner.class} devrait répondre à la méthode `nokogiri_html=` pour actualiser l'instance qui contient le code du document."
+    end
+    owner.nokogiri_html= content
+    return true
   end
 
   # = main =
@@ -69,11 +79,7 @@ class CURL
 
   # Requête construite
   def built_request
-    @built_requete ||= begin
-      req = "curl#{req_options}#{req_data} #{req_url}"
-      # debug "\nRequete CURL : #{req}\n"
-      req
-    end
+    @built_requete ||= "curl#{req_options}#{req_data} #{req_url}"
   end
 
   # True si la requête est une simulation de soumission
@@ -115,14 +121,17 @@ class CURL
         when String then request_data[:data]
         when Hash
           request_data[:data].collect do |k, v|
+            # v = CGI::escape v
             v = v.to_s.match(/ /) ? "\\\"#{v}\\\"" : v
             "#{k}=#{v}"
-          end.join(';')
+          end.join('&')
         when Array  then request_data[:data].join(';')
         else
           raise "Propriété :data incorrecte pour une requête CURL"
         end
-        " " + "--data-urlencode \"#{datareq}\""
+        # " " + "--data-urlencode \"#{datareq}\""
+        " " + "--data \"#{datareq}\""
+        # " " + datareq
       end
     end
   end

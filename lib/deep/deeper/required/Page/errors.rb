@@ -42,7 +42,7 @@ class Page
 
   def error_standard err
     self.error_message = err.message
-    self.error_backtrace = err.backtrace.collect{|l| l.in_div}.join("\n")
+    self.error_backtrace = ("(ERREUR : #{err.message})") + "\n" + err.backtrace.collect{|l| l.in_div}.join("\n")
     ( output_error 'standard' )
   end
 

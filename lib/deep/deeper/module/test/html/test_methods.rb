@@ -17,7 +17,14 @@ class Html
 
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
-    mess_sup = ok ? "" : messages_flash_as_human
+    mess_sup = ok ? "" : messages_flash_as_human(mess)
+
+    if !ok then
+      debug "\n\n\n"+("-"*80)+"\n\n\n"
+      debug "PAGE QUI NE CONTIENT PAS LE MESSAGE #{mess}:\n\n\n"
+      debug page.to_s.gsub(/</,'&lt;')
+      debug "\n\n\n"+("-"*80)+"\n\n\n"
+    end
 
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
@@ -45,7 +52,7 @@ class Html
 
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
-    mess_sup = ok ? "" : messages_flash_as_human
+    mess_sup = ok ? "" : messages_flash_as_human(mess)
 
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
@@ -97,11 +104,6 @@ class Html
       class:  {pref:'.', value:".#{options[:class]}"}
     }.each do |prop, dprop|
       tag += dprop[:value] if options.has_key?(prop) && options[prop]!=nil
-    end
-
-    # Débug
-    if tag_init != tag
-      debug "Tag modifiée dans `has_tag` : #{tag}"
     end
 
     # On compte le nombre de balises qui peuvent répondre

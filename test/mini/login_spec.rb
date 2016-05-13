@@ -21,21 +21,19 @@ end
 test_form "user/login", dform, "Bon login d'un user" do |f|
 
   f.fill_and_submit
-  debug "\n\n\n--- DÉBUT TEST f.has_message ---"
-  f.has_message "Bienvenue Phil"
-  debug "\n--- FIN TEST f.has_message ---\n\n\n"
+  f.has_message "Bienvenue, Phil"
 
 end
 
-
-test_form "user/login", dform, "Mauvais login d'un user" do |f|
-  # form[:fields][:login_mail][:value] = ""
-  f.fill_and_submit( login_mail: "" )
-  f.has_error "Il faut fournir votre mail."
-
-  f.fill_and_submit(login_password: "")
-  f.has_error "Il faut fournir votre mot de passe."
-
-  f.fill_and_submit(login_mail: "bad@mail.fr", login_password: "mauvaismotdepasse")
-  f.has_error "Je ne vous reconnais pas. Merci d'essayer encore."
-end
+#
+# test_form "user/login", dform, "Mauvais login d'un user" do |f|
+#   # form[:fields][:login_mail][:value] = ""
+#   f.fill_and_submit( login_mail: "" )
+#   f.has_error "Il faut fournir votre mail."
+#
+#   f.fill_and_submit(login_password: "")
+#   f.has_error "Il faut fournir votre mot de passe."
+#
+#   f.fill_and_submit(login_mail: "bad@mail.fr", login_password: "mauvaismotdepasse")
+#   f.has_error "Je ne vous reconnais pas. Merci d'essayer encore."
+# end

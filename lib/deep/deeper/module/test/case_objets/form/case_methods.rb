@@ -59,7 +59,7 @@ class Form
       end
     end
 
-    # Préparation des données (:data) donc curl aura besoin
+    # Préparation des données (:data) dont curl aura besoin
     # pour simuler la soumission du formulaire
     data_req = Hash::new
     this_data[:fields].each do |field_id, field_data|
@@ -70,9 +70,6 @@ class Form
     # On peut instancier la requête et l'exécuter
     req_curl = SiteHtml::TestSuite::Request::CURL::new(self, {form: true, data: data_req})
     req_curl.execute
-
-    # On peut tester maintenant le contenu du retour
-    debug "\n\n\nRETOUR REQUÊTE: #{req_curl.built_request}\n" + req_curl.content.gsub(/</, '&lt;') + "\n\n\n"
 
   end
 

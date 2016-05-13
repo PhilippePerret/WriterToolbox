@@ -29,7 +29,7 @@ class User
     set(session_id: app.session.session_id)
 
     require './data/secret/known_users.rb'
-    flash( if KNOWN_USERS.has_key?( id )
+    flash( if KNOWN_USERS.has_key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil
       KNOWN_USERS[id][:messages_accueil].shuffle.shuffle.first
     else
       "Bienvenue, #{pseudo} !"
