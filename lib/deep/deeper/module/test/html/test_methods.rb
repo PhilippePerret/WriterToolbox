@@ -13,27 +13,34 @@ class Html
   def has_message mess, options = nil, inverse = false
     options ||= Hash::new
 
-    ok = has_tag?("div#flash div.message", options.merge!(text: mess))
+    ok = has_tag?("div#flash div.notice", options.merge!(text: mess))
 
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
     mess_sup = ok ? "" : messages_flash_as_human(mess)
 
-    if !ok then
-      debug "\n\n\n"+("-"*80)+"\n\n\n"
-      debug "PAGE QUI NE CONTIENT PAS LE MESSAGE #{mess}:\n\n\n"
-      debug page.to_s.gsub(/</,'&lt;')
-      debug "\n\n\n"+("-"*80)+"\n\n\n"
+    # # Pour débugger
+    # if !ok then
+    #   debug "\n\n\n"+("-"*80)+"\n\n\n"
+    #   debug "PAGE QUI NE CONTIENT PAS LE MESSAGE #{mess}:\n\n\n"
+    #   debug page.to_s.gsub(/</,'&lt;')
+    #   debug "\n\n\n"+("-"*80)+"\n\n\n"
+    # end
+
+    message_strict = if options[:strict]
+      "message"
+    else
+      "message ressemblant à"
     end
 
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
         result:           ok,
         positif:          !inverse,
-        on_success:       "La page affiche bien le message “#{mess}”.",
-        on_success_not:   "La page n'affiche pas de message “#{mess}” (OK).",
-        on_failure:       "La page devrait afficher le message “#{mess}” (#{mess_sup}).",
-        on_failure_not:   "La page ne devrait pas afficher le message “#{mess}”."
+        on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
+        on_success_not:   "La page n'affiche pas de #{message_strict} “#{mess}” (OK).",
+        on_failure:       "La page devrait afficher un #{message_strict} “#{mess}” (#{mess_sup}).",
+        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}”."
       ).evaluate
     else
       return ok
@@ -54,14 +61,20 @@ class Html
     # flash affichés dans la page
     mess_sup = ok ? "" : messages_flash_as_human(mess)
 
+    message_strict = if options[:strict]
+      "message d'erreur"
+    else
+      "message d'erreur ressemblant à"
+    end
+
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
         result:           ok,
         positif:          !inverse,
-        on_success:       "La page affiche bien le message d'erreur “#{mess}”.",
-        on_success_not:   "La page n'affiche pas le message d'erreur “#{mess}” (OK).",
-        on_failure:       "La page devrait afficher le message d'erreur “#{mess}” (#{mess_sup}).",
-        on_failure_not:   "La page ne devrait pas afficher le message d'erreur “#{mess}”."
+        on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
+        on_success_not:   "La page n'affiche pas un #{message_strict} “#{mess}” (OK).",
+        on_failure:       "La page devrait afficher le #{message_strict} “#{mess}” (#{mess_sup}).",
+        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}”."
       ).evaluate
     else
       return ok
@@ -90,6 +103,9 @@ class Html
   def has_tag? tag, options=nil, inverse=false
     has_tag(tag, (options||{}).merge(evaluate: false), inverse)
   end
+  # Message qui cherche tab avec les options
+  # Produit une failure ou un succès, sauf si :evaluate est false
+  # dans les options.
   def has_tag tag, options=nil, inverse=false
     debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
     options ||= Hash::new
@@ -109,6 +125,8 @@ class Html
     # On compte le nombre de balises qui peuvent répondre
     # à tag
     ok = page.css(tag).count >= ( options[:count] ||= 1 )
+
+    debug "OK Balise #{tag} trouvée : #{ok.inspect}"
 
 
     # Si +options+ définit :text; il faut chercher le texte
@@ -134,7 +152,8 @@ class Html
   end
 
   # Cherche le texte +text+ dans les balises définies par
-  # +tag+ avec les options +options+
+  # +tag+ avec les options +options+ et retourne le nombre
+  # de résultats trouvés.
   #
   # +text+        {String|RegExp} Le texte à rechercher
   #
@@ -146,7 +165,7 @@ class Html
   #
   # Retourne le nombre d'occurences trouvés (noter qu'il peut).
   # y en avoir plusieurs par balise.
-  def search_text_in_tag text, tag, options = nil
+  def search_text_in_tag tag, text, options = nil
     options ||= Hash::new
 
     # Le texte à trouver

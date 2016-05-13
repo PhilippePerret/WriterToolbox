@@ -18,22 +18,9 @@ test_form "user/signin", dform, "Le form login existe à l'adresse user/signin" 
 
 end
 
-test_form "user/login", dform, "Bon login d'un user" do |f|
+test_form "user/login", dform, "Un user peut se connecter avec un bon login" do |f|
 
   f.fill_and_submit
   f.has_message "Bienvenue, Phil"
 
 end
-
-#
-# test_form "user/login", dform, "Mauvais login d'un user" do |f|
-#   # form[:fields][:login_mail][:value] = ""
-#   f.fill_and_submit( login_mail: "" )
-#   f.has_error "Il faut fournir votre mail."
-#
-#   f.fill_and_submit(login_password: "")
-#   f.has_error "Il faut fournir votre mot de passe."
-#
-#   f.fill_and_submit(login_mail: "bad@mail.fr", login_password: "mauvaismotdepasse")
-#   f.has_error "Je ne vous reconnais pas. Merci d'essayer encore."
-# end

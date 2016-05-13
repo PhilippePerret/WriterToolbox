@@ -1,10 +1,32 @@
 # Implémentation
 
+* [Problèmes à résoudre](#problemearesoudre)
 * [Méthodes de tests des Files](#fichierdefinissantlesmethodesdetestdefile)
 * [Créer une nouvelle méthode de test](#creerunnouveautest)
   * [Définir le nouveau test (MÉTHODE-TEST)](#definitiondunouveautest)
   * [Définir l'OBJET-CASE](#definirlobjetcase)
 * [Aide pour cUrl](#aidepourcurl)
+
+<a name='problemearesoudre'></a>
+
+## Problèmes à résoudre
+
+PROBLÈME #1  : Le problème que j'ai rencontré était un problème de code HTML (la page complète, en retour d'une requête cUrl) qui n'était pas actualisée. Un premier appel sur `form.exist` vérifiait que le formulaire existait dans la page (en utilisant Nokogiri) puis on appelle une méthode form.fill_and_submit qui est soumise en cUrl et ensuite, la méthode form.has_message travaillait avec le premier code, pas celui retourné par `fill_and_submit`.
+
+> PROBLÈME #2 Note&nbsp;: Ci-dessus, il faudrait régler le problème du `form.has_message` qui n'est pas cohérent. On devrait pouvoir utiliser partout `page.has_message` (ou un autre nom que `page` pour ne pas interférer avec les méthodes existantes)
+
+Pour palier ce problème, j'ai modifié la méthode `execute` de la class `SiteHtml::TestSuite::CURL` en ajoutant&nbsp;:
+
+~~~ruby
+
+    # Dans ./lib/deep/deeper/module/test/request/cUrl.rb
+    owner.nokogiri_html= content
+
+~~~
+
+La méthode `nokogiri_html`, ici appartenant à la classe `SiteHtml::TestSuite::Form` par le module `ModuleRouteMethods` (`./lib/deep/deeper/module/test/first_required/module/route_methods.rb`) redéfinit `@nokogiri_html` et surtout initialise `@instance_test_html` qui oblige à réinitialiser l'instance `SiteHtml::TestSuite::Html` qui s'occupe des tests sur le code.
+
+---------------------------------------------------------------------
 
 <a name='fichierdefinissantlesmethodesdetestdefile'></a>
 
