@@ -36,6 +36,7 @@ class TestSuite
     "<hr>" + (
       "#{infos[:nombre_files]} fichier#{s_files}" +
       " | #{infos[:nombre_tests]} test#{s_tests}"+
+      " | #{infos[:nombre_cas]} cas"+
       " | durée : #{laps}" +
       " | folder: #{folder_test_path}" +
       " | #{infos[:nombre_files]} fichier#{s_files}" +
@@ -48,7 +49,8 @@ class TestSuite
       start_time:   nil,
       end_time:     nil,
       nombre_files: 0, # Nombre de fichiers
-      nombre_tests: 0
+      nombre_tests: 0,
+      nombre_cas:   0
     }
   end
 
@@ -73,18 +75,10 @@ class TestSuite
       div_filepath = "#{itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
       icase = 0
-      filetest_success_messages = testfile.success_atests.collect do |atest|
-        "#{itestfile}.#{icase += 1} - #{atest.libelle}".in_div(class:'tlib') +
-        atest.messages.collect do |itf, itt, message|
-          # Rappel :  itf est l'instance TestFile
-          #           itt est l'instance Atest
-          message.in_div(class:"mess")
-        end.join("\n")
-      end.join('').in_div(class:'atests')
 
-      icase
       filetest_failure_messages = testfile.failure_atests.collect do |atest|
-        nombre_messages = atest.messages.count
+        nombre_messages     = atest.messages.count
+        infos[:nombre_cas] += nombre_messages
         imessage = 0
         "#{itestfile}.#{icase += 1} - #{atest.libelle}".in_div(class:'tlib') +
         atest.messages.collect do |itf, itt, message|
@@ -93,6 +87,17 @@ class TestSuite
           imessage += 1
           css = imessage == nombre_messages ? 'err' : 'suc'
           message.in_div(class:"mess #{css}")
+        end.join("\n")
+      end.join('').in_div(class:'atests')
+
+      filetest_success_messages = testfile.success_atests.collect do |atest|
+        nombre_messages     = atest.messages.count
+        infos[:nombre_cas] += nombre_messages
+        "#{itestfile}.#{icase += 1} - #{atest.libelle}".in_div(class:'tlib') +
+        atest.messages.collect do |itf, itt, message|
+          # Rappel :  itf est l'instance TestFile
+          #           itt est l'instance Atest
+          message.in_div(class:"mess")
         end.join("\n")
       end.join('').in_div(class:'atests')
 
@@ -112,6 +117,9 @@ class TestSuite
     @nombre_failures = nombre_failures
     @nombre_success  = nombre_success
 
+    # Renseigner le nombre total de tests
+    infos[:nombre_tests] = nombre_success + nombre_failures
+
     @detail_failures = if nombre_failures > 0
       "Failures".in_h4(class:'red') + failure_messages
     else
@@ -124,50 +132,5 @@ class TestSuite
     end
 
   end
-
-  # def detail_failures
-  #   return "" if nombre_failures == 0
-  #   c = ""
-  #
-  #   c += failures.collect do |ifailure, tfile, atest|
-  #     div = "#{ifailure}. #{tfile.path}".in_div(class:'pfile red')
-  #     # Pour ne mettre que le dernier en erreur
-  #     message_count = atest.messages.count
-  #     imessage = 0
-  #     list_messages = atest.messages.collect do |itf, itt, message|
-  #       # Rappel :  itf est l'instance TestFile
-  #       #           itt est l'instance Atest
-  #       imessage += 1
-  #       message.in_div(class:'mess ' + (imessage == message_count ? 'err' : 'suc'))
-  #     end.join('')
-  #
-  #     (
-  #       div +
-  #       "#{ifailure}.#{icase += 1} - #{atest.libelle}".in_div(class:'tname err') +
-  #       list_messages
-  #     ).in_div(class:'atest err')
-  #     # div
-  #   end.join("\n")
-  # end
-  # def detail_success
-  #   return "" if nombre_success == 0
-  #   icase = 0
-  #   c = ""
-  #   c << "Succès".in_h4(class:'green') +
-  #   c += success.collect do |isuccess, tfile, atest|
-  #     div = "#{isuccess}. #{tfile.path}".in_div(class:'pfile')
-  #     (
-  #       div +
-  #       "#{isuccess}.#{icase += 1} #{atest.libelle}".in_div(class:'tname suc') +
-  #       atest.messages.collect do |itf, itt, message|
-  #         # Rappel :  itf est l'instance TestFile
-  #         #           itt est l'instance Atest
-  #         message.in_div(class:'mess suc')
-  #       end.join('')
-  #     ).in_div(class:'atest suc')
-  #     # div
-  #   end.join("\n")
-  # end
-
 end #/TestSuite
 end #/SiteHtml

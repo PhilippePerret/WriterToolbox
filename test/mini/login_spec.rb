@@ -35,8 +35,10 @@ end
 
 test_route "bad/route", "Test de mauvaise route" do |r|
   r.responds
+  r.has_tag('div#bonroute')
 end
 
 test_route "bad/autreroute", "Autre test de mauvaise route" do |r|
   r.responds
+  r.has_tag('div#bonroute')
 end

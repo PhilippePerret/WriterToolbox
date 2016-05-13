@@ -2,8 +2,11 @@
 div.tfile
   line-height   : 0.9em
   margin-bottom : 1em
-  &.err *
-    color     : red
+  &.err 
+    *
+      color     : red
+    div.mess.err
+      font-weight   : bold
   &.suc *
     color     : green
   // Div contenant le path du fichier courant

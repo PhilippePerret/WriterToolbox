@@ -49,8 +49,14 @@ class ATest
     rescue Exception => e
       # => Failure
       debug e
+      # On ajoute la failure.
+      # Noter que les réussites, elles, sont enregistrées au
+      # fur et à mesure par les messages renvoyés.
+      # La méthode `add_failure` définit aussi @has_failed qui
+      # permettra au fichier de savoir que c'est un échec.
       add_failure e.message
     end
+    # On ajoute le résultat de ce test au fichier
     file.add_test( self )
   end
 

@@ -32,7 +32,7 @@ module ModuleRouteMethods
   #
   def responds options = nil, inverse = false
     SiteHtml::TestSuite::Case::new(
-      result: request(request_only_header).ok?,
+      result:         request(request_only_header).ok?,
       positif:        !inverse,
       on_success:     "La page existe.",
       on_success_not: "La page n'existe pas (OK).",
