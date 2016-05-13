@@ -68,7 +68,7 @@ class TestSuite
 
       (
         div +
-        "#{atest.name}".in_div(class:'tname err') +
+        "#{ifailure}.#{icase += 1} - #{atest.libelle}".in_div(class:'tname err') +
         list_messages
       ).in_div(class:'atest err')
       # div
@@ -76,15 +76,14 @@ class TestSuite
   end
   def detail_success
     return "" if nombre_success == 0
+    icase = 0
     c = ""
     c << "Succès".in_h4(class:'green') +
     c += success.collect do |isuccess, tfile, atest|
       div = "#{isuccess}. #{tfile.path}".in_div(class:'pfile')
-      # debug "messages : #{arrmessage.inspect}"
-      # ifile, atest, message = arrmessage
       (
         div +
-        "#{atest.name}".in_div(class:'tname suc') +
+        "#{isuccess}.#{icase += 1} #{atest.libelle}".in_div(class:'tname suc') +
         atest.messages.collect do |itf, itt, message|
           # Rappel :  itf est l'instance TestFile
           #           itt est l'instance Atest

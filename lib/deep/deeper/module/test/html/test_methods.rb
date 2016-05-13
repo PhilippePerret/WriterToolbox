@@ -11,6 +11,24 @@ class TestSuite
 class Html
 
 
+  def has_tag tag, options, inverse = false
+    debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
+    options ||= Hash::new
+    ok = page.css(tag).count >= ( options[:count] ||= 1 )
+    SiteHtml::TestSuite::Case::new(
+      result:           ok,
+      positif:          !inverse,
+      on_success:       "La balise #{tag} existe dans la page.",
+      on_success_not:   "La balise #{tag} n'existe pas dans la page (OK).",
+      on_failure:       "La balise #{tag} devrait exister dans la page.",
+      on_failure_not:   "La balise #{tag} ne devrait pas exister dans la page."
+    ).evaluate
+  end
+
+  def has_not_tag tag, options = nil
+    has_tag tag, options, true
+  end
+
   def has_title titre, niveau = nil, options = nil, inverse = false
     # page.css("h#{niveau}").each do |tested|
     #   debug "tested : #{tested.text}"
@@ -49,24 +67,6 @@ class Html
   end
   def has_not_title titre, niveau = nil, options = nil
     has_title titre, niveau, options, true
-  end
-
-  def has_tag tag, options, inverse = false
-    debug "-> has_tag"
-    options ||= Hash::new
-    ok = page.css(tag).count >= ( options[:count] ||= 1 )
-    SiteHtml::TestSuite::Case::new(
-      result:           ok,
-      positif:          !inverse,
-      on_success:       "La balise #{tag} existe dans la page.",
-      on_success_not:   "La balise #{tag} n'existe pas dans la page (OK).",
-      on_failure:       "La balise #{tag} devrait exister dans la page.",
-      on_failure_not:   "La balise #{tag} ne devrait pas exister dans la page."
-    ).evaluate
-  end
-
-  def has_not_tag tag, options = nil
-    has_tag tag, options, true
   end
 
 

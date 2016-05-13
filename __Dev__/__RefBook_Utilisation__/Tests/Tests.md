@@ -3,10 +3,11 @@
 * [Introduction](#introductionteststest)
 * [Hiérarchie des éléments](#hierarchiedeselements)
 * [Messages de succès ou de failure](#ajoutermessagefailuresuccess)
+* [Méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [Les méthodes de test](#lesmethodesdetests)
+  * [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
   * [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
   * [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
-
 * [Aide pour cUrl](#aidepourcurl)
 
 Deux formes de tests sont possibles :
@@ -78,28 +79,12 @@ Où `args` est un `Hash` contenant :
                       ici, c'est un fichier, ça n'est pas à confondre avec
                       le "Case", le cas.
 
-<a name='lesmethodesdetests'></a>
-
-## Les méthodes de test
+---------------------------------------------------------------------
 
 
-<a name='methodesdetestderoute'></a>
+<a name='methodesmoduleroutemethodes'></a>
 
-
-### Méthodes de tests de route (méthodes-cases)
-
-Ce que j'appelle les "méthodes de tests de route", ce sont les méthodes qui testent une page particulière appelée par une route, donc une URL moins la partie local.
-
-Par exemple, si l'url complète est `http://www.atelier-icare.net/overview/temoignages` alors la route est `overview/temoignagnes`. Cette route peut également définir des variables après un "?".
-
-La formule de base du test d'une route est la suivante :
-
-        test_route "la/route?var=val"[, __LINE__] do |r|
-          r.<methode>
-          r.<methode> <parametres>
-        end
-
-Liste des méthodes :
+## Méthodes du module `ModuleRouteMethods`
 
 * [respond](#methoderesponds)
 * [has_title](#methodehastitle)
@@ -112,11 +97,11 @@ Liste des méthodes :
 
 Retourne très si la commande renvoie une page valide (code 200)
 
-        r.responds
+        responds
 
 Négatif :
 
-        r.not_responds
+        not_responds
 
 
 <a name='methodehastitle'></a>
@@ -127,7 +112,7 @@ Produit un succès si la page contient le titre spécifié, au niveau spécifié
 
 @syntaxe
 
-        r.has_title <titre>[, <niveau>][, <options>]
+        has_title <titre>[, <niveau>][, <options>]
 
 Négatif :
 
@@ -157,6 +142,75 @@ Négatif :
         r.has_not_tag "span", {text: /Bienvenue !/}
 
 
+
+
+---------------------------------------------------------------------
+
+
+<a name='lesmethodesdetests'></a>
+
+## Les méthodes de test
+
+
+---------------------------------------------------------------------
+
+<a name='optionsdefinmethodestest'></a>
+
+### Options de dernier agument de méthode-test
+
+On peut trouver en dernier argument des méthodes-test l'argument `options` qui permet de définir plusieurs choses. Par exemple :
+
+~~~ruby
+
+    test_form "user/login", dataform, "Test du login" do |f|
+      ...
+~~~
+
+Ci-dessus, c'est "Test du login" qui sera la valeur de `options` dans :
+
+~~~ruby
+
+    def test_form route, data = nil, options = nil
+      ...
+    end
+
+~~~
+
+Ce dernier argument peut être :
+
+* Un `String`. Dans ce cas, c'est simplement le libellé à donner au test dans le rapport.
+* Un `Hash` qui peut contenir ces valeurs :
+
+        libelle:      {String} "Le libellé du test"
+        line:         {Fixnum} Le numéro de ligne du test dans sa
+                      feuille de test (qu'on peut obtenir par __LINE__)
+                      
+---------------------------------------------------------------------
+
+<a name='methodesdetestderoute'></a>
+
+
+### Méthodes de tests de route (méthodes-cases)
+
+Ce que j'appelle les "méthodes de tests de route", ce sont les méthodes qui testent une page particulière appelée par une route, donc une URL moins la partie local.
+
+Par exemple, si l'url complète est `http://www.atelier-icare.net/overview/temoignages` alors la route est `overview/temoignagnes`. Cette route peut également définir des variables après un "?".
+
+La formule de base du test d'une route est la suivante :
+
+        test_route "la/route?var=val"[, options] do |r|
+          r.<methode>
+          r.<methode> <parametres>
+        end
+
+`options` peut être le libellé à donner au test (`String`) ou un `Hash` contenant : les [options de fin de méthode](#optionsdefinmethodestest)
+
+Liste des méthodes :
+
+Cet objet-test hérite de toutes les [méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
+
+---------------------------------------------------------------------
+
 <a name='methodesdetestsdeformulaire'></a>
 
 ## Méthodes-cases de l'objet-case formulaire
@@ -169,15 +223,21 @@ L'autre grande chose à faire avec les pages, c'est le remplissage de formulaire
 
         end
 
-Les `data` doivent permettre de remplir les champs du formulaire avec les valeurs proposées, sous la forme :
+Les `data` doivent permettre de trouver le formulaire et de remplir les champs du formulaire avec les valeurs proposées, sous la forme :
 
         {
-          'id ou name de champ' => {value: <valeur à donner> },
-          'id ou name de champ' => {value: <valeur à donner> }
+          id:     "ID du formulaire (if any)",
+          name:   "NAME du formulaire (if any)",
+          action: "ACTION du formulaire, if any",
+          fields: { # Champs du formulaire
+            'id ou name de champ' => {value: <valeur à donner> },
+            'id ou name de champ' => {value: <valeur à donner> }            
+          }
         }
 
 Toutes les méthodes-cases :
 
+Toutes les [méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [`exist` - test de l'existence du formulaire](#testexistenceformulaire)
 * [`fill` - remplissage du formulaire](#testremplissageformulaire)
 

@@ -20,34 +20,52 @@ class ATest
   # ce a-test.
   attr_reader :messages
 
-  # {String} Le nom du test, c'est-à-dire ce qu'il fait
-  attr_reader :name
+  # {String} Le nom du test par défaut, c'est-à-dire ce qu'il fait
+  # Pourra être remplacé par les définitions de `options`
+  attr_reader :default_name
+
+  # {String} Libellé qui peut être défini par les options.
+  # Noter que ce n'est pas celui-ci qui sera utilisé, c'est la
+  # méthode-property `libelle` qui est appelée.
+  attr_reader :test_libelle
 
   # {Hash} Les options, comme par exemple le numéro de ligne
   attr_reader :options
 
-  def initialize instance_file, tname, options = nil
-    @file     = instance_file
-    @name     = tname
-    @options  = options
-    @messages = Array::new
-
+  def initialize instance_file, def_name, options = nil
+    @file         = instance_file
+    @default_name = def_name
+    @options      = options
+    @messages     = Array::new
+    analyse_options
     # On le met automatique en atest courant pour la
     # gestion des cas
     ::SiteHtml::TestSuite::Case::current_atest = self
   end
 
-  def evaluate #proc
+  def evaluate
     begin
-      # # yield r
-      # proc.call
       yield
     rescue Exception => e
-      # => Failure de ce "ATest"
+      # => Failure
       debug e
       add_failure e.message
     end
     file.add_test( self )
+  end
+
+  # Retourne le libellé à donner à ce test
+  #
+  # Noter qu'on ajoute le nom par défaut (nom générique du
+  # test) sauf si +no_default_name+ est true
+  def libelle no_default_name = false
+    if test_libelle.nil?
+      default_name
+    else
+      libe = test_libelle
+      libe += "(TEST #{default_name})".in_div(class:'defname') unless no_default_name
+      libe
+    end
   end
 
   # Méthode pour ajouter un message au test courant.
@@ -67,6 +85,26 @@ class ATest
   def success?  ; !failed?            end
   def failed?   ; @has_failed == true end
 
+
+  # Pour parser le dernier argument envoyé à la méthode
+  # de test
+  def analyse_options
+    opts = @options
+    case opts
+    when NilClass
+      # Rien à faire
+      return
+    when Fixnum
+      @test_line = opts
+    when String
+      # Si le dernier argument est un string, c'est le libellé
+      # à donner au test.
+      @test_libelle = opts
+    when Hash
+      @test_libelle = opts[:libelle]  if opts.has_key?(:libelle)
+      @test_line    = opts[:line]     if opts.has_key?(:line)
+    end
+  end
 
 end #/ATest
 end #/TestFile

@@ -6,19 +6,12 @@ class Form
   # Les méthodes propres à tous les objets-case
   include ModuleObjetCaseMethods
 
-  # Les méthodes propres aux routes (dès que l'objet-case
-  # doit interagir avec la page)
-  include ModuleRouteMethods
-
-  # {String} La route pour rejoindre le formulaire
-  attr_reader :route
-
   # {Hash} Les données pour le formulaire
-  attr_reader :data
+  attr_reader :data_form
 
-  def initialize route, data
-    @route  = route
-    @data   = data
+  def initialize route, data = nil
+    @raw_route  = route
+    @data_form  = data
   end
 
 

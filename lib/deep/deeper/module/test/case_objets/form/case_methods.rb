@@ -3,11 +3,21 @@ class SiteHtml
 class TestSuite
 class Form
 
+  # Les méthodes propres aux routes (dès que l'objet-case
+  # doit interagir avec la page)
+  include ModuleRouteMethods
+
+
   # Produit un succès si le formulaire existe et qu'il contient
   # (intuitivement) les données définies. Produit une failure
   # dans le cas contraire.
   def exist
-
+    opts = Hash::new
+    responds # La page doit exister
+    [:id, :name, :action].each do |k|
+      opts.merge!(k => data_form[k]) if data_form.has_key?(k)
+    end
+    has_tag("form", opts)
   end
 
   # Remplit le formulaire avec les données spécifiées à l'instanciation
@@ -25,7 +35,7 @@ class Form
   def fill other_data = nil
     other_data ||= Hash::new
     soumettre = other_data.delete(:submit)
-    dform = data.merge(other_data)
+    dform     = data_form.merge(other_data)
 
 
   end
@@ -38,7 +48,7 @@ class Form
   def has_message mess, options = nil
 
   end
-  
+
 end #/Form
 end #/TestSuite
 end #/SiteHtml

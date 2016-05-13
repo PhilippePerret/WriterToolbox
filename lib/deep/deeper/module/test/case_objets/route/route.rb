@@ -13,10 +13,6 @@ class TestSuite
 class Route
 
   include ModuleObjetCaseMethods
-  
-  include ModuleRouteMethods
-
-  attr_reader :raw_route
 
   # +raw_route+ La route brut, qui peut contenir un query_string
   def initialize raw_route

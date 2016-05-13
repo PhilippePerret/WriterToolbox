@@ -46,7 +46,7 @@ Par exemple, pour teste un formulaire, j'ai utilisé :
 
 Ensuite, il faut définir le nombre de paramètres. Pour `test_route`, le seul paramètre nécessaire était la route, pour `test_form`, il faut la route et les données à envoyer :
 
-        test_form route, data
+        test_form route, data[, options_ou_libelle_ou_line]
 
 Dans la feuille de test, la méthode va donc ressembler à :
 
@@ -78,20 +78,32 @@ Pour notre test `test_form`, cet OBJET-CASE est un formulaire, on va faire la cl
 
     ~~~
 
-* On crée l'instanciation de l'objet-case. Ici, puisque nous avons 2 arguments transmis à `test_form`, ces deux arguments seront envoyés à l'instanciation :
+* On crée l'instanciation de l'objet-case. Ici, puisque nous avons 2 arguments transmis à `test_form`, ces deux arguments seront envoyés à l'instanciation. On charge plusieurs modules de méthodes pour cet objet-case, qui seront utiles plus tard :
 
     ~~~ruby
         ...
         class Form
 
-          attr_reader :route
-          attr_reader :data
+          # Normalement, doit être chargé par tout objet-case
+          include ModuleObjetCaseMethods
 
-          def initialize route, data
-            @route = route
-            @data  = data
+          # Quand il y a des routes/pages à gérer
+          include ModuleRouteMethods
+
+          # Inutile de définir `raw_route` ici car c'est déjà
+          # une variable définie dans le module ModuleRouteMethods
+          # attr_reader :raw_route
+
+          attr_reader :data_form
+
+          def initialize route, data = nil
+            @raw_route  = route
+            @data_form  = data
 
     ~~~
+
+    > Note : `raw_route` est un nom obligé car les méthodes du module
+    `ModuleRouteMethods` en ont besoin.
 
 * On crée les méthodes de case de cet objet-case. On les implémente dans un fichier `_/test/case_objets/form/case_methods.rb`.
 
@@ -106,7 +118,7 @@ Pour notre test `test_form`, cet OBJET-CASE est un formulaire, on va faire la cl
               ...
             end
 
-            def fill
+            def fill args = nil
               ...
             end
         ~~~
@@ -121,10 +133,21 @@ Pour notre test `test_form`, cet OBJET-CASE est un formulaire, on va faire la cl
 
         # Dans test/TestFile/test_methods.rb
 
+        # Note : Toutes 
         def test_form la_route, les_data, options = nil
-          f     = SiteHtml::TestSuite::Form::new(la_route, les_data)
-          atest = SiteHtml::TestSuite::ATest::new(self, "FORM #{f.url}")
+
+          # On crée l'objet-case propre à ce test
+          f = SiteHtml::TestSuite::Form::new(la_route, les_data)
+
+          # On crée une instance test qui permettra de gérer tous les
+          # succès et toutes les failures.
+          # Le 2e argument sera le nom par défaut à donner au test
+          # dans le cas où `options` ne le définirait pas.
+          atest = ATest::new(self, "FORM #{f.url}", options)
+
+          # On évalue le bloc de code de test_form
           atest.evaluate{ yield f }
+
         end
 
     ~~~
