@@ -4,7 +4,7 @@
 * [Créer une nouvelle méthode de test](#creerunnouveautest)
   * [Définir le nouveau test (MÉTHODE-TEST)](#definitiondunouveautest)
   * [Définir l'OBJET-CASE](#definirlobjetcase)
-
+* [Aide pour cUrl](#aidepourcurl)
 
 <a name='fichierdefinissantlesmethodesdetestdefile'></a>
 
@@ -133,7 +133,7 @@ Pour notre test `test_form`, cet OBJET-CASE est un formulaire, on va faire la cl
 
         # Dans test/TestFile/test_methods.rb
 
-        # Note : Toutes 
+        # Note : Toutes
         def test_form la_route, les_data, options = nil
 
           # On crée l'objet-case propre à ce test
@@ -151,3 +151,39 @@ Pour notre test `test_form`, cet OBJET-CASE est un formulaire, on va faire la cl
         end
 
     ~~~
+
+---------------------------------------------------------------------
+
+<a name='aidepourcurl'></a>
+
+## Aide pour cUrl
+
+Voir les pages :
+
+* [curl.haxx.se](https://curl.haxx.se/docs/httpscripting.html#Forms_explained)
+
+Cette aide `cUrl` doit permettre de rédiger de nouveaux tests.
+
+
+        Option -o "un/fichier"
+        Pour que la page retournée soit enregistrée dans un fichier
+        plutôt que retournée
+        Note : -O pour l'enregistrer dans le même nom de page
+
+        Option -I ou --head
+        Retourne seulement l'entête (HEADER). Permet de gagner en
+        rapidité pour certains tests.
+
+        Option -f
+        On peut ajouter `-f` pour que la page d'erreur ne soit
+        pas retournée en cas d'erreur (code 22)
+
+        Option -F
+        Pour simuler la soumission d'un formulaire
+        curl -F "name=\"Son nom\";prenom='Prénom'" example.com
+        Fichier uploadé :
+        curl -F "web=@index.html;type=text/html" example.com
+
+        req = 'curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"'
+
+        res = `curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"`

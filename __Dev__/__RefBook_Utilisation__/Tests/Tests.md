@@ -6,9 +6,9 @@
 * [Méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [Les méthodes de test](#lesmethodesdetests)
   * [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
+  * [Méthodes-case `methode`, `not_methode` et `methode?`](#hashashnotandinterrogation)
   * [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
   * [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
-* [Aide pour cUrl](#aidepourcurl)
 
 Deux formes de tests sont possibles :
 
@@ -99,10 +99,9 @@ Retourne très si la commande renvoie une page valide (code 200)
 
         responds
 
-Négatif :
+Négatif : `not_responds`
 
-        not_responds
-
+Sans évaluation : `responds?`
 
 <a name='methodehastitle'></a>
 
@@ -184,7 +183,29 @@ Ce dernier argument peut être :
         libelle:      {String} "Le libellé du test"
         line:         {Fixnum} Le numéro de ligne du test dans sa
                       feuille de test (qu'on peut obtenir par __LINE__)
-                      
+
+---------------------------------------------------------------------
+
+
+<a name='hashashnotandinterrogation'></a>
+
+### Méthodes-case `methode`, `not_methode` et `methode?`
+
+La plupart des méthodes de test possèdent trois états différents qui correspondent à trois actions et retours différents :
+
+La méthode "droite" ou "test-case"
+: C'est la méthode qui produit une évaluation, donc un succès ou une failure.
+: Par exemple : `has_titre`
+
+La méthode "inverse"
+: La méthode inverse fait le contraire de la méthode droite. Un "not" est ajouté à son nom.
+: Par exemple : `has_not_titre`
+
+La méthode "interrogation"
+: La méthode "interrogation" ne produit pas d'évaluation, elle retourne simplement `false` ou `true` en fonction du résultat.
+: Par exemple : `has_titre?`
+
+
 ---------------------------------------------------------------------
 
 <a name='methodesdetestderoute'></a>
@@ -239,7 +260,7 @@ Toutes les méthodes-cases :
 
 Toutes les [méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [`exist` - test de l'existence du formulaire](#testexistenceformulaire)
-* [`fill` - remplissage du formulaire](#testremplissageformulaire)
+* [`fill_and_submit` - remplissage du formulaire](#testremplissageformulaire)
 
 <a name='testexistenceformulaire'></a>
 
@@ -252,63 +273,58 @@ Toutes les [méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethod
     end
 ~~~
 
+Négatif&nbsp;: `not_exist`
+
+Sans évaluation&nbsp;: `exist?`
+
 <a name='testremplissageformulaire'></a>
 
-#### `fill` - remplissage du formulaire
+#### `fill_and_submit` - remplissage et soumission du formulaire
 
 ~~~ruby
 
     test_form "mon/formulaire", data_form do |f|
 
-      f.fill
+      f.fill_and_submit
 
     end
 ~~~
 
-Les données utilisées seront celles transmises dans `data_form` (enregistrées à l'instanciation du formulaire) mais on peut également en transmettre d'autres à la volée qui seront mergées avec les données originales. Par exemple :
+Données de formulaire :
+
+~~~ruby
+  data_form = {
+  
+    id: "ID du formulaire",
+    action: "ACTION/DU/FORMULAIRE", 
+    fields: {
+      <field_id>: {name: <field[name]>, value:"<field_value_expected_or_send>"},
+      <field id>: {name: <field[name2]>, value:"<field value expected or send>"},
+      etc.
+    }
+  }
+~~~
+
+> Note : La propriété `:name` est impérative pour les champs s'ils doivent être pris en compte pour la simulation de remplissage.
+
+Les données utilisées seront celles transmises dans `data_form` (enregistrées à l'instanciation du formulaire) mais on peut également en transmettre d'autres à la volée qui seront mergées DE FAÇON INTELLIGENTE (*) avec les données originales. Par exemple :
 
 ~~~ruby
 
     test_form "signup", data_signup do |f|
 
-      f.fill(pseudo: nil, submit: true)
+      f.fill_and_submit(pseudo: nil) # le :pseudo sera mis à nil
       f.has_error "Vous devez soumettre votre pseudo"
 
       ...
 
-      f.fill(password_confirmation: nil, submit: true)
+      f.fill_and_submit(password_confirmation: nil)
       f.has_error "La confirmation du mot de passe est requise."
 
 ~~~
 
----------------------------------------------------------------------
+(*) *DE FAÇON INTELLIGENTE* signifie qu'on peut définir simplement la valeur d'un champ sans mettre `dform[:fields][:id_du_field][:value] = "la valeur"`. Il suffit de faire :
 
-<a name='aidepourcurl'></a>
-
-## Aide pour cUrl
-
-Cette aide `cUrl` doit permettre de rédiger de nouveaux tests.
-
-
-        Option -o "un/fichier"
-        Pour que la page retournée soit enregistrée dans un fichier
-        plutôt que retournée
-        Note : -O pour l'enregistrer dans le même nom de page
-
-        Option -I ou --head
-        Retourne seulement l'entête (HEADER). Permet de gagner en
-        rapidité pour certains tests.
-
-        Option -f
-        On peut ajouter `-f` pour que la page d'erreur ne soit
-        pas retournée en cas d'erreur (code 22)
-
-        Option -F
-        Pour simuler la soumission d'un formulaire
-        curl -F "name=\"Son nom\";prenom='Prénom'" example.com
-        Fichier uploadé :
-        curl -F "web=@index.html;type=text/html" example.com
-
-        req = 'curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"'
-
-        res = `curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"`
+    id_du_field: "la valeur"
+    
+… et la méthode `fill_and_submit` comprendra qu'il s'agit du champ.
