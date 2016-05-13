@@ -12,7 +12,7 @@ dform = {
     login_password:  DATA_PHIL[:password]
   }
 }
-test_form "user/signin", dform, "Test du login d'un utilisateur" do |f|
+test_form "user/signin", dform, "Login correct d'un user" do |f|
 
   f.exist
   f.fill(submit: true)
@@ -21,7 +21,7 @@ test_form "user/signin", dform, "Test du login d'un utilisateur" do |f|
 end
 
 
-test_form "user/login", dform, "Test du mauvais login d'un utilisateur" do |f|
+test_form "user/login", dform, "Mauvais login d'un user" do |f|
   new_data = {submit: true}
   f.fill(new_data.merge(:login_mail => ""))
   f.has_error "Il faut fournir votre mail."
@@ -31,4 +31,12 @@ test_form "user/login", dform, "Test du mauvais login d'un utilisateur" do |f|
 
   f.fill(new_data.merge(login_mail: "bad@mail.fr", login_password: "mauvaismotdepasse"))
   f.has_error "Je ne vous reconnais pas. Merci d'essayer encore."
+end
+
+test_route "bad/route", "Test de mauvaise route" do |r|
+  r.responds
+end
+
+test_route "bad/autreroute", "Autre test de mauvaise route" do |r|
+  r.responds
 end

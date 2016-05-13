@@ -16,8 +16,13 @@ class TestSuite
 
   end #/<< self
 
-  attr_reader :failures
-  attr_reader :success
+  attr_reader :failures # OBSOLÈTE
+  attr_reader :success  # OBSOLÈTE
+
+  # Liste des instances TestFile des fichiers tests traités
+  attr_reader :test_files
+
+
   attr_reader :options
 
 
@@ -38,12 +43,21 @@ class TestSuite
   def run
     @failures           = Array::new
     @success            = Array::new
+    @test_files         = Array::new
     infos[:start_time]  = Time.now
     Dir["#{folder_test_path}/**/*_spec.rb"].each do |p|
       infos[:nombre_files] += 1
       # On passe le test en test courant
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
       @current.execute
+      # # On récupère les messages de succès
+      # @success  << @current.success_messages
+      # @failures << @current.failure_messages
+      # On mémorise ce fichier pour pouvoir le traiter à
+      # l'affichage. L'instance @current du fichier possède
+      # les propriété @success_messages et @failure_messages
+      # qui sont des listes d'instances ATest des tests passés
+      @test_files << @current
     end
     infos[:end_time]      = Time.now
     display_resultat

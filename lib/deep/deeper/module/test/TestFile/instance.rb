@@ -19,12 +19,20 @@ class TestFile
   # C'est le nom général, défini par exemple par `test_route`
   attr_reader :test_name
 
-  # {Fixnum} Indice des cas traités dans le test courant
+
+  # {Array} Liste des messages de succès. En fait, c'est une
+  # liste d'instances ATest
+  # La seconde liste contient les messages d'échec
+  attr_reader :success_atests
+  attr_reader :failure_atests
+
 
   # +tsuite+  SiteHtml::TestSuite courante (possédant ce fichier)
   def initialize tsuite, path
     @test_suite = tsuite
     @path       = path
+    @success_atests = Array::new
+    @failure_atests = Array::new
   end
 
   # = main =
@@ -47,11 +55,10 @@ class TestFile
   # méthode pour consigner les messages d'erreur (un seul) ou
   # de succès (plusieurs si plusieurs "lignes")
   def add_test atest
-    debug "-> TestSuite::TestFile#add_test"
     if atest.success?
-      test_suite.add_success(self, atest)
+      @success_atests << atest
     else
-      test_suite.add_failure(self, atest)
+      @failure_atests << atest
     end
   end
 
