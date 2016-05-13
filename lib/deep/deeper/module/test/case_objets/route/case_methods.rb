@@ -18,6 +18,9 @@ class SiteHtml
 class TestSuite
 class Route
 
+  # Produit un succès si la route retourne une page 200,
+  # produit une failure dans le cas contraire.
+  # 
   def responds options = nil, inverse = false
     SiteHtml::TestSuite::Case::new(
       result: request(request_only_header).ok?,

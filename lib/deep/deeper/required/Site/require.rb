@@ -33,12 +33,16 @@ class SiteHtml
   # +dossier+ Un path {String} ou un {SuperFile}
   # C'est pour le moment uniquement pour les tests qu'on a besoin
   # de +forcer+ qui load au lieu de requirer.
+  #
+  # Si le dossier contient un dossier `first_required`, il est chargé
+  # en tout premier lieu.
   def require_all_in dossier, forcer = false
     dossier = SuperFile::new(dossier) unless dossier.instance_of?(SuperFile)
-    # dossier.require
     if forcer
+      Dir["#{dossier}/first_required/**/*.rb"].each{|m| load m}
       Dir["#{dossier}/**/*.rb"].each{|m| load m}
     else
+      Dir["#{dossier}/first_required/**/*.rb"].each{|m| require m}
       Dir["#{dossier}/**/*.rb"].each{|m| require m}
     end
     page.add_css        Dir["#{dossier}/**/*.css"]

@@ -4,7 +4,9 @@
 * [Hiérarchie des éléments](#hierarchiedeselements)
 * [Messages de succès ou de failure](#ajoutermessagefailuresuccess)
 * [Les méthodes de test](#lesmethodesdetests)
-  * [Méthodes de tests de route](#methodesdetestderoute)
+  * [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
+  * [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
+
 * [Aide pour cUrl](#aidepourcurl)
 
 Deux formes de tests sont possibles :
@@ -35,9 +37,12 @@ Les tests non rspec servent principalement à tester l'application en intégrati
             Une instance de fichier de test
             qui est composée de "tests" :
 
-        SiteHtml::TestSuite::File::Test
+        SiteHtml::TestSuite::File::Test    METHODE-TEST
             Une instance de test, un cas, ce qui appelé un
-            "example" par RSpec
+            "example" par RSpec, c'est que j'appelle une
+            methode-test.
+            Une méthode-test travaille le plus souvent avec un
+            OBJET-CASE (ça peut être une route, un formulaire, etc.)
             qui utilise des méthodes qui produisent des "cases" :
 
         SiteHtml::TestSuite::Case
@@ -81,7 +86,7 @@ Où `args` est un `Hash` contenant :
 <a name='methodesdetestderoute'></a>
 
 
-### Méthodes de tests de route
+### Méthodes de tests de route (méthodes-cases)
 
 Ce que j'appelle les "méthodes de tests de route", ce sont les méthodes qui testent une page particulière appelée par une route, donc une URL moins la partie local.
 
@@ -152,12 +157,11 @@ Négatif :
         r.has_not_tag "span", {text: /Bienvenue !/}
 
 
-* [Méthodes de test de formulaire](#methodesdetestsdeformulaire)
 <a name='methodesdetestsdeformulaire'></a>
 
-## Méthodes de test de formulaire
+## Méthodes-cases de l'objet-case formulaire
 
-L'autre grande chose à faire avec les pages, c'est le remplissage de formulaires. La méthode ci-dessous est la méthode principale qui s'en charge :
+L'autre grande chose à faire avec les pages, c'est le remplissage de formulaires. La méthode-test ci-dessous est la méthode principale qui s'en charge :
 
         test_form "la/route", <data> do |f|
 
@@ -171,6 +175,51 @@ Les `data` doivent permettre de remplir les champs du formulaire avec les valeur
           'id ou name de champ' => {value: <valeur à donner> },
           'id ou name de champ' => {value: <valeur à donner> }
         }
+
+Toutes les méthodes-cases :
+
+* [`exist` - test de l'existence du formulaire](#testexistenceformulaire)
+* [`fill` - remplissage du formulaire](#testremplissageformulaire)
+
+<a name='testexistenceformulaire'></a>
+
+#### `exist` - Test de l'existence du formulaire
+
+~~~ruby
+
+    test_form "mon/formulaire", data do |f|
+      f.exist
+    end
+~~~
+
+<a name='testremplissageformulaire'></a>
+
+#### `fill` - remplissage du formulaire
+
+~~~ruby
+
+    test_form "mon/formulaire", data_form do |f|
+
+      f.fill
+
+    end
+~~~
+
+Les données utilisées seront celles transmises dans `data_form` (enregistrées à l'instanciation du formulaire) mais on peut également en transmettre d'autres à la volée qui seront mergées avec les données originales. Par exemple :
+
+~~~ruby
+
+    test_form "signup", data_signup do |f|
+
+      f.fill(pseudo: nil, submit: true)
+      f.has_error "Vous devez soumettre votre pseudo"
+
+      ...
+
+      f.fill(password_confirmation: nil, submit: true)
+      f.has_error "La confirmation du mot de passe est requise."
+
+~~~
 
 ---------------------------------------------------------------------
 

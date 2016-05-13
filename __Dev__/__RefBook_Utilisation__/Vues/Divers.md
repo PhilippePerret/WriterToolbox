@@ -1,6 +1,7 @@
 # Divers
 
 * [Balise title de page](#titledepage)
+
 <a name='titledepage'></a>
 
 ## Balise title de page

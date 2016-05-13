@@ -14,3 +14,5 @@ Une méthode pratique, qui fonctionne comme `require_relative` mais en renvoyant
     retournera :
 
       "./dans/mon/dossier/autre_fichier.erb"
+
+Noter qu'ELLE NE FONCTIONNE PAS dans les vues ERB.
