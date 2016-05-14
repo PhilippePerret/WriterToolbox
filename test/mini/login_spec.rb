@@ -7,8 +7,9 @@ test_route "" do
   description "La page d'accueil répond et contient les éléments valides."
   responds
   html.has_tag('section#header')
-  # html.has_tag('section#content')
-  # html.has_tag('section#footer')
+  html.has_tag('section#content')
+  html.has_tag('section#footer')
+  html.has_tag('babar#notfound')
 end
 
 # require './data/secret/data_phil'

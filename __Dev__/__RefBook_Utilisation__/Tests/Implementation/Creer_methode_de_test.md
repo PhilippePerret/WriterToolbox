@@ -52,6 +52,8 @@ On utilise un **DSL** particulier.
         SiteHtml::TestSuite::TestForm::new self, param1... paramN, &bloc
       end
 
+  Ne pas oublier le `self` comme premier argument qui fait référence au fichier de test
+
 * lire les méthodes de la classe `DSLTestClass` dans `./lib/deep/deeper/module/test/first_required/dsl/DSLTestClass.rb` pour se souvenir des méthodes héritées, à commencer par `html`, qui permet d'avoir accès à tout le code de la dernière requête,
 * définir une **description par défaut** dans la méthode `description_defaut` de la classe,
 

@@ -10,13 +10,15 @@ class DSLTestClass
   # Sortie des messages
   def messages_output
     c = String::new
-    c += success_messages.collect do |mess|
-      mess.in_div(class:'suc')
-    end.join('')
-    c += failure_messages.collect do |mess|
-      mess.in_div(class:'err')
-    end.join('')
+    c += as_div_list success_messages, 'suc'
+    c += as_div_list failure_messages, 'err'
     c.in_div(class:"#{success? ? 'suc' : 'err'}")
+  end
+
+  # Transforme la liste des messages +liste_mess+ en
+  # string de div tcase
+  def as_div_list liste_mess, css
+    liste_mess.collect do |mess| "• #{mess}".in_div(class:"tcase #{css}") end.join('')
   end
 
 

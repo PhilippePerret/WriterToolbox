@@ -1,0 +1,320 @@
+# encoding: UTF-8
+=begin
+
+SiteHtml::Test::Html
+
+Pour le traitement des codes Html
+
+=end
+class SiteHtml
+class TestSuite
+class HTML
+
+  include ModuleCaseTestMethods
+
+
+  # has_tag
+  # has_tags
+  # has_tag?
+  # has_tags?
+  # has_not_tag
+  # has_not_tags
+  #
+  # Message qui cherche tab avec les options
+  # Produit une failure ou un succès, sauf si :evaluate est false
+  # dans les options.
+  def has_tag tag, options=nil, inverse=false
+    # debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
+    options ||= Hash::new
+
+    tag_init = tag.freeze
+
+    # On modifie +tag+ en fonction des données d'options
+    # éventuelle
+    {
+      # Note : `pref`, ci-dessous, ne sert à rien
+      id:     {pref:'#', value:"##{options[:id]}"},
+      class:  {pref:'.', value:".#{options[:class]}"}
+    }.each do |prop, dprop|
+      tag += dprop[:value] if options.has_key?(prop) && options[prop]!=nil
+    end
+
+    # On compte le nombre de balises qui peuvent répondre
+    # à tag
+    # ok = page.css(tag).count >= ( options[:count] ||= 1 )
+    tags = page.css( tag )
+    ok = if options[:count]
+      tags.count == options[:count]
+    else
+      tags.count >= 1
+    end
+
+    # Si +options+ définit :text; il faut chercher le texte
+    # dans les balises remontées
+    if ok && options.has_key?(:text) && options[:text] != nil
+      nombre_iterations = search_text_in_tags(tags, options[:text], options)
+      ok = 0 < nombre_iterations
+    else
+      nombre_iterations = tags.count
+    end
+
+    # Pour indiquer le nombre de fois où la balise devait
+    # être trouvées
+    mess_count = if options[:count]
+      " #{options[:count]} fois"
+    else
+      ""
+    end
+
+    message_on_failure = if !ok
+      if options[:count] && (options[:count] != nombre_iterations)
+        "La balise `#{tag}` devrait exister#{mess_count} dans la page (elle existe #{nombre_iterations} fois)."
+      else
+        "La balise `#{tag}` devrait exister#{mess_count} dans la page."
+      end
+    else
+      nil
+    end
+
+    # Soit on crée une évaluation, soit on retourne simplement
+    # le résultat (quand options[:evaluate] == false)
+    unless options[:evaluate] === false
+      SiteHtml::TestSuite::Case::new(
+        tmethod,
+        result:           ok,
+        positif:          !inverse,
+        on_success:       "La balise #{tag} existe#{mess_count}.",
+        on_success_not:   "La balise #{tag} n'existe pas#{mess_count} (OK).",
+        on_failure:       message_on_failure,
+        on_failure_not:   "La balise #{tag} ne devrait pas exister#{mess_count}."
+      ).evaluate
+    else
+      return ok
+    end
+  end
+  def has_tag? tag, options=nil, inverse=false
+    has_tag(tag, (options||{}).merge(evaluate: false), inverse)
+  end
+  def has_tags arr, options=nil
+    evaluate_as_pluriel :has_tag, arr, options
+  end
+  def has_tags? arr, options=nil
+    evaluate_as_pluriel :has_tag?, arr, options
+  end
+  def has_not_tag tag, options = nil
+    has_tag tag, options, true
+  end
+  def has_not_tags arr, options=nil
+    evaluate_as_pluriel :has_not_tag, arr, options
+  end
+
+  # has_message
+  # has_not_message
+  # has_message?
+  # has_messages
+  # has_not_messages
+  # has_messages?
+  # has_not_messages?
+  def has_message mess, options = nil, inverse = false
+    options ||= Hash::new
+    ok = has_tag?("div#flash div.notice", options.merge!(text: mess))
+    # Message supplémentaire indiquant les messages
+    # flash affichés dans la page
+    mess_sup = ok ? "" : messages_flash_as_human(mess)
+
+    message_strict = if options[:strict]
+      "message"
+    else
+      "message ressemblant à"
+    end
+
+    unless options[:evaluate] === false
+      SiteHtml::TestSuite::Case::new(
+        tmethod,
+        result:           ok,
+        positif:          !inverse,
+        on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
+        on_success_not:   "La page n'affiche pas de #{message_strict} “#{mess}” (OK).",
+        on_failure:       "La page devrait afficher un #{message_strict} “#{mess}” (#{mess_sup}).",
+        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}”."
+      ).evaluate
+    else
+      return ok
+    end
+  end
+  # Méthode-?
+  def has_message? mess, options = nil, inverse = false
+    options ||= Hash::new
+    options.merge!(evaluate: false)
+    has_message(mess, options, inverse)
+  end
+  # Méthode négative
+  def has_not_message mess, options=nil
+    has_message mess, options, true
+  end
+  # Méthode plurielle
+  def has_messages arr, options=nil
+    evaluate_as_pluriel :has_message, arr, options
+  end
+  def has_not_messages arr, options=nil
+    evaluate_as_pluriel :has_not_message, arr, options
+  end
+
+  def has_error mess, options = nil, inverse = false
+    options ||= Hash::new
+
+    ok = has_tag?("div#flash div.error", options.merge!(text: mess))
+
+    # Message supplémentaire indiquant les messages
+    # flash affichés dans la page
+    mess_sup = ok ? "" : messages_flash_as_human(mess)
+
+    message_strict = if options[:strict]
+      "message d'erreur"
+    else
+      "message d'erreur ressemblant à"
+    end
+
+    unless options[:evaluate] === false
+      SiteHtml::TestSuite::Case::new(
+        tmethod,
+        result:           ok,
+        positif:          !inverse,
+        on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
+        on_success_not:   "La page n'affiche pas un #{message_strict} “#{mess}” (OK).",
+        on_failure:       "La page devrait afficher le #{message_strict} “#{mess}” (#{mess_sup}).",
+        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}”."
+      ).evaluate
+    else
+      return ok
+    end
+  end
+  def has_not_error mess, options=nil
+    has_error mess, options, inverse=true
+  end
+  def has_errors arr, options=nil
+    evaluate_as_pluriel :has_error, arr, options
+  end
+  def has_not_errors arr, options=nil
+    evaluate_as_pluriel :has_not_error, arr, options
+  end
+  def has_error? mess, options = nil, inverse = false
+    options ||= Hash::new
+    options.merge!(evaluate: false)
+    has_error(mess, options, inverse)
+  end
+
+  # Retourne true si le code contient le div#flash qui
+  # contient les messages de l'application RestSite
+  def has_flash_tag?
+    has_tag( 'div#flash', evaluate: false )
+  end
+  def has_flash_message?
+    has_tag( 'div#flash div.notice', evaluate: false ) || has_tag( 'div#flash div.message', evaluate: false )
+  end
+  def has_flash_error?
+    has_tag( 'div#flash div.error', evaluate: false )
+  end
+
+  def has_title titre, niveau = nil, options = nil, inverse = false
+    # page.css("h#{niveau}").each do |tested|
+    #   debug "tested : #{tested.text}"
+    # end
+    options ||= Hash::new
+
+    # Faut-il prendre exactement le titre
+    unless titre.instance_of?(RegExp)
+      titre = if options[:strict]
+        /#{Regexp::escape titre}/oi
+      else
+        /^#{Regexp::escape titre}$/o
+      end
+    end
+    niveaux = niveau ? [niveau] : (1..6)
+
+    # On cherche le titre
+    found = false
+    niveaux.each do |niv|
+      page.css("h#{niv}").each do |tested|
+        if tested.text.match titre
+          found == true
+          break
+        end
+      end
+    end
+
+    SiteHtml::TestSuite::Case::new(
+      tmethod,
+      result:           found == true,
+      positif:          !inverse,
+      on_success:       "Le titre #{tag} “#{titre_init}” existe dans la page.",
+      on_success_not:   "Le titre #{tag} “#{titre_init}” n'existe pas dans la page (OK).",
+      on_failure:       "Le titre #{tag} “#{titre_init}” devrait exister dans la page.",
+      on_failure_not:   "Le titre #{tag} “#{titre_init}” ne devrait pas exister dans la page."
+    ).evaluate
+  end
+  # Retourne TRUE si le titre est trouvé
+  def has_title? titre, niveau=nil, options=nil, inverse=false
+    options ||= Hash::new
+    options.merge!(evaluate: false)
+    has_title(titre, niveau, options, inverse)
+  end
+  def has_titles arr, options=nil
+    evaluate_as_pluriel :has_title, arr, options
+  end
+  def has_titles? arr, options=nil
+    evaluate_as_pluriel :has_title?, arr, options
+  end
+  def has_not_title titre, niveau = nil, options = nil
+    has_title titre, niveau, options, true
+  end
+  def has_not_titles arr, options=nil
+    evaluate_as_pluriel :has_not_title, arr, options
+  end
+  def has_not_titles? arr, options=nil
+    evaluate_as_pluriel :has_not_title?, arr, options
+  end
+
+
+  # Cherche le texte +text+ dans les balises définies par
+  # +tag+ avec les options +options+ et retourne le nombre
+  # de résultats trouvés.
+  #
+  # +text+        {String|RegExp} Le texte à rechercher
+  #
+  # +options+
+  #   :several    Mettre à true pour chercher le texte plusieurs
+  #               seule fois (false par défaut)
+  #   :strict     Si true, recherche le texte strictement dans la
+  #               balise (false par défaut)
+  #
+  # Retourne le nombre d'occurences trouvés (noter qu'il peut).
+  # y en avoir plusieurs par balise.
+  def search_text_in_tag tag, text, options=nil
+    search_text_in_tags page.css(tag), text, options
+  end
+  def search_text_in_tags tags, text, options=nil
+    options ||= Hash::new
+
+    # Le texte à trouver
+    unless text.instance_of?(Regexp)
+      text = if options[:strict]
+        /^#{text}$/o
+      else
+        /#{text}/oi
+      end
+    end
+
+    nombre_found = 0
+    tags.each do |tested|
+      if 0 < (nb = tested.text.scan(text).count)
+        nombre_found += nb
+        return nb unless options[:several] == true
+      end
+    end
+    return nombre_found
+  end
+
+end #/Html
+end #/TestSuite
+end #/SiteHtml

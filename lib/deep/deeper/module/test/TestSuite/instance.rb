@@ -45,18 +45,15 @@ class TestSuite
     @success            = Array::new
     @test_files         = Array::new
     infos[:start_time]  = Time.now
+
+    test_files = Dir["#{folder_test_path}/**/*_spec.rb"]
+    debug "Fichiers tests : #{test_files.join(', ')}"
     Dir["#{folder_test_path}/**/*_spec.rb"].each do |p|
       infos[:nombre_files] += 1
       # On passe le test en test courant
+      debug "\n--- Test fichier #{p}"
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
       @current.execute
-      # # On récupère les messages de succès
-      # @success  << @current.success_messages
-      # @failures << @current.failure_messages
-      # On mémorise ce fichier pour pouvoir le traiter à
-      # l'affichage. L'instance @current du fichier possède
-      # les propriété @success_messages et @failure_messages
-      # qui sont des listes d'instances ATest des tests passés
       @test_files << @current
     end
     infos[:end_time]      = Time.now

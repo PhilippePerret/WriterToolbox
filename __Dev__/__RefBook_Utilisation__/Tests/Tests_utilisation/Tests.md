@@ -6,13 +6,10 @@
 * [Liste des méthodes de test](#listemethodesdetest)
   * [Méthode de test `test_route`](#methodetesttestroute)
   * [Méthode de test `test_form`](#methodedetesttestform)
-
-
-
 * [Méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [Les méthodes de test](#lesmethodesdetests)
-  * [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
-  * [Méthodes-case `methode`, `not_methode` et `methode?`](#hashashnotandinterrogation)
+  * [Options de dernier argument de méthode-test](#optionsdefinmethodestest)
+  * [Méthodes-case `methode`, `not_methode`, `methode?` et `methodeS`](#hashashnotandinterrogation)
   * [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
   * [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
 
@@ -51,7 +48,7 @@ Les tests non rspec servent principalement à tester l'application en intégrati
           ...
         end
     
-    … qui contient la méthode de cas `responds`&nbsp;:
+    … qui contient la méthode de cas `responds` :
     
         test_form "user/signin", fdata do
           responds
@@ -68,7 +65,7 @@ Les tests non rspec servent principalement à tester l'application en intégrati
           (cf. le fichier Tests_implementation.md pour le détail)
     Les méthodes de case
           … sont définis dans un fichier `case_methods.rb` dans le dossier
-          de leur méthode de test&nbsp;:
+          de leur méthode de test :
                       ./lib/deep/deeper/module/test/Test_methods/<test method>/
 
         SiteHtml::TestSuite
@@ -108,15 +105,15 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 
 Un test se crée dans une “feuille de test”.
 
-* Créer la feuille de test (le fichier) dans un sous-dossier du dossier `./test`&nbsp;;
-* choisir la “méthode-test” à utiliser (il peut y en avoir plusieurs par feuille de test). Par exemple&nbsp;:
+* Créer la feuille de test (le fichier) dans un sous-dossier du dossier `./test` ;
+* choisir la “méthode-test” à utiliser (il peut y en avoir plusieurs par feuille de test). Par exemple :
 
         test_route "une/route" do
         
         end
         
     Vous pouvez trouver dans ce document la [liste de toutes les méthodes de test](#listemethodesdetest).
-* une description par défaut existe pour toutes les méthodes de test mais on peut définir une description plus appropriée à l'aide de `description`&nbsp;:
+* une description par défaut existe pour toutes les méthodes de test mais on peut définir une description plus appropriée à l'aide de `description` :
 
         test_route "une/route" do
           description "Ceci est un test de la route “une/route”"
@@ -152,7 +149,7 @@ Pour tester une route, donc une adresse URL et la page retournée.
 
     test_route "" do
       description "Le test de la page d'accueil du site"
-      html.has_titre("Bienvenue&nbsp;!", niveau: 1)
+      html.has_titre("Bienvenue !", niveau: 1)
     end
     
 <a name='methodedetesttestform'></a>
@@ -177,9 +174,9 @@ Permet de tester la soumission d'un formulaire.
       ...
     end
 
-Noter que puisque cette méthode de test hérite des méthodes de test de la route, on peut aussi bien tester la validité du formulaire en lui-même —&nbsp;en tant qu'objet DOM&nbsp;— que son efficacité lorsqu'on le soumet avec des données valides ou non. 
+Noter que puisque cette méthode de test hérite des méthodes de test de la route, on peut aussi bien tester la validité du formulaire en lui-même — en tant qu'objet DOM — que son efficacité lorsqu'on le soumet avec des données valides ou non. 
 
-Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `RestSite` classique, on utilise la route `user/signin` pour atteindre le formulaire d'identification tandis qu'on utilise la route `user/login` pour identifier l'user en soumettant ce questionnaire. Donc on aura&nbsp;:
+Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `RestSite` classique, on utilise la route `user/signin` pour atteindre le formulaire d'identification tandis qu'on utilise la route `user/login` pour identifier l'user en soumettant ce questionnaire. Donc on aura :
 
     test_form "user/signin", data_form do
       # Test de la conformité du formulaire affiché
@@ -202,9 +199,10 @@ Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `
 
 ## Méthodes de cas du module `ModuleRouteMethods`
 
-* [respond](#methoderesponds)
-* [has_title](#methodehastitle)
-* [has_tag](#methodtesthastag)
+* [respond & dérivées](#methoderesponds)
+* [has_tag & dérivées](#methodtesthastag)
+* [has_title & dérivées](#methodehastitle)
+* [`has_message` & dérivées](#casemethodhasmessage)
 
 
 <a name='methoderesponds'></a>
@@ -219,6 +217,13 @@ Négatif : `not_responds`
 
 Sans évaluation : `responds?`
 
+        Formes
+    ---------------------------------------------------------------------
+      Negative        simple évaluation     plurielle
+      
+      not_responds    responds?              ---
+
+
 <a name='methodehastitle'></a>
 
 #### `has_title`
@@ -229,9 +234,24 @@ Produit un succès si la page contient le titre spécifié, au niveau spécifié
 
         has_title <titre>[, <niveau>][, <options>]
 
-Négatif :
+        Formes
+    ---------------------------------------------------------------------
+      Negative        simple évaluation     plurielle
+      
+      has_not_title   has_title?            has_titles
 
-        has_not_title
+<a name='casemethodhasmessage'></a>
+
+## `has_message`
+
+    has_message <message>[, <options>]
+    
+        Formes
+    ---------------------------------------------------------------------
+      Negative          simple évaluation     plurielle
+      
+      has_not_message   has_message?          has_messages
+
 
 <a name='methodtesthastag'></a>
 
@@ -242,19 +262,27 @@ Produit un succès si la page contient le tag spécifié.
 @syntaxe
 
         r.has_tag <tag>[, <options>]
+        
+        ou
+        
+        r.has_tag( [<tag>, <tag>, <tag>] ) # test une liste de balises
 
-Négatif :
 
-        has_not_tag
+        Formes
+    ---------------------------------------------------------------------
+      Negative        simple évaluation     plurielle
+      
+      has_not_tag     has_tag?              has_tags
 
 
 @exemples
 
-        r.has_tag "div#mondiv.soncss"
-
-        r.has_tag "div", {id:"mondiv", class:'soncss'}
-
-        r.has_not_tag "span", {text: /Bienvenue !/}
+    test_route "ma/route" do
+      html.has_tag "div#mondiv.soncss"
+      html.has_tag "div", {id:"mondiv", class:'soncss'}
+      html.has_not_tag "span", {text: /Bienvenue !/}
+      html.has_tags(['div#premier', 'div#deuxieme', 'div#troisieme'])
+    end
 
 
 
@@ -305,22 +333,43 @@ Ce dernier argument peut être :
 
 <a name='hashashnotandinterrogation'></a>
 
-### Méthodes-case `methode`, `not_methode` et `methode?`
+### Méthodes-case `methode`, `not_methode`, `methode?` et `methodeS`
 
-La plupart des méthodes de test possèdent trois états différents qui correspondent à trois actions et retours différents :
+La plupart des méthodes de test possèdent QUATRE états différents qui correspondent à quatre actions et retours différents :
 
-La méthode "droite" ou "test-case"
+La méthode DROITE ou "test-case"
 : C'est la méthode qui produit une évaluation, donc un succès ou une failure.
 : Par exemple : `has_titre`
 
-La méthode "inverse"
-: La méthode inverse fait le contraire de la méthode droite. Un "not" est ajouté à son nom.
+La méthode INVERSE ou "not-méthode"
+: La méthode inverse fait le contraire de la méthode droite. Un "not" est ajouté à son nom, soit au début, soit au milieu.
 : Par exemple : `has_not_titre`
 
 La méthode "interrogation"
-: La méthode "interrogation" ne produit pas d'évaluation, elle retourne simplement `false` ou `true` en fonction du résultat.
+: La méthode "interrogation" ne produit pas d'évaluation (ie pas de message de failure ou de success), elle retourne simplement `false` ou `true` en fonction du résultat.
 : Par exemple : `has_titre?`
 
+Les méthodes "plurielles"
+: La méthode "pluriel" répète pour chaque élément qu'elle reçoit un test-case de son type.
+: Par exemple, la méthode `has_tags` attend une liste de liste d'attributs pour `has_tag`. La méthode `has_not_tags` attend une liste d'attributs qui ne doivent pas exister dans la page.
+
+Note : Noter que chaque élément de cette liste peut être soit une liste d'argument soit un argument seul :
+
+    has_tags ["premier#tag", "div#interieur"]
+    
+    has_tags [
+      ["span", {class: "sacss", count:5}],
+      "div#seul"
+    ]
+    
+    # Avec un dernier argument options
+    has_tags ["span#unnom", "span#unautre"], {class:'unspan'}
+    # Le dernier argument sera utilisé pour tous les appels. Donc cette
+    # méthodes produira&nbsp;:
+    
+        has_tag("span#unnom", {class:'unspan'})
+        has_tag("span#unautre", {class:'unspan'})
+    
 
 ---------------------------------------------------------------------
 
@@ -354,9 +403,9 @@ Cet objet-test hérite de toutes les [méthodes du module `ModuleRouteMethods`](
 
 L'autre grande chose à faire avec les pages, c'est le remplissage de formulaires. La méthode-test ci-dessous est la méthode principale qui s'en charge :
 
-        test_form "la/route", <data> do |f|
+        test_form "la/route", <data> do
 
-          f.<methode>
+          <case-methode>
 
         end
 
@@ -389,9 +438,11 @@ Toutes les [méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethod
     end
 ~~~
 
-Négatif&nbsp;: `not_exist`
+    Formes
+    Negative        simple évaluation     plurielle
+      
+    not_exist       exist?                  ---
 
-Sans évaluation&nbsp;: `exist?`
 
 <a name='testremplissageformulaire'></a>
 

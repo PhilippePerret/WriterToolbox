@@ -6,6 +6,11 @@
 =end
 class DSLTestClass
 
+  if defined?(ModuleCaseTestMethods)
+    # Sinon, il sera inclus après le chargement du module
+    include ModuleCaseTestMethods
+  end
+
   # Pour décrire plus précisément le test
   def description str = nil
     if str.nil?
