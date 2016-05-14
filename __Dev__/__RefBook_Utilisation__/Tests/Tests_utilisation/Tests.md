@@ -2,7 +2,13 @@
 
 * [Introduction](#introductionteststest)
 * [Hiérarchie des éléments](#hierarchiedeselements)
-* [Messages de succès ou de failure](#ajoutermessagefailuresuccess)
+* [Implémentation du test](#implementation_du_test)
+* [Liste des méthodes de test](#listemethodesdetest)
+  * [Méthode de test `test_route`](#methodetesttestroute)
+  * [Méthode de test `test_form`](#methodedetesttestform)
+
+
+
 * [Méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [Les méthodes de test](#lesmethodesdetests)
   * [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
@@ -14,6 +20,8 @@ Deux formes de tests sont possibles :
 
 * les tests `RSpec` traditionnels. Cf. le fichier `RSpec.md`,
 * les tests propres à RestSite.
+
+Ce document ne décrit que les seconds tests.
 
 <a name='introductionteststest'></a>
 
@@ -59,25 +67,98 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 
         SiteHtml::TestSuite::Request
 
-<a name='ajoutermessagefailuresuccess'></a>
+<a name='implementation_du_test'></a>
 
-## Messages de succès ou de failure
+## Implémentation du test
 
-Pour ajouter des messages, utiliser les méthodes :
+Un test se crée dans une “feuille de test”.
 
-        test_success <args>
+* Créer la feuille de test (le fichier) dans un sous-dossier du dossier `./test`&nbsp;;
+* choisir la “méthode-test” à utiliser (il peut y en avoir plusieurs par feuille de test). Par exemple&nbsp;:
 
-        test_failure <args>
+        test_route "une/route" do
+        
+        end
+        
+    Vous pouvez trouver dans ce document la [liste de toutes les méthodes de test](#listemethodesdetest).
+* une description par défaut existe pour toutes les méthodes de test mais on peut définir une description plus appropriée à l'aide de `description`&nbsp;:
 
-Où `args` est un `Hash` contenant :
+        test_route "une/route" do
+          description "Ceci est un test de la route “une/route”"
+          
+        end
 
-        message:      Le message d'erreur ou de succès à afficher
-        test_name:    Le nom du test
-        test_line:    [optionnel] La ligne du test
-        itest:        [optionnel] L'instance SiteHtml::Test du test
-                      Par défaut, le test courant (rappel : un test,
-                      ici, c'est un fichier, ça n'est pas à confondre avec
-                      le "Case", le cas.
+---------------------------------------------------------------------
+
+
+<a name='listemethodesdetest'></a>
+
+## Liste des méthodes de test
+
+Les “méthodes de test” sont les objets supérieurs des feuilles de test.
+
+
+
+<a name='methodetesttestroute'></a>
+
+### Méthode de test `test_route`
+
+Pour tester une route, donc une adresse URL et la page retournée.
+
+@usage
+
+    test_route <route>[, <option>] do
+      <test>
+      <test>
+      ...
+    end
+    
+@exemple
+
+    test_route "" do
+      description "Le test de la page d'accueil du site"
+      html.has_titre("Bienvenue&nbsp;!", niveau: 1)
+    end
+    
+<a name='methodedetesttestform'></a>
+
+### Méthode de test `test_form`
+
+Permet de tester la soumission d'un formulaire.
+
+@usage
+
+    test_form <route>, <data formulaire>[, options] do
+      <test>
+      <test>
+      ...
+    end
+
+@exemple
+
+    test_form "user/login", data_login do
+      description "Un user peut s'identifier avec des données valides"
+      fill_and_submit
+      ...
+    end
+
+Noter que puisque cette méthode de test hérite des méthodes de test de la route, on peut aussi bien tester la validité du formulaire en lui-même —&nbsp;en tant qu'objet DOM&nbsp;— que son efficacité lorsqu'on le soumet avec des données valides ou non. 
+
+Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `RestSite` classique, on utilise la route `user/signin` pour atteindre le formulaire d'identification tandis qu'on utilise la route `user/login` pour identifier l'user en soumettant ce questionnaire. Donc on aura&nbsp;:
+
+    test_form "user/signin", data_form do
+      # Test de la conformité du formulaire affiché
+      # La donnée +data_form+ permet de voir les champs à tester
+    end
+    
+    test_form "user/login", data_form do
+      # Test du résultat du login, c'est-à-dire du contenu de la page
+      # et autre effet après soumission du formulaire avec les données
+      # contenues dans +data_form+
+      
+    end
+
+
 
 ---------------------------------------------------------------------
 

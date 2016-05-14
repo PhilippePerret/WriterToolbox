@@ -16,7 +16,7 @@
 =end
 class SiteHtml
 class TestSuite
-class Route
+class TestRoute < DSLTestClass
 
   include ModuleRouteMethods
 

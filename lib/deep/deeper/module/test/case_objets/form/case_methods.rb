@@ -1,19 +1,12 @@
 # encoding: UTF-8
 class SiteHtml
 class TestSuite
-class Form
+class TestForm < DSLTestClass
 
   # Les méthodes propres aux routes (dès que l'objet-case
   # doit interagir avec la page)
   include ModuleRouteMethods
 
-
-  def exist?
-    exist(evaluate: false)
-  end
-  def not_exist
-    exist(inverse: true)
-  end
   # Produit un succès si le formulaire existe et qu'il contient
   # (intuitivement) les données définies. Produit une failure
   # dans le cas contraire.
@@ -24,6 +17,12 @@ class Form
       opts.merge!(k => data_form[k]) if data_form.has_key?(k)
     end
     has_tag("form", opts, opts[:inverse]==true)
+  end
+  def exist?
+    exist(evaluate: false)
+  end
+  def not_exist
+    exist(inverse: true)
   end
 
   # Remplit le formulaire avec les données spécifiées à l'instanciation
@@ -74,6 +73,6 @@ class Form
   end
 
 
-end #/Form
+end #/TestForm
 end #/TestSuite
 end #/SiteHtml

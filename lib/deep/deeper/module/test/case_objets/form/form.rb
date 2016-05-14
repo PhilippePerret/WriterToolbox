@@ -1,20 +1,17 @@
 # encoding: UTF-8
 class SiteHtml
 class TestSuite
-class Form
+class TestForm < DSLTestClass
 
-  # Les méthodes propres à tous les objets-case
-  include ModuleObjetCaseMethods
-
-  # {Hash} Les données pour le formulaire
   attr_reader :data_form
 
-  def initialize route, data = nil
-    @raw_route  = route
-    @data_form  = data
+  def initialize raw_route, data_form=nil, options=nil, &block
+    @raw_route = raw_route
+    @data_form = data_form
+    super(&block)
   end
 
 
-end #/Form
+end #/TestForm
 end #/TestSuite
 end #/SiteHtml

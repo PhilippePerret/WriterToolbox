@@ -10,16 +10,18 @@
 
 class SiteHtml
 class TestSuite
-class Route
-
-  include ModuleObjetCaseMethods
+class TestRoute < DSLTestClass
 
   # +raw_route+ La route brut, qui peut contenir un query_string
-  def initialize raw_route
+  def initialize raw_route, options=nil, &block
     @raw_route = raw_route
+    super(&block)
   end
 
-
+  def description_defaut
+    @description_defaut ||= "TEST ROUTE #{raw_route}"
+  end
+  
 end #/Route
 end #/TestSuite
 end #/SiteHtml
