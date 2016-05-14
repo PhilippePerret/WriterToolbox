@@ -7,8 +7,12 @@
 class DSLTestClass
 
   # Pour décrire plus précisément le test
-  def description str
-    @tdata[:description] = str
+  def description str = nil
+    if str.nil?
+      @tdata[:description]
+    else
+      @tdata[:description] = str
+    end
   end
 
   # Instance SiteHtml::TestSuite::HTML qui permet de

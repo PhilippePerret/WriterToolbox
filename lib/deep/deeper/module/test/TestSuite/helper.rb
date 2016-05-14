@@ -18,7 +18,7 @@ class TestSuite
 
       color = failures.empty? ? 'green' : 'red'
       s_failures = nombre_failures > 1 ? "s" : ""
-      resume = "#{nombre_failures} failure#{s_failures} #{nombre_success} succès".in_span(class: color)
+      resume = "#{nombre_failures} failure#{s_failures} #{nombre_success} success".in_span(class: color)
 
       (
         resume            +
@@ -67,38 +67,26 @@ class TestSuite
 
     itestfile = 0
 
+    # Boucle sur chaque fichier-test
     test_files.each do |testfile|
 
-      nombre_success  += testfile.success_atests.count
-      nombre_failures += testfile.failure_atests.count
+      nombre_success  += testfile.success_tests.count
+      nombre_failures += testfile.failure_tests.count
 
       div_filepath = "#{itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
       icase = 0
 
-      filetest_failure_messages = testfile.failure_atests.collect do |atest|
-        nombre_messages     = atest.messages.count
-        infos[:nombre_cas] += nombre_messages
-        imessage = 0
-        "#{itestfile}.#{icase += 1} - #{atest.libelle}".in_div(class:'tlib') +
-        atest.messages.collect do |itf, itt, message|
-          # Rappel :  itf est l'instance TestFile
-          #           itt est l'instance Atest
-          imessage += 1
-          css = imessage == nombre_messages ? 'err' : 'suc'
-          message.in_div(class:"mess #{css}")
-        end.join("\n")
+      filetest_failure_messages = testfile.failure_tests.collect do |tmethod|
+        infos[:nombre_cas] += tmethod.messages_count
+        tmethod.full_libelle_output( itestfile, icase += 1 ) +
+        tmethod.messages_output
       end.join('').in_div(class:'atests')
 
-      filetest_success_messages = testfile.success_atests.collect do |atest|
-        nombre_messages     = atest.messages.count
-        infos[:nombre_cas] += nombre_messages
-        "#{itestfile}.#{icase += 1} - #{atest.libelle}".in_div(class:'tlib') +
-        atest.messages.collect do |itf, itt, message|
-          # Rappel :  itf est l'instance TestFile
-          #           itt est l'instance Atest
-          message.in_div(class:"mess")
-        end.join("\n")
+      filetest_success_messages = testfile.success_tests.collect do |tmethod|
+        infos[:nombre_cas] += tmethod.messages_count
+        tmethod.full_libelle_output( itestfile, icase += 1 ) +
+        tmethod.messages_output
       end.join('').in_div(class:'atests')
 
       # On ajoute les messages, sauf s'il sont vides
@@ -110,7 +98,7 @@ class TestSuite
       end
 
 
-    end
+    end #/Fin de boucle sur chaque fichier-test
 
     # Définir les variables d'instance qui vont contenir les
     # valeurs à prendre en compte
@@ -126,7 +114,7 @@ class TestSuite
       ""
     end
     @detail_success = if nombre_success > 0
-      "Succès".in_h4(class:'green') + success_messages
+      "Success".in_h4(class:'green') + success_messages
     else
       ""
     end

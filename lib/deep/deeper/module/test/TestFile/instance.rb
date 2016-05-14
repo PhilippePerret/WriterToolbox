@@ -23,16 +23,16 @@ class TestFile
   # {Array} Liste des messages de succès. En fait, c'est une
   # liste d'instances ATest
   # La seconde liste contient les messages d'échec
-  attr_reader :success_atests
-  attr_reader :failure_atests
+  attr_reader :success_tests
+  attr_reader :failure_tests
 
 
   # +tsuite+  SiteHtml::TestSuite courante (possédant ce fichier)
   def initialize tsuite, path
     @test_suite = tsuite
     @path       = path
-    @success_atests = Array::new
-    @failure_atests = Array::new
+    @success_tests = Array::new
+    @failure_tests = Array::new
   end
 
   # = main =
@@ -49,17 +49,6 @@ class TestFile
   rescue Exception => e
     debug e
     error e.message
-  end
-
-  # +atest+ Instance ATest du test qui appelle cette
-  # méthode pour consigner les messages d'erreur (un seul) ou
-  # de succès (plusieurs si plusieurs "lignes")
-  def add_test atest
-    if atest.success?
-      @success_atests << atest
-    else
-      @failure_atests << atest
-    end
   end
 
   def log mess

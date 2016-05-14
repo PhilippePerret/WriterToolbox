@@ -24,9 +24,15 @@ class DSLTestClass
       # géré l'enregistrement du message d'erreur (on aurait pu
       # l'envoyer ici, mais la méthode `evaluate` de TestCase est
       # plus facile à lire comme ça)
+      #
+      # On ajoute cet échec au fichier
+      tfile.failure_tests << self
     rescue Exception => e
       # On passe ici si c'est une erreur fonctionnelle
       raise e
+    else
+      # On peut ajouter ce succès au fichier
+      tfile.success_tests << self
     end
   end
 
@@ -46,13 +52,6 @@ class DSLTestClass
       @tdata.merge!(description_defaut: description_defaut)
     end
 
-    # Pour la liste des messages de cette méthode de test
-    @messages = Array::new
-  end
-
-  # Le ATest de la méthode de test
-  def test
-    @test ||= ATest::new(self)
   end
 
 end

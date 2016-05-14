@@ -24,18 +24,12 @@ class DSLTestClass
   # ---------------------------------------------------------------------
   #   Helper methods
   #   --------------
-  #   Pour la mise en forme des messages
+  #   Cf. le fichier helper.rb
   # ---------------------------------------------------------------------
 
-  def messages_output
-    c = String::new
-    c += success_messages.collect do |mess|
-      mess.in_div(class:'suc')
-    end.join('')
-    c += failure_messages.collect do |mess|
-      mess.in_div(class:'err')
-    end.join('')
-    c.in_div(class:"atest #{success? ? 'suc' : 'err'}")
+
+  def messages_count
+    @messages_count ||= success_messages.count + failure_messages.count
   end
 
   # ---------------------------------------------------------------------

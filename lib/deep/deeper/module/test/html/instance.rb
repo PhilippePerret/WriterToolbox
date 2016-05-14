@@ -33,15 +33,15 @@ class HTML
       rawhtml_or_nokohtml
     when String
       @raw_code = rawhtml_or_nokohtml
-      Nokogiri::HTML(rawhtml_or_nokohtml)
+      ( Nokogiri::HTML rawhtml_or_nokohtml )
     else
       raise "Mauvais format pour l'instanciation de SiteHtml::Test::Html : #{rawhtml_or_nokohtml.class} (String ou Nokogiri::HTML::Document attendu)"
     end
   end
-  #
-  # # Raccourci
-  # def page ; @nokogiri_html_doc end
-  #
+
+  # Raccourci
+  def page ; @nokogiri_html_doc end
+
 
 end #/Html
 end #/TestSuite

@@ -8,7 +8,7 @@ Pour le traitement des codes Html
 =end
 class SiteHtml
 class TestSuite
-class Html
+class HTML
 
   def has_message mess, options = nil, inverse = false
     options ||= Hash::new
@@ -126,6 +126,7 @@ class Html
 
     # On compte le nombre de balises qui peuvent répondre
     # à tag
+    # ok = page.css(tag).count >= ( options[:count] ||= 1 )
     ok = page.css(tag).count >= ( options[:count] ||= 1 )
 
     debug "OK Balise #{tag} trouvée : #{ok.inspect}"

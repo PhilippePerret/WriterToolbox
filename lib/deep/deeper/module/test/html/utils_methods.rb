@@ -4,7 +4,7 @@ require 'levenshtein'
 
 class SiteHtml
 class TestSuite
-class Html
+class HTML
 
 
 
