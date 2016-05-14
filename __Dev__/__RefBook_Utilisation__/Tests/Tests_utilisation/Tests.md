@@ -37,6 +37,39 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 
 ## Hiérarchie des éléments
 
+    Fichier de test     test-file     contient des :
+    Méthodes de test    test-methods  contient des :
+    Méthodes de cas     case-method
+    
+    Par exemple, le fichier de test :
+    
+        # ./test/mini/login_spec.rb
+    
+    … contient la méthode de test :
+    
+        test_form "user/signin", fdata do
+          ...
+        end
+    
+    … qui contient la méthode de cas `responds`&nbsp;:
+    
+        test_form "user/signin", fdata do
+          responds
+        end
+        
+    Les fichiers de tests
+          … sont définis dans le dossier ./test/
+    Les méthodes de test
+          … sont définis dans le fichier :
+                      ./lib/deep/deeper/module/test/TestFile/test_methods.rb
+                      (donc pour la class SiteHtml::TestSuite::TestFile)
+          … et définissent leur classe dans leur dossier :
+                      ./lib/deep/deeper/module/test/Test_methods/<test method>/
+          (cf. le fichier Tests_implementation.md pour le détail)
+    Les méthodes de case
+          … sont définis dans un fichier `case_methods.rb` dans le dossier
+          de leur méthode de test&nbsp;:
+                      ./lib/deep/deeper/module/test/Test_methods/<test method>/
 
         SiteHtml::TestSuite
             Une instance est une suite de test
@@ -56,6 +89,8 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 
         SiteHtml::TestSuite::Case
 
+          Les méthodes de cas (ou "method-case") sont des sous-éléments
+          des méthodes de tests.
           Certains `cases` font appels à des gérants de code
           HTML (bout de code ou pages entières)
 
@@ -165,7 +200,7 @@ Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `
 
 <a name='methodesmoduleroutemethodes'></a>
 
-## Méthodes du module `ModuleRouteMethods`
+## Méthodes de cas du module `ModuleRouteMethods`
 
 * [respond](#methoderesponds)
 * [has_title](#methodehastitle)

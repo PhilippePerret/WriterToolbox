@@ -35,6 +35,7 @@ class Html
 
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
+        tmethod,
         result:           ok,
         positif:          !inverse,
         on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
@@ -69,6 +70,7 @@ class Html
 
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
+        tmethod,
         result:           ok,
         positif:          !inverse,
         on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
@@ -139,6 +141,7 @@ class Html
     # le résultat (quand options[:evaluate] == false)
     unless options[:evaluate] === false
       SiteHtml::TestSuite::Case::new(
+        tmethod,
         result:           ok,
         positif:          !inverse,
         on_success:       "La balise #{tag} existe dans la page.",
@@ -229,6 +232,7 @@ class Html
     end
 
     SiteHtml::TestSuite::Case::new(
+      tmethod,
       result:           found == true,
       positif:          !inverse,
       on_success:       "Le titre #{tag} “#{titre_init}” existe dans la page.",

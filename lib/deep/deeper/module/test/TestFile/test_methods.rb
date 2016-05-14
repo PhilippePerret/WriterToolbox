@@ -11,10 +11,10 @@ class TestFile
 
 
   def test_form route, data_form=nil, options=nil, &bloc
-    SiteHtml::TestSuite::TestForm::new route, data_form, options, bloc
+    SiteHtml::TestSuite::TestForm::new self, route, data_form, options, &bloc
   end
   def test_route route, options=nil, &bloc
-    SiteHtml::TestSuite::TestRoute::new( route, options, &bloc )
+    SiteHtml::TestSuite::TestRoute::new( self, route, options, &bloc )
   end
 
   # # Pour tester une page

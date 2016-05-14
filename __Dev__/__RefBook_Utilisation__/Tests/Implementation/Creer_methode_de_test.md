@@ -20,8 +20,8 @@ On utilise un **DSL** particulier.
     
           ...
           class TestForm < DSLTestClass
-            def initialize param1... paramN, &block
-              super(&block)
+            def initialize ftest, param1... paramN, &block
+              super(ftest, &block)
             end
 
     
@@ -29,6 +29,7 @@ On utilise un **DSL** particulier.
     
     Noter que les paramètres seront ceux qui seront utilisés quand on utilisera la méthode de test dans la feuille de test, par exemple :
     
+    `ftest` est l'instance `TestFile` du fichier test. Cf. plus bas.
     
     
         test_form param1,... paramN do
@@ -42,13 +43,13 @@ On utilise un **DSL** particulier.
 
     
       def <méthode test>, param1,... paramN, &bloc
-        SiteHtml::TestSuite::<TestMethodClass>::new param1,... paramN, &bloc
+        SiteHtml::TestSuite::<TestMethodClass>::new self, param1,... paramN, &bloc
       end
 
       Par exemple :
       
       def test_form param1... paramN, &bloc
-        SiteHtml::TestSuite::TestForm::new param1... paramN, &bloc
+        SiteHtml::TestSuite::TestForm::new self, param1... paramN, &bloc
       end
 
 * lire les méthodes de la classe `DSLTestClass` dans `./lib/deep/deeper/module/test/first_required/dsl/DSLTestClass.rb` pour se souvenir des méthodes héritées, à commencer par `html`, qui permet d'avoir accès à tout le code de la dernière requête,

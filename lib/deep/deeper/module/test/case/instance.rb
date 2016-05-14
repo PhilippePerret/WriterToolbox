@@ -1,27 +1,28 @@
 # encoding: UTF-8
 
+class TestUnsuccessfull < StandardError; end
+
 class SiteHtml
 class TestSuite
 class Case
 
-  class << self
-    # Le ATest courant (SiteHtml::TestSuite::File::ATest) qui
-    # doit recevoir les messages de succès
-    attr_accessor :current_atest
-  end #/<< self
+  # Instance de la test-method qui invoque ce
+  # cas. C'est cette test-méthod qui va recevoir les messages
+  attr_reader :tmethod
 
   # Arguments envoyés
+  # Ces arguments définissent tout ce qu'il faut savoir, le résultat
+  # "droit", l'inversion demandée (if any) et tous les messages en
+  # fonction des cas.
   attr_reader :args
 
   # {True|False} Résultat de l'estimation
   attr_reader :result
 
 
-
-  def initialize args
-    @args = args
-    # debug "args: #{args.inspect}"
-    # debug " => successfull? = #{successfull?.inspect}"
+  def initialize tmethod, args
+    @tmethod  = tmethod
+    @args     = args
   end
 
   # = main =
@@ -32,9 +33,10 @@ class Case
   # courant.
   def evaluate
     if successfull?
-      self.class::current_atest.add_success bon_message_success
+      tmethod.success_messages << bon_message_success
     else
-      raise bon_message_failure
+      tmethod.failure_messages << bon_message_failure
+      raise TestUnsuccessfull
     end
   end
 
