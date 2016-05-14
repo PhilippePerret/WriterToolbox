@@ -51,7 +51,6 @@ class TestSuite
     Dir["#{folder_test_path}/**/*_spec.rb"].each do |p|
       infos[:nombre_files] += 1
       # On passe le test en test courant
-      debug "\n--- Test fichier #{p}"
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
       @current.execute
       @test_files << @current

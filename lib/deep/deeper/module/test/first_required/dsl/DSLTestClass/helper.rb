@@ -21,9 +21,13 @@ class DSLTestClass
     liste_mess.collect do |mess| "• #{mess}".in_div(class:"tcase #{css}") end.join('')
   end
 
-
+  # Le libellé pour la sortie
   def libelle
-    description || description_defaut
+    if description
+      description + description_defaut.in_div(class:'defname')
+    else
+      description_defaut
+    end
   end
 
 

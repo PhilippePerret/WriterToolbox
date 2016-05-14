@@ -29,52 +29,98 @@ class HTML
 
     tag_init = tag.freeze
 
+    # On retire toutes les options pour ne conserver que
+    # les attributs qui vont être à checker dans la balise
+    option_id     = options.delete(:id)
+    option_class  = options.delete(:class)
+    option_count  = options.delete(:count)
+    option_text   = options.delete(:text) || options.delete(:content)
+    option_strict = options.delete(:strict) === true
+
+    # Ce qui reste dans +options+ doivent être les attributs
+    # à trouver dans la ou les balises
+    # Pour la clarté, on duplique la table de hashage
+    attrs = options.dup
+
+
     # On modifie +tag+ en fonction des données d'options
     # éventuelle
     {
       # Note : `pref`, ci-dessous, ne sert à rien
-      id:     {pref:'#', value:"##{options[:id]}"},
-      class:  {pref:'.', value:".#{options[:class]}"}
+      id:     { pref:'#', opt: option_id     },
+      class:  { pref:'.', opt: option_class  }
     }.each do |prop, dprop|
-      tag += dprop[:value] if options.has_key?(prop) && options[prop]!=nil
+      tag += "#{tag}#{dprop[:pref]}#{dprop[:opt]}" if dprop[:opt] != nil
     end
 
-    # On compte le nombre de balises qui peuvent répondre
-    # à tag
-    # ok = page.css(tag).count >= ( options[:count] ||= 1 )
+    # On relève toutes les balises
     tags = page.css( tag )
-    ok = if options[:count]
-      tags.count == options[:count]
-    else
-      tags.count >= 1
+
+    unless attrs.empty?
+      debug "Des attributs sont à rechercher : #{attrs.inspect}"
+      tags = tags.select do |edom|
+        debug "Recherche dans #{edom.inner_html}"
+        is_valide = true
+        attrs.each do |attr, value|
+          if edom[attr.to_s] != value
+            debug "  Valeur non conforme : #{edom[attr].inspect}"
+            is_valide = false
+            break
+          end
+        end
+        debug "= is_valide est #{is_valide.inspect}"
+        is_valide
+      end
     end
 
     # Si +options+ définit :text; il faut chercher le texte
     # dans les balises remontées
-    if ok && options.has_key?(:text) && options[:text] != nil
-      nombre_iterations = search_text_in_tags(tags, options[:text], options)
-      ok = 0 < nombre_iterations
+    nombre_iterations = if option_text
+      search_text_in_tags(tags, option_text, {strict:option_strict})
     else
-      nombre_iterations = tags.count
+      tags.count
     end
+
+    ok = if option_count != nil
+      nombre_iterations == option_count
+    else
+      nombre_iterations >= 1
+    end
+
+    # /fin du test
+    # ---------------------------------------------------------------------
 
     # Pour indiquer le nombre de fois où la balise devait
     # être trouvées
-    mess_count = if options[:count]
-      " #{options[:count]} fois"
+    mess_count = if option_count
+      " #{option_count} fois"
     else
       ""
     end
 
+    # On construit la spécification de la balise avec ses
+    # attributs recherchés
+    tag_in_message = tag
+    unless attrs.empty?
+      tag_in_message += attrs.collect{|a,v| "[#{a}=#{v}]"}.join('')
+    end
+    unless option_text.nil?
+      exactement = option_strict ? "exactement" : "à peu près"
+      tag_in_message += " contenant #{exactement} “#{option_text}”"
+    end
+
+    # Les messages d'échec en fonction du fait qu'on demande
+    # un nombre exact ou non.
     message_on_failure = if !ok
-      if options[:count] && (options[:count] != nombre_iterations)
-        "La balise `#{tag}` devrait exister#{mess_count} dans la page (elle existe #{nombre_iterations} fois)."
+      if option_count && (option_count != nombre_iterations)
+        "La balise `#{tag_in_message}` devrait exister#{mess_count} dans la page (elle existe #{nombre_iterations} fois)."
       else
-        "La balise `#{tag}` devrait exister#{mess_count} dans la page."
+        "La balise `#{tag_in_message}` devrait exister#{mess_count} dans la page."
       end
     else
       nil
     end
+
 
     # Soit on crée une évaluation, soit on retourne simplement
     # le résultat (quand options[:evaluate] == false)
@@ -83,10 +129,10 @@ class HTML
         tmethod,
         result:           ok,
         positif:          !inverse,
-        on_success:       "La balise #{tag} existe#{mess_count}.",
-        on_success_not:   "La balise #{tag} n'existe pas#{mess_count} (OK).",
+        on_success:       "La balise #{tag_in_message} existe#{mess_count}.",
+        on_success_not:   "La balise #{tag_in_message} n'existe pas#{mess_count} (OK).",
         on_failure:       message_on_failure,
-        on_failure_not:   "La balise #{tag} ne devrait pas exister#{mess_count}."
+        on_failure_not:   "La balise #{tag_in_message} ne devrait pas exister#{mess_count}."
       ).evaluate
     else
       return ok

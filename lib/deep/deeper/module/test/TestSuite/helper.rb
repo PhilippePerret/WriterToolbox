@@ -60,8 +60,8 @@ class TestSuite
   # Méthode créant l'affichage des succès et des failures
   # on passant fichier test après fichier test
   def details_test
-    nombre_success  = 0
-    nombre_failures = 0
+    nombre_total_success  = 0
+    nombre_total_failures = 0
     success_messages = String::new
     failure_messages = String::new
 
@@ -70,8 +70,10 @@ class TestSuite
     # Boucle sur chaque fichier-test
     test_files.each do |testfile|
 
-      nombre_success  += testfile.success_tests.count
-      nombre_failures += testfile.failure_tests.count
+      nombre_success  = testfile.success_tests.count
+      nombre_failures = testfile.failure_tests.count
+      nombre_total_success  += nombre_success
+      nombre_total_failures += nombre_failures
 
       div_filepath = "#{itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
@@ -81,20 +83,20 @@ class TestSuite
         infos[:nombre_cas] += tmethod.messages_count
         tmethod.full_libelle_output( itestfile, icase += 1 ) +
         tmethod.messages_output
-      end.join('').in_div(class:'atests')
+      end.join('')
 
       filetest_success_messages = testfile.success_tests.collect do |tmethod|
         infos[:nombre_cas] += tmethod.messages_count
         tmethod.full_libelle_output( itestfile, icase += 1 ) +
         tmethod.messages_output
-      end.join('').in_div(class:'atests')
+      end.join('')
 
       # On ajoute les messages, sauf s'il sont vides
-      unless filetest_success_messages.empty?
-        success_messages += (div_filepath + filetest_success_messages).in_div(class:'tfile suc')
+      if nombre_success > 0
+        success_messages += (div_filepath + filetest_success_messages).in_div(class:'atests').in_div(class:'tfile suc')
       end
-      unless filetest_failure_messages.empty?
-        failure_messages += (div_filepath + filetest_failure_messages).in_div(class:'tfile err')
+      if nombre_failures > 0
+        failure_messages += (div_filepath + filetest_failure_messages).in_div(class:'atests').in_div(class:'tfile err')
       end
 
 
@@ -102,18 +104,18 @@ class TestSuite
 
     # Définir les variables d'instance qui vont contenir les
     # valeurs à prendre en compte
-    @nombre_failures = nombre_failures
-    @nombre_success  = nombre_success
+    @nombre_failures = nombre_total_failures
+    @nombre_success  = nombre_total_success
 
     # Renseigner le nombre total de tests
-    infos[:nombre_tests] = nombre_success + nombre_failures
+    infos[:nombre_tests] = nombre_total_success + nombre_total_failures
 
-    @detail_failures = if nombre_failures > 0
+    @detail_failures = if nombre_total_failures > 0
       "Failures".in_h4(class:'red') + failure_messages
     else
       ""
     end
-    @detail_success = if nombre_success > 0
+    @detail_success = if nombre_total_success > 0
       "Success".in_h4(class:'green') + success_messages
     else
       ""
