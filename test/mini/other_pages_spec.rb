@@ -5,7 +5,7 @@
 test_route "admin/dashboard" do
   description "Un user quelconque ne peut pas atteindre le tableau de bord administration"
   html.inspect
-  html.has_error "Section administration"
+  html.has_error "Section réservée à l'administration."
 end
 
 test_route "forum/home" do

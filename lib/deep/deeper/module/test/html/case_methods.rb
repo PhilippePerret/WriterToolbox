@@ -236,10 +236,18 @@ class HTML
     evaluate_as_pluriel :has_not_message, arr, options, inverse=true
   end
 
+  # ---------------------------------------------------------------------
+  #   HAS ERROR
+  # ---------------------------------------------------------------------
+
   def has_error mess, options = nil, inverse = false
     options ||= Hash::new
 
-    ok = has_tag?("div#flash div.error", options.merge!(text: mess))
+    options.merge!(text: mess)
+
+    ok = has_tag?("div#flash div.error",  options)
+    ok = has_tag?(".access_error",        options) if !ok
+    ok = has_tag?(".main_error",          options) if !ok
 
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
