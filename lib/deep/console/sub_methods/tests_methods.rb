@@ -13,13 +13,13 @@ class Console
     site.require_module 'test'
     if args == nil || args == 'run'
       # Il faut jouer le fichier ./test/run.rb
+      inst = SiteHtml::TestSuite::new(nil)
       require './test/run'
-      opts = nil
     else
       # Utilisation "normale" des tests
-      opts = parse_arguments
+      inst = SiteHtml::TestSuite::new( parse_arguments )
     end
-    SiteHtml::TestSuite::new(opts).run
+    inst.run
   end
 
   def parse_arguments

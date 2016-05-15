@@ -9,25 +9,23 @@ end
 class SiteHtml
 class TestSuite
 
-  class << self
 
-    # Instance de la suite de test courante
-    attr_accessor :current
-
-  end #/<< self
-
-  # attr_reader :failures # OBSOLÈTE
-  # attr_reader :success  # OBSOLÈTE
-
-  # Liste des instances TestFile des fichiers tests traités
+  # {Array} Liste des instances {SiteHtml::TestSuite::TestFile}
+  # des fichiers-tests de cette suite.
   attr_reader :test_files
 
-
-
+  # +opts+ Options transmises à la ligne de commande, sauf
+  # si c'est `test run` ou `run test` qui est appelé, dans lequel
+  # cas on appelle SiteHtml::TestSuite.configure depuis le fichier
+  # ./test/run.rb pour lancer des tests particuliers.
   def initialize  opts = nil
-    @options = opts
-    parse_options
     self.class::current= self
+    unless opts.nil?
+      @options = opts
+      parse_options
+    else
+      @options = Hash::new
+    end
     # Il faut aussi initialiser les options de la class, qui permettent
     # pour le moment de gérer la mise en route et l'arrêt du débuggage
     # Warning : La méthode `parse_options` ci-dessous enregistre déjà
@@ -45,14 +43,13 @@ class TestSuite
   #   :dossier_test     Le dossier dans lequel jouer les tests
   #   :online           Si true, en online
   def run
+    infos[:start_time]  = Time.now
     @failures           = Array::new
     @success            = Array::new
     @test_files         = Array::new
-    infos[:start_time]  = Time.now
-
-    test_files = Dir["#{folder_test_path}/**/*_spec.rb"]
-    debug "Fichiers tests : #{test_files.join(', ')}"
-    Dir["#{folder_test_path}/**/*_spec.rb"].each do |p|
+    regularise_options
+    debug "Fichiers tests : #{files.join(', ')}" if debug?
+    files.each do |p|
       infos[:nombre_files] += 1
       # On passe le test en test courant
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
@@ -64,6 +61,28 @@ class TestSuite
     # debug "failures : #{failures.inspect}"
     # debug "success: #{success.inspect}"
     return "" # pour la console
+  end
+
+  # Liste des paths de tous les fichiers testés
+  # Noter que ça peut être défini par le fichier ./test/run.rb par
+  # la méthode configure de la classe.
+  def files
+    debug "-> files (@files = #{@files.inspect}) (#{self.__id__})"
+    @files ||= Dir["#{folder_test_path}/**/*_spec.rb"]
+  end
+  def files= liste
+    debug "-> files=( liste=#{liste.inspect}) (#{self.__id__})"
+    @files = liste.collect do |relpath|
+      relpath = "./test/#{relpath}" unless relpath.start_with?("./test")
+      relpath += "_spec.rb" unless relpath.end_with?("_spec.rb")
+      if File.exist?(relpath)
+        relpath
+      else
+        error "Le fichier-test `#{relpath}` est introuvable."
+        nil
+      end
+    end.compact
+    debug "= @files = #{@files.inspect}"
   end
 
   def base_url
@@ -82,6 +101,8 @@ class TestSuite
       File.join(['.', 'test', options[:dossier_test]].compact)
     end
   end
+  def folder_test_path= value; @folder_test_path = value end
+
 
 end #/TestSuite
 end #/SiteHtml

@@ -3,6 +3,10 @@ class SiteHtml
 class TestSuite
 class << self
 
+  # Instance de la suite de test courante
+  attr_accessor :current
+
+  # Options générales
   attr_accessor :options
 
   # Initialisation des options de la classe
@@ -10,6 +14,7 @@ class << self
   # La méthode est appelée par l'instanciation d'une suite
   # de tests.
   def init_options
+    @options ||= Hash::new
     @options.merge!( debug: false ) unless @options.has_key?(:debug)
   end
 

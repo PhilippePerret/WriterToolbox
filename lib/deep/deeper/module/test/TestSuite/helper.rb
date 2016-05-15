@@ -39,6 +39,7 @@ class TestSuite
       " | #{infos[:nombre_cas]} cas"+
       " | durée : #{laps}" +
       " | folder: #{folder_test_path}" +
+      " | #{online? ? 'ONLINE' : 'OFFLINE'}" +
       " | "
     ).in_div(id:'test_infos')
   end
