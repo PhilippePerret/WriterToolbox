@@ -10,7 +10,7 @@ class << self
   # La méthode est appelée par l'instanciation d'une suite
   # de tests.
   def init_options
-    @options.merge!( debug: false )
+    @options.merge!( debug: false ) unless @options.has_key?(:debug)
   end
 
   def debug?  ; options[:debug] == true end

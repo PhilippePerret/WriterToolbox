@@ -73,6 +73,11 @@ test:
       <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
       </ul>
   -
+    command:      "`test run`  ou `run test`"
+    description: |
+      Joue le fichier ./test/run.rb qui détermine les tests à faire.
+      <br>Voir le mode d'emploi (Test > Fichier_run.md) pour le détail.
+  -
     command:      test --depth=1 mini[ online]
     description: |
       Si un dossier ./test/mini/ existe, alors tous les tests à
@@ -84,6 +89,7 @@ test:
         -q / --quiet=t        Mode silencieux
         -v / --verbose=f      Mode verbose (inverse de quiet)
         -d / --documented=t   Mode documenté (ne fait rien pour le moment)
+        --debug               Mode débuggage
       </pre>
 
   -

@@ -174,6 +174,14 @@ class HTML
     end
   end
 
+  # Méthode pour inspecter le code actuel
+  def inspect
+    debug "\n\n"+("-"*80)+"\n\n"
+    debug "=== html.inspect ==="
+    debug page.inner_html.gsub(/</,'&lt;').gsub(/>/,'&gt;')
+    debug "=== /html.inspect ==="
+    debug "\n\n"+("-"*80)+"\n\n"
+  end
 
 end #/Html
 end #/TestSuite

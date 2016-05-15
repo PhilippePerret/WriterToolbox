@@ -123,10 +123,14 @@ class Console
     when 'help', 'aide'
       sub_log help
       "" # Pour ne rien renvoyer
+      # TESTS
+    when 'run test'
+      run_a_test
     when 'sync'
       redirect_to 'admin/sync'
       ""
       # --- TACHES ---
+
     when /^liste? ta(che|sk)s$/
       Taches::show_liste_taches
     when /^(liste? )?mes taches$/
@@ -140,6 +144,7 @@ class Console
       Taches::show_liste_taches all: true
 
       # --- BASES DE DONNÉES ---
+
     when /^backup table ([^\.]+)\.(.+?)$/
       db, tbl = line.scan(/^backup table ([^\.]+)\.(.+?)$/).first
       backup_data_from_all "#{db}.db", tbl
@@ -150,6 +155,7 @@ class Console
       return ""
 
       # --- IMAGES ---
+
     when /^balise image/
       Images::balise_image line.sub(/^balise image/,'').strip
     # ---------------------------------------------------------------------
@@ -191,7 +197,7 @@ class Console
     when /^rspec$/
 
       # --- RSPEC ---
-      
+
       return ( run_a_rspec_test reste_line)
     end
   end

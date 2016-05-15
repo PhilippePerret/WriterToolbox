@@ -292,30 +292,27 @@ class HTML
     has_tag( 'div#flash div.error', evaluate: false )
   end
 
-  def has_title titre, niveau = nil, options = nil, inverse = false
+  def has_title titre, niveau=nil, options=nil, inverse=false
     # page.css("h#{niveau}").each do |tested|
     #   debug "tested : #{tested.text}"
     # end
     options ||= Hash::new
 
-    # Faut-il prendre exactement le titre
-    unless titre.instance_of?(RegExp)
-      titre = if options[:strict]
-        /#{Regexp::escape titre}/oi
-      else
-        /^#{Regexp::escape titre}$/o
-      end
-    end
+    titre_init = if titre.instance_of?(Regexp)
+      titre.to_s
+    else
+      titre
+    end.freeze
+
     niveaux = niveau ? [niveau] : (1..6)
 
     # On cherche le titre
     found = false
+    options = options.merge!(text: titre)
     niveaux.each do |niv|
-      page.css("h#{niv}").each do |tested|
-        if tested.text.match titre
-          found == true
-          break
-        end
+      if has_tag?("h#{niv}", options)
+        found = true
+        break
       end
     end
 
@@ -323,10 +320,10 @@ class HTML
       tmethod,
       result:           found == true,
       positif:          !inverse,
-      on_success:       "Le titre #{tag} “#{titre_init}” existe dans la page.",
-      on_success_not:   "Le titre #{tag} “#{titre_init}” n'existe pas dans la page (OK).",
-      on_failure:       "Le titre #{tag} “#{titre_init}” devrait exister dans la page.",
-      on_failure_not:   "Le titre #{tag} “#{titre_init}” ne devrait pas exister dans la page."
+      on_success:       "Le titre “#{titre_init}” existe dans la page.",
+      on_success_not:   "Le titre “#{titre_init}” n'existe pas dans la page (OK).",
+      on_failure:       "Le titre “#{titre_init}” devrait exister dans la page.",
+      on_failure_not:   "Le titre “#{titre_init}” ne devrait pas exister dans la page."
     ).evaluate
   end
   # Retourne TRUE si le titre est trouvé

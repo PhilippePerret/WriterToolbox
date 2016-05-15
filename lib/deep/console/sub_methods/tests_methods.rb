@@ -8,10 +8,17 @@ class Console
   # Les arguments transmis au méthodes principales
   attr_reader :args
 
-  def run_a_test args
+  def run_a_test args = nil
     @args = args
-    opts = parse_arguments
     site.require_module 'test'
+    if args == nil || args == 'run'
+      # Il faut jouer le fichier ./test/run.rb
+      require './test/run'
+      opts = nil
+    else
+      # Utilisation "normale" des tests
+      opts = parse_arguments
+    end
     SiteHtml::TestSuite::new(opts).run
   end
 

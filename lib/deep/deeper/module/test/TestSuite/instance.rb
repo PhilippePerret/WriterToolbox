@@ -31,7 +31,8 @@ class TestSuite
     # Il faut aussi initialiser les options de la class, qui permettent
     # pour le moment de gérer la mise en route et l'arrêt du débuggage
     # Warning : La méthode `parse_options` ci-dessous enregistre déjà
-    # des valeurs dans les options.
+    # des valeurs dans les options, il ne faut donc pas réinitialiser
+    # complètement le Hash des options.
     self.class::init_options
   end
 
