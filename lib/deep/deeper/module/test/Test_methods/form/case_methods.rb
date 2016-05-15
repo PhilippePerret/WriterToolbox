@@ -16,7 +16,7 @@ class TestForm < DSLTestClass
     [:id, :name, :action].each do |k|
       opts.merge!(k => data_form[k]) if data_form.has_key?(k)
     end
-    has_tag("form", opts, opts[:inverse]==true)
+    html.has_tag("form", opts, opts[:inverse]==true)
   end
   def exist?
     exist(evaluate: false)

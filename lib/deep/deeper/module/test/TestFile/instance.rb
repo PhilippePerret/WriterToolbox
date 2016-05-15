@@ -55,6 +55,11 @@ class TestFile
     self.class::log mess
   end
 
+  # Pour mettre en route le débug lorsque ces méthodes sont à la
+  # "racine" du fichier (i.e. pas dans une test-méthode)
+  def debug_start;  SiteHtml::TestSuite::debug_start  end
+  def debug_stop;   SiteHtml::TestSuite::debug_stop   end
+
 end #/TestFile
 end #/TestSuite
 end #/SiteHtml

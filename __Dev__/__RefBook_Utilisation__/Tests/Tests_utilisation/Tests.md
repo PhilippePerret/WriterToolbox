@@ -94,21 +94,47 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 
 ## Implémentation du test
 
-Un test se crée dans une “feuille de test”.
+Cf. le dossier Test_implementation.md
 
-* Créer la feuille de test (le fichier) dans un sous-dossier du dossier `./test` ;
-* choisir la “méthode-test” à utiliser (il peut y en avoir plusieurs par feuille de test). Par exemple :
+* [Débuggage du test](#debugging)
+<a name='debugging'></a>
 
-        test_route "une/route" do
+## Débuggage du test
 
-        end
+On peut obtenir des informations de débugging tout au long du test en utilisant les méthodes `start_debug` — qui ouvre le débugging et la méthode `stop_debug` qui ferme le débugging.
 
-    Vous pouvez trouver dans ce document la [liste de toutes les méthodes de test](#listemethodesdetest).
-* une description par défaut existe pour toutes les méthodes de test mais on peut définir une description plus appropriée à l'aide de `description` :
+Noter que ces deux méthodes peuvent s'utiliser aussi bien à la base des fichiers de test :
 
-        test_route "une/route" do
-          description "Ceci est un test de la route “une/route”"
+~~~ruby
 
-        end
+  # In ./test/mon_test_spec.rb
+  ...
+  start_debug
+  
+  test_form ... do
+    ...
+  end
+  
+  ...
+  
+  stop_debug
+  
+  ...
+  
+~~~
 
----------------------------------------------------------------------
+… aussi bien qu'à l'intérieur même d'une méthode de test :
+
+~~~ruby
+
+test_route "ma/route" do
+  html.has_tag("div#tag")
+  start_debug
+  html.has_message("Je commence le débuggage !")
+  stop_debug
+  html.has_message("J'ai arrêté de débugguer")
+end
+
+~~~
+
+Les messages sont inscrits dans le débug normalement des sites, c'est-à-dire sous la page.

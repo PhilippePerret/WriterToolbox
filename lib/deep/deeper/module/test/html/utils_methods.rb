@@ -28,7 +28,9 @@ class HTML
   def search_text_in_tags tags, text, options=nil
     options ||= Hash::new
 
-    # debug "\n\n-> search_text_in_tags(tags, text=“#{text}”, options=#{options.inspect})"
+    if debug?
+      debug "\n\n-> search_text_in_tags(tags, text=“#{text}”, options=#{options.inspect})"
+    end
 
     # Le texte à trouver
     unless text.instance_of?(Regexp)
@@ -41,7 +43,10 @@ class HTML
 
     nombre_found = 0
     tags.each do |tag|
-      if 0 < (nb = tag.text.scan(text).count)
+      debug "\n* Recherche de #{text.inspect} in #{tag.text.inspect}" if debug?
+      nb = tag.text.scan(text).count
+      debug "  = Occurrences: #{nb}" if debug?
+      if nb > 0
         nombre_found += nb
         # Sauf si on a précisé qu'il fallait trouver la balise
         # plusieurs fois (pour une recherche avec :count par exemple)
@@ -68,6 +73,10 @@ class HTML
   # Levenshtein.normalized_distance(t1, t2)
   def messages_flash_as_human searched_message = nil
     hmess = messages_flash
+
+    # # Voir les messages affichés (flash + erreurs importantes)
+    # debug "\nMessages flash = #{hmess.pretty_inspect}\n\n"
+
     nombre_errors       = hmess[:errors].count
     nombre_notices      = hmess[:notices].count
     nombre_main_errs    = hmess[:main].count
@@ -102,9 +111,10 @@ class HTML
       s_errors = nombre_errors > 1 ? 's' : ''
       s_notices = nombre_notices > 1 ? 's' : ''
       m = "la page affiche "
-      m += "<br>le#{s_errors} message#{s_errors} d'erreur : #{errs}" unless hmess[:errors].empty?
-      m += "<br>le#{s_notices} message#{s_notices} : #{nots}" unless hmess[:notices].empty?
-      m
+      arr = Array::new
+      arr << "le#{s_errors} message#{s_errors} d'erreur : #{errs}" unless hmess[:errors].empty?
+      arr << "le#{s_notices} message#{s_notices} : #{nots}" unless hmess[:notices].empty?
+      m += arr.join(' ainsi que ')
     end
   end
 
@@ -115,11 +125,11 @@ class HTML
     messages.collect do |m|
       d = Levenshtein.normalized_distance(searched, m).round(2)
       if d <= 0.15
-        "“<strong>#{m}</strong>” (le vrai message ? - #{d})"
+        "“<strong>#{m}</strong>” (le vrai message ? - Levenshtein:#{d})"
       elsif d <= 0.3
-        "“<strong>#{m}</strong>” (peut-être le message recherché - #{d})"
+        "“<strong>#{m}</strong>” (peut-être le message recherché - Levenshtein:#{d})"
       elsif d <= 0.5
-        "“#{m}” (message proche - #{d})"
+        "“#{m}” (message proche - Levenshtein:#{d})"
       else
         "“#{m}” (#{d})"
       end
@@ -130,25 +140,23 @@ class HTML
   # page. Cette méthode est à appeler en cas d'erreur lorsqu'il
   # faut indiquer quels messages existent dans la page
   def messages_flash
-    @messages_flash ||= begin
-      # debug "\n\n" + "-"*80
-      # debug "\n-> messages_flash\n"
-      # cont = page.css("div#flash").text.gsub(/</, '&lt;')
-      # debug "page.css('div#flash') : #{cont}"
-      # debug "\n\n" + "-"*80
-      notices = page.css("div#flash div.notice").collect do |edom|
-        edom.text
-      end
-      warnings = page.css("div#flash div.error").collect do |edom|
-        edom.text
-      end
-      {
-        notices:  notices,
-        errors:   warnings,
-        main:     message_main_error,
-        access:   message_access_error
-      }
+    # debug "\n\n" + "-"*80
+    # debug "\n-> messages_flash\n"
+    # cont = page.css("div#flash").text.gsub(/</, '&lt;')
+    # debug "page.css('div#flash') : #{cont}"
+    # debug "\n\n" + "-"*80
+    notices = page.css("div#flash div.notice").collect do |edom|
+      edom.text
     end
+    warnings = page.css("div#flash div.error").collect do |edom|
+      edom.text
+    end
+    {
+      notices:  notices,
+      errors:   warnings,
+      main:     message_main_error,
+      access:   message_access_error
+    }
   end
 
   def message_access_error

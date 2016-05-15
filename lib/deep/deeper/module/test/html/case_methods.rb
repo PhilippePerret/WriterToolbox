@@ -24,20 +24,23 @@ class HTML
   # Produit une failure ou un succès, sauf si :evaluate est false
   # dans les options.
   def has_tag tag, options=nil, inverse=false
-    # debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
+    if debug?
+      debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
+    end
     options ||= Hash::new
 
     tag_init = tag.freeze
 
     # On retire toutes les options pour ne conserver que
     # les attributs qui vont être à checker dans la balise
-    option_id     = options.delete(:id)
-    option_class  = options.delete(:class)
-    option_count  = options.delete(:count)
-    option_text   = options.delete(:text) || options.delete(:content)
-    option_strict = options.delete(:strict) === true
+    option_id       = options.delete(:id)
+    option_class    = options.delete(:class)
+    option_count    = options.delete(:count)
+    option_text     = options.delete(:text) || options.delete(:content)
+    option_strict   = options.delete(:strict) === true
+    option_evaluate = options.delete(:evaluate)
 
-    # Ce qui reste dans +options+ doivent être les attributs
+    # Ce qui reste dans +options+ doit être SEULEMENT les attributs
     # à trouver dans la ou les balises
     # Pour la clarté, on duplique la table de hashage
     attrs = options.dup
@@ -50,11 +53,15 @@ class HTML
       id:     { pref:'#', opt: option_id     },
       class:  { pref:'.', opt: option_class  }
     }.each do |prop, dprop|
-      tag += "#{tag}#{dprop[:pref]}#{dprop[:opt]}" if dprop[:opt] != nil
+      tag = "#{tag}#{dprop[:pref]}#{dprop[:opt]}" if dprop[:opt] != nil
     end
 
     # On relève toutes les balises
     tags = page.css( tag )
+
+    if debug?
+      debug "  = Nombre de balises trouvées : #{tags.count}"
+    end
 
     unless attrs.empty?
       # debug "Des attributs sont à rechercher : #{attrs.inspect}"
@@ -67,17 +74,23 @@ class HTML
             break
           end
         end
-        # if is_valide
-        #   debug "  = Balise conforme par ses attributs"
-        # end
+        if is_valide && debug?
+          debug "  = Balise conforme par ses attributs"
+        end
         is_valide
       end
     end
 
-    # # Débug
-    # debug "\n= TAGS CONSERVÉS (après test des attributs if any) : "
-    # debug tags.collect{|t| t.text }.join("\n")
-    # debug "=/Fin TAGS CONSERVÉS"
+    if debug?
+      iftestattrs = if attrs.empty?
+        ""
+      else
+        " (après test des attributs : #{attrs.inspect})"
+      end
+      debug "\n= #{tags.count} TAGS CONSERVÉS#{iftestattrs} : "
+      debug tags.collect{|t| t.text }.join("\n")
+      debug "=/Fin TAGS CONSERVÉS"
+    end
 
     # Si +options+ définit :text; il faut chercher le texte
     # dans les balises remontées
@@ -86,7 +99,7 @@ class HTML
     else
       tags.count
     end
-    # debug "= nombre_iterations : #{nombre_iterations}"
+    debug "= nombre_iterations : #{nombre_iterations}" if debug?
 
     ok = if option_count != nil
       nombre_iterations == option_count
@@ -94,7 +107,7 @@ class HTML
       nombre_iterations >= 1
     end
 
-    debug "=== OK = #{ok.inspect}\n\n\n"
+    debug "=== OK = #{ok.inspect}\n\n\n" if debug?
 
     # /fin du test
     # ---------------------------------------------------------------------
@@ -109,22 +122,30 @@ class HTML
 
     # On construit la spécification de la balise avec ses
     # attributs recherchés
-    tag_in_message = tag
+    tag_in_message = tag.dup
     unless attrs.empty?
       tag_in_message += attrs.collect{|a,v| "[#{a}=#{v}]"}.join('')
     end
+
     unless option_text.nil?
       exactement = option_strict ? "exactement" : "à peu près"
       tag_in_message += " contenant #{exactement} “#{option_text}”"
+    end
+
+    la_chose = case tag_init.downcase
+    when "form"     then "Le formulaire"
+    when "a"        then "Le lien"
+    when "section"  then "La section"
+    else "La balise"
     end
 
     # Les messages d'échec en fonction du fait qu'on demande
     # un nombre exact ou non.
     message_on_failure = if !ok
       if option_count && (option_count != nombre_iterations)
-        "La balise `#{tag_in_message}` devrait exister#{mess_count} dans la page (elle existe #{nombre_iterations} fois)."
+        "#{la_chose} `#{tag_in_message}` devrait exister#{mess_count} dans la page (elle existe #{nombre_iterations} fois)."
       else
-        "La balise `#{tag_in_message}` devrait exister#{mess_count} dans la page."
+        "#{la_chose} `#{tag_in_message}` devrait exister#{mess_count} dans la page."
       end
     else
       nil
@@ -133,15 +154,15 @@ class HTML
 
     # Soit on crée une évaluation, soit on retourne simplement
     # le résultat (quand options[:evaluate] == false)
-    unless options[:evaluate] === false
+    unless option_evaluate === false
       SiteHtml::TestSuite::Case::new(
         tmethod,
         result:           ok,
         positif:          !inverse,
-        on_success:       "La balise #{tag_in_message} existe#{mess_count}.",
-        on_success_not:   "La balise #{tag_in_message} n'existe pas#{mess_count} (OK).",
+        on_success:       "#{la_chose} #{tag_in_message} existe#{mess_count}.",
+        on_success_not:   "#{la_chose} #{tag_in_message} n'existe pas#{mess_count} (OK).",
         on_failure:       message_on_failure,
-        on_failure_not:   "La balise #{tag_in_message} ne devrait pas exister#{mess_count}."
+        on_failure_not:   "#{la_chose} #{tag_in_message} ne devrait pas exister#{mess_count}."
       ).evaluate
     else
       return ok

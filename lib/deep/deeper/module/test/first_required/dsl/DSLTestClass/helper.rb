@@ -18,7 +18,8 @@ class DSLTestClass
   # Transforme la liste des messages +liste_mess+ en
   # string de div tcase
   def as_div_list liste_mess, css
-    liste_mess.collect do |mess| "• #{mess}".in_div(class:"tcase #{css}") end.join('')
+    puce = css == success? ? "•" : "#"
+    liste_mess.collect do |mess| "#{puce} #{mess}".in_div(class:"tcase #{css}") end.join('')
   end
 
   # Le libellé pour la sortie

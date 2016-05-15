@@ -16,8 +16,8 @@ class TestSuite
 
   end #/<< self
 
-  attr_reader :failures # OBSOLÈTE
-  attr_reader :success  # OBSOLÈTE
+  # attr_reader :failures # OBSOLÈTE
+  # attr_reader :success  # OBSOLÈTE
 
   # Liste des instances TestFile des fichiers tests traités
   attr_reader :test_files
@@ -30,6 +30,9 @@ class TestSuite
     @options = opts
     parse_options
     self.class::current= self
+    # Il faut aussi initialiser les options de la class, qui permettent
+    # pour le moment de gérer la mise en route et l'arrêt du débuggage
+    self.class::init_options
   end
 
   # = main =
@@ -82,20 +85,8 @@ class TestSuite
 
   def parse_options
     @options ||= Hash::new
+    @options.merge!(debug: false) unless @options.has_key?(:debug)
     debug "SiteHtml::Test::options : #{@options.pretty_inspect}"
-  end
-
-  # Méthodes appelées par les files (SiteHtml::TestSuite::File) pour
-  # enregistrer leurs messages de succès ou d'erreur
-  def add_failure ifile, messages
-    # debug "-> TestSuite#add_failure"
-    infos[:nombre_tests] += 1
-    @failures << [infos[:nombre_tests], ifile, messages]
-  end
-  def add_success ifile, messages
-    # debug "-> TestSuite#add_success"
-    infos[:nombre_tests] += 1
-    @success << [infos[:nombre_tests], ifile, messages]
   end
 
 end #/TestSuite

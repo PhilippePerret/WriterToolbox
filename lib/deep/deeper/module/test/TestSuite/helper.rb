@@ -16,7 +16,7 @@ class TestSuite
       # Construire les éléments d'affichage
       details_test
 
-      color = failures.empty? ? 'green' : 'red'
+      color = nombre_failures == 0 ? 'green' : 'red'
       s_failures = nombre_failures > 1 ? "s" : ""
       resume = "#{nombre_failures} failure#{s_failures} #{nombre_success} success".in_span(class: color)
 
@@ -39,7 +39,6 @@ class TestSuite
       " | #{infos[:nombre_cas]} cas"+
       " | durée : #{laps}" +
       " | folder: #{folder_test_path}" +
-      " | #{infos[:nombre_files]} fichier#{s_files}" +
       " | "
     ).in_div(id:'test_infos')
   end
@@ -75,6 +74,11 @@ class TestSuite
       nombre_total_success  += nombre_success
       nombre_total_failures += nombre_failures
 
+      # Si le fichier n'a aucun succès ni aucune failure, c'est
+      # qu'aucun test n'a été joué. => On le passe.
+      next if (nombre_success + nombre_failures) == 0
+
+      # La ligne principale décrivant le fichier courant.
       div_filepath = "#{itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
       icase = 0

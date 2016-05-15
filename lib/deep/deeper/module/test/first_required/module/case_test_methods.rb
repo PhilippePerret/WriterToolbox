@@ -8,6 +8,11 @@
 =end
 module ModuleCaseTestMethods
 
+  # Pour savoir s'il faut débugguer
+  def debug?; SiteHtml::TestSuite::debug? end
+  def start_debug ; SiteHtml::TestSuite::start_debug  end
+  def stop_debug  ; SiteHtml::TestSuite::stop_debug   end
+
   # Pour traiter les méthodes plurielles. Envoyer simplement les
   # deux arguments attendus à cette méthode, plus la méthode de
   # traitement
