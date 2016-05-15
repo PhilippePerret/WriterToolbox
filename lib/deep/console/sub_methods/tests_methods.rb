@@ -20,11 +20,42 @@ class Console
     # commande `test` est jouée seule, ces arguments sont vides
     # et il faut jouer le dossier "offline" entier
     where = :offline # Par défaut
+    opts  = Hash::new
     dossier_test, dossier_rspec = if args != ""
+
       dargs = args.split(' ')
       if dargs.last == "online" || dargs.last == "offline"
         where = (dargs.pop == "online") ? :online : :offline
       end
+
+      # On recherche les options dans les commandes transmises
+      dargs = dargs.collect do |arg|
+        next arg unless arg.start_with?('-')
+        if arg.start_with?('--')
+          prop, value = arg[2..-1].strip.split('=')
+          value = case value
+          when 't' then true
+          when 'f' then false
+          else value
+          end
+          opts.merge!(prop.to_sym => value)
+        else
+          table_one_letter = {
+            'v' => :verbose,
+            'q' => :quiet,
+            'd' => :documented
+          }
+          arg[1..-1].strip.split('').each do |lettre_option|
+            opt = table_one_letter[lettre_option]
+            unless opt.nil?
+              opts.merge!( opt => true )
+            else
+              opts.merge!( lettre_option => true )
+            end
+          end
+        end
+        nil
+      end.compact
 
       # Quel test ? Soit un raccourci, soit un dossier
       # existant dans les tests
@@ -41,7 +72,8 @@ class Console
       dossier_test:   dossier_test,
       where:          where,
       online:         (where == :online),
-      offline:        (where == :offline)
+      offline:        (where == :offline),
+      options:        opts
     }
   end
   def run_a_rspec_test args

@@ -3,16 +3,14 @@ class SiteHtml
 class TestSuite
 class << self
 
-  attr_reader :options
+  attr_accessor :options
 
   # Initialisation des options de la classe
   #
   # La méthode est appelée par l'instanciation d'une suite
   # de tests.
   def init_options
-    @options = {
-      debug: false
-    }
+    @options.merge!( debug: false )
   end
 
   def debug?  ; options[:debug] == true end

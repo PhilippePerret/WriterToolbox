@@ -54,4 +54,10 @@ class DSLTestClass
 
   end
 
+  # Pour mettre le mode en verbose (même si le fichier ou les tests
+  # généraux ont leur options différentes)
+  def verbose value = true  ; @verbose = value end
+  # Pour mettre quiet à true ou false
+  def quiet value = true; @quiet = value end
+
 end

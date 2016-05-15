@@ -13,4 +13,12 @@ class DSLTestClass
   def route_test?
     false
   end
+
+  def verbose?              ; @verbose end
+
+  # Retourne true si le test de cette test-méthode doit être
+  # silencieux. Cette valeur n'est mise à true que si `quiet` est
+  # explicitement définie dans le code du fichier test. Sinon, la
+  # valeur est nil.
+  def quiet? ; @quiet end
 end

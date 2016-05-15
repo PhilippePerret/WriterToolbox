@@ -123,7 +123,7 @@ class << self
 
       @report[where][:removed_taches].each do |tdata|
         tbl_loc.delete(tdata[:id])
-        @suivi << "REM tâche #{where} ##{tid}"
+        @suivi << "REM tâche #{where} ##{tdata[:id]}"
       end
     end #/Fin de boucle hot/cold
 

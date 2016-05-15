@@ -23,8 +23,6 @@ class TestSuite
   attr_reader :test_files
 
 
-  attr_reader :options
-
 
   def initialize  opts = nil
     @options = opts
@@ -32,6 +30,8 @@ class TestSuite
     self.class::current= self
     # Il faut aussi initialiser les options de la class, qui permettent
     # pour le moment de gérer la mise en route et l'arrêt du débuggage
+    # Warning : La méthode `parse_options` ci-dessous enregistre déjà
+    # des valeurs dans les options.
     self.class::init_options
   end
 
@@ -80,13 +80,6 @@ class TestSuite
     @folder_test_path ||= begin
       File.join(['.', 'test', options[:dossier_test]].compact)
     end
-  end
-
-
-  def parse_options
-    @options ||= Hash::new
-    @options.merge!(debug: false) unless @options.has_key?(:debug)
-    debug "SiteHtml::Test::options : #{@options.pretty_inspect}"
   end
 
 end #/TestSuite

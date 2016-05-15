@@ -78,22 +78,49 @@ class TestSuite
       # qu'aucun test n'a été joué. => On le passe.
       next if (nombre_success + nombre_failures) == 0
 
+      # Est-ce en mode verbeux ou quiet ? Cela peut être
+      # déterminé par :
+      #   - les options générales de la ligne de commande
+      #   en utilisant `-q` ou `-v`,
+      #   - les options du fichier lui-même (en utilisant
+      #     `verbose` ou `quiet` à l'intérieur du fichier-test,
+      #       hors méthode de test)
+      #   - les options du test-méthode en utilisant
+      #     `verbose` ou `quiet` à l'intérieur de la méthode
+      #     de test.
+      verbose =
+
       # La ligne principale décrivant le fichier courant.
       div_filepath = "#{itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
-      icase = 0
+      # debug "SiteHtml::TestSuite::options = #{SiteHtml::TestSuite::options.inspect}"
+      if SiteHtml::TestSuite::options[:quiet] || (SiteHtml::TestSuite::options[:verbose] === false)
+        filetest_failure_messages = ""
+        filetest_success_messages = ""
+      else
+        icase = 0
+        filetest_failure_messages = testfile.failure_tests.collect do |tmethod|
 
-      filetest_failure_messages = testfile.failure_tests.collect do |tmethod|
-        infos[:nombre_cas] += tmethod.messages_count
-        tmethod.full_libelle_output( itestfile, icase += 1 ) +
-        tmethod.messages_output
-      end.join('')
+          verbose = ( tmethod.verbose? || tmethod.quiet? === false ) ||
+                    ( tfile.verbose?   || tfile.quiet? === false )   ||
+                    ( verbose?         || quiet? === false )
 
-      filetest_success_messages = testfile.success_tests.collect do |tmethod|
-        infos[:nombre_cas] += tmethod.messages_count
-        tmethod.full_libelle_output( itestfile, icase += 1 ) +
-        tmethod.messages_output
-      end.join('')
+          infos[:nombre_cas] += tmethod.messages_count
+          c = tmethod.full_libelle_output( itestfile, icase += 1 )
+          c << tmethod.messages_output if verbose
+        end.join('')
+
+        filetest_success_messages = testfile.success_tests.collect do |tmethod|
+
+          verbose = ( tmethod.verbose? || tmethod.quiet? === false ) ||
+                    ( tfile.verbose?   || tfile.quiet? === false )   ||
+                    ( verbose?         || quiet? === false )
+
+          infos[:nombre_cas] += tmethod.messages_count
+          c = tmethod.full_libelle_output( itestfile, icase += 1 )
+          c << tmethod.messages_output if verbose
+        end.join('')
+      end
 
       # On ajoute les messages, sauf s'il sont vides
       if nombre_success > 0

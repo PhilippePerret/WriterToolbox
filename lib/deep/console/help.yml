@@ -65,6 +65,28 @@ synchro:
 # ---------------------------------------------------------------------
 test:
   -
+    command:      test[ -&lt;options&gt;](&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
+    description: |
+      Exécute le test voulu avec le module propre aux RestSites.
+      <br>Soit le test dans le dossier spécifié (à partir de `path/dossier`)
+      <br>Soit le `type` (À DÉFINIR) qui correspond à certains tests comme : <ul>
+      <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
+      </ul>
+  -
+    command:      test --depth=1 mini[ online]
+    description: |
+      Si un dossier ./test/mini/ existe, alors tous les tests à
+      l'intérieur seront joués par cette commande en ONLINE et en n'affichage
+      que les évaluations de test-méthodes (pas les cases).
+    note: |
+      Mettre `online` en fin de ligne si les tests doivent se faire ONLINE.
+      <br>Options :<pre>
+        -q / --quiet=t        Mode silencieux
+        -v / --verbose=f      Mode verbose (inverse de quiet)
+        -d / --documented=t   Mode documenté (ne fait rien pour le moment)
+      </pre>
+
+  -
     command:      rspec (&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
     description: |
       Joue un test ou un ensemble de tests avec RSpec.
@@ -74,19 +96,6 @@ test:
       </ul>
     note: |
       Pour cURL, cf. le site <a href="https://curl.haxx.se/docs/manual.html">https://curl.haxx.se/docs/manual.html</a>
-  -
-    command:      test (&lt;type&gt;|&lt;path/dossier&gt;)[ online|offline]
-    description: |
-      Exécute le test voulu.
-      <br>Soit le test dans le dossier spécifié (à partir de `path/dossier`)
-      <br>Soit le `type` (À DÉFINIR) qui correspond à certains tests comme : <ul>
-      <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
-      </ul>
-  -
-    command:      test mini online
-    description: |
-      Si un dossier ./spec/online/mini/ existe, alors tous les tests à
-      l'intérieur seront joués par cette commande.
 
 # DÉBUG
 debug:
@@ -97,7 +106,9 @@ debug:
     command:      destroy|kill debug
     description:  Détruit le fichier de débug.
 
-# ALLER
+# ---------------------------------------------------------------------
+#   ALLER
+# ---------------------------------------------------------------------
 aller:
   -
     command:      "`goto &lt;somewhere&gt;` ou `aller &lt;somewhere&gt;`"
