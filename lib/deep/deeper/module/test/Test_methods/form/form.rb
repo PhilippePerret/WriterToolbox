@@ -11,6 +11,18 @@ class TestForm < DSLTestClass
     super(&block)
   end
 
+  def description_defaut
+    @description_defaut ||= begin
+      form_specs = if data_form[:id]
+        " ##{data_form[:id]}"
+      elsif data_form[:name]
+        " .#{data_form[:name]}"
+      else
+        ""
+      end
+      "TEST FORM#{form_specs} AT #{url}"
+    end
+  end
 
 end #/TestForm
 end #/TestSuite

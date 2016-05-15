@@ -24,10 +24,18 @@ module ModuleCaseTestMethods
   # La méthode retourne le résultat de l'évaluation
   # dans le cas où ce sont des méthodes-?.
   #
-  def evaluate_as_pluriel method, arr, options=nil
+  # +inverse+ permet de savoir si c'est une méthode not ou droite.
+  # Car le comportement n'est pas du tout le même :
+  #   * Si c'est une méthode droite (affirmative), la condition
+  #     est vraie si tous les éléments existent et sont conformes
+  #     Par exemple : has_tags
+  #   * Si c'est une méthode inverse (négative), la condition est
+  #     false dès qu'un élément correspond à la recherche.
+  #     Par exemple : has_not_tags
+  #
+  def evaluate_as_pluriel method, arr, options=nil, inverse=false
 
     is_interrogative = method.to_s.end_with?("?")
-    total_value = true if is_interrogative
 
     # Les éléments de la liste peuvent être :
     #   - soit un string seul (le premier argument de la méthode +method+)
@@ -41,7 +49,9 @@ module ModuleCaseTestMethods
         args = [args] unless args.instance_of?(Array)
         args << options
       end
+
       send(method, *args) # c'est le résultat qu'on doit collecter
+
     end.compact.uniq
 
     return res == [true]

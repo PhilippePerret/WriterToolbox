@@ -57,35 +57,44 @@ class HTML
     tags = page.css( tag )
 
     unless attrs.empty?
-      debug "Des attributs sont à rechercher : #{attrs.inspect}"
+      # debug "Des attributs sont à rechercher : #{attrs.inspect}"
       tags = tags.select do |edom|
-        debug "Recherche dans #{edom.inner_html}"
+        # debug "Recherche dans #{edom.inner_html}"
         is_valide = true
         attrs.each do |attr, value|
           if edom[attr.to_s] != value
-            debug "  Valeur non conforme : #{edom[attr].inspect}"
             is_valide = false
             break
           end
         end
-        debug "= is_valide est #{is_valide.inspect}"
+        # if is_valide
+        #   debug "  = Balise conforme par ses attributs"
+        # end
         is_valide
       end
     end
 
+    # # Débug
+    # debug "\n= TAGS CONSERVÉS (après test des attributs if any) : "
+    # debug tags.collect{|t| t.text }.join("\n")
+    # debug "=/Fin TAGS CONSERVÉS"
+
     # Si +options+ définit :text; il faut chercher le texte
     # dans les balises remontées
     nombre_iterations = if option_text
-      search_text_in_tags(tags, option_text, {strict:option_strict})
+      search_text_in_tags(tags, option_text, {strict:option_strict, several: (option_count!=nil && option_count>1)})
     else
       tags.count
     end
+    # debug "= nombre_iterations : #{nombre_iterations}"
 
     ok = if option_count != nil
       nombre_iterations == option_count
     else
       nombre_iterations >= 1
     end
+
+    debug "=== OK = #{ok.inspect}\n\n\n"
 
     # /fin du test
     # ---------------------------------------------------------------------
@@ -142,16 +151,16 @@ class HTML
     has_tag(tag, (options||{}).merge(evaluate: false), inverse)
   end
   def has_tags arr, options=nil
-    evaluate_as_pluriel :has_tag, arr, options
+    evaluate_as_pluriel :has_tag, arr, options, inverse=false
   end
   def has_tags? arr, options=nil
-    evaluate_as_pluriel :has_tag?, arr, options
+    evaluate_as_pluriel :has_tag?, arr, options, inverse=false
   end
   def has_not_tag tag, options = nil
     has_tag tag, options, true
   end
   def has_not_tags arr, options=nil
-    evaluate_as_pluriel :has_not_tag, arr, options
+    evaluate_as_pluriel :has_not_tag, arr, options, inverse=true
   end
 
   # has_message
@@ -200,10 +209,10 @@ class HTML
   end
   # Méthode plurielle
   def has_messages arr, options=nil
-    evaluate_as_pluriel :has_message, arr, options
+    evaluate_as_pluriel :has_message, arr, options, inverse=false
   end
   def has_not_messages arr, options=nil
-    evaluate_as_pluriel :has_not_message, arr, options
+    evaluate_as_pluriel :has_not_message, arr, options, inverse=true
   end
 
   def has_error mess, options = nil, inverse = false
@@ -239,10 +248,10 @@ class HTML
     has_error mess, options, inverse=true
   end
   def has_errors arr, options=nil
-    evaluate_as_pluriel :has_error, arr, options
+    evaluate_as_pluriel :has_error, arr, options, inverse=false
   end
   def has_not_errors arr, options=nil
-    evaluate_as_pluriel :has_not_error, arr, options
+    evaluate_as_pluriel :has_not_error, arr, options, inverse=true
   end
   def has_error? mess, options = nil, inverse = false
     options ||= Hash::new
@@ -306,7 +315,7 @@ class HTML
     has_title(titre, niveau, options, inverse)
   end
   def has_titles arr, options=nil
-    evaluate_as_pluriel :has_title, arr, options
+    evaluate_as_pluriel :has_title, arr, options, inverse=false
   end
   def has_titles? arr, options=nil
     evaluate_as_pluriel :has_title?, arr, options
@@ -315,50 +324,10 @@ class HTML
     has_title titre, niveau, options, true
   end
   def has_not_titles arr, options=nil
-    evaluate_as_pluriel :has_not_title, arr, options
+    evaluate_as_pluriel :has_not_title, arr, options, inverse=true
   end
   def has_not_titles? arr, options=nil
-    evaluate_as_pluriel :has_not_title?, arr, options
-  end
-
-
-  # Cherche le texte +text+ dans les balises définies par
-  # +tag+ avec les options +options+ et retourne le nombre
-  # de résultats trouvés.
-  #
-  # +text+        {String|RegExp} Le texte à rechercher
-  #
-  # +options+
-  #   :several    Mettre à true pour chercher le texte plusieurs
-  #               seule fois (false par défaut)
-  #   :strict     Si true, recherche le texte strictement dans la
-  #               balise (false par défaut)
-  #
-  # Retourne le nombre d'occurences trouvés (noter qu'il peut).
-  # y en avoir plusieurs par balise.
-  def search_text_in_tag tag, text, options=nil
-    search_text_in_tags page.css(tag), text, options
-  end
-  def search_text_in_tags tags, text, options=nil
-    options ||= Hash::new
-
-    # Le texte à trouver
-    unless text.instance_of?(Regexp)
-      text = if options[:strict]
-        /^#{text}$/o
-      else
-        /#{text}/oi
-      end
-    end
-
-    nombre_found = 0
-    tags.each do |tested|
-      if 0 < (nb = tested.text.scan(text).count)
-        nombre_found += nb
-        return nb unless options[:several] == true
-      end
-    end
-    return nombre_found
+    evaluate_as_pluriel :has_not_title?, arr, options, inverse=true
   end
 
 end #/Html

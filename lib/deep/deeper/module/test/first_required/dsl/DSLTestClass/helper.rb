@@ -23,7 +23,7 @@ class DSLTestClass
 
   # Le libellé pour la sortie
   def libelle
-    if description
+    if description.nil_if_empty != nil
       description + description_defaut.in_div(class:'defname')
     else
       description_defaut

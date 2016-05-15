@@ -8,6 +8,52 @@ class HTML
 
 
 
+  # Cherche le texte +text+ dans les balises définies par
+  # +tag+ avec les options +options+ et retourne le nombre
+  # de résultats trouvés.
+  #
+  # +text+        {String|RegExp} Le texte à rechercher
+  #
+  # +options+
+  #   :several    Mettre à true pour chercher le texte plusieurs
+  #               seule fois (false par défaut)
+  #   :strict     Si true, recherche le texte strictement dans la
+  #               balise (false par défaut)
+  #
+  # Retourne le nombre d'occurences trouvés (noter qu'il peut).
+  # y en avoir plusieurs par balise.
+  def search_text_in_tag tag, text, options=nil
+    search_text_in_tags page.css(tag), text, options
+  end
+  def search_text_in_tags tags, text, options=nil
+    options ||= Hash::new
+
+    # debug "\n\n-> search_text_in_tags(tags, text=“#{text}”, options=#{options.inspect})"
+
+    # Le texte à trouver
+    unless text.instance_of?(Regexp)
+      text = if options[:strict]
+        /^#{text}$/
+      else
+        /#{text}/i
+      end
+    end
+
+    nombre_found = 0
+    tags.each do |tag|
+      if 0 < (nb = tag.text.scan(text).count)
+        nombre_found += nb
+        # Sauf si on a précisé qu'il fallait trouver la balise
+        # plusieurs fois (pour une recherche avec :count par exemple)
+        # on peut retourner le nombre qui est souvent 1 dès qu'on
+        # a trouvé le texte dans une balise
+        return nb unless options[:several]
+      end
+    end
+    return nombre_found
+  end
+
+
   # Retourne un texte à ajouter aux messages d'erreur pour
   # préciser les messages contenus dans la page
   #
