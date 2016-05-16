@@ -16,6 +16,9 @@ class TestFile
   def test_route route, options=nil, &bloc
     SiteHtml::TestSuite::TestRoute::new( self, route, options, &bloc )
   end
+  def test_base table_specs, options=nil, &block
+    SiteHtml::TestSuite::TestBase::TestTable::new(self, table_specs, options, &block)
+  end
 
   # / Fin méthodes des tests
   # ---------------------------------------------------------------------

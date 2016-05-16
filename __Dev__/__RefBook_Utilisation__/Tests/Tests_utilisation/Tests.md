@@ -1,6 +1,9 @@
 # Tests
 
 * [Introduction](#introductionteststest)
+* [Lancer des tests](#lanceruntest)
+  * [Lancer une suite de tests (`test dossier online`)](#lancerunesuitedetests)
+  * [Lancer une configuration de tests (`run test`)](#lancerdestestsspecifique)
 * [Hiérarchie des éléments](#hierarchiedeselements)
 * [Implémentation du test](#implementation_du_test)
 
@@ -20,6 +23,55 @@ Les tests non rspec servent principalement à tester l'application en intégrati
 * vérifier qu'une page renvoie un code, et un code valide,
 * soumettre un formulaire et tester le retour/résultat,
 * faire un essai de l'api.
+
+<a name='lanceruntest'></a>
+
+## Lancer des tests
+
+<a name='lancerunesuitedetests'></a>
+
+### Lancer une suite de tests (`test dossier online`)
+
+
+Pour lancer des tests, on utilise la console. La commande de base est&nbsp;:
+
+    test[ <options>] <dossier>[ <lieu>]
+    
+où&nbsp;:
+
+    options
+    -------
+        Les options peuvent être spécifiées de façon habituelles, soient
+        avec "-" soit avec "--" :
+          --debug           Mode débuggage. Envoie des messages au débug
+          -v, --verbose     Mode bavard, affiche le détail des tests
+          -q, --quiet       Mode silencieux. Seul le nom des test-méthodes
+                            est indiqué.
+                            
+    dossier
+    -------
+        C'est un sous-dossier du dossier principal `./test`. N'importe
+        quel sous-dossier peut être spécifié ici.
+    
+    lieu
+    ----
+        Ajouter simplement "online" ou "offline"
+        Pour déterminer si les tests doivent se faire en online ou en
+        offline.
+        Si lieu n'est pas déterminé, les tests sont faits en offline, donc
+        sur le site local.
+
+<a name='lancerdestestsspecifique'></a>
+
+### Lancer une configuration de tests (`run test`)
+
+On peut lancer une configuration précise de test avec la commande&nbsp;:
+
+    run test
+    ou
+    test run
+
+Cf. le fichier "Fichier_run.md" pour le détail de l'opération.
 
 <a name='hierarchiedeselements'></a>
 

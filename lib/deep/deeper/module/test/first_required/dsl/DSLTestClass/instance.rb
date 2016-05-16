@@ -1,11 +1,11 @@
 # encoding: UTF-8
 =begin
 
-Ouvrir le fichier Test/Implémentation/DSLTestClass.md pour obtenir
+Ouvrir le fichier Test/Implémentation/DSLTestMethod.md pour obtenir
 tous les détails
 
 =end
-class DSLTestClass
+class DSLTestMethod
 
   # {SiteHtml::TestSuite::TestFile} Instance du fichier
   # possédant la méthode de test.

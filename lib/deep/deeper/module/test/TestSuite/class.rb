@@ -31,6 +31,10 @@ class << self
     debug "\n\n\n---------------- /DEBUG OFF -----------------\n"
   end
 
+  # Valeurs prises dans la test-suite courante
+  def online?   ; self.current.online?  end
+  def offline?  ; self.current.offline? end
+
 end #/<< self
 end #/TestSuite
 end #/SiteHtml

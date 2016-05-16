@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class DSLTestClass
+class DSLTestMethod
 
   # Retourne true si la test-method a été un succès, c'est-à-dire
   # qu'elle n'a généré aucun message d'erreur.

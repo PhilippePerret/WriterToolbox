@@ -315,20 +315,20 @@ sup {
 <ul>
 <li>Définir la classe, c'est-à-dire son nom. Par exemple <code>SiteHtml::TestSuite::TestForm</code>,</li>
 <li>Créer un dossier pour cette nouvelle méthode de test dans <code>./lib/deep/deeper/module/test/case_objets</code>,</li>
-<li><p>la faire hériter de <code>DSLTestClass</code> après l'avoir fait descendre de <code>SiteHtml::TestSuite</code> :</p>
+<li><p>la faire hériter de <code>DSLTestMethod</code> après l'avoir fait descendre de <code>SiteHtml::TestSuite</code> :</p>
 
 <p>  ~~~ruby</p>
 
 <pre><code>class SiteHtml
 class TestSuite
-class TestForm &lt; DSLTestClass
+class TestForm &lt; DSLTestMethod
 </code></pre>
 
 <p>  ~~~</p></li>
 <li><p>définir sa méthode d'initialisation :</p>
 
 <pre><code>    ...
-    class TestForm &lt; DSLTestClass
+    class TestForm &lt; DSLTestMethod
       def initialize param1... paramN, &amp;bloc
         super bloc
       end

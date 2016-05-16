@@ -5,7 +5,7 @@
   tous les messages d'erreur et les notifications.
 
 =end
-class DSLTestClass
+class DSLTestMethod
 
 
   def success_messages

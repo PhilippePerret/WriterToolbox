@@ -1,4 +1,4 @@
-# DSLTestClass
+# DSLTestMethod
 
 C'est la classe dont doit hériter toute classe de test.
 
@@ -8,7 +8,7 @@ Par exemple, `test_form`, qui teste les formulaires, est défini par :
 
     class SiteHtml
       class TestSuite
-        class TestForm < DSLTestClass
+        class TestForm < DSLTestMethod
 
           ...
 

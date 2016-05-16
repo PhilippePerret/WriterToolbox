@@ -6,20 +6,20 @@ On utilise un **DSL** particulier.
 
 * Définir la classe, c'est-à-dire son nom. Par exemple `SiteHtml::TestSuite::TestForm`,
 * Créer un dossier pour cette nouvelle méthode de test dans `./lib/deep/deeper/module/test/case_objets`,
-* la faire hériter de `DSLTestClass` après l'avoir fait descendre de `SiteHtml::TestSuite` :
+* la faire hériter de `DSLTestMethod` après l'avoir fait descendre de `SiteHtml::TestSuite` :
 
     ~~~ruby
     
       class SiteHtml
       class TestSuite
-      class TestForm < DSLTestClass
+      class TestForm < DSLTestMethod
       
     ~~~
 * définir sa méthode d'initialisation :
 
     
           ...
-          class TestForm < DSLTestClass
+          class TestForm < DSLTestMethod
             def initialize ftest, param1... paramN, &block
               super(ftest, &block)
             end
@@ -54,7 +54,7 @@ On utilise un **DSL** particulier.
 
   Ne pas oublier le `self` comme premier argument qui fait référence au fichier de test
 
-* lire les méthodes de la classe `DSLTestClass` dans `./lib/deep/deeper/module/test/first_required/dsl/DSLTestClass.rb` pour se souvenir des méthodes héritées, à commencer par `html`, qui permet d'avoir accès à tout le code de la dernière requête,
+* lire les méthodes de la classe `DSLTestMethod` dans `./lib/deep/deeper/module/test/first_required/dsl/DSLTestMethod.rb` pour se souvenir des méthodes héritées, à commencer par `html`, qui permet d'avoir accès à tout le code de la dernière requête,
 * définir une **description par défaut** dans la méthode `description_defaut` de la classe,
 
         class TestForm

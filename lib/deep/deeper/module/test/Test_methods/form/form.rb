@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class SiteHtml
 class TestSuite
-class TestForm < DSLTestClass
+class TestForm < DSLTestMethod
 
   attr_reader :data_form
 

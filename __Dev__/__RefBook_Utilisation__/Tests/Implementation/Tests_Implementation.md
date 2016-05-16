@@ -62,7 +62,7 @@ Cette aide `cUrl` doit permettre de rédiger de nouveaux tests.
 
 Rappel : Une "méthode-plurielle", c'est par exemple la méthode `has_tags` en comparaison avec la méthode `has_tag`.
 
-Comme ces méthodes peuvent recevoir plusieurs type d'ensemble, il vaut mieux utiliser une seule méthode pour toutes les créer. C'est méthode est la méthode `evaluate_as_pluriel` de la class `DSLTestClass`. Il suffit de faire&nbsp;:
+Comme ces méthodes peuvent recevoir plusieurs type d'ensemble, il vaut mieux utiliser une seule méthode pour toutes les créer. C'est méthode est la méthode `evaluate_as_pluriel` de la class `DSLTestMethod`. Il suffit de faire&nbsp;:
 
     def has_tags liste, options=nil
       evaluate_as_pluriel :has_tag, liste, options

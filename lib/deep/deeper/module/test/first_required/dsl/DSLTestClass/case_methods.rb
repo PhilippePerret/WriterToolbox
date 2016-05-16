@@ -4,7 +4,7 @@
   Les méthodes ou objets utilisables par les fichiers de test
 
 =end
-class DSLTestClass
+class DSLTestMethod
 
   if defined?(ModuleCaseTestMethods)
     # Sinon, il sera inclus après le chargement du module

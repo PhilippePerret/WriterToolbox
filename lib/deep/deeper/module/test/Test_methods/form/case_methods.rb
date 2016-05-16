@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class SiteHtml
 class TestSuite
-class TestForm < DSLTestClass
+class TestForm < DSLTestMethod
 
   # Les méthodes propres aux routes (dès que l'objet-case
   # doit interagir avec la page)

@@ -1,6 +1,7 @@
 # Le fichier `./test/run`
 
 * [Définir la liste des fichiers tests](#definirlalistedesfichiers)
+* [Définir le lieu des tests (distant/local)](#definironlineoffline)
 
 
   test run
@@ -26,7 +27,6 @@ On peut spécifier chaque élément de trois façons différentes&nbsp;:
 * en version relative depuis ./test/mini&nbsp;: "mini/mon_test_spec.rb",
 * en version relative simple&nbsp;: "mini/mon_test" (noter qu'ici l'application ajoute `./test` devant et `_spec.rb` au nom du fichier).
 
-* [Définir le lieu des tests (distant/local)](#definironlineoffline)
 <a name='definironlineoffline'></a>
 
 ## Définir le lieu des tests (distant/local)

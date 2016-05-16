@@ -11,7 +11,7 @@ class TestSuite
 class HTML
 
   # Test-method
-  # Une classe héritant de DSLTestClass
+  # Une classe héritant de DSLTestMethod
   attr_reader :tmethod
 
   # {String} Le code tel qu'il est soumis à l'instanciation

@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class DSLTestClass
+class DSLTestMethod
 
   # Le libellé complet, tel qu'il apparaitra dans le rapport final
   # affiché, avec le numéro de file-test et de test-case.

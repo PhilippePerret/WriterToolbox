@@ -2,8 +2,11 @@
 
 * [Définition](#definitiondesmethodesdetests)
 * [Liste des méthodes de test](#listemethodesdetest)
-  * [Méthode de test `test_route`](#methodetesttestroute)
-  * [Méthode de test `test_form`](#methodedetesttestform)
+  * [Test-méthode URL `test_route`](#methodetesttestroute)
+  * [Test-méthode FORM `test_form`](#methodedetesttestform)
+  * [Test-méthode DATABASE `test_base`](#testmethodesdatabase)
+    * [Case-objets de la test-méthode `test_base`](#casesobjetsdetestbase)
+      * [Case-objet `row`](#caseobjetrowdetestbase)
 * [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
 
 
@@ -38,6 +41,22 @@ Pour tester une route, donc une adresse URL et la page retournée.
       description "Le test de la page d'accueil du site"
       html.has_titre("Bienvenue !", niveau: 1)
     end
+
+* [Case-objets de la test-méthode `test_route`](#caseobjetsdelatestmethoderoute)
+<a name='caseobjetsdelatestmethoderoute'></a>
+
+#### Case-objets de la test-méthode `test_route`
+
+* html
+
+`html` est une instance `SiteHtml::TestSuite::HTML` dont la propriété `page` est un `Nokogiri::Document` permettant de faire tous les tests sur le code. Par exemple&nbsp;:
+
+~~~ruby
+
+  html.has_tag("div#un_div_present")
+  html.has_message("Mon message", {strict: true})
+  
+~~~
 
 <a name='methodedetesttestform'></a>
 
@@ -77,6 +96,67 @@ Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `
 
     end
 
+<a name='testmethodesdatabase'></a>
+
+### Test-méthodes des bases de données (`test_base`)
+
+Permet de tester les bases de données. Exemple&nbsp;:
+
+~~~ruby
+
+  test_base "path/to/base.table" do
+    has_row({id: 12, phil: "Phil", activity: 13})
+  end
+  
+  test_base "users.users"{ row(2).exists }
+  
+~~~
+
+@syntaxe
+
+~~~ruby
+
+  test_base "<base sans .db>.<table>" do
+    <case-méthode>
+    <case-méthode>
+    ...
+  end
+~~~
+
+<a name='casesobjetsdetestbase'></a>
+
+#### Case-objets de la test-méthode `test_base`
+
+
+<a name='caseobjetrowdetestbase'></a>
+
+##### Case-objet `row`
+
+`row` est un objet de classe `SiteHtml::TestSuite::DBase::Row` qui contient des méthodes de case et des méthodes de gestion&nbsp;:
+
+~~~ruby
+
+row(...).exists
+row(...).delete
+row(...).insert(...data...)
+row(...).has(...data...)
+
+~~~
+
+Noter que ces méthodes fonctionnent aussi bien online qu'offline donc qu'il faut être particulièrement prudent, même si des backups sont produits.
+
+**Données de la rangée**
+
+On peut obtenir les données de la rangée par&nbsp;:
+
+~~~ruby
+
+  thdata = row(...).data
+  # Noter que c'est un THash
+
+~~~
+
+La valeur retournée est un `THash`, pas un `Hash` donc on peut utiliser sur lui toutes les méthodes normales des `Hash` mais en plus les case-méthodes propres, à commencer par `has`, `has_not` etc. pour vérifier qu'il y a bien ces données.
 
 
 ---------------------------------------------------------------------

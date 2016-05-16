@@ -64,7 +64,7 @@ module ModuleCaseTestMethods
 
 end
 
-# On inclut ce module à DSLTestClass
-if defined?(DSLTestClass)
-  class DSLTestClass; include ModuleCaseTestMethods end
+# On inclut ce module à DSLTestMethod
+if defined?(DSLTestMethod)
+  class DSLTestMethod; include ModuleCaseTestMethods end
 end

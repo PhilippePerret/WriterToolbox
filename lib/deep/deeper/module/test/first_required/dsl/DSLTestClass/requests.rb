@@ -6,7 +6,7 @@ principalement Nokogiri et cURL
 
 =end
 
-class DSLTestClass
+class DSLTestMethod
 
   # Instance `Nokogiri::HTML` du code de retour de l'url.
   #

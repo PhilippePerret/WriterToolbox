@@ -10,9 +10,9 @@
 
 class SiteHtml
 class TestSuite
-class TestRoute < DSLTestClass
+class TestRoute < DSLTestMethod
 
-  attr_reader :raw_route
+  # attr_reader :raw_route
 
   # +raw_route+ La route brut, qui peut contenir un query_string
   def initialize tfile, raw_route, options=nil, &block

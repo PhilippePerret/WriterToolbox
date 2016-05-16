@@ -20,7 +20,7 @@ module ModuleRouteMethods
   # {String} La route pour rejoindre le formulaire
   attr_reader :raw_route
 
-  # Surclasse la même méthode dans DSLTestClass pour indiquer
+  # Surclasse la même méthode dans DSLTestMethod pour indiquer
   # que la test-méthode courante — qui charge ce module — est
   # de type "route" et qu'elle peut donc utiliser `html` qui
   # permet d'accéder à toutes les méthodes qui testent le code
