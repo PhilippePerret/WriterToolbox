@@ -15,6 +15,11 @@ Extension des Hash pour les tests
 =end
 class THash < Hash
 
+  ERROR = {
+    actual_value:         "sa valeur est %s",
+    unknown_property:     "cette propriété est inconnue"
+  }
+
   # Test-méthode (pour savoir où enregistrer le résultat des
   # méthodes d'évaluation)
   attr_reader :tmethod
@@ -36,7 +41,7 @@ class THash < Hash
     # On teste les contenus
     hdiff = Hash::new
     hdata.each do |k, v|
-      hdiff.merge!(k => {attendu:v.inspect, valeur_courant: self[k].inspect}) if self[k] != v
+      hdiff.merge!(k => {expected:v, existe:(self.has_key?(k)), valeur: self[k]}) if self[k] != v
     end
 
     # Débug
@@ -52,7 +57,13 @@ class THash < Hash
 
     # Pour l'affichage
     hinspected = hdata.inspect
-    hdiff = "différences : #{hdiff.inspect}"
+    if ok != !inverse
+      hdiff = "différences : " + hdiff.collect do |k, dv|
+        kerreur = dv[:existe] ? :actual_value : :unknown_property
+        erreur = ERROR[kerreur] % [dv[:valeur].inspect]
+        "la propriété #{k.inspect} devrait avoir la valeur #{dv[:expected].inspect} et #{erreur}"
+      end.pretty_join
+    end
 
     # Production du cas
     SiteHtml::TestSuite::Case::new(

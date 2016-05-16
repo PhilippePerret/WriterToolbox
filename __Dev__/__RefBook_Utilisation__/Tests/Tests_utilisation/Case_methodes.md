@@ -1,13 +1,16 @@
 # Les `Case-méthodes`
 
+* [Définition](#definitiondesmethodesdecase)
 * [Méthodes du module `ModuleRouteMethods`](#methodesmoduleroutemethodes)
 * [L'objet `html`](#objethtml)
+* [Le case-objet `row`](#objetcaserow)
 * [Méthodes-case `methode`, `not_methode`, `methode?` et `methodeS`](#hashashnotandinterrogation)
   * [Arguments des cases-méthodes plurielles](#argumentdescasesmethodesplurielles)
 * [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
 * [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
+* [Case-méthodes des Hash de données](#testcasesdeshash)
 
-* [Définition](#definitiondesmethodesdecase)
+
 <a name='definitiondesmethodesdecase'></a>
 
 ## Définition
@@ -186,6 +189,21 @@ FORMES    ———————————————————————�
 -------------------------------------------------------------------
 
 ~~~
+
+<a name='objetcaserow'></a>
+
+## Le case-objet `row`
+
+Le case-objet `row` s'utilise dans les test-méthodes des bases de données (`test_base`). Il permet de tester ou de commander une rangée de la base de données. Par exemple&nbsp;:
+
+~~~ruby
+
+  row(12).has(id: 12, pseudo: "Bernadette")
+  
+~~~
+
+Le test ci-dessus renvoie un succès si la rangée d'identifiant 12 de la table possède l'attribut :id à 12 et l'attribut :pseudo à "Bernadette". Il produit une failure dans le cas contraire.
+
 
 
 ---------------------------------------------------------------------
@@ -367,3 +385,56 @@ Les données utilisées seront celles transmises dans `data_form` (enregistrées
     id_du_field: "la valeur"
 
 … et la méthode `fill_and_submit` comprendra qu'il s'agit du champ.
+
+
+<a name='testcasesdeshash'></a>
+
+## Case-méthodes des Hash de données
+
+Les `Hash` peuvent être testés grâce à la classe `THash`.
+
+* [Instanciation d'un `THash`](#instanciationthash)
+* [Case-méthode `has` & dérivées](#casemethodehas)
+
+<a name="instanciationthash"></a>
+### Instanciation d'un `THash`
+
+~~~ruby
+
+THash::new(<test_method>[ <valeur par défaut>])
+
+  <test_method> est soit un test_route, un test_form, un test_base, etc.
+~~~
+
+
+<a name='casemethodehas'></a>
+
+### Case-méthode `has` & dérivées  
+
+> Note&nbsp;: Cette méthode répond au [méthodes dérivées](#hashashnotandinterrogation).
+
+Produit un succès si le `Hash` possède les éléments décrits dans le `hash` qui lui est transmis en argument.
+
+~~~ruby
+
+  <thash>.has(<Hash de données>[, <options>])
+
+~~~
+
+Par exemple, dans le contexte d'une base de données&nbsp;:
+
+~~~ruby
+
+test_base "labase.latable" do
+
+  # On récupère les données de la rangée id: 12
+  data = row(12).data
+  # On teste son contenu
+  data.has(pseudo: "Ernest")
+  
+  
+  # Noter que dans la vraie vie, on aurait fait plutôt, à l'aide
+  # des méthodes-raccourcis :
+  # row(12).has(pseudo: "Ernest")
+
+end

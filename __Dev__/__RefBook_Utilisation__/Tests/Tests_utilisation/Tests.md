@@ -6,6 +6,7 @@
   * [Lancer une configuration de tests (`run test`)](#lancerdestestsspecifique)
 * [Hiérarchie des éléments](#hierarchiedeselements)
 * [Implémentation du test](#implementation_du_test)
+* [Débuggage du test](#debugging)
 
 Deux formes de tests sont possibles :
 
@@ -148,7 +149,6 @@ Cf. le fichier "Fichier_run.md" pour le détail de l'opération.
 
 Cf. le dossier Test_implementation.md
 
-* [Débuggage du test](#debugging)
 <a name='debugging'></a>
 
 ## Débuggage du test
