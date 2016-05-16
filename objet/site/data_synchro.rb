@@ -23,7 +23,7 @@ Pour utiliser ces données n'importe où, il faut :
 # ---------------------------------------------------------------------
 class Synchro
   def serveur_ssh
-    "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
+    site.serveur_ssh || site.ssh_server || "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
   end
 
 

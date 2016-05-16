@@ -16,7 +16,7 @@ Extension des Hash pour les tests
 class THash < Hash
 
   ERROR = {
-    actual_value:         "sa valeur est %s",
+    actual_value:         "sa valeur vaut  %s",
     unknown_property:     "cette propriété est inconnue"
   }
 
@@ -39,9 +39,16 @@ class THash < Hash
     option_evaluate = options.delete(:evaluate)
 
     # On teste les contenus
-    hdiff = Hash::new
+    hdiff = {}
     hdata.each do |k, v|
-      hdiff.merge!(k => {expected:v, existe:(self.has_key?(k)), valeur: self[k]}) if self[k] != v
+      valide =
+        if v.instance_of?(Regexp)
+          self[k] =~ v
+        else
+          self[k] == v
+        end
+      next if valide
+      hdiff.merge!(k => { expected: v, existe: self.key?(k), valeur: self[k] })
     end
 
     # Débug
@@ -61,7 +68,7 @@ class THash < Hash
       hdiff = "différences : " + hdiff.collect do |k, dv|
         kerreur = dv[:existe] ? :actual_value : :unknown_property
         erreur = ERROR[kerreur] % [dv[:valeur].inspect]
-        "la propriété #{k.inspect} devrait avoir la valeur #{dv[:expected].inspect} et #{erreur}"
+        "la propriété #{k.inspect} devrait avoir la valeur #{dv[:expected].inspect} or #{erreur}"
       end.pretty_join
     end
 

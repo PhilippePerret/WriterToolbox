@@ -41,6 +41,10 @@ class SiteHtml
   # {String} Host Distant (p.e. 'www.atelier-icare.net')
   attr_accessor :distant_host
 
+  # Serveur SSH pour le site
+  attr_accessor :serveur_ssh
+  attr_accessor :ssh_server
+
   # Prix de l'abonnement au site, s'il est unique
   attr_accessor :tarif
 

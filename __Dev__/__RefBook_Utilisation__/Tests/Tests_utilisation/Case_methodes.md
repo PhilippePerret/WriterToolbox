@@ -6,8 +6,9 @@
 * [Le case-objet `row`](#objetcaserow)
 * [Méthodes-case `methode`, `not_methode`, `methode?` et `methodeS`](#hashashnotandinterrogation)
   * [Arguments des cases-méthodes plurielles](#argumentdescasesmethodesplurielles)
-* [Méthodes-case de l'objet-case ROUTE](#methodesdetestderoute)
-* [Méthodes-case de l'objet-case FORM](#methodesdetestsdeformulaire)
+* [Case-méthodes de l'objet-case ROUTE](#methodesdetestderoute)
+* [Case-méthodes de l'objet-case FORM](#methodesdetestsdeformulaire)
+* [Case-méthodes et méthodes du case-objet `row`](#casemethodesdeobjetrow)
 * [Case-méthodes des Hash de données](#testcasesdeshash)
 
 
@@ -385,6 +386,48 @@ Les données utilisées seront celles transmises dans `data_form` (enregistrées
     id_du_field: "la valeur"
 
 … et la méthode `fill_and_submit` comprendra qu'il s'agit du champ.
+
+
+<a name='casemethodesdeobjetrow'></a>
+
+## Méthodes du case-objet `row`
+
+* [Case-méthode `<row>.exists` & dérivées](#casemethoderowexists)
+* [Méthode fonctionnelle `<row>.data`](#casemethoderowdata)
+  
+<a name='casemethoderowexists'></a>
+
+#### `<row>.exists`
+
+Produit un succès si la rangée `<row>` existe (contient des données). Produit une failure dans le cas contraire.
+  
+~~~
+
+          ________________________________________________________
+FORMES    ————————————————————————————————————————————————————————
+          ||    Droite     |     Négative      | Interrogation    |
+----------||---------------|------------------ |------------------|
+  Simple  ||    exists     |    not_exists     |     exists?      |
+----------||---------------|-------------------|------------------|
+  Pluriel ||      ---      |        ---        |        ---       |
+-------------------------------------------------------------------
+
+~~~
+
+<a name='casemethoderowdata'></a>
+
+#### Case-méthode `<row>.data`
+
+Retourne les données de la rangée spécifiée. Exemple&nbsp;:
+
+~~~ruby
+
+row(12).data
+
+~~~
+
+TODO: Plus tard, pouvoir préciser les colonnes, par exemple avec `row(12).data(columns:[:id, :pseudo, :options])`.
+
 
 
 <a name='testcasesdeshash'></a>

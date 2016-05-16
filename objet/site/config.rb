@@ -56,6 +56,8 @@ site.default_editor = :atom
 # qui serait utilisée.
 site.markdown_application = "TextMate" # "Mou"
 
+site.serveur_ssh = "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
+
 # ---------------------------------------------------------------------
 # ADMINISTRATION
 

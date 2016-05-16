@@ -23,6 +23,6 @@ SiteHtml::TestSuite.configure do
 
   # LIEU DU TEST
   # ------------
-  current.options[:online] = false
+  current.options[:online] = true
 
 end
