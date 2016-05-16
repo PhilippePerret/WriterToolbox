@@ -4,7 +4,8 @@ class DSLTestMethod
   # Retourne true si la test-method a été un succès, c'est-à-dire
   # qu'elle n'a généré aucun message d'erreur.
   def success?
-    @is_success ||= failure_messages.count == 0
+    @is_a_success = (!fatal? || (@is_not_a_success != true)) if @is_a_success === nil
+    @is_a_success
   end
 
   # Retourne TRUE si la test-méthode est de type `route`, i.e.
@@ -21,4 +22,11 @@ class DSLTestMethod
   # explicitement définie dans le code du fichier test. Sinon, la
   # valeur est nil.
   def quiet? ; @quiet end
+
+  # Retourne true si on est en mode fatal, le mode par défaut
+  # des tests, qui interrompt tout test-méthode lorsque qu'un
+  # case-test échoue.
+  def fatal?
+    @is_not_fatal != true
+  end
 end

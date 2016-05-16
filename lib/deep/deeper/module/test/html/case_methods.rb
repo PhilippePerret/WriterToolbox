@@ -184,6 +184,10 @@ class HTML
     evaluate_as_pluriel :has_not_tag, arr, options, inverse=true
   end
 
+  # ---------------------------------------------------------------------
+  #   HAS_MESSAGE
+  # ---------------------------------------------------------------------
+
   # has_message
   # has_not_message
   # has_message?
@@ -234,6 +238,34 @@ class HTML
   end
   def has_not_messages arr, options=nil
     evaluate_as_pluriel :has_not_message, arr, options, inverse=true
+  end
+
+  # ---------------------------------------------------------------------
+  #   HAS LINK
+  # ---------------------------------------------------------------------
+  def has_link( href, options = nil, inverse = false )
+    has_tag('a', (options || {}).merge(href: href), inverse)
+  end
+  def has_not_link(href, options = nil, inverse = false )
+    has_link(href, options, true)
+  end
+  def has_link?(href, options = nil)
+    has_link(href, (options || {}).merge(evaluate: true), false)
+  end
+  def has_not_link?(href, options = nil)
+    has_link(href, (options || {}).merge(evaluate: true), true)
+  end
+  def has_links(arr, options = nil, inverse = false)
+    evaluate_as_pluriel( :has_link, arr, options, inverse )
+  end
+  def has_not_link( arr, options = nil)
+    has_links(arr, options, true)
+  end
+  def has_links?(arr, options = nil, inverse = false )
+    evaluate_as_pluriel( :has_link?, arr, options, false )
+  end
+  def has_not_links?(arr, options = nil)
+    has_links?(arr, options, true)
   end
 
   # ---------------------------------------------------------------------

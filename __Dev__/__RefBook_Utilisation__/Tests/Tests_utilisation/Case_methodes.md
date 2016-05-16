@@ -45,7 +45,48 @@ Quelques méthodes de l'objet `html` :
 
 ~~~
 
-ICI ICI ICI
+~~~
+
+  has_tag( <specs>[, <options>][, <inverse>])
+    Succès si la balise est contenu dans le code HTML.
+    Cette méthode est la méthode principale utile à presque toutes les
+    autres. Elle est donc complète.
+    <options>
+      :text     Ce que la balise doit contenir, String ou Regexp
+      :strict   Si true, le texte exact est recherché
+      :evaluate Mis à true par les méthodes interrogation pour ne pas 
+                produire de "case" mais simplement retourner la valeur
+                true ou false.
+      :count    Le nombre de balises qu'on doit trouver, répondant aux
+                critères fournis.
+                
+  has_message(<specs>[, <options>][, <inverse>])
+    Succès si la page contient le message spécifié.
+
+  has_title <titre>[, <niveau>][, <options>][, <inverse>]
+    Succès si la page contient un titre (un header) répondant aux 
+    critères spécifiés.
+    
+  has_link(<specs>)
+      Succès si le lien existe dans la page.
+      <specs> Version simple   : L'url (href)
+              Version complète : Un hash de données ou chaque clé est un attribut
+~~~
+
+#### `has_link`
+
+~~~
+          
+FORMES    ____________________________________________
+          ||      Droite      |      Négative        |
+----------||------------------|----------------------|
+  Simple  ||   has_link(?)    |   has_not_link(?)    |
+----------||------------------|----------------------|
+  Pluriel ||   has_links(?)   |   has_not_links(?)   |
+------------------------------------------------------
+
+~~~
+
 
 <a name='methodesmoduleroutemethodes'></a>
 

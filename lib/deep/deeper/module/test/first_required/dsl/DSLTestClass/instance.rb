@@ -54,6 +54,11 @@ class DSLTestMethod
 
   end
 
+  # Pour indiquer qu'il y a eu des erreurs
+  def is_not_a_success
+    @is_not_a_success = true
+  end
+
   # Pour mettre le mode en verbose (même si le fichier ou les tests
   # généraux ont leur options différentes)
   def verbose value = true  ; @verbose = value end

@@ -19,10 +19,16 @@ SiteHtml::TestSuite.configure do
   #   - en version relative entière : "./test/mini/un_test_spec.rb"
   #   - en version relative depuis ./test : "mini/un_test_spec.rb"
   #   - en version relative simplifiée : "mini/un_test"
-  current.files = ["mini/database"]
+  current.files = ["mini/other_pages"]
 
   # LIEU DU TEST
   # ------------
-  current.options[:online] = true
+  # current.options[:online] = true
+  current.options[:offline] = true
+
+  # VERBOSITÉ
+  # ----------
+  options[:verbose] = true
+  current.options[:verbose] = true
 
 end

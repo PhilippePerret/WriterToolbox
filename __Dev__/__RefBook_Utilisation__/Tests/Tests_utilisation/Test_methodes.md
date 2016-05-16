@@ -7,7 +7,8 @@
   * [Test-méthode DATABASE `test_base`](#testmethodesdatabase)
     * [Case-objets de la test-méthode `test_base`](#casesobjetsdetestbase)
       * [Case-objet `row`](#caseobjetrowdetestbase)
-* [Options de dernier agument de méthode-test](#optionsdefinmethodestest)
+* [Rendre un test-méthode NON FATALE](#rendretestmethodenonfatale)
+* [Options de dernier argument de méthode-test](#optionsdefinmethodestest)
 
 
 <a name='definitiondesmethodesdetests'></a>
@@ -158,6 +159,39 @@ On peut obtenir les données de la rangée par&nbsp;:
 
 La valeur retournée est un `THash`, pas un `Hash` donc on peut utiliser sur lui toutes les méthodes normales des `Hash` mais en plus les case-méthodes propres, à commencer par `has`, `has_not` etc. pour vérifier qu'il y a bien ces données.
 
+---------------------------------------------------------------------
+
+<a name='rendretestmethodenonfatale'></a>
+
+## Rendre un test-méthode NON FATALE
+
+Par défaut, lorsqu'un cas (une case-méthode) d'un test-méthode échoue, cela produit l'arrêt de ce test-méthode. Mais dans certain cas, par exemple le test d'existence d'éléments multiples dans une page, on peut vouloir que le test se poursuive tout de même.
+
+Dans ce cas, on passe le test-méthode en mode `NON FATAL` à l'aide de la méthode&nbsp;:
+
+~~~ruby
+
+  non_fatal
+  
+  ou
+  
+  not_fatal
+  
+~~~
+
+Par exemple&nbsp;:
+
+~~~ruby
+
+test_route "ma/route" do
+  non_fatal
+  has_tag("div#letage")
+  has_tag("nimporte#quoi") # inexistant, mais n'interrompra pas le test
+  has_tag("span#pourvoir")
+  ...
+  has_tag("toujours#played") # quoi qu'il advienne, ce case-test sera toujours
+                             # joué
+end
 
 ---------------------------------------------------------------------
 

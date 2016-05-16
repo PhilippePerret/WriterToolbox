@@ -9,7 +9,7 @@ Pour le moment, sert à implémenter les tests des bases
 
 
 test_base "users.users" do
-  description "Test des données de l'administrateur principal"
+  description "Les données de Phil sont correctes"
 
   require './data/secret/data_phil'
 
@@ -22,7 +22,7 @@ test_base "users.users" do
 end
 
 test_base "users.users" do
-  description "Test des données de Marion"
+  description "Les données de Marion sont correctes"
 
   # Ma petite rangée #3 doit exister et comporter les bonnes
   # données
@@ -30,7 +30,7 @@ test_base "users.users" do
   marion = row(id: 3)
   marion.exists
   hdata = marion.data
-  hdata.has(id: 3, pseudo: "Marion", mail: DATA_MARION[:mail], options: /^4/)
+  hdata.has(id: 3, pseudo: "Marion", mail: DATA_MARION[:mail], options: /^341/)
   hdata.has_not(password: DATA_MARION[:password])
 
 end

@@ -176,6 +176,7 @@ class HTML
 
   # Méthode pour inspecter le code actuel
   def inspect
+    return unless tmethod.verbose?
     debug "\n\n"+("-"*80)+"\n\n"
     debug "=== html.inspect ==="
     debug page.inner_html.gsub(/</,'&lt;').gsub(/>/,'&gt;')

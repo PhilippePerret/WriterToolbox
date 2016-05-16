@@ -22,11 +22,13 @@ class User
   end
 
   # Index d'options : 1
+  # -------------------
   # {Fixnum} Grade forum de l'user (0 à 9)
   def grade ; @grade ||= get_option(:grade) end
   def set_grade new_grade ; set_option(:grade, new_grade) end
 
   # Index d'option : 2
+  # ------------------
   # Méthode utilisée par un ticket pour confirmer le mail
   # de l'user.
   # Note : on ne loggue pas l'user, pour qu'il ne repasse pas
@@ -36,9 +38,7 @@ class User
     flash "Merci à vous #{pseudo}, votre mail et votre inscription sont confirmés.<br />Vous pouvez vous identifier."
   end
   # Retourne true si le mail est bien confirmé
-  def mail_confirmed?
-    get_option(:confirm_mail) == 1
-  end
+  def mail_confirmed? ; get_option(:confirm_mail) == 1 end
 
   # OPTION 4 (indice 3)
   def bit_destroyed

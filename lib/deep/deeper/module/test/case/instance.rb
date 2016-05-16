@@ -33,10 +33,15 @@ class Case
   # courant.
   def evaluate
     if successfull?
-      tmethod.success_messages << bon_message_success
+      # tmethod.success_messages << bon_message_success
+      tmethod.all_messages << [bon_message_success, true]
     else
-      tmethod.failure_messages << bon_message_failure
-      raise TestUnsuccessfull
+      # tmethod.failure_messages << bon_message_failure
+      tmethod.all_messages << [bon_message_failure, false]
+      if tmethod.fatal?
+        tmethod.is_not_a_success
+        raise TestUnsuccessfull
+      end
     end
   end
 

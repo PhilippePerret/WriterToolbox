@@ -7,19 +7,21 @@
 =end
 class DSLTestMethod
 
+  def non_fatal
+    @is_not_fatal = true
+  end
+  alias :not_fatal :non_fatal
 
-  def success_messages
-    @success_messages ||= Array::new
+  def all_messages
+    @all_messages ||= []
   end
 
-  # En fait, il ne peut y avoir qu'un seul message ici, le message
-  # d'erreur éventuel qui a interrompu le cas. Mais je laisse quand
-  # même comme ça au cas où on puisse définir un mode "sans-erreur"
-  # qui permettent une certaine forme de test qui n'est pas interrompu
-  # lors d'une erreur
-  def failure_messages
-    @failure_messages ||= Array::new
-  end
+  # def success_messages
+  #   @success_messages ||= Array::new
+  # end
+  # def failure_messages
+  #   @failure_messages ||= Array::new
+  # end
 
   # ---------------------------------------------------------------------
   #   Helper methods
@@ -29,7 +31,8 @@ class DSLTestMethod
 
 
   def messages_count
-    @messages_count ||= success_messages.count + failure_messages.count
+    # @messages_count ||= success_messages.count + failure_messages.count
+    @messages_count ||= all_messages.count
   end
 
   # ---------------------------------------------------------------------

@@ -65,8 +65,8 @@ class TestSuite
 
     nombre_total_success  = 0
     nombre_total_failures = 0
-    success_messages = String::new
-    failure_messages = String::new
+    success_messages = ""
+    failure_messages = ""
 
     @itestfile = 0
 
@@ -103,6 +103,7 @@ class TestSuite
       [:failure, :success].each do |ktype|
         filetest_messages[ktype] = messages_of_tmethods_of_tfile( testfile, ktype )
         # On ajoute les messages, sauf s'il sont vides
+        debug "nombre[#{ktype}] : #{nombre[ktype].inspect}"
         if nombre[ktype] > 0
           messages_str[ktype] += (div_filepath + filetest_messages[ktype]).in_div(class:'atests').in_div(class:"tfile #{ktype[0..2]}")
         end
@@ -139,6 +140,10 @@ class TestSuite
         ( tfile.verbose?   || tfile.quiet? === false )   ||
         ( verbose?         || quiet? === false )
       end
+
+      # # Pour tester
+      # verbose = true
+
       infos[:nombre_cas] += tmethod.messages_count
       c = tmethod.full_libelle_output( @itestfile, @icase += 1 )
       c << tmethod.messages_output if verbose
