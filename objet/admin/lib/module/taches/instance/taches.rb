@@ -33,18 +33,33 @@ class Taches
     @liste_taches_autres_admins
   end
 
+  # Relever toutes les tâches non achevées et les dispatcher entre
+  # les tâches de l'administrateur courant et des autres administrateurs
   def liste_des_taches_dispatched
+    debug "-> liste_des_taches_dispatched"
     @ladmin = Array::new
     @lothers = Array::new
-    Admin::table_taches.select(where:'state < 9',order:"echeance ASC",colonnes:[:admin_id]).each do |tid, tdata|
+    # Ancienne formule : mais les appels à la table sont trop
+    # en rafale. À chaque `itache.get_all`, ça fait un appel.
+    # À la place, on relève toutes les données et on crée les
+    # instance on leur fournissant les donnnées
+    # Admin::table_taches.select(where:'state < 9',order:"echeance ASC",colonnes:[:admin_id]).each do |tid, tdata|
+    #   owned_current = tdata[:admin_id] == admin_id
+    #   itache = Tache::new(tid)
+    #   itache.get_all
+    #   litache = itache.as_li
+    #   owned_current ? (@ladmin << litache) : (@lothers << litache)
+    # end
+    Admin::table_taches.select(where:'state < 9',order:"echeance ASC").each do |tid, tdata|
       owned_current = tdata[:admin_id] == admin_id
       itache = Tache::new(tid)
-      itache.get_all
+      itache.data = tdata
       litache = itache.as_li
       owned_current ? (@ladmin << litache) : (@lothers << litache)
     end
     @liste_taches_admin_courant = @ladmin.join.in_ul(class:'taches')
     @liste_taches_autres_admins = @lothers.join.in_ul(class:'taches')
+    debug "<- liste_des_taches_dispatched"
   end
 
   # Liste {Array} des instances Tache de la liste
@@ -52,13 +67,16 @@ class Taches
   def taches options = nil
     @taches = nil if options != nil
     @taches ||= begin
-      options ||= Hash::new
+      options ||= {}
       where = options[:where] || "state < 9"
       where += " AND admin_id = #{admin_id}" unless admin_id.nil?
       options.merge!(where: where)
       options.merge!(order:"echeance ASC")  unless options.has_key?(:order)
-      options.merge!(colonnes:[])           unless options.has_key?(:colonnes)
-      Admin::table_taches.select(options).collect { |tid, tdata| Tache::new(tid) }
+      Admin::table_taches.select(options).collect do |tid, tdata|
+        t = Tache::new(tid)
+        t.data= tdata
+        t
+      end
     end
   end
 

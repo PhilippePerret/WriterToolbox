@@ -185,15 +185,15 @@ class BdD
       # Exécution (BON)
       res = smt.execute
 
-      debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
-      if request_name == "SELECT"
-        debug "=== Retour de requête SELECT ==="
-        debug "Request : #{request.inspect}"
-        debug "Class retour : #{res.class}"
-        debug "Colonnes retournées : #{res.columns.inspect}"
-        debug "Types retournés : #{res.types.inspect}"
-        debug "=== / SELECT ==="
-      end
+      # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
+      # if request_name == "SELECT"
+      #   debug "=== Retour de requête SELECT ==="
+      #   debug "Request : #{request.inspect}"
+      #   debug "Class retour : #{res.class}"
+      #   debug "Colonnes retournées : #{res.columns.inspect}"
+      #   debug "Types retournés : #{res.types.inspect}"
+      #   debug "=== / SELECT ==="
+      # end
 
 
       # Retour suivant l'opération
@@ -222,9 +222,9 @@ class BdD
         # Le Hash qui contiendra toutes les données retournées
         hretour = {}
 
+        debug "= RES ANALYSE ="
         res.each_hash do |hdata|
           hres = {}.merge(hdata) # pour le transformer en Hash simple
-          debug "HRES = #{hres.pretty_inspect}"
 
           # Il faut transformer les valeurs en leur valeur réelle
           real_hres = {}
@@ -239,7 +239,7 @@ class BdD
 
         end
 
-        debug "\n\n\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
+        debug "\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
 
         # ANCIENNE MÉTHODE OBSOLÈTE :
         # if params[:colonnes] != nil

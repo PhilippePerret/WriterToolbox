@@ -23,7 +23,7 @@ module MethodesObjetsBdD
     table.count(where: {id: id}) > 0
   end
   alias :exists? :exist?
-  
+
   # ---------------------------------------------------------------------
   #   Données qu'on retrouve presque partout
   def created_at  ; @created_at ||= get(:created_at) end
@@ -34,9 +34,23 @@ module MethodesObjetsBdD
 
   # Relève toutes les données de l'instance pour éviter les
   # requêtes à répétition et les dispatche dans les variables
-  # Retourne toujours les données, sous forme de Hahs
-  def get_all
-    @data = nil # pour forcer la relève
+  # Retourne toujours les données, sous forme de Hash
+  #
+  # RETURN Toutes les données relevées.
+  #
+  # Noter que si cette méthode est utilisée dans une boucle
+  # d'instance à initialiser, les requêtes seront tout aussi à
+  # répétition. Pour éviter ça, on relève toutes les données
+  # lors d'une seule requête et on les envoie ici en arguments
+  # pour qu'elles passent en variable d'instance
+  #
+  # Pour le moment, je mets ce +given_data+ pour éviter ces
+  # requête à répétition, mais ça n'est pas très cohérent
+  # avec le nom de la méthode (dans l'absolu, il vaudrait mieux
+  # utiliser la méthode data=)
+  def get_all given_data = nil
+    given_data.nil? || error("Il vaut mieux utiliser la méthode `data=` que `get_all(data)` pour transmettre les données à une instance.")
+    @data = given_data # si nil => force la relève
     dispatch data
     return data
   end
@@ -50,8 +64,15 @@ module MethodesObjetsBdD
   # Retourne {Hash} des données ou NIL si la donnée n'existe pas
   def data
     @data ||= begin
-      id.nil? ? Hash::new : table.select(where: {id: id}).values.first
+      id.nil? ? {} : table.select(where: {id: id}).values.first
     end
+  end
+  # Méthode permettant de définir les données
+  # NOTE : La méthode retourne `self` pour être chainée
+  def data= hdata
+    @data = hdata
+    dispatch hdata
+    return self
   end
 
   def select params

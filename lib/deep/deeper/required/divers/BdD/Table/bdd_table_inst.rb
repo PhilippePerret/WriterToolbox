@@ -328,14 +328,16 @@ class BdD
     #
     def count params = nil
       params ||= {}
-      params = condition_deprecated params if params.has_key? :condition
-      # Requête
+      params.has_key?(:condition) && params = condition_deprecated( params )
+
+      # Construction de la requête COUNT
       request = "SELECT COUNT(*) FROM #{name}"
       if params.has_key?(:where)
         request += " WHERE #{clause_where_conforme params[:where]}"
         request += " COLLATE NOCASE" if params[:nocase]
       end
 
+      # Soumission de la requête
       res = bdd.database.execute(request).first
 
       if res == false
