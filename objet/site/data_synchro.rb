@@ -22,8 +22,16 @@ Pour utiliser ces données n'importe où, il faut :
 # utilisation.
 # ---------------------------------------------------------------------
 class Synchro
+  SERVEUR_SSH = "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
+  # Retourne le serveur SSH
+  # Attention, cette méthode est appelée aussi par la synchronisation
+  # qui ne connait pas le site `site`.
   def serveur_ssh
-    site.serveur_ssh || site.ssh_server || "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
+    if respond_to?(:site)
+      site.serveur_ssh || site.ssh_server || SERVEUR_SSH
+    else
+      SERVEUR_SSH
+    end
   end
 
 
