@@ -29,7 +29,6 @@ class BdD
   def initialize path
     @path = path
     check_data_or_raise
-    on_create unless File.exist? path
   end
 
   ##
@@ -68,18 +67,6 @@ class BdD
   end
 
   ##
-  # Création de la BDD
-  # Appelé lors de la toute première instanciation de la base, lorsque
-  # lorsqu'elle n'existe pas encore.
-  # On va :
-  #   - créer la table __column_names__ qui va conserver le nom
-  #     des colonnes des tables.
-  #
-  def on_create
-    create_table_column_names
-  end
-
-  ##
   #Retourne la liste des noms de table
   def table_names
     @table_names ||= BdD::Table::table_names(self)
@@ -93,56 +80,7 @@ class BdD
   end
   alias :has_table? :table_exist?
 
-  ##
-  # Définit dans la table `_columns_names_' la liste des colonnes
-  # de la table +table_name+
-  # Noter qu'il peut s'agir d'une redéfinition des colonnes déjà dans
-  # la base, en cas de changement de schéma de table.
-  def add_column_names_of_table table_name, arr_column_names
-    # debug "-> add_column_names_of_table(#{table_name})"
-    has_row = table_column_names.has_row_with?("table_name = '#{table_name}'")
-    # debug "Has row : #{has_row.inspect}"
-    column_names = arr_column_names.join(',')
-    code_sql = unless has_row
-      # debug "-> insertion de la liste des colonnes de #{table_name}"
-      "INSERT INTO __column_names__ (table_name, columns) VALUES ('#{table_name}', '#{column_names}');"
-    else
-      # debug "-> actualisation de la liste des colonnes de #{table_name}"
-      "UPDATE __column_names__ SET columns = '#{column_names}' WHERE table_name = '#{table_name}';"
-    end
-    res = table_column_names.execute code_sql
-    # debug "Retour : #{res.inspect}"
-    # debug "<- add_column_names_of_table(#{table_name})"
-  end
-
-  ##
-  # {Array} Retourne les noms de colonnes des la table +table_name+
-  def column_names_of_table table_name
-    res = table_column_names.execute("SELECT * FROM __column_names__ WHERE table_name = '#{table_name}'")
-    return res[1].split(',')
-  end
-
-  ##
-  # La table qui conserve les noms de colonnes de chaque table
-  def table_column_names
-    @table_column_names ||= get_table( '__column_names__' )
-  end
-
   private
-
-    def create_table_column_names
-      # debug "-> create_table_column_names"
-      code_sql = "CREATE TABLE __column_names__ "
-      code_sql << "(table_name VARCHAR(255) PRIMARY KEY NOT NULL, columns BLOB NOT NULL);"
-      # Création de la table
-      res = database.execute code_sql
-      # debug "Retour création table colonnes : #{res.inspect}"
-      # On insert la table elle même
-      res = database.execute "INSERT INTO __column_names__ (table_name, columns) VALUES ('__column_names__', 'table_name,columns')"
-      # debug "Retour insertion colonnes de table colonnes : #{res.inspect}"
-      # debug "<- create_table_column_names"
-    end
-
 
     ##
     # Ajoute une erreur

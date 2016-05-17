@@ -31,11 +31,10 @@ class BdD
     # Retourne :
     #   - soit une liste des noms de colonnes Symbol
     #   - soit une liste contenant simplement "*"
-    # 
+    #
     def traite_colonnes_in params
       case ( colonnes = params[:colonnes] || params[:columns] )
       when NilClass
-        # colonnes = column_names_of_table params[:db], params[:table]
         ['*']
       when String
         if colonnes == '*'
@@ -47,23 +46,6 @@ class BdD
         colonnes.collect { |c| c.to_sym } # vraiment utile ?
       end
     end
-
-    # OBSOLETE
-    # # Retourne la liste des noms de colonnes de la table
-    # # +table+ dans la database +db+
-    # def column_names_of_table datab, table_name
-    #   request = "SELECT columns FROM __column_names__ WHERE table_name = '#{table_name}'"
-    #   res = datab.execute(request)
-    #   return res.first.first.split(',') unless res.nil? || res.first.nil?
-    #   mess = "[BdD::column_names_of_table] Impossible d'obtenir les noms de colonnes de la table `#{table_name}' (elle ne semble pas exister).\n" +
-    #   "[BdD::column_names_of_table] full_column_names : #{datab.full_column_names.inspect}\n" +
-    #   "[BdD::column_names_of_table] table_info(#{table_name}) : #{datab.table_info(table_name).inspect}\n" +
-    #     "[BdD::column_names_of_table] Requête : #{request}\n" +
-    #     "[BdD::column_names_of_table] Retour  : #{res.inspect}\n" +
-    #     "[BdD::column_names_of_table] Error code: #{datab.errcode} / Error message: #{datab.errmsg.inspect}"
-    #   # debug mess
-    #   raise "Impossible d'obtenir les noms de colonnes de la table `#{table_name}'…\n#{mess}"
-    # end
 
     # Reçoit la clause WHERE comme un {Hash} et retourne
     # un {String}

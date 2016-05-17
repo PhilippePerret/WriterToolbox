@@ -23,13 +23,8 @@ class BdD
 
     # {Array de String} Nom des colonnes de la table
     # Utiliser la méthode `define' sur la table pour les
-    # définir. Ou si la table existe on les cherche
-    # dans la base
-    def colonnes_definition
-      @colonnes_definition ||= begin
-        bdd.column_names_of_table name if exist?
-      end
-    end
+    # définir.
+    def colonnes_definition; @colonnes_definition end
     alias :columns :colonnes_definition
     alias :column_names :colonnes_definition
 
@@ -221,9 +216,6 @@ class BdD
       hdata ||= {}
       hdata = {where: "ID = #{hdata}"} if hdata.class == Fixnum
       hdata.merge!(colonnes: '*') unless hdata.has_key?(:colonnes)
-
-      # debug "bdd.column_names_of_table('documents') : #{bdd.column_names_of_table('documents').inspect}"
-
       hdata.merge!( colonnes: hdata.delete(:keys) ) if hdata.has_key?(:keys)
 
       # Finalisation du Hash de données à envoyer à BdD::execute
@@ -369,9 +361,7 @@ class BdD
       # debug "-> create"
       return false if exist?
       check_definition_colonnes_or_raise
-      # mem_column_names( forcer = false ) # au cas où
       res = execute creation_code, true
-      # debug "<- create"
       return res
     end
 
@@ -390,18 +380,7 @@ class BdD
         hdata.merge! :id => { type: "INTEGER", constraint: "PRIMARY KEY AUTOINCREMENT" }
       end
       @colonnes_definition = hdata
-      # mem_column_names( forcer = true )
     end
-
-    # # Pour mémoriser (à la création) le nom des colonnes
-    # def mem_column_names forcer = false
-    #   # debug "-> mem_column_names"
-    #   return if bdd.table_column_names.has_row_with?("table_name = '#{self.name}'") && forcer == false
-    #   # debug "Je dois créer la rangée des noms de colonnes"
-    #   col_names = @colonnes_definition.keys.collect{|c| c.to_s}
-    #   bdd.add_column_names_of_table self.name, col_names
-    #   # debug "<- mem_column_names"
-    # end
 
     ##
     # Return TRUE si la table existe
@@ -467,17 +446,17 @@ class BdD
       ##
       # Check des données des colonnes de la table
       def check_definition_colonnes_or_raise
-        raise BdDError, :colonnes_definition_required if colonnes_definition.nil?
+        colonnes_definition || raise( BdDError, :colonnes_definition_required )
         colonnes_definition.each do |key, data_key|
           # Check du NOM des colonnes
           raise BdDError, :bad_colonne_name if key.to_s.gsub(/[a-z0-9_]/,'') != ""
           # Check du TYPE des colonnes
           typ = data_key[:type]
-          raise BdDError, :type_colonne_required if typ.nil?
+          typ || raise( BdDError, :type_colonne_required )
           unless BdD::Table::DATA_TYPES.include?(typ)
             # On essaie en retirant la parenthèse
             typ = typ.split('(').first if typ =~ /\(/
-            raise BdDError, :unknown_type unless BdD::Table::DATA_TYPES.include?(typ)
+            BdD::Table::DATA_TYPES.include?(typ) || raise( BdDError, :unknown_type )
           end
           # Check de la contrainte si elle est définie
           unless data_key[:constraint].nil?
@@ -488,12 +467,12 @@ class BdD
                 break
               end
             end
-            raise BdDError, :unknown_constraint unless constraint_found
+            constraint_found || raise( BdDError, :unknown_constraint )
           end
         end
       rescue BdDError => e
         debug "[BdDError] “#{e.message}” avec colonnes_definition : "
-        debug colonnes_definition
+        debug colonnes_definition.inspect
         debug e
         raise BdD::ERRORS[e.message.to_sym]
       rescue Exception => e
