@@ -21,7 +21,7 @@ class TestRoute < DSLTestMethod
   end
 
   def description_defaut
-    @description_defaut ||= "TEST ROUTE #{url}"
+    @description_defaut ||= "TEST ROUTE #{clickable_url}"
   end
 
 end #/Route

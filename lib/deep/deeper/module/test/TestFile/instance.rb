@@ -51,6 +51,12 @@ class TestFile
     error e.message
   end
 
+  # Affichage de la path dans un lien permettant d'ouvrir
+  # le fichier dans l'éditeur de préférence
+  def clickable_path
+    @clickable_path ||= lien.edit_file(File.expand_path(path.to_s), titre: path.to_s, editor: :atom, class: 'inherit')
+  end
+
   def log mess
     self.class::log mess
   end

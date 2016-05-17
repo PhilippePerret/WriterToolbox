@@ -20,7 +20,7 @@ class TestForm < DSLTestMethod
       else
         ""
       end
-      "TEST FORM#{form_specs} AT #{url}"
+      "TEST FORM#{form_specs} AT #{clickable_url}"
     end
   end
 

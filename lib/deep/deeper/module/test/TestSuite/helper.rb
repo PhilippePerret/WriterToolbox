@@ -85,7 +85,7 @@ class TestSuite
       next if (nombre[:success] + nombre[:failure]) == 0
 
       # La ligne principale décrivant le fichier courant.
-      div_filepath = "#{@itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
+      div_filepath = "#{@itestfile += 1}- #{testfile.clickable_path}".in_div(class:'pfile')
 
       @icase = 0
       filetest_messages = { failure: nil, success: nil }

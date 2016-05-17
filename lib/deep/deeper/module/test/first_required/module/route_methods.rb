@@ -86,6 +86,12 @@ module ModuleRouteMethods
     @url ||= "#{SiteHtml::TestSuite::current::base_url}#{URL_PORT}/#{raw_route}"
   end
 
+  # Pour obtenir une URL qu'on peut cliquer, pour l'affichage du
+  # libellé de la test-méthode
+  def clickable_url
+    @clickable_url ||= url.in_a(class:'inherit', href: url, target: :new)
+  end
+
   def request req
     SiteHtml::TestSuite::Request::new(req).execute
   end
