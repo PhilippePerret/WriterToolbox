@@ -20,15 +20,23 @@ class Page
   # n'est pas abonné, et un message lui est fourni pour qu'il
   # s'abonne.
   def output_as_page
-    if false == path_semidyn.exist? || out_of_date?
-      # La page semi-dynamique n'est pas encore construite, il
-      # faut la construire. Pour ça, on utilise kramdown.
-      Cnarration::require_module 'page'
-      build
-    end
+    # Si la page n'a pas un niveau de développement suffisant,
+    # on affiche un message d'alerte
+    final_page_content =
+      if developpement < 8 #&& !user.admin?
+         message_niveau_developpement_insuffisant
+      else
+        if false == path_semidyn.exist? || out_of_date?
+          # La page semi-dynamique n'est pas encore construite, il
+          # faut la construire. Pour ça, on utilise kramdown.
+          Cnarration::require_module 'page'
+          build
+        end
+        page_content_by_user
+      end
     if path_semidyn.exist?
       (
-        titre.in_h1 + page_content_by_user
+        titre.in_h1 + final_page_content
       ).in_div(id:'page_cours')
     else
       error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
@@ -45,8 +53,6 @@ class Page
     @full_page = path_semidyn.deserb
     # Si l'user est abonné ou que le texte fait moins de 3000
     # signes, on retourne le texte tel quel
-    debug "user.admin? #{user.admin?.inspect}"
-    debug "consultable?: #{consultable?.inspect}"
     return (full_page_with_exergue || @full_page) if consultable? || @full_page.length < 2500
     # Si l'utilisateur n'est pas abonné, on tronque la page
     # et on ajoute un message l'invitant à s'abonner.
@@ -85,6 +91,20 @@ class Page
     @full_page.with_exergue( reg )
   end
 
+  # Le message de page en cours d'écriture et pas encore
+  # prête pour la lecture
+  def message_niveau_developpement_insuffisant
+    <<-HTML
+<div class="warning air">
+  Désolé, cette page est en cours de rédaction et vous
+  n'avez pas le niveau de privilège requis pour la
+  consulter malgré tout.
+</div>
+<p class="right small">
+  #{lien.subscribe("S’ABONNER", type: :arrow_cadre)}
+</p>
+    HTML
+  end
   # Le message d'abonnement demandé pour que l'user puisse lire
   # l'intégralité de la page.
   def message_abonnement_required
@@ -95,8 +115,8 @@ class Page
 <p>
   Veuillez noter qu'<b>une partie seulement de la page</b> est affichée. Seuls les abonnés peuvent consulter les pages de la collection en intégralité.
 </p>
-<p class="right">
-  #{lien.subscribe('S’ABONNER')} (pour #{site.tarif_humain}/an)
+<p class="right small">
+  #{lien.subscribe("S’ABONNER", type: :arrow_cadre)}
 </p>
   </div>
 </div>

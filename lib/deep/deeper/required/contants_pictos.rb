@@ -15,6 +15,10 @@ DOIGT_ROUGE   = picto_doigt('red')
 DOIGT_WHITE   = picto_doigt('white')
 DOIGT_GOLD    = picto_doigt('gold')
 
+ARROW         = "<span style='font-family:\"Lucida Grande\",Helvetica,sans-serif;font-size:30px;vertical-align:bottom;'>→</span>"
+ARROW_RED     = "<span class='red' style='font-family:\"Lucida Grande\",Helvetica,sans-serif;font-size:30px;vertical-align:bottom;'>→</span>"
+ARROW_BLUE    = "<span class='blue' style='font-family:\"Lucida Grande\",Helvetica,sans-serif;font-size:30px;vertical-align:bottom;'>→</span>"
+
 FLASH = "<img src='./view/img/pictos/flash.png' class='pflash' />".freeze
 
 def picto_punaise color

@@ -2,6 +2,7 @@
 
 * [Introduction](#introductionhelperliens)
 * [Liens de forme route](#liendeformeroute)
+* [Liens avec flèche et cadre](#lienavecflecheetcadre)
 * [Liens RestSite par défaut](#lienspardefautsrestsite)
 * [Liens propres à l'application](#liensproprealapplication)
 * [Liens pour éditer des fichiers dans un éditeur](#liendeditiondefichier)
@@ -125,3 +126,23 @@ Dans le fichier config.rb, définir :
     site.default_editor
 
 Noter que pour ouvrir le fichier dans Atom, à ce jour (2016) il faut utiliser le script se trouvant à l'adresse [https://github.com/WizardOfOgz/atom-handler](https://github.com/WizardOfOgz/atom-handler).
+
+<a name='lienavecflecheetcadre'></a>
+
+## Liens avec flèche et cadre
+
+Pour obtenir une flèche et un cadre autour du lien, il suffit d'ajouter le `type: :arrow_cadre` aux options envoyés à un lien. Par exemple :
+
+~~~ruby
+
+    lien.subscribe("S’ABONNER", type: :arrow_cadre)
+
+~~~
+
+Sinon, pour un lien inconnu, il suffit d'utiliser la méthode générique :
+
+~~~ruby
+
+    lien.build( <route>, <titre>, {type: :arrow_cadre} )
+
+~~~
