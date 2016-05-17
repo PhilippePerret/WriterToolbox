@@ -23,7 +23,7 @@ class Page
     # Si la page n'a pas un niveau de développement suffisant,
     # on affiche un message d'alerte
     final_page_content =
-      if developpement < 8 #&& !user.admin?
+      if developpement < 8 && !user.admin?
          message_niveau_developpement_insuffisant
       else
         if false == path_semidyn.exist? || out_of_date?

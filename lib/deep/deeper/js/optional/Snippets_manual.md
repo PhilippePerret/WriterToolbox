@@ -37,7 +37,9 @@ Voici une présentation succinte de l'utilisation des snippets. Cette définitio
     // Pour un scope personnalisé, inexistant
     Snippets.set_scopes_to(
       [
-        "<nom du scope>",
+        <!-- Faire appel à un scope commun -->
+        "<nom d'un scope>",
+        <!--  définir d'autres snippets propres -->
         {<définition des snippets>}
       ]
     )

@@ -79,7 +79,7 @@ class SiteHtml
     request = <<-SQL
 SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, created_at, updated_at
   FROM pages
-  WHERE nivdev > 6
+  WHERE nivdev >= 8
   ORDER BY updated_at DESC
   LIMIT 3
     SQL

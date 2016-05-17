@@ -1552,3 +1552,493 @@ HRETOUR:{
 
 
 ---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+dans header.erb, user.identified? est true
+= RES ANALYSE =
+
+HRETOUR:{
+310 => 
+  {
+  :tache => "NARRATION Emp\u00EAcher les pages d'un certain niveau de d\u00E9veloppement de s'afficher."
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "10 mai 2016 - 19:12 (real: 1462900376)"
+  :updated_at => "10 mai 2016 - 19:12 (real: 1462900376)"
+  :id => 310
+  }
+311 => 
+  {
+  :tache => "NARRATION Ne pas prendre en compte les pages en dessous d'un certain niveau de d\u00E9veloppement dans les actualit\u00E9s r\u00E9centes de l'ACCUEIL."
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "10 mai 2016 - 19:13 (real: 1462900406)"
+  :updated_at => "10 mai 2016 - 19:13 (real: 1462900406)"
+  :id => 311
+  }
+312 => 
+  {
+  :tache => "UNAN Poursuivre le manuel de l'auteur(e)"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :updated_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :id => 312
+  }
+315 => 
+  {
+  :tache => "Essayer la destruction d'un user en en cr\u00E9ant un (lui faire des messages forum, des sujets suivis, un programme unan un script, etc.) -- peut-\u00EAtre faire un spec pour \u00E7a"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :updated_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :id => 315
+  }
+316 => 
+  {
+  :tache => "ANALYSE Int\u00E9grer le t\u00E9l\u00E9chargement du manuel d'analyse dans la page d'aide"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :updated_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :id => 316
+  }
+318 => 
+  {
+  :tache => "TWITTER Int\u00E9grer dans les pages la possibilit\u00E9 de s'abonner au flux twitter"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :updated_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :id => 318
+  }
+337 => 
+  {
+  :tache => "BDD S'assurer que tout fonctionne bien au niveau des bases avec le nouveau fonctionnement"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :id => 337
+  }
+338 => 
+  {
+  :tache => "Faire des corrections de Marion"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :id => 338
+  }
+37 => 
+  {
+  :tache => "Poursuivre l'entr\u00E9e des pages Narration et leur correction."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :updated_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :id => 37
+  }
+70 => 
+  {
+  :tache => "Narration : Reprendre les exemples des \u00E9v\u00E8nemenciers de Taxi Driver pour illustrer le fichier Echelles. On peut ouvrir le fichier avec : `ouvrir page narration 185`"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :updated_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :id => 70
+  }
+192 => 
+  {
+  :tache => "NARRATION EXPORT LATEX Mettre en forme les questions checkup au fil du texte."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :updated_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :id => 192
+  }
+212 => 
+  {
+  :tache => "ANALYSES Corriger l'analyse de 21 Grams"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :updated_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :id => 212
+  }
+279 => 
+  {
+  :tache => "UNAN Pour un questionnaire reprogramm\u00E9, peut-\u00EAtre la class CurPDay doit-elle regarder aussi les works de l'auteur, en plus des travaux absolus, pour relever les travaux reprogramm\u00E9s"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :updated_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :id => 279
+  }
+314 => 
+  {
+  :tache => "Pouvoir envoyer un twit par la console avec la commande \"twit\" ou \"twitte"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :updated_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :id => 314
+  }
+}
+
+
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb
+= RES ANALYSE =
+
+HRETOUR:{
+338 => 
+  {
+  :tache => "Faire des corrections de Marion"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :id => 338
+  }
+312 => 
+  {
+  :tache => "UNAN Poursuivre le manuel de l'auteur(e)"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :updated_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :id => 312
+  }
+315 => 
+  {
+  :tache => "Essayer la destruction d'un user en en cr\u00E9ant un (lui faire des messages forum, des sujets suivis, un programme unan un script, etc.) -- peut-\u00EAtre faire un spec pour \u00E7a"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :updated_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :id => 315
+  }
+316 => 
+  {
+  :tache => "ANALYSE Int\u00E9grer le t\u00E9l\u00E9chargement du manuel d'analyse dans la page d'aide"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :updated_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :id => 316
+  }
+318 => 
+  {
+  :tache => "TWITTER Int\u00E9grer dans les pages la possibilit\u00E9 de s'abonner au flux twitter"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :updated_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :id => 318
+  }
+337 => 
+  {
+  :tache => "BDD S'assurer que tout fonctionne bien au niveau des bases avec le nouveau fonctionnement"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :id => 337
+  }
+37 => 
+  {
+  :tache => "Poursuivre l'entr\u00E9e des pages Narration et leur correction."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :updated_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :id => 37
+  }
+70 => 
+  {
+  :tache => "Narration : Reprendre les exemples des \u00E9v\u00E8nemenciers de Taxi Driver pour illustrer le fichier Echelles. On peut ouvrir le fichier avec : `ouvrir page narration 185`"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :updated_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :id => 70
+  }
+192 => 
+  {
+  :tache => "NARRATION EXPORT LATEX Mettre en forme les questions checkup au fil du texte."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :updated_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :id => 192
+  }
+212 => 
+  {
+  :tache => "ANALYSES Corriger l'analyse de 21 Grams"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :updated_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :id => 212
+  }
+279 => 
+  {
+  :tache => "UNAN Pour un questionnaire reprogramm\u00E9, peut-\u00EAtre la class CurPDay doit-elle regarder aussi les works de l'auteur, en plus des travaux absolus, pour relever les travaux reprogramm\u00E9s"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :updated_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :id => 279
+  }
+314 => 
+  {
+  :tache => "Pouvoir envoyer un twit par la console avec la commande \"twit\" ou \"twitte"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :updated_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :id => 314
+  }
+339 => 
+  {
+  :tache => "CONSOLE Syst\u00E8me d'aide \u00E0 la vol\u00E9e quand on d\u00E9tecte certains mots commande. Par exemple, si \u00E7a commence par \"test\" => aide pour les tests, si \u00E7a commence par \"twit\" => aide pour les twites, etc."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "17 mai 2016 - 13:41 (real: 1463485299)"
+  :updated_at => "17 mai 2016 - 13:41 (real: 1463485299)"
+  :id => 339
+  }
+}
+
+
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+dans header.erb, user.identified? est true
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb
+<- console.erb
+---> vue “./view/gabarit/left_margin.erb” (@already_required: nil)
+---> vue “./view/gabarit/header.erb” (@already_required: nil)
+dans header.erb, user.identified? est true
+= RES ANALYSE =
+
+HRETOUR:{
+338 => 
+  {
+  :tache => "Faire des corrections de Marion"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463436000
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480072)"
+  :id => 338
+  }
+312 => 
+  {
+  :tache => "UNAN Poursuivre le manuel de l'auteur(e)"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :updated_at => "10 mai 2016 - 19:14 (real: 1462900451)"
+  :id => 312
+  }
+315 => 
+  {
+  :tache => "Essayer la destruction d'un user en en cr\u00E9ant un (lui faire des messages forum, des sujets suivis, un programme unan un script, etc.) -- peut-\u00EAtre faire un spec pour \u00E7a"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :updated_at => "11 mai 2016 - 16:34 (real: 1462977260)"
+  :id => 315
+  }
+316 => 
+  {
+  :tache => "ANALYSE Int\u00E9grer le t\u00E9l\u00E9chargement du manuel d'analyse dans la page d'aide"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :updated_at => "11 mai 2016 - 17:50 (real: 1462981813)"
+  :id => 316
+  }
+318 => 
+  {
+  :tache => "TWITTER Int\u00E9grer dans les pages la possibilit\u00E9 de s'abonner au flux twitter"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :updated_at => "12 mai 2016 - 06:01 (real: 1463025690)"
+  :id => 318
+  }
+337 => 
+  {
+  :tache => "BDD S'assurer que tout fonctionne bien au niveau des bases avec le nouveau fonctionnement"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :updated_at => "17 mai 2016 - 12:14 (real: 1463480049)"
+  :id => 337
+  }
+340 => 
+  {
+  :tache => "BITLY Poursuivre l'impl\u00E9mentation de Bitly pour g\u00E9n\u00E9rer des liens courts pour les tweets"
+  :admin_id => 1
+  :description => nil
+  :echeance => 1463522400
+  :state => 0
+  :created_at => "17 mai 2016 - 15:37 (real: 1463492266)"
+  :updated_at => "17 mai 2016 - 15:37 (real: 1463492266)"
+  :id => 340
+  }
+37 => 
+  {
+  :tache => "Poursuivre l'entr\u00E9e des pages Narration et leur correction."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :updated_at => "25 mars 2016 - 14:35 (real: 1458912920)"
+  :id => 37
+  }
+70 => 
+  {
+  :tache => "Narration : Reprendre les exemples des \u00E9v\u00E8nemenciers de Taxi Driver pour illustrer le fichier Echelles. On peut ouvrir le fichier avec : `ouvrir page narration 185`"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :updated_at => "30 mars 2016 - 13:35 (real: 1459337734)"
+  :id => 70
+  }
+192 => 
+  {
+  :tache => "NARRATION EXPORT LATEX Mettre en forme les questions checkup au fil du texte."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :updated_at => "22 avril 2016 - 09:58 (real: 1461311904)"
+  :id => 192
+  }
+212 => 
+  {
+  :tache => "ANALYSES Corriger l'analyse de 21 Grams"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :updated_at => "26 avril 2016 - 12:36 (real: 1461666971)"
+  :id => 212
+  }
+279 => 
+  {
+  :tache => "UNAN Pour un questionnaire reprogramm\u00E9, peut-\u00EAtre la class CurPDay doit-elle regarder aussi les works de l'auteur, en plus des travaux absolus, pour relever les travaux reprogramm\u00E9s"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :updated_at => "6 mai 2016 - 10:12 (real: 1462522369)"
+  :id => 279
+  }
+314 => 
+  {
+  :tache => "Pouvoir envoyer un twit par la console avec la commande \"twit\" ou \"twitte"
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :updated_at => "11 mai 2016 - 09:08 (real: 1462950496)"
+  :id => 314
+  }
+339 => 
+  {
+  :tache => "CONSOLE Syst\u00E8me d'aide \u00E0 la vol\u00E9e quand on d\u00E9tecte certains mots commande. Par exemple, si \u00E7a commence par \"test\" => aide pour les tests, si \u00E7a commence par \"twit\" => aide pour les twites, etc."
+  :admin_id => 1
+  :description => nil
+  :echeance => nil
+  :state => 0
+  :created_at => "17 mai 2016 - 13:41 (real: 1463485299)"
+  :updated_at => "17 mai 2016 - 13:41 (real: 1463485299)"
+  :id => 339
+  }
+}
+
+
+---> vue “./view/gabarit/footer.erb” (@already_required: nil)
+Avant <- left_margin.erb, user.identified? true
+<- left_margin.erb

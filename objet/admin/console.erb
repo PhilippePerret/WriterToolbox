@@ -2,6 +2,10 @@
 # Console administrateur
 #
 raise_unless_admin
+
+# POUR LES SNIPPETS
+page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.1.js").to_s)
+
 %>
 
 <%
@@ -13,6 +17,11 @@ reduite = console.special_output != ""
 <textarea onfocus="this.select()" id="console" class='<%= reduite ? 'reduite' : '' %>' name="console" onreturn="this.form.submit()"><%= console.code_console %></textarea>
 </form>
 <span id="longueur_code"></span>
+<%
+# Pour afficher notamment l'aide à la volée, après détection de la
+# commande courante générique.
+%>
+<pre id="aide" style="font-size:11pt"></pre>
 <%
 #
 # ---------------------------------------------------------------------
