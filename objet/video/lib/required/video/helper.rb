@@ -5,7 +5,7 @@ class Video
 
   class << self
 
-    def titre ; @titre ||= "Didacticiels vidéos".freeze end
+    def titre ; @titre ||= "Les Didacticiels-vidéo".freeze end
     def data_onglets
       @data_onglets ||= begin
         d = {

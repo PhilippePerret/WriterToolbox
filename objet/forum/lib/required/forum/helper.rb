@@ -13,7 +13,7 @@ class Forum
   #     :onglets      Si true, on place les onglets sous le titre
   def titre_h1 sous_titre = nil, params = nil
     params ||= Hash::new
-    t = "Forum".in_h1
+    t = "Le Forum".in_h1
     t << sous_titre.in_h2 unless sous_titre.nil?
     t << onglets # dans le module MethodesMainObjets
     # Pour le titre de la fenêtre

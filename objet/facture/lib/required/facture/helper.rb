@@ -5,7 +5,7 @@ class Facture
 
   class << self
 
-    def titre ; @titre ||= "Facture d’auteur".freeze end
+    def titre ; @titre ||= "La Facture d’auteur".freeze end
 
     def data_onglets
       @data_onglets ||= {

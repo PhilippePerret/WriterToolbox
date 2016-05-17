@@ -5,7 +5,7 @@ class SttCalculator
 
   class << self
 
-    def titre; @titre ||= "Calculateur de structure".freeze end
+    def titre; @titre ||= "Le Calculateur de structure".freeze end
     def data_onglets
       {
         "Calculateur" => 'calculateur/main',

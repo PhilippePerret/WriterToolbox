@@ -22,7 +22,7 @@ calculateur:
     Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
 
 screencasts:
-  name:       Didacticiels-vidéo
+  name:       Les Didacticiels-vidéo
   folder:     video
   home:       video/home
   description: |
@@ -36,7 +36,7 @@ cnarration:
     Profitez en ligne de la future version papier des cours de <strong>Philippe Perret</strong>, auteur et pédagogue œuvrant depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel, et qui s'inspire des grands pédagogues aussi bien que des œuvres elles-mêmes pour divulguer une connaissance de la narration la plus pragmatique et la plus profonde possible.
 
 facture:
-  name:       Facture d’auteur
+  name:       La Facture d’auteur
   folder:     facture
   home:       facture/main
   description: |
