@@ -8,7 +8,6 @@ class << self
   # un administrateur le nombre de tâches qu'il a à faire
   def pastille_taches_administrator
 
-    return ""
     todolist  = new(admin_id: user.id)
     nombre_taches_overl = 0
     nombre_taches_today = 0
