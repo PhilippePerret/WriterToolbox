@@ -194,7 +194,6 @@ On récupérer des données à l'aide de la méthode `select` ou `>>`&nbsp;:
 
 Sans arguments, la méthode retourne toutes les colonnes de toutes les rangées de la table.
 
-Noter que la grande différence entre `select` (ou `>>`) et `get`, c'est que `select` retourne une liste d'array des valeurs tandis que `get` retourne un Hash de la donnée, où les clés sont des symboles.
 
 Avec un premier argument Hash, permet d'affiner la recherche et le retour&nbsp;:
 
@@ -285,11 +284,15 @@ On peut utiliser la méthode `get` sur la table pour récupérer une donnée uni
 À la grande différence de la méthode `select` vue précédemment, la méthode `get` retourne seulement le hash des données de la rangée recherchée.
 
     data_row = ma_table.get 12
-    # data_row est un Hash contenant les données.
+    # data_row est un Hash contenant les données de la rangée 12.
 
 On peut spécifier les colonnes à recevoir dans un second argument :
 
     hash_data = ma_table.get <id>, [<liste colonnes>]
+    
+    ou 
+    
+    hdata = ma_table.get( <id>, colonnes: [<liste colonnes>])
 
 Par exemple :
 
@@ -316,7 +319,7 @@ Bien sûr, ça n'est pas intéressant ici avec l'`:id` mais ça peut l'être ave
 
     pseudo = table.get(where: "mail= '#{mail_user}'", :pseudo)
 
-La dernière utilisation montre l'usage d'un second argument avec une valeur symabolique et non pas un Array : il renvoie seulement la valeur de cette colonne, pas un Hash.
+La dernière utilisation montre l'usage d'un second argument avec une valeur symbolique et non pas un Array : il renvoie seulement la valeur de cette colonne, pas un Hash.
 
 Récapitulatif :
 
@@ -368,7 +371,7 @@ Trois syntaxe possibles :
 
 Noter que l'utilisation de `set` permet aussi de créer une donnée puisqu'un test d'existence est fait par la méthode.
 
-###Par `udpate`
+### Par `udpate`
 
 Syntaxe :
 
@@ -589,6 +592,13 @@ Détruit dans la table la rangée de l'instance courante.
     hdata = <instance>.data
 
 Retourne toutes les données enregistrées dans la table de l'instance, ou un `Hash` vide si l'ID est NIL ou enfin retourne NIL si la donnée n'existe pas.
+
+La méthode `data=` permet elle de définir les données&nbsp;:
+
+@usage
+
+    <instance>.data= <hash de donnée>
+    # => Retourne l'instance elle-même.
 
 ---------------------------------------------------------------------
 
