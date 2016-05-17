@@ -84,17 +84,6 @@ class TestSuite
       # qu'aucun test n'a été joué. => On le passe.
       next if (nombre[:success] + nombre[:failure]) == 0
 
-      # Est-ce en mode verbeux ou quiet ? Cela peut être
-      # déterminé par :
-      #   - les options générales de la ligne de commande
-      #   en utilisant `-q` ou `-v`,
-      #   - les options du fichier lui-même (en utilisant
-      #     `verbose` ou `quiet` à l'intérieur du fichier-test,
-      #       hors méthode de test)
-      #   - les options du test-méthode en utilisant
-      #     `verbose` ou `quiet` à l'intérieur de la méthode
-      #     de test.
-
       # La ligne principale décrivant le fichier courant.
       div_filepath = "#{@itestfile += 1}- #{testfile.path}".in_div(class:'pfile')
 
@@ -103,7 +92,6 @@ class TestSuite
       [:failure, :success].each do |ktype|
         filetest_messages[ktype] = messages_of_tmethods_of_tfile( testfile, ktype )
         # On ajoute les messages, sauf s'il sont vides
-        debug "nombre[#{ktype}] : #{nombre[ktype].inspect}"
         if nombre[ktype] > 0
           messages_str[ktype] += (div_filepath + filetest_messages[ktype]).in_div(class:'atests').in_div(class:"tfile #{ktype[0..2]}")
         end
@@ -131,6 +119,10 @@ class TestSuite
     end
   end
 
+  # Affichages de toutes les test-méthodes de type +type+,
+  # i.e. :success ou :failure, du fichier-test +tfile+
+  # En fonction des options, on affiche ou non tous les
+  # messages des case-méthodes.
   def messages_of_tmethods_of_tfile tfile, type
     tfile.send("#{type}_tests".to_sym).collect do |tmethod|
       verbose = if type == :failure
@@ -141,12 +133,11 @@ class TestSuite
         ( verbose?         || quiet? === false )
       end
 
-      # # Pour tester
-      # verbose = true
+      debug "\n#{tmethod.libelle}.success? : #{tmethod.success?.inspect}\n"
 
       infos[:nombre_cas] += tmethod.messages_count
       c = tmethod.full_libelle_output( @itestfile, @icase += 1 )
-      c << tmethod.messages_output if verbose
+      c << tmethod.messages_output if verbose || !tmethod.success?
       c
     end.join('')
   end

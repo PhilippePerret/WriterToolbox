@@ -14,6 +14,9 @@ REQUIS
 =end
 module ModuleRouteMethods
 
+  # URL_PORT = ":1234"
+  URL_PORT = ""
+
   require 'nokogiri'
   require 'open-uri'
 
@@ -79,9 +82,8 @@ module ModuleRouteMethods
     @instance_test_html = nil
   end
 
-
   def url
-    @url ||= "#{SiteHtml::TestSuite::current::base_url}/#{raw_route}"
+    @url ||= "#{SiteHtml::TestSuite::current::base_url}#{URL_PORT}/#{raw_route}"
   end
 
   def request req

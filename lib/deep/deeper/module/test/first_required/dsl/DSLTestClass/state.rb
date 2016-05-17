@@ -2,9 +2,12 @@
 class DSLTestMethod
 
   # Retourne true si la test-method a été un succès, c'est-à-dire
-  # qu'elle n'a généré aucun message d'erreur.
+  # qu'elle n'a généré aucun message d'erreur. Même en mode non-fatal
+  # le résultat général de la test-méthode peut être un succès ou un
+  # échec pour qu'en mode non verbeux on puisse voir les libellés où
+  # il y a eu une erreur.
   def success?
-    @is_a_success = (!fatal? || (@is_not_a_success != true)) if @is_a_success === nil
+    @is_a_success = @is_not_a_success != true if @is_a_success === nil
     @is_a_success
   end
 

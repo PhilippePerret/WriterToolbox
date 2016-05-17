@@ -6,6 +6,25 @@ class User
     site.send_mail( data_mail.merge(to: self.mail) )
   end
 
+  # Méthode qui procède au login des informations de
+  # l'user qui vient de s'identifier.
+  # Cette méthode est utilisée par la méthode `login`
+  # ci-dessous
+  # La méthode a été "isolée" pour pouvoir être utilisée
+  # lors d'une reconnexion par des scripts, comme après
+  # l'exécution des tests.
+  def proceed_login
+    app.session['user_id'] = id
+    # On met l'utilisateur en utilisateur courant
+    User::current= self
+    reset_user_current
+    # Variable session permettant de savoir combien de pages a
+    # déjà visité l'utilisateur (pour baisser l'opacité des
+    # éléments annexes de l'interface)
+    app.session['user_nombre_pages'] = 1
+    set(session_id: app.session.session_id)
+  end
+
   # On connecte l'user et on le redirige vers la
   # direction demandée ou logique.
   # On met également en session une variable qui va permettre
@@ -15,18 +34,9 @@ class User
     unless mail_confirmed? || admin? || for_paiement?
       return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
     end
-    app.session['user_id'] = id
 
-    # On met l'utilisateur en utilisateur courant
-    User::current= self
-    reset_user_current
+    proceed_login
 
-    # Variable session permettant de savoir combien de pages a
-    # déjà visité l'utilisateur (pour baisser l'opacité des
-    # éléments annexes de l'interface)
-    app.session['user_nombre_pages'] = 1
-
-    set(session_id: app.session.session_id)
 
     require './data/secret/known_users.rb'
     flash( if KNOWN_USERS.has_key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil

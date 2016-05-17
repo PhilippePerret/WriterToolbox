@@ -10,21 +10,14 @@ class DSLTestMethod
   # Sortie des messages
   def messages_output
     all_messages.collect do |dmess|
-      # Ci-dessous, ne pas mélangé le `is_suc`, qui concerne le
+      # Ci-dessous, ne pas mélanger le `is_suc`, qui concerne le
       # message lui-même, donc le résultat d'un seul "case-test" du
       # test-méthode, avec le `success?` qui concerne tout le
       # test-méthode.
       mess, is_suc = dmess
-      "#{success? ? '•' : '#'} #{mess}".in_div(class:"tcase #{is_suc ? 'suc' : 'fai'}")
+      "#{is_suc ? '•' : '#'} #{mess}".in_div(class:"tcase #{is_suc ? 'suc' : 'fai'}")
     end.join('').in_div(class:"#{success? ? 'suc' : 'fai'}")
   end
-
-  # # Transforme la liste des messages +liste_mess+ en
-  # # string de div tcase
-  # def as_div_list liste_mess, css
-  #   puce = success? ? "•" : "#"
-  #   liste_mess.collect do |mess| "#{puce} #{mess}".in_div(class:"tcase #{css}") end.join('')
-  # end
 
   # Le libellé pour la sortie
   def libelle

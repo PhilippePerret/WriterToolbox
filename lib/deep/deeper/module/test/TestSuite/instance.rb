@@ -10,6 +10,12 @@ class SiteHtml
 class TestSuite
 
 
+  # {User} Administrateur courant, celui qui fait passer les
+  # tests.
+  # On doit le prendre pour le reconnecter à la fin des
+  # tests
+  attr_reader :current_admin
+
   # {Array} Liste des instances {SiteHtml::TestSuite::TestFile}
   # des fichiers-tests de cette suite.
   attr_reader :test_files
@@ -34,21 +40,20 @@ class TestSuite
     self.class::init_options
   end
 
-  # = main =
+  # = MAIN =
   #
-  # Méthode principale qui joue toutes la suite de tests
-  # désirée.
+  # MÉTHODE PRINCIPALE QUI JOUE LA SUITE DE TESTS
   #
-  # +options+
-  #   :dossier_test     Le dossier dans lequel jouer les tests
-  #   :online           Si true, en online
   def run
+    @current_admin = User::new(user.id)
     infos[:start_time]  = Time.now
     @failures           = Array::new
     @success            = Array::new
     @test_files         = Array::new
     regularise_options
-    debug "Fichiers tests : #{files.join(', ')}" if debug?
+    if debug?
+      debug "Fichiers tests : #{files.join(', ')}"
+    end
     files.each do |p|
       infos[:nombre_files] += 1
       # On passe le test en test courant
@@ -57,9 +62,12 @@ class TestSuite
       @test_files << @current
     end
     infos[:end_time]      = Time.now
+
+    # === AFFICHAGE DU RÉSULTAT ===
     display_resultat
-    # debug "failures : #{failures.inspect}"
-    # debug "success: #{success.inspect}"
+
+    reconnecte_administrateur
+
     return "" # pour la console
   end
 
@@ -67,11 +75,9 @@ class TestSuite
   # Noter que ça peut être défini par le fichier ./test/run.rb par
   # la méthode configure de la classe.
   def files
-    debug "-> files (@files = #{@files.inspect}) (#{self.__id__})"
     @files ||= Dir["#{folder_test_path}/**/*_spec.rb"]
   end
   def files= liste
-    debug "-> files=( liste=#{liste.inspect}) (#{self.__id__})"
     @files = liste.collect do |relpath|
       relpath = "./test/#{relpath}" unless relpath.start_with?("./test")
       relpath += "_spec.rb" unless relpath.end_with?("_spec.rb")
@@ -103,6 +109,15 @@ class TestSuite
   end
   def folder_test_path= value; @folder_test_path = value end
 
-
+  # À la fin des tests, on essaie de reconnecter l'administrateur
+  def reconnecte_administrateur
+    debug "-> reconnecte_administrateur"
+    debug "Admin identifié ? #{current_admin.identified?.inspect}"
+    debug "session[user_id] = #{app.session['user_id'].inspect}"
+    current_admin.proceed_login
+    debug "Admin identifié ? #{current_admin.identified?.inspect}"
+    debug "session[user_id] = #{app.session['user_id'].inspect}"
+    debug "<- reconnecte_administrateur"
+  end
 end #/TestSuite
 end #/SiteHtml

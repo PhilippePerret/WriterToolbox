@@ -33,16 +33,13 @@ class Case
   # courant.
   def evaluate
     if successfull?
-      # tmethod.success_messages << bon_message_success
       tmethod.all_messages << [bon_message_success, true]
     else
-      # tmethod.failure_messages << bon_message_failure
+      tmethod.is_not_a_success
       tmethod.all_messages << [bon_message_failure, false]
-      if tmethod.fatal?
-        tmethod.is_not_a_success
-        raise TestUnsuccessfull
-      end
+      raise TestUnsuccessfull if tmethod.fatal?
     end
+
   end
 
   # Le vrai résultat, en fonction du fait que le test est

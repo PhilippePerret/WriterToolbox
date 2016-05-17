@@ -77,9 +77,12 @@ class CURL
     @request ||= SiteHtml::TestSuite::Request::new( built_request )
   end
 
+  FAKE_SESSION_ID = "400d4d25b9c540ce9d1d745231764ae4"
   # Requête construite
   def built_request
-    @built_requete ||= "curl#{req_options}#{req_data} #{req_url}"
+    debug "-> built_request"
+    # @built_request ||= "curl#{req_options}#{req_data} #{req_url}"
+    @built_request ||= "curl -H \"Session: #{FAKE_SESSION_ID}\"#{req_options}#{req_data} #{req_url}"
   end
 
   # True si la requête est une simulation de soumission
