@@ -28,15 +28,16 @@ class BdD
     :bad_set_first_arg => "Le premier argument transmis à BdD::Table#set devrait être un Hash ou un Fixnum (ID de la donnée)",
     :set_bad_id_data => "L'ID de la donnée devrait être un nombre (Fixnum)",
     :set_bad_data_for_data => "Les données transmise à BdD::Table#set pour la donnée devrait être un Hash.",
-    :bad_args_with_values_form => "L'argument avec :values doit impérativement définir soit :id soit la condition WHERE dans :where.", 
+    :bad_args_with_values_form => "L'argument avec :values doit impérativement définir soit :id soit la condition WHERE dans :where.",
     :where_clause_hash_required => "La clause WHERE (:where) doit obligatoirement être définie par un Hash, pas par un string, dans cette tournure.",
     # Méthode #delete
     :delete_require_hash_or_id => "La méthode BdD::Table#delete attend en premier argument un Fixnum (ID de la donnée) ou un Hash (définissant :condition ou :where)",
-    :delete_invalid_hash => "Le premier argument Hash de la méthode BdD::Table#delete doit définir :condition ou :where."
-    
+    :delete_invalid_hash => "Le premier argument Hash de la méthode BdD::Table#delete doit définir :condition ou :where.",
+    # Méthode #update
+    bd_execute_require_explicite_colonne_with_arr_values: "Avec la requête UPDATE et des valeurs transmises par un Array, il faut impérativement définir explicitement les colonnes."
   }
   class << self
-  
+
     ##
     # Produire une erreur
     # +error_mess+

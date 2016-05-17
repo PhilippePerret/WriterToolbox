@@ -86,7 +86,7 @@ class BdD
     # Actualisation de données
     # La recherche se fait toujours sur l'identifiant
     # Noter que l'ID est le plus souvent un Fixnum mais que ça n'est
-    # pas toujours systématiquement le cas.
+    # pas toujours le cas.
     def update id, hdata
       # debug "-> update"
       raise ArgumentError, "Le second argument doit être un Hash (des nouvelles valeurs)" unless hdata.class == Hash
@@ -327,7 +327,7 @@ class BdD
     # Retourne le nombre de rangées avec ou sans condition
     #
     def count params = nil
-      params ||= Hash::new
+      params ||= {}
       params = condition_deprecated params if params.has_key? :condition
       # Requête
       request = "SELECT COUNT(*) FROM #{name}"
@@ -336,9 +336,7 @@ class BdD
         request += " COLLATE NOCASE" if params[:nocase]
       end
 
-      res = BdD::execute_requete( bdd.database, request, params[:values] ).first
-      # # La soumettre
-      # res = execute request
+      res = bdd.database.execute(request).first
 
       if res == false
         # Deux solutions lorsque le résultat est false :
@@ -361,11 +359,15 @@ class BdD
     # Pour pouvoir être créée, la table a besoin de définition des
     # colonnes.
     #
+    # Note : Maintenant, on n'enregistre plus les noms des
+    # colonnes dans une table, puisqu'on peut facilement les
+    # récupérer par les méthodes Ruby du gem 'sqlite3'
+    #
     def create
       # debug "-> create"
       return false if exist?
       check_definition_colonnes_or_raise
-      mem_column_names( forcer = false ) # au cas où
+      # mem_column_names( forcer = false ) # au cas où
       res = execute creation_code, true
       # debug "<- create"
       return res
@@ -386,18 +388,18 @@ class BdD
         hdata.merge! :id => { type: "INTEGER", constraint: "PRIMARY KEY AUTOINCREMENT" }
       end
       @colonnes_definition = hdata
-      mem_column_names( forcer = true )
+      # mem_column_names( forcer = true )
     end
 
-    # Pour mémoriser (à la création) le nom des colonnes
-    def mem_column_names forcer = false
-      # debug "-> mem_column_names"
-      return if bdd.table_column_names.has_row_with?("table_name = '#{self.name}'") && forcer == false
-      # debug "Je dois créer la rangée des noms de colonnes"
-      col_names = @colonnes_definition.keys.collect{|c| c.to_s}
-      bdd.add_column_names_of_table self.name, col_names
-      # debug "<- mem_column_names"
-    end
+    # # Pour mémoriser (à la création) le nom des colonnes
+    # def mem_column_names forcer = false
+    #   # debug "-> mem_column_names"
+    #   return if bdd.table_column_names.has_row_with?("table_name = '#{self.name}'") && forcer == false
+    #   # debug "Je dois créer la rangée des noms de colonnes"
+    #   col_names = @colonnes_definition.keys.collect{|c| c.to_s}
+    #   bdd.add_column_names_of_table self.name, col_names
+    #   # debug "<- mem_column_names"
+    # end
 
     ##
     # Return TRUE si la table existe
@@ -425,7 +427,6 @@ class BdD
     # Détruit également son enregistrement dans __column_names__
     def remove
       bdd.execute "DROP TABLE IF EXISTS #{name}"
-      res = bdd.execute "DELETE FROM __column_names__ WHERE table_name = '#{name}'"
       return res
     end
     alias :destroy :remove

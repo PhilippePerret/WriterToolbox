@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class BdD
   class Table
-    
+
     # Types de données
     DATA_TYPES = [
       "NULL",
@@ -13,25 +13,25 @@ class BdD
       "BOOLEAN",
       "DATE", "DATETIME"
     ]
-    
+
     # Types de contraintes
     CONSTRAINT_TYPES = [
       "NOT NULL", "UNIQUE", "PRIMARY KEY", "AUTOINCREMENT",
       # Contraintes avec valeurs
       "DEFAULT", "CHECK"
     ]
-    
+
     class << self
-      
+
       ##
-      # Return TRUE si la table +table_name+ ({String}) existe dans 
+      # Return TRUE si la table +table_name+ ({String}) existe dans
       # la base de données +bdd+ ({BdD})
       def table_exist? bdd, table_name
-        res = bdd.execute "SELECT count(*) FROM sqlite_master WHERE (type = 'table' AND name = '#{table_name}');" 
+        res = bdd.execute "SELECT count(*) FROM sqlite_master WHERE (type = 'table' AND name = '#{table_name}');"
         return res.count == 1 && res.first == [1]
       end
       alias :exist? :table_exist?
-      
+
       ##
       # Retourne la liste des tables de la base de données +bdd+
       def table_names bdd
@@ -41,14 +41,14 @@ class BdD
             row[1]
           end
           arr.delete("sqlite_sequence")
-          arr.delete("__column_names__")
+          arr.delete("__column_names__") # ancienne version
         else
           error "Impossible de récupérer la liste des tables de la base de données…"
           arr = []
         end
         return arr
       end
-      
+
     end # << self
   end # Table
 end # BdD

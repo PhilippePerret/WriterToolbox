@@ -9,31 +9,33 @@ class BdD
     def execute params
 
       # La base de données
-      db = params.delete :database
-      raise AIError, :bdd_execute_db_required if db.nil?
+      db = params.delete(:database) || raise( AIError, :bdd_execute_db_required)
       db = db.database if db.class == BdD
-      raise AIError, :bdd_execute_required_db_sqlite3 unless db.class == ::SQLite3::Database
+      db.class == ::SQLite3::Database || raise( AIError, :bdd_execute_required_db_sqlite3)
       params[:db] = db
 
       # La table
-      table = params[:table]
-      raise AIError, :bdd_execute_table_required if table.nil?
-      raise AIError, :bdd_execute_table_string unless table.class == String
+      table = params[:table]      || raise( AIError, :bdd_execute_table_required )
+      table.instance_of?(String)  || raise( AIError, :bdd_execute_table_string )
 
       # Les colonnes
+      # ------------
       colonnes = traite_colonnes_in params
+      # =>
+      #   - soit ['*']
+      #   - soit La liste des noms de colonnes {Symbol}
 
       # L'opération (request)
       operation = params[:requete] || params[:request] || params[:operation] || params[:do]
-      raise :bd_execute_request_required    if operation.nil?
-      raise :bd_execute_request_str_or_sym  unless [String, Symbol].include?(operation.class)
+      operation || raise( :bd_execute_request_required )
+      [String, Symbol].include?(operation.class) || raise( :bd_execute_request_str_or_sym )
       operation = operation.to_s.upcase
 
       # La requête SELECT nécessite toujours la relève de la colonne :ID pour
       # la constitution du hash
-      colonnes << :id if operation == "SELECT" && false == colonnes.include?(:id)
+      colonnes << :id if operation == "SELECT" && !colonnes.include?('*') && !colonnes.include?(:id)
       # pour `execute_requete'
-      params.merge! colonnes: colonnes
+      params.merge!( colonnes: colonnes )
 
 
       # Les valeurs
@@ -44,18 +46,22 @@ class BdD
         when "INSERT"
           values_sql = case values
           when Array
-            Array::new( colonnes.count, '?' ).join(', ')
+            Array::new( values.count, '?' ).join(', ')
           when Hash
-            colonnes.collect{ |col| ":#{col}" }.join(', ')
+            values.collect{ |col, val| ":#{col}" }.join(', ')
           else
             "?"
           end
         when "UPDATE"
           colonnes_and_values_sql = case values
           when Array
-            colonnes.collect { |col| "#{col} = ?"}.join(', ')
+            if colonnes.include?('*')
+              raise(AIError, :bd_execute_require_explicite_colonne_with_arr_values)
+            else
+              colonnes.collect { |col| "#{col} = ?"}.join(', ')
+            end
           when Hash
-            colonnes.collect { |col| "#{col} = :#{col}"}.join(', ')
+            values.collect { |col, val| "#{col} = :#{col}"}.join(', ')
           end
         end
       end
@@ -73,7 +79,7 @@ class BdD
       end
 
       # Liste valeurs
-      values = Array::new if values.nil?
+      values ||= []
 
       # Clause WHERE
       where = params[:where]
@@ -119,7 +125,7 @@ class BdD
     # {Hash} +values+ sur la table {SQLite3::Database} +database+
     # @alias: def execute_request
     def execute_requete database, request, values = nil, params = nil
-      params ||= Hash::new
+      params ||= {}
 
       request_name = request.split.first
 
@@ -137,7 +143,7 @@ class BdD
 
       # Préparation de la requête
       begin
-        smt = database.prepare request
+        smt = database.prepare( request )
       rescue Exception => e
         debug "# Une erreur est survenue avec database.prepare : #{e.message}"
         debug "# Requête : #{request}"
@@ -147,7 +153,8 @@ class BdD
       end
 
 
-      # Binder des valeurs (if any)
+      # Si nécessaire, binder des valeurs à la préparation de la
+      # requête.
       if values
         if ["INSERT", "UPDATE"].include? request_name
           case values
@@ -178,37 +185,78 @@ class BdD
       # Exécution (BON)
       res = smt.execute
 
-      # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
-      # if request_name == "SELECT"
-      #   debug "=== requête SELECT ==="
-      #   debug res
-      #   debug "Colonnes: #{res.columns.inspect}"
-      #   debug "Types: #{res.types.inspect}"
-      #   debug "=== / SELECT ==="
-      # end
-      #
+      debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
+      if request_name == "SELECT"
+        debug "=== Retour de requête SELECT ==="
+        debug "Request : #{request.inspect}"
+        debug "Class retour : #{res.class}"
+        debug "Colonnes retournées : #{res.columns.inspect}"
+        debug "Types retournés : #{res.types.inspect}"
+        debug "=== / SELECT ==="
+      end
+
 
       # Retour suivant l'opération
       retour = case request_name
       when "SELECT"
-        # On fait un hash de colonne => type
+        # On fait un hash de colonne => type pour pouvoir
+        # transformer les valeurs en leur type réel.
+        # Noter qu'ici le type ne peut pas être grand chose,
+        # simplement un string, un nombre ou du code brut,
+        # guère plus que ce genre de choses.
         col2type = Hash[res.columns.zip res.types]
-        if params[:colonnes] != nil
-          unless params[:colonnes].first.class == Symbol
-            params[:colonnes] = params[:colonnes].collect { |k| k.to_sym }
+
+        # On recupère la liste des colonnes, qu'on transforme
+        # en Symbols (est-ce vraiment indispensable ? Est-ce qu'on
+        # ne pourrait pas le faire plus tard ?)
+        res_colonnes = res.columns.collect{|c| c.to_sym}
+
+        # La clé de clé principale.
+        # C'est la clé qui sera utilisée comme clé principale
+        # dans le Hash retourné.
+        # En général, c'est :id, donc c'est l'identifiant de
+        # la rangée qui sera utilisé comme clé du Hash de
+        # retour.
+        main_key = (params[:key] || :id).to_sym
+
+        # Le Hash qui contiendra toutes les données retournées
+        hretour = {}
+
+        res.each_hash do |hdata|
+          hres = {}.merge(hdata) # pour le transformer en Hash simple
+          debug "HRES = #{hres.pretty_inspect}"
+
+          # Il faut transformer les valeurs en leur valeur réelle
+          real_hres = {}
+          hres.each do |k, v|
+            real_value = table_values_to_real_values(v, col2type[k.to_s])
+            real_hres.merge!( k.to_sym => real_value )
           end
-          main_key = (params[:key] || :id).to_sym
-          hretour = Hash::new
-          res.each do |values_returned|
-            hres = Hash[params[:colonnes].zip(values_returned)]
-            hres.each do |k, v|
-              v = table_values_to_real_values v, col2type[k.to_s]
-              hres[k] = v
-            end
-            hretour.merge! hres[main_key] => hres
-          end
-          hretour
+
+          # On ajoute ce Hash de données au Hash qui doit être
+          # retourné
+          hretour.merge!( real_hres[main_key] => real_hres )
+
         end
+
+        debug "\n\n\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
+
+        # ANCIENNE MÉTHODE OBSOLÈTE :
+        # if params[:colonnes] != nil
+        #   unless params[:colonnes].first.class == Symbol
+        #     params[:colonnes] = params[:colonnes].collect { |k| k.to_sym }
+        #   end
+        #   main_key = (params[:key] || :id).to_sym
+        #   hretour = Hash::new
+        #   res.each do |values_returned|
+        #     hres = Hash[params[:colonnes].zip(values_returned)]
+        #     hres.each do |k, v|
+        #       v = table_values_to_real_values v, col2type[k.to_s]
+        #       hres[k] = v
+        #     end
+        #     hretour.merge! hres[main_key] => hres
+        #   end
+        hretour
       when "INSERT"
         # Après une insertion, on retourne le nouvel ID
         # attribué.
@@ -219,9 +267,6 @@ class BdD
         retour = res.collect { |row| table_values_to_real_values row }
       end
 
-      smt.close
-
-      return retour
     rescue Exception => e
       debug "# IMPOSSIBLE DE JOUER execute_requete : #{e.message}"
       debug "# Requête : #{request}"
@@ -230,6 +275,11 @@ class BdD
       debug "Backtrace :\n" + e.backtrace.join("\n")
       debug e
       raise e.message
+    else
+      return retour
+    ensure
+      # database.close  if database
+      smt.close       if smt
     end
     alias :execute_request :execute_requete
 
