@@ -25,9 +25,9 @@ class RSBitly
   def info_bitly
     @info_bitly ||= begin
       configure_bitly
-      # res = Bitly.client.info(long_url)
+      debug "Bitly.client.shorten(#{long_url})"
+      long_url.start_with?('http') || raise( "L'URI http doit impérativement commencer par `http`…" )
       res = Bitly.client.shorten(long_url)
-      # debug "res : " + res.methods.collect{|m| "#{m} = " + (res.send(m.to_sym) rescue nil).inspect}.join("\n")
       res
     end
   end
@@ -80,7 +80,7 @@ class RSBitly
 
   # URL longue, originale, de la page à atteindre
   def long_url
-    @url ||= begin
+    @long_url ||= begin
       case data[:route]
       when NilClass then nil
       when /^http/  then data[:route]
