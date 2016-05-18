@@ -32,14 +32,15 @@ class Case
   # ATest courante, une failure fait sortir (raise) du test
   # courant.
   def evaluate
-    if successfull?
-      tmethod.all_messages << [bon_message_success, true]
-    else
+    tmethod.all_messages << [ message_final, !!successfull? ]
+    unless successfull?
       tmethod.is_not_a_success
-      tmethod.all_messages << [bon_message_failure, false]
       raise TestUnsuccessfull if tmethod.fatal?
     end
+  end
 
+  def message_final
+    @message_final ||= formate_message( successfull? ? bon_message_success : bon_message_failure)
   end
 
   # Le vrai résultat, en fonction du fait que le test est
@@ -47,6 +48,11 @@ class Case
   def successfull?
     @is_successfull ||= (positif == args[:result])
   end
+
+  def sujet_valeur ; @sujet_valeur ||= args[:sujet_valeur]||args[:valeur_sujet] end
+  def objet_valeur ; @objet_valeur ||= args[:objet_valeur]||args[:valeur_objet] end
+  def sujet_name   ; @sujet_name   ||= args[:sujet]||args[:sujet_name]  end
+  def objet_name   ; @objet_name   ||= args[:objet]||args[:objet_name]  end
 
   def bon_message_success
     @bon_message ||= positif ? message_success : message_success_not

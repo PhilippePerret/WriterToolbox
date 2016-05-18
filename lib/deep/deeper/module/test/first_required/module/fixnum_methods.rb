@@ -5,25 +5,27 @@ class Fixnum
   def eq compared, options=nil, inverse=nil
     options ||= {}
     option_evaluate = options.delete(:evaluate)
-    option_strict   = options.delete(:strict)
-    option_sujet    = options.delete(:sujet) || self
-    option_objet    = options.delete(:objet) || compared
+    option_strict   = !!options.delete(:strict)
 
     ok = option_strict ? ( self === compared ) : ( self == compared )
 
-    unless option_evaluate === false
-      SiteHtml::TestSuite::Case::new(
-        SiteHtml::TestSuite::current_test_method,
-        result:           ok,
-        positif:          !inverse,
-        on_success:       "#{option_sujet} est égal à #{option_objet}.",
-        on_success_not:   "#{option_sujet} est différent de #{option_objet} (OK).",
-        on_failure:       "#{option_sujet} devrait être égal à #{option_objet}…",
-        on_failure_not:   "#{option_sujet} ne devrait pas être égal à #{option_objet}."
-      ).evaluate
-    else
-      return ok
-    end
+    strictly = option_strict ? "strictement " : ""
+
+    option_evaluate && ( return ok )
+
+    SiteHtml::TestSuite::Case::new(
+      SiteHtml::TestSuite::current_test_method,
+      result:           ok,
+      positif:          !inverse,
+      sujet:            options.delete(:sujet),
+      sujet_valeur:     self,
+      objet:            options.delete(:objet),
+      objet_valeur:     compared,
+      on_success:       "_SUJET_ est #{strictly}égal _OBJET_.",
+      on_success_not:   "_SUJET_ n'est pas #{strictly}égal _OBJET_ (OK).",
+      on_failure:       "_SUJET_ devrait être #{strictly}égal _OBJET_, il est égal à #{self}…",
+      on_failure_not:   "_SUJET_ ne devrait pas être #{strictly}égal _OBJET_."
+    ).evaluate
   end
   def not_eq( compared, options=nil )
     eq compared, options, true
@@ -35,9 +37,41 @@ class Fixnum
     eq compared, (options || {}).merge(evaluate: true), true
   end
 
-  def bigger_than
+  def bigger_than expected, options=nil, inverse=false
+    options ||= {}
+    option_evaluate = options.delete(:evaluate)
+    option_strict   = !!options.delete(:strict)
 
+    ok = option_strict ? ( self > expected ) : ( self >= expected )
+
+    option_evaluate && ( return ok )
+
+    strictly = option_strict ? "strictement " : ""
+
+    SiteHtml::TestSuite::Case::new(
+      SiteHtml::TestSuite::current_test_method,
+      result:           ok,
+      positif:          !inverse,
+      sujet:            options.delete(:sujet),
+      sujet_valeur:     self,
+      objet:            options.delete(:objet),
+      objet_valeur:     expected,
+      on_success:       "_SUJET_ est #{strictly}supérieur _OBJET_.",
+      on_success_not:   "_SUJET_ n'est pas #{strictly}supérieur _OBJET_ (OK).",
+      on_failure:       "_SUJET_ devrait être #{strictly}supérieur _OBJET_, il est égal à #{self}…",
+      on_failure_not:   "_SUJET_ ne devrait pas être #{strictly}supérieur _OBJET_."
+    ).evaluate
   end
+  def not_bigger_than(expected, options=nil)
+    bigger_than expected, options, true
+  end
+  def bigger_than?(expected, options=nil)
+    bigger_than expected, (options || {}).merge(evaluate: true)
+  end
+  def not_bigger_than?(expected, options=nil)
+    bigger_than expected, (options || {}).merge(evaluate: true), true
+  end
+
   def smaller_than
 
   end

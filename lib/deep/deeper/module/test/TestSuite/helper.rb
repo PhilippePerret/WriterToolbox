@@ -35,12 +35,13 @@ class TestSuite
     laps = (infos[:end_time] - infos[:start_time]).round(4)
     "<hr>" + (
       "#{infos[:nombre_files]} fichier#{s_files}" +
+      " in #{folder_test_path}"
       " | #{infos[:nombre_tests]} test#{s_tests}"+
       " | #{infos[:nombre_cas]} cas"+
       " | durée : #{laps}" +
-      " | folder: #{folder_test_path}" +
       " | #{online? ? 'ONLINE' : 'OFFLINE'}" +
-      " | bckup: #{infos[:duree_db_backup]} / #{infos[:duree_db_unbackup]}"
+      " | backups: #{infos[:duree_db_backup]} / #{infos[:duree_db_unbackup]}" +
+      " |"
     ).in_div(id:'test_infos')
   end
 

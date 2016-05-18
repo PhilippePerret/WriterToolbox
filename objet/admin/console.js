@@ -93,6 +93,11 @@ $.extend(window.RSConsole, {
 Commande de base : `test <dossier> <online>` __\
     <dossier> : chemin relatif depuis ./test/ __\
 `run test` pour jouer le fichier ./test/run.rb __\
+__\
+    options : __\
+        -v      Mode verbose : affiche le détail des cases __\
+        -d      Mode documenté (pas encore implémenté)     __\
+        -q      Mode quiet : affichage minimum.            __\
 ",
       twitter: " \
 Commande de base : `twit <message>` __\

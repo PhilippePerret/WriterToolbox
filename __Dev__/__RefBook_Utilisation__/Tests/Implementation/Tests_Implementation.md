@@ -1,9 +1,10 @@
 # Implémentation
 
+* [Débuggage](#debuggageducode)
 * [Problèmes à résoudre](#problemearesoudre)
 * [Aide pour cUrl](#aidepourcurl)
+* [Gestion des "méthodes-plurielles"](#gestionmethodeplurielle)
 
-* [Débuggage](#debuggageducode)
 <a name='debuggageducode'></a>
 
 ## Débuggage
@@ -55,7 +56,6 @@ Cette aide `cUrl` doit permettre de rédiger de nouveaux tests.
         res = `curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"`
 
 
-* [Gestion des "méthodes-plurielles"](#gestionmethodeplurielle)
 <a name='gestionmethodeplurielle'></a>
 
 ## Gestion des "méthodes-plurielles"

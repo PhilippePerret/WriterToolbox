@@ -14,9 +14,9 @@ class TestTable
   # la table courante.
   def count( options=nil )
     req = SiteHtml::TestSuite::TestBase::Request::new(self, options)
-    retour = req.execute( req.count_request )
-    # retour contient quelque chose comme {:"COUNT(*)" => 12}
-    retour.values.first # contient
+    req.execute( req.count_request )
+    # req.first_resultat contient quelque chose comme {:"COUNT(*)" => 12}
+    req.first_resultat.values.first # contient
   end
 
 end #/TestTable

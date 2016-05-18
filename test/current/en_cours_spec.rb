@@ -8,5 +8,7 @@
 
 test_base "users.users" do
   NOMBRE_INIT_USERS = count
-  count.eq(5, {sujet: "Le nombre de users"})
+  NOMBRE_INIT_USERS.eq(3, {sujet: "Le nombre d'users"})
+
+  NOMBRE_INIT_USERS.not_bigger_than(5, {sujet: "Le nombre d'users"})
 end
