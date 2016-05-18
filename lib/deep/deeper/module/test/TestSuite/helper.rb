@@ -40,7 +40,7 @@ class TestSuite
       " | durée : #{laps}" +
       " | folder: #{folder_test_path}" +
       " | #{online? ? 'ONLINE' : 'OFFLINE'}" +
-      " | "
+      " | bckup: #{infos[:duree_db_backup]} / #{infos[:duree_db_unbackup]}"
     ).in_div(id:'test_infos')
   end
 

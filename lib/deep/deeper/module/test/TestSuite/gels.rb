@@ -17,7 +17,7 @@ class TestSuite
     dst = "./tmp/testdbbackdup"
     FileUtils::rm_rf(dst) if File.exist?(dst)
     `mkdir -p "#{dst}"`
-    FileUtils::cp_r src, dst
+    FileUtils::cp_r src, dst, {preserve: true}
     File.exist?("#{dst}/data") || raise( "Le dossier des backups des bases de données devrait exister.")
     @freezed = true
     end_time = Time.now
@@ -34,7 +34,7 @@ class TestSuite
     dst = "./database"
     dst_folder = "#{dst}/data"
     FileUtils::rm_rf(dst_folder) if File.exist?(dst_folder)
-    FileUtils::cp_r src, dst
+    FileUtils::cp_r src, dst, {preserve: true}
     File.exist?(dst_folder) || raise("Le dossier ./database/data devrait exister. Le récupérer dans le dossier `#{src}`.")
     # Pour indiquer que le dégel a eu lieu
     @unfreezed = true

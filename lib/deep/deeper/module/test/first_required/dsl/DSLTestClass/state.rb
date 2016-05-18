@@ -18,7 +18,7 @@ class DSLTestMethod
     false
   end
 
-  def verbose?              ; @verbose end
+  def verbose? ; @verbose end
 
   # Retourne true si le test de cette test-méthode doit être
   # silencieux. Cette valeur n'est mise à true que si `quiet` est

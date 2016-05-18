@@ -20,7 +20,17 @@ class Row
   #
   # Noter qu'elles sont récupérées à chaque fois, donc
   # qu'il faut les dupliquer dans une donnée pour les
-  # tester sans les recharger à chaque fois
+  # tester sans les recharger à chaque fois depuis la table
+  #
+  # Cette méthode sert dans les tests de cette manière :
+  #
+  #   row(12).data.has(id: 12)
+  #
+  # ou
+  #
+  #   d12 = row(12).data
+  #   d12.has(id: 12)
+  # 
   def data options=nil
     req = SiteHtml::TestSuite::TestBase::Request::new(self, options)
     THash::new(ttable).merge(req.first_resultat)

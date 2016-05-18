@@ -15,23 +15,49 @@ class Request
     more_than_one_result: "Il ne devrait y avoir qu'un résultat dans la table, mais %i ont été trouvés…"
   }
 
+  # Nil ou définit à l'instanciation
   attr_reader :row
 
   attr_reader :options
 
-  # +row+ Instance de la rangée
-  def initialize row, options=nil
-    @row      = row
-    @options  = options || Hash::new
+  # +row_or_table+ Instance de la rangée ou de la table
+  def initialize row_or_table, options=nil
+    if row_or_table.instance_of?(SiteHtml::TestSuite::TestBase::TestTable)
+      @ttable = row_or_table
+    else
+      @row = row
+    end
+    @options = options || {}
   end
 
-  def execute
-    online? ? execute_online : execute_offline
+  # ---------------------------------------------------------------------
+  #   Requêtes qu'on peut envoyer à la méthode `execute` de cette
+  #   instance requête
+  # ---------------------------------------------------------------------
+  # Construction des requêtes
+  #
+  def select_request
+    @select_request ||= select_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
+  end
+  def count_request
+    @count_request ||= count_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
+  end
+
+  #
+  # ---------------------------------------------------------------------
+
+  # Exécution de la requête, online ou offline
+  #
+  # Par défaut, +sql_request+ est la requête de SELECT
+  #
+  def execute( sql_request = nil )
+    sql_request ||= select_request
+    send(online? ? :execute_online : :execute_offline, sql_request)
     @resultats = @resultats.collect { |h| h.to_sym }
     return self
   end
 
-  def execute_online
+  def execute_online sql_request
     # debug "REQUETE SSH : #{request_ssh.inspect}"
     res = `#{request_ssh} 2>&1`
     # debug "res : #{res.inspect}"
@@ -51,9 +77,9 @@ class Request
   end
   def request_ruby_in_ssh
     <<-SSH
-#{procedure_ruby_str}
+#{procedure_ruby_str sql_request}
 result = {
-  database:             @dbpath,
+  database:             @db_path,
   erreur_sql:           @erreur_sql,
   erreur_fatale:        @erreur_fatale,
   request_sql:          @request_sql,
@@ -64,8 +90,8 @@ STDOUT.write(Marshal.dump(result))
 SSH
   end
 
-  def execute_offline
-    procedure_ruby
+  def execute_offline sql_request
+    procedure_ruby sql_request
   end
 
   def resultats
@@ -83,19 +109,28 @@ SSH
     @nombre_changements
   end
 
-  def procedure_ruby
-    eval(procedure_ruby_str)
+  def procedure_ruby sql_request
+    eval(procedure_ruby_str sql_request)
     @erreur_fatale && raise( @erreur_fatale )
     unless plusieurs_resultats?
       nombre_resultats == 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
     end
   end
 
-  def procedure_ruby_str
-    racine = online? ? '/home/boite-a-outils/www' : ''
-    dbpath = "#{racine}#{row.ttable.database.path.to_s[1..-1]}"
-    # dbpath = row.ttable.database.path.to_s
-    # debug "= dbpath: #{dbpath}"
+  # La Test-Table courante, qu'on prend soit dans la
+  # rangée transmise à l'instanciation (`row`) soit dans la
+  # table transmise à l'instanciation
+  def ttable
+    @ttable ||= row.ttable
+  end
+  def racine
+    @racine ||= (online? ? '/home/boite-a-outils/www' : '.')
+  end
+  def db_path
+    @db_path || "#{racine}#{ttable.database.path.to_s[1..-1]}"
+  end
+
+  def procedure_ruby_str sql_request
     <<-PROC
 $: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
 begin
@@ -105,10 +140,10 @@ begin
   @nombre_changements = nil
   @db   = nil
   @pst  = nil
-  @dbpath = %Q{#{dbpath}}
-  File.exist?(@dbpath) || (raise %Q{La base de données \#{@dbpath} est introuvable} )
-  @request_sql = %Q{#{select_request_one_line}}
-  @db   = SQLite3::Database.open( @dbpath )
+  @db_path = %Q{#{db_path}}
+  File.exist?(@db_path) || (raise %Q{La base de données \#{@db_path} est introuvable} )
+  @request_sql = %Q{#{sql_request}}
+  @db   = SQLite3::Database.open( @db_path )
   @pst  = @db.prepare( @request_sql )
   rs    = @pst.execute
   @nombre_changements = @db.changes
@@ -135,16 +170,15 @@ PROC
   end
 
   # Raccourci pour avoir les spécifications de la
-  # rangée à travailler
-  def specs   ; @specs ||= row.specs  end
-
-  # Construction des requêtes
-  #
-  def select_request_one_line
-    @select_request_one_line ||= select_request.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
+  # rangée à travailler, si une rangée est définie
+  def specs
+    @specs ||= begin
+      row.nil? ? nil : row.specs
+    end
   end
-  def select_request
-    @select_request ||= begin
+
+  def select_request_multi_lines
+    @select_request_multi_lines ||= begin
       options ||= Hash::new
       what  = options[:what] || "*"
       order = options[:order]
@@ -153,17 +187,40 @@ PROC
       limit = " LIMIT #{limit}" unless limit.nil?
       <<-SQL
 SELECT #{what}
-  FROM #{row.ttable.name}
-  WHERE #{where_clause}#{order}#{limit};
+FROM #{ttable.name}
+#{where_clause_finale}#{order}#{limit};
       SQL
     end
   end
 
+  # Requête pour compte un nombre de choses
+  def count_request_multi_lines
+    @count_request_multi_lines ||= begin
+      where_clause_final = where_clause
+      <<-SQL
+SELECT COUNT(*)
+FROM #{ttable.name}
+#{where_clause_finale}
+      SQL
+    end
+  end
+
+  def where_clause_finale
+    @where_clause_finale ||= begin
+      if where_clause.nil?
+        ""
+      else
+        "WHERE #{where_clause}"
+      end
+    end
+  end
   # Construction de la clause WHERE en fonction des
   # spécifications de la requête
   def where_clause
     @where_clause ||= begin
       case specs
+      when NilClass
+        nil
       when Fixnum
         "id = #{specs}"
       else

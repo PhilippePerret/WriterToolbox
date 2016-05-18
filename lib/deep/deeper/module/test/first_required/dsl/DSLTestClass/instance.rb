@@ -40,7 +40,7 @@ class DSLTestMethod
   def init
     # Les données du test, qui serviront notamment pour
     # l'affichage.
-    @tdata = Hash::new
+    @tdata = {}
     @tdata = {
       test_file:            tfile, # instance TestFile du fichier
       start_time:           Time.now,

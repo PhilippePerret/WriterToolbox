@@ -18,6 +18,7 @@ class TestTable < DSLTestMethod
 
   # Instanciation
   def initialize tfile, table_spec, options=nil, &block
+    SiteHtml::TestSuite::current_test_method = self
     @table_spec = table_spec
     @options    = options
     analyse_table

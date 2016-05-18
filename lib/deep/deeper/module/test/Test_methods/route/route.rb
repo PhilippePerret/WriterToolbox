@@ -16,6 +16,7 @@ class TestRoute < DSLTestMethod
 
   # +raw_route+ La route brut, qui peut contenir un query_string
   def initialize tfile, raw_route, options=nil, &block
+    SiteHtml::TestSuite::current_test_method = self
     @raw_route = raw_route
     super(tfile, &block)
   end

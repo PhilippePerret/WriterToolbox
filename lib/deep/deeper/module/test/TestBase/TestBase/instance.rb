@@ -19,6 +19,8 @@ class TestBase
   # ---------------------------------------------------------------------
   #   Méthodes d'état
   # ---------------------------------------------------------------------
+
+  # Note : Pour le moment, elle ne fonctionne qu'en offline
   def exist?
     path.exist?
   end

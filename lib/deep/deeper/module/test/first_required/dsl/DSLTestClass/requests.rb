@@ -19,7 +19,7 @@ class DSLTestMethod
   #
   def nokogiri_html
     @nokogiri_html ||= begin
-      raise (error_no_test_route "nokogiri_html") unless route_test?
+      route_test? || raise(error_no_test_route "nokogiri_html")
       Nokogiri::HTML(open url)
     end
   end
