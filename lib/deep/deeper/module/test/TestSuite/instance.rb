@@ -69,7 +69,7 @@ class TestSuite
     # === AFFICHAGE DU RÉSULTAT ===
     display_resultat
 
-    reconnecte_administrateur
+    # reconnecte_administrateur
 
     return "" # pour la console
   rescue Exception => e
