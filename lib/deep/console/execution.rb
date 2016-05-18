@@ -274,8 +274,8 @@ class Console
       # log "---> #{res.inspect}"
     rescue Exception => e
       error "Line injouable : `#{line}`"
-      "### LIGNE INCOMPRÉHENSIBLE ### #{e.message}"
       debug e
+      "### LIGNE INCOMPRÉHENSIBLE ### #{e.message}"
     end
   end
 

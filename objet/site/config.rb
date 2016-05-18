@@ -16,6 +16,10 @@ HOME = "/Users/philippeperret"
 # factures ou autre mail officiel
 site.official_designation = "La Boite à Outils de l'Auteur" # "Writer's Toolbox"
 site.name                 = "La Boite à Outils de l'Auteur"
+# Pour donner un nom différent dans la balise <title>
+# Si non défini, c'est la valeur de site.name qui sera prise
+# et PASSÉE EN CAPITALES
+# site.title = "LA BOITE À OUTILS DE L'AUTEUR"
 
 # Pour composer la balise TITLE de la page
 # Le title_prefix servira pour toutes les autres pages de l'accueil
@@ -24,8 +28,8 @@ site.name                 = "La Boite à Outils de l'Auteur"
 site.title_prefix     = "BOA"
 site.title_separator  = " | "
 TINY_CAR = '<span style="font-size:9.1pt;color:#97c0c8">%s</span>'
-# site.title = "#{TINY_CAR % 'LA'} #{as_main_link('BOITE')} #{TINY_CAR % 'À'} #{as_main_link('OUTILS')} #{TINY_CAR % 'DE L’'}#{as_main_link 'AUTEUR'}"
-site.title = "#{TINY_CAR % 'LA'} BOITE #{TINY_CAR % 'À'} OUTILS #{TINY_CAR % 'DE L’'}AUTEUR".in_span(style:'color:#97c0c8')
+site.logo_title = "#{TINY_CAR % 'LA'} BOITE #{TINY_CAR % 'À'} OUTILS #{TINY_CAR % 'DE L’'}AUTEUR".in_span(style:'color:#97c0c8')
+
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site
 site.mail                 = "phil@laboiteaoutilsdelauteur.fr"
