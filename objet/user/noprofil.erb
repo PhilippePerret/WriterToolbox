@@ -1,0 +1,15 @@
+<%
+# Non-profil qui est affiché lorsque le visiteur clique sur
+# le bouton "AUTEUR" dans la marge gauche
+%>
+<h1>Profil d’auteur</h1>
+<p class=''>
+  En étant inscrit ou abonné à <%= site.name %>, votre profil d'auteur et tous vos outils s'affichent sur cette page.
+</p>
+<p class='right'>
+  <%= lien.subscribe("S’abonner", {type: :arrow_cadre}) %>
+  <%= lien.signup("S’inscrire", {type: :arrow_cadre}) %>
+</p>
+<p>
+  Avant de vous inscrire ou de vous abonner, vous pouvez bien entendu découvrir <%= "toutes les bonnes raisons de s'inscrire".in_a(href:"aide/why_signup") %> et <%= "toutes les bonnes raisons de s'abonner".in_a(href:"aide/why_subscribe") %>.
+</p>

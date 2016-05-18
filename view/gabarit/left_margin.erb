@@ -5,12 +5,13 @@
 %>
 <section id="left_margin">
 
-  <%= "OUTILS".in_a(href:"tool/list", id:'lk_outils') %>
-  <% if user.identified? %>
-    <%= "Profil".in_a(href:"user/#{user.id}/profil") %>
-  <% end %>
-  <%= "Accueil".in_a(href: '') %>
-  <%= "Forum".in_a(href:'forum/home') %>
+  <div class="left">
+    <%= main_link('BOITE', '', {title: "Pour rejoindre l’accueil du site."}) %>
+    <%= main_link('OUTILS', 'tool/list', {title:"Pour rejoindre la liste de tous les outils d'écriture."}) %>
+    <%=
+      link_profil = user.identified? ? "user/#{user.id}/profil" : 'user/noprofil'
+      main_link('AUTEUR', link_profil, {title:"Pour rejoindre votre profil si vous êtes inscrit(e) sur le site."}) %>
+  </div>
 
   <% if false == user.identified? %>
     <%= "".in_div(class:'air') %>
@@ -22,7 +23,7 @@
   %>
     <%
       lien_1a1s = if user.unanunscript?
-        "1 AN<br>1 SCRIPT".in_a(id:'lk_unan', href:'unan/home')
+        (as_main_link("1 AN<br>") + as_main_link("1 SCRIPT")).in_a(id:'lk_unan', href:'unan/home')
       else
         "1 an, 1 script".in_a(href:'unan/home')
       end

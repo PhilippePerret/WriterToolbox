@@ -100,8 +100,16 @@ URL site dans message : ... [URL]route/12/voir... __\
 __\
 Le comptage des lettres empêche de dépasser la limite des 140 caractères __\
 mais il faut surveiller quand même avec les raccourcis. __\
+__\
+Pour obtenir une URL BITLY (lien court) rejoindre la \\<a href='bitly/main' target='_blank'>section Bitly du site\\</a> __\
+__\
       "
-    }[sujet].replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/__/g,'<br />')
+    }[sujet].
+      replace(/\\</g, '---SUPP---').
+      replace(/</g,'&lt;').
+      replace(/__/g,'<br />').
+      replace(/---SUPP---/g, '<')
+      ;
   }
 
 })

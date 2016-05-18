@@ -1,0 +1,46 @@
+<%
+raise_unless_admin
+%>
+<h1>Bitly</h1>
+<p class='small italic discret'>
+  Pour produire des adresses courtes pour les tweets.
+</p>
+
+<%
+# ---------------------------------------------------------------------
+#   INFORMATION SUR L'OPÉRATION OU LE LIEN BITLY
+# ---------------------------------------------------------------------
+%>
+<%=  bitly.output %>
+
+<%
+# ---------------------------------------------------------------------
+#   FORMULAIRE
+# ---------------------------------------------------------------------
+site.require 'form_tools'
+form.prefix = "bitly"
+%>
+<form class="dim2080" action="bitly/main" method="POST">
+  <%= form.field_text("Route/URL", 'route', nil, {class:'long'}) %>
+  <%= form.field_description("On peut fournir ici soit l'URL complète, soit la route. On peut obtenir la route souvent par un lien en bas de page.") %>
+  <%= form.submit_button("DO") %>
+</form>
+
+<%
+# ---------------------------------------------------------------------
+#   EXPLICATION
+# ---------------------------------------------------------------------
+%>
+<p>
+  <%= "Bitly".in_a(href:"https://app.bitly.com/bitlinks/1TkHhvC") %> est un site fournissant des liens raccourcis pour les tweets.
+</p>
+<p>
+  On peut créer des liens pour toutes les pages du site, ces liens seront utilisables à tout moment et pourront être récupérés ici.
+</p>
+<p>
+  Puisque toutes les méthodes utilisent `shorten` et retournent les informations sur les liens, on n'a pas besoin de spécifier l'opération, le bouton DO créera toujours le lien court s'il n'existe pas et en donnera toujours les informations complètes.
+</p>
+<h4>TODO List</h4>
+<p>
+  À l'avenir, on pourra imaginer un bouton pour voir toutes les adresses et leur nombre de clics.
+</p>
