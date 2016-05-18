@@ -50,6 +50,7 @@ class TestSuite
     @failures           = Array::new
     @success            = Array::new
     @test_files         = Array::new
+    freeze_current_db_state
     regularise_options
     if debug?
       debug "Fichiers tests : #{files.join(', ')}"
@@ -63,12 +64,18 @@ class TestSuite
     end
     infos[:end_time]      = Time.now
 
+    unfreeze_current_db_state
+
     # === AFFICHAGE DU RÉSULTAT ===
     display_resultat
 
     reconnecte_administrateur
 
     return "" # pour la console
+  rescue Exception => e
+    (@freezed && @unfreezed) || unfreeze_current_db_state
+    debug e
+    raise e
   end
 
   # Liste des paths de tous les fichiers testés
@@ -100,6 +107,18 @@ class TestSuite
   end
 
   def log mess; console.sub_log mess end
+
+  def infos
+    @infos ||= {
+      start_time:           nil,
+      end_time:             nil,
+      duree_db_backup:      nil,
+      duree_db_unbackup:    nil,
+      nombre_files:         0,  # fichiers tests
+      nombre_tests:         0,  # test-méthodes
+      nombre_cas:           0   # case-méthodes
+    }
+  end
 
 
   def folder_test_path

@@ -7,7 +7,7 @@ class TestSuite
   def parse_options
     @options ||= Hash::new
     @options.merge!(debug: false) unless @options.has_key?(:debug)
-    debug "SiteHtml::Test::options : #{@options.pretty_inspect}" if debug?
+    # debug "SiteHtml::Test::options : #{@options.pretty_inspect}" if debug?
     self.class::options = @options.delete(:options)
   end
 

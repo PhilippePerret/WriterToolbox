@@ -44,16 +44,6 @@ class TestSuite
     ).in_div(id:'test_infos')
   end
 
-  def infos
-    @infos ||= {
-      start_time:   nil,
-      end_time:     nil,
-      nombre_files: 0, # Nombre de fichiers
-      nombre_tests: 0,
-      nombre_cas:   0
-    }
-  end
-
   def nombre_failures;  @nombre_failures end
   def nombre_success;   @nombre_success  end
 
@@ -132,9 +122,6 @@ class TestSuite
         ( tfile.verbose?   || tfile.quiet? === false )   ||
         ( verbose?         || quiet? === false )
       end
-
-      debug "\n#{tmethod.libelle}.success? : #{tmethod.success?.inspect}\n"
-
       infos[:nombre_cas] += tmethod.messages_count
       c = tmethod.full_libelle_output( @itestfile, @icase += 1 )
       c << tmethod.messages_output if verbose || !tmethod.success?

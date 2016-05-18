@@ -36,7 +36,7 @@ class Request
     res = `#{request_ssh} 2>&1`
     # debug "res : #{res.inspect}"
     res = Marshal.load(res)
-    debug "res démarshalisé : #{res.inspect}"
+    # debug "res démarshalisé : #{res.inspect}"
     @resultats = []
     if res[:erreur_sql]
       error res[:erreur_sql]
@@ -95,7 +95,7 @@ SSH
     racine = online? ? '/home/boite-a-outils/www' : ''
     dbpath = "#{racine}#{row.ttable.database.path.to_s[1..-1]}"
     # dbpath = row.ttable.database.path.to_s
-    debug "= dbpath: #{dbpath}"
+    # debug "= dbpath: #{dbpath}"
     <<-PROC
 $: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
 begin

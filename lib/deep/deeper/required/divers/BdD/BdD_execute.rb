@@ -222,7 +222,7 @@ class BdD
         # Le Hash qui contiendra toutes les données retournées
         hretour = {}
 
-        debug "= RES ANALYSE ="
+        # debug "= RES ANALYSE ="
         res.each_hash do |hdata|
           hres = {}.merge(hdata) # pour le transformer en Hash simple
 
@@ -239,7 +239,8 @@ class BdD
 
         end
 
-        debug "\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
+        # Pour savoir ce que la méthode va retourner
+        # debug "\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
 
         # ANCIENNE MÉTHODE OBSOLÈTE :
         # if params[:colonnes] != nil

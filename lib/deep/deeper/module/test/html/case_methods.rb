@@ -64,9 +64,7 @@ class HTML
     end
 
     unless attrs.empty?
-      # debug "Des attributs sont à rechercher : #{attrs.inspect}"
       tags = tags.select do |edom|
-        # debug "Recherche dans #{edom.inner_html}"
         is_valide = true
         attrs.each do |attr, value|
           if edom[attr.to_s] != value
@@ -333,9 +331,6 @@ class HTML
   end
 
   def has_title titre, niveau=nil, options=nil, inverse=false
-    # page.css("h#{niveau}").each do |tested|
-    #   debug "tested : #{tested.text}"
-    # end
     options ||= Hash::new
 
     titre_init = if titre.instance_of?(Regexp)
