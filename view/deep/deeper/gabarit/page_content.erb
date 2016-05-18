@@ -1,14 +1,18 @@
 <section id="content">
   <div id="chapiteau_logo"><div id="inner_chapiteau_logo"></div></div>
-  <div class="fright">
-    <a
-      id="twitter-button"
-      class="twitter-share-button"
-      href="https://twitter.com/intent/tweet"
-      data-size='medium'
-      >
-      Tweet</a>    
-  </div>
-
+  <%
+    unless OFFLINE
+      page.add_js('./lib/deep/deeper/js/optional/twitter.js')
+    end
+  %>
+    <div class="fright">
+      <a
+        id="twitter-button"
+        class="twitter-share-button"
+        href="https://twitter.com/intent/tweet"
+        data-size='medium'
+        >
+        Tweet</a>
+    </div>
   <%= page.content_route || page.home %>
 </section>

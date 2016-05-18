@@ -1,5 +1,7 @@
 # Case-méthodes
 
+* [Évaluation de la case-méthode (code)](#evaluationdelacasemethode)
+
 Les “case-méthodes” sont les méthodes utilisées à l'intérieur des “test_méthodes” :
 
 ~~~ruby
@@ -10,11 +12,11 @@ Les “case-méthodes” sont les méthodes utilisées à l'intérieur des “te
     
     html.has_tag('div#titre) # <- une case-méthode de l'objet
                              #    `html`
+                             
   end
 
 ~~~
 
-* [Évaluation de la case-méthode](#evaluationdelacasemethode)
 <a name='evaluationdelacasemethode'></a>
 
 ## Évaluation de la case-méthode
