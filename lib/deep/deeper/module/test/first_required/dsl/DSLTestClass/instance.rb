@@ -59,6 +59,15 @@ class DSLTestMethod
     @is_not_a_success = true
   end
 
+
+  # Pour ré-initialiser la session
+  #
+  # Noter que cela consiste simplement à détruire le
+  # fichier qui conserve l'HEADER de la page pour CURL
+  def reset_session
+    SiteHtml::TestSuite::Request::CURL::reset_session
+  end
+
   # Pour mettre le mode en verbose (même si le fichier ou les tests
   # généraux ont leur options différentes)
   def verbose value = true  ; @verbose = value end

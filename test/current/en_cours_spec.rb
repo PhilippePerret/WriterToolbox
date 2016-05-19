@@ -30,7 +30,7 @@
 #
 # end
 
-# J'essaie une nouvelle méthode handy pour me connecter
+
 login_phil
 
 test_route "admin/dashboard" do

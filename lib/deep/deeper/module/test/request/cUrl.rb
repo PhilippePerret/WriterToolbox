@@ -13,6 +13,10 @@ class CURL
 
   class << self
 
+    def reset_session
+      tmp_request_header_path.remove if tmp_request_header_path.exist?
+    end
+
     # {SuperFile} Fichier contenant les headers retournés
     # par les requêtes
     def tmp_request_header_path
