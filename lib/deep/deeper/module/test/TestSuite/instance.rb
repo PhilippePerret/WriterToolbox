@@ -24,6 +24,7 @@ class TestSuite
   # si c'est `test run` ou `run test` qui est appelé, dans lequel
   # cas on appelle SiteHtml::TestSuite.configure depuis le fichier
   # ./test/run.rb pour lancer des tests particuliers.
+  #
   def initialize  opts = nil
     self.class::current= self
     unless opts.nil?
@@ -47,6 +48,11 @@ class TestSuite
   def run
     @current_admin = User::new(user.id)
     infos[:start_time]  = Time.now
+
+    # On requiert tout le dossier `./test/support/required`
+    # et seulement ce dossier, contrairement à RSpec
+    require_support
+
     @failures           = Array::new
     @success            = Array::new
     @test_files         = Array::new
@@ -55,8 +61,19 @@ class TestSuite
     if debug?
       debug "Fichiers tests : #{files.join(', ')}"
     end
+
+    # Pour initialiser (détruire) le fichier HEADER des
+    # requête CURL à chaque nouvelle feuille de tests
+    ptrhp = SiteHtml::TestSuite::Request::CURL::tmp_request_header_path
+
+    # Boucle sur chaque fichier
     files.each do |p|
       infos[:nombre_files] += 1
+
+      # On initialise toujours le fichier HEADER des
+      # requête CURL pour repartir d'une session vierge
+      ptrhp.remove if ptrhp.exist?
+
       # On passe le test en test courant
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
       @current.execute
@@ -76,6 +93,12 @@ class TestSuite
     (@freezed && @unfreezed) || unfreeze_current_db_state
     debug e
     raise e
+  end
+
+  # Au début du `run`, on doit requérir toutes les librairies
+  # utiles
+  def require_support
+    Dir["#{folder_support}/required/**/*.rb"].each{|m| require m}
   end
 
   # Liste des paths de tous les fichiers testés
@@ -137,6 +160,14 @@ class TestSuite
     debug "Admin identifié ? #{current_admin.identified?.inspect}"
     debug "session[user_id] = #{app.session['user_id'].inspect}"
     debug "<- reconnecte_administrateur"
+  end
+
+
+  def folder_support
+    @folder_support ||= File.join(folder, 'support')
+  end
+  def folder
+    @folder ||= File.join('.','test')
   end
 end #/TestSuite
 end #/SiteHtml

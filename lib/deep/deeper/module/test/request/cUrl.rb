@@ -17,15 +17,13 @@ class CURL
     # par les requêtes
     def tmp_request_header_path
       @tmp_request_header_path ||= begin
-        `mkdir -p ./tmp/test`
-        SuperFile::new('./tmp/test/curl_req_header')
+        SuperFile::new('.curl_request_header')
       end
     end
 
     def tmp_request_cookie_jar_path
       @tmp_request_cookie_jar_path ||= begin
-        `mkdir -p ./tmp/test`
-        SuperFile::new('./tmp/test/curl_req_cookie_jar')
+        SuperFile::new('.curl_request_cookie_jar')
       end
     end
   end
@@ -49,6 +47,10 @@ class CURL
   #               {Array} Liste de "var=val" qui seront rassemblées
   #               {Hash} Table de key=>valeur qui seront aussi
   #               rassemblées suivant leur classe/type.
+  #   :url        Dans le cas où +owner+ est nil à l'instanciation,
+  #               il faut fournir l'url de la requête dans cette
+  #               propriété.
+  #
   attr_reader :request_data
 
   # +request_data+ Cf. ci-dessus
@@ -57,18 +59,37 @@ class CURL
     @request_data = request_data
   end
 
+  # = main =
+  #
   # Exécution de la requête, qui retourne le code obtenu
   def execute
     # debug "-> CURL#execute"
+    if true #debug?
+      debug "Requête à exécuter : #{built_request.inspect}"
+      if tmp_request_header_path.exist?
+        debug "Contenu du fichier header AVANT EXÉCUTION:\n#{tmp_request_header_path.read}"
+      end
+    end
+
     request.execute
+
+    if true && tmp_request_header_path.exist? # debug?
+      debug "Contenu du fichier header APRÈS EXÉCUTION:\n#{tmp_request_header_path.read}"
+    end
+
     # Après l'exécution du code, on doit modifier l'instance
     # Nokogiri::HTML du propriétaire en utilisant sa méthode
     # `nokogiri_html` qui contient l'instance.
     # Le propriétaire doit posséder cette méthode
-    unless owner.respond_to?(:nokogiri_html)
-      raise "Le propriétaire de classe #{owner.class} devrait répondre à la méthode `nokogiri_html=` pour actualiser l'instance qui contient le code du document."
+    #
+    # Mais ne le faire que si un propriétaire est défini
+    # Il n'est pas défini lorsque c'est une méthode de support
+    # par exemple qui fait appel à Request
+    unless owner.nil?
+      owner.respond_to?(:nokogiri_html=) || raise( "Le propriétaire de classe #{owner.class} devrait répondre à la méthode `nokogiri_html=` pour actualiser l'instance qui contient le code du document.")
+      owner.nokogiri_html= content
     end
-    owner.nokogiri_html= content
+
     return true
   end
 
@@ -88,6 +109,14 @@ class CURL
     end
   end
 
+  # Retourne true si la requête a pu s'exécuter correctement
+  #
+  # Pour le moment, on considère qu'elle s'est exécutée
+  # correctement si le code est 200, 301 ou 302
+  def ok?
+    @is_ok ||= content != "" && [200, 301, 302].include?( header[:status_code] )
+  end
+
   # = main =
   #
   # {THash} Header décomposé
@@ -104,7 +133,11 @@ class CURL
       header_lines = raw_header.strip.split("\n")
       http = header_lines.shift
 
-      h = THash::new(owner)
+      # Suivi qu'il y a un owner ou pas, on fait un Hash de
+      # test ou non. Il n'y a pas de propriétaire lorsqu'on
+      # utilise ces méthodes depuis les méthodes de support,
+      # par exemple.
+      h = owner.nil? ? {} : THash::new(owner)
 
       # Analyse de la première ligne
       http_version, status_code, human_status = http.split(' ')
@@ -181,14 +214,24 @@ class CURL
     @request ||= SiteHtml::TestSuite::Request::new( built_request )
   end
 
-  FAKE_SESSION_ID = "400d4d25b9c540ce9d1d745231764ae4"
   # Requête construite
   def built_request
     @built_request ||= begin
-      "curl #{req_options}#{req_data}"+
-      " --dump-header #{tmp_request_header_path}"+
-      " --cookie #{tmp_request_cookie_jar_path}"+
-      " #{req_url}"
+      r = "curl" +
+          " -L"
+
+      # Si le fichier tmp_request_header_path existe (header),
+      # on le charge (c'est pour conserver la session)
+      r <<
+        if tmp_request_header_path.exist?
+          " -b '#{tmp_request_header_path}'"
+        else
+          " --dump-header '#{tmp_request_header_path}'"
+        end
+
+      # On ajoute les données et les options
+      r += " #{req_options}#{req_data}" +
+           " #{req_url}"
     end
   end
 
@@ -206,19 +249,24 @@ class CURL
   end
 
   def req_options
+    return ""
     @req_options ||= begin
-      arr_opts = Array::new
-      # arr_opts << "F" if request_data[:form]
+      arr_opts = []
+      unless request_data.nil?
+        # arr_opts << "F" if request_data[:form]
+        arr_opts << "-b #{tmp_request_header_path}" if  request_data[:with_cookies]
+        arr_opts << "--dump-header #{tmp_request_header_path}" if request_data[:dump_header]
+      end
       if arr_opts.empty?
         ""
       else
-        " " + "-#{arr_opts.join('')}"
+        " " + "#{arr_opts.join(' ')}"
       end
     end
   end
   def req_data
     @req_data ||= begin
-      if request_data[:data].nil?
+      if request_data.nil? || request_data[:data].nil?
         ""
       else
         datareq = if form_simulation? && request_data[:data].has_key?(:fields)
@@ -253,7 +301,13 @@ class CURL
     end
   end
   def req_url
-    @req_url ||= owner.url
+    @req_url ||= begin
+      if owner.nil?
+        request_data[:url]
+      else
+        owner.url
+      end
+    end
   end
 
 end #/CURL

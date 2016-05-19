@@ -71,6 +71,7 @@ class HTML
   # Dans les cas contraires, on affiche simplement la valeur de
   # la distance.
   # Levenshtein.normalized_distance(t1, t2)
+  #
   def messages_flash_as_human searched_message = nil
     hmess = messages_flash
 
@@ -81,6 +82,7 @@ class HTML
     nombre_notices      = hmess[:notices].count
     nombre_main_errs    = hmess[:main].count
     nombre_access_errs  = hmess[:access].count
+
     mess_sup = if (nombre_errors + nombre_notices + nombre_main_errs + nombre_access_errs) == 0
       "la page n'affiche strictement aucun message"
     elsif nombre_main_errs > 0
@@ -95,7 +97,7 @@ class HTML
       "la page affiche un MESSAGE D'ERREUR FATALE OU NON FATALE (note : le contenu de la page est mis en débug) : #{mainerrs}"
     elsif nombre_access_errs > 0
       accerrs = hmess[:access].collect{|m| "“#{m}”"}.join(', ')
-      "la page affiche un message d'erreur d'accès : #{accerrs}"
+      "la page affiche un message d'ERREUR D'ACCÈS : #{accerrs}"
     else
       errs = hmess[:errors]
       nots = hmess[:notices]
@@ -115,6 +117,7 @@ class HTML
       arr << "le#{s_errors} message#{s_errors} d'erreur : #{errs}" unless hmess[:errors].empty?
       arr << "le#{s_notices} message#{s_notices} : #{nots}" unless hmess[:notices].empty?
       m += arr.join(' ainsi que ')
+      m
     end
   end
 

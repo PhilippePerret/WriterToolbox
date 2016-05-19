@@ -205,13 +205,17 @@ end # << self SiteHtmlConnexions
 
       # Est-ce que c'est une ip connue ?
       whois = nil
-      if known_ips.has_key?(ip)
+      if known_ips.key?(ip)
         whois = known_ips[ip]
       else
         search_engine_ips.each do |mid, mdata|
-          if mdata[:ip] =~ ip
-            whois = mdata[:pseudo]
+          mdata[:ips].each do |cip|
+            if cip =~ ip
+              whois = mdata[:pseudo]
+              break
+            end
           end
+          break if whois
         end
       end
 

@@ -281,7 +281,7 @@ class HTML
 
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
-    mess_sup = ok ? "" : messages_flash_as_human(mess)
+    mess_sup = ok == !inverse ? "" : messages_flash_as_human(mess)
 
     message_strict = if options[:strict]
       "message d'erreur"
@@ -297,13 +297,14 @@ class HTML
         on_success:       "La page affiche bien le #{message_strict} “#{mess}”.",
         on_success_not:   "La page n'affiche pas un #{message_strict} “#{mess}” (OK).",
         on_failure:       "La page devrait afficher le #{message_strict} “#{mess}” (#{mess_sup}).",
-        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}”."
+        on_failure_not:   "La page ne devrait pas afficher un #{message_strict} “#{mess}” (#{mess_sup})."
       ).evaluate
     else
       return ok
     end
   end
-  def has_not_error mess, options=nil
+  def has_not_error mess=nil, options=nil
+    mess ||= //
     has_error mess, options, inverse=true
   end
   def has_errors arr, options=nil

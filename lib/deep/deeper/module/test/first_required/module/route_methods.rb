@@ -70,9 +70,12 @@ module ModuleRouteMethods
     @instance_test_html ||= SiteHtml::TestSuite::HTML::new(nokogiri_html)
   end
 
-  def nokogiri_html
-    @nokogiri_html ||= Nokogiri::HTML( open url )
-  end
+  # def nokogiri_html
+  #   @nokogiri_html ||= begin
+  #     debug "JE PASSE PAR CE nokogiri_html LÀ"
+  #     Nokogiri::HTML( open url )
+  #   end
+  # end
 
   # Redéfinir le Nokogiri::HTML suite à une nouvelle requête,
   # pour prendre en compte le nouveau code.
