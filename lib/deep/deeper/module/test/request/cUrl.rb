@@ -4,10 +4,31 @@
 Module pour l'exécution des requêtes CURL
 
 =end
+require 'time'
+
 class SiteHtml
 class TestSuite
 class Request
 class CURL
+
+  class << self
+
+    # {SuperFile} Fichier contenant les headers retournés
+    # par les requêtes
+    def tmp_request_header_path
+      @tmp_request_header_path ||= begin
+        `mkdir -p ./tmp/test`
+        SuperFile::new('./tmp/test/curl_req_header')
+      end
+    end
+
+    def tmp_request_cookie_jar_path
+      @tmp_request_cookie_jar_path ||= begin
+        `mkdir -p ./tmp/test`
+        SuperFile::new('./tmp/test/curl_req_cookie_jar')
+      end
+    end
+  end
 
   # Le propriétaire de la requête, par exemple une instance
   # {SiteHtml::TestSuite::Form} de formulaire
@@ -67,6 +88,89 @@ class CURL
     end
   end
 
+  # = main =
+  #
+  # {THash} Header décomposé
+  #
+  # C'est une table avec tous les renseignements possibles
+  # tirés du fichier enregistré avec --dump-header
+  #
+  # Noter que c'est un {THash} qui est retourné, donc un
+  # {Hash} qui répond aux méthodes de test.
+  #
+  def header
+    @header ||= begin
+
+      header_lines = raw_header.strip.split("\n")
+      http = header_lines.shift
+
+      h = THash::new(owner)
+
+      # Analyse de la première ligne
+      http_version, status_code, human_status = http.split(' ')
+      h.merge!(
+        http_version: http_version,
+        status_code:  status_code.to_i,
+        human_status:  human_status
+      )
+      # Analyse des lignes autres que la première
+      header_lines.each do |line|
+        property, value = line.scan(/^([\-a-zA-Z]+):(.*)$/).first
+        case property
+        when 'Date'
+          value = Time.parse(value)
+        when 'Set-Cookie'
+          h[:cookies] ||= []
+          cookie = {}
+          value.split(';').each do |dpar|
+            puts "dpar : #{dpar.inspect}"
+            hval = CGI::parse(dpar.strip)
+            k = hval.keys.first
+            v = hval.values.first.first
+            v = Time.parse(v) if k == "expires"
+            hval[k] = v
+            cookie.merge! hval
+          end
+          h[:cookies] << cookie
+          next
+        when "Content-Length"
+          value = value.to_i
+        end
+        h.merge!( property.downcase.gsub(/\-/,'_').to_sym => value )
+      end
+      # Pour mettre le h dans header
+      h
+    end
+  end
+
+  # Session ID
+  #
+  # Il se trouve dans l'entête (header) de la requête CURL
+  # transmise, avec le nom du cookie propre au site, qu'on
+  # peut définir dans la configuration par site.cookie_session_name
+  def session_id
+    @session_id ||= begin
+      sid = nil
+      header[:cookies].each do |dcook|
+        if dcook.key?(site.cookie_session_name || "SESSRESTSITEWTB" )
+          sid = dcook[site.cookie_session_name || "SESSRESTSITEWTB"]
+          break
+        end
+      end
+      sid != nil || error("Il faut définir site.cookie_session_name dans le fichier de configuration (./objet/site/config.rb) pour pouvoir récupérer l'ID de sessions.")
+      sid
+    end
+  end
+
+  # Contenu du header retourné par la requête Curl
+  #
+  # Quelque soit la requête, puisqu'il est enregistré par le
+  # biais de `--dump-header`
+  #
+  def raw_header
+    @raw_header ||= tmp_request_header_path.read
+  end
+
   # Le contenu en version Nokogiri::HTML
   def nokogiri_html
     @code_nokogiri ||= Nokogiri::HTML(content)
@@ -80,9 +184,19 @@ class CURL
   FAKE_SESSION_ID = "400d4d25b9c540ce9d1d745231764ae4"
   # Requête construite
   def built_request
-    # debug "-> built_request"
-    # @built_request ||= "curl#{req_options}#{req_data} #{req_url}"
-    @built_request ||= "curl -H \"Session: #{FAKE_SESSION_ID}\"#{req_options}#{req_data} #{req_url}"
+    @built_request ||= begin
+      "curl #{req_options}#{req_data}"+
+      " --dump-header #{tmp_request_header_path}"+
+      " --cookie #{tmp_request_cookie_jar_path}"+
+      " #{req_url}"
+    end
+  end
+
+  def tmp_request_header_path
+    @tmp_request_header_path ||= self.class.tmp_request_header_path
+  end
+  def tmp_request_cookie_jar_path
+    @tmp_request_cookie_jar_path ||= self.class.tmp_request_cookie_jar_path
   end
 
   # True si la requête est une simulation de soumission

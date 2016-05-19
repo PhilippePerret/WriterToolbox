@@ -14,15 +14,20 @@ class Request
   #
   # RETURN L'instance requête courante {SiteHtml::Test::Request} par
   # convénience
-  # 
+  #
   def execute
-    @content = `#{request}`.force_encoding('utf-8')
-    # debug "RETOUR DE #{request}:\n#{@content}"
-    # debug "header : #{header.inspect}"
+    @content = `#{request} 2>&1`.force_encoding('utf-8')
+    if @content.start_with?('Warning')
+      error "# ERREUR CURL avec la requête #{request} : #{@content}"
+      @content = ''
+        # Ne pas mettre nil ci-dessus sinon la méthode `execute` serait
+        # appelée chaque fois qu'on essaie d'obtenir le content.
+    end
     return self
   end
   def ok?
-    code_retour == 200 && texte_retour == "OK"
+    (code_retour == 200 && texte_retour.upcase == "OK") ||
+    (code_retour =~ /30(1|2)/ && texte_retour.upcase == 'FOUND')
   end
   def error_404?
     code_retour == 404

@@ -67,8 +67,7 @@ class TestForm < DSLTestMethod
     end
 
     # On peut instancier la requête et l'exécuter
-    req_curl = SiteHtml::TestSuite::Request::CURL::new(self, {form: true, data: data_req})
-    req_curl.execute
+    curl_request(data_req).execute
 
   end
 

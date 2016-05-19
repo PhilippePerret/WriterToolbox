@@ -24,6 +24,10 @@ class SiteHtml
   # Le séparateur de nom dans la balise title ("|" par défaut)
   attr_accessor :title_separator
 
+  # Nom du cookie qui va maintenir le numéro de session.
+  # Par défaut, il est égal à 'SESSRESTSITEWTB'
+  attr_accessor :cookie_session_name
+
   # Mail de l'administrateur du site.
   # Définir `site.mail = "adresse@chez.moi"` dans le fichier de
   # configuration

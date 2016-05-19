@@ -5,7 +5,7 @@ class App
     @session ||= begin
       sess = CGI::Session::new(
         page.cgi,
-        'session_key'       => "SESSRESTSITEWTB", # (= nom cookie)
+        'session_key'       => cookie_name,
         'session_expires'   => Time.now + 60 * 60,
         'prefix'            => 'icaress'
       )
@@ -13,6 +13,10 @@ class App
     end
   end
 
+  def cookie_name
+    @cookie_name ||= site.cookie_session_name || "SESSRESTSITEWTB"
+  end
+  
   def delete_last_session
     sess = CGI::Session.new(page.cgi, 'new_session' => false)
     sess.delete

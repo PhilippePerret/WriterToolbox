@@ -26,6 +26,8 @@ class THash < Hash
 
   # +tmethod+ Instance de la méthode de test à l'intérieur de
   # laquelle.
+  # +default_value+ Valeur à donner à une valeur quand sa clé
+  # n'existe pas dans le Hash.
   def initialize tmethod, default_value=nil
     @tmethod = tmethod
     super(default_value)

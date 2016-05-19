@@ -16,12 +16,14 @@ class DSLTestMethod
     @all_messages ||= []
   end
 
-  # def success_messages
-  #   @success_messages ||= Array::new
-  # end
-  # def failure_messages
-  #   @failure_messages ||= Array::new
-  # end
+  # Méthode-case qu'on peut utiliser pour enregistrer n'importe
+  # quel message à écrire au fil du test
+  #
+  # Le nil en second élément signifie que ça n'est ni un succès
+  # ni une failure
+  def show mess
+    all_messages << [mess, nil]
+  end
 
   # ---------------------------------------------------------------------
   #   Helper methods

@@ -15,7 +15,13 @@ class DSLTestMethod
       # test-méthode, avec le `success?` qui concerne tout le
       # test-méthode.
       mess, is_suc = dmess
-      "#{is_suc ? '•' : '#'} #{mess}".in_div(class:"tcase #{is_suc ? 'suc' : 'fai'}")
+      puce, css =
+        case is_suc
+        when TrueClass  then ['•', 'suc']
+        when NilClass   then ['-', 'mes'] # simplement message show
+        when FalseClass then ['#', 'fai']
+        end
+      "#{puce} #{mess}".in_div(class:"tcase #{css}")
     end.join('').in_div(class:"#{success? ? 'suc' : 'fai'}")
   end
 

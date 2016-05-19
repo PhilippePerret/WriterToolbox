@@ -82,8 +82,18 @@ module ModuleRouteMethods
     @instance_test_html = nil
   end
 
+  # URI
+  # Soit la route brute si elle commence par 'http' soit la
+  # route préfixé de la base-uri en fonction du lieu online/offline
+  # et du port.
   def url
-    @url ||= "#{SiteHtml::TestSuite::current::base_url}#{URL_PORT}/#{raw_route}"
+    @url ||= begin
+      if raw_route.start_with?('http')
+        raw_route
+      else
+        "#{SiteHtml::TestSuite::current::base_url}#{URL_PORT}/#{raw_route}"
+      end
+    end
   end
 
   # Pour obtenir une URL qu'on peut cliquer, pour l'affichage du

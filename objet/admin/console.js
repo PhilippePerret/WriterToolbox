@@ -89,16 +89,28 @@ $.extend(window.RSConsole, {
 
   aide_by_sujet:function(sujet){
     return {
+
+      //
+      // AIDE TESTS
+      //
       test: " \
 Commande de base : `test <dossier> <online>` __\
     <dossier> : chemin relatif depuis ./test/ __\
 `run test` pour jouer le fichier ./test/run.rb __\
+__\
+    <dossier> peut avoir la valeur de n'importe quel dossier __\
+    dans ./test, dont : __\
+      - mini  (tests minimum, à faire jouer après tout update) __\
+      - moyen (tests un peu plus poussés) __\
+      - deep  (tests profonds, par exemple tous les liens) __\
 __\
     options : __\
         -v      Mode verbose : affiche le détail des cases __\
         -d      Mode documenté (pas encore implémenté)     __\
         -q      Mode quiet : affichage minimum.            __\
 ",
+
+// AIDE TWITTER
       twitter: " \
 Commande de base : `twit <message>` __\
 URL site dans message : ... [URL]route/12/voir... __\
