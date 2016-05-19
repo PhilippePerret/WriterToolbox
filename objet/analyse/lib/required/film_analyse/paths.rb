@@ -24,7 +24,7 @@ class << self
   def folder_films_MYE
     @folder_films_MYE ||= begin
       d = site.folder_data+'analyse/film_MYE'
-      d.build unless d.exist?
+      d.exist? || d.build
       d
     end
   end
