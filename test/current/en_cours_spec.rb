@@ -39,5 +39,5 @@ test_route "admin/dashboard" do
   # j'utilise Nokogori pour avoir la page.
   responds
   html.has_not_error
-  html.has_tag('a', {text: "SYNCHRONISATION"})
+  html.has_link( 'admin/sync', text: 'SYNCHRONISATION' )
 end

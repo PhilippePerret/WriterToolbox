@@ -535,8 +535,14 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
   end
 
 
+  # Méthode générique qui retourne une rangée avec
+  # un libellé et une valeur.
   def libelle_and_value libelle, value
     return "" if value.to_s == ""
+    # Si la valeur ne se termine pas par un point,
+    # on en ajoute un
+    value = value.to_s.strip
+    value =~ %r{[…\.\?\!\:;]$} || value += '.'
     (
       libelle.to_s.in_span(class:'libelle') +
       value.in_span(class:'value')
