@@ -6,15 +6,126 @@
   Il parcourt toutes les pages en relevant les liens qui conduisent
   à une erreur 404 ou une autre erreur dans la page.
 
+  Il fait un rapport final avec tous les résultats
+
 =end
 
 
 # Hash augmenté pour gérer la liste des liens checkés
 class ListeLinksChecked < Hash
 
+  # Liste des bases-uri à ne pas tester
+  IGNORED_BASES_URI = [
+    'https://twitter.com',
+    'javascript:void(0)'
+  ]
+
   class << self
+
+    # L'instance ListeLinksChecked courante du
+    # test courant qui produira le rapport final.
     def current
       @current ||= new
+    end
+
+    # ---------------------------------------------------------------------
+    #   LA BOUCLE QUI TESTE TOUS LES FICHIERS
+    # ---------------------------------------------------------------------
+    def test_all_site_pages
+
+      # Nombre maximum de liens à checker, pour
+      # les tests
+      max_nombre_links = 100000000000
+
+      # Indice du lien courant testé
+      indice_current_link = 0
+
+      # Boucle sur tous les liens à tester
+      #
+      # Note : +main_link+ est une instance de la classe ALink
+      while main_link = links_stack.shift
+
+        # S'il s'agit une URL à ne pas tester, on passe à la suite
+        do_not_check = false
+        IGNORED_BASES_URI.each do |base_uri|
+          if main_link.href.start_with?(base_uri)
+            do_not_check = true
+            break
+          end
+        end
+        next if do_not_check
+
+        # On passe à l'indice suivant
+        indice_current_link += 1
+
+        test_route main_link.href do
+          description "Check du lien `#{main_link.href}`"
+          responds
+
+          # Si le lien testé est un lien externe, on peut
+          # s'en retourner tout de suite, on ne va pas tester
+          # ses liens internes.
+          next if main_link.externe?
+
+          # === TEST DE TOUS LES LIENS DE LA PAGE ===
+          # On récupère les liens de la page pour les tester
+          html.page.css('a').each do |edom|
+
+            # On doit retirer tous les liens qui n'ont pas
+            # de HREF (par exemple les ancres)
+            ilink = ALink::new(edom, main_link)
+
+            # Si l'élément possède la balise href, mais qu'elle est
+            # vide, on passe à la suivante.
+            next if ilink.href.nil?
+
+            # debug "-edom::#{edom.class} / href:#{ilink.href} / text:#{ilink.text}"
+
+            # Dans tous les cas, on ajoute ce lien à la liste des
+            # liens checkés.
+            ListeLinksChecked.current << ilink
+
+            # Si ce lien a déjà été testé ou que c'est un lien
+            # externe, on peut s'en retourner tout
+            next if ilink.already_tested?
+
+            # Sinon, on l'ajoute à la liste des liens à tester
+            #
+            links_stack << ilink
+
+          end
+        end
+
+        # S'il y a une limite, on s'arrête
+        break if indice_current_link >= max_nombre_links
+
+      end # /Fin de boucle sur tous les liens à copier
+
+      # On inspect le résultat
+      # TODO On pourrait faire un rapport sur les liens qu'on trouve,
+      # le nombre qui conduit à, etc. Peut-être une liste d'URI en particulier
+      # pour classer les résultats suivant un ordre de pertinence.
+      ListeLinksChecked.current.sort_by{|uri, duri| uri}.each do |uri, data_uri|
+        debug "- #{uri}"
+      end
+
+    end #/ Fin de méthode main qui test tous les fichiers
+
+    # Propriété qui va contenir la liste de tous les
+    # liens à tester.
+    # C'est un Array d'instances ALink qui contient au départ un
+    # lien vers l'accueil pilou
+    def links_stack
+      @links_stack ||= begin
+        # On fake le code d'une page qui appellerait la page
+        # d'accueil pour obtenir une instance ALink pour commencer
+        # la recherche.
+        fakedpage = "<html><head></head><body><a id='boa' href=\"site/home\">LA BOITE À OUTILS DE L’AUTEUR</a></body></html>"
+        # Liste qui contient tous les liens à checker
+        fakedpage = Nokogiri::HTML(fakedpage)
+        linktohome = fakedpage.css('a#boa').first
+        [ALink::new(linktohome, nil)]
+      end
     end
   end #/<< self
 
@@ -145,96 +256,5 @@ class ALink
   end
 end
 
-# On fake le code d'une page qui appellerait la page
-# d'accueil pour obtenir une instance ALink pour commencer
-# la recherche.
-fakedpage = "<html><head></head><body><a id='boa' href=\"site/home\">LA BOITE À OUTILS DE L’AUTEUR</a></body></html>"
-# Liste qui contient tous les liens à checker
-fakedpage = Nokogiri::HTML(fakedpage)
-debug "class de fakedpage : #{fakedpage.class}"
-linktohome = fakedpage.css('a#boa').first
-debug "Class de linktohome : #{linktohome.class}"
-accueil = ALink::new(linktohome, nil)
-links_stack = [accueil]
-
-# Nombre maximum de liens à checker, pour
-# les tests
-max_nombre_links = 100000000000
-
-# Indice du lien courant testé
-indice_current_link = 0
-
-# Liste des bases-uri à ne pas tester
-IGNORED_BASES_URI = [
-  'https://twitter.com',
-  'javascript:void(0)'
-]
-
-# Boucle sur tous les liens à tester
-#
-# Note : +main_link+ est une instance de la classe ALink
-while main_link = links_stack.shift
-
-  # S'il s'agit une URL à ne pas tester, on passe à la suite
-  do_not_check = false
-  IGNORED_BASES_URI.each do |base_uri|
-    if main_link.href.start_with?(base_uri)
-      do_not_check = true
-      break
-    end
-  end
-  next if do_not_check
-
-  # On passe à l'indice suivant
-  indice_current_link += 1
-
-  test_route main_link.href do
-    description "Check du lien `#{main_link.href}`"
-    responds
-
-    # Si le lien testé est un lien externe, on peut
-    # s'en retourner tout de suite, on ne va pas tester
-    # ses liens internes.
-    next if main_link.externe?
-
-    # === TEST DE TOUS LES LIENS DE LA PAGE ===
-    # On récupère les liens de la page pour les tester
-    html.page.css('a').each do |edom|
-
-      # On doit retirer tous les liens qui n'ont pas
-      # de HREF (par exemple les ancres)
-      ilink = ALink::new(edom, main_link)
-
-      # Si l'élément possède la balise href, mais qu'elle est
-      # vide, on passe à la suivante.
-      next if ilink.href.nil?
-
-      # debug "-edom::#{edom.class} / href:#{ilink.href} / text:#{ilink.text}"
-
-      # Dans tous les cas, on ajoute ce lien à la liste des
-      # liens checkés.
-      ListeLinksChecked.current << ilink
-
-      # Si ce lien a déjà été testé ou que c'est un lien
-      # externe, on peut s'en retourner tout
-      next if ilink.already_tested?
-
-      # Sinon, on l'ajoute à la liste des liens à tester
-      #
-      links_stack << ilink
-
-    end
-  end
-
-  # S'il y a une limite, on s'arrête
-  break if indice_current_link >= max_nombre_links
-
-end # /Fin de boucle sur tous les liens à copier
-
-# On inspect le résultat
-# TODO On pourrait faire un rapport sur les liens qu'on trouve,
-# le nombre qui conduit à, etc. Peut-être une liste d'URI en particulier
-# pour classer les résultats suivant un ordre de pertinence.
-ListeLinksChecked.current.sort_by{|uri, duri| uri}.each do |uri, data_uri|
-  debug "- #{uri}"
-end
+# === Méthode qui appelle la méthode principale ===
+ListeLinksChecked.test_all_site_pages

@@ -13,11 +13,19 @@
 
 
 require 'yaml'
+# Pour composer les ancres uniques
+require 'digest/md5'
 
 class FilmAnalyse
 class Film
 
   # Constructeur d'une analyse de film MYE
+  #
+  # Noter que cette construction ne peut être fait que par un
+  # administrateur ou un analyste.
+  # Elle produit un code pour l'admin avec des liens d'édition
+  # et un autre code pour l'user sans ces liens.
+  #
   def build_analyse_display
 
     site.require_module 'kramdown'
@@ -76,6 +84,7 @@ class Film
       tdm.collect do |fdata|
         ititre += 1
         ancre = "#{fdata[:path]}#{fdata[:titre]}".as_normalized_id.downcase
+        ancre = "lk" + Digest::MD5.hexdigest("#{ancre}")
         fdata.merge!(anchor: ancre)
         fdata[:titre].in_a(href:"#{route_courante}##{fdata[:anchor]}").in_li(class:'tdm_item')
       end.join.in_ul(class:'tdm')
@@ -116,13 +125,13 @@ class Film
         fincipit +
         fintroduction +
         (
-          box_edition(fdata) +
+          "<!-- ADMIN -->" + box_edition(fdata) + "<!-- /ADMIN -->" +
           case sfile.extension
           when 'md'   then sfile.as_kramdown
           when 'yaml' then sfile.as_yaml
           when 'evc'
             require_module_evc_if_needed
-            sfile.as_evc
+            sfile.as_evc #.in_section(class:'document evc')
           else
             # Extension inconnue, on lit le fichier tel quel
             sfile.read
@@ -136,17 +145,32 @@ class Film
     # analyste qui visite la page, je vais placer en regard des
     # titre un lien pour obtenir le tag à cette partie, à partir
     # de l'identifiant attribué par Kramdown
-    whole_content = place_boutons_pour_balise_in(whole_content) if user.admin?
+    # Noter qu'elles sont placées ici tout le temps car :
+    #   1. C'est toujours l'administrateur qui passe par ic
+    #   2. Elles sont mises entre balises admin qui seront
+    #      détruites pour composer le code du fichier final
+    #      pour l'user.
+    whole_content = place_boutons_pour_balise_in(whole_content)
 
     # L'intégralité de la page d'analyse
-    return (
-        permanent_link +
-        intro +
-        table_of_content +
-        whole_content +
-        permanent_link
+    whole_code_file = (
+      permanent_link +
+      intro +
+      table_of_content +
+      whole_content +
+      permanent_link
       ).in_section
 
+    # On fait le fichier de l'user final en supprimant
+    # tous les codes réservés à l'administration
+    whole_code_file_user = whole_code_file.gsub(/<\!\-\- ADMIN \-\->(.*?)<!\-\- \/ADMIN \-\->/,'')
+
+    # On enregistre le code dans un fichier HTML
+    html_mye_file.remove if html_mye_file.exist?
+    html_mye_file.write whole_code_file_user
+
+    # On retourne le code pour l'administrateur
+    return whole_code_file
   end
 
 
@@ -161,17 +185,14 @@ class Film
       titre_complet = "Analyse de #{titre}, #{titre_nom}"
       relative_url = "#{file_url}##{titre_id}"
       absolute_url = "#{site.distant_url}/#{relative_url}"
-      if user.admin?
-        clips = ["'BRUT': '#{relative_url}'"]
-        clips << "'MD Loc': '[#{titre_nom}](#{relative_url})'"
-        clips << "'MD Dist':'[#{titre_complet}](#{absolute_url})'"
-      else
-        clips << "'Markdown': '[#{titre_complet}](#{absolute_url})'"
-      end
+      clips = ["'BRUT': '#{relative_url}'"]
+      clips << "'MD Loc': '[#{titre_nom}](#{relative_url})'"
+      clips << "'MD Dist':'[#{titre_complet}](#{absolute_url})'"
+      clips << "'Markdown': '[#{titre_complet}](#{absolute_url})'"
       clips << "'Mail': 'ALINK[#{absolute_url},#{titre_complet}]'"
       clips = "{#{clips.join(',')}}"
       box = "&lt;lien&gt;".in_a(onclick:"UI.clip(#{clips})").in_div(class:'fright small')
-      "#{box}#{tout}"
+      "<!-- ADMIN -->#{box}#{tout}<!-- /ADMIN -->"
     }
   end
 

@@ -116,10 +116,17 @@ class Film
   #
   def analyse_display
     page.title = "Analyse de film (#{titre})"
-    # TODO Ne demander la construction que si le fichier
-    # complet HTML n'est pas à jour ou n'existe pas
-    FilmAnalyse::require_module 'film_MYE_building'
-    self.build_analyse_display
+    # On reconstruit le fichier dès que c'est l'administrateur
+    # qui visite la page, en faisant une version pour lui (avec des
+    # boutons et des liens d'édition) et une version pour l'user
+    # final.
+    if user.admin? || !html_mye_file.exist?
+      FilmAnalyse::require_module 'film_MYE_building'
+      self.build_analyse_display
+    else
+      debug "* Chargement du fichier HTML pour l'user de l'analyse de #{titre}"
+      html_mye_file.read
+    end
   end
 
 end #/Film
