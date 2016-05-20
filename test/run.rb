@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-  Module appelé quand on joue la commande `test run`
+  Module appelé quand on joue la commande `test run` ou `run test`
 
   Il permet de définir très précisément les tests qui vont être
   joués.
@@ -19,7 +19,7 @@ SiteHtml::TestSuite.configure do
   #   - en version relative entière : "./test/mini/un_test_spec.rb"
   #   - en version relative depuis ./test : "mini/un_test_spec.rb"
   #   - en version relative simplifiée : "mini/un_test"
-  current.files = ["mini/other_pages"]
+  current.files = ["moyen/signup"]
 
   # LIEU DU TEST
   # ------------

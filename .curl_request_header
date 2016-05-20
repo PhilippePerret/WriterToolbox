@@ -1,8 +1,0 @@
-HTTP/1.1 200 OK
-Date: Thu, 19 May 2016 13:43:42 GMT
-Server: Apache/2.2
-Set-Cookie: SESSRESTSITEWTB=58b79c3fd40c6c7dec457db901e626d8; path=/; expires=Thu, 19 May 2016 14:43:43 GMT
-Content-Length: 8964
-Vary: Accept-Encoding
-Content-Type: text/html
-

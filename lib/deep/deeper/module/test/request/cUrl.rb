@@ -67,19 +67,8 @@ class CURL
   #
   # Exécution de la requête, qui retourne le code obtenu
   def execute
-    # debug "-> CURL#execute"
-    if true #debug?
-      debug "Requête à exécuter : #{built_request.inspect}"
-      if tmp_request_header_path.exist?
-        debug "Contenu du fichier header AVANT EXÉCUTION:\n#{tmp_request_header_path.read}"
-      end
-    end
 
     request.execute
-
-    if true && tmp_request_header_path.exist? # debug?
-      debug "Contenu du fichier header APRÈS EXÉCUTION:\n#{tmp_request_header_path.read}"
-    end
 
     # Après l'exécution du code, on doit modifier l'instance
     # Nokogiri::HTML du propriétaire en utilisant sa méthode

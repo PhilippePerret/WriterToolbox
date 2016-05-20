@@ -15,17 +15,23 @@ class Request
     more_than_one_result: "Il ne devrait y avoir qu'un résultat dans la table, mais %i ont été trouvés…"
   }
 
+  # Pour garder une trace du premier argument
+  # (utile pour les messages d'erreur)
+  attr_reader :first_arg
+
   # Nil ou définit à l'instanciation
   attr_reader :row
 
   attr_reader :options
 
   # +row_or_table+ Instance de la rangée ou de la table
-  def initialize row_or_table, options=nil
+  def initialize(row_or_table, options=nil)
+    debug "-> initialize"
+    @first_arg = row_or_table
     if row_or_table.instance_of?(SiteHtml::TestSuite::TestBase::TestTable)
       @ttable = row_or_table
     else
-      @row = row
+      @row = row_or_table
     end
     @options = options || {}
   end
@@ -37,6 +43,7 @@ class Request
   # Construction des requêtes
   #
   def select_request
+    debug "-> select_request (@select_request = #{@select_request.inspect})"
     @select_request ||= select_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
   end
   def count_request
@@ -51,9 +58,14 @@ class Request
   # Par défaut, +sql_request+ est la requête de SELECT
   #
   def execute( sql_request = nil )
+    debug "-> execute (sql_request: #{sql_request.inspect})"
     sql_request ||= select_request
     send(online? ? :execute_online : :execute_offline, sql_request)
+    debug "@resultats: #{@resultats.inspect}"
     @resultats = @resultats.collect { |h| h.to_sym }
+    unless plusieurs_resultats?
+      nombre_resultats == 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
+    end
     return self
   end
 
@@ -110,18 +122,25 @@ SSH
   end
 
   def procedure_ruby sql_request
+    debug "-> procedure_ruby(sql_request=#{sql_request.inspect})"
     eval(procedure_ruby_str sql_request)
+    debug "<-- procedure_ruby_str"
     @erreur_fatale && raise( @erreur_fatale )
-    unless plusieurs_resultats?
-      nombre_resultats == 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
-    end
   end
 
   # La Test-Table courante, qu'on prend soit dans la
   # rangée transmise à l'instanciation (`row`) soit dans la
   # table transmise à l'instanciation
   def ttable
-    @ttable ||= row.ttable
+    debug "-> ttable"
+    @ttable ||= begin
+      debug "-> @ttable"
+      if @row.nil?
+        raise "`@row` est nil dans l'instance #{self.class} instancié avec #{first_arg.class}::#{first_arg}. Impossible de définir `ttable`."
+      else
+        @row.ttable
+      end
+    end
   end
   def racine
     @racine ||= (online? ? '/home/boite-a-outils/www' : '.')
