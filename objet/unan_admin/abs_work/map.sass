@@ -10,7 +10,7 @@ section#content
   left            : auto
   h1, h2
     display : none
-  
+
 div#abs_work_map_container
   padding           : 12px
   border            : 1px solid #C4C4C4
@@ -18,19 +18,21 @@ div#abs_work_map_container
   position          : relative
   div#abs_work_map
     position      : relative
-    
+
     div.titre_zone
       transform         : rotate(-90deg)
       font-size         : 11pt
-      position          : absolute
-      left              : -70px
+      position          : fixed
+      left              : -42px
       width             : 94px
       border-bottom     : 1px solid
       line-height       : 1em
       text-align        : center
-      padding           : 0
+      padding           : 4px
       margin            : 0
-  
+      background-color  : white
+      z-index           : 100
+
     div.work
       position          : absolute
       height            : 20px
@@ -85,4 +87,3 @@ div#overview_infos_work
       margin-right    : 0.4em
     a
       color           : black
-    
