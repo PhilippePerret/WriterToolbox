@@ -19,6 +19,29 @@ class << self
   # de test.
   attr_accessor :current_test_method
 
+
+  # Permet de mémoriser des variables d'un test à
+  # l'autre ou d'une test-méthode à l'autre.
+  # S'utilise dans les test-méthodes avec la méthode
+  # `let(:var_name){... var_value ...}`
+  def add_variable var_name, &block_value
+    @variables ||= {}
+    @variables.merge! var_name => yield
+  end
+
+  # La méthode renvoie la valeur spéciale :__unknown_test_variable__
+  # lorsque cette variable n'est pas définie. Cela pour faire la
+  # différence entre une variable qui aurait la valeur nil et une
+  # variable non définie.
+  def get_variable var_name
+    @variables ||= {}
+    if @variables.key?(var_name)
+      @variables[var_name]
+    else
+      :__unknown_test_variable__
+    end
+  end
+
   # Initialisation des options de la classe
   #
   # La méthode est appelée par l'instanciation d'une suite

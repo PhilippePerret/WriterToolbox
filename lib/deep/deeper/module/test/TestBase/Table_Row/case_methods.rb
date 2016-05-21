@@ -19,7 +19,9 @@ class Row
   def has_not? h, opts ; data.has_not?(h, opts)  end
 
   def exists options=nil, inverse=false
-    ok = data != nil
+    # debug "-> exists(inverse=#{inverse.inspect})"
+    # debug "   data = #{data.inspect}"
+    ok = data.nil_if_empty != nil
 
     lachose = "La rangée définie par #{specs.inspect}"
 

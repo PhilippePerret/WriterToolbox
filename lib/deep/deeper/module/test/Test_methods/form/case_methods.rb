@@ -10,7 +10,7 @@ class TestForm < DSLTestMethod
   # Produit un succès si le formulaire existe et qu'il contient
   # (intuitivement) les données définies. Produit une failure
   # dans le cas contraire.
-  def exist options=nil
+  def exists options=nil
     opts = options || Hash::new
     responds # La page doit exister
     [:id, :name, :action].each do |k|
@@ -18,13 +18,16 @@ class TestForm < DSLTestMethod
     end
     html.has_tag("form", opts, opts[:inverse]==true)
   end
+  alias :exist :exists
   def exist?
     exist(evaluate: false)
   end
+  alias :exists? :exist?
   def not_exist
     exist(inverse: true)
   end
-
+  alias :not_exists :not_exist
+  
   # Remplit le formulaire avec les données spécifiées à l'instanciation
   # ou les nouvelles données transmises à la méthode.
   # Produit un succès si l'opération réussit, produit un échec dans le

@@ -48,3 +48,5 @@ CRON/rapports_connexions/
 
 lib/deep/deeper/gem/latexbook/lib/compilation/sources/
 
+
+.curl_request_header

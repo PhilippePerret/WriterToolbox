@@ -14,7 +14,7 @@ class Case
   end
 
   def sujet_formated
-    @sujet_formated ||= sujet_name || sujet_valeur
+    @sujet_formated ||= (sujet_name || sujet_valeur).to_s
   end
 
   # Permet de formater un "objet" dans les messages
@@ -40,14 +40,13 @@ class Case
   #   => "à eux (6)"
   #
   def objet_formated
-
     if objet_name.nil?
       "à #{objet_valeur}"
     else
       objet_name.start_with?('au') || objet_name.start_with?('à') || (objet_name += 'à ')
       objet_name += " (#{objet_valeur})"
       objet_name
-    end
+    end.to_s
   end
 
 end #/Case

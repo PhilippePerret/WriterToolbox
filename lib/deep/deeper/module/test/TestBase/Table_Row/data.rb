@@ -30,10 +30,16 @@ class Row
   #
   #   d12 = row(12).data
   #   d12.has(id: 12)
-  # 
+  #
+  # Mais la FORMULE PRÉFÉRÉE est d'utiliser les méthodes
+  # de tests directement sur la rangée :
+  #
+  #   row(12).has(id: 12)
+  #
   def data options=nil
     req = SiteHtml::TestSuite::TestBase::Request::new(self, options)
-    THash::new(ttable).merge(req.first_resultat)
+    retour_request = req.first_resultat
+    THash.new(ttable).merge!(retour_request || {})
   end
 
 

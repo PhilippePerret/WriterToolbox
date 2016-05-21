@@ -26,7 +26,7 @@ class Request
 
   # +row_or_table+ Instance de la rangée ou de la table
   def initialize(row_or_table, options=nil)
-    debug "-> initialize"
+    # debug "-> initialize"
     @first_arg = row_or_table
     if row_or_table.instance_of?(SiteHtml::TestSuite::TestBase::TestTable)
       @ttable = row_or_table
@@ -43,7 +43,7 @@ class Request
   # Construction des requêtes
   #
   def select_request
-    debug "-> select_request (@select_request = #{@select_request.inspect})"
+    # debug "-> select_request (@select_request = #{@select_request.inspect})"
     @select_request ||= select_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
   end
   def count_request
@@ -58,13 +58,14 @@ class Request
   # Par défaut, +sql_request+ est la requête de SELECT
   #
   def execute( sql_request = nil )
-    debug "-> execute (sql_request: #{sql_request.inspect})"
+    # debug "-> execute (sql_request: #{sql_request.inspect})"
     sql_request ||= select_request
+    # debug "sql_request : #{sql_request.inspect}"
     send(online? ? :execute_online : :execute_offline, sql_request)
     debug "@resultats: #{@resultats.inspect}"
     @resultats = @resultats.collect { |h| h.to_sym }
     unless plusieurs_resultats?
-      nombre_resultats == 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
+      nombre_resultats <= 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
     end
     return self
   end
@@ -122,9 +123,19 @@ SSH
   end
 
   def procedure_ruby sql_request
-    debug "-> procedure_ruby(sql_request=#{sql_request.inspect})"
-    eval(procedure_ruby_str sql_request)
-    debug "<-- procedure_ruby_str"
+    # debug "-> procedure_ruby(sql_request=#{sql_request.inspect})"
+    code = procedure_ruby_str sql_request
+    # debug "CODE: #{code}"
+    begin
+      eval(procedure_ruby_str sql_request)
+    rescue Exception => e
+      debug e
+      error e.message
+    end
+    if @erreur_fatale || @erreur_sql
+      raise "Une erreur est survenue : ERREUR FATALE: #{@erreur_fatale} / ERREUR SQL: #{@erreur_sql}"
+    end
+    # debug "<-- procedure_ruby_str"
     @erreur_fatale && raise( @erreur_fatale )
   end
 
@@ -132,9 +143,7 @@ SSH
   # rangée transmise à l'instanciation (`row`) soit dans la
   # table transmise à l'instanciation
   def ttable
-    debug "-> ttable"
     @ttable ||= begin
-      debug "-> @ttable"
       if @row.nil?
         raise "`@row` est nil dans l'instance #{self.class} instancié avec #{first_arg.class}::#{first_arg}. Impossible de définir `ttable`."
       else
@@ -151,16 +160,18 @@ SSH
 
   def procedure_ruby_str sql_request
     <<-PROC
-$: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
-begin
+if #{SiteHtml::TestSuite::online?.inspect}
+  $: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
   require 'sqlite3'
+end
+begin
   @erreur_fatale      = nil
   @resultats          = nil
   @nombre_changements = nil
   @db   = nil
   @pst  = nil
   @db_path = %Q{#{db_path}}
-  File.exist?(@db_path) || (raise %Q{La base de données \#{@db_path} est introuvable} )
+  File.exist?(@db_path) || (raise %Q{La base de données '#{db_path}' est introuvable} )
   @request_sql = %Q{#{sql_request}}
   @db   = SQLite3::Database.open( @db_path )
   @pst  = @db.prepare( @request_sql )
@@ -245,7 +256,7 @@ FROM #{ttable.name}
       else
         specs.collect do |k,v|
           v = case v
-          when String then "%Q{#{v}}"
+          when String then "\"#{v}\""
           when Array, Hash then v.inspect # STRING => PROBLÈME
           else v
           end

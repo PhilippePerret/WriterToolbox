@@ -26,12 +26,20 @@ data_form = {
 
 test_base "users.users" do
   description "L'user #{user_pseudo} n'existe pas dans la base de données des Users."
+
+  # Mettre le nombre actel de users dans la
+  # variable test `:users_count`
+  let(:users_count){count}
+  show "Nombre users : #{users_count}"
+
+  # On s'assure que la rangée n'existe pas déjà
   row(pseudo: user_pseudo, mail: user_mail).not_exists
+
 end
 
 test_form "user/signup", data_form do
 
-  exist
+  exists
 
 end
 
@@ -39,11 +47,13 @@ test_form "user/create", data_form do
 
   fill_and_submit
 
-  html.has_message("Vous êtes inscrite !")
+  html.has_title("Vous êtes inscrite !", 1)
 
 end
 
 test_base "users.users" do
   description "L'user est bien enregistré dans la base de données"
+  # Le nombre de users doit avoir été incrémenté d'1
+  count.eq( users_count + 1, sujet: "Le nouveau nombre de users" )
   row(pseudo: user_pseudo, mail: user_mail).exists
 end
