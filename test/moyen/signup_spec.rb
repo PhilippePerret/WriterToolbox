@@ -5,6 +5,12 @@
 
 =end
 
+# Ce test ne doit surtout pas être joué sur le site distant, car
+# il modifierait la liste des utilisateurs dans la base
+# only_offline
+only_online
+
+
 user_pseudo = "SonPseudo"
 user_mail   = "pour@voir.net"
 user_pwd    = "motdepasse"

@@ -39,6 +39,9 @@ class TestFile
   #
   # Méthode principale lançant l'exécution du code
   # de tout le fichier
+  #
+  # TODO Plus tard, il faudra jouer ça dans un thread
+  # isolé.
   def execute
     self.class::class_eval do
       define_method(:run) do
@@ -46,6 +49,10 @@ class TestFile
       end
     end
     run
+  rescue NotRunOnline
+    test_suite.files_out << [self.path, "seulement en offline"]
+  rescue NotRunOffline
+    test_suite.files_out << [self.path, "seulement en online"]
   rescue Exception => e
     debug e
     error e.message

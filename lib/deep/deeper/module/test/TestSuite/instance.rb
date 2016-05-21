@@ -101,6 +101,16 @@ class TestSuite
     Dir["#{folder_support}/required/**/*.rb"].each{|m| require m}
   end
 
+
+  # Liste des fichiers exclus des tests, par exemple parce
+  # qu'ils ne sont à exécuter que online ou offline.
+  # Chaque élément de cette liste est composées de :
+  #   [<path du fichier>, <raison de l'exclusion>]
+  # 
+  def files_out
+    @files_out ||= []
+  end
+
   # Liste des paths de tous les fichiers testés
   # Noter que ça peut être défini par le fichier ./test/run.rb par
   # la méthode configure de la classe.

@@ -22,11 +22,24 @@ class TestSuite
 
       (
         resume            +
+        informations      +
         @detail_failures  +
         @detail_success   +
         disp_infos_test
       )
     end
+  end
+
+  def informations
+    infs = ""
+    unless @files_out.nil?
+      files_and_raisons = files_out.collect do |dout|
+        "#{dout[0]} (#{dout[1]})"
+      end.join(', ')
+      infs << "Fichiers exclus : #{files_and_raisons}"
+    end
+    infs != "" || ( return "" )
+    infs.in_div(class:'small')
   end
 
   def disp_infos_test
