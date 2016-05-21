@@ -20,7 +20,7 @@ class Row
 
   def exists options=nil, inverse=false
     # debug "-> exists(inverse=#{inverse.inspect})"
-    # debug "   data = #{data.inspect}"
+    debug "   [Row#exists] data = #{data.inspect}"
     ok = data.nil_if_empty != nil
 
     lachose = "La rangée définie par #{specs.inspect}"

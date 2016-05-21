@@ -16,8 +16,7 @@ class User
   #   Classe User
   # ---------------------------------------------------------------------
   class << self
-    # Méthode appelée par le formulaire pour inscrire
-    # l'utilisateur
+    # Méthode appelée par le formulaire pour inscrire l'utilisateur
     # Si la création réussit, on doit attendre CONFIRMATION DE L'ADRESSE
     # MAIL avant la validation complète de l'user. SAUF s'il s'agit d'un
     # abdonnement dans lequel cas on envoie vers la page de paiement.
@@ -66,11 +65,12 @@ class User
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
       save_all_data
+      pmail = './lib/deep/deeper/optional/_per_route/user/create/mail_confirmation.erb'
       # On envoie à l'utilisateur un message pour qu'il confirme
       # son adresse-mail.
       send_mail(
         subject: "Confirmez votre inscription",
-        message: SuperFile::new(_"mail_confirmation.erb").deserb(self)
+        message: SuperFile::new(pmail).deserb(self)
       )
       true
     else
@@ -129,12 +129,13 @@ class User
   def data_valides?
     # Validité du PSEUDO
     @pseudo = form_data[:pseudo].nil_if_empty
-    raise "Il faut fournir le pseudo."                    if @pseudo.nil?
-    raise "Ce pseudo est déjà utilisé, merci d'en choisir un autre" if pseudo_exist?(@pseudo)
-    raise "Le pseudo doit faire moins de 40 caractères."  if @pseudo.length >= 40
-    raise "Le pseudo doit faire au moins 3 caractères."   if @pseudo.length < 3
+    ! @pseudo.nil? || raise( "Il faut fournir le pseudo." )
+    ! pseudo_exist?(@pseudo) || raise("Ce pseudo est déjà utilisé, merci d'en choisir un autre")
+    @pseudo.length < 40 || raise("Le pseudo doit faire moins de 40 caractères.")
+    @pseudo.length >= 3 || raise("Le pseudo doit faire au moins 3 caractères.")
+
     reste = @pseudo.gsub(/[a-zA-Z_\-]/,'')
-    raise "Le pseudo ne doit comporter que des lettres, traits plats et tirets. Il comporte les caractères interdits : #{reste.split.pretty_join}" if reste != ""
+    reste == "" || raise("Le pseudo ne doit comporter que des lettres, traits plats et tirets. Il comporte les caractères interdits : #{reste.split.pretty_join}")
     # Validité du patronyme
     @patronyme = form_data[:patronyme].nil_if_empty
     raise "Il faut fournir le patronyme." if @patronyme.nil?

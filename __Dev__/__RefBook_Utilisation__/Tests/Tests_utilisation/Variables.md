@@ -29,5 +29,4 @@ test_route "ma/route" do
   # sans passer par get
   html.has_tag("div", text: "#{users_count} users"
   
-  
 end

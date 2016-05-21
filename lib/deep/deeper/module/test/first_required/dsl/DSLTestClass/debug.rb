@@ -10,7 +10,6 @@ class DSLTestMethod
 
   alias :top_debug :debug
   def debug(foo, options=nil)
-    top_debug "-> debug propre"
     case foo
     when SiteHtml::TestSuite::HTML
       debug_html html, options

@@ -44,10 +44,10 @@ class Request
   #
   def select_request
     # debug "-> select_request (@select_request = #{@select_request.inspect})"
-    @select_request ||= select_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
+    @select_request ||= select_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ').strip
   end
   def count_request
-    @count_request ||= count_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ')
+    @count_request ||= count_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ').strip
   end
 
   #
@@ -60,8 +60,8 @@ class Request
   def execute( sql_request = nil )
     # debug "-> execute (sql_request: #{sql_request.inspect})"
     sql_request ||= select_request
-    # debug "sql_request : #{sql_request.inspect}"
     send(online? ? :execute_online : :execute_offline, sql_request)
+    debug "sql_request : #{sql_request.inspect}"
     debug "@resultats: #{@resultats.inspect}"
     @resultats = @resultats.collect { |h| h.to_sym }
     unless plusieurs_resultats?
@@ -95,7 +95,7 @@ result = {
   database:             @db_path,
   erreur_sql:           @erreur_sql,
   erreur_fatale:        @erreur_fatale,
-  request_sql:          @request_sql,
+  request_sql:          @sql_request,
   resultats:            @resultats,
   nombre_changements:   @nombre_changements
 }
@@ -172,13 +172,22 @@ begin
   @pst  = nil
   @db_path = %Q{#{db_path}}
   File.exist?(@db_path) || (raise %Q{La base de données '#{db_path}' est introuvable} )
-  @request_sql = %Q{#{sql_request}}
+  @sql_request = %Q{#{sql_request}}
   @db   = SQLite3::Database.open( @db_path )
-  @pst  = @db.prepare( @request_sql )
-  rs    = @pst.execute
+
+  # # Pour Voir ce qu'il y a dans la table
+  # table_name = 'users'
+  # pst = @db.prepare("SELECT * FROM \#{table_name};")
+  # res = pst.execute
+  # res.each_hash do |h|
+  #   debug "RES: \#{h.inspect}"
+  # end
+
+  @pst  = @db.prepare( @sql_request )
+  res   = @pst.execute
   @nombre_changements = @db.changes
   @resultats = Array::new
-  rs.each_hash { |h| @resultats << h }
+  res.each_hash { |h| @resultats << h }
 rescue SQLite3::Exception => e
   @erreur_sql = e
 rescue Exception => e
@@ -230,7 +239,7 @@ FROM #{ttable.name}
       <<-SQL
 SELECT COUNT(*)
 FROM #{ttable.name}
-#{where_clause_finale}
+#{where_clause_finale};
       SQL
     end
   end
@@ -256,7 +265,7 @@ FROM #{ttable.name}
       else
         specs.collect do |k,v|
           v = case v
-          when String then "\"#{v}\""
+          when String then "'#{v.gsub(/'/, "\\'")}'"
           when Array, Hash then v.inspect # STRING => PROBLÈME
           else v
           end

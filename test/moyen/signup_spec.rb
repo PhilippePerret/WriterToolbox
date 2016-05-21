@@ -7,11 +7,10 @@
 
 # Ce test ne doit surtout pas être joué sur le site distant, car
 # il modifierait la liste des utilisateurs dans la base
-# only_offline
-only_online
+only_offline
 
 
-user_pseudo = "SonPseudo"
+user_pseudo = "Sonpseudo"
 user_mail   = "pour@voir.net"
 user_pwd    = "motdepasse"
 
@@ -61,5 +60,27 @@ test_base "users.users" do
   description "L'user est bien enregistré dans la base de données"
   # Le nombre de users doit avoir été incrémenté d'1
   count.eq( users_count + 1, sujet: "Le nouveau nombre de users" )
+
+  dbpath = "./database/data/users.db"
+  db = SQLite3::Database.new(dbpath)
+  request = 'SELECT * FROM users'
+  pre = db.prepare(request)
+  res = pre.execute
+  res.each_hash do |h|
+    debug h.inspect
+  end
+
+  # debug "NOUVELLE REQUÊTE RECHERCHE SonPseudo"
+  # request = 'SELECT * FROM users WHERE ( pseudo = \'SonPseudo\' ) AND ( mail = \'pour@voir.net\' );'
+  # request = 'SELECT * FROM users WHERE id = 254'
+  # pre = db.prepare(request)
+  # res = pre.execute
+  # debug "= Résultats trouvés"
+  # res.each_hash do |h|
+  #   debug h.inspect
+  # end
+  # debug "= /Résultats trouvés"
+
+
   row(pseudo: user_pseudo, mail: user_mail).exists
 end
