@@ -16,6 +16,13 @@ class String
 
   end # << self
 
+  # Par exemple, lorsqu'un argument de fonction peut être
+  # un array ou un string, cette méthode permet de ne pas
+  # avoir à tester si l'élément est un array ou non.
+  def in_array
+    [self]
+  end
+
   # Retire toutes les balises du string
   def strip_tags
     str = self

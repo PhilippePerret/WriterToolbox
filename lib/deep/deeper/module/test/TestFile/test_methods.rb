@@ -10,6 +10,9 @@ class TestSuite
 class TestFile
 
 
+  def test_user ref_user, options=nil, &block
+    SiteHtml::TestSuite::TestUser.new(self, ref_user, options, &block)
+  end
   def test_form route, data_form=nil, options=nil, &bloc
     SiteHtml::TestSuite::TestForm::new self, route, data_form, options, &bloc
   end

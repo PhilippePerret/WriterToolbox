@@ -5,6 +5,9 @@ Class User
 Classe
 =end
 class User
+
+  extend MethodesMainObjets
+  
   class << self
 
     def get id

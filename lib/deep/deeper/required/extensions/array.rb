@@ -1,6 +1,14 @@
 # encoding: UTF-8
 class ::Array
 
+  # Sert pour obtenir facilement un array lorsque l'on veut
+  # obtenir un array depuis un string, un fixnum, etc. ou un
+  # array. Si l'élément est déjà un array, on n'a rien à faire
+  # d'autre que de le renvoyer.
+  def in_array
+    self
+  end
+
   def to_sym
     self.collect do |e|
       case e

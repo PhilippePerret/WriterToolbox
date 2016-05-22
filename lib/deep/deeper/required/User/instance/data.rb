@@ -10,8 +10,6 @@ class User
 
   include MethodesObjetsBdD
 
-  IP =
-
   # Identifiant de l'user dans la table
   attr_reader :id
 

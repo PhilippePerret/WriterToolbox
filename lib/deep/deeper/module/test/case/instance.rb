@@ -40,7 +40,7 @@ class Case
   end
 
   def message_final
-    @message_final ||= formate_message( successfull? ? bon_message_success : bon_message_failure)
+    @message_final ||= formate_message( uniq_message || (successfull? ? bon_message_success : bon_message_failure) )
   end
 
   # Le vrai résultat, en fonction du fait que le test est
@@ -55,18 +55,28 @@ class Case
   def objet_name   ; @objet_name   ||= args[:objet]||args[:objet_name]  end
 
   def bon_message_success
-    @bon_message ||= positif ? message_success : message_success_not
+    @bon_message ||= uniq_message || (positif ? message_success : message_success_not)
   end
   def bon_message_failure
-    @bon_message_failure ||= positif ? message_failure : message_failure_not
+    @bon_message_failure ||= uniq_message || (positif ? message_failure : message_failure_not)
   end
 
-  def positif             ; @positif              ||= !!args[:positif]      end
+  def uniq_message        ; @message              ||= args[:message]        end
   def message_success     ; @message_success      ||= args[:on_success]     end
   def message_success_not ; @message_success_not  ||= args[:on_success_not] end
   def message_failure     ; @message_failure      ||= args[:on_failure]     end
   def message_failure_not ; @message_failure_not  ||= args[:on_failure_not] end
-
+  # Test droit ou inverse ?
+  # Note : :positif peut ne pas avoir été transmis, dans le cas où
+  # la valeur de succès est déjà évaluée et qu'il y a un seul message
+  # transmis, le message à afficher. Dans ces cas-là, il faut mettre
+  # positif à true.
+  def positif
+    if @positif === nil
+      @positif = args.key?(:positif) ? !!args[:positif] : true
+    end
+    @positif
+  end
 
 end #/Case
 end #/TestSuite

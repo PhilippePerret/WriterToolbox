@@ -88,7 +88,7 @@ module ModuleFeminines
   end
 
   def f_trice # lec<teur> / lec<trice>
-    @f_rice ||= (feminine? ? 'teur' : 'trice')
+    @f_rice ||= (feminine? ? 'trice' : 'teur')
   end
 
 end

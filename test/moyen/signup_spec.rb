@@ -10,7 +10,7 @@
 only_offline
 
 
-user_pseudo = "Sonpseudo"
+user_pseudo = "SonPseudo"
 user_mail   = "pour@voir.net"
 user_pwd    = "motdepasse"
 
@@ -61,26 +61,44 @@ test_base "users.users" do
   # Le nombre de users doit avoir été incrémenté d'1
   count.eq( users_count + 1, sujet: "Le nouveau nombre de users" )
 
-  dbpath = "./database/data/users.db"
-  db = SQLite3::Database.new(dbpath)
-  request = 'SELECT * FROM users'
-  pre = db.prepare(request)
-  res = pre.execute
-  res.each_hash do |h|
-    debug h.inspect
-  end
+  # L'user a été enregistré dans la base de données
+  r = row(pseudo: user_pseudo, mail: user_mail)
+  r.exists
 
-  # debug "NOUVELLE REQUÊTE RECHERCHE SonPseudo"
-  # request = 'SELECT * FROM users WHERE ( pseudo = \'SonPseudo\' ) AND ( mail = \'pour@voir.net\' );'
-  # request = 'SELECT * FROM users WHERE id = 254'
-  # pre = db.prepare(request)
-  # res = pre.execute
-  # debug "= Résultats trouvés"
-  # res.each_hash do |h|
-  #   debug h.inspect
-  # end
-  # debug "= /Résultats trouvés"
+  # On prend l'identifiant de l'user
+  let(:user_id){r.data[:id]}
 
+end
 
-  row(pseudo: user_pseudo, mail: user_mail).exists
+test_base "site_hot.tickets" do
+  description "Un ticket a été enregistré pour confirmer le mail"
+  code = "User::get(#{user_id}).confirm_mail"
+  r = row(user_id: user_id, code: code)
+  r.exists
+  # On récupère l'ID du ticket pour voir s'il est correct dans
+  # le mail.
+  let(:ticket_id) { r.data[:id] }
+end
+
+# TODO L'user doit avoir un mail
+# QUESTION : Comment tester un mail ?
+# Une méthode-test test_mail ?
+# Une méthode-test test_user qui définisse la méthode case `has_mail` ?
+
+test_user get(:user_id) do
+  description "L'user créé (##{user_id}) a reçu un mail"
+  # Premier mail lui annonçant son inscription
+  has_mail(
+    subject: "Inscription sur la Boite à Outils de l'Auteur",
+    message: ["SonPseudo, bienvenue sur la Boite à Outils de l'Auteur !"]
+  )
+  # Deuxième mail lui demandant de confirmer son mail
+  lien_confirmation = "<a href=\"www.laboiteaoutilsdelauteur.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
+  has_mail(
+    subject: /Confirmez votre mail/,
+    message: [
+      "Merci de bien vouloir confirmer votre adresse-mail",
+      lien_confirmation
+    ]
+    )
 end

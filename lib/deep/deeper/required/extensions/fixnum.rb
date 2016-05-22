@@ -15,6 +15,13 @@ class ::Fixnum
   #   Instance
   # ---------------------------------------------------------------------
 
+  # Par exemple, lorsqu'un argument de fonction peut être
+  # un array ou un string, cette méthode permet de ne pas
+  # avoir à tester si l'élément est un array ou non.
+  def in_array
+    [self]
+  end
+
   # Pour ne pas avoir à toujours passer des nombres
   # en string avant de les aligner
   def rjust( len, remp = " ") ; self.to_s.rjust(len, remp) end
