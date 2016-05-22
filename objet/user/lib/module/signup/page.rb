@@ -21,6 +21,6 @@ class Page
   end
 
   def normal_signup_form
-    @normal_signup_form ||= (site.folder_lib_per_route + 'user/signup/form.erb')
+    @normal_signup_form ||= (site.folder_objet + 'user/lib/module/signup/form.erb')
   end
 end

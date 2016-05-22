@@ -4,6 +4,8 @@ Extension de la classe User pour créer l'utilisateur après son inscription
 valide
 =end
 
+User.require_module 'create'
+
 class SiteHtml
   # Puisque l'user créé ne va pas être mis en user courant (car son mail
   # doit d'abord être confirmé), on le met dans cette variable pour
@@ -65,7 +67,7 @@ class User
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
       save_all_data
-      pmail = './lib/deep/deeper/optional/_per_route/user/create/mail_confirmation.erb'
+      pmail = './objet/user/lib/module/create/mail_confirmation.erb'
       # On envoie à l'utilisateur un message pour qu'il confirme
       # son adresse-mail.
       send_mail(
@@ -113,7 +115,7 @@ class User
   def data_to_save
     now = Time.now.to_i
     @data_to_save ||= {
-      pseudo:       pseudo.capitalize,
+      pseudo:       real_pseudo,
       patronyme:    patronyme,
       sexe:         sexe,
       mail:         mail,
@@ -123,6 +125,12 @@ class User
       created_at:   now,
       updated_at:   now
     }
+  end
+
+  # Retourne le pseudo avec toujours la première
+  # lettre capitalisée (mais on ne touche pas aux autres)
+  def real_pseudo
+    pseudo[0].upcase + pseudo[1..-1]
   end
 
   # Retourne true si les données sont valides
