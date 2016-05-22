@@ -67,13 +67,24 @@ class User
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
       save_all_data
-      pmail = './objet/user/lib/module/create/mail_confirmation.erb'
+
+      # On envoie un mail à l'utilisateur pour confirmer son
+      # inscription.
+      pmail = User::folder_modules + 'create/mail_bienvenue.erb'
+
+      send_mail(
+        subject: 'Bienvenue !',
+        message: pmail.deserb(self)
+      )
+
       # On envoie à l'utilisateur un message pour qu'il confirme
       # son adresse-mail.
+      pmail = User::folder_modules + 'create/mail_confirmation.erb'
       send_mail(
-        subject: "Confirmez votre inscription",
-        message: SuperFile::new(pmail).deserb(self)
+        subject: 'Merci de confirmer votre mail',
+        message: pmail.deserb(self)
       )
+
       true
     else
       # Les données sont invalides, on doit rediriger vers

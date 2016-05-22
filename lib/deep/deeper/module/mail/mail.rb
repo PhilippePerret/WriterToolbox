@@ -267,10 +267,15 @@ class SiteHtml
 
     # Envoi du message
     # ----------------
+    # Quelle que soit la situation, on enregistre un fichier Marshal
+    # du mail envoyé.
+    # On n'envoie le mail que si on est en online ou si on
+    # doit forcer l'envoyer même en offline.
     def send
-      if self.class.offline? && ( @force_offline != true ) && self.class.respond_to?(:send_offline)
+      if self.class.respond_to?(:send_offline)
         self.class.send_offline data.merge(subject: subject, to: to, from: from, message: message)
-      else
+      end
+      if self.class.online? || @force_offline
         self.class.send message, to, from
       end
     end

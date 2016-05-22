@@ -14,6 +14,8 @@ user_pseudo = "SonPseudo"
 user_mail   = "pour@voir.net"
 user_pwd    = "motdepasse"
 
+let(:start_time){ Time.now.to_i }
+
 data_form = {
   id: 'form_user_signup',
   action: 'user/create',
@@ -80,25 +82,24 @@ test_base "site_hot.tickets" do
   let(:ticket_id) { r.data[:id] }
 end
 
-# TODO L'user doit avoir un mail
-# QUESTION : Comment tester un mail ?
-# Une méthode-test test_mail ?
-# Une méthode-test test_user qui définisse la méthode case `has_mail` ?
-
 test_user get(:user_id) do
-  description "L'user créé (##{user_id}) a reçu un mail"
+  description "L'user créé (##{user_id}) a reçu deux mails valides"
   # Premier mail lui annonçant son inscription
+  non_fatal
+
   has_mail(
-    subject: "Inscription sur la Boite à Outils de l'Auteur",
-    message: ["SonPseudo, bienvenue sur la Boite à Outils de l'Auteur !"]
+    subject: "Bienvenue !",
+    message: ['SonPseudo, bienvenue sur la Boite à Outils de l\'Auteur'],
+    sent_after: start_time
   )
   # Deuxième mail lui demandant de confirmer son mail
   lien_confirmation = "<a href=\"www.laboiteaoutilsdelauteur.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
   has_mail(
-    subject: /Confirmez votre mail/,
+    subject: 'Merci de confirmer votre mail',
     message: [
-      "Merci de bien vouloir confirmer votre adresse-mail",
+      'Merci de bien vouloir confirmer votre adresse-mail',
       lien_confirmation
-    ]
+    ],
+    sent_after: start_time
     )
 end

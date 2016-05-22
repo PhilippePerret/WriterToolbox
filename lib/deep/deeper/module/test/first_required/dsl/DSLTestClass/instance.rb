@@ -11,9 +11,14 @@ class DSLTestMethod
   # possédant la méthode de test.
   attr_reader :tfile
 
+  # {Fixnum} Indice de la test-méthode courante dans le
+  # fichier.
+  attr_reader :indice_test_method
+
   # Instanciation commune à toutes les méthode de test
   def initialize tfile, &block
     @tfile = tfile
+    @indice_test_method = tfile.itest_method += 1
     init
     begin
       # C'est ici qu'on évalue tout le contenu du bloc de test
@@ -28,8 +33,10 @@ class DSLTestMethod
       # On ajoute cet échec au fichier
       tfile.failure_tests << self
     rescue Exception => e
-      # On passe ici si c'est une erreur fonctionnelle
-      raise e
+      # On passe ici si c'est une erreur systémique
+      debug e
+      self.all_messages << [ "ERREUR SYSTÉMIQUE : #{e.message}", false ]
+      tfile.failure_tests << self
     else
       # On peut ajouter ce succès au fichier
       tfile.success_tests << self

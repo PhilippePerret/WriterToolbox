@@ -3,8 +3,8 @@ class DSLTestMethod
 
   # Le libellé complet, tel qu'il apparaitra dans le rapport final
   # affiché, avec le numéro de file-test et de test-case.
-  def full_libelle_output ifile, icase
-    "#{ifile}.#{icase} - #{libelle}".in_div(class:'tlib')
+  def full_libelle_output ifile
+    "#{ifile}.#{indice_test_method} - #{libelle}".in_div(class:'tlib')
   end
 
   # Sortie des messages

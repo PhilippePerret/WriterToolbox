@@ -24,7 +24,7 @@ class << self
   # l'autre ou d'une test-méthode à l'autre.
   # S'utilise dans les test-méthodes avec la méthode
   # `let(:var_name){... var_value ...}`
-  def add_variable var_name, &block_value
+  def set_variable var_name, &block_value
     @variables ||= {}
     @variables.merge! var_name => yield
   end

@@ -1,0 +1,22 @@
+<%
+# Mail de bienvenue envoyé à l'auteur
+#
+# Il est envoyé forcément avant le paiement même si l'user va
+# s'abonner au site.
+%>
+<p>
+  <%= pseudo %>, bienvenue sur <%= site.name %> !
+</p>
+<p>
+  Vous vous êtes inscrit<%= f_e %> avec le mail : <%= mail %>.
+</p>
+<p>Cette inscription sur la <%= site.name %> vous offre un accès plus profond au site.</p>
+<p>
+  Si vous avez la moindre question, n'hésitez pas à la poser <%= lien.forum "sur le forum" %>.
+</p>
+<p>
+  Nous vous souhaitons un agréable séjour sur le site et que vous y trouviez plein de choses utiles pour vos travaux d'écriture.
+</p>
+<p>
+  Et justement, connaissez-vous les <%= lien.narration("livres de la collection Narration") %> ? ou encore les <%= lien.analyses("analyses de films") %> ? ou mieux : <%= lien.unanunscript("le programme UN AN UN SCRIPT") %> ? Si ce n'est pas le cas, nous vous invitons vivement à les découvrir !
+</p>

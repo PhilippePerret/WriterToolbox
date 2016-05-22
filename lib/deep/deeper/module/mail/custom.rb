@@ -69,12 +69,17 @@ class Mail
       hash_data_message_plus.merge!(created_at: NOW)
       # debug "Mail qui aurait été envoyé : "
       # debug hash_data_message_plus.pretty_inspect
-      File.open(tmp_mail_path,'w') do |f|
-        f.write Marshal.dump(hash_data_message_plus)
-      end
+      tmp_mail_path.write Marshal.dump(hash_data_message_plus)
     end
     def tmp_mail_path
-      (site.folder_tmp + "mails/#{tmp_mail_name}").to_s
+      tmp_mails_folder + tmp_mail_name
+    end
+    def tmp_mails_folder
+      @tmp_mails_folder ||= begin
+        fd = site.folder_tmp + 'mails'
+        fd.exist? || fd.build
+        fd
+      end
     end
     def tmp_mail_name
       "mail#{imail}.msh"

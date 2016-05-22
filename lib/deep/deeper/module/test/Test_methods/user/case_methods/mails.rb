@@ -15,8 +15,6 @@ class TestUser < DSLTestMethod
       evaluate:   !!data_mail.delete(:evaluate)
     )
 
-    no_mails    = mails.empty?
-
     ok          = nil
     is_success  = nil
     # Liste des messages d'erreur, if any.
@@ -28,6 +26,23 @@ class TestUser < DSLTestMethod
     # Pour recueillir les mails valides (pour tester leur
     # nombre)
     mails_ok = []
+
+    # Pour le message de retour, pour spécifier le mail
+    # qu'on doit trouver ou ne pas trouver.
+    dmail_human = []
+    data_mail[:subject] && begin
+      sbj = data_mail[:subject].in_array.collect{|e| "“#{e}”"}.pretty_join
+      dmail_human << "SUJET avec #{sbj}"
+    end
+    data_mail[:message] && begin
+      msg = data_mail[:message].in_array.collect{|e| "“#{e}”"}.pretty_join
+      dmail_human << "MESSAGE avec #{msg}"
+    end
+    dmail_human = dmail_human.pretty_join
+
+    no_mails      = mails.empty?
+    nombre_mails  = mails.count
+
 
     if no_mails
 
@@ -51,8 +66,17 @@ class TestUser < DSLTestMethod
       # S'il y a des mails
       # ------------------
 
-      debug "  = Il y a des mails (mails.count)"
+      debug "  = Il y a des mails (#{nombre_mails})"
 
+      # Boucle sur chaque mail
+      #
+      # Si c'est un test droit (non inverse), on cherche un mail
+      # qui contient tous les textes transmis. Si un mail ne
+      # correspond pas, ça ne provoque pas forcément une erreur,
+      # l'erreur ne tient qu'au fait que AUCUN mail ne correspond
+      # à la recherche.
+      # Si c'est un test inverse, on génère une erreur dès
+      # qu'un mail correspond aux critères.
       mails.each do |dmail|
 
         tsujet    = TString.new(self, dmail[:subject])
@@ -100,38 +124,39 @@ class TestUser < DSLTestMethod
 
     end # /fin du else de "si no_mails"
 
+    # Si c'est un test droit, il faut qu'il y ait au moins
+    # un mail trouvé.
+    if inverse == false && mails_ok.count > 0
+      # Ça peut être un succès, sauf si un nombre de mails
+      # précis à été demandé
+      if options[:count]
+
+        # SUCCESS DROIT : LE NOMBRE DE MAIL TROUVÉS
+        mails_ok.count == options[:count]
+
+      else
+
+        # SUCCESS DROIT : UN MAIL TROUVÉ
+        mess_retour = "Un mail correspondant aux critères #{dmail_human} a été trouvé."
+        is_success = true
+
+      end
+    end
+
     debug "  Fin de test des mails"
 
-    is_success ||= begin
-      # Si is_success n'a pas été déterminé par une des
-      # conditions particulière rencontrée, alors il faut
-      # poursuivre son test.
-
-      if options[:count]
-        is_success = mails_ok.count == options[:count]
-      else
-        is_success = (mails_ok.count > 0) == !inverse
+    if is_success === nil
+      is_success = begin
+        ok != nil || raise("ok ne devrait pas être nil si is_success n'est pas défini (#{__FILE__}:#{__LINE__})…")
+        # Si is_success n'a toujours pas été défini
+        ok == !inverse
       end
-
-      ok != nil || raise("ok ne devrait pas être nil…")
-      # Si is_success n'a toujours pas été défini
-      ok == !inverse
     end
 
     debug "  * Composition du message de retour"
 
     # Composition du message de retour
     mess_retour ||= begin
-      dmail_human = []
-      data_mail[:subject] && begin
-        sbj = data_mail[:subject].in_array.collect{|e| "“#{e}”"}.pretty_join
-        dmail_human << "SUJET avec #{sbj}"
-      end
-      data_mail[:message] && begin
-        msg = data_mail[:message].in_array.collect{|e| "“#{e}”"}.pretty_join
-        dmail_human << "MESSAGE avec #{msg}"
-      end
-      dmail_human = dmail_human.pretty_join
       opt_count   = options[:count]
       s_mail      = ( opt_count.nil? ? '' : (opt_count > 1 ? 's' : '') )
       if is_success
@@ -155,7 +180,7 @@ class TestUser < DSLTestMethod
           # FAILURE
           errs = []
           message_errors.nil? || (
-            errs << 'le messages ' + message_errors.pretty_join
+            errs << 'le message ' + message_errors.pretty_join
             )
           subject_errors.nil? || (
             errs << 'le sujet ' + subject_errors.pretty_join
@@ -166,7 +191,7 @@ class TestUser < DSLTestMethod
             if opt_count
               "On devait trouver #{opt_count} mail#{s_mail} correspondant à #{dmail_human}. Nombre trouvés : #{mails_ok.count} (#{errs})."
             else
-              "Aucun mail ne correspond à #{dmail_human} (#{errs})."
+              "Aucun mail (sur #{nombre_mails}) ne correspond à la recherche : #{errs}."
             end
           else
             # FAILURE INVERSE

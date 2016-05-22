@@ -91,7 +91,6 @@ class TestSuite
       # La ligne principale décrivant le fichier courant.
       div_filepath = "#{@itestfile += 1}- #{testfile.clickable_path}".in_div(class:'pfile')
 
-      @icase = 0
       filetest_messages = { failure: nil, success: nil }
       [:failure, :success].each do |ktype|
         filetest_messages[ktype] = messages_of_tmethods_of_tfile( testfile, ktype )
@@ -137,7 +136,7 @@ class TestSuite
         ( verbose?         || quiet? === false )
       end
       infos[:nombre_cas] += tmethod.messages_count
-      c = tmethod.full_libelle_output( @itestfile, @icase += 1 )
+      c = tmethod.full_libelle_output @itestfile
       c << tmethod.messages_output if verbose || !tmethod.success?
       c
     end.join('')
