@@ -10,3 +10,5 @@
         nano> ...modifier le cron tab ...
 
 On peut trouver de l'aide intéressante sur le format sur [wikipedia](https://fr.wikipedia.org/wiki/Cron#crontab).
+
+Note : On peut utiliser aussi `ssh serveur_boa`

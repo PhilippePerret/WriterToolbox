@@ -33,7 +33,7 @@ class Ticket
   end
 
   def href
-    "#{site.distant_host}?tckid=#{id}"
+    "#{site.distant_url}?tckid=#{id}"
   end
 
   def save

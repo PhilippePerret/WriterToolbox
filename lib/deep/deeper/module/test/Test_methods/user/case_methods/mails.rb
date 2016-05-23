@@ -6,7 +6,7 @@ class TestUser < DSLTestMethod
   # Teste si l'user a reçu un mail
   def has_mail data_mail, inverse=false
 
-    debug "-> has_mail(data_mail: #{data_mail.inspect})"
+    debug "-> has_mail(data_mail: #{Debug::escape data_mail})"
 
     options = {}
     options.merge!(
@@ -44,9 +44,9 @@ class TestUser < DSLTestMethod
     nombre_mails  = mails.count
 
 
-    if no_mails
+    if nombre_mails == 0
 
-      debug "  = no_mails"
+      debug "  = aucun mail"
 
       if inverse == false && options[:count] != 0
         # Produit forcément un échec
@@ -62,18 +62,18 @@ class TestUser < DSLTestMethod
 
     else
 
-      # ------------------
-      # S'il y a des mails
-      # ------------------
+      # --------------------------
+      # Si l'user a reçu des mails
+      # --------------------------
 
-      debug "  = Il y a des mails (#{nombre_mails})"
+      debug "  = #{pseudo} a reçu #{nombre_mails} mails."
 
       # Boucle sur chaque mail
       #
       # Si c'est un test droit (non inverse), on cherche un mail
       # qui contient tous les textes transmis. Si un mail ne
       # correspond pas, ça ne provoque pas forcément une erreur,
-      # l'erreur ne tient qu'au fait que AUCUN mail ne correspond
+      # l'erreur ne tient qu'au fait qu'AUCUN mail ne correspond
       # à la recherche.
       # Si c'est un test inverse, on génère une erreur dès
       # qu'un mail correspond aux critères.
@@ -82,126 +82,107 @@ class TestUser < DSLTestMethod
         tsujet    = TString.new(self, dmail[:subject])
         tmessage  = TString.new(self, dmail[:message])
 
-        ok = true
+        mail_is_ok = true
 
         data_mail.each do |k, v|
 
-          ok = ok &&
+          debug "** Test propriété #{k.inspect} : #{Debug::escape v}"
+
+          mail_is_ok = mail_is_ok &&
             case k
             when :sent_after, :send_after
               dmail[:created_at] > v
             when :sent_before, :send_before
               dmail[:created_at] < v
             when :message
-              ok = tmessage.has?(v, options)
+              res = tmessage.has?(v, options)
               message_errors = tmessage.errors
-              ok
+              res
             when :subject, :sujet
-              ok = tsujet.has?(v, options)
+              res = tsujet.has?(v, options)
               subject_errors = tsujet.errors
-              ok
+              res
+            else
+              error "La propriété #{k.inspect} est inconnue, je ne peux pas la tester… (je retourne true pour le moment) (#{__FILE__}:#{__LINE__})"
+              true
             end
+
+          debug "== mail_is_ok = #{mail_is_ok.inspect}"
 
           # Si c'est un test "droit" (non inverse) et qu'une
           # condition est false, on peut s'arrêter tout de
           # suite pour passer au mail suivant
-          break if inverse == false && ok == false
+          break if inverse == false && mail_is_ok == false
 
         end
 
-        # On mémorise ce mail OK
-        mails_ok << dmail if ok
+        # Ce mail est OK, il remplit toutes les
+        # conditions
+        if mail_is_ok
+          if inverse
+            # Si c'est un test inverse, c'est-à-dire qu'il ne faut
+            # pas trouver de mail et qu'un mail répond pourtant aux
+            # conditions, il faut produire une failure et on peut
+            # s'arrêter là
 
-        if inverse == true && ok == true
-          # Si c'est une inversion, c'est-à-dire qu'il ne faut
-          # pas trouver de mail et qu'un mail répond pourtant aux
-          # conditions, il faut produire une failure
-          is_success = false
-          break
+            # UN MAIL TROUVÉ => ÉCHEC INVERSE
+            mess_retour = "Aucun mail n'aurait dû être trouvé avec les critères : #{dmail_human}."
+            is_success = false
+
+            break
+          elsif options[:count] == nil || options[:count] == 1
+            # Si c'est un test droit et qu'on cherche à
+            # trouver seulement un mail, alors c'est un succès
+            # et on peut s'arrêter là.
+
+            # UN MAIL TROUVÉ => SUCCESS DROIT
+            mess_retour = "Un mail correspondant aux critères #{dmail_human} a été trouvé."
+            is_success = true
+
+            break
+          else
+            # Si c'est un test droit et qu'on cherche + d'1
+            # message correspondant aux critères, alors on
+            # doit continuer à chercher, en mémorisant ce mail.
+            mails_ok << dmail
+          end
         end
 
       end #/fin de boucle sur tous les mails
 
     end # /fin du else de "si no_mails"
 
-    # Si c'est un test droit, il faut qu'il y ait au moins
-    # un mail trouvé.
-    if inverse == false && mails_ok.count > 0
-      # Ça peut être un succès, sauf si un nombre de mails
-      # précis à été demandé
-      if options[:count]
+    # Si c'est un test droit avec plusieurs mails attendus,
+    #  on vérifie le nombre de mails.
+    if inverse == false && options[:count].to_i > 1
 
-        # SUCCESS DROIT : LE NOMBRE DE MAIL TROUVÉS
-        mails_ok.count == options[:count]
+      nombre_founds = mails_ok.count
+      is_success = ( nombre_founds == options[:count] )
+      s_mail = nombre_founds > 1 ? 's' : ''
+
+      mess_retour =
+      if is_success
+
+        # NOMBRE DE MAILS TROUVÉS => SUCCESS DROIT MULTIPLE
+        "#{nombre_founds} mail#{s_mail} trouvé#{s_mail} répondant aux critères #{dmail_human}."
 
       else
 
-        # SUCCESS DROIT : UN MAIL TROUVÉ
-        mess_retour = "Un mail correspondant aux critères #{dmail_human} a été trouvé."
-        is_success = true
+        # PAS NOMBRE DE MAILS TROUVÉS => ÉCHEC DROIT MULTIPLE
+        "On devrait trouver #{options[:count]} mails répondant aux critères #{dmail_human}. Seulement #{nombre_found} trouvé#{s_mail}."
 
       end
+
     end
 
     debug "  Fin de test des mails"
 
     if is_success === nil
-      is_success = begin
-        ok != nil || raise("ok ne devrait pas être nil si is_success n'est pas défini (#{__FILE__}:#{__LINE__})…")
-        # Si is_success n'a toujours pas été défini
-        ok == !inverse
-      end
+      raise("is_success ne devrait pas être nil (#{__FILE__}:#{__LINE__})…")
     end
-
-    debug "  * Composition du message de retour"
-
-    # Composition du message de retour
-    mess_retour ||= begin
-      opt_count   = options[:count]
-      s_mail      = ( opt_count.nil? ? '' : (opt_count > 1 ? 's' : '') )
-      if is_success
-          # SUCCESS
-          if inverse == false
-            # SUCCESS DROIT
-            if opt_count
-              "#{opt_count} mail#{s_mail} correspondant à #{dmail_human} ont été envoyés."
-            else
-              "Un mail correspondant à #{dmail_human} a été envoyé."
-            end
-          else
-            # SUCCESS INVERSE
-            if opt_count
-              "Il n'y pas eu #{opt_count} mail#{s_mail} correspondant à #{dmail_human} envoyés."
-            else
-              "Aucun mail correspondant à #{dmail_human} n'a été envoyé (OK)."
-            end
-          end
-        else
-          # FAILURE
-          errs = []
-          message_errors.nil? || (
-            errs << 'le message ' + message_errors.pretty_join
-            )
-          subject_errors.nil? || (
-            errs << 'le sujet ' + subject_errors.pretty_join
-          )
-          errs = errs.join(', ')
-          if inverse == false
-            # FAILURE DROITE
-            if opt_count
-              "On devait trouver #{opt_count} mail#{s_mail} correspondant à #{dmail_human}. Nombre trouvés : #{mails_ok.count} (#{errs})."
-            else
-              "Aucun mail (sur #{nombre_mails}) ne correspond à la recherche : #{errs}."
-            end
-          else
-            # FAILURE INVERSE
-            if opt_count
-              "On ne devrait pas trouver #{opt_count} mail#{s_mail} correspondant à #{dmail_humain} (#{errs})."
-            else
-              "Aucun mail ne devrait correspondre à #{dmail_human} (#{errs})."
-            end
-          end
-        end
+    debug "  = is_success = #{is_success.inspect}"
+    if mess_retour == nil
+      raise "Le message de retour `mess_retour` devrait être défini."
     end
 
     debug " = mess_retour: #{mess_retour.inspect}"

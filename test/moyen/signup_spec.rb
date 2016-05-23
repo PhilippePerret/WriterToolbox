@@ -90,16 +90,16 @@ test_user get(:user_id) do
   has_mail(
     subject: "Bienvenue !",
     message: ['SonPseudo, bienvenue sur la Boite à Outils de l\'Auteur'],
-    sent_after: start_time
+    sent_after: start_time - 1
   )
   # Deuxième mail lui demandant de confirmer son mail
-  lien_confirmation = "<a href=\"www.laboiteaoutilsdelauteur.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
+  lien_confirmation = "<a href=\"http://www.laboiteaoutilsdelauteur.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
   has_mail(
     subject: 'Merci de confirmer votre mail',
     message: [
       'Merci de bien vouloir confirmer votre adresse-mail',
       lien_confirmation
     ],
-    sent_after: start_time
+    sent_after: start_time - 1
     )
 end
