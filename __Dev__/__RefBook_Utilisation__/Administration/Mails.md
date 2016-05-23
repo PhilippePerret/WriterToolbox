@@ -3,7 +3,7 @@
 
 ## Envoi d'un mail à l'administration
 
-Pour envoyer un mail à l'administration, on utiliser la même méthode que pour n'importe quel envoi :
+Pour envoyer un mail à l'administration, on utilise la même méthode que pour n'importe quel envoi :
 
         site.send_mail <data mail>
 

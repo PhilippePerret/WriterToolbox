@@ -6,7 +6,7 @@ class TestUser < DSLTestMethod
   # Teste si l'user a reçu un mail
   def has_mail data_mail, inverse=false
 
-    debug "-> has_mail(data_mail: #{Debug::escape data_mail})"
+    debug "-> has_mail(data_mail: #{Debug::escape data_mail}, inverse=#{inverse.inspect})"
 
     options = {}
     options.merge!(
@@ -111,7 +111,9 @@ class TestUser < DSLTestMethod
 
           # Si c'est un test "droit" (non inverse) et qu'une
           # condition est false, on peut s'arrêter tout de
-          # suite pour passer au mail suivant
+          # suite pour passer au mail suivant.
+          # Mais ça n'est pas un échec pour autant, peut-être
+          # qu'on trouvera le mail dans le mail suivant
           break if inverse == false && mail_is_ok == false
 
         end
@@ -136,6 +138,7 @@ class TestUser < DSLTestMethod
             # et on peut s'arrêter là.
 
             # UN MAIL TROUVÉ => SUCCESS DROIT
+            mails_ok << dmail
             mess_retour = "Un mail correspondant aux critères #{dmail_human} a été trouvé."
             is_success = true
 
@@ -152,28 +155,40 @@ class TestUser < DSLTestMethod
 
     end # /fin du else de "si no_mails"
 
-    # Si c'est un test droit avec plusieurs mails attendus,
-    #  on vérifie le nombre de mails.
-    if inverse == false && options[:count].to_i > 1
+    # Si c'est un test droit
+    if inverse == false
 
       nombre_founds = mails_ok.count
-      is_success = ( nombre_founds == options[:count] )
-      s_mail = nombre_founds > 1 ? 's' : ''
 
-      mess_retour =
-      if is_success
+      if options[:count].nil? && nombre_founds == 0
+        # Si un seul mail était attendu mais qu'on ne
+        # l'a pas trouvé, on produit un échec
+        is_success = false
+        mess_retour = "Aucun mail n'a été trouvé qui remplirait toutes les conditions : #{dmail_human}."
 
-        # NOMBRE DE MAILS TROUVÉS => SUCCESS DROIT MULTIPLE
-        "#{nombre_founds} mail#{s_mail} trouvé#{s_mail} répondant aux critères #{dmail_human}."
+      elsif options[:count].to_i > 1
+        # Si plusieurs mails sont attendus, on vérifie le nombre
+        #  de mails.
 
-      else
+        is_success = ( nombre_founds == options[:count] )
+        s_mail = nombre_founds > 1 ? 's' : ''
 
-        # PAS NOMBRE DE MAILS TROUVÉS => ÉCHEC DROIT MULTIPLE
-        "On devrait trouver #{options[:count]} mails répondant aux critères #{dmail_human}. Seulement #{nombre_found} trouvé#{s_mail}."
+        mess_retour =
+        if is_success
 
-      end
+          # NOMBRE DE MAILS TROUVÉS => SUCCESS DROIT MULTIPLE
+          "#{nombre_founds} mail#{s_mail} trouvé#{s_mail} répondant aux critères #{dmail_human}."
 
-    end
+        else
+
+          # PAS NOMBRE DE MAILS TROUVÉS => ÉCHEC DROIT MULTIPLE
+          "On devrait trouver #{options[:count]} mails répondant aux critères #{dmail_human}. Seulement #{nombre_found} trouvé#{s_mail}."
+
+        end
+
+      end #/EN fonction de options[:count]
+
+    end #/ si inverse == false
 
     debug "  Fin de test des mails"
 

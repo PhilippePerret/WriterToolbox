@@ -30,7 +30,6 @@ class User
     # SI L'INSCRIPTION EST INVALIDE, on revient tout simplement à la page
     # d'inscription (redirection) pour que l'user recommence.
     def create
-      debug "-> User::create"
       newuser = User::new
       if newuser.create
         if param(:user) && param(:user)[:subscribe] == 'on'
@@ -62,8 +61,8 @@ class User
   #   Instance User
   # ---------------------------------------------------------------------
   def create
-    debug "-> User#create"
     if data_valides?
+
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
       save_all_data
@@ -71,7 +70,6 @@ class User
       # On envoie un mail à l'utilisateur pour confirmer son
       # inscription.
       pmail = User::folder_modules + 'create/mail_bienvenue.erb'
-
       send_mail(
         subject: 'Bienvenue !',
         message: pmail.deserb(self)
@@ -85,6 +83,14 @@ class User
         message: pmail.deserb(self)
       )
 
+      # On envoie un mail à l'administration pour informer
+      # de l'inscription
+      pmail = User.folder_modules + 'create/mail_admin.erb'
+      User.get(1).send_mail(
+        subject:  'Nouvelle inscription',
+        message:  pmail.deserb(self),
+        formated: true
+      )
       true
     else
       # Les données sont invalides, on doit rediriger vers

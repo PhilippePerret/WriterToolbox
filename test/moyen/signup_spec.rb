@@ -81,7 +81,7 @@ test_base "users.users" do
   r.exists
 
   # On prend l'identifiant de l'user
-  let(:user_id){r.data[:id]}
+  let(:new_user_id){r.data[:id]}
 
 
   # On teste les options par défaut
@@ -103,16 +103,16 @@ end
 
 test_base "site_hot.tickets" do
   description "Un ticket a été enregistré pour confirmer le mail"
-  code = "User::get(#{user_id}).confirm_mail"
-  r = row(user_id: user_id, code: code)
+  code = "User::get(#{new_user_id}).confirm_mail"
+  r = row(user_id: new_user_id, code: code)
   r.exists
   # On récupère l'ID du ticket pour voir s'il est correct dans
   # le mail.
   let(:ticket_id) { r.data[:id] }
 end
 
-test_user get(:user_id) do
-  description "L'user créé (##{user_id}) a reçu deux mails valides"
+test_user get(:new_user_id) do
+  description "L'user créé (##{new_user_id}) a reçu deux mails valides"
   # Premier mail lui annonçant son inscription
   non_fatal
 
@@ -139,7 +139,7 @@ test_user 1 do
   has_mail(
     sent_after: start_time - 1,
     subject: "Nouvelle inscription",
-    message: ["User : ##{user_id}", "Pseudo : #{user_pseudo}", "Mail : #{user_mail}"]
+    message: ["User   : ##{new_user_id}", "Pseudo : #{user_pseudo}", "Mail   : #{user_mail}"]
   )
 
 end
