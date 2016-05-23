@@ -119,22 +119,22 @@ class TString < String
   def self_contains arr, inverse, strict
     arr = [arr] unless arr.instance_of?(Array)
 
-    debug "\n\n-> TString#self_contains"
-    debug "   self = #{Debug::escape self}"
-    debug "   arr  = #{Debug::escape arr}"
+    # debug "\n\n-> TString#self_contains"
+    # debug "   self = #{Debug::escape self}"
+    # debug "   arr  = #{Debug::escape arr}"
 
     met_error = false
     arr.each do |expected|
 
-      debug "  * expected = #{Debug::escape expected} (strict: #{strict.inspect})"
+      # debug "  * expected = #{Debug::escape expected} (strict: #{strict.inspect})"
 
       unless expected.instance_of?(Regexp)
-        expected = strict ? /^#{expected}$/ : /#{expected}/i
+        expected = strict ? /^#{Regexp::escape expected}$/ : /#{Regexp::escape expected}/i
       end
       if self =~ expected
         # Le texte a été trouvé, ça provoque une erreur
         # si test inverse
-        debug "  = expected TROUVÉ"
+        # debug "  = expected TROUVÉ"
         if inverse
           errors << "ne devrait pas contenir “#{expected.source}”"
           met_error = true
@@ -143,7 +143,7 @@ class TString < String
         # Le texte n'a pas été trouvé, ça provoque une
         # erreur si test droit
         ndl = Levenshtein.normalized_distance(self, expected.source)
-        debug "  = expected NON TROUVÉ (distance : #{ndl})"
+        # debug "  = expected NON TROUVÉ (distance : #{ndl})"
         # Distance de Levenshtein
         if !inverse
           errors << "devrait contenir “#{expected.source}”"

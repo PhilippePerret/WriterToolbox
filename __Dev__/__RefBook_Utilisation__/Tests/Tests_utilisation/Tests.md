@@ -5,7 +5,6 @@
   * [Lancer une suite de tests (`test dossier online`)](#lancerunesuitedetests)
   * [Lancer une configuration de tests (`run test`)](#lancerdestestsspecifique)
 * [Hiérarchie des éléments](#hierarchiedeselements)
-* [Options des fichiers de tests](#optionsdesfichiersdetests)
 * [Implémentation du test](#implementation_du_test)
 * [Débuggage du test](#debugging)
 
@@ -143,22 +142,6 @@ Cf. le fichier "Fichier_run.md" pour le détail de l'opération.
             SiteHtml::TestSuite::Html utilise Nokogiri)
 
         SiteHtml::TestSuite::Request
-
-<a name='optionsdesfichiersdetests'></a>
-
-## Options des fichiers de tests
-
-On peut définir qu'une feuille de tests ne doit se faire qu'en offline ou en online en indiquant dans son entête, **avant le premier test**&nbsp;:
-
-~~~ruby
-
-only_offline
-    # Le test ne sera joué que si on teste en offline (local)
-
-
-only_online
-    # Le test ne sera joué que si on teste en online (distant)
-    
 
 
 <a name='implementation_du_test'></a>

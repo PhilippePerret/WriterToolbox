@@ -89,7 +89,7 @@ class TestSuite
       next if (nombre[:success] + nombre[:failure]) == 0
 
       # La ligne principale décrivant le fichier courant.
-      div_filepath = "#{@itestfile += 1}- #{testfile.clickable_path}".in_div(class:'pfile')
+      div_filepath = testfile.line_output( itestfile += 1 )
 
       filetest_messages = { failure: nil, success: nil }
       [:failure, :success].each do |ktype|

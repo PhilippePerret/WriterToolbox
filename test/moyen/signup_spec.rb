@@ -9,6 +9,18 @@
 # il modifierait la liste des utilisateurs dans la base
 only_offline
 
+# Description de la feuille de test
+description <<-HTML
+Test de l'inscription d'un utilisateur avec des paramètres valides
+pour voir :
+
+* s'il sera bien enregistré dans la base des users,
+* si sa donnée indiquera qu'il a un statut de simple user,
+* si sa donnée indiquera qu'il a un statut de simple lecteur du forum,
+* si sa donnée indiquera bien que son mail n'est pas confirmé,
+* s'il recevra bien le mail de bienvenue,
+* s'il recevra bien le mail lui demandant de confirmer son mail
+HTML
 
 user_pseudo = "SonPseudo"
 user_mail   = "pour@voir.net"
@@ -69,6 +81,23 @@ test_base "users.users" do
 
   # On prend l'identifiant de l'user
   let(:user_id){r.data[:id]}
+
+  options = r.data[:options]
+
+  bit1 = TString.new(self, options[0])
+  # Ses données indiquent bien qu'il n'a qu'un statut
+  # de simple user
+  # options[0].is('0', {sujet: "Premier bit d'options (statut user)"})
+  bit1.is('0', {sujet: "Premier bit d'options (statut user)"})
+
+  # # Ses données indique bien qu'il n'a qu'un statut de
+  # # simple lecteur sur le forum
+  # options[1].is('0', {sujet: "Deuxième bit d'options (statut forum)"})
+  #
+  # # Ses données indiquent bien que son mail n'a pas
+  # # encore été validé
+  # options[2].is('0', {sujet: "Non confirmation de mail"})
+
 
 end
 
