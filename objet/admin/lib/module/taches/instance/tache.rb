@@ -172,12 +172,15 @@ class Tache
       (Time.now + 1.day).strftime("%d %m %Y")
     when "après-demain"
       (Time.now + 2.days).strftime("%d %m %Y")
+    when /^\+ ?([0-9]+)$/
+      nombre_jours = eche.scan(%r{^\+ ?([0-9]+)$})[0][0].to_i
+      (Time.now + nombre_jours.days).strftime("%d %m %Y")
     else
       eche
     end
     jour, mois, annee = eche.split(' ').collect{ |e| e.to_i }
     if jour.nil? || mois.nil? || annee.nil?
-      raise "L'échéance de la tâche doit être sous la forme JJ MM AA ou être un identifiant comme `dem` pour demain, etc. (demander l'aide avec `aide taches`)."
+      raise "L'échéance de la tâche doit être sous la forme JJ MM AA ou être un identifiant comme `dem` pour demain, ou définir `+ nombre_de_jour`, etc. (demander l'aide avec `aide taches`)."
     end
     raise "Le jour de l'échéance doit être inférieur à 31" if jour > 31
     raise "Le mois doit être un nombre entre 1 et 12" if mois > 12 || mois < 1

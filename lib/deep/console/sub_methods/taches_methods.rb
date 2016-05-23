@@ -80,12 +80,12 @@ class Console
       htache = Data::by_semicolon_in tache_data_str
 
       # On fait quelques corrections et vérifications
-      htache.merge!(echeance: htache.delete(:le)) if htache.has_key?(:le)
+      htache.merge!(echeance: htache.delete(:le)) if htache.key?(:le)
       if htache.has_key?(:echeance)
         htache[:echeance] = itache.test_echeance_tache(htache[:echeance])
         raise "Impossible d'actualiser la tache." if htache[:echeance] === false
       end
-      if htache.has_key?(:pour)
+      if htache.key?(:pour)
         admin_id = htache.delete(:pour)
         unless admin_id.numeric?
           admin = User::get_by_pseudo(admin_id)
@@ -96,7 +96,7 @@ class Console
         htache.merge!(admin_id: admin_id)
       end
       htache.merge!(state: htache.delete(:statut)) if htache.has_key?(:statut)
-      if htache.has_key?(:state)
+      if htache.key?(:state)
         htache[:state] = itache.test_statut_tache(htache[:state])
         raise "Impossible d'actualiser la tache." if htache[:state] == false
       end
