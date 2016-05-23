@@ -26,9 +26,7 @@ class TestFile
   attr_reader :success_tests
   attr_reader :failure_tests
 
-  # {Fixnum} Indice de la test-méthode. C'est le deuxième
-  # argument des Array envoyés à success_tests et failure_tests,
-  # le premier étant le test lui-même.
+  # {Fixnum} Indice de la test-méthode.
   attr_accessor :itest_method
 
   # +tsuite+  SiteHtml::TestSuite courante (possédant ce fichier)

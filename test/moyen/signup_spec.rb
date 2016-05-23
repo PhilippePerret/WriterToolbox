@@ -19,7 +19,8 @@ pour voir :
 * si sa donnée indiquera qu'il a un statut de simple lecteur du forum,
 * si sa donnée indiquera bien que son mail n'est pas confirmé,
 * s'il recevra bien le mail de bienvenue,
-* s'il recevra bien le mail lui demandant de confirmer son mail
+* s'il recevra bien le mail lui demandant de confirmer son mail,
+* si un mail est envoyé à l'administration pour informer de la nouvelle inscription.
 HTML
 
 user_pseudo = "SonPseudo"
@@ -82,22 +83,21 @@ test_base "users.users" do
   # On prend l'identifiant de l'user
   let(:user_id){r.data[:id]}
 
-  options = r.data[:options]
 
-  bit1 = TString.new(self, options[0])
+  # On teste les options par défaut
+  options = TString.new(self, r.data[:options])
+
   # Ses données indiquent bien qu'il n'a qu'un statut
   # de simple user
-  # options[0].is('0', {sujet: "Premier bit d'options (statut user)"})
-  bit1.is('0', {sujet: "Premier bit d'options (statut user)"})
+  options[0].is('0', {sujet: "Le bit de statut d'user"})
 
-  # # Ses données indique bien qu'il n'a qu'un statut de
-  # # simple lecteur sur le forum
-  # options[1].is('0', {sujet: "Deuxième bit d'options (statut forum)"})
-  #
-  # # Ses données indiquent bien que son mail n'a pas
-  # # encore été validé
-  # options[2].is('0', {sujet: "Non confirmation de mail"})
+  # Ses données indique bien qu'il n'a qu'un statut de
+  # simple lecteur sur le forum
+  options[1].is('0', {sujet: "Le bit de statut de lecteur forum"})
 
+  # Ses données indiquent bien que son mail n'a pas
+  # encore été validé
+  options[2].is('0', {sujet: "Le bit de confirmation de mail"})
 
 end
 
@@ -131,4 +131,15 @@ test_user get(:user_id) do
     ],
     sent_after: start_time - 1
     )
+end
+
+test_user 1 do
+  description 'Un mail est envoyé à l’administration pour informer de la nouvelle inscription.'
+
+  has_mail(
+    sent_after: start_time - 1,
+    subject: "Nouvelle inscription",
+    message: ["User : ##{user_id}", "Pseudo : #{user_pseudo}", "Mail : #{user_mail}"]
+  )
+
 end

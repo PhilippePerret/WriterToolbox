@@ -19,6 +19,11 @@ class DSLTestMethod
   def initialize tfile, &block
     @tfile = tfile
     @indice_test_method = tfile.itest_method += 1
+
+    # On la met en méthode courante de la class de fichier
+    # de test
+    SiteHtml::TestSuite::TestFile.current_test_method = self
+
     init
     begin
       # C'est ici qu'on évalue tout le contenu du bloc de test

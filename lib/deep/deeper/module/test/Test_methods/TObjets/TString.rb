@@ -13,10 +13,11 @@ class TString < String
   # où enregistrer les succès et les failures.
   # +str+ {String} Valeur à donner au string
   def initialize tmethod, str=nil
-    @tmethod  = tmethod
+    @tmethod  = tmethod || SiteHtml::TestSuite::TestFile::current_test_method
     @errors   = []
     super(str)
   end
+
 
   # ---------------------------------------------------------------------
   #   has, has_not, has?, has_not?
@@ -54,7 +55,7 @@ class TString < String
 
     str_expected = searched.inspect
     sujet_str = options[:sujet]   || "“#{self}”"
-    objet_str = options[:objet]   || "“#{searched.source}”"
+    objet_str = options[:objet]   || "#{searched.inspect}"
 
     # Ici, on a plutôt intérêt à composer seulement le
     # message de résultat nécessaire

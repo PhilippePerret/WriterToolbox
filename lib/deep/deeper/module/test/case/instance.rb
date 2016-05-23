@@ -21,7 +21,7 @@ class Case
 
 
   def initialize tmethod, args
-    @tmethod  = tmethod
+    @tmethod  = tmethod || SiteHtml::TestSuite::TestFile.current_test_method
     @args     = args
   end
 

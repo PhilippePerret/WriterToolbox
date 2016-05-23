@@ -1,16 +1,19 @@
 # Classe de test `TString`
 
+* [Case-méthode `has` & dérivées](#casemethodehas)
+* [Case-méthode `is` & dérivées](#casemethodeisestderivees)
+* [Test d'une valeur String quelconque](#testdunevaleurstringquelqconte)
+
 Les objets `TString` sont des instances de `String` augmentées.
 
-Elles répondent aux méthodes de test&nbsp;:
+Elles répondent aux méthodes de test :
 
-* [Case-méthode `has` & dérivées](#casemethodehas)
 
 <a name='casemethodehas'></a>
 
 ## Case-méthode `has` & dérivées
 
-> Note&nbsp;: Le nom `has` est choisi pour la cohérence avec les autres méthodes plutôt que `contains` ou autre `include`.
+> Note : Le nom `has` est choisi pour la cohérence avec les autres méthodes plutôt que `contains` ou autre `include`.
 
 ~~~ruby
 
@@ -25,7 +28,6 @@ Elles répondent aux méthodes de test&nbsp;:
   t.has?("Mon strin")
   # => true
   
-* [Case-méthode `is` & dérivées](#casemethodeisestderivees)
 <a name='casemethodeisestderivees'></a>
 
 ## Case-méthode `is` & dérivées
@@ -48,3 +50,44 @@ Elles répondent aux méthodes de test&nbsp;:
   # => Produit un succès (pas strictement égal)
   
 ~~~
+
+<a name='testdunevaleurstringquelqconte'></a>
+
+## Test d'une valeur String quelconque
+
+Les tests quels qu'ils soient nécessitant de connaitre la méthode-test courante, on ne peut pas faire de tests directs sur les `String` :
+
+~~~ruby
+
+  # IMPOSSIBLE
+  "Impossible".is("impossible") # <= IMPOSSIBLE
+  # IMPOSSIBLE
+
+~~~
+
+Il faut passer par la classe `TString` :
+
+~~~ruby
+
+test_route "ma/route" do
+
+  str = TString.new(self, "Possible")
+  str.is("possible")
+  
+end
+
+~~~
+
+En revanche, on peut tout à fait utiliser `[]` :
+
+~~~ruby
+
+  str = TString.new(self, "Possible")
+  
+  str[0].is("P", {strict: true})
+  # => Produit un succès
+  
+~~~
+
+Noter cependant que ce système utilise la valeur de `SiteHtml::TestSuite::TestFile.current_test_method` qui maintient la test-méthode courante, ce qui peut parfois poser problème dans des situations particulières.
+
