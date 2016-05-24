@@ -25,21 +25,22 @@ class SuperFile
   # ---------------------------------------------------------------------
 
   KEY_SYM_TO_HUMAN = {
-    cdv:                    "Clé de voûte",
-    categorie:              "Catégorie",
-    contre_objectif:        "Contre-objectif",
-    denouement:             "Dénouement",
-    idees:                  "Idées",
-    incdec:                 "Incident déclencheur",
-    incper:                 "Incident perturbateur",
-    intensite:              "Intensité",
-    memo:                   "Mémo",
-    originalite:            "Originalité",
-    preparation_paiement:   "Préparation/paiement",
-    procedes:               "Procédés",
-    reponse:                "Réponse",
-    running_gag:            "Running-gag",
-    themes:                 "Thèmes"
+    cdv:                    'Clé de voûte',
+    categorie:              'Catégorie',
+    contre_objectif:        'Contre-objectif',
+    denouement:             'Dénouement',
+    idees:                  'Idées',
+    incdec:                 'Incident déclencheur',
+    incper:                 'Incident perturbateur',
+    pivot1:                 'Premier pivot',
+    intensite:              'Intensité',
+    memo:                   'Mémo',
+    originalite:            'Originalité',
+    preparation_paiement:   'Préparation/paiement',
+    procedes:               'Procédés',
+    reponse:                'Réponse',
+    running_gag:            'Running-gag',
+    themes:                 'Thèmes'
 
   }
   # Méthode qui retourne le nom humain pour une clé symbole.
@@ -380,19 +381,27 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     stt = ""
 
     {
-      incper:     {hname:"Incident perturbateur"},
-      incdec:     {hname:"Incident déclencheur"},
-      un5ie:      {hname:"1 / 5<sup>e</sup>"},
-      tiers:      {hname:"1 / 3"},
-      deux5ie:    {hname:"2 / 5<sup>e</sup>"},
-      cdv:        {hname:"Clé de voûte"},
-      trois5ie:   {hname:"3 / 5<sup>e</sup>"},
-      deuxtiers:  {hname:"2 / 3"},
-      quatre5ie:  {hname:"4 / 5<sup>e</sup>"},
-      crise:      {hname:"Crise"},
-      climax:     {hname:"Climax"},
-      end:        {hname:"Fin"},
-      fin:        {hname:"Fin"}
+      # Note : Ces éléments doivent être placés dans
+      # l'ordre de la structure.
+      Acte_I:     {hname:'Exposition'},
+      incper:     {hname:'Incident perturbateur'},
+      incdec:     {hname:'Incident déclencheur'},
+      pivot1:     {hname:'Premier pivot'},
+      Acte_II:    {hname:'Développement'},
+      devpart2:   {hname:'Développement (2<sup>nde</sup> partie)'},
+      un5ie:      {hname:'1 / 5<sup>e</sup>'},
+      tiers:      {hname:'1 / 3'},
+      deux5ie:    {hname:'2 / 5<sup>e</sup>'},
+      cdv:        {hname:'Clé de voûte'},
+      trois5ie:   {hname:'3 / 5<sup>e</sup>'},
+      deuxtiers:  {hname:'2 / 3'},
+      quatre5ie:  {hname:'4 / 5<sup>e</sup>'},
+      pivot2:     {hname:'Second pivot'},
+      Acte_III:   {hname:'Dénouement'},
+      crise:      {hname:'Crise'},
+      climax:     {hname:'Climax'},
+      end:        {hname:'Fin'},
+      fin:        {hname:'Fin'}
     }.each do |kpart, dpart|
 
       # Définition dans la structure
