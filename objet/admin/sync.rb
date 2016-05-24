@@ -1,18 +1,14 @@
 # encoding: UTF-8
 =begin
 
-À FAIRE :
-
-  1. Implémenter la synchronisation proprement dite
-      - ne pas oublier de détruire les fichiers de synchronisation
-        mais après l'opération
-      - les affiches
-      - chaque fichier avec son traitement spécial
-      
-  2. Incorporer les fichiers de Narration dans le check, mais il
-     faut au préalable voir comment ils fonctionnent sur Icare et
-     synchroniser le fonctionnement.
-
+  Ce module permet de procéder à une synchronisation intelligente
+  des fichiers et bases de données entre le site distant et local.
+  Elle est "intelligente" dans le sens où elle tient compte des
+  modifications qui peuvent avoir été faites des deux côtés.
+  Elle est intelligente aussi parce qu'elle vérifie aussi tous les
+  fichiers, que ce soit les pages d'analyse, les pages de cours ou
+  les affiches de film.
+  
 =end
 
 # Ce module peut être appelé en standalone pour le check

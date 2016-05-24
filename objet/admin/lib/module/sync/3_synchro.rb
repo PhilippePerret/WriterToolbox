@@ -169,7 +169,9 @@ class Sync
       dsync[:to_upload].each do |prel|
         path_loc = "./data/analyse/#{prel}"
         path_dis = "./www/data/analyse/#{prel}"
-        cmd = "scp -p #{path_loc} #{serveur_ssh_boa}:#{path_dis}"
+        folder_dis = File.dirname(path_dis)
+        # On s'assure toujours que le dossier existe
+        cmd = "ssh #{serveur_ssh_boa} \"mkdir -p #{folder_dis}\" && scp -p #{path_loc} #{serveur_ssh_boa}:#{path_dis}"
         res = `#{cmd} 2>&1`
         if res != ""
           err_mess = "# ERREUR UPLOAD ANALYSE #{prel} : #{res}"
