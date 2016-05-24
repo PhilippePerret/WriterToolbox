@@ -78,6 +78,13 @@ test:
       Joue le fichier ./test/run.rb qui détermine les tests à faire.
       <br>Voir le mode d'emploi (Test > Fichier_run.md) pour le détail.
   -
+    command:      "`test show db[ options]`"
+    description: |
+      Affiche le contenuu des bases de données après la suite de test.
+    note: |
+      Sans options, affiche le contenu des tables 'hot'.
+      (pour le moment, aucune autre option n'est traitée)
+  -
     command:      test --depth=1 mini[ online]
     description: |
       Si un dossier ./test/mini/ existe, alors tous les tests à

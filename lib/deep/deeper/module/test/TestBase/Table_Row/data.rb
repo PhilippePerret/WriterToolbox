@@ -38,9 +38,14 @@ class Row
   #
   def data options=nil
     req = SiteHtml::TestSuite::TestBase::Request::new(self, options)
-    debug "[Row#data] requête = #{req.select_request.inspect}"
     retour_request = req.first_resultat
     THash.new(ttable).merge!(retour_request || {})
+  end
+
+  # Permet de définir des valeurs dans la rangée courante
+  def set hdata
+    req = SiteHtml::TestSuite::TestBase::Request::new(self)
+    req.execute( req.set_request(hdata) )
   end
 
 

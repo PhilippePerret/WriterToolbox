@@ -4,9 +4,6 @@
 * [Liste des méthodes de test](#listemethodesdetest)
   * [Test-méthode URL `test_route`](#methodetesttestroute)
   * [Test-méthode FORM `test_form`](#methodedetesttestform)
-  * [Test-méthode DATABASE `test_base`](#testmethodesdatabase)
-    * [Case-objets de la test-méthode `test_base`](#casesobjetsdetestbase)
-      * [Case-objet `row`](#caseobjetrowdetestbase)
 * [Rendre un test-méthode NON FATALE](#rendretestmethodenonfatale)
 * [Options de dernier argument de méthode-test](#optionsdefinmethodestest)
 
@@ -56,7 +53,7 @@ Pour tester une route, donc une adresse URL et la page retournée.
 
   html.has_tag("div#un_div_present")
   html.has_message("Mon message", {strict: true})
-  
+
 ~~~
 
 <a name='methodedetesttestform'></a>
@@ -97,68 +94,6 @@ Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `
 
     end
 
-<a name='testmethodesdatabase'></a>
-
-### Test-méthodes des bases de données (`test_base`)
-
-Permet de tester les bases de données. Exemple&nbsp;:
-
-~~~ruby
-
-  test_base "path/to/base.table" do
-    has_row({id: 12, phil: "Phil", activity: 13})
-  end
-  
-  test_base "users.users"{ row(2).exists }
-  
-~~~
-
-@syntaxe
-
-~~~ruby
-
-  test_base "<base sans .db>.<table>" do
-    <case-méthode>
-    <case-méthode>
-    ...
-  end
-~~~
-
-<a name='casesobjetsdetestbase'></a>
-
-#### Case-objets de la test-méthode `test_base`
-
-
-<a name='caseobjetrowdetestbase'></a>
-
-##### Case-objet `row`
-
-`row` est un objet de classe `SiteHtml::TestSuite::DBase::Row` qui contient des méthodes de case et des méthodes de gestion&nbsp;:
-
-~~~ruby
-
-row(...).exists
-row(...).delete
-row(...).insert(...data...)
-row(...).has(...data...)
-
-~~~
-
-Noter que ces méthodes fonctionnent aussi bien online qu'offline donc qu'il faut être particulièrement prudent, même si des backups sont produits.
-
-**Données de la rangée**
-
-On peut obtenir les données de la rangée par&nbsp;:
-
-~~~ruby
-
-  thdata = row(...).data
-  # Noter que c'est un THash
-
-~~~
-
-La valeur retournée est un `THash`, pas un `Hash` donc on peut utiliser sur lui toutes les méthodes normales des `Hash` mais en plus les case-méthodes propres, à commencer par `has`, `has_not` etc. pour vérifier qu'il y a bien ces données.
-
 ---------------------------------------------------------------------
 
 <a name='rendretestmethodenonfatale'></a>
@@ -172,11 +107,11 @@ Dans ce cas, on passe le test-méthode en mode `NON FATAL` à l'aide de la méth
 ~~~ruby
 
   non_fatal
-  
+
   ou
-  
+
   not_fatal
-  
+
 ~~~
 
 Par exemple&nbsp;:

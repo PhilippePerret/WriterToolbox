@@ -13,10 +13,10 @@ class TestTable
 class Row
 
   # Raccourcis pour utiliser par exemple `row(...).has(...)`
-  def has h, opts      ; data.has(h, opts)       end
-  def has_not h, opts  ; data.has_not(h, opts)   end
-  def has? h, opts     ; data.has?(h, opts)      end
-  def has_not? h, opts ; data.has_not?(h, opts)  end
+  def has h, opts = nil      ; data.has(h, opts)       end
+  def has_not h, opts = nil  ; data.has_not(h, opts)   end
+  def has? h, opts = nil     ; data.has?(h, opts)      end
+  def has_not? h, opts = nil ; data.has_not?(h, opts)  end
 
   def exists options=nil, inverse=false
     # debug "-> exists(inverse=#{inverse.inspect})"

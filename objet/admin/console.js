@@ -74,19 +74,22 @@ $.extend(window.RSConsole, {
   sujet_courant: null,
   detecte_sujet: function(tested){
     var sujet = this.KNOW_SUJETS[tested] ;
-    console.log("tested = " + tested + " => sujet = " + sujet);
     if(undefined != sujet && sujet != this.sujet_courant){
       this.sujet_courant = sujet ;
       var aide = this.aide_by_sujet(sujet);
-      console.log("-> Inscription de l'aide")
-      $('pre#aide').html(aide);
+      $('pre#aide').html(aide + this.footaide());
     } else if (undefined == sujet && this.sujet_courant != null){
-      console.log("=> Effacement du sujet courant")
       this.sujet_courant = null;
       $('pre#aide').html('');
     }
   },
 
+  footaide:function(){
+    return "__\
+__\
+Pour ajouter de l'aide, éditer le fichier `console.js` __\
+    "
+  },
   aide_by_sujet:function(sujet){
     return {
 
@@ -94,7 +97,7 @@ $.extend(window.RSConsole, {
       // AIDE TESTS
       //
       test: " \
-Commande de base : `test <dossier> <online>` __\
+<strong>Commande `test <dossier>[ <online|offline>]`</strong> __\
     <dossier> : chemin relatif depuis ./test/ __\
 `run test` pour jouer le fichier ./test/run.rb __\
 __\
@@ -108,6 +111,12 @@ __\
         -v      Mode verbose : affiche le détail des cases __\
         -d      Mode documenté (pas encore implémenté)     __\
         -q      Mode quiet : affichage minimum.            __\
+__\
+__\
+<strong>Commande : `test show db[ options]`</strong> __\
+Pour afficher le contenu des bases de données à la fin des __\
+tests (rappel : les bases de données sont backupées dans un) __\
+dossier temporaire. __\
 ",
 
 // AIDE TWITTER

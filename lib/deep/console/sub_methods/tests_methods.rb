@@ -22,6 +22,18 @@ class Console
     inst.run
   end
 
+  # Répond à la commande `test show db`
+  # +options+ peut être un mot ajouté à la fin de la commande
+  # ci-dessus, par exemple pour préciser qu'il faut voir une table
+  # en particulier ou "all" pour les voir toutes.
+  # TODO: C'est à implémenter, pour le moment, +options+ ne sert à
+  # rien.
+  def show_db_after_tests options = nil
+    site.require_module 'test'
+    SiteHtml::TestSuite.display_db_after_test( options )
+    return ""
+  end
+
   def parse_arguments
     # On explode les arguments. Noter que si la
     # commande `test` est jouée seule, ces arguments sont vides

@@ -49,6 +49,11 @@ class Request
   def count_request
     @count_request ||= count_request_multi_lines.gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ').strip
   end
+  # Requête pour définir les données dans la base de
+  # données.
+  def set_request hdata
+    @set_request ||= set_request_multi_lines(hdata).gsub(/\n/, " ").gsub(/\t/,' ').gsub(/( +)/, ' ').strip
+  end
 
   #
   # ---------------------------------------------------------------------
@@ -244,6 +249,21 @@ FROM #{ttable.name}
     end
   end
 
+  # Requête pour définir des valeurs dans une rangée
+  # +hdata+ Les données à définir dans la rangée spécifié
+  # par le possesseur de la requête (qui doit être une Row)
+  def set_request_multi_lines hdata
+    values_set =
+      hdata.collect do |col, val|
+        "#{col} = #{realvalue2sqlvalue val}"
+      end.join(', ')
+    <<-SQL
+UPDATE #{ttable.name}
+SET #{values_set}
+#{where_clause_finale};
+    SQL
+  end
+
   def where_clause_finale
     @where_clause_finale ||= begin
       if where_clause.nil?
@@ -264,11 +284,7 @@ FROM #{ttable.name}
         "id = #{specs}"
       else
         specs.collect do |k,v|
-          v = case v
-          when String then "'#{v.gsub(/'/, "\\'")}'"
-          when Array, Hash then v.inspect # STRING => PROBLÈME
-          else v
-          end
+          v = realvalue2sqlvalue v
           "( #{k} = #{v} )"
         end.join(' AND ')
       end
@@ -277,6 +293,18 @@ FROM #{ttable.name}
 
   def online?
     @is_online ||= SiteHtml::TestSuite::online?
+  end
+
+  # Reçoit une valeur quelconque et renvoie la valeur
+  # à mettre dans le requête SQL en sachant qu'elle pourra
+  # être envoyée par SSH et qu'il ne faut donc pas utiliser
+  # de guillemets doubles.
+  def realvalue2sqlvalue val
+    case val
+    when String then "'#{val.gsub(/'/, "\\'")}'"
+    when Array, Hash then val.inspect # STRING => PROBLÈME
+    else val
+    end
   end
 
 end #/Request

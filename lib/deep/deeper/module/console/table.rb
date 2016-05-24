@@ -4,7 +4,8 @@ class Admin
 class Console
 
   # Sort dans la sortie spéciale, i.e. en dessous du champ de
-  # console.
+  # console, le contenu de la table +table+ en le formatant
+  # correctement pour qu'il puisse s'afficher entièrement
   # +table+ Instance {BdD::Table} de la table
   def show_table table
     data = table.select

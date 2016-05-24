@@ -19,7 +19,7 @@ SiteHtml::TestSuite.configure do
   #   - en version relative entière : "./test/mini/un_test_spec.rb"
   #   - en version relative depuis ./test : "mini/un_test_spec.rb"
   #   - en version relative simplifiée : "mini/un_test"
-  current.files = ["moyen/signup"]
+  current.files = ["deep/user/destroy"]
 
   # LIEU DU TEST
   # ------------

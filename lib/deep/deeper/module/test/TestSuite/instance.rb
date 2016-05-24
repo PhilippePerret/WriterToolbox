@@ -81,6 +81,11 @@ class TestSuite
     end
     infos[:end_time]      = Time.now
 
+    # On fait un backup des bases actuelles pour
+    # pouvoir vérifier certaines erreurs potentielles
+    backup_db_fin_test
+
+    # On remet les bases originales
     unfreeze_current_db_state
 
     # === AFFICHAGE DU RÉSULTAT ===
@@ -106,7 +111,7 @@ class TestSuite
   # qu'ils ne sont à exécuter que online ou offline.
   # Chaque élément de cette liste est composées de :
   #   [<path du fichier>, <raison de l'exclusion>]
-  # 
+  #
   def files_out
     @files_out ||= []
   end

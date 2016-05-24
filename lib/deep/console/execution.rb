@@ -192,7 +192,11 @@ class Console
 
       # --- TESTS ---
 
-      return ( run_a_test reste_line )
+      if line =~ /^test show db/
+        return (show_db_after_tests line.sub(/^test show db/,'').strip)
+      else
+        return ( run_a_test reste_line )
+      end
 
     when /^rspec$/
 
