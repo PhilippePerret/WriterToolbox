@@ -26,7 +26,8 @@ class SiteHtml
       # C'est un fichier qui doit se trouver dans un dossier
       # secret, sauf indication contraire.
       # Note : après avoir utilisé `data` une première fois,
-      # on peut aussi utiliser PAYPAL dans le programme.
+      # on peut aussi utiliser la constante PAYPAL dans le
+      # programme, qui contient toutes les données PayPal.
       def data
         @data ||= begin
           path_data_file.require
@@ -41,4 +42,4 @@ class SiteHtml
 end # /SiteHtml
 
 # Pour forcer le chargement des données
-SiteHtml::Paiement::data
+SiteHtml::Paiement.data

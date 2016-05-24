@@ -37,7 +37,7 @@ class TestSuite
       log '</pre>'
 
       [
-        ['users.db',    'users'],
+        ['users.db',    ['users', 'paiements']],
         ['site_hot.db', ['last_date', 'tickets'] ],
         ['forum.db' ,   ['posts', 'posts_content']],
         ['unan_hot',    ['programs', 'projets']]

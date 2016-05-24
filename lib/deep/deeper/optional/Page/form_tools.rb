@@ -369,10 +369,12 @@ class Page
       def field_attrs
         @field_attrs ||= begin
           h = { name:field_name, id:field_id, class:field_class }
-          h.merge!(placeholder: options[:placeholder]) if options[:placeholder]
-          h.merge!(onclick: onclick)    unless onclick.nil?
-          h.merge!(onchange: onchange)  unless onchange.nil?
-          h.merge!(onsubmit: onsubmit)  unless onsubmit.nil?
+          options[:placeholder] .nil?  || h.merge!(placeholder: options[:placeholder])
+          options[:style]       .nil?  || h.merge!(style: options[:style])
+          onclick.nil?  || h.merge!(onclick: onclick)
+          onchange.nil? || h.merge!(onchange: onchange)
+          onsubmit.nil? || h.merge!(onsubmit: onsubmit)
+
           h
         end
       end

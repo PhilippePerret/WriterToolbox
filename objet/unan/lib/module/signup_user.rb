@@ -6,6 +6,9 @@ class ::User
   #
   # Note : c'est une procédure hyper protégée (mode sans échec) pour
   # aller jusqu'au bout et pouvoir corriger les problèmes au cas où.
+  #
+  # Cette méthode est une méthode de l'user courant.
+  #
   def signup_program_uaus
 
     debug "\n\n=== INSTANCIATION D'UN PROGRAMME UN AN UN SCRIPT ===\n\n"
@@ -14,7 +17,7 @@ class ::User
     # À l'intérieur d'une autre méthode ou de l'instance
     # user, utiliser la méthode `auteur.add_error "<erreur>"` ou
     # `user.add_error "<erreur>"`
-    @errors = Array::new
+    @errors = []
 
     # On crée le programme de l'user et son projet
     create_program_et_projet
@@ -26,10 +29,6 @@ class ::User
       @errors << "Les tables du programme n'ont pas pu être créés : #{e.message}"
       debug "# IMPOSSIBLE DE CRÉER LES TABLES 1A1S : #{e.message}\n\n"+e.backtrace.join("\n")
     end
-
-    # Définition du premier p-day (jour-programme)
-    # Obsolète, il est défini dès la création de l'instance
-    # du programme.
 
     # Envoi des mails à l'user pour lui confirmer les
     # choses
@@ -61,7 +60,7 @@ class ::User
     end
     begin
       # Création du programme (dans la table générale des programmes)
-      @program_id = Unan::Program::create
+      @program_id = Unan::Program.create
       raise "@program_id (ID du programme créé) ne devrait pas être nil…" if @program_id.nil?
       debug "ID du nouveau programme : #{@program_id}"
       # On définit le programme pour ne pas avoir de problèmes par

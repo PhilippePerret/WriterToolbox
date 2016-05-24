@@ -29,8 +29,8 @@ class << self
       rythme:             5,
       current_pday:       1, # toujours le premier jour
       current_pday_start: NOW, # commencé maintenant
-      created_at:         NOW.to_i,
-      updated_at:         NOW.to_i
+      created_at:         NOW,
+      updated_at:         NOW
     }
     @program_id = Unan::table_programs.insert(data_program)
   end

@@ -51,5 +51,3 @@ if user.can_subscribe_to_1an1script?
   )
 
 end
-
-debug "<- ./objet/unan/paiement.rb"
