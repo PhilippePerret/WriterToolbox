@@ -32,10 +32,22 @@ class Case
   # ATest courante, une failure fait sortir (raise) du test
   # courant.
   def evaluate
-    tmethod.all_messages << [ message_final, !!successfull? ]
+    unless tmethod.nil? # les tests
+      tmethod.all_messages << [ message_final, !!successfull? ]
+    end
     unless successfull?
-      tmethod.is_not_a_success
-      raise TestUnsuccessfull if tmethod.fatal?
+      tmethod.is_not_a_success unless tmethod.nil? # tests de base
+      raise TestUnsuccessfull if fatal?
+    end
+  end
+
+  def fatal?
+    @is_fatal ||= begin
+      if tmethod.nil?
+        true
+      else
+        tmethod.fatal?
+      end
     end
   end
 

@@ -73,9 +73,6 @@ test_base "users.users" do
 
 end
 
-# Création du programme UN AN UN SCRIPT pour l'user
-# TODO (VOIR CE QUI SE PASSE APRÈS QUE L'USER A PAYÉ)
-
 # ---------------------------------------------------------------------
 #   RÉGLAGE DE L'USER
 #   Pour qu'il ait suffisamment de privilège pour faire toutes les
@@ -101,10 +98,11 @@ User.get(duser[:id]).signup_program_uaus
 test_user duser[:id] do
 
   # Il doit être inscrit
-  unanunscript?.is true
+  unanunscript?.is(true, sujet: "unanunscript? de l'user")
 
   # Il doit avoir un programme
-  program.is_not nil
+  program.is_not(nil, sujet: "La propriété `program` de l'user")
+  program.class.is(Unan::Program, sujet: "La classe du programme")
 
 end
 # TODO TEST : On doit voir le programme quelque part, dans une

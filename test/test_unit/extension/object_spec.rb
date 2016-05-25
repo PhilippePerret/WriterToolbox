@@ -26,8 +26,6 @@ class TestObject < Test::Unit::TestCase
   end
 
   def test_a_string_errors
-    assert_raise(RuntimeError, 'Un String ne peut pas être comparé à un Fixnum.'){'a string'.__test_is?(12)}
-    assert_raise(RuntimeError, 'Un String ne peut pas être comparé à un Float.'){'a string'.__test_is?(12.0)}
     assert_raise(RuntimeError, 'Un String ne peut pas contenir un Array.'){"un string".__test_has?([1,2,3])}
     assert_raise(RuntimeError, 'Un String ne peut pas contenir un Hash.'){"un string".__test_has?({mon: 'hash'})}
   end
@@ -43,10 +41,64 @@ class TestObject < Test::Unit::TestCase
     assert([1,2,3].__test_is?([1,2,3]))
     assert(![1,2,3].__test_is?([1,2]))
   end
-  def test_an_array_errors
-    assert_raise(RuntimeError, 'Un Array ne peut pas être comparé à un String.'){ [1,2,3].__test_is?('un string')}
-    assert_raise(RuntimeError, 'Un Array ne peut pas être comparé à un Hash.'){[1,2,3].__test_is?(mon: 'Hash')}
-    assert_raise(RuntimeError, 'Un Array ne peut pas être comparé à un Fixnum'){[1,2,3].__test_is?(12)}
+
+  EGAUX = [
+    ["mon string", "mon string"],["mon string", "Mon String"],
+    [true, true], [false, false], [nil, nil],
+    [ [1,2,3], [1,2,3]],
+    [ {un: 'hash'}, {:un => 'hash'} ]
+  ]
+
+  DIFFERENTS = [
+    [true, false], [false, true], [nil, false], [nil, true],
+    [true, nil], [false, nil],
+    ["a string", true], ["a string", false], ["a string", nil],
+    [12, 13], [12, true], [12, false], [12, nil],
+    [ [1,2,3], [1,2]], [ [1,2,3], true], [ [1,2,3], nil],
+    [ {un: 'hash'}, { 'un' => 'hash'} ]
+  ]
+
+  # Attention, ci-dessous, des valeurs qui pourraient être
+  # égales mais qui doivent être fausses avec l'argument strict
+  # à true
+  STRICTEMENT_DIFFERENTS = [
+    ["mon string", "Mon String"]
+  ]
+
+  def test_de_is
+    assert_respond_to(Object, :is)
+
+    # Assertions qui provoquent une égalité
+    EGAUX.each do |pair|
+      assert(pair[0].is(pair[1]))
+    end
+
+    # Assertions qui provoquent une erreur
+    DIFFERENTS.each do |pair|
+      assert_raise(TestUnsuccessfull){pair[0].is(pair[1])}
+    end
+
+    STRICTEMENT_DIFFERENTS.each do |pair|
+      assert_raise(TestUnsuccessfull){pair[0].is(pair[1], strict: true)}
+    end
+
   end
 
+  def test_de_is_not
+    assert_respond_to(Object, :is_not)
+    assert({un:'hash'}.is_not({'un' => 'hash'}))
+
+    EGAUX.each do |pair|
+      assert_raise(TestUnsuccessfull){pair[0].is_not(pair[1])}
+    end
+
+    DIFFERENTS.each do |pair|
+      assert(pair[0].is_not(pair[1]))
+    end
+
+    STRICTEMENT_DIFFERENTS.each do |pair|
+      assert(pair[0].is(pair[1]))
+      assert(pair[0].is_not(pair[1], strict: true))
+    end
+  end
 end
