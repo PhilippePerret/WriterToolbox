@@ -18,7 +18,12 @@ def safe_log_path
   @safe_log_path ||= "./safed.log"
 end
 
-
+# ONLY_REQUIRE est définie pour essayer de ne faire que
+# charger les modules par le Terminal, sinon on se
+# retrouve avec CGI qui attend des pairs de variable
+unless defined?(ONLY_REQUIRE)
+  ONLY_REQUIRE = false
+end
 
 unless defined?(ONLINE)
   ONLINE  = ENV['HTTP_HOST'] != "localhost"
@@ -65,13 +70,11 @@ require './lib/deep/deeper/output'
 #   Quelques initialisations et vérification
 # ---------------------------------------------------------------------
 
-if site.ajax?
-  site.require_module('ajax')
-else
-  require './lib/preambule'
-  execute_preambule
+unless ONLY_REQUIRE
+  if site.ajax?
+    site.require_module('ajax')
+  else
+    require './lib/preambule'
+    execute_preambule
+  end
 end
-
-
-debug "param(:tested) = #{param(:tested).inspect}"
-debug "param(:login) = #{param(:login).inspect}"
