@@ -25,6 +25,25 @@ class TestUser < DSLTestMethod
     super(tfile, &block)
   end
 
+  # Fonctionne comme `method_missing` mais method_missing
+  # est déjà défini pour la class `Object` dont héritent toutes
+  # les classes. Pour faire une propre captation, il faut
+  # donc définir self_method_missing qui sera appelé par
+  # method_missing
+  def self_method_missing method_name, *args, &block
+    if self.user.respond_to?(method_name)
+      if block_given?
+        self.user.send(method_name, &block)
+      elsif args
+        self.user.send(method_name, *args)
+      else
+        self.user.send(method_name)
+      end
+    else
+      raise "La méthode #{method_name.inspect} est inconnue de l'user courant."
+    end
+  end
+
   def description_defaut
     @description_defaut ||= "TEST USER ##{data[:id]} #{pseudo}"
   end
@@ -45,6 +64,11 @@ class TestUser < DSLTestMethod
     else
       User::table_users.select(where: ref_user).values.first || {}
     end
+  end
+
+  # Instance de l'user courant
+  def user
+    @user ||= User.get(data[:id])
   end
 
   # Pseudo de l'user

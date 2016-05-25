@@ -101,4 +101,10 @@ class TestObject < Test::Unit::TestCase
       assert(pair[0].is_not(pair[1], strict: true))
     end
   end
+
+
+  def test_de_is_instance_of
+    assert("string".is_instance_of(String))
+    assert_raise(TestUnsuccessfull){ "string".is_instance_of(Fixnum)}
+  end
 end

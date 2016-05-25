@@ -1,5 +1,7 @@
 # Classe de test `TString`
 
+OBSOLÈTES : MAINTENANT, UTILISER SIMPLEMENT LE STRING AVEC LES MÉTHODES `is`, `is_not`, `has` et `has_not`.
+
 * [Case-méthode `has` & dérivées](#casemethodehas)
 * [Case-méthode `is` & dérivées](#casemethodeisestderivees)
 * [Test d'une valeur String quelconque](#testdunevaleurstringquelqconte)

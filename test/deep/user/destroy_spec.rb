@@ -102,20 +102,33 @@ test_user duser[:id] do
 
   # Il doit avoir un programme
   program.is_not(nil, sujet: "La propriété `program` de l'user")
-  program.class.is(Unan::Program, sujet: "La classe du programme")
+  program.is_instance_of(Unan::Program, sujet: "La classe du programme")
+
+  let(:program_id){ program.id }
+
+  show "ID du programme : #{program.id}"
+
+  # On vérifie que les options soient bien réglées
+  #   options[0] = '1' (programme actif)
+  #   options[2] = '0' (ou rien) (programme non abandonné)
+  opts = program.options
+  show "Options du programme de l'user : #{opts}"
+  opts[0].is('1', sujet: 'Le premier bit d’options (actif)')
+  opts[2].is_not('1', sujet: 'Le troisième bit d’options (abandon)')
 
 end
-# TODO TEST : On doit voir le programme quelque part, dans une
-# liste qui affiche les programmes
-# TODO TEST : Les options du programme doivent être :
-#   options[0] = '1' (programme actif)
-#   options[2] = '0' (ou rien) (programme non abandonné)
+
 
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 
-# TODO ON DÉTRUIT L'USER
+# ON DÉTRUIT L'USER
+
+require './objet/user/destroy.rb'
+test_user duser[:id] do
+  proceed_destruction # dans le module destroy.rb ci-dessus
+end
 
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
@@ -124,6 +137,19 @@ end
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
+
+# TODO Son dossier de user ne doit plus exister
+# dans les données
+test_user duser[:id] do
+
+  # L'user ne doit plus répondre positivement à exist?
+  is_exist(sujet: 'L’user')
+  is_destroyed(sujet: 'L’user')
+
+  # Son bit de destruction doit être activé
+  options[3].is('1', sujet: "Le bit de marque de destruction de l'user")
+
+end
 
 # PROGRAMME UN AN UN SCRIPT
 # -------------------------
@@ -134,6 +160,18 @@ end
 # options[2] doit être à '1' (programme abandonné)
 # TEST : Le projet doit être marqué interrompu aussi ? Non, il n'existe
 # pas d'indication pour le projet.
+# TODO Son dossier user doit avoir été détruit
+test_user duser[:id] do
+  program.is(nil)
+end
+
+test_base 'site_hot.programs' do
+
+  # La liste des programmes actuelles ne doit plus contenir le
+  # programme de l'user
+  row(id: program_id).not_exist
+
+end
 
 # FORUM
 # ------

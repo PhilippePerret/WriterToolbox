@@ -80,7 +80,7 @@ class User
   def remove
     self.app_remove if self.respond_to?( :app_remove )
     folder.remove if folder.exist? # Dossier des données et databases persos
-    set_option(:destroyed, true)
+    set_option(:destroyed, 1)
   end
 
 end
