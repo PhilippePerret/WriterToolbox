@@ -127,10 +127,26 @@ SELECT id, items_ids FROM sujets_followers
     # Destruction de ses programmes dans la table
     where = "auteur_id = #{self.id}"
     nombre_programmes = Unan::table_programs.count(where:where)
+      # Note : Maintenant que les programmes terminés sont mis
+      # en archive, l'user ne peut plus avoir qu'un seul programme
+      # dans la table hot.
     nombre_projets    = Unan::table_projets.count(where:where)
+      # Idem que ci-dessus.
+    data_program = Unan::table_programs.select(where:where).values.first
     Unan::table_programs.delete(where:where)
+    # Modification des options et enregistrement dans les
+    # archives
+    opts = data_program[:options]
+    opts[2] = '1' # bit abandon
+    data_program[:options] = opts
+    Unan::table_archives_programs.insert(data_program)
+
     # Destruction de ses projets dans la table
+    # En fait, on l'enregistre dans les archives
+    data_projet = Unan::table_projets.select(where:where).values.first
     Unan::table_projets.delete(where:where)
+    # TODO: Remettre ça :
+    # Unan::table_archives_projets.insert(data_projet)
 
     debug "  = Destruction des programmes UAUS OK"
   end

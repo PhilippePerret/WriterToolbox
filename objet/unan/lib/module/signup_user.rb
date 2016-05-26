@@ -60,7 +60,7 @@ class ::User
     end
     begin
       # Création du programme (dans la table générale des programmes)
-      @program_id = Unan::Program.create
+      @program_id = Unan::Program.create self
       raise "@program_id (ID du programme créé) ne devrait pas être nil…" if @program_id.nil?
       debug "ID du nouveau programme : #{@program_id}"
       # On définit le programme pour ne pas avoir de problèmes par
@@ -72,7 +72,7 @@ class ::User
     end
     begin
       # Création du projet (dans la table générale des projets)
-      @projet_id  = Unan::Projet::create
+      @projet_id  = Unan::Projet::create self
       raise "@projet_id (ID du projet créé) ne devrait pas être nil…" if @projet_id.nil?
       debug "ID du nouveau projet : #{@projet_id}"
     rescue Exception => e

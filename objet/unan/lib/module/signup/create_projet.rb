@@ -7,17 +7,22 @@ class Projet
     # Rappel : il y a d'un côté le programme Unan::Program et de
     # l'autre le projet Unan::Projet développé au cours de ce
     # programme.
-    def create
+    #
+    # +auteur+ Instance User de l'auteur pour lequel il faut
+    # créer le projet. Introduit pour les tests, pour mieux
+    # isoler.
+    def create auteur = nil
+      auteur ||= user
       debug "-> Unan::Projet::create (création du projet)"
-      user_program_id = user.program_id
-      debug "program_id par user.program_id : #{user_program_id.inspect}"
+      user_program_id = auteur.program_id
+      debug "program_id par auteur.program_id : #{user_program_id.inspect}"
       # Au cas où… mais normalement aucun problème n'a été détecté
       program_id = Unan::Program::program_id
 
       if user_program_id.nil? || user_program_id != program_id
         debug "program_id par Unan::Program::program_id : #{Unan::Program::program_id.inspect}"
-        debug "user.program_id et Unan::Program::program_id sont divergents. Je prends le second (et j'essaie de rectifier l'auteur aussi)."
-        debug "user ID : #{user.id.inspect}"
+        debug "auteur.program_id et Unan::Program::program_id sont divergents. Je prends le second (et j'essaie de rectifier l'auteur aussi)."
+        debug "user ID : #{auteur.id.inspect}"
       end
       program = Unan::Program::get(program_id)
       auteur_program = program.auteur

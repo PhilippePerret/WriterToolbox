@@ -34,18 +34,5 @@ class Program
     @database ||= BdD::new(database_path.to_s)
   end
 
-  # Table générale des programmes UN AN UN SCRIPT
-  # C'est une sorte de raccourci
-  def table_programs
-    @table_programs ||= site.db.create_table_if_needed('unan_hot', 'programs')
-  end
-  alias :table :table_programs # pour les méthodes des objets BdD
-
-  # Table générales de tous les projets de UN AN UN SCRIPT
-  # C'est une sorte de raccourci
-  def table_projets
-    @table_projets ||= site.db.create_table_id_needed('unan_hot', 'projets')
-  end
-
 end #/Program
 end #/Unan

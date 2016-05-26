@@ -21,9 +21,17 @@ class << self
     @table_programs ||= get_table_hot('programs')
   end
 
+  def table_archives_programs
+    @table_archives_programs ||= get_table_archives('programs')
+  end
+
   # Table contenant tous les projets
   def table_projets
     @table_projets ||= get_table_hot('projets')
+  end
+
+  def table_archives_projets
+    @table_archives_projets ||= get_table_archives('projets')
   end
 
   # Table contenant la définition absolue de tous les
@@ -56,6 +64,10 @@ class << self
   # ---------------------------------------------------------------------
   #   Méthode générique construisant la table si nécessaire
   # ---------------------------------------------------------------------
+
+  def get_table_archives table_name
+    site.db.create_table_if_needed('unan_archives', table_name)
+  end
   def get_table_cold table_name
     site.db.create_table_if_needed('unan_cold', table_name)
   end

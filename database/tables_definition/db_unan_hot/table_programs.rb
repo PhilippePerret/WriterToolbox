@@ -1,9 +1,8 @@
 # encoding: UTF-8
 =begin
 
-Définition de la table pour un programme “Un An Un script”
-Ce sont les données générales
-
+  Définition de la table pour un programme “Un An Un script”
+  Ce sont les données générales
 =end
 def schema_table_unan_hot_programs
   @schema_table_unan_programs ||= {
@@ -64,7 +63,7 @@ def schema_table_unan_hot_programs
     rythme:       {type:"INTEGER(1)", constraint:"NOT NULL"},
 
     created_at:   {type:"INTEGER(10)", constraint:"NOT NULL"},
-    updated_at:   {type:"INTEGER(10)", constraint:"NOT NULL"},
+    updated_at:   {type:"INTEGER(10)", constraint:"NOT NULL"}
 
   }
 end

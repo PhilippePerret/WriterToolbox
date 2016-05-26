@@ -153,25 +153,35 @@ end
 
 # PROGRAMME UN AN UN SCRIPT
 # -------------------------
-# TODO On ne doit plus voir le programme de user dans la liste des
-# programmes UN AN UN SCRIPT
-# TODO TEST : Le programme doit être marqué interrompu (abandonné)
-# options[0] doit être à '0' (programme inactif)
-# options[2] doit être à '1' (programme abandonné)
-# TEST : Le projet doit être marqué interrompu aussi ? Non, il n'existe
-# pas d'indication pour le projet.
 # TODO Son dossier user doit avoir été détruit
 test_user duser[:id] do
   program.is(nil)
 end
 
-test_base 'site_hot.programs' do
-
+test_base 'unan_hot.programs' do
   # La liste des programmes actuelles ne doit plus contenir le
   # programme de l'user
   row(id: program_id).not_exist
-
 end
+
+test_base 'unan_hot.projets' do
+  row(id: projet_id).not_exist
+end
+
+test_base 'unan_archives.programs' do
+  # TODO Le programme doit avoir été mis dans les archives
+  # Le programme ne doit plus être actif
+  opts = row(id: program_id).data[:options]
+  opts[0].is('0', 'Le bit de programme actif')
+  # Le programme doit avoir été marqué abandonné
+  opts[2].is('1', 'Le bit de programme abandonné')
+end
+test_base 'unan_archives.projets' do
+  # Le projet doit avoir été mis dans les archives
+  row(id: projet_id).not_exist
+end
+
+
 
 # FORUM
 # ------
