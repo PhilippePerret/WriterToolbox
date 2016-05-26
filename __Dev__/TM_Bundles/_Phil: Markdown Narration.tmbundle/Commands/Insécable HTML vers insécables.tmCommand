@@ -12,7 +12,7 @@
 contenu = STDIN.read
 
 contenu.gsub!(/\&amp;nbsp\;/, ' ')
-['tt', 'em'].each do |tag|
+['tt', 'em', 'personnage', 'acteur', 'auteur', 'realisateur'].each do |tag|
   contenu.gsub!(/&lt;#{tag}&gt;(.*?)&lt;\/#{tag}&gt;/){
     str = $1
     if str.index(/[ \/\-]/).nil?
@@ -20,6 +20,13 @@ contenu.gsub!(/\&amp;nbsp\;/, ' ')
     else
       "#{tag}:|#{str}|"
     end
+  }
+end
+{
+  'b' =&gt; '**', 'strong' =&gt; '**', 'i' =&gt; '*'
+}.each do |badtag, autour|
+  contenu.gsub!(/&lt;#{badtag}&gt;(.*?)&lt;\/#{badtag}&gt;/){
+    "#{autour}#{$1}#{autour}"
   }
 end
 
