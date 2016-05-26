@@ -4,18 +4,18 @@
 # librairies de débug soient en place) pour laisser des messages
 # de débug.
 #
-# @usage      safed_log <message>
+# @usage      main_safed_log <message>
 #
 # Il faut ensuite aller charger le fichier ./safed.log par
 # FTP
-def safed_log mess
-  ref_log.puts mess
+def main_safed_log mess
+  main_ref_log.puts mess
 end
-def ref_log
-  @ref_log ||= File.open(safe_log_path, 'a')
+def main_ref_log
+  @main_ref_log ||= File.open(main_safe_log_path, 'a')
 end
-def safe_log_path
-  @safe_log_path ||= "./safed.log"
+def main_safe_log_path
+  @main_safe_log_path ||= "./safed.log"
 end
 
 # ONLY_REQUIRE est définie pour essayer de ne faire que
@@ -31,9 +31,9 @@ unless defined?(ONLINE)
 end
 
 def require_folder dossier
-  # safed_log "Require dossier #{dossier}"
+  # main_safed_log "Require dossier #{dossier}"
   Dir["#{dossier}/**/*.rb"].each do |m|
-    # safed_log "Module : #{m}"
+    # main_safed_log "Module : #{m}"
     require m
   end
 end

@@ -129,7 +129,8 @@ end # << self SiteHtmlConnexions
     build_message_admin
   end
 
-  # On construit le message pour l'administrateur
+  # On construit le message pour l'administrateur, qui va lui 
+  # rapporter toutes les connexions qui ont eu lieu.
   def build_message_admin
     titre = "Rapport #{Cron::online? ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"
 
@@ -149,19 +150,25 @@ end # << self SiteHtmlConnexions
       last_str  = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
       duree  = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
       duree_str = duree.to_s.ljust(5)
-      whois_str = if ipdata[:whois].nil?
-        "- unknown -"
-      else
-        if ipdata[:whois].has_key?(:pseudo)
-          ipdata[:whois][:pseudo]
-        elsif ipdata[:whois].has_key?(:id)
-          User::get(ipdata[:whois][:id]).pseudo
-        elsif ipdata[:whois].has_key?(:user_id)
-          User::get(ipdata[:whois][:user_id]).pseudo
+      whois = ipdata[:whois]
+      whois_str = 
+        case whois
+        when NilClass then "- unknown -"
+        when String then whois
+        when Hash
+          if whois.key?(:pseudo)
+            whois[:pseudo]
+          elsif whois.key?(:id)
+            User::get(whois[:id]).pseudo
+          elsif whois.key?(:user_id)
+            User::get(whois[:user_id]).pseudo
+          else
+            "INCONNU AVEC CLÉS #{whois.keys.join(', ')}"
+          end
         else
-          "INCONNU AVEC CLÉS #{ipdata[:whois].keys.join(', ')}"
-        end
-      end.ljust(30)
+          # Ni String, ni Nil, ni Hash
+          "- unknown & unfoundable (whois est #{whois.class}) ="
+        end.ljust(30)
       routes_str = ipdata[:nombre_routes].to_s.rjust(5)
       "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
     end.join("\n")

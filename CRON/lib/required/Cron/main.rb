@@ -89,11 +89,11 @@ class << self
       require "./lib/required"
       safed_log "     <- Cron::requerir_les_librairies_du_site"
     rescue Exception => e
-      log "# Impossible de charger les librairies du site : #{e.message}"
-      log e.backtrace.join("\n")
       safed_log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
       safed_log "### JE DOIS RENONCER"
       safed_log e.backtrace.join("\n")
+      log "# Impossible de charger les librairies du site : #{e.message}"
+      log e.backtrace.join("\n")
       exit(1)
     end
   end

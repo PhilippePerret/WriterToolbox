@@ -444,7 +444,7 @@ Le fichier `./lib/required.rb` charge des librairies de cron puis appelle la mé
 
 Pendant tout le processus, on peut utiliser la méthode :
 
-  safed_log message
+  main_safed_log message
 
 … pour enregistrer un message qui le sera à tout moment.
 

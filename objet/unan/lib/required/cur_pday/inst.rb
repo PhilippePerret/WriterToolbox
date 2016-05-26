@@ -395,7 +395,7 @@ class CurPDay
           end
 
           # # Débug des valeurs
-          # safed_log "\tself.indice = #{self.indice.inspect}\n"+
+          # main_safed_log "\tself.indice = #{self.indice.inspect}\n"+
           # "\tidpday       = #{idpday.inspect}\n"+
           # "\tduree        = #{wdata[:duree].inspect}\n"+
           # "\tdepassement  = #{depassement.inspect}\n"+

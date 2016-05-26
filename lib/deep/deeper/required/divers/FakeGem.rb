@@ -69,12 +69,12 @@ class FakeGem
   #   @folder_name += "-#{version}" unless version.nil_if_empty.nil?
   #   seek_folder_gem_to_load
   #   if real_folder_name.nil?
-  #     safed_log "# Impossible de trouver le gem #{@folder_name}"
+  #     main_safed_log "# Impossible de trouver le gem #{@folder_name}"
   #     raise "Impossible de trouver le gem #{@folder_name}…"
   #   end
   #   @gem_name = gem_name_from_folder_name real_folder_name
-  #   safed_log "GEM NAME : #{gem_name}"
-  #   safed_log "GEM PATH FOLDER : #{real_folder_path}"
+  #   main_safed_log "GEM NAME : #{gem_name}"
+  #   main_safed_log "GEM PATH FOLDER : #{real_folder_path}"
   #   $LOAD_PATH << "#{real_folder_path}/lib"
   #   # Le gem_name peut être sous la forme "multipart-post" ou
   #   # "multipart_post" (c'est-à-dire avec les tirets remplacés
@@ -95,7 +95,7 @@ class FakeGem
   #   gname   = dname.join('-')
   # end
   #
-  # def safed_log mess
+  # def main_safed_log mess
   #   ref_safe_log.puts mess
   # end
   # def ref_safe_log
@@ -111,14 +111,14 @@ class FakeGem
   # def seek_folder_gem_to_load
   #   @real_folder_name, @real_folder_path =
   #   if gems_restsite.include?(folder_name)
-  #     safed_log "Dossier Gem #{folder_name} trouvé dans les gems RestSite"
+  #     main_safed_log "Dossier Gem #{folder_name} trouvé dans les gems RestSite"
   #     [folder_name, File.join(self.class::local_gems_folder, folder_name)]
   #   elsif commons_gems.include?(folder_name)
-  #     safed_log "Dossier Gem #{folder_name} trouvé dans les gems généraux"
+  #     main_safed_log "Dossier Gem #{folder_name} trouvé dans les gems généraux"
   #     [folder_name, File.join(self.class::gems_folder, folder_name)]
   #   else
   #     # Il faut chercher
-  #     safed_log "Dossier Gem #{folder_name} non trouvé dans les gems RestSite ou généraux. Il faut le chercher par le nom."
+  #     main_safed_log "Dossier Gem #{folder_name} non trouvé dans les gems RestSite ou généraux. Il faut le chercher par le nom."
   #     seek_folder_gem_with_gem_name
   #   end
   #   return nil
@@ -130,7 +130,7 @@ class FakeGem
   #   ].each do |gems_folder_names, gems_folder_path|
   #     gems_folder_names.each do |real_folder_name|
   #       gname = (gem_name_from_folder_name real_folder_name)
-  #       safed_log "Recherche avec #{real_folder_name} (gname = '#{gname}')"
+  #       main_safed_log "Recherche avec #{real_folder_name} (gname = '#{gname}')"
   #       return [real_folder_name, File.join(gems_folder_path, real_folder_name)] if gname == folder_name
   #     end
   #   end
