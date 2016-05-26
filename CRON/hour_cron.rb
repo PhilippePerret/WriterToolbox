@@ -27,7 +27,7 @@ end
 begin
 
   # Appel du fichier required.rb qui va accomplir toutes les
-  # actions
+  # actions. Note : Ce ne sont pas les librairies du site
   require File.join(THIS_FOLDER, 'lib', 'required.rb')
 
   # On peut marquer la fin du safed log sans erreur

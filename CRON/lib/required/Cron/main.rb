@@ -41,8 +41,10 @@ class << self
       # Voir s'il faut faire un résumé des connexions
       # par IP (en fonction des fréquences)
       safed_log "#{separation}[Cron::run] Traitement des connexions par IP"
-      SiteHtml::Connexions::resume
+      SiteHtml::Connexions.resume
 
+      safed_log "#{separation} [Cron::run] Envoi des permanent tweets (si nécessaire)"
+      SiteHtml::Tweet.send_permanent_tweets_if_needed
 
       safed_log "#{separation}[Cron::run] Traitement du programme UN AN UN SCRIPT"
       traitement_programme_un_an_un_script

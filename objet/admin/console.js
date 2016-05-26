@@ -22,6 +22,12 @@ $.extend(window.RSConsole, {
     }[lword]
   },
 
+  // Type de commande détectée
+  // Cela permet notamment d'envoyer des messages d'aide pour
+  // certains type comme par exemple pour le tweet permanent
+  // pour lequel a été implémentée cette fonctionnalité.
+  type_command: null,
+
   // Indique la longueur du code tapé
   // Si la méthode détecte que c'est un tweet, elle décompte
   // le nombre de caractères
@@ -32,6 +38,7 @@ $.extend(window.RSConsole, {
     var words = c.split(' ');
     var nombre_mots = words.length;
     var first_word = words[0];
+    var second_word = words[1];
     // if (words.length > 0){ last_word  = words[nombre_mots - 1] }
     this.detecte_sujet( first_word );
     // if( sc = this.last_word_is_a_shortcut(last_word) ){
@@ -42,9 +49,26 @@ $.extend(window.RSConsole, {
     // }
     var l = c.length;
     if (this.sujet_courant == 'twitter'){
+      // Cas d'un tweet
       l = l - first_word.length;
+      var amorce = 'Tweet' ;
+      // Y a-t-il des options ?
+      if ( second_word == 'P' ){
+        amorce += ' PERMANENT' ;
+        l = l - 3 ;
+        if (this.type_command != 'tweet permanent'){
+          if(OFFLINE){
+            Flash.error("Noter que les tweets permanents doivent être envoyés seulement en ONLINE. Ce tweet ne sera pas envoyé.")
+          }
+          this.type_command = 'tweet permanent';
+          Flash.show("Un tweet permanent est composé d'une “citation entre guillemets suivi d'un” lien bitly.");
+        }
+      } else {
+        this.type_command = 'tweet'
+      }
+
       reste = 140 - l ;
-      mess = "Tweet : " + reste + " restants"
+      mess = amorce + " : " + reste + " restants" ;
       if(reste < 0 && ev.keyCode != 8){
         $('span#longueur_code').css({color: 'red'})
         ev.preventDefault();
@@ -53,6 +77,7 @@ $.extend(window.RSConsole, {
         $('span#longueur_code').css({color: 'inherit'})
       }
     } else {
+      this.type_command = null ;
       mess = l.toString();
     }
     $('span#longueur_code').html(mess);
@@ -121,7 +146,7 @@ dossier temporaire. __\
 
 // AIDE TWITTER
       twitter: " \
-Commande de base : `twit <message>` __\
+Commande de base : `twit[ <option>] <message>` __\
 URL site dans message : ... [URL]route/12/voir... __\
 __\
 Le comptage des lettres empêche de dépasser la limite des 140 caractères __\
@@ -129,6 +154,14 @@ mais il faut surveiller quand même avec les raccourcis. __\
 __\
 Pour obtenir une URL BITLY (lien court) rejoindre la \\<a href='bitly/main' target='_blank'>section Bitly du site\\</a> __\
 __\
+OPTIONS __\
+------- __\
+P : Transforme le tweet en 'tweet PERMANENT', c'est-à-dire en un __\
+    tweet qui sera envoyé régulièrement de façon automatique __\
+    Un tel tweet doit être composé d'une “citation” entre guillemets __\
+    suivi d'un lien bitly vers la page du site concernée. __\
+    Exemple : `twit P “Ceci est un extrait d'une page de cours” __\
+                http://bitly/2546` __\
       "
     }[sujet].
       replace(/\\</g, '---SUPP---').

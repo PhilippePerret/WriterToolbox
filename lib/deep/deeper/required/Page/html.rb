@@ -34,6 +34,15 @@ class Page
     end.join("\n")
   end
 
+  def raw_javascript
+    <<-HTML
+<script type="text/javascript">
+ONLINE = #{ONLINE.inspect};
+OFFLINE = !ONLINE;
+</script>
+    HTML
+  end
+
   def css
     allcss = Array::new
     allcss += Dir["#{site.folder_view}/css/**/*.css"]

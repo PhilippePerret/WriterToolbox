@@ -7,9 +7,25 @@ class SiteHtml
   #   site.require_module 'twitter'
   #   site.tweet "Le message à twitter"
   #
+  # Si le message commence exactement par "P ", il s'agit
+  # d'un TWEET PERMANENT (cf. manuel Divers > Twitter)
+  #
   def tweet message
-    require 'twitter'
-    Tweet::send message
+    is_permanent = message.start_with?('P ')
+    message = message[2..-1].strip if is_permanent
+
+    # === ENVOI ===
+    if is_permanent && OFFLINE
+      flash "En ONLINE, le message permanent suivant aurait été twitté : #{message}."
+    elsif is_permanent
+      ptweet = Tweet::new(nil, message)
+      ptweet.create
+      flash "Le tweet ##{ptweet.id} sera envoyé au prochain tour de cron."
+    else
+      require 'twitter'
+      Tweet::send message
+    end
+
   end
   alias :twitte :tweet
 
@@ -36,7 +52,129 @@ class SiteHtml
         client.update(message)
       end
 
+      # Pour envoyer des tweets permanents
+      # +nombre+ Nombre de tweets à envoyer par ce biais.
+      #
+      # Cette méthode est appelée par le CRON-JOB quotidien
+      #
+      # RETURN La méthode retourne un Array contenant en
+      # première valeur le succès ou non de l'opération et
+      # en seconde valeur le message soit de succès soit
+      # le message d'erreur rencontrée.
+      #
+      def auto_tweet(nombre = 1)
+        # Relever dans la table les derniers tweets les
+        # plus lointains et les moins envoyés. Bien noter
+        # que ça va dans cet ordre. Un message peu envoyé
+        # passera toujours après un message envoyé longtemps
+        # auparavant même s'il a été envoyé plus de fois.
+        # Dans le cas contraire, tous les nouveaux messages
+        # seraient toujours envoyés plusieurs fois jusqu'à
+        # ce que leur nombre ait atteint les autres nombre
+        # d'envois.
+        req_data = {order: 'last_sent ASC, count ASC', limit: nombre, colonnes:[]}
+        tweets_ids = table_permanent_tweets.select(req_data).keys
+        tweets_ids.each { |tweet_id| Tweet::new(tweet_id).resend }
+      rescue Exception => e
+        bt = e.backtrace.join("\n")
+        [false, "Les tweets permanents n'ont pas pu être envoyés : #{e.message}\n#{bt}"]
+      else
+        # On retourne un résultat positif d'opération
+        s = nombre > 1 ? 's' : ''
+        [true, "#{nombre} tweet#{s} permanent#{s} ré-expédiés."]
+      end
+
     end #/<<self
 
+    # ---------------------------------------------------------------------
+    #   INSTANCES DES TWEETS (POUR LES TWEETS PERMANENTS)
+    # ---------------------------------------------------------------------
+
+    # Instanciation d'un tweet permanent
+    #
+    # Si +id+ est nil, c'est une création
+    # Si +message+ est nil, c'est un rechargement de tweet,
+    # certainement pour un renvoi ou une modification du
+    # message.
+    def initialize(id, message = nil)
+      @id       = id
+      @message  = message
+    end
+
+    # Ré-expédie le tweet
+    def resend
+      # Incrémenter le nombre d'envois (count)
+      @count += 1
+      # Modifier la date de dernier envoi
+      @last_sent = NOW
+      # Envoyer
+      self.class.send( message )
+      # Actualiser les données
+      update
+    end
+
+    # Création du permanent tweet
+    #
+    # Note : À la création du tweet, on ne l'envoie pas
+    # car il a déjà été envoyé par d'autres moyens. On
+    # ne fait vraiment que consigner sa donnée.
+    def create
+      extract_bitly
+      @count      = 0
+      @last_sent  = 0
+      @id = table.insert( data2save.merge(created_at: NOW) )
+    end
+    def update
+      table.set(id, data2save)
+    end
+
+    # Les données à sauver dans la tables des tweets
+    # permanents.
+    def data2save
+      {
+        message:      message,
+        bitlink:      bitlink,
+        count:        count,
+        last_sent:    last_sent,
+        updated_at:   NOW
+      }
+    end
+
+    # ---------------------------------------------------------------------
+    #   Propriétés
+    # ---------------------------------------------------------------------
+    def id;         @id         ||= dispatch(:id)         end
+    def message;    @message    ||= dispatch(:message)   end
+    def bitlink;    @bitlink    ||= dispatch(:bitlink)    end
+    def count;      @count      ||= dispatch(:count)      end
+    def last_sent;  @last_sent  ||= dispatch(:last_sent)  end
+    def created_at; @created_at ||= dispatch(:created_at) end
+    def updated_at; @updated_at ||= dispatch(:updated_at) end
+    def data;       @data       ||= table.get(id)     end
+
+    # /Propriétés
+    # ---------------------------------------------------------------------
+
+    # Dispatche toutes les données du permanent link et
+    # retourne la donnée attendue
+    def dispatch kreturned
+      data.each {|k, v| instance_variable_set("@#{k}", v) }
+      data[kreturned]
+    end
+
+    # À la création du lien permanent, cette méthode permet
+    # d'extraire le lien bitly du message (noter que ce lien n'est pas
+    # retiré du message lui-même)
+    #
+    # Affecte la donnée @bitlink
+    def extract_bitly
+      bl = message.match(/^(.*)(http:\/\/bit\.ly\/(?:.*))$/).to_a[2]
+      bl != nil || raise("Impossible de trouver le lien bitly dans le message…")
+      @bitlink = bl
+    end
+
+    def table
+      @table ||= site.db.create_table_if_needed('site_cold', 'permanent_tweets')
+    end
   end #/Tweet
 end #/SiteHtml
