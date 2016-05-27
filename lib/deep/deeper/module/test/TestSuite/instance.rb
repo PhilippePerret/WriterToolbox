@@ -66,8 +66,10 @@ class TestSuite
     # requête CURL à chaque nouvelle feuille de tests
     ptrhp = SiteHtml::TestSuite::Request::CURL::tmp_request_header_path
 
+    # --------------------------
     # Boucle sur chaque fichier
-    files.each do |p|
+    # --------------------------
+    files.each_with_index do |p, file_index|
       infos[:nombre_files] += 1
 
       # On initialise toujours le fichier HEADER des
@@ -76,6 +78,7 @@ class TestSuite
 
       # On passe le test en test courant
       @current = ::SiteHtml::TestSuite::TestFile::new(self, p)
+      @current.itest_file = file_index + 1
       @current.execute
       @test_files << @current
     end

@@ -28,6 +28,19 @@ class Row
     @ttable   = ttable
     @specs    = specs
     @options  = options
+    check_validity_or_raise
+  end
+
+  # Méthode qui checke la validité des spécifications de
+  # la rangée et produit une exception s'il y a un problème.
+  # Cette procédure permet notamment de ne pas avoir de définition
+  # de colonne vide.
+  def check_validity_or_raise
+    return if specs.nil? || specs.empty?
+    specs.each do |k, v|
+      v == nil || next
+      raise "[#{self.class} Impossible d'avoir une valeur nil (clé #{k.inspect})"
+    end
   end
 
 end #/Row

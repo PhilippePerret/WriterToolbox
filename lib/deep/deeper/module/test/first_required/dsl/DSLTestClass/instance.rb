@@ -15,6 +15,10 @@ class DSLTestMethod
   # fichier.
   attr_reader :indice_test_method
 
+  # {String} Ligne depuis laquelle a été appelée la
+  # méthode de test. Elle est tirée de caller.
+  attr_accessor :line
+
   # Instanciation commune à toutes les méthode de test
   def initialize tfile, &block
     @tfile = tfile

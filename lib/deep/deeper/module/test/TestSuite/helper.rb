@@ -136,7 +136,7 @@ class TestSuite
         ( verbose?         || quiet? === false )
       end
       infos[:nombre_cas] += tmethod.messages_count
-      c = tmethod.full_libelle_output @itestfile
+      c = tmethod.full_libelle_output
       c << tmethod.messages_output if verbose || !tmethod.success?
       c
     end.join('')

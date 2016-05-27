@@ -70,7 +70,7 @@ class Request
     debug "@resultats: #{@resultats.inspect}"
     @resultats = @resultats.collect { |h| h.to_sym }
     unless plusieurs_resultats?
-      nombre_resultats <= 1 || error(ERROR[:more_than_one_result] % nombre_resultats)
+      nombre_resultats <= 1 || raise(ERROR[:more_than_one_result] % nombre_resultats)
     end
     return self
   end

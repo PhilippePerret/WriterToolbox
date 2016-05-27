@@ -3,8 +3,18 @@ class DSLTestMethod
 
   # Le libellé complet, tel qu'il apparaitra dans le rapport final
   # affiché, avec le numéro de file-test et de test-case.
-  def full_libelle_output ifile
-    "#{ifile}.#{indice_test_method} - #{libelle}".in_div(class:'tlib')
+  def full_libelle_output
+    full_libelle_string.in_a(href: href).in_div(class:'tlib')
+  end
+
+  def full_libelle_string
+    "#{tfile.itest_file}.#{indice_test_method} - lig:#{line} - #{libelle}"
+  end
+
+  # Href pour ouvrir le fichier et se rendre à la ligne
+  # voulu (dans Atom)
+  def href
+    @href ||= "atm://open?url=file://#{File.expand_path(tfile.path)}&line=#{line}"
   end
 
   # Sortie des messages
