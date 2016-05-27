@@ -55,6 +55,8 @@ class << self
       safed_log "    = Fin Cron::run ="
     end
 
+    error_log "Un erreur volontaire pour voir si ça fonctionne."
+
   rescue Exception => e
 
     error_log "# ERREUR FATALE : #{e.message}"  rescue nil
