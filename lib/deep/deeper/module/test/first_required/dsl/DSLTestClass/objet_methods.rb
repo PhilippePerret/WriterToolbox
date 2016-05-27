@@ -21,12 +21,12 @@ class DSLTestMethod
   end
 
   # Une instance de dossier à tester
-  def folder(path, name = nil)
+  def tfolder(path, name = nil)
     SiteHtml::TestSuite::TFolder.new path, name
   end
 
   # Une instance de fichier à tester
-  def file(path, name = nil)
+  def tfile(path, name = nil)
     SiteHtml::TestSuite::TFile.new(path, name)
   end
 

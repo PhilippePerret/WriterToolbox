@@ -114,8 +114,8 @@ test_user duser[:id] do
 
   # Il doit avoir un dossier et un fichier pour son nouveau
   # programme
-  folder("./database/data/unan/user/#{duser[:id]}").exists
-  file("./database/data/unan/user/#{duser[:id]}/programme#{program.id}.db").exists
+  tfolder("./database/data/unan/user/#{duser[:id]}").exists
+  tfile("./database/data/unan/user/#{duser[:id]}/programme#{program.id}.db").exists
 
 end
 
@@ -166,8 +166,8 @@ test_user duser[:id] do
 
   # Il ne doit plus avoir de dossier dans les
   # data
-  file("./database/data/unan/user/#{duser[:id]}/programme#{duser[:program_id]}.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exists
-  folder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exists
+  tfile("./database/data/unan/user/#{duser[:id]}/programme#{duser[:program_id]}.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exists
+  tfolder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exists
 
 end
 

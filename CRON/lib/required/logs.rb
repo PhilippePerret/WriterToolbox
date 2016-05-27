@@ -119,8 +119,8 @@ end
 def safed_log mess
   safedlog.add mess
 end
-def error_log mess
-  errorlog.add mess
+def error_log(mess, amorce = nil)
+  errorlog.add mess, amorce
 end
 alias :log_error :error_log
 
