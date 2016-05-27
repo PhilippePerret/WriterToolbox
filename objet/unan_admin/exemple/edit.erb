@@ -62,3 +62,9 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
 
   <%= form.submit_button("Enregistrer l'exemple") %>
 </form>
+<%
+# Pour bloquer la fenêtre
+%>
+<script type="text/javascript">
+$(document).ready(function(){UI.bloquer_la_page(true)})
+</script>
