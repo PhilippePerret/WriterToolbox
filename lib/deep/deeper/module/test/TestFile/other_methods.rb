@@ -22,7 +22,7 @@ class TestFile
   def tget var_name
     SiteHtml::TestSuite.get_variable var_name
   end
-  def :get :tget
+  alias :get :tget
 
 end #/TestFile
 end #/TestSuite

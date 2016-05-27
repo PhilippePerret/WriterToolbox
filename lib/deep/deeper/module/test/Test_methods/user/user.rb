@@ -67,8 +67,13 @@ class TestUser < DSLTestMethod
   end
 
   # Instance de l'user courant
+  #
+  # Noter que chaque instance possède une instance User
+  # vierge, car on utilise la méthode `new` et non pas
+  # `get`, ce qui permet vraiment de faire des tests sur
+  # des user "neuf"
   def user
-    @user ||= User.get(data[:id])
+    @user ||= User.new(data[:id])
   end
 
   # Pseudo de l'user

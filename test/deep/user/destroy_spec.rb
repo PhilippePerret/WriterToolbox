@@ -105,21 +105,17 @@ test_user duser[:id] do
   program.is_instance_of(Unan::Program, sujet: "La classe du programme")
 
   let(:program_id){ program.id }
+  duser.merge!(
+    program_id: program.id,
+    projet_id:  projet.id
+    )
+
+  show "PROJET_ID : #{duser[:projet_id].inspect}"
 
   # Il doit avoir un dossier et un fichier pour son nouveau
   # programme
   folder("./database/data/unan/user/#{duser[:id]}").exists
   file("./database/data/unan/user/#{duser[:id]}/programme#{program.id}.db").exists
-
-  show "ID du programme : #{program.id}"
-
-  # On vérifie que les options soient bien réglées
-  #   options[0] = '1' (programme actif)
-  #   options[2] = '0' (ou rien) (programme non abandonné)
-  opts = program.get(:options)
-  show "Options du programme de l'user : #{opts.inspect}"
-  opts[0].is('1', sujet: 'Le premier bit d’options (actif)')
-  opts[2].is_not('1', sujet: 'Le troisième bit d’options (abandon)')
 
 end
 
@@ -127,7 +123,14 @@ test_base "unan_hot.programs" do
   progid = tget(:program_id)
   show "PROGRAM ID = #{progid.inspect}"
   show "tget(:program_id) = #{tget(:program_id).inspect}"
-  show "Data du programme : #{row(program_id: progid).data.inspect}"
+
+  # On vérifie que les options soient bien réglées
+  #   options[0] = '1' (programme actif)
+  #   options[2] = '0' (ou rien) (programme non abandonné)
+  opts = row(duser[:program_id]).data[:options]
+  show "Options du programme de l'user : #{opts.inspect}"
+  opts[0].is('1', sujet: 'Le premier bit d’options (actif)')
+  opts[2].is_not('1', sujet: 'Le troisième bit d’options (abandon)')
 end
 
 
@@ -163,39 +166,44 @@ test_user duser[:id] do
 
   # Il ne doit plus avoir de dossier dans les
   # data
-  file("./database/data/unan/user/#{duser[:id]}/programme1.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exists
+  file("./database/data/unan/user/#{duser[:id]}/programme#{duser[:program_id]}.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exists
   folder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exists
 
 end
 
 # PROGRAMME UN AN UN SCRIPT
 # -------------------------
-# TODO Son dossier user doit avoir été détruit
 test_user duser[:id] do
   program.is(nil)
 end
 
 test_base 'unan_hot.programs' do
-  # La liste des programmes actuelles ne doit plus contenir le
+  # La liste des programmes ne doit plus contenir le
   # programme de l'user
-  row(id: program_id).not_exist
+  row(id: duser[:program_id]).not_exists
 end
 
 test_base 'unan_hot.projets' do
-  row(id: projet_id).not_exist
+  row( id: duser[:projet_id] ).not_exists
 end
 
 test_base 'unan_archives.programs' do
+  description 'Vérification des options du programme dans les archives'
   # Le programme doit avoir été mis dans les archives
   # Le programme ne doit plus être actif
-  opts = row(id: program_id).data[:options]
+  opts = row(id: duser[:program_id]).data[:options]
   opts[0].is('0', 'Le bit de programme actif')
   # Le programme doit avoir été marqué abandonné
   opts[2].is('1', 'Le bit de programme abandonné')
 end
+test_base 'unan_hot.projets' do
+  description 'Le projet n’est plus dans les données courantes'
+  row(duser[:projet_id]).not_exists
+end
 test_base 'unan_archives.projets' do
+  description 'Vérification de la présence des données projets dans les archives de projets.'
   # Le projet doit avoir été mis dans les archives
-  row(id: projet_id).not_exist
+  row(id: duser[:projet_id]).exists
 end
 
 
