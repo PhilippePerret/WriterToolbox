@@ -85,13 +85,15 @@ site.display_taches_for_user = true
 # :now / :tout_de_suite   Alerte immédiate : dès que l'user se
 #                         connecte au site, l'administion est avertie
 # :one_an_hour / :une_par_heure
+# :twice_a_day / :deux_par_jour
+#     Deux résumés par jour, à midi et à minuit
 # :one_a_day / :une_par_jour
 #     Résumé quotidien des connexions de la journée
 # :one_a_week / :une_par_semaine
 #     Résumé hebdomadaire des connexions de la semaine
 # :one_a_month / :une_par_mois
 #     Résumé mensuel des connexions du mois
-site.alert_apres_login = :one_an_hour
+site.alert_apres_login = :twice_a_day
 
 # ---------------------------------------------------------------------
 # TESTS

@@ -69,6 +69,8 @@ class << self
       false # c'est géré autrement
     when ":one_an_hour", ":une_par_heure"
       return true # puisque c'est le cron horaire
+    when ':twice_a_day', 'deux_par_jour'
+      return premiere_heure || now.hour == 12
     when ":one_a_day", ":une_page_jour"
       # Retourne true si on est dans la première heure du jour
       return premiere_heure
@@ -129,7 +131,7 @@ end # << self SiteHtmlConnexions
     build_message_admin
   end
 
-  # On construit le message pour l'administrateur, qui va lui 
+  # On construit le message pour l'administrateur, qui va lui
   # rapporter toutes les connexions qui ont eu lieu.
   def build_message_admin
     titre = "Rapport #{Cron::online? ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"
@@ -150,25 +152,7 @@ end # << self SiteHtmlConnexions
       last_str  = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
       duree  = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
       duree_str = duree.to_s.ljust(5)
-      whois = ipdata[:whois]
-      whois_str = 
-        case whois
-        when NilClass then "- unknown -"
-        when String then whois
-        when Hash
-          if whois.key?(:pseudo)
-            whois[:pseudo]
-          elsif whois.key?(:id)
-            User::get(whois[:id]).pseudo
-          elsif whois.key?(:user_id)
-            User::get(whois[:user_id]).pseudo
-          else
-            "INCONNU AVEC CLÉS #{whois.keys.join(', ')}"
-          end
-        else
-          # Ni String, ni Nil, ni Hash
-          "- unknown & unfoundable (whois est #{whois.class}) ="
-        end.ljust(30)
+      whois_str = pseudo_in_ipdata(ipdata).ljust(30)
       routes_str = ipdata[:nombre_routes].to_s.rjust(5)
       "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
     end.join("\n")
@@ -176,7 +160,7 @@ end # << self SiteHtmlConnexions
     # On ajoute les routes empruntées par IP
     mess += "\n\n=== ROUTES PAR IPS ===\n"
     mess += @report[:by_ip].collect do |ip, ipdata|
-      "#{ip}\n" +
+      "#{ip} #{pseudo_in_ipdata ipdata}\n" +
       ipdata[:routes].collect do |route|
         "\t- #{route}"
       end.join("\n")
@@ -189,6 +173,27 @@ end # << self SiteHtmlConnexions
 
     log "RÉSULTATS À ENVOYER :\nTitre : #{@report[:titre]}\nMessage :\n#{@report[:message]}"
 
+  end
+
+  def pseudo_in_ipdata ipdata
+    whois = ipdata[:whois]
+    case whois
+    when NilClass then "- unknown -"
+    when String   then whois
+    when Hash
+      if whois.key?(:pseudo)
+        whois[:pseudo]
+      elsif whois.key?(:id)
+        User::get(whois[:id]).pseudo
+      elsif whois.key?(:user_id)
+        User::get(whois[:user_id]).pseudo
+      else
+        "INCONNU AVEC CLÉS #{whois.keys.join(', ')}"
+      end
+    else
+      # Ni String, ni Nil, ni Hash
+      "- unknown & unfoundable (whois est #{whois.class}) -"
+    end
   end
 
   def message_sous_rapport
