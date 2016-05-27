@@ -54,12 +54,9 @@ class SafedErrorLog
     end
 
     def send_report_errors
-      site.send_mail(
-        to:         site.mail,
-        from:       site.mail,
-        subject:    "RAPPORT D'ERREUR du #{Time.now}",
-        message:    report_errors,
-        formated:   true
+      MiniMail.new().send(
+        report_errors,
+        "RAPPORT D'ERREUR du #{Time.now}"
       )
     rescue Exception => e
       error_log "Impossible d'envoyer le rapport d'erreur : #{e.message}"

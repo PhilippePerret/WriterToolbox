@@ -6,10 +6,6 @@
 
 =end
 
-# Pour l'envoi des mails
-require 'cgi'
-require 'net/smtp'
-
 
 def safed_log mess
   File.open(safed_log_path, 'a') do |f|
@@ -20,54 +16,16 @@ def safed_log_path
   @safed_log_path ||= "#{RACINE}/CRON/mini_cron.log"
 end
 
+# Donc le dossier CRON
 THIS_FOLDER = File.expand_path(File.dirname(__FILE__))
+# Donc le dossier de l'application, qu'on soit online ou offline
 RACINE      = File.expand_path(File.join(THIS_FOLDER, '..'))
 ONLINE      = RACINE.split('/').last == "WriterToolbox"
 OFFLINE     = !ONLINE
 
-class MiniMail
-  # ---------------------------------------------------------------------
-  #   SYNTAXE
-  #     MiniMail.new().send(<message>)
-  def send message, sujet = nil
-    from = 'phil@laboiteaoutilsdelauteur.fr'
-    to   = 'phil@laboiteaoutilsdelauteur.fr'
-
-    # On prend le log
-    log_message = File.open(safed_log_path, 'r'){|f|
-      f.read.force_encoding('utf-8')
-    } rescue ""
-
-    # On met en forme le message minimum
-    message = <<-MAIL
-From: <#{from}>
-To: <#{to}>
-MIME-Version: 1.0
-Content-type: text/plain; charset=UTF-8
-Subject: #{sujet || "MAIL D’ALERTE du mini-cron - #{Time.now}"}
-
-#{message}
-
-LOG
-
-#{log_message}
-    MAIL
-    serverfrom = ONLINE ? 'www.laboiteaoutilsdelauteur.fr' : 'localhost'
-    Net::SMTP.start(
-      data[:server], data[:port], serverfrom,
-      data[:user], data[:password]
-      ) do |smtp|
-        smtp.send_message message, from, to
-    end
-  end
-
-  def data
-    @data ||= begin
-      require File.join(RACINE, 'data', 'secret', 'data_mail.rb')
-      MY_SMTP.merge(DATA_MAIL)
-    end
-  end
-end # / MiniMail
+# Requérir la classe MiniMail qui permettra d'envoyer
+# le mail.
+require "#{THIS_FOLDER}/lib/required/mini_mail"
 
 # ---------------------------------------------------------------------
 #   DÉBUT DES OPÉRATIONS
@@ -149,7 +107,10 @@ begin
         route, name = droute
         "- #{name} (#{route})"
       end.join("\n")
-    MiniMail.new().send( rapport )
+
+    # === ENVOI DU MESSAGE ===
+    MiniMail.new().send( rapport, "MAIL D’ALERTE du mini-cron - #{Time.now}" )
+
   end
 rescue Exception => e
   MiniMail.new().send( "PROBLÈME : #{e.message}\n" +  e.backtrace.join("\n"))
