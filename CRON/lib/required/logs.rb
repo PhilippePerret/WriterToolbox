@@ -37,7 +37,13 @@ class SafedErrorLog
     # Pour savoir si une erreur s'est produite au cours
     # du cron-job.
     attr_accessor :error_occured
+
     def error err
+      err =
+        case err
+        when String then err
+        else err.message + "\n" + err.backtrace.join("\n")
+        end
       @errors ||= []
       @errors << err
     end
@@ -69,9 +75,22 @@ class SafedErrorLog
       error_log "Impossible d'envoyer le rapport d'erreur : #{e.message}"
       error_log e.backtrace.join("\n")
     end
+  end # << self
+
+  # ---------------------------------------------------------------------
+  #   INSTANCE
+  # ---------------------------------------------------------------------
+
+  def init
+    File.open(safed_error_log_path, 'a') do |f|
+      f.write "\n\n============ LOG ERROR #{now_human} ==============\n\n"
+    end rescue nil
+    @inited = true
   end
+
   # Pour ajouter un message d'erreur
   def add err, amorce = nil
+    @inited || init
     if err.instance_of?(RuntimeError)
       err = err.message + "\n" + err.backtrace.join("\n")
     end
