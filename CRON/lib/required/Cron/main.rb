@@ -54,21 +54,28 @@ class << self
 
       safed_log "    = Fin Cron::run ="
     end
+
   rescue Exception => e
-    safed_log "# ERREUR FATALE : #{e.message}"  rescue nil
-    safed_log e.backtrace.join("\n")            rescue nil
+
+    error_log "# ERREUR FATALE : #{e.message}"  rescue nil
+    error_log e.backtrace.join("\n")            rescue nil
+
   ensure
 
     # Dans tous les cas, il faut s'assurer que le rapport soit créé et
     # envoyé à l'administrateur.
-    # TODO Mettre plutôt le rapport dans Cron que dans Unan
     safed_log "#{separation}[Cron::run] Traitement du rapport admin"
     begin
       Cron::rapport_admin.traite
     rescue Exception => e
-      safed_log "# Impossible de traiter le rapport administration : #{e.message}"
-      safed_log e.backtrace.join("\n")
+      error_log "# Impossible de traiter le rapport administration : #{e.message}"
+      error_log e.backtrace.join("\n")
     end
+
+
+    # Si des erreurs se sont produites, il faut envoyer un mail
+    # à l'administrateur pour l'en informer
+    SafedErrorLog.send_report_errors if SafedErrorLog.error_occured
 
   end #/run
 

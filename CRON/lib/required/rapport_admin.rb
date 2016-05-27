@@ -64,7 +64,6 @@ class Cron
       # Envoyer le rapport
       if send_rapport
         safed_log "    = Rapport administrateur envoyé."
-
         path_rapport_admin.remove if path_rapport_admin.exist?
         path_mail_erb.remove      if path_mail_erb.exist?
       end

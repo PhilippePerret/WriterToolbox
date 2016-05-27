@@ -16,11 +16,11 @@ class Tweet
       if ok
         safed_log "  = #{message_retour}"
       else
-        safed_log "  ### PROBLÈME ENVOI DES TWEETS : #{message_retour}"
+        error_log "  ### PROBLÈME ENVOI DES TWEETS : #{message_retour}"
       end
     rescue Exception => e
       bt = e.backtrace.join("\n")
-      safed_log "# Problème en envoyant les tweets permanents : #{e.message}\n#{bt}"
+      error_log "# Problème en envoyant les tweets permanents : #{e.message}\n#{bt}"
     else
       safed_log "  = Tweets permanents envoyés avec succès."
     end

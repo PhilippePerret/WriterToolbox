@@ -7,6 +7,10 @@ Noter que cela ne charge pas le module du site ./lib/required
 qui chargera toutes les librairies du site, ce qui sera fait plus tard
 
 =end
+
+# Pour charger le traitement des messages
+require './CRON/lib/required/logs'
+
 safed_log "-> #{__FILE__}"
 
 safed_log "* STEP 1"

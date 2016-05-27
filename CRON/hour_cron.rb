@@ -6,26 +6,17 @@ NOTE : Il doit être exécutable.
 
 =end
 
-def safed_log mess
-  File.open(safed_log_path, 'a') do |f|
-    f.write "#{mess}\n"
-  end rescue nil
-end
-def safed_log_path
-  @safed_log_path ||= "#{RACINE}/CRON/safed_log.log"
-end
-
 THIS_FOLDER = File.expand_path(File.dirname(__FILE__))
 RACINE      = File.expand_path(File.join(THIS_FOLDER, '..'))
 ONLINE      = RACINE.split('/').last == "WriterToolbox"
 OFFLINE     = !ONLINE
 
-File.open("#{THIS_FOLDER}/safed_log.log", 'wb') do |f|
-  f.write "SAFED LOG DU #{Time.now.strftime('%d %m %Y - %H:%M')}\n(Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)\nRACINE : #{RACINE}\n\n"
-end
-
 begin
 
+  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  # ON NE PEUT PAS APPELER LES MÉTHODES DE MESSAGES/LOG
+  # AVANT CETTE LIGNE
+  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   # Appel du fichier required.rb qui va accomplir toutes les
   # actions. Note : Ce ne sont pas les librairies du site
   require File.join(THIS_FOLDER, 'lib', 'required.rb')
