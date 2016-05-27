@@ -105,7 +105,6 @@ test_user duser[:id] do
   program.is_instance_of(Unan::Program, sujet: "La classe du programme")
 
   let(:program_id){ program.id }
-  show "get(:program_id) = #{get(:program_id).inspect}"
 
   # Il doit avoir un dossier et un fichier pour son nouveau
   # programme
@@ -125,9 +124,10 @@ test_user duser[:id] do
 end
 
 test_base "unan_hot.programs" do
-  show "PROGRAM ID = #{program_id.inspect}"
-  show "get(:program_id) = #{get(:program_id).inspect}"
-  show "Data du programme : #{row(program_id: program_id).data.inspect}"
+  progid = tget(:program_id)
+  show "PROGRAM ID = #{progid.inspect}"
+  show "tget(:program_id) = #{tget(:program_id).inspect}"
+  show "Data du programme : #{row(program_id: progid).data.inspect}"
 end
 
 

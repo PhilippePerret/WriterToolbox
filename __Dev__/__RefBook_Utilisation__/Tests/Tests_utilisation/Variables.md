@@ -6,7 +6,7 @@
     
 ~~~
 
-Pour récupérer une variable instanciée de cette manière, on peut utiliser simplement son nom, comme une propriété méthode, dans le code. Mais pour être plus rapide, on peut utiliser la méthode `get`.
+Pour récupérer une variable instanciée de cette manière, on peut utiliser simplement son nom, comme une propriété méthode, dans le code. Mais pour être plus rapide, on peut utiliser la méthode `tget`.
 
 Exemples&nbsp;:
 
@@ -22,7 +22,7 @@ end
 test_route "ma/route" do
 
   # On récupère la variable à l'aide de `get`
-  nb = get(:users_count)
+  nb = tget(:users_count)
   html.has_tag("div", text: "#{nb} users")
   
   # Mais on peut faire aussi appel directement à la méthode

@@ -70,12 +70,17 @@ class SafedErrorLog
       error_log e.backtrace.join("\n")
     end
   end
-  def add mess
+  # Pour ajouter un message d'erreur
+  def add err, amorce = nil
+    if err.instance_of?(RuntimeError)
+      err = err.message + "\n" + err.backtrace.join("\n")
+    end
+    err = "#{amorce} : #{err}" unless amorce.nil?
     File.open(safed_error_log_path, 'a') do |f|
-      f.write "#{mess}\n"
+      f.write "#{err}\n"
     end rescue nil
     self.class.error_occured = true
-    self.class.error mess
+    self.class.error err
   end
   alias :<< :add
 

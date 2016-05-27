@@ -56,10 +56,7 @@ class << self
     end
 
   rescue Exception => e
-
-    error_log "# ERREUR FATALE : #{e.message}"  rescue nil
-    error_log e.backtrace.join("\n")            rescue nil
-
+    error_log e rescue nil
   ensure
 
     # Dans tous les cas, il faut s'assurer que le rapport soit créé et
@@ -68,8 +65,7 @@ class << self
     begin
       Cron::rapport_admin.traite
     rescue Exception => e
-      error_log "# Impossible de traiter le rapport administration : #{e.message}"
-      error_log e.backtrace.join("\n")
+      error_log e, "# Impossible de traiter le rapport administration"
     end
 
 
@@ -96,9 +92,7 @@ class << self
       require "./lib/required"
       safed_log "     <- Cron::requerir_les_librairies_du_site"
     rescue Exception => e
-      error_log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
-      error_log "### JE DOIS RENONCER"
-      error_log e.backtrace.join("\n")
+      error_log e, "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE"
       log "# Impossible de charger les librairies du site : #{e.message}"
       log e.backtrace.join("\n")
       exit(1)
@@ -117,8 +111,7 @@ class << self
       Forum::check_new_messages
       safed_log "     <- Cron::traitement_messages_forum"
     rescue Exception => e
-      error_log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
-      error_log e.backtrace.join("\n")
+      error_log e, "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM"
     end
   end
 
@@ -132,8 +125,7 @@ class << self
     begin
       site.require_objet 'unan'
     rescue Exception => e
-      error_log "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan` : #{e.message}"
-      error_log "### JE DOIS RENONCER"
+      error_log e, "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan`"
       return false
     end
 

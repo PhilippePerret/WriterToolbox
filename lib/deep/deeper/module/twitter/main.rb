@@ -109,7 +109,7 @@ class SiteHtml
     # Ré-expédie le tweet
     def resend
       # Incrémenter le nombre d'envois (count)
-      @count += 1
+      @count = count + 1
       # Modifier la date de dernier envoi
       @last_sent = NOW
       # Envoyer

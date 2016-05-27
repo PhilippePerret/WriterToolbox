@@ -137,7 +137,7 @@ class << self
     end
 
   rescue Exception => e
-    error_log "# Impossible de checker les nouveaux messages forum…", e
+    error_log e, "# Impossible de checker les nouveaux messages forum"
   ensure
     log "=== Fin du check des nouveaux messages du forum ===\n"
   end

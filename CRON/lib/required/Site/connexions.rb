@@ -47,8 +47,7 @@ class << self
     log "  = Résumé des connexions OK"
     log "<- SiteHtml::Connexions::resume"
   rescue Exception => e
-    error_log "# ERREUR AU COURS DU RAPPORT DE CONNEXIONS : #{e.message}"
-    error_log e.backtrace.join("\n")
+    error_log e, "# ERREUR AU COURS DU RAPPORT DE CONNEXIONS"
   end
 
   # Retourne TRUE s'il faut faire le rapport (en fonction de

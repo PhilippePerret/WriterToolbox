@@ -19,8 +19,7 @@ class Tweet
         error_log "  ### PROBLÈME ENVOI DES TWEETS : #{message_retour}"
       end
     rescue Exception => e
-      bt = e.backtrace.join("\n")
-      error_log "# Problème en envoyant les tweets permanents : #{e.message}\n#{bt}"
+      error_log e, "# Problème en envoyant les tweets permanents"
     else
       safed_log "  = Tweets permanents envoyés avec succès."
     end
