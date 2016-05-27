@@ -38,7 +38,7 @@ class TestSuite
 
       [
         ['users.db',    ['users', 'paiements']],
-        ['site_hot.db', ['last_date', 'tickets'] ],
+        ['site_hot.db', ['last_dates', 'tickets'] ],
         ['forum.db' ,   ['posts', 'posts_content']],
         ['unan_hot',    ['programs', 'projets']]
       ].each do |pair|
