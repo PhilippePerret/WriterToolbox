@@ -26,8 +26,8 @@ class DSLTestMethod
   end
 
   # Une instance de fichier à tester
-  def file(path, name)
-    SiteHtml::TestSuite::TFile.new path, name
+  def file(path, name = nil)
+    SiteHtml::TestSuite::TFile.new(path, name)
   end
 
 

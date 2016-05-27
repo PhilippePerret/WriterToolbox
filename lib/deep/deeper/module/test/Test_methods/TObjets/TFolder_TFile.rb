@@ -18,7 +18,8 @@ module TestMethodsFileAndFolder
     resultat = f_exists == !inverse
     as_case || (return resultat)
     SiteHtml::TestSuite::Case.new(nil, {
-      result: resultat,
+      result:         f_exists,
+      positif:        !inverse,
       on_success:     "#{real_hname} existe bien.",
       on_success_not: "#{real_hname} n'existe pas (OK)",
       on_failure:     "#{real_hname} devrait exister.",

@@ -20,7 +20,8 @@ SiteHtml::TestSuite.configure do
   #   - en version relative depuis ./test : "mini/un_test_spec.rb"
   #   - en version relative simplifiée : "mini/un_test"
   #   - par un dossier : Dir['./test/unit/extension/*_spec.rb']
-  current.files = ['deep/user/destroy']
+  # current.files = ['deep/user/destroy']
+  current.files = ['current/essai_file_et_folder']
 
   # LIEU DU TEST
   # ------------
