@@ -38,7 +38,7 @@ class SafedErrorLog
     # du cron-job.
     attr_accessor :error_occured
     def error err
-      @errors || []
+      @errors ||= []
       @errors << err
     end
 

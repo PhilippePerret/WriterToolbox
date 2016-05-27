@@ -35,8 +35,6 @@ login_phil
 
 test_route "admin/dashboard" do
   description "En tant qu'administrateur, je peux rejoindre le table de bord"
-  # TODO ERROR LE Problème, c'est qu'ici, je ne charge par les cookies puisque
-  # j'utilise Nokogori pour avoir la page.
   responds
   html.has_not_error
   html.has_link( 'admin/sync', text: 'SYNCHRONISATION' )

@@ -97,7 +97,7 @@ User.get(duser[:id]).signup_program_uaus
 
 test_user duser[:id] do
 
-  # Il doit être inscrit
+  # Il doit être inscrit au programme un an un script
   unanunscript?.is(true, sujet: "unanunscript? de l'user")
 
   # Il doit avoir un programme
@@ -149,6 +149,11 @@ test_user duser[:id] do
   # Son bit de destruction doit être activé
   options[3].is('1', sujet: "Le bit de marque de destruction de l'user")
 
+  # Il ne doit plus avoir de dossier dans les
+  # data
+  file("./database/data/unan/user/#{duser[:id]}/programme1.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exist
+  folder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exist
+
 end
 
 # PROGRAMME UN AN UN SCRIPT
@@ -169,7 +174,7 @@ test_base 'unan_hot.projets' do
 end
 
 test_base 'unan_archives.programs' do
-  # TODO Le programme doit avoir été mis dans les archives
+  # Le programme doit avoir été mis dans les archives
   # Le programme ne doit plus être actif
   opts = row(id: program_id).data[:options]
   opts[0].is('0', 'Le bit de programme actif')

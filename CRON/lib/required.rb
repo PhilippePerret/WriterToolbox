@@ -9,7 +9,8 @@ qui chargera toutes les librairies du site, ce qui sera fait plus tard
 =end
 
 # Pour charger le traitement des messages
-require './CRON/lib/required/logs'
+# safed
+require "#{THIS_FOLDER}/lib/required/logs"
 
 safed_log "-> #{__FILE__}"
 
