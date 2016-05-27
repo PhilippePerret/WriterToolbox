@@ -105,17 +105,29 @@ test_user duser[:id] do
   program.is_instance_of(Unan::Program, sujet: "La classe du programme")
 
   let(:program_id){ program.id }
+  show "get(:program_id) = #{get(:program_id).inspect}"
+
+  # Il doit avoir un dossier et un fichier pour son nouveau
+  # programme
+  folder("./database/data/unan/user/#{duser[:id]}").exists
+  file("./database/data/unan/user/#{duser[:id]}/programme#{program.id}.db").exists
 
   show "ID du programme : #{program.id}"
 
   # On vérifie que les options soient bien réglées
   #   options[0] = '1' (programme actif)
   #   options[2] = '0' (ou rien) (programme non abandonné)
-  opts = program.options
-  show "Options du programme de l'user : #{opts}"
+  opts = program.get(:options)
+  show "Options du programme de l'user : #{opts.inspect}"
   opts[0].is('1', sujet: 'Le premier bit d’options (actif)')
   opts[2].is_not('1', sujet: 'Le troisième bit d’options (abandon)')
 
+end
+
+test_base "unan_hot.programs" do
+  show "PROGRAM ID = #{program_id.inspect}"
+  show "get(:program_id) = #{get(:program_id).inspect}"
+  show "Data du programme : #{row(program_id: program_id).data.inspect}"
 end
 
 
@@ -151,8 +163,8 @@ test_user duser[:id] do
 
   # Il ne doit plus avoir de dossier dans les
   # data
-  file("./database/data/unan/user/#{duser[:id]}/programme1.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exist
-  folder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exist
+  file("./database/data/unan/user/#{duser[:id]}/programme1.db", 'La base de donnée du programme UN AN UN SCRIPT').not_exists
+  folder("./database/data/unan/user/#{duser[:id]}", 'Le dossier du programme UN AN UN SCRIPT').not_exists
 
 end
 

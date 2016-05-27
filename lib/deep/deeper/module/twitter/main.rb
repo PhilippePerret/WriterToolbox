@@ -84,6 +84,11 @@ class SiteHtml
         [true, "#{nombre} tweet#{s} permanent#{s} ré-expédiés."]
       end
 
+      def table_permanent_tweets
+        @table_permanent_tweets ||= site.db.create_table_if_needed('site_cold', 'permanent_tweets')
+      end
+
+
     end #/<<self
 
     # ---------------------------------------------------------------------
@@ -174,7 +179,7 @@ class SiteHtml
     end
 
     def table
-      @table ||= site.db.create_table_if_needed('site_cold', 'permanent_tweets')
+      @table ||= self.class.table_permanent_tweets
     end
   end #/Tweet
 end #/SiteHtml

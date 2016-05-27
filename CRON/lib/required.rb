@@ -29,7 +29,7 @@ rescue Exception => e
     "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES CRON : #{e.message}\n" +
     "### JE DOIS RENONCER À LANCER LE CRON-JOB\n" +
     "### BACKTRACE\n" + e.backtrace.join("\n")
-  safed_log err_message
+  error_log err_message
   if respond_to?(:log)
     log err_message
   else
@@ -45,7 +45,7 @@ begin
   Cron::run
   safed_log "= STEP 2 OK ="
 rescue Exception => e
-  log "### PROBLÈME AU COURS DE Cron::run : #{e.message}"
+  error_log "### PROBLÈME AU COURS DE Cron::run : #{e.message}"
 end
 
 safed_log "<- #{__FILE__}"

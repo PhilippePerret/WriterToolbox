@@ -138,7 +138,8 @@ SSH
       error e.message
     end
     if @erreur_fatale || @erreur_sql
-      raise "Une erreur est survenue : ERREUR FATALE: #{@erreur_fatale} / ERREUR SQL: #{@erreur_sql}"
+      raise "Une erreur est survenue : ERREUR FATALE: #{@erreur_fatale} / ERREUR SQL: #{@erreur_sql}" +
+      "\nREQUETE FAUTIVE : #{sql_request.inspect}"
     end
     # debug "<-- procedure_ruby_str"
     @erreur_fatale && raise( @erreur_fatale )

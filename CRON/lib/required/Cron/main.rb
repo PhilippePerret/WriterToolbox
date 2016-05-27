@@ -55,9 +55,6 @@ class << self
       safed_log "    = Fin Cron::run ="
     end
 
-    # À SUPPRIMER QUAND ÇA FONCTIONNERA
-    error_log "Un erreur volontaire pour voir si ça fonctionne."
-
   rescue Exception => e
 
     error_log "# ERREUR FATALE : #{e.message}"  rescue nil
@@ -99,9 +96,9 @@ class << self
       require "./lib/required"
       safed_log "     <- Cron::requerir_les_librairies_du_site"
     rescue Exception => e
-      safed_log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
-      safed_log "### JE DOIS RENONCER"
-      safed_log e.backtrace.join("\n")
+      error_log "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE : #{e.message}"
+      error_log "### JE DOIS RENONCER"
+      error_log e.backtrace.join("\n")
       log "# Impossible de charger les librairies du site : #{e.message}"
       log e.backtrace.join("\n")
       exit(1)
@@ -120,8 +117,8 @@ class << self
       Forum::check_new_messages
       safed_log "     <- Cron::traitement_messages_forum"
     rescue Exception => e
-      safed_log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
-      safed_log e.backtrace.join("\n")
+      error_log "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM : #{e.message}"
+      error_log e.backtrace.join("\n")
     end
   end
 
@@ -135,8 +132,8 @@ class << self
     begin
       site.require_objet 'unan'
     rescue Exception => e
-      log "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan` : #{e.message}"
-      log "### JE DOIS RENONCER"
+      error_log "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan` : #{e.message}"
+      error_log "### JE DOIS RENONCER"
       return false
     end
 

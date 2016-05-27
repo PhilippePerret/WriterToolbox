@@ -42,21 +42,28 @@ class SafedErrorLog
       @errors << err
     end
 
+    def now_human
+      @now_human ||= Time.now.strftime('%d %m %Y à %H:%M')
+    end
+
     # Construit le rapport d'erreur qui sera envoyé à l'administration
     # Noter qu'il est envoyé de façon séparée par vraiment être mis
     # en évidence.
     def report_errors
       s = @errors.count > 1 ? 's' : ''
       '<div style="color:red">' +
-      "<div style=\"margin-bottom:2em;\">#{@errors.count} erreur#{s} produite#{s} au cours du dernier cron du #{Time.now} :</div>" +
-      @errors.collect { |err| "<div># #{err}</div>" }.join("\n") +
+      "<div style=\"margin-bottom:2em;\">#{@errors.count} erreur#{s} produite#{s} au cours du dernier cron du #{now_human} :</div>" +
+      @errors.collect do |err|
+        "<div># #{err.gsub(/\n/,'<br>')}</div>"
+      end.join("\n") +
       '</div>'
     end
 
     def send_report_errors
       MiniMail.new().send(
         report_errors,
-        "RAPPORT D'ERREUR du #{Time.now}"
+        "BOA - RAPPORT D'ERREUR du #{now_human}",
+        {format: 'html'}
       )
     rescue Exception => e
       error_log "Impossible d'envoyer le rapport d'erreur : #{e.message}"

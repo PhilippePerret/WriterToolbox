@@ -23,8 +23,8 @@ class << self
     nettoyage_logs_cron
 
   rescue Exception => e
-    safed_log "# ERREUR AU COURS DU NETTOYAGE : #{e.message}"
-    safed_log e.backtrace.join("\n")
+    error_log "# ERREUR AU COURS DU NETTOYAGE : #{e.message}"
+    error_log e.backtrace.join("\n")
   end
 
   def nettoyage_rapports_connexions
@@ -75,14 +75,14 @@ class << self
         next if File.stat(p).mtime > il_y_a_une_heure
         File.unlink p
       rescue Exception => e
-        safed_log "    # Problème avec le fichier #{p} : #{e.message}"
+        error_log "    # Problème avec le fichier #{p} : #{e.message}"
       else
         nombre += 1
       end
     end #/fin de boucle sur tous les fichiers
   rescue Exception => e
-    safed_log "    # PROBLÈME : #{e.message}"
-    safed_log e.backtrace.join("\n")
+    error_log "    # PROBLÈME : #{e.message}"
+    error_log e.backtrace.join("\n")
   else
     safed_log "     = #{nombre} fichiers rapport de synchronisation détruits" +
               "     = Nettoyage OK"

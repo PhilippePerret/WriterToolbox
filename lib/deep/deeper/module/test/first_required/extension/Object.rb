@@ -106,7 +106,7 @@ class Object
       when TrueClass
         "#{options[:sujet]} est#{strictement} égal à #{options[:objet]}."
       when FalseClass
-        "#{options[:sujet]} devrait être#{strictement} égal à #{options[:objet]}."
+        "#{options[:sujet]} devrait être#{strictement} égal à #{options[:objet]} (il vaut #{self.inspect})."
       end
 
       # On évalue ce cas pour produire le success ou la failure

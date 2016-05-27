@@ -95,7 +95,7 @@ module MethodesObjetsBdD
     @data ||= Hash::new
     rest_keys = Array::new
     keys.each do |key|
-      if @data.has_key?( key )
+      if @data.key?( key )
         retour.merge!( key => @data[key] )
       else
         rest_keys << key

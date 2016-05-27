@@ -61,7 +61,7 @@ class << self
         if resultat[:errors].empty?
           log "--- #{entete_message} a été passé au jour-programme suivant avec succès (P-Day #{auteur.program.current_pday})."
         else
-          log "--- #{entete_message} N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
+          error_log "--- #{entete_message} N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
         end
       else
         log "--- #{entete_message} n'a pas eu besoin d'être passé au jour-programme suivant."
@@ -87,7 +87,7 @@ class << self
           log "    = État des lieux de première heure et envoi mail OK"
         else
           errors_auteur = auteur.errors.join("\n")
-          log "    # Problème au cours de l'envoi du mail de l'état des lieux : #{errors_auteur}"
+          error_log "    # Problème au cours de l'envoi du mail de l'état des lieux : #{errors_auteur}"
         end
       else
         # On envoie le mail de l'auteur que si nécessaire
