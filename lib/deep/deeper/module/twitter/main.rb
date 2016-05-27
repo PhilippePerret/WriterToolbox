@@ -1,5 +1,4 @@
 # encoding: UTF-8
-# require 'Twitter'
 class SiteHtml
 
   # Pour envoyer un tweet
@@ -34,6 +33,7 @@ class SiteHtml
 
       def client
         @client ||= begin
+          require 'twitter'
           require './data/secret/data_twitter'
           Twitter::REST::Client.new do |config|
             config.consumer_key        = DATA_TWITTER[:consumer_key]

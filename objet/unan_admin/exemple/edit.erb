@@ -38,11 +38,11 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
   <%= form.field_select("Sujet", 'sujet', nil, {values:sujets_cibles_as_select}) %>
 
   <%# CONTENU DE L'EXEMPLE %>
-  <%= form.field_textarea("Exemple", 'content', nil, {class:'high'}) %>
-  <%= form.field_checkbox("Syntaxe markdown", 'cb_markdown', form.objet[:content].start_with?('<!-- MARKDOWN -->'), {onclick:"$.proxy(Exemple,'toggle_markdown', this.checked)()"}) %>
+  <%= form.field_textarea("Exemple", 'content', nil, {class:'high', style: 'width:100%;height:680px'}) %>
+  <%= form.field_checkbox("Syntaxe markdown", 'cb_markdown', (form.objet[:content] || '').start_with?('<!-- MARKDOWN -->'), {onclick:"$.proxy(Exemple,'toggle_markdown', this.checked)()"}) %>
 
   <%# NOTES SUR L'EXEMPLE %>
-  <%= form.field_textarea("Notes", 'notes', nil) %>
+  <%= form.field_textarea("Notes", 'notes', nil, {style: 'width:100%'}) %>
   <%= form.field_description("Des notes ou un note qui sera ajoutée à l'affichage de l'exemple, par exemple pour préciser la nature de l'exemple, s'il est simplifié ou non.") %>
 
   <%# WORK DE RÉFÉRENCE (ID) %>
