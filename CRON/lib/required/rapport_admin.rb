@@ -84,7 +84,7 @@ class Cron
         end
 
         # Message assemblé
-        "<h2>Rapport administration #{online? ? 'ONLINE' : 'OFFLINE'} du cronjob du #{NOW.as_human_date(true, true, ' ')}</h2>"+
+        "<h2>Rapport administration #{ONLINE ? 'ONLINE' : 'OFFLINE'} du cronjob du #{NOW.as_human_date(true, true, ' ')}</h2>"+
         suivi +
         "<hr />" +
         log_content.in_pre(class:'small')

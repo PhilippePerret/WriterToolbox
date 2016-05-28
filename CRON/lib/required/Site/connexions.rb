@@ -133,7 +133,7 @@ end # << self SiteHtmlConnexions
   # On construit le message pour l'administrateur, qui va lui
   # rapporter toutes les connexions qui ont eu lieu.
   def build_message_admin
-    titre = "Rapport #{Cron::online? ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"
+    titre = "Rapport #{ONLINE ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"
 
     ip_entete     = "IP".ljust(20)
     nb_entete     = "Nb".ljust(4)

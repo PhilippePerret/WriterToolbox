@@ -75,14 +75,6 @@ class << self
 
   end #/run
 
-  def online?
-    @is_online = !offline? if @is_online === nil
-  end
-  def offline?
-    @is_offline = RACINE.split('/').last == "WriterToolbox" if @is_offline === nil
-    @is_offline
-  end
-
   # « Tout est dans le titre. »
   # Noter que c'est la même chose qui est requise par le site au démarrage,
   #
