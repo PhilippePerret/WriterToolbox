@@ -23,6 +23,7 @@ class Specs
   def initialize evc, raw_line
     @evc      = evc
     @raw_line = raw_line
+    debug "raw_line = #{raw_line.inspect}"
     @data = ( JSON.parse raw_line )
   end
 

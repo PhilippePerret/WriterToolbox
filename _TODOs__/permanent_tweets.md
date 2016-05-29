@@ -1,6 +1,6 @@
 > J'ai vu que les liens tweets disparaissaient. Peut-être parce que la table site_cold.db est actualisé sur le site (à surveiller). En attendant, pour qu'il n'y ait pas de problème, on met toujours les tweets ici.
 
-««« Ne jamais chercher à compliquer, chercher à simplifier en permanence. »»» bit.ly/25niuyw
+««« Ne jamais chercher à compliquer, chercher à simplifier en permanence. »»» http://bit.ly/25niuyw
 
 ««« Une histoire, c'est très simple. La seule difficulté consiste à parvenir à cette simplicité. »»» http://bit.ly/25j7EGk
 
