@@ -14,7 +14,13 @@ raise_unless_admin
 
 <h3>Pages narration <em>in</em> programme</h3>
 <div class="fright"><%= "Voir les pages non utilisées".in_a(class:'tiny', href:"page_cours/list?in=unan_admin&opt=pages_narration_out", title:"Cet outil permet de faire la liste des pages de la collection Narration qui ne sont pas utilisées par le programme UN AN UN SCRIPT (afin de les ajouter).") %></div>
-<div class='tiny discret' style="width:65%"><div>Les pages ci-dessous appartiennent toutes à la Collection Narration</div><div>L'identifiant entre crochets est l'identifiant de la page cours, pas celui de la page de la collection.</div></div>
+<div class='tiny discret' style="width:65%">
+  <div>Les pages ci-dessous appartiennent toutes à la Collection Narration</div>
+  <div>L'identifiant entre crochets est l'identifiant de la page cours, pas celui de la page de la collection.</div>
+  <div>
+    Les <span class='red'>pages en rouge</span> sont des pages dont le niveau de développement est insuffisant pour être affichées. Il faut absolument les amener à un niveau suffisant.
+  </div>
+</div>
 <%= liste_pages_narration %>
 
 <h3>“Vraies” pages programme</h3>

@@ -235,34 +235,33 @@ class BdD
     ##
     # Récupération d'une donnée par :id ou par clause WHERE
     def get id_arg, colonnes = nil
-      colonnes = case colonnes
-      when String
-        if colonnes == '*'
-          ['*']
+      colonnes =
+        case colonnes
+        when String
+          colonnes == '*' ? ['*'] : colonnes.to_sym
+        when Array, Symbol
+          colonnes
+        when Hash
+          colonnes[:colonnes]
         else
-          colonnes.to_sym
+          nil
         end
-      when Array, Symbol
-        colonnes
-      when NilClass
-        nil
-      else
-      end
 
       unique_key = colonnes != nil && colonnes.class == Symbol
 
-      hdata = case id_arg
-      when Fixnum
-        {where:  "id = ?", values: [ id_arg ] }
-      when String
-        { where: id_arg }
-      when Hash
-        id_arg.has_key?(:where) ? id_arg : { where: id_arg }
-      when NilClass
-        raise AIError, :bdd_first_argument_get_nil
-      else
-        raise AIError, :bdd_bad_first_argument_for_get
-      end
+      hdata =
+        case id_arg
+        when Fixnum
+          {where:  "id = ?", values: [ id_arg ] }
+        when String
+          { where: id_arg }
+        when Hash
+          id_arg.has_key?(:where) ? id_arg : { where: id_arg }
+        when NilClass
+          raise AIError, :bdd_first_argument_get_nil
+        else
+          raise AIError, :bdd_bad_first_argument_for_get
+        end
       hdata.merge!(colonnes: colonnes) unless colonnes.nil?
       retour = select(hdata).values
       return nil if retour.first.nil?

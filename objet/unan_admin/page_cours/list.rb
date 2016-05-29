@@ -1,11 +1,19 @@
 # encoding: UTF-8
 raise_unless_admin
+site.require_objet('cnarration')
+
+# Liste UL des pages narration qui sont utilisées
+# dans le programme UN AN UN SCRIPT
+def liste_pages_narration
+  pages_narration.collect do |hpage|
+    mise_en_forme_page_line(hpage)
+  end.join.in_ul(class:'tdm small')
+end
 
 # Retourne le code HTML de la liste de toutes les
-# pages de la collection narration qui ne sont pas utilisées
+# pages de la collection narration qui NE SONT PAS utilisées
 # dans le programme UN AN UN SCRIPT
 def liste_pages_narration_hors_programme
-  site.require_objet('cnarration')
   data_request = {
     where:    "options LIKE '1%'",
     colonnes: [:titre, :livre_id],
@@ -33,11 +41,6 @@ def narration_id_to_page_programme_id
     end;h
   end
 end
-def liste_pages_narration
-  pages_narration.collect do |hpage|
-    mise_en_forme_page_line(hpage)
-  end.join.in_ul(class:'tdm small')
-end
 def liste_pages_unan
   pages_unan.collect do |hpage|
     mise_en_forme_page_line(hpage)
@@ -45,13 +48,25 @@ def liste_pages_unan
 end
 
 def mise_en_forme_page_line hpage
+  classes_css = ['tdm']
+  if hpage[:narration_id]
+    dn = Cnarration::table_pages.get(hpage[:narration_id], colonnes: [:options])
+    opts = dn[:options]
+    if opts[0] == '1'
+      debug "Test page #{opts.inspect}"
+      # Si c'est une page, on regarde si son niveau de développement
+      # est suffisant.
+      niveau_developpement_ok = opts[1].to_i(11) >= 8
+      niveau_developpement_ok || ( classes_css << 'warning' )
+    end
+  end
   (
     (
       "[edit]".in_a(class:'tiny', target:'_blank', href:"page_cours/#{hpage[:id]}/edit?in=unan_admin") +
       "[voir]".in_a(class:'tiny', target:'_blank', href:"page_cours/#{hpage[:id]}/show?in=unan")
     ).in_div(class:'btns fright') +
    "[#{hpage[:id]}] #{hpage[:titre]}".in_span(title:"#{hpage[:description].purified.strip_tags}")
-  ).in_li(class:'tdm', style:'margin-top:8px')
+  ).in_li(class:classes_css.join(' '), style:'margin-top:8px')
 end
 def mise_en_forme_page_line_narration hpage
   (
