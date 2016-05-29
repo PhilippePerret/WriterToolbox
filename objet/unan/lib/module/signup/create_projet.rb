@@ -25,13 +25,13 @@ class Projet
         debug "user ID : #{auteur.id.inspect}"
       end
       program = Unan::Program::get(program_id)
-      auteur_program = program.auteur
-      debug "Auteur program ID = #{auteur_program.id}"
-      if auteur_program.instance_of?(User)
+      debug "Auteur program ID = #{auteur.id}"
+      if auteur.instance_of?(User)
+
       end
 
       data_new_projet = {
-        auteur_id:  auteur_program.id,
+        auteur_id:  auteur.id,
         program_id: program_id,
         titre:      nil,
         resume:     nil,

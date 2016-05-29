@@ -65,8 +65,15 @@ class Object
   # ---------------------------------------------------------------------
   # Traitement des options envoyées à toutes les méthodes de
   # test de type `is`, `has` & dérivées
+  # +options+ Options envoyées à la méthode de test.
+  #           Si c'est un String, c'est le sujet envoyé.
   def defaultize_options options, expected
-    options ||= {}
+    options =
+      case options
+      when Hash     then options
+      when String   then {sujet: options}
+      when NilClass then {}
+      end
     options.key?(:strict) || options.merge!(strict: false)
     options[:sujet] = defaultize_sujet_or_value(options[:sujet], self)
     options[:objet] = defaultize_sujet_or_value(options[:objet], expected)

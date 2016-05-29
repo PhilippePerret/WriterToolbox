@@ -16,6 +16,9 @@ Dans un premier temps, il faut créer l'user :
 * on lui fabrique des messages forum
 * on l'inscrit au programme UN AN UN SCRIPT
 
+Le principal du programme de destruction de l'user se fait dans
+le module `./objet/user/destroy.rb`
+
 MD
 
 let(:start_time){ Time.now.to_i - 1 }
@@ -116,7 +119,7 @@ test_user duser[:id] do
   let(:program_id){ program.id }
   duser.merge!(
     program_id: program.id,
-    projet_id:  program.projet.id
+    projet_id:  projet.id
     )
 
   projet.id.is_not(nil, sujet: 'L’ID du projet')
@@ -202,14 +205,16 @@ test_base 'unan_archives.programs' do
   # Le programme doit avoir été mis dans les archives
   # Le programme ne doit plus être actif
   opts = row(id: duser[:program_id]).data[:options]
+  # show "Options : #{opts.inspect}"
   opts[0].is('0', 'Le bit de programme actif')
   # Le programme doit avoir été marqué abandonné
   opts[2].is('1', 'Le bit de programme abandonné')
 end
 test_base 'unan_hot.projets' do
   description 'Le projet n’est plus dans les données courantes'
-  row(duser[:projet_id]).not_exists
+  row(id: duser[:projet_id]).not_exists
 end
+site.db.create_table_if_needed('unan_archives', 'projets')
 test_base 'unan_archives.projets' do
   description 'Vérification de la présence des données projets dans les archives de projets.'
   # Le projet doit avoir été mis dans les archives

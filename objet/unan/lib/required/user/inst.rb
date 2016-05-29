@@ -8,7 +8,9 @@ class User
 
   # {Unan::Projet} Le projet courant de l'user, ou nil
   def projet
-    @projet ||= Unan::Projet::get_current_projet_of(self.id)
+    @projet ||= begin
+      Unan::Projet::get_current_projet_of( self.id )
+    end
   end
   def projet_id; @projet_id ||= projet.id end
 

@@ -137,6 +137,7 @@ SELECT id, items_ids FROM sujets_followers
     # Modification des options et enregistrement dans les
     # archives
     opts = data_program[:options]
+    opts[0] = '0' # bit inactif
     opts[2] = '1' # bit abandon
     data_program[:options] = opts
     Unan::table_archives_programs.insert(data_program)
@@ -145,8 +146,7 @@ SELECT id, items_ids FROM sujets_followers
     # En fait, on l'enregistre dans les archives
     data_projet = Unan::table_projets.select(where:where).values.first
     Unan::table_projets.delete(where:where)
-    # TODO: Remettre ça :
-    # Unan::table_archives_projets.insert(data_projet)
+    Unan::table_archives_projets.insert(data_projet)
 
     debug "  = Destruction des programmes UAUS OK"
   end
