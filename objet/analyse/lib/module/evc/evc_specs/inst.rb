@@ -13,6 +13,8 @@ class Specs
 
   # {String} La ligne brute telle qu'écrite dans le fichier
   # en première ligne. C'est du code JSON
+  # Elle peut être nil si la première ligne n'était pas
+  # définie.
   attr_reader :raw_line
 
   # {Hash} Les données d'entête. C'est la ligne brute après
@@ -20,12 +22,43 @@ class Specs
   attr_reader :data
 
   # +evc+ Instance {Evc} de l'évènemencier
-  def initialize evc, raw_line
+  def initialize evc, raw_line = nil
     @evc      = evc
-    @raw_line = raw_line
-    debug "raw_line = #{raw_line.inspect}"
-    @data = ( JSON.parse raw_line )
+    # debug "@raw_line : #{@raw_line.inspect}"
+    @raw_line = raw_line.nil_if_empty
+    set_data
   end
+
+  def set_data
+    @data =
+      if @raw_line.nil?
+        # Données par défaut
+        default_data
+      else
+        # Données de la première ligne de l'évènemencier
+        JSON.parse raw_line
+      end
+  end
+
+  def default_data
+    fid = File.basename(evc.folder)
+    if fid == 'evc'
+      fid = File.basename(File.dirname(evc.folder))
+    end
+    {
+      'evc_titre'     => "EVC sans titre",
+      'film_id'       => fid,
+      'film_titre'    => nil,
+      'date'          => NOW,
+      'format_duree'  => 'seconde',
+      'scale'         => 'scenier',
+      'type'          => 'scenier',
+      'duree'         => nil,
+      'real_start'    => 0,
+      'fragment'      => false
+    }
+  end
+
 
   # ---------------------------------------------------------------------
   # Data d'entête
@@ -124,8 +157,11 @@ class Specs
   def temps_seconde?
     @is_temps_seconde ||= (format_duree == 'seconde')
   end
+
+  # RETURN True quand les durées et positions temporelles
+  # sont exprimées en pages plutôt qu'en secondes.
   def temps_page?
-    @is_temps_page ||= (format_duree == 'page')
+    @is_temps_page ||= format_duree == 'page'
   end
 
   # ---------------------------------------------------------------------
@@ -141,13 +177,13 @@ class Specs
         film_titre:   film_titre,
         evc_titre:    evc_titre,
         duree:        duree,
-        type:         type || "brin", # !!! À MODIFIER !!!
+        type:         type || "scenier",
         scale:        scale,
         format_duree: format_duree,
         events:       evc.events.count,
         date:         (date || Time.now.to_i)
       }
-      h.merge!(fragment: fragment? ) unless @is_fragment === nil
+      h.merge!(fragment: fragment? )    unless @is_fragment === nil
       h.merge!(real_start: real_start ) unless real_start.nil?
       h
     end

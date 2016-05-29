@@ -330,7 +330,8 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
     :id,
     :libelle, :description,
     :installation, :exploitation, :resolution,
-    :auteur, :victime, :produit
+    :auteur, :victime, :produit,
+    :effet_produit, :notes, :preparation
   ]
   def traite_content_as_ironies_dramatiques
     explication_ironies_dramatiques.in_p(class:'small italic') +
@@ -348,13 +349,15 @@ Notez que cette liste n'est pas nécessairement exhaustive et que de nombreuses 
 <a name="ironie_dramatique-#{key}"></a>
 <dt>#{idid}#{hvalue[:libelle]}</dt>
 <dd>
+  #{description_of  hvalue}
+  #{preparation_of  hvalue}
   #{installation_of hvalue}
   #{exploitation_of hvalue}
   #{resolution_of   hvalue}
-  #{description_of  hvalue}
-  #{libnval("Auteur",   hvalue[:auteur])}
-  #{libnval("Victime",  hvalue[:victime])}
-  #{libnval("Produit", hvalue[:produit] || "- non défini -")}
+  #{libnval('Auteur',   hvalue[:auteur])}
+  #{libnval('Victime',  hvalue[:victime])}
+  #{libnval('Produit', hvalue[:produit] || hvalue[:effet_produit] || "- non défini -")}
+  #{notes_of        hvalue}
 </dd>
       HTML
     end.join.in_dl
@@ -564,45 +567,51 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     libnval("Catégorie", val.in_span(class:'bold'))
   end
   def description_of h
-    libnval( "Description", h[:description] )
+    libnval( 'Description', h[:description] )
   end
   def explication_of h
-    libnval("Explication", h[:explication])
+    libnval('Explication', h[:explication])
+  end
+  def preparation_of h
+    libnval('Préparation', h[:preparation])
   end
   def exploitation_of h
-    libnval("Exploitation", h[:exploitation])
+    libnval('Exploitation', h[:exploitation])
   end
   def facteur_u_of h
-    libnval("Facteur U", h[:facteurU] || h[:facteur_u])
+    libnval('Facteur U', h[:facteurU] || h[:facteur_u])
   end
   def facteur_o_of h
-    libnval("Facteur O", h[:facteurO] || h[:facteur_o])
+    libnval('Facteur O', h[:facteurO] || h[:facteur_o])
   end
   def intitule_of h, key_alt = nil
     value = h[:intitule] || h[key_alt] || "" unless key_alt.nil?
-    libnval("Intitulé", value)
+    libnval('Intitulé', value)
   end
   def installation_of h
-    libnval("Installation", h[:installation])
+    libnval('Installation', h[:installation])
   end
   def produit_of h
-    libnval("Produit", h[:produit])
+    libnval('Produit', h[:produit])
   end
   def question_of h
-    libnval("Question", h[:question])
+    libnval('Question', h[:question])
   end
   def reponse_of h
-    libnval("Réponse", h[:reponse])
+    libnval('Réponse', h[:reponse])
   end
   def resolution_of h
-    libnval("Résolution", h[:resolution])
+    libnval('Résolution', h[:resolution])
+  end
+  def notes_of h
+    libnval('Notes', h[:notes])
   end
   def scenes_of h
     return "" if h[:scenes].to_s == ""
     scenes = h[:scenes].split(' ').collect { |sid| sid.to_i }
     onclick = "$.proxy(Timeline,'show_scenes', '#{scenes.join(', ')}')()"
     lien_scenes = scenes.join(', ').in_a(onclick: onclick)
-    libnval( "Scènes", lien_scenes )
+    libnval( 'Scènes', lien_scenes )
   end
 
 

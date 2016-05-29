@@ -20,7 +20,7 @@ class Event
       # les espaces
       li << human_duree.in_span(class:'d') # li.ev span.d
     end
-    li << resume.in_span(class:'r') # li.ev span.r
+    resume.nil? || ( li << resume.in_span(class:'r') )
     unless note.nil? || options[:note] === false
       li << note.formate_balises_propres.in_span(class:'n')
     end

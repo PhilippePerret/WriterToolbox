@@ -61,6 +61,8 @@ class Event
     end
   end
 
+  # Retourne true quand la valeur de position ou de
+  # durée de l'évènemencier est exprimée en pages.
   def in_page?
     @in_page = evc.specs.temps_page? if @in_page === nil
     @in_page

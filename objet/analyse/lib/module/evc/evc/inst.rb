@@ -4,8 +4,10 @@ class Evc
 
   # Le chemin d'accès relatif (commence par ".") à l'evc
   attr_reader :path
+
   # {Array d'instances Evc::Events} Tous les évènements
   # attr_reader :events
+
   # {Evc::Specs} Infos de l'évènemencier
   # Ou NIL si l'évènemencier ne contient pas de première ligne de
   # description
@@ -28,13 +30,13 @@ class Evc
   #
   # Méthode principale qui parse le fichier évènemencier et définit :
   #   specs       Les infos sur le film (ou NIL)
+  #               Elles sont toujours définies, même lorsque la première
+  #               ligne n'existe pas, avec des valeurs par défaut.
   #   events      Toutes les instances Evc::Event des évènements
+  #
   def parse
-    if lines.first.start_with?('{')
-      @specs = Specs::new( self, lines.shift )
-    else
-      @specs = nil
-    end
+    fline   = lines.first.start_with?('{') ? lines.shift : nil
+    @specs  = Specs::new( self, fline )
     @events = lines.collect { |line| Event::new( self, line ) }
   end
 
