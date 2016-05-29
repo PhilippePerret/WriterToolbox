@@ -19,10 +19,10 @@ class TestUser < DSLTestMethod
   # méthode `exist?`
   attr_reader :data
 
-  def initialize tfile, ref_user, options=nil, &block
+  def initialize __tfile, ref_user, options=nil, &block
     @ref_user = ref_user
     analyze_ref_user
-    super(tfile, &block)
+    super(__tfile, &block)
   end
 
   # Fonctionne comme `method_missing` mais method_missing

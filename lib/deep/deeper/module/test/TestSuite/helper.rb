@@ -123,16 +123,16 @@ class TestSuite
   end
 
   # Affichages de toutes les test-méthodes de type +type+,
-  # i.e. :success ou :failure, du fichier-test +tfile+
+  # i.e. :success ou :failure, du fichier-test +__tfile+
   # En fonction des options, on affiche ou non tous les
   # messages des case-méthodes.
-  def messages_of_tmethods_of_tfile tfile, type
-    tfile.send("#{type}_tests".to_sym).collect do |tmethod|
+  def messages_of_tmethods_of_tfile __tfile, type
+    __tfile.send("#{type}_tests".to_sym).collect do |tmethod|
       verbose = if type == :failure
         true
       else
         ( tmethod.verbose? || tmethod.quiet? === false ) ||
-        ( tfile.verbose?   || tfile.quiet? === false )   ||
+        ( __tfile.verbose?   || __tfile.quiet? === false )   ||
         ( verbose?         || quiet? === false )
       end
       infos[:nombre_cas] += tmethod.messages_count

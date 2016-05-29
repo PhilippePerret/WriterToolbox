@@ -5,11 +5,11 @@ class TestForm < DSLTestMethod
 
   attr_reader :data_form
 
-  def initialize tfile, raw_route, data_form=nil, options=nil, &block
+  def initialize(__tfile, raw_route, data_form = nil, options = nil, &block)
     SiteHtml::TestSuite::current_test_method = self
     @raw_route = raw_route
     @data_form = data_form
-    super(tfile, &block)
+    super(__tfile, &block)
   end
 
   def description_defaut

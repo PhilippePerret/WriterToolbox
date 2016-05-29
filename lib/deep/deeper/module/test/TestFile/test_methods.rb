@@ -14,9 +14,10 @@ class TestFile
     i = SiteHtml::TestSuite::TestUser.new(self, ref_user, options, &block)
     i.line = get_line_in_caller(caller.first)
   end
-  def test_form route, data_form=nil, options=nil, &bloc
-    i = SiteHtml::TestSuite::TestForm::new self, route, data_form, options, &bloc
+  def test_form route, data_form=nil, options=nil, &block
+    i = SiteHtml::TestSuite::TestForm::new self, route, data_form, options, &block
     i.line = get_line_in_caller(caller.first)
+    i
   end
   def test_route route, options=nil, &bloc
     i = SiteHtml::TestSuite::TestRoute::new( self, route, options, &bloc )

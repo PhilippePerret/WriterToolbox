@@ -17,12 +17,12 @@ class TestTable < DSLTestMethod
   attr_reader :options
 
   # Instanciation
-  def initialize tfile, table_spec, options=nil, &block
+  def initialize __tfile, table_spec, options=nil, &block
     SiteHtml::TestSuite::current_test_method = self
     @table_spec = table_spec
     @options    = options
     analyse_table
-    super(tfile, &block)
+    super(__tfile, &block)
   end
 
   def description_defaut

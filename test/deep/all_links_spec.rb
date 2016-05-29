@@ -32,7 +32,7 @@ class ListeLinksChecked < Hash
     # ---------------------------------------------------------------------
     #   LA BOUCLE QUI TESTE TOUS LES FICHIERS
     # ---------------------------------------------------------------------
-    def test_all_site_pages tfile
+    def test_all_site_pages __tfile
 
       # Nombre maximum de liens à checker, pour
       # les tests.
@@ -71,12 +71,12 @@ class ListeLinksChecked < Hash
         # On passe à l'indice suivant
         indice_current_link += 1
 
-        # Liste des liens de tfile qui seront ajoutés
+        # Liste des liens de __tfile qui seront ajoutés
         added_links     = []
         links_for_stack = []
         errors_links    = []
 
-        tfile.test_route main_link.href do
+        __tfile.test_route main_link.href do
           description "Check du lien `#{main_link.href}`"
 
           # C'est ici que ce fait le test, mais on ne

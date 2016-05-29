@@ -22,11 +22,16 @@ let(:start_time){ Time.now.to_i - 1 }
 
 let(:user_mail){ 'unfakemail@yahoo.fr' }
 let(:user_pwd){ 'unmotdepassevalide' }
+
+# Table de user, dans laquelle on va mettre toutes les
+# données récupérées
 duser = {
-  id:       nil,
-  pseudo:   "UnPseudoPourUneUseuse",
-  mail:     get(:user_mail),
-  password: get(:user_pwd)
+  id:           nil,
+  pseudo:       "UnPseudoPourUneUseuse",
+  mail:         get(:user_mail),
+  password:     get(:user_pwd),
+  program_id:   nil,
+  projet_id:    nil
 }
 
 # ---------------------------------------------------------------------
@@ -42,13 +47,17 @@ dform = {
     user_password:  {name:'user[password]', value: duser[:password]},
     user_pwdconf:   {name:'user[password_confirmation]', value: duser[:password]},
     user_sexe:      {name:'user[sexe]', value:'F'},
-    user_captcha: {name: 'user[captcha]', value: '366'}
+    user_captcha:   {name: 'user[captcha]', value: '366'}
   }
 }
+
+
 test_form "user/create", dform do
   fill_and_submit
   html.has_title("Vous êtes inscrite !", 1)
 end
+
+
 
 # On récupère l'ID du nouvel user
 test_base "users.users" do
@@ -107,9 +116,10 @@ test_user duser[:id] do
   let(:program_id){ program.id }
   duser.merge!(
     program_id: program.id,
-    projet_id:  projet.id
+    projet_id:  program.projet.id
     )
 
+  projet.id.is_not(nil, sujet: 'L’ID du projet')
   show "PROJET_ID : #{duser[:projet_id].inspect}"
 
   # Il doit avoir un dossier et un fichier pour son nouveau

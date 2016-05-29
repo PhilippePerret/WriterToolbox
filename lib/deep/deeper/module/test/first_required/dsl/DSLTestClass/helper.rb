@@ -8,13 +8,13 @@ class DSLTestMethod
   end
 
   def full_libelle_string
-    "#{tfile.itest_file}.#{indice_test_method} - lig:#{line} - #{libelle}"
+    "#{__tfile.itest_file}.#{indice_test_method} - lig:#{line} - #{libelle}"
   end
 
   # Href pour ouvrir le fichier et se rendre à la ligne
   # voulu (dans Atom)
   def href
-    @href ||= "atm://open?url=file://#{File.expand_path(tfile.path)}&line=#{line}"
+    @href ||= "atm://open?url=file://#{File.expand_path(__tfile.path)}&line=#{line}"
   end
 
   # Sortie des messages
