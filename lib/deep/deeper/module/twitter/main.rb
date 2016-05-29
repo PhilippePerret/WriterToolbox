@@ -14,12 +14,12 @@ class SiteHtml
     message = message[2..-1].strip if is_permanent
 
     # === ENVOI ===
-    if is_permanent && OFFLINE
-      flash "En ONLINE, le message permanent suivant aurait été twitté : #{message}."
+    if is_permanent && ONLINE
+      flash "Les tweets permanents doivent être ajoutés en OFFLINE."
     elsif is_permanent
       ptweet = Tweet::new(nil, message)
       ptweet.create
-      flash "Le tweet ##{ptweet.id} sera envoyé au prochain tour de cron."
+      flash "Le tweet ##{ptweet.id} sera envoyé au prochain tour de cron (il faut actualiser les données par le dashboard — pas par check synchro)."
     else
       require 'twitter'
       Tweet::send message

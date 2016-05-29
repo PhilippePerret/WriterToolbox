@@ -57,8 +57,8 @@ $.extend(window.RSConsole, {
         amorce += ' PERMANENT' ;
         l = l - 3 ;
         if (this.type_command != 'tweet permanent'){
-          if(OFFLINE){
-            Flash.error("Noter que les tweets permanents doivent être envoyés seulement en ONLINE. Ce tweet ne sera pas envoyé.")
+          if(ONLINE){
+            Flash.error("Noter que les tweets permanents doivent être enregistrés seulement en OFFLINE. Ce tweet ne sera pas enregistré.")
           }
           this.type_command = 'tweet permanent';
           Flash.show("Un tweet permanent est composé d'une “citation entre guillemets suivi d'un” lien bitly.");
@@ -152,7 +152,7 @@ __\
 Le comptage des lettres empêche de dépasser la limite des 140 caractères __\
 mais il faut surveiller quand même avec les raccourcis. __\
 __\
-Pour obtenir une URL BITLY (lien court) rejoindre la \\<a href='bitly/main' target='_blank'>section Bitly du site\\</a> __\
+Pour obtenir une URL BITLY (lien court) rejoindre \\<a href='https://app.bitly.com/bitlinks/1TkHhvC' target='_blank'>Mon bitly\\</a> __\
 __\
 OPTIONS __\
 ------- __\
@@ -162,6 +162,7 @@ P : Transforme le tweet en 'tweet PERMANENT', c'est-à-dire en un __\
     suivi d'un lien bitly vers la page du site concernée. __\
     Exemple : `twit P “Ceci est un extrait d'une page de cours” __\
                 http://bitly/2546` __\
+    L'opération n'est possible qu'en OFFLINE. __\
       "
     }[sujet].
       replace(/\\</g, '---SUPP---').

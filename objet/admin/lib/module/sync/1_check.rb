@@ -128,6 +128,7 @@ class Sync
     end
   end
 
+
   # Méthode principale qui compare les fichiers d'analyse
   # sur BOA avec les fichiers locaux
   #
@@ -245,7 +246,6 @@ class Sync
   end
 
 
-
   # Méthode principale qui compare les fichiers NARRATION sur
   # ICARE avec les fichiers Locaux pour savoir ceux qui devront
   # être actualisés
@@ -304,6 +304,7 @@ class Sync
 
     return diff_naric
   end
+
 
   def check_liste_icare_narration files_loc, files_dis, indice_ref
     hres = {
@@ -386,6 +387,8 @@ class Sync
       diff_affiches_in_listes liste_affiches_locales, affiches_on_boa
     end
   end
+
+
   # Méthode qui compare la liste des affiches de l'atelier Icare
   # avec la liste des affiches en local et donne la différence (les
   # affiches qui se trouvent en local et pas sur Icare et inversement,
@@ -402,10 +405,12 @@ class Sync
     end
   end
 
+
   # Liste des affiches en local
   def liste_affiches_locales
     @liste_affiches_locales ||= Dir['./view/img/affiches/*.jpg'].collect{|p| File.basename(p)}
   end
+
 
   # Méthode commune checkant la liste des affiches et retournant
   # un hash définissant les affiches à uploader, les affiches à

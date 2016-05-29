@@ -13,3 +13,5 @@
 ««« Le difficile de la structure est qu'elle convoque, pour se construire, tous les éléments dramaturgiques. »»» http://bit.ly/22pXySp
 
 ««« Le rythme engendre une attente inconsciente dans le futur. »»» http://bit.ly/1U92zsc
+
+««« Les techniques employées par les auteurs aguerris ne fonctionnent pas pour les auteurs débutants »»» http://bit.ly/22pWpKw
