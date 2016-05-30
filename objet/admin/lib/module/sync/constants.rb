@@ -4,7 +4,7 @@ class Sync
 
   # Données des fichiers dont il faut tester la synchro
   #
-  # La clé peut être choisie comme on veut, aucun convention.
+  # La clé peut être choisie comme on veut, aucune convention.
   # Cette clé servira à nommer la case à cocher :cb_synchronize_analyses
   # qui permettra de tester s'il faut synchroniser la base en question et
   # appeler la méthode particulière dans ./objet/admin/lib/module/sync/3_synchro.rb
@@ -17,10 +17,15 @@ class Sync
   FILES2SYNC = {
     # Systémique (RestSite)
     taches: {
-      hname: "DB Site (hot/cold)",
+      hname: "Tâches (hot)",
       fpath: "./database/data/site_hot.db",
       icare: false
       },
+    permtweets: {
+      hname: "Tweets permanents",
+      fpath: "./database/data/site_cold.db",
+      icare: false
+    },
     # Application
     narration: {
       hname: "Database Narration",

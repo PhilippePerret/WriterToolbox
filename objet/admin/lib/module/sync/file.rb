@@ -87,7 +87,7 @@ class Fichier
           d.merge!(upate_on_boa: true)
         end
         if icare?
-          if ica_mtime
+          if ica_mtime && loc_mtime && boa_mtime
             if [loc_mtime, boa_mtime].max > ica_mtime
               d.merge!(update_on_icare: true)
             end
@@ -202,7 +202,7 @@ class Fichier
   end
   def voyant_synchro_icare
     if icare?
-      voyant_synchro( !( ica_mtime && (ica_mtime < loc_mtime || ica_mtime < boa_mtime) ) )
+      voyant_synchro( !( (ica_mtime && boa_mtime) && (ica_mtime < loc_mtime || ica_mtime < boa_mtime) ) )
     else
       voyant_synchro nil
     end

@@ -13,3 +13,13 @@
 ««« Le difficile de la structure est qu'elle convoque, pour se construire, tous les éléments dramaturgiques. »»» http://bit.ly/22pXySp
 
 ««« Le rythme engendre une attente inconsciente dans le futur. »»» http://bit.ly/1U92zsc
+
+««« S'efforcer toujours de transformer un objectif procédant du VOULOIR en objectif procédant du DEVOIR. »»» http://bit.ly/1Vq9eUb
+
+««« La Note d'intention peut être un bac à sable à fantasmes. »»» http://bit.ly/22u4tKf
+
+««« Ne pas se laisser abuser par le mirage d'une nouvelle idée. »»» http://bit.ly/24gHbXL
+
+««« Le plus important, c'est de parvenir une première fois jusqu'au bout [du roman ou du script]. »»» (Le Premier jet) http://bit.ly/24gHbXL
+
+««« Il n'y a que ceux qui renoncent qui ne parviennent à rien. »»» (Le Premier jet) http://bit.ly/24gHbXL

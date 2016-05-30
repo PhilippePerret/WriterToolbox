@@ -52,7 +52,7 @@ class Sync
   def online_sync_state
     @online_sync_state ||= begin
 
-      toutres = Hash::new
+      toutres = {}
 
       # Si le fichier du test de synchro existe et qu'il n'a pas
       # encore une heure, on utilise ses données au lieu de recommencer
@@ -69,7 +69,10 @@ class Sync
         # Sur la boite à outils
         # ----------------------
         # debug "COMMANDS ENVOYÉES À BOA :\n#{commands}"
+        # flash "Début du SSH"
         res_boa = `ssh #{serveur_ssh} "ruby -e \\"#{script_check_boa}\\""`
+        # flash "Fin du SSH"
+        # debug "res_boa = #{res_boa.inspect}"
         if res_boa != ""
           res_boa = Marshal.load(res_boa)
           if res_boa[:error]
@@ -142,6 +145,14 @@ class Sync
   #
   def diff_analyse_files_boa
     # debug "-> diff_analyse_files_boa"
+    if online_sync_state[:boa].nil?
+      return error "Grave erreur : online_sync_state[:boa] est nil (#{__FILE__}:#{__LINE__})"
+    elsif online_sync_state[:boa][:analyse_files].nil?
+      return error "Grave erreur : online_sync_state[:boa][:analyse_files] est nil (#{__FILE__}:#{__LINE__})"
+    elsif online_sync_state[:boa][:analyse_files][:online].nil?
+      return error "Grave erreur : online_sync_state[:boa][:analyse_files][:online] est nil (#{__FILE__}:#{__LINE__})"
+    end
+
     dfiles_dis  = online_sync_state[:boa][:analyse_files][:online]
     dfiles_loc  = analyse_files_mtimes
 
@@ -208,6 +219,7 @@ class Sync
     }
 
     # === Check des fichiers CSS ===
+
     files_loc = Array::new
     folder_css_common = File.join('.', 'view', 'css', 'common')
     folder_css_narration = File.join('.', 'objet','cnarration','lib','required','css')
@@ -268,6 +280,7 @@ class Sync
     }
 
     # === Check des fichiers CSS ===
+
     files_loc = Array::new
     folder_css_common = File.join('.', 'view', 'css', 'common')
     folder_css_narration = File.join('.', 'objet','cnarration','lib','required','css')

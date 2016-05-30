@@ -24,7 +24,7 @@ class Sync
 
     synchronize_taches      if param(:cb_synchronize_taches)
 
-    synchronize_tweets
+    synchronize_tweets      if param(:cb_synchronize_permtweets)
 
     synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
 
@@ -146,7 +146,7 @@ class Sync
   # envoyés (lors du cron horaire) et c'est donc en online que
   # les valeurs :count et :last_sent des tweets sont incrémentés.
   def synchronize_tweets
-    debug "-> synchronize_tweets"
+
     # L'instance Sync::Database de la base `site_cold.db` qui
     # permet de gérer la base. Elle a peut-être été déjà
     # chargée par les tâches qui en ont besoin aussi.
@@ -183,10 +183,13 @@ class Sync
     end
     debug "Données à actualiser : #{rs_diff.inspect}"
 
+    # Il faut actualiser la base site_cold.db si
+    # 1/ les nombres de tweets sont différents ou
+    # 2/ des différences ont été relevées.
+    need_update_site_code = !rs_diff.empty? || rs_online.count != rs_offline.count
+
     # *** On actualise les données à actualiser
     unless rs_diff.empty?
-      # On indique que la table site_cold doit être uploadée
-      sdb.need_upload = true
       # La requête pour actualiser la table
       req_update = "UPDATE permanent_tweets SET count = :count, last_sent = :last_sent WHERE id = :id"
       res = []
@@ -195,6 +198,10 @@ class Sync
       end
       debug "Résultat de l'actualisation : #{res.inspect}"
     end
+
+    # On indique que la table site_cold doit être uploadée
+    # si nécessaire cf. plus haut
+    sdb.need_upload = true if need_update_site_code
 
     debug "<- synchronize_tweets"
   end

@@ -75,6 +75,11 @@ module ModuleFeminines
     @f_La ||= f_la.capitalize
   end
 
+  # 3 LETTRES
+  def f_lle # personne[l] / personne[lle]
+    @f_lle ||= (feminine? ? 'lle' : 'l')
+  end
+
   # 4 LETTRES
   def f_iere # prem[ier] / prem[ière]
     @f_iere ||= (feminine? ? 'ière' : 'ier')

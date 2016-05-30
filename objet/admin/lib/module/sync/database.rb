@@ -7,7 +7,7 @@
   locaux.
 
 =end
-site.require_module 'remote_file'
+# site.require_module 'remote_file'
 
 class Sync
 class Database
@@ -17,6 +17,11 @@ class Database
   # ---------------------------------------------------------------------
   class << self
 
+
+    def init
+      site.require_module 'remote_file'
+    end
+
     # La base site_cold.db
     #
     # À l'instanciation de cette variable, on downloade
@@ -25,7 +30,7 @@ class Database
     def site_cold
       @site_cold ||= begin
         sdb = new('site_cold.db')
-        sdb.rfile.download
+        sdb.download
         sdb
       end
     end
@@ -51,19 +56,25 @@ class Database
   # On download le fichier distant mais sans écraser le
   # fichier local.
   def download
+    File.unlink dst_loc_path if File.exist?(dst_loc_path)
     rfile.download
+    size = File.stat(dst_loc_path).size
+    debug "TAILLE DE LA BASE site_cold après download : #{size}"
+    size > 0 || raise( "La taille de site_cold.db ne devrait pas être de ZÉRO.")
   end
 
   # Upload la base de données si nécessaire
   # (et détruit le fichier distant provisoire)
   def upload_if_needed
+    debug "-> Sync::Database#upload_if_needed"
+    File.unlink( dst_loc_path ) if File.exist?( dst_loc_path )
     need_upload || return
     upload
-    File.unlink( dst_loc_path ) if File.exist?( dst_loc_path )
   end
 
   # On upload le fichier local
   def upload
+    debug "-> upload #{loc_path}"
     rfile.upload
   end
 
@@ -75,6 +86,7 @@ class Database
   # faire
   def rfile
     @rfile ||= begin
+      defined?(RFile) || self.class.init
       rf = RFile::new(loc_path)
       rf.distant.downloaded_file_name = dst_loc_name
       rf

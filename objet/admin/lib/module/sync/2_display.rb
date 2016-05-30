@@ -12,7 +12,11 @@ class Sync
   # l'état de synchro.
   def etat_des_lieux_offline
     build_inventory
-    display_path.read
+    if display_path.exist?
+      display_path.read
+    else
+      error "Mon coco, ton état des lieux s'est pas bien fait."
+    end
   end
 
   # Méthode principale qui construit l'état des lieux à afficher
@@ -115,6 +119,10 @@ class Sync
   # les CSS, les images, etc.)
   def display_etat_des_lieux_analyse_files_boa
     dboa = diff_analyse_files_boa
+    if dboa.nil?
+      error "Grave error : diff_analyse_files_boa est nil (#{__FILE__}:#{__LINE__})"
+      return ""
+    end
     @datasync.merge!(analyse_files: dboa)
     if (dboa[:nombre_destroy] + dboa[:nombre_uploads]) == 0
       "• Aucun fichier analyses de film à uploader".in_div(class:'small')

@@ -14,6 +14,16 @@ class << self
       hot:  { taches: { local: nil, distant: nil } },
       cold: { taches: { local: nil, distant: nil } }
     }
+
+    # La base site_cold qui a dû déjà être downloadée pour
+    # les tweets mais le sera ici si les tweets ne sont pas
+    #  à actualiser.
+    # 
+    # Note : Il faut le mettre là pour que soit aussi
+    # chargée la classe RFile utilisée ci-dessous.
+    @rfile_site_cold = Sync::Database::site_cold.rfile
+    @path_database_cold_prov = @rfile_site_cold.distant.local_path
+
     # Le fichier des tâches local
     @path_database_loc = ::Admin::table_taches.bdd.path.to_s
     @suivi << "Path de la base = #{@path_database_loc}"
@@ -23,9 +33,6 @@ class << self
     @rfile.distant.downloaded_file_name = "site_hot-distant-prov.db"
     @path_database_prov = @rfile.distant.local_path
 
-    # La base site_cold qui a dû déjà être downloadée
-    @rfile_site_cold = Sync::Database::site_cold.rfile
-    @path_database_cold_prov = @rfile_site_cold.distant.local_path
 
 
     # On downloade la base des tâches locale (en fait, toute la
