@@ -16,6 +16,11 @@ class Program
     end
   end
 
+  # Pour les méthodes de MethodesObjetsBdD (get, set, etc.)
+  def table
+    @table ||= Unan::table_programs
+  end
+
   # Tables des P-Days propres au programme
   # Noter qu'il faut utiliser `auteur.table_pdays` pour construire
   # la table en cas d'inexistence

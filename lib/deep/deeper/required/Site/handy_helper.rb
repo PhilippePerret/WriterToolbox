@@ -18,10 +18,12 @@ def main_link( titre, uri = nil, options = nil )
   options.merge!(href: uri, class:'mainlink')
   as_main_link(titre).in_a(options)
 end
-def as_main_link titre
+# +style+ On peut ajouter du contenu pour l'attribut style
+def as_main_link titre, style = nil
   dtitre = titre.split('')
   first_letter = dtitre.shift
   other_letters = dtitre.join('')
-  "<span class='first_letter_main_link'>#{first_letter}</span>" +
-  "<span class='other_letters_main_link'>#{other_letters}</span>"
+  sty = style.nil? ? "" : " style=\"#{style}\""
+  "<span class='first_letter_main_link'#{sty}>#{first_letter}</span>" +
+  "<span class='other_letters_main_link'#{sty}>#{other_letters}</span>"
 end
