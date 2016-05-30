@@ -79,24 +79,24 @@ class SiteHtml
         tweets_ids = table_permanent_tweets.select(req_data).keys
         safed_log "  = tweets_ids: #{tweets_ids.inspect}"
         tweets_ids.each do |tweet_id|
-          twit = Tweet::new(tweet_id)
+          twit = new(tweet_id)
           init_count = twit.count + 0
           twit.resend
           safed_log "  = Réexpédition de : #{twit.message}"
           # On vérifie que le tweet ait bien été actualisé
           # Dans un premier temps, on essaie de corriger l'erreur à la
           # volée, puis si c'est encore mauvais, on signale une erreur
-          tchecked = Tweet::new(tweet_id)
+          tchecked = new(tweet_id)
           if tchecked.count == init_count + 1
             safed_log "  = Données du tweet actualisées avec succès (count passé à #{init_count + 1})"
           else
-            site.db.table('site_cold', 'permanent_tweets').set(tweet_id, {count: init_count+1, last_sent: NOW})
+            site.db.table('site_cold', 'permanent_tweets').set(tweet_id, {count: init_count + 1, last_sent: Time.now.to_i})
             # On essaie à nouveau
-            tchecked = Tweet::new(tweet_id)
+            tchecked = new(tweet_id)
             if tchecked.count != init_count + 1
-              error_log "Les données du tweet réexpédié (##{twit.id}) n'ont pas été actualisées après envoi (le nombre de tweet initial, #{init_count}, n'a pas été modifié)…"
+              error_log "Les données du tweet réexpédié (##{tweet_id}) n'ont pas été actualisées après envoi (le nombre de tweet initial, #{init_count}, n'a pas été modifié)…"
             else
-              safed_log "  = Données du tweet correctement actualisées."
+              safed_log "  = Données du tweet ##{tweet_id} correctement actualisées."
             end
           end
         end
