@@ -29,6 +29,9 @@ class SiteHtml
   alias :twitte :tweet
 
   class Tweet
+
+    include MethodesObjetsBdD
+
     class << self
 
       def client
@@ -113,14 +116,10 @@ class SiteHtml
 
     # Ré-expédie le tweet
     def resend
-      # Incrémenter le nombre d'envois (count)
-      @count = count + 1
-      # Modifier la date de dernier envoi
-      @last_sent = NOW
       # Envoyer
       self.class.send( message )
       # Actualiser les données
-      update
+      set( count: count + 1, last_sent: NOW )
     end
 
     # Création du permanent tweet
@@ -133,9 +132,6 @@ class SiteHtml
       @count      = 0
       @last_sent  = 0
       @id = table.insert( data2save.merge(created_at: NOW) )
-    end
-    def update
-      table.set(id, data2save)
     end
 
     # Les données à sauver dans la tables des tweets
@@ -160,7 +156,7 @@ class SiteHtml
     def last_sent;  @last_sent  ||= dispatch(:last_sent)  end
     def created_at; @created_at ||= dispatch(:created_at) end
     def updated_at; @updated_at ||= dispatch(:updated_at) end
-    def data;       @data       ||= table.get(id)     end
+    def data;       @data       ||= table.get(id)         end
 
     # /Propriétés
     # ---------------------------------------------------------------------
