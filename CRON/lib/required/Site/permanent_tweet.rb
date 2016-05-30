@@ -5,7 +5,7 @@ class Tweet
   # Le nombre se lit : "Envoyer NOMBRE_PERMANENT_TWEETS_SEND toutes
   # les PERMANENT_TWEET_FREQUENCE heures"
   NOMBRE_PERMANENT_TWEETS_SEND  = 1
-  PERMANENT_TWEET_FREQUENCE     = 6
+  PERMANENT_TWEET_FREQUENCE     = 3
 
   class << self
 

@@ -146,6 +146,7 @@ class Sync
   # envoyés (lors du cron horaire) et c'est donc en online que
   # les valeurs :count et :last_sent des tweets sont incrémentés.
   def synchronize_tweets
+    @suivi << "* Synchronisation des tweets permanents"
 
     # L'instance Sync::Database de la base `site_cold.db` qui
     # permet de gérer la base. Elle a peut-être été déjà
@@ -163,7 +164,6 @@ class Sync
     pr.execute.each_hash do |h|
       rs_online.merge!(h['id'] => h.to_sym)
     end
-    debug "Données permanent_tweets online : #{rs_online.inspect}"
 
     # *** On prend les données de la base locale
     db = SQLite3::Database.new(sdb.loc_path)
@@ -172,7 +172,6 @@ class Sync
     pr.execute.each_hash do |h|
       rs_offline.merge!(h['id'] => h.to_sym)
     end
-    debug "Données permanent_tweets OFFLINE : #{rs_offline.inspect}"
 
     # *** On calcule la différence
     rs_diff = []
@@ -181,7 +180,6 @@ class Sync
         rs_diff << tdata_online
       end
     end
-    debug "Données à actualiser : #{rs_diff.inspect}"
 
     # Il faut actualiser la base site_cold.db si
     # 1/ les nombres de tweets sont différents ou
@@ -196,14 +194,17 @@ class Sync
       db.prepare(req_update) do |stm|
         rs_diff.collect { |tdata| res << (stm.execute tdata) }
       end
-      debug "Résultat de l'actualisation : #{res.inspect}"
     end
 
     # On indique que la table site_cold doit être uploadée
     # si nécessaire cf. plus haut
     sdb.need_upload = true if need_update_site_code
 
-    debug "<- synchronize_tweets"
+    @suivi << "= Synchronisation des tweets permanents OK"
+  rescue Exception => e
+    debug e
+    @suivi << "ERROR : #{e.message}"
+    @errors << e.message
   end
 
   # Synchornisation de la base de données des analyses de films
