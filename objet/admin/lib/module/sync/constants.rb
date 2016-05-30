@@ -17,7 +17,7 @@ class Sync
   FILES2SYNC = {
     # Systémique (RestSite)
     taches: {
-      hname: "Todolist (hot/cold)",
+      hname: "DB Site (hot/cold)",
       fpath: "./database/data/site_hot.db",
       icare: false
       },

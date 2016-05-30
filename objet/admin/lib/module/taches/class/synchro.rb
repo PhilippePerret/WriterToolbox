@@ -14,29 +14,26 @@ class << self
       hot:  { taches: { local: nil, distant: nil } },
       cold: { taches: { local: nil, distant: nil } }
     }
-
     # Le fichier des tâches local
     @path_database_loc = ::Admin::table_taches.bdd.path.to_s
-    @path_database_loc_cold = ::Admin::table_taches_cold.bdd.path.to_s
     @suivi << "Path de la base = #{@path_database_loc}"
-    @suivi << "Path de la base cold = #{@path_database_loc_cold}"
-    site.require_module 'remote_file'
     @rfile      = RFile::new(@path_database_loc)
-    @rfile_cold = RFile::new(@path_database_loc_cold)
-
     # Il faut charger le fichier distant, mais en changeant son nom
     # pour qu'il n'écrase pas le fichier local.
     @rfile.distant.downloaded_file_name = "site_hot-distant-prov.db"
-    @rfile_cold.distant.downloaded_file_name = "site_cold-distant-prov.db"
     @path_database_prov = @rfile.distant.local_path
-    @path_database_cold_prov = @rfile_cold.distant.local_path
+
+    # La base site_cold qui a dû déjà être downloadée
+    @rfile_site_cold = Sync::Database::site_cold.rfile
+    @path_database_cold_prov = @rfile_site_cold.distant.local_path
+
 
     # On downloade la base des tâches locale (en fait, toute la
     # base des données 'hot' et 'cold' du site) en la plaçant dans
     # un fichier autre que le fichier local.
     # SAUF si param(:reload) n'est pas égale à 1
     if param(:reload) == '1' || false == File.exist?(@path_database_prov)
-      @suivi << "Rechargement des fichiers distants"
+      @suivi << "Rechargement du fichier site_hot distant"
       download_bases_distantes || ( return false )
     else
       @suivi << "! On ne recharge pas le fichier distant."
@@ -65,6 +62,13 @@ class << self
     # On va vérifier que la synchronisation est nécessaire
     synchro_required? || return
 
+    # On indique que la base site_cold.rb devra être
+    # uploadée à la fin de l'opération
+    # Rappel : On ne peut pas le faire tout de suite car
+    # d'autres tables ont besoin d'être synchronisées,
+    # comme la table des tweets permanents par exemple.
+    Sync::Database.site_cold.need_upload = true
+
     # On compare les deux fichiers. Cette méthode n'affiche
     # rien, elle fait juste la comparaison et détermine les
     # modification à faire.
@@ -75,8 +79,9 @@ class << self
     add_and_modify_taches || return
 
     # On upload le fichier des tâches
+    # Note : Le fichier site_cold.db sera chargé plus tard
+    # car plusieurs tables peuvent être à synchroniser
     @rfile.upload
-    @rfile_cold.upload
 
     # On en a terminé, on peut détruire les fichiers provisoires
     # local, sauf si ne pas détruire a été coché.
@@ -278,8 +283,8 @@ class << self
 
     @table_taches_loc = BdD::new(@rfile.path).table('todolist')
     @table_taches_dis = BdD::new(@rfile.distant.local_path).table('todolist')
-    @table_taches_loc_cold = BdD::new(@rfile_cold.path).table('todolist')
-    @table_taches_dis_cold = BdD::new(@rfile_cold.distant.local_path).table('todolist')
+    @table_taches_loc_cold = BdD::new(@rfile_site_cold.path).table('todolist')
+    @table_taches_dis_cold = BdD::new(@rfile_site_cold.distant.local_path).table('todolist')
 
     [
       [:hot,  @table_taches_loc,      @table_taches_dis],
@@ -293,10 +298,11 @@ class << self
   end
 
   def download_bases_distantes
+    # Note : on ne charge plus ici la base site_cold car d'autres
+    # tables en ont besoin, donc on doit le faire de façon
     ok = true
     [
-      [@rfile, @path_database_prov],
-      [@rfile_cold, @path_database_cold_prov]
+      [@rfile, @path_database_prov]
     ].each do |rf, pathdb|
       rf.download
       ok = ok && File.exist?(pathdb)
@@ -323,7 +329,7 @@ class << self
   # Retourne TRUE si les deux fichiers comportent des dates différentes
   # en précisant qui est le plus vieux.
   def synchro_required?
-    [@rfile, @rfile_cold].each do |rf|
+    [@rfile, @rfile_site_cold].each do |rf|
       loc_mtime = rf.mtime
       dis_mtime = rf.distant.mtime
       if loc_mtime < dis_mtime

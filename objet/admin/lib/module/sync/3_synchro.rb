@@ -24,6 +24,8 @@ class Sync
 
     synchronize_taches      if param(:cb_synchronize_taches)
 
+    synchronize_tweets
+
     synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
 
     synchronize_scenodico   if param(:cb_synchronize_scenodico)
@@ -32,6 +34,10 @@ class Sync
 
     synchronize_analyses    if param(:cb_synchronize_analyses) || param(:cb_sync_analyse_files)
 
+
+    # Les bases de données qui contiennent plusieurs tables
+    # à synchroniser doivent être chargées ici si nécessaire
+    Sync::Database.site_cold.upload_if_needed
 
     # À la fin, on peut détruire tous les fichiers pour forcer
     # un prochain check. Cela entrainera l'affichage d'un
@@ -127,6 +133,70 @@ class Sync
     debug e
     @suivi << "ERROR : #{e.message}"
     @errors << e.message
+  end
+
+  # Synchronisation de la table des tweets permanents.
+  #
+  # Cette opération est faite à chaque synchronisation, elle
+  # consiste simplement à prendre les :count et :last_sent de
+  # la base online pour les reporter sur la base locale.
+  #
+  # Rappel : La base locale permet d'ajouter des tweets
+  # permanents, mais c'est en online que les tweets sont
+  # envoyés (lors du cron horaire) et c'est donc en online que
+  # les valeurs :count et :last_sent des tweets sont incrémentés.
+  def synchronize_tweets
+    debug "-> synchronize_tweets"
+    # L'instance Sync::Database de la base `site_cold.db` qui
+    # permet de gérer la base. Elle a peut-être été déjà
+    # chargée par les tâches qui en ont besoin aussi.
+    # Noter que l'instanciation seule (ci-desous) suffit à
+    # downloader le fichier distant.
+    sdb = Sync::Database.site_cold
+
+    # *** On prend les données de la base distante, à
+    # savoir des hashs {:id, :count, :last_sent}
+    req = "SELECT id, count, last_sent FROM permanent_tweets"
+    db = SQLite3::Database.new(sdb.dst_loc_path)
+    pr = db.prepare req
+    rs_online = {}
+    pr.execute.each_hash do |h|
+      rs_online.merge!(h['id'] => h.to_sym)
+    end
+    debug "Données permanent_tweets online : #{rs_online.inspect}"
+
+    # *** On prend les données de la base locale
+    db = SQLite3::Database.new(sdb.loc_path)
+    pr = db.prepare req
+    rs_offline = {}
+    pr.execute.each_hash do |h|
+      rs_offline.merge!(h['id'] => h.to_sym)
+    end
+    debug "Données permanent_tweets OFFLINE : #{rs_offline.inspect}"
+
+    # *** On calcule la différence
+    rs_diff = []
+    rs_online.each do |tid, tdata_online|
+      if rs_offline[tid] != tdata_online
+        rs_diff << tdata_online
+      end
+    end
+    debug "Données à actualiser : #{rs_diff.inspect}"
+
+    # *** On actualise les données à actualiser
+    unless rs_diff.empty?
+      # On indique que la table site_cold doit être uploadée
+      sdb.need_upload = true
+      # La requête pour actualiser la table
+      req_update = "UPDATE permanent_tweets SET count = :count, last_sent = :last_sent WHERE id = :id"
+      res = []
+      db.prepare(req_update) do |stm|
+        rs_diff.collect { |tdata| res << (stm.execute tdata) }
+      end
+      debug "Résultat de l'actualisation : #{res.inspect}"
+    end
+
+    debug "<- synchronize_tweets"
   end
 
   # Synchornisation de la base de données des analyses de films
