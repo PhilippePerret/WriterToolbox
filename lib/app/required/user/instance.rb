@@ -6,7 +6,7 @@ class User
   # indispensable, on crée cette méthode qui sera surclassée par
   # l'autre
   def unanunscript?
-    return false unless user.identified?
+    user.identified? || ( return false )
     table_programs = site.db.create_table_if_needed('unan_hot', 'programs')
     table_programs.count(where:"(auteur_id = #{user.id}) AND (options LIKE '1%') AND (options NOT LIKE '__1%')" ) > 0
   end

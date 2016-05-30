@@ -51,7 +51,7 @@ class User
       self.send(:do_after_login)
     end
 
-    if param(:login)[:back_to].nil_if_empty
+    if param(:login) && param(:login)[:back_to].nil_if_empty
       # Une redirection est demandée
       redirect_to param(:login)[:back_to]
     elsif self.respond_to?(:redirect_after_login)

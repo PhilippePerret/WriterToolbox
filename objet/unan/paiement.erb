@@ -27,7 +27,7 @@ if user.unanunscript?
 
     debug "[paiement.erb] user.just_subscribe_unanunscript? NON"
 
-    # Si l'user en vient pas juste de s'inscrire au programme, mais
+    # Si l'user ne vient pas juste de s'inscrire au programme, mais
     # est inscrit depuis un bon bout de temps
 
     %>
@@ -81,7 +81,6 @@ else
 
     %><p class='small'>L'inscription au programme “Un An Un Script” vous abonne aussi pendant deux ans au site et vous offre donc un accès complet à tous les autres outils. Merci de bien vouloir remplir le formulaire ci-dessous afin de mieux vous faire connaitre à nous.</p>
     <%=
-      app.require_optional '_per_route/user/signup'
       page.view('user/signup')
     %><%
   end

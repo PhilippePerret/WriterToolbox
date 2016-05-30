@@ -9,6 +9,11 @@ class SiteHtml
   class DB
     include Singleton
 
+    # @usage  site.db.table('<base>', '<table>')
+    def table dbname, tblname
+      database_of(dbname).table(tblname)
+    end
+
     # Méthode principale à appeler quand on veut récupérer une table en
     # la créant si elle n'existe pas.
     # RETURN {BdD::Table} La table, si elle a pu être créée
@@ -24,6 +29,7 @@ class SiteHtml
       create_table(db_name, table_name) if creation_required
       database_of(db_name).table(table_name)
     end
+
     # = main =
     #
     # Méthode principale pour créer une table

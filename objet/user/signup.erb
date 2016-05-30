@@ -6,7 +6,8 @@
 # NOTE Cette vue sert aussi bien à l'inscription au site qu'à
 #      l'inscription au programme UN AN UN SCRIPT.
 #
-signup_for_unanunscript = site.current_route.context == "unan"
+signup_for_unanunscript = site.current_route.route == "unan/paiement"
+debug "signup_for_unanunscript = #{signup_for_unanunscript.inspect}"
 signup_for_site = !signup_for_unanunscript
 %>
 <% unless signup_for_unanunscript %>

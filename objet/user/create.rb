@@ -30,7 +30,7 @@ class User
     # SI L'INSCRIPTION EST INVALIDE, on revient tout simplement à la page
     # d'inscription (redirection) pour que l'user recommence.
     def create
-      newuser = User::new
+      newuser = User.new
       if newuser.create
         if param(:user) && param(:user)[:subscribe] == 'on'
           # Pour passer outre la confirmation du mail, on

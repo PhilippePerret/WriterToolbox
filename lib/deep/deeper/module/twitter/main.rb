@@ -80,7 +80,7 @@ class SiteHtml
         safed_log "  = tweets_ids: #{tweets_ids.inspect}"
         tweets_ids.each do |tweet_id|
           twit = Tweet::new(tweet_id)
-          init_count = twit.count.dup
+          init_count = twit.count + 0
           twit.resend
           safed_log "  = Réexpédition de : #{twit.message}"
           # On vérifie que le tweet ait bien été actualisé

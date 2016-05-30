@@ -55,6 +55,7 @@ class User
   # On le sait à partir du moment où il possède un programme
   # ACTIF dans la table des programmes
   def unanunscript?
+    return false if id.nil?
     program.instance_of?(Unan::Program)
   end
 

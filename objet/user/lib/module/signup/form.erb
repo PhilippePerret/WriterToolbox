@@ -3,7 +3,7 @@
 # NOTE Cette vue sert aussi bien à l'inscription au site qu'à
 #      l'inscription au programme UN AN UN SCRIPT.
 #
-signup_for_unanunscript = site.current_route.context == "unan"
+signup_for_unanunscript = site.current_route.route == "unan/paiement"
 %>
 <%
 # Formulaire d'inscription par défaut
@@ -28,7 +28,7 @@ end
 site.require 'form_tools'
 form.prefix = 'user'
 %>
-<form id="form_user_signup" class="dim3070" action="user/create<%= signup_for_unanunscript ? '?in=unan' : '' %>" method="POST">
+<form id="form_user_signup" class="dim3070" action="<%= signup_for_unanunscript ? 'unan' : 'user' %>/create" method="POST">
   <%= (param(:route_after_signup)||param(:ras)||"").in_hidden(name:'route_after_signup') %>
   <%= form.field_text("Pseudo", 'pseudo', nil, {class:'milong'}) %>
   <%= form.field_text("Patronyme", 'patronyme', nil, {class:'milong'}) %>
