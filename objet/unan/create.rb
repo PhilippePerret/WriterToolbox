@@ -7,11 +7,8 @@
   sur le site et qu'il faut donc faire une inscription complète.
 
 =end
-debug "-> create de unan"
 require './objet/user/create.rb'
 User.create
   # La méthode create gère entièrement le fait que l'user
   # s'inscrit au programme et le renvoie donc vers une
   # page de paiement adaptée.
-
-debug "<- create de unan"

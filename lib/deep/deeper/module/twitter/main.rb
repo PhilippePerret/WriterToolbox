@@ -84,11 +84,20 @@ class SiteHtml
           twit.resend
           safed_log "  = Réexpédition de : #{twit.message}"
           # On vérifie que le tweet ait bien été actualisé
+          # Dans un premier temps, on essaie de corriger l'erreur à la
+          # volée, puis si c'est encore mauvais, on signale une erreur
           tchecked = Tweet::new(tweet_id)
-          if tchecked.count != init_count + 1
-            error_log "Les données du tweet réexpédié (##{twit.id}) n'ont pas été actualisées après envoi…"
+          if tchecked.count == init_count + 1
+            safed_log "  = Données du tweet actualisées avec succès (count passé à #{init_count + 1})"
           else
-            safed_log "  = Données du tweet actualisées."
+            site.db.table('site_cold', 'permanent_tweets').set(tweet_id, {count: init_count+1, last_sent: NOW})
+            # On essaie à nouveau
+            tchecked = Tweet::new(tweet_id)
+            if tchecked.count != init_count + 1
+              error_log "Les données du tweet réexpédié (##{twit.id}) n'ont pas été actualisées après envoi (le nombre de tweet initial, #{init_count}, n'a pas été modifié)…"
+            else
+              safed_log "  = Données du tweet correctement actualisées."
+            end
           end
         end
       rescue Exception => e
@@ -111,6 +120,8 @@ class SiteHtml
     #   INSTANCES DES TWEETS (POUR LES TWEETS PERMANENTS)
     # ---------------------------------------------------------------------
 
+    attr_reader :id
+
     # Instanciation d'un tweet permanent
     #
     # Si +id+ est nil, c'est une création
@@ -128,9 +139,7 @@ class SiteHtml
       self.class.send( message )
       # Actualiser les données
       newdata = { count: count + 1, last_sent: NOW }
-      safed_log "  * Données du tweet mise à #{newdata.inspect}"
       set( newdata )
-      safed_log "  = Données du tweet actualisées"
     end
 
     # Création du permanent tweet
@@ -160,7 +169,6 @@ class SiteHtml
     # ---------------------------------------------------------------------
     #   Propriétés
     # ---------------------------------------------------------------------
-    def id;         @id         ||= dispatch(:id)         end
     def message;    @message    ||= dispatch(:message)   end
     def bitlink;    @bitlink    ||= dispatch(:bitlink)    end
     def count;      @count      ||= dispatch(:count)      end
@@ -175,7 +183,7 @@ class SiteHtml
     # Dispatche toutes les données du permanent link et
     # retourne la donnée attendue
     def dispatch kreturned
-      data.each {|k, v| instance_variable_set("@#{k}", v) }
+      data.each { |k, v| instance_variable_set("@#{k}", v) }
       data[kreturned]
     end
 
