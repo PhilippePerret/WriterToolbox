@@ -26,6 +26,19 @@ class SafedLog
   end
   alias :<< :add
 
+  # Pour envoyer le rapport de safed-log à l'administration
+  # si demandé. C'est la constante SEND_SAFED_LOG définie dans
+  # Cron/main.rb qui le détermine.
+  def send_report
+    content = File.open(safed_log_path,'r'){|f| f.read.force_encoding('utf-8')}
+    MiniMail.new().send(
+      content,
+      "BOA - Safed-log du #{Time.now}"
+    )
+  rescue Exception => e
+    error_log e, "Impossible d'envoyer le safed-log."
+  end
+
   def safed_log_path
     @safed_log_path ||= "#{RACINE}/CRON/safed_log.log"
   end

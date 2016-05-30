@@ -74,14 +74,19 @@ class SiteHtml
         # d'envois.
         req_data = {order: 'last_sent ASC, count ASC', limit: nombre, colonnes:[]}
         tweets_ids = table_permanent_tweets.select(req_data).keys
-        tweets_ids.each { |tweet_id| Tweet::new(tweet_id).resend }
+        safed_log "  = tweets_ids: #{tweets_ids.inspect}"
+        tweets_ids.each do |tweet_id|
+          twit = Tweet::new(tweet_id)
+          twit.resend
+          safed_log "  = Réexpédition de : #{twit.message}"
+        end
       rescue Exception => e
         bt = e.backtrace.join("\n")
         [false, "Les tweets permanents n'ont pas pu être envoyés : #{e.message}\n#{bt}"]
       else
         # On retourne un résultat positif d'opération
         s = nombre > 1 ? 's' : ''
-        [true, "#{nombre} tweet#{s} permanent#{s} ré-expédiés."]
+        [true, "#{nombre} tweet#{s} permanent#{s} ré-expédié#{s}."]
       end
 
       def table_permanent_tweets

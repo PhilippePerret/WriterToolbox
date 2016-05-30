@@ -10,6 +10,7 @@ class Tweet
   class << self
 
     def send_permanent_tweets_if_needed
+      safed_log "-> send_permanent_tweets_if_needed"
       time_ok_to_send || return
       Dir["./lib/deep/deeper/module/twitter/**/*.rb"].each{|m| require m}
       ok, message_retour = auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
@@ -21,7 +22,7 @@ class Tweet
     rescue Exception => e
       error_log e, "# [#{Time.now}] Problème en envoyant les tweets permanents"
     else
-      safed_log "  = Tweets permanents envoyés avec succès."
+      safed_log "  = Envoi Tweet Permanent OK."
     end
 
 
@@ -31,9 +32,14 @@ class Tweet
     #
     # On prend la date du dernier tweet envoyé
     def time_ok_to_send
+      safed_log "  = last_sent = #{last_sent.inspect}"
       if last_sent.nil?
         (Time.now.hour % PERMANENT_TWEET_FREQUENCE) == 0
       else
+        safed_log "  = Calcul si envoi est nécessaire"
+        safed_log "  = Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)"
+        safed_log "  = #{Time.now.to_i} > #{last_sent} + #{PERMANENT_TWEET_FREQUENCE * 3600}"
+        safed_log "  = Résultat : #{(Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)).inspect}"
         Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)
       end
     end

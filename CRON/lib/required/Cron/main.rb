@@ -8,6 +8,15 @@ appelé par ./lib/required.rb en premier).
 safed_log "-> #{__FILE__}"
 
 class Cron
+
+  # Si cette constante est mise à true, le safed log qui est
+  # composé à chaque run (donc toutes les heures) est transmis
+  # à l'administration pour surveillance.
+  #
+  # C'est important quand de nouveaux processus sont mis en place.
+  SEND_SAFED_LOG = true
+
+
 class << self
 
   def run
@@ -29,6 +38,7 @@ class << self
 
       safed_log "Racine dans le Dir.chdir = #{File.expand_path('.')}"
 
+      log "\n\n---> Nettoyage des lieux"
       safed_log "#{separation}[Cron::run] Nettoyage des lieux"
       nettoyage
 
@@ -40,18 +50,23 @@ class << self
 
       # Voir s'il faut faire un résumé des connexions
       # par IP (en fonction des fréquences)
+      log "\n\n---> Traitement des connexions par IP"
       safed_log "#{separation}[Cron::run] Traitement des connexions par IP"
       SiteHtml::Connexions.resume
 
+      log "\n\n---> Envoi des tweets permanents (if needed)"
       safed_log "#{separation} [Cron::run] Envoi des permanent tweets (si nécessaire)"
       SiteHtml::Tweet.send_permanent_tweets_if_needed
 
+      log "\n\n---> Traitement du programme UN AN UN SCRIPT"
       safed_log "#{separation}[Cron::run] Traitement du programme UN AN UN SCRIPT"
       traitement_programme_un_an_un_script
 
+      log "\n\n---> Traitement des messages du forum"
       safed_log "#{separation}[Cron::run] Traitement des messages forum"
       traitement_messages_forum
 
+      log "\n\n--- Fin du cron.run ---"
       safed_log "    = Fin Cron::run ="
     end
 
@@ -73,6 +88,9 @@ class << self
     # à l'administrateur pour l'en informer
     SafedErrorLog.send_report_errors if SafedErrorLog.error_occured
 
+    # Si on doit transmettre le safed-log dans son intégralité
+    safedlog.send_report if SEND_SAFED_LOG
+
   end #/run
 
   # « Tout est dans le titre. »
@@ -93,7 +111,6 @@ class << self
 
   # Gestion des nouveaux messages sur le forum
   def traitement_messages_forum
-    log "\n\n\n---> cron.traitement_messages_forum"
     safed_log "     -> Cron::traitement_messages_forum"
     # Toutes les heures, on vérifie s'il y de nouveaux
     # messages sur le forum, et on envoie les messages
@@ -110,7 +127,6 @@ class << self
   # Toute la partie pour gérer les inscrits au programme
   # UN AN UN SCRIPT
   def traitement_programme_un_an_un_script
-    log "---> cron.traitement_programme_un_an_un_script"
     safed_log "     -> Cron::traitement_programme_un_an_un_script"
     # L'objet Unan doit être requis pour traiter tout ce qui
     # concerne le programme UN AN UN SCRIPT
