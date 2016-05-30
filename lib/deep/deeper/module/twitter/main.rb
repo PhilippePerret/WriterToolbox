@@ -80,8 +80,16 @@ class SiteHtml
         safed_log "  = tweets_ids: #{tweets_ids.inspect}"
         tweets_ids.each do |tweet_id|
           twit = Tweet::new(tweet_id)
+          init_count = twit.count.dup
           twit.resend
           safed_log "  = Réexpédition de : #{twit.message}"
+          # On vérifie que le tweet ait bien été actualisé
+          tchecked = Tweet::new(tweet_id)
+          if tchecked.count != init_count + 1
+            error_log "Les données du tweet réexpédié (##{twit.id}) n'ont pas été actualisées après envoi…"
+          else
+            safed_log "  = Données du tweet actualisées."
+          end
         end
       rescue Exception => e
         bt = e.backtrace.join("\n")
@@ -119,7 +127,10 @@ class SiteHtml
       # Envoyer
       self.class.send( message )
       # Actualiser les données
-      set( count: count + 1, last_sent: NOW )
+      newdata = { count: count + 1, last_sent: NOW }
+      safed_log "  * Données du tweet mise à #{newdata.inspect}"
+      set( newdata )
+      safed_log "  = Données du tweet actualisées"
     end
 
     # Création du permanent tweet
