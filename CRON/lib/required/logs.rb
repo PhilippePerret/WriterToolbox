@@ -31,6 +31,8 @@ class SafedLog
   # Cron/main.rb qui le détermine.
   def send_report
     content = File.open(safed_log_path,'r'){|f| f.read.force_encoding('utf-8')}
+
+    content = "(Pour ne plus recevoir ce rapport, mettre la constante SEND_SAFED_LOG à false dans ./CRON/lib/required/Cron/main.rb)\n\n#{content}"
     MiniMail.new().send(
       content,
       "BOA - Safed-log du #{Time.now}"
