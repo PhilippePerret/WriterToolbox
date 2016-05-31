@@ -64,6 +64,7 @@ else
     debug "[paiement.erb] user.subscribed? NON identified? OUI"
 
     %><p class='small'>Notez qu'avec l'inscription au programme <%= UN_AN_UN_SCRIPT %> vous bénéficiez automatiquement de <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
+    <% make_transaction_paiement_unanunscript %>
     <%= site.paiement.output %><%
 
   # Si l'user n'est NI INSCRIT, NI ABONNÉ

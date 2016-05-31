@@ -35,7 +35,8 @@ dform = {
     user_code:    {name: 'user[password]', value: duser[:pwd]},
     ucode_conf:   {name: 'user[password_confirmation]', value: duser[:pwd]},
     user_sexe:    {name: 'user[sexe]', value:'F'},
-    capcha:       {name: 'user[captcha]', value: '366'}
+    capcha:       {name: 'user[captcha]', value: '366'},
+    subscribe:    {name: 'user[subscribe]', value: 'on'}
   }
 }
 
@@ -45,10 +46,21 @@ test_form 'unan/create', dform do
   curl_request.header.has(status_code: 200)
   html.has_not_tag('form#form_user_signup')
   html.has_not_error
-  html.debug_debug
+  # html.debug_debug
+  # La page contient le formulaire pour procéder au paiement
+  # paypal
+  html.has_tag('form#form_paiement')
   # debug "HTML : #{html.inspect}"
 end
-#
+
+# Là il faudrait faire comme si on passer par Paypal
+test_route 'paiement/on_ok?in=unan' do
+  description "Simulation du retour PayPal OK (création du programme pour l'user)"
+  responds
+
+end
+
+
 # # On va récupérer le dernier utilisateur créé, qui doit correspond
 # test_base 'users.users' do
 #   du = row(mail: duser[:mail]).data

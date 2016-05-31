@@ -1,4 +1,9 @@
 # encoding: UTF-8
+debug "Je passe par unan/paiement.rb (redirection, normalement)"
+debug "Je require le module 'paiement'"
+site.require_module 'paiement'
+debug "Module 'paiement' requis avec succès"
+
 class User
 
   # Méthode appelée lorsque l'user est déjà inscrit sur le
@@ -19,7 +24,9 @@ class User
   # Return TRUE si l'user peut accéder au paiement du
   # programme Un AN UN SCRIPT
   def can_subscribe_to_1an1script?
-    @can_subscribe_to_1an1script ||= identified? && !unanunscript?
+    @can_subscribe_to_1an1script ||= begin
+      identified? && !unanunscript?
+    end
   end
 
   # Return TRUE si l'user vient juste de s'inscrire au programme
@@ -33,13 +40,7 @@ class User
 
 end #/User
 
-# Pour passer par là, l'user doit être identifié (donc
-# inscrit) et ne doit pas déjà suivre le programme
-# UN AN UN SCRIPT
-if user.can_subscribe_to_1an1script?
-
-  app.require_optional 'paiement'
-
+def make_transaction_paiement_unanunscript
   # Instancier un paiement et le traiter en fonction de
   # param(:pres)
   site.paiement.make_transaction(
@@ -49,5 +50,10 @@ if user.can_subscribe_to_1an1script?
     context:      "unan",
     description:  "règlement de l'inscription au programme “1 An 1 Script”"
   )
-
+end
+# Pour passer par là, l'user doit être identifié (donc
+# inscrit) et ne doit pas déjà suivre le programme
+# UN AN UN SCRIPT
+if user.can_subscribe_to_1an1script?
+  make_transaction_paiement_unanunscript
 end

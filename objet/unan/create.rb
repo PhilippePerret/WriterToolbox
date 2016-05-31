@@ -8,8 +8,9 @@
 
 =end
 debug "Je passe par le module unan/create.rb"
+debug "Le contexte est #{site.current_route.context.inspect}"
 require './objet/user/create.rb'
-User.create
+User.create(pour_unanunscript = true)
   # La méthode create gère entièrement le fait que l'user
   # s'inscrit au programme et le renvoie donc vers une
   # page de paiement adaptée.

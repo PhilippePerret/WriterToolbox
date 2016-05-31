@@ -29,8 +29,7 @@ class User
     #     je crois que c'est une vieille tournure qui n'a plus cours maintenant)
     # SI L'INSCRIPTION EST INVALIDE, on revient tout simplement à la page
     # d'inscription (redirection) pour que l'user recommence.
-    def create
-      debug "Je passe par User::create"
+    def create pour_unanunscript = false
       newuser = User.new
       if newuser.create
         if param(:user) && param(:user)[:subscribe] == 'on'
@@ -38,7 +37,7 @@ class User
           # doit préciser que l'user procède à son paiement
           app.session['for_paiement'] = "1"
           newuser.login
-          if site.current_route.context == 'unan'
+          if pour_unanunscript
             # => Page de paiement du programme UN AN UN SCRIPT
             redirect_to 'unan/paiement'
           else
