@@ -80,25 +80,19 @@ class SiteHtml
         safed_log "  = tweets_ids: #{tweets_ids.inspect}"
         tweets_ids.each do |tweet_id|
           twit = new(tweet_id)
-          init_count = twit.count + 0
+          count_expected = twit.count + 1
           twit.resend
           safed_log "  = Réexpédition de : #{twit.message}"
-          # On vérifie que le tweet ait bien été actualisé
-          # Dans un premier temps, on essaie de corriger l'erreur à la
-          # volée, puis si c'est encore mauvais, on signale une erreur
-          tchecked = new(tweet_id)
-          if tchecked.count == init_count + 1
-            safed_log "  = Données du tweet actualisées avec succès (count passé à #{init_count + 1})"
+
+          # On s'assure que les données du tweet ont bien été
+          # modifiées
+          if check_update_tweet_data( tweet_id, count_expected )
+            safed_log "  = Données actualisées avec succès"
           else
-            site.db.table('site_cold', 'permanent_tweets').set(tweet_id, {count: init_count + 1, last_sent: Time.now.to_i})
-            # On essaie à nouveau
-            tchecked = new(tweet_id)
-            if tchecked.count != init_count + 1
-              error_log "Les données du tweet réexpédié (##{tweet_id}) n'ont pas été actualisées après envoi (le nombre de tweet initial, #{init_count}, n'a pas été modifié)…"
-            else
-              safed_log "  = Données du tweet ##{tweet_id} correctement actualisées."
-            end
+            safed_log "  # Impossible d'actualiser les données du tweet"
+            error_log "Impossible d'actualiser les données du tweet…"
           end
+
         end
       rescue Exception => e
         bt = e.backtrace.join("\n")
@@ -107,6 +101,68 @@ class SiteHtml
         # On retourne un résultat positif d'opération
         s = nombre > 1 ? 's' : ''
         [true, "#{nombre} tweet#{s} permanent#{s} ré-expédié#{s}."]
+      end
+
+      # Un grave problème se pose avec les tweets : leurs données
+      # ne s'actualisent pas (:count et :last_sent). J'utilise donc
+      # cette méthode pour forcer cette actualisation au maximum.
+      # +tid+       ID du tweet
+      # +count_expected+  Le nombre (:count) attendu
+      def check_update_tweet_data tid, count_expected
+
+        # On met les messages dans cette variable pour pouvoir
+        # l'envoyer ensuite dans le error_log s'il y a une erreur
+        suivi_error = []
+        suivi_error << "=== Tentative d'incrémentation des données du tweet ==="
+        suivi_error << "TWEET ID : #{tid}"
+        suivi_error << ":count expected: #{count_expected}"
+
+        tchecked = new(tid)
+        suivi_error << ":count in tchecked: #{tchecked.count}"
+        return true if tchecked.count == count_expected
+        suivi_error << "BAD"
+
+        # Tentative d'actualisation des données en utilisant
+        # `site.db.table`
+        suivi_error << "Essai avec site.db.table"
+        site.db.table('site_cold', 'permanent_tweets').set(tid, {count: count_expected, last_sent: Time.now.to_i})
+        tchecked = new(tid)
+        suivi_error <<  "tchecked class : #{tchecked.class}" +
+                        "         ID    : #{tchecked.id}" +
+                        "         count : #{tchecked.count.inspect}" +
+                        "         sent  : #{tchecked.last_sent.inspect}"
+
+        return true if tchecked.count == count_expected
+        suivi_error << "BAD"
+
+        # Tentative finale d'actualisation : en utilisant tout
+        # en brut.
+        require 'sqlite3'
+        req = "UPDATE permanent_tweets"+
+              " SET count = #{count_expected}, last_send = #{Time.now.to_i}"+
+              " WHERE id = #{tid}"
+        suivi_error << "REQUEST : #{req}"
+        suivi_error << "Root : #{File.expand_path('.')}"
+        pdb = File.join(RACINE, 'database', 'data', 'site_cold.db')
+        suivi_error << "DB Path: #{pdb} "
+        suivi_error << "Exist? #{File.exist?(pdb).inspect}"
+        db = SQLite3::Database.new(pdb)
+        pr = db.prepare req
+        rs = pr.execute
+        suivi_error << "Retour de l'exécution de la requête : #{rs.inspect}"
+        tchecked = new(tid)
+        suivi_error <<  "tchecked class : #{tchecked.class}" +
+                        "         ID    : #{tchecked.id}" +
+                        "         count : #{tchecked.count.inspect}" +
+                        "         sent  : #{tchecked.last_sent.inspect}"
+
+        return true if tchecked.count == count_expected
+        suivi_error << "BAD"
+
+        error_log suivi_error.join("\n")
+
+        return false
+
       end
 
       def table_permanent_tweets
