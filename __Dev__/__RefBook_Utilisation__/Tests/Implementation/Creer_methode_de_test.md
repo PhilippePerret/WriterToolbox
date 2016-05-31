@@ -20,8 +20,8 @@ On utilise un **DSL** particulier.
     
           ...
           class TestForm < DSLTestMethod
-            def initialize ftest, param1... paramN, &block
-              super(ftest, &block)
+            def initialize __ftest, param1... paramN, &block
+              super(__ftest, &block)
             end
 
     
@@ -61,6 +61,12 @@ On utilise un **DSL** particulier.
           def description_defaut
             @description_defaut ||= "TEST FORM at ROUTE #{raw_route}"
           end
+        end
+
+* définir le **sujet** de la test-méthode, qui va permettre de gérer les missing_methods de type `?`. Par exemple, pour `test_user`, le sujet est l'user défini par le premier argument de la test-méthode.
+
+        def subject
+          @subject ||= <le sujet>
         end
         
 * implémenter les méthodes de la nouvelle classe pour faire des *méthodes-case* dans un fichier `case_methods.rb` dans le dossier de la nouvelle classe de test.

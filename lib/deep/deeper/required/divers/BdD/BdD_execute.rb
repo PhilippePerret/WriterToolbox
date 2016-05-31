@@ -145,6 +145,8 @@ class BdD
       begin
         smt = database.prepare( request )
       rescue Exception => e
+        (smt.close if smt) rescue nil
+        (database.close if database) rescue nil
         debug "# Une erreur est survenue avec database.prepare : #{e.message}"
         debug "# Requête : #{request}"
         debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
@@ -221,7 +223,6 @@ class BdD
 
         # Le Hash qui contiendra toutes les données retournées
         hretour = {}
-
         # debug "= RES ANALYSE ="
         res.each_hash do |hdata|
           hres = {}.merge(hdata) # pour le transformer en Hash simple
@@ -238,26 +239,8 @@ class BdD
           hretour.merge!( real_hres[main_key] => real_hres )
 
         end
-
-        # Pour savoir ce que la méthode va retourner
-        # debug "\nHRETOUR:#{hretour.pretty_inspect}\n\n\n"
-
-        # ANCIENNE MÉTHODE OBSOLÈTE :
-        # if params[:colonnes] != nil
-        #   unless params[:colonnes].first.class == Symbol
-        #     params[:colonnes] = params[:colonnes].collect { |k| k.to_sym }
-        #   end
-        #   main_key = (params[:key] || :id).to_sym
-        #   hretour = Hash::new
-        #   res.each do |values_returned|
-        #     hres = Hash[params[:colonnes].zip(values_returned)]
-        #     hres.each do |k, v|
-        #       v = table_values_to_real_values v, col2type[k.to_s]
-        #       hres[k] = v
-        #     end
-        #     hretour.merge! hres[main_key] => hres
-        #   end
         hretour
+
       when "INSERT"
         # Après une insertion, on retourne le nouvel ID
         # attribué.
@@ -279,8 +262,8 @@ class BdD
     else
       return retour
     ensure
-      # database.close  if database
-      smt.close       if smt
+      (database.close  if database) rescue nil
+      (smt.close       if smt) rescue nil
     end
     alias :execute_request :execute_requete
 

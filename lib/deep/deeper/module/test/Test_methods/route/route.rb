@@ -25,6 +25,13 @@ class TestRoute < DSLTestMethod
     @description_defaut ||= "TEST ROUTE #{clickable_url}"
   end
 
+  # Le sujet de la test-méthode
+  #
+  # Cf. le manuel
+  def subject
+    @subject ||= html
+  end
+  
 end #/Route
 end #/TestSuite
 end #/SiteHtml

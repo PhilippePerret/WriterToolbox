@@ -14,14 +14,31 @@ class TestForm < DSLTestMethod
 
   def description_defaut
     @description_defaut ||= begin
-      form_specs = if data_form[:id]
-        " ##{data_form[:id]}"
-      elsif data_form[:name]
-        " .#{data_form[:name]}"
-      else
-        ""
-      end
-      "TEST FORM#{form_specs} AT #{clickable_url}"
+      fs =
+        if data_form[:id]
+          " ##{data_form[:id]}"
+        elsif data_form[:name]
+          " .#{data_form[:name]}"
+        else
+          ""
+        end
+      "TEST FORM#{fs} AT #{clickable_url}"
+    end
+  end
+
+  # Le "sujet" de la test-méthode
+  # C'est le node Nokogiri du formulaire
+  def subject
+    @subject ||= html.find("form#{form_specs}")
+  end
+
+  def form_specs
+    @form_specs ||= begin
+      attrs = ""
+      attrs << "##{data_form[:id]}"     if data_form.key?(:id)
+      attrs << ".#{data_form[:class]}"  if data_form.key?(:class)
+      attrs << "[action=\"#{data_form[:action]}\"]" if data_form.key?(:action)
+      attrs
     end
   end
 

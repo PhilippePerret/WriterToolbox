@@ -6,6 +6,7 @@ Test de la base du fonctionnement du programme UN AN UN SCRIPT.
 Dans ce premier module, on simule l'inscription d'un nouvel inscrit.
 MD
 
+start_time = Time.now.to_i - 1
 
 test_route "unan/paiement" do
   description "On peut rejoindre le formulaire d'inscription au programme UN AN UN SCRIPT."
@@ -44,20 +45,38 @@ test_form 'unan/create', dform do
   curl_request.header.has(status_code: 200)
   html.has_not_tag('form#form_user_signup')
   html.has_not_error
+  html.debug_debug
+  # debug "HTML : #{html.inspect}"
 end
-
-# On va récupérer le dernier utilisateur créé, qui doit correspond
-test_base 'users.users' do
-  du = row(mail: duser[:mail]).data
-  show "du : #{du.inspect}"
-  du[:id].is_not(nil, sujet: 'L’identifiant du nouvel inscrit')
-  duser[:id] = du[:id]
-
-  show duser.inspect
-end
-# Ensuite, on peut vérifier que l'user a bien tout ce qu'il faut
-
-test_user duser[:id] do
-  show duser.inspect
-
-end
+#
+# # On va récupérer le dernier utilisateur créé, qui doit correspond
+# test_base 'users.users' do
+#   du = row(mail: duser[:mail]).data
+#   # show "du : #{du.inspect}"
+#   du[:id].is_not(nil, sujet: 'L’identifiant du nouvel inscrit')
+#   duser[:id] = du[:id]
+#
+#   # show duser.inspect
+# end
+# # Ensuite, on peut vérifier que l'user a bien tout ce qu'il faut
+#
+# test_user duser[:id] do
+#   description "Les données de l'user doivent être correctes"
+#   # show duser.inspect
+#   is_unanunscript
+# end
+#
+# test_user duser[:id] do
+#   description "L'user a reçu les mails attendus"
+#   has_mail(
+#     sujet: "Bienvenue sur le programme UN AN UN SCRIPT",
+#     sent_after:  start_time
+#   )
+#   pending_
+# end
+#
+# test_route "unan/home" do
+#   description "L'user trouve son bureau de travail"
+#   responds
+#   pending_
+# end

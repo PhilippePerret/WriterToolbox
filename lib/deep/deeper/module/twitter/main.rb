@@ -87,7 +87,7 @@ class SiteHtml
           # On s'assure que les données du tweet ont bien été
           # modifiées
           if check_update_tweet_data( tweet_id, count_expected )
-            safed_log "  = Données actualisées avec succès"
+            safed_log "  = Données actualisées (et vérifiées) avec succès"
           else
             safed_log "  # Impossible d'actualiser les données du tweet"
             error_log "Impossible d'actualiser les données du tweet…"
@@ -139,7 +139,7 @@ class SiteHtml
         # en brut.
         require 'sqlite3'
         req = "UPDATE permanent_tweets"+
-              " SET count = #{count_expected}, last_send = #{Time.now.to_i}"+
+              " SET count = #{count_expected}, last_sent = #{Time.now.to_i}"+
               " WHERE id = #{tid}"
         suivi_error << "REQUEST : #{req}"
         suivi_error << "Root : #{File.expand_path('.')}"
@@ -191,7 +191,7 @@ class SiteHtml
 
     # Ré-expédie le tweet
     def resend
-      # Envoyer
+      # ENVOYER LE TWEET
       self.class.send( message )
       # Actualiser les données
       newdata = { count: count + 1, last_sent: NOW }

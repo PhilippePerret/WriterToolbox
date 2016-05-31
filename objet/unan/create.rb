@@ -7,6 +7,7 @@
   sur le site et qu'il faut donc faire une inscription complète.
 
 =end
+debug "Je passe par le module unan/create.rb"
 require './objet/user/create.rb'
 User.create
   # La méthode create gère entièrement le fait que l'user

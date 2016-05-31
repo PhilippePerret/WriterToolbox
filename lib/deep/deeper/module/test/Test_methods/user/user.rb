@@ -25,27 +25,32 @@ class TestUser < DSLTestMethod
     super(__tfile, &block)
   end
 
-  # Fonctionne comme `method_missing` mais method_missing
-  # est déjà défini pour la class `Object` dont héritent toutes
-  # les classes. Pour faire une propre captation, il faut
-  # donc définir self_method_missing qui sera appelé par
-  # method_missing
-  def self_method_missing method_name, *args, &block
-    if self.user.respond_to?(method_name)
-      if block_given?
-        self.user.send(method_name, &block)
-      elsif args
-        self.user.send(method_name, *args)
-      else
-        self.user.send(method_name)
-      end
-    else
-      raise "La méthode #{method_name.inspect} est inconnue de l'user courant."
-    end
-  end
+  # # Fonctionne comme `method_missing` mais method_missing
+  # # est déjà défini pour la class `Object` dont héritent toutes
+  # # les classes. Pour faire une propre captation, il faut
+  # # donc définir self_method_missing qui sera appelé par
+  # # method_missing
+  # def self_method_missing method_name, *args, &block
+  #   if self.user.respond_to?(method_name)
+  #     if block_given?
+  #       self.user.send(method_name, &block)
+  #     elsif args
+  #       self.user.send(method_name, *args)
+  #     else
+  #       self.user.send(method_name)
+  #     end
+  #   else
+  #     raise "La méthode #{method_name.inspect} est inconnue de l'user courant."
+  #   end
+  # end
 
   def description_defaut
     @description_defaut ||= "TEST USER ##{data[:id]} #{pseudo}"
+  end
+
+  # Le sujet de la test-méthode
+  def subject
+    @subject ||= user
   end
 
   # Retourne true si l'user existe
@@ -66,7 +71,11 @@ class TestUser < DSLTestMethod
     end
   end
 
+
+
   # Instance de l'user courant
+  #
+  # C'est aussi le *subject* de la test-méthode
   #
   # Noter que chaque instance possède une instance User
   # vierge, car on utilise la méthode `new` et non pas

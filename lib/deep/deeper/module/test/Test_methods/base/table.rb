@@ -29,6 +29,11 @@ class TestTable < DSLTestMethod
     @description_defaut ||= "TEST TABLE #{name} DE BASE #{database.name}"
   end
 
+  # Le sujet : La table (BdD::Table)
+  def subject
+    @subject ||= site.db.table(database.name, name)
+  end
+
   # On décompose la base et la table en testant la
   # validité des informations données
   def analyse_table
@@ -41,7 +46,7 @@ class TestTable < DSLTestMethod
     @name = table_name
   end
 
-  # {SuperFile} Base de données
+  # {SiteHtml::TestSuite::TestBase} Base de données
   def database ; @database end
   # {String} La table concernée
   def name     ; @name     end

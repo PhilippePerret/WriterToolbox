@@ -179,13 +179,20 @@ class HTML
 
   # Méthode pour inspecter le code actuel
   def inspect
-    return unless tmethod.verbose?
+    # return unless tmethod.verbose?
     debug "\n\n"+("-"*80)+"\n\n"
     debug "=== html.inspect ==="
     debug page.inner_html.gsub(/</,'&lt;').gsub(/>/,'&gt;')
     debug "=== /html.inspect ==="
     debug "\n\n"+("-"*80)+"\n\n"
   end
+
+  # Méthode pour afficher le message de débug
+  def debug_debug
+    sdeb = page.inner_html.scan(/(<section id="debug"(.*?)<\/section>)/m)[0][0]
+    debug sdeb.gsub(/</,'&lt;')
+  end
+  alias :show_debug :debug_debug
 
 end #/Html
 end #/TestSuite

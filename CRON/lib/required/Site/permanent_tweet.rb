@@ -54,6 +54,9 @@ class Tweet
     rescue Exception => e
       error_log e, "# [#{Time.now}] Problème en récupérant la date de dernier envoi."
       nil
+    ensure
+      (db.close if db) rescue nil
+      (rp.close if rp) rescue nil
     end
     def request_last_sent
       <<-SQL
