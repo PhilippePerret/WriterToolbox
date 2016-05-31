@@ -1,8 +1,5 @@
 # encoding: UTF-8
-debug "Je passe par unan/paiement.rb (redirection, normalement)"
-debug "Je require le module 'paiement'"
 site.require_module 'paiement'
-debug "Module 'paiement' requis avec succès"
 
 class User
 

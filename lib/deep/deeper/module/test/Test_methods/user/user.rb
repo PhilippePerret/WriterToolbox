@@ -50,7 +50,7 @@ class TestUser < DSLTestMethod
 
   # Le sujet de la test-méthode
   def subject
-    @subject ||= user
+    @subject ||= self.user
   end
 
   # Retourne true si l'user existe

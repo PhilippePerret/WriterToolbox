@@ -57,27 +57,39 @@ end
 test_route 'paiement/on_ok?in=unan' do
   description "Simulation du retour PayPal OK (création du programme pour l'user)"
   responds
-
+  html.has_title('C\'est parti !')
 end
 
 
-# # On va récupérer le dernier utilisateur créé, qui doit correspond
-# test_base 'users.users' do
-#   du = row(mail: duser[:mail]).data
-#   # show "du : #{du.inspect}"
-#   du[:id].is_not(nil, sujet: 'L’identifiant du nouvel inscrit')
-#   duser[:id] = du[:id]
-#
-#   # show duser.inspect
-# end
-# # Ensuite, on peut vérifier que l'user a bien tout ce qu'il faut
-#
-# test_user duser[:id] do
-#   description "Les données de l'user doivent être correctes"
-#   # show duser.inspect
-#   is_unanunscript
-# end
-#
+# On va récupérer le dernier utilisateur créé, qui doit correspond
+test_base 'users.users' do
+  du = row(mail: duser[:mail])
+  du.exists
+  du = du.data
+  du[:id].is_not(nil, sujet: 'L’identifiant du nouvel inscrit')
+  duser[:id] = du[:id]
+  show "User ID : #{du[:id]}"
+end
+# Ensuite, on peut vérifier que l'user a bien tout ce qu'il faut
+
+site.require_objet('unan')
+
+test_user duser[:id] do
+  description "Les données de l'user doivent être correctes"
+  # show duser.inspect
+  id.is_not(nil, 'L’identifiant de l’user')
+  program.is_not(nil, 'La propriété `program`')
+  is_identified
+  if subject.identified?
+    is_unanunscript
+  else
+    show "Je ne peux pas vérifier s'il est inscrit par unanunscript? car il n'est pas identifié."
+  end
+end
+
+# login_user duser[:id], {password: duser[:password]}
+
+
 # test_user duser[:id] do
 #   description "L'user a reçu les mails attendus"
 #   has_mail(

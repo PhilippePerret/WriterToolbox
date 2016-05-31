@@ -7,8 +7,6 @@
   sur le site et qu'il faut donc faire une inscription complète.
 
 =end
-debug "Je passe par le module unan/create.rb"
-debug "Le contexte est #{site.current_route.context.inspect}"
 require './objet/user/create.rb'
 User.create(pour_unanunscript = true)
   # La méthode create gère entièrement le fait que l'user

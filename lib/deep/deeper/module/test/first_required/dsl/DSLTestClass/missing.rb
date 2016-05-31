@@ -27,7 +27,7 @@ class DSLTestMethod
         # On ajoute un message aux options dans le cas où
         # il n'aurait pas été défini, pour ne pas avoir le
         # message "true est égal à true"
-        options = defaultize_options(args[0], !for_not)
+        options = self.subject.defaultize_options(args[0], !for_not)
         options[:message] ||= begin
           if resultat
             if for_not
@@ -46,6 +46,12 @@ class DSLTestMethod
         # On produit ensuite le test en fonction du
         # résultat
         rs.is(true, options)
+      end
+    elsif self.subject.respond_to?(method_name)
+      if args.empty?
+        self.subject.send(method_name)
+      else
+        self.subject.send(method_name, *args)
       end
     else
       if self.respond_to?(:self_method_missing)
