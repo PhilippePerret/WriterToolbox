@@ -46,8 +46,13 @@ POUR INSÉRER UN LIEN DANS UNE PAGE :
       - inline  => image inline
       - fright  => flottant à droite
       - fleft   => flottant à gauche
+      - plain   => 100%
       - autre chose => Un titre alternatif (qui pourra aussi servir
       de légende)
+
+    Ce deuxième paramètre peut se terminer par un pourcentage à
+    indiquer, par exemple : 'inline 80%' pour indiquer la taille
+    que doit occuper l'image.
 
     Si légende est :
       - nil (vraiment non défini, donc sans le "|") => pas de légende

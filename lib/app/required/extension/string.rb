@@ -61,22 +61,38 @@ class String
         end
         legend = legend.nil? ? "" : "<div class='img_legend'>#{legend}</div>"
 
+
+        attrs = {}
+
+        # Si `title` se termine par '%', c'est une taille
+        # à prendre en compte
+        unless (rs = title.scan(/ ?([0-9]{1,3})%$/)).empty?
+          taille  = rs.first.first.to_i
+          attrs.merge!(style: "width:#{taille}%")
+          # Ce qu'il reste du titre
+          title   = title.sub(/ ?([0-9]{1,3})%$/, '').strip
+        end
+
         # Soit title est un titre alternatif (qui pourra
         # servir de légende si légende non définie) ou bien
         # c'est un indicateur de position de l'image.
         # Le texte construit retourné
         case title
         when 'inline'
-          imgpath.in_img()
+          imgpath.in_img( attrs )
         when 'fright', 'fleft'
-          (imgpath.in_img + legend).in_div(class:"image_#{title}")
+          attrs.merge!( class:"image_#{title}" )
+          (imgpath.in_img + legend).in_div( attrs )
         else
-          style, title = if title == 'plain'
-            [" style=\"width:100%\"", ""]
-          else
-            ["", " alt=\"Image : #{title}\""]
-          end
-          img_tag = "<img src='#{imgpath}'#{title}#{style} />"
+          title =
+            if title == 'plain'
+              attrs.merge!(style: 'width:100%')
+              ""
+            else
+              " alt=\"Image : #{title}\""
+            end
+          attrs = attrs.collect { |attr, val| "#{attr}=\"#{val}\"" }.join(' ')
+          img_tag = "<img src='#{imgpath}'#{title} #{attrs} />"
           "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
         end
       else
