@@ -15,7 +15,7 @@ class Sync
     if display_path.exist?
       display_path.read
     else
-      error "Mon coco, ton état des lieux s'est pas bien fait."
+      error "Mon coco, ton état des lieux ne s'est pas bien fait…"
     end
   end
 
@@ -29,6 +29,11 @@ class Sync
   def build_inventory
 
     return if display_path.exist? && display_path.mtime.to_i > (NOW - 3600)
+
+    # Je charge ici la base de donnée site_cold parce que
+    # ça n'a pas l'air de se faire bien ailleurs.
+    
+    Sync::Database.site_cold
 
     @suivi << "* Construction de l'inventaire à afficher"
     display_path.remove if display_path.exist?
