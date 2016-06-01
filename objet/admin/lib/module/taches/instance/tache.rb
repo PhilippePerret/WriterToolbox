@@ -165,19 +165,7 @@ class Tache
   # un désignant comme "auj", "dem", "today", "aujourd'hui", etc.
   def test_echeance_tache eche
     return nil if eche.nil_if_empty.nil? || eche == "null"
-    eche = case eche
-    when "auj", "today", "aujourd'hui" then
-      Time.now.strftime("%d %m %Y")
-    when "dem", "demain", "tomorrow" then
-      (Time.now + 1.day).strftime("%d %m %Y")
-    when "après-demain"
-      (Time.now + 2.days).strftime("%d %m %Y")
-    when /^\+ ?([0-9]+)$/
-      nombre_jours = eche.scan(%r{^\+ ?([0-9]+)$})[0][0].to_i
-      (Time.now + nombre_jours.days).strftime("%d %m %Y")
-    else
-      eche
-    end
+    eche = Data::date_humaine_to_date_real( eche, "%d %m %Y")
     jour, mois, annee = eche.split(' ').collect{ |e| e.to_i }
     if jour.nil? || mois.nil? || annee.nil?
       raise "L'échéance de la tâche doit être sous la forme JJ MM AA ou être un identifiant comme `dem` pour demain, ou définir `+ nombre_de_jour`, etc. (demander l'aide avec `aide taches`)."

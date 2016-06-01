@@ -261,6 +261,38 @@ images:
     note:         "Le path relatif se calcule à partir du dossier './view/img/'."
 
 # ---------------------------------------------------------------------
+#   UPDATES (HISTORIQUE DES OPÉRATIONS)
+# ---------------------------------------------------------------------
+updates:
+  -
+    type:         TITLE
+    description:  Updates (historique des actualisations)
+  -
+    command:      "update message: &lt;le message> type: &lt;le type> ..."
+    description:  Enregistre un update.
+    note: |
+      Les arguments complets sont :
+        <dl>
+          <dt>message:</dt><dd>[OBLIGATOIRE] Le message à enregistrer.</dd>
+          <dt>type:</dt><dd>[OBLIGATOIRE] Le type, parmi les types possibles (cf. ci-dessous).</dd>
+          <dt>route:</dt><dd>La route pour rejoindre la page concernée, si elle existe.</dd>
+          <dt>le:</dt><dd>La date JJ MM YYYY ou exprimée par un 'auj', 'dem', '+X' ou '-X' (nombre de jours). Si non fournie, ça sera maintenant.</dd>
+          <dt>annonce:</dt><dd>Si défini, pour faire une annonce par mail journalier. Valeurs possibles :<br>1/true/inscrits : à tout le monde. 'abonnés' : seulement aux abonnés. 0/false (défaut) : pas d'annonce.</dd>
+          <dt>options:</dt><dd>Une suite de 0/1 pour définir les options de façon forcée.</dd>
+        </dl>
+      </ul>
+  -
+    command:      update list
+    description:  Affiche la liste de toutes les actualisations.
+    note:         Noter que ça peut être énorme.
+  -
+    command:      update show[ online]
+    description:  Rejoindre la page des actualisations.
+    note:         Si online est ajouté, on la rejoint online.
+  -
+    command:      affiche table site_code.updates
+    description:  Pour afficher le contenu de la table des updates
+# ---------------------------------------------------------------------
 #   GELS ET DÉGELS
 # ---------------------------------------------------------------------
 gels:

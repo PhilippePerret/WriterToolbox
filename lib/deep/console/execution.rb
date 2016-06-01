@@ -183,8 +183,16 @@ class Console
   def execute_as_first_word_command line
     words = line.split(' ')
     first_word = words.shift
-    reste_line = words.join(' ')
+    reste_line = words.join(' ').strip
     case first_word
+
+      # --- UPDATES (HISTORIQUE ACTUALISATIONS) ---
+
+    when /^updates?/
+      return (exec_updates reste_line)
+
+      # --- TWITTER ---
+
     when /^(twitter|twitte|twit|tweet)$/
       return ( envoyer_tweet reste_line )
 

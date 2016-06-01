@@ -10,6 +10,48 @@ commandes de console qui peuvent être mises sous la forme :
 class Data
 class << self
 
+
+  # Méthode qui reçoit une date quelconque, sous une forme
+  # humaine ou pseudo humaine, et retourne le nombre de
+  # secondes (timestamp) correspondant.
+  #
+  # Les valeurs possibles sont par exemple :
+  #   auj, today, aujourd'hui     = aujourd'hui
+  #   dem, demain, tomorrow       = demain
+  #   après-demain, +2            = après-demain
+  #
+  #   + <nombre de jours>   = nombre de jours à partir de maintenant
+  #   - <nombre de jours>   = nombre de jours avant maintenant
+  #
+  # Cette méthode sert notamment pour la console, les commandes
+  # pour les tâches ou pour les updates.
+  # Mettre +dformat+ à "%d %m %Y" pour obtenir "JJ MM YYYY"
+  def date_humaine_to_date_real hvalue, dformat = nil
+    rval = case hvalue
+    when "auj", "today", "aujourd'hui" then
+      Time.now.strftime()
+    when "dem", "demain", "tomorrow" then
+      (Time.now + 1.day)
+    when "après-demain"
+      (Time.now + 2.days)
+    when /^\+ ?([0-9]+)$/
+      nombre_jours = hvalue.scan(%r{^\+ ?([0-9]+)$})[0][0].to_i
+      (Time.now + nombre_jours.days)
+    when /^\- ?([0-9]+)$/
+      nombre_jours = hvalue.scan(%r{^\- ?([0-9]+)$})[0][0].to_i
+      (Time.now - nombre_jours.days)
+    else
+      hvalue.to_i
+    end
+
+    if dformat == nil
+      rval.to_i
+    else
+      rval.strftime(dformat)
+    end
+
+  end
+
   # @usage :
   #     hash_data = Data::by_semicolon_in line_data_string
   #
