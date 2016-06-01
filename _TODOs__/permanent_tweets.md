@@ -20,6 +20,8 @@
 
 ««« Ne pas se laisser abuser par le mirage d'une nouvelle idée. »»» http://bit.ly/24gHbXL
 
-««« Le plus important, c'est de parvenir une première fois jusqu'au bout [du roman ou du script]. »»» (Le Premier jet) http://bit.ly/24gHbXL
+“Le plus important, c'est de parvenir une première fois jusqu'au bout [du roman ou du script].” (Premier jet) http://bit.ly/24gHbXL
 
 ««« Il n'y a que ceux qui renoncent qui ne parviennent à rien. »»» (Le Premier jet) http://bit.ly/24gHbXL
+
+“Parvenir à un script en un an, c'est possible avec le programme UN AN UN SCRIPT !” http://bit.ly/1UtuQwv #UnAnUnScript

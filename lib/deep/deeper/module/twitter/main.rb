@@ -2,6 +2,7 @@
 class SiteHtml
 
   # Pour envoyer un tweet
+  #
   # @usage :
   #   site.require_module 'twitter'
   #   site.tweet "Le message à twitter"
@@ -12,6 +13,14 @@ class SiteHtml
   def tweet message
     is_permanent = message.start_with?('P ')
     message = message[2..-1].strip if is_permanent
+
+    # Vérification de la longueur
+    len_message = message.length
+    unless len_message < 140 # 140, c'est trop long
+      len_retrait = len_message - 139
+      error "Le message doit faire moins de 140 caractères, il en fait #{len_message} caractères, il faut en retirer <strong>#{len_retrait}</strong>."
+      return false
+    end
 
     # === ENVOI ===
     if is_permanent && ONLINE
@@ -73,12 +82,20 @@ class SiteHtml
         # auparavant même s'il a été envoyé plus de fois.
         # Dans le cas contraire, tous les nouveaux messages
         # seraient toujours envoyés plusieurs fois jusqu'à
-        # ce que leur nombre ait atteint les autres nombre
+        # ce que leur nombre ait atteint les autres nombres
         # d'envois.
-        req_data = {order: 'last_sent ASC, count ASC', limit: nombre, colonnes:[]}
+        req_data = {order: 'last_sent ASC, count ASC', limit: 10, colonnes:[]}
         tweets_ids = table_permanent_tweets.select(req_data).keys
         safed_log "  = tweets_ids: #{tweets_ids.inspect}"
-        tweets_ids.each do |tweet_id|
+
+        # On mélange les 10 tweets récupérés et on envoie
+        # les +nombre+ premiers.
+        tweets_ids.shuffle.shuffle.each_with_index do |tweet_id, tweet_index|
+
+          # On a relevé 10 tweets (pour mélanger les cartes), mais
+          # il ne faut en envoyer que +nombre+
+          break if tweet_index >= nombre
+
           twit = new(tweet_id)
           count_expected = twit.count + 1
           twit.resend

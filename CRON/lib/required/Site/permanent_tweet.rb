@@ -16,13 +16,12 @@ class Tweet
       ok, message_retour = auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
       if ok
         safed_log "  = #{message_retour}"
+        safed_log "  = Envoi Tweet Permanent OK."
       else
         error_log "  ### [#{Time.now}] PROBLÈME ENVOI DES TWEETS : #{message_retour}"
       end
     rescue Exception => e
       error_log e, "# [#{Time.now}] Problème en envoyant les tweets permanents"
-    else
-      safed_log "  = Envoi Tweet Permanent OK."
     end
 
 
@@ -50,14 +49,16 @@ class Tweet
         db = SQLite3::Database.new(db_site_cold)
         rp = db.prepare request_last_sent
         rp.execute.each_hash { |h| return h['last_sent'] }
+      rescue Exception => e
+        error_log e, "# [#{Time.now}] Problème en récupérant la date de dernier envoi."
+        nil
+      ensure
+        (db.close if db) rescue nil
+        (rp.close if rp) rescue nil
       end
-    rescue Exception => e
-      error_log e, "# [#{Time.now}] Problème en récupérant la date de dernier envoi."
-      nil
-    ensure
-      (db.close if db) rescue nil
-      (rp.close if rp) rescue nil
     end
+
+
     def request_last_sent
       <<-SQL
 SELECT last_sent
