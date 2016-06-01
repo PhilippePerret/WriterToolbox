@@ -123,6 +123,9 @@ class SiteHtml
       # Un grave problème se pose avec les tweets : leurs données
       # ne s'actualisent pas (:count et :last_sent). J'utilise donc
       # cette méthode pour forcer cette actualisation au maximum.
+      #
+      # Note : C'était juste un problème de table qui n'était
+      # pas fermée, maintenant, le problème doit être résolu.
       # +tid+       ID du tweet
       # +count_expected+  Le nombre (:count) attendu
       def check_update_tweet_data tid, count_expected
@@ -136,7 +139,11 @@ class SiteHtml
 
         tchecked = new(tid)
         suivi_error << ":count in tchecked: #{tchecked.count}"
-        return true if tchecked.count == count_expected
+        if tchecked.count == count_expected
+          safed_log "= Actualisation data tweet permanent checké par le premier moyen\n" +
+                    "= Si ça réussit plusieurs fois, on pourra supprimer les formules après (#{__FILE__}:#{__LINE__})"
+          return true
+        end
         suivi_error << "BAD"
 
         # Tentative d'actualisation des données en utilisant
@@ -266,7 +273,7 @@ class SiteHtml
     #
     # Affecte la donnée @bitlink
     def extract_bitly
-      bl = message.match(/^(.*)(http:\/\/bit\.ly\/(?:.*))$/).to_a[2]
+      bl = message.match(/^(.*)(http:\/\/bit\.ly\/([a-zA-Z0-9_-]+)) ?/).to_a[2]
       bl != nil || raise("Impossible de trouver le lien bitly dans le message…")
       @bitlink = bl
     end
