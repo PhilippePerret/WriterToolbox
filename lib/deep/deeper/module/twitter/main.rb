@@ -86,11 +86,13 @@ class SiteHtml
         # d'envois.
         req_data = {order: 'last_sent ASC, count ASC', limit: 10, colonnes:[]}
         tweets_ids = table_permanent_tweets.select(req_data).keys
-        safed_log "  = tweets_ids: #{tweets_ids.inspect}"
+        safed_log "  = tweets_ids : #{tweets_ids.inspect}"
+        tweets_ids = tweets_ids.shuffle.shuffle
+        safed_log "  = tweets_ids (désordre) : #{tweets_ids.inspect}"
 
         # On mélange les 10 tweets récupérés et on envoie
         # les +nombre+ premiers.
-        tweets_ids.shuffle.shuffle.each_with_index do |tweet_id, tweet_index|
+        tweets_ids.each_with_index do |tweet_id, tweet_index|
 
           # On a relevé 10 tweets (pour mélanger les cartes), mais
           # il ne faut en envoyer que +nombre+
@@ -99,7 +101,7 @@ class SiteHtml
           twit = new(tweet_id)
           count_expected = twit.count + 1
           twit.resend
-          safed_log "  = Réexpédition de : #{twit.message}"
+          safed_log "  = Réexpédition de : #{twit.message} (##{tweet_id})"
 
           # On s'assure que les données du tweet ont bien été
           # modifiées
