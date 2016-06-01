@@ -25,3 +25,15 @@
 ««« Il n'y a que ceux qui renoncent qui ne parviennent à rien. »»» (Le Premier jet) http://bit.ly/24gHbXL
 
 “Parvenir à un script en un an, c'est possible avec le programme UN AN UN SCRIPT !” http://bit.ly/1UtuQwv #UnAnUnScript
+
+=== À INTRODUIRE ===
+
+“L’évidence d’une œuvre est toujours Le fruit d’un long et laborieux effort.” (Le mirage des méthodes)
+(page 325 quand ok, et faire le lien bitly)
+
+
+“C'est l'histoire qui doit décider des choix, jamais l'auteur.”
+(page 324, quand OK, et faire le lien bitly)
+
+“Ça n'est pas à l'auteur de décider de la fonction d'un évènement.”
+(page 334, quand OK et faire lien bitly)

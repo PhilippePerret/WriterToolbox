@@ -29,7 +29,7 @@ class << self
   def date_humaine_to_date_real hvalue, dformat = nil
     rval = case hvalue
     when "auj", "today", "aujourd'hui" then
-      Time.now.strftime()
+      Time.now
     when "dem", "demain", "tomorrow" then
       (Time.now + 1.day)
     when "après-demain"
@@ -44,7 +44,7 @@ class << self
       hvalue.to_i
     end
 
-    if dformat == nil
+    if dformat.nil?
       rval.to_i
     else
       rval.strftime(dformat)

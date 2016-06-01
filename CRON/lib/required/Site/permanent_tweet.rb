@@ -35,11 +35,18 @@ class Tweet
       if last_sent.nil?
         (Time.now.hour % PERMANENT_TWEET_FREQUENCE) == 0
       else
+        time_now        = Time.now.to_i
+        time_next_envoi = last_sent + (PERMANENT_TWEET_FREQUENCE * 3600) - 30
+        envoi_requis = time_now >= time_next_envoi
         safed_log "  = Calcul si envoi est nécessaire"
-        safed_log "  = Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)"
-        safed_log "  = #{Time.now.to_i} > #{last_sent} + #{PERMANENT_TWEET_FREQUENCE * 3600}"
-        safed_log "  = Résultat : #{(Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)).inspect}"
-        Time.now.to_i > last_sent + (PERMANENT_TWEET_FREQUENCE * 3600)
+        safed_log "  = #{time_now} (now) > #{last_sent} (last_sent) + #{PERMANENT_TWEET_FREQUENCE * 3600} (PERMANENT_TWEET_FREQUENCE * 3600)"
+        safed_log "  = Envoi requis : #{envoi_requis ? 'OUI' : 'NON'}"
+        envoi_requis || begin
+          reste = time_next_envoi - time_now
+          date_next_envoi = time_next_envoi.as_human_date(true, true, ' ')
+          safed_log "  = Le prochain envoi se fera dans #{reste.as_duree} (#{date_next_envoi})"
+        end
+        envoi_requis
       end
     end
 

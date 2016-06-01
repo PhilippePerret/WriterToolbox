@@ -4,7 +4,8 @@ $.extend(window.RSConsole, {
 
   Snippets: {
     'URL': {replace:"http://www.laboiteaoutilsdelauteur.fr"},
-    'tache': {replace:"new tache pour:Phil le:$1 tache: $2"}
+    'tache': {replace:"new tache pour:Phil le:$1 tache: $2"},
+    'update':{replace:'update message:$1 le:$2 route:$3 type:$4 annonce:$5'}
   },
 
   console_field:function(){
