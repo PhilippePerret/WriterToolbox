@@ -30,6 +30,7 @@ class Database
     def site_cold
       @site_cold ||= begin
         sdb = new('site_cold.db')
+        debug "* Je downloade site_cold"
         sdb.download
         sdb
       end
@@ -59,14 +60,13 @@ class Database
     File.unlink dst_loc_path if File.exist?(dst_loc_path)
     rfile.download
     size = File.stat(dst_loc_path).size
-    debug "TAILLE DE LA BASE site_cold après download : #{size}"
+    debug "= TAILLE de la BASE site_cold après download : #{size}"
     size > 0 || raise( "La taille de site_cold.db ne devrait pas être de ZÉRO.")
   end
 
   # Upload la base de données si nécessaire
   # (et détruit le fichier distant provisoire)
   def upload_if_needed
-    debug "-> Sync::Database#upload_if_needed"
     File.unlink( dst_loc_path ) if File.exist?( dst_loc_path )
     need_upload || return
     upload
@@ -74,8 +74,13 @@ class Database
 
   # On upload le fichier local
   def upload
-    debug "-> upload #{loc_path}"
+    debug "-> UPLOAD de #{loc_path}"
     rfile.upload
+  rescue Exception => e
+    debug e
+    error "Problème en uploadant site_cold.db : #{e.message}"
+  else
+    true
   end
 
   # Le remote-file de la base de données

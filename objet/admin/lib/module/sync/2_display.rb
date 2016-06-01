@@ -32,7 +32,7 @@ class Sync
 
     # Je charge ici la base de donnée site_cold parce que
     # ça n'a pas l'air de se faire bien ailleurs.
-    
+    # Noter qu'il suffit de l'appeler pour que ça fonctionne
     Sync::Database.site_cold
 
     @suivi << "* Construction de l'inventaire à afficher"

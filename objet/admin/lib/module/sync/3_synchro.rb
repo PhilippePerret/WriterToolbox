@@ -157,20 +157,38 @@ class Sync
 
     # *** On prend les données de la base distante, à
     # savoir des hashs {:id, :count, :last_sent}
-    req = "SELECT id, count, last_sent FROM permanent_tweets"
-    db = SQLite3::Database.new(sdb.dst_loc_path)
-    pr = db.prepare req
-    rs_online = {}
-    pr.execute.each_hash do |h|
-      rs_online.merge!(h['id'] => h.to_sym)
+    begin
+      req = "SELECT id, count, last_sent FROM permanent_tweets"
+      db = SQLite3::Database.new(sdb.dst_loc_path)
+      pr = db.prepare req
+      rs_online = {}
+      pr.execute.each_hash do |h|
+        rs_online.merge!(h['id'] => h.to_sym)
+      end
+    rescue Exception => e
+      debug e
+      error "Une erreur est survenue en récupérant les informations des tweets permanents distants. Je dois renoncer."
+      return false
+    ensure
+      (db.close if db) rescue nil
+      (pr.close if pr) rescue nil
     end
 
     # *** On prend les données de la base locale
-    db = SQLite3::Database.new(sdb.loc_path)
-    pr = db.prepare req
-    rs_offline = {}
-    pr.execute.each_hash do |h|
-      rs_offline.merge!(h['id'] => h.to_sym)
+    begin
+      db = SQLite3::Database.new(sdb.loc_path)
+      pr = db.prepare req
+      rs_offline = {}
+      pr.execute.each_hash do |h|
+        rs_offline.merge!(h['id'] => h.to_sym)
+      end
+    rescue Exception => e
+      debug e
+      error "Une erreur est survenur en récupérant les informations des tweets permanents locaux. Je dois renoncer."
+      return
+    ensure
+      (db.close if db) rescue nil
+      (pr.close if pr) rescue nil
     end
 
     # *** On calcule la différence
@@ -188,11 +206,20 @@ class Sync
 
     # *** On actualise les données à actualiser
     unless rs_diff.empty?
-      # La requête pour actualiser la table
-      req_update = "UPDATE permanent_tweets SET count = :count, last_sent = :last_sent WHERE id = :id"
-      res = []
-      db.prepare(req_update) do |stm|
-        rs_diff.collect { |tdata| res << (stm.execute tdata) }
+      begin
+        db = SQLite3::Database.new(sdb.loc_path)
+        # La requête pour actualiser la table
+        req_update = "UPDATE permanent_tweets SET count = :count, last_sent = :last_sent WHERE id = :id"
+        res = []
+        db.prepare(req_update) do |stm|
+          rs_diff.collect { |tdata| res << (stm.execute tdata) }
+        end
+      rescue Exception => e
+        debug e
+        error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
+        return
+      ensure
+        (db.close if db) rescue nil
       end
     end
 

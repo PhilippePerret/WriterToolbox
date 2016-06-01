@@ -18,7 +18,7 @@ class << self
     # La base site_cold qui a dû déjà être downloadée pour
     # les tweets mais le sera ici si les tweets ne sont pas
     #  à actualiser.
-    # 
+    #
     # Note : Il faut le mettre là pour que soit aussi
     # chargée la classe RFile utilisée ci-dessous.
     @rfile_site_cold = Sync::Database::site_cold.rfile
@@ -326,7 +326,7 @@ class << self
   def remove_databases_prov
     return if param(:keep) == '1'
     ok = true
-    [@path_database_prov, @path_database_cold_prov].each do |pathdb|
+    [@path_database_prov].each do |pathdb|
       File.unlink(pathdb) if File.exist?(pathdb)
       ok = ( false == File.exist?(pathdb) )
     end
