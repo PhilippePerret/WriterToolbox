@@ -30,6 +30,8 @@ class User
     return if param(:user_already_signaled) == "1"
 
     require './data/secret/known_ips.rb'
+      # Normalement, known_ips doit déjà être chargé, pour
+      # savoir si c'est un moteur de recherche
 
     if BLACK_IPS_LIST.has_key?(self.ip)
       exit( "Vous n'êtes pas le bienvenu, désolé.<br>You're not welcome, sorry." )

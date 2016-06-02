@@ -27,6 +27,7 @@ class << self
   # pour les tâches ou pour les updates.
   # Mettre +dformat+ à "%d %m %Y" pour obtenir "JJ MM YYYY"
   def date_humaine_to_date_real hvalue, dformat = nil
+    hvalue = hvalue.strip
     rval = case hvalue
     when "auj", "today", "aujourd'hui" then
       Time.now
@@ -40,6 +41,10 @@ class << self
     when /^\- ?([0-9]+)$/
       nombre_jours = hvalue.scan(%r{^\- ?([0-9]+)$})[0][0].to_i
       (Time.now - nombre_jours.days)
+    when /^[0-9]{1,2} [0-9]{1,2} [0-9]{2,4}$/
+      jour, mois, annee = hvalue.split(' ').collect{ |c| c.to_i }
+      annee = annee + 2000 if annee < 100
+      Time.new(annee, mois, jour).to_i
     else
       hvalue.to_i
     end

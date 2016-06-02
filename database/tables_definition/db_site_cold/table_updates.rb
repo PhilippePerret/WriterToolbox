@@ -8,7 +8,7 @@ def schema_table_site_cold_updates
     # Note : la propriété ID est automatiquement ajoutée
 
     # Le message humain de l'actualisation
-    message:    {type:"VARCHAR(255)", constraint:"NOT NULL"},
+    message:    {type:"TEXT", constraint:"NOT NULL"},
 
     # La route conduisant à la page concernée
     # Noter qu'elle peut ne pas exister
@@ -32,7 +32,6 @@ def schema_table_site_cold_updates
     # -------
     # À déterminer
     options:    {type:"VARCHAR(32)"},
-
 
     # Date de cette actualisation
     created_at:  {type:"INTEGER(10)", constraint:"NOT NULL"}

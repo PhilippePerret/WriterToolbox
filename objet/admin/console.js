@@ -95,7 +95,8 @@ $.extend(window.RSConsole, {
     */
   KNOW_SUJETS: {
     'twit': 'twitter', 'tweet': 'twitter', 'tweete':'twitter',
-    'test': 'test'
+    'test': 'test',
+    'update': 'updates', 'updates': 'updates'
   },
   sujet_courant: null,
   detecte_sujet: function(tested){
@@ -144,7 +145,25 @@ Pour afficher le contenu des bases de données à la fin des __\
 tests (rappel : les bases de données sont backupées dans un) __\
 dossier temporaire. __\
 ",
-
+// AIDE UPDATES
+      updates: " \
+POUR AJOUTER UNE ACTUALISATION __\
+__\
+Commande de base : `update message: <le message> etc.` __\
+__\
+Données à renseigner obligatoirement : __\
+    message:    Le message __\
+    annonce:    Si doit être annoncé (0=non, 1=tous, 2=abonnés) __\
+    type:       Le type parmi `site`, `narration`, etc. __\
+                Ne rien mettre pour produire une erreur qui __\
+                indiquera tous les types. __\
+    route:      La route de la page. __\
+                Mettre '---' si aucune route. __\
+                __\
+Autres données optionnelles __\
+    le:         Date de l'acutalisation. Si non précisé, ce sera __\
+                la date d'aujourd'hui __\
+      "
 // AIDE TWITTER
       twitter: " \
 Commande de base : `twit[ <option>] <message>` __\

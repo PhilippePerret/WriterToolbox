@@ -14,7 +14,25 @@ class Cron
   # à l'administration pour surveillance.
   #
   # C'est important quand de nouveaux processus sont mis en place.
-  SEND_SAFED_LOG = true
+  # d'avoir un retour fréquent.
+  #
+  # On peut également indiquer une autre fréquence d'envoi à
+  # l'aide des valeurs :
+  #
+  #   2       Toutes les deux heures
+  #   3       Toutes les trois heures
+  #   4       Toutes les quatre heures
+  #   etc.
+  #   true    Envoyer toutes les heures
+  #   false   Ne jamais envoyer
+  #
+  #   Noter que jusqu'au chiffre 11 le log sera transmis
+  #   plus d'une fois, mais au-dessus de cette valeur, de
+  #   12 à 24, il sera envoyé une seule fois mais à l'heure
+  #   indiquée par le nombre. 13 => envoi du safed_log à 13
+  #   heures.
+  #
+  SEND_SAFED_LOG = 4
 
 
 class << self
@@ -22,7 +40,6 @@ class << self
   def run
 
     safed_log "-> Cron::run"
-    safed_log "Racine courante = #{File.expand_path('.')}"
     if defined?(APP_FOLDER)
       safed_log "APP_FOLDER = #{APP_FOLDER.inspect}"
     else
@@ -89,9 +106,20 @@ class << self
     SafedErrorLog.send_report_errors if SafedErrorLog.error_occured
 
     # Si on doit transmettre le safed-log dans son intégralité
-    safedlog.send_report if SEND_SAFED_LOG
+    safedlog.send_report if transmit_safed_log?
 
   end #/run
+
+  def transmit_safed_log?
+    case SEND_SAFED_LOG
+    when TrueClass  then return true
+    when FalseClass then return false
+    when Fixnum
+      Time.now.hour % SEND_SAFED_LOG == 0
+    else
+      error_log "La valeur de SEND_SAFED_LOG est inconnue. Il faut soit true, soit false, soit un nombre (Fixnum) de 1 à 24"
+    end
+  end
 
   # « Tout est dans le titre. »
   # Noter que c'est la même chose qui est requise par le site au démarrage,

@@ -22,6 +22,7 @@ def schema_table_site_cold_permanent_tweets
 
     # Créaation du tweet permanent
     created_at:  {type:"INTEGER(10)", constraint:"NOT NULL"},
+    
     # Modification du tweet permanent
     updated_at:  {type:"INTEGER(10)", constraint:"NOT NULL"}
   }

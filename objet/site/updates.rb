@@ -53,3 +53,4 @@ UPDATES AUTOMATIQUES
     Même remarque que pour le scénodico.
 
 =end
+site.require_module 'updates'

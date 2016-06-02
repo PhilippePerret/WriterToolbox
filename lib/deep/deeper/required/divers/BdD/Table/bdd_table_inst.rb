@@ -406,7 +406,7 @@ class BdD
     # Détruit la table
     # Détruit également son enregistrement dans __column_names__
     def remove
-      bdd.execute "DROP TABLE IF EXISTS #{name}"
+      res = bdd.execute( "DROP TABLE IF EXISTS #{name}" )
       return res
     end
     alias :destroy :remove

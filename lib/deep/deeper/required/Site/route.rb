@@ -30,19 +30,31 @@ class SiteHtml
   def execute_route
     # debug "-> SiteHtml::execute_route"
 
+    if param(:__o)
+
+      # Sinon, on crée une instance route, qui va posséder toutes
+      # les données des paramètres (context, objet, objet_id et
+      # method)
+      @current_route = iroute = Route::new
+
+      debug "\nObjet    = #{iroute.objet.inspect}"     +
+            "\nObjet ID = #{iroute.objet_id.inspect}"  +
+            "\nMethod   = #{iroute.method.inspect}"    +
+            "\nContext  = #{iroute.context.inspect}"
+    end
+
+    # Si l'utilisateur est identifié, on mémorise sa
+    # route et sa date de dernière connexion.
+    if user.identified? && !user.moteur_recherche?
+      user.set_last_connexion
+    end
+
     # Si aucun objet n'est défini dans la route, on peut s'en
     # retourner immédiatement.
+    # Noter qu'on doit le faire ici pour que la dernière connexion
+    # de l'user soit prise en compte même lorsque __o n'est pas
+    # défini.
     return if param(:__o).nil?
-
-    # Sinon, on crée une instance route, qui va posséder toutes
-    # les données des paramètres (context, objet, objet_id et
-    # method)
-    @current_route = iroute = Route::new
-
-    debug "\nObjet    = #{iroute.objet.inspect}"     +
-          "\nObjet ID = #{iroute.objet_id.inspect}"  +
-          "\nMethod   = #{iroute.method.inspect}"    +
-          "\nContext  = #{iroute.context.inspect}"
 
     # La méthode qui va charger tout ce qui est défini par rapport
     # à la route donnée. Par exemple, si la route est "tool/list",
