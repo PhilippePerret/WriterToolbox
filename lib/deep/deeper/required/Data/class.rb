@@ -27,8 +27,10 @@ class << self
   # pour les tâches ou pour les updates.
   # Mettre +dformat+ à "%d %m %Y" pour obtenir "JJ MM YYYY"
   def date_humaine_to_date_real hvalue, dformat = nil
-    hvalue = hvalue.strip
+    hvalue = hvalue.strip if hvalue.instance_of?(String)
     rval = case hvalue
+    when Fixnum
+      hvalue
     when "auj", "today", "aujourd'hui" then
       Time.now
     when "dem", "demain", "tomorrow" then

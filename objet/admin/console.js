@@ -163,7 +163,7 @@ Données à renseigner obligatoirement : __\
 Autres données optionnelles __\
     le:         Date de l'acutalisation. Si non précisé, ce sera __\
                 la date d'aujourd'hui __\
-      "
+      ",
 // AIDE TWITTER
       twitter: " \
 Commande de base : `twit[ <option>] <message>` __\

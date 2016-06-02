@@ -10,6 +10,7 @@ class Updates
   TYPES = {
     site:       {hname: 'La Boite à Outils'},
     narration:  {hname: 'Collection Narration'},
+    analyse:    {hname: 'Analyse de film'},
     unan:       {hname: 'Programme UN AN UN SCRIPT'},
     video:      {hname: 'Tutoriel-vidéo'},
     forum:      {hname: 'Forum'},

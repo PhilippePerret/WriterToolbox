@@ -8,7 +8,7 @@ film_options.each do |fid, opts|
   ifilm = FilmAnalyse::table_films.get(fid)
   unless ifilm.nil?
     # Le film existe
-    FilmAnalyse::table_films.update( fid, { options: opts } )
+    FilmAnalyse::table_films.update( fid, { options: opts, updated_at: NOW } )
     mess << ifilm[:titre]
   else
     errors << "Impossible de trouver le film ##{fid}"

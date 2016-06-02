@@ -17,13 +17,18 @@ class Update
   #   {Hash}    Ce sont les données d'une update à créer
   #
   def initialize foo
-    debug "foo: #{foo.inspect}"
+    # debug "foo: #{foo.inspect}"
     case foo
     when Fixnum
       @id = foo
     when Hash
       @data = foo
-      human_values_to_correct_values
+      # Si les données contiennent :correct_values, les valeurs
+      # transmises seront corrigées. On fait cela pour ne pas
+      # corriger toujours les valeurs, lorsque par exemple elles
+      # sont transmises à l'instanciation après avoir été
+      # relevées dans la table.
+      human_values_to_correct_values if @data[:correct_values]
     else
       raise ArgumentError, "Mauvais argument. Fixnum ou Hash attendu."
     end
@@ -32,6 +37,8 @@ class Update
   # Pour transformer les valeurs qui peuvent être raccourcies
   # ou humaines en vraies valeurs.
   def human_values_to_correct_values
+
+    @data.delete(:correct_values)
 
     # La date
     # -------
@@ -47,9 +54,9 @@ class Update
     # ---------
     @data[:annonce] =
       case @data[:annonce]
-      when NilClass                         then nil
-      when '0', 'false', 'FALSE'            then 0
-      when '1', 'true', 'TRUE', 'inscrit', 'inscrits' then 1
+      when NilClass                             then nil
+      when 0, '0', 'false', 'FALSE'             then 0
+      when 1, '1', 'true', 'TRUE', 'inscrit', 'inscrits' then 1
       else 2
       end
 
