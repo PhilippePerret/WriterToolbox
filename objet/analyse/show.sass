@@ -9,3 +9,90 @@ div#div_bouton_back
   border-radius : 1em
   &:hover
     opacity     : 1
+
+// Pour le scénier qui permet d'afficher les scènes et qui s'affiche
+// dès qu'on clique sur un numéro de scène quelque part. Il permet
+// de visualiser la scène spatialement dans le film et de lire son
+// résumé
+div#scenier_dynamique
+  position          : fixed
+  top               : 100px
+  left              : 100px
+  border            : 4px solid #CCC
+  width             : 80%
+  background-color  : white
+  opacity           : 0.9
+  height            : 50%
+  max-height        : 50%
+
+  // Le bouton pour ferme la timeline
+  a#scenier_dynamique_close_btn
+    display         : block
+    padding         : 4px 12px
+    font-size       : 13pt
+    border          : 1px solid #777
+    position        : absolute
+    right           : 8px
+    bottom          : 8px
+    
+  // La timeline horizontale
+  div.timeline-h
+    position      : absolute
+    top           : 4px
+    left          : 4px
+    height        : 32px
+    min-height    : 32px
+    max-height    : 32px
+    width         : 98%
+    // Une scène dans la timeline horizontale
+    div.sc
+      position      : absolute
+      height        : 30px
+      opacity         : 0.5
+
+      &.selected
+        opacity         : 1
+
+  div.timeline-v
+    // Pour laisser la place au-dessus avec la timeline
+    // horizontale
+    position          : absolute
+    top               : 40px
+    left              : 0
+    max-height        : calc(100% - 100px)
+    height            : calc(100% - 100px)
+    min-height        : calc(100% - 100px)
+    overflow          : auto
+    padding           : 1em
+    
+    // Une scène de la timeline vertical (synopsis)
+    div.sc
+      position        :  relative
+      font-size       : 12.1pt
+      margin-bottom   : 8px
+      opacity         : 0.7
+
+      &.selected
+        opacity         : 1
+
+      // Numéro de la scène
+      span.n
+        margin-right    : 1em
+        font-family     : Georgia
+        vertical-align  : top
+        float           : left
+    
+      // Le temps
+      span.t
+        margin-right    : 1em
+        font-family     : monospace
+        float           : left
+        margin-top      : 3px
+  
+      // Le résumé de la scène
+      span.r
+        display     : block
+        margin-left : 120px
+        width       : 620px
+        text-align  : justify
+  

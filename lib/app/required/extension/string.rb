@@ -11,6 +11,7 @@ class String
     str = str.formate_balises_images
     str = str.formate_balises_mots
     str = str.formate_balises_films
+    str = str.formate_balises_scenes
     str = str.formate_balises_livres
     str = str.formate_balises_personnages
     str = str.formate_balises_realisateurs
@@ -111,6 +112,18 @@ class String
   def formate_balises_films
     str = self
     str.gsub!(/FILM\[(.*?)\]/){ lien.film($1.to_s) }
+    str
+  end
+
+  def formate_balises_scenes # Analyses
+    str = self
+    str.gsub!(/SCENE\[(.*?)\]/){
+      numero, libelle, extra = $1.split('|').collect{|e| e.strip}
+      # Je ne sais plus à quoi sert `extra`, il peut avoir
+      # la valeur 'true'
+      libelle ||= "scène #{numero}"
+      libelle.in_a(onclick:"$.proxy(Scenes,'show',#{numero})()")
+    }
     str
   end
 
