@@ -48,7 +48,7 @@ $.extend(window.Scenes,{
     // S'il y a plusieurs scènes, il faut afficher la boite
     // de navigation scène par scène
     var plusieurs_scenes = numeros.length > 1 ;
-    var onav = $('div#scenier_dynamique_boite_navigation_selection')
+    var onav = $('div#timeline_scenes_boite_navigation_selection')
     if( plusieurs_scenes ){
       onav.show();
       this.iscene_selection_courante = 0 ;
@@ -104,7 +104,7 @@ $.extend(window.Scenes,{
     this.span_numero_current_scene().html("Scène " + numero);
   },
   span_numero_current_scene:function(){
-    return $('div#scenier_dynamique_boite_navigation_selection span#numero_scene_courante') ;
+    return $('div#timeline_scenes_boite_navigation_selection span#numero_scene_courante') ;
   },
   // Sélectionne la scène dans la timeline vertical
   //
@@ -115,15 +115,15 @@ $.extend(window.Scenes,{
     this.goto_scene(numero);
     var i, e ;
     for(i = numero-10; i<numero+10; ++i){
-      e = $('div#scenier_dynamique div.timeline-v div#scv-'+i) ;
+      e = $('div#timeline_scenes div.timeline-v div#scv-'+i) ;
       e.css('opacity', i == numero ? '1' : '0.7')
     }
   },
   goto_scene:function(numero){
-    var o = $('div#scenier_dynamique div#scv-'+numero) ;
+    var o = $('div#timeline_scenes div#scv-'+numero) ;
     // Le décalage de la scène par rapport au haut
     var toppos = o[0].offsetTop ;
-    var tl = $('div#scenier_dynamique div.timeline-v');
+    var tl = $('div#timeline_scenes div.timeline-v');
     // On scrolle jusqu'à l'élément, avec 40 pixels en moins
     // pour qu'il ne commence pas tout au-dessus, ce qui le
     // situerait en dessous en la timeline horizontale
@@ -132,9 +132,9 @@ $.extend(window.Scenes,{
   select_scene:function(numero){
     numero = parseInt(numero) ;
     // Objet de la scène dans la timeline verticale
-    var ov = $('div#scenier_dynamique div.timeline-v div#scv-'+numero);
+    var ov = $('div#timeline_scenes div.timeline-v div#scv-'+numero);
     // Objet de la scène dans la timeline horizontale
-    var oh = $('div#scenier_dynamique div.timeline-h div#sch-'+numero);
+    var oh = $('div#timeline_scenes div.timeline-h div#sch-'+numero);
     this.selected[numero] = {
       numero: numero,
       bgcolor: oh.css('background-color'),
@@ -169,7 +169,7 @@ $.extend(window.Scenes,{
   // comme au premier jour.
   reset: function(){
     var my = this ;
-    $('div#scenier_dynamique div.timeline-h div.sc').each(function(){
+    $('div#timeline_scenes div.timeline-h div.sc').each(function(){
       var id     = parseInt( $(this).attr('id').split('-')[1] ) ;
       var dscene = my.selected[id] ;
       if(undefined != dscene){ my.deselect_scene(dscene)}
@@ -190,13 +190,13 @@ $.extend(window.Scenes,{
 
   close_timeline:function(){
     this.reset();
-    $('div#scenier_dynamique').hide();
+    $('div#timeline_scenes').hide();
   },
   open_timeline:function(){
-    $('div#scenier_dynamique').show();
+    $('div#timeline_scenes').show();
   }
 })
 
 $(document).ready(function(){
-  $('div#scenier_dynamique').draggable();
+  $('div#timeline_scenes').draggable();
 })
