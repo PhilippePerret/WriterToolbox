@@ -33,11 +33,22 @@ class Film
     #  Fichier d'introduction
     # ========================
     # Si un fichier d'introduction existe, il faut le prendre
-    intro = if introduction_file.exist?
-      introduction_file.kramdown.formate_balises_propres
-    else
-      ""
-    end
+    intro =
+      if introduction_file.exist?
+        introduction_file.kramdown.formate_balises_propres
+      else
+        ""
+      end
+
+    # Si un timeline des scènes existe, il faut le
+    # charger
+    timeline_scenes =
+      if timeline_scenes_file.exist?
+        timeline_scenes_file.read
+      else
+        ""
+      end
+
 
     # Un lien pour obtenir la balise conduisant
     # à cette analyse
@@ -156,6 +167,7 @@ class Film
     whole_code_file = (
       permanent_link +
       intro +
+      timeline_scenes +
       table_of_content +
       whole_content +
       permanent_link
