@@ -92,9 +92,10 @@ div#timeline_scenes
     width         : 98%
     // Une scène dans la timeline horizontale
     div.sc
-      position      : absolute
-      height        : 30px
+      position        : absolute
+      height          : 30px
       opacity         : 0.5
+      z-index         : 5
 
       &.selected
         opacity           : 1
@@ -102,6 +103,7 @@ div#timeline_scenes
       &.exergue
         background-color  : blue
         opacity           : 1
+        z-index           : 10
 
   div.timeline-v
     // Pour laisser la place au-dessus avec la timeline

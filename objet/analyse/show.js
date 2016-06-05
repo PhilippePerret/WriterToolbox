@@ -23,7 +23,23 @@ $.extend(window.PFA, {
     this.CALQUE.hide();
   },
 
-  inode: null, // L'index 0-start du noeud courant
+  /* ---------------------------------------------------------------------
+    Section gérant la "détection" des scènes clés du paradigme de
+    Field augmenté. C'est un outil de la Timeline des scènes qui
+    permet de passer en revue les scènes proches des temps des noeuds
+    important pour trouver celle qui pourrait avoir fonction de ce
+    noeud.
+  ---------------------------------------------------------------------*/
+  // Liste des scènes "candidates" au noeud passé en revue
+  // On la mémorise pour pouvoir repasser par elle avec la flèche
+  // gauche
+  nodes_candidates: [],
+
+  // L'index dans nodes_candidates
+  icandidate: null,
+
+  // L'index 0-start du noeud courant
+  inode: null,
   // Numéro de la scène courante dans le noeud courant
   // Principe : On avance de scène en scène jusqu'à ce que
   // le temps limite du noeud courant soit atteint. Si c'est le
@@ -33,19 +49,39 @@ $.extend(window.PFA, {
 
   vingt4e: 4.16, //8.33,
   DATA_NODE: [
-    {hname: "Pivot 1",      fin: 25 },
-    {hname: 'Clé de voûte', milieu: 50},
-    {hname: "Pivot 2",      fin: 75 }
+    { hname: 'Pivot 1',      pos: 25 },
+    { hname: 'Clé de voûte', pos: 50 },
+    { hname: 'Pivot 2',      pos: 75 }
   ],
+
+  show_scene_et_node: function(scene_num, inode){
+    Scenes.display( scene_num ) ;
+    $('span#tls_pfa_nav_libelle').html(this.DATA_NODE[inode].hname + " ?")
+
+  },
 
   // Pour sélectionner le nœud précédent
   prev_node: function(){
-    if(this.inode === null)return;
+    if(this.icandidate === null) return ;
+    this.icandidate -= 1 ;
+    var candidate = this.nodes_candidates[this.icandidate] ;
+    this.show_scene_et_node( candidate.scene_num, candidate.inode ) ;
   },
+
   // Pour sélectionner le nœud suivant, ou plus exactement
   // la prochaine scène qui correspond soit au nœud courant
   // soit au nœud suivant
   next_node:function(){
+    if(this.icandidate != null && this.icandidate < this.nodes_candidates.length - 1){
+      // On est remonté dans l'histoire des scènes candidates avec
+      // la flèche gauche, il faut la redescendre avec la flèche
+      // droite
+      this.icandidate += 1 ;
+      var candidate = this.nodes_candidates[this.icandidate] ;
+      this.show_scene_et_node( candidate.scene_num, candidate.inode ) ;
+      return ;
+    }
+    // Sinon, on cherche la scène suivante
     if(this.inode     === null){ this.inode = 0     }
     if(this.scene_num === null){ this.scene_num = 0 }
 
@@ -55,15 +91,9 @@ $.extend(window.PFA, {
     // voulu
 
     // Les pourcentages des temps du noeud
-    var node_times = function(dnode){
-      if(undefined != dnode.fin){
-        return [dnode.fin - PFA.vingt4e, dnode.fin ]
-      }else if(undefined != dnode.milieu){
-        return [dnode.milieu - PFA.vingt4e, dnode.milieu + PFA.vingt4e]
-      }else if(undefined != dnode.debut){
-        return [dnode.debut, dnode.debut + PFA.vingt4e]
-      }
-    }(this.DATA_NODE[this.inode]);
+    var dnode       = this.DATA_NODE[this.inode]
+    var node_times  = [dnode.pos - PFA.vingt4e, dnode.pos + PFA.vingt4e] ;
+
     // On transforme les pourcentages en valeur de temps
     // par rapport au film.
     // Noter aussi qu'on transforme la liste en Hash
@@ -87,12 +117,13 @@ $.extend(window.PFA, {
       // console.log("Scenes.scenes[this.scene_num + 1].time = " + Scenes.scenes[this.scene_num + 1].time);
     } while( fin_scene < node_times.debut );
 
-
     // Si le temps de la scène est encore dans l'intervalle
     // voulu, on la montre, sinon, on passe au node suivante
     if ( Scenes.scenes[this.scene_num].time < node_times.fin ){
-      Scenes.display(this.scene_num) ;
-      $('span#tls_pfa_nav_libelle').html(this.DATA_NODE[this.inode].hname + " ?")
+      this.show_scene_et_node(this.scene_num, this.inode);
+
+      this.nodes_candidates.push( {scene_num: this.scene_num, inode: this.inode } ) ;
+      this.icandidate = this.nodes_candidates.length - 1 ;
     } else {
       this.inode += 1 ;
       this.next_node() ;
@@ -330,6 +361,7 @@ $.extend(window.Scenes,{
       this.cur_div_scene_v.removeClass('exergue');
       delete this.cur_div_scene_v ;
       this.cur_div_scene_h.removeClass('exergue');
+      this.cur_div_scene_h.css('background-color', this.cur_div_scene_h.attr('data-bgcolor'));
       delete this.cur_div_scene_h ;
     }
     this.TIMELINE_V.scrollTop(Scenes.scenes[numscene].top) ;
@@ -337,6 +369,8 @@ $.extend(window.Scenes,{
     this.cur_div_scene_v.addClass('exergue') ;
     this.cur_div_scene_h = $('div.timeline-h div#sch-'+numscene) ;
     this.cur_div_scene_h.addClass('exergue') ;
+    this.cur_div_scene_h.attr('data-bgcolor', this.cur_div_scene_h.css('background-color'));
+    this.cur_div_scene_h.css('background-color', 'blue');
   },
 
   select_scene:function(numero){
