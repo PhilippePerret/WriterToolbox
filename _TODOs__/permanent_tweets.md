@@ -26,6 +26,16 @@
 
 “Parvenir à un script en un an, c'est possible avec le programme UN AN UN SCRIPT !” http://bit.ly/1UtuQwv #UnAnUnScript
 
+“Ne pas confondre OBJECTIF et ENJEU.” (la Dynamique dramatique) http://bit.ly/1t9BLCG
+
+“Ne pas confondre OBJECTIF et MOYEN.” (la Dynamique narrative) http://bit.ly/1VEPlZv
+
+“Aucune des PHASES de l'OBJECTIF ne doit être négligée.” (la Dynamique narrative) http://bit.ly/1sXP8Fj
+
+“Concernant l'OBJECTIF, s'efforcer toujours de transformer un VOULOIR en DEVOIR” (Dynamique narrative) http://bit.ly/1Vq9eUb
+
+“Tout le monde en parle, mais peu savent de quoi il s'agit : l'ENJEU NARRATIF.” (Dynamique narrative) http://bit.ly/28cC3IU
+
 === À INTRODUIRE ===
 
 “L’évidence d’une œuvre est toujours Le fruit d’un long et laborieux effort.” (Le mirage des méthodes)
