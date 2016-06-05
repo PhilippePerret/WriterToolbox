@@ -1,4 +1,4 @@
-# encoding:
+# encoding: UTF-8
 =begin
 Pseudos et mails récupérés de la version en ligne de Narration
 =end

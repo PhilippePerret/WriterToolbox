@@ -47,18 +47,30 @@ class << self
       # Pour la collecte
       hscene
     end.reverse
-      # Il faut remettre l'ordre des scènes dans le bon ordre
+      # Il faut remettre les scènes dans le bon ordre, puisqu'elles
+      # ont été inversées pour la durée.
 
-    @duree_film = liste_scenes[-1][:time]
-
+    # Retrait de dernier élément (si marque fin) et
+    # calcul de la durée du film
+    #
     # Si la dernière donnée n'a pas de résumé, ou que ce résumé
     # est "FIN" ou "fin" ou ressemblant, alors c'est simplement
     # la marque du temps de fin. On retire cette "scène" pour
     # ne pas l'afficher
+    #
+    # La durée du film
+    # Soit le dernier élément est la marque de la durée et l'on
+    # prend son temps pour connaitre la durée du film, soit on
+    # met une valeur par défaut de 30 secondes pour la durée
+    # de la dernière scène.
     last_resume = liste_scenes[-1][:resume]
-    if last_resume.nil? || last_resume.nil_if_empty == nil || last_resume.downcase == 'fin'
-      liste_scenes.pop
-    end
+    @duree_film =
+      if last_resume.nil? || last_resume.nil_if_empty == nil || last_resume.downcase == 'fin'
+        thelast = liste_scenes.pop
+        thelast[:time]
+      else
+        liste_scenes[-1][:time] + 30
+      end
 
     # La suite des couleurs qui seront employées pour les blocs
     # de scènes.
@@ -66,7 +78,7 @@ class << self
     @nombre_background_colors = @background_colors.count
 
     # Le path du fichier final qu'on va créer
-    # 
+    #
     html_file = args[:path] ||= begin
       File.join(args[:folder], 'timeline_scenes.htm')
     end
@@ -76,7 +88,7 @@ class << self
     tl_css  = 'timeline'
 
     code_timeline =
-      "<div id='#{main_id}' style='display:none'>" +
+      "<div id='#{main_id}' data-film-duree='#{@duree_film}' style='display:none'>" +
         "<div class='#{tl_css}-h'>" +
           horizontal_timeline(liste_scenes) +
         '</div>' +
@@ -86,6 +98,8 @@ class << self
         '</div>' +
         boutons_navigation_selection +
         bouton_fermeture +
+        calque_pfa +
+        boutons_pfa +
       '</div>'
 
     # On enregistre le code fabriqué dans le fichier voulu
@@ -115,7 +129,7 @@ class << self
       bgcolor = @background_colors[hscene[:numero] % @nombre_background_colors]
       style   = "left:#{current_left.round(2)}%;width:#{width}%;background-color:##{bgcolor}"
       current_left += width
-      "<div id='sch-#{hscene[:numero]}' class='sc' onclick='sv(#{hscene[:numero]})' style='#{style}'></div>"
+      "<div id='sch-#{hscene[:numero]}' data-time='#{hscene[:time]}' class='sc' onclick='sv(#{hscene[:numero]})' style='#{style}'></div>"
     end.join('')
   end
   def s2h s

@@ -74,6 +74,7 @@ SELECT last_sent
   LIMIT 1
       SQL
     end
+    
     def db_site_cold
       @db_site_cold ||= './database/data/site_cold.db'
     end

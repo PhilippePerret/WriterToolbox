@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Fixnum
 
   # Affirme que le nombre courant est égal au nombre

@@ -172,10 +172,18 @@ class SiteHtml
         pdb = File.join(RACINE, 'database', 'data', 'site_cold.db')
         suivi_error << "DB Path: #{pdb} "
         suivi_error << "Exist? #{File.exist?(pdb).inspect}"
-        db = SQLite3::Database.new(pdb)
-        pr = db.prepare req
-        rs = pr.execute
-        suivi_error << "Retour de l'exécution de la requête : #{rs.inspect}"
+        begin
+          db = SQLite3::Database.new(pdb)
+          pr = db.prepare req
+          rs = pr.execute
+          suivi_error << "Retour de l'exécution de la requête : #{rs.inspect}"
+        rescue Exception => e
+          suivi_error << "# Erreur d'actualisation : #{e.message}"
+          suivi_error << e.backtrace.join("\n")
+        ensure
+          (db.close if db) rescue nil
+          (pr.close if pr) rescue nil
+        end
         tchecked = new(tid)
         suivi_error <<  "tchecked class : #{tchecked.class}" +
                         "         ID    : #{tchecked.id}" +

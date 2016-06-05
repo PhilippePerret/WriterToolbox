@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 def post
   @post ||= site.objet
 end

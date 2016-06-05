@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class ::NilClass
 
   # Pour compatibilité quand une valeur est nil

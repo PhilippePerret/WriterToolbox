@@ -30,7 +30,7 @@ class SiteHtml
       pbase = folder_connexions_by_ip + "connexions#{ibase}.db"
       unless pbase.exist?
         dbase = SQLite3::Database::new(pbase.to_s)
-        create_base_connexion(dbase)
+        create_base_connexion( dbase )
       end
       dbase ||= SQLite3::Database::new(pbase.to_s)
       begin
@@ -39,6 +39,8 @@ class SiteHtml
         debug e
       else
         break # on peut finir si on a pu enregistrer
+      ensure
+        (dbase.close if dbase) rescue nil
       end
     end
   end

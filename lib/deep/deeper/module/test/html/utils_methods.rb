@@ -125,7 +125,9 @@ class HTML
   # proximité avec le message +searched+ en les comparant suivant
   # la distance normalisée de Levenshtein.
   def liste_with_levenshtein messages, searched
+    # searched = searched.force_encoding('utf-8')
     messages.collect do |m|
+      # m = m.force_encoding('utf-8')
       d = Levenshtein.normalized_distance(searched, m).round(2)
       if d <= 0.15
         "“<strong>#{m}</strong>” (le vrai message ? - Levenshtein:#{d})"
