@@ -5,7 +5,7 @@ $.extend(window.RSConsole, {
   Snippets: {
     'URL': {replace:"http://www.laboiteaoutilsdelauteur.fr"},
     'tache': {replace:"new tache pour:Phil le:$1 tache: $2"},
-    'update':{replace:'update message:$1 le:$2 route:$3 type:$4 annonce:$5'}
+    'update':{replace:'update message:$1 le:$2 route:$3 type:$4 annonce:$5 degre:$6'}
   },
 
   console_field:function(){
@@ -159,6 +159,8 @@ Données à renseigner obligatoirement : __\
                 indiquera tous les types. __\
     route:      La route de la page. __\
                 Mettre '---' si aucune route. __\
+    degre:      Le degré d'importance de l'update (0-9). __\
+                À partir de 7, l'update est inscrite sur l'accueil. __\
                 __\
 Autres données optionnelles __\
     le:         Date de l'acutalisation. Si non précisé, ce sera __\

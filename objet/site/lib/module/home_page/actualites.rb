@@ -268,14 +268,21 @@ SELECT
   def bloc_actualite_divers
     titre_bloc_actu("Divers") +
     "Dernières actualités :".in_span(class:'label') +
-    dernieres_actualites_divers
+    dernieres_actualites_divers +
+    "[les voir toutes]".in_a(href:'site/updates', class:'tiny').in_div(class:'right')
   end
   def dernieres_actualites_divers
     require './hot/last_actualites'
     dernieres_actualites_generales.collect do |arrdata|
       message, hdate = arrdata
-      djour, dmois, dannee = hdate.split(/[ \/]/)
-      t = Time.new(dannee.to_i, dmois.to_i, djour.to_i).to_i
+      t =
+        case hdate
+        when String
+          djour, dmois, dannee = hdate.split(/[ \/]/)
+          Time.new(dannee.to_i, dmois.to_i, djour.to_i).to_i
+        when Fixnum
+          hdate
+        end
       "#{DOIGT}#{message}#{as_small_date t}".in_div(class:'actu')
     end.join('')
   end

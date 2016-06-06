@@ -40,7 +40,7 @@ class Updates
       (
         link_to_page  +
         human_date    +
-        message.in_span(class: 'm')
+        "##{id}- #{message}".in_span(class: 'm')
       ).in_li(class: class_li)
     end
 
@@ -53,6 +53,7 @@ class Updates
       if user.identified?
         user.last_connexion > created_at || ( css << 'unread' )
       end
+      css << 'bold' if importante?
       css.join(' ')
     end
     def human_date

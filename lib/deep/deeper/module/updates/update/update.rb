@@ -60,6 +60,14 @@ class Update
       else 2
       end
 
+    # Le degré de l'importance
+    if @data.key? :degre
+      @data[:options] ||= ""
+      @data[:options][0] = @data[:degre]
+      @options = @data[:options]
+    end
+
+
     debug "@data après correction : #{@data.inspect}"
   end
 
@@ -67,6 +75,7 @@ class Update
   #   Les données enregistrées
   # ---------------------------------------------------------------------
 
+  def id          ; @id         ||= data[:id]                 end
   def message     ; @message    ||= data[:message]            end
   def type        ; @type       ||= data[:type]               end
   def route       ; @route      ||= data[:route]              end
@@ -103,6 +112,12 @@ class Update
     end
   end
 
+  # L'update est importante si son niveau de degré est
+  # supérieur ou égal à 7
+  def importante?
+    (options||"")[0].to_s.to_i >= 7
+  end
+
   # Vérification des données transmises
   # Retourne TRUE si c'est OK, et l'update peut être
   # enregistrées, ou alors retourne false.
@@ -117,6 +132,7 @@ class Update
     @route != nil || raise("Indiquer qu'il n'y a pas de `route` avec `route:---` (pour être sûr que ça n'est pas un oubli).")
     @route = @data[:route] = nil if @route == '---'
     annonce != nil || raise("Indiquer `annonce: 0` s'il n'y a pas d'annonce à faire (ou `1` pour annonce à tout le monde et `2` pour annonce seulement aux abonnés).")
+    @data[:degre] || raise("Il faut indiquer le degré de 0 à 9 de l'annonce déterminant l'importance de l'annonce. À partir de 7, l'update est annoncée sur l'accueil.")
   rescue Exception => e
     error e.message
   else
