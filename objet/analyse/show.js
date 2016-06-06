@@ -1,21 +1,202 @@
+if(undefined==window.Scenes){window.Scenes={}}
+if(undefined==window.PFA){window.PFA={}}
+
 // Raccourci pour utiliser seulement `s(num scène)` dans les
 // attributs onclick
-function s(numero){Scenes.show(numero)}
+function s(numeros){Scenes.show(numeros)}
 function sv(numero){Scenes.show_in_timelinev(numero)}
 
-if(undefined==window.PFA){window.PFA={}}
+
+/* ---------------------------------------------------------------------
+    Les méthodes Scenes (Timeline) de contrôleur
+   --------------------------------------------------------------------- */
+$.extend(window.Scenes, {
+
+  // Pour l'affichage d'une scène dans le scénier
+  // +numero+ peut être :
+  //  - {Number} un numéro seul
+  //  - {Object} une liste Array de numéros de scènes
+  //  - {String} un string avec les numéros séparés par des espaces
+  /** Affichage de la timeline des scènes
+    *
+    * Si +numeros+ est strictement identique au précédent
+    * numéros envoyés, c'est une fermeture qui est demandée
+    *
+    */
+  last_numeros: null,
+  show:function(numeros){
+
+    // Numéros identiques à la demande précédente
+    // => Fermeture de la timeline demandée
+    // Sinon, on mémorise ces numéros pour savoir si c'est
+    // une fermeture qui sera demandée.
+    if(numeros == this.last_numeros){
+      this.reset();
+      this.close_timeline();
+      this.last_numeros = null ;
+      return ;
+    } else { this.last_numeros = numeros }
+    // Au cas où, il faut toujours ouvrir la timeline
+    this.open_timeline();
+
+    // Au cas où on clique sur une autre liste de scènes ou
+    // scène dans le texte alors que la timeline est encore
+    // ouverte, il faut s'initialiser
+    this.reset();
+
+    // Déterminer la liste des numéros
+    if ('number' == typeof numeros){numeros = [numeros]}
+    else if ('string' == typeof numeros){numeros = numeros.split(' ')}
+
+    // On sélectionne les scènes demandées
+    for(var i in numeros){
+      numeros[i] = parseInt(numeros[i]) ;
+      this.select_scene(numeros[i]);
+    }
+    // On se rend toujours à la première scène pour la mettre
+    // en exergue.
+    if( numeros[0] ){ this.display( numeros[0] ) }
+
+    // S'il y a plusieurs scènes, il faut afficher la boite
+    // de navigation scène par scène
+    var plusieurs_scenes = numeros.length > 1 ;
+    var onav = $('div#timeline_scenes_boite_navigation_selection')
+    if( plusieurs_scenes ){
+      onav.show();
+      this.iscene_selection_courante = 0 ;
+      this.selection_courante = numeros ;
+      this.select_current_scene() ;
+    } else {
+      onav.hide();
+    }
+  }
+
+})
+/* ---------------------------------------------------------------------
+    Les méthodes PFA de contrôleur
+   ---------------------------------------------------------------------*/
+$.extend(window.PFA, {
+
+  // Pour le bouton qui affiche et masque le paradigme
+  // de Field et les boutons de navigation dans les noeuds
+  toggle:function(){
+    if(this.displayed){ this.hide() } else { this.init(); this.show() }
+    this.displayed = !this.displayed ;
+  },
+
+  /** Pour sélectionner le nœud précédent ou le nœud suivant
+    *
+    * Toutes les scènes candidates sont recherchées et mémorisées
+    * dès qu'on clique sur le bouton "P.F.A.". La valeur
+    * this.icandidate permet ensuite de naviguer de scène en
+    * scène.
+    */
+  prev_node: function(){
+    if( this.icandidate === null || this.icandidate == 0 ){
+      this.icandidate = this.nodes_candidates.length
+    }
+    this.icandidate -= 1 ;
+    this.display_node_candidate();
+  },
+  next_node: function(){
+    if(this.icandidate === null || this.icandidate == this.nodes_candidates.length - 1){
+      this.icandidate = -1
+    }
+    this.icandidate += 1 ;
+    this.display_node_candidate();
+  },
+
+  // Affiche la scène candidate voulue
+  display_node_candidate:function(){
+    var candidate = this.nodes_candidates[this.icandidate] ;
+    this.show_scene_et_node( candidate.scene_num, candidate.inode ) ;
+  }
+
+})
+/* ---------------------------------------------------------------------
+    Les méthods Scenes fonctionnelles
+   --------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------
+    Les méthodes PFA fonctionnelles
+   ---------------------------------------------------------------------*/
 $.extend(window.PFA, {
   CALQUE: null, // réglé par l'init de Scenes
   CADRE: null,
   displayed: false,
-  toggle:function(){
-    if(this.displayed){this.hide()} else { this.show() }
-    this.displayed = !this.displayed ;
+
+
+  // Initialisation du PFA
+  //
+  pfa_inited: false,
+  init:function(){
+    if(this.pfa_inited)return;
+    this.find_nodes_candidates();
+    this.pfa_inited = true ;
   },
+
+  zonew: 5, //4.16, //8.33,
+  DATA_NODE: [
+    { hname: 'Pivot 1',      pos: 25 },
+    { hname: '1/3',          pos: 33 },
+    { hname: 'Clé de voûte', pos: 50 },
+    { hname: '2/3',          pos: 66 },
+    { hname: 'Pivot 2',      pos: 75 }
+  ],
+
+  /**
+    * Méthode fonctionnelle qui cherche les scènes
+    * candidate par noeud. Cela produit une liste
+    * (nodes_candidates) dont chaque élément est un
+    * hash contenant le numéro de la scène, l'indice
+    * du noeud et la hauteur de la scène dans la
+    * timeline V pour un affichage plus rapide.
+    *
+    */
+  find_nodes_candidates: function(){
+    this.nodes_candidates = []
+    var inode,
+        dnode,
+        node_debut, node_fin,
+        scene_num = 0 ;
+    // On boucle sur chaque node pour récupérer les scènes
+    // candidate.
+    // Un "node", c'est par exemple un pivot ou la clé de voûte
+    // Une "scène candidate", c'est une scène qui pourrait se
+    // trouver à l'endroit voulu.
+    for(inode = 0, len = this.DATA_NODE.length; inode < len; ++inode){
+      dnode     = this.DATA_NODE[inode] ;
+      node_debut = dnode.pos - PFA.zonew ;
+      node_debut = parseInt((node_debut/100) * Scenes.DUREE_FILM) ;
+      node_fin   = dnode.pos + PFA.zonew ;
+      node_fin   = parseInt((node_fin/100)   * Scenes.DUREE_FILM)
+
+      // On récupère toutes les scènes candidates pour ce noeud
+      // Une scène est candidate lorsque son temps de fin est
+      // supérieur strictement au temps de début du noeud ou
+      // que son temps de début est inférieur strictement au
+      // temps de fin
+      do {
+        scene_num += 1 ;
+        scene_debut   = Scenes.scenes[scene_num].time ;
+        scene_fin     = Scenes.scenes[scene_num + 1].time - 1 ;
+        is_candidate  = scene_fin > node_debut && scene_debut < node_fin ;
+        if(is_candidate){
+          this.nodes_candidates.push({
+            scene_num: scene_num, inode: inode
+          })
+        }
+      } while( is_candidate || scene_fin < node_debut )
+    } // Fin de boucle sur chaque node
+  },
+
   show:function(){
     $('a#tls_toggle_pfa').addClass('actived') ;
     $('div#tls_pfa_tools_nav').css('visibility', 'visible');
     this.CALQUE.show();
+    // Quand on demande l'affichage du PFA, il faut effacer
+    // toute marque qui aurait été faite sur la timeline H
+    Scenes.reset();
   },
   hide:function(){
     $('a#tls_toggle_pfa').removeClass('actived') ;
@@ -38,101 +219,16 @@ $.extend(window.PFA, {
   // L'index dans nodes_candidates
   icandidate: null,
 
-  // L'index 0-start du noeud courant
-  inode: null,
-  // Numéro de la scène courante dans le noeud courant
-  // Principe : On avance de scène en scène jusqu'à ce que
-  // le temps limite du noeud courant soit atteint. Si c'est le
-  // cas, on passe au nœud suivant, sinon, on passe à la scène
-  // suivante
-  scene_num: null,
-
-  vingt4e: 4.16, //8.33,
-  DATA_NODE: [
-    { hname: 'Pivot 1',      pos: 25 },
-    { hname: 'Clé de voûte', pos: 50 },
-    { hname: 'Pivot 2',      pos: 75 }
-  ],
 
   show_scene_et_node: function(scene_num, inode){
     Scenes.display( scene_num ) ;
     $('span#tls_pfa_nav_libelle').html(this.DATA_NODE[inode].hname + " ?")
-
-  },
-
-  // Pour sélectionner le nœud précédent
-  prev_node: function(){
-    if(this.icandidate === null) return ;
-    this.icandidate -= 1 ;
-    var candidate = this.nodes_candidates[this.icandidate] ;
-    this.show_scene_et_node( candidate.scene_num, candidate.inode ) ;
-  },
-
-  // Pour sélectionner le nœud suivant, ou plus exactement
-  // la prochaine scène qui correspond soit au nœud courant
-  // soit au nœud suivant
-  next_node:function(){
-    if(this.icandidate != null && this.icandidate < this.nodes_candidates.length - 1){
-      // On est remonté dans l'histoire des scènes candidates avec
-      // la flèche gauche, il faut la redescendre avec la flèche
-      // droite
-      this.icandidate += 1 ;
-      var candidate = this.nodes_candidates[this.icandidate] ;
-      this.show_scene_et_node( candidate.scene_num, candidate.inode ) ;
-      return ;
-    }
-    // Sinon, on cherche la scène suivante
-    if(this.inode     === null){ this.inode = 0     }
-    if(this.scene_num === null){ this.scene_num = 0 }
-
-    // Il faut voir s'il faut passer à la scène
-    // suivante/nœud suivant. Il faut passer au nœud suivant
-    // seulement si la scène suivante dépasse le temps
-    // voulu
-
-    // Les pourcentages des temps du noeud
-    var dnode       = this.DATA_NODE[this.inode]
-    var node_times  = [dnode.pos - PFA.vingt4e, dnode.pos + PFA.vingt4e] ;
-
-    // On transforme les pourcentages en valeur de temps
-    // par rapport au film.
-    // Noter aussi qu'on transforme la liste en Hash
-    node_times = {
-      debut : parseInt((node_times[0]/100) * Scenes.DUREE_FILM),
-      fin   : parseInt((node_times[1]/100) * Scenes.DUREE_FILM),
-      '(durée film)' : Scenes.DUREE_FILM,
-      '(node times)' : node_times
-    }
-
-    console.dir(node_times);
-
-    // Si la fin de la scène est inférieure au début du
-    // temps du node, il faut passer à la scène suivante
-    // jusqu'à ce que la fin de la scène soit comprise
-    // dans la zone du noeud.
-    do {
-      this.scene_num += 1 ;
-      // console.log("this.scene_num = " + this.scene_num) ;
-      var fin_scene = Scenes.scenes[this.scene_num + 1].time
-      // console.log("Scenes.scenes[this.scene_num + 1].time = " + Scenes.scenes[this.scene_num + 1].time);
-    } while( fin_scene < node_times.debut );
-
-    // Si le temps de la scène est encore dans l'intervalle
-    // voulu, on la montre, sinon, on passe au node suivante
-    if ( Scenes.scenes[this.scene_num].time < node_times.fin ){
-      this.show_scene_et_node(this.scene_num, this.inode);
-
-      this.nodes_candidates.push( {scene_num: this.scene_num, inode: this.inode } ) ;
-      this.icandidate = this.nodes_candidates.length - 1 ;
-    } else {
-      this.inode += 1 ;
-      this.next_node() ;
-    }
-
   }
 
 })
-if(undefined==window.Scenes){window.Scenes={}}
+
+
+
 $.extend(window.Scenes,{
 
   // Objet DOM (jQuery) de la timeline des scènes
@@ -164,6 +260,7 @@ $.extend(window.Scenes,{
   inited: false,
   init:function(){
     this.TIMELINE_SCENES    = $('div#timeline_scenes');
+    this.TIMELINE_H         = $('div#timeline_scenes div.timeline-h') ;
     this.TIMELINE_V         = $('div#timeline_scenes div.timeline-v') ;
     this.CALQUE_PFA = PFA.CALQUE = $('div#pfa') ;
 
@@ -172,10 +269,16 @@ $.extend(window.Scenes,{
     this.CALQUE_PFA.show();
 
     // On fait les calculs
-    this.PFA_WIDTH          = this.CALQUE_PFA.width();
-    this.PFA_OFFSET_LEFT    = this.CALQUE_PFA.offset().left ;
+    this.PFA_WIDTH            = this.CALQUE_PFA.width();
+    this.PFA_OFFSET_LEFT      = this.CALQUE_PFA.offset().left ;
+    this.TIMELINE_OFFSET_LEFT = this.TIMELINE_H.offset().left ;
 
-    this.init_pfa();
+    // On prépare la liste des scènes (Scenes.scenes)
+    this.prepare_map_scenes();
+
+    // Initialisation du paradigme de Field (ne sert à
+    // rien pour le moment)
+    // PFA.init();
 
     this.DUREE_FILM = parseInt(this.TIMELINE_SCENES.attr('data-film-duree'));
     this.COEF_PIXELS_TO_SECONDS = this.DUREE_FILM / this.TIMELINE_SCENES.find("div#pfa").width();
@@ -189,6 +292,28 @@ $.extend(window.Scenes,{
     this.inited = true ;
   },
 
+  /* ---------------------------------------------------------------------
+      Méthodes fonctionnelles
+     ---------------------------------------------------------------------*/
+
+  /** Méthodes qui prépare la table des scènes avec pour
+    * chaque scène le temps et le décalage de la scène dans
+    * la liste verticale, pour pouvoir scroller rapidement
+    * à la scène voulue.
+    */
+  prepare_map_scenes:function(){
+    var my = this ;
+    my.scenes = {};
+    my.TIMELINE_SCENES.find('div.timeline-h div.sc').each(function(){
+      var o = $(this);
+      var sid = parseInt(o.attr('id').split('-')[1]) ;
+      var stime = parseInt(o.attr('data-time')) ;
+      var stop  = $('div.timeline-v div#scv-' + sid )[0].offsetTop ;
+      // Noter qu'on décale déjà de 40 pixels pour avoir le
+      // vrai scrollTop qu'il faudra utiliser
+      my.scenes[sid] = { time: stime, top: stop - 40} ;
+    })
+  },
   // Méthodes "left-to-second" qui reçoit un offset left et
   // retourne la position en secondes correspondant
   //
@@ -199,30 +324,6 @@ $.extend(window.Scenes,{
     return parseInt( left_pos * this.COEF_PIXELS_TO_SECONDS );
   },
 
-  // Initialisation du PFA
-  //
-  // La méthode est appelée lorsque l'on glisse la souris
-  // sur le PFA ou lorsqu'on clique le bouton "PFA"
-  // Principalement, elle relève les temps de chaque scène
-  // pour un usage plus rapide
-  pfa_inited: false,
-  init_pfa:function(){
-    if(this.pfa_inited)return;
-    // console.log("-> Scenes.init_pfa");
-    this.scenes = {};
-    var my = this ;
-    this.TIMELINE_SCENES.find('div.timeline-h div.sc').each(function(){
-      var o = $(this);
-      var sid = parseInt(o.attr('id').split('-')[1]) ;
-      var stime = parseInt(o.attr('data-time')) ;
-      var stop  = $('div.timeline-v div#scv-' + sid )[0].offsetTop ;
-      // Noter qu'on décale déjà de 40 pixels pour avoir le
-      // vrai scrollTop qu'il faudra utiliser
-      my.scenes[sid] = { time: stime, top: stop - 40} ;
-    })
-    // console.dir(this.scenes) ;
-    this.pfa_inited = true ;
-  },
 
   // Méthodes qui construit la table contenant en clé le
   // décalage left (sur le calque PFA, au survol de la souris) et
@@ -249,47 +350,6 @@ $.extend(window.Scenes,{
   // du décalage left
   left2scene:function(theleft){
     return this.lefts2scenes[theleft];
-  },
-
-  // Pour l'affichage d'une scène dans le scénier
-  // +numero+ peut être :
-  //  - {Number} un numéro seul
-  //  - {Object} une liste Array de numéros de scènes
-  //  - {String} un string avec les numéros séparés par des espaces
-  show:function(numeros){
-
-    // Au cas où, il faut toujours ouvrir la timeline
-    this.open_timeline();
-
-    // Au cas où on clique sur une autre liste de scènes ou
-    // scène dans le texte alors que la timeline est encore
-    // ouverte, il faut s'initialiser
-    this.reset();
-
-    // Déterminer la liste des numéros
-    if ('number' == typeof numeros){numeros = [numeros]}
-    else if ('string' == typeof numeros){numeros = numeros.split(' ')}
-
-    // On sélectionne les scènes demandées
-    for(var i in numeros){
-      numeros[i] = parseInt(numeros[i]) ;
-      this.select_scene(numeros[i]);
-    }
-    // On se rend toujours à la première scène
-    if( numeros[0] ){ this.goto_scene(numeros[0]) }
-
-    // S'il y a plusieurs scènes, il faut afficher la boite
-    // de navigation scène par scène
-    var plusieurs_scenes = numeros.length > 1 ;
-    var onav = $('div#timeline_scenes_boite_navigation_selection')
-    if( plusieurs_scenes ){
-      onav.show();
-      this.iscene_selection_courante = 0 ;
-      this.selection_courante = numeros ;
-      this.select_current_scene() ;
-    } else {
-      onav.hide();
-    }
   },
 
 
@@ -345,7 +405,7 @@ $.extend(window.Scenes,{
   // scène quand on clique sur la timeline horizontale,
   // en passant par la méthode `sv`
   show_in_timelinev:function(numero){
-    this.goto_scene(numero);
+    this.display(numero);
     var i, e ;
     for(i = numero-10; i<numero+10; ++i){
       e = $('div#timeline_scenes div.timeline-v div#scv-'+i) ;
@@ -353,15 +413,15 @@ $.extend(window.Scenes,{
     }
   },
 
-  goto_scene:function(numero){
-    this.display( numero );
-  },
   display: function( numscene ){
     if(this.cur_div_scene_v){
       this.cur_div_scene_v.removeClass('exergue');
       delete this.cur_div_scene_v ;
       this.cur_div_scene_h.removeClass('exergue');
-      this.cur_div_scene_h.css('background-color', this.cur_div_scene_h.attr('data-bgcolor'));
+      this.cur_div_scene_h.css({
+        'background-color': this.cur_div_scene_h.attr('data-bgcolor'),
+        'top':'0', 'height':'32px', 'opacity':'0.5'
+      });
       delete this.cur_div_scene_h ;
     }
     this.TIMELINE_V.scrollTop(Scenes.scenes[numscene].top) ;
@@ -370,7 +430,12 @@ $.extend(window.Scenes,{
     this.cur_div_scene_h = $('div.timeline-h div#sch-'+numscene) ;
     this.cur_div_scene_h.addClass('exergue') ;
     this.cur_div_scene_h.attr('data-bgcolor', this.cur_div_scene_h.css('background-color'));
-    this.cur_div_scene_h.css('background-color', 'blue');
+    this.cur_div_scene_h.css({
+      'background-color':'blue',
+      'height': '42px',
+      'top':'-6px',
+      'opacity':'1'
+    });
   },
 
   select_scene:function(numero){
@@ -449,27 +514,19 @@ $(document).ready(function(){
 
   $('div#timeline_scenes').draggable();
 
-  // // Pour le voir directement (implémentation)
+  // Pour voir le calque du PFA directement au chargement
+  // de la page (pendant l'implémentation)
   $('div#timeline_scenes').show();
-  // $('div#pfa').show();
+  $('div#pfa').show();
 
-
-  $('div#pfa').bind('mousemove',function(ev,ui){
+  Scenes.TIMELINE_H.bind('mousemove',function(ev,ui){
     if(Scenes.inited){
-      var x = parseInt(ev.clientX - Scenes.PFA_OFFSET_LEFT) ;
+      var x = parseInt(ev.clientX - Scenes.TIMELINE_OFFSET_LEFT) ;
       var scene_num = Scenes.left2scene(x) ;
       // $('div#pfa-developpement').html("x:" + x + " / " + Scenes.l2s( x ) + " / Scène " + scene_num );
       // On scrolle pour afficher la scène dans la timeline
       // verticale.
       Scenes.display(scene_num) ;
     }
-  })
-  // Déclenchement du suivi du mousemouve
-  // Il faut calculer les valeurs pour savoir quoi
-  // montrer
-  $('div#pfa').bind('mouseover',function(){
-  })
-  // Fin du suivi du mousemove
-  $('div#pfa').bind('mouseout', function(){
   })
 })

@@ -1,0 +1,18 @@
+<%
+# Aide pour les analyses, mais différente du manuel
+#
+# Elle fonctionne avec la variable 'p' qui contient le nom
+# du fichier d'aide à afficher, par exemple 'timeline_scenes' qui
+# renvoie à l'aide sur le timeline des scènes.
+#
+%>
+<%= FilmAnalyse::titre_h1("Aide") %>
+<% if param(:p) %>
+  <%=
+    paide = FilmAnalyse.folder_lib + "aide/#{param :p}.md"
+    site.require_module 'kramdown'
+    paide.kramdown
+  %>
+<% else %>
+  <p>Cette section affiche l'aide des analyses.</p>
+<% end %>

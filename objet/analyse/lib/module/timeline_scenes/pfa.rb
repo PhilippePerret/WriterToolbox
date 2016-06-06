@@ -11,8 +11,11 @@ class << self
   # Retourne le code HTML du calque du paradigme de Field
   def calque_pfa
     '<div id="pfa" style="display:none">'   +
-      '<div id="pfa-exposition"></div>'     +
-      '<div id="pfa-developpement"></div>'  +
+      '<div id="pfa-exposition"><span id="pfa-pvt1" class="libelle">Pivot 1</span></div>' +
+      '<div id="pfa-1tiers"><span class="libelle">1/3</span></div>' +
+      '<div id="pfa-cdv"><span class="libelle">C.d.V.</span></div>' +
+      '<div id="pfa-2tiers"><span class="libelle">2/3</span></div>' +
+      '<div id="pfa-developpement"><span id="pfa-pvt1" class="libelle">Pivot 2</span></div>'  +
       '<div id="pfa-denouement"></div>'     +
     '</div>'
   end
@@ -27,7 +30,9 @@ class << self
         '<span id="tls_pfa_nav_libelle">---</span>' +
         '<a id="tls_btn_pfa_next" href="javascript:void(0)" onclick="$.proxy(PFA,\'next_node\')()">▶︎</a>' +
       '</div>' +
-      '<div class="right"><a id="tls_toggle_pfa" href="javascript:void(0)" onclick="$.proxy(PFA,\'toggle\')()">P.F.A.</a></div>' +
+      '<div class="right">' +
+        '<a id="tls_toggle_pfa" href="javascript:void(0)" onclick="$.proxy(PFA,\'toggle\')()">P.F.A.</a>' +
+      '</div>' +
     '</div>'
   end
 
