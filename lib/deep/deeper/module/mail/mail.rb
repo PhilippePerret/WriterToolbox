@@ -31,7 +31,9 @@ class SiteHtml
   else
     true # pour confirmer que l'envoi a pu se faire
   end
-end
+
+
+end # /SiteHtml
 
 # Pour le moment, on met ce module ici, mais il devra être
 # mis dans un fichier si on a besoin de le charger ailleurs.
@@ -48,7 +50,9 @@ module MailModuleMethods
     data.each do |k,v|
       v = case v
       when FalseClass, TrueClass, Fixnum then v
-      else v.nil_if_empty
+      else
+        v = v.strip
+        v == "" ? nil : v
       end
       instance_variable_set("@#{k}", v)
     end unless data.nil?

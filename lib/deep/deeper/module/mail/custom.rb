@@ -94,4 +94,6 @@ class Mail
 end #/Mail
 end #/SiteHtml
 
-site.folder_module_mail.require
+if defined?(site)
+  site.folder_module_mail.require
+end

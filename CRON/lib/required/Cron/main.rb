@@ -65,6 +65,10 @@ class << self
       safed_log "#{separation}[Cron::run] Requérir toutes les librairies du site"
       requerir_les_librairies_du_site
 
+      # Mails d'actualité
+      safed_log "#{separation}[Cron::run] Mails d'actualité quotidiens"
+      SiteHtml::Updates.annonce_last_updates
+
       # Voir s'il faut faire un résumé des connexions
       # par IP (en fonction des fréquences)
       log "\n\n---> Traitement des connexions par IP"

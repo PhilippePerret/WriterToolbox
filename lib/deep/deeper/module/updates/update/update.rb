@@ -52,6 +52,12 @@ class Update
 
     # L'annonce
     # ---------
+    # En fait, l'annonce correspond aux utilisateurs qui
+    # peuvent utiliser l'update. 0, personne et aucune annonce
+    # ne sera faite, 1, pour les inscrits et 2 pour les abonnés
+    # seulement. Mais noter que même les updates pour les abonnées
+    # seulement sont mentionnées pour les inscrits, ça leur donnera
+    # peut-être envie de s'inscrire eux aussi.
     @data[:annonce] =
       case @data[:annonce]
       when NilClass                             then nil
