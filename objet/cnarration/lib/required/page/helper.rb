@@ -11,13 +11,13 @@ class Page
     end
   end
   alias :lehtype :hletype
-  
+
   # Si c'est l'administrateur, cette méthode retourne les liens
   # pour éditer le texte ou les données de la page.
   # Le lien pour éditer le texte n'est présent que si c'est vraiment
   # une page, pas un titre de chapitre/sous-chapitre
   def liens_edition_if_admin
-    return "" unless user.admin?
+    return "" unless OFFLINE && user.admin? 
     (
       lien_edit_text + lien_edit_data + lien_give_code
     ).in_div(class:'btns fright small')
