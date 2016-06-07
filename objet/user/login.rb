@@ -8,9 +8,26 @@ class User
   # se rendre à une adresse après l'identification, cette méthode
   # ne sera jamais appelée. Donc il ne faut l'utiliser que pour
   # une redirection et rien d'autre.
+  #
+  # La redirection peut avoir été déterminée par les préférences
+  # grâce à la préférence 'goto'
   def redirect_after_login
-    if true == preference(:bureau_after_login, false)
-      debug "[User#redirect_after_login] Redirection vers 'bureau/hom?in=unan'"
+    if (goto = preference(:goto_after_login))
+      route =
+        case goto
+        when '0'  # Le profil
+          "user/#{id}/profil"
+        when '1'  # Dernière page consultée
+          # La dernière page consultée (ou l'accueil si aucune
+          # dernière page consultée n'a été trouvée)
+          # C'est dans les connexions qu'on trouve cette information
+          res = site.db.table('users','connexions').get(id)
+          res.nil? ? 'site/home' : res[:route]
+        else
+          User::GOTOS_AFTER_LOGIN[goto][:route]
+        end
+      redirect_to route
+    elsif true == preference(:bureau_after_login, false)
       redirect_to 'bureau/home?in=unan'
     else
       debug "[User#redirect_after_login] Aucune redirection"

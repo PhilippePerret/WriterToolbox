@@ -17,7 +17,7 @@ class User
     app.session['user_id'] = id
     # On met l'utilisateur en utilisateur courant
     User::current= self
-    reset_user_current
+    # reset_user_current
     # Variable session permettant de savoir combien de pages a
     # déjà visité l'utilisateur (pour baisser l'opacité des
     # éléments annexes de l'interface)
@@ -31,6 +31,7 @@ class User
   # de gérer la transparence de l'interface (il doit disparaitre
   # petit à petit à mesure que l'utilisateur visite les pages)
   def login
+
     unless mail_confirmed? || admin? || for_paiement?
       return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
     end

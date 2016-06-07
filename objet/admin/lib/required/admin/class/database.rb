@@ -6,7 +6,7 @@
 
 # Je ne sais pas pourquoi, mais en arrivant ici, user.id est nil
 # Il faut donc appeler cette méthode pour forcer les choses
-reset_user_current
+# reset_user_current
 
 raise_unless_admin
 class Admin

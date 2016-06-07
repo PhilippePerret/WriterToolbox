@@ -24,6 +24,11 @@ class User
   # la page), on enregistre toujours sa dernière connexion
   def set_last_connexion
     rt = site.current_route ? site.current_route.route : nil
+    # On ne doit pas enregistrer la dernière connexion si
+    # c'est une déconnexion (sinon ça pose problème si l'user
+    # a choisi de rejoindre sa dernière page consultée après
+    # son login)
+    return if rt.to_s =~ /(deconnexion|logout)$/
     site.db.create_table_if_needed('users', 'connexions').set(self.id, {
       id: self.id, route: rt, time: NOW
       })

@@ -47,13 +47,14 @@ def menu_mail_updates
   ].in_select(name:'prefs[mail_updates]', id: 'prefs_mail_updates', class: 'inline', selected: user.preference(:mail_updates))
 end
 def menu_goto_after_signin
-  [
-    ['0', "mon profil"],
-    ['1', 'ma dernière page consultée'],
-    ['2', "mon programme UN AN UN SCRIPT"],
-    ['3', 'l’accueil du site'],
-    ['4', 'la collection Narration'],
-    ['5', 'le forum'],
-    ['6', 'les analyses de film']
-  ].in_select(name:'prefs[goto_after_login]', id: 'prefs_goto_after_login', class: 'inline', selected: user.preference(:goto_after_login).to_s)
+  liste_goto_after_signin.in_select(name:'prefs[goto_after_login]', id: 'prefs_goto_after_login', class: 'inline', selected: user.preference(:goto_after_login).to_s)
+end
+# Liste des redirections possibles après le login
+def liste_goto_after_signin
+  @liste_goto_after_signin ||= begin
+    User::GOTOS_AFTER_LOGIN.collect do |k, dk|
+      next nil if dk[:admin] && !user.admin?
+      [k, dk[:hname]]
+    end.compact
+  end
 end

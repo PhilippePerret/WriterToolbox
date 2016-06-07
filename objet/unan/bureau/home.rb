@@ -8,7 +8,11 @@ où par :
 # Beaucoup de formulaires dans ce bureau
 Unan::require_module 'bureau'
 
-redirect_to :home unless user.identified? && user.unanunscript?
+unless user.identified? && user.unanunscript?
+  # Ça peut arriver par exemple lorsque l'user règle ses préférences
+  # après login sur cette page, sans savoir ce que c'est.
+  redirect_to 'unan/home'
+end
 
 class Unan
 class Bureau

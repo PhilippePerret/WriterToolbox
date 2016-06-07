@@ -38,7 +38,7 @@ form.prefix = 'user'
   <% if signup_for_unanunscript %>
     <%= form.field_checkbox("S'abonner au programme UN AN UN SCRIPT", 'subscribe', 'on') %>
   <% else %>
-    <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: "(Pourquoi s'abonner ?)".in_a(href:'aide/why_subscribe', target:'_blank', class:'small')}) %>
+    <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: "(Pourquoi s'abonner ?)".in_a(href:'aide/3/show', target:'_blank', class:'small')}) %>
   <% end %>
   <%= form.field_text("Test anti-robot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')}) %>
   <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons') %>
