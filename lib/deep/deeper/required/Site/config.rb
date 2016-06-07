@@ -74,6 +74,16 @@ class SiteHtml
   # RSpec
   attr_accessor :rspec_command
 
+  # {String} Le compte facebook (if any)
+  # Note : Sera ajouté à la signature du mail si défini, précédé
+  # de http://www.facebook.com/
+  attr_accessor :facebook
+
+  # {String} Compte twitter (simple) if any
+  # Note : Sera ajouté à la signature du mail si
+  # défini, précédé de https://twitter.com/
+  attr_accessor :twitter
+
 
   # Séparateur des unités avec les décimales, particulièrement
   # dans un tarif

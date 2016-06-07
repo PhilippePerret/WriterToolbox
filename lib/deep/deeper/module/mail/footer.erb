@@ -4,3 +4,9 @@
 <hr />
 <div class="tiny"><%= site.name %></div>
 <div class='tiny'><%= site.distant_url %></div>
+<% if site.facebook %>
+  <div class="tiny">Facebook : http://www.facebook.com/<%= site.facebook %></div>
+<% end %>
+<% if site.twitter %>
+  <div class="tiny">Twitter : https://twitter.com/<%= site.twitter %></div>
+<% end %>

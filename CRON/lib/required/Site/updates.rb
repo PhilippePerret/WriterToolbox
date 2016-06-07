@@ -162,7 +162,9 @@ class << self
       hier_matin  = Time.new(hier.year, hier.month, hier.day, 0, 0, 0).to_i
       ce_matin    = Time.new(now.year, now.month, now.day, 0, 0, 0).to_i
       where = []
-      where << "CAST(SUBSTR(options,1,1) AS INTEGER) > 6"
+      # On ne fait plus de filtre par degré d'importance, mais
+      # seulement si l'update doit être annoncée ou non.
+      # where << "CAST(SUBSTR(options,1,1) AS INTEGER) > 6"
       where << "created_at >= #{hier_matin} AND created_at < #{ce_matin}"
       where << "annonce > 0"
       where = where.join(' AND ')

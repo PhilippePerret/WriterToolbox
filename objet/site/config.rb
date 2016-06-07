@@ -42,6 +42,20 @@ site.distant_host = 'www.laboiteaoutilsdelauteur.fr'
 
 site.tarif = 6.90
 
+# Compte Facebook
+# ---------------
+# Un lien sera ajouté automatiquement à la signature
+# des mails si le compte est défini.
+site.facebook = nil
+site.facebook = 'laboiteaoutilsdelauteur'
+
+# Compte Twitter
+# --------------
+# Un lien sera ajouté automatiquement à la signature
+# des mails si le compte est défini.
+site.twitter = nil
+site.twitter = 'b_outils_auteur'
+
 # # Si on est en anglais :
 # site.separateur_decimal = "."
 # site.devise = "$"

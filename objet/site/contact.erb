@@ -11,9 +11,11 @@ end
 %>
 
 <% if site.current_mail.sent? %>
-  <p class='big'>
-    Votre message a été transmis avec succès. Merci à vous.
-  </p>
+  <div class='big center'>
+    <div class="center" style="font-size:38.7pt;color:#00dd00">√</div>
+    <div>Votre message a été transmis avec succès.</div>
+    <div>Merci à vous.</div>
+  </div>
 <% else %>
 <%
 site.require 'form_tools'

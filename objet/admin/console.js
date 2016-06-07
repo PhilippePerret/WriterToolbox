@@ -161,6 +161,8 @@ Données à renseigner obligatoirement : __\
                 Mettre '---' si aucune route. __\
     degre:      Le degré d'importance de l'update (0-9). __\
                 À partir de 7, l'update est inscrite sur l'accueil. __\
+                Mais toutes les updates sont annoncées par mail si __\
+                'annonce' est différent de zéro. __\
                 __\
 Autres données optionnelles __\
     le:         Date de l'acutalisation. Si non précisé, ce sera __\
