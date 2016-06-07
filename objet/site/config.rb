@@ -46,14 +46,12 @@ site.tarif = 6.90
 # ---------------
 # Un lien sera ajouté automatiquement à la signature
 # des mails si le compte est défini.
-site.facebook = nil
 site.facebook = 'laboiteaoutilsdelauteur'
 
 # Compte Twitter
 # --------------
 # Un lien sera ajouté automatiquement à la signature
 # des mails si le compte est défini.
-site.twitter = nil
 site.twitter = 'b_outils_auteur'
 
 # # Si on est en anglais :

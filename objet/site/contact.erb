@@ -11,15 +11,11 @@ end
 %>
 
 <% if site.current_mail.sent? %>
-  <div class='big center'>
-    <div class="center" style="font-size:38.7pt;color:#00dd00">√</div>
-    <div>Votre message a été transmis avec succès.</div>
-    <div>Merci à vous.</div>
-  </div>
+  <%= big_message(["Votre message a été transmis avec succès.", "Merci à vous."], {ok: true}) %>
 <% else %>
 <%
-site.require 'form_tools'
-form.prefix = 'contact'
+  site.require 'form_tools'
+  form.prefix = 'contact'
 %>
 <form id="form_contact" class="dim2080" action="site/contact" method="POST">
   <%= "envoyer".in_hidden(name:'operation') %>
