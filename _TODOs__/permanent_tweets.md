@@ -46,6 +46,16 @@ Connaissez-vous vraiment tous les documents d'écriture de l'auteur ? (les Docu
 
 Savoir écrire une minute par page (de scénario) - les Documents de l'auteur http://bit.ly/22JsXiG
 
+Le meilleur outil de l'auteur : les ciseaux (le Travail de l'auteur) http://bit.ly/25K5YJL #MeilleurOutilDeLAuteur
+
+“L’évidence d’une œuvre est le fruit d’un long et laborieux effort.” (le mirage des méthodes - La Structure) http://bit.ly/1UbYoAc
+
+Très concrètement, construire la structure, qu'est-ce que c'est ? (La Structure) http://bit.ly/1sv1Kns
+
+“L'élaboration de la structure, c'est l'obsession pour la simplicité et l'évidence.” (La Structure) http://bit.ly/215bEHF
+
+Des exemples parfaits de PFA - #TheMazeRunner #Her #Rocky #ThelmaLouise #DancerInTheDark (La Structure) http://bit.ly/28hIdHP
+
 === À INTRODUIRE ===
 
 “L’évidence d’une œuvre est toujours Le fruit d’un long et laborieux effort.” (Le mirage des méthodes)

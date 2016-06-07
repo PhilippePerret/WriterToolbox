@@ -20,11 +20,12 @@ class << self
   # en fonction de leurs options, les dernières actualités.
   #
   def annonce_last_updates
-    safed_log "--> Annonce des dernières actualités (updates)"
+    safed_log "  -> Annonce last updates"
 
     # Pas d'annonce si ça n'est pas l'heure
     if Time.now.hour != 0
-      safed_log "   = Pas l'heure d'envoyer les mails d'actualité"
+      safed_log '   = Pas l’heure d’envoyer les mails d’actualité' +
+                '   <- (annonces last updates)'
       return
     end
 
