@@ -41,23 +41,41 @@ end
   <%= div_row("Session ID"    , session_id, {class:'small'} ) %>
 </div>
 
+<%
+# ---------------------------------------------------------------------
+#   FORUM
+# ---------------------------------------------------------------------
+%>
 <h3>Forum</h3>
-<p>
-  Vous n'avez aucun message en attente.
-</p>
-<p>
-  Vous n'avez aucune question en attente.
-</p>
+<p>Vous n'avez aucun message en attente.</p>
+<p>Vous n'avez aucune question en attente.</p>
 
+<%
+# ---------------------------------------------------------------------
+#   UN AN UN SCRIPT
+# ---------------------------------------------------------------------
+%>
 <h3>Programme <%= UN_AN_UN_SCRIPT %></h3>
 <% if unanunscript? %>
   <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
-
 <% else %>
-
   <p>Vous ne suivez pas le <%= lien.unanunscript %>.</p>
-
 <% end %>
+
+<%
+# ---------------------------------------------------------------------
+#   PRÉFÉRENCES
+# ---------------------------------------------------------------------
+%>
+<h3>Préférences</h3>
+<form action="user/<%= user.id %>/profil" method="POST">
+  <%= 'save_preferences'.in_hidden(name:'operation') %>
+  <ul>
+    <%= "Recevoir le mail des dernières actualités #{menu_mail_updates}".in_li %>
+    <%= "Après l'identification, rejoindre #{menu_goto_after_signin}".in_li %>
+  </ul>
+  <%= "Enregistrer".in_submit(class: 'btn small discret').in_div(class: 'buttons') %>
+</form>
 
 <% if user.admin? %><%= sous_vue('admin') %><% end %>
 

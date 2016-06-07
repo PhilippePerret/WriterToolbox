@@ -19,7 +19,7 @@ class User
     set_var( var_key, pref_value )
     @preferences[pref_id] = pref_value
   end
-
+ 
   # Enregistre un flot de préférences d'un bloc
   # WARNING : Les +pref_id+ NE DOIVENT PAS être préfixés avec "pref_"
   def set_preferences hpreferences

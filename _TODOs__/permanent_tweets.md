@@ -36,6 +36,16 @@
 
 “Tout le monde en parle, mais peu savent de quoi il s'agit : l'ENJEU NARRATIF.” (Dynamique narrative) http://bit.ly/28cC3IU
 
+“Mais à quoi peuvent-ils donc servir, tous ces documents du scénariste ?!?” (Documents d'écriture) http://bit.ly/1VHY5hD
+
+“Pour être bonne, l'histoire doit l'être à toutes ses échelles.” (Documents d'écriture) http://bit.ly/1VHY5hD
+
+Connaissez-vous vraiment tous les documents d'écriture de l'auteur ? (les Documents d'écriture) http://bit.ly/25HBlBb
+
+“Atteindre la clarté, c'est être au clair avec ce que l'on doit dire.” (la clarté dans les documents de l'auteur) http://bit.ly/1Y3skzR
+
+Savoir écrire une minute par page (de scénario) - les Documents de l'auteur http://bit.ly/22JsXiG
+
 === À INTRODUIRE ===
 
 “L’évidence d’une œuvre est toujours Le fruit d’un long et laborieux effort.” (Le mirage des méthodes)

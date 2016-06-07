@@ -5,7 +5,6 @@
   inscrits et abonnés.
 
 =end
-require 'sqlite3'
 
 class SiteHtml
 class Updates
@@ -34,6 +33,11 @@ class << self
       safed_log "   = Aucune actualité"
       return
     end
+
+    # Pour savoir si on est samedi, pour les users qui
+    # ne veulent recevoir le mail d'updates qu'une seule
+    # fois par semaine.
+    is_samedi = Time.now.wday == 6
 
     # On construit la liste des actualisations
     ul_last_updates =
@@ -90,6 +94,13 @@ class << self
 
         u = User.new(u_id)
 
+        pref_mail = u.preference(:mail_updates)
+
+        # On ne doit pas envoyer le mail à l'user s'il a
+        # réglé ses préférences sur 'never' ou sur 'weekly' et qu'on
+        # n'est pas samedi.
+        next if ( pref_mail == 'never' ) || ( pref_mail == 'weekly' && !is_samedi )
+
         # Message d'abonnement en fin de mail
         # Si l'user est abonné, on le remerci, sinon on lui propose
         # de soutenir le site en s'abonnant.
@@ -106,7 +117,7 @@ class << self
         )
 
         u.pseudo # pour la collecte
-      end
+      end.compact
 
     safed_log "   = Mails actualité envoyés à #{user_list.count} utilisateurs : #{user_list.join(', ')}."
     safed_log "   = Envoi des mails d'actualité OK"
@@ -186,7 +197,7 @@ class << self
       # Il faut que l'user soit inscrit ou abonné, et que ses
       # options précisent qu'il veut recevoir les mails d'actualité
       # Il ne doit pas être détruit
-      where = "(SUBSTR(options,3,1) IS NOT '1') AND (SUBSTR(options,4,1) IS NOT '1')"
+      where = 'options NOT LIKE "___1%"'
       req = "SELECT id FROM users WHERE #{where}"
       db = SQLite3::Database.new('./database/data/users.db')
       pr = db.prepare req

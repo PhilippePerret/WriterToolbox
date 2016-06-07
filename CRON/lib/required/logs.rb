@@ -60,7 +60,7 @@ class SafedErrorLog
         else err.message + "\n" + err.backtrace.join("\n")
         end
       @errors ||= []
-      @errors << err
+      @errors << "[#{now_human}] #{err}"
     end
 
     def now_human
