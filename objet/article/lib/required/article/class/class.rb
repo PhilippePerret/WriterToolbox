@@ -5,20 +5,24 @@ class Article
 
   class << self
 
-    def titre ; @titre ||= 'LE Blog de la Boite' end
+    def titre ; @titre ||= 'Le Blog de la Boite' end
 
     def data_onglets
       @data_onglets ||= {
-        "Article courant" => 'article/show',
+        "Article courant" => "article/#{current_article_id}/show",
         "Liste articles"  => 'article/list'
       }
     end
 
     # {Article} L'instance du dernier Article
     def last
-      @last ||= begin
+      @last ||= new(current_article_id)
+    end
+
+    def current_article_id
+      @current_article_id ||= begin
         require './objet/article/current.rb'
-        new(CURRENT_ARTICLE_ID)
+        CURRENT_ARTICLE_ID
       end
     end
 
