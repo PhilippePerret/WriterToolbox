@@ -7,7 +7,7 @@ class User
     def login
       unless login_ok?
         error "Je ne vous reconnais pas… Voulez-vous bien réessayer ?"
-        redirect_to :home
+        redirect_to 'user/signin'
       end
     end
 
