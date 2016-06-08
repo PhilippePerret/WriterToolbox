@@ -114,7 +114,7 @@ class Lien
   def signin titre = "s'identifier", options = nil
     options ||= Hash::new
     href = "user/signin"
-    href += "?backto=#{CGI::escape(options.delete(:back_to))}" if options.has_key?(:back_to)
+    href += "?backto=#{CGI::escape(options.delete(:back_to))}" if options.key?(:back_to)
     build href, titre, options
   end
 

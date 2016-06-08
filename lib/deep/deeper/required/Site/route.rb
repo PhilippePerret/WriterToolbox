@@ -110,15 +110,38 @@ class SiteHtml
   # de la route (__o, __i etc.) et à exécuter la route une nouvelle fois
   #
   def redirect_to rut
-    set_params_route
 
     # Premier traitement : les raccourcis
-    rut = case rut
-    when :last_page, :last_route
-      debug "app.session['last_route']: #{app.session['last_route']}"
-      app.session['last_route']
-    else rut
+    rut =
+      case rut
+      when :last_page, :last_route
+        app.session['last_route']
+      when :signin  then 'user/signin'
+      when :signup  then 'user/signup'
+      when :home    then :home # cf. ci-dessous
+      else rut
+      end
+
+
+    # Traitement spécial pour les routes 'user/signin' ou
+    # 'user/signup'. Il faut mettre dans le paramètre
+    # backto la route actuelle pour y renvoyer l'user
+    # après son identification réussie.
+    if rut == 'user/signin'
+      route_courante =
+        if site.current_route.nil?
+          nil
+        else
+          site.current_route.route
+        end
+      param(backto: route_courante)
+      route_courante.nil? || debug("param(:backto) mis à #{route_courante.inspect}")
     end
+
+    # On reset complètement les valeurs __o etc. qui
+    # définissent les routes.
+    set_params_route
+
 
     # debug "rut après premier traitement : #{rut}"
 

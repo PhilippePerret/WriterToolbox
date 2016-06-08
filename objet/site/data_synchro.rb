@@ -67,11 +67,12 @@ class Synchro
   def app_ignored_folders
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
-      "./database/data/unan/",
-      "./database/data/user/",
-      "./lib/deep/deeper/module/synchronisation/",
-      "./CRON/log/",
-      "./CRON/rapports_connexions/"
+      './database/data/unan/',
+      './database/data/user/',
+      './lib/deep/deeper/module/synchronisation/',
+      './CRON/log/',
+      './CRON/rapports_connexions/',
+      './view/img/CHANTIER'
     ]
   end
 end
