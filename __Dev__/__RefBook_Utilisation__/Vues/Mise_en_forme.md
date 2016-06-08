@@ -127,7 +127,9 @@ On peut mettre l'affichage en double colonnes à l'aide de :
             ...
           </div>
         </div>
-        
+
+Par défaut, les doubles colonnes sont entourées d'un cadre fin. Pour ne pas avoir de cadre du tout, ajouter la classe `nocadre` au div principal.
+
 <a name='stylespecialadminonly'></a>
 
 ## Style spécial pour l'administrateur
