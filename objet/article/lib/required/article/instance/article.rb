@@ -37,6 +37,26 @@ class Article
     end
   end
 
+  # Retourne un extrait tronqué de l'article (pour
+  # la page d'accueil)
+  def extrait
+    titre, texte = raw_output
+    e = ("<strong>#{titre}</strong> - #{texte}")[0..270]
+    o = e.rindex(' ')
+    e[0..o] + ' […]'
+  end
+
+  # Le contenu textuel brut (pour l'accueil)
+  # Retourne un Array contenant :
+  #   [le titre, le contenu sans tag]
+  def raw_output
+    @raw_output ||= begin
+      lines = path.read.split("\n")
+      titre = lines.shift
+      [titre.strip_tags, lines.join(' ').strip_tags(' ')]
+    end
+  end
+
   def extension
     @extension = File.extname(path)
   end

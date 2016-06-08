@@ -45,6 +45,8 @@ class SiteHtml
     debug "   = Données vidéos : #{data_videos.mtime} (OK)" if debugit
     return true if mtime < data_divers_actus.mtime
     debug "   = Données actus diverses : #{data_divers_actus.mtime} (OK)" if debugit
+    return true if mtime < plast_blog_post.mtime
+    debug "   = Dernier article de blog : #{plast_blog_post.mtime} (OK)" if debugit
     return false # donc up-to-date
   end
 
@@ -56,4 +58,7 @@ class SiteHtml
   def data_videos; @data_videos ||= site.folder_objet + 'video/DATA_VIDEOS.rb' end
   def data_divers_actus; @data_divers_actus ||= SuperFile::new('./hot/last_actualites.rb') end
 
+  def plast_blog_post ;
+    @plast_blog_post ||= site.folder_objet + 'article/current.rb'
+  end
 end #/SiteHtml

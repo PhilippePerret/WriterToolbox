@@ -14,6 +14,14 @@ class Article
       }
     end
 
+    # {Article} L'instance du dernier Article
+    def last
+      @last ||= begin
+        require './objet/article/current.rb'
+        new(CURRENT_ARTICLE_ID)
+      end
+    end
+
     # Dossier contenant les textes des articles
     def folder_textes
       @folder_textes ||= folder_lib + 'texte'

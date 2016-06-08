@@ -18,6 +18,7 @@ class SiteHtml
     incipit +
     image_accueil +
     '<div style="clear:both"></div>' +
+    extrait_last_blog_post +
     section_hot_news +
     message_inscription_footer
   end
@@ -30,6 +31,21 @@ class SiteHtml
     image('divers/logo.png', id:'homeimage', width:"340px").in_div(class:'center')
   end
 
+  # ---------------------------------------------------------------------
+  #   Extrait du dernier article du blog
+  # ---------------------------------------------------------------------
+  def extrait_last_blog_post
+    site.require_objet 'article'
+
+    (
+      'Dernier article'.in_span(id: 'libelle_last_post', class: 'libelle') +
+      Article.last.extrait.in_span(class: 'extrait_blog') +
+      ' [lire la suite]'
+    ).in_a(id: 'last_post_blog', href:"article/#{Article.last.id}/show")
+  end
+  def path_current
+    @path_current ||= site.folder_objet+'article/'
+  end
   # ---------------------------------------------------------------------
   #   Les éléments textuels
   # ---------------------------------------------------------------------

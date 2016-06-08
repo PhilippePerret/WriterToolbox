@@ -24,9 +24,13 @@ class String
   end
 
   # Retire toutes les balises du string
-  def strip_tags
+  #
+  # +separator+ Texte de remplacement pour chaque balise
+  # Penser que ces balises sont aussi les italiques et
+  # autres marques de formatage.
+  def strip_tags separator = ''
     str = self
-    str = str.gsub(/<(.+?)>/,'')
+    str = str.gsub(/<(.+?)>/, separator)
     str.gsub!(/<adminonly>(.*?)<\/adminonly>/,'')
     return str
   end

@@ -3,4 +3,4 @@
 # article courant.
 %>
 <%= Article.titre_h1 %>
-<%= article.output %>
+<%= Article.new(site.current_route.objet_id).output %>

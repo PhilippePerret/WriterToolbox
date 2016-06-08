@@ -6,6 +6,26 @@ section#content
   padding-left        : 0px
   padding-top         : 0.1em
   
+  // Lien du dernier POST
+  // Ce lien contient l'intégralité du texte, pour qu'on
+  // puisse cliquer dessus et rejoindre l'article.
+  a#last_post_blog
+    position      : relative
+    display       : block
+    font-size     : 13pt
+    color         : inherit !important
+    margin-top    : 1em
+    margin-bottom : 1em
+    margin-left   : 13em
+    width         : 64%
+    padding-left  : 8px
+    border-left   : 1px solid #CCC
+    span.extrait_blog
+      font-family     : "Times New Roman"
+    span#libelle_last_post
+      position        : absolute
+      left            : -7em
+
   // Incipit (phrase tout en haut)
   p#incipit
     margin              : 2em 3em 3em
@@ -47,7 +67,7 @@ section#content
     max-width           : 52em
     min-width           : 52em
     margin-left         : 1em
-    margin-top          : 3em
+    margin-top          : 1em
     
     // Les petits blocs pour recevoir de l'actualité
     div.blocactu
