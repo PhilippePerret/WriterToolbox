@@ -14,6 +14,10 @@ class << self
     @http ||= "http://www.laboiteaoutilsdelauteur.fr"
   end
 
+  def samedi?
+    @is_samedi = (Time.now.wday == 6) if @is_samedi === nil
+    @is_samedi
+  end
   # = main =
   #
   # Méthode principale qui annonce aux inscrits et aux abonnés,
@@ -30,63 +34,10 @@ class << self
     end
 
     # Pas d'annonce s'il n'y a aucune actualité
-    if last_updates.empty?
+    if (last_updates.empty? && !samedi?) || (samedi? && last_week_updates.empty?)
       safed_log "   = Aucune actualité"
       return
     end
-
-    # Pour savoir si on est samedi, pour les users qui
-    # ne veulent recevoir le mail d'updates qu'une seule
-    # fois par semaine.
-    is_samedi = Time.now.wday == 6
-
-    # On construit la liste des actualisations
-    ul_last_updates =
-      '<ul id="last_updates" class="small">' +
-      last_updates.collect do |hupdate|
-        heure = Time.at(hupdate[:created_at]).strftime("%H:%M")
-        degre = (hupdate[:options]||"")[0].to_i
-        degre = "#{degre}/9"
-        route =
-          if hupdate[:route]
-            r = "href='#{http}/#{hupdate[:route]}'"
-            " <a #{r}>-&gt; voir</a>"
-          else
-            ""
-          end
-
-        # TODO: INDIQUER SI L'ACTUALITÉ EST RÉSERVÉE AUX ABONNÉS
-        # Note : Même si c'est un inscrit on l'affiche, pour lui donner
-        # envie de s'abonner.
-        mark_for_subscribers =
-          if hupdate[:annonce] > 1
-            "<span style='color:green'>[Abonnés]</span> "
-          else
-            ""
-          end
-
-        '<li>'+
-          "<span>#{heure}</span> : " +
-          "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
-          " <span class='tiny'>(catégorie : #{hupdate[:type]} — importance : #{degre})</span>" +
-        '</li>'
-      end.join('') + '</ul>'
-
-    safed_log "    = Liste actualités transmises : #{ul_last_updates}"
-
-    # On compose le message
-    lien_preferences = "<a href='#{http}/user/%{id}/profil'>préférences de votre profil</a>"
-    template = <<-HTML
-<p class="small">%{pseudo}, nous sommes heureux de vous faire part des dernières actualités
-  de la BOITE À OUTILS DE L'AUTEUR.</p>
-#{ul_last_updates}
-<p class="tiny">Notez que nous ne sommes nullement là pour vous
-  importuner, aussi,
-  <strong>si vous ne désirez plus recevoir ces messages</strong>, il vous
-  suffit de l'indiquer dans les #{lien_preferences}.</p>
-%{message_abonnement}
-<p class="small">Merci de votre attention, %{pseudo}, et profitez bien de la BOITE À OUTILS DE L'AUTEUR !</p>
-    HTML
 
     # On envoie le mail à tous les destinataires
     #
@@ -100,10 +51,10 @@ class << self
         # On ne doit pas envoyer le mail à l'user s'il a
         # réglé ses préférences sur 'never' ou sur 'weekly' et qu'on
         # n'est pas samedi.
-        next if ( pref_mail == 'never' ) || ( pref_mail == 'weekly' && !is_samedi )
+        next if ( pref_mail == 'never' ) || ( pref_mail == 'weekly' && !samedi? )
 
         # Message d'abonnement en fin de mail
-        # Si l'user est abonné, on le remerci, sinon on lui propose
+        # Si l'user est abonné, on le remercie, sinon on lui propose
         # de soutenir le site en s'abonnant.
         mess_subscribe =
           case true
@@ -111,9 +62,22 @@ class << self
           when u.subscribed?    then message_remerciement
           else message_sabonner
           end
+
+        # Le message en fonction du choix de fréquence de
+        # l'user.
+        # Noter que si sa fréquence est hebdomadaire, on ne
+        # passe par ici que lorsque l'on est samedi.
+        message_final =
+          if pref_mail == 'weekly'
+            template_week_message
+          else
+            template_message
+          end % {pseudo: u.pseudo, id: u.id, message_abonnement: mess_subscribe}
+
+        # On peut transmettre le message final
         u.send_mail(
           subject:  "Dernières actualités",
-          message:  template % {pseudo: u.pseudo, id: u.id, message_abonnement: mess_subscribe},
+          message:  message_final,
           formated: true
         )
 
@@ -126,6 +90,88 @@ class << self
   rescue Exception => e
     error_log e
     false
+  end
+
+  # Le message template
+  def template_message
+    @template_message ||= begin
+      <<-HTML
+  <p class="small">%{pseudo}, nous sommes heureux de vous faire part des dernières actualités
+    de la BOITE À OUTILS DE L'AUTEUR.</p>
+  #{ul_last_updates}
+  <p class="tiny">Notez que nous ne sommes nullement là pour vous
+    importuner, aussi,
+    <strong>si vous ne désirez plus recevoir ces messages</strong>, il vous
+    suffit de l'indiquer dans les #{lien_preferences}.</p>
+  %{message_abonnement}
+  <p class="small">Merci de votre attention, %{pseudo}, et profitez bien de la BOITE À OUTILS DE L'AUTEUR !</p>
+      HTML
+    end
+  end
+  # Le message template pour la semaine
+  def template_week_message
+    @template_week_message ||= begin
+      <<-HTML
+  <p class="small">%{pseudo}, nous sommes heureux de vous faire part des dernières actualités
+    de la BOITE À OUTILS DE L'AUTEUR pour la semaine écoulée.</p>
+  #{ul_last_week_updates}
+  <p class="tiny">Notez que nous ne sommes nullement là pour vous
+    importuner, aussi,
+    <strong>si vous ne désirez plus recevoir ces messages</strong>, il vous
+    suffit de l'indiquer dans les #{lien_preferences}.</p>
+  %{message_abonnement}
+  <p class="small">Merci de votre attention, %{pseudo}, et profitez bien de la BOITE À OUTILS DE L'AUTEUR !</p>
+      HTML
+    end
+  end
+
+  def lien_preferences
+    @lien_preferences ||= "<a href='#{http}/user/%{id}/profil'>préférences de votre profil</a>"
+  end
+
+  # Liste UL des dernières updates de la veille
+  def ul_last_updates
+    @ul_last_updates ||= build_liste_updates( last_updates )
+  end
+
+  # Liste UL des dernières updates de LA SEMAINE
+  def ul_last_week_updates
+    @ul_last_week_updates ||= build_liste_updates( last_week_updates )
+  end
+  # Construction du UL de la liste des actualités
+  #
+  # Rappel : Le samedi, on utilise cette méthodep pour
+  # les updates de la veille ET pour les updates de la
+  # semaine.
+  #
+  def build_liste_updates liste_updates
+    '<ul id="last_updates" class="small">' +
+    liste_updates.collect do |hupdate|
+      heure = Time.at(hupdate[:created_at]).strftime("%H:%M")
+      degre = (hupdate[:options]||"")[0].to_i
+      degre = "#{degre}/9"
+      route =
+        if hupdate[:route]
+          r = "href='#{http}/#{hupdate[:route]}'"
+          " <a #{r}>-&gt; voir</a>"
+        else
+          ""
+        end
+
+      # Note : Même si c'est un inscrit on l'affiche
+      mark_for_subscribers =
+        if hupdate[:annonce] > 1
+          "<span style='color:green'>[Abonnés]</span> "
+        else
+          ""
+        end
+
+      '<li>'+
+        "<span>#{heure}</span> : " +
+        "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
+        " <span class='tiny'>(catégorie : #{hupdate[:type]} — importance : #{degre})</span>" +
+      '</li>'
+    end.join('') + '</ul>'
   end
 
   def message_remerciement
@@ -162,29 +208,51 @@ class << self
       hier  = now - (3600*24)
       hier_matin  = Time.new(hier.year, hier.month, hier.day, 0, 0, 0).to_i
       ce_matin    = Time.new(now.year, now.month, now.day, 0, 0, 0).to_i
-      where = []
-      # On ne fait plus de filtre par degré d'importance, mais
-      # seulement si l'update doit être annoncée ou non.
-      # where << "CAST(SUBSTR(options,1,1) AS INTEGER) > 6"
-      where << "created_at >= #{hier_matin} AND created_at < #{ce_matin}"
-      where << "annonce > 0"
-      where = where.join(' AND ')
-      req = "SELECT message, route, type, created_at, options, annonce FROM updates WHERE #{where} ORDER BY created_at ASC, type"
-      db = SQLite3::Database.new('./database/data/site_cold.db')
-      pr = db.prepare req
-      res = []
-      pr.execute.each_hash do |h|
-        res << {message: h['message'], type: h['type'], annonce: h['annonce'].to_i, created_at: h['created_at'], route: h['route'], options: h['options']}
-      end
-    rescue Exception => e
-      error_log e
-      []
-    else
-      res
-    ensure
-      (db.close if db) rescue nil
-      (pr.close if pr) rescue nil
+      get_updates(from = hier_matin, to = ce_matin)
     end
+  end
+
+  # Liste des dernièers actualités de la semaine précédente
+  #
+  # Note : On ne doit le faire que si on est samedi
+  def last_week_updates
+    @last_week_updates ||= begin
+      if samedi?
+        now  = Time.now
+        awa  = now - (7*3600*24) # a week ago
+        awa_matin = Time.new(awa.year, awa.month, awa.day, 0, 0, 0).to_i
+        now_matin = Time.new(now.year, now.month, now.day, 0, 0, 0).to_i
+        get_updates(from = awa_matin, to = now_matin)
+      else
+        [] # plutôt que NIL pour le test empty?
+      end
+    end
+  end
+
+  # Retourne les updates de +from+ (compris) à +to+ (non compris)
+  def get_updates from, to
+    where = []
+    # On ne fait plus de filtre par degré d'importance, mais
+    # seulement si l'update doit être annoncée ou non.
+    # where << "CAST(SUBSTR(options,1,1) AS INTEGER) > 6"
+    where << "created_at >= #{from} AND created_at < #{to}"
+    where << "annonce > 0"
+    where = where.join(' AND ')
+    req = "SELECT message, route, type, created_at, options, annonce FROM updates WHERE #{where} ORDER BY created_at ASC, type"
+    db = SQLite3::Database.new('./database/data/site_cold.db')
+    pr = db.prepare req
+    res = []
+    pr.execute.each_hash do |h|
+      res << {message: h['message'], type: h['type'], annonce: h['annonce'].to_i, created_at: h['created_at'], route: h['route'], options: h['options']}
+    end
+  rescue Exception => e
+    error_log e
+    []
+  else
+    res
+  ensure
+    (db.close if db) rescue nil
+    (pr.close if pr) rescue nil
   end
 
   # Liste des destinataires des mails.
