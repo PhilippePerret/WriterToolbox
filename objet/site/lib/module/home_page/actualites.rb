@@ -27,11 +27,10 @@ class SiteHtml
 
       bloc_actualite_if_any(:narration)  +
       bloc_actualite_if_any(:analyses)   +
-      bloc_actualite_if_any(:unan_unscript) +
       bloc_actualite_if_any(:videos) +
+      bloc_actualite_if_any(:unan_unscript)+
       bloc_actualite_if_any(:forum) +
       bloc_actualite_if_any(:divers)
-
     ).in_section(id:'hot_news')
   end
 
