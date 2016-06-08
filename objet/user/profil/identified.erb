@@ -71,8 +71,8 @@ end
 <form action="user/<%= user.id %>/profil" method="POST">
   <%= 'save_preferences'.in_hidden(name:'operation') %>
   <ul>
-    <%= "Recevoir le mail des dernières actualités #{menu_mail_updates}".in_li %>
-    <%= "Après l'identification, rejoindre #{menu_goto_after_signin}".in_li %>
+    <%= ("Recevoir le mail des dernières actualités #{menu_mail_updates}" + lien.aide(4)).in_li %>
+    <%= ("Après l'identification, rejoindre #{menu_goto_after_signin}" + lien.aide(1)).in_li %>
   </ul>
   <%= "Enregistrer".in_submit(class: 'btn small discret').in_div(class: 'buttons') %>
 </form>

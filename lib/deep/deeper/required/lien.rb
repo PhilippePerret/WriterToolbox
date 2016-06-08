@@ -53,6 +53,18 @@ class Lien
     end
   end
 
+
+  # Retourne un lien qui est l'image du point d'interrogation
+  # conduisant à un fichier d'aide d'ID +aide_id+
+  #
+  # @usage      lien.information(xxx[, options])
+  # +aide_id+ {Fixnum} Identifiant du fichier d'aide, correspondant
+  #           au fichier dans le dossier ./objet/aide/lib/data/texte
+  def information aide_id, options = nil
+    image('pictos/picto_info_dark.png').in_a(href: "aide/#{aide_id}/show", class: 'lkaide discret')
+  end
+  alias :aide :information
+
   # Similaire à `build` mais avec un nom plus parlant et l'ordre
   # est celui de Markdown. Les arguments sont également plus
   # souples :

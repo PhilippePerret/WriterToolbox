@@ -2,6 +2,7 @@
 
 * [Introduction](#introductionhelperliens)
 * [Liens de forme route](#liendeformeroute)
+* [Liens d'aide et d'information (?)](#liendinformation)
 * [Liens avec flèche et cadre](#lienavecflecheetcadre)
 * [Liens RestSite par défaut](#lienspardefautsrestsite)
 * [Liens propres à l'application](#liensproprealapplication)
@@ -35,16 +36,16 @@ Par exemple, pour obtenir un lien vers l'inscription :
 
 *(L'url réelle — laboiteaoutilsdelauteur.fr — a été volontairement raccourcie pour l'exemple)*
 
-        # Si lien.output_format = :html (défaut)
-        # => <a href="http://wwww.boa.fr/site/home"
-                target="_blank">Accueil</a>
+    #   Si lien.output_format = :html (défaut)
+    #   => <a href='http://wwww.boa.fr/site/home'
+              target='_blank'>Accueil</a>
 
-        # Si lien.output_format = :markdown
-        # => [Accueil](http://www.boa.fr/site/home){:target="_blank"}
+    #       Si lien.output_format = :markdown
+    #   => [Accueil](http://www.boa.fr/site/home){:target='_blank'}
 
-        # Si lien.output_format = :latex
-        # (pour le moment)
-        # => "Accueil"
+    #   Si lien.output_format = :latex
+    #   (pour le moment)
+    #   => 'Accueil'
 
 La méthode est souple et peut s'appeler aussi avec :
 
@@ -52,15 +53,32 @@ La méthode est souple et peut s'appeler aussi avec :
 
         lien.route <route>, <options>
 
-<a name='lienspardefautsrestsite'></a>
+
+<a name='liendinformation'></a>
+
+## Liens d'aide et d'information (?)
+
+Les liens d'information (qui doivent obligatoirement renvoyer à un fichier d'aide), avec une image point d'interrogation, peuvent s'obtenir par :
+
+    <%= lien.information(12) %>
+    <%= lien.aide(12) %>
+    # Produira le lien vers le fichier d'aide 12 avec l'image
+    # du point d'interrogation
+
+On peut ajouter des options qui seront ajoutées à la balise :
+
+    <%= lien.information(12, {float: right})
+
+
+<a name="lienspardefautsrestsite"></a>
 
 ## Liens RestSite par défaut
 
 Toute application `RestSite` hérite des liens :
 
-    lien.signup   # => lien pour s'inscrire
-    lien.signin   # => lien conduisant au formulaire d'identification
-    lien.subscribe  # => lien conduisant au formulaire d'abonnement, si
+    lien.signup     # => lien pour s inscrire
+    lien.signin     # => lien conduisant au formulaire d identification
+    lien.subscribe  # => lien conduisant au formulaire d abonnement, si
                     #    le site fonctionne par abonnement
 
 <a name='liensproprealapplication'></a>
@@ -87,14 +105,14 @@ Par exemple :
 
     class lien
 
-      def livres titre = "bibliotheque", options = nil
-        build "livre/list", titre, options
+      def livres titre = 'bibliotheque', options = nil
+        build 'livre/list', titre, options
       end
 
 Dans le texte, il suffira alors d'utiliser ce lien de cette façon :
 
-      Si vous voulez voir <%= lien.livres "tous mes livres" %> je vous
-      invite à rejoindre ma <%= lien.livres "bibliothèque" %>.
+      Si vous voulez voir <%= lien.livres 'tous mes livres' %> je vous
+      invite à rejoindre ma <%= lien.livres 'bibliothèque' %>.
 
 
 <a name='liendeditiondefichier'></a>
