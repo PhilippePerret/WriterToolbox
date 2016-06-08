@@ -5,13 +5,14 @@
 # Il y a peut-être une redirection demandée après l'identification
 # Elle se trouve soit dans param(:backto) soit dans param(:login)[:back_to]
 # si une première soumission a déjà eu lieu.
-backto = if param(:backto) != nil
-  param(:backto)
-elsif param(:login) != nil
-  param(:login)[:back_to]
-else
-  ""
-end
+backto =
+  if param(:backto) != nil
+    param(:backto)
+  elsif param(:login) != nil
+    param(:login)[:back_to]
+  else
+    ""
+  end
 %>
 <form id="form_user_login" action="user/login" method="POST">
   <div class="content"><%# ça définit le style %>
@@ -23,7 +24,7 @@ end
         <span>&nbsp;</span>
         <span class='ulink'><a href="user/signup">S'inscrire</a></span>
         <span> </span>
-        <span class='ulink'><a href="user/lost_password">Code oublié</a></span>
+        <span class='ulink'><a href="user/retreive_password">Code oublié</a></span>
         <span> </span>
       </div>
       <input type="submit" value="OK" onclick="return $.proxy(User,'check_login')()" />

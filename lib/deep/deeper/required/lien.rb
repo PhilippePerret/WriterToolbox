@@ -43,7 +43,7 @@ class Lien
       end
     else
       options.merge!(href: route)
-      options.merge!(target:'_blank') unless options.has_key?(:target)
+      options.key?(:target) || options.merge!(target:'_blank')
       if is_arrow_cadred
         titre = titre.in_span(class:'cadre')
         "#{ARROW}#{titre}".in_a(options)
@@ -57,11 +57,22 @@ class Lien
   # Retourne un lien qui est l'image du point d'interrogation
   # conduisant à un fichier d'aide d'ID +aide_id+
   #
+  # Par défaut, les liens s'ouvrent toujours dans une nouvelle
+  # fenêtre.
+  #
   # @usage      lien.information(xxx[, options])
   # +aide_id+ {Fixnum} Identifiant du fichier d'aide, correspondant
   #           au fichier dans le dossier ./objet/aide/lib/data/texte
   def information aide_id, options = nil
-    image('pictos/picto_info_dark.png').in_a(href: "aide/#{aide_id}/show", class: 'lkaide discret')
+    options ||= {}
+    options[:class] ||= ''
+    options[:class] << ' lkaide discret'
+    options.key?(:target) || options[:target] = '_blank'
+    options.merge!(
+      href:   "aide/#{aide_id}/show",
+      class:  options[:class].strip
+    )
+    image('pictos/picto_info_dark.png').in_a(options)
   end
   alias :aide :information
 
