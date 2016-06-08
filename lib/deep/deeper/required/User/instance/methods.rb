@@ -33,7 +33,7 @@ class User
   def login
 
     unless mail_confirmed? || admin? || for_paiement?
-      return error "Désolé, mais vous ne pouvez pas vous reconnecter avant d'avoir confirmé votre mail à l'aide du message qui vous a été envoyé."
+      return error 'Désolé, mais vous ne pouvez pas vous reconnecter avant d’avoir confirmé votre mail à l’aide du mail qui vous a été transmis.'
     end
 
     proceed_login
@@ -43,7 +43,7 @@ class User
     flash( if KNOWN_USERS.has_key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil
       KNOWN_USERS[id][:messages_accueil].shuffle.shuffle.first
     else
-      "Bienvenue, #{pseudo} !"
+      'Bienvenue, %s !' % pseudo
     end)
 
     # Si une méthode doit être appelée après le login, on

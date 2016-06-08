@@ -9,13 +9,15 @@
 
   Cette route peut être consignée dans le paramètre :backto
   pour certaines routes qui font sciemment la redirection.
-  
+  Mais si c'est le même module (ce formulaire) qui est
+  rechargé (suite à une erreur par exemple), alors c'est
+  dans param(:login) qu'on trouvera la clé :back_to qui
+  contiendra la valeur.
+
 =end
 %>
+
 <%
-# Il y a peut-être une redirection demandée après l'identification
-# Elle se trouve soit dans param(:backto) soit dans param(:login)[:back_to]
-# si une première soumission a déjà eu lieu.
 backto =
   if param(:backto) != nil
     param(:backto)
