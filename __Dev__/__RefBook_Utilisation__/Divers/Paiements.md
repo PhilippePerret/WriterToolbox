@@ -132,7 +132,7 @@ Avant d'implémenter une procédure de paiement, il faut [configurer le paiement
 Il suffit ensuite d'implémenter dans un fichier chargé à l'affichage de la section de paiement, par exemple le fichier `./objet/mon_espace/paiement.rb` si c'est la vue `./objet/mon_espace/paiement.erb` qui est appelée :
 
     # encoding: UTF-8
-    app.require_optional 'paiement'
+    site.require_module 'paiement'
     site.paiement.make_transaction(<data transaction>)
 
 `<data transaction>` doit définir :
