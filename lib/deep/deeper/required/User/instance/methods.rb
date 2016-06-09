@@ -33,10 +33,16 @@ class User
   def login
 
     unless mail_confirmed? || admin? || for_paiement?
-      return error 'Désolé, mais vous ne pouvez pas vous reconnecter avant d’avoir confirmé votre mail.' +
-                    '<br>Le lien de confirmation de votre mail se trouve dans le message qui vous '+
-                    '<br>a été transmis par mail après votre inscription.'+
-                    '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
+      error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
+            '<br>confirmé votre adresse-mail.' +
+            '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
+            '<br>qui vous a été transmis par mail après votre inscription. Merci de' +
+            '<br>vérifier votre boite aux lettres virtuelle.' +
+            '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
+            '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
+      # redirect_to :home
+      redirect_to 'user/deconnexion'
+      return # Pour ne pas enregistrer de message de bienvenue
     end
 
     proceed_login
