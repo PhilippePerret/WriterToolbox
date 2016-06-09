@@ -47,7 +47,7 @@ class Citation
         ''
       else
         'Explicitation'.in_h4(class: 'libelle', style: 'margin-top: 4em') +
-        description.in_div
+        description.in_div(id: 'explicitation_citation')
       end
     end
   end

@@ -7,6 +7,7 @@
 * [Options pour les champs](#optionspourleschamps)
 * [Définir un préfix pour NAME et ID](#definirunprefixpourlesnameetid)
 * [Mise en exergue des champs](#mettreneexerguedeschamps)
+* [Définition de l'objet édité ou du hash de données](#definitiondunobjet)
 
 <a name='dimensionsdeuxcolonnes'></a>
 
@@ -156,3 +157,13 @@ Pour une erreur sur les mêmes champs :
 
     site.require 'form_tools'
     form.error_fields = (param(:errfields)||"").split(',')
+
+<a name='definitiondunobjet'></a>
+
+## Définition de l'objet édité ou du hash de données
+
+On peut définir l'objet du formulaire par :
+
+    form.objet = <l'objet>
+
+… où l'objet est soit un `Hash` de données (dont les clés sont les clés des champs) soit un objet, une instance, qui possède des méthodes-propriétés pour les champs définis.

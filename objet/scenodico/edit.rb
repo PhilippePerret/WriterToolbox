@@ -91,7 +91,7 @@ class Scenodico
 
       #  - Mot -
       @mot = data_param[:mot].nil_if_empty
-      raise "Il faut donner le mot à enregistrer !" if @mot.nil?
+      @mot != nil || raise('Il faut donner le mot à enregistrer !')
       if new?
         raise "Ce mot existe déjà !" if self.class::mot_existe?(@mot)
       end
@@ -103,11 +103,11 @@ class Scenodico
       # Valeur obsolète aujourd'hui, mais on la crée toujours,
       # au cas où.
       @id_interdata = data_param[:id_interdata].nil_if_empty
-      @id_interdata = @mot.as_normalized_id('_').downcase if @id_interdata.nil?
+      @id_interdata != nil || ( @id_interdata = @mot.as_normalized_id('_').downcase )
 
       # - Définition -
       @definition = data_param[:definition].purified.nil_if_empty
-      raise "Il faut donner la définition du mot !" if @definition.nil?
+      @definition != nil || raise('Il faut donner la définition du mot !')
 
       # - Relatifs -
       [:relatifs, :synonymes, :contraires].each do |key|

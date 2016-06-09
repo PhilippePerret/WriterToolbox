@@ -19,5 +19,9 @@ class << self
     }
   end
 
+  def table
+    @table ||= site.db.create_table_if_needed('site_cold', 'citations')
+  end
+
 end #/ <<self
 end #/ Citation
