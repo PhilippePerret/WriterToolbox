@@ -61,6 +61,9 @@ class Tweet
       bitly     = " bit.ly/1TkHhvC/citation/#{citation_id}/show"
       auteur    = " - #{dquote[:auteur]}"
       reste_len = 139 - (bitly.length + auteur.length + 4) #
+      citation  = dquote[:citation]
+
+      # Citation finale
       citation =
         if citation.length < reste_len
           dquote[:citation]
