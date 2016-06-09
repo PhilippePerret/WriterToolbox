@@ -12,24 +12,70 @@ class Tweet
     def send_permanent_tweets_if_needed
       safed_log "-> send_permanent_tweets_if_needed"
       time_ok_to_send || return
+
+      # On a besoin des librairies twitter
       Dir["./lib/deep/deeper/module/twitter/**/*.rb"].each{|m| require m}
-      ok, message_retour = auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
-      if ok
-        safed_log "  = #{message_retour}"
-        safed_log "  = Envoi Tweet Permanent OK."
+
+      # Une fois sur 4 on envoie un auto tweet qui renvoie vers
+      # une partie de la boite, et 3 fois sur 4 on envoie une
+      # citation.
+      heure = Time.now.hour
+      if heure > 9 && heure < (9 + PERMANENT_TWEET_FREQUENCE)
+        ok, message_retour = auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
+        if ok
+          safed_log "  = #{message_retour}"
+          safed_log "  = Envoi Tweet Permanent OK."
+        else
+          error_log "  ### [#{Time.now}] PROBLÈME ENVOI DES TWEETS : #{message_retour}"
+        end
+
       else
-        error_log "  ### [#{Time.now}] PROBLÈME ENVOI DES TWEETS : #{message_retour}"
+
+        # Sinon on envoie une citation
+        site.tweet tweet_citation
+        safed_log "  = Envoi Tweet d'une CITATION (OK)."
       end
+
     rescue Exception => e
       error_log e, "# [#{Time.now}] Problème en envoyant les tweets permanents"
     end
 
+    # Pour le moment, 3 tweet sur 4 on envoie une citation
+    # tirée de la base au hasard.
+    #
+    # Cette méthode retourne le texte du tweet à envoyer
+    # pour une citation (avec un lien qui conduit à la section
+    # citations de la boite).
+    def tweet_citation
+
+      # On choisit un nombre (ID) de citation au hasard
+      tbl_citations = site.db.table('site_cold', 'citations')
+      nombre_citations = tbl_citations.count
+      citation_id = rand(nombre_citations)
+      citation_id = 1 if citation_id < 1 || citation_id > nombre_citations
+
+      # On récupère les données de la citation
+      dquote = tbl_citations.get( citation_id )
+
+      # http = " http://bit.ly/1TkHhvC/citation/#{citation_id}/show"
+      bitly     = " bit.ly/1TkHhvC/citation/#{citation_id}/show"
+      auteur    = " - #{dquote[:auteur]}"
+      reste_len = 139 - (bitly.length + auteur.length + 4) #
+      citation =
+        if citation.length < reste_len
+          dquote[:citation]
+        else
+          dquote[:citation][0..reste_len] + '[…] '
+        end
+      "#{citation}#{auteur}#{bitly}"
+    end
 
     # Retourne TRUE si on doit envoyer un tweet
     # en fonction de la fréquence d'envoi déterminée par la
     # constante PERMANENT_TWEET_FREQUENCE
     #
     # On prend la date du dernier tweet envoyé
+    #
     def time_ok_to_send
       safed_log "  = last_sent = #{last_sent.inspect}"
       if last_sent.nil?
@@ -74,7 +120,7 @@ SELECT last_sent
   LIMIT 1
       SQL
     end
-    
+
     def db_site_cold
       @db_site_cold ||= './database/data/site_cold.db'
     end
