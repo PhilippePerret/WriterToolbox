@@ -31,9 +31,17 @@ class Tweet
 
       else
 
-        # Sinon on envoie une citation
-        site.tweet tweet_citation
-        safed_log "  = Envoi Tweet d'une CITATION (OK)."
+        # Sinon on envoie une citation. Noter que la longueur
+        # ne doit pas être vérifiée car le message est forcément plus
+        # long à cause de l'adresse complète (qui sera raccourcie par
+        # twitter)
+        begin
+          site.tweet( tweet_citation, dont_check_length: false)
+        rescue Exception => e
+          error_log( e, 'Impossible d’envoyer la citation' )
+        else
+          safed_log "  = Envoi Tweet d'une CITATION (OK)."
+        end
       end
 
     rescue Exception => e
@@ -57,10 +65,11 @@ class Tweet
       # On récupère les données de la citation
       dquote = tbl_citations.get( citation_id )
 
-      # http = " http://bit.ly/1TkHhvC/citation/#{citation_id}/show"
-      bitly     = " bit.ly/1TkHhvC/citation/#{citation_id}/show"
+      # Le lien complet, qui sera transformé en lien raccourci
+      full_lien = " http://www.laboiteaoutilsdelauteur.fr/citation/#{citation_id}/show"
       auteur    = " - #{dquote[:auteur]}"
-      reste_len = 139 - (bitly.length + auteur.length + 4) #
+      bitly_len = 20 # longueur approximative
+      reste_len = 139 - (auteur.length + bitly_len + 4) #
       citation  = dquote[:citation]
 
       # Citation finale
@@ -70,7 +79,7 @@ class Tweet
         else
           dquote[:citation][0..reste_len] + '[…] '
         end
-      "#{citation}#{auteur}#{bitly}"
+      "#{citation}#{auteur}#{full_lien}"
     end
 
     # Retourne TRUE si on doit envoyer un tweet

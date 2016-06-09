@@ -10,16 +10,20 @@ class SiteHtml
   # Si le message commence exactement par "P ", il s'agit
   # d'un TWEET PERMANENT (cf. manuel Divers > Twitter)
   #
-  def tweet message
+  def tweet message, options = nil
+    options ||= {}
+
     is_permanent = message.start_with?('P ')
     message = message[2..-1].strip if is_permanent
 
-    # Vérification de la longueur
-    len_message = message.length
-    unless len_message < 140 # 140, c'est trop long
-      len_retrait = len_message - 139
-      error "Le message doit faire moins de 140 caractères, il en fait #{len_message} caractères, il faut en retirer <strong>#{len_retrait}</strong>."
-      return false
+    # Vérification de la longueur (sauf si :dont_check_length est à faux)
+    unless options[:dont_check_length]
+      len_message = message.length
+      unless len_message < 140 # 140, c'est trop long
+        len_retrait = len_message - 139
+        error "Le message doit faire moins de 140 caractères, il en fait #{len_message} caractères, il faut en retirer <strong>#{len_retrait}</strong>."
+        return false
+      end
     end
 
     # === ENVOI ===
@@ -33,7 +37,6 @@ class SiteHtml
       require 'twitter'
       Tweet::send message
     end
-
   end
   alias :twitte :tweet
 
