@@ -80,7 +80,8 @@ class User
       pmail = User::folder_modules + 'create/mail_confirmation.erb'
       send_mail(
         subject: 'Merci de confirmer votre mail',
-        message: pmail.deserb(self)
+        message: pmail.deserb(self),
+        formated: true
       )
 
       # On envoie un mail à l'administration pour informer

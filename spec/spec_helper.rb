@@ -31,6 +31,9 @@ require 'capybara-webkit'
 Capybara.javascript_driver  = :selenium
 Capybara.default_driver     = :selenium
 
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
 
 # On requiert tout ce que requiert l'index du site
 # Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?

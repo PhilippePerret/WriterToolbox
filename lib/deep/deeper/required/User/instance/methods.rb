@@ -33,7 +33,10 @@ class User
   def login
 
     unless mail_confirmed? || admin? || for_paiement?
-      return error 'Désolé, mais vous ne pouvez pas vous reconnecter avant d’avoir confirmé votre mail à l’aide du mail qui vous a été transmis.'
+      return error 'Désolé, mais vous ne pouvez pas vous reconnecter avant d’avoir confirmé votre mail.' +
+                    '<br>Le lien de confirmation de votre mail se trouve dans le message qui vous '+
+                    '<br>a été transmis par mail après votre inscription.'+
+                    '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
     end
 
     proceed_login

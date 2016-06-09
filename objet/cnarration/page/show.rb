@@ -54,22 +54,35 @@ class Page
     # Si l'user est abonné ou que le texte fait moins de 3000
     # signes, on retourne le texte tel quel
     return (full_page_with_exergue || @full_page) if consultable? || @full_page.length < 2500
+
     # Si l'utilisateur n'est pas abonné, on tronque la page
     # et on ajoute un message l'invitant à s'abonner.
-    tiers_longueur = (@full_page.length / 3) - 100
-    # Si le tiers n'est pas assez long, on l'augmente
-    tiers_longueur = case true
-    when tiers_longueur < 1900 then 1900
-    when tiers_longueur > 2500 then 2500
-    else tiers_longueur
-    end
-    # On cherche le premier double retour chariot suivant
-    offset = @full_page.index("\n\n", tiers_longueur)
-    # Si on en trouve pas, on garde 2900
-    offset = 1900 if offset.nil?
+    # On a plusieurs moyens de tronquer la page :
+    #   - par la longueur (un tiers)
+    #   - par une longueur maximale si un tiers est trop long
+    #   - par une marque "stop" à un endroit précis
+    #
+    offset_mark_fin_extrait = @full_page.index('<!-- FIN EXTRAIT -->')
+    @full_page =
+      if offset_mark_fin_extrait != nil
+        debug "Mark de fin d'extrait trouvée à #{offset_mark_fin_extrait}"
+        @full_page[0..offset_mark_fin_extrait - 1]
+      else
+        tiers_longueur = (@full_page.length / 3) - 100
+        # Si le tiers n'est pas assez long, on l'augmente
+        tiers_longueur = case true
+        when tiers_longueur < 1900 then 1900
+        when tiers_longueur > 2500 then 2500
+        else tiers_longueur
+        end
+        # On cherche le premier double retour chariot suivant
+        offset = @full_page.index("\n\n", tiers_longueur)
+        # Si on en trouve pas, on garde 2900
+        offset = 1900 if offset.nil?
 
-    @full_page = @full_page[0..offset]
-    return message_abonnement_required + (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
+        @full_page[0..offset]
+      end
+    return (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
   end
 
   # Si les paramètres contiennent :xmotex, c'est un mot

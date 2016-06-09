@@ -10,7 +10,7 @@ class User
   def change_mot_de_passe
     check_new_mot_de_passe  || return
     save_mot_de_passe       || return
-    set_mdp_via_mail        || return
+    send_mdp_via_mail       || return
     flash "#{pseudo}, votre nouveau mot de passe a été enregistré.<br>Il vous a été également transmis par mail."
     param(user_mdp: '')
     param(user_mdp_confirmation: '')
@@ -18,15 +18,14 @@ class User
   end
 
   # Envoi d'un mail pour confirmer le nouveau mot de passe
-  def set_mdp_via_mail
+  def send_mdp_via_mail
     self.send_mail(
       subject: 'Changement de mot de passe',
       message: "<p>#{pseudo},</p>" +
       '<p>Votre nouveau mot de passe, tel que modifié sur le site :</p>'+
       "<pre>        #{new_mdp}</pre>" +
       '<p>Bonne continuation à vous sur la Boite.</p>',
-      formated: true,
-      force_offline: true
+      formated: true
     )
   rescue Exception => e
     debug e
