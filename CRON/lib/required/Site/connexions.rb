@@ -147,7 +147,7 @@ end # << self SiteHtmlConnexions
     route_entete  = "Routes".ljust(5)
     entete = "#{ip_entete} #{nb_entete} #{duree_entete} #{whois_entete} #{from_entete} #{to_entete} #{route_entete}"
 
-    known_ips   = []
+    known_ips   = {}
     unknown_ips = []
 
 
@@ -158,23 +158,25 @@ end # << self SiteHtmlConnexions
       last_str    = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
       duree       = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
       duree_str   = duree.to_s.ljust(5)
-      whois_str   = pseudo_in_ipdata(ipdata).ljust(30)
+      pseudo_ipdata = pseudo_in_ipdata(ipdata)
+      whois_str   = pseudo_ipdata.ljust(30)
       routes_str  = ipdata[:nombre_routes].to_s.rjust(5)
 
       data_line = "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
-      if whois_str == '- unknown -'
+      if pseudo_ipdata == '- unknown -'
         unknown_ips << data_line
       else
-        known_ips << data_line
+        known_ips.key?(pseudo_ipdata) || known_ips.merge!(pseudo_ipdata => [])
+        known_ips[pseudo_ipdata] << data_line
       end
     end
 
     mess = "\nNombre total d'IPs : #{@report[:by_ip].count}"
     mess += "\nIPs connues : #{known_ips.count}"
     mess += "\nIPs inconnues : #{unknown_ips.count}"
-    
+
     known_ips   = known_ips.join("\n")
-    unknown_ips = unknown_ips.join("\n")
+    unknown_ips = unknown_ips.collect{ |nom, arr| arr.join("\n") }.join("\n")
 
     mess += "\n=== IPs INCONNUES ===\n"
     mess += known_ips
@@ -206,7 +208,7 @@ end # << self SiteHtmlConnexions
     when String   then whois
     when Hash
       if whois.key?(:pseudo)
-        whois[:pseudo]
+        whois[:short_pseudo] || whois[:pseudo]
       elsif whois.key?(:id)
         User::get(whois[:id]).pseudo
       elsif whois.key?(:user_id)

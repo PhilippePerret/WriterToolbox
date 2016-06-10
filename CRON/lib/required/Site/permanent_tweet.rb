@@ -69,6 +69,7 @@ class Tweet
         colonnes: [:citation, :auteur, :bitly]
         ).values
       dquote = choix.shuffle.shuffle.first
+      citation_id = dquote[:id]
 
       auteur    = " - #{dquote[:auteur]}"
       bitly     = " #{dquote[:bitly]}"

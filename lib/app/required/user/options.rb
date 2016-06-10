@@ -13,7 +13,7 @@ class User
   # Si 1, l'user est un icarien
   # Si 2, l'user est un icarien actif
   def bit_icarien
-    options[31].to_i
+    (options||"")[31].to_i
   end
 
   def icarien?
