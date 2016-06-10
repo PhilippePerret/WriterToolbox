@@ -41,8 +41,13 @@ class User
   # Retourne true si l'user est à jour de ses paiements
   # Pour qu'il soit à jour, il faut qu'il ait un paiement qui
   # remonte à moins d'un an.
+  #
+  # Un icarien actif est toujours considéré comme
+  # abonné.
+  #
   def paiements_ok?
     return true   if moteur_recherche?
+    return true   if icarien_actif?
     return false  if @id.nil? # Un simple visiteur
     now = Time.now
     anprev = Time.new(now.year - 1, now.month, now.day).to_i
@@ -67,6 +72,9 @@ class User
   # Par défaut 6 mois.
   def abonnement_recent?(nombre_mois = 6)
     return false if @id.nil? # pour guest
+    # Pour les moteurs de recherche, les icariens actifs,
+    # i.e. tous les gens qui ne paient pas d'abonnement mais
+    # peuvent tout voir.
     return false if User::table_paiements.exist? == false
     return false if last_abonnement.nil?
     last_abonnement > (NOW.to_i - (30.5*nombre_mois).to_i.days)

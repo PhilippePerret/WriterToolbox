@@ -31,6 +31,7 @@ begin
   db = SQLite3::Database.new(dbpath)
   db.execute('SELECT id FROM citations').each do |acitation|
     cit = acitation[0]
+    next if cit < 287 # déjà traité (sinon, s'arrête à 170 environ)
     puts "Citation ##{cit}"
     long_url = "http://www.laboiteaoutilsdelauteur.fr/citation/#{cit}/show"
     bitly = Bitly.client.shorten(long_url)

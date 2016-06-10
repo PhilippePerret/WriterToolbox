@@ -61,7 +61,8 @@ site.twitter = 'b_outils_auteur'
 # Définition propre des bits options de l'utilisateur
 # Cf. RefBook > User > Options.md
 site.user_options = {
-  analyse:  [17, '@analyste_level']
+  analyse:  [17, '@analyste_level'],
+  icarien:  [31, '@is_icarien']
 }
 
 # Soit :textmate, soit :atom, l'éditeur à utiliser

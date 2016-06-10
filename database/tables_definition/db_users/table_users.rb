@@ -13,7 +13,12 @@ def schema_table_users_users
     # Options
     # -------
     # 32 caractères (ou plus) pour spécifier l'user
-    # Cf. le fichier ./lib/deep/deeper/required/User/inst_options.rb
+    # Cf. le fichier ./lib/deep/deeper/required/User/instance/options.rb
+    # ATTENTION : LES OPTIONS PEUVENT ÊTRE DÉFINIES :
+    #   - de 0 à 15 pour restsite dans User/instance/options.rb
+    #   - de 16 à 31 pour l'application :
+    #     - dans ./objet/site/config.rb (user_options)
+    #     - dans ./lib/app/required/user/options.rb
     options:      {type:"VARCHAR(32)"},
     sexe:         {type:"BOOLEAN"},
     address:      {type:"TEXT"},
