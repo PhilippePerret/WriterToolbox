@@ -19,6 +19,10 @@
         :log_error  Si true, on ajoute le log des erreurs
         :log        Si true, on ajoute le log complet
         :format     'plain' (default) ou 'html'
+
+
+  Note : Cette classe est toujours chargée par le cron, dont on
+  peut l'utiliser n'importe quant
 =end
 require 'cgi'
 require 'net/smtp'
