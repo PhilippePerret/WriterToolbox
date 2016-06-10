@@ -26,6 +26,8 @@ class Sync
 
     synchronize_tweets      if param(:cb_synchronize_permtweets)
 
+    synchronize_citations   # toujours
+
     synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
 
     synchronize_scenodico   if param(:cb_synchronize_scenodico)
@@ -134,6 +136,106 @@ class Sync
     @suivi << "ERROR : #{e.message}"
     @errors << e.message
   end
+
+  # Synchronisation de la table des citations.
+  #
+  # Tout ce qu'il y a à faire, c'est récupérer les dates
+  # de derniers envois des citations (last_sent) pour les
+  # injecter dans la table locale.
+  #
+  # Noter que cette synchronisation est presque identique
+  # à celle des tweets permanents et qu'on pourrait donc
+  # être plus DRY en rationalisant les choses.
+  #
+  def synchronize_citations
+    @suivi << "* Synchronisation des citations (last_sent)"
+
+    # L'instance Sync::Database de la base `site_cold.db` qui
+    # permet de gérer la base. Elle a peut-être été déjà
+    # chargée par les tâches qui en ont besoin aussi.
+    # Noter que l'instanciation seule (ci-desous) suffit à
+    # downloader le fichier distant.
+    sdb = Sync::Database.site_cold
+
+    # *** On prend les données de la base distante, à
+    # savoir des hashs {:id, :count, :last_sent}
+    begin
+      req = "SELECT id, last_sent FROM citations"
+      db = SQLite3::Database.new(sdb.dst_loc_path)
+      pr = db.prepare req
+      rs_online = {}
+      pr.execute.each_hash do |h|
+        rs_online.merge!(h['id'] => h.to_sym)
+      end
+    rescue Exception => e
+      debug e
+      error "Une erreur est survenue en récupérant les informations des citations distantes. Je dois renoncer."
+      return false
+    ensure
+      (db.close if db) rescue nil
+      (pr.close if pr) rescue nil
+    end
+
+    # *** On prend les données de la base locale
+    begin
+      db = SQLite3::Database.new(sdb.loc_path)
+      pr = db.prepare req
+      rs_offline = {}
+      pr.execute.each_hash do |h|
+        rs_offline.merge!(h['id'] => h.to_sym)
+      end
+    rescue Exception => e
+      debug e
+      error "Une erreur est survenur en récupérant les informations des citations locales. Je dois renoncer."
+      return
+    ensure
+      (db.close if db) rescue nil
+      (pr.close if pr) rescue nil
+    end
+
+    # *** On calcule la différence
+    rs_diff = []
+    rs_online.each do |tid, tdata_online|
+      if rs_offline[tid] != tdata_online
+        rs_diff << tdata_online
+      end
+    end
+
+    # Il faut actualiser la base site_cold.db si
+    # 1/ les nombres de citations est différent ou
+    # 2/ des différences ont été relevées.
+    need_update_site_code = !rs_diff.empty? || rs_online.count != rs_offline.count
+
+    # *** On actualise les données à actualiser
+    unless rs_diff.empty?
+      begin
+        db = SQLite3::Database.new(sdb.loc_path)
+        # La requête pour actualiser la table
+        req_update = "UPDATE citations SET last_sent = :last_sent WHERE id = :id"
+        res = []
+        db.prepare(req_update) do |stm|
+          rs_diff.collect { |tdata| res << (stm.execute tdata) }
+        end
+      rescue Exception => e
+        debug e
+        error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
+        return
+      ensure
+        (db.close if db) rescue nil
+      end
+    end
+
+    # On indique que la table site_cold doit être uploadée
+    # si nécessaire cf. plus haut
+    sdb.need_upload = true if need_update_site_code
+
+    @suivi << "= Synchronisation des citations OK"
+  rescue Exception => e
+    debug e
+    @suivi << "ERROR : #{e.message}"
+    @errors << e.message
+  end
+
 
   # Synchronisation de la table des tweets permanents.
   #
