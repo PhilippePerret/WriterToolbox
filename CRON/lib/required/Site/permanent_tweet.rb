@@ -36,11 +36,12 @@ class Tweet
         # long à cause de l'adresse complète (qui sera raccourcie par
         # twitter)
         begin
-          site.tweet( tweet_citation, dont_check_length: false)
+          mess_citation, citation_id = tweet_citation
+          site.tweet( mess_citation, dont_check_length: false)
         rescue Exception => e
           error_log( e, 'Impossible d’envoyer la citation' )
         else
-          safed_log "  = Envoi Tweet d'une CITATION (OK)."
+          safed_log "  = Envoi Tweet de la CITATION ##{citation_id} (OK)."
         end
       end
 
@@ -79,7 +80,7 @@ class Tweet
         else
           dquote[:citation][0..reste_len] + '[…] '
         end
-      "#{citation}#{auteur}#{full_lien}"
+      ["#{citation}#{auteur}#{full_lien}", citation_id]
     end
 
     # Retourne TRUE si on doit envoyer un tweet

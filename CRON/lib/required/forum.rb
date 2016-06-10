@@ -20,8 +20,6 @@ des suiveurs d'un sujet et les derniers appels.
   depuis la dernière alerte qui lui a été envoyée pour le dernier
   message
 =end
-safed_log "-> #{__FILE__}"
-
 class Forum
 class << self
 
@@ -161,5 +159,3 @@ class << self
 
 end #/ << self
 end #/Forum
-
-safed_log "<- #{__FILE__}"

@@ -5,8 +5,6 @@ Fichier principal appelé par `hour_cron.rb` à la racine (plus justement,
 appelé par ./lib/required.rb en premier).
 
 =end
-safed_log "-> #{__FILE__}"
-
 class Cron
 
   # Si cette constante est mise à true, le safed log qui est
@@ -187,5 +185,3 @@ class << self
 
 end #/<<self Cron
 end #/Cron
-
-safed_log "<- #{__FILE__}"

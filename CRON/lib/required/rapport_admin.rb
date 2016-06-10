@@ -1,6 +1,4 @@
 # encoding: UTF-8
-safed_log "-> #{__FILE__}"
-
 require 'singleton'
 
 class Cron
@@ -141,5 +139,3 @@ class Cron
 
   end
 end #/Unan
-
-safed_log "<- #{__FILE__}"

@@ -14,7 +14,7 @@ require "#{THIS_FOLDER}/lib/required/logs"
 
 safed_log "-> #{__FILE__}"
 
-safed_log "* STEP 1"
+safed_log "* STEP 1 (all requirements)"
 begin
   # On requiert d'abord le module qui permet de loguer les
   # messages

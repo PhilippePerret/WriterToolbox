@@ -135,6 +135,9 @@ end # << self SiteHtmlConnexions
   def build_message_admin
     titre = "Rapport #{ONLINE ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"
 
+    # Le message complet à construire
+    mess = ''
+
     ip_entete     = "IP".ljust(20)
     nb_entete     = "Nb".ljust(4)
     duree_entete  = "Durée".ljust(5)
@@ -144,17 +147,39 @@ end # << self SiteHtmlConnexions
     route_entete  = "Routes".ljust(5)
     entete = "#{ip_entete} #{nb_entete} #{duree_entete} #{whois_entete} #{from_entete} #{to_entete} #{route_entete}"
 
-    mess = @report[:by_ip].collect do |ip, ipdata|
+    known_ips   = []
+    unknown_ips = []
+
+
+    @report[:by_ip].each do |ip, ipdata|
       ip_str = ip.ljust(20)
       nb_str = ipdata[:nombre_connexions].to_s.ljust(4)
-      first_str = Time.at(ipdata[:first_connexion_time]).strftime("%H:%M:%S")
-      last_str  = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
-      duree  = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
-      duree_str = duree.to_s.ljust(5)
-      whois_str = pseudo_in_ipdata(ipdata).ljust(30)
-      routes_str = ipdata[:nombre_routes].to_s.rjust(5)
-      "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
-    end.join("\n")
+      first_str   = Time.at(ipdata[:first_connexion_time]).strftime("%H:%M:%S")
+      last_str    = Time.at(ipdata[:last_connexion_time]).strftime("%H:%M:%S")
+      duree       = ipdata[:last_connexion_time] - ipdata[:first_connexion_time]
+      duree_str   = duree.to_s.ljust(5)
+      whois_str   = pseudo_in_ipdata(ipdata).ljust(30)
+      routes_str  = ipdata[:nombre_routes].to_s.rjust(5)
+
+      data_line = "#{ip_str} #{nb_str} #{duree_str} #{whois_str} #{first_str} #{last_str} #{routes_str}"
+      if whois_str == '- unknown -'
+        unknown_ips << data_line
+      else
+        known_ips << data_line
+      end
+    end
+
+    mess = "\nNombre total d'IPs : #{@report[:by_ip].count}"
+    mess += "\nIPs connues : #{known_ips.count}"
+    mess += "\nIPs inconnues : #{unknown_ips.count}"
+    
+    known_ips   = known_ips.join("\n")
+    unknown_ips = unknown_ips.join("\n")
+
+    mess += "\n=== IPs INCONNUES ===\n"
+    mess += known_ips
+    mess += "\n=== IPs CONNUES ===\n"
+    mess += known_ips
 
     # On ajoute les routes empruntées par IP
     mess += "\n\n=== ROUTES PAR IPS ===\n"
