@@ -2,6 +2,7 @@
 require 'bitly'
 
 class RSBitly
+
   class << self
     def current
       @current ||= new()
@@ -79,6 +80,7 @@ class RSBitly
   end
 
   # URL longue, originale, de la page à atteindre
+  def long_url= value; @long_url = value end
   def long_url
     @long_url ||= begin
       case data[:route]
@@ -105,9 +107,3 @@ class RSBitly
     @data ||= param(:bitly) || {}
   end
 end
-
-def bitly ; @bitly ||= RSBitly.current end
-
-# On affiche ou on crée le lien court que si
-# une URL ou une route est fournie
-bitly.long_url && bitly.display_infos

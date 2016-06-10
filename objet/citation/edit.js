@@ -2,6 +2,18 @@ if(undefined == window.Citation){window.Citation = {}}
 
 $.extend(window.Citation,{
 
+  // Méthode appelée par le bouton "Voir" pour
+  // afficher la citation
+  show_citation:function(olien){
+    var cit = $('input#citation_id').val().trim();
+    if(cit == ''){
+      F.error('Il faut indiquer l’identifiant de la citation.')
+      return false;
+    } else {
+      $(olien).attr('href', 'citation/' + cit + '/show');
+      return true;
+    }
+  },
 
   on_keypress_description:function(ev){
     if(ev.keyCode == 13){

@@ -1,6 +1,17 @@
 <%
 raise_unless_admin
 %>
+<%
+
+# Ne pas le mettre dans le fichier main.rb car ce module
+# main.rb peut être appelé de n'importe où, même avec un
+# objet qui peut avoir la méthode `bitly`
+def bitly
+  @bitly ||= RSBitly.current
+end
+
+
+%>
 <h1>Bitly</h1>
 <p class='small italic discret'>
   Pour produire des adresses courtes pour les tweets.

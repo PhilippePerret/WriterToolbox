@@ -44,3 +44,8 @@ Donc je peux copier-coller la commande ci-dessous dans n'importe quel fichier qu
 ## Installation sur le site distant
 
 Pour le moment, le problème n'est pas encore résolu, mais je devrais pouvoir le faire par SSH.
+
+Se placer à la racine si nécessaire (pas www, vraiment la racine, qui contient le dossier www — dès que j'ouvre la connexion SSH, je suis à la racine). Taper :
+
+    > export GEM_HOME=$HOME/.gems
+    > gem install <le gem>

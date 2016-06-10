@@ -13,6 +13,8 @@ class Citation
   def auteur      ; @auteur       ||= get(:auteur)      end
   def source      ; @source       ||= get(:source)      end
   def description ; @description  ||= get(:description) end
+  def last_sent   ; @last_sent    ||= get(:last_sent)   end
+  def bitly       ; @bitly        ||= get(:bitly)       end
   def created_at  ; @created_at   ||= get(:created_at)  end
 
   def output
@@ -21,6 +23,24 @@ class Citation
     source_humaine +
     boutons_edition +
     description_if_any
+  end
+
+  # ---------------------------------------------------------------------
+  #   Data volatiles
+  # ---------------------------------------------------------------------
+  def long_url
+    @long_url = "#{site.distant_url}/citation/#{id}/show"
+  end
+
+  def short_url
+    @short_url ||= begin
+      self.bitly || begin
+        require './objet/bitly/main.rb'
+        rsbitly = RSBitly.new
+        rsbitly.long_url = long_url
+        rsbitly.short_url # la crée si nécessaire
+      end
+    end
   end
 
   def source_humaine

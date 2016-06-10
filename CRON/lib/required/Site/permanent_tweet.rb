@@ -55,23 +55,29 @@ class Tweet
     # Cette méthode retourne le texte du tweet à envoyer
     # pour une citation (avec un lien qui conduit à la section
     # citations de la boite).
+    #
     def tweet_citation
 
       # On choisit un nombre (ID) de citation au hasard
       tbl_citations = site.db.table('site_cold', 'citations')
-      nombre_citations = tbl_citations.count
-      citation_id = rand(nombre_citations)
-      citation_id = 1 if citation_id < 1 || citation_id > nombre_citations
 
-      # On récupère les données de la citation
-      dquote = tbl_citations.get( citation_id )
+      where = '( bitly IS NOT NULL ) AND ( bitly != "" )'
+      choix = tbl_citations.select(
+        where: where,
+        order: 'last_sent ASC',
+        limit: 10,
+        colonnes: [:citation, :auteur, :bitly]
+        ).values
+      dquote = choix.shuffle.shuffle.first
 
-      # Le lien complet, qui sera transformé en lien raccourci
-      full_lien = " http://www.laboiteaoutilsdelauteur.fr/citation/#{citation_id}/show"
       auteur    = " - #{dquote[:auteur]}"
-      bitly_len = 20 # longueur approximative
-      reste_len = 139 - (auteur.length + bitly_len + 4) #
+      bitly     = " #{dquote[:bitly]}"
+      reste_len = 139 - (auteur.length + bitly.length + 4) #
       citation  = dquote[:citation]
+
+      # On indique la date d'envoi de cette dernière
+      # citation
+      tbl_citations.update(citation_id, { last_sent: Time.now.to_i })
 
       # Citation finale
       citation =
@@ -80,7 +86,7 @@ class Tweet
         else
           dquote[:citation][0..reste_len] + '[…] '
         end
-      ["#{citation}#{auteur}#{full_lien}", citation_id]
+      ["#{citation}#{auteur}#{bitly}", citation_id]
     end
 
     # Retourne TRUE si on doit envoyer un tweet
