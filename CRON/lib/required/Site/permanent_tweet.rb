@@ -146,7 +146,7 @@ class Tweet
           "<p>Citations à expliciter :</p>" +
           '<ul>' + mess_admin.join('') + '</ul>' +
           '<p>Les premières seront les premières diffusées.</p>'
-          
+
         MiniMail.new().send(
           mess_admin,
           'Citations à expliciter',
@@ -185,48 +185,17 @@ class Tweet
     # On prend la date du dernier tweet envoyé
     #
     def time_ok_to_send
-      safed_log "  = last_sent = #{last_sent.inspect}"
-      if last_sent.nil?
-        (Time.now.hour % PERMANENT_TWEET_FREQUENCE) == 0
-      else
-        time_now        = Time.now.to_i
-        time_next_envoi = last_sent + (PERMANENT_TWEET_FREQUENCE * 3600) - 30
-        envoi_requis = time_now >= time_next_envoi
-        safed_log "  = Calcul si envoi est nécessaire"
-        safed_log "  = #{time_now} (now) > #{last_sent} (last_sent) + #{PERMANENT_TWEET_FREQUENCE * 3600} (PERMANENT_TWEET_FREQUENCE * 3600)"
-        safed_log "  = Envoi requis : #{envoi_requis ? 'OUI' : 'NON'}"
-        envoi_requis || begin
-          reste = time_next_envoi - time_now
-          date_next_envoi = time_next_envoi.as_human_date(true, true, ' ')
-          safed_log "  = Le prochain envoi se fera dans #{reste.as_duree} (#{date_next_envoi})"
-        end
-        envoi_requis
+      envoi_requis = (Time.now.hour % PERMANENT_TWEET_FREQUENCE) == 0
+      safed_log "  = Calcul si envoi est nécessaire"
+      safed_log "  = Heure courante : #{Time.now.hour} / Fréquence : toutes les #{PERMANENT_TWEET_FREQUENCE} heures"
+      safed_log "  = Envoi requis : #{envoi_requis ? 'OUI' : 'NON'}"
+      envoi_requis || begin
+        modu = Time.now.hour % PERMANENT_TWEET_FREQUENCE
+        rest = PERMANENT_TWEET_FREQUENCE - modu
+        date_next_envoi = time_next_envoi.as_human_date(true, true, ' ')
+        safed_log "  = Le prochain envoi se fera dans #{rest} heures"
       end
-    end
-
-    def last_sent
-      @last_sent ||= begin
-        require 'sqlite3'
-        db = SQLite3::Database.new(db_site_cold)
-        rp = db.prepare request_last_sent
-        rp.execute.each_hash { |h| return h['last_sent'] }
-      rescue Exception => e
-        error_log e, "# [#{Time.now}] Problème en récupérant la date de dernier envoi."
-        nil
-      ensure
-        (db.close if db) rescue nil
-        (rp.close if rp) rescue nil
-      end
-    end
-
-
-    def request_last_sent
-      <<-SQL
-SELECT last_sent
-  FROM permanent_tweets
-  ORDER BY last_sent DESC
-  LIMIT 1
-      SQL
+      envoi_requis
     end
 
     def db_site_cold
