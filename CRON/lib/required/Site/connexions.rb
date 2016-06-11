@@ -188,7 +188,8 @@ end # << self SiteHtmlConnexions
     mess += @report[:by_ip].collect do |ip, ipdata|
       "#{ip} #{pseudo_in_ipdata ipdata}\n" +
       ipdata[:routes].collect do |route|
-        "\t- #{route}"
+        route_linked = "<a href=\"http://www.laboiteaoutilsdelauteur.fr/#{route}\">#{route}</a>"
+        "\t- #{route_linked}"
       end.join("\n")
     end.join("\n\n")
 
