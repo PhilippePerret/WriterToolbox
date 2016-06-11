@@ -1,32 +1,11 @@
 ---
 unan:
-  name:     Le Programme “Un An Un Script”
+  name:     Le programme “Un An Un Script”
   folder:   unan
   home:     'unan/home'
   description: |
     Ce programme unique en son genre permet à tout auteur, expérimenté ou non, de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée génératrice jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
     Ce programme spécial nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût complet de #{Unan::tarif_humain} pour une année (#{Unan::tarif_humain_par_mois}). Noter que l'inscription à ce programme d'apprentissage et de développement donne accès à tous les autres outils du site pendant deux ans.
-
-analyse:
-  name:       Les Analyses de films
-  folder:     analyse
-  home:       analyse/home
-  description: |
-    Cette section à la pointe de la technologie vous permet de tirer le maximum de profit des films de tout genre et de toute provenance, grâce à des analyses approfondies, instructives, indispensables.
-
-calculateur:
-  name:       Le Calculateur de structure
-  folder:     calculateur
-  home:       calculateur/main
-  description: |
-    Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
-
-screencasts:
-  name:       Les Didacticiels-vidéo
-  folder:     video
-  home:       video/home
-  description: |
-    Des didacticiels en vidéo qui permettent d'améliorer de façon significative son écriture, aussi bien au niveau de la qualité de ce qui est produit que de la quantité.
 
 cnarration:
   name:       La collection Narration
@@ -35,15 +14,44 @@ cnarration:
   description: |
     Profitez en ligne de la future version papier des cours de <strong>Philippe Perret</strong>, auteur et pédagogue œuvrant depuis plus de vingt ans dans le monde du cinéma et de l'audiovisuel, et qui s'inspire des grands pédagogues aussi bien que des œuvres elles-mêmes pour divulguer une connaissance de la narration la plus pragmatique et la plus profonde possible.
 
+analyse:
+  name:       Les analyses de films
+  folder:     analyse
+  home:       analyse/home
+  description: |
+    Cette section à la pointe de la technologie vous permet de tirer le maximum de profit des films de tout genre et de toute provenance, grâce à des analyses approfondies, instructives, indispensables.
+
+calculateur:
+  name:       Le calculateur de structure
+  folder:     calculateur
+  home:       calculateur/main
+  description: |
+    Utilisé par de nombreux auteurs depuis de nombreuses années, cet outil vous permet de calculer, en pages, en minutes, la durée de chaque partie de votre histoire ou de votre scénario, ainsi que l'emplacement de toutes les scènes-clés indispensables.
+
+screencasts:
+  name:       Les didacticiels-vidéo
+  folder:     video
+  home:       video/home
+  description: |
+    Des didacticiels en vidéo qui permettent d'améliorer de façon significative son écriture, aussi bien au niveau de la qualité de ce qui est produit que de la quantité.
+
 facture:
-  name:       La Facture d’auteur
+  name:       La facture d’auteur
   folder:     facture
   home:       facture/main
   description: |
     Outil pour concevoir vos factures d'écriture, factures d'auteur, en fournissant la valeur HT (Hors-Taxe), TTC (Toute Taxe Comprise) ou nette, donc permettant des calculs rapides quel que soit l'accord passé avec l'autre partie.
 
+citation:
+  name:       Les citations d'auteurs
+  folder:     citation
+  home:       'citation/1/show'
+  description: |
+    Les citations d'auteurs sont un outil auquel on ne pense pas spontanément et qui pourtant peut être d'une grande aide, aussi bien dans le travail très concret de l'écriture que dans la réflexion qu'on peut en avoir.<br/>
+    Ces citations, ici, sont pour la plupart explicitées, ce qui offre encore d'autres perspectives inédites.
+
 forum:
-  name:     Le Forum
+  name:     Le forum
   folder:   forum
   home:     'forum/home'
   description: |
