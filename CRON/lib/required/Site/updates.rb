@@ -18,6 +18,7 @@ class << self
     @is_samedi = (Time.now.wday == 6) if @is_samedi === nil
     @is_samedi
   end
+
   # = main =
   #
   # Méthode principale qui annonce aux inscrits et aux abonnés,
@@ -34,7 +35,10 @@ class << self
     end
 
     # Pas d'annonce s'il n'y a aucune actualité
-    if (last_updates.empty? && !samedi?) || (samedi? && last_week_updates.empty?)
+    no_updates_today = last_updates.empty?
+    no_updates_this_week = last_week_updates.empty?
+
+    if (no_updates_today && !samedi?) || (samedi? && no_updates_this_week)
       safed_log "   = Aucune actualité"
       return
     end
@@ -48,10 +52,19 @@ class << self
 
         pref_mail = u.preference(:mail_updates)
 
-        # On ne doit pas envoyer le mail à l'user s'il a
-        # réglé ses préférences sur 'never' ou sur 'weekly' et qu'on
-        # n'est pas samedi.
-        next if ( pref_mail == 'never' ) || ( pref_mail == 'weekly' && !samedi? )
+        # On ne doit pas envoyer le mail à l'user :
+        #  - s'il a réglé ses préférences sur 'never'
+        #  - s'il a réglé ses préférences sur 'weekly' et
+        #    qu'on n'est pas samedi.
+        #  - S'il veut recevoir les actualités mais qu'il n'y
+        #    en a pas mais qu'on est samedi avec des actualités
+        #    dans la semaine
+        # Noter bien qu'on passe ici le samedi, même s'il n'y a
+        # aucune update aujourd'hui, mais qu'il y en a eu pendant
+        # la semaine
+        next if pref_mail == 'never'
+        next if !samedi? && pref_mail == 'weekly'
+        next if samedi? && pref_mail != 'weekly' && no_updates_today
 
         # Message d'abonnement en fin de mail
         # Si l'user est abonné, on le remercie, sinon on lui propose
