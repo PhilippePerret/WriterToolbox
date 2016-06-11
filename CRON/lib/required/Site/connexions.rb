@@ -150,7 +150,6 @@ end # << self SiteHtmlConnexions
     known_ips   = {}
     unknown_ips = []
 
-
     @report[:by_ip].each do |ip, ipdata|
       ip_str = ip.ljust(20)
       nb_str = ipdata[:nombre_connexions].to_s.ljust(4)
@@ -175,8 +174,8 @@ end # << self SiteHtmlConnexions
     mess += "\nIPs connues : #{known_ips.count}"
     mess += "\nIPs inconnues : #{unknown_ips.count}"
 
-    known_ips   = known_ips.join("\n")
-    unknown_ips = unknown_ips.collect{ |nom, arr| arr.join("\n") }.join("\n")
+    known_ips     = known_ips.collect{ |nom, arr| arr.join("\n") }.join("\n")
+    unknown_ips   = unknown_ips.join("\n")
 
     mess += "\n=== IPs INCONNUES ===\n"
     mess += known_ips

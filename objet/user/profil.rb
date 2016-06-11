@@ -35,6 +35,10 @@ when 'save_preferences'
     prefs[k] = nil
   end
 
+  # Cas spécial de la donnée :
+  # Il faut régler :bureau_after_login en conséquence
+  prefs.merge!(bureau_after_login: prefs[:goto_after_login] == '2')
+
   user.set_preferences prefs
   flash "#{user.pseudo}, vos préférences sont enregistrées."
 end

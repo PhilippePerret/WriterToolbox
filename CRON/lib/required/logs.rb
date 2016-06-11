@@ -113,7 +113,7 @@ class SafedErrorLog
   # Pour ajouter un message d'erreur
   def add err, amorce = nil
     @inited || init
-    if err.instance_of?(RuntimeError)
+    if err.respond_to?(:backtrace) # une erreur quelconque
       err = err.message + "\n" + err.backtrace.join("\n")
     end
     err = "#{amorce} : #{err}" unless amorce.nil?
@@ -141,6 +141,8 @@ end
 def safed_log mess
   safedlog.add mess
 end
+# Handy méthode pour enregistrer une erreur
+# +mess+ peut être un message ou une erreur
 def error_log(mess, amorce = nil)
   errorlog.add mess, amorce
 end
