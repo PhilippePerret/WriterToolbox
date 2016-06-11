@@ -144,12 +144,12 @@ class << self
 
   # Liste UL des dernières updates de la veille
   def ul_last_updates
-    @ul_last_updates ||= build_liste_updates( last_updates )
+    @ul_last_updates ||= build_liste_updates( last_updates, date: false )
   end
 
   # Liste UL des dernières updates de LA SEMAINE
   def ul_last_week_updates
-    @ul_last_week_updates ||= build_liste_updates( last_week_updates )
+    @ul_last_week_updates ||= build_liste_updates( last_week_updates, date: true )
   end
   # Construction du UL de la liste des actualités
   #
@@ -157,10 +157,26 @@ class << self
   # les updates de la veille ET pour les updates de la
   # semaine.
   #
-  def build_liste_updates liste_updates
+  # +options+ Les options. A été ajouté pour traiter le fait
+  # que les listes hebdomadaires doivent comporter le nom du
+  # jour et pas seulement l'heure. C'est l'option :
+  #   :date   qui est mise à true
+  #
+  def build_liste_updates liste_updates, options = nil
+    options ||= {}
+
+    # Le template du temps/date en fonction du fait qu'il
+    # faut ou non le jour
+    format_time =
+      if options[:date]
+        "%d %m - %H:%M"
+      else
+        "%H:%M"
+      end
+
     '<ul id="last_updates" class="small">' +
     liste_updates.collect do |hupdate|
-      heure = Time.at(hupdate[:created_at]).strftime("%H:%M")
+      heure = Time.at(hupdate[:created_at]).strftime(format_time)
       degre = (hupdate[:options]||"")[0].to_i
       degre = "#{degre}/9"
       route =
