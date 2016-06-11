@@ -147,7 +147,7 @@ module MailModuleMethods
 
   def header
     if get_class(:header).nil?
-      set_class(:header, SiteHtml::Mail::respond_to?(:header) ? SiteHtml::Mail::header : "" )
+      set_class(:header, SiteHtml::Mail::respond_to?(:header) ? SiteHtml::Mail.header : "" )
     end
     get_class :header
   end

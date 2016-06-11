@@ -24,6 +24,7 @@ class Mail
       @styles_css ||= begin
         style_bande_logo      +
         style_message_content +
+        style_citation        +
         other_styles          +
         style_signature
       end
@@ -37,6 +38,16 @@ class Mail
     # logo
     def style_message_content
       @style_message_content ||= "div#message_content{margin:2em 4em}"
+    end
+
+    # Style pour la citation d'auteur
+    def style_citation
+      @style_citation ||= <<-CSS
+div#citation{float:right;font-size:13pt!important;width:45%;margin:4px 4px 1em 1em}
+div#citation a{text-decoration:none;color:inherit;}
+div#citation span#quote_citation{font-style:italic}
+div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;text-variant:small-caps}
+      CSS
     end
 
     def style_signature

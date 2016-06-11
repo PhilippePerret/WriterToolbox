@@ -192,7 +192,6 @@ class Tweet
       envoi_requis || begin
         modu = Time.now.hour % PERMANENT_TWEET_FREQUENCE
         rest = PERMANENT_TWEET_FREQUENCE - modu
-        date_next_envoi = time_next_envoi.as_human_date(true, true, ' ')
         safed_log "  = Le prochain envoi se fera dans #{rest} heures"
       end
       envoi_requis

@@ -2,3 +2,38 @@
 # Entête des messages mail
 %>
 <div id="logo"><%= site.name %></div>
+<%
+# ---------------------------------------------------------------------
+#   CITATION
+%>
+<div id="citation">
+  <%
+  # On prend la dernière citation tweetée pour être sûr
+  # qu'elle contient une explicitation et surtout pour
+  # ne pas avoir à gérer l'envoi d'une citation suivante
+  # Ou alors, plutôt, on prend dans les dernières citations
+  # Noter que l'on met toujours cette citation en instance
+  # variable de Mail pour tenir compte du fait que des mailings
+  # peuvent être envoyés, pour ne pas avoir à recommencer
+  # chaque fois
+  %>
+  <%
+    Mail.instance_variable_get('@citation_courante') || begin
+      candidates = site.db.table('site_cold', 'citations').select(
+        limit:    10,
+        offset:   11, # pour passer les "prochaines"
+        order:    'last_sent ASC',
+        colonnes:  [:citation, :auteur, :id]
+      ).values
+      hquote = candidates.shuffle.shuffle.first
+      q = hquote[:citation].strip_tags(' ')
+      current_quote =
+        (
+          "#{q}".in_span(id: 'quote_citation') +
+          hquote[:auteur].in_span(id: 'quote_auteur')
+        ).in_a(href: "#{distant_url}/citation/#{hquote[:id]}/show")
+      Mail.instance_variable_set('@citation_courante', current_quote)
+    end
+  %>
+  <%= Mail.instance_variable_get('@citation_courante') %>
+</div>
