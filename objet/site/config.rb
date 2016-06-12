@@ -28,7 +28,7 @@ site.name                 = "La Boite à Outils de l'Auteur"
 site.title_prefix     = "BOA"
 site.title_separator  = " | "
 TINY_CAR = '<span style="font-size:9.1pt;color:#97c0c8">%s</span>'
-site.logo_title = "#{TINY_CAR % 'LA'} BOITE #{TINY_CAR % 'À'} OUTILS #{TINY_CAR % 'DE L’'}AUTEUR".in_span(style:'color:#97c0c8')
+site.logo_title = "#{TINY_CAR % 'LA'} BOITE #{TINY_CAR % 'À'} OUTILS #{TINY_CAR % 'DE L’'}AUTEUR".in_span(style:'color:#b7e0e8')
 
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site

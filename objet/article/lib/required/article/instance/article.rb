@@ -52,8 +52,8 @@ class Article
   def raw_output
     @raw_output ||= begin
       lines = path.read.split("\n")
-      titre = lines.shift
-      [titre.strip_tags, lines.join(' ').strip_tags(' ')]
+      lines.shift
+      [titre, lines.join(' ').strip_tags(' ')]
     end
   end
 

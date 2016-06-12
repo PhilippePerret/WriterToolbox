@@ -157,8 +157,7 @@ $.extend(window.Facture,{
 
   // Pour cacher les éléments d'interface qui ne devront pas réapparaitre
   UI_ELEMENTS: [
-    'section#header', 'section#left_margin', 'section#footer',
-    'div#chapiteau_logo', 'h1'
+    'section#header', 'section#left_margin', 'section#footer', 'h1'
   ],
   reset_ui_elements:function(){
     $(this.UI_ELEMENTS).each(function(i,o){$(o).show()})

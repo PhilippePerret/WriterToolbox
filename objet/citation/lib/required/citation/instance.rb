@@ -67,8 +67,14 @@ class Citation
         ''
       else
         'Explicitation'.in_h4(class: 'libelle', style: 'margin-top: 4em') +
-        description.in_div(id: 'explicitation_citation')
+        humain_description.in_div(id: 'explicitation_citation')
       end
+    end
+  end
+
+  def humain_description
+    @humain_description ||= begin
+      description.formate_balises_propres.formate_balises_erb
     end
   end
 

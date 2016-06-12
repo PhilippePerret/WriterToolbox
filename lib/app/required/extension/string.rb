@@ -2,6 +2,16 @@
 
 class String
 
+  def formate_balises_erb
+    self.gsub(/<%=(.*?)%>/){
+      begin
+        eval($1.strip)
+      rescue Exception => e
+        $1
+      end
+    }
+  end
+
   def formate_balises_propres
     str = self
 

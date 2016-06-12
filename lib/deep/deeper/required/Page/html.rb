@@ -62,7 +62,10 @@ OFFLINE = !ONLINE;
     low_opacities = if user.identified?
       low_opacity = 1.0 - (0.08 * (app.session['user_nombre_pages'] || 1))
       low_opacity = 0.14 if low_opacity < 0.14
-      ['section#header', 'section#left_margin', 'section#footer', 'div#chapiteau_logo'].collect do |jid|
+      # On ne joue plus sur l'opacité du bandeau supérieur 'section#header'
+      # 'div#chapiteau_logo' se trouve maintenant dans left_margin donc
+      # on n'a pas besoin de le traiter non plus.
+      ['section#left_margin', 'section#footer'].collect do |jid|
         "#{jid}{opacity:#{low_opacity}}"
       end.join("\n")
     else

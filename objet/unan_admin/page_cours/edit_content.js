@@ -16,8 +16,7 @@ $.extend(window.PageCours,{
   // éditer, en la fixant
   liste_objets_to_hide: [
     'section#header', 'section#footer', 'section#left_margin',
-    'div#btns_admin_footer', 'div#bande_bas_de_page',
-    'div#chapiteau_logo'
+    'div#btns_admin_footer', 'div#bande_bas_de_page'
   ],
   set_interface:function(){
     $(this.liste_objets_to_hide).each(function(i,o){
