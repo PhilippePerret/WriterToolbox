@@ -166,6 +166,12 @@ class Console
     when /^aide (rédaction|redaction|markdown|kramdown)$/
       aide_redaction_markdown
       ""
+
+      # --- FILES ---
+    when /^kramdown ([^ ]+) (pdf|html|htm)$/
+      tout, path, oformat = line.match(/^kramdown ([^ ]+) (pdf|html|htm)$/).to_a
+      visualise_document_kramdown path, oformat
+      ""
       # ---------------------------------------------------------------------
     when /^check (site|synchro)$/     then check_synchro
     when /^(read|show|afficher|affiche) debug$/ then read_debug

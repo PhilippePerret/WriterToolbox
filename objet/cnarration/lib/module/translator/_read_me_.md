@@ -43,5 +43,5 @@
     Enfin, la méthode `translate` finalise le contenu à l'aide de
     `finalise_content`
 
-    Et elle écrit le fichier LaTex résultant dans uen vraie source
+    Et elle écrit le fichier LaTex résultant dans une vraie source
     du dossier LaTex créé pour le livre.

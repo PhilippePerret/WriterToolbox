@@ -21,6 +21,7 @@ class ::String
   DATA_OUTPUT_FORMAT = {
     :html   => {extension: '.html'},
     :latex  => {extension: ".tex" },
+    :pdf    => {extension: '.tex'}, # car il faut passer par là avant
     :erb    => {extension: ".erb"}
   }
 
@@ -40,7 +41,7 @@ class ::String
   def kramdown options = nil
 
     options ||= Hash::new
-    options[:output_format] = :html unless options.has_key?(:output_format)
+    options[:output_format] = :html unless options.key?(:output_format)
 
     owner = options[:owner]
 
@@ -49,12 +50,14 @@ class ::String
     mdown_method = case options[:output_format]
     when :html, :erb then :to_html
     when :latex      then :to_latex
+    when :pdf        then :to_latex
     end
 
     # Pour extra_markdown par exemple
     output_format = case options[:output_format]
-    when :html, :erb then :html
-    when :latex      then :latex
+    when :html, :erb  then :html
+    when :latex       then :latex
+    when :pdf         then :latex
     end
 
     code = self
@@ -196,12 +199,11 @@ end
 
 class SuperFile
 
-  DATA_OUTPUT_FORMAT = {
-    :html   => {extension: '.html'},
-    :latex  => {extension: ".tex" },
-    :erb    => {extension: ".erb"}
-  }
+  DATA_OUTPUT_FORMAT = String::DATA_OUTPUT_FORMAT
 
+  # Dossier contenant les bin pdflatex, etc.
+  # Attention, ça ne fonctionnera pas sur le site distant
+  TEXLIVE_FOLDER = "/usr/local/texlive/2015/bin/x86_64-darwin/"
 
   # Retourne le code du fichier, kramdowné
   #
@@ -244,15 +246,31 @@ class SuperFile
 
     if options[:in_file]
       # Écrire le code dans ce fichier
-      dest_path = case options[:in_file]
-      when String, SuperFile then options[:in_file]
-      when TrueClass  then (self.folder + self.affixe).to_s
-      end
+      dest_path =
+        case options[:in_file]
+        when String, SuperFile then options[:in_file]
+        when TrueClass  then (self.folder + self.affixe).to_s
+        end
       if File.extname(dest_path.to_s) == ""
         dest_path += DATA_OUTPUT_FORMAT[options[:output_format]][:extension]
       end
       dest_path = SuperFile::new(dest_path) unless dest_path.instance_of?(SuperFile)
       dest_path.write code_final
+    end
+
+    # Sortie en PDF
+    # Un fichier latex a été construit, il faut maintenant le
+    # transformer en fichier PDF.
+    #
+    # Le fichier LaTex se trouve dans `dest_path`
+    if options[:output_format] == :pdf
+      Dir.chdir(self.folder) do
+        `#{TEXLIVE_FOLDER}pdflatex #{self.affixe}.tex`
+        # Si index
+        # `#{TEXLIVE_FOLDER}makeindex main.idx`
+        # `#{TEXLIVE_FOLDER}pdflatex #{self.affixe}`
+      end
+      flash "Sortie PDF voulue"
     end
     # Retourner ce code dans tous les cas
     return code_final

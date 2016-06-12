@@ -249,7 +249,7 @@ end # << self SiteHtmlConnexions
         search_engine_ips.each do |mid, mdata|
           mdata[:ips].each do |cip|
             if cip =~ ip
-              whois = mdata[:pseudo]
+              whois = mdata[:short_pseudo] || mdata[:pseudo]
               break
             end
           end

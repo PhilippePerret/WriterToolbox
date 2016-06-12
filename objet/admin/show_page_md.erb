@@ -2,13 +2,16 @@
 # Vue pour afficher une page Markdown, quelle qu'elle soit.
 # Réservé exclusivement à l'administration.
 raise_unless_admin
+
+output_format = (param(:format) || 'html').to_sym
+flash "Format de sortie : #{output_format}"
 %>
 <h1>Lecteur document Markdown</h1>
 <article>
   <section>
 <%=
   site.require_module 'kramdown'
-  SuperFile::new(param(:pmd)).kramdown
+  SuperFile::new(param(:pmd)).kramdown(output_format: output_format, in_file: true)
 %>
 </section>
 </article>
