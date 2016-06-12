@@ -178,7 +178,7 @@ end # << self SiteHtmlConnexions
     unknown_ips   = unknown_ips.join("\n")
 
     mess += "\n=== IPs INCONNUES ===\n"
-    mess += known_ips
+    mess += unknown_ips
     mess += "\n=== IPs CONNUES ===\n"
     mess += known_ips
 

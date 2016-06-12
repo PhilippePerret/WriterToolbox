@@ -44,16 +44,22 @@ $(document).ready(function(){
 
   $('textarea#citation_description').bind('focus', function(){
     console.log("-> focus description")
+    Snippets.watch($(this));
   })
   $('textarea#citation_description').bind('blur', function(){
     console.log("-> blur description")
-    Citation.overview_description()
+    Citation.overview_description();
+    Snippets.unwatch($(this));
   })
   $('textarea#citation_description').bind('keypress', function(ev, ui){
     Citation.on_keypress_description(ev)
   })
 
   // On met également en forme la description pour qu'elle soit plus lisible
-  Citation.mettre_en_forme_description()
+  Citation.mettre_en_forme_description();
+
+  // Snippets sur le champ description
+  Snippets.set_scopes_to(['text.html']);
+
 
 })
