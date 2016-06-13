@@ -107,15 +107,17 @@ class Page
   # Le message de page en cours d'écriture et pas encore
   # prête pour la lecture
   def message_niveau_developpement_insuffisant
+    lien_subscribe =
+      if user.subscribed? || user.unanunscript?
+        ''
+      else
+        lien.bouton_subscribe
+      end
     <<-HTML
-<div class="warning air">
-  Désolé, cette page est en cours de rédaction et vous
-  n'avez pas le niveau de privilège requis pour la
-  consulter malgré tout.
+<div class="red air">
+  Cette page est en cours de rédaction et ne peut être consultée. Elle est au niveau de développement #{developpement} et elle sera consultable à partir du niveau 8.
 </div>
-<p class="right small">
-  #{lien.subscribe("S’ABONNER", type: :arrow_cadre)}
-</p>
+#{lien_subscribe}
     HTML
   end
   # Le message d'abonnement demandé pour que l'user puisse lire

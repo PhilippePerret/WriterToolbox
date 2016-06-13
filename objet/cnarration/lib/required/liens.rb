@@ -30,8 +30,8 @@ class Lien
   def livre_les_procedes
     link_livre_id Cnarration::SYM2ID[:procedes]
   end
-  def livre_les_concepts_narratifs
-    link_livre_id Cnarration::SYM2ID[:concepts_narratifs]
+  def livre_les_concepts_narratifs titre = nil
+    link_livre_id Cnarration::SYM2ID[:concepts_narratifs], titre
   end
   def livre_le_dialogue
     link_livre_id Cnarration::SYM2ID[:dialogue]
@@ -40,13 +40,13 @@ class Lien
     link_livre_id Cnarration::SYM2ID[:analyse]
   end
 
-  def link_livre_id livre_id
+  def link_livre_id livre_id, titre = nil
     dlivre = Cnarration::LIVRES[livre_id]
     case output_format
     when :latex
-      "#{dlivre[:hname]}\\cite{NarrationID#{livre_id}}"
+      "#{titre || dlivre[:hname]}\\cite{NarrationID#{livre_id}}"
     else
-      dlivre[:hname].in_a(class:'livre', href:"livre/#{livre_id}/tdm?in=cnarration")
+      (titre || dlivre[:hname]).in_a(class:'livre', href:"livre/#{livre_id}/tdm?in=cnarration")
     end
   end
 
