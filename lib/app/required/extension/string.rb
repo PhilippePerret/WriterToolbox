@@ -29,6 +29,7 @@ class String
     str = str.formate_balises_acteurs
     str = str.formate_balises_auteurs
     str = str.formate_termes_techniques
+    str = str.formate_balises_citations
 
       # debug "STRING APRÈS = #{str.gsub(/</,'&lt;').inspect}"
     return str
@@ -119,6 +120,12 @@ class String
     str
   end
 
+  def formate_balises_citations
+    str = self
+    str.gsub!(/CITATION\[([0-9]+)\|(.*?)\]/){ lien.citation($1.to_i, $2.to_s) }
+    str
+  end
+  
   def formate_balises_films
     str = self
     str.gsub!(/FILM\[(.*?)\]/){ lien.film($1.to_s) }

@@ -123,11 +123,18 @@ class Lien
   # qui sont définis par `MOT[<mot_id>, <mot>]` dans les textes.
   #
   def mot mot_id, mot_str, options = nil
-    options ||= Hash::new
+    options ||= {}
     options.merge!( class:'mot', target:'_blank' )
     build("scenodico/#{mot_id}/show", mot_str, options)
   end
 
+  # Retourne un lien pour lire la citation d'identifiant
+  # +cit+ avec le titre +titre+
+  def citation cit, titre, options = nil
+    options ||= {}
+    options.merge!( target: '_blank')
+    build("citation/#{cit}/show", titre, options)
+  end
 
   # Lien vers le filmodico
   # @usage: lien.filmodico("TITRE")
