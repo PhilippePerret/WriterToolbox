@@ -516,8 +516,8 @@ $(document).ready(function(){
 
   // Pour voir le calque du PFA directement au chargement
   // de la page (pendant l'implémentation)
-  $('div#timeline_scenes').show();
-  $('div#pfa').show();
+  // $('div#timeline_scenes').show();
+  // $('div#pfa').show();
 
   Scenes.TIMELINE_H.bind('mousemove',function(ev,ui){
     if(Scenes.inited){
