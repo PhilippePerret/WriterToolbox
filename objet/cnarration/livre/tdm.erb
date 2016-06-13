@@ -8,8 +8,6 @@ end
 %>
 <%= Cnarration::titre_h1(livre.titre) %>
 <% if user.admin? %>
-  <div class="tiny right">
-    <%= "Éditer la TdM".in_a(href:"livre/#{livre.id}/edit?in=cnarration") %>
-  </div>
+  <%= "Éditer la TdM".in_a(href:"livre/#{livre.id}/edit?in=cnarration").in_div(class: 'tiny right') %>
 <% end %>
-<%= site.objet.tdm.as_ul %>
+<%= livre.tdm.as_ul %>

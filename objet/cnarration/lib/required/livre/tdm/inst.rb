@@ -17,17 +17,35 @@ class Tdm
     @id     = livre.id # correspond à l'id du livre
   end
 
+  GREEN_BALL  =  ' <img src="view/img/divers/rond-vert.png" style="width:10px" />'
+  ORANGE_BALL =  ' <img src="view/img/divers/rond-orange.png" style="width:10px" />'
   # {StringHTML} La table des matières comme une liste UL
+  #
+  # C'est la méthode qui est appelée quand on se rend sur
+  # la table des matières du livre.
   def as_ul
     if data.nil?
       "Pas de table des matières pour le moment."
     else
       pages_ids.collect do |page_id|
         dpage = pages[page_id]
+        ispage = dpage[:options][0].to_i == 1
+        nivdev = dpage[:options][1].to_i(11)
+        # debug "Niveau de développement page ##{page_id} : #{nivdev}"
         titre = dpage[:titre]
         # Une page de la collection
-        if dpage[:options][0] == "1"
-          titre = titre.in_a(href:"page/#{page_id}/show?in=cnarration", title:"Page ##{page_id}")
+        if ispage
+          mark_dev_insuffisant =
+            if nivdev < 4
+              ''
+            elsif nivdev < 8
+              ORANGE_BALL
+            else
+              GREEN_BALL
+            end
+          titre = (
+            titre + mark_dev_insuffisant
+            ).in_a(class: (nivdev < 8 ? 'discret' : ''), href:"page/#{page_id}/show?in=cnarration", title:"Page ##{page_id}")
         elsif user.admin?
           titre = titre.in_a(href:"page/#{page_id}/edit?in=cnarration", title:"Titre ##{page_id}")
         end
