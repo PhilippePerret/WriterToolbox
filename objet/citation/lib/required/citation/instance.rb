@@ -58,7 +58,7 @@ class Citation
     (
       'Nouvelle citation'.in_a(href: 'http://localhost/WriterToolbox/citation/edit') +
       "Editer la citation ##{id}".in_a(href: "http://localhost/WriterToolbox/citation/#{id}/edit") +
-      '&lt;...&gt;'.in_a()
+      '&lt;CODES&gt;'.in_a(onclick:"UI.clip({'Route':'citation/#{id}/show', 'Balise':'CITATION[#{id}|voir citation]', 'HREF':'#{site.distant_url}/citation/#{id}/show'})")
     ).in_div(class: 'small right btns')
   end
 
