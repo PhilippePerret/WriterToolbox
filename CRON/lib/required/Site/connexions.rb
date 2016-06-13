@@ -175,11 +175,11 @@ end # << self SiteHtmlConnexions
     mess += "\nIPs inconnues : #{unknown_ips.count}"
 
     known_ips     = known_ips.collect{ |nom, arr| arr.join("\n") }.join("\n")
-    unknown_ips   = unknown_ips.join("\n")
+    unknown_ips   = unknown_ips.sort.join("\n")
 
     mess += "\n=== IPs INCONNUES ===\n"
     mess += unknown_ips
-    mess += "\n=== IPs CONNUES ===\n"
+    mess += "\n\n\n=== IPs CONNUES ===\n"
     mess += known_ips
 
     # On ajoute les routes empruntées par IP
