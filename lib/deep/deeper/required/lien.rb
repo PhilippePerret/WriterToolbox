@@ -128,6 +128,20 @@ class Lien
   alias :sabonner :subscribe
   alias :abonnement :subscribe
 
+  def bouton_subscribe options = nil
+    # type: :arrow_cadre
+    options ||= {}
+    options.key?(:tarif) || options.merge!(tarif: true)
+    options[:titre] ||= begin
+      tarif = options[:tarif] ? "<br>(pour #{site.tarif_humain}/an)".in_span(class:'tiny') : ''
+      (
+        "#{ARROW} S'ABONNER" + tarif
+      ).in_div(class: 'cadre', style:'display:inline-block;line-height:0.6em')
+    end
+    subscribe(options[:titre], class: 'small vert discret').in_div(class:'right vert')
+  end
+  alias :bouton_abonnement :bouton_subscribe
+
   # Pour rejoindre la console
   def console titre = "console", options = nil
     raise_unless_admin

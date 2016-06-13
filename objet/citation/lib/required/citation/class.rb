@@ -15,6 +15,7 @@ class << self
 
   def data_onglets
     @data_onglets ||= {
+      'Recherche' => 'citation/search',
       'Au hasard' => 'citation/round'
     }
   end

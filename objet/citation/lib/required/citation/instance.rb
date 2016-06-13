@@ -57,7 +57,8 @@ class Citation
     user.manitou? || ( return '' )
     (
       'Nouvelle citation'.in_a(href: 'http://localhost/WriterToolbox/citation/edit') +
-      "Editer la citation ##{id}".in_a(href: "http://localhost/WriterToolbox/citation/#{id}/edit")
+      "Editer la citation ##{id}".in_a(href: "http://localhost/WriterToolbox/citation/#{id}/edit") +
+      '&lt;...&gt;'.in_a()
     ).in_div(class: 'small right btns')
   end
 
