@@ -104,6 +104,6 @@ feature "Changement de mot de passe" do
     options = bdata[:options]
     expect(options).not_to eq nil
     expect(options[2]).to eq '1' # mail confirmé
-    
+
   end
 end

@@ -113,4 +113,4 @@ site.alert_apres_login = :twice_a_day
 # Chemin d'accès au binaire `rpsec` pour lancer les tests
 # façon console. Pour l'obtenir, taper `which rspec` dans le
 # Terminal.
-site.rspec_command = File.join(HOME, '.rvm/rubies/ruby-2.0.0-p643/bin/rspec')
+site.rspec_command = File.join(HOME, '.rbenv/shims/rspec')

@@ -1,6 +1,21 @@
 # encoding: UTF-8
 class SiteHtml
 
+  def get_last_date key, default_value = nil
+    key = key.to_s
+    res = table_last_dates.select(where:{key: key}).values.first
+    res || default_value
+  end
+  alias :get_last_time :get_last_date
+
+  # Enregistrement de la clé +key+ avec le temps +time+
+  def set_last_date key, time = nil
+    time ||= Time.now.to_i
+    key = key.to_s
+    table_last_dates.set(value:{time:time, key:key}, where:{key: key})
+  end
+  alias :set_last_time :set_last_date
+
   # Exécute le script +script+ (qui doit être au format AppleScript)
   # RETURN False s'il y a eu une erreur (qui est affichée) ou
   # le retour du script qui peut contenir l'erreur AppleScript.

@@ -34,6 +34,17 @@ class << self
       return
     end
 
+    # Pas d'annonce si la dernière remonte aux dernières
+    # 23 heures. Dans le cas contraire, on enregistre la
+    # date de dernier envoi des actualités.
+    if site.get_last_date(:mail_updates, 0) > (Time.now - 23*3600).to_i
+      safed_log '   = Envoi effectué dans les dernières 23 heures' +
+                '   <- (annonces last updates)'
+      return
+    else
+      site.set_last_date(:mail_updates)
+    end
+
     # Pas d'annonce s'il n'y a aucune actualité
     no_updates_today = last_updates.empty?
     no_updates_this_week = last_week_updates.empty?

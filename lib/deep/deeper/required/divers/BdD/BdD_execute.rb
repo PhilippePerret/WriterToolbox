@@ -141,6 +141,12 @@ class BdD
       end
       # @debug_on = false
 
+      # Par prudence, j'essaie ça
+      begin
+        database.execute("BEGIN TRANSACTION; END;")
+      rescue Exception => e
+      end
+
       # Préparation de la requête
       begin
         smt = database.prepare( request )
@@ -187,6 +193,12 @@ class BdD
       # Exécution (BON)
       res = smt.execute
 
+      if request_name == 'INSERT'
+        last_insert_rowid = database.execute("SELECT last_insert_rowid();").first.first
+      end
+      # (smt.close; smt = nil) rescue nil
+      # database.close
+
       # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
       # if request_name == "SELECT"
       #   debug "=== Retour de requête SELECT ==="
@@ -199,7 +211,8 @@ class BdD
 
 
       # Retour suivant l'opération
-      retour = case request_name
+      retour =
+      case request_name
       when "SELECT"
         # On fait un hash de colonne => type pour pouvoir
         # transformer les valeurs en leur type réel.
@@ -244,7 +257,7 @@ class BdD
       when "INSERT"
         # Après une insertion, on retourne le nouvel ID
         # attribué.
-        database.execute("SELECT last_insert_rowid();").first.first
+        last_insert_rowid
       end
 
       if retour.nil?
@@ -264,6 +277,7 @@ class BdD
     ensure
       (database.close  if database) rescue nil
       (smt.close       if smt) rescue nil
+      database = nil # pour essayer une instance neuve chaque fois
     end
     alias :execute_request :execute_requete
 

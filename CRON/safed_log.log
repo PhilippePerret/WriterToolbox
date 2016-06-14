@@ -1,27 +1,14 @@
-SAFED LOG DU 13 05 2016 - 10:00
+SAFED LOG DU 14 06 2016 - 00:53
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
 -> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
-* STEP 1
+* STEP 1 (all requirements)
 - Require log.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/log.rb
 - Require toutes les librairies cron
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/__constantes__.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/__constantes__.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/Cron/main.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/forum.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/forum.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/rapport_admin.rb
--> /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
-<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required/UnAnUnScript/User/traite_users.rb
 = STEP 1 OK =
 * STEP 2 (Cron::run)
 -> Cron::run
-Racine courante = /Users/philippeperret
 APP_FOLDER = "/Users/philippeperret/Sites/WriterToolbox"
 Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 
@@ -29,9 +16,9 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Nettoyage des lieux
     - Nettoyage des vieux rapports de connexion
-    = OK (2 destructions)
+    = OK (0 destructions)
     - Nettoyage du debug.log
-    = OK
+    - Inexistant -
     - Nettoyage des rapports de synchronisation générale
      = 0 fichiers rapport de synchronisation détruits     = Nettoyage OK
     - Nettoyage des logs cron (un an un script)
@@ -41,3 +28,91 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Requérir toutes les librairies du site
      -> Cron::requerir_les_librairies_du_site
+     <- Cron::requerir_les_librairies_du_site
+
+
+----------------------------------------------------------------------
+[Cron::run] Mails d'actualité quotidiens
+  -> Annonce last updates
+   = Mails actualité envoyés à 5 utilisateurs : Phil, Benoit, Marion, Pseudo, Autrevoir.
+   = Envoi des mails d'actualité OK
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement des connexions par IP
+Fréquence de rapport connexion : ":twice_a_day"
+			   rapport_needed? : true
+Fréquence de rapport connexion : ":twice_a_day"
+			* Résumé des connexions par IP
+			. = /Users/philippeperret/Sites/WriterToolbox
+			-> rationalise_connexions
+			RÉSULTATS À ENVOYER :
+Titre : Rapport ONLINE des connexions du 2016-06-14 00:53:03 +0200
+Message :
+<pre style='font-size:9pt'>
+Rapport ONLINE des connexions du 2016-06-14 00:53:03 +0200
+
+IP                   Nb   Durée Whois                          De       à        Routes
+
+Nombre total d'IPs : 0
+IPs connues : 0
+IPs inconnues : 0
+=== IPs INCONNUES ===
+
+
+
+=== IPs CONNUES ===
+
+
+=== ROUTES PAR IPS ===
+
+</pre><p class='small'>La durée est exprimée en secondes.</p>
+<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
+
+			  = Résumé des connexions OK
+			<- SiteHtml::Connexions::resume
+
+
+----------------------------------------------------------------------
+ [Cron::run] Envoi des permanent tweets (si nécessaire)
+-> send_permanent_tweets_if_needed
+  = Calcul si envoi est nécessaire
+  = Heure courante : 0 / Fréquence : toutes les 3 heures
+  = Envoi requis : OUI
+Les prochaines citations à expliciter sont les citations : 49, 54, 94, 80, 22, 87, 68, 92, 42, 89
+  = Envoi Tweet de la CITATION #91 (OK).
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement du programme UN AN UN SCRIPT
+     -> Cron::traitement_programme_un_an_un_script
+nombre_avertissements_mineurs : 5::Fixnum
+    = retard   = 1
+    = retards  = 0000001111
+    = frequence ? nil
+Traitement de la liste :overtimed
+Traitement de la liste :nouveaux
+Traitement de la liste :poursuivis
+    = retard   = 0
+    = retards  = 000
+    = frequence ? nil
+Traitement de la liste :nouveaux
+     <- Cron::traitement_programme_un_an_un_script
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement des messages forum
+     -> Cron::traitement_messages_forum
+     <- Cron::traitement_messages_forum
+    = Fin Cron::run =
+
+
+----------------------------------------------------------------------
+[Cron::run] Traitement du rapport admin
+    = Rapport administrateur envoyé.
+= STEP 2 OK =
+<- /Users/philippeperret/Sites/WriterToolbox/CRON/lib/required.rb
+
+
+=== FIN DU SAFED LOG SANS ERREUR FATALE ===
+--- FIN DU SAFED LOG (14 06 2016 - 00:53) ---
