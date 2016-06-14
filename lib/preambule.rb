@@ -5,7 +5,7 @@ Préambule de l'application, après que tout a été chargé
 
 =end
 def execute_preambule
-  User::init
+  User.init
   app.check_ticket
   user.do_after_load
 end

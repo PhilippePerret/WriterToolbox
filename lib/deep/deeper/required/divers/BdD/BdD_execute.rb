@@ -9,14 +9,14 @@ class BdD
     def execute params
 
       # La base de données
-      db = params.delete(:database) || raise( AIError, :bdd_execute_db_required)
-      db = db.database if db.class == BdD
-      db.class == ::SQLite3::Database || raise( AIError, :bdd_execute_required_db_sqlite3)
-      params[:db] = db
+      db = params.delete(:database) || raise('Il faut indiquer la base de données à utiliser (path)')
+
+      db.instance_of?(String) || raise('Il faut indiquer la base de données en String (path)')
+      params[:db] = db = SQLite3::Database.new(db)
 
       # La table
-      table = params[:table]      || raise( AIError, :bdd_execute_table_required )
-      table.instance_of?(String)  || raise( AIError, :bdd_execute_table_string )
+      table = params[:table]      || raise('Il faut indiquer la table à utiliser.')
+      table.instance_of?(String)  || raise('Il faut indiquer le NOM de la table à utiliser dans la base.')
 
       # Les colonnes
       # ------------
@@ -127,6 +127,9 @@ class BdD
     def execute_requete database, request, values = nil, params = nil
       params ||= {}
 
+      # Pour essayer de forcer une instance chaque fois
+      # @database = nil
+
       request_name = request.split.first
 
       # @debug_on = true
@@ -142,6 +145,7 @@ class BdD
       # @debug_on = false
 
       # Par prudence, j'essaie ça
+      debug "--> On envoie BEGIN TRANSACTION; END;" if @debug_on
       begin
         database.execute("BEGIN TRANSACTION; END;")
       rescue Exception => e
@@ -149,6 +153,7 @@ class BdD
 
       # Préparation de la requête
       begin
+        debug "--> smt = database.prepare( request )" if @debug_on
         smt = database.prepare( request )
       rescue Exception => e
         (smt.close if smt) rescue nil
@@ -191,13 +196,12 @@ class BdD
       end
 
       # Exécution (BON)
+      debug "--> res = smt.execute" if @debug_on
       res = smt.execute
 
       if request_name == 'INSERT'
         last_insert_rowid = database.execute("SELECT last_insert_rowid();").first.first
       end
-      # (smt.close; smt = nil) rescue nil
-      # database.close
 
       # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
       # if request_name == "SELECT"
@@ -263,6 +267,11 @@ class BdD
       if retour.nil?
         retour = res.collect { |row| table_values_to_real_values row }
       end
+
+      debug "--> smt.close" if @debug_on
+      smt.close
+      debug "--> database.close" if @debug_on
+      database.close
 
     rescue Exception => e
       debug "# IMPOSSIBLE DE JOUER execute_requete : #{e.message}"

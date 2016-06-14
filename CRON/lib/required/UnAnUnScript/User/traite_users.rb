@@ -76,7 +76,7 @@ class << self
       # l'auteur lorsqu'il rejoindra son bureau.
       #
       # [METTRE TRUE ICI POUR FORCER LE RAPPORT]
-      if true # resultat == nil && Time.now.hour == 0
+      if resultat == nil && Time.now.hour == 0
         log "--- État des lieux de première heure nécessaire"
         log "    * État des lieux"
         auteur.program.etat_des_lieux

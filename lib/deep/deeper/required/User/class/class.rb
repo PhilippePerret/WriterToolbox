@@ -7,7 +7,7 @@ Classe
 class User
 
   extend MethodesMainObjets
-  
+
   class << self
 
     def get id
@@ -37,15 +37,27 @@ class User
     #     du nombre de pages visitées au cours de cette session
     #     permettant notamment de régler l'opacité de l'interface
     def current
-      if @current == nil && app.session['user_id']
-        uchecked = get(app.session['user_id'].to_i)
-        uchecked.instance_variable_set('@session_id', nil)
-        if uchecked.get(:session_id) == app.session.session_id
-          app.session['user_nombre_pages'] += 1
-          @current = uchecked
-        end
+      @current ||= begin
+        debug "-> current (@current non défini)"
+        # debug "-> current (app.session['user_id'] = #{app.session['user_id']})"
+        user_id =
+          if app.session['user_id'].nil?
+            nil
+          else
+            app.session['user_id'].to_i
+          end
+
+        # l'user courant
+        curuser = User::new(user_id)
+
+        user_id && curuser.incremente_nombre_pages
+
+        debug "user_id = #{user_id}"
+        debug "<- current"
+
+        # Pour le mettre dans @current
+        curuser
       end
-      @current ||= User::new
     end
 
     def bind; binding() end

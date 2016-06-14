@@ -20,6 +20,14 @@ class User
   #   Instance
   # ---------------------------------------------------------------------
 
+  # Incrémentation du nombre de pages visitées si c'est la
+  # même session que précédemment
+  def incremente_nombre_pages
+    if get(:session_id) == app.session.session_id
+      app.session['user_nombre_pages'] += 1
+    end
+  end
+
   # À l'initialisation de l'user (en fait, au chargement de
   # la page), on enregistre toujours sa dernière connexion
   def set_last_connexion

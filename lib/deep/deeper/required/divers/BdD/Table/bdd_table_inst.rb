@@ -87,7 +87,7 @@ class BdD
       raise ArgumentError, "Le second argument doit être un Hash (des nouvelles valeurs)" unless hdata.class == Hash
       raise ArgumentError, "La donnée #{id} n'existe pas dans la table" if count(where: "id = #{id.inspect}") == 0
       return BdD::execute(
-        database:   bdd.database,
+        database:   bdd.path,
         table:      self.name,
         request:    'UPDATE',
         colonnes:   hdata.keys,
@@ -220,7 +220,7 @@ class BdD
 
       # Finalisation du Hash de données à envoyer à BdD::execute
       hdata.merge!(
-        database: bdd.database,
+        database: bdd.path,
         table:    name,
         request:  "select"
       )

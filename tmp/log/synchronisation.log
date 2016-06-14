@@ -136,3 +136,177 @@
 /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Site/route.rb:76:in `execute_route'
 /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/output.rb:30:in `output'
 /Users/philippeperret/Sites/WriterToolbox/index.rb:6:in `<main>'
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+-> current (app.session['user_id'] = 1)
+@current.id = 1
+user_id = 1
+<- current
+
+
+---BdD::execute_requete---
+[BdD::execute_requete]
+REQUEST: SELECT * FROM todolist WHERE state < 9 AND admin_id = 1 ORDER BY echeance ASC
+VALUES: nil
+PARAMS: {:where=>"state < 9 AND admin_id = 1", :order=>"echeance ASC", :colonnes=>["*"], :table=>"todolist", :request=>"select", :db=>#<SQLite3::Database:0x007ffc212e5868 @tracefunc=nil, @authorizer=nil, @encoding=nil, @busy_handler=nil, @collations={}, @functions={}, @results_as_hash=nil, @type_translation=nil, @readonly=false>}
+[/BdD::execute_requete]
+--------------------------------------------------
+
+--> On envoie BEGIN TRANSACTION; END;
+--> smt = database.prepare( request )
+--> res = smt.execute
+--> smt.close
+--> database.close
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+
+
+---BdD::execute_requete---
+[BdD::execute_requete]
+REQUEST: SELECT * FROM todolist WHERE state < 9 AND admin_id = 1 ORDER BY echeance ASC
+VALUES: nil
+PARAMS: {:where=>"state < 9 AND admin_id = 1", :order=>"echeance ASC", :colonnes=>["*"], :table=>"todolist", :request=>"select", :db=>#<SQLite3::Database:0x007fb93c3cb1b0 @tracefunc=nil, @authorizer=nil, @encoding=nil, @busy_handler=nil, @collations={}, @functions={}, @results_as_hash=nil, @type_translation=nil, @readonly=false>}
+[/BdD::execute_requete]
+--------------------------------------------------
+
+--> On envoie BEGIN TRANSACTION; END;
+--> smt = database.prepare( request )
+--> res = smt.execute
+--> smt.close
+--> database.close
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
+-> identified?
+<- identified? (true)
