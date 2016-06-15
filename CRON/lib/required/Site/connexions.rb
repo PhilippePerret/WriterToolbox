@@ -287,6 +287,7 @@ end # << self SiteHtmlConnexions
   def recolte_connexions_by_ip
     # On passe en revue toutes les bases
     Dir["#{folder_connexions_report}/*.db"].each do |p|
+      # -> MYSQL
       dbase   = SQLite3::Database::new(p)
       connexions = dbase.execute("SELECT * FROM connexions").each do |res|
         ip, time, route = res
@@ -294,6 +295,7 @@ end # << self SiteHtmlConnexions
         @report[:by_ip][ip][:times]   << time
         @report[:by_ip][ip][:routes]  << route
       end
+      # -> MYSQL
     end
   end
 

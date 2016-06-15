@@ -38,6 +38,7 @@ class << self
     # Chargement de toutes les librairies du forum
     site.require_objet 'forum'
 
+    # -> MYSQL FORUM
     # On récupère tous les messages qui ont été créés depuis le
     # dernier checkup du forum et qui sont validés.
     drequest = {where:"created_at > #{last_time_checkup} AND options LIKE '1%'"}
@@ -110,6 +111,7 @@ class << self
         # puisqu'il faut une validation, c'est une manière pour lui aussi
         # de savoir que son message a été validé.
 
+        # -> MYSQL FORUM
         # Vérifier si l'abonné a déjà reçu une alerte pour un message
         # précédent dans le même sujet (s'en retourner si oui). Cette vérification
         # se fait à l'aide de la table sujets_followers, pour les données où

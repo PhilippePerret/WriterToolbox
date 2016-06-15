@@ -243,6 +243,7 @@ class << self
   # Liste des dernières actualisations
   def last_updates
     @last_updates ||= begin
+      # -> MYSQL
       require 'sqlite3'
       now   = Time.now
       hier  = now - (3600*24)
@@ -271,6 +272,7 @@ class << self
 
   # Retourne les updates de +from+ (compris) à +to+ (non compris)
   def get_updates from, to
+    # -> MYSQL UPDATES
     where = []
     # On ne fait plus de filtre par degré d'importance, mais
     # seulement si l'update doit être annoncée ou non.
@@ -301,28 +303,14 @@ class << self
   # C'est une liste `Array` d'éléments : [mail, pseudo]
   def destinataires
     @destinataires ||= begin
-      require 'sqlite3'
-      require './data/secret/data_phil'
-      arr = []
-      # WHERE CLAUSE
       # Il faut que l'user soit inscrit ou abonné, et que ses
       # options précisent qu'il veut recevoir les mails d'actualité
       # Il ne doit pas être détruit
       where = 'options NOT LIKE "___1%"'
-      req = "SELECT id FROM users WHERE #{where}"
-      db = SQLite3::Database.new('./database/data/users.db')
-      pr = db.prepare req
-      pr.execute.each_hash do |huser|
-        arr << huser['id']
-      end
+      User.table_users.select(where: where, colonnes:[]).collect{|huser| huser[:id]}
     rescue Exception => e
       error_log e
-      arr
-    else
-      arr
-    ensure
-      (pr.close if pr) rescue nil
-      (db.close if db) rescue nil
+      []
     end
   end
 end #/<< self

@@ -68,6 +68,7 @@ class Tweet
     #
     def tweet_citation
 
+      # -> MYSQL CITATIONS
       # On choisit un nombre (ID) de citation au hasard
       tbl_citations = site.db.table('site_cold', 'citations')
 
@@ -164,6 +165,7 @@ class Tweet
       reste_len = 139 - (auteur.length + bitly.length + 4) #
       citation  = prochaine[:citation]
 
+      # -> MYSQL CITATIONS
       # On indique la date d'envoi de cette dernière
       # citation
       tbl_citations.update(citation_id, { last_sent: Time.now.to_i })

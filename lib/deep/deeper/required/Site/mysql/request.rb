@@ -270,7 +270,7 @@ DELETE FROM #{dbm_table.name}
     end
   end
   def columns_clause
-    cols = params[:columns] || params[:colonnes]
+    cols = params[:columns] || params[:colonnes] || options[:colonnes] || options[:columns]
     case cols
     when NilClass then '*'
     when Array    then (cols << :id).uniq.join(', ')

@@ -1,5 +1,16 @@
 # Passage de SQLite3 à MYSQL
 
+Pour savoir où il y a des choses à corriger, chercher les
+balises :
+
+
+    # -> MYSQL
+
+    # -> MYSQL CITATIONS
+    # -> MYSQL UNAN
+    # -> MYSQL FORUM
+    # -> MYSQL CONNEXIONS
+
 > NOTE : Ce fichier doit servir aussi de mode d'emploi. Il sera glissé dans le dossier d'aide.
 
 * [Principe généraux](#principesgeneraux)

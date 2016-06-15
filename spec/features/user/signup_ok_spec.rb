@@ -46,7 +46,7 @@ feature "Inscription d'un nouveau membre" do
     puts "Il y a un auteur en plus"
 
 
-    last_user = User::table_users.select(limit:1, order:"created_at DESC").values.first
+    last_user = User::table_users.select(limit:1, order:"created_at DESC").first
 
     expect(last_user[:pseudo]).to eq data[:pseudo]
     expect(last_user[:patronyme]).to eq data[:patronyme]

@@ -100,7 +100,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     Request.new(self, params, options).select
   end
   def get who, options = nil
-    Request.new(self, (options || {}).merge(id: who)).get
+    Request.new(self, who, options).get
   end
   def update who, values
     Request.new(self, who, values).update

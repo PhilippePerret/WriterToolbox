@@ -108,6 +108,7 @@ class << self
   # du programme UN AN UN SCRIPT en activité
   def users_en_activite
     @users_en_activite ||= begin
+      # -> MYSQL UNAN
       where_clause = "options LIKE '1%'"
       Unan::table_programs.select(where:where_clause, colonnes:[:auteur_id]).collect do |pid, pdata|
         User::new( pdata[:auteur_id] )

@@ -72,6 +72,7 @@ class User
   # (en fait, on marque que l'user a supprimé son compte mais on
   #  garde le message)
   def destroy_messages_forum
+    # -> MYSQL FORUM
     debug "  * Destruction des messages forum"
     db_forum = SQLite3::Database::new('./database/data/forum.db')
 
@@ -80,6 +81,7 @@ class User
       arr_with_id[0]
     end
 
+    # -> MYSQL FORUM
     request = <<-SQL
 UPDATE posts_content
   SET content = "[Contenu supprimé : utilisateur supprimé]"
@@ -92,6 +94,7 @@ UPDATE posts_content
     db_forum.execute( request )
     debug "  = Suppression de ses suivis"
 
+    # -> MYSQL FORUM
     request = <<-SQL
 SELECT id, items_ids FROM sujets_followers
   WHERE (items_ids LIKE ',#{self.id} ,') OR ( items_ids LIKE '[#{self.id},') OR ( items_ids LIKE '#{self.id}]');
@@ -111,6 +114,7 @@ SELECT id, items_ids FROM sujets_followers
 
   # Destruction des programmes UN AN UN SCRIPT
   def destroy_programmes_unan
+    # -> MYSQL UNAN
     debug "  * Destruction des programmes & projets UN AN UN SCRIPT"
     # On charge tout ce qui concerne Unan, on en aura
     # besoin plus bas (pour les bases de données)

@@ -18,6 +18,7 @@ class User
         when '0'  # Le profil
           "user/#{id}/profil"
         when '1'  # Dernière page consultée
+          # -> MYSQL CONNEXIONS
           # La dernière page consultée (ou l'accueil si aucune
           # dernière page consultée n'a été trouvée)
           # C'est dans les connexions qu'on trouve cette information
