@@ -37,6 +37,7 @@ class User
     # Pour obtenir les méthodes qui permettent de comparer
     # les travaux exécutés aux travaux non démarrés en utilisant
     # l'instance Unan::Program::CurPDay (current_pday)
+    SuperFile::new('./objet/unan/lib/required/user').require
     SuperFile::new('./objet/unan/lib/required/cur_pday').require
     SuperFile::new('./objet/unan/lib/required/program').require
 

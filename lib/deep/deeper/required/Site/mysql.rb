@@ -96,20 +96,10 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   def insert params
     Request::new(self, params).insert
   end
-
-  def select params
-    request = <<-SQL
-SELECT #{columns_clause params} FROM #{name}
-  #{where_clause params}
-  #{order_by_clause params}
-  #{limit_clause params}
-  #{group_clause params}
-  ;
-    SQL
+  def select params = nil, options = nil
+    Request.new(self, params, options).select
   end
-  def request_select params
 
-  end
 
   def update params
     request = <<-SQL
@@ -169,75 +159,7 @@ UPDATE #{name}
     end
   end
 
-  # = main =
-  #
-  # Fonction principal qui exécute le code voulu.
-  #
-  def execute request
-    client.query(request)
-  rescue Exception => e
-    debug e
-    @error = e
-    raise e
-  end
 
-
-  # ---------------------------------------------------------------------
-  #   Méthodes de fabrication des clauses
-  # ---------------------------------------------------------------------
-
-  # La clause WHERE peut être définie de ces manières
-  # suivantes :
-  #     - String simple     p.e. 'id = 12'
-  #     - String complexe   p.e.  'id = ?'
-  #     - Hash              p.e. {id : 12}
-  def where_clause params
-    where = params[:where]
-    case where
-    when NilClass then ''
-    when String then where
-    when Hash then
-      # Pour un Hash, on transforme en "key = :key" et on incrémente
-      # les valeurs qui devront être bindées
-      @values ||= []
-      @values = where.values + @values
-      where.collect { |k, v| "( #{k} = ? )" }.join(' AND ')
-    else
-      raise 'La clause WHERE doit être définie par un NIL, un String ou un Hash.'
-    end
-  end
-  def columns_clause params
-    columns = params[:columns] || params[:colonnes]
-    case columns
-    when NilClass then '*'
-    when Array    then (columns << :id).uniq.join(', ')
-    when String   then columns
-    else
-      raise 'Le paramètre :colonnes doit être NIL, un Array ou un String.'
-    end
-  end
-
-  def limit_clause params
-    if params.key?(:limit)
-      "LIMIT #{params[:limit]}"
-    else
-      ''
-    end
-  end
-  def group_by_clause params
-    if params.key?(:group) || params.key?(:group_by)
-      "GROUP BY #{params[:group] || params[:group_by]}"
-    else
-      ''
-    end
-  end
-  def order_by_clause params
-    if params.key?(:order) || params.key?(:order_by)
-      "ORDER BY #{params[:order] || params[:order_by]}"
-    else
-      ''
-    end
-  end
 
   # ---------------------------------------------------------------------
   #   Méthodes utilitaires

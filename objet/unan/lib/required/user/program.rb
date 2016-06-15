@@ -16,6 +16,7 @@ class User
       Unan::Program::get_current_program_of(self.id)
     end
   end
+  
   # ID du programme de l'user
   # Noter que ça ne fonctionne pas comme habituellement : ici, la
   # propriété ne permettra pas de définir l'instance, c'est au

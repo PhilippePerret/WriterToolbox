@@ -30,8 +30,8 @@ class Request
 
   def initialize itable, params, options = nil
     @dbm_table  = itable
-    @params     = params
-    @options    = options
+    @params     = params  || {}
+    @options    = options || {}
   end
 
   # ---------------------------------------------------------------------
@@ -45,26 +45,116 @@ class Request
   # @RETURN L'insertion retourne toujours l'ID de la rangée créée.
   def insert
     @request = request_insert
+    resultat = exec
+    return last_insert_id
+  end
+
+  # SELECT
+  #
+  # @USAGE <dbm_table>.select(where, options)
+  #
+  # @RETURN Un hash des éléments trouvés
+  #
+  def select
+    @request = request_select
     debug "@request : #{@request}"
     debug "@prepared_values : #{@prepared_values.inspect}"
     resultat = exec
-    return last_insert_id
+    return resultat
   end
 
   # ---------------------------------------------------------------------
   #   REQUÊTES STRING
   # ---------------------------------------------------------------------
+
+  # Construction de la requête string pour INSERT
   def request_insert
     inserted_columns = params.keys.join(', ')
     @prepared_values = params.values
     inserted_values  = Array.new(params.count, '?').join(', ')
-    @request_insert ||= <<-SQL
+    <<-SQL
 INSERT INTO #{dbm_table.name}
   (#{inserted_columns})
   VALUES ( #{inserted_values} )
   ;
     SQL
   end
+
+  # Construction de la requête string pour SELECT
+  def request_select
+    <<-SQL
+SELECT #{columns_clause} FROM #{dbm_table.name}
+  ;
+    SQL
+  end
+=begin
+#{where_clause}
+#{order_by_clause}
+#{limit_clause}
+#{group_clause}
+=end
+  # ---------------------------------------------------------------------
+  #   Méthodes de fabrication des clauses
+  # ---------------------------------------------------------------------
+
+  # La clause WHERE peut être définie de ces manières
+  # suivantes :
+  #     - String simple     p.e. 'id = 12'
+  #     - String complexe   p.e.  'id = ?'
+  #     - Hash              p.e. {id : 12}
+  def where_clause
+    where = params[:where]
+    case where
+    when NilClass then ''
+    when String then where
+    when Hash then
+      # Pour un Hash, on transforme en "key = :key" et on incrémente
+      # les valeurs qui devront être bindées
+      @values ||= []
+      @values = where.values + @values
+      where.collect { |k, v| "( #{k} = ? )" }.join(' AND ')
+    else
+      raise 'La clause WHERE doit être définie par un NIL, un String ou un Hash.'
+    end
+  end
+  def columns_clause
+    cols = params[:columns] || params[:colonnes]
+    case cols
+    when NilClass then '*'
+    when Array    then (cols << :id).uniq.join(', ')
+    when String   then cols
+    else
+      raise 'Le paramètre :colonnes doit être NIL, un Array ou un String.'
+    end
+  end
+
+  def limit_clause
+    if params.key?(:limit)
+      "LIMIT #{params[:limit]}"
+    else
+      ''
+    end
+  end
+  def group_by_clause
+    if params.key?(:group) || params.key?(:group_by)
+      "GROUP BY #{params[:group] || params[:group_by]}"
+    else
+      ''
+    end
+  end
+  def order_by_clause
+    if params.key?(:order) || params.key?(:order_by)
+      "ORDER BY #{params[:order] || params[:order_by]}"
+    else
+      ''
+    end
+  end
+
+
+
+  # / Fin de méthodes de fabrication des clauses
+  # ---------------------------------------------------------------------
+
 
   # Retourne l'ID de la dernière ligne insérée
   #
@@ -99,7 +189,12 @@ INSERT INTO #{dbm_table.name}
     end
     # Si on passe ici c'est que la requête a pu être exécutée.
     # Mais resultat est nil pour certaines requêtes
-    resultat.to_sym unless resultat.nil?
+    unless resultat.nil?
+      resultat =
+        resultat.collect do |row|
+          row.to_sym
+        end
+    end
     return resultat
   end
 
