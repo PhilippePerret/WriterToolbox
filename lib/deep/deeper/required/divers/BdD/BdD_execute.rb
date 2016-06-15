@@ -33,9 +33,10 @@ class BdD
         debug '# Le path contient /./'
         dbpath = dbpath.gsub(/\/\.\//,'/')
         debug "db-path corrigé : #{dbpath}"
-        # On refait une instance propre
-        dbase = SQLite3::Database.new(dbpath)
       end
+
+      # On refait une instance propre
+      dbase = SQLite3::Database.new(dbpath)
 
       # Nom de la requête, c'est à dire SELECT ou UPDATE,
       # etc.
@@ -52,20 +53,8 @@ class BdD
         debug "-"*50 + "\n\n"
       end
       # @debug_on = false
-
-
-      # Nouvelle formule, on traite tout en séparé suivant
-      # la requête
-      case request_name
-      when 'SELECT'
-      when 'INSERT'
-      when 'UPDATE'
-      when 'DELETE'
-      else
-        raise "La requête #{request_name} doit être traitée."
-      end
-
-
+      #
+      #
       # # Par prudence, j'essaie ça
       # debug "--> On envoie BEGIN TRANSACTION; END;" if @debug_on
       # begin

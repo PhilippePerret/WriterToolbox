@@ -18,6 +18,7 @@ class User
   # chargé à chaque chargement de page même lorsque l'utilisateur
   # ne se trouve pas dans la section du programme)
   def set_pastille_taches
+    return ''
     site.require_module 'pastille'
     ipastille = SiteHtml::Pastille::new
     # Procéder à l'état des lieux du programme UN AN UN SCRIPT et
@@ -37,9 +38,11 @@ class User
     # Pour obtenir les méthodes qui permettent de comparer
     # les travaux exécutés aux travaux non démarrés en utilisant
     # l'instance Unan::Program::CurPDay (current_pday)
-    SuperFile::new('./objet/unan/lib/required/user').require
-    SuperFile::new('./objet/unan/lib/required/cur_pday').require
-    SuperFile::new('./objet/unan/lib/required/program').require
+    # SuperFile::new('./objet/unan/lib/required/user').require
+    # SuperFile::new('./objet/unan/lib/required/cur_pday').require
+    # SuperFile::new('./objet/unan/lib/required/program').require
+
+    site.require_objet('unan')
 
     icp = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
 

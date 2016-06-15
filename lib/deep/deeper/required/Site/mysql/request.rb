@@ -57,8 +57,6 @@ class Request
   #
   def select
     @request = request_select
-    debug "@request : #{@request}"
-    debug "@prepared_values : #{@prepared_values.inspect}"
     resultat = exec
     return resultat
   end
@@ -76,7 +74,6 @@ class Request
 INSERT INTO #{dbm_table.name}
   (#{inserted_columns})
   VALUES ( #{inserted_values} )
-  ;
     SQL
   end
 
@@ -84,15 +81,14 @@ INSERT INTO #{dbm_table.name}
   def request_select
     <<-SQL
 SELECT #{columns_clause} FROM #{dbm_table.name}
-  ;
+  #{where_clause}
+  #{group_by_clause}
+  #{order_by_clause}
+  #{limit_clause}
+  #{offset_clause}
     SQL
   end
-=begin
-#{where_clause}
-#{order_by_clause}
-#{limit_clause}
-#{group_clause}
-=end
+
   # ---------------------------------------------------------------------
   #   Méthodes de fabrication des clauses
   # ---------------------------------------------------------------------
@@ -106,13 +102,13 @@ SELECT #{columns_clause} FROM #{dbm_table.name}
     where = params[:where]
     case where
     when NilClass then ''
-    when String then where
+    when String then 'WHERE ' + where
     when Hash then
       # Pour un Hash, on transforme en "key = :key" et on incrémente
       # les valeurs qui devront être bindées
-      @values ||= []
-      @values = where.values + @values
-      where.collect { |k, v| "( #{k} = ? )" }.join(' AND ')
+      @prepared_values ||= []
+      @prepared_values = where.values + @prepared_values
+      'WHERE ' + where.collect { |k, v| "( #{k} = ? )" }.join(' AND ')
     else
       raise 'La clause WHERE doit être définie par un NIL, un String ou un Hash.'
     end
@@ -150,6 +146,16 @@ SELECT #{columns_clause} FROM #{dbm_table.name}
     end
   end
 
+  def offset_clause
+    offset = params[:offset] || params[:from]
+    case offset
+    when NilClass then ''
+    when Fixnum   then "OFFSET #{offset}"
+    else
+      raise 'La classe OFFSET doit être un nombre (Fixnum)'
+    end
+  end
+
 
 
   # / Fin de méthodes de fabrication des clauses
@@ -182,7 +188,7 @@ SELECT #{columns_clause} FROM #{dbm_table.name}
       if prepared_values
         prepared_statement.execute( *prepared_values )
       else
-        dbm_table.client.query( request )
+        dbm_table.client.query( final_request )
       end
     rescue Exception => e
       raise e
@@ -190,16 +196,22 @@ SELECT #{columns_clause} FROM #{dbm_table.name}
     # Si on passe ici c'est que la requête a pu être exécutée.
     # Mais resultat est nil pour certaines requêtes
     unless resultat.nil?
-      resultat =
-        resultat.collect do |row|
-          row.to_sym
-        end
+      resultat = resultat.collect { |row| row.to_sym }
     end
     return resultat
   end
 
   def prepared_statement
-    @prepared_statement ||= dbm_table.client.prepare(request)
+    @prepared_statement ||= dbm_table.client.prepare(final_request)
+  end
+
+  def final_request
+    @final_request ||= begin
+      r = request.gsub(/\n/, ' ').gsub(/ +/, ' ').strip + ';'
+      debug "Requête définitive : #{r}"
+      debug "@prepared_values : #{@prepared_values.inspect}"
+      r
+    end
   end
 
 end #/Request

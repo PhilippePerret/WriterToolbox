@@ -27,8 +27,12 @@ class BdD
       # Return TRUE si la table +table_name+ ({String}) existe dans
       # la base de données +bdd+ ({BdD})
       def table_exist? bdd, table_name
-        res = bdd.execute "SELECT count(*) FROM sqlite_master WHERE (type = 'table' AND name = '#{table_name}');"
-        return res.count == 1 && res.first == [1]
+        begin
+          bdd.execute "SELECT 1 FROM #{table_name} LIMIT 1;"
+          true
+        rescue Exception => e
+          false
+        end
       end
       alias :exist? :table_exist?
 
