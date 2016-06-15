@@ -4,6 +4,8 @@
 
 * [Principe généraux](#principesgeneraux)
 * [Obtenir une instance de table MySQL](#obtenirinstancetablemysql)
+* [Nombre de rangées dans une table](#nombrerangeesdanstable)
+* [Insertion de rangée dans la table](#insertionderangeesdanslatable)
 * [Destruction d'une table](#destructiondunetable)
 
 <a name='principesgeneraux'></a>
@@ -34,6 +36,32 @@ Voir l'exemple de la table User
 
     site.dbm_table(:hot/:cold, '<nom de la table>')
     # => Instance SiteHtml::DBM_TABLE de la table
+
+<a name='nombrerangeesdanstable'></a>
+
+## Nombre de rangées dans une table
+
+    <dbm_table>.count
+
+Par exemple :
+
+    SiteHTML::DBM_TABLE.new(:hot, 'users').count
+    # => nombre d'user enregistrés
+
+
+<a name='insertionderangeesdanslatable'></a>
+
+## Insertion de rangée dans la table
+
+    <dbm_table>.insert({<data à insérrer>})
+    # => Dernier IDentifiant, mais le premier si c'est une
+    #    liste de rangées à créer en une seule fois.
+
+Pour obtenir le **NOMBRE DE RANGÉES INSÉRÉES** on peut faire :
+
+    <dbm_table>.nombre_inserted_rows
+    # => nombre de rangées insérées
+
 
 <a name='destructiondunetable'></a>
 

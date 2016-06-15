@@ -99,30 +99,17 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   def select params = nil, options = nil
     Request.new(self, params, options).select
   end
-
-
-  def update params
-    request = <<-SQL
-UPDATE #{name}
-  SET #{set_clause params}
-  #{where_clause params}
-  #{order_by_clause params}
-  #{limit_clause params}
-  ;
-    SQL
+  def get who, options = nil
+    Request.new(self, (options || {}).merge(id: who)).get
   end
-
-  # Pour SET, il faut savoir si c'est un insert ou un
-  # update, donc savoir si la ligne existe.
-  def set params
-
+  def update who, values
+    Request.new(self, who, values).update
   end
-  def get params
-
+  def set who, values
+    Request.new(self, who, values).set
   end
-
-  def delete
-
+  def delete who
+    Request.new(self, who).delete
   end
 
   #
@@ -143,6 +130,15 @@ UPDATE #{name}
     @db_name = "#{self.class.prefix_name}#{type}"
   end
 
+  def count
+    nombre_rows = 0
+    client.query("SELECT COUNT(*) FROM #{name};").each do |row|
+      debug "ROW : #{row.inspect}"
+      nombre_rows = row.values.first
+    end
+    debug "count : #{nombre_rows.inspect}"
+    nombre_rows
+  end
 
   # Retourne TRUE si la table existe, FALSE si elle
   # n'existe pas.
@@ -173,11 +169,6 @@ UPDATE #{name}
     self.class.tables.delete("#{type}.#{name}")
     exists? == false
   end
-
-  def export
-
-  end
-
 
   # ---------------------------------------------------------------------
   #   Méthodes utiles à la création de la table
