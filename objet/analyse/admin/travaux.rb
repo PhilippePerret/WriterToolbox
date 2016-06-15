@@ -96,8 +96,8 @@ class << self
     @analyste_values ||= begin
       where = "(CAST(SUBSTR(options,18,1) as INTEGER) & 1) OR ( CAST(SUBSTR(options,1,1) as INTEGER) & 1)"
       cols  = [:pseudo, :options]
-      User::table_users.select(where:where,colonnes:cols).collect do |uid, udata|
-        ["#{uid}", "#{udata[:pseudo]}"]
+      User::table_users.select(where:where,colonnes:cols).collect do |udata|
+        ["#{udata[:id]}", "#{udata[:pseudo]}"]
       end
     end
   end

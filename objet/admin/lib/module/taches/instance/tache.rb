@@ -134,7 +134,7 @@ class Tache
     if aref.numeric?
       admin_id = aref.to_i
     else
-      admin_id = User::table_users.select(where:"pseudo = '#{aref}'", colonnes:[]).keys.first
+      admin_id = User::table_users.select(where:"pseudo = '#{aref}'", colonnes:[]).first[:id]
       raise "Aucun administrateur ne correspond au pseudo `#{aref}`" if admin_id.nil?
     end
     ua = User::get(admin_id)

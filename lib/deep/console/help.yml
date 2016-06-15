@@ -46,6 +46,16 @@ commandes:
     note:         La liste dépend de l'application. Cf. ci-dessous pour la programmation de cette aide.
     implement:    |
       Pour implémenter une aide sur un élément, il faut définir l'aide dans le fichier `help_app.yml` en définissant son type à `HELP`.
+
+  -
+    command:      run &lt;script&gt;[ arguments]
+    description: |
+      Permet de jouer un script du dossier ./lib/app/console_scripts
+    note: |
+      L'avantage de cette commande par rapport à un script placé dans
+      le dossier __Dev__, c'est qu'on peut le jouer aussi bien en
+      online qu'en offline.
+
 # ---------------------------------------------------------------------
 # SYNCHRO
 # ---------------------------------------------------------------------

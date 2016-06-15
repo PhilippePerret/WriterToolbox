@@ -69,12 +69,12 @@ class << self
 
   # Return true si le pseudo existe
   def pseudo_exist? pseudo
-    return User::table_users.count(where: "pseudo = '#{pseudo}'") > 0
+    return User::table_users.count(where: {pseudo: pseudo}) > 0
   end
 
   # Return True si le mail +mail+ se trouve déjà dans la table
   def mail_exist? mail
-    return User::table_users.count(where: "mail = '#{mail}'") > 0
+    return User::table_users.count(where: {mail: mail}) > 0
   end
 
   # Message qui sera envoyé à l'administration pour l'informer

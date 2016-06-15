@@ -192,6 +192,10 @@ class Console
     reste_line = words.join(' ').strip
     case first_word
 
+      # --- Jouer des scripts console ---
+    when 'run'
+      run_script_console reste_line
+
       # --- UPDATES (HISTORIQUE ACTUALISATIONS) ---
 
     when /^updates?/

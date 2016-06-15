@@ -51,7 +51,7 @@ class Request
   # Pour obtenir le nombre de nouvelles rangées, il faut utiliser
   # <dbm_table>.nombre_inserted_rows et non pas <dbm_table>.row_count
   # car la dernière requête sert à obtenir 'last_insert_id'
-  # 
+  #
   def insert
     @prepared_values = []
     @request = request_insert
@@ -131,6 +131,28 @@ class Request
     resultat = exec
     debug "[delete] resultat : #{resultat.inspect}"
   end
+
+  def count
+    @request = request_count
+    nombre_rows = 0
+    resultat = exec
+    unless resultat.nil?
+      resultat.each do |row|
+        nombre_rows = row.first[1]
+      end
+    end
+    nombre_rows
+  end
+
+  def request_count
+    <<-SQL
+SELECT COUNT(*) FROM #{dbm_table.name}
+  #{where_clause}
+  #{group_by_clause}
+    SQL
+  end
+
+  # ---------------------------------------------------------------------
 
   # Retourne true si les rangées définies par la clause
   # where existent. En général, ça ne test qu'une seule

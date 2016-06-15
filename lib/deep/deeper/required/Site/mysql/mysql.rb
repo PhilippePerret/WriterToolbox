@@ -108,9 +108,13 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   def set who, values
     Request.new(self, who, values).set
   end
-  def delete who
+  def delete who = nil
     Request.new(self, who).delete
   end
+  def count who = nil
+    Request.new(self, who).count
+  end
+
 
   #
   # / FIN REQUÊTES PRINCIPALES
@@ -128,16 +132,6 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Soit la base :hot soit la base :cold.
   def db_name
     @db_name = "#{self.class.prefix_name}#{type}"
-  end
-
-  def count
-    nombre_rows = 0
-    client.query("SELECT COUNT(*) FROM #{name};").each do |row|
-      debug "ROW : #{row.inspect}"
-      nombre_rows = row.values.first
-    end
-    debug "count : #{nombre_rows.inspect}"
-    nombre_rows
   end
 
   # Retourne TRUE si la table existe, FALSE si elle
@@ -191,7 +185,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Crée la table si elle n'existe pas.
   # RETURN toujours l'instance courante, pour le chainage
   def create_if_needed
-    execute( code_creation_schema ) unless exists?
+    client.query( code_creation_schema ) unless exists?
     return self
   end
   #

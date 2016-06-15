@@ -17,7 +17,7 @@ class User
       login_data = param(:login)
       mail = login_data[:mail]
       pasw = login_data[:password]
-      res = table_users.select(where: {mail: mail}, colonnes: [:salt, :cpassword, :mail]).values.first
+      res = table_users.select(where: {mail: mail}, colonnes: [:salt, :cpassword, :mail]).first
       return false if res.nil?
       expected = res[:cpassword]
       compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")

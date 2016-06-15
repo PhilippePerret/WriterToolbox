@@ -16,7 +16,7 @@ class User
     end
 
     def get_by_pseudo pseudo
-      u = table_users.select(where:"pseudo = '#{pseudo}'", colonnes: [:id]).values.first
+      u = table_users.select(where: {pseudo: pseudo}, colonnes: []).first
       return nil if u.nil?
       get(u[:id])
     end
@@ -65,8 +65,8 @@ class User
     # Retourne la liste des users comme un Array d'instances User,
     # classée par les pseudos
     def as_array
-      table_users.select(order:"pseudo ASC", colonnes:[]).keys.collect do |uid|
-        new(uid)
+      table_users.select(order:"pseudo ASC", colonnes:[]).collect do |huser|
+        new(huser[:id])
       end
     end
 

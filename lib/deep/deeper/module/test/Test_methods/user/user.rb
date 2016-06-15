@@ -67,7 +67,7 @@ class TestUser < DSLTestMethod
       @user_id = ref_user
       User::table_users.get(@user_id)
     else
-      User::table_users.select(where: ref_user).values.first || {}
+      User::table_users.select(where: ref_user).first || {}
     end
   end
 

@@ -16,14 +16,21 @@ class User
     end
 
     def table_users
-      @table_users ||= create_table_if_needed('users')
+      @table_users ||= begin
+        # create_table_if_needed('users')
+        # La nouvelle table mysql
+        site.dbm_table(:hot, 'users')
+      end
     end
     alias :table :table_users
 
     # Attention : Il s'agit de la base de données commune, avec tous
-    # les users, pas la base de données propre à chaque user (cf. + bas)
+    # les users, pas la base de données propre à chaque user
     def database
-      @database ||= BdD::new(database_path.to_s)
+      @database ||= begin
+        error "On ne doit plus appeler User::database" if OFFLINE
+        BdD::new(database_path.to_s)
+      end
     end
 
     def database_path
