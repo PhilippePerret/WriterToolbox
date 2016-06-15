@@ -3,6 +3,230 @@ class BdD
   class << self
 
 
+
+    ##
+    # Exécute la requête {String} +request+ avec les valeurs
+    # {Hash} +values+ sur la table {SQLite3::Database} +database+
+    # @alias: def execute_request
+    def execute_requete dbase, request, values = nil, params = nil
+      params ||= {}
+
+      # @debug_on = true
+      @debug_on = false
+
+      if @debug_on
+        debug "\n\n\n" + ('='*80) + "\n-> execute_requete"
+      end
+
+      # Pour essayer de forcer une instance chaque fois
+      # @database = nil
+
+      # Parfois, quand la base est fabriquée à partir d'une
+      # path relative, on se retrouve avec /./ dans le path
+      # On corrige ici et on refait une instance de database
+      dbpath = nil
+      dbase.execute("PRAGMA database_list").each do |row|
+        dbpath = row[2]
+      end
+      debug "db-path : #{dbpath}" if @debug_on
+      if dbpath.match(/\/\.\//)
+        debug '# Le path contient /./'
+        dbpath = dbpath.gsub(/\/\.\//,'/')
+        debug "db-path corrigé : #{dbpath}"
+        # On refait une instance propre
+        dbase = SQLite3::Database.new(dbpath)
+      end
+
+      # Nom de la requête, c'est à dire SELECT ou UPDATE,
+      # etc.
+      request_name = request.split.first
+
+      # @debug_on = true
+      if @debug_on
+        debug "\n\n---BdD::execute_requete---"
+        debug "[BdD::execute_requete]"
+        debug "REQUEST: #{request}"
+        debug "VALUES: #{values.inspect}"
+        debug "PARAMS: #{params.inspect}"
+        debug "[/BdD::execute_requete]"
+        debug "-"*50 + "\n\n"
+      end
+      # @debug_on = false
+
+
+      # Nouvelle formule, on traite tout en séparé suivant
+      # la requête
+      case request_name
+      when 'SELECT'
+      when 'INSERT'
+      when 'UPDATE'
+      when 'DELETE'
+      else
+        raise "La requête #{request_name} doit être traitée."
+      end
+
+
+      # # Par prudence, j'essaie ça
+      # debug "--> On envoie BEGIN TRANSACTION; END;" if @debug_on
+      # begin
+      #   dbase.execute("BEGIN TRANSACTION; END;")
+      #   debug '    BEGIN et END TRANSACTION ok'
+      # rescue Exception => e
+      #   debug " BEGIN et END TRANSACTION n'a pas pu se faire : #{e.message}"
+      # end
+
+      # Préparation de la requête
+      begin
+        debug "--> smt = dbase.prepare( request )" if @debug_on
+        smt = dbase.prepare( request )
+      rescue Exception => e
+        (smt.close if smt) rescue nil
+        (dbase.close if dbase) rescue nil
+        debug "# Une erreur est survenue avec dbase.prepare : #{e.message}"
+        debug "# Requête : #{request}"
+        debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
+        debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
+        raise e.message
+      end
+
+
+      # Si nécessaire, binder des valeurs à la préparation de la
+      # requête.
+      if values
+        if ["INSERT", "UPDATE"].include? request_name
+          case values
+          when Array
+            values = values.collect { |val| real_value_to_table_value val }
+          when Hash
+            hprov = values.dup
+            values = Hash.new
+            hprov.each { |k, v| values.merge! k => real_value_to_table_value( v ) }
+          else
+            values = real_value_to_table_value values
+          end
+
+          debug "=== values : #{values.inspect}"
+        end
+
+        case values
+        when Array
+          (1..values.count).each { |index| smt.bind_param index, values[index - 1] }
+        when Hash
+          values.each do |col, value|
+            debug "BIND_PARAM #{col.to_sym.inspect}: #{value.inspect}::#{value.class}"
+            smt.bind_param col.to_sym, value
+          end
+        else
+          smt.bind_param 1, values
+        end
+      end
+
+
+
+
+
+      # Exécution (BON)
+      debug "--> res = smt.execute" if @debug_on
+      res = smt.execute
+      debug "    smt.execute OK" if @debug_on
+
+
+
+      # FileUtils.cp dbpath, "#{dbpath}-copy"
+
+
+
+      if request_name == 'INSERT'
+        last_insert_rowid = dbase.execute("SELECT last_insert_rowid();").first.first
+      end
+
+      # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
+      # if request_name == "SELECT"
+      #   debug "=== Retour de requête SELECT ==="
+      #   debug "Request : #{request.inspect}"
+      #   debug "Class retour : #{res.class}"
+      #   debug "Colonnes retournées : #{res.columns.inspect}"
+      #   debug "Types retournés : #{res.types.inspect}"
+      #   debug "=== / SELECT ==="
+      # end
+
+
+      # Retour suivant l'opération
+      retour =
+      case request_name
+      when "SELECT"
+        # On fait un hash de colonne => type pour pouvoir
+        # transformer les valeurs en leur type réel.
+        # Noter qu'ici le type ne peut pas être grand chose,
+        # simplement un string, un nombre ou du code brut,
+        # guère plus que ce genre de choses.
+        col2type = Hash[res.columns.zip res.types]
+
+        # On recupère la liste des colonnes, qu'on transforme
+        # en Symbols (est-ce vraiment indispensable ? Est-ce qu'on
+        # ne pourrait pas le faire plus tard ?)
+        res_colonnes = res.columns.collect{|c| c.to_sym}
+
+        # La clé de clé principale.
+        # C'est la clé qui sera utilisée comme clé principale
+        # dans le Hash retourné.
+        # En général, c'est :id, donc c'est l'identifiant de
+        # la rangée qui sera utilisé comme clé du Hash de
+        # retour.
+        main_key = (params[:key] || :id).to_sym
+
+        # Le Hash qui contiendra toutes les données retournées
+        hretour = {}
+        # debug "= RES ANALYSE ="
+        res.each_hash do |hdata|
+          hres = {}.merge(hdata) # pour le transformer en Hash simple
+
+          # Il faut transformer les valeurs en leur valeur réelle
+          real_hres = {}
+          hres.each do |k, v|
+            real_value = table_values_to_real_values(v, col2type[k.to_s])
+            real_hres.merge!( k.to_sym => real_value )
+          end
+
+          # On ajoute ce Hash de données au Hash qui doit être
+          # retourné
+          hretour.merge!( real_hres[main_key] => real_hres )
+
+        end
+        hretour
+
+      when "INSERT"
+        # Après une insertion, on retourne le nouvel ID
+        # attribué.
+        last_insert_rowid
+      end
+
+      if retour.nil?
+        retour = res.collect { |row| table_values_to_real_values row }
+      end
+
+      debug "--> smt.close" if @debug_on
+      smt.close
+      debug "--> dbase.close" if @debug_on
+      dbase.close
+
+    rescue Exception => e
+      debug "# IMPOSSIBLE DE JOUER execute_requete : #{e.message}"
+      debug "# Requête : #{request}"
+      debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
+      debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
+      debug "Backtrace :\n" + e.backtrace.join("\n")
+      debug e
+      raise e.message
+    else
+      return retour
+    ensure
+      (dbase.close  if dbase) rescue nil
+      (smt.close       if smt) rescue nil
+    end
+    alias :execute_request :execute_requete
+
+
     ##
     # Exécution d'une requête sur une base de données quelconque
     # +params+ Cf. dans le manuel : “Arguments passés à `BdD::execute`”
@@ -12,6 +236,10 @@ class BdD
       db = params.delete(:database) || raise('Il faut indiquer la base de données à utiliser (path)')
 
       db.instance_of?(String) || raise('Il faut indiquer la base de données en String (path)')
+      # Un bug qu'on corrige comme ça pour le moment puisque de
+      # toute façon on va passer en MySQL
+
+      db = File.expand_path(db) if db.start_with?('./')
       params[:db] = db = SQLite3::Database.new(db)
 
       # La table
@@ -118,177 +346,6 @@ class BdD
     rescue Exception => e
       raise e
     end
-
-
-    ##
-    # Exécute la requête {String} +request+ avec les valeurs
-    # {Hash} +values+ sur la table {SQLite3::Database} +database+
-    # @alias: def execute_request
-    def execute_requete database, request, values = nil, params = nil
-      params ||= {}
-
-      # Pour essayer de forcer une instance chaque fois
-      # @database = nil
-
-      request_name = request.split.first
-
-      # @debug_on = true
-      if @debug_on
-        debug "\n\n---BdD::execute_requete---"
-        debug "[BdD::execute_requete]"
-        debug "REQUEST: #{request}"
-        debug "VALUES: #{values.inspect}"
-        debug "PARAMS: #{params.inspect}"
-        debug "[/BdD::execute_requete]"
-        debug "-"*50 + "\n\n"
-      end
-      # @debug_on = false
-
-      # Par prudence, j'essaie ça
-      debug "--> On envoie BEGIN TRANSACTION; END;" if @debug_on
-      begin
-        database.execute("BEGIN TRANSACTION; END;")
-      rescue Exception => e
-      end
-
-      # Préparation de la requête
-      begin
-        debug "--> smt = database.prepare( request )" if @debug_on
-        smt = database.prepare( request )
-      rescue Exception => e
-        (smt.close if smt) rescue nil
-        (database.close if database) rescue nil
-        debug "# Une erreur est survenue avec database.prepare : #{e.message}"
-        debug "# Requête : #{request}"
-        debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
-        debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
-        raise e.message
-      end
-
-
-      # Si nécessaire, binder des valeurs à la préparation de la
-      # requête.
-      if values
-        if ["INSERT", "UPDATE"].include? request_name
-          case values
-          when Array
-            values = values.collect { |val| real_value_to_table_value val }
-          when Hash
-            hprov = values.dup
-            values = Hash.new
-            hprov.each { |k, v| values.merge! k => real_value_to_table_value( v ) }
-          else
-            values = real_value_to_table_value values
-          end
-        end
-
-        case values
-        when Array
-          (1..values.count).each { |index| smt.bind_param index, values[index - 1] }
-        when Hash
-          values.each do |col, value|
-            # debug "#{col}: #{value.inspect}::#{value.class}"
-            smt.bind_param col.to_sym, value
-          end
-        else
-          smt.bind_param 1, values
-        end
-      end
-
-      # Exécution (BON)
-      debug "--> res = smt.execute" if @debug_on
-      res = smt.execute
-
-      if request_name == 'INSERT'
-        last_insert_rowid = database.execute("SELECT last_insert_rowid();").first.first
-      end
-
-      # debug "REQUÊTE : '#{request_name}'::#{request_name.class}"
-      # if request_name == "SELECT"
-      #   debug "=== Retour de requête SELECT ==="
-      #   debug "Request : #{request.inspect}"
-      #   debug "Class retour : #{res.class}"
-      #   debug "Colonnes retournées : #{res.columns.inspect}"
-      #   debug "Types retournés : #{res.types.inspect}"
-      #   debug "=== / SELECT ==="
-      # end
-
-
-      # Retour suivant l'opération
-      retour =
-      case request_name
-      when "SELECT"
-        # On fait un hash de colonne => type pour pouvoir
-        # transformer les valeurs en leur type réel.
-        # Noter qu'ici le type ne peut pas être grand chose,
-        # simplement un string, un nombre ou du code brut,
-        # guère plus que ce genre de choses.
-        col2type = Hash[res.columns.zip res.types]
-
-        # On recupère la liste des colonnes, qu'on transforme
-        # en Symbols (est-ce vraiment indispensable ? Est-ce qu'on
-        # ne pourrait pas le faire plus tard ?)
-        res_colonnes = res.columns.collect{|c| c.to_sym}
-
-        # La clé de clé principale.
-        # C'est la clé qui sera utilisée comme clé principale
-        # dans le Hash retourné.
-        # En général, c'est :id, donc c'est l'identifiant de
-        # la rangée qui sera utilisé comme clé du Hash de
-        # retour.
-        main_key = (params[:key] || :id).to_sym
-
-        # Le Hash qui contiendra toutes les données retournées
-        hretour = {}
-        # debug "= RES ANALYSE ="
-        res.each_hash do |hdata|
-          hres = {}.merge(hdata) # pour le transformer en Hash simple
-
-          # Il faut transformer les valeurs en leur valeur réelle
-          real_hres = {}
-          hres.each do |k, v|
-            real_value = table_values_to_real_values(v, col2type[k.to_s])
-            real_hres.merge!( k.to_sym => real_value )
-          end
-
-          # On ajoute ce Hash de données au Hash qui doit être
-          # retourné
-          hretour.merge!( real_hres[main_key] => real_hres )
-
-        end
-        hretour
-
-      when "INSERT"
-        # Après une insertion, on retourne le nouvel ID
-        # attribué.
-        last_insert_rowid
-      end
-
-      if retour.nil?
-        retour = res.collect { |row| table_values_to_real_values row }
-      end
-
-      debug "--> smt.close" if @debug_on
-      smt.close
-      debug "--> database.close" if @debug_on
-      database.close
-
-    rescue Exception => e
-      debug "# IMPOSSIBLE DE JOUER execute_requete : #{e.message}"
-      debug "# Requête : #{request}"
-      debug "# Values : #{values.inspect}" unless values.nil? || values.empty?
-      debug "# Params : #{params.inspect}" unless params.nil? || params.empty?
-      debug "Backtrace :\n" + e.backtrace.join("\n")
-      debug e
-      raise e.message
-    else
-      return retour
-    ensure
-      (database.close  if database) rescue nil
-      (smt.close       if smt) rescue nil
-      database = nil # pour essayer une instance neuve chaque fois
-    end
-    alias :execute_request :execute_requete
 
 
   end # << self

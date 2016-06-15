@@ -3,6 +3,8 @@
 > NOTE : Ce fichier doit servir aussi de mode d'emploi. Il sera glissé dans le dossier d'aide.
 
 * [Principe généraux](#principesgeneraux)
+* [Obtenir une instance de table MySQL](#obtenirinstancetablemysql)
+* [Destruction d'une table](#destructiondunetable)
 
 <a name='principesgeneraux'></a>
 
@@ -25,3 +27,24 @@ Au lieu de plein de bases de données, on utilise seulement deux bases, une pour
 Au lieu d'un table, mettre le code de création en dur, les commentaires dans le code
 
 Voir l'exemple de la table User
+
+<a name='obtenirinstancetablemysql'></a>
+
+## Obtenir une instance de table MySQL
+
+    site.dbm_table(:hot/:cold, '<nom de la table>')
+    # => Instance SiteHtml::DBM_TABLE de la table
+
+<a name='destructiondunetable'></a>
+
+## Destruction d'une table
+
+Pour détruire complètement une table, utiliser :
+
+    <dbm_table>.destroy
+
+Par exemple :
+
+    site.dbm_table(:cold, 'citation').destroy
+
+ATTENTION : La table est vraiment détruite complètement

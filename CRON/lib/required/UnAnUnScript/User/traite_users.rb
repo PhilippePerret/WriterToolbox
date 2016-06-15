@@ -13,6 +13,13 @@ class << self
   # qu'il ont une date de création dans le futur.
   def traite_users_unanunscript
 
+    # Pour le moment, puisqu'il y a un bug, je ne produis
+    # le rapport qu'une seule fois par jour.
+    unless Time.now.hour == 0
+      safed_log '= Traitement UN AN UN SCRIPT une seule fois par jour en attendant que ça fonctionne.'
+      return
+    end
+
     # Charger les librairies propres aux Unan::Program pour voir
     # s'il faut passer au jour suivant et passer le programme au
     # jour suivant

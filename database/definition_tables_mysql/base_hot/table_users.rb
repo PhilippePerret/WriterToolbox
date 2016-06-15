@@ -17,27 +17,27 @@ CREATE TABLE users
 
     # PSEUDO
     # ------
-    pseudo VARCHAR(40) NOT NULL,
+    pseudo VARCHAR(40) NOT NULL UNIQUE,
 
     # PATRONYME
     # ---------
     # Un patronyme doit toujours être fourni
     # Mais il n'est pas encore utilisé maintenant
-    patronyme VARCHAR(255) NOT NULL,
+    patronyme VARCHAR(255) NOT NULL UNIQUE,
 
     # MAIL
     # ----
-    mail VARCHAR(255) NOT NULL,
+    mail VARCHAR(255) NOT NULL UNIQUE,
 
     # CPASSWORD
     # ---------
     # Mot de passe crypté.
-    cpassword VARCHAR(32),
+    cpassword VARCHAR(32) NOT NULL,
 
     # SALT
     # ----
     # Le sel qui permet de crypter le mot de passe
-    salt VARCHAR(32),
+    salt VARCHAR(32) NOT NULL,
 
     # SESSION_ID
     # ----------
@@ -56,12 +56,12 @@ CREATE TABLE users
     #   - de 16 à 31 pour l'application :
     #     - dans ./objet/site/config.rb (user_options)
     #     - dans ./lib/app/required/user/options.rb
-    options VARCHAR(32),
+    options VARCHAR(32) NOT NULL,
 
     # SEXE
     # ----
     # 'H' ou 'F' pour savoir si c'est un homme ou une femme
-    sexe CHAR(1),
+    sexe CHAR(1) NOT NULL,
 
     # ADDRESS
     # -------
@@ -80,7 +80,7 @@ CREATE TABLE users
     # ----------
     # Date de création de la donnée, donc d'inscription
     # de l'user
-    created_at INTEGER(10),
+    created_at INTEGER(10) NOT NULL,
 
     PRIMARY KEY (id)
   );
