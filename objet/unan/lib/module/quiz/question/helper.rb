@@ -87,13 +87,18 @@ class Question
       une_seule_bonne_reponse = (rights.count == 1)
       # debug "rights: #{rights.pretty_inspect}"
       # debug "une_seule_bonne_reponse = #{une_seule_bonne_reponse.inspect}"
-      if une_seule_bonne_reponse
-        # => Une seule "bonne" réponse
-        good_or_best = rights.values.first
-      else
-        # => Une "meilleure" réponse
-        good_or_best = rights.sort_by{ |k, h| h[:points] }.reverse.first[1]
-      end
+      good_or_best =
+        if une_seule_bonne_reponse
+          # => Une seule "bonne" réponse
+          rights.values.first
+        else
+          # => Une "meilleure" réponse
+          rights_sorted   = rights.sort_by{ |k, h| h[:points] }
+          debug "rights_sorted : #{rights_sorted.inspect}"
+          rights_inverse  = rights_sorted.reverse
+          first_right     = rights_inverse.first || []
+          first_right[1] || { id: nil } # erreur
+        end
       # Maintenant qu'on a récupéré la ou les bonnes réponses, on
       # les indique dans les réponses en indiquant aussi si c'est
       # une mauvaise réponse de l'utilisateur.
