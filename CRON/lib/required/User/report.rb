@@ -287,13 +287,14 @@ class UAUSReport
 
     # Le message dépend aussi du stade où en est l'auteur,
     # différent si c'est au début du programme ou à la fin
-    stade_programme = if cur_pday.indice < 100
-      :debut
-    elsif cur_pday.indice <= 260
-      :milieu
-    elsif cur_pday.indice > 260
-      :fin
-    end
+    stade_programme =
+      if cur_pday.indice < 100
+        :debut
+      elsif cur_pday.indice <= 260
+        :milieu
+      elsif cur_pday.indice > 260
+        :fin
+      end
 
     retard = case true
     when nombre_cisi > 20 then 9

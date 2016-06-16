@@ -25,7 +25,7 @@ class Projet
 
     def save
       if data_valide?
-        Unan::table_projets.update(projet_id, data2save)
+        Unan.table_projets.update(projet_id, data2save)
         flash "#{new? ? ' Nouveau p' : 'P'}rojet ##{projet_id} sauvé."
       else
       end

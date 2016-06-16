@@ -80,6 +80,7 @@ class Question
   # ---------------------------------------------------------------------
   #   Méthodes de database
   # ---------------------------------------------------------------------
+  # -> MYSQL UNAN
   def table ; @table ||= Unan::table_questions end
 
 end #/Question

@@ -24,6 +24,7 @@ class ::User
 
     # Création des tables du programme
     begin
+      # -> MYSQL UNAN
       create_tables_1a1s
     rescue Exception => e
       @errors << "Les tables du programme n'ont pas pu être créés : #{e.message}"

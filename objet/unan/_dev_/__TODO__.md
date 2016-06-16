@@ -23,20 +23,10 @@
 
 # Processus de travail
 
-* Un nouveau jour-programme commence
-* -> Envoyer le mail décrivant le programme du jour à l'user
-      => ajouter B_MAIL_DEB au jour de days_overview
-* <- User confirme son démarrage
-      => ajouter B_CONF_DEB au jour de days_overview
-
 * Calcul des points de l'auteur.
   S'ils sont suffisants, le jour-programme est marqué OK
-    => ajouter B_FIN au jour de days_overview
 * <- L'auteur peut forcer la fin du jour-programme
-    => ajouter B_FORC_FIN au jour de days_overview
-    => ajouter B_FIN au jour de days_overview
 * Un mail est envoyé pour confirmer la fin du travail (si nécessaire) avec récapitulation de ce qui a été fait
-    => ajouter B_MAIL_FIN au jour de days_overview
 
 * Explication du développement en spirale => page cours
 

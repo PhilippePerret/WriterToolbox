@@ -102,6 +102,7 @@ class Quiz
 
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
+      # -> MYSQL UNAN
       auteur.table_quiz.insert(data2save.merge(work_id: work.id))
 
       # Enregistrer le score dans le programme de l'utilisateur,
@@ -148,6 +149,7 @@ class Quiz
   end
 
   def quiz_existe_deja?
+    # -> MYSQL UNAN
     @quiz_existe_deja ||= auteur.table_quiz.count(where:"quiz_id = #{id}") > 0
   end
 

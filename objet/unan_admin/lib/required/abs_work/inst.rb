@@ -4,6 +4,7 @@ site.require_objet 'unan'
 class UnanAdmin
 class AbsWork
 
+  # -> MYSQL UNAN
   include MethodesObjetsBdD
 
   # ---------------------------------------------------------------------
@@ -30,6 +31,7 @@ class AbsWork
   end
 
   def table
+    # -> MYSQL UNAN
     @table ||= Unan::table_absolute_works
   end
 

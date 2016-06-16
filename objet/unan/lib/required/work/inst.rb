@@ -14,6 +14,7 @@ class Unan
 class Program
 class Work
 
+  # -> MYSQL UNAN
   include MethodesObjetsBdD
 
   # {Fixnum} ID du programme dans la table des travaux
@@ -60,6 +61,7 @@ class Work
   # impérativement invoquée pour procéder à la construction de
   # la table si elle n'existe pas encore.
   def table
+    # -> MYSQL UNAN
     @table ||= program.table_works
   end
 

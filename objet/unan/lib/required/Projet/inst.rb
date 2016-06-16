@@ -11,7 +11,7 @@ Note : on peut obtenir le projet du programme en faisant program.projet
 class Unan
 class Projet
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -28,10 +28,7 @@ class Projet
   def resume        ; @resume     ||= get(:resume)      end
   def created_at    ; @created_at ||= get(:created_at)  end
   def updated_at    ; @updated_at ||= get(:updated_at)  end
-  # Bit 1   Type du projet (Unan::Projet::TYPES)
-  # Bit 2   - pour développement ultérieur -
-  # Bit 3   - pour développement ultérieur -
-  def specs         ; @specs      ||= get(:specs)       end
+  # Pour specs, voir le fichier specs.rb
 
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
@@ -83,7 +80,7 @@ class Projet
   # ---------------------------------------------------------------------
 
   def table
-    @table ||= Unan::table_projets
+    @table ||= Unan.table_projets
   end
 
 end # /Projet

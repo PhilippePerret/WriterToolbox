@@ -146,34 +146,6 @@ RSpec.configure do |config|
   config.after :suite do
     debug "\n\n"
 
-    # Destruction des users qui ont été créés au cours des
-    # tests
-    # OBSOLÈTE maintenant qu'on travail avec les gels
-    # $users_2_destroy.each do |uref|
-    #   u = uref.instance_of?(User) ? uref : User::get(uref)
-    #   u.remove # appelle aussi `u.app_remove` propre à l'app.
-    # end
-
-    # Destruction de tout ce qui a été créé au cours des tests,
-    # c'est-à-dire après le @start_suite_time
-    # OBSOLÈTE maintenant qu'on travaille avec les gels
-    # if Unan::table_programs.exist?
-    #   nb_init = Unan::table_programs.count
-    #   Unan::table_programs.delete(where:"created_at >= #{@start_suite_time}")
-    #   nb_destroyed = nb_init - Unan::table_programs.count
-    #   debug "Nombre de programmes détruits dans la table unan_hot.programs : #{nb_destroyed}"
-    # else
-    #   debug "Aucun programme détruit (table unan_hot.programs inexistante)"
-    # end
-    # if Unan::table_projets.exist?
-    #   nb_init = Unan::table_projets.count
-    #   Unan::table_projets.delete(where:"created_at >= #{@start_suite_time}")
-    #   nb_destroyed = nb_init - Unan::table_projets.count
-    #   debug "\nNombre de projets détruits dans la table unan_hot.projets : #{nb_destroyed}"
-    # else
-    #   debug "Aucun projet détruit (table unan_hot.projets inexistante)"
-    # end
-
     SiteHtml.instance.require_module('gel')
     SiteHtml::Gel::degel('before-test')
 

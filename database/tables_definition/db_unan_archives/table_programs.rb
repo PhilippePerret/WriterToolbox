@@ -8,7 +8,7 @@
 =end
 def schema_table_unan_archives_programs
   @schema_table_unan_archives_hot_programs ||= begin
-    require './database/tables_definition/db_unan_hot/table_programs.rb'
+    require './database/tables_definition_mysql/base_unan/table_programs.rb'
     schema_table_unan_hot_programs
   end
 end

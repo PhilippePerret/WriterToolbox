@@ -3,6 +3,7 @@ class Unan
 class Quiz
 
   def exist?
+    # -> MYSQL UNAN
     Unan::table_quiz.count(where:{id: id}) > 0
   end
 
@@ -45,6 +46,7 @@ class Quiz
     if @is_output_up_to_date === nil
       qids = (questions_ids || "").split(' ').join(', ')
       @is_output_up_to_date = true
+      # -> MYSQL UNAN
       updates = Unan::table_questions.select(colonnes: [:updated_at], where: "id IN (#{qids})").values
       updates.each do |h|
         update = h[:updated_at]

@@ -73,6 +73,7 @@ class UPage
     data_req.merge!( colonnes: [:works] )
     awork_id = nil
     apday_id = nil
+    # -> MYSQL UNAN
     Unan::table_absolute_pdays.select(data_req).each do |pid, pdata|
       next if pdata[:works].nil?
       wids = pdata[:works].split(' ').collect{ |e| e.to_i }

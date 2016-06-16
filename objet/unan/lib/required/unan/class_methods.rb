@@ -24,15 +24,6 @@ class Unan
       raise e
     end
 
-    # # Requiert `module_name` dans le dossier `./objet/unan/lib/module`
-    # # (Ruby, CSS et JS)
-    # # OBSOLÈTE: C'est maintenant une méthode commune
-    # def r e q uire_module module_name
-    #   p = (folder_modules + module_name)
-    #   raise "Impossible de trouver le module #{p.to_s}" unless p.exist?
-    #   site.require_all_in(p)
-    # end
-
   end # <<self
 
 end #/Unan

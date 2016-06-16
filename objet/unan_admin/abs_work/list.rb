@@ -13,6 +13,7 @@ class AbsWork
       data_request = Hash::new
       data_request.merge!(colonnes: [])
       data_request.merge!(where: where_clause) unless where_clause.nil?
+      # -> MYSQL UNAN
       Unan::table_absolute_works.select(data_request).keys.collect do |wid|
         get(wid)
       end

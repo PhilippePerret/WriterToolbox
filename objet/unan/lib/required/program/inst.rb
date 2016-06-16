@@ -12,11 +12,6 @@ class Program
 
   def initialize id
     @id = id
-
-    # Pour contenir tous les jours de la propriété
-    # days_overview (cf. le fichier dev Days-overview.md)
-    @all_days_overview = Array::new
-
   end
 
   # Pour ERB

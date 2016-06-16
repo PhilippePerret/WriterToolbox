@@ -27,6 +27,7 @@ class PageCours
 
     # Table des pages de cours
     def table_pages_cours
+      # -> MYSQL UNAN
       @table_pages_cours ||= site.db.create_table_if_needed('unan_cold', 'pages_cours')
     end
     alias :table :table_pages_cours

@@ -11,6 +11,7 @@ class Unan
 class Program
 class AbsWork
 
+  # -> MYSQL UNAN
   include MethodesObjetsBdD
 
   attr_reader :id
@@ -56,6 +57,7 @@ class AbsWork
 
   # La table "absolute_works" dans la base de données du programme
   def table
+    # -> MYSQL UNAN
     @table ||= Unan::table_absolute_works
   end
 

@@ -40,9 +40,11 @@ class AbsPDay
     if new?
       data2save.merge!(created_at: NOW)
       debug data2save.pretty_inspect
+      # -> MYSQL UNAN
       Unan::table_absolute_pdays.insert( data2save )
       flash "Données du P-Day ##{id} créées."
     else
+      # -> MYSQL UNAN
       Unan::table_absolute_pdays.set( id, data2save )
       flash "Données du P-Day ##{id} actualisées."
     end
@@ -50,6 +52,7 @@ class AbsPDay
 
   def new?
     if @is_new === nil
+      # -> MYSQL UNAN
       @is_new = Unan::table_absolute_pdays.count(where:"id = #{id}") == 0
     end
     @is_new
@@ -57,6 +60,7 @@ class AbsPDay
 
   def data_in_db
     @data_in_db ||= begin
+      # -> MYSQL UNAN
       Unan::table_absolute_pdays.get(id)
     end
   end
@@ -116,6 +120,7 @@ class AbsPDay
   # Return TRUE si le travail d'identifiant +wid+ existe.
   # false dans le cas contraire.
   def travail_existe? wid
+    # -> MYSQL UNAN
     @all_works_ids ||= Unan::table_absolute_works.select( colonnes:[:id] ).keys
     @all_works_ids.include? wid
   end

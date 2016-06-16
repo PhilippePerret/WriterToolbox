@@ -2,6 +2,7 @@
 class Unan
 class Quiz
 
+  # -> MYSQL UNAN
   include MethodesObjetsBdD
 
   attr_reader :id
@@ -116,6 +117,7 @@ class Quiz
   # ---------------------------------------------------------------------
   #   Base de données
   # ---------------------------------------------------------------------
+  # -> MYSQL UNAN
   def table ; @table ||= Unan::table_quiz end
 
 end #/Quiz

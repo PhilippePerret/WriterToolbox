@@ -143,6 +143,8 @@ class CurPDay
       # pas tenir compte des travaux reprogrammés.
       # Mais pour le moment, on ne peut plus reprogrammer un
       # travail.
+
+      # -> MYSQL UNAN
       uworks = auteur.table_works.select(where: where)
       sbt = {
         task:   Array::new,
@@ -222,6 +224,8 @@ class CurPDay
       # debug "Rythme : #{auteur.program.rythme}"
       # debug "Coefficient durée : #{auteur.program.coefficient_duree}"
       # debug "il_y_a_dix_pdays = #{il_y_a_dix_pdays}::#{il_y_a_dix_pdays.class} (#{il_y_a_dix_pdays.as_human_date(true, true)})"
+
+      # -> MYSQL UNAN
       auteur.table_works.select(where: where).each do |wid, wdata|
         awork_id = wdata[:abs_work_id]
         apday_id = wdata[:abs_pday]
@@ -338,6 +342,7 @@ class CurPDay
         all:    Array::new
       }
       @works_undone_as_hdata ||= begin
+        # -> MYSQL UNAN
         res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
         # On ajoute certaines données utiles, dont :
         #   * Le type de travail (:task, :page, :forum ou :quiz)
@@ -449,6 +454,7 @@ class CurPDay
   def works_done options = nil
     @works_done ||= begin
       h = Hash::new
+      # -> MYSQL UNAN
       uworks = auteur.table_works.select(where: "status = 9")
       uworks.each do |wid, wdata|
         h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
@@ -509,6 +515,7 @@ class CurPDay
   # Cette méthode alimente la méthode `works_until_now`
   def all_works_ids_until_now
     @all_works_ids_until_now ||= begin
+      # -> MYSQL UNAN
       all_pdays_until_now = Unan::table_absolute_pdays.select(where:"id <= #{indice}", colonnes:[:works])
       l = Array::new
       all_pdays_until_now.each do |pdid, pddata|

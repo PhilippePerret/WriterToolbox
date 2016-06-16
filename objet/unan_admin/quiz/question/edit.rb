@@ -16,9 +16,11 @@ class Question
       if question_id.nil?
         error "Il faut indiquer l'identifiant de la question à détruire…"
         return
+        # -> MYSQL UNAN
       elsif Unan::table_questions.count(where:{id: question_id}) == 0
         flash "La question ##{question_id} n'existe pas ou plus."
       else
+        # -> MYSQL UNAN
         Unan::table_questions.delete(question_id)
         flash "Question ##{question_id} détruite."
       end
@@ -36,9 +38,11 @@ class Question
     if dinp[:id].nil_if_empty.nil?
       # => Nouvelle question
       data2save.merge!(created_at: NOW)
+      # -> MYSQL UNAN
       dinp[:id] = Unan::table_questions.insert(data2save)
     else
       # => Actualisation de question
+      # -> MYSQL UNAN
       Unan::table_questions.update(dinp[:id].to_i, data2save)
     end
     param( :question => dinp.merge(reponses: reponses) )

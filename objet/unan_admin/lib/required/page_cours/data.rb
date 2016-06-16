@@ -22,6 +22,7 @@ class PageCours
   end
 
   def data
+    # -> MYSQL UNAN
     @data ||= table_pages_cours.get(id)
   end
 

@@ -363,11 +363,11 @@ class Console
 
     # Destruction de ses programmes dans la table
     where = "auteur_id = #{u.id}"
-    nombre_programmes = Unan::table_programs.count(where:where)
-    nombre_projets    = Unan::table_projets.count(where:where)
-    Unan::table_programs.delete(where:where)
+    nombre_programmes = Unan::table_programs.count(where: where)
+    nombre_projets    = Unan::table_projets.count(where: where)
+    Unan::table_programs.delete(where: where)
     # Destruction de ses projets dans la table
-    Unan::table_projets.delete(where:where)
+    Unan::table_projets.delete(where: where)
 
     "Destruction de tous les programmes de #{u.pseudo} opérée avec succès\n# Nombre paiements détruits : #{nombre_paiements}\n# Dossier database : #{with_dossier_db}\n# Nombre programmes détruits : #{nombre_programmes}\n# Nombre projets détruits : #{nombre_projets}"
   end

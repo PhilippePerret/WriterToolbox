@@ -106,11 +106,13 @@ class << self
 
   # {Array of User} Retourne la liste de tous les auteurs
   # du programme UN AN UN SCRIPT en activité
+  #
+  # TODO : Attention, ici, il va y avoir un problème quand un
+  # auteur suivra son deuxième programme, si cela arrive.
   def users_en_activite
     @users_en_activite ||= begin
-      # -> MYSQL UNAN
       where_clause = "options LIKE '1%'"
-      Unan::table_programs.select(where:where_clause, colonnes:[:auteur_id]).collect do |pid, pdata|
+      Unan::table_programs.select(where:where_clause, colonnes:[:auteur_id]).collect do |pdata|
         User::new( pdata[:auteur_id] )
       end.compact
     end

@@ -64,6 +64,7 @@ def ids_exemples
     # On relève les exemples correspondant à
     # la requête et au filtre
     debug "data_request: #{data_request.pretty_inspect}"
+    # -> MYSQL UNAN
     Unan::table_exemples.select(data_request).keys
   end
 end

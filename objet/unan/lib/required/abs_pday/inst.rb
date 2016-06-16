@@ -8,6 +8,7 @@ class Unan
 class Program
 class AbsPDay
 
+  # -> MYSQL UNAN
   include MethodesObjetsBdD
 
   # ID du P-Day absolu, qui sert aussi d'indice du jour 1-start.
@@ -55,6 +56,7 @@ class AbsPDay
 
   # La table "absolute_works" dans la base de données du programme
   def table
+    # -> MYSQL UNAN
     @table ||= Unan::table_absolute_pdays
   end
 

@@ -19,23 +19,28 @@ class User
   #
 
   # Table des lectures de pages de cours
+  # -> MYSQL UNAN
   def table_pages_cours ; @table_pages_cours ||= get_table('pages_cours') end
 
   # Table des travaux accomplis ou en cours de l'user
   # Noter que c'est une méthode d'instance
+  # -> MYSQL UNAN
   def table_works ; @table_works ||= get_table('works') end
 
   # Table des questionnaires
+  # -> MYSQL UNAN
   def table_quiz ; @table_quiz ||= get_table('quiz') end
 
   # La base de données personnelle du programme de l'user,
   # dépendant de l'id de l'user et de l'id du programme.
   # Noter qu'on utilise `program_id` ici (plutôt que `program.id`)
   # car le programme vient d'être défini et on connaitre @program_id
+  # -> MYSQL UNAN
   def program_database ; @program_database ||= BdD::new(program_database_path.to_s) end
 
   # La base de données contenant toutes les données pour le programme
   # de l'utilisateur (sa database personnelle)
+  # -> MYSQL UNAN
   def program_database_path
     @program_database_path ||= begin
       folder_data + "programme#{program.id}.db"
@@ -44,6 +49,7 @@ class User
 
   # Récupérer n'importe quelle table de la base de données personnelle
   # du programme de l'user et la construire si nécessaire.
+  # -> MYSQL UNAN
   def get_table table_name
     unless program_database_path.exist? && program_database.table(table_name).exist?
       create_tables_1a1s
@@ -59,6 +65,7 @@ class User
   # Noter que la table n'est créée que si elle n'existe pas, donc
   # on peut en ajouter d'autres, pourvu que cette méthode soit
   # appelée pour la créer.
+  # -> MYSQL UNAN
   def create_tables_1a1s
     # debug "-> create_tables_1a1s"
     # debug "Dossier de définition de table : #{folder_tables_definitions.to_s}"
@@ -78,6 +85,7 @@ class User
 
   # {SuperFile}
   def folder_tables_definitions
+    # -> MYSQL UNAN
     @folder_tables_definitions ||= site.folder_tables_definition + "user"
   end
 

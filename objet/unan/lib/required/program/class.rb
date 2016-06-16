@@ -23,22 +23,17 @@ class Program
         # debug "auteur_id est nil, get_current_program_of return nil"
         return nil
       end
-      hdata = Unan::table_programs.select(where:"(auteur_id = #{auteur_id}) AND (options LIKE '1%') AND (options NOT LIKE '1_1%')", colonnes:[:id]).values.first
+      where = []
+      where << "auteur_id = #{auteur_id}"
+      where << "options LIKE '1%'"
+      where << "options NOT LIKE '1_1%'"
+      where = where.join(' AND ')
+      hdata = Unan::table_programs.select(where: where, colonnes:[]).first
       if hdata.nil? # Aucun programme trouvé
         # debug "hdata est nil, get_current_program_of return NIL"
         return nil
       end
-      program_id = hdata[:id].freeze
-      # debug "[get_current_program_of] program_id = #{program_id.inspect}::#{program_id.class}"
-      get(program_id)
-    end
-
-    # {Hash de Hash} Retourne tous les programmes de l'auteur
-    # d'ID +auteur_id+
-    # En clé, l'id du programme et en valeur le hash des données
-    # enregistrées dans la table 'programs'
-    def get_programs_of auteur_id
-      Unan::table_programs.select(where:"auteur_id = #{auteur_id}")
+      get( hdata[:id] )
     end
 
   end # << self

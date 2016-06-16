@@ -7,7 +7,7 @@ Méthode de data du programme
 class Unan
 class Program
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # ID du programme (dans la table Unan::table_programs)
   attr_reader :id
@@ -48,7 +48,7 @@ class Program
   # ---------------------------------------------------------------------
   #   Propriétés volatiles
   # ---------------------------------------------------------------------
-  def auteur        ; @auteur ||= User::get(auteur_id)  end
+  def auteur        ; @auteur ||= User.get(auteur_id)  end
 
   # Coefficient de durée du jour-programme du programme courant
   # @usage : On MULTIPLIE la durée réelle par ce nombre pour

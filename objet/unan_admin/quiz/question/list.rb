@@ -59,6 +59,7 @@ def liste_questions
     # Ne rien faire
   end
   # debug "data_request : #{data_request.inspect}"
+  # -> MYSQL UNAN !!!
   ::Unan::table_questions.select(data_request).collect do |qid, hquest|
     iquestion = ::Unan::Quiz::Question::new(qid)
     # On traite un quiz qui est une version finale

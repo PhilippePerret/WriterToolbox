@@ -5,7 +5,6 @@ class PageCours
 
   # Path de la page originale (celle dont on travaille le contenu)
   def fullpath
-    debug "-> fullpath (type = #{type.inspect}, path = #{path.inspect})"
     @fullpath ||= folder_pages_originales + "#{type}/#{path}"
   end
   # Path de la page semi-dynmaique (celle dont on a corrigé les

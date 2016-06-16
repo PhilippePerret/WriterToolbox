@@ -34,18 +34,6 @@ class Console
     # La table courante
     retrieve_data_from_all('unan_cold.db', 'exemples', proc_modif)
   end
-  # Noter qu'il ne suffit pas de traiter les tables courantes mais
-  # également celles de tous les gels…
-  def retreive_data_table_programs
-    proc_modif = Proc::new do |data_init|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data = data_init.dup
-      data
-    end
-    # La table courante
-    retrieve_data_from_all('unan_hot.db', 'programs', proc_modif)
-  end
   def retreive_data_table_absolute_works
     proc_modif = Proc::new do |data_init|
       # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
@@ -116,9 +104,6 @@ class Console
   def backup_data_table_pages_cours
     backup_data_from_all('unan_cold.db', 'pages_cours')
   end
-  def backup_data_table_programs
-    backup_data_from_all('unan_hot.db', 'programs')
-  end
   def backup_data_table_projets
     backup_data_from_all('unan_hot.db', 'projets')
   end
@@ -156,25 +141,6 @@ class Console
       destruction_impossible % {choses: "quiz"}
     end
   end
-  def detruire_table_programs
-    if OFFLINE
-      init_unan
-      Unan::database_hot.execute("DROP TABLE IF EXISTS 'programs';")
-      "Table des programmes détruite avec succès."
-    else
-      destruction_impossible % {choses: "programmes"}
-    end
-  end
-
-  def detruire_table_projets
-    if OFFLINE
-      init_unan
-      Unan::database_hot.execute("DROP TABLE IF EXISTS 'projets';")
-      "Table des projets détruite avec succès."
-    else
-      destruction_impossible % {choses: "projets"}
-    end
-  end
 
   def detruire_table_pages_cours
     if OFFLINE
@@ -197,15 +163,6 @@ class Console
   def afficher_table_quiz
     init_unan
     show_table Unan::table_quiz
-  end
-  def afficher_table_programs
-    init_unan
-    show_table Unan::table_programs
-  end
-
-  def afficher_table_projets
-    init_unan
-    show_table Unan::table_projets
   end
 
   def afficher_table_pages_cours

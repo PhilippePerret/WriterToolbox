@@ -37,7 +37,7 @@ def get_any_user options = nil
   if options[:with_program]
     # => Il faut retourner un user qui suit un programme, donc il faut
     # prendre les ids dans la table des programmes.
-    programs = Unan::table_programs.select(where:"options LIKE '1%'", colonnes:[:auteur_id]).values
+    programs = Unan::table_programs.select(where: "options LIKE '1%'", colonnes:[:auteur_id])
     ids = programs.collect{|hp| hp[:auteur_id]}
   end
 

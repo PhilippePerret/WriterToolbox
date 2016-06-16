@@ -25,6 +25,7 @@ class Program
   def current_works options = nil
     options ||= Hash::new
     options[:as] ||= :data
+    # -> MYSQL UNAN
     @works_hash ||= self.table_works.select(where:"status < 9 AND created_at < #{NOW + 1}")
 
     case options[:as]
@@ -44,6 +45,7 @@ class Program
   def ulterieurs_works options = nil
     options ||= Hash::new
     options[:as] ||= :data
+    # -> MYSQL UNAN
     @ulterieurs_works ||= self.table_works.select(where:"created_at > #{NOW}")
 
     case options[:as]
@@ -84,6 +86,7 @@ class Program
     where << "(created_at < #{options[:started_before]})" if options[:started_before]
     where << "(created_at >= #{options[:started_after]})" if options[:started_after]
     where = where.join(' AND ')
+    # -> MYSQL UNAN
     table_works.select(where: where)
   end
   alias :works_of_type :works_by_type
@@ -106,6 +109,7 @@ class Program
   # Noter que les travaux futur (avec un created_at supérieur à NOW)
   # seront aussi traités par cette méthode.
   def works filtre = nil
+    # -> MYSQL UNAN
     @works ||= self.table_works.select(order:"created_at DESC").values
     return @works if filtre.nil?
 
@@ -149,8 +153,10 @@ class Program
       where_clause = "status = 9"
       # Je relève les 20 derniers travaux (work) de l'auteur qui
       # ont été terminés
+      # -> MYSQL UNAN
       res = self.table_works.select(colonnes: [:abs_work_id], where:where_clause, order:"created_at DESC", limit:20).values
       debug "res : #{res.inspect}"
+      # -> MYSQL UNAN
       debug self.table_works.select.pretty_inspect
       # Parmi ces 20 travaux, je dois garder ceux qui sont de type `task`
       # en sachant que c'est le travail absolu (abs-work) qui consigne cette

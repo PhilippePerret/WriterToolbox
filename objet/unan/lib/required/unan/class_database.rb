@@ -18,46 +18,54 @@ class << self
 
   # Table contenant tous les programmes
   def table_programs
-    @table_programs ||= get_table_hot('programs')
+    @table_programs ||= site.dbm_table(:unan, 'programs')
   end
 
   def table_archives_programs
+    # -> MYSQL UNAN
     @table_archives_programs ||= get_table_archives('programs')
   end
 
   # Table contenant tous les projets
   def table_projets
-    @table_projets ||= get_table_hot('projets')
+    @table_projets ||= site.dbm_table(:unan, 'projets')
   end
 
   def table_archives_projets
+    # -> MYSQL UNAN
     @table_archives_projets ||= get_table_archives('projets')
   end
 
   # Table contenant la définition absolue de tous les
   # jours-programme
   def table_absolute_pdays
+    # -> MYSQL UNAN
     @table_absolute_pdays ||= get_table_cold('absolute_pdays')
   end
 
   # Table contenant toutes les données absolues des travaux (abs_works)
   def table_absolute_works
+    # -> MYSQL UNAN
     @table_absolute_works ||= get_table_cold('absolute_works')
   end
 
   def table_questions
+    # -> MYSQL UNAN
     @table_questions ||= get_table_cold('questions')
   end
 
   def table_quiz
+    # -> MYSQL UNAN
     @table_quiz ||= get_table_cold('quiz')
   end
 
   def table_exemples
+    # -> MYSQL UNAN
     @table_exemples ||= get_table_cold('exemples')
   end
 
   def table_pages_cours
+    # -> MYSQL UNAN
     @table_pages_cours ||= get_table_cold('pages_cours')
   end
 
@@ -79,15 +87,19 @@ class << self
   #   Données générales des deux bases de données, cold et hot
   # ---------------------------------------------------------------------
   def database
+    # -> MYSQL UNAN
     @database ||= BdD::new(database_path.to_s)
   end
   def database_path
+    # -> MYSQL UNAN
     @database_path ||= site.folder_db + "unan_cold.db"
   end
   def database_hot
+    # -> MYSQL UNAN
     @database_hot ||= BdD::new(database_hot_path.to_s)
   end
   def database_hot_path
+    # -> MYSQL UNAN
     @database_hot_path ||= site.folder_db + 'unan_hot.db'
   end
 

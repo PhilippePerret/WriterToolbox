@@ -39,13 +39,6 @@ describe 'Création d’un programme au niveau unitaire' do
   it 'enregistre les bonnes données du programme dans la table' do
     dprog = Unan::table_programs.get(program.id)
     dproj = Unan::table_projets.get(where: "created_at >= #{@start_time}")
-    # puts "@start_time = #{@start_time}"
-    # puts "dprog : #{dprog.inspect}"
-    # puts "dproj : #{dproj.inspect}"
-    # puts "TABLE PROGRAMMES"
-    # puts Unan::table_programs.select.inspect
-    # puts "TABLE PROJETS"
-    # puts Unan::table_projets.select.inspect
     expect(dprog[:projet_id]).not_to eq nil
     expect(dprog[:projet_id]).to eq dproj[:id]
     expect(dprog[:auteur_id]).not_to eq nil
@@ -55,13 +48,13 @@ describe 'Création d’un programme au niveau unitaire' do
   end
   it 'initie un projet dans la table des projet' do
     dprog = Unan::table_programs.get(program.id)
-    res = Unan::table_projets.select(where:"program_id = #{program.id}").values.first
+    res = Unan::table_projets.select(where:"program_id = #{program.id}").first
     expect(res).not_to eq nil
     expect(res[:id]).to eq dprog[:projet_id]
   end
   it 'avec les bonnes données pour le projet' do
     dprog = Unan::table_programs.get(program.id)
-    res = Unan::table_projets.select(where:"program_id = #{program.id}").values.first
+    res = Unan::table_projets.select(where:"program_id = #{program.id}").first
     expect(res).not_to eq nil
     {
       id:           dprog[:projet_id],

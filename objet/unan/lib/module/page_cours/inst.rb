@@ -40,6 +40,7 @@ class Program
 
 
     def get_id
+      # -> MYSQL UNAN
       table.select(where:"handler = '#{handler}'", colonnes:[:id]).values.first[:id]
     end
 
@@ -59,6 +60,7 @@ class Program
     end
 
     def table
+      # -> MYSQL UNAN
       @table ||= self.class::table_pages_cours
     end
 

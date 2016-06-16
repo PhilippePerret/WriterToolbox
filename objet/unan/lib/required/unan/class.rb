@@ -11,7 +11,9 @@ Pour un programme en particulier, voir la classe Unan::Program
 =end
 
 class Unan
+
   extend MethodesMainObjets
+
   class << self
 
     # Requérir les données

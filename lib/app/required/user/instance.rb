@@ -7,7 +7,11 @@ class User
   # l'autre
   def unanunscript?
     user.identified? || ( return false )
-    table_programs = site.db.create_table_if_needed('unan_hot', 'programs')
-    table_programs.count(where:"(auteur_id = #{user.id}) AND (options LIKE '1%') AND (options NOT LIKE '__1%')" ) > 0
+    where = []
+    where << "auteur_id = #{user.id}"
+    where << 'options LIKE "1%"'
+    where << 'options NOT LIKE "__1%"'
+    where = where.join(' AND ')
+    site.dbm_table(:unan, 'programs').count(where: where) > 0
   end
 end #/User

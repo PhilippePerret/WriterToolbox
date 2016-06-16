@@ -19,10 +19,10 @@ describe 'Création d’un programme par les tests' do
     before(:all) do
       # On prend les ID de programmes avant
       @init_ids = Unan::table_programs.select(colonnes:[]).keys
-      @init_projets_ids = Unan::table_projets.select(colonnes:[]).keys
+      @init_projets_ids = Unan::table_projets.select(colonnes:[]).collect{|p| p[:id]}
       @user = create_user(unanunscript: true, current:true)
-      @new_ids = Unan::table_programs.select(colonnes:[]).keys
-      @new_projets_ids = Unan::table_projets.select(colonnes:[]).keys
+      @new_ids = Unan::table_programs.select(colonnes:[]).collect{|p| p[:id]}
+      @new_projets_ids = Unan::table_projets.select(colonnes:[]).collect{|p| p[:id]}
       @program_id = @new_ids.reject{|pid| @init_ids.include?(pid)}.first
       puts "@program_id : #{@program_id.inspect}"
       @projet_id  = @new_projets_ids.reject{|pid| @init_projets_ids.include?pid}.first

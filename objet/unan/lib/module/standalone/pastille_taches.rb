@@ -18,7 +18,7 @@ class User
   # chargé à chaque chargement de page même lorsque l'utilisateur
   # ne se trouve pas dans la section du programme)
   def set_pastille_taches
-    return ''
+    # return ''
     site.require_module 'pastille'
     ipastille = SiteHtml::Pastille::new
     # Procéder à l'état des lieux du programme UN AN UN SCRIPT et

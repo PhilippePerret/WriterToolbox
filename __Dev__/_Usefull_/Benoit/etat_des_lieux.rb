@@ -40,7 +40,7 @@ class Benoit
   # ---------------------------------------------------------------------
   def program ; @program ||= Unan::Program::new(program_id) end
   def program_id
-    @program_id ||= Unan::table_programs.select(where:"(auteur_id = #{id}) AND (options LIKE '1%') AND (options NOT LIKE '1_1%')", colonnes:[:id]).keys.first
+    @program_id ||= Unan::table_programs.select(where:"(auteur_id = #{id}) AND (options LIKE '1%') AND (options NOT LIKE '1_1%')", colonnes:[]).first[:id]
   end
   def id; @id ||= 2 end
 
