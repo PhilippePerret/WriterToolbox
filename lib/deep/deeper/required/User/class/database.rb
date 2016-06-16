@@ -19,6 +19,7 @@ class User
       @table_users ||= site.dbm_table(:hot, 'users')
     end
     alias :table :table_users
+    
     def table_connexions
       @table_connexions ||= site.dbm_table(:hot, 'connexions')
     end

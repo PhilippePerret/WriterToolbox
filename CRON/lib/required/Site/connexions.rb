@@ -37,13 +37,13 @@ class << self
     log "* Résumé des connexions par IP"
     log ". = #{File.expand_path('.')}"
     ireport = new
-    ireport.prepare_rapport
     ireport.build_report
     if ireport.has_connexions?
       ireport.consigne_report
       ireport.send_report
     end
-    ireport.reset_databases_connexions
+    # Suppression des connexions traitées
+    ireport.remove_connexions
     log "  = Résumé des connexions OK"
     log "<- SiteHtml::Connexions::resume"
   rescue Exception => e
@@ -108,19 +108,6 @@ end # << self SiteHtmlConnexions
   # n'est à consigner.
   def has_connexions?
     report[:by_ip].count > 0
-  end
-
-  # Préparation du rapport
-  # Notamment, on fait une copie du dossier
-  # des connexions
-  def prepare_rapport
-    # On commence par copier toutes les bases de données
-    folder_connexions_report.remove if folder_connexions_report.exist?
-    folder_connexions_report.build
-    Dir["#{folder_connexions}/*.db"].each do |p|
-      FileUtils::cp p, File.join(folder_connexions_report.to_s, File.basename(p))
-      File.unlink p
-    end
   end
 
   # Construction du rapport
@@ -284,19 +271,22 @@ end # << self SiteHtmlConnexions
   end
 
   # récolte les connexions par ip
+  #
   def recolte_connexions_by_ip
-    # On passe en revue toutes les bases
-    Dir["#{folder_connexions_report}/*.db"].each do |p|
-      # -> MYSQL
-      dbase   = SQLite3::Database::new(p)
-      connexions = dbase.execute("SELECT * FROM connexions").each do |res|
-        ip, time, route = res
-        @report[:by_ip][ip] ||= {times: Array::new, routes: Array::new}
-        @report[:by_ip][ip][:times]   << time
-        @report[:by_ip][ip][:routes]  << route
-      end
-      # -> MYSQL
+    # On récupère toutes les connexions qui ont eu lieu depuis
+    # le dernier rapport.
+    all_connexions = table_connexions_per_ip.select
+    # On définit le temps de départ à maintenant pour supprimer
+    # toutes ces connexions en fin de rapport, si tout s'est
+    # bien passé
+    @start_time = Time.now.to_i
+    all_connexions.each do |con|
+      ip = con[:ip]
+      @report[:by_ip][ip] ||= {times: Array::new, routes: Array::new}
+      @report[:by_ip][ip][:times]   << con[:time]
+      @report[:by_ip][ip][:routes]  << con[:route]
     end
+
   end
 
   # Envoi du rapport à l'administration
@@ -337,17 +327,12 @@ end # << self SiteHtmlConnexions
   # Noter qu'elles ont été mises de côté pour ne
   # pas empêcher le fonctionnement normal pendant
   # qu'on calcule
-  def reset_databases_connexions
-    folder_connexions_report.remove
+  def remove_connexions
+    table_connexions_per_ip.delete(where: "time <= #{@start_time}")
   end
 
-  def folder_connexions
-    @folder_connexions ||= SuperFile::new('./tmp/connexions')
+  def table_connexions_per_ip
+    @table_connexions_per_ip ||= site.dbm_table(:hot, 'connexions_per_ip')
   end
-  def folder_connexions_report
-    @folder_connexions_report ||= SuperFile::new('./tmp/connexions_report')
-  end
-
-
 end #/Connexions
 end #/SiteHtml

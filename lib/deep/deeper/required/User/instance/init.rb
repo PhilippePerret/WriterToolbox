@@ -29,9 +29,15 @@ class User
   end
 
   # À l'initialisation de l'user (en fait, au chargement de
-  # la page), on enregistre toujours sa dernière connexion
+  # la page), on enregistre toujours sa dernière connexion.
+  #
+  # Attention, cela n'a rien à voir (pour le moment) avec le suivi
+  # par IP qui enregistre dans la table :hot, connexions_per_ip
+  # 
   def set_last_connexion
-    rt = site.current_route ? site.current_route.route : nil
+    # On doit toujours avoir une route, car la propriété `route` ne
+    # peut pas être nil dans la table.
+    rt = site.current_route ? site.current_route.route : 'site/home'
     # On ne doit pas enregistrer la dernière connexion si
     # c'est une déconnexion (sinon ça pose problème si l'user
     # a choisi de rejoindre sa dernière page consultée après
@@ -41,6 +47,7 @@ class User
   end
 
   # Retourne la date de dernière connexion de l'user, ou NIL
+  # Note : pour le moment, la route ne sert à rien.
   def last_connexion
     @last_connexion ||= begin
       rs = User::table_connexions.get(self.id)
