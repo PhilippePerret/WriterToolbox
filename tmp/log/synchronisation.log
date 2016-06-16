@@ -322,3 +322,9 @@ Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND opt
 where : "auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\"" / params : {:where=>"auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\""}
 Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
 @prepared_values : nil
+where : "auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\"" / params : {:where=>"auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\""}
+Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
+@prepared_values : nil
+where : "auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\"" / params : {:where=>"auteur_id = 1 AND options LIKE \"1%\" AND options NOT LIKE \"__1%\""}
+Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
+@prepared_values : nil

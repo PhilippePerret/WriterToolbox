@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-  Script autonome pour passer la table users.users de la base SQLite à
+  Script autonome pour passer la table site_hot.todolist de la base SQLite à
   la base MySQL.
 
   Le lancer dans TextMate
@@ -18,11 +18,13 @@ if OFFLINE
   # Si on est en offline, il faut importer certaines librairies utiles
   require '/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/extensions/hash.rb'
   Dir['/Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/required/Site/mysql/**/*.rb'].each{|m| require m}
+
+  def debug foo
+    (console.sub_log "#{foo}<br>") rescue nil
+  end
+
 end
 
-def debug foo
-  (console.sub_log "#{foo}<br>") rescue nil
-end
 
 
 begin
@@ -30,14 +32,14 @@ begin
   Dir.chdir(OFFLINE ? "/Users/philippeperret/Sites/WriterToolbox": '.') do
 
     # La base SQLite
-    dbpath = './database/data/users.db'
+    dbpath = './database/data/site_hot.db'
     dblite = SQLite3::Database.new(dbpath)
     # La table dans la base MySQL
-    dbm_table = SiteHtml::DBM_TABLE.get(:hot, 'users')
+    dbm_table = SiteHtml::DBM_TABLE.get(:hot, 'taches')
 
     # RÉCUPÉRATION DES DONNÉES ORIGINALES
     # -----------------------------------
-    pr = dblite.prepare('SELECT * FROM users')
+    pr = dblite.prepare('SELECT * FROM todolist')
     original_data = []
     pr.execute.each_hash do |row|
       original_data << row.to_sym
@@ -47,14 +49,12 @@ begin
     # -------------------------------------------------
     dbm_table.destroy if dbm_table.exists?
     dbm_table.create_if_needed
-
     debug "Nombre de rangées dans la table mySQL AVANT l'opération : #{dbm_table.count}"
     original_data.each do |hdata|
       # ---------------------------------------------------------------------
       # TRANSFORMATION OPTIONNELLE DES DONNÉES
       # ---------------------------------------------------------------------
       hdata.each do |k, v|
-        # Il faut toujours faire ça
         hdata[k] = nil if v == 'NULL'
       end
       # ---------------------------------------------------------------------
