@@ -3,7 +3,7 @@ class Admin
 class Taches
 class Tache
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -23,7 +23,7 @@ class Tache
   # ---------------------------------------------------------------------
   #   Data volatiles
   # ---------------------------------------------------------------------
-  def admin ; @admin ||= User::get(admin_id) end
+  def admin ; @admin ||= User.get(admin_id) end
 
   # Retourne :
   #   NIL si la tâche n'a pas d'échéance
@@ -51,7 +51,6 @@ class Tache
   # Actualisation de la donnée
   def update
     table.update(id, data2save)
-    debug "data2save: #{data2save.pretty_inspect}"
     flash "Tache ##{id} actualisée."
   end
 
@@ -65,12 +64,13 @@ class Tache
   #
   def stop
     data_cold = {
-      id: id,
-      tache: tache,
-      admin_id: admin_id,
-      description: description,
-      created_at:  created_at,
-      ended_at:     NOW
+      id:           id,
+      tache:        tache,
+      admin_id:     admin_id,
+      description:  description,
+      created_at:   created_at,
+      state:        9,
+      updated_at:   NOW
     }
     table_cold.insert(data_cold)
     table.delete(id)
@@ -106,10 +106,10 @@ class Tache
   end
 
   def table
-    @table ||= Admin::table_taches
+    @table ||= Admin.table_taches
   end
   def table_cold
-    @table_cold ||= Admin::table_taches_cold
+    @table_cold ||= Admin.table_taches_cold
   end
 
   # Return true si les données sont valides
@@ -137,7 +137,7 @@ class Tache
       admin_id = User::table_users.select(where:"pseudo = '#{aref}'", colonnes:[]).first[:id]
       raise "Aucun administrateur ne correspond au pseudo `#{aref}`" if admin_id.nil?
     end
-    ua = User::get(admin_id)
+    ua = User.get(admin_id)
     raise "L'user #{ua.pseudo} n'est pas administrateur…" unless ua.admin?
   rescue Exception => e
     debug e

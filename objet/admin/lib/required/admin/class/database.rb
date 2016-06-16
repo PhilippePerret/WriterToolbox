@@ -13,12 +13,11 @@ class Admin
   class << self
 
     def table_taches
-      @table_taches ||= site.db.create_table_if_needed('site_hot', 'todolist')
+      @table_taches ||= site.dbm_table(:hot, 'taches')
     end
-    alias :table_todolist :table_taches
 
     def table_taches_cold
-      @table_taches_cold ||= site.db.create_table_if_needed('site_cold', 'todolist')
+      @table_taches_cold ||= site.dbm_table(:cold, 'taches')
     end
 
   end #/ << self

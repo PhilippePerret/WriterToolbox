@@ -127,10 +127,10 @@ class Console
       # On relève la liste des tâches
       task_list = if options[:all]
         sub_log "liste de toutes les taches".in_h3
-        ::Admin::table_taches.select(order: "echeance DESC", colonnes:[]).keys.collect do |tid|
-          ::Admin::Taches::Tache::new(tid)
+        ::Admin.table_taches.select(order: "echeance DESC", colonnes:[]).collect do |htache|
+          ::Admin::Taches::Tache::new(htache[:id])
         end
-      elsif options.has_key?( :admin )
+      elsif options.key?( :admin )
         unless options[:admin].to_s.numeric?
           admin = User::get_by_pseudo(options[:admin])
           if admin.pseudo == "Marion" && admin.options[0..1] != "15"

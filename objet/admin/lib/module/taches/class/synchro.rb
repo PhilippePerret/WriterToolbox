@@ -7,6 +7,7 @@ class << self
   attr_reader :suivi
 
   def init_synchro
+    raise "REFAIRE LA FORMULE DE SYNCHRO"
     # Pour le suivi qui va être affiché
     @suivi = Array::new
     # Pour le rapport complet (contient toutes les tâches)

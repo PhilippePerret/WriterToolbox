@@ -36,7 +36,6 @@ class Taches
   # Relever toutes les tâches non achevées et les dispatcher entre
   # les tâches de l'administrateur courant et des autres administrateurs
   def liste_des_taches_dispatched
-    debug "-> liste_des_taches_dispatched"
     @ladmin = Array::new
     @lothers = Array::new
     # Ancienne formule : mais les appels à la table sont trop
@@ -50,7 +49,7 @@ class Taches
     #   litache = itache.as_li
     #   owned_current ? (@ladmin << litache) : (@lothers << litache)
     # end
-    Admin::table_taches.select(where:'state < 9',order:"echeance ASC").each do |tid, tdata|
+    Admin.table_taches.select(where:'state < 9',order:"echeance ASC").each do |tdata|
       owned_current = tdata[:admin_id] == admin_id
       itache = Tache::new(tid)
       itache.data = tdata
@@ -59,11 +58,9 @@ class Taches
     end
     @liste_taches_admin_courant = @ladmin.join.in_ul(class:'taches')
     @liste_taches_autres_admins = @lothers.join.in_ul(class:'taches')
-    debug "<- liste_des_taches_dispatched"
   end
 
   # Liste {Array} des instances Tache de la liste
-  # Rappel : la table ne s'appelle pas 'taches' mais 'todolist'
   def taches options = nil
     @taches = nil if options != nil
     @taches ||= begin
@@ -71,12 +68,19 @@ class Taches
       where = options[:where] || "state < 9"
       where += " AND admin_id = #{admin_id}" unless admin_id.nil?
       options.merge!(where: where)
-      options.merge!(order:"echeance ASC")  unless options.has_key?(:order)
-      Admin::table_taches.select(options).collect do |tid, tdata|
-        t = Tache::new(tid)
+      options.merge!(order: "echeance ASC")  unless options.key?(:order)
+      tache_with_echeance = []
+      tache_without_echeance = []
+      Admin.table_taches.select(options).each do |tdata|
+        t = Tache::new(tdata[:id])
         t.data= tdata
-        t
+        if tdata[:echeance]
+          tache_with_echeance << t
+        else
+          tache_without_echeance << t
+        end
       end
+      tache_with_echeance + tache_without_echeance
     end
   end
 

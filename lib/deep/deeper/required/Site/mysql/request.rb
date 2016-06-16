@@ -238,7 +238,6 @@ DELETE FROM #{dbm_table.name}
     end
     # On peut prend where dans les paramètres
     where = params[:where]
-    debug "where : #{where.inspect} / params : #{params.inspect}"
     case where
     when NilClass then ''
     when String then 'WHERE ' + where
