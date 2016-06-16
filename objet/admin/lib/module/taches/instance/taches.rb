@@ -36,8 +36,10 @@ class Taches
   # Relever toutes les tâches non achevées et les dispatcher entre
   # les tâches de l'administrateur courant et des autres administrateurs
   def liste_des_taches_dispatched
-    @ladmin = Array::new
-    @lothers = Array::new
+    @ladmin   = []
+    @lothers  = []
+    @ladmin_no_echeance   = []
+    @lothers_no_echeance  = []
     # Ancienne formule : mais les appels à la table sont trop
     # en rafale. À chaque `itache.get_all`, ça fait un appel.
     # À la place, on relève toutes les données et on crée les
@@ -49,15 +51,28 @@ class Taches
     #   litache = itache.as_li
     #   owned_current ? (@ladmin << litache) : (@lothers << litache)
     # end
-    Admin.table_taches.select(where:'state < 9',order:"echeance ASC").each do |tdata|
+    Admin.table_taches.select(where: 'state < 9', order: "echeance ASC").each do |tdata|
+      tid = tdata[:id]
       owned_current = tdata[:admin_id] == admin_id
       itache = Tache::new(tid)
       itache.data = tdata
       litache = itache.as_li
-      owned_current ? (@ladmin << litache) : (@lothers << litache)
+      if owned_current
+        if tdata[:echeance]
+          @ladmin << litache
+        else
+          @ladmin_no_echeance << litache
+        end
+      else
+        if tdata[:echeance]
+          @lothers << litache
+        else
+          @lothers_no_echeance << litache
+        end
+      end
     end
-    @liste_taches_admin_courant = @ladmin.join.in_ul(class:'taches')
-    @liste_taches_autres_admins = @lothers.join.in_ul(class:'taches')
+    @liste_taches_admin_courant = (@ladmin + @ladmin_no_echeance).join.in_ul(class:'taches')
+    @liste_taches_autres_admins = (@lothers + @lothers_no_echeance).join.in_ul(class:'taches')
   end
 
   # Liste {Array} des instances Tache de la liste

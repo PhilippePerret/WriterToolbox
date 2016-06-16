@@ -140,6 +140,7 @@ class User
       cpassword:    cpassword,
       salt:         random_salt,
       session_id:   app.session.session_id,
+      options:      '0'*10,
       created_at:   now,
       updated_at:   now
     }

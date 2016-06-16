@@ -334,3 +334,9 @@ Requête définitive : SELECT * FROM taches WHERE state < 9 AND admin_id = 1 ORD
 @prepared_values : []
 Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
 @prepared_values : nil
+Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
+@prepared_values : nil
+Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND options LIKE "1%" AND options NOT LIKE "__1%";
+@prepared_values : nil
+Requête définitive : SELECT * FROM taches WHERE state < 9 AND admin_id = 1 ORDER BY echeance ASC;
+@prepared_values : []

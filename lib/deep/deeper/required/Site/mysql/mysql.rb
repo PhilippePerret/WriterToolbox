@@ -184,19 +184,51 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # ---------------------------------------------------------------------
   #   Méthodes utiles à la création de la table
   # ---------------------------------------------------------------------
+
+  # Lorsque c'est une table dans :users_tables, le nom
+  # est composé de <nom table>_<id user>.
+  # Il faut prendre le préfixe pour obtenir le nom de la table
+  # pour trouver sa définition et son code de création.
+  # Il faut prendre le suffixe, donc l'ID de l'user pour pour
+  # envoyer à la création pour composer une table qui s'appellera
+  # bien <nom table>_<id user>, donc une table unique pour l'user
+  def prefix_name
+    @prefix_name ||= name.split('_')[0]
+  end
+  def suffix_name # en fait = l'ID de l'user
+    @suffix_name ||= name.split('_')[1]
+  end
+
   # Chemin d'accès au schéma de la base
   def schema_path
-    @schema_path ||= self.class.folder_path_schema_tables(type) + "table_#{name}.rb"
+    @schema_path ||= begin
+      if type = :users_tables
+        self.class.folder_path_schema_tables(type) + "table_#{prefix_name}.rb"
+      else
+        self.class.folder_path_schema_tables(type) + "table_#{name}.rb"
+      end
+    end
   end
   # Le nom du schéma, c'est-à-dire le nom de la méthode
   # qui va renvoyer le code de création de la table.
   def schema_name
-    @schema_name ||= "schema_table_#{name}".to_sym
+    @schema_name ||= begin
+      if type = :users_tables
+        "schema_table_#{prefix_name}".to_sym
+      else
+        "schema_table_#{name}".to_sym
+      end
+    end
   end
+
   def code_creation_schema
     @code_creation_schema ||= begin
       schema_path.require
-      send(schema_name)
+      if type = :users_tables
+        send(schema_name, suffix_name)
+      else
+        send(schema_name)
+      end
     end
   end
   # Crée la table si elle n'existe pas.

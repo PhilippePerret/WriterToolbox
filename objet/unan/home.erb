@@ -17,6 +17,11 @@
 
 <%
 
+lien_subscribe_program = (
+  "S’inscrire au programme".in_a(href:"unan/paiement", style:'color:white;font-size:16pt') +
+  "<br>#{Unan::tarif_humain} pour toute une année".in_span(class: 'tiny center')
+  ).in_div(class: 'btn', style: 'background-color:green;color:white;display:inline-block;text-align:center;padding:1em 2em')
+
 
 if user.identified?
 
@@ -41,11 +46,11 @@ if user.identified?
       # Un user identifié mais qui ne suit pas le programme
       # un an un script
 %>
+  <div class="right"><%= lien_subscribe_program %></div>
   <p class='small right red'>Vous ne suivez pas (encore) le programme “Un An Un Script”.</p>
-  <ul class='free bordure'>
-    <li><%= "Découvrir le programme UN AN UN SCRIPT en profondeur".in_a(href:"aide/overview?in=unan") %></li>
-    <li><%= "S'inscrire au programme UN AN UN SCRIPT".in_a(href:"unan/paiement") %><span class='small'> (<%= Unan::tarif_humain %> pour l'année complète)</span></li>
-  </ul>
+  <p class='right'>
+    <%= "#{DOIGT}Découvrir le programme UN AN UN SCRIPT en profondeur".in_a(href:"aide/overview?in=unan") %>
+  </p>
 <%
 
   end # if unanunscript?
@@ -62,13 +67,13 @@ else
   # s'inscrire au programme ou pour en savoir plus.
 
 %>
+<div class="right"><%= lien_subscribe_program %></div>
 <p>
   Le pari de ce <strong>programme d'écriture</strong> est simple : que vous soyez auteur expérimenté ou non, que vous ayez ou non des connaissances poussées en dramaturgie, que vous ayez ou non déjà mené à terme un projet d'écriture, ce programme sérieux et inventif s'engage à vous faire <strong>parvenir à écrire votre roman, votre scénario de film ou de BD</strong> en un temps donné d'environ un an — suivant le rythme choisi —, tout en vous faisant suivre une <strong>formation complète à la narration</strong> (l'art d'écrire des histoires).
 </p>
-<ul>
-  <li><%= "En apprendre plus sur ce programme".in_a(href:"aide/overview?in=unan") %> ;</li>
-  <li><a href="unan/paiement"><strong class='inherit'>S'inscrire à ce programme d'un an</strong> pour seulement <%= Unan::tarif_humain(tarif_mois = true) %>.</li>
-</ul>
+<p class='right'>
+  <%= "#{DOIGT}En apprendre plus sur ce programme".in_a(href:"aide/overview?in=unan") %>
+</p>
 
 <%
 end
