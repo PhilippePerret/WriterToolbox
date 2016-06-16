@@ -16,11 +16,6 @@ class Sync
   # car prévoir qu'il pourra y avoir d'autres fichiers à checker.
   FILES2SYNC = {
     # Systémique (RestSite)
-    taches: {
-      hname: "Tâches",
-      fpath: "./database/data/site_hot.db",
-      icare: false
-      },
     permtweets: {
       hname: "Tweets permanents",
       fpath: "./database/data/site_cold.db",

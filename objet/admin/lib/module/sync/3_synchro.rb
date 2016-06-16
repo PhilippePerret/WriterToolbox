@@ -22,11 +22,7 @@ class Sync
 
     synchronize_affiches    if param(:cb_synchronize_affiches)
 
-    synchronize_taches      if param(:cb_synchronize_taches)
-
     synchronize_tweets      if param(:cb_synchronize_permtweets)
-
-    synchronize_citations   # toujours
 
     synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
 
@@ -56,7 +52,6 @@ class Sync
   def build_backups_per_synchro
     @suivi << "*** Backup des bases ***"
     array_backup = Array::new
-    array_backup << "./database/data/site_hot.db"   if param(:cb_synchronize_taches)
     array_backup << "./database/data/cnarration.db" if param(:cb_synchronize_narration)
     array_backup << "./database/data/scenodico.db"  if param(:cb_synchronize_scenodico)
     array_backup << "./database/data/filmodico.db"  if param(:cb_synchronize_filmodico)

@@ -4,8 +4,8 @@ require 'mysql2'
 class SiteHtml
 
   # Retourne l'instance SiteHtml::DBM_TABLE de la table MySQL
-  def dbm_table db_name, table_name
-    DBM_TABLE.get(db_name.to_sym, table_name)
+  def dbm_table db_name, table_name, force_online = false
+    DBM_TABLE.get(db_name.to_sym, table_name, force_online)
   end
 
 class DBM_TABLE # DBM_TABLE pour DataBase Mysql
@@ -20,10 +20,10 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # Retourne la table (instance {SiteHtml::DBM_TABLE}) de nom
     # +tablename+ dans la base de type +db_type+ qui peut
     # être :hot, :cold, :cnarration, :unan.
-    def get db_type, tablename
+    def get db_type, tablename, force_online = false
       @tables ||= {}
-      @tables["#{db_type}.#{tablename}"] ||= begin
-        new(db_type, tablename).create_if_needed
+      @tables["#{db_type}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin
+        new(db_type, tablename, force_online).create_if_needed
       end
     end
 
@@ -38,10 +38,17 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # Les données pour se connecter à la base mySql
     # soit en local soit en distant.
     def client_data
-      @client_data ||= begin
-        require './data/secret/mysql'
-        OFFLINE ? DATA_MYSQL[:offline] : DATA_MYSQL[:online]
-      end
+      @client_data ||= ( OFFLINE ? client_data_offline : client_data_online )
+    end
+
+    def client_data_offline
+      require './data/secret/mysql'
+      DATA_MYSQL[:offline]
+    end
+
+    def client_data_online
+      require './data/secret/mysql'
+      DATA_MYSQL[:online]
     end
 
     # Le préfixe du nom (de la base de données) en fonction
@@ -74,11 +81,19 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
 
   attr_reader :db_name
 
+  # Si True, c'est avec les bases online qu'on travaille
+  attr_reader :force_online
+
   # Instanciation de la table, avec son type (dans :hot
   # ou dans :cold — la base) et son nom +table_name+
-  def initialize type, table_name
-    @name = table_name
-    @type = type
+  #
+  # +force_online+ permet de forcer l'interaction avec
+  # la base online (pour la synchronisation par exemple)
+  #
+  def initialize type, table_name, force_online = false
+    @name           = table_name
+    @type           = type
+    @force_online   = force_online
   end
 
   # ---------------------------------------------------------------------
@@ -118,7 +133,14 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # données.
   def client
     @client ||= begin
-      Mysql2::Client.new(self.class.client_data.merge(database: db_name))
+      Mysql2::Client.new(client_data.merge(database: db_name))
+    end
+  end
+  def client_data
+    if force_online
+      self.class.client_data_online
+    else
+      self.class.client_data
     end
   end
 
@@ -131,7 +153,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Retourne TRUE si la table existe, FALSE si elle
   # n'existe pas.
   def exists?
-    if self.class.tables.key?("#{type}.#{name}")
+    if self.class.tables.key?("#{type}.#{name}#{force_online ? '' : '.online'}")
       true
     else
       begin

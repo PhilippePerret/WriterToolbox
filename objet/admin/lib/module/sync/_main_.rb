@@ -16,10 +16,17 @@ class Sync
   # à checker.
   #
   def etat_des_lieux
-    @suivi ||= Array::new
+    @suivi  ||= Array::new
+    @errors ||= Array::new
     if ONLINE
       etat_des_lieux_online
     else
+      # On fait systématiquement la synchronisation des
+      # tâches
+      synchronize_taches
+      # On fait systématiquement la synchronisation des citations
+      synchronize_citations
+      # On procède à l'état des lieux
       etat_des_lieux_offline
     end
   end

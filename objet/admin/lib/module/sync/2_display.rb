@@ -100,7 +100,7 @@ class Sync
 
     c << @datasync.pretty_inspect.in_pre(id: "data_sync", displayed: false)
     c << @online_sync_state_init.pretty_inspect.in_pre(id: "online_sync_state", display: false)
-    c << suivi.join("\n").in_pre(id: 'suivi_operation', display: false)
+    c << suivi.join("\n").in_pre(id: 'suivi_operation', display: true)
 
     # On écrit tout ce code dans le fichier temporaire pour qu'il soit
     # relu facilement.
