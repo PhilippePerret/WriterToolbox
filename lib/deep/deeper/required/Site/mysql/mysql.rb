@@ -19,7 +19,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
 
     # Retourne la table (instance {SiteHtml::DBM_TABLE}) de nom
     # +tablename+ dans la base de type +db_type+ qui peut
-    # être soit :hot soit :cold.
+    # être :hot, :cold, :cnarration, :unan.
     def get db_type, tablename
       @tables ||= {}
       @tables["#{db_type}.#{tablename}"] ||= begin
@@ -51,10 +51,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # online comme en offline.
     #
     def prefix_name
-      @prefix_name ||= begin
-        # (ONLINE ? 'boite-a-outils' : 'boite_outils_auteur') + '_'
-        'boite-a-outils_'
-      end
+      @prefix_name ||= 'boite-a-outils_'
     end
 
     # {SuperFile} Dossier contenant les schémas des
@@ -62,11 +59,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # Elles sont réparties en deux dossier, :hot ou :cold.
     def folder_path_schema_tables type = nil
       @folder_path_schema_tables ||= site.folder_database + 'definition_tables_mysql'
-      case type
-      when NilClass then @folder_path_schema_tables
-      when :hot     then @folder_path_schema_tables + 'base_hot'
-      when :cold    then @folder_path_schema_tables + 'base_cold'
-      end
+      type ? @folder_path_schema_tables + "base_#{type}" : @folder_path_schema_tables
     end
 
   end #/<< self
@@ -75,7 +68,8 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   #   Instance d'une table de database
   # ---------------------------------------------------------------------
   attr_reader :name
-  # Pour savoir si c'est une table :hot ou :cold
+  # Pour savoir si c'est une table :hot, :cold, :cnarration,
+  # etc.
   attr_reader :type
 
   attr_reader :db_name
@@ -148,6 +142,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
       end
     end
   end
+  alias :exist? :exists?
 
 
 

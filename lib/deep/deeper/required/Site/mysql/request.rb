@@ -144,6 +144,10 @@ class Request
     nombre_rows
   end
 
+  # ---------------------------------------------------------------------
+  #   REQUÊTES STRING
+  # ---------------------------------------------------------------------
+
   def request_count
     <<-SQL
 SELECT COUNT(*) FROM #{dbm_table.name}
@@ -151,27 +155,6 @@ SELECT COUNT(*) FROM #{dbm_table.name}
   #{group_by_clause}
     SQL
   end
-
-  # ---------------------------------------------------------------------
-
-  # Retourne true si les rangées définies par la clause
-  # where existent. En général, ça ne test qu'une seule
-  # rangée pour la méthode SET.
-  def rows_exist?
-    @prepared_values = []
-    @request = "SELECT COUNT(*) FROM #{dbm_table.name} #{where_clause} LIMIT 1"
-    resultat = exec
-    debug "resultat : #{resultat.inspect}"
-    unless resultat.nil?
-      resultat.first.values.first > 0
-    else
-      return false
-    end
-  end
-
-  # ---------------------------------------------------------------------
-  #   REQUÊTES STRING
-  # ---------------------------------------------------------------------
 
   # Construction de la requête string pour INSERT
   def request_insert
@@ -312,10 +295,24 @@ DELETE FROM #{dbm_table.name}
     end
   end
 
-
-
   # / Fin de méthodes de fabrication des clauses
   # ---------------------------------------------------------------------
+
+  # Retourne true si les rangées définies par la clause
+  # where existent. En général, ça ne test qu'une seule
+  # rangée pour la méthode SET.
+  def rows_exist?
+    @prepared_values = []
+    @request = "SELECT COUNT(*) FROM #{dbm_table.name} #{where_clause} LIMIT 1"
+    resultat = exec
+    debug "resultat : #{resultat.inspect}"
+    unless resultat.nil?
+      resultat.first.values.first > 0
+    else
+      return false
+    end
+  end
+
 
   # Renvoie le nombre de rangées touchées par la dernière
   # requête (en tout cas avec INSERT, pas encore vérifié avec

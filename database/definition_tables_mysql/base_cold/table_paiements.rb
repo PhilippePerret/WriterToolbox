@@ -22,13 +22,14 @@ CREATE TABLE paiements
     # OBJET_ID
     # --------
     # L'objet du paiement, par exemple "ABONNEMENT" pour un
-    # abonnement au site.
+    # abonnement au site ou "1AN1SCRIPT" pour une inscription au
+    # programme UN AN UN SCRIPT.
     objet_id VARCHAR(200) NOT NULL,
 
     # MONTANT
     # -------
     # Montant en euros du paiement
-    montant INTEGER(4) NOT NULL,
+    montant FLOAT(5) NOT NULL,
 
     # FACTURE
     # -------
