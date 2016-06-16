@@ -151,7 +151,7 @@ class Paiement
   def save_paiement
     # debug "-> save_paiement"
     # debug "= data_paiement : #{data_paiement.inspect}"
-    self.class::table_paiements.insert(data_paiement)
+    User.table_paiements.insert(data_paiement)
   end
 
   # Envoyer un mail de confirmation à l'user

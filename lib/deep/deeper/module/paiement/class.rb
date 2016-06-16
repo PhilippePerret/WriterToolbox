@@ -16,11 +16,6 @@ class SiteHtml
         true == OFFLINE
       end
 
-      # Table dans la base de données users
-      def table_paiements
-        @table_paiements ||= site.db.create_table_if_needed('users', 'paiements')
-      end
-
       # Les données Paypal
       # ------------------
       # C'est un fichier qui doit se trouver dans un dossier

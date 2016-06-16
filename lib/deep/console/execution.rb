@@ -307,7 +307,7 @@ class Console
   def vide_table_paiements
 
     if OFFLINE
-      User::table_paiements.pour_away
+      User::table_paiements.delete
       if User::table_paiements.count == 0
         "Table des paiements vidée avec succès"
       else
@@ -321,7 +321,7 @@ class Console
 
   def remove_table_paiements
     if OFFLINE
-      User::table_paiements.remove
+      User::table_paiements.destroy
       "Table des paiements détruite avec succès."
     else
       "Impossible de détruire la table des paiements en ONLINE. On perdrait toutes les données."

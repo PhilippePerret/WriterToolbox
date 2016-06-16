@@ -75,7 +75,6 @@ class User
     # Pour les moteurs de recherche, les icariens actifs,
     # i.e. tous les gens qui ne paient pas d'abonnement mais
     # peuvent tout voir.
-    return false if User::table_paiements.exist? == false
     return false if last_abonnement.nil?
     last_abonnement > (NOW.to_i - (30.5*nombre_mois).to_i.days)
   end
