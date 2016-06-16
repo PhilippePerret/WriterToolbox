@@ -39,8 +39,14 @@ end
   <%= div_row('Pseudo'        , pseudo ) %>
   <%= div_row('Inscription'   , created_at.as_human_date(true, true) ) %>
   <%= div_row('Grade forum'   , mark_forum + grade_humain ) %>
-  <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
-  <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>
+  <% unless user.admin? %>
+    <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
+  <% else %>
+    <%= div_row('Grade site', "Administra#{f_trice} de niveau #{get_option(:admin)}") %>
+  <% end %>
+  <% unless user.manitou? %>
+    <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>
+  <% end %>
   <%= div_row('Mot de passe', lien_modifier_mdp) %>
   <%= div_row('Session ID'    , session_id, {class:'small'} ) %>
 </div>

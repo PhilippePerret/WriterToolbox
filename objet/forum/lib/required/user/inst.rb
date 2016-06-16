@@ -25,11 +25,11 @@ class User
     }
   end
 
-  # Grade de l'auteur au format humain
-  # {String} Grade forum de l'utilisateur au format humain
-  def grade_humain
-    @grade_humain ||= GRADES[grade][:hname]
-  end
+  # # Grade de l'auteur au format humain
+  # # {String} Grade forum de l'utilisateur au format humain
+  # def grade_humain
+  #   @grade_humain ||= GRADES[grade][:hname]
+  # end
 
   # Ajoute un message pour l'auteur
   # Cela correspond à plusieurs actions : incrémente la
