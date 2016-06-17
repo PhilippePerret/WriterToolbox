@@ -64,7 +64,7 @@ class Tache
   #
   def stop
     data_cold = {
-      id:           id,
+      # id:           id, NON !!!
       tache:        tache,
       admin_id:     admin_id,
       description:  description,

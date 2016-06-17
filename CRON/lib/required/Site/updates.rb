@@ -276,7 +276,7 @@ class << self
     where = []
     # On ne fait plus de filtre par degré d'importance, mais
     # seulement si l'update doit être annoncée ou non.
-    # where << "CAST(SUBSTR(options,1,1) AS INTEGER) > 6"
+    # where << "CAST(SUBSTRING(options,1,1) AS UNSIGNED) > 6"
     where << "created_at >= #{from} AND created_at < #{to}"
     where << "annonce > 0"
     where = where.join(' AND ')

@@ -183,9 +183,6 @@ end # << self SiteHtmlConnexions
     mess = "<pre style='font-size:9pt'>\n#{titre}\n\n#{entete}\n#{mess}\n</pre>"
     @report[:message] = mess + message_sous_rapport
     @report[:titre]   = titre
-
-    log "RÉSULTATS À ENVOYER :\nTitre : #{@report[:titre]}\nMessage :\n#{@report[:message]}"
-
   end
 
   def pseudo_in_ipdata ipdata

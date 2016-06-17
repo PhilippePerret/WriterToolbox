@@ -75,6 +75,8 @@ class SiteHtml
 
   # On prend les
   def narration_dernieres_pages_cours
+    # -> MYSQL
+    # mettre après : "CAST(SUBSTRING(options,2,1) as UNSIGNED)"
     request = <<-SQL
 SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, created_at, updated_at
   FROM pages

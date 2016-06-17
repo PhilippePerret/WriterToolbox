@@ -22,7 +22,7 @@ class << self
   end
   def travaux
     @travaux ||= begin
-      where = "CAST( SUBSTR(options,3,1) as INTEGER ) < 9"
+      where = "CAST( SUBSTRING(options,3,1) as UNSIGNED ) < 9"
       FilmAnalyse::table_travaux.select(where:where, order:"user_id")
     end
   end
@@ -94,7 +94,7 @@ class << self
 
   def analyste_values
     @analyste_values ||= begin
-      where = "(CAST(SUBSTR(options,18,1) as INTEGER) & 1) OR ( CAST(SUBSTR(options,1,1) as INTEGER) & 1)"
+      where = "(CAST(SUBSTRING(options,18,1) as UNSIGNED) & 1) OR ( CAST(SUBSTRING(options,1,1) as UNSIGNED) & 1)"
       cols  = [:pseudo, :options]
       User::table_users.select(where:where,colonnes:cols).collect do |udata|
         ["#{udata[:id]}", "#{udata[:pseudo]}"]
