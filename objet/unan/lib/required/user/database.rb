@@ -19,8 +19,9 @@ class User
   #
 
   # Table des lectures de pages de cours
-  # -> MYSQL UNAN
-  def table_pages_cours ; @table_pages_cours ||= get_table('pages_cours') end
+  def table_pages_cours
+    @table_pages_cours ||= site.dbm_table(:users_tables, "unan_pages_cours_#{id}")
+  end
 
   # Table des travaux accomplis ou en cours de l'user
   # Noter que c'est une méthode d'instance

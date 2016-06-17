@@ -9,8 +9,7 @@ Gestion des pages de cours lues par l'auteur
 class User
 class UPage
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # {User} Auteur pour l'instance
   attr_reader :auteur
@@ -25,7 +24,6 @@ class UPage
   end
 
   def create
-    # -> MYSQL UNAN
     table.insert(data2save.merge(created_at: NOW))
   end
   def data2save
@@ -83,7 +81,6 @@ class UPage
   # ---------------------------------------------------------------------
 
   def table
-    # -> MYSQL UNAN
     @table ||= auteur.table_pages_cours
   end
 

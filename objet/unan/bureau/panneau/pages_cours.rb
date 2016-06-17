@@ -87,8 +87,8 @@ class Bureau
   def last_pages_cours
     @last_pages_cours ||= begin
       where = "status & #{User::UPage::BIT_LUE} AND updated_at > #{NOW - 4.days}"
-      user.table_pages_cours.select(where: where, colonnes:[:id]).keys.collect do |pid|
-        User::UPage::get(user, pid)
+      user.table_pages_cours.select(where: where, colonnes:[:id]).collect do |hpc|
+        User::UPage::get(user, hpc[:id])
       end
     end
   end

@@ -198,10 +198,16 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # envoyer à la création pour composer une table qui s'appellera
   # bien <nom table>_<id user>, donc une table unique pour l'user
   def prefix_name
-    @prefix_name ||= name.split('_')[0]
+    @prefix_name || split_name
   end
   def suffix_name # en fait = l'ID de l'user
-    @suffix_name ||= name.split('_')[1]
+    @suffix_name || split_name
+    @suffix_name
+  end
+  def split_name
+    dname = name.split('_')
+    @suffix_name = dname.pop
+    @prefix_name = dname.join('_')
   end
 
   # Chemin d'accès au schéma de la base
