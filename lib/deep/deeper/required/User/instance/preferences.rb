@@ -44,9 +44,8 @@ class User
   # Note : RETURN le hash des préférences
   # Cf. User > Preferences.md
   def preferences
-    @preferences = Hash::new
-    # -> MYSQL
-    table_variables.select(where: "name LIKE 'pref_%'").values.each do |hpref|
+    @preferences = {}
+    table_variables.select(where: "name LIKE 'pref_%'").each do |hpref|
       pref_id     = hpref[:name][5..-1].to_sym
       pref_value  = var_value_to_real(hpref)
       @preferences.merge!(pref_id => pref_value)

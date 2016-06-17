@@ -16,8 +16,8 @@ class User
   # Noter que c'est une méthode d'instance
   # Cf. le fichier `inst_variables.rb`
   def table_variables
-    @table_variables ||= create_table_unless_exists('variables')
-    # @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
+    # @table_variables ||= create_table_unless_exists('variables')
+    @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
   end
 
   # Base de données propre à l'user

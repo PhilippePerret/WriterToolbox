@@ -13,12 +13,18 @@ booléenne.
 
 =end
 def schema_table_variables(user_id)
+  # debug "-> schema_table_variables(#{user_id}) (création table 'variables_#{user_id}')"
   <<-MYSQL
 CREATE TABLE variables_#{user_id}
   (
+    # ID
+    # ---
+    # Toujours un ID, même s'il ne sert à rien ici
+    id INTEGER AUTO_INCREMENT,
+
     # NAME
     # ----
-    # Nomm de la variable
+    # Nom de la variable
     name VARCHAR(200) UNIQUE,
 
     # VALUE
@@ -32,7 +38,7 @@ CREATE TABLE variables_#{user_id}
     # cf. VARIABLES_TYPES
     type INTEGER(1),
 
-    PRIMARY KEY (name)
-  )
+    PRIMARY KEY (id)
+  );
   MYSQL
 end

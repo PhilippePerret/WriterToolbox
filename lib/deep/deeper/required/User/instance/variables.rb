@@ -12,7 +12,7 @@ class User
   def variables
     @variables ||= begin
       h = Hash::new
-      table_variables.select.values.each do |d|
+      table_variables.select.each do |d|
         h.merge! d[:name].to_sym => var_value_to_real(d)
       end
       # debug "variables : #{h.inspect}"
@@ -44,12 +44,12 @@ class User
     # Le Hash qui sera enregistré dans la table
     h2save = var_real_to_hash2save( var_value )
 
-    # Création ou update
+    # Création ou update de la variable
     if table_variables.count(where:{name: var_name}) == 0
       h2save.merge!(name: var_name)
       table_variables.insert(h2save)
     else
-      table_variables.set( where:{name: var_name}, values: h2save )
+      table_variables.set( {where:{name: var_name}}, h2save )
     end
   end
 
@@ -99,7 +99,7 @@ class User
     hsaved = Hash::new
     arr_names = arr_var_names.collect{|n| "'#{n}'"}
     where = "name IN (#{arr_names.join(', ')})"
-    saved_vars = table_variables.select(where: where).values.each do |hvalue|
+    saved_vars = table_variables.select(where: where).each do |hvalue|
       # hvalue => {:id, :name, :value, :type}
       hsaved.merge!(hvalue[:name] => hvalue)
     end

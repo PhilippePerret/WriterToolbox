@@ -94,6 +94,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     @name           = table_name
     @type           = type
     @force_online   = force_online
+    # debug "@name: #{@name.inspect} / @type: #{@type.inspect} / @force_online: #{@force_online.inspect}"
   end
 
   # ---------------------------------------------------------------------
@@ -147,7 +148,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Nom de la base de données contenant la table.
   # Soit la base :hot soit la base :cold.
   def db_name
-    @db_name = "#{self.class.prefix_name}#{type}"
+    @db_name ||= "#{self.class.prefix_name}#{type}"
   end
 
   # Retourne TRUE si la table existe, FALSE si elle
@@ -156,15 +157,19 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     if self.class.tables.key?("#{type}.#{name}#{force_online ? '' : '.online'}")
       true
     else
-      begin
-        client.query("SELECT 1 FROM #{name} LIMIT 1;")
-        true
-      rescue Exception => e
-        false
-      end
+      force_query_existence
     end
   end
   alias :exist? :exists?
+
+  def force_query_existence
+    begin
+      client.query("SELECT 1 FROM #{name} LIMIT 1;")
+      true
+    rescue Exception => e
+      false
+    end
+  end
 
 
 
@@ -202,18 +207,21 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Chemin d'accès au schéma de la base
   def schema_path
     @schema_path ||= begin
-      if type = :users_tables
-        self.class.folder_path_schema_tables(type) + "table_#{prefix_name}.rb"
-      else
-        self.class.folder_path_schema_tables(type) + "table_#{name}.rb"
-      end
+      sp =
+        if type == :users_tables
+          self.class.folder_path_schema_tables(type) + "table_#{prefix_name}.rb"
+        else
+          self.class.folder_path_schema_tables(type) + "table_#{name}.rb"
+        end
+      sp.exist? || raise("Le schéma de la table (#{sp}) est introuvable…")
+      sp
     end
   end
   # Le nom du schéma, c'est-à-dire le nom de la méthode
   # qui va renvoyer le code de création de la table.
   def schema_name
     @schema_name ||= begin
-      if type = :users_tables
+      if type == :users_tables
         "schema_table_#{prefix_name}".to_sym
       else
         "schema_table_#{name}".to_sym
@@ -224,7 +232,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   def code_creation_schema
     @code_creation_schema ||= begin
       schema_path.require
-      if type = :users_tables
+      if type == :users_tables
         send(schema_name, suffix_name)
       else
         send(schema_name)
@@ -234,8 +242,17 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # Crée la table si elle n'existe pas.
   # RETURN toujours l'instance courante, pour le chainage
   def create_if_needed
-    client.query( code_creation_schema ) unless exists?
+    create unless exists?
     return self
+  end
+
+  def create
+    client.query( code_creation_schema )
+    if force_query_existence
+      debug "Table #{name} créée avec succès dans #{db_name}"
+    else
+      raise("La table #{name} n'a pas été crée, dans #{db_name}…")
+    end
   end
   #
   # /fin des méthodes pour la création de la table
