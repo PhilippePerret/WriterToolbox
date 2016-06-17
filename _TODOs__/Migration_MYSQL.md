@@ -12,6 +12,8 @@
 * Champs `questions_ids` dans les quiz
 * Champs à déjsonner :
   `reponses` des questions (de quiz)
+* Table `hot.last_dates`
+  Remplacement de la clé `key` par la clé `cle`
 
 
 Pour savoir où il y a des choses à corriger, chercher les
