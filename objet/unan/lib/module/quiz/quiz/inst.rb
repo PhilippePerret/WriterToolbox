@@ -2,8 +2,7 @@
 class Unan
 class Quiz
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
   def initialize id

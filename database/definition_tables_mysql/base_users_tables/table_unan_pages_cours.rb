@@ -28,6 +28,9 @@ CREATE TABLE unan_pages_cours_#{user_id}
     # --------
     # Un hash (qui sera désérialisé) contenant les dates
     # de lecture de la page concernée.
+    # Sera transformé par JSON.parse(..., symbolize_names: true)
+    # pour retrouver les keys symboliques (c'est la raison pour laquelle
+    # on n'utilise pas le type JSON ici)
     lectures BLOB,
 
     # INDEX_TDM

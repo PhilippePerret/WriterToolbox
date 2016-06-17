@@ -18,7 +18,7 @@ class Quiz
   # réponses qui ont été fournies par l'user.
   def auteur_reponses
     @auteur_reponses ||= begin
-      uquiz = auteur.quizes(quiz_id: id).values.last
+      uquiz = auteur.quizes(quiz_id: id).value.last
       uquiz.nil? ? Hash::new : uquiz.reponses
     end
   end
@@ -203,7 +203,7 @@ class Quiz
     @for_correction = true
 
     # Récolte des réponses par type de question
-    @auteur_reponses  = Hash::new
+    @auteur_reponses  = {}
     # Nombre de points total marqués par l'user
     # Note : Peut être nil sur certains questionnaires, sans
     # que cela ne génère de problème.

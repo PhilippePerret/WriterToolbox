@@ -76,7 +76,9 @@ class User
     def created_at  ; @created_at ||= get(:created_at)  end
     def points      ; @points     ||= get(:points)      end
     def max_points  ; @max_points ||= get(:max_points)  end
-    def reponses    ; @reponses   ||= get(:reponses)    end
+    def reponses
+      @reponses   ||= JSON.parse(get(:reponses), symbolize_names: true)
+    end
 
     # Pour faire une sortie simple du quiz
     # Elle sert soit pour le bureau, dans le panneau Quiz, quand le
