@@ -9,6 +9,9 @@
 * Champs `type` des pages_cours qui était avant 'cnarration'
   ou 'program' et qui est maintenant 'H' ou 'N' (penser à le modifier
     aussi dans le formulaire)
+* Champs `questions_ids` dans les quiz
+* Champs à déjsonner :
+  `reponses` des questions (de quiz)
 
 
 Pour savoir où il y a des choses à corriger, chercher les
