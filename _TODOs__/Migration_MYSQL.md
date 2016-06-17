@@ -1,5 +1,16 @@
 # Passage de SQLite3 à MYSQL
 
+### À FAIRE
+
+* Champs list-string (ids séparés par espace)
+  - exemples des absolute works
+  - pages_cours_ids des absolute works
+  - works des absolute pdays
+* Champs `type` des pages_cours qui était avant 'cnarration'
+  ou 'program' et qui est maintenant 'H' ou 'N' (penser à le modifier
+    aussi dans le formulaire)
+
+
 Pour savoir où il y a des choses à corriger, chercher les
 balises :
 
