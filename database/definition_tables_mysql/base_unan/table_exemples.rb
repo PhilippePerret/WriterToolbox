@@ -6,52 +6,64 @@ inspirés de films ou totalement invnentés.
 
 Permet d'alimenter la propriété `exemples` des étapes absolues
 =end
-def schema_table_unan_cold_exemples
-  @schema_table_unan_cold_exemples ||= {
+def schema_table_exemples
+  <<-MYSQL
+CREATE TABLE exemples
+  (
+    id INTEGER AUTO_INCREMENT,
 
-    # ID de l'exemple
-    # ---------------
-    id: {type:"INTEGER", constraint:"PRIMARY KEY AUTOINCREMENT"},
-
-    # Titre de l'exemple
-    # ------------------
+    #  TITRE
+    # -------
     # Doit être assez cours, simplement pour affichage dans un
     # listing. Ça peut être "Fondamentales de Babe" ou
     # "Synopsis de Titanic" (ne pas utiliser "Exemple" qui sera
     # ajouté)
-    titre:  {type:"VARCHAR(255)", constraint:"NOT NULL"},
+    titre VARCHAR(255) NOT NULL,
 
-    # Le travail visé
-    # ---------------
-    # ID du travail dont cet exemple est l'illustration, dans la
-    # table `absolute_works`.
-    work_id: {type:"INTEGER"},
+    #  CONTENT
+    # ---------
+    # Le contenu proprement dit de l'exemple, donc
+    # l'exemple lui-même.
+    content TEXT NOT NULL,
 
-    # Contenu de l'exemple
-    # --------------------
-    content: {type:"TEXT", constraint:"NOT NULL"},
+    #  WORK_ID
+    # ---------
+    # ID du travail (absolute_work) auquel est associé cet exemple
+    # (Mais est-ce que ça sert vraiment, entendu qu'un exemple pourrait
+    # servir à plusieurs travaux absolus différents)
+    work_id INTEGER,
 
-    # Notes sur l'exemple
-    notes: {type:"TEXT"},
+    #  NOTES
+    # -------
+    # Notes optionnelles qui seront données à l'auteur à propos de
+    # l'exemple fourni.
+    notes TEXT,
 
-    # Source de l'exemple
-    # -------------------
-    # Description de la source de l'exemple, lorsqu'il vient d'un
-    # film, ou d'un livre, ou d'une illustration propre au cours,
-    # etc.
-    source: {type:"TEXT", constraint:"NOT NULL"},
+    #  SOURCE
+    # --------
+    # La source de l'exemple, expliqué de façon littéraire, mais
+    # pas trop longue. Pour expliquer si ça vient d'un livre,
+    # d'un exemple personnel, etc.
+    source VARCHAR(1000),
 
-    # Type de la source
+    # SOURCE_TYPE
     # -----------------
     # Suite de bits définissant le type de la source
     # BIT 1 : 0:indéfini, 1:film, 2:livre, 3:perso, 9:autre
     # BIT 2-5 : Année de la source
     # BIT 6-7 : Pays de la source ("fr" = français, "us" = USA, etc.)
-    source_type: {type:"VARCHAR(16)", default:"'"+("0"*16)+"'"},
+    source_type VARCHAR(16) DEFAULT '0000000',
 
-    # Date de création de l'exemple
-    created_at:{type:"INTEGER(10)",constraint:"NOT NULL"},
-    # Date de modification de l'exemple
-    updated_at:{type:"INTEGER(10)",constraint:"NOT NULL"}
-  }
+    # UPDATED_AT
+    # ----------
+    updated_at INTEGER(10),
+
+    # CREATED_AT
+    # ----------
+    # Date de création de la donnée
+    created_at INTEGER(10) NOT NULL,
+
+    PRIMARY KEY (id)
+  );
+  MYSQL
 end
