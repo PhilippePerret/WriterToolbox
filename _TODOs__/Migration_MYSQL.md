@@ -2,6 +2,10 @@
 
 ### À FAIRE
 
+* Utiliser la table hot.tickets
+  relancer `run hot_tickets_sqlite2mysql` sur le site
+  distant (dans le cas où de nouveaux tickets ont été
+  générés entre temps)
 * Champs list-string (ids séparés par espace)
   - exemples des absolute works
   - pages_cours_ids des absolute works
@@ -14,6 +18,18 @@
   `reponses` des questions (de quiz)
 * Table `hot.last_dates`
   Remplacement de la clé `key` par la clé `cle`
+
+RECAPITULATION TABLES À TRAITER AU NIVEAU DU CODE :
+(elles ont déjà été migrées vers mysql)
+
+    hot.tickets
+    hot.last_dates
+    unan.absolute_works
+    unan.absolute_pdays
+    unan.pages_cours
+    unan.quiz
+    unan.questions
+
 
 
 Pour savoir où il y a des choses à corriger, chercher les
