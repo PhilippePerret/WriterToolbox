@@ -137,8 +137,8 @@ class CurPDay
   # l'auteur)
   def started_by_type
     @started_by_type ||= begin
-      h = Hash::new
-      where = "status < 9 AND created_at < #{NOW}"
+      h = {}
+      where = "status < 9 AND created_at < #{NOW} AND program_id = #{program_id}"
       # Note : Le "created_at < NOW" ci-dessus permet de ne
       # pas tenir compte des travaux reprogrammés.
       # Mais pour le moment, on ne peut plus reprogrammer un
@@ -153,7 +153,8 @@ class CurPDay
         forum:  Array::new,
         all:    Array::new
       }
-      uworks.each do |wid, wdata|
+      uworks.each do |wdata|
+        wid = wdata[:id]
         type_w = wdata[:options][0..1].to_i
         wdata.merge!(
           type_w:     type_w,
@@ -220,13 +221,14 @@ class CurPDay
       # les dix jours précédents)
       # On relève le hash des données travail.
       il_y_a_dix_pdays = (NOW - (10.days * auteur.program.coefficient_duree)).to_i
-      where = "status = 9 AND ended_at > #{il_y_a_dix_pdays}"
+      where = "status = 9 AND ended_at > #{il_y_a_dix_pdays} AND program_id = #{program_id}"
       # debug "Rythme : #{auteur.program.rythme}"
       # debug "Coefficient durée : #{auteur.program.coefficient_duree}"
       # debug "il_y_a_dix_pdays = #{il_y_a_dix_pdays}::#{il_y_a_dix_pdays.class} (#{il_y_a_dix_pdays.as_human_date(true, true)})"
 
       # -> MYSQL UNAN
-      auteur.table_works.select(where: where).each do |wid, wdata|
+      auteur.table_works.select(where: where).each do |wdata|
+        wid = wdata[:id]
         awork_id = wdata[:abs_work_id]
         apday_id = wdata[:abs_pday]
         type_w = wdata[:options][0..1].to_i
@@ -453,10 +455,8 @@ class CurPDay
   #
   def works_done options = nil
     @works_done ||= begin
-      h = Hash::new
-      # -> MYSQL UNAN
-      uworks = auteur.table_works.select(where: "status = 9")
-      uworks.each do |wid, wdata|
+      h = {}
+      auteur.table_works.select(where: "status = 9 AND program_id = #{program_id}").each do |wdata|
         h.merge!( "#{wdata[:abs_work_id]}:#{wdata[:abs_pday]}" => wdata )
       end
       h
@@ -470,6 +470,9 @@ class CurPDay
     end
   end
 
+  def program_id
+    @program_id ||= auteur.program.id
+  end
 
   # ---------------------------------------------------------------------
   # Méthodes de collecte des travaux

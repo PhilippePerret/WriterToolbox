@@ -60,8 +60,7 @@ class Bureau
   end
 
   def table_travaux
-    # -> MYSQL UNAN
-    @table_travaux ||= User::table_works
+    @table_travaux ||= User.table_works
   end
 
   # ---------------------------------------------------------------------

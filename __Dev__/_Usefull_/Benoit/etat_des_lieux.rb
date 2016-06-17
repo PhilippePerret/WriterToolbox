@@ -26,7 +26,6 @@ class Benoit
     puts "ID      : #{id}"
     puts "Program : #{program.id}"
     puts "Start   : #{program.created_at.as_human_date}"
-    # puts program.table_works.select.pretty_inspect
     works_coherents_in_table_et_variable || (return poursuite_impossible)
     puts "Works   : #{program.works.count}"
     puts "Travaux courants :\n#{titre_travaux_courants}"
@@ -83,7 +82,7 @@ class Benoit
   # variables de l'user
   def works_coherents_in_table_et_variable
     liste_in_variables = get_var(:works_ids)
-    liste_in_database  = program.table_works.select(where:"status < 9").keys
+    liste_in_database  = program.table_works.select(where:"status < 9").collect{|h|h[:id]}
     if liste_in_variables != liste_in_database
       if REPARER
         set_var(:works_ids, liste_in_database)
@@ -110,7 +109,7 @@ class Benoit
   # D'autre part, il faut vérifier si des works de la base de données
   # ne sont pas des tâches qui ont été oubliées.
   def tasks_coherents_in_table_et_variable
-    liste_in_database  = program.table_works.select(where:"status < 9").keys
+    liste_in_database  = program.table_works.select(where:"status < 9").collect{|h| h[:id]}
     good_taches_ids = Array::new
     erreur = false
     tasks_ids.each do |tid|

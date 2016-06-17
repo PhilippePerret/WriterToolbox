@@ -12,7 +12,7 @@ describe 'Unan::Program#last_tasks' do
   context 'avec des tâches récentes' do
     before(:all) do
       # Lui faire des tâches finies récemment
-      @program.table_works.execute("UPDATE 'works' SET status = 9")
+      @program.table_works.execute("UPDATE works SET status = 9")
     end
     it 'il doit y avoir des works' do
       expect(@program.table_works.count).not_to eq 0
@@ -33,7 +33,7 @@ describe 'Unan::Program#last_tasks' do
   context 'sans tâches récentes finies' do
     before(:all) do
       # Lui retirer toutes les tâches finies récemment
-      @program.table_works.execute("UPDATE 'works' SET status = 0")
+      @program.table_works.execute("UPDATE works SET status = 0")
       [:works, :last_tasks].each do |k|
         @program.instance_variable_set("@#{k}", nil)
       end

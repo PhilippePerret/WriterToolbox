@@ -2,7 +2,7 @@ describe 'Méthodes d’état du work' do
   before(:all) do
     site.require_objet 'unan'
     @program = get_any_program
-    @work = Unan::Program::Work::new(@program, @program.table_works.select.keys.first)
+    @work = Unan::Program::Work::new(@program, @program.table_works.select(where: "program_id = #{@program.id}").first[:id])
     @old_abs_work_id = @work.abs_work_id.freeze
   end
 

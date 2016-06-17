@@ -25,8 +25,9 @@ class User
 
   # Table des travaux accomplis ou en cours de l'user
   # Noter que c'est une méthode d'instance
-  # -> MYSQL UNAN
-  def table_works ; @table_works ||= get_table('works') end
+  def table_works
+    @table_works ||= site.dbm_table(:users_tables, 'unan_works')
+  end
 
   # Table des questionnaires
   # -> MYSQL UNAN

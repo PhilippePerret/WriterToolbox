@@ -17,20 +17,19 @@ describe 'Unan::Program#current_works' do
 
   describe 'vérification' do
     it 'benoit possède des travaux finis' do
-      completed_works = benoit.table_works.select(where:"status = 9").values
+      completed_works = benoit.table_works.select(where:"status = 9 AND program_id = #{benoit.program.id}")
       expect(completed_works).not_to be_empty
     end
     it 'benoit possède des travaux non finis' do
-      cur_works = benoit.table_works.select(where:"status != 9").values
+      cur_works = benoit.table_works.select(where:"status != 9 AND program_id = #{benoit.program.id}")
       expect(cur_works).not_to be_empty
     end
   end
 
   describe 'current_works suivant arguments :as' do
     before(:all) do
-      @cur_works  = benoit.table_works.select(where:"status != 9")
-      @works_ids  = @cur_works.keys
-      @works_data = @cur_works.values
+      @works_data = benoit.table_works.select(where:"status != 9 AND program_id = #{benoit.program.id}")
+      @works_ids  = @works_data.collect{|h| h[:id]}
     end
     context 'avec des travaux définis et non finis' do
       it 'current_works retourne seulement les travaux non finis' do
