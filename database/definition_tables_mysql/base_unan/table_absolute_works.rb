@@ -4,40 +4,28 @@
 Définition de la table `absolute_works` qui définit précisément tous
 les travaux à accomplir pour arriver au bout du scénario.
 
+duree En jour-programme
 =end
-def schema_table_unan_cold_absolute_works
-  @schema_table_unan_absolute_works ||= {
+def schema_table_absolute_works
+  <<-MYSQL
+CREATE TABLE absolute_works
+  (
+    id      INTEGER         AUTO_INCREMENT,
+    titre   VARCHAR(255)    NOT NULL,
+    duree   INTEGER(3)      NOT NULL,
 
-    # ID absolu du travail
-    # Correspond à la propriété `work_id` des travaux des auteurs (works)
-    id:         {type:"INTEGER",    constraint:"PRIMARY KEY AUTOINCREMENT"},
-
-    # Titre du travail
-    # ----------------
-    # Un titre générique pour le travail
-    # Noter qu'un "jour-programme" possède en général de nombre
-    # travaux donc peut avoir plusieurs titres.
-    titre:      {type:"VARCHAR(250)", constraint:"NOT NULL"},
-
-    # Durée absolue du travail
-    # ------------------------
-    # C'est la durée absolue (en programmes-jours) dans laquelle ce
-    # travail doit être effectué. Le nombre de jours-réels variera en
-    # fonction du `rythme` choisi par l'auteur
-    duree:        {type:"INTEGER(3)", constraint:"NOT NULL"},
-
-    # Type de travail
-    # ---------------
+    # TYPE_W (type travail)
+    # ---------------------
     # Un nombre de 0 (non défini) à 99 qui définit précisément
     # le type de travail, depuis la production d'un document sur
     # l'histoire jusqu'au remplissage d'un questionnaire en passant
     # par des actions à accomplir.
     # Cf. la liste Unan::Program::AbsWork::TYPES dans le fichier
     # ./data/unan/data/listes.rb
-    type_w:   { type:"INTEGER(2)", constraint:"NOT NULL" },
+    type_w  INTEGER(2)      NOT NULL,
 
-    # Le type
-    # ------------------
+    # TYPE
+    # ----
     # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
     # pour le type du travail.
     #   BIT 1-2   [OBSOLÈTE cf. type_w ci-dessus] (typeW) Le type général,
@@ -60,37 +48,32 @@ def schema_table_unan_cold_absolute_works
     #     Noter que pour le moment seul le premier bit est utilisé. L'autre
     #     est laissé dans lequel cas il faudrait être plus précis
     #     Cf. la liste Unan::Projet::TYPES
-    type:       {type:"VARCHAR(16)", constraint:"NOT NULL"},
+    type  VARCHAR(16)     NOT NULL,
 
+    # TRAVAIL
+    # -------
+    # L'énoncé du travail.
+    travail   TEXT,
 
-    # Travail général
-    # ---------------
-    # La définition générale du travail (TEXT). Il pourra être précisé
-    # dans d'autres propriétés
-    travail:    {type:"TEXT", constraint:"NOT NULL"},
+    # PARENT
+    # ------
+    # Identifiant du travail parent, if any.
+    parent    INTEGER,
 
-    # Travail parent
-    #
-    # {FIXNUM} Identifiant du travail parent, c'est-à-dire du plus
-    # grand ensemble contenant ce travail.
-    parent: {type:"INTEGER", default:"NULL"},
+    # PREV_WORK
+    # ---------
+    # Identifiant du travail précédent (je n'utilise pas encore
+    # cette propriété, elle ne servira peut-être à rien).
+    prev_work INTEGER,
 
+    # RESULTAT
+    # --------
+    # Résultat littéraire attendu pour ce travail
+    resultat TEXT,
 
-    # Travail précédent
-    # ----------------
-    # Lorsque le travail fait suite à un autre, et ne peut pas être commencé
-    # avant qu'un autre soit terminé (le précédent), on renseigne cette
-    # donnée.
-    prev_work: {type:'INTEGER', default:"NULL"},
-
-    # Résultat du travail
-    # -------------------
-    # Le document qui doit être le résultat de ce travail, de façon
-    # littéraire (marchera de paire avec la propriété type_resultat)
-    resultat:   {type:"TEXT", constraint:"NOT NULL"},
-
-    # Type du résultat
-    # ----------------
+    # TYPE_RESULTAT
+    # -------------
+    # Le type de résultat attendu pour ce travail
     # Pour compléter la donnée précédente le type du résultat
     # Bit 1     : Type de document 0:Brainstorming, 1:Document rédigé, 2:Image, etc.
     #             3 Action à accomplir
@@ -100,13 +83,14 @@ def schema_table_unan_cold_absolute_works
     #             Propriété volatile `destinataire`
     # BIT 3     : Niveau d'exigence de 0 à 9
     #             Propriété volatile `niveau_dev`
-    type_resultat:  {type:"VARCHAR(8)"},
+    type_resultat   VARCHAR(8),
 
-    # Pour consigner l'ID de l'item suivant le travail,
-    # s'il peut en avoir. Par exemple, pour une page de cours, l'id
-    # de la page de cours, ou pour un questionnaire, l'id de ce
-    # questionnaire, etc.
-    item_id: { type:"INTEGER" },
+    # ITEM_ID
+    # -------
+    # Si le travail à un item, c'est-à-dire, par exemple,
+    # une page de cours ou un questionnaire. C'est l'id dans
+    # leur table respective.
+    item_id INTEGER,
 
     # Exemples
     # --------
@@ -115,10 +99,13 @@ def schema_table_unan_cold_absolute_works
     # C'est une liste d'identifiants dans la table `exemples`
     # Il peut s'agir aussi de screenshots lorsqu'il s'agit de
     # d'action à accomplir.
-    exemples:       {type:"BLOB"},
+    # WARNING ! Cette donnée a besoin d'être traitée en lecture
+    # pour décomposer le string en array
+    exemples VARCHAR(255),
 
-    # Pages cours
-    # -----------
+
+    # PAGES_COURS_IDS
+    # ---------------
     # Page de cours associées. Noter qu'elles n'ont rien à voir
     # avec les pages que l'apprenti-auteur doit lire au cours de
     # son programme, elles sont simplement données en aide.
@@ -126,19 +113,27 @@ def schema_table_unan_cold_absolute_works
     # Narration mais d'ID de pages de cours dans le programme
     # donc d'instance Unan::Program::PageCours (qui peuvent bien
     # entendu faire référence à des pages de Narration)
-    pages_cours_ids:    {type:"BLOB"},
+    pages_cours_ids VARCHAR(255),
 
-    # Valeur en Points
-    # ----------------
+    # POINTS
+    # ------
     # Nombre de points que rapporte ce travail. Pour savoir si
     # le p-day peut être validé ou non.
     # Noter qu'il ne tient pas compte des points rapportés par
     # les autres sources, comme les questionnaires ou autres
     # questions volantes.
-    points:  {type:"INTEGER(3)", constraint:"NOT NULL"},
+    points INTEGER(3) NOT NULL,
 
-    created_at: {type:"INTEGER(10)",constraint:"NOT NULL"},
-    updated_at: {type:"INTEGER(10)",constraint:"NOT NULL"}
+    # UPDATED_AT
+    # ----------
+    updated_at INTEGER(10),
 
-  }
+    # CREATED_AT
+    # ----------
+    # Date de création de la donnée
+    created_at INTEGER(10) NOT NULL,
+
+    PRIMARY KEY (id)
+  );
+  MYSQL
 end

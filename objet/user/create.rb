@@ -61,7 +61,9 @@ class User
   #   Instance User
   # ---------------------------------------------------------------------
   def create
+    debug "-> create"
     if data_valides?
+      debug "  = data_valides"
 
       # Les données sont valides on peut vraiment créer le
       # nouvel utilisateur.
@@ -69,31 +71,55 @@ class User
 
       # On envoie un mail à l'utilisateur pour confirmer son
       # inscription.
-      pmail = User::folder_modules + 'create/mail_bienvenue.erb'
-      send_mail(
-        subject: 'Bienvenue !',
-        message: pmail.deserb(self)
-      )
+      begin
+        debug "  * Envoi du mail de bienvenue"
+        pmail = User.folder_modules + 'create/mail_bienvenue.erb'
+        send_mail(
+          subject: 'Bienvenue !',
+          message: pmail.deserb(self),
+          formated: true
+        )
+        debug "  = mail de bienvenue OK"
+      rescue Exception => e
+        debug "### PROBLÈME À L'ENVOI DU MAIL DE BIENVENUE"
+        debug e
+      end
 
       # On envoie à l'utilisateur un message pour qu'il confirme
       # son adresse-mail.
-      pmail = User::folder_modules + 'create/mail_confirmation.erb'
-      send_mail(
-        subject: 'Merci de confirmer votre mail',
-        message: pmail.deserb(self),
-        formated: true
-      )
+      debug "  * Envoi du mail de confirmation du mail"
+      begin
+        pmail = User.folder_modules + 'create/mail_confirmation.erb'
+        send_mail(
+          subject: 'Merci de confirmer votre mail',
+          message: pmail.deserb(self),
+          formated: true
+        )
+        debug "  = mail de confirmation adresse-mail OK"
+      rescue Exception => e
+        debug "### PROBLÈME À L'ENVOI DU MAIL DE CONFIRMATION"
+        debug e
+      end
 
       # On envoie un mail à l'administration pour informer
       # de l'inscription
-      pmail = User.folder_modules + 'create/mail_admin.erb'
-      User.get(1).send_mail(
-        subject:  'Nouvelle inscription',
-        message:  pmail.deserb(self),
-        formated: true
-      )
+      begin
+        debug "  * Envoi du mail de nouvelle inscription"
+        pmail = User.folder_modules + 'create/mail_admin.erb'
+        User.get(1).send_mail(
+          subject:  'Nouvelle inscription',
+          message:  pmail.deserb(self),
+          formated: true
+        )
+        debug "  = mail de Nouvelle inscription OK"
+      rescue Exception => e
+        debug "### PROBLÈME À L'ENVOI DU MAIL D'ANNONCE DE NOUVELLE INSCRIPTION"
+        debug e
+      end
       true
     else
+      debug "  = Données invalides"
+
       # Les données sont invalides, on doit rediriger vers
       # la page du formulaire d'inscription (user/signup)
       # Il y a peut-être un contexte, comme lorsque l'on crée
@@ -106,19 +132,6 @@ class User
       redirect_to redirection
       false
     end
-  end
-
-  # Méthode appelée par le mail de confirmation de l'inscription
-  # et du mail pour permettre à l'user de confirmer son inscription.
-  # La méthode crée un ticket de confirmation et donne le lien au
-  # mail
-  def lien_confirmation_inscription
-    code = "User::get(#{id}).confirm_mail"
-    app.create_ticket(nil, code, {user_id: id})
-    # On retourne le lien de confirmation
-    # Noter que `create_ticket` met le ticket dans App::@ticket
-    # ce qui permet ci-dessous de faire `app.ticket`
-    app.ticket.link("Confirmation de votre mail").freeze
   end
 
   # Méthode qui sauve toutes les données de l'user d'un coup

@@ -9,6 +9,12 @@ debug "-> vue user/login.erb (user.identified? #{user.identified?.inspect})"
   <p>Vous êtes l'utilisateur #<%= user.id %> du site.</p>
   <% if user.paiements_ok? %>
     <p>Vous êtes à jour de vos paiements</p>
+    <% if user.unanunscript? %>
+    <p>Puisque vous suivez le programme UN AN UN SCRIPT, vous pouvez <%= 'rejoindre votre centre de travail'.in_a(href: 'bureau/home?in=unan') %>.</p>
+    <p class='small'>
+      Notez que vous pouvez régler vos préférences pour vous rendre directement dans ce centre de travail après votre identification. Cela vous épargnerait un clic de souris ;-).
+    </p>
+    <% end %>
   <% else %>
     <p>Vous n'êtes pas ou plus abonné au site. Vous pouvez régulariser votre situtation en rejoignant la <a href="user/paiement">section de paiment</a>.</p>
   <% end %>

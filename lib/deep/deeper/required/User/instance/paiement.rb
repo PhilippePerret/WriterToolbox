@@ -24,7 +24,7 @@ class User
   def last_abonnement
     @last_abonnement ||= begin
       if @id != nil && User::table_paiements.exists?
-        la = User::table_paiements.select(where:"user_id = #{id} AND objet_id = 'ABONNEMENT'", order: "created_at DESC", limit:1, colonnes:[:created_at]).first
+        la = User::table_paiements.select(where:"user_id = #{id} AND ( objet_id = 'ABONNEMENT' OR objet_id = '1AN1SCRIPT' )", order: "created_at DESC", limit:1, colonnes:[:created_at]).first
         la[:created_at] unless la.nil?
       end
     end

@@ -104,7 +104,15 @@ module MethodesObjetsBdD
 
     # On doit relever dans la table les clés manquantes
     unless rest_keys.empty?
-      retour_table = table.select( colonnes: keys, where: { id: id } ).values.first
+      r = table.select( colonnes: keys, where: { id: id } )
+      retour_table =
+        if r.instance_of?(Array)
+          r.first
+        elsif r.respond_to?(:values)
+          r.values.first
+        else
+          raise 'Impossible de relever les clés manquantes.'
+        end
       retour.merge!(retour_table) unless retour_table.nil?
     end
 

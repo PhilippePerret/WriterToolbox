@@ -1,7 +1,9 @@
 # encoding: UTF-8
 =begin
-  Ici, pour le moment, j'ai un bug : On peut apparemment atteindre
-  cette page directement sans passer par PayPal…
+  Noter qu'on peut atteindre cette page par un hack (en suivant
+  l'adresse paiement/on_ok?in=unan) mais de toute façon on
+  n'irait pas très loin puisque la vérification du paiement
+  retournerait une erreur.
 =end
 
 # On peut créer le programme (son dossier data et sa base de données)

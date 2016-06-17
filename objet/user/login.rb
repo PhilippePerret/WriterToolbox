@@ -32,7 +32,7 @@ class User
       redirect_to 'bureau/home?in=unan'
     else
       debug "[User#redirect_after_login] Aucune redirection"
-    end
+    end 
   end
 
 

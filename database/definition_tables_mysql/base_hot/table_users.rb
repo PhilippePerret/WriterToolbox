@@ -72,16 +72,6 @@ CREATE TABLE users
     # ---------
     telephone VARCHAR(10),
 
-    # UPDATED_AT
-    # ----------
-    updated_at INTEGER(10),
-
-    # CREATED_AT
-    # ----------
-    # Date de création de la donnée, donc d'inscription
-    # de l'user
-    created_at INTEGER(10) NOT NULL,
-
     PRIMARY KEY (id)
   );
   MYSQL

@@ -123,7 +123,9 @@ RSpec.configure do |config|
   config.before :suite do
 
     reset_mails
-    
+
+    empty_screenshot_folder
+
     # On prend le temps de départ qui permettra de savoir les choses
     # qui ont été créées au cours des tests et pourront être
     # supprimées à la fin de la suite de tests
@@ -227,10 +229,25 @@ RSpec.configure do |config|
 
   # Pour pouvoir utiliser `visit home`
   def home
-    @home ||= "http://localhost/WriterToolbox"
+    @home ||= "#{site.local_url}"
+  end
+  def home_online
+    @home_online ||= "#{site.distant_url}"
   end
 
+  # @usage visit_home dans feature/scenario
+  #         visite_home online: true
+  def visit_home options = nil
+    options ||= {}
+    options[:online] ||= false
+    visit (options[:online] ? home_online : home)
+    resize_window
+  end
 
+  # La fenêtre ouverte par capybara
+  def resize_window
+    page.driver.browser.manage.window.resize_to(1600, 600)
+  end
 
   # ---------------------------------------------------------------------
   #   Screenshots

@@ -49,24 +49,6 @@ class << self
   end
 
 end #/<<self
-
-  # ---------------------------------------------------------------------
-  #   INSTANCE USER
-  # ---------------------------------------------------------------------
-
-  # Méthode appelée par le mail de confirmation de l'inscription
-  # et du mail pour permettre à l'user de confirmer son inscription.
-  # La méthode crée un ticket de confirmation et donne le lien au
-  # mail
-  def lien_confirmation_inscription
-    code = "User::get(#{id}).confirm_mail"
-    app.create_ticket(nil, code, {user_id: id})
-    # On retourne le lien de confirmation
-    # Noter que `create_ticket` met le ticket dans App::@ticket
-    # ce qui permet ci-dessous de faire `app.ticket`
-    app.ticket.link("Confirmation de votre mail").freeze
-  end
-
 end #/User
 
 case param(:operation)

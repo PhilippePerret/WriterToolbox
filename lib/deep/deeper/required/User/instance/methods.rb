@@ -34,10 +34,10 @@ class User
 
     unless mail_confirmed? || admin? || for_paiement?
       error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
-            '<br>confirmé votre adresse-mail.' +
+            ' confirmé votre adresse-mail.' +
             '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
-            '<br>qui vous a été transmis par mail après votre inscription. Merci de' +
-            '<br>vérifier votre boite aux lettres virtuelle.' +
+            ' qui vous a été transmis par mail après votre inscription. Merci de' +
+            ' vérifier votre boite aux lettres virtuelle.' +
             '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
             '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
       # redirect_to :home

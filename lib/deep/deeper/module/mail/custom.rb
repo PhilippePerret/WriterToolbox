@@ -83,7 +83,9 @@ div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;t
       tmp_mail_path.write Marshal.dump(hash_data_message_plus)
     end
     def tmp_mail_path
-      tmp_mails_folder + tmp_mail_name
+      p = tmp_mails_folder + tmp_mail_name
+      debug "Path du mail in temp : #{p}"
+      p
     end
     def tmp_mails_folder
       @tmp_mails_folder ||= begin
@@ -92,13 +94,18 @@ div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;t
         fd
       end
     end
+    # Retourne un numéro pour le mail unique par
+    # rapport à ceux qui se trouvent déjà dans le dossier
+    # des mails (qui doit donc être régulièrement vidé)
     def tmp_mail_name
-      "mail#{imail}.msh"
-    end
-    def imail
+      mail_name = nil
       @imail ||= 0
-      @imail += 1
-      "#{@imail}".rjust(4,"0")
+      begin
+        @imail += 1
+        imailj = "#{@imail}".rjust(4,"0")
+        mail_name = "mail#{imailj}.msh"
+      end while (tmp_mails_folder + mail_name).exist?
+      mail_name
     end
 
   end # << self

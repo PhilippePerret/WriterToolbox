@@ -102,7 +102,6 @@ class BdD
           (1..values.count).each { |index| smt.bind_param index, values[index - 1] }
         when Hash
           values.each do |col, value|
-            debug "BIND_PARAM #{col.to_sym.inspect}: #{value.inspect}::#{value.class}"
             smt.bind_param col.to_sym, value
           end
         else

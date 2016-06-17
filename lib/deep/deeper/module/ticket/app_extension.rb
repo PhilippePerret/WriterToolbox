@@ -37,7 +37,11 @@ class App
 
   def ticket(tid = nil) ; @ticket ||= get_ticket(tid) end
 
+  # La table contentant les tickets
+  # On peut l'obtenir par `app.table_tickets` mais il faut :
+  # site.require_module 'ticket'
   def table_tickets
+    # -> MYSQL TICKETS
     @table_tickets ||= site.db.create_table_if_needed('site_hot', 'tickets')
   end
 
