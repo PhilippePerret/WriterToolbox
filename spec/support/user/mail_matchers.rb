@@ -40,7 +40,7 @@ RSpec::Matchers::define :have_mails_with do |params|
     # empêcheraient de trouver qui.mail. Dans ces cas-là, il faut ajouter
     # la propriété `:to` aux paramètres en la renseignant avec la valeur
     # de mail qui aura été mise de côté avant.
-    @params   = @params.merge(to: qui.mail) unless @params.has_key?(:to)
+    @params   = @params.merge(to: qui.mail) unless @params.key?(:to)
     @only_one = @params.delete(:only_one)
     # On cherche les mails
     @mails_found = search_mails_with @params

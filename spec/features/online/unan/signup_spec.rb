@@ -17,6 +17,7 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT" do
     start_time = Time.now.to_i
     table_users_online = site.dbm_table(:hot, 'users', online = true)
 
+    # On détruit cet user s'il existe
     table_users_online.delete(where: "mail = '#{duser[:mail]}'")
 
 
@@ -41,11 +42,13 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT" do
       fill_in('user_captcha', with: '366')
       click_button("S'inscrire")
     end
-    sleep 10
     expect(page).not_to have_css('#flash div.error')
-    # On détruit ce compte
-    table_users_online.delete(where: "mail = '#{duser[:mail]}'")
-    # On doit se retrouver sur la page de paiement paypal
-    sleep 30
+    expect(page).to have_css('form#form_paiement')
+    # Il faut récupérer le contenu du champ hidden name='token'
+    within('form#form_paiement') do
+      token = find('input[name="token"]').inner_html
+      puts "token = #{token}"
+    end
+
   end
 end

@@ -122,6 +122,8 @@ RSpec.configure do |config|
 
   config.before :suite do
 
+    reset_mails
+    
     # On prend le temps de départ qui permettra de savoir les choses
     # qui ont été créées au cours des tests et pourront être
     # supprimées à la fin de la suite de tests

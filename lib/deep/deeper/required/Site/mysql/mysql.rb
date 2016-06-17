@@ -20,7 +20,20 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # Retourne la table (instance {SiteHtml::DBM_TABLE}) de nom
     # +tablename+ dans la base de type +db_type+ qui peut
     # être :hot, :cold, :cnarration, :unan.
-    def get db_type, tablename, force_online = false
+    #
+    # Trois valeurs possibles pour +force_online+
+    # - NIL   Dans ce cas, on regarde dans ONLINE/OFFLINE où on est
+    # - FALSE   On force le traitement en local
+    # - TRUE    On force le traitement en distant
+    def get db_type, tablename, force_online = nil
+      unless force_online === !@is_offline
+        @is_offline =
+          case force_online
+          when NilClass then OFFLINE
+          else !force_online
+          end
+        reset
+      end
       @tables ||= {}
       @tables["#{db_type}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin
         new(db_type, tablename, force_online).create_if_needed
@@ -35,10 +48,20 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
       @tables["#{table.type}.#{table.name}"] = table
     end
 
+    def offline?
+      @is_offline ||= OFFLINE
+    end
+
+    # Au cours de la même session, on peut faire appel à la
+    # base local ou distante. Il faut donc pouvoir reseter les
+    # données
+    def reset
+      @client_data = nil
+    end
     # Les données pour se connecter à la base mySql
     # soit en local soit en distant.
     def client_data
-      @client_data ||= ( OFFLINE ? client_data_offline : client_data_online )
+      @client_data ||= ( offline? ? client_data_offline : client_data_online )
     end
 
     def client_data_offline

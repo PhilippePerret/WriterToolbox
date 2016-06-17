@@ -36,6 +36,9 @@ class Request
     @dbm_table  = itable
     @params     = params  || {}
     @options    = options || {}
+    if @options.instance_of?(Array)
+      raise "@options ne devrait pas être un array #{@options.inspect}"
+    end
   end
 
   # ---------------------------------------------------------------------
@@ -129,7 +132,7 @@ class Request
   def delete
     @request = request_delete
     resultat = exec
-    debug "[delete] resultat : #{resultat.inspect}"
+    # TODO Comment savoir si l'élément a bien été effacé ?
   end
 
   def count
@@ -252,7 +255,16 @@ DELETE FROM #{dbm_table.name}
     end
   end
   def columns_clause
-    cols = params[:columns] || params[:colonnes] || options[:colonnes] || options[:columns]
+    begin
+      cols = params[:columns] || params[:colonnes] if params.instance_of?(Hash)
+      cols ||= options[:colonnes] || options[:columns] if options.instance_of?(Hash)
+    rescue Exception => e
+      debug "# ERREUR columns_clause : #{e.message}"
+      debug "# ERREUR columns_clause, options = #{options.inspect}"
+      debug "# ERREUR columns_clause, params = #{params.inspect}"
+      error "Erreur dans columns_clause de la requête MYSQL (voir débug). Je retroune '*'" if OFFLINE
+      return '*'
+    end
     case cols
     when NilClass then '*'
     when Array    then (cols << :id).uniq.join(', ')
@@ -369,10 +381,10 @@ DELETE FROM #{dbm_table.name}
   def exec
     resultat =
       begin
-        if prepared_values
-          prepared_statement.execute( *prepared_values )
-        else
+        if prepared_values.nil? || prepared_values.empty?
           dbm_table.client.query( final_request )
+        else
+          prepared_statement.execute( *prepared_values )
         end
       rescue Exception => e
         raise e

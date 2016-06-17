@@ -57,7 +57,7 @@ class Updates
       css.join(' ')
     end
     def human_date
-      created_at.as_human_date(false, true).in_span(class: 'd')
+      Time.at(created_at).strftime('%d %m %Y - %H:%M').in_span(class: 'd')
     end
     def link_to_page
       route || (return "")

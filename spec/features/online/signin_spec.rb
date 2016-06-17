@@ -108,4 +108,8 @@ feature "Connection en ONLINE" do
 
   end
 
+  scenario 'Inscrite au programme UN AN UN SCRIPT' do
+    
+  end
+
 end

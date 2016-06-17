@@ -23,13 +23,13 @@ class ::User
     create_program_et_projet
 
     # Création des tables du programme
-    begin
-      # -> MYSQL UNAN
-      create_tables_1a1s
-    rescue Exception => e
-      @errors << "Les tables du programme n'ont pas pu être créés : #{e.message}"
-      debug "# IMPOSSIBLE DE CRÉER LES TABLES 1A1S : #{e.message}\n\n"+e.backtrace.join("\n")
-    end
+    # OBSOLÈTE : MAINTENANT, ON LES CRÉERA EN LES APPELANT
+    # begin
+    #   # create_tables_1a1s
+    # rescue Exception => e
+    #   @errors << "Les tables du programme n'ont pas pu être créés : #{e.message}"
+    #   debug "# IMPOSSIBLE DE CRÉER LES TABLES 1A1S : #{e.message}\n\n"+e.backtrace.join("\n")
+    # end
 
     # Envoi des mails à l'user pour lui confirmer les
     # choses
