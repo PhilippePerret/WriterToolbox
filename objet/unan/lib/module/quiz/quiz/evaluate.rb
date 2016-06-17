@@ -60,7 +60,7 @@ class Quiz
       # réduit car on peut le soumettre à nouveau dans un temps
       # assez court correspondant à son remplissage.
       if quiz_existe_deja? && false == multi?
-        soumis_recemment = auteur.table_quiz.count(where:"quiz_id = #{id} AND created_at > #{NOW - 1.day}") > 0
+        soumis_recemment = auteur.table_quiz.count(where: "program_id = #{auteur.program.id} AND quiz_id = #{id} AND created_at > #{NOW - 1.day}") > 0
         return error "Votre questionnaire a déjà été enregistré.<br />Merci de ne pas le soumettre à nouveau." if soumis_recemment
       end
 
@@ -102,7 +102,6 @@ class Quiz
 
       # Enregistrer les données de ce questionnaire dans la
       # table de l'utilisateur
-      # -> MYSQL UNAN
       auteur.table_quiz.insert(data2save.merge(work_id: work.id))
 
       # Enregistrer le score dans le programme de l'utilisateur,
@@ -149,8 +148,7 @@ class Quiz
   end
 
   def quiz_existe_deja?
-    # -> MYSQL UNAN
-    @quiz_existe_deja ||= auteur.table_quiz.count(where:"quiz_id = #{id}") > 0
+    @quiz_existe_deja ||= auteur.table_quiz.count(where: "program_id = #{auteur.program.id} AND quiz_id = #{id}") > 0
   end
 
   # Marquer le travail qui a conduit à ce questionnaire comme

@@ -19,7 +19,7 @@ class Quiz
 
   def auteur_points
     @auteur_points ||= begin
-      res = auteur.table_quiz.select(where:"quiz_id = #{id}", order:"created_at DESC", limit:1, colonnes:[:points]).values.first
+      res = auteur.table_quiz.select(where: "quiz_id = #{id} AND program_id = #{auteur.program.id}", order:"created_at DESC", limit:1, colonnes:[:points]).first
       raise "Les données pour ce questionnaire sont introuvables…" if res.nil?
       res[:points]
     end

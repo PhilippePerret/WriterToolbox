@@ -26,12 +26,13 @@ class User
   # Table des travaux accomplis ou en cours de l'user
   # Noter que c'est une méthode d'instance
   def table_works
-    @table_works ||= site.dbm_table(:users_tables, 'unan_works')
+    @table_works ||= site.dbm_table(:users_tables, "unan_works_#{id}")
   end
 
   # Table des questionnaires
-  # -> MYSQL UNAN
-  def table_quiz ; @table_quiz ||= get_table('quiz') end
+  def table_quiz
+    @table_quiz ||= site.dbm_table(:users_tables, "unan_quiz_#{id}")
+  end
 
   # La base de données personnelle du programme de l'user,
   # dépendant de l'id de l'user et de l'id du programme.

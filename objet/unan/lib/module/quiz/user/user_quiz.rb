@@ -22,9 +22,8 @@ class User
   def quizes filter = nil
     @all_quizes ||= begin
       h = Hash::new
-      # -> MYSQL UNAN
-      self.table_quiz.select(colonnes:[:id]).keys.each do |qid|
-        h.merge!( qid => UQuiz::new(self, qid) )
+      self.table_quiz.select(where: "program_id = #{program.id}", colonnes:[:id]).each do |dquiz|
+        h.merge!( qid => UQuiz::new( self, dquiz[:id] ) )
       end
       h
     end
@@ -118,7 +117,6 @@ class User
     end
 
     def table
-      # -> MYSQL UNAN
       @table ||= auteur.table_quiz
     end
   end # /UQuiz
