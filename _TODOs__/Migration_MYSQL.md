@@ -3,6 +3,7 @@
 ## MIGRATION -> MYSQL
 
 * Faire régulièrement une recherche sur 'site.db.'
+  Et `include MethodesObjetsBdD`
 * Supprimer le fichier ./lib/deep/deeper/required/Site/database.rb quand
   toutes les tables seront construites.
 * Penser à modifier le traitement de l'actualisation de l'accueil

@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class Filmodico
-  include MethodesObjetsBdD
+
+  include MethodesMySQL
 
   attr_reader :film_ref
   attr_reader :id
@@ -18,7 +19,7 @@ class Filmodico
 
   def initialize_with_film_id
     @film_id = film_ref
-    @id = table.select(where:{film_id: @film_id}).keys.first
+    @id = table.select(where:{film_id: @film_id}).first[:id]
   end
 
   def table

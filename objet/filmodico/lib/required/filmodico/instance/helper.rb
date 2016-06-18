@@ -32,7 +32,7 @@ class Filmodico
     end
     (affiche.in_div(class:'affiche') +
     boutons_edition +
-    titre.in_div(class:'titre') +
+    titre.force_encoding('utf-8').in_div(class:'titre') +
     ( titre_fr.nil? ? '' : titre_fr.in_div(class:'titre_fr') ) +
     resume.formate_balises_propres.to_html.in_div(class:'resume') +
     div_infos +

@@ -42,17 +42,17 @@ class Filmodico
       end
 
       if after?
-        where_clause << "( annee > #{annee_after} )"
+        where_clause << "annee > #{annee_after}"
       end
       if before?
-        where_clause << "( annee < #{annee_before} )"
+        where_clause << "annee < #{annee_before}"
       end
 
       films_ids = nil
       unless where_clause.empty?
         where_clause = where_clause.join(' AND ')
         debug "where_clause: #{where_clause.inspect}"
-        hfilms = Filmodico::table_films.select(where:where_clause, colonnes:[:titre, :realisateur, :annee], nocase: true).values
+        hfilms = Filmodico.table_films.select(where: where_clause, colonnes:[:titre, :realisateur, :annee], nocase: true)
       end
 
       @found = unless hfilms.nil? || hfilms.empty?

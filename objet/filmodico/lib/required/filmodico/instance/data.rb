@@ -5,7 +5,7 @@ class Filmodico
   #   Data enregistrées
   # ---------------------------------------------------------------------
   def film_id     ; @film_id      ||= get(:film_id)               end
-  def titre       ; @titre        ||= get(:titre)                 end
+  def titre       ; @titre        ||= get(:titre).force_encoding('utf-8') end
   def titre_fr    ; @titre_fr     ||= get(:titre_fr).nil_if_empty end
   def resume      ; @resume       ||= get(:resume)                end
   def annee       ; @annee        ||= get(:annee)                 end
