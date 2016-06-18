@@ -22,7 +22,7 @@ class User
           # La dernière page consultée (ou l'accueil si aucune
           # dernière page consultée n'a été trouvée)
           # C'est dans les connexions qu'on trouve cette information
-          res = site.db.table('users','connexions').get(id)
+          res = site.dbm_table(:hot,'connexions').get(id)
           res.nil? ? 'site/home' : res[:route]
         else
           User::GOTOS_AFTER_LOGIN[goto][:route]
@@ -32,7 +32,7 @@ class User
       redirect_to 'bureau/home?in=unan'
     else
       debug "[User#redirect_after_login] Aucune redirection"
-    end 
+    end
   end
 
 

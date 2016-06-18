@@ -25,6 +25,7 @@ class Forum
     class << self
       def bind; binding() end
 
+      # -> MYSQL FORUM
       def table_sujets
         @table_sujets ||= site.db.create_table_if_needed('forum', 'sujets')
       end

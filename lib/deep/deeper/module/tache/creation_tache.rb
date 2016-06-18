@@ -75,7 +75,7 @@ class Taches
       }
 
       # Une instance de la table
-      tbl = site.db.create_table_if_needed('site_hot', 'todolist')
+      tbl = site.dbm_table(:hot, 'taches')
 
       # On crée la tâche pour chaque destinataire
       @taches_ids = Array::new

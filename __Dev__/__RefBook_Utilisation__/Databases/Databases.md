@@ -33,7 +33,7 @@ Les données de ces tables se trouvent dans :
 
 Pour récupérer n'importe quelle table de base de données dans le programme, qu'elle soit ou non créée, on utilise la tournure :
 
-    site.db.create_table_if_needed('<nom base de données>', '<nom table>')
+    site.dbm_table(:<ref base>, '<nom table>')
 
 Il est juste nécessaire que le schéma de la table soit défini tel qu'attendu. Cf. [Définition d'une table](#definitionduschemadelatable)
 
@@ -57,13 +57,13 @@ On fait un fichier database.rb (le nom est indifférent) dans lequel on va écr
       class << self
         def table_livres
           @table_livres ||= begin
-            site.db.create_table_if_needed('bibliotheque', 'livres')
+            site.dbm_table(:biblio, 'livres')
           end
         end
       end
     end
 
-Comme la méthode `create_table_if_needed` retourne la table, on a juste besoin de cette ligne pour récupérer n'importe quelle table.
+On a juste besoin de cette ligne pour récupérer n'importe quelle table.
 
 Ensuite, si je veux créer un livre, je peux mettre quelque part :
 

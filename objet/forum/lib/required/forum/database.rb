@@ -3,28 +3,35 @@ class Forum
   class << self
 
     # Pour les données générales des messages
+    # -> MYSQL FORUM
     def table_posts
       @table_posts ||= site.db.create_table_if_needed('forum', 'posts')
     end
     # Pour le contenu des messages
+    # -> MYSQL FORUM
     def table_posts_content
       @table_posts_content ||= site.db.create_table_if_needed('forum', 'posts_content')
     end
     # Pour les votes
+    # -> MYSQL FORUM
     def table_posts_votes
       @table_posts_votes ||= site.db.create_table_if_needed('forum', 'posts_votes')
     end
 
+    # -> MYSQL FORUM
     def table_sujets
       @table_sujets ||= site.db.create_table_if_needed('forum', 'sujets')
     end
+    # -> MYSQL FORUM
     def table_sujets_posts
       @table_sujets_posts ||= site.db.create_table_if_needed('forum', 'sujets_posts')
     end
+    # -> MYSQL FORUM
     def table_sujets_followers
       @table_sujets_followers ||= site.db.create_table_if_needed('forum', 'sujets_followers')
     end
 
+    # -> MYSQL FORUM
     def table_users
       @table_users ||= site.db.create_table_if_needed('forum', 'users')
     end

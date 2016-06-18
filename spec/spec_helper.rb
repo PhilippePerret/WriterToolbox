@@ -250,7 +250,7 @@ RSpec.configure do |config|
 
   # La fenêtre ouverte par capybara
   def resize_window
-    page.driver.browser.manage.window.resize_to(1200, 600)
+    page.driver.browser.manage.window.resize_to(1300, 600)
   end
 
   # ---------------------------------------------------------------------

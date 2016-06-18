@@ -19,12 +19,12 @@
   %>
   <%
     Mail.instance_variable_get('@citation_courante') || begin
-      candidates = site.db.table('site_cold', 'citations').select(
+      candidates = site.dbm_table(:cold, 'citations').select(
         limit:    10,
         offset:   11, # pour passer les "prochaines"
         order:    'last_sent ASC',
         colonnes:  [:citation, :auteur, :id]
-      ).values
+      )
       hquote = candidates.shuffle.shuffle.first
       q = hquote[:citation].strip_tags(' ')
       current_quote =

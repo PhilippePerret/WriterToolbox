@@ -210,16 +210,6 @@ test_base 'unan_archives.programs' do
   # Le programme doit avoir été marqué abandonné
   opts[2].is('1', 'Le bit de programme abandonné')
 end
-test_base 'unan_hot.projets' do
-  description 'Le projet n’est plus dans les données courantes'
-  row(id: duser[:projet_id]).not_exists
-end
-site.db.create_table_if_needed('unan_archives', 'projets')
-test_base 'unan_archives.projets' do
-  description 'Vérification de la présence des données projets dans les archives de projets.'
-  # Le projet doit avoir été mis dans les archives
-  row(id: duser[:projet_id]).exists
-end
 
 
 

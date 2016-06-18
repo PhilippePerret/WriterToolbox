@@ -7,11 +7,13 @@ class FilmAnalyse
 
     # {BdD::Table} La table contenant les informations minimales sur
     # les films.
+    # -> MYSQL ANALYSE
     def table_films
       @table_films ||= site.db.create_table_if_needed('analyse', 'films')
     end
 
     # {BdD::Table} La table contenant les films du Filmodico
+    # -> MYSQL FILMODICO
     def table_filmodico
       @table_filmodico ||= site.db.create_table_if_needed('filmodico', 'films')
     end

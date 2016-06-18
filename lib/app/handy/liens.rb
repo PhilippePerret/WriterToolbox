@@ -178,7 +178,7 @@ class Lien
     # On mémorise les films déjà cités pour ne pas mettre plusieurs
     # fois leur année et leur réalisateur
     @films_already_cited ||= Hash::new
-    # table_film = site.db.create_table_if_needed('analyse', 'films')
+    # -> MYSQL FILMODICO
     table_film = site.db.create_table_if_needed('filmodico', 'films')
     cols = [:titre, :titre_fr, :annee, :realisateur]
 
