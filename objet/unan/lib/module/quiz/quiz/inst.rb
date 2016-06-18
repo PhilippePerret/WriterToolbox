@@ -116,7 +116,7 @@ class Quiz
   # ---------------------------------------------------------------------
   #   Base de données
   # ---------------------------------------------------------------------
-  def table ; @table ||= Unan::table_quiz end
+  def table ; @table ||= Unan.table_quiz end
 
 end #/Quiz
 end #/Unan

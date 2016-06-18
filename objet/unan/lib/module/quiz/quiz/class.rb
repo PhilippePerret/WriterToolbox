@@ -6,7 +6,7 @@ class Quiz
 
     def get quiz_id
       quiz_id = quiz_id.to_i
-      @instances ||= Hash::new
+      @instances          ||= {}
       @instances[quiz_id] ||= new(quiz_id)
     end
 

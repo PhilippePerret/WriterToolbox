@@ -8,8 +8,8 @@ class UQuiz
     def get qid, quser = nil
       quser ||= user
       qid = qid.to_i
-      @instances ||= Hash::new
-      @instances[quser.id] ||= Hash::new
+      @instances            ||= {}
+      @instances[quser.id]  ||= {}
       @instances[quser.id][qid] ||= new(quser, qid)
     end
 

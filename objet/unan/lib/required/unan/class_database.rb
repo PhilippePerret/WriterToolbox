@@ -42,13 +42,11 @@ class << self
   end
 
   def table_questions
-    # -> MYSQL UNAN
-    @table_questions ||= get_table_cold('questions')
+    @table_questions ||= site.dbm_table(:unan, 'questions')
   end
 
   def table_quiz
-    # -> MYSQL UNAN
-    @table_quiz ||= get_table_cold('quiz')
+    @table_quiz ||= site.dbm_table(:unan, 'quiz')
   end
 
   def table_exemples

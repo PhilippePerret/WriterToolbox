@@ -112,7 +112,6 @@ class Quiz
 
 
   def exist?
-    # -> MYSQL UNAN
     Unan::table_quiz.count(where:{id: id}) > 0
   end
 

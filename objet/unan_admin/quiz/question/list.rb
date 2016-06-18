@@ -58,10 +58,8 @@ def liste_questions
   else
     # Ne rien faire
   end
-  # debug "data_request : #{data_request.inspect}"
-  # -> MYSQL UNAN !!!
-  ::Unan::table_questions.select(data_request).collect do |qid, hquest|
-    iquestion = ::Unan::Quiz::Question::new(qid)
+  ::Unan::table_questions.select(data_request).collect do |hquest|
+    iquestion = ::Unan::Quiz::Question::new(hquest[:id])
     # On traite un quiz qui est une version finale
     iquestion.as_li_item
   end.join

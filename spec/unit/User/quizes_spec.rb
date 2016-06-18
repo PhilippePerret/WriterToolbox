@@ -30,7 +30,7 @@ describe 'Méthodes de quiz de l’auteur' do
       before(:all) do
         # On commence par copier des instances du premier quiz (le seul)
         # pour avoir plusieurs exemplaires de quiz
-        hquiz = @user.table_quiz.select(limit:1).values.first
+        hquiz = @user.table_quiz.select(limit:1).first
         @hquiz1_id = hquiz[:id]
         hquiz[:quiz_id]       = 2
         hquiz[:points]        = 50

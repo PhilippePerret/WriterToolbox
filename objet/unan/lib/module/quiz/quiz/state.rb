@@ -45,8 +45,7 @@ class Quiz
     if @is_output_up_to_date === nil
       qids = (questions_ids || "").split(' ').join(', ')
       @is_output_up_to_date = true
-      # -> MYSQL UNAN
-      updates = Unan::table_questions.select(colonnes: [:updated_at], where: "id IN (#{qids})").values
+      updates = Unan::table_questions.select(colonnes: [:updated_at], where: "id IN (#{qids})")
       updates.each do |h|
         update = h[:updated_at]
         # Si on trouve une question qui a été modifiée après

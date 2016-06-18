@@ -42,7 +42,8 @@ def liste_questionnaires
   # versions précédentes aussi et les afficher, mais en plus petit
   html = ""
 
-  ::Unan::table_quiz.select(colonnes:[:id]).each do |qid, hquiz|
+  ::Unan::table_quiz.select(colonnes:[:id]).each do |hquiz|
+    qid = hquiz[:id]
     iquiz = ::Unan::Quiz::new(qid)
 
     # On passe les quiz qui ont une version suivante, ils seront

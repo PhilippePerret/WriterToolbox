@@ -2,17 +2,10 @@
 
 ### À FAIRE
 
-* Champs `questions_ids` dans les quiz
-* Champs à déjsonner :
-  `reponses` des questions (de quiz)
-
 RECAPITULATION TABLES À TRAITER AU NIVEAU DU CODE :
 (elles ont déjà été migrées vers mysql)
 
-    unan.pages_cours
-    unan.quiz
-    unan.questions
-
+    unan.exemples
 
 
 Pour savoir où il y a des choses à corriger, chercher les

@@ -3,7 +3,7 @@ class Unan
 class Quiz
 class Question
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -80,8 +80,7 @@ class Question
   # ---------------------------------------------------------------------
   #   Méthodes de database
   # ---------------------------------------------------------------------
-  # -> MYSQL UNAN
-  def table ; @table ||= Unan::table_questions end
+  def table ; @table ||= Unan.table_questions end
 
 end #/Question
 end #/Quiz
