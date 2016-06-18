@@ -243,8 +243,6 @@ class << self
   # Liste des dernières actualisations
   def last_updates
     @last_updates ||= begin
-      # -> MYSQL
-      require 'sqlite3'
       now   = Time.now
       hier  = now - (3600*24)
       hier_matin  = Time.new(hier.year, hier.month, hier.day, 0, 0, 0).to_i
@@ -280,21 +278,17 @@ class << self
     where << "created_at >= #{from} AND created_at < #{to}"
     where << "annonce > 0"
     where = where.join(' AND ')
-    req = "SELECT message, route, type, created_at, options, annonce FROM updates WHERE #{where} ORDER BY created_at ASC, type"
-    db = SQLite3::Database.new('./database/data/site_cold.db')
-    pr = db.prepare req
-    res = []
-    pr.execute.each_hash do |h|
-      res << {message: h['message'], type: h['type'], annonce: h['annonce'].to_i, created_at: h['created_at'], route: h['route'], options: h['options']}
-    end
+    res = table_updates.select(where: where, order: 'created_at ASC, type')
   rescue Exception => e
     error_log e
     []
   else
     res
-  ensure
-    (db.close if db) rescue nil
-    (pr.close if pr) rescue nil
+  end
+
+  # La table contenant toutes les updates
+  def table_updates
+    @table_updates ||= site.dbm_table(:cold, 'updates')
   end
 
   # Liste des destinataires des mails.

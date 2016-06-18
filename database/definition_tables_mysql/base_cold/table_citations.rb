@@ -1,6 +1,6 @@
 # encoding: UTF-8
 =begin
-  Table pour les updates
+  Table pour les Citation
 
 =end
 def schema_table_citations

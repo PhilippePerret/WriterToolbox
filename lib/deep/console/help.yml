@@ -299,9 +299,7 @@ updates:
     command:      update show[ online]
     description:  Rejoindre la page des actualisations.
     note:         Si online est ajouté, on la rejoint online.
-  -
-    command:      affiche table site_code.updates
-    description:  Pour afficher le contenu de la table des updates
+
 # ---------------------------------------------------------------------
 #   GELS ET DÉGELS
 # ---------------------------------------------------------------------

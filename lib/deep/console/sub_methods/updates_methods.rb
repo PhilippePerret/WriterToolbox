@@ -5,12 +5,10 @@ class Console
 
   def exec_updates params
     case params
-    when /^(liste|list|table)$/
-      affiche_table_of_database 'site_cold.updates'
     when /^delete ([0-9]+)$/
       # Pour détruire une actualisation
       update_id = params.split(' ')[1].to_i
-      tbl = site.db.table('site_cold', 'updates')
+      tbl = site.dbM_table(:cold, 'updates')
       if tbl.get(update_id).nil?
         error "L'update ##{update_id} n'existe pas, impossible de la détruire."
       else

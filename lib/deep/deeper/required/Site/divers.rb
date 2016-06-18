@@ -31,7 +31,7 @@ class SiteHtml
   end
 
 
-  # Ajoute une actualisation dans la table site_cold.updates
+  # Ajoute une actualisation dans la table `updates' (cold)
   #
   # Cet ajout peut se faire de façon automatique ou par la
   # console.

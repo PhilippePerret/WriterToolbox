@@ -96,7 +96,6 @@ class Update
   # Création de l'actualisation dans la table
   def create
     check_data || return
-    debug "Données UPDATE enregistrées : #{data2save.inspect}"
     @id = table.insert(data2save)
     if @id
       flash "Update ##{@id} enregistrée avec succès."
@@ -161,7 +160,7 @@ class Update
   end
 
   def table
-    @table ||= SiteHtml::Updates::table
+    @table ||= SiteHtml::Updates.table_updates
   end
 
 end #/Update

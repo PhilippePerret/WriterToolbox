@@ -11,10 +11,11 @@ class Updates
       u.create
     end
 
-    # {BdD::Table} La table contenant l'historique des updates
-    def table
-      @table ||= site.db.create_table_if_needed('site_cold', 'updates')
+    # {SiteHtml::DBM_TABLE} La table contenant l'historique des updates
+    def table_updates
+      @table_updates ||= site.dbm_table(:cold, 'updates')
     end
+    alias :table :table_updates
 
     # Quand c'est l'administrateur qui visite la page, on propose
     # une liste d'updates à ajouter. Cela sert surtout lorsque
@@ -29,25 +30,24 @@ class Updates
       # debug "   ago : #{ago} (#{Time.at(ago)})"
 
       # On relève les updates des deux derniers mois
-      debug "Nombre d'updates : #{site.db.table('site_cold','updates').count}"
+      debug "Nombre d'updates : #{table.count}"
       last_updates = {}
       dselect = {
         where: "created_at >= #{ago}"
       }
-      site.db.table('site_cold','updates').select(dselect).each do |uid, udata|
+      table.select(dselect).each do |udata|
         # Inutile de prendre les updates sans route
         next if udata[:route].nil?
         last_updates.merge!( udata[:route] => udata )
       end
 
-      # debug "last_updates: #{last_updates.inspect}"
-
       # Proposition par rapport aux pages narration
       reqdata = {
-        where: "updated_at > #{ago}",
+        where:    "updated_at > #{ago}",
         colonnes: [:titre, :options],
         order:    'updated_at DESC'
       }
+      # -> MYSQL NARRATION
       pages_narration =
         site.db.table('cnarration', 'pages').select(reqdata).collect do |pid, pdata|
           # On ne prend que les pages, pas les chapitres/sous-chapitres
@@ -64,6 +64,7 @@ class Updates
         end.compact.join('')
 
       # Les analyses de film
+      # -> MYSQL ANALYSE
       reqdata.merge!(colonnes: [:titre, :titre_fr, :realisateur, :options])
       analyses_films =
         site.db.table('analyse', 'films').select(reqdata).collect do |fid, fdata|
@@ -118,6 +119,7 @@ class Updates
         case id
         when /^analyse_film/
           fid = id.split('-')[1].to_i
+          # -> MYSQL ANALYSE
           dfilm = site.db.table('analyse','films').get(fid)
           # S'il y a plus de trois mois entre la création et
           # l'actualisation, alors c'est une actualisation,
@@ -134,6 +136,7 @@ class Updates
             }
         when /^page_narration/
           pid = id.split('-')[1].to_i
+          # -> MYSQL NARRATION
           dpage   = site.db.table('cnarration','pages').get(pid)
           dlivre  = Cnarration::LIVRES[dpage[:livre_id]]
           diff = dpage[:updated_at] - dpage[:created_at]

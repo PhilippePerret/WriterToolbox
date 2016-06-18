@@ -22,7 +22,7 @@ class Updates
         limit:    args[:to] - args[:from],
         offset:   args[:from] - 1
       }
-      table.select(data_request).collect do |uid, udata|
+      table.select(data_request).collect do |udata|
         Update.new(udata).as_li
       end.join('').in_ul(class: 'tdm', id: 'updates')
     end
