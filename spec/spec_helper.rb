@@ -128,6 +128,8 @@ RSpec.configure do |config|
 
     empty_screenshot_folder
 
+    File.unlink('./debug.log') if File.exist?('./debug.log')
+
     # On prend le temps de départ qui permettra de savoir les choses
     # qui ont été créées au cours des tests et pourront être
     # supprimées à la fin de la suite de tests

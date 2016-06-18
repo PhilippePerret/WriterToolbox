@@ -148,7 +148,11 @@ module MethodesMySQL
   # Détruit la donnée
   # Alias def remove
   def delete
-    table.delete(id)
+    if id.instance_of? Fixnum
+      table.delete(id)
+    else
+      table.delete(where: { id: id })
+    end
   rescue Exception => e
     error e
   end

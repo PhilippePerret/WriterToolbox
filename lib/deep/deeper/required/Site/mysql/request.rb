@@ -387,6 +387,7 @@ DELETE FROM #{dbm_table.name}
           prepared_statement.execute( *prepared_values )
         end
       rescue Exception => e
+        debug e
         raise e
       end
     # Si on passe ici c'est que la requête a pu être exécutée.

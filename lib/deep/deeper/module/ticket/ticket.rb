@@ -38,7 +38,7 @@ class Ticket
 
   def save
     if exist?
-      table.update("id LIKE '#{id}'", data2save)
+      table.update({where: "id LIKE '#{id}'"}, data2save)
     else
       create
     end
@@ -50,7 +50,7 @@ class Ticket
   # formée, sans doute en octal. En revanche, LIKE transforme
   # forcément le test en string
   def exist?
-    table.count(where:"id LIKE '#{id}'") > 0
+    table.count(where: "id LIKE '#{id}'") > 0
   end
 
   def create
@@ -73,15 +73,6 @@ class Ticket
       user_id:      user_id,
       updated_at:   NOW
     }
-  end
-
-  # Méthode surclassant la méthode originale qui ne permettrait
-  # pas de récupérer la valeur car ça passe mal.
-  def get key
-    @data ||= Hash::new
-    @data[:key] ||= begin
-      table.select(where:"id LIKE '#{id}'", colonnes:[key]).first[key]
-    end
   end
 
   def user_id   ; @user_id  ||= get(:user_id) end

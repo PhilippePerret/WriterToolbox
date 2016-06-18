@@ -315,11 +315,11 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
     expect(page).to have_content('Votre centre de travail')
     expect(table_travaux.count).to eq 1
 
-    # TODO Le travail doit être marqué démarré
+    # TODO Le travail doit être marqué à démarrer
     # TODO Un bouton pour finir le travail doit être affiché
     # TODO La pastille doit avoir changé
 
-    sleep 60
+    # sleep 60
 
     shot('panneau-des-taches')
 
