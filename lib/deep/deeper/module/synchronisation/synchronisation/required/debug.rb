@@ -4,12 +4,18 @@ Noter que les librairies en sont pas chargées pour la synchro,
 donc il faut implémenter ces méthodes
 =end
 def debug str
-  @reffile ||= File.open(path_log, 'a')
+  @reffile ||= begin
+    r = File.open(path_log_synchro, 'a')
+    r.write("\n\n\n==== SYNCHRO #{Time.now} ===\n\n")
+    r
+  end
   @reffile.puts str
 end
-def path_log
-  @path_log ||= begin
-    File.join(folder_log, 'synchronisation.log')
+def path_log_synchro
+  @path_log_synchro ||= begin
+    f = File.join(folder_log, 'debug_synchro.log')
+    File.unlink f if File.exist? f
+    f
   end
 end
 def folder_log

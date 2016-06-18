@@ -2,7 +2,7 @@
 class App
 class Ticket
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -50,7 +50,7 @@ class Ticket
   # formée, sans doute en octal. En revanche, LIKE transforme
   # forcément le test en string
   def exist?
-    table.count(where:"id LIKE '#{id}'", colonnes:[]) > 0
+    table.count(where:"id LIKE '#{id}'") > 0
   end
 
   def create

@@ -413,8 +413,12 @@ class Sync
   #
   def diff_affiches_icare
     @diff_affiches_icare ||= begin
-      affiches_on_icare = online_sync_state[:icare][:affiches].split(',')
-      diff_affiches_in_listes liste_affiches_locales, affiches_on_icare
+      if affiches_on_icare = online_sync_state[:icare][:affiches].nil?
+        {}
+      else
+        affiches_on_icare = online_sync_state[:icare][:affiches].split(',')
+        diff_affiches_in_listes liste_affiches_locales, affiches_on_icare
+      end
     end
   end
 

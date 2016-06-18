@@ -64,7 +64,7 @@ feature "Inscription d'un nouveau membre" do
 
     # Un ticket a été créé pour lui
     site.require_module 'ticket'
-    res = app.table_tickets.select(where:{user_id: last_user[:id]}, limit:1, order:"created_at DESC").values.first
+    res = app.table_tickets.select(where:{user_id: last_user[:id]}, limit:1, order:"created_at DESC").first
     expect(res).not_to eq nil
     expect(res[:created_at]).to be >= start_time
     ticket_id_in_table = res[:id]

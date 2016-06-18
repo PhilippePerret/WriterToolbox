@@ -36,21 +36,25 @@ class Synchro
     #
     # Relève les fichiers et dates sur le site local
     #
+    debug "--> check_folders_offline"
     check_folders_offline
 
     #
     # Relève les fichiers et les dates sur le site distant
     #
+    debug "--> check_folders_online"
     check_folders_online
 
     #
     # Construire le résultat
     #
+    debug "--> build_result"
     build_result
 
     #
     # L'ouvrir dans le navigateur
     #
+    debug "--> open_result"
     open_result
 
   end
@@ -61,6 +65,7 @@ class Synchro
     fullpath_racine = File.expand_path('.')
     folder_upto_synchro = fullpath_folder.sub(/^#{fullpath_racine}\//, './')
     res = `ssh #{serveur_ssh} "ruby run_online.rb '#{folder_upto_synchro}/synchronisation.rb'" -q`
+    # res = `ssh #{serveur_ssh} "ruby run_online.rb '#{folder_upto_synchro}/synchronisation.rb'"`
     begin
       res = Marshal.load(res)
       res.each do |file_path, file_data|
@@ -71,10 +76,11 @@ class Synchro
         end
       end
     rescue Exception => e
-      puts "Une erreur est malheureusement survenue : #{e.message}"
-      puts "(consulter le fichier `#{path_log}` pour le détail)"
-      puts e.backtrace.join("\n")
+      error "Une erreur est malheureusement survenue : #{e.message}"
+      error "(consulter le fichier `#{path_log_synchro}` pour le détail)"
       debug "RETOUR SSH (évalué par Marshal) : #{res.inspect}::#{res.class}"
+      debug e.message
+      debug e.backtrace.join("\n")
     end
   end
 

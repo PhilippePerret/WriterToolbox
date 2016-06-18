@@ -51,12 +51,8 @@ class Synchro
   def app_ignored_files
     [
       # Ici la liste des paths de fichiers à ignorer
-      "./database/data/users.db",
       "./database/data/forum.db",
       "./database/data/analyse.db",
-      "./database/data/unan_hot.db",
-      './database/data/site_hot.db',
-      './database/data/site_cold.db',
       './database/data/filmodico.db',
       './database/data/scenodico.db',
       './database/data/cnarration.db',
@@ -67,8 +63,6 @@ class Synchro
   def app_ignored_folders
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
-      './database/data/unan/',
-      './database/data/user/',
       './lib/deep/deeper/module/synchronisation/',
       './CRON/log/',
       './CRON/rapports_connexions/',

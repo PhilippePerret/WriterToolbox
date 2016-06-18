@@ -4,8 +4,8 @@ describe 'Méthodes pour la gestion des tickets' do
     it 'répond' do
       expect(app).to respond_to :table_tickets
     end
-    it 'retourne une instance de BdD::Table' do
-      expect(app.table_tickets).to be_instance_of BdD::Table
+    it 'retourne une instance de SiteHtml::BDM_TABLE' do
+      expect(app.table_tickets).to be_instance_of SiteHtml::BDM_TABLE
     end
     it 'retourne une table qui existe' do
       expect(app.table_tickets).to be_exist

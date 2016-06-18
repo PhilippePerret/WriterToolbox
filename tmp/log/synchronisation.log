@@ -340,3 +340,11 @@ Requête définitive : SELECT COUNT(*) FROM programs WHERE auteur_id = 1 AND opt
 @prepared_values : nil
 Requête définitive : SELECT * FROM taches WHERE state < 9 AND admin_id = 1 ORDER BY echeance ASC;
 @prepared_values : []
+RETOUR SSH (évalué par Marshal) : ""::String
+RETOUR SSH (évalué par Marshal) : ""::String
+--> check_folders_offline
+--> check_folders_online
+RETOUR SSH (évalué par Marshal) : ""::String
+--> build_result
+--> open_result
+--> check_folders_offline

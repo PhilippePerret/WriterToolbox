@@ -9,7 +9,6 @@ class App
   # ne vérifie pas que c'est bien le possesseur du ticket qui
   # l'exécute.
   def execute_ticket tid
-    debug.add("-> app.execute_ticket(tid: #{tid})")
     get_ticket(tid)
     if false == @ticket.exist?
       error.add "Impossible d'exécuter ce ticket. Il n'existe pas ou plus."
@@ -41,8 +40,7 @@ class App
   # On peut l'obtenir par `app.table_tickets` mais il faut :
   # site.require_module 'ticket'
   def table_tickets
-    # -> MYSQL TICKETS
-    @table_tickets ||= site.db.create_table_if_needed('site_hot', 'tickets')
+    @table_tickets ||= site.dbm_table(:hot, 'tickets')
   end
 
 end #/App

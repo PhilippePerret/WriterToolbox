@@ -101,7 +101,7 @@ test_base "users.users" do
 
 end
 
-test_base "site_hot.tickets" do
+test_base "base_hot.tickets" do
   description "Un ticket a été enregistré pour confirmer le mail"
   code = "User::get(#{new_user_id}).confirm_mail"
   r = row(user_id: new_user_id, code: code)

@@ -37,10 +37,7 @@ class TestSuite
       log '</pre>'
 
       [
-        ['users.db',    ['users', 'paiements']],
-        ['site_hot.db', ['last_dates', 'tickets'] ],
         ['forum.db' ,   ['posts', 'posts_content']],
-        ['unan_hot',    ['programs', 'projets']]
       ].each do |pair|
         db_name, tables = pair
         tables.in_array.each do |table_name|

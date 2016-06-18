@@ -8,7 +8,7 @@ feature 'Confirmation du mail et donc de l’inscription à l’aide du ticket' 
     # cette adresse en récupérant le dernier ticket créé, qui est forcément
     # le ticket pour cette inscription.
     site.require_module 'ticket'
-    ticket = app.table_tickets.select(where:"code LIKE 'User::get%confirm_mail'",order:"created_at DESC").values.first
+    ticket = app.table_tickets.select(where:"code LIKE 'User::get%confirm_mail'",order:"created_at DESC").first
     puts ticket.inspect
     ticket_id = ticket[:id]
 
