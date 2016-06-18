@@ -14,15 +14,6 @@ class Console
   # ---------------------------------------------------------------------
   # Méthodes de récupération des données
   # (qui ont été backupées dans des PStores)
-  def retreive_data_table_pages_cours
-    proc_modif = Proc::new do |data_init|
-      # ICI LE TRAITEMENT DES DONNÉES POUR INSÉRER DANS LA
-      # NOUVELLE TABLE
-      data = data_init.dup
-      data
-    end
-    retrieve_data_from_all( 'unan_cold.db', 'page_cours', proc_modif )
-  end
 
   def retreive_data_table_exemples
     proc_modif = Proc::new do |data_init|
@@ -101,9 +92,6 @@ class Console
   def backup_data_table_absolute_pdays
     backup_data_from_all('unan_cold.db', 'absolute_pdays')
   end
-  def backup_data_table_pages_cours
-    backup_data_from_all('unan_cold.db', 'pages_cours')
-  end
   def backup_data_table_projets
     backup_data_from_all('unan_hot.db', 'projets')
   end
@@ -142,15 +130,6 @@ class Console
     end
   end
 
-  def detruire_table_pages_cours
-    if OFFLINE
-      init_unan
-      Unan::database.execute("DROP TABLE IF EXISTS 'pages_cours';")
-      "Table des pages de cours détruite avec succès."
-    else
-      destruction_impossible % {choses: "pages de cours"}
-    end
-  end
 
   def afficher_table_exemples
     init_unan
@@ -163,11 +142,6 @@ class Console
   def afficher_table_quiz
     init_unan
     show_table Unan::table_quiz
-  end
-
-  def afficher_table_pages_cours
-    init_unan
-    show_table Unan::Program::PageCours::table_pages_cours
   end
 
   def afficher_table_absolute_pdays

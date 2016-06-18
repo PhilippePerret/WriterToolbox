@@ -86,14 +86,14 @@ def table_pages_cours
 end
 def pages_cours
   @pages_cours ||= begin
-    table_pages_cours.select()
+    table_pages_cours.select
   end
 end
 
 def dispatch_pages_cours
   @pages_narration  = Array::new
   @pages_unan       = Array::new
-  pages_cours.each do |pcid, pcdata|
+  pages_cours.each do |pcdata|
     if pcdata[:narration_id].nil?
       @pages_unan << pcdata
     else

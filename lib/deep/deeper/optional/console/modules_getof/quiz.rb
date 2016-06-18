@@ -125,7 +125,7 @@ class Quiz
       relpath = relpath.split('/')
       page_type = relpath.shift
       page_path = relpath.join('/')
-      id = Unan::table_pages_cours.select(where:"type = '#{page_type}' AND path = '#{page_path}'", colonnes:[]).keys.first
+      id = Unan.table_pages_cours.select(where:"type = '#{page_type}' AND path = '#{page_path}'", colonnes:[]).first[:id]
       error "La page de cours de type `#{page_type}` et de relpath `#{page_path}` est inconnue de la table des pages de cours…" if id.nil?
       id
     end.compact # pour éviter les nil

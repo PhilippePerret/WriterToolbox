@@ -190,7 +190,7 @@ class PageCours
             # -> MYSQL UNAN
             if table_pages_cours.count(where:where) > 0
               # -> MYSQL UNAN !!!
-              pcid = table_pages_cours.select(where:where,colonnes:[]).values.first[:id]
+              pcid = table_pages_cours.select(where: where,colonnes:[]).first[:id]
               raise "#{pagen.hletype.capitalize} Narration #{pagen.titre} est déjà mémorisé dans la page-cours #{pcid}"
             end
           end

@@ -12,7 +12,7 @@ class SiteHtml
   def set_last_date cle, time = nil
     time ||= Time.now.to_i
     cle = cle.to_s
-    table_last_dates.set(value:{time:time, cle:cle}, where:{cle: cle})
+    table_last_dates.set( {where: {cle: cle} }, {time:time, cle:cle } )
   end
   alias :set_last_time :set_last_date
 

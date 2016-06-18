@@ -961,7 +961,7 @@ OBSOLÈTE. `page_cours` est maintenant une méthode-propriété qui retourne la 
 
 ### Map des pages de cours
 
-Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre le handler (Symbol explicite) et l'ID de la table. C'est dans les données de la page, dans la base de données (unan_cold.pages_cours), qu'est définie cette correspondance.
+Ce que j'appelle la “map des pages de cours”, c'est la correspondance entre le handler (Symbol explicite) et l'ID de la table. C'est dans les données de la page, dans la base de données (:unan, 'pages_cours'), qu'est définie cette correspondance.
 
 <a name='leshandlersdepage'></a>
 

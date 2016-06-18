@@ -37,6 +37,10 @@ class << self
     @table_absolute_works ||= site.dbm_table(:unan, 'absolute_works')
   end
 
+  def table_pages_cours
+    @table_pages_cours ||= site.dbm_table(:unan, 'pages_cours')
+  end
+
   def table_questions
     # -> MYSQL UNAN
     @table_questions ||= get_table_cold('questions')
@@ -50,11 +54,6 @@ class << self
   def table_exemples
     # -> MYSQL UNAN
     @table_exemples ||= get_table_cold('exemples')
-  end
-
-  def table_pages_cours
-    # -> MYSQL UNAN
-    @table_pages_cours ||= get_table_cold('pages_cours')
   end
 
   # ---------------------------------------------------------------------

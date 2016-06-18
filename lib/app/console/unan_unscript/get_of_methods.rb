@@ -11,12 +11,13 @@ class Console
     foo_id = foo_id.to_i
     # debug "wanted:#{wanted.inspect} / foo:#{foo.inspect} / foo_id:#{foo_id.inspect}"
 
-    ichose = case foo
-    when "work", "works"
+    ichose =
+    case foo
+    when /^works?$/
       foo = "work"
       Unan::require_module "abs_work" # et notamment 'getof_methods.rb'
       Unan::Program::AbsWork::get(foo_id)
-    when "page_cours", "pages_cours", "page", "pages"
+    when /^pages?$/
       foo = "page_cours"
       Unan::require_module "page_cours"
       Unan::Program::PageCours::get(foo_id)
