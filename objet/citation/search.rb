@@ -44,7 +44,7 @@ class << self
   def founds
     @founds ||= begin
       # debug "data_request = #{data_request.pretty_inspect}"
-      Citation.table.select(data_request).values
+      Citation.table_citations.select(data_request)
     end
   end
 
@@ -77,7 +77,6 @@ class << self
   def all_words?;   @all_words    end
 
   def check_data
-    debug "dquote = #{dquote.inspect}"
     @searched = dquote[:searched].nil_if_empty
     @searched != nil || raise('Il faut définir le texte à rechercher ! :-)')
     @searched.gsub!(/(d|l|qu)['’]/, '\1 ')

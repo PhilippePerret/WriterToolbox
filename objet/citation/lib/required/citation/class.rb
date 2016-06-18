@@ -20,9 +20,10 @@ class << self
     }
   end
 
-  def table
-    @table ||= site.db.create_table_if_needed('site_cold', 'citations')
+  def table_citations
+    @table_citations ||= site.dbm_table(:cold, 'citations')
   end
+  alias :table :table_citations
 
 end #/ <<self
 end #/ Citation

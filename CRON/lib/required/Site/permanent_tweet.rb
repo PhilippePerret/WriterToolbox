@@ -68,19 +68,18 @@ class Tweet
     #
     def tweet_citation
 
-      # -> MYSQL CITATIONS
       # On choisit un nombre (ID) de citation au hasard
-      tbl_citations = site.db.table('site_cold', 'citations')
+      tbl_citations = site.dbm_table(:cold, 'citations')
 
       # On récupère les citations qui sont
       # prévues pour diffusion (dont je dois faire l'explicitation
       # avant envoi)
-      where = '( last_sent > 0 ) AND ( last_sent < 11 )'
+      where = 'last_sent > 0 AND last_sent < 11'
       prochaines = tbl_citations.select(
         where: where,
         order: 'last_sent ASC',
         colonnes: [:citation, :auteur, :bitly, :last_sent]
-        ).values
+        )
 
       # La citation qui doit être envoyée maintenant
       # est toujours la dernière (c'est celle qui porte
@@ -101,11 +100,11 @@ class Tweet
       nombre_candidates_voulues = 10 - nombre_prochaines
 
       all_candidates = tbl_citations.select(
-        where: nil,
+        where:    nil,
         order:    'last_sent ASC',
         limit:    40 + nombre_candidates_voulues,
         colonnes: [:citation, :auteur, :bitly, :last_sent, :id]
-      ).values
+      )
       all_candidates = all_candidates.shuffle.shuffle
       candidates = all_candidates[0..nombre_candidates_voulues - 1]
 
@@ -165,7 +164,6 @@ class Tweet
       reste_len = 139 - (auteur.length + bitly.length + 4) #
       citation  = prochaine[:citation]
 
-      # -> MYSQL CITATIONS
       # On indique la date d'envoi de cette dernière
       # citation
       tbl_citations.update(citation_id, { last_sent: Time.now.to_i })

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Citation
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -23,6 +23,10 @@ class Citation
     source_humaine +
     boutons_edition +
     description_if_any
+  rescue Exception => e
+    debug "# IMPOSSIBLE D'AFFICHER LA CITATION ##{id} : #{e.message}"
+    debug e
+    'Malheureusement, il est impossible d’afficher cette citation.'.in_div(class: 'big air')
   end
 
   # ---------------------------------------------------------------------
@@ -80,7 +84,7 @@ class Citation
   end
 
   def table
-    @table ||= site.db.create_table_if_needed('site_cold', 'citations')
+    @table ||= self.class.table_citations
   end
 
 end

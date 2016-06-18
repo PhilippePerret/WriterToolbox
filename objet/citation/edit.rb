@@ -9,17 +9,16 @@ class Citation
 class << self
   def save
     check_data || return
-    debug "cdata : #{cdata.inspect}"
 
     if cdata[:id].nil?
       # C'est une nouvelle citation
       cdata.delete(:id)
-      id_new_citation = table.insert( cdata )
+      id_new_citation = table_citations.insert( cdata )
       cdata.merge!(id: id_new_citation)
       param(citation: cdata.merge(id: id_new_citation))
       flash "Création de la nouvelle citation opérée (##{id_new_citation})."
     else
-      table.update(cdata[:id], cdata)
+      table_citations.update(cdata[:id], cdata)
       flash "Modification de la citation ##{cdata[:id]} enregistrée."
     end
 

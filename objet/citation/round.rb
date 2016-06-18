@@ -5,7 +5,7 @@
 
 =end
 
-nombre_citations = site.db.table('site_cold', 'citations').count
+nombre_citations = Citation.table_citations.count
 citation_id = rand(nombre_citations)
 citation_id = 1 if citation_id < 1 || citation_id > nombre_citations
 
