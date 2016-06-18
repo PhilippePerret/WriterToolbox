@@ -37,6 +37,8 @@ end
 
 # On requiert tout ce que requiert l'index du site
 # Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?
+ONLINE  = false
+OFFLINE = true
 require './lib/required'
 
 require_folder './spec/support'
@@ -246,7 +248,7 @@ RSpec.configure do |config|
 
   # La fenêtre ouverte par capybara
   def resize_window
-    page.driver.browser.manage.window.resize_to(1600, 600)
+    page.driver.browser.manage.window.resize_to(1400, 600)
   end
 
   # ---------------------------------------------------------------------

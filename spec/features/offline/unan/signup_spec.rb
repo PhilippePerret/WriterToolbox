@@ -49,7 +49,8 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
     #   - dans la table des users
     #   - Dans la table :unan des programmes
     #   - dans la table :unan des projets
-    oldu = table_users_offline.get(where: "mail = '#{DUSER[:mail]}'")
+    oldu = table_users_offline.get(where: "mail = '#{DUSER[:mail]}' OR pseudo = '#{DUSER[:pseudo]}'")
+    puts "oldu existe ? #{oldu.nil? ? 'NON' : 'OUI'}"
     unless oldu.nil?
       oldu_id = oldu[:id]
       table_users_offline.delete(oldu_id)

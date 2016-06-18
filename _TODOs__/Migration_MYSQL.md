@@ -2,23 +2,13 @@
 
 ### À FAIRE
 
-* Champs list-string (ids séparés par espace)
-  - works des absolute pdays
-* Champs `type` des pages_cours qui était avant 'cnarration'
-  ou 'program' et qui est maintenant 'H' ou 'N' (penser à le modifier
-    aussi dans le formulaire)
 * Champs `questions_ids` dans les quiz
 * Champs à déjsonner :
   `reponses` des questions (de quiz)
-* Table `hot.last_dates`
-  Remplacement de la clé `key` par la clé `cle`
 
 RECAPITULATION TABLES À TRAITER AU NIVEAU DU CODE :
 (elles ont déjà été migrées vers mysql)
 
-    hot.last_dates
-    unan.absolute_works
-    unan.absolute_pdays
     unan.pages_cours
     unan.quiz
     unan.questions

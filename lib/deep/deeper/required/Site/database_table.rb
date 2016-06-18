@@ -7,7 +7,7 @@ class SiteHtml
   # @usage: Utiliser la méthode `get_last_date(key)` et
   # `set_last_date(key, value)` pour définir et récupérer des valeurs
   def table_last_dates
-    @table_last_dates ||= self.db.create_table_if_needed('site_hot', 'last_dates')
+    @table_last_dates ||= self.dbm_table(:hot, 'last_dates')
   end
 
 end

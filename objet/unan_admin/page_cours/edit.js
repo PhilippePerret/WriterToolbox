@@ -16,7 +16,11 @@ $.extend(window.PageCours, {
     var div = $('div#folder_page_path') ;
     // Le menu contenant le type
     var menu = $('select#page_cours_type') ;
-    var path_type = menu.val();
+    var type = menu.val();
+    var path_type;
+    if(type == 'U'){path_type = 'program'}
+    else if (type == 'N'){path_type = 'cnarration'}
+    else {F.error("Le type " + type + " est inconnu. Impossible de régler le path du dossier."); return}
     div.html("./data/unan/pages_cours/"+path_type+"/");
   }
 })

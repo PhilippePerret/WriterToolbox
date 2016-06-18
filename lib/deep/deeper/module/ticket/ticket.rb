@@ -80,7 +80,7 @@ class Ticket
   def get key
     @data ||= Hash::new
     @data[:key] ||= begin
-      table.select(where:"id LIKE '#{id}'", colonnes:[key]).values.first[key]
+      table.select(where:"id LIKE '#{id}'", colonnes:[key]).first[key]
     end
   end
 

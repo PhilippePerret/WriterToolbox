@@ -344,16 +344,17 @@ class CurPDay
         all:    Array::new
       }
       @works_undone_as_hdata ||= begin
-        # -> MYSQL UNAN
-        res = Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})")
+        res = {}
+        Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})").collect do |h|
+          res.merge! h[:id] => h
+        end
         # On ajoute certaines données utiles, dont :
         #   * Le type de travail (:task, :page, :forum ou :quiz)
         #   * Le jour-programme où ce travail était programmé (pour composer
         #   * le `pairid` qui permet de voir si un travail a été démarré pour
         #     ce travail)
         #   * Le nombre de jours de dépassement (if any) ou nil (en jour)
-        res.each do |wdata|
-          wid     = wdata[:id]
+        res.each do |wid, wdata|
           idpday  = @last_pday_of_abswork[wid]
           pairid  = "#{wid}:#{idpday}"
           type    = Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type]
@@ -401,16 +402,6 @@ class CurPDay
             @unstarted_by_type[type] << wdata
             @unstarted_by_type[:all] << wdata
           end
-
-          # # Débug des valeurs
-          # main_safed_log "\tself.indice = #{self.indice.inspect}\n"+
-          # "\tidpday       = #{idpday.inspect}\n"+
-          # "\tduree        = #{wdata[:duree].inspect}\n"+
-          # "\tdepassement  = #{depassement.inspect}\n"+
-          # "\tis_overtimed = #{is_overtimed.inspect}\n"+
-          # "\tis_nouveau   = #{is_nouveau.inspect}\n"+
-          # "\t    (est nouveau si (self.indice - idpday) <= 1)\n"
-
           # Ajout des valeurs
           res[wid].merge!(
             type:         type,

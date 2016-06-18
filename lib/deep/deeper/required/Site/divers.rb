@@ -1,18 +1,18 @@
 # encoding: UTF-8
 class SiteHtml
 
-  def get_last_date key, default_value = nil
-    key = key.to_s
-    res = table_last_dates.select(where:{key: key}).values.first
+  def get_last_date cle, default_value = nil
+    cle = cle.to_s
+    res = table_last_dates.select(where: {cle: cle} ).first
     res || default_value
   end
   alias :get_last_time :get_last_date
 
   # Enregistrement de la clé +key+ avec le temps +time+
-  def set_last_date key, time = nil
+  def set_last_date cle, time = nil
     time ||= Time.now.to_i
-    key = key.to_s
-    table_last_dates.set(value:{time:time, key:key}, where:{key: key})
+    cle = cle.to_s
+    table_last_dates.set(value:{time:time, cle:cle}, where:{cle: cle})
   end
   alias :set_last_time :set_last_date
 
