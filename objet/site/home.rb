@@ -39,8 +39,8 @@ class SiteHtml
     debug "   = Base Narration : #{db_cnarration.mtime} (OK)" if debugit
     return true if mtime < db_forum.mtime
     debug "   = Base Forum : #{db_forum.mtime} (OK)" if debugit
-    return true if mtime < db_unan_hot.mtime
-    debug "   = Base Un an un script : #{db_unan_hot.mtime} (OK)" if debugit
+    return true if table_unan_programs.last_update > mtime
+    debug "   = Programmes Un an un script (OK)" if debugit
     return true if mtime < data_videos.mtime
     debug "   = Données vidéos : #{data_videos.mtime} (OK)" if debugit
     return true if mtime < data_divers_actus.mtime
@@ -53,7 +53,11 @@ class SiteHtml
   def db_analyse;     @db_analyse     ||= site.folder_db + 'analyse.db'     end
   def db_cnarration;  @db_cnarration  ||= site.folder_db + 'cnarration.db'  end
   def db_forum;       @db_forum       ||= site.folder_db + 'forum.db'       end
-  def db_unan_hot;    @db_unan_hot    ||= site.folder_db + 'unan_hot.db'    end
+
+  # Table des programmes Un An Un Script
+  def table_unan_programs
+    @table_unan_programs ||= site.dbm_table(:unan, 'programs')
+  end
 
   def data_videos; @data_videos ||= site.folder_objet + 'video/DATA_VIDEOS.rb' end
   def data_divers_actus; @data_divers_actus ||= SuperFile::new('./hot/last_actualites.rb') end

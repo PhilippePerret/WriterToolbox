@@ -2,6 +2,9 @@
 
 ## MIGRATION -> MYSQL
 
+* Penser à modifier le traitement de l'actualisation de l'accueil
+  dans ./objet/site/home.rb
+  
 Pour savoir où il y a des choses à corriger, chercher les
 balises :
 

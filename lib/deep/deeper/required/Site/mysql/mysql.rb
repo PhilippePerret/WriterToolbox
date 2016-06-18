@@ -152,6 +152,14 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     Request.new(self, who).count
   end
 
+  NIL_TIME = Time.at(0)
+
+  # Retourne le timestamp {Fixnum} de la dernière actualisation
+  # de la table courante.
+  def last_update default_value = NIL_TIME
+    ((r = client.query(request_last_update)).nil? ? nil : r.first['UPDATE_TIME']) || default_value
+  end
+
 
   #
   # / FIN REQUÊTES PRINCIPALES
@@ -198,6 +206,15 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     end
   end
 
+  # Code de la requête pour tester la date de la dernière
+  # modification de la table.
+  def request_last_update
+    @request_last_update ||= <<-MYSQL
+SELECT UPDATE_TIME
+  FROM   information_schema.tables
+  WHERE  TABLE_NAME = '#{name}';
+     MYSQL
+  end
 
 
   # ---------------------------------------------------------------------

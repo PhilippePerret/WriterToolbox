@@ -210,7 +210,7 @@ class BdD
       return retour
     ensure
       (dbase.close  if dbase) rescue nil
-      (smt.close       if smt) rescue nil
+      (smt.close    if smt) rescue nil
     end
     alias :execute_request :execute_requete
 

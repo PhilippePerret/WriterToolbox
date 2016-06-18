@@ -156,7 +156,6 @@ SELECT id, film_id, titre, updated_at
   end
 
   def derniere_nouvelles_unan
-    @db_programs_unan = SQLite3::Database::new('./database/data/unan_hot.db')
     # Les dernières inscriptions (if any)
     unan_dernieres_inscriptions +
     # Les dernières activités sur le programme
@@ -164,7 +163,12 @@ SELECT id, film_id, titre, updated_at
     # Des actualités "forcées"
   end
   def unan_dernieres_inscriptions
-    @db_programs_unan.execute(request_derniers_programmes_unan).collect do |arrdata|
+    request_data = {
+      order: 'created_at DESC',
+      limit: 3,
+      colonnes: [:id, :auteur_id, :projet_id, :updated_at]
+    }
+    site.dbm_table(:unan, 'programs').select(request_data).collect do |arrdata|
       uid, pid, created_at = arrdata
       upseudo = User::get(uid).pseudo
       # TODO: Pour le moment, on n'indique pas la date
@@ -173,7 +177,12 @@ SELECT id, film_id, titre, updated_at
     end.join('')
   end
   def unan_dernieres_activites
-    @db_programs_unan.execute(request_dernieres_activites_unan).collect do |arrdata|
+    request_data = {
+      order: 'updated_at DESC',
+      limit: 3,
+      colonnes: [:id, :auteur_id, :projet_id, :updated_at]
+    }
+    site.dbm_table(:unan, 'programs').select(request_data).collect do |arrdata|
       pid, puser, pprojet, pupdate = arrdata
       puser = User::get(puser).pseudo
       # TODO: Pour le moment on n'indique pas la date, on le
@@ -182,34 +191,7 @@ SELECT id, film_id, titre, updated_at
       "#{DOIGT}Projet de #{puser}".in_div(class:'actu')
     end.join('')
   end
-  # Requête SQL pour récupérer les dernières activités dans
-  # les programmes UN AN UN SCRIPT.
-  # Pour ça, on relève simplement les derniers programmes
-  # modifiés.
-  def request_dernieres_activites_unan
-    req = <<-SQL
-SELECT
-  id, auteur_id, projet_id, updated_at
-  FROM programs
-  ORDER BY updated_at DESC
-  LIMIT 3
-    SQL
-    req.gsub(/\t/, ' ').gsub(/\n/, ' ')
-  end
-  def request_derniers_programmes_unan
-    req = <<-SQL
-SELECT
-  auteur_id, projet_id, created_at
-  FROM programs
-  ORDER BY created_at DESC
-  LIMIT 2
-    SQL
-    req.gsub(/\t/,' ').gsub(/\n/,' ')
-  end
 
-  def request
-
-  end
   # ---------------------------------------------------------------------
   #     TUTORIELS VIDÉOS
   # ---------------------------------------------------------------------
