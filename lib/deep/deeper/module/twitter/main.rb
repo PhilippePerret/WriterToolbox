@@ -42,7 +42,7 @@ class SiteHtml
 
   class Tweet
 
-    include MethodesObjetsBdD
+    include MethodesMySQL
 
     class << self
 
@@ -88,7 +88,7 @@ class SiteHtml
         # ce que leur nombre ait atteint les autres nombres
         # d'envois.
         req_data = {order: 'last_sent ASC, count ASC', limit: 10, colonnes:[]}
-        tweets_ids = table_permanent_tweets.select(req_data).keys
+        tweets_ids = table_permanent_tweets.select(req_data).collect{|h|h[:id]}
         safed_log "  = tweets_ids : #{tweets_ids.inspect}"
         tweets_ids = tweets_ids.shuffle.shuffle
         safed_log "  = tweets_ids (désordre) : #{tweets_ids.inspect}"
@@ -150,60 +150,13 @@ class SiteHtml
           return true
         end
         suivi_error << "BAD"
-
-        # Tentative d'actualisation des données en utilisant
-        # `site.db.table`
-        suivi_error << "Essai avec site.db.table"
-        site.db.table('site_cold', 'permanent_tweets').set(tid, {count: count_expected, last_sent: Time.now.to_i})
-        tchecked = new(tid)
-        suivi_error <<  "tchecked class : #{tchecked.class}" +
-                        "         ID    : #{tchecked.id}" +
-                        "         count : #{tchecked.count.inspect}" +
-                        "         sent  : #{tchecked.last_sent.inspect}"
-
-        return true if tchecked.count == count_expected
-        suivi_error << "BAD"
-
-        # Tentative finale d'actualisation : en utilisant tout
-        # en brut.
-        require 'sqlite3'
-        req = "UPDATE permanent_tweets"+
-              " SET count = #{count_expected}, last_sent = #{Time.now.to_i}"+
-              " WHERE id = #{tid}"
-        suivi_error << "REQUEST : #{req}"
-        suivi_error << "Root : #{File.expand_path('.')}"
-        pdb = File.join(RACINE, 'database', 'data', 'site_cold.db')
-        suivi_error << "DB Path: #{pdb} "
-        suivi_error << "Exist? #{File.exist?(pdb).inspect}"
-        begin
-          db = SQLite3::Database.new(pdb)
-          pr = db.prepare req
-          rs = pr.execute
-          suivi_error << "Retour de l'exécution de la requête : #{rs.inspect}"
-        rescue Exception => e
-          suivi_error << "# Erreur d'actualisation : #{e.message}"
-          suivi_error << e.backtrace.join("\n")
-        ensure
-          (db.close if db) rescue nil
-          (pr.close if pr) rescue nil
-        end
-        tchecked = new(tid)
-        suivi_error <<  "tchecked class : #{tchecked.class}" +
-                        "         ID    : #{tchecked.id}" +
-                        "         count : #{tchecked.count.inspect}" +
-                        "         sent  : #{tchecked.last_sent.inspect}"
-
-        return true if tchecked.count == count_expected
-        suivi_error << "BAD"
-
         error_log suivi_error.join("\n")
-
         return false
 
       end
 
       def table_permanent_tweets
-        @table_permanent_tweets ||= site.db.create_table_if_needed('site_cold', 'permanent_tweets')
+        @table_permanent_tweets ||= site.dbm_table(:cold, 'permanent_tweets')
       end
 
 

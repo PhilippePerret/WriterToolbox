@@ -2,6 +2,8 @@
 
 ## MIGRATION -> MYSQL
 
+* Supprimer le fichier ./lib/deep/deeper/required/Site/database.rb quand
+  toutes les tables seront construites.
 * Penser à modifier le traitement de l'actualisation de l'accueil
   dans ./objet/site/home.rb
 

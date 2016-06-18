@@ -158,9 +158,9 @@ class Sync
       req = "SELECT id, last_sent FROM citations"
       db = SQLite3::Database.new(sdb.dst_loc_path)
       pr = db.prepare req
-      rs_online = {}
+      rs_dis = {}
       pr.execute.each_hash do |h|
-        rs_online.merge!(h['id'] => h.to_sym)
+        rs_dis.merge!(h['id'] => h.to_sym)
       end
     rescue Exception => e
       debug e
@@ -175,9 +175,9 @@ class Sync
     begin
       db = SQLite3::Database.new(sdb.loc_path)
       pr = db.prepare req
-      rs_offline = {}
+      rs_loc = {}
       pr.execute.each_hash do |h|
-        rs_offline.merge!(h['id'] => h.to_sym)
+        rs_loc.merge!(h['id'] => h.to_sym)
       end
     rescue Exception => e
       debug e
@@ -190,8 +190,8 @@ class Sync
 
     # *** On calcule la différence
     rs_diff = []
-    rs_online.each do |tid, tdata_online|
-      if rs_offline[tid] != tdata_online
+    rs_dis.each do |tid, tdata_online|
+      if rs_loc[tid] != tdata_online
         rs_diff << tdata_online
       end
     end
@@ -199,7 +199,7 @@ class Sync
     # Il faut actualiser la base site_cold.db si
     # 1/ les nombres de citations est différent ou
     # 2/ des différences ont été relevées.
-    need_update_site_code = !rs_diff.empty? || rs_online.count != rs_offline.count
+    need_update_site_code = !rs_diff.empty? || rs_dis.count != rs_loc.count
 
     # *** On actualise les données à actualiser
     unless rs_diff.empty?
@@ -245,84 +245,84 @@ class Sync
   def synchronize_tweets
     @suivi << "* Synchronisation des tweets permanents"
 
-    # L'instance Sync::Database de la base `site_cold.db` qui
-    # permet de gérer la base. Elle a peut-être été déjà
-    # chargée par les tâches qui en ont besoin aussi.
-    # Noter que l'instanciation seule (ci-desous) suffit à
-    # downloader le fichier distant.
-    sdb = Sync::Database.site_cold
 
     # *** On prend les données de la base distante, à
     # savoir des hashs {:id, :count, :last_sent}
+    table_tweets_dis = site.dbm_table(:cold, 'permanent_tweets', online = true)
     begin
-      req = "SELECT id, count, last_sent FROM permanent_tweets"
-      db = SQLite3::Database.new(sdb.dst_loc_path)
-      pr = db.prepare req
-      rs_online = {}
-      pr.execute.each_hash do |h|
-        rs_online.merge!(h['id'] => h.to_sym)
+      rs_dis = {}
+      table_tweets_dis.select(colonnes: [:count, :last_sent]).each do |htweet|
+        rs_dis.merge! htweet[:id] => htweet
       end
     rescue Exception => e
       debug e
       error "Une erreur est survenue en récupérant les informations des tweets permanents distants. Je dois renoncer."
       return false
-    ensure
-      (db.close if db) rescue nil
-      (pr.close if pr) rescue nil
     end
 
     # *** On prend les données de la base locale
+    #
+    # Ici, il faut prendre toutes les données car des nouveaux tweets
+    # seront peut-être à ajouter.
+    table_tweets_loc = site.dbm_table(:cold, 'permanent_tweets', online = false)
     begin
-      db = SQLite3::Database.new(sdb.loc_path)
-      pr = db.prepare req
-      rs_offline = {}
-      pr.execute.each_hash do |h|
-        rs_offline.merge!(h['id'] => h.to_sym)
+      rs_loc = {}
+      table_tweets_loc.select(colonnes: nil).each do |htweet|
+        rs_loc.merge! htweet[:id] => htweet
       end
     rescue Exception => e
       debug e
       error "Une erreur est survenur en récupérant les informations des tweets permanents locaux. Je dois renoncer."
       return
-    ensure
-      (db.close if db) rescue nil
-      (pr.close if pr) rescue nil
     end
 
-    # *** On calcule la différence
+    # *** On calcule la différence au niveau des
+    # count et des last_sent
     rs_diff = []
-    rs_online.each do |tid, tdata_online|
-      if rs_offline[tid] != tdata_online
-        rs_diff << tdata_online
+    liste_ids_traited = []
+    rs_dis.each do |tid, tdata_dis|
+      liste_ids_traited << tid
+      tdata_loc = rs_loc[tid]
+      if (tdata_loc[:count] != tdata_dis[:count]) || (tdata_loc[:last_sent] != tdata_dis[:last_sent])
+        rs_diff << tdata_dis
       end
     end
 
-    # Il faut actualiser la base site_cold.db si
+    # Voir les tweets en offline qu'il faut
+    # ajouter online
+    rs_diff_loc = []
+    rs_loc.each do |tid, tdata_loc|
+      next if liste_ids_traited.include?( tid )
+      rs_diff_loc << tdata_loc
+    end
+
+    # Il faut actualiser la table si
     # 1/ les nombres de tweets sont différents ou
     # 2/ des différences ont été relevées.
-    need_update_site_code = !rs_diff.empty? || rs_online.count != rs_offline.count
+    return if rs_diff.empty? && rs_dis.count == rs_loc.count
 
     # *** On actualise les données à actualiser
-    unless rs_diff.empty?
-      begin
-        db = SQLite3::Database.new(sdb.loc_path)
-        # La requête pour actualiser la table
-        req_update = "UPDATE permanent_tweets SET count = :count, last_sent = :last_sent WHERE id = :id"
-        res = []
-        db.prepare(req_update) do |stm|
-          rs_diff.collect { |tdata| res << (stm.execute tdata) }
-        end
-      rescue Exception => e
-        debug e
-        error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
-        return
-      ensure
-        (db.close if db) rescue nil
+    begin
+      rs_diff_loc.each do |dtweet|
+        table_tweets_dis.insert(dtweet)
       end
+    rescue Exception => e
+      debug e
+      error "Impossible d'actualiser les données tweet nouvelles."
+      return
     end
 
-    # On indique que la table site_cold doit être uploadée
-    # si nécessaire cf. plus haut
-    sdb.need_upload = true if need_update_site_code
+    # Actualisation des données locales, modifiées en
+    # online
+    begin
+      rs_diff.each do |tid, tdata|
+        table_tweets_loc.update(tid, {count: tdata[:count], last_sent: tdata[:last_sent]})
+      end
+    rescue Exception => e
+      debug e
+      error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
+      return
+    end
 
     @suivi << "= Synchronisation des tweets permanents OK"
   rescue Exception => e
