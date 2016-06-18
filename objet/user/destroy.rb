@@ -120,39 +120,27 @@ SELECT id, items_ids FROM sujets_followers
     # besoin plus bas (pour les bases de données)
     site.require_objet 'unan'
     # Destruction des paiements "1UN1SCRIPT" de l'self
-    where = "(user_id = #{self.id}) AND (objet_id = '1AN1SCRIPT')"
-    nombre_paiements = User::table_paiements.count(where:where)
-    User::table_paiements.delete(where:where)
+    where = "user_id = #{self.id} AND objet_id = '1AN1SCRIPT'"
+    nombre_paiements = User.table_paiements.count(where:where)
+    User.table_paiements.delete(where:where)
 
     # Destruction de son dossier dans database/data/unan/user
     with_dossier_db = self.folder_data.exist? ? "détruit" : "inexistant"
     self.folder_data.remove if self.folder_data.exist?
 
     # Destruction de ses programmes dans la table
-    where = "auteur_id = #{self.id}"
-    nombre_programmes = Unan::table_programs.count(where: where)
-      # Note : Maintenant que les programmes terminés sont mis
-      # en archive, l'user ne peut plus avoir qu'un seul programme
-      # dans la table hot.
-    nombre_projets    = Unan::table_projets.count(where: where)
-      # Idem que ci-dessus.
-    data_program = Unan::table_programs.select(where: where).first
-    Unan::table_programs.delete(where: where)
-    # Modification des options et enregistrement dans les
-    # archives
+    where = "auteur_id = #{self.id} AND options LIKE '1%'"
+    data_program = Unan::table_programs.get(where: where)
+
+    # Modification des options
     opts = data_program[:options]
     opts[0] = '0' # bit inactif
     opts[2] = '1' # bit abandon
-    data_program[:options] = opts
-    Unan::table_archives_programs.insert(data_program)
+    Unan.table_programs.update( data_program[:id], { options: opts } )
 
-    # Destruction de ses projets dans la table
-    # En fait, on l'enregistre dans les archives
-    data_projet = Unan::table_projets.select(where: where).first
-    Unan::table_projets.delete(where: where)
-    Unan::table_archives_projets.insert(data_projet)
+    # Note : on ne touche pas au projet.
 
-    debug "  = Destruction des programmes UAUS OK"
+    debug "  = Arrêt du dernier programme UAUS OK"
   end
 
 

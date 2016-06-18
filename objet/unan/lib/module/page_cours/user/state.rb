@@ -56,7 +56,7 @@ class UPage
     # au travail. Donc on recherche un travail qui a pour item_id cet
     # ID de page et pour type_w 20 ou 21 (page à lire ou relire)
     where = "item_id = #{id} AND type_w IN (20,21)"
-    awork_ids = Unan::table_absolute_works.select(where: where).keys
+    awork_ids = Unan::table_absolute_works.select(where: where, colonnes: []).collect{|h|h[:id]}
     debug "awork_ids : #{awork_ids}"
     # Il faut ensuite connaitre l'indice p-day pour pouvoir l'enregistrer
     # dans le work. Pour trouver cet indice on doit trouver le PDay qui
@@ -73,8 +73,7 @@ class UPage
     data_req.merge!( colonnes: [:works] )
     awork_id = nil
     apday_id = nil
-    # -> MYSQL UNAN
-    Unan::table_absolute_pdays.select(data_req).each do |pid, pdata|
+    Unan::table_absolute_pdays.select(data_req).each do |pdata|
       next if pdata[:works].nil?
       wids = pdata[:works].split(' ').collect{ |e| e.to_i }
       if wids.include?(awork_ids[0])

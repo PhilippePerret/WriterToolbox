@@ -3,9 +3,17 @@ class Unan
 class Program
 class PageCours
 
+  def folder_by_type type
+    if TYPES_PAGE.key?( type )
+      TYPES_PAGE[type][:folder]
+    else
+      raise "Impossible de définir le type de dossier pour le type de page cours #{type}."
+    end
+  end
+
   # Path de la page originale (celle dont on travaille le contenu)
   def fullpath
-    @fullpath ||= folder_pages_originales + "#{type}/#{path}"
+    @fullpath ||= folder_pages_originales + "#{folder_by_type}/#{path}"
   end
   # Path de la page semi-dynmaique (celle dont on a corrigé les
   # principaux textes fixes — balises — pour ne laisser que les
@@ -13,7 +21,7 @@ class PageCours
   # template qui sera détemplatisé et envoyé au lecteur.
   def fullpath_semidyn
     @fullpath_semidyn ||= begin
-      sf = folder_pages_semidynamiques + "#{type}/#{path}"
+      sf = folder_pages_semidynamiques + "#{folder_by_type}/#{path}"
       sf.dirname.build unless sf.dirname.exist?
       sf
     end

@@ -10,7 +10,7 @@ class Projet
 
   # Retoure TRUE si le projet existe. FALSE sinon.
   def exist?
-    Unan::table_projets.count(where:"id = #{id}") > 0
+    Unan.table_projets.count(where:"id = #{id}") > 0
   end
 
 end #/Projet

@@ -18,7 +18,7 @@ class StarterPDay
   def reparer_error_current_pday_nil
     curpday = nil
     begin
-      curpday = auteur.table_pdays.select(limit:1, order:"id DESC", colonnes:[]).keys.first
+      curpday = auteur.table_pdays.select(limit:1, order:"id DESC", colonnes:[]).first[:id]
     rescue Exception => e
       log "# ERROR dans `Unan::Program::StartPDay::reparer_error_current_pday_nil` : #{e.message}"
       log "# current_pday est donc mis artificiellement à 1"

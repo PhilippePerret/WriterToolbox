@@ -10,8 +10,8 @@ class PageCours
   # narration qui reprend toutes les anciennes pages du livre
   # Narration
   TYPES_PAGE = {
-    program:      {hname:"Programme UN AN UN SCRIPT"},
-    cnarration:   {hname:"Collection Narration"}
+    'U' => {type: 'U', hname:"Programme UN AN UN SCRIPT", folder: 'program'},
+    'N' => {type: 'N', hname:"Collection Narration", folder: 'cnarration'}
   }
 
   class << self
@@ -27,8 +27,7 @@ class PageCours
 
     # Table des pages de cours
     def table_pages_cours
-      # -> MYSQL UNAN
-      @table_pages_cours ||= site.db.create_table_if_needed('unan_cold', 'pages_cours')
+      @table_pages_cours ||= site.dbm_table(:unan, 'pages_cours')
     end
     alias :table :table_pages_cours
 

@@ -90,7 +90,7 @@ class AbsWork
     #   Données volatiles
     # ---------------------------------------------------------------------
     def auteur
-      @auteur ||= User::get(user_id)
+      @auteur ||= User.get(user_id)
     end
     # Program de ce travail relatif
     def program

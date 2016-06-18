@@ -10,7 +10,7 @@ class AbsWork
 
     def get wid
       wid = wid.to_i_inn
-      @instances ||= Hash::new
+      @instances      ||= {}
       @instances[wid] ||= new(wid)
     end
 
@@ -22,8 +22,7 @@ class AbsWork
 
     # La table "absolute_works" dans la base de données du programme
     def table
-      # -> MYSQL UNAN
-      @table ||= Unan::table_absolute_works
+      @table ||= Unan.table_absolute_works
     end
 
   end # << self

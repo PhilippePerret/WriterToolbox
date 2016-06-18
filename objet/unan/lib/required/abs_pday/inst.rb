@@ -8,8 +8,7 @@ class Unan
 class Program
 class AbsPDay
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # ID du P-Day absolu, qui sert aussi d'indice du jour 1-start.
   # Par exemple, le 12e jour porte l'ID 12
@@ -35,7 +34,8 @@ class AbsPDay
     @works ||= get(:works) || ""
     case as
     when :as_data
-      # Comme enregistré dans la base de donnée
+      # Comme enregistré dans la base de donnée, c'est-à-dire un
+      # String avec les IDs séparés par espaces.
       @works
     when :as_ids, :as_id
       # Une liste de Fixnum
@@ -56,7 +56,6 @@ class AbsPDay
 
   # La table "absolute_works" dans la base de données du programme
   def table
-    # -> MYSQL UNAN
     @table ||= Unan::table_absolute_pdays
   end
 

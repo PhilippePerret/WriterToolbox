@@ -2,13 +2,7 @@
 
 ### À FAIRE
 
-* Utiliser la table hot.tickets
-  relancer `run hot_tickets_sqlite2mysql` sur le site
-  distant (dans le cas où de nouveaux tickets ont été
-  générés entre temps)
 * Champs list-string (ids séparés par espace)
-  - exemples des absolute works
-  - pages_cours_ids des absolute works
   - works des absolute pdays
 * Champs `type` des pages_cours qui était avant 'cnarration'
   ou 'program' et qui est maintenant 'H' ou 'N' (penser à le modifier
@@ -22,7 +16,6 @@
 RECAPITULATION TABLES À TRAITER AU NIVEAU DU CODE :
 (elles ont déjà été migrées vers mysql)
 
-    hot.tickets
     hot.last_dates
     unan.absolute_works
     unan.absolute_pdays

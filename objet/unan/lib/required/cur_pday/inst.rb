@@ -352,7 +352,8 @@ class CurPDay
         #   * le `pairid` qui permet de voir si un travail a été démarré pour
         #     ce travail)
         #   * Le nombre de jours de dépassement (if any) ou nil (en jour)
-        res.each do |wid, wdata|
+        res.each do |wdata|
+          wid     = wdata[:id]
           idpday  = @last_pday_of_abswork[wid]
           pairid  = "#{wid}:#{idpday}"
           type    = Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type]
@@ -490,7 +491,7 @@ class CurPDay
   #     :hash_instances Hash d'instance avec en clé leur identifiant
   def works_until_now options = nil
     options ||= Hash::new
-    options[:as] = :ids unless options.has_key?(:as)
+    options[:as] = :ids unless options.key?(:as)
     case options[:as]
     when :ids then all_works_ids_until_now
     when :hash_ids then
@@ -518,12 +519,11 @@ class CurPDay
   # Cette méthode alimente la méthode `works_until_now`
   def all_works_ids_until_now
     @all_works_ids_until_now ||= begin
-      # -> MYSQL UNAN
       all_pdays_until_now = Unan::table_absolute_pdays.select(where:"id <= #{indice}", colonnes:[:works])
       l = Array::new
-      all_pdays_until_now.each do |pdid, pddata|
+      all_pdays_until_now.each do |pddata|
         next if pddata[:works].nil?
-        l += pddata[:works].split(' ').collect{|e| "#{e}:#{pdid}"}
+        l += pddata[:works].split(' ').collect{|e| "#{e}:#{pddata[:id]}"}
       end
       l
     end

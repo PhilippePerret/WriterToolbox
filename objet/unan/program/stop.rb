@@ -84,7 +84,6 @@ end #/Program
 end #/Unan
 
 dk = Unan::Program::datakill
-debug "dk = #{dk.inspect}"
 if dk != nil &&  dk[:operation] == 'kill' && dk[:confirmation_kill] == "1"
   Unan::Program::destroy_program_user_courant
 end

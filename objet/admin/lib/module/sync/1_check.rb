@@ -385,6 +385,9 @@ class Sync
         resaff[:nombre_actions] += diff_affiches_icare[:nombre_uploads] + diff_affiches_icare[:nombre_deletes]
         resaff
       end
+    rescue Exception => e
+      @errors << "# ERREUR DANS [diff_affiches](#{__FILE__}:#{__LINE__}) : #{e.message}\n" + e.backtrace.join("\n")
+      nil
     end
   end
 

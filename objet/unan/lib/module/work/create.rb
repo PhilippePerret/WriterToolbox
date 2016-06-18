@@ -49,7 +49,6 @@ class Work
 
   # La méthode qui crée le work dans la table
   def create
-    # -> MYSQL UNAN
     @id = table.insert( data2save )
   end
 

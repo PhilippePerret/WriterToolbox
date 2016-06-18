@@ -14,8 +14,7 @@ class Unan
 class Program
 class Work
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # {Fixnum} ID du programme dans la table des travaux
   # propre au programme.

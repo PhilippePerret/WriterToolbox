@@ -13,19 +13,11 @@ class Projet
     # isoler.
     def create auteur = nil
       auteur ||= user
-      debug "-> Unan::Projet::create (création du projet)"
       user_program_id = auteur.program_id
-      debug "program_id par auteur.program_id : #{user_program_id.inspect}"
       # Au cas où… mais normalement aucun problème n'a été détecté
       program_id = Unan::Program::program_id
 
-      if user_program_id.nil? || user_program_id != program_id
-        debug "program_id par Unan::Program::program_id : #{Unan::Program::program_id.inspect}"
-        debug "auteur.program_id et Unan::Program::program_id sont divergents. Je prends le second (et j'essaie de rectifier l'auteur aussi)."
-        debug "user ID : #{auteur.id.inspect}"
-      end
       program = Unan::Program::get(program_id)
-      debug "Auteur program ID = #{auteur.id}"
       if auteur.instance_of?(User)
 
       end

@@ -26,13 +26,17 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # - FALSE   On force le traitement en local
     # - TRUE    On force le traitement en distant
     def get db_type, tablename, force_online = nil
-      unless force_online === !@is_offline
-        @is_offline =
-          case force_online
-          when NilClass then OFFLINE
-          else !force_online
-          end
-        reset
+      if ONLINE
+        @is_offline = false
+      else
+        unless force_online === !@is_offline
+          @is_offline =
+            case force_online
+            when NilClass then OFFLINE
+            else !force_online
+            end
+          reset
+        end
       end
       @tables ||= {}
       @tables["#{db_type}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin

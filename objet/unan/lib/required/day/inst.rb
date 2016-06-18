@@ -17,7 +17,6 @@ class Cal
     def initialize cal, time
       @cal    = cal
       @time  = time
-      debug "time:#{time} / #{date} / #{pday.index}"
     end
 
     # ---------------------------------------------------------------------

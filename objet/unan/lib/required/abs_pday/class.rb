@@ -25,8 +25,7 @@ class AbsPDay
     # la carte des Jour-programme et la carte des travaux absolus.
     def all
       @all ||= begin
-        # -> MYSQL UNAN
-        Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pdid, pddata|
+        Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pddata|
           Unan::Program::AbsPDay::new(pdid)
         end
       end

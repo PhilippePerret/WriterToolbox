@@ -12,7 +12,6 @@ class Program
 
   class << self
     def table_works
-      # -> MYSQL UNAN
       @table_works ||= Unan.table_absolute_works
     end
   end
@@ -26,21 +25,13 @@ class Program
   # Noter qu'il faut utiliser `auteur.table_pdays` pour construire
   # la table en cas d'inexistence
   def table_pdays
-    # -> MYSQL UNAN
     @table_pdays ||= auteur.table_pdays
   end
   # Tables des Work(s) propres au programme
   # Noter qu'il faut utiliser `auteur.table_works` pour construire
   # la table en cas d'inexistence
   def table_works
-    # -> MYSQL UNAN
     @table_works ||= auteur.table_works
-  end
-
-  # {BdD} Base de donnée propre à ce programme en particulier
-  def database
-    # -> MYSQL UNAN
-    @database ||= BdD::new(database_path.to_s)
   end
 
 end #/Program

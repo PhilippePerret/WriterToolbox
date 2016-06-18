@@ -158,7 +158,10 @@ class AbsWork
   def suggestions_lectures
     return "" if pages_cours_ids.empty?
     where = "id IN (#{pages_cours_ids.join(',')})"
-    hpagescours = Unan.table_pages_cours.select(where:where, colonnes:[:titre])
+    hpagescours = {}
+    Unan.table_pages_cours.select(where: where, colonnes:[:titre]).each do |hpage|
+      hpagescours.merge! hpage[:id] => hpage
+    end
     listepages = pages_cours_ids.collect do |pcid|
       titre = hpagescours[pcid][:titre]
       "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")

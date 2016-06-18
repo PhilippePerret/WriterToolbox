@@ -3,7 +3,7 @@ class Unan
 class Program
 class PageCours
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # ID de la page de cours
   attr_reader :id

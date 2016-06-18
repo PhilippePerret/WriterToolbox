@@ -40,17 +40,16 @@ class Program
 
 
     def get_id
-      # -> MYSQL UNAN
-      table.select(where:"handler = '#{handler}'", colonnes:[:id]).values.first[:id]
+      table.select(where:"handler = '#{handler}'", colonnes:[:id]).first[:id]
     end
 
     # Retourne toutes les données
-    # NOTE Surclasse la méthode du module MethodesObjetsBdD car on
+    # NOTE Surclasse la méthode du module MethodesMySQL car on
     # peut utiliser ici l'ID ou le handler.
     def data
       @data ||= begin
         if handler != nil
-          table.get(where:"handler = '#{handler}'")
+          table.get(where: "handler = '#{handler}'")
         elsif id != nil
           table.get(id)
         else
@@ -60,7 +59,6 @@ class Program
     end
 
     def table
-      # -> MYSQL UNAN
       @table ||= self.class::table_pages_cours
     end
 
