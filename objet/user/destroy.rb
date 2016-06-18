@@ -114,7 +114,6 @@ SELECT id, items_ids FROM sujets_followers
 
   # Destruction des programmes UN AN UN SCRIPT
   def destroy_programmes_unan
-    # -> MYSQL UNAN
     debug "  * Destruction des programmes & projets UN AN UN SCRIPT"
     # On charge tout ce qui concerne Unan, on en aura
     # besoin plus bas (pour les bases de données)

@@ -3,8 +3,7 @@ class Unan
 class Program
 class PageCours
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # {Fixnum} Identifiant de la page de cours éditée
   attr_reader :id

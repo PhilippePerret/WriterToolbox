@@ -545,7 +545,7 @@ Les `p-days` absolus, instance de class `Unan::Program::AbsPDay`, définissent p
 
 Ces p-days absolus sont définis dans la table&nbsp;:
 
-        unan_cold.absolute_pdays
+        boite-a-outils_unan, 'absolute_pdays'
 
 … qu'on peut obtenir par :
 

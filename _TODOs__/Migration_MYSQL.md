@@ -1,12 +1,6 @@
 # Passage de SQLite3 à MYSQL
 
-### À FAIRE
-
-RECAPITULATION TABLES À TRAITER AU NIVEAU DU CODE :
-(elles ont déjà été migrées vers mysql)
-
-    unan.exemples
-
+## MIGRATION -> MYSQL
 
 Pour savoir où il y a des choses à corriger, chercher les
 balises :
@@ -15,9 +9,9 @@ balises :
     # -> MYSQL
 
     # -> MYSQL CITATIONS
-    # -> MYSQL UNAN
     # -> MYSQL FORUM
     # -> MYSQL CONNEXIONS
+    # -> MYSQL NARRATION
 
 > NOTE : Ce fichier doit servir aussi de mode d'emploi. Il sera glissé dans le dossier d'aide.
 

@@ -21,7 +21,7 @@ def liste_pages_narration_hors_programme
   }
   ul_pages = String::new
   current_livre_id = nil
-  # -> MYSQL UNAN !!!
+  # -> MYSQL NARRATION !!!
   Cnarration::table_pages.select(data_request).collect do |pid, pdata|
     # Passage au livre suivant (ou premier)
     if pdata[:livre_id] != current_livre_id
@@ -51,7 +51,7 @@ end
 def mise_en_forme_page_line hpage
   classes_css = ['tdm']
   if hpage[:narration_id]
-    # -> MYSQL UNAN
+    # -> MYSQL NARRATION
     dn = Cnarration::table_pages.get(hpage[:narration_id], colonnes: [:options])
     opts = dn[:options]
     if opts[0] == '1'

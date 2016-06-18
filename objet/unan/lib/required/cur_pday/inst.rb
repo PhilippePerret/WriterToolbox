@@ -144,7 +144,6 @@ class CurPDay
       # Mais pour le moment, on ne peut plus reprogrammer un
       # travail.
 
-      # -> MYSQL UNAN
       uworks = auteur.table_works.select(where: where)
       sbt = {
         task:   Array::new,
@@ -226,7 +225,6 @@ class CurPDay
       # debug "Coefficient durée : #{auteur.program.coefficient_duree}"
       # debug "il_y_a_dix_pdays = #{il_y_a_dix_pdays}::#{il_y_a_dix_pdays.class} (#{il_y_a_dix_pdays.as_human_date(true, true)})"
 
-      # -> MYSQL UNAN
       auteur.table_works.select(where: where).each do |wdata|
         wid = wdata[:id]
         awork_id = wdata[:abs_work_id]

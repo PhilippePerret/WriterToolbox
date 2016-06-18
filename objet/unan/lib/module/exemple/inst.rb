@@ -3,8 +3,7 @@ class Unan
 class Program
 class Exemple
 
-  # -> MYSQL UNAN
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # ID de l'exemple dans la table
   attr_reader :id
@@ -16,8 +15,7 @@ class Exemple
 
 
   def table
-    # -> MYSQL UNAN
-    @table ||= Unan::table_exemples
+    @table ||= Unan.table_exemples
   end
 
 end #/Exemple

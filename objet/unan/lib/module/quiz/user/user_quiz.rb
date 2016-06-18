@@ -56,8 +56,7 @@ class User
 
   class UQuiz
 
-    # -> MYSQL UNAN
-    include MethodesObjetsBdD
+    include MethodesMySQL
 
     # {User} Auteur possesseur du quiz
     attr_reader :auteur

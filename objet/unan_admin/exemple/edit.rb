@@ -41,7 +41,6 @@ class Exemple
   end
 
   def create
-    # -> MYSQL UNAN
     @id = table.insert(data4create)
     param(exemple: param(:exemple).merge(id: @id))
     flash "Donnée créée avec succès."
@@ -110,7 +109,6 @@ class Exemple
   # Retourne true si le work absolu d'identifiant +wid+ existe,
   # false dans le cas contraire
   def abswork_exist? wid
-    # -> MYSQL UNAN
     Unan::table_absolute_works.count(where:{id: wid.to_i}) > 0
   end
 
@@ -140,7 +138,6 @@ def exemple_id
   end
 end
 
-debug "exemple_id: #{exemple_id.inspect}"
 case param(:operation)
 when "save_exemple"
   exemple.save

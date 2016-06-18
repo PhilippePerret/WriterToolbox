@@ -369,33 +369,3 @@ unan:
     note: |
       Pour le moment, ces commandes n'ont pas encore été mises en commandes
       générales, on peut les trouver ci-dessous.
-  -
-    command:          unan affiche (table &lt;nom_table&gt;)
-    description:      Affiche le contenu de la table.
-    note:             Cf. ci-dessous les noms de table utilisables.
-  -
-    command:          unan backup data (table &lt;nom_table&gt;)
-    description:      Procède au backup de la table &lt;nom_table&gt;.
-  -
-    command:          unan retreive data (table &lt;nom_table&gt;)
-    description:      Procède à la récupération des données.
-    note: |
-      Avant d'appeler cette méthode il faut bien entendu définir les modications
-      qui doivent être faites sur les données backupées précédemment.
-  -
-    command:          Liste des tables connaissant le cycle ci-dessus.
-    description: |
-      <ul>
-        <li>programs</li>
-        <li>projets</li>
-        <li>pages cours # les pages de cours</li>
-        <li>exemples</li>
-        <li>quiz # les questionnaires</li>
-        <li>questions # les questions des questionnaires</li>
-        <li>absolute works # les travaux absolus</li>
-        <li>absolute pdays # les jours absolus</li>
-      </ul>
-    note: |
-      Noter que cette modification affecte les tables courantes mais
-      également toutes les tables des gels, en respectant leurs données
-      propres.

@@ -56,7 +56,7 @@ class AbsPDay
 
   # La table "absolute_works" dans la base de données du programme
   def table
-    @table ||= Unan::table_absolute_pdays
+    @table ||= Unan.table_absolute_pdays
   end
 
 end

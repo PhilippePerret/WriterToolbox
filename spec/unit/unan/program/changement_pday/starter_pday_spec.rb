@@ -176,7 +176,7 @@ describe 'Méthodes de Unan::Program::StarterPDay' do
     describe '#has_new_works?' do
       before(:all) do
         @existant, @inexistant = nil, nil
-        ids = Unan::table_absolute_pdays.select(colonnes:[:id]).keys
+        ids = Unan::table_absolute_pdays.select(colonnes:[:id]).collect{|h|h[:id]}
         (1..365).each do |icheck|
           if ids.include?(icheck)
             @existant = icheck.freeze

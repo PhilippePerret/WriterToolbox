@@ -29,7 +29,7 @@ describe 'Méthodes d’état du work' do
     end
     context 'avec un travail de type tâche' do
       before(:each) do
-        @abs_work_task_id = Unan::table_absolute_works.select(where:"type_w = 50").keys.first
+        @abs_work_task_id = Unan::table_absolute_works.select(where:"type_w = 50").first[:id]
         @work.set(abs_work_id: @abs_work_task_id)
       end
       it 'un id de work task a été trouvé' do
@@ -41,8 +41,7 @@ describe 'Méthodes d’état du work' do
     end
     context 'avec un travail qui n’est pas de type tâche' do
       before(:each) do
-        @abs_work_not_task_id = Unan::table_absolute_works.select(where:"type_w = 20").keys.first
-        # puts "abs_work_not_task_id : #{abs_work_not_task_id.inspect}"
+        @abs_work_not_task_id = Unan.table_absolute_works.select(where: "type_w = 20", colonnes:[]).first[:id]
         @work.set(abs_work_id: @abs_work_not_task_id)
       end
       it 'un id de work non task a été trouvé' do

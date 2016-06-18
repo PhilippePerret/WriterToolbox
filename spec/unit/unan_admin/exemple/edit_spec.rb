@@ -83,7 +83,7 @@ describe 'Edition des exemples' do
           expect(exemple.check_data_or_raise).to eq false
         end
         it 'le work-id n’existe pas' do
-          ids = Unan::table_absolute_works.select(colonne:[]).keys
+          ids = Unan::table_absolute_works.select(colonne:[]).collect{|h|h[:id]}
           bad_id = ids.max + 1
           param(exemple: @data.merge(work_id:"#{bad_id}"))
           expect(exemple.check_data_or_raise).to eq false

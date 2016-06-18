@@ -9,7 +9,7 @@ class Exemple
     # créée.
     def get eid
       eid = eid.to_i
-      @instances ||= Hash::new
+      @instances      ||= {}
       @instances[eid] ||= new(eid)
     end
 

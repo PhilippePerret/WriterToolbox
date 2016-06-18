@@ -44,9 +44,8 @@ class << self
   def points_of ij
     @works_per_pday ||= works_per_pday
     @points_per_work ||= begin
-      # -> MYSQL UNAN !!!
-      h = {}; Unan::table_absolute_works.select(colonnes:[:points]).each do |wid, wdata|
-        h.merge! wid => wdata[:points].to_i
+      h = {}; Unan::table_absolute_works.select(colonnes:[:points]).each do |wdata|
+        h.merge! wdata[:id] => wdata[:points].to_i
       end; h
     end
 
@@ -66,11 +65,10 @@ class << self
   end
 
   def works_per_pday
-    # -> MYSQL UNAN !!!
     res = Unan::table_absolute_pdays.select(colonnes:[:works])
-    h = {}; res.each do |pid, pdata|
+    h = {}; res.each do |pdata|
       next if pdata[:works].nil?
-      h.merge! pid => pdata[:works].split.collect{|i| i.to_i}
+      h.merge! pdata[:id] => pdata[:works].split.collect{|i| i.to_i}
     end; h
   end
 
@@ -178,9 +176,8 @@ class << self
   # @usage :    @durees_per_works ||= Unan::Program::Work::durees_per_work
   def durees_per_work
     h = Hash::new
-    # -> MYSQL UNAN !!!
-    Unan::table_absolute_works.select(colonnes:[:duree]).each do |wid, wdata|
-      h.merge! wid => wdata[:duree]
+    Unan::table_absolute_works.select(colonnes:[:duree]).each do |wdata|
+      h.merge! wdata[:id] => wdata[:duree]
     end
     return h
   end

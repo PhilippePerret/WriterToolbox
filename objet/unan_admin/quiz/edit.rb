@@ -26,7 +26,6 @@ class Quiz
   def destroy
     raise "Il faut définir l'identifiant." if id.nil?
     raise "Ce questionnaire est inconnu." unless exist?
-    # -> MYSQL UNAN
     Unan::table_quiz.delete(id)
     param(:quiz => nil)
     flash "Questionnaire ##{id} détruit."
@@ -49,12 +48,10 @@ class Quiz
         data2save.merge!(id: id)
       end
       data2save.merge!(created_at: NOW)
-      # -> MYSQL UNAN
       @id = Unan::table_quiz.insert(data2save)
       dinp[:id] = @id
       param(:quiz => dinp)
     else
-      # -> MYSQL UNAN
       Unan::table_quiz.update(id, data2save)
     end
 

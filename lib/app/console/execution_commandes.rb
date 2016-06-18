@@ -101,29 +101,7 @@ class Console
       when "unan répare", "unan repare"
         reparation_programme_unan
       when /^unan (afficher|affiche|backup data|destroy|retreive data) table (pages_cours|exemples|absolute_works|projets|absolute_pdays|programs|questions|quiz)$/
-        # Cette condition capte toutes les commandes de type :
-        # `Unan <action> table <table référence>`
-        # qui permettent d'afficher le contenu d'une table, de faire un
-        # backup, de détruire la table et de récupérer les données.
-        splitted_line = line.downcase.split(' ')
-        db_operation  = splitted_line[1]
-        table_name    = splitted_line.last
-
-        method_prefix = case db_operation
-        when /afficher?/    then "afficher"
-        when "backup"       then "backup_data"
-        when /(destroy|detruire|kill)/      then "detruire"
-        when "retreive" then "retreive_data"
-        end
-
-        # On invoque la méthode si elle existe
-        method = "#{method_prefix}_table_#{table_name}".to_sym
-        if respond_to? method
-          send(method)
-        else
-          raise "La méthode `#{method}` est inconnu… Impossible de traiter la commande."
-        end
-        return ""
+        return "Ces commandes ne sont plus utilisables."
       else
         nil # pour chercher la commande autrement
       end

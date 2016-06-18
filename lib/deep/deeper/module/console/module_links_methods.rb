@@ -43,14 +43,14 @@ module MethodesLinksProgramThings
   # en arguments, ou seulement la valeur {id: id} si aucune colonne
   # n'est fournie.
   def search_pdays_where where_clause, colonnes = []
-    Unan::table_absolute_pdays.select(where:where_clause, colonnes:colonnes).values
+    Unan.table_absolute_pdays.select(where: where_clause, colonnes: colonnes)
   end
   # Retourne tous les abs-works qui répondent à la clause
   # where +where_clause+ et retourne la valeur des colonnes fournies
   # en arguments, ou seulement la valeur {id: id} si aucune colonne n'est
   # fournie
   def search_works_where where_clause, colonnes = []
-    Unan::table_absolute_works.select(where:where_clause, colonnes:colonnes).values
+    Unan::table_absolute_works.select(where: where_clause, colonnes: colonnes)
   end
 
 

@@ -90,7 +90,7 @@ class Quiz
   def getof_exemple
     error_does_not_exist
     sub_log "Un quiz ne possède pas d'exemples, mais un exemple peut faire appel à un quiz dans son texte ([quiz::#{id}]). Ce sont ces exemples qui sont cherchés."
-    ids = Unan::table_exemples.select(where:"content LIKE '%\[quiz::#{id}\]%' OR content LIKE '\[quiz::#{id}::%'", colonnes:[]).keys
+    ids = Unan::table_exemples.select(where:"content LIKE '%\[quiz::#{id}\]%' OR content LIKE '\[quiz::#{id}::%'", colonnes:[]).collect{|h|h[:id]}
     raise "Ce quiz ##{id} n'est invoqué par aucun exemple." if ids.empty?
     sub_log( all_liens_exemples(ids))
   rescue Exception => e

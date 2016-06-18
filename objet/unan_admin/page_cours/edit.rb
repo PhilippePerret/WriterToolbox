@@ -26,7 +26,6 @@ class PageCours
         data_page.merge!(created_at: NOW.to_i)
 
         # ===> CRÉATION ICI <===
-        # -> MYSQL UNAN
         data_page[:id] = @page_id = table_pages_cours.insert(data_page)
 
         # Si on doit associer tout de suite cette nouvelle
@@ -49,7 +48,6 @@ class PageCours
       else
 
         # ===> UPDATE ICI <===
-        # -> MYSQL UNAN
         table_pages_cours.set(page_id, data_page)
 
       end
@@ -100,7 +98,6 @@ class PageCours
           updated_at:       NOW
         }
       # On insert la donnée dans la table
-      # -> MYSQL UNAN
       work_id = Unan::table_absolute_works.insert(work_data)
 
     rescue Exception => e
@@ -187,9 +184,7 @@ class PageCours
             # Il faut s'assurer que cette page Narration n'existe pas
             # encore en tant que page de cours UN AN UN SCRIPT
             where = "narration_id = #{nid}"
-            # -> MYSQL UNAN
             if table_pages_cours.count(where:where) > 0
-              # -> MYSQL UNAN !!!
               pcid = table_pages_cours.select(where: where,colonnes:[]).first[:id]
               raise "#{pagen.hletype.capitalize} Narration #{pagen.titre} est déjà mémorisé dans la page-cours #{pcid}"
             end
@@ -235,7 +230,6 @@ class PageCours
       # L'handler doit être unique si c'est une nouvelle page
       if new_page? && data_page[:narration_id].nil?
         handler = data_page[:handler]
-        # -> MYSQL UNAN
         raise "l'handler doit être unique" if table_pages_cours.count(where:"handler = '#{handler}'") > 0
       end
       # Contrôle du path de la page de cours
@@ -271,8 +265,7 @@ class PageCours
     end
 
     def get pid
-      # -> MYSQL UNAN
-      table_pages_cours.get(pid) || Hash::new
+      table_pages_cours.get(pid) || {}
     end
 
     # Crée le fichier de cours s'il n'existe pas et que la

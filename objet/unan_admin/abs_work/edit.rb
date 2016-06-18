@@ -58,7 +58,6 @@ class AbsWork
       param(:work => nil)
       if wid.nil?
         error "Il faut indiquer l'ID de l'abs-work à éditer"
-        # -> MYSQL UNAN
       elsif Unan::table_absolute_works.count(where:"id = #{wid}") == 0
         error "L'abs-work d'ID ##{wid} n'existe pas."
       else
@@ -73,7 +72,6 @@ class AbsWork
     # est 'destroy_abs_work'
     def destroy
       wid = param(:work)[:id].to_i
-      # -> MYSQL UNAN
       nombre = Unan::table_absolute_works.count(where:"id = #{wid}")
       if nombre == 0
         error "La donnée abs-work d'ID ##{wid} n'existe pas. Impossible de la détruire."
@@ -100,10 +98,8 @@ class AbsWork
     def save_data
       debug data_to_save.pretty_inspect
       if data_to_save[:id]
-        # -> MYSQL UNAN
         Unan::table_absolute_works.set(data_to_save)
       else
-        # -> MYSQL UNAN
         data[:id] = Unan::table_absolute_works.insert(data_to_save)
         param(:work => data)
       end

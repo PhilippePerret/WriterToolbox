@@ -50,29 +50,7 @@ class << self
   end
 
   def table_exemples
-    # -> MYSQL UNAN
-    @table_exemples ||= get_table_cold('exemples')
-  end
-
-  # ---------------------------------------------------------------------
-  #   Méthode générique construisant la table si nécessaire
-  # ---------------------------------------------------------------------
-
-  def get_table_cold table_name
-    # -> MYSQL UNAN
-    site.db.create_table_if_needed('unan_cold', table_name)
-  end
-
-  # ---------------------------------------------------------------------
-  #   Données générales des deux bases de données, cold et hot
-  # ---------------------------------------------------------------------
-  def database
-    # -> MYSQL UNAN
-    @database ||= BdD::new(database_path.to_s)
-  end
-  def database_path
-    # -> MYSQL UNAN
-    @database_path ||= site.folder_db + "unan_cold.db"
+    @table_exemples ||= site.dbm_table(:unan, 'exemples')
   end
 
 end # << self
