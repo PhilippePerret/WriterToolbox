@@ -5,10 +5,7 @@ page.title = "Scénodico"
 =begin
 
 NOTE : Si ce sont les catégories qui sont recherchées, elles se trouvent
-dans une table. Pour les lire, utiliser le code console :
-
-    afficher table scenodico.categories
-
+dans une table.
 Pour ajouter une catégorie, utiliser :
 
     site.require_objet('scenodico');

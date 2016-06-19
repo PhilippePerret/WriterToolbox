@@ -2,7 +2,7 @@
 class Scenodico
 class Categorie
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :cate_ref
   attr_reader :cate_id
@@ -19,7 +19,7 @@ class Categorie
 
   def init_with_cate_id
     @cate_id = cate_ref
-    @id = table.select(where:{cate_id: cate_ref}, colonnes:[]).keys.first
+    @id = table.select(where:{cate_id: cate_ref}, colonnes:[]).first[:id]
   end
 
   def init_with_id

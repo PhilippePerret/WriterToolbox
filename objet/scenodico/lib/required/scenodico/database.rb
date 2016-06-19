@@ -6,9 +6,8 @@ class Scenodico
       @table_mots ||= site.dbm_table(:biblio, 'scenodico')
     end
 
-    # -> MYSQL SCENODICO
     def table_categories
-      @table_categories ||= site.db.create_table_if_needed('scenodico', 'categories')
+      @table_categories ||= site.dbm_table(:biblio, 'categories')
     end
 
   end #/<< self
