@@ -26,13 +26,18 @@ class Film
     @auteurs  ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:auteurs])[:auteurs]
   end
 
-  def titre         ; @titre        ||= get(:titre)       end
+  def titre         ; @titre        ||= get(:titre).force_encoding('utf-8') end
   def titre_fr      ; @titre_fr     ||= get(:titre_fr)    end
   def annee         ; @annee        ||= get(:annee)       end
   def pays          ; @pays         ||= get(:pays)        end
   def realisateur   ; @realisateur  ||= get(:realisateur) end
   def options       ; @options      ||= get(:options)||"" end
   def sym           ; @sym          ||= get(:sym)         end
+
+  def get_all
+    super
+    @titre = @titre.force_encoding('utf-8')
+  end
 
 end #/Film
 end #/FilmAnalyse

@@ -64,10 +64,10 @@ class Updates
         end.compact.join('')
 
       # Les analyses de film
-      # -> MYSQL ANALYSE
       reqdata.merge!(colonnes: [:titre, :titre_fr, :realisateur, :options])
       analyses_films =
-        site.db.table('analyse', 'films').select(reqdata).collect do |fid, fdata|
+        site.dbm_table(:biblio, 'films_analyses').select(reqdata).collect do |fdata|
+          fid = fdata[:id]
           # debug "fdata = #{fdata.inspect}"
           # Ne pas prendre les films sans options
           fdata[:options] || next
@@ -80,7 +80,7 @@ class Updates
           # route)
           next if last_updates.key?( route_for_analyse_film(fid) )
           # Dans tous les autres cas, on garde cette proposition
-          fdata[:titre].in_checkbox(name:"updates[analyse_film-#{fid}]", checked: true).in_div
+          fdata[:titre].force_encoding('utf-8').in_checkbox(name:"updates[analyse_film-#{fid}]", checked: true).in_div
         end.compact.join('')
 
       'Pages Narrations'.in_h3 +
@@ -119,8 +119,7 @@ class Updates
         case id
         when /^analyse_film/
           fid = id.split('-')[1].to_i
-          # -> MYSQL ANALYSE
-          dfilm = site.db.table('analyse','films').get(fid)
+          dfilm = site.dbm_table(:biblio, 'films_analyses').get(fid)
           # S'il y a plus de trois mois entre la création et
           # l'actualisation, alors c'est une actualisation,
           # sinon c'est une création

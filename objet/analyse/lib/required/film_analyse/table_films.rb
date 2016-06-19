@@ -7,9 +7,8 @@ class FilmAnalyse
 
     # {BdD::Table} La table contenant les informations minimales sur
     # les films.
-    # -> MYSQL ANALYSE
     def table_films
-      @table_films ||= site.db.create_table_if_needed('analyse', 'films')
+      @table_films ||= site.dbm_table(:biblio, 'films_analyses')
     end
 
     # {SiteHtml::DBM_TABLE} La table contenant les films du Filmodico
@@ -44,7 +43,7 @@ class FilmAnalyse
     # Méthode utilisée par la console, mais maintenant il vaut mieux
     # passer par le tableau de bord d'administration
     def update_film film_ref, dfilm
-      if dfilm.has_key?(:options)
+      if dfilm.key?(:options)
         error "Pour modifier les options, il faut utiliser le tableau de bord des analyses."
         "ERROR"
       else

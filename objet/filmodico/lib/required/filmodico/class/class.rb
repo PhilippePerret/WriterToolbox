@@ -70,9 +70,8 @@ class Filmodico
       @table_filmodico ||= site.dbm_table(:biblio, 'filmodico')
     end
 
-    # -> MYSQL ANALYSE
-    def table_films_analyse
-      @table_films_analyse ||= site.db.create_table_if_needed('analyse', 'films')
+    def table_films_analyses
+      @table_films_analyses ||= site.dbm_table(:biblio, 'films_analyses')
     end
 
   end #/<<self

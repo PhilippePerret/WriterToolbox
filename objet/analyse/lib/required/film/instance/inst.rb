@@ -2,7 +2,7 @@
 class FilmAnalyse
 class Film
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 
@@ -18,7 +18,7 @@ class Film
   end
 
   def table
-    @table ||= FilmAnalyse::table_films
+    @table ||= FilmAnalyse.table_films
   end
 
 end #/Film

@@ -34,8 +34,7 @@ class Filmodico
     def edit_by_sym_id
       sym_id = param_data[:sym].nil_if_empty
       return error("Il faut fournir le SYM ID du film") if sym_id.nil?
-      # -> MYSQL ANALYSE
-      id = table_films_analyse.select(where:{sym: sym_id}).keys.first
+      id = table_films_analyse.select(where:{sym: sym_id}).first[:id]
       prepare_edition_film table_filmodico.get(id)
     end
 
@@ -70,8 +69,7 @@ class Filmodico
       @id = Filmodico::table_filmodico.insert(data2save)
       # Table ANALYSE
       data2save_analyse.merge!(id: @id, created_at: NOW)
-      # -> MYSQL ANALYSE
-      Filmodico::table_filmodico_analyse.insert(data2save_analyse)
+      Filmodico::table_films_analyses.insert(data2save_analyse)
       # Pour l'affichage
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
@@ -79,8 +77,7 @@ class Filmodico
       danalyse = data2save_analyse
       # Il faut remettre le sym et les options si le film
       # existe déjà dans la table des analyses.
-      # -> MYSQL ANALYSE
-      dfilm = Filmodico::table_filmodico_analyse.get(id)
+      dfilm = Filmodico::table_films_analyses.get(id)
       unless dfilm.nil?
         data2save_analyse.merge!(options: dfilm[:options])
         if data2save_analyse[:sym].nil_if_empty == nil

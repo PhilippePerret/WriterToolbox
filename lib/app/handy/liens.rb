@@ -174,48 +174,78 @@ class Lien
   # qui sont définis par `FILM[<film_id>]` dans les textes.
   #
   def film film_ref, options = nil
-    options ||= Hash::new
+    # Pour faciliter le travail, on charge les librairies
+    # filmodico
+    @lib_filmodico_already_required ||= begin
+      site.require_objet 'filmodico'
+      @lib_filmodico_already_required = true
+    end
+
+    options ||= {}
+
+
     # On mémorise les films déjà cités pour ne pas mettre plusieurs
-    # fois leur année et leur réalisateur
-    @films_already_cited ||= Hash::new
+    # fois leur année et leur réalisateur.
+    # Donc : La première fois, on donne toutes les informations et
+    # les fois suivantes où le film apparait on ne donne que son
+    # titre.
+    @films_already_cited ||= {}
+
     # -> MYSQL FILMODICO
-    table_film = site.db.create_table_if_needed('filmodico', 'films')
+    @table_filmodico ||= Filmodico.table_filmodico
     cols = [:titre, :titre_fr, :annee, :realisateur]
 
     # On récupère le film dans la table (analyse.films) avec la
     # référence donné.
-    case film_ref
-    when String
-      hfilm = table_film.select(where:{film_id: film_ref}, colonnes:cols).values.first
-    when Fixnum
-      hfilm = table_film.get(film_ref, colonnes:cols)
-    else
-      error "Impossible d'obtenir le lien vers le film #{film_ref} (la référence devrait être un string ou un fixnum)"
-      return film_ref
-    end
-
-    # Cas du film introuvable, on retourne la référence en indiquant
-    # dans le texte que ce film est introuvable.
-    return "#{film_ref} [INTROUVABLE]" if hfilm.nil?
-
-    film_id = hfilm[:id]
+    film_id =
+      case film_ref
+      when String
+        @table_filmodico.select(where: {film_id: film_ref}, colonnes:[]).first[:id]
+      when Fixnum
+        film_ref
+      else
+        error "Impossible d'obtenir le lien vers le film #{film_ref} (la référence devrait être un string ou un fixnum)"
+        nil
+      end
+    film_id != nil || ( return film_ref )
 
     # Le titre, en fonction du fait que le film a déjà été cité une fois
-    # ou non.
-    titre = if @films_already_cited[film_id] == true
-      "#{hfilm[:titre].in_span(class:'titre')}"
-    else
-      # On commence par indiquer que le film a déjà été cité
-      @films_already_cited.merge!(film_id => true)
-      t = "#{hfilm[:titre].in_span(class:'titre')} ("
-      t << hfilm[:titre_fr].in_span(class:'italic') + " – " if hfilm[:titre_fr].to_s != ""
-      realisateur = hfilm[:realisateur].collect do |hreal|
-        "#{hreal[:prenom]} #{hreal[:nom]}"
-      end.pretty_join
-      t << "#{realisateur}, #{hfilm[:annee]}"
-      t << ")"
-      t
+    # ou non. Si le film a déjà été cité, on a mémorisé les deux
+    # titres possibles, il suffit de le prendre. Sinon, on le
+    # construit
+    film_deja_cited = @films_already_cited.key?(film_id)
+    @films_already_cited[film_id] ||= begin
+
+      # --- CONSTRUCTION DES DEUX TITRES ---
+
+      # Instance du film
+      ifilm = Filmodico.get( film_id )
+
+      # Cas du film introuvable, on retourne la référence en indiquant
+      # dans le texte que ce film est introuvable.
+      titre_premiere_fois, titre_autres_fois =
+        if ifilm != nil
+          titre_autres_fois = "#{ifilm.titre.in_span(class:'titre')}"
+          t = "#{ifilm.titre.in_span(class:'titre')} ("
+          t << ifilm.titre_fr.in_span(class:'italic') + " – " if ifilm.titre_fr.to_s != ""
+          realisateur = ifilm.realisateur.collect do |hreal|
+            "#{hreal[:prenom]} #{hreal[:nom]}"
+          end.pretty_join
+          t << "#{realisateur}, #{ifilm.annee}"
+          t << ")"
+          [t, titre_autres_fois]
+        else
+          ["#{film_ref} [INTROUVABLE]", "#{film_ref} [INTROUVABLE]"]
+        end
     end
+
+    titre =
+      if film_deja_cited
+        @films_already_cited[film_id][1]
+      else
+        @films_already_cited[film_id][0]
+      end
+
     # On construit et on renvoie le lien
     options.merge!(class:'film')
     build("filmodico/#{film_id}/show", titre, options )

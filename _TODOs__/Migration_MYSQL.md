@@ -11,12 +11,8 @@
 
 Pour savoir où il y a des choses à corriger, chercher les
 balises :
-
-
     # -> MYSQL
-
     # -> MYSQL FORUM
-    # -> MYSQL CONNEXIONS
     # -> MYSQL NARRATION
 
 > NOTE : Ce fichier doit servir aussi de mode d'emploi. Il sera glissé dans le dossier d'aide.

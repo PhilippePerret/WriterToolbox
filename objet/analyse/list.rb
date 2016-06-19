@@ -28,7 +28,8 @@ class TDM
   end
 
   def as_ul
-    films.collect do |fid, fdata|
+    films.collect do |fdata|
+      fid = fdata[:id]
       ifilm = FilmAnalyse::Film::get(fid)
       # La class CSS va dépendre du fait que le film est ou non
       # consultable pour l'utilisateur courant.

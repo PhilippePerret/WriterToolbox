@@ -6,60 +6,54 @@ Cette table permet de savoir qui fait quoi sur quel film.
 Noter que les ID sont synchronisés avec la table filmodico.films et la
 table analyse.films.
 =end
-def schema_table_analyse_travaux
-  @schema_table_analyse_travaux ||= {
+def schema_table_travaux_analyses
+  <<-MYSQL
+CREATE TABLE travaux_analyses
+  (
+    id INTEGER AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
 
-    # ID du travail.
-    id:   {type:"INTEGER",       constraint:"PRIMARY KEY AUTOINCREMENT"},
-
-    # Auteur ID
-    # ---------
-    # ID dans la table user de l'analyste qui exécute ce travail
-    user_id:      {type:"INTEGER", constraint:"NOT NULL"},
-
-    # Film ID
+    # FILM_ID
     # --------
     # ID du film concerné par ce travail, dans filmodico et
     # dans analyse.films. On peut, grâce à lui, retrouver
     # les informations sur le film.
     # Pour faire une jointure :
     # SELECT *
-    #   FROM films
-    #   INNER JOIN travaux
-    #   ON films.id = travaux.film_id;
-    film_id:      {type:"INTEGER", constraint:"NOT NULL"},
+    #   FROM filmodico
+    #   INNER JOIN travaux_analyses
+    #   ON filmodico.id = travaux_analyses.film_id;
+    film_id INTEGER NOT NULL,
 
-    # Cible
-    # -----
+    # TARGET_REF
+    # ----------
     # Désignation de l'élément qui est visé par ce travail. Ça peut
     # être un film en général, mais ça peut être également un fichier
     # en particulier.
     #
     # Voir aussi les premiers bits des options qui définissent la
     # cible.
-    # 
-    target_ref:   {type:"VARCHAR(255)"},
+    #
+    target_ref VARCHAR(255),
 
-    # Options
+    # OPTIONS
     # -------
     # Options pour cette tache, permet de préciser si elle est
     # achevée, en cours, abandonnée, transférée, etc.
     # Peut-être aussi qu'on sait ce qu'elle est grâce à ça.
-    options:      {type:"VARCHAR(32)"},
+    options VARCHAR(32),
 
-    # Description
+    # DESCRIPTION
     # -----------
     # Description littérale de la tache. Sert par exemple pour un
     # affichage dans les tâches en cours.
-    description:  {type:"TEXT"},
+    description TEXT,
 
-    # Note
-    # ----
-    note:         {type:"TEXT"},
+    note        TEXT,
+    created_at  INTEGER(10) NOT NULL,
+    updated_at  INTEGER(10) NOT NULL,
 
-    # Dates de cette tache
-    # --------------------
-    created_at:   {type:"INTEGER(10)", constraint:"NOT NULL"},
-    updated_at:   {type:"INTEGER(10)", constraint:"NOT NULL"}
-  }
+    PRIMARY KEY (id)
+  )
+  MYSQL
 end

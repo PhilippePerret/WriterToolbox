@@ -9,7 +9,8 @@ class << self
   def list
     user_courant = nil
     "Travaux en cours".in_h3 +
-    travaux.collect do |wid, wdata|
+    travaux.collect do |wdata|
+      wid = wdata[:id]
       c = ""
       if wdata[:user_id] != user_courant
         c += User::get(wdata[:user_id]).pseudo.in_h4
@@ -23,7 +24,7 @@ class << self
   def travaux
     @travaux ||= begin
       where = "CAST( SUBSTRING(options,3,1) as UNSIGNED ) < 9"
-      FilmAnalyse::table_travaux.select(where:where, order:"user_id")
+      FilmAnalyse.table_travaux.select(where: where, order:"user_id")
     end
   end
 
@@ -139,15 +140,15 @@ end #/<< self
 
   def destroy
     debug "id = #{id.inspect}"
-    FilmAnalyse::table_travaux.delete(id) unless new?
+    FilmAnalyse.table_travaux.delete(id) unless new?
   end
   def create
     debug "DATA DE CRÉATION DU TRAVAIL : #{data2create}"
-    @id = FilmAnalyse::table_travaux.insert(data2create)
+    @id = FilmAnalyse.table_travaux.insert(data2create)
   end
   def update
     debug "DATA D'UPDATE DU TRAVAIL : #{data2update}"
-    FilmAnalyse::table_travaux.update(id, data2update)
+    FilmAnalyse.table_travaux.update(id, data2update)
   end
 
   def data2update

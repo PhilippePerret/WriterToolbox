@@ -2,9 +2,8 @@
 class FilmAnalyse
 class << self
 
-  # -> MYSQL ANALYSE
   def table_travaux
-    @table_travaux ||= site.db.create_table_if_needed('analyse', 'travaux')
+    @table_travaux ||= site.dbm_table(:biblio, 'travaux_analyses')
   end
 end # << self
 end #/FilmAnalyse
