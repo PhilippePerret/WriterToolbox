@@ -17,17 +17,16 @@ class Scenodico
         nocase: true,
         colonnes:[:mot]
       }
-      found = Hash::new
+      @found = []
       if in_mot?
-        drequest = data_search_defaut.merge!(where: "mot LIKE '%#{text_searched}%'")
-        ( found.merge! table_mots.select(drequest) )
+        drequest = data_search_defaut.merge!(where: "mot LIKE '%#{text_searched}%'", colonnes:[:mot, :definition])
+        ( @found += table_mots.select(drequest) )
       end
       if in_definition?
         drequest = data_search_defaut.merge!(where: "definition LIKE '%#{text_searched}%'", colonnes:[:mot, :definition])
-        ( found.merge! table_mots.select(drequest) )
+        ( @found += table_mots.select(drequest) )
       end
 
-      @found = found
       # On s'arrête là, et c'est la vue, en appelant `resultat_recherche`,
       # qui demandera la construction du résultat.
     end
@@ -48,7 +47,8 @@ class Scenodico
     # On ajoute les définitions si la recherche devait se faire aussi dans la
     # définition, et on met les mots cherchés en exergue.
     def mots_trouved_as_ul
-      @found.collect do |mid, hmot|
+      @found.collect do |hmot|
+        mid = hmot[:id]
         c = hmot[:mot].in_a(href:"scenodico/#{mid}/show", target:'_blank').in_div(class:'mot')
         if in_definition? && hmot[:definition].match(/#{text_searched}/i)
           c << ( hmot[:definition].formate_balises_propres.gsub(/(#{text_searched})/i, '<span class="found">\1</span>') ).in_div(class:'definition')

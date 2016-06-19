@@ -34,7 +34,7 @@ class Scenodico
 
     def check_existence_mot
       if table_mots.count(where:"mot = \"#{suggested_mot}\"", nocase:true) > 0
-        mot_id = table_mots.select(where:{mot:suggested_mot}, nocase:true, colonnes:[]).keys.first
+        mot_id = table_mots.select(where:{mot:suggested_mot}, nocase:true, colonnes:[]).first[:id]
         mot_lk = "voir la définition".in_a(href:"scenodico/#{mot_id}/show")
         error "Ce mot existe déjà (#{mot_lk}) !"
       else

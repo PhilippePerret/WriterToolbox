@@ -12,7 +12,7 @@ class Scenodico
       panneaux = Hash::new
       list(as: :data, colonnes:[:mot]).each do |hmot|
         first_letter = hmot[:letters][0].capitalize
-        unless panneaux.has_key? first_letter
+        unless panneaux.key? first_letter
           panneaux.merge!(first_letter => Array::new)
         end
         panneaux[first_letter] << "#{hmot[:mot]}".in_a(href:"scenodico/#{hmot[:id]}/show", target:'_mot_scenodico_', class:'mot')

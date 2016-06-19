@@ -15,7 +15,7 @@ $.extend(window.Scenodico, {
   reset_form:function(){
     var listes = {}
     listes.val = [
-      'input#mot_id', 'input#mot_mot', 'input#mot_id_interdata',
+      'input#mot_id', 'input#mot_mot',
       'textarea#mot_definition',
       'input#mot_categories',
       'input#mot_relatifs', 'input#mot_synonymes', 'input#mot_contraires',

@@ -8,12 +8,12 @@ class Mot
 
     def get mot_id
       mot_id = mot_id.to_i
-      @instances ||= Hash::new
-      @instances[mot_id] ||= new(mot_id)
+      @instances          ||= {}
+      @instances[mot_id]  ||= new(mot_id)
     end
 
     def table
-      @table ||= Scenodico::table_mots
+      @table ||= Scenodico.table_mots
     end
   end #/<< self
 end #/Mot

@@ -2,7 +2,7 @@
 class Scenodico
 class Mot
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 

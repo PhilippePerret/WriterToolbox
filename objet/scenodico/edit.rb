@@ -70,13 +70,12 @@ class Scenodico
     def data2save
       @data2save ||= {
         mot:            @mot,
-        type_def:       @type_def,
-        id_interdata:   @id_interdata,
+        type_def:       @type_def.to_i,
         definition:     @definition,
-        relatifs:       @relatifs,
-        synonymes:      @synonymes,
-        contraires:     @contraires,
-        categories:     @categories,
+        relatifs:       (@relatifs || '').join(' '),
+        synonymes:      (@synonymes || '').join(' '),
+        contraires:     (@contraires || '').join(' '),
+        categories:     (@categories || '').join(' '),
         liens:          @liens
       }
     end
@@ -99,28 +98,14 @@ class Scenodico
       # - Type de définition -
       @type_def = data_param[:type_def].to_i # toujours
 
-      # - ID interdata -
-      # Valeur obsolète aujourd'hui, mais on la crée toujours,
-      # au cas où.
-      @id_interdata = data_param[:id_interdata].nil_if_empty
-      @id_interdata != nil || ( @id_interdata = @mot.as_normalized_id('_').downcase )
-
       # - Définition -
       @definition = data_param[:definition].purified.nil_if_empty
       @definition != nil || raise('Il faut donner la définition du mot !')
 
       # - Relatifs -
       [:relatifs, :synonymes, :contraires].each do |key|
-        val_str = data_param[key].nil_if_empty
-        val = if val_str.nil?
-          nil
-        else
-          val_str.split(' ').collect do |mid|
-            # Ici, on pourrait contrôler que le mot existe bien
-            mid.to_i
-          end
-        end
-        instance_variable_set("@#{key}", val)
+        val_str = data_param[key].strip
+        instance_variable_set("@#{key}", val_str.split(' '))
       end
 
       # - categories

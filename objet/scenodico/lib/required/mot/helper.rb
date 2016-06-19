@@ -37,16 +37,14 @@ class Mot
   end
 
   def hcategories
-    (categories||Array::new).collect do |cate_id|
+    categories.collect do |cate_id|
       Scenodico::Categorie::get(cate_id).hname
     end.join(' – ')
   end
 
   def liens_formated
     return nil if liens.nil?
-    liens.collect do |lien|
-      lien.in_a(href:lien)
-    end.join(' – ')
+    liens.collect { |lien| lien.in_a(href:lien) }.join(' – ')
   end
 end #/Mot
 end #/Scenodico
