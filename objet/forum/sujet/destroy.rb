@@ -22,9 +22,9 @@ class Forum
       redirect_to :last_page
     end
     def destroy_posts
-      ids = Forum::table_posts.select(colonnes:[], where:{sujet_id: id}).keys
-      if ids.empty?
-        list_ids = ids.join(',')
+      ids = Forum::table_posts.select(colonnes:[], where:{sujet_id: id})
+      unless ids.empty?
+        list_ids = ids.collect{|h|h[:id]}.join(',')
         where_clause = {where: "id IN (#{list_ids})"}
         Forum::table_posts.delete( where_clause )
         Forum::table_posts_content.delete( where_clause )

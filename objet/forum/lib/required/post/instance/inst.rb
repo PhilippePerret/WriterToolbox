@@ -81,9 +81,9 @@ class Post
     return true
   end
 
-  def table         ; @table          ||= Forum::table_posts          end
-  def table_content ; @table_content  ||= Forum::table_posts_content  end
-  def table_vote    ; @table_vote     ||= Forum::table_posts_votes    end
+  def table         ; @table          ||= Forum.table_posts          end
+  def table_content ; @table_content  ||= Forum.table_posts_content  end
+  def table_vote    ; @table_vote     ||= Forum.table_posts_votes    end
 
 end #/Post
 end #/Forum

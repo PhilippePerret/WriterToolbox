@@ -13,11 +13,11 @@ class Forum
     question  = hquestion[:question].strip
     categorie = hquestion[:categorie].to_i # Un nombre, ID de la catégorie
     raise "Il faut fournir la question." if question.empty?
-    question_existe_deja = Forum::table_sujets.count( where: { name: question } ) > 0
+    question_existe_deja = Forum::table_sujets.count( where: { titre: question } ) > 0
     raise "Cette question a déjà été posée." if question_existe_deja
 
     sujet = Sujet::new
-    sujet.name            = question
+    sujet.titre           = question
     sujet.type_s          = 2
     sujet.bit_validation  = ( user.grade > 3 ? 1 : 0 )
     sujet.categorie       = categorie

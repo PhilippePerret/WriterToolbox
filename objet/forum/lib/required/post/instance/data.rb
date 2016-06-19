@@ -48,7 +48,7 @@ class Post
       content:    contenu,
       updated_at: NOW
     }
-    Forum::table_posts_content.update(id, new_data)
+    Forum.table_posts_content.update(id, new_data)
   end
 
   # ---------------------------------------------------------------------
@@ -56,7 +56,7 @@ class Post
   # ---------------------------------------------------------------------
   private
     def get_content
-      res = Forum::table_posts_content.get(id, colonnes: [:content] )
+      res = Forum.table_posts_content.get(id, colonnes: [:content] )
       res.nil? ? "" : res[:content]
     end
 

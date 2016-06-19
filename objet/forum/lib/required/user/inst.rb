@@ -51,7 +51,8 @@ class User
     @posts_count = posts_count - 1
     dnew.merge!( posts_count:@posts_count )
     if last_post == post_id
-      res = Forum::table_posts.select( where:"id != #{post_id} AND user_id = #{id}", order:"created_at DESC", limit:1, colonnes: [] ).keys
+      res = Forum::table_posts.select( where:"id != #{post_id} AND user_id = #{id}", order:"created_at DESC", limit:1, colonnes: [] )
+      res_id = res.empty? ? nil : res.first[:id]
       dnew.merge!( last_post: res.first ) # peut-être nil
     end
     Forum::table_users.update(id, dnew.merge( updated_at:NOW ))

@@ -7,7 +7,7 @@ class Sujet
   def posts params = nil
     params ||= Hash::new
     from_index  = params.delete(:from)  || 0
-    for_nombre  = params.delete(:for)   || Forum::Sujet::nombre_by_default
+    for_nombre  = params.delete(:for)   || Forum::Sujet.nombre_by_default
     return_as   = params.delete(:as)    || :instance
 
 
@@ -30,9 +30,9 @@ class Sujet
       # l'emporte, à note égale) - pas encore implémenté
 
       # Pour le moment, on ne prend que les ids car on relèvera
-      # toutes les autres informations du message en fonction de ce
+      # toutes les autres informations du me&@ssage en fonction de ce
       # qui est demandé
-      colonnes = "posts.id"
+      colonnes = "posts.id, posts_votes.vote, posts_votes.upvotes"
       request = "SELECT #{colonnes}" +
       " FROM posts_votes"+
       " INNER JOIN posts" + # pour prendre même messages sans vote
@@ -44,18 +44,18 @@ class Sujet
 
       # ---------------------------------------------
       # Relève des messages
-      res_request = Forum::db.execute(request)
+      res_request = site.db_execute(:forum, request)
       # ---------------------------------------------
       # Note  : Seuls les messages qui possède un vote sont relevés.
       # debug res_request
-      posts_ids = Array::new
-      posts = Hash::new
-      res_request.each do |arr_res|
-        p_id, p_vote, p_upvotes = arr_res
+      posts_ids = []
+      posts     = {}
+      res_request.each do |dres|
+        p_id      = dres[:id]
+        p_vote    = dres[:vote]
+        p_upvotes = dres[:upvotes]
         posts_ids << p_id
-        posts.merge! p_id => {id: p_id}
-        # p_upvotes = JSON.parse(p_upvotes).count
-        # debug "post_id : #{p_id} / vote : #{p_vote} / #{p_upvotes} upvotes"
+        posts.merge!( p_id => {id: p_id} )
       end
 
       # Pour les questions techniques, on affiche toujours tous les
@@ -77,8 +77,10 @@ class Sujet
       where_clause = "id NOT IN (#{posts_ids.join(', ')}) AND sujet_id = #{id}"
       data_request = {where:where_clause, order:"created_at DESC"}
       data_request.merge!(colonnes:[]) unless [:hash, :data].include?(return_as)
-      posts.merge! Forum::table_posts.select(data_request)
-
+      Forum.table_posts.select(data_request).each do |dpost|
+        posts.merge! dpost[:id] => dpost
+      end
+      posts
     else
 
       # Un sujet de type forum, donc avec classement simple par date
@@ -138,8 +140,9 @@ class Sujet
     }
     if last_post_id == post_id
       # Il faut rechercher le nouveau dernier message s'il existe
-      res = Forum::table_posts.select( where:"id != #{post_id} AND sujet_id = #{id}", order:"created_at DESC", limit:1, colonnes: [] ).keys
-      data_update.merge!( last_post_id: res.first ) # peut-être nil
+      res = Forum::table_posts.select( where:"id != #{post_id} AND sujet_id = #{id}", order:"created_at DESC", limit:1, colonnes: [])
+      res_id = res.empty? ? nil : res.first[:id]
+      data_update.merge!( last_post_id: res_id ) # peut-être nil
     end
 
     Forum.table_sujets.update(id, data_update)

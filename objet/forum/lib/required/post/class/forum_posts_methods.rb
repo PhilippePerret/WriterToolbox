@@ -70,15 +70,15 @@ class Post
       if filter.instance_of?( Fixnum )
         get_by_id(filter)
       else
-        data_request = Hash::new
+        data_request = {}
         unless filter.nil? || filter.empty?
           where, valeurs = Forum::where_clause_from(filter)
           data_request.merge!(where: where, values: valeurs)
         end
         data_request.merge!( colonnes: [:id] )
         # debug "data_request: #{data_request.inspect}"
-        Forum::table_posts.select( data_request ).keys.collect do |pid|
-          new(pid)
+        Forum::table_posts.select(data_request).collect do |pdata|
+          new(pdata[:id])
         end
       end
     end
@@ -87,7 +87,7 @@ class Post
     # les autres classes.
     def get_by_id pid
       pid = pid.to_i
-      @instances ||= Hash::new
+      @instances      ||= {}
       @instances[pid] ||= new(pid)
     end
 
@@ -104,7 +104,7 @@ class Post
     #   for:    Pour ce nombre de messages Forum::Post::nombre_by_default
     #           par défaut
     def list params = nil
-      params ||= Hash::new
+      params ||= {}
       nombre_posts  = params.delete(:for)  || nombre_by_default
       return_as     = params.delete(:as)
       from_index   = params.delete(:from) || 0
@@ -112,7 +112,7 @@ class Post
         from_index = param(:posts_from).to_i
       end
 
-      data_request = Hash::new
+      data_request = {}
 
       unless params.empty?
         params.merge!(valid: true)
@@ -188,7 +188,7 @@ class Post
     #   created_before:   Les messages créés à ou avant ce timestamp
     #   content:          Les messages contenant ce texte (recherche spéciale)
     def count filter = nil
-      filter ||= Hash::new
+      filter ||= {}
 
       filtre_sur_texte = filter.delete(:content)
 

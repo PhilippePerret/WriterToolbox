@@ -17,13 +17,13 @@ class Forum
 
     # Créer le sujet
     def create
-      @id = Forum::table_sujets.insert( data4create.merge(created_at: NOW) )
+      @id = Forum.table_sujets.insert( data4create.merge(created_at: NOW) )
     end
 
     def data4create
       @data4create ||= {
         creator_id:   user.id,
-        name:         name,
+        titre:        titre,
         categorie:    categorie,
         options:      "#{bit_validation}#{type_s}",
         last_post_id:   nil,

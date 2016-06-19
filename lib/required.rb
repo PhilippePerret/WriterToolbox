@@ -51,11 +51,12 @@ end
 
 # On peut maintenant requérir tous les gems
 require 'singleton'
-require 'sqlite3'
+# require 'sqlite3'
 require 'json'
 
 
 # Le site
+require_folder "./lib/deep/deeper/first_required"
 require_folder './lib/deep/deeper/required/divers'
 require_folder './lib/deep/deeper/required/Site'
 require_folder "./lib/deep/deeper/required"

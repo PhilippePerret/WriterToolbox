@@ -4,7 +4,7 @@ class Sujet
 
   # Return true si le sujet courant est suivi par l'user
   # d'id +user_id+
-  def followed_by? user_id
+  def followed_by?( user_id )
     followers.include? user_id
   end
 
@@ -13,8 +13,13 @@ class Sujet
   def followers
     @followers ||= begin
       res = table_follows.select( where: "sujet_id = #{id} AND user_id IS NULL", colonnes:[:items] )
-      @followers_row_id = res.first[:id]
-      (@followers_row_id.nil? ? nil : (res.first[:items].split(' ')) || [])
+      if res.empty?
+        @followers_row_id = nil
+        []
+      else
+        @followers_row_id = res.first[:id]
+        res.first[:items].split(' ') || []
+      end
     end
   end
 
@@ -35,17 +40,17 @@ class Sujet
   # User.
   def save_sujets_suivi user_id, sujets_suivis
     if following_row_id.nil?
-      table_follows.insert(user_id:user_id, items:sujets_suivis)
+      table_follows.insert(user_id: user_id, items: sujets_suivis)
     else
-      table_follows.update(following_row_id, {items:sujets_suivis})
+      table_follows.update(following_row_id, {items: sujets_suivis})
     end
   end
 
   # Retourne la liste des IDs des sujets suivis par +user_id+
   def followed_by user_id
     res = table_follows.select(where:"user_id = #{user_id} AND sujet_id IS NULL", colonnes:[:items])
-    @following_row_id = res.keys.first
-    (@following_row_id.nil? ? nil : res.values.first[:items]) || Array::new
+    @following_row_id = res.first[:id]
+    (@following_row_id.nil? ? nil : res.first[:items]) || []
   end
 
   def following_row_id ; @following_row_id end

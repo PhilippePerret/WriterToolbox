@@ -24,7 +24,7 @@ class Sujet
     # l'instance.
     def get sid
       sid = sid.to_i
-      @instances      ||= Hash::new
+      @instances      ||= {}
       @instances[sid] ||= ( new sid )
     end
 
@@ -64,22 +64,22 @@ class Sujet
       colonnes = [:id, :categorie] unless [:data, :hash].include?(return_as)
       data_request.merge!(colonnes: colonnes)
 
-      @hash_sujets = Forum::table_sujets.select(data_request)
+      @arr_sujets = Forum.table_sujets.select(data_request)
 
       case return_as
-      when :id, :ids, nil  then @hash_sujets.collect{|h|h[:id]}
+      when :id, :ids, nil  then @arr_sujets.collect{|h|h[:id]}
       when :hash
         h = {}
-        @hash_sujets.each{|sdata| h.merge! sdata[:id] => sdata}
+        @arr_sujets.each{|sdata| h.merge! sdata[:id] => sdata}
         h
-      when :data      then @hash_sujets
-      when :instance  then @hash_sujets.collect { |sdata| get(sdata[:id]) }
+      when :data      then @arr_sujets
+      when :instance  then @arr_sujets.collect { |sdata| get(sdata[:id]) }
       when :li        then
-        if @hash_sujets.empty?
+        if @arr_sujets.empty?
           "Aucun sujet sur le forum pour le moment.".in_li
         else
           current_cate = nil
-          @hash_sujets.collect do |dsujet|
+          @arr_sujets.collect do |dsujet|
             if current_cate != dsujet[:categorie]
               current_cate = dsujet[:categorie]
               cate_sym = Forum::Categorie::ID2SYM[current_cate]

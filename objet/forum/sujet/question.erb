@@ -8,7 +8,7 @@ raise_unless_identified
 site.require 'form_tools'
 form.prefix = "question"
 form.objet  = param(:question)            || Hash::new
-last_route  = param(:question_last_route) || site.route.last
+last_route  = param(:question_last_route) || app.session['last_route']
 
 %>
 

@@ -43,7 +43,7 @@ class Sujet
       data_sujets_posts[:views]
     end
     def data_sujets_posts
-      @data_sujets_posts ||= Forum::table_sujets.get(id)
+      @data_sujets_posts ||= Forum.table_sujets.get(id)
     end
 
 end #/Sujet

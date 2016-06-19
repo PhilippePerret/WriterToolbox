@@ -4,8 +4,14 @@ require 'mysql2'
 class SiteHtml
 
   # Retourne l'instance SiteHtml::DBM_TABLE de la table MySQL
-  def dbm_table db_name, table_name, force_online = false
-    DBM_TABLE.get(db_name.to_sym, table_name, force_online)
+  def dbm_table db_suffix, table_name, force_online = false
+    DBM_TABLE.get(db_suffix.to_sym, table_name, force_online)
+  end
+
+  # Pour exécuter une requête sur une base, pas sur une table.
+  # Cf. le fichier db_base.rb
+  def db_execute db_suffix, request, options = nil
+    DBM_BASE.execute(db_suffix, request, options)
   end
 
 class DBM_TABLE # DBM_TABLE pour DataBase Mysql
@@ -13,6 +19,9 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # ---------------------------------------------------------------------
   #   Classe
   # ---------------------------------------------------------------------
+
+  extend MethodesBaseMySQL
+
   class << self
 
     attr_reader :tables
@@ -26,18 +35,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # - FALSE   On force le traitement en local
     # - TRUE    On force le traitement en distant
     def get db_type, tablename, force_online = nil
-      if ONLINE
-        @is_offline = false
-      else
-        unless force_online === !@is_offline
-          @is_offline =
-            case force_online
-            when NilClass then OFFLINE
-            else !force_online
-            end
-          reset
-        end
-      end
+      define_is_offline force_online
       @tables ||= {}
       @tables["#{db_type}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin
         new(db_type, tablename, force_online).create_if_needed
@@ -52,42 +50,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
       @tables["#{table.type}.#{table.name}"] = table
     end
 
-    def offline?
-      @is_offline ||= OFFLINE
-    end
-
-    # Au cours de la même session, on peut faire appel à la
-    # base local ou distante. Il faut donc pouvoir reseter les
-    # données
-    def reset
-      @client_data = nil
-    end
-    # Les données pour se connecter à la base mySql
-    # soit en local soit en distant.
-    def client_data
-      @client_data ||= ( offline? ? client_data_offline : client_data_online )
-    end
-
-    def client_data_offline
-      require './data/secret/mysql'
-      DATA_MYSQL[:offline]
-    end
-
-    def client_data_online
-      require './data/secret/mysql'
-      DATA_MYSQL[:online]
-    end
-
-    # Le préfixe du nom (de la base de données) en fonction
-    # du fait qu'on est online ou offline
-    #
-    # Normalement, maintenant, on peut utiliser les deux en
-    # online comme en offline.
-    #
-    def prefix_name
-      @prefix_name ||= 'boite-a-outils_'
-    end
-
+    # (Pour la construction des tables)
     # {SuperFile} Dossier contenant les schémas des
     # tables des bases de données.
     # Elles sont réparties en deux dossier, :hot ou :cold.
@@ -172,13 +135,13 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
       Mysql2::Client.new(client_data.merge(database: db_name))
     end
   end
-  def client_data
-    if force_online
-      self.class.client_data_online
-    else
-      self.class.client_data
-    end
-  end
+  def client_data ; self.class.client_data end
+  #   if force_online
+  #     self.class.client_data_online
+  #   else
+  #     self.class.client_data
+  #   end
+  # end
 
   # Nom de la base de données contenant la table.
   # Soit la base :hot soit la base :cold.

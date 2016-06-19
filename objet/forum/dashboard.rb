@@ -34,8 +34,8 @@ class Forum
   # Retourne la liste des instances de nouveaux sujets
   def new_sujets
     @new_sujets ||= begin
-      Forum::table_sujets.select(where:"options LIKE '0%'", order:"created_at ASC", colonnes:[]).keys.collect do |sid|
-        Forum::Sujet::get(sid)
+      Forum::table_sujets.select(where:"options LIKE '0%'", order:"created_at ASC", colonnes:[]).collect do |hsujet|
+        Forum::Sujet::get(hsujet[:id])
       end
     end
   end
@@ -43,8 +43,8 @@ class Forum
   # Retourne la liste des instances de nouveaux messages
   def new_messages
     @new_messages ||= begin
-      Forum::table_posts.select(where:"options LIKE '0%'").keys.collect do |mid|
-        Forum::Post::get(mid)
+      Forum::table_posts.select(where:"options LIKE '0%'").collect do |mdata|
+        Forum::Post::get(mdata[:id])
       end
     end
   end
