@@ -8,8 +8,6 @@ Instance
 =end
 class User
 
-  # include MethodesObjetsBdD
-  # Nouvelles méthodes pour MySQL
   include MethodesMySQL
 
   # Identifiant de l'user dans la table

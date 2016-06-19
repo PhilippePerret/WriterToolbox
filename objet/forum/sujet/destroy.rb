@@ -17,7 +17,6 @@ class Forum
         his_name = "#{name}"
         destroy_posts
         Forum::table_sujets.delete(id)
-        Forum::table_sujets_posts.delete(id)
         flash "Sujet “#{his_name}” détruit."
       end
       redirect_to :last_page

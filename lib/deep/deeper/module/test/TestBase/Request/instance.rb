@@ -165,6 +165,7 @@ SSH
   end
 
   def procedure_ruby_str sql_request
+    raise 'Il ne faut plus utiliser sqlite3'
     <<-PROC
 if #{SiteHtml::TestSuite::online?.inspect}
   $: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
@@ -179,7 +180,7 @@ begin
   @db_path = %Q{#{db_path}}
   File.exist?(@db_path) || (raise %Q{La base de données '#{db_path}' est introuvable} )
   @sql_request = %Q{#{sql_request}}
-  @db   = SQLite3::Database.open( @db_path )
+  @db   = S Q L i t e 3::Database.open( @db_path )
 
   # # Pour Voir ce qu'il y a dans la table
   # table_name = 'users'
@@ -194,7 +195,7 @@ begin
   @nombre_changements = @db.changes
   @resultats = Array::new
   res.each_hash { |h| @resultats << h }
-rescue SQLite3::Exception => e
+rescue S Q L ite3::Exception => e
   @erreur_sql = e
 rescue Exception => e
   @erreur_fatale = e

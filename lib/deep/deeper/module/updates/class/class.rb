@@ -136,7 +136,7 @@ class Updates
         when /^page_narration/
           pid = id.split('-')[1].to_i
           # -> MYSQL NARRATION
-          dpage   = site.db.table('cnarration','pages').get(pid)
+          dpage   = site.dbm_table(:cnarration,'narration').get(pid)
           dlivre  = Cnarration::LIVRES[dpage[:livre_id]]
           diff = dpage[:updated_at] - dpage[:created_at]
           is_actu = diff > 90.days

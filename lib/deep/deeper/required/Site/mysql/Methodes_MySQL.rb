@@ -4,8 +4,7 @@ Méthodes pour les objets (instances) des bases de données.
 
 @usage
 
-    Placer `include MethodesObjetsBdD' dans la classe de l'objet
-    Noter que ce module est toujours chargé (on utilise les BdD partout)
+    Placer `include MethodesMySQL' dans la classe de l'objet
 
 @requis
 
@@ -13,7 +12,7 @@ Méthodes pour les objets (instances) des bases de données.
     l'instance BdD::Table de la classe.
 
 =end
-module MethodesObjetsBdD
+module MethodesMySQL
 
 
   # Test de l'existence.
@@ -63,10 +62,9 @@ module MethodesObjetsBdD
   # Relève toutes les données dans la table
   # Retourne {Hash} des données ou NIL si la donnée n'existe pas
   def data
-    @data ||= begin
-      id.nil? ? {} : table.select(where: {id: id}).values.first
-    end
+    @data ||= ( id.nil? ? {} : table.get(id) )
   end
+
   # Méthode permettant de définir les données
   # NOTE : La méthode retourne `self` pour être chainée
   def data= hdata
@@ -76,7 +74,7 @@ module MethodesObjetsBdD
   end
 
   def select params
-    table.select(params)
+    table.select( params )
   end
 
 
@@ -104,15 +102,7 @@ module MethodesObjetsBdD
 
     # On doit relever dans la table les clés manquantes
     unless rest_keys.empty?
-      r = table.select( colonnes: keys, where: { id: id } )
-      retour_table =
-        if r.instance_of?(Array)
-          r.first
-        elsif r.respond_to?(:values)
-          r.values.first
-        else
-          raise 'Impossible de relever les clés manquantes.'
-        end
+      retour_table = table.select( colonnes: keys, where: { id: id } ).first
       retour.merge!(retour_table) unless retour_table.nil?
     end
 
@@ -134,11 +124,12 @@ module MethodesObjetsBdD
   # Alias def set
   def save hdata = nil
     hdata ||= data
-    retour = if @id.nil?
-      @id = table.insert( hdata )
-    else # Update ou Insert
-      table.set values: hdata, where: {id: id}
-    end
+    retour =
+      if @id.nil?
+        @id = table.insert( hdata )
+      else # Update ou Insert
+        table.set( id, hdata )
+      end
     # On actualise les variables d'instance et les données
     # déjà consignées dans @data
     @data ||= Hash::new
@@ -156,7 +147,11 @@ module MethodesObjetsBdD
   # Détruit la donnée
   # Alias def remove
   def delete
-    table.delete(where: { id: id })
+    if id.instance_of? Fixnum
+      table.delete(id)
+    else
+      table.delete(where: { id: id })
+    end
   rescue Exception => e
     error e
   end

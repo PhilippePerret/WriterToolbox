@@ -5,8 +5,9 @@ class Sujet
   # ---------------------------------------------------------------------
   #   Data enregistrées
   # ---------------------------------------------------------------------
-  def name          ; @name           ||= get(:name)          end
-  def name= valeur  ; @name = valeur end
+  def titre         ; @titre           ||= get(:titre)         end
+  alias :name :titre
+  def titre= valeur  ; @titre = valeur end
   # Une seule categorie, un nombre (ID de la catégorie)
   def categorie     ; @categorie     ||= get(:categorie).to_i    end
   def categorie= valeur ; @categorie = valeur end
@@ -42,7 +43,7 @@ class Sujet
       data_sujets_posts[:views]
     end
     def data_sujets_posts
-      @data_sujets_posts ||= Forum::table_sujets_posts.get(id)
+      @data_sujets_posts ||= Forum::table_sujets.get(id)
     end
 
 end #/Sujet

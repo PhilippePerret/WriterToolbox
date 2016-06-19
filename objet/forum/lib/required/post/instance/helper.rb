@@ -83,7 +83,7 @@ class Post
     @post_infos ||= begin
       (
         ("Votes".in_span(class:'libelle') + vote.to_s.in_span).in_span(class:'votes') +
-        ("Créé le".in_span(class:'libelle') + updated_at.as_human_date(true)).in_span(class: 'date') +
+        ("Créé le".in_span(class:'libelle') + (updated_at || created_at).as_human_date(true)).in_span(class: 'date') +
         "Index".in_span(class:'libelle') + ("##{numero}").in_span(class:'numero')
       ).in_div(class:'infos_post')
     end
@@ -116,7 +116,7 @@ class Post
   # le message avant de l'enregistrer. Donc on indique la modification que
   # si elle a eu lieu au moins deux heures après la création.
   def mark_last_update
-    return "" unless updated_at > (created_at + 2*3600) || modified_by != nil
+    return "" unless (updated_at || created_at) > (created_at + 2*3600) || modified_by != nil
     mlu = String::new
     mlu << "modifié le #{updated_at.as_human_date}"
     mlu << " par <strong>#{User::get(modified_by).pseudo}</strong>" unless modified_by.nil?

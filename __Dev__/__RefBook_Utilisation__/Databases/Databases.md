@@ -14,17 +14,11 @@
 
 ## Introduction
 
-Les applications RestSite 2.0 fonctionnent à base de database SQLite3.
+Les applications RestSite 2.0 fonctionnent à base de database MySQL.
 
-Ces bases de données doivent être définies dans le dossier :
+Les tables de ces bases de données doivent être définies dans le dossier :
 
-    ./database/table_definitions/
-
-Les données de ces tables se trouvent dans :
-
-    ./database/data/
-
-*Note : C'est ce dossier qui doit être utilisé pour les gels.*
+    ./database/table_definitions_mysql/
 
 
 <a name='getanytableorcreate'></a>
@@ -121,6 +115,8 @@ On trouve en valeur un `Hash` définissant la colonne :
 <a name='methodesdesobjetsbdd'></a>
 
 ## Méthodes à inclure pour les objets BdD
+
+=== OBSOLÈTE ===
 
 J'appelle "objets BdD" tous les objets, donc toutes les instances, qui sont créées pour des éléments enregistrées dans des bases de données `BdD`.
 

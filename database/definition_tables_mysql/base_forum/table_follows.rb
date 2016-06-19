@@ -34,12 +34,13 @@ def schema_table_follows
   <<-MYSQL
 CREATE TABLE follows
   (
-
+    id          INTEGER AUTO_INCREMENT,
     user_id     INTEGER,
     sujet_id    INTEGER,
     items       BLOB,
     time        INTEGER(10),
 
+    PRIMARY KEY (id),
     INDEX idx_user  (user_id),
     INDEX idx_sujet (sujet_id)
   );

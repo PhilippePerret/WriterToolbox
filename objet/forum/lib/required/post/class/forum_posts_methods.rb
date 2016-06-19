@@ -162,18 +162,22 @@ class Post
       # ----------------------------------------------
 
       case return_as
-      when :instance, :instances  then @posts.keys.collect { |pid| get(pid) }
+      when :instance, :instances  then @posts.collect { |pdata| get(pdata[:id]) }
       when :li
         numero_message = from_index.to_i
-        lis = @posts.keys.collect do |pid|
+        lis = @posts.collect do |pdata|
+          pid = pdata[:id]
           numero_message += 1
           get(pid).as_li(as: :full_message, numero: numero_message)
         end.join('')
         lis = "Aucun message sur le forum pour le moment.".in_li if lis.empty?
         lis
-      when :id, :ids, nil         then @posts.keys
-      when :data                  then @posts.values
-      when :hash                  then @posts
+      when :id, :ids, nil         then @posts.collect{|h|h[:id]}
+      when :data                  then @posts
+      when :hash
+        h = {}
+        @posts.each { |pdata| h.merge! pdata[:id] => pdata }
+        h
       end
     end
 
@@ -197,22 +201,18 @@ class Post
 
       if filtre_sur_texte.nil?
         # => Pas de recherche sur le texte
-        return Forum::table_posts.count(data_request)
+        return Forum.table_posts.count(data_request)
       elsif data_request.nil?
         # => Seulement une recherche sur le texte
-        return Forum::table_posts_content.count(where:"content LIKE ?", values:["%#{filtre_sur_texte}%"])
+        return Forum.table_posts_content.count(where:"content LIKE ?", values:["%#{filtre_sur_texte}%"])
       else
         # => Une recherche sur le texte et autre chose
+        raise "Il faut corriger ici la recherche (#{__FILE__}:#{__LINE__})"
         data_request ||= {where: "", values:[]}
         data_request[:where] += " AND " unless data_request[:where].empty?
         data_request[:where] += "posts_content.content LIKE ?"
         data_request[:values] << "%#{filtre_sur_texte}%"
-        request = "SELECT posts_content.content" +
-        # request = "SELECT COUNT(posts.id)" +
-          " FROM posts" +
-          " INNER JOIN posts_content" +
-          " WHERE #{data_request[:where]}"
-        BdD::execute_request(Forum::db.database, request, data_request[:values]).first.first
+        Forum.table_posts_content.select(data_request)
       end
 
     end

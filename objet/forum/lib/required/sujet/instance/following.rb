@@ -12,9 +12,9 @@ class Sujet
   # ce sujet.
   def followers
     @followers ||= begin
-      res = table_follow.select(where:"sujet_id = #{id} AND user_id IS NULL", colonnes:[:items_ids] )
-      @followers_row_id = res.keys.first
-      (@followers_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
+      res = table_follows.select( where: "sujet_id = #{id} AND user_id IS NULL", colonnes:[:items] )
+      @followers_row_id = res.first[:id]
+      (@followers_row_id.nil? ? nil : (res.first[:items].split(' ')) || [])
     end
   end
 
@@ -23,9 +23,9 @@ class Sujet
   # Sauvegarde la liste des suiveurs de ce sujet
   def save_followers
     if followers_row_id.nil?
-      table_follow.insert(sujet_id:id, items_ids:followers)
+      table_follows.insert(sujet_id:id, items: followers)
     else
-      table_follow.update( @followers_row_id, {items_ids:followers} )
+      table_follows.update( @followers_row_id, {items:followers} )
     end
   end
 
@@ -35,17 +35,17 @@ class Sujet
   # User.
   def save_sujets_suivi user_id, sujets_suivis
     if following_row_id.nil?
-      table_follow.insert(user_id:user_id, items_ids:sujets_suivis)
+      table_follows.insert(user_id:user_id, items:sujets_suivis)
     else
-      table_follow.update(following_row_id, {items_ids:sujets_suivis})
+      table_follows.update(following_row_id, {items:sujets_suivis})
     end
   end
 
   # Retourne la liste des IDs des sujets suivis par +user_id+
   def followed_by user_id
-    res = table_follow.select(where:"user_id = #{user_id} AND sujet_id IS NULL", colonnes:[:items_ids])
+    res = table_follows.select(where:"user_id = #{user_id} AND sujet_id IS NULL", colonnes:[:items])
     @following_row_id = res.keys.first
-    (@following_row_id.nil? ? nil : res.values.first[:items_ids]) || Array::new
+    (@following_row_id.nil? ? nil : res.values.first[:items]) || Array::new
   end
 
   def following_row_id ; @following_row_id end
@@ -89,8 +89,8 @@ class Sujet
   end
 
   # Table contenu les informations de suivi
-  def table_follow
-    @table_follow ||= Forum::table_sujets_followers
+  def table_follows
+    @table_follows ||= Forum.table_follows
   end
 
 end #/Sujet

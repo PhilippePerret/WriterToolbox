@@ -23,7 +23,7 @@ class Sujet
   # Retourne le dernier message sur le sujet courant
   def last_post
     @last_post ||= begin
-      pid = Forum::table_sujets_posts.get(id, colonnes:[:last_post_id])[:last_post_id]
+      pid = Forum::table_sujets.get(id, colonnes:[:last_post_id])[:last_post_id]
       Forum::Post::get(pid) unless pid.nil?
     end
   end

@@ -29,9 +29,11 @@ class TestTable < DSLTestMethod
     @description_defaut ||= "TEST TABLE #{name} DE BASE #{database.name}"
   end
 
-  # Le sujet : La table (BdD::Table)
+  # Le sujet : AVANT : La table (BdD::Table)
   def subject
-    @subject ||= site.db.table(database.name, name)
+    @subject ||= begin
+      raise "Il faut redéterminer subject avec MySQL"
+    end
   end
 
   # On décompose la base et la table en testant la

@@ -37,8 +37,8 @@ class SiteHtml
     debug "   = Base analyse : #{db_analyse.last_update} (OK)" if debugit
     return true if mtime < db_cnarration.last_update
     debug "   = Base Narration : #{db_cnarration.last_update} (OK)" if debugit
-    return true if mtime < db_forum.mtime
-    debug "   = Base Forum : #{db_forum.mtime} (OK)" if debugit
+    return true if mtime < db_forum.last_update
+    debug "   = Base Forum : #{db_forum.last_update} (OK)" if debugit
     return true if table_unan_programs.last_update > mtime
     debug "   = Programmes Un an un script (OK)" if debugit
     return true if mtime < data_videos.mtime
@@ -52,7 +52,7 @@ class SiteHtml
 
   def db_analyse;     @db_analyse     ||= site.dbm_table(:biblio, 'films_analyses') end
   def db_cnarration;  @db_cnarration  ||= site.dbm_table(:cnarration, 'narration')  end
-  def db_forum;       @db_forum       ||= site.folder_db + 'forum.db'       end
+  def db_forum;       @db_forum       ||= site.dbm_table(:forum, 'posts')           end
 
   # Table des programmes Un An Un Script
   def table_unan_programs

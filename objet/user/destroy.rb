@@ -72,43 +72,8 @@ class User
   # (en fait, on marque que l'user a supprimé son compte mais on
   #  garde le message)
   def destroy_messages_forum
-    # -> MYSQL FORUM
-    debug "  * Destruction des messages forum"
-    db_forum = SQLite3::Database::new('./database/data/forum.db')
-
-    request = "SELECT id FROM posts WHERE user_id = #{self.id};"
-    messages_id = db_forum.execute(request).collect do |arr_with_id|
-      arr_with_id[0]
-    end
-
-    # -> MYSQL FORUM
-    request = <<-SQL
-UPDATE posts_content
-  SET content = "[Contenu supprimé : utilisateur supprimé]"
-  WHERE id IN (#{messages_id.join(',')});
-    SQL
-    db_forum.execute( request )
-    debug "  = Messages initialisés"
-
-    request = "DELETE FROM sujets_followers WHERE user_id = #{self.id}"
-    db_forum.execute( request )
-    debug "  = Suppression de ses suivis"
-
-    # -> MYSQL FORUM
-    request = <<-SQL
-SELECT id, items_ids FROM sujets_followers
-  WHERE (items_ids LIKE ',#{self.id} ,') OR ( items_ids LIKE '[#{self.id},') OR ( items_ids LIKE '#{self.id}]');
-    SQL
-    db_forum.execute( request ).each do |row|
-      sid, items_ids = row
-      items_ids = eval(items_ids)
-      items_ids.delete(self.id)
-      items_ids = items_ids.inspect
-      req = "UPDATE sujets_followers SET items_ids = #{items_ids} WHERE id = #{sid};"
-      db_forum.execute(request)
-    end
-    debug "  = Suppresion des listes de sujets suivis"
-
+    error "La procédure de suppression des messages d'un user détruit est complètement à réimplémenter (#{__FILE__}:#{__LINE__})" if OFFLINE
+    return
     debug "  = Messages forum détruits"
   end
 

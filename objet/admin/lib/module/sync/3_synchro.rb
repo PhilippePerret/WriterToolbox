@@ -145,47 +145,27 @@ class Sync
   def synchronize_citations
     @suivi << "* Synchronisation des citations (last_sent)"
 
-    # L'instance Sync::Database de la base `site_cold.db` qui
-    # permet de gérer la base. Elle a peut-être été déjà
-    # chargée par les tâches qui en ont besoin aussi.
-    # Noter que l'instanciation seule (ci-desous) suffit à
-    # downloader le fichier distant.
-    sdb = Sync::Database.site_cold
+    table_loc = site.dbm_table(:cold, 'citations', online = false)
+    table_dis = site.dbm_table(:cold, 'citations', online = true)
 
+    req = { colonnes: [:last_sent] }
     # *** On prend les données de la base distante, à
     # savoir des hashs {:id, :count, :last_sent}
     begin
-      req = "SELECT id, last_sent FROM citations"
-      db = SQLite3::Database.new(sdb.dst_loc_path)
-      pr = db.prepare req
-      rs_dis = {}
-      pr.execute.each_hash do |h|
-        rs_dis.merge!(h['id'] => h.to_sym)
-      end
+      table_dis.select(req).each { |h| rs_dis.merge!(h['id'] => h) }
     rescue Exception => e
       debug e
       error "Une erreur est survenue en récupérant les informations des citations distantes. Je dois renoncer."
       return false
-    ensure
-      (db.close if db) rescue nil
-      (pr.close if pr) rescue nil
     end
 
     # *** On prend les données de la base locale
     begin
-      db = SQLite3::Database.new(sdb.loc_path)
-      pr = db.prepare req
-      rs_loc = {}
-      pr.execute.each_hash do |h|
-        rs_loc.merge!(h['id'] => h.to_sym)
-      end
+      table_loc.select(req).each { |h| rs_loc.merge!(h['id'] => h) }
     rescue Exception => e
       debug e
       error "Une erreur est survenur en récupérant les informations des citations locales. Je dois renoncer."
       return
-    ensure
-      (db.close if db) rescue nil
-      (pr.close if pr) rescue nil
     end
 
     # *** On calcule la différence
@@ -196,33 +176,18 @@ class Sync
       end
     end
 
-    # Il faut actualiser la base site_cold.db si
-    # 1/ les nombres de citations est différent ou
-    # 2/ des différences ont été relevées.
-    need_update_site_code = !rs_diff.empty? || rs_dis.count != rs_loc.count
-
     # *** On actualise les données à actualiser
     unless rs_diff.empty?
       begin
-        db = SQLite3::Database.new(sdb.loc_path)
-        # La requête pour actualiser la table
-        req_update = "UPDATE citations SET last_sent = :last_sent WHERE id = :id"
-        res = []
-        db.prepare(req_update) do |stm|
-          rs_diff.collect { |tdata| res << (stm.execute tdata) }
+        rs_dis.each do |cdata|
+          table_loc.update( cdata[:id], cdata )
         end
       rescue Exception => e
         debug e
         error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
         return
-      ensure
-        (db.close if db) rescue nil
       end
     end
-
-    # On indique que la table site_cold doit être uploadée
-    # si nécessaire cf. plus haut
-    sdb.need_upload = true if need_update_site_code
 
     @suivi << "= Synchronisation des citations OK"
   rescue Exception => e
@@ -420,19 +385,8 @@ STDOUT.write Marshal::dump(errors: errors)
   def synchronize_filmodico
     @suivi << "* Synchronisation du Filmodico"
 
-    # Les trois paths de la base Filmodico
-    local_path  = File.expand_path("./database/data/filmodico.db")
-    boite_path  = "./www/database/data/filmodico.db"
-    icare_path  = "./www/storage/db/filmodico.db"
-
-    # Rapatrier le fichier boa distant
-    cmd = "scp -p #{serveur_ssh_boa}:#{boite_path} #{local_path}"
-    res = `#{cmd}`
-    @suivi << "\tfilmodico.db - Retour de download Boa distant -> local : #{res.inspect}"
-    # Copier le fichier local vers Icare
-    cmd = "scp -p #{local_path} #{serveur_ssh_icare}:#{icare_path}"
-    res = `#{cmd}`
-    @suivi << "\tfilmodico.db - Retour d'upload local -> Icare : #{res.inspect}"
+    error "Il ne faut plus utiliser sqlite3 pour le filmodico + ne plus l'utiliser sur Icare."
+    return
 
     @suivi << "= Synchronisation du Filmodico OK"
   rescue Exception => e
@@ -445,19 +399,8 @@ STDOUT.write Marshal::dump(errors: errors)
   def synchronize_scenodico
     @suivi << "* Synchronisation du Scénodico"
 
-    # Les trois paths de la base Filmodico
-    local_path  = File.expand_path("./database/data/scenodico.db")
-    boite_path  = "./www/database/data/scenodico.db"
-    icare_path  = "./www/storage/db/scenodico.db"
-
-    # Rapatrier le fichier boa distant
-    cmd = "scp -p #{serveur_ssh_boa}:#{boite_path} #{local_path}"
-    res = `#{cmd}`
-    @suivi << "\tscenodico.db - Retour de download Boa distant -> local : #{res.inspect}"
-    # Copier le fichier local vers Icare
-    cmd = "scp -p #{local_path} #{serveur_ssh_icare}:#{icare_path}"
-    res = `#{cmd}`
-    @suivi << "\tscenodico.db - Retour d'upload local -> Icare : #{res.inspect}"
+    error "Il ne faut plus utiliser sqlite3 pour le scenodico + ne plus l'utiliser sur Icare."
+    return
 
     @suivi << "= Synchronisation du Scénodico OK"
   rescue Exception => e

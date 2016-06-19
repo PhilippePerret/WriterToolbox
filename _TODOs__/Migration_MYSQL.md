@@ -2,21 +2,8 @@
 
 ## MIGRATION -> MYSQL
 
-* sujet_followers -> follows
-  Ajout de la donnée 'time' mieux que 'item_ids' quand les
-  user_id et sujet_id sont définis (user_id suit sujet_id et
-  a été prévenu la dernière fois à 'time')
-  item_ids => items
-  
-* Tables sujets et posts_sujets compilées ensemble
-
 APRÈS CHAQUE MIGRATION PENSER À :
-* Corriger ./objet/site/lib/module/home_page/actualites.rb
-* Modifier le traitement de l'actualisation de l'accueil
-  dans ./objet/site/home.rb
 
-* Faire régulièrement une recherche sur 'site.db.'
-  Et `include MethodesObjetsBdD`
 * Supprimer le fichier ./lib/deep/deeper/required/Site/database.rb quand
   toutes les tables seront construites.
 

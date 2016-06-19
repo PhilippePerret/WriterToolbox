@@ -9,7 +9,7 @@ class Sujet
   end
 
   def lien_read titre = "Lire", params = nil
-    params ||= Hash::new
+    params ||= {}
     params.merge!(href:"sujet/#{id}/read?in=forum")
     titre.in_a( params )
   end

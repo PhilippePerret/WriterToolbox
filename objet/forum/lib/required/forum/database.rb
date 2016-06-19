@@ -2,46 +2,27 @@
 class Forum
   class << self
 
-    # Pour les données générales des messages
-    # -> MYSQL FORUM
+    def table_users
+      @table_users ||= site.dbm_table(:forum, 'users')
+    end
+    # Tous les messages (moins les contenus)
     def table_posts
-      @table_posts ||= site.db.create_table_if_needed('forum', 'posts')
+      @table_posts ||= site.dbm_table(:forum, 'posts')
     end
     # Pour le contenu des messages
-    # -> MYSQL FORUM
     def table_posts_content
-      @table_posts_content ||= site.db.create_table_if_needed('forum', 'posts_content')
+      @table_posts_content ||= site.dbm_table(:forum, 'posts_content')
     end
     # Pour les votes
-    # -> MYSQL FORUM
     def table_posts_votes
-      @table_posts_votes ||= site.db.create_table_if_needed('forum', 'posts_votes')
+      @table_posts_votes ||= site.dbm_table(:forum, 'posts_votes')
     end
-
-    # -> MYSQL FORUM
     def table_sujets
-      @table_sujets ||= site.db.create_table_if_needed('forum', 'sujets')
+      @table_sujets ||= site.dbm_table(:forum, 'sujets')
     end
-    # -> MYSQL FORUM
-    def table_sujets_posts
-      @table_sujets_posts ||= site.db.create_table_if_needed('forum', 'sujets_posts')
+    def table_follows
+      @table_follows ||= site.dbm_table(:forum, 'follows')
     end
-    # -> MYSQL FORUM
-    def table_sujets_followers
-      @table_sujets_followers ||= site.db.create_table_if_needed('forum', 'sujets_followers')
-    end
-
-    # -> MYSQL FORUM
-    def table_users
-      @table_users ||= site.db.create_table_if_needed('forum', 'users')
-    end
-
-    # {SQLite3::Databalse} Base de données du forum. Pour injection
-    # directe de code.
-    def db
-      @db ||= site.db.database_of('forum')
-    end
-
 
   end # << self
 end #/Forum

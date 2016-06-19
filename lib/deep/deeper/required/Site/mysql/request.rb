@@ -39,6 +39,9 @@ class Request
     if @options.instance_of?(Array)
       raise "@options ne devrait pas être un array #{@options.inspect}"
     end
+    if @params.instance_of?(Hash) && @params.key?(:values)
+      @prepared_values = params.delete(:values)
+    end
   end
 
   # ---------------------------------------------------------------------
@@ -56,7 +59,7 @@ class Request
   # car la dernière requête sert à obtenir 'last_insert_id'
   #
   def insert
-    @prepared_values = []
+    @prepared_values ||= []
     @request = request_insert
     resultat = exec
     @nombre_inserted_rows = row_count
@@ -71,7 +74,7 @@ class Request
   # @RETURN Un hash des éléments trouvés
   #
   def select
-    @prepared_values = []
+    @prepared_values ||= []
     @request = request_select
     resultat = exec
     return resultat
@@ -188,7 +191,7 @@ SELECT #{columns_clause} FROM #{dbm_table.name}
   # Note : C'est la valeurs `options` qui contient
   # les valeurs.
   def request_update
-    @prepared_values = []
+    @prepared_values ||= []
     set_clause =
       'SET ' + options.collect do |k, v|
         @prepared_values << v
@@ -205,7 +208,7 @@ UPDATE #{dbm_table.name}
   end
 
   def request_delete
-    @prepared_values = []
+    @prepared_values ||= []
     <<-SQL
 DELETE FROM #{dbm_table.name}
   #{where_clause}
@@ -410,8 +413,8 @@ DELETE FROM #{dbm_table.name}
   # `set` quand il faut voir si la rangée existe ou non)
   def final_request
     r = request.gsub(/\n/, ' ').gsub(/ +/, ' ').strip + ';'
-    # debug "@REQUEST: #{r}"
-    # debug "@PREPARED_VALUES: #{@prepared_values.inspect}"
+    debug "@REQUEST: #{r}"
+    debug "@PREPARED_VALUES: #{@prepared_values.inspect}"
     r
   end
 

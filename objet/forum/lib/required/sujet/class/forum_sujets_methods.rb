@@ -48,7 +48,7 @@ class Sujet
       end
 
 
-      data_request = Hash::new
+      data_request = {}
 
       unless params.empty?
         where, valeurs = ( where_clause_from params )
@@ -67,16 +67,19 @@ class Sujet
       @hash_sujets = Forum::table_sujets.select(data_request)
 
       case return_as
-      when :id, :ids, nil  then @hash_sujets.keys
-      when :hash      then @hash_sujets
-      when :data      then @hash_sujets.values
-      when :instance  then @hash_sujets.keys.collect { |sid| get(sid) }
+      when :id, :ids, nil  then @hash_sujets.collect{|h|h[:id]}
+      when :hash
+        h = {}
+        @hash_sujets.each{|sdata| h.merge! sdata[:id] => sdata}
+        h
+      when :data      then @hash_sujets
+      when :instance  then @hash_sujets.collect { |sdata| get(sdata[:id]) }
       when :li        then
         if @hash_sujets.empty?
           "Aucun sujet sur le forum pour le moment.".in_li
         else
           current_cate = nil
-          @hash_sujets.values.collect do |dsujet|
+          @hash_sujets.collect do |dsujet|
             if current_cate != dsujet[:categorie]
               current_cate = dsujet[:categorie]
               cate_sym = Forum::Categorie::ID2SYM[current_cate]

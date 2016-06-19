@@ -7,9 +7,9 @@ require 'sqlite3'
 class Scenodico
   BASE_SCENODICO = '/Users/philippeperret/Sites/WriterToolbox/database/data/scenodico.db'
   class << self
-    
+
     attr_reader :extrait
-    
+
     # Méthode qui retourne un code de type snippet pour mettre la balise
     # correspond à l'extrait de mot.
     # Si un seul mot correspond à la recherche, on peut retourner un snippet
@@ -30,10 +30,10 @@ class Scenodico
     def get
       submit_requete
     end
-    
+
     def submit_requete
       pdb = database.prepare requete
-      rs = 
+      rs =
         pdb.execute.collect do |paire|
           id, mot = paire
           "#{id}|${2:#{mot.downcase}}"
@@ -43,16 +43,15 @@ class Scenodico
       return [e.message]
     end
     def database
-      @database ||= SQLite3::Database.new(BASE_SCENODICO)
     end
-    
+
     def requete
       ext = extrait.gsub(/'/, "\\'")
       where_clause = "mot LIKE '%#{ext}%'"
       <<-SQL
 SELECT id, mot
   FROM mots
-  WHERE #{where_clause} 
+  WHERE #{where_clause}
   COLLATE NOCASE;
       SQL
     end

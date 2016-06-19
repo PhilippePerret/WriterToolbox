@@ -2,7 +2,7 @@
 class Forum
   class Sujet
 
-    include MethodesObjetsBdD
+    include MethodesMySQL
 
     # ---------------------------------------------------------------------
     #   Instance Forum::Sujet
@@ -18,7 +18,6 @@ class Forum
     # Créer le sujet
     def create
       @id = Forum::table_sujets.insert( data4create.merge(created_at: NOW) )
-      Forum::table_sujets_posts.insert( dataposts4create )
     end
 
     def data4create
@@ -27,27 +26,21 @@ class Forum
         name:         name,
         categorie:    categorie,
         options:      "#{bit_validation}#{type_s}",
-        updated_at:   NOW
-      }
-    end
-    def dataposts4create
-      {
-        id:             id,
         last_post_id:   nil,
         count:          0,
         views:          0,
-        updated_at:     NOW
+        updated_at:   NOW
       }
     end
 
     def incremente_vues
       @views = views + 1
-      Forum::table_sujets_posts.update( id, { views:@views, updated_at:NOW } )
+      Forum.table_sujets.update( id, { views: @views, updated_at: NOW } )
     end
 
     # Raccourci à la table contenant les sujets
     def table
-      @table ||= Forum::table_sujets
+      @table ||= Forum.table_sujets
     end
 
   end

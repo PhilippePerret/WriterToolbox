@@ -122,7 +122,7 @@ class Sujet
     post_id = post_id.id if post_id.instance_of?(Forum::Post)
     @count        = count + 1
     @last_post_id = post_id
-    Forum::table_sujets_posts.update(id, {
+    Forum::table_sujets.update(id, {
       count:          @count,
       last_post_id:   post_id,
       updated_at:     NOW
@@ -142,7 +142,7 @@ class Sujet
       data_update.merge!( last_post_id: res.first ) # peut-être nil
     end
 
-    Forum::table_sujets_posts.update(id, data_update)
+    Forum.table_sujets.update(id, data_update)
   end
 
 end #/Sujet

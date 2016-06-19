@@ -92,10 +92,10 @@ class Console
     end
 
     def table_films
-      @table_films ||= site.db.create_table_if_needed('analyse', 'films')
+      @table_films ||= site.dbm_table(:biblio, 'films_analyses')
     end
     def table_filmodico
-      @table_filmodico ||= site.db.create_table_if_needed('filmodico', 'films')
+      @table_filmodico ||= site.dbm_table(:biblio,'filmodico')
     end
 
     def rappels_fonctionnement

@@ -17,8 +17,6 @@ class App
       case mess
       when String
         # rien à faire
-      when SQLite3::SQLException then
-        mess = mess.message # pour le moment
       else
         if mess.respond_to?(:message)
           mess = mess.message + "\n\n" + mess.backtrace.join("\n")

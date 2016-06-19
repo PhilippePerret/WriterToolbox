@@ -15,7 +15,6 @@ class << self
   # Retourne l'IDentifiant du nouveau sujet
   def create_new_sujet
     new_sujet_id = Forum::table_sujets.insert( data_new_sujet )
-    Forum::table_sujets_posts.insert( data_new_sujet_posts(new_sujet_id) )
   end
   def data_new_sujet
     time = NOW - rand(100).days
@@ -26,17 +25,11 @@ class << self
       name:           "Un sujet initié par #{creator.pseudo} à #{time.as_human_date} à propos de #{mot_alea}",
       options:        "",
       categories:     nil,
-      created_at:     time,
-      updated_at:     time
-    }
-  end
-  def data_new_sujet_posts(id)
-    time = NOW - rand(50).days
-    {
       id:             id,
       last_post_id:   nil,
       count:          0,
       views:          0,
+      created_at:     time,
       updated_at:     time
     }
   end

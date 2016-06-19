@@ -5,7 +5,7 @@ Extension de Forum::Message pour la gestion des messages
 class Forum
 class Post
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # ID absolu du message dans la base de données du forum
   attr_reader :id

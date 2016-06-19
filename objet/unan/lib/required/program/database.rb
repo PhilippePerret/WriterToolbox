@@ -16,7 +16,6 @@ class Program
     end
   end
 
-  # Pour les méthodes de MethodesObjetsBdD (get, set, etc.)
   def table
     @table ||= Unan.table_programs
   end

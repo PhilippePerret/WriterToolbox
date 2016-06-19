@@ -54,7 +54,7 @@ class << self
 
     # Table pour conserver les sujets déjà traités. Un sujet n'a besoin
     # que d'un traitement.
-    @sujets_deja_traited = Hash::new
+    @sujets_deja_traited = {}
 
     # On traite chaque nouveau message du forum en envoyant une alerte
     # aux abonnés du sujets, sauf si une alerte leur a déjà été envoyée
@@ -111,13 +111,12 @@ class << self
         # puisqu'il faut une validation, c'est une manière pour lui aussi
         # de savoir que son message a été validé.
 
-        # -> MYSQL FORUM
         # Vérifier si l'abonné a déjà reçu une alerte pour un message
         # précédent dans le même sujet (s'en retourner si oui). Cette vérification
         # se fait à l'aide de la table sujets_followers, pour les données où
         # l'user_id et le sujet_id sont tous les deux définis.
         where_clause = "sujet_id = #{sujet_id} AND user_id = #{follower_id}"
-        next if Forum::table_sujets_followers.count(where:where_clause) > 0
+        next if Forum::table_follows.count(where: where_clause) > 0
 
         # Le destinataire du message. On a besoin d'en faire une
         # instance pour remplir les données du template de mail
@@ -131,7 +130,7 @@ class << self
 
         # Enregistrer que l'abonné a reçu une alerte pour ce message
         # dans ce sujet
-        Forum::table_sujets_followers.insert( {user_id:follower_id, sujet_id:sujet_id, items_ids:NOW.to_s} )
+        Forum.table_follows.insert( {user_id: follower_id, sujet_id: sujet_id, time: NOW} )
 
       end # / fin de boucle sur les followers du sujet
     end

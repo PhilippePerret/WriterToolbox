@@ -189,31 +189,32 @@ class SiteHtml
 
   def derniers_messages_forum
     @derniers_messages_forum ||= begin
-      db = SQLite3::Database::new('./database/data/forum.db')
-      db.execute(request_forum.gsub(/\n/,'')).collect do |dpost|
-        pid, puser, pcontent, dcreated = dpost
-        puser     = User::get(puser)
+      table_contents = site.dbm_table(:forum, 'posts_content')
+      last_messages_forum.collect do |dpost|
+        pid       = dpost[:id]
+        puser     = User::get(dpost[:user_id])
+        pcreated  = dpost[:created_at]
+        pcontent = table_contents.get(pid, colonnes:[:content])[:content]
+
         pseudo    = puser.pseudo
         puser     = " (#{pseudo})".in_span(class:'tiny')
         plongcontent = pcontent[0..200]
         plongcontent += " […]" if pcontent.length > 200
         pcontent  = pcontent[0..30] + " […]"
         plink     = "post/#{pid}/read?in=forum"
-        title     = "Cliquer ici pour lire le dernier message de #{pseudo}, datant du #{dcreated.as_human_date(true, true, ' ')} : #{plongcontent.purified.gsub(/\n/,' ')}"
+        title     = "Cliquer ici pour lire le dernier message de #{pseudo}, datant du #{pcreated.as_human_date(true, true, ' ')} : #{plongcontent.purified.gsub(/\n/,' ')}"
         "#{DOIGT}“#{pcontent}”#{puser}".in_a(href: plink, target:"_blank", title: title.strip_tags).in_div(class:'actu')
       end.join('')
     end
   end
-  def request_forum
-    <<-SQL
-SELECT
-  posts.id, posts.user_id, posts_content.content, posts.created_at
-  FROM posts
-  INNER JOIN posts_content
-  WHERE SUBSTR(posts.options,1,1) = '1'
-  ORDER BY posts.updated_at DESC
-  LIMIT 3;
-    SQL
+  def last_messages_forum
+    drequest = {
+      where: "SUBSTRING(options,1,1) = '1'",
+      order:  'created_at',
+      limit:  3,
+      colonnes: [:user_id, :created_at]
+    }
+    site.dbm_table(:forum, 'posts').select(drequest)
   end
 
   # ---------------------------------------------------------------------
