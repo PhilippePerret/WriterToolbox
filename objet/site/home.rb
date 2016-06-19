@@ -33,7 +33,7 @@ class SiteHtml
     debug "   = Home_spotlight.rb : #{spotlight_mtime} (OK)" if debugit
     # On retourne true si la base de données des analyses
     # est plus vieille que le fichier HTML
-    return true if mtime < db_analyse.mtime
+    return true if mtime < db_analyse.last_update
     debug "   = Base analyse : #{db_analyse.mtime} (OK)" if debugit
     return true if mtime < db_cnarration.mtime
     debug "   = Base Narration : #{db_cnarration.mtime} (OK)" if debugit
@@ -50,7 +50,7 @@ class SiteHtml
     return false # donc up-to-date
   end
 
-  def db_analyse;     @db_analyse     ||= site.folder_db + 'analyse.db'     end
+  def db_analyse;     @db_analyse     ||= site.dbm_table(:biblio, 'films_analyses') end
   def db_cnarration;  @db_cnarration  ||= site.folder_db + 'cnarration.db'  end
   def db_forum;       @db_forum       ||= site.folder_db + 'forum.db'       end
 

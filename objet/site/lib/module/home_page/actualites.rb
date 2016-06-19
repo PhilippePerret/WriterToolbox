@@ -103,47 +103,21 @@ SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, cr
   end
 
   def dernieres_analyses_films
-    p = './database/data/analyse.db'
-    request = request_analyses_film.gsub(/\t/,' ').gsub(/\n/,' ')
-    res = SQLite3::Database::new(p).execute(request)
-    debug "DERNIÈRES ANALYSES : \n #{res.inspect}"
-    res.collect do |dana|
-      fid, film_id, titre, updated_at = dana
-      title = "Cliquez ici pour consulter l'analyse du film “#{titre}” produite et achevée par #{analystes_of fid} le #{updated_at.as_human_date(true,false,' ')}"
+    drequest = {
+      where:    "SUBSTRING(options, 5, 1) = '1'",
+      order:    'updated_at DESC',
+      limit:    3,
+      colonnes: [:film_id, :titre, :updated_at]
+    }
+    site.dbm_table(:biblio, 'films_analyses').select(drequest).collect do |dana|
+      fid         = dana[:id]
+      film_id     = dana[:film_id]
+      titre       = dana[:titre].force_encoding('utf-8')
+      updated_at  = dana[:updated_at]
+      title = "Cliquez ici pour consulter l'analyse du film “#{titre}” produite le #{updated_at.as_human_date(true,false,' ')}"
       titre_film = "#{DOIGT}#{titre}".in_a(href:"analyse/#{fid}/show", target:"_blank", title:title.strip_tags)
       "#{titre_film}".in_div(class:'actu')
     end.join('')
-  end
-
-  # Retourne la liste des analyses du film d'identifiant +fid+
-  # TODO: Implémenter la vraie procédure une fois que la table
-  # analyse.travaux sera mise en place et fonctionnelle.
-  def analystes_of fid
-    return "Phil"
-    @db_travaux ||= SQLite3::Database::new('./database/data/analyse.db')
-    request = <<-SQL
-SELECT user_id
-  FROM travaux
-  INNER JOIN films
-  ON travaux.film_id = films.id
-  WHERE films.id = #{fid}
-    SQL
-    @db_travaux.execute(request).collect do |fdata|
-      User::get(fdata[:user_id] || 1).pseudo
-    end.pretty_join
-  end
-
-  # Requête pour relever les dernières analyses de film
-  # On prend seulement les 3 dernières lisibles en les classant
-  # par dernière modification
-  def request_analyses_film
-    <<-SQL
-SELECT id, film_id, titre, updated_at
-  FROM  films
-  WHERE SUBSTR(options, 5, 1) = '1'
-  ORDER BY updated_at DESC
-  LIMIT 3
-    SQL
   end
 
   # ---------------------------------------------------------------------
