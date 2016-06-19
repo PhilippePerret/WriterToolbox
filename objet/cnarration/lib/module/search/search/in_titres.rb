@@ -2,6 +2,9 @@
 class Cnarration
 class Search
 
+  def table_pages
+    @table_pages ||= Cnarration.table_pages
+  end
   # = main =
   #
   # Méthode qui recherche le texte dans les titres de la
@@ -16,7 +19,8 @@ class Search
         colonnes: [:titre, :options]
       }
       request_data.merge!(nocase: true) unless exact?
-      table_pages.select( request_data ).each do |pid, pdata|
+      table_pages.select( request_data ).each do |pdata|
+        pid = pdata[:id]
         ipage = Cnarration::Page::get(pid)
         next if ipage.page? && ipage.developpement < developpement_minimum
         # Sinon, on prend la page
@@ -26,7 +30,8 @@ class Search
       # Recherche régulière
       # debug "-> recherche régulière dans les titres"
       # debug "   reg_searched : #{reg_searched.inspect}"
-      Cnarration::table_pages.select(colonnes:[:titre, :handler, :livre_id, :options]).each do |pid, pdata|
+      table_pages.select(colonnes:[:titre, :handler, :livre_id, :options]).each do |pdata|
+        pid = pdata[:id]
         ipage = Cnarration::Page::get(pid)
         next if ipage.page? && ( ipage.developpement < developpement_minimum )
         unless pdata[:titre].match(reg_searched).nil?

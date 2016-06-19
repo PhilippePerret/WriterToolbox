@@ -9,7 +9,7 @@ class Page
   class << self
     def get page_id
       page_id = page_id.to_i
-      @instances ||= Hash::new
+      @instances          ||= {}
       @instances[page_id] ||= new(page_id)
     end
 
@@ -156,7 +156,7 @@ class Page
       if new?
         # Si c'est une nouvelle page il faut s'assurer que ce handler est
         # unique
-        if Cnarration::table_pages.count(where:"handler = '#{@handler}'") > 0
+        if Cnarration::table_pages.count(where: "handler = '#{@handler}'") > 0
           raise "Ce handler (path du fichier) est déjà employé… Impossible de l'utiliser pour une nouvelle page."
         end
       end

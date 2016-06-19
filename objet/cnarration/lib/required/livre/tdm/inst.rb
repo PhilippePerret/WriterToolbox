@@ -3,7 +3,7 @@ class Cnarration
 class Livre
 class Tdm
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   # {Fixnum} Identifiant de la table des matières
   # Note : Est égal à l'identifiant du livre
@@ -58,11 +58,21 @@ class Tdm
   # l'identifiant de la page et en valeur un Hash ne contenant que :
   #   {:titre, :id, :options, :handler}
   def pages
-    @pages ||= Cnarration::table_pages.select(where:"livre_id = #{id}", colonnes:[:titre, :handler, :options])
+    @pages ||= begin
+      drequest = {
+        where:    {livre_id: id},
+        colonnes: [:titre, :handler, :options]
+      }
+      hpages = {}
+      Cnarration::table_pages.select(drequest).each do |dpage|
+        hpages.merge! dpage[:id] => dpage
+      end
+      hpages
+    end
   end
 
   def pages_ids
-    @pages_ids ||= get(:tdm)
+    @pages_ids ||= Cnarration::Livre.ids_tdm_of_livre(id)
   end
 
   def table

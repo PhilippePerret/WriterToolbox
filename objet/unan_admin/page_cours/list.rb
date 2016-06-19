@@ -22,14 +22,14 @@ def liste_pages_narration_hors_programme
   ul_pages = String::new
   current_livre_id = nil
   # -> MYSQL NARRATION !!!
-  Cnarration::table_pages.select(data_request).collect do |pid, pdata|
+  Cnarration::table_pages.select(data_request).collect do |pdata|
     # Passage au livre suivant (ou premier)
     if pdata[:livre_id] != current_livre_id
       current_livre_id = pdata[:livre_id]
       titre_livre = Cnarration::LIVRES[current_livre_id][:hname]
       ul_pages << titre_livre.in_h3
     end
-    next if narration_id_to_page_programme_id.has_key?( pid )
+    next if narration_id_to_page_programme_id.has_key?( pdata[:id] )
     # Page inutilisée par le programme
     ul_pages << mise_en_forme_page_line_narration(pdata)
   end

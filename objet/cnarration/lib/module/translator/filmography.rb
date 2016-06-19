@@ -11,7 +11,7 @@ class << self
   #      filmodico.db
   #
   def build_if_needed
-    return if Cnarration::force_update_biblios.nil? && bib_file.exist? && bib_file.mtime > base_filmodico.mtime
+    return if Cnarration::force_update_biblios.nil? && bib_file.exist? && bib_file.mtime > table_filmodico.last_update
     # Sinon il faut reconstruire la bibliographie
     debug "LE FICHIER #{bib_file} (filmographie) doit être actualisé."
     build
@@ -79,12 +79,6 @@ class << self
     @ref_bib_file ||= begin
       File.open(bib_file.to_s, 'a')
     end
-  end
-
-  # {SuperFile} fichier filmodico.db contenant tous les
-  # films dans la table films.
-  def base_filmodico
-    @base_filmodico ||= site.folder_db + "filmodico.db"
   end
 
   # {SuperFile} Fichier contenant la filmographie

@@ -2,7 +2,7 @@
 class Cnarration
 class Page
 
-  include MethodesObjetsBdD
+  include MethodesMySQL
 
   attr_reader :id
 

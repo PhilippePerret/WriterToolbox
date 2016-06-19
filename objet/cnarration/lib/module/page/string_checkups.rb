@@ -28,7 +28,7 @@ class << self
       File.unlink(pfile) if File.exist?(pfile)
       handler = pfile.sub(/^#{pbook}\//,'')[0..-5]
       where = "handler = '#{handler}' AND livre_id = #{ipage.livre_id}"
-      hpage = Cnarration::table_pages.select(where:where).values.first
+      hpage = Cnarration::table_pages.select(where:where).first
       # Lien à retourner à mettre dans le message
       "#{hpage[:titre]}".in_a(href:"page/#{hpage[:id]}/show?in=cnarration", target:'_blank')
     end.join("<br />")
@@ -186,7 +186,7 @@ class << self
     # Liste des fichiers déjà mis en commentaire (ils servent à
     # savoir si le fichier doit être actualisé après modification
     # de la question ou du fichier la contenant)
-    @files_checkups_traited ||= Hash::new
+    @files_checkups_traited ||= {}
 
     # Boucle sur chaque question
     all_questions = questions.collect do |hquestion|
@@ -194,7 +194,7 @@ class << self
       # La marque pour savoir que le fichier de la question est
       # utilisé ici et que s'il a été modifié il faut modifier aussi
       # ce fichier
-      mark_file = unless @files_checkups_traited.has_key?(hquestion[:file])
+      mark_file = unless @files_checkups_traited.key?(hquestion[:file])
         @files_checkups_traited.merge!(hquestion[:file] => true)
         "<!-- #{hquestion[:file]} -->"
       else
@@ -203,15 +203,6 @@ class << self
 
       lien_vers_question = case output_format
       when :latex
-        # " (\\ref{#{hquestion[:id]}} p.\\pageref{#{hquestion[:id]}})"
-        # Avec hyperef
-        # " (\\nameref{#{hquestion[:id]}} p.)"
-        # Avec varioref
-        # L'astérisque permet de ne pas ajouter d'espace avant
-        # " (\\vref*{#{hquestion[:id]}})"
-        # Avec varioref+cleveref
-        # " (\\cref{#{hquestion[:id]}})"
-        # " (\\labelcref{#{hquestion[:id]}})" # => rien…
         " (\\cpageref{#{hquestion[:id]}})"
       else # :html
         # Le lien pour rejoindre la question dans son fichier
@@ -271,7 +262,7 @@ class << self
     grep_command = REG_CHECKUP_DATA % {book_folder: book_pfolder}
 
     # La table produite avec toutes les questions
-    @table_checkup = Hash::new
+    @table_checkup = {}
 
     # === Recherche ===
     evaluation = `#{grep_command}`
@@ -287,8 +278,8 @@ class << self
         pfile = pfile.split(':').first.sub(/^#{book_pfolder}\//o,'')
 
         # Si le groupe n'existe pas encore, il faut l'ajouter
-        unless @table_checkup.has_key? qgroupe
-          @table_checkup.merge!(qgroupe => Array::new)
+        unless @table_checkup.key? qgroupe
+          @table_checkup.merge!(qgroupe => [])
         end
         # On peut maintenant ajouter la question
         @table_checkup[qgroupe] << {

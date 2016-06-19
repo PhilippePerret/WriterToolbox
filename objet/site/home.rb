@@ -34,9 +34,9 @@ class SiteHtml
     # On retourne true si la base de données des analyses
     # est plus vieille que le fichier HTML
     return true if mtime < db_analyse.last_update
-    debug "   = Base analyse : #{db_analyse.mtime} (OK)" if debugit
-    return true if mtime < db_cnarration.mtime
-    debug "   = Base Narration : #{db_cnarration.mtime} (OK)" if debugit
+    debug "   = Base analyse : #{db_analyse.last_update} (OK)" if debugit
+    return true if mtime < db_cnarration.last_update
+    debug "   = Base Narration : #{db_cnarration.last_update} (OK)" if debugit
     return true if mtime < db_forum.mtime
     debug "   = Base Forum : #{db_forum.mtime} (OK)" if debugit
     return true if table_unan_programs.last_update > mtime
@@ -51,7 +51,7 @@ class SiteHtml
   end
 
   def db_analyse;     @db_analyse     ||= site.dbm_table(:biblio, 'films_analyses') end
-  def db_cnarration;  @db_cnarration  ||= site.folder_db + 'cnarration.db'  end
+  def db_cnarration;  @db_cnarration  ||= site.dbm_table(:cnarration, 'narration')  end
   def db_forum;       @db_forum       ||= site.folder_db + 'forum.db'       end
 
   # Table des programmes Un An Un Script

@@ -28,7 +28,7 @@ class Console
       hpage = Cnarration::table_pages.get(page_ref.to_i, colonnes:[:titre, :livre_id])
       [hpage]
     else
-      Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre, :livre_id]).values
+      Cnarration::table_pages.select(where:"titre LIKE '%#{page_ref}%'", colonnes:[:titre, :livre_id])
     end
 
     return pages unless pages.count == 0

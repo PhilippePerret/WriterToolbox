@@ -114,7 +114,7 @@ class Translator
   # du fichier dans la table des matières.
   def page_id
     @page_id ||= begin
-      pid = Cnarration::table_pages.select(where:"handler = '#{handler}' AND livre_id = #{livre.id}").keys.first
+      pid = Cnarration::table_pages.select(where:"handler = '#{handler}' AND livre_id = #{livre.id}").first[:id]
       raise "Impossible d'obtenir l'ID de la page source de path : #{path} (avec le handler '#{handler}')" if pid.nil?
       pid
     end

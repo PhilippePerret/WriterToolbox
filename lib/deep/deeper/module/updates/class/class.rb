@@ -47,9 +47,9 @@ class Updates
         colonnes: [:titre, :options],
         order:    'updated_at DESC'
       }
-      # -> MYSQL NARRATION
       pages_narration =
-        site.db.table('cnarration', 'pages').select(reqdata).collect do |pid, pdata|
+        site.dbm_table(:cnarration, 'narration').select(reqdata).collect do |pdata|
+          pid = pdata[:id]
           # On ne prend que les pages, pas les chapitres/sous-chapitres
           next if pdata[:options][0] != '1'
           # On ne prend que les pages dont le niveau de développement

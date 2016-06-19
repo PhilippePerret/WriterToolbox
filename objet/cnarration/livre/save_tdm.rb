@@ -7,30 +7,30 @@ de la table des matières.
 
 # Le livre dont il faut actualisation la table des matières
 def livre
-  @livre ||= Cnarration::Livre::new(site.current_route.objet_id)
+  @livre ||= Cnarration::Livre.new(site.current_route.objet_id)
 end
 # La nouvelle liste de pages et titres du livre dans l'ordre
 def liste_ids
-  @liste_ids ||= param(:ids).split('-').collect{|pid| pid.to_i}
+  @liste_ids ||= param(:ids).split('-').join(',')
 end
 
 def tdm_exist?
-  Cnarration::table_tdms.count(where:{id: livre.id}) > 0
+  Cnarration.table_tdms.count(where: {id: livre.id}) > 0
 end
 
 def data_tdm
   @data_tdm ||= begin
-    d = Hash::new
+    d = {}
     d.merge!( tdm: liste_ids, updated_at:NOW )
     d
   end
 end
 # flash "Liste : #{data_tdm.inspect}"
 if tdm_exist?
-  Cnarration::table_tdms.update(livre.id, data_tdm )
+  Cnarration::table_tdms.update( livre.id, data_tdm )
   flash "Table des matières du livre ##{livre.id} actualisée."
 else
-  Cnarration::table_tdms.insert(data_tdm.merge(id: livre.id))
+  Cnarration.table_tdms.insert( data_tdm.merge(id: livre.id) )
   flash "Table des matières créée pour le livre ##{livre.id}."
 end
 

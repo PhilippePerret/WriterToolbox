@@ -53,8 +53,9 @@ class << self
     # S'il faut classer les pages par livre et par table
     # des matières
     if params[:sorted]
-      hsorted = Hash::new
-      pgs.sort_by{|pid, pdata| pdata[:livre_id]}.each do |pid, pdata|
+      hsorted = {}
+      pgs.sort_by{|pdata| pdata[:livre_id]}.each do |pdata|
+        pid = pdata[:id]
         livre_id = pdata[:livre_id]
         unless hsorted.has_key?(livre_id)
           # Un nouveau livre dont il faut prendre les informations
@@ -85,18 +86,21 @@ class << self
     end
 
     case params[:as]
-    when :hash_data       then pgs
-    when :array_data      then pgs.values
-    when :array_instances then pgs.keys.collect{ |pid| Page::new(pid) }
+    when :hash_data
+      h = {}
+      pgs.each { |hpage| h.merge! hpage[:id] => hpage }
+      h
+    when :array_data
+      pgs
+    when :array_instances
+      pgs.collect{ |hpage| Page::new(hpage[:id]) }
     when :hash_instances
-      h = Hash::new
-      pgs.keys.each { |pid| h.merge!( pid => Page::new(pid) ) }
+      h = {}
+      pgs.each { |hpage| h.merge!( hpage[:id] => Page::new(hpage[:id]) ) }
       h
     when :ul
       # Une liste UL doit être retournée
-      pgs.values.collect do |hpage|
-        hpage[:titre].in_option(value: hpage[:id])
-      end.in_ul(class:'tdm')
+      pgs.collect{ |hpage| hpage[:titre].in_option(value: hpage[:id]) }.in_ul(class:'tdm')
     end
   end
 
@@ -111,7 +115,7 @@ class << self
   #   Tous les critères de `pages' ci-dessus, à commencer par la
   #   requête `where`
   def pages_as_ul options = nil
-    options ||= Hash::new
+    options ||= {}
     options_edit_btns = options.delete(:edition_buttons)
     options.merge!(as: :array_data)
     pages(options).collect do |hpage|

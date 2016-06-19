@@ -52,8 +52,13 @@ class SiteHtml
   end
   def narration_liste_three_last_pages
     require './objet/cnarration/lib/required/constants.rb'
-    narration_dernieres_pages_cours.collect do |arr_dpage|
-      page_id, titre_page, livre_id, niveau_dev, created_at, updated_at = arr_dpage
+    narration_dernieres_pages_cours.collect do |dpage|
+      page_id = dpage[:id]
+      titre_page = dpage[:titre]
+      livre_id = dpage[:livre_id]
+      niveau_dev = dpage[:options][1].to_i
+      created_at = dpage[:created_at]
+      updated_at = dpage[:updated_at]
       livre_id = livre_id.to_i
       livre = begin
         titre_livre = Cnarration::LIVRES[livre_id][:short_hname]
@@ -75,22 +80,12 @@ class SiteHtml
 
   # On prend les
   def narration_dernieres_pages_cours
-    # -> MYSQL Remplacer TOUT le code ci-dessous par :
-    # site.dbm_table(:narration, 'pages').select(
-    #   where: "CAST( SUBSTRING(options,2,1) as UNSIGNED ) >= 8",
-    #   order: 'updated_at DESC',
-    #   limit: 3,
-    #   colonnes: [:titre, :livre_id, :options, :created_at, :updated_at]
-    # )
-    request = <<-SQL
-SELECT id, titre, livre_id, CAST( SUBSTR(options,2,1) as INTEGER ) as nivdev, created_at, updated_at
-  FROM pages
-  WHERE nivdev >= 8
-  ORDER BY updated_at DESC
-  LIMIT 3
-    SQL
-    p = './database/data/cnarration.db'
-    SQLite3::Database::new(p).execute(request)
+    site.dbm_table(:cnarration, 'narration').select(
+      where: "CAST(SUBSTRING(options,2,1) as UNSIGNED) >= 8",
+      order: 'updated_at DESC',
+      limit: 3,
+      colonnes: [:titre, :livre_id, :options, :created_at, :updated_at]
+    )
   end
 
   # ---------------------------------------------------------------------

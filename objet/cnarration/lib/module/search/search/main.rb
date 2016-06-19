@@ -16,11 +16,9 @@ class Search
   def proceed
     check_data || (return false)
     init_result
-    make_base_duplicat
     search_in_titres  if in_titres?
     search_in_textes  if in_textes?
     finir_recherche
-    destroy_base_duplicat
     return true
   end
 
@@ -92,37 +90,6 @@ class Search
   else
     true # pour poursuivre
   end
-
-  # ---------------------------------------------------------------------
-  #  Méthodes pour la database
-  # ---------------------------------------------------------------------
-
-  # {BdD::Table} Tables (copiée) des données de pages
-  def table_pages
-    @table_pages ||= base_narration.table('pages')
-  end
-  # {BdD} La base de données (copiée) contenant les
-  # données Narration
-  def base_narration
-    @base_narration ||= BdD::new(base_duplicat_path.to_s)
-  end
-  # Pour ne pas "encombrer" la base pendant la recherche,
-  # je fais une duplication provisoire de la table originale
-  # pour pouvoir chercher dedans
-  def make_base_duplicat
-    FileUtils::cp base_original_path.to_s, base_duplicat_path.to_s
-  end
-  def destroy_base_duplicat
-    base_duplicat_path.remove if base_duplicat_path.exist?
-  end
-  def base_original_path
-    @base_original_path ||= site.folder_db + 'cnarration.db'
-  end
-  def base_duplicat_path
-    @base_duplicat_path ||= site.folder_tmp + "cnarration-#{NOW}-#{user.id}.db"
-  end
-
-
 
 end #/Search
 end #/Cnarration

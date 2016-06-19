@@ -17,7 +17,6 @@ class << self
   def check_pages_out_tdm
 
     site.require_objet 'cnarration'
-    table = Cnarration::table_pages
     path_main_folder = File.join('.', 'data', 'unan', 'pages_cours', 'cnarration')
 
     full_output           = String::new
@@ -50,7 +49,7 @@ class << self
           # La page physique peut ne pas exister pour le livre, mais peut avoir été
           # enregistrée quand même (sans avoir été associée à un livre, ce qui est une erreur)
           # Dans ce cas-là, on signale juste que la page n'est pas dans le livre auquel elle devrait appartenir.
-          record_existe = Cnarration::table_pages.count(where:"handler = '#{page_handler}'") > 0
+          record_existe = Cnarration::table_pages.count(where: {handler: page_handler}) > 0
           nombre_erreurs += 1
           if record_existe
             errs_output << "Handler : #{page_handler} (MAIS DÉJÀ CONSIGNÉE OK => AJOUTER AU LIVRE)".in_div
@@ -87,7 +86,7 @@ class << self
     # matières.
     liste_all_ids_titres_et_pages = Array::new
     Cnarration::LIVRES.each do |bid, bd|
-      Cnarration::table_tdms.select(where:"id = #{bid}").each do |bid, bdata|
+      Cnarration::table_tdms.select(where: {id: bid}).each do |bdata|
         liste_all_ids_titres_et_pages += bdata[:tdm]
       end
     end
@@ -101,7 +100,8 @@ class << self
 
     liste_pages_hors_livres = Array::new
     liste_pages_hors_tdm    = Array::new
-    Cnarration::table_pages.select(colonnes:[:titre, :livre_id, :options, :handler]).each do |pid, pdata|
+    Cnarration::table_pages.select(colonnes:[:titre, :livre_id, :options, :handler]).each do |pdata|
+      pid = pdata[:id]
       ptype = (pdata[:options][0]=="1" ? "page" : "titre")
       if pdata[:livre_id].nil? || pdata[:livre_id] == 0
         # => Page ou titre qui n'appartient pas à un livre

@@ -5,10 +5,10 @@ class Page
 
     def get page_id
       page_id = page_id.to_i
-      @instances ||= Hash::new
+      @instances          ||= {}
       @instances[page_id] ||= new(page_id)
     end
-    
+
   end #/<< self
 end #/Page
 end #/Cnarration

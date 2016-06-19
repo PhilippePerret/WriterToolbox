@@ -36,36 +36,30 @@ class Livre
   # du livre courant.
   def pages_et_titres_in_tdm
     @pages_et_titres_tdm ||= begin
-      h = Hash::new
+      h = {}
       ids_pages_et_titres_in.each{ |pid| h.merge!(pid => Cnarration::Page::get(pid)) }
       h
     end
   end
   def pages_et_titres_out_tdm
     @pages_et_titres_out_tdm ||= begin
-      h = Hash::new
+      h = {}
       ids_pages_et_titres_out.each{ |pid| h.merge!(pid => Cnarration::Page::get(pid)) }
       h
     end
   end
 
+
   def ids_pages_et_titres_in
-    @ids_pages_et_titres ||= begin
-      res = Cnarration::table_tdms.get(id, colonnes:[:tdm])
-      if res.nil? # Pas encore de table des matières
-        Array::new
-      else # Il y a une table des matières
-        res[:tdm]
-      end
-    end
+    @ids_pages_et_titres_in ||= Cnarration::Livre.ids_tdm_of_livre( id )
   end
   def ids_pages_et_titres_out
     @ids_pages_et_titres_out ||= begin
-      ids = Cnarration::table_pages.select(where:{livre_id: id}, colonnes:[]).keys
+      ids = Cnarration.table_pages.select(where:{livre_id: id}, colonnes:[]).collect{|h| h[:id]}
       if ids_pages_et_titres_in.empty?
         ids
       else
-        ids.reject!{|pid| ids_pages_et_titres_in.include?(pid)}
+        ids.reject!{ |pid| ids_pages_et_titres_in.include?(pid)}
       end
     end
   end

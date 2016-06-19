@@ -265,7 +265,6 @@ class << self
   def niveau_humain niveau
     niveau = niveau.to_s(11)
     niv = niveau.to_s == "a" ? "a" : niveau.to_i
-    debug "NIV : #{niv.inspect}"
     Cnarration::NIVEAUX_DEVELOPPEMENT[niv][:hname]
   rescue Exception => e
     "Cnarration::NIVEAUX_DEVELOPPEMENT ne connait pas le niveau #{niveau.inspect}…"
@@ -282,10 +281,10 @@ class << self
   # Hash des données de la page.
   def pages_per_niveau
     @pages_per_niveau ||= begin
-      h = Hash::new
-      pages.each do |pid, hpage|
+      h = {}
+      pages.each do |hpage|
         niveau = hpage[:options][1].to_i(11)
-        h.merge!(niveau => Array::new) unless h.has_key?(niveau)
+        h.merge!(niveau => Array::new) unless h.key?(niveau)
         h[niveau] << hpage
       end
       h
@@ -294,22 +293,20 @@ class << self
 
   def pages_per_book
     @pages_per_book ||= begin
-      hbooks = Hash::new
-      pages.each do |pid, hpage|
+      hbooks = {}
+      pages.each do |hpage|
         livre_id = hpage[:livre_id].to_i
-        hbooks.merge!(livre_id => Array::new) unless hbooks.has_key?(livre_id)
+        hbooks.merge!(livre_id => Array::new) unless hbooks.key?(livre_id)
         hbooks[livre_id] << hpage
       end
       hbooks
     end
   end
 
-  # Hash avec en clé l'ID de la page (seulement des pages) et
-  # en valeur un hash de toutes les données.
+  # Array des pages (seulement des pages) où chaque élément est
+  # un hash de toutes les données de la page.
   def pages
-    @pages ||= begin
-      Cnarration::table_pages.select(where: "options LIKE '1%'")
-    end
+    @pages ||= Cnarration::table_pages.select(where: "options LIKE '1%'")
   end
 
   def chapitres
