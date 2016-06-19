@@ -26,7 +26,7 @@ class << self
   # @usage    Cnarration::Filmography::build
   def build
     bib_file.remove if bib_file.exist?
-    films.each do |fid, fdata|
+    films.each do |fdata|
       ref_bib_file.puts code_film( fdata )
     end
   rescue Exception => e
@@ -67,11 +67,11 @@ class << self
   # {Hash} de tous les films du filmodico avec en clé l'identifiant
   # numérique du film et en valeur le hash de toutes ses données.
   def films
-    @films ||= table_films.select(order:"titre ASC")
+    @films ||= table_filmodico.select(order:"titre ASC")
   end
 
-  def table_films
-    @table_films ||= BdD::new(base_filmodico.to_s).table('films')
+  def table_filmodico
+    @table_filmodico ||= site.bdm_table(:biblio, 'filmodico')
   end
 
   # Référence au fichier ouvert en écriture (append)

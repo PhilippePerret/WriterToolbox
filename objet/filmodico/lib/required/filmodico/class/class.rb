@@ -30,7 +30,7 @@ class Filmodico
       end
       colonnes << :resume if options[:with_resume]
       data_request.merge!(colonnes: colonnes)
-      @films = table_films.select(data_request)
+      @films = table_filmodico.select(data_request)
 
       # Dans la table, le `order by mot` ne tient pas compte des caractères
       # accentués et les envoie vers la fin les mots commençant par des
@@ -58,7 +58,7 @@ class Filmodico
     # Répond à `list films` ou `affiche table films`
     def films_in_table
       flash "Attention, cette liste de films est celle du Filmodico, PAS CELLE qui sert pour l'outil Analyse de films, même si les deux listes sont synchronisées."
-      console.show_table self.table_films
+      console.show_table self.table_filmodico
       "OK"
     rescue Exception => e
       debug e
@@ -66,9 +66,10 @@ class Filmodico
     end
 
 
-    def table_films
-      @table_films ||= site.dbm_table(:biblio, 'filmodico')
+    def table_filmodico
+      @table_filmodico ||= site.dbm_table(:biblio, 'filmodico')
     end
+
     # -> MYSQL ANALYSE
     def table_films_analyse
       @table_films_analyse ||= site.db.create_table_if_needed('analyse', 'films')

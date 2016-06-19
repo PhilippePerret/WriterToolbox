@@ -7,6 +7,8 @@
   Le lancer dans TextMate
 
 =end
+require 'json'
+
 unless defined?(OFFLINE)
   require 'sqlite3'
   require 'mysql2'
@@ -57,9 +59,12 @@ begin
       hdata.each do |k, v|
         hdata[k] = nil if v == 'NULL'
       end
-      if hdata[:id] == 212
-        debug "FILM ##{hdata[:id]} : #{hdata[:titre]}"
-        hdata[:titre] = 'Wò Hǔ Cáng Lóng'.force_encoding('utf-8')
+      # if hdata[:id] == 212
+      #   debug "FILM ##{hdata[:id]} : #{hdata[:titre]}"
+      #   hdata[:titre] = 'Wò Hǔ Cáng Lóng'.force_encoding('utf-8')
+      # end
+      if hdata[:pays]
+        hdata[:pays] = JSON.parse(hdata[:pays]).join(' ')
       end
       # ---------------------------------------------------------------------
       # /FIN TRANSFORMATION DES DONNÉES

@@ -58,9 +58,9 @@ class SiteHtml
     #   end
     # end
     #
-    # def database_exists? db_name
-    #   (path_database_of db_name).exist?
-    # end
+    def database_exists? db_name
+      (path_database_of db_name).exist?
+    end
 
     def database_of db_name
       BdD::new((path_database_of db_name).to_s)

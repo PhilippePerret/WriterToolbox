@@ -23,6 +23,6 @@ class Filmodico
   end
 
   def table
-    @table ||= self.class::table_films
+    @table ||= self.class.table_filmodico
   end
 end

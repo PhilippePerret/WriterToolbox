@@ -12,10 +12,9 @@ class FilmAnalyse
       @table_films ||= site.db.create_table_if_needed('analyse', 'films')
     end
 
-    # {BdD::Table} La table contenant les films du Filmodico
-    # -> MYSQL FILMODICO
+    # {SiteHtml::DBM_TABLE} La table contenant les films du Filmodico
     def table_filmodico
-      @table_filmodico ||= site.db.create_table_if_needed('filmodico', 'films')
+      @table_filmodico ||= site.dbm_table(:biblio, 'filmodico')
     end
 
     # Affiche la liste des films dans la table analyse.films, pour

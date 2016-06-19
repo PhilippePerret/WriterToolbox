@@ -86,10 +86,6 @@ class Filmodico
   end
   # Les pays du film, au format humain
   def hpays
-    @hpays ||= begin
-      pays.collect do |pa|
-        PAYS[pa]
-      end.pretty_join
-    end
+    @hpays ||= pays.collect { |pa| PAYS[pa] }.pretty_join
   end
 end

@@ -52,7 +52,7 @@ class Filmodico
       unless where_clause.empty?
         where_clause = where_clause.join(' AND ')
         debug "where_clause: #{where_clause.inspect}"
-        hfilms = Filmodico.table_films.select(where: where_clause, colonnes:[:titre, :realisateur, :annee], nocase: true)
+        hfilms = Filmodico.table_filmodico.select(where: where_clause, colonnes:[:titre, :realisateur, :annee], nocase: true)
       end
 
       @found = unless hfilms.nil? || hfilms.empty?

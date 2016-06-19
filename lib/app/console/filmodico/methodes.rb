@@ -9,7 +9,7 @@ class Console
   # type Harvard du film
   def get_all_films_of_ref fref
     site.require_objet 'filmodico'
-    Filmodico::table_films.select(where:"titre LIKE '%#{fref}%' OR titre_fr LIKE '%#{fref}%' OR film_id LIKE '%#{fref}%'", colonnes:[:film_id, :titre], nocase:true).values
+    Filmodico::table_filmodico.select(where:"titre LIKE '%#{fref}%' OR titre_fr LIKE '%#{fref}%' OR film_id LIKE '%#{fref}%'", colonnes:[:film_id, :titre], nocase:true)
   end
 
   # Retourne la balise pour le film de référence

@@ -23,12 +23,12 @@ class Filmodico
     def edit_by_id
       id = param_data[:id].nil_if_empty
       return error("Il faut fournir l'identifiant du film") if id.nil?
-      prepare_edition_film table_films.get(id.to_i)
+      prepare_edition_film table_filmodico.get(id.to_i)
     end
     def edit_by_film_id
       film_id = param_data[:film_id].nil_if_empty
       return error("Il faut fournir le FILM ID du film") if film_id.nil?
-      hfilm = table_films.get(where:{film_id: film_id})
+      hfilm = table_filmodico.get(where:{film_id: film_id})
       prepare_edition_film hfilm
     end
     def edit_by_sym_id
@@ -36,13 +36,11 @@ class Filmodico
       return error("Il faut fournir le SYM ID du film") if sym_id.nil?
       # -> MYSQL ANALYSE
       id = table_films_analyse.select(where:{sym: sym_id}).keys.first
-      prepare_edition_film table_films.get(id)
+      prepare_edition_film table_filmodico.get(id)
     end
 
     def prepare_edition_film hfilm
-      pays = hfilm.delete(:pays).join(' ') # Array
       hfilm.merge!(
-        pays: pays,
         realisateur: hfilm.delete(:realisateur).as_people_in_textarea,
         auteurs: (hfilm.delete(:auteurs)||[]).as_people_in_textarea,
         producteurs: (hfilm.delete(:producteurs)||[]).as_people_in_textarea,
@@ -69,27 +67,26 @@ class Filmodico
     if is_new?
       # debug "data2save: #{data2save.pretty_inspect}"
       # Table FILMODICO
-      @id = Filmodico::table_films.insert(data2save)
+      @id = Filmodico::table_filmodico.insert(data2save)
       # Table ANALYSE
       data2save_analyse.merge!(id: @id, created_at: NOW)
       # -> MYSQL ANALYSE
-      Filmodico::table_films_analyse.insert(data2save_analyse)
+      Filmodico::table_filmodico_analyse.insert(data2save_analyse)
       # Pour l'affichage
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
-      Filmodico::table_films.update(id, data2save)
+      Filmodico::table_filmodico.update(id, data2save)
       danalyse = data2save_analyse
       # Il faut remettre le sym et les options si le film
       # existe déjà dans la table des analyses.
       # -> MYSQL ANALYSE
-      dfilm = Filmodico::table_films_analyse.get(id)
+      dfilm = Filmodico::table_filmodico_analyse.get(id)
       unless dfilm.nil?
         data2save_analyse.merge!(options: dfilm[:options])
         if data2save_analyse[:sym].nil_if_empty == nil
           data2save_analyse.merge!(sym: dfilm[:sym])
         end
       end
-      # -> MYSQL ANALYSE
       Filmodico::table_films_analyse.update(id, data2save_analyse)
     end
     # Transmettre l'affiche si nécessaire
@@ -106,7 +103,7 @@ class Filmodico
       resume:           @resume,
       duree:            @duree,
       duree_generique:  @duree_generique,
-      pays:             @pays, # Array
+      pays:             @pays,
       realisateur:      @realisateur,
       auteurs:          @auteurs,
       producteurs:      @producteurs,
@@ -179,8 +176,10 @@ class Filmodico
     raise "Il faut fournir le résumé du film !" if @resume.nil?
 
     @pays = data_params[:pays].nil_if_empty
-    raise "Il faut fournir le pays du film !" if @pays.nil?
-    @pays = @pays.split(' ')
+    @pays != nil || raise("Il faut fournir le pays du film !")
+    @pays.split(' ').each do |p|
+      PAYS.key?(p) || raise("La marque du pays #{p.inspect} est inconnue.")
+    end
 
     ['realisateur', 'auteurs', 'producteurs', 'musique'].each do |key|
       people = data_params[key.to_sym].nil_if_empty
