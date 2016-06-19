@@ -1,7 +1,6 @@
 # encoding: UTF-8
 class User
 
-  def first_post  ; @first_post   ||= get_first_post  end
   def last_post   ; @last_post    ||= get_last_post   end
   # Nombre de messages sur le forum
   def posts_count ; @posts_count  ||= get_posts_count end
@@ -18,7 +17,6 @@ class User
     {
       id:           id,
       posts_count:  0,
-      first_post:   nil,
       last_post:    nil,
       created_at:   NOW,
       updated_at:   NOW
@@ -34,16 +32,13 @@ class User
   # Ajoute un message pour l'auteur
   # Cela correspond à plusieurs actions : incrémente la
   # donnée `count` de l'auteur (note : dans l'autre table),
-  # renseigne `first_post` si c'est le premier message et
-  # enfin renseigne `last_post` spécifiant l'identifiant
+  # et renseigne `last_post` spécifiant l'identifiant
   # du dernier message.
   def add_post post_id
     post_id = post_id.id if post_id.instance_of?(Forum::Post)
     dnew = Hash::new
-    # Est-ce un premier message ?
-    dnew.merge!( first_post: { at:NOW, id:post_id } ) if posts_count == 0
     # On l'ajoute toujours en dernier message
-    dnew.merge!(last_post: {at: NOW, id: post_id} )
+    dnew.merge!(last_post: {at: NOW, id: post_id}.to_json )
     # On incrémente toujours le nombre de message de l'user
     @posts_count = posts_count + 1
     dnew.merge!( posts_count:@posts_count, updated_at:NOW )
@@ -55,11 +50,6 @@ class User
     dnew = Hash::new
     @posts_count = posts_count - 1
     dnew.merge!( posts_count:@posts_count )
-    if first_post == post_id
-      # Il faut rechercher le nouveau dernier message s'il existe
-      res = Forum::table_posts.select( where:"id != #{post_id} AND user_id = #{id}", order:"created_at ASC", limit:1, colonnes: [] ).keys
-      dnew.merge!( first_post: res.first ) # peut-être nil
-    end
     if last_post == post_id
       res = Forum::table_posts.select( where:"id != #{post_id} AND user_id = #{id}", order:"created_at DESC", limit:1, colonnes: [] ).keys
       dnew.merge!( last_post: res.first ) # peut-être nil
@@ -73,9 +63,6 @@ class User
 
     def get_posts_count
       data_forum_user[:posts_count]
-    end
-    def get_first_post
-      data_forum_user[:first_post]
     end
     def get_last_post
       data_forum_user[:last_post]
