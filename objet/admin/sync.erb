@@ -26,7 +26,8 @@ end
   [
     ['les citations', 'citations'],
     ['les tâches',    'taches'],
-    ['la Collection Narration', 'narration']
+    ['la Collection Narration', 'narration'],
+    ['le programme UN AN UN SCRIPT', 'uaus']
   ].collect do |choses, key|
     is_checked = param("sync_#{key}".to_sym) == 'on'
     "Synchroniser #{choses}".in_checkbox(name: "sync_#{key}", checked: is_checked).in_div

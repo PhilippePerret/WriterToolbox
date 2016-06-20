@@ -22,17 +22,18 @@ class Sync
   # Nouvelle méthode principale
   #
   def synchroniser
-    debug "-> synchroniser"
+
+    # Synchronisation des tâches
     synchronize_taches    if param('sync_taches') == 'on'
-    # On fait systématiquement la synchronisation des citations
+    # Synchronisation des citations
     synchronize_citations if param('sync_citations') == 'on'
     # Narration
     synchronize_narration if param('sync_narration') == 'on'
+    # Synchronisation du programme UN AN UN SCRIPT
+    synchronize_uaus      if param('sync_uaus') == 'on'
 
 
-    # # On procède à l'état des lieux
-    # etat_des_lieux_offline
-    debug "<- synchroniser"
+    # Construction de la sortie
     build_output
 
   end

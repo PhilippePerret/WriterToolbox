@@ -100,49 +100,8 @@ class CNarration
   end
 
   def synchronize_fichiers
-    loc_files = get_fichiers_locaux
-    dis_files = get_fichiers_distants
     report "* Synchronisation des fichiers physiques"
-    report "Nombre fichiers locaux   : #{loc_files.count}"
-    report "Nombre fichiers distants : #{dis_files.count}"
-
-    loc_files.each do |loc_path, loc_mtime|
-      dis_mtime = dis_files.delete(loc_path)
-
-      if dis_mtime.nil? || loc_mtime > dis_mtime
-        if dis_mtime.nil?
-          suivi "Le fichier #{loc_path} n'existe pas en online."
-          report "* Création du fichier DISTANT #{loc_path}…"
-        elsif loc_mtime > dis_mtime
-          suivi "Le fichier LOCAL #{loc_path} est plus jeune"
-          report "* Actualisation du fichier DISTANT #{loc_path}…"
-        end
-        upload_narration_file(loc_path)
-        report "= OK"
-        @nombre_synchronisations += 1
-      elsif dis_mtime > loc_mtime
-        suivi "Bizarre, le fichier distant #{loc_path} est plus jeune que le fichier local (local: #{loc_mtime.inspect} / distant: #{dis_mtime.inspect})…"
-      else
-        suivi "Fichier #{loc_path} OK"
-      end
-    end
-
-    # Les ficheirs distants doivent être détruits
-    if dis_files.count > 0
-      report "Nombre de fichiers DISTANTS à détruire : #{dis_files.count} "
-      dis_files.each do |relpath, ctime|
-        # On met une protection, au cas où
-        unless relpath.nil_if_empty.nil? || relpath == '/'
-          dis_fullpath = "#{dis_cnarration_folder}/#{relpath}"
-          rs = `ssh #{serveur_ssh} 'rm #{dis_fullpath}'`
-          report "= Fichier #{relpath} DISTANT détruit avec succès"
-        end
-      end
-    else
-      report "Aucun fichiers distants à détruire."
-    end
-
-
+    sync_files loc_cnarration_folder, dis_cnarration_folder
     report "= Synchronisation des fichiers physiques OK"
   end
 
@@ -154,17 +113,15 @@ class CNarration
   #
   def upload_narration_file relpath
     loc_fullpath = "#{loc_cnarration_folder}/#{relpath}"
-    File.exist?(loc_fullpath) || raise("Le fichier local `#{loc_fullpath}` est introuvable…")
     dis_fullpath = "#{dis_cnarration_folder}/#{relpath}"
-    cmd_scp = "scp -pv '#{loc_fullpath}' #{serveur_ssh}:#{dis_fullpath}"
-    retour = `#{cmd_scp}`
-    suivi retour
+    retour = upload_file loc_fullpath, dis_fullpath
   end
 
   # Dossier narration local
   def loc_cnarration_folder
     @loc_cnarration_folder ||= './data/unan/pages_semidyn/cnarration'
   end
+
   # Dossier narration distant
   def dis_cnarration_folder
     @dis_cnarration_folder ||= './www/data/unan/pages_semidyn/cnarration'
@@ -173,49 +130,6 @@ class CNarration
   # ---------------------------------------------------------------------
   #   SOUS MÉTHODES
   # ---------------------------------------------------------------------
-
-
-  # Méthode qui récupère les données des fichiers online.
-  # C'est simplement un Hash contenant en clé le path du fichier
-  # distant et en valeur sa date de modification.
-  def get_fichiers_distants
-    code_ssh = <<-SSH
-res = {error: nil, files: nil}
-begin
-  h_files = {}
-  main_folder = './www/data/unan/pages_semidyn/cnarration'
-  Dir[main_folder + '/**/*.*'].collect do |pany|
-    relpath = pany.sub(/^\\.\\/www\\/data\\/unan\\/pages_semidyn\\/cnarration\\//,'')
-    h_files.merge!( relpath => File.stat(pany).mtime.to_i )
-  end
-  res[:files] = h_files
-rescue Exception => e
-  res[:error] = e.message
-end
-STDOUT.write Marshal::dump(res)
-    SSH
-    rs = `ssh #{serveur_ssh} "ruby -e \\"#{code_ssh}\\""`
-    if rs == ''
-      raise "Impossible d'obtenir la liste des fichiers distants : retour SSH vide…"
-    else
-      rs = Marshal.load(rs)
-      if rs[:error].nil?
-        rs[:files]
-      else
-        raise "Impossible d'obtenir la liste des fichiers distants : #{rs[:error]}"
-      end
-    end
-  end
-
-  def get_fichiers_locaux
-    h_files = {}
-    main_folder = './data/unan/pages_semidyn/cnarration'
-    Dir[main_folder + '/**/*.*'].collect do |pany|
-      relpath = pany.sub(/^#{main_folder}\//,'')
-      h_files.merge!( relpath => File.stat(pany).mtime.to_i )
-    end
-    h_files
-  end
 
   # Pour actualiser le niveau de développement d'une page
   def update_niveau_developpement(pid, loc_data, dis_data)
