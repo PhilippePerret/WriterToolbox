@@ -31,6 +31,16 @@ class Sync
     synchronize_narration if param('sync_narration') == 'on'
     # Synchronisation du programme UN AN UN SCRIPT
     synchronize_uaus      if param('sync_uaus') == 'on'
+    # Synchronise le FIlmodico
+    synchronize_filmodico if param('sync_filmodico') == 'on'
+    # Synchronise le SCÉNODICO
+    synchronize_scenodico if param('sync_scenodico') == 'on'
+    # Synchronise les analyses de films
+    synchronize_analyses if param('sync_analyses') == 'on'
+    # Synchronise le affiches de films
+    synchronize_affiches if param('sync_affiches') == 'on'
+    # Synchronise le tweets permanents
+    synchronize_permanent_tweets if param('sync_tweets') == 'on'
 
 
     # Construction de la sortie

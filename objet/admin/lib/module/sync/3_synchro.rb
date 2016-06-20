@@ -12,12 +12,6 @@ class Sync
   #
   def synchronize
 
-    # On fait des backups en fonction des synchronisations
-    # à faire
-    build_backups_per_synchro
-
-    # Toutes les synchronisation à faire
-
     synchronize_affiches    if param(:cb_synchronize_affiches)
 
     synchronize_tweets      if param(:cb_synchronize_permtweets)

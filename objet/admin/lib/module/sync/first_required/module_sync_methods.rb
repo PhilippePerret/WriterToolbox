@@ -77,7 +77,10 @@ module CommonSyncMethods
 
   def suivi mess  ; @sync.suivi   << "    #{mess}"  end
   def report mess ; @sync.report  << "    #{mess}"  end
-  def error mess  ; @sync.errors  << mess           end
+  def error mess
+    @sync.errors  << mess
+    false
+  end
 
 
   # ---------------------------------------------------------------------
