@@ -8,7 +8,7 @@
   Elle est intelligente aussi parce qu'elle vérifie aussi tous les
   fichiers, que ce soit les pages d'analyse, les pages de cours ou
   les affiches de film.
-  
+
 =end
 
 # Ce module peut être appelé en standalone pour le check

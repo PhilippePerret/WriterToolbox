@@ -413,8 +413,8 @@ DELETE FROM #{dbm_table.name}
   # `set` quand il faut voir si la rangée existe ou non)
   def final_request
     r = request.gsub(/\n/, ' ').gsub(/ +/, ' ').strip + ';'
-    debug "@REQUEST: #{r}"
-    debug "@PREPARED_VALUES: #{@prepared_values.inspect}"
+    # debug "@REQUEST: #{r}"
+    # debug "@PREPARED_VALUES: #{@prepared_values.inspect}"
     r
   end
 

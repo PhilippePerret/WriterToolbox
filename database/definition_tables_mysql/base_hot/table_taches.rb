@@ -37,7 +37,7 @@ CREATE TABLE taches
 
     # UPDATED_AT
     # ----------
-    # Date de dernière modification. Sert aussi de date de fin
+    # Date de dernière modification.
     updated_at INTEGER(10),
 
     # CREATED_AT

@@ -19,7 +19,8 @@ module MethodesBaseMySQL
   end
 
   def offline?
-    @is_offline ||= OFFLINE
+    @is_offline = OFFLINE if @is_offline === nil
+    @is_offline
   end
 
   # Au cours de la même session, on peut faire appel à la

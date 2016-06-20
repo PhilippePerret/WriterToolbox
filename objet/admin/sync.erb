@@ -5,37 +5,40 @@
 # leur synchronisation.
 # Seuls les fichiers de l'application ne sont pas testés par ce programme
 raise_unless_admin
-
+%>
+<h1>Synchronisation</h1>
+<%
 # Si une opération est à faire, il faut l'invoquer
 #
 if site.current_route.route == "admin/sync" && param(:operation) != nil
   methode = param(:operation).to_sym
-  sync.send(methode) if sync.respond_to?( methode )
+  if sync.respond_to?( methode )
+    debug "--> #{methode}"
+    sync.send(methode)
+  end
 end
 
 %>
-<%= ::Admin::titre_h1("Synchronisation") %>
 
-<%
-# ---------------------------------------------------------------------
-#   Boutons
-#   permettant d'obtenir l'état de la synchronisation et de lancer
-#   les synchronisation nécessaire.
-# ---------------------------------------------------------------------
-%>
-<div class="right btns">
-  <%= "Forcer un nouveau check".in_a(href:"admin/sync?operation=force_check_synchro", class:'small') %>
-</div>
-<hr>
-<%
-# ---------------------------------------------------------------------
-#   État de la synchronisation
-#   Produit par les méthodes du fichier ruby
-#   L'état des lieux est fait une fois par heure et doit être réitéré
-#   à l'aide du bouton si nécessaire.
-# ---------------------------------------------------------------------
-%>
-<%= sync.etat_des_lieux %>
+<form class="dim2080" action="admin/sync" method="POST">
+  <%= 'synchroniser'.in_hidden(name:'operation') %>
+  <%=
+  [
+    ['les citations', 'citations'],
+    ['les tâches',    'taches'],
+    ['la Collection Narration', 'narration']
+  ].collect do |choses, key|
+    is_checked = param("sync_#{key}".to_sym) == 'on'
+    "Synchroniser #{choses}".in_checkbox(name: "sync_#{key}", checked: is_checked).in_div
+  end.join('')
+  %>
+  <%= 'Synchroniser'.in_submit(class:'btn').in_div(class: 'buttons') %>
+</form>
+
+
+<%=
+  # La sortie de la synchronisation, son résultat
+  sync.output %>
 
 <%
 # ---------------------------------------------------------------------

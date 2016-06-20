@@ -11,8 +11,6 @@ class Sync
   # procèdera à un nouvel état des lieux.
   #
   def synchronize
-    @suivi  ||= Array::new
-    @errors ||= Array::new
 
     # On fait des backups en fonction des synchronisations
     # à faire
@@ -24,18 +22,11 @@ class Sync
 
     synchronize_tweets      if param(:cb_synchronize_permtweets)
 
-    synchronize_narration   if param(:cb_synchronize_narration) || param(:cb_synchro_files_narration)
-
     synchronize_scenodico   if param(:cb_synchronize_scenodico)
 
     synchronize_filmodico   if param(:cb_synchronize_filmodico)
 
     synchronize_analyses    if param(:cb_synchronize_analyses) || param(:cb_sync_analyse_files)
-
-
-    # Les bases de données qui contiennent plusieurs tables
-    # à synchroniser doivent être chargées ici si nécessaire
-    Sync::Database.site_cold.upload_if_needed
 
     # À la fin, on peut détruire tous les fichiers pour forcer
     # un prochain check. Cela entrainera l'affichage d'un
@@ -104,98 +95,6 @@ class Sync
   # ---------------------------------------------------------------------
   #   Méthodes de synchronisation
   # ---------------------------------------------------------------------
-
-  # Synchronisation de la collection NARRATION sur ICARE
-  #
-  # Synchronise :
-  #   * la base de données cnarration.db
-  #   * tous les fichiers ERB
-  #   * les images
-  #
-  def synchronize_narration
-    @suivi << "* Synchronisation de la collection Narration"
-
-    # Il faut requérir le module qui contient toutes les méthodes
-    # pour synchroniser les sites
-    SuperFile::new('./objet/cnarration/lib/module/sync').require
-    resultat_ok = SynchroNarration::synchronize_all(self)
-    @suivi << (SynchroNarration::suivi.collect{|p| "  #{p}"}.join("\n"))
-
-    if resultat_ok
-      @suivi << "= Synchronisation de la collection Narration OK"
-    else
-      @suivi << "  # Problème avec la synchronisation de la collection Narration"
-    end
-  rescue Exception => e
-    debug e
-    @suivi << "ERROR : #{e.message}"
-    @errors << e.message
-  end
-
-  # Synchronisation de la table des citations.
-  #
-  # Tout ce qu'il y a à faire, c'est récupérer les dates
-  # de derniers envois des citations (last_sent) pour les
-  # injecter dans la table locale.
-  #
-  # Noter que cette synchronisation est presque identique
-  # à celle des tweets permanents et qu'on pourrait donc
-  # être plus DRY en rationalisant les choses.
-  #
-  def synchronize_citations
-    @suivi << "* Synchronisation des citations (last_sent)"
-
-    table_loc = site.dbm_table(:cold, 'citations', online = false)
-    table_dis = site.dbm_table(:cold, 'citations', online = true)
-
-    req = { colonnes: [:last_sent] }
-    # *** On prend les données de la base distante, à
-    # savoir des hashs {:id, :count, :last_sent}
-    begin
-      table_dis.select(req).each { |h| rs_dis.merge!(h['id'] => h) }
-    rescue Exception => e
-      debug e
-      error "Une erreur est survenue en récupérant les informations des citations distantes. Je dois renoncer."
-      return false
-    end
-
-    # *** On prend les données de la base locale
-    begin
-      table_loc.select(req).each { |h| rs_loc.merge!(h['id'] => h) }
-    rescue Exception => e
-      debug e
-      error "Une erreur est survenur en récupérant les informations des citations locales. Je dois renoncer."
-      return
-    end
-
-    # *** On calcule la différence
-    rs_diff = []
-    rs_dis.each do |tid, tdata_online|
-      if rs_loc[tid] != tdata_online
-        rs_diff << tdata_online
-      end
-    end
-
-    # *** On actualise les données à actualiser
-    unless rs_diff.empty?
-      begin
-        rs_dis.each do |cdata|
-          table_loc.update( cdata[:id], cdata )
-        end
-      rescue Exception => e
-        debug e
-        error "Impossible d'actualiser les données tweets permanents. Je dois renoncer…"
-        return
-      end
-    end
-
-    @suivi << "= Synchronisation des citations OK"
-  rescue Exception => e
-    debug e
-    @suivi << "ERROR : #{e.message}"
-    @errors << e.message
-  end
-
 
   # Synchronisation de la table des tweets permanents.
   #
@@ -403,21 +302,6 @@ STDOUT.write Marshal::dump(errors: errors)
     return
 
     @suivi << "= Synchronisation du Scénodico OK"
-  rescue Exception => e
-    debug e
-    @suivi << "ERROR : #{e.message}"
-    @errors << e.message
-  end
-
-  # Synchronisation des tâches
-  def synchronize_taches
-    @suivi << "* Synchronisation des tâches"
-
-    Admin::require_module 'taches'
-    ::Admin::Taches::synchronize_taches
-    @suivi << (::Admin::Taches::suivi.collect{|p| "\t\t#{p}"}.join("\n"))
-
-    @suivi << "= Synchronisation des tâches OK"
   rescue Exception => e
     debug e
     @suivi << "ERROR : #{e.message}"

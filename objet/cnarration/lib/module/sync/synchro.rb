@@ -78,35 +78,22 @@ class << self
   #
   def build_commands_narration_and_execute_on lieu
 
-    # Si true, on n'exécute pas les commandes, on les place
-    # seulement dans le débug
-    mode_debuggage = false
-
-    if mode_debuggage && @alerte_mode_debuggage.nil?
-      flash "Synchronisation de Narration en mode debuggage. Aucun fichier ne sera synchronisé. Regarder dans le debug les codes exécutés."
-      @alerte_mode_debuggage = true
-    end
-
-    on_boa    = lieu == :boa
-    on_icare  = lieu == :icare
-
-    dnar = isync.data_synchronisation["cnarration_#{lieu}".to_sym]
-
-    debug "\n\n\ndnar: #{dnar.pretty_inspect}\n\n" if mode_debuggage
+    # Les données de synchronisation
+    dnar =
 
     # Liste des commandes qui seront envoyés par SSH
-    command_scp = Array::new
-    command_mkd = Array::new
-    command_ssh = Array::new
+    command_scp = []
+    command_mkd = []
+    command_ssh = []
 
-    serveur = on_boa ? serveur_ssh_boa : serveur_ssh_icare
+    serveur = serveur_ssh_boa
 
     # === Synchroniser les CSS ===
     # Attention, pour BOA, il faut passer les fichiers commun CSS
-    folder_css = lieu == :boa ? "www/objet/cnarration/lib/required/css" : "www/ruby/_apps/Cnarration/view/css"
+    folder_css = "www/objet/cnarration/lib/required/css"
     dcss = dnar[:css]
     (dcss[:synchro_required] + dcss[:distant_unknown]).each do |relpath, ncss|
-      next if on_boa && relpath.start_with?('./view/css/common/')
+      next if relpath.start_with?('./view/css/common/')
       fcss = File.expand_path(relpath)
       pnar = "./#{folder_css}/#{ncss}"
       fnar = File.dirname(pnar)
@@ -123,7 +110,7 @@ class << self
     # === Synchroniser les fichiers ERB ===
     dfiles = dnar[:files]
     folder_loc = "./data/unan/pages_semidyn/cnarration"
-    folder_erb = on_boa ? "www/data/unan/pages_semidyn/cnarration" : "www/storage/narration/cnarration"
+    folder_erb = "www/data/unan/pages_semidyn/cnarration"
 
     # Fichiers à ajouter et synchroniser
     (dfiles[:synchro_required] + dfiles[:distant_unknown]).each do |rpath_loc, nfile|
@@ -140,9 +127,7 @@ class << self
       command_ssh << "  File.unlink(f) if File.exist?(f)"
     end
 
-    #
     # Finalisation des commandes mkdir
-    #
     unless command_mkd.empty?
       command_mkd = command_mkd.collect do |dir|
         "mkdir -p #{dir}"
