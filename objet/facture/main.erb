@@ -113,7 +113,7 @@ TODAY_HUMAN = "<%= Time.now.to_i.as_human_date %>" ;
 # 	Formulaire pour les informations générales
 %>
 
-<form class="dim3070 left hidden_when_formate" action="facture/main" method="POST">
+<form id="form_facture" class="dim3070 left hidden_when_formate" action="facture/main" method="POST">
 	<%= form.field_text("Lieu", 'lieu', "Paris", {class:'medium'}) %>
 	<%= form.field_text("Date", 'date', Time.now.to_i.as_human_date.gsub(/<(.*?)>/, ' ')) %>
 	<%= form.separator %>
