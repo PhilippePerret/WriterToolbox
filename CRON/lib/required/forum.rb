@@ -43,7 +43,7 @@ class << self
     # dernier checkup du forum et qui sont validés.
     drequest = { where: "created_at > #{last_time_checkup} AND options LIKE '1%'"}
     drequest.merge!( colonnes: [:sujet_id] )
-    new_messages = table_posts.select( drequest ).values
+    new_messages = table_posts.select( drequest )
 
     log "= Nouveaux messages trouvés : #{new_messages.count}"
 
