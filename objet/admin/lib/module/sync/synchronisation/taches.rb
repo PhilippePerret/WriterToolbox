@@ -14,7 +14,7 @@ class Sync
     @report << "* Synchronisation immédiate des TÂCHES"
     if HotTaches.instance.synchronize(self)
       @suivi << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS"
-      @report << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS"
+      @report << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS".in_span(class: 'blue')
     else
       mess_err = "# Synchronisation des tâches impossible"
       @suivi << mess_err

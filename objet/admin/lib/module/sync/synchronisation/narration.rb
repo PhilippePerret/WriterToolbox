@@ -12,7 +12,7 @@ class Sync
   def synchronize_narration
     @report << "* Synchronisation IMMÉDIATE de la Collection NARRATION"
     if Sync::CNarration.instance.synchronize(self)
-      @report << "= Synchronisation de la collection Narration OPÉRÉE AVEC SUCCÈS"
+      @report << "= Synchronisation de la collection Narration OPÉRÉE AVEC SUCCÈS".in_span(class: 'blue')
     else
       @report << "# PROBLÈME AVEC LA SYNCHRONISATION DE LA COLLECTION NARRATION".in_span(class: 'red')
     end

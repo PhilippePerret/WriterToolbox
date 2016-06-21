@@ -1,6 +1,15 @@
 # encoding: UTF-8
 =begin
 Il faut que ce module soit en standalone
+
+  Pour placer un livre dans une page narration (ou autre) on fait :
+
+    LIVRE[<id>]
+
+  On peut modifier le titre par :
+
+    LIVRE[<id>|<autre titre>]
+
 =end
 class Cnarration
 
@@ -8,6 +17,14 @@ class Cnarration
   # de la collection Narration.
   #
   BIBLIOGRAPHIE = {
+    'DIAL2004' => {
+        id:     'DIAL2004',
+        titre:  'Des Dialogues de cinéma',
+        auteur:  'Jean Samouillan',
+        editeur:  'Lharmattan',
+        annee:    2004,
+        isbn:     '2-7475-5923-8'
+    },
     'DRAMA1994'     => {
       id:       "DRAMA1994",
       titre:    "La Dramaturgie",

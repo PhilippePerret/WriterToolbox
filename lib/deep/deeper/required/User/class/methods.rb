@@ -15,15 +15,21 @@ class User
     #
     def login_ok?
       login_data = param(:login)
-      mail = login_data[:mail]
-      pasw = login_data[:password]
-      res = table_users.select(where: {mail: mail}, colonnes: [:salt, :cpassword, :mail]).first
-      return false if res.nil?
-      expected = res[:cpassword]
-      compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
-      ok = expected == compared
-      User::new( res[:id] ).login if ok
-      return ok
+      if login_data.nil?
+        # Ça arrive quelque chose quand ça tourne trop longtemps
+        # ou autre
+        return false
+      else
+        mail = login_data[:mail]
+        pasw = login_data[:password]
+        res = table_users.select(where: {mail: mail}, colonnes: [:salt, :cpassword, :mail]).first
+        return false if res.nil?
+        expected = res[:cpassword]
+        compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
+        ok = expected == compared
+        User::new( res[:id] ).login if ok
+        return ok
+      end
     end
 
   end # << self

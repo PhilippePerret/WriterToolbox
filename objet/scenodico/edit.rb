@@ -11,12 +11,13 @@ class Scenodico
     # Prend l'instance du mot +imot+ et retourne
     # un Hash pour son édition (où, par exemple, les listes des
     # relatifs sont transformées en liste string séparées par des
-    # espaces, etc.)
+    # espaces, etc.). OBSOLÈTE : Normalement, maintenant, toutes les
+    # listes sont enregistrées en string simple.
     def prepare_pour_champs imot
       hmot = imot.get_all
-      [:relatifs, :contraires, :synonymes, :categories].each do |key|
-        hmot[key] = hmot.delete(key).join(' ') unless hmot[key].nil?
-      end
+      # [:relatifs, :contraires, :synonymes, :categories].each do |key|
+        # hmot[key] = hmot.delete(key).join(' ') unless hmot[key].nil?
+      # end
       return hmot
     end
 
