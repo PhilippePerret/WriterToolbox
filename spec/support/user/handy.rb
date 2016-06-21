@@ -2,6 +2,16 @@
 =begin
 Handy méthodes pour les user
 =end
+def go_and_identify mail, password
+  visit_home
+  click_link('S\'identifier')
+  expect(page).to have_css('form#form_user_login')
+  within('form#form_user_login') do
+    fill_in('login_mail', with: mail)
+    fill_in('login_password', with: password)
+    click_button('OK')
+  end
+end
 
 # Retourne un pseudo aléatoire d'une longeur de 6 à 16 lettres
 # à peu près

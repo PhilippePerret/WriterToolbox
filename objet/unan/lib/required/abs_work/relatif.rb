@@ -206,7 +206,8 @@ class AbsWork
     # Un travail est considéré comme démarré s'il possède
     # un identifiant
     def started?
-      @is_started ||= work_id != nil
+      debug "started? = #{(work_id!=nil).inspect}"
+      work_id != nil
     end
 
     # ---------------------------------------------------------------------

@@ -78,7 +78,7 @@ class Work
   # achevés (mis en bas de page) et que donc, certaines informations
   # comme les dates, ne sont pas toujours affichées.
   def output
-    Unan::require_module 'work'
+    Unan.require_module('abs_work')
     self.as_card
   end
 end #/Work

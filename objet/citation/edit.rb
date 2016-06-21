@@ -13,6 +13,7 @@ class << self
     if cdata[:id].nil?
       # C'est une nouvelle citation
       cdata.delete(:id)
+      cdata.merge! created_at: NOW
       id_new_citation = table_citations.insert( cdata )
       cdata.merge!(id: id_new_citation)
       param(citation: cdata.merge(id: id_new_citation))

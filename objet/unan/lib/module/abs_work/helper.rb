@@ -18,7 +18,7 @@ class AbsWork
   #                 travail effectué.
   #
   def as_card_relative options = nil
-    options ||= Hash::new
+    options ||= {}
     as_recent = !!options[:as_recent]
     (
       nombre_de_points +
@@ -29,7 +29,7 @@ class AbsWork
       details_tache                         +
       section_exemples                      +
       suggestions_lectures
-    ).in_div(class:'work')
+    ).in_div(id: "work-#{id}", class:'work')
   end
 
   # ---------------------------------------------------------------------

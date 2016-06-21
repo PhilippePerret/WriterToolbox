@@ -5,33 +5,13 @@
   - par un visiteur inscrit mais non abonné
   - par un visiteur inscrit et abonné
 =end
-DUSER = {
-  pseudo: "InscriteUNAN", # pas de chiffres !
-  patronyme: "Inscrite UnanunScript",
-  mail: "boa.inscrite.unan@gmail.com",
-  password: 'unessaidesignupunan'
-}
-
-def go_and_identify_inscrite
-  visit_home
-  click_link('S\'identifier')
-  expect(page).to have_css('form#form_user_login')
-  within('form#form_user_login') do
-    fill_in('login_mail', with: DUSER[:mail])
-    fill_in('login_password', with: DUSER[:password])
-    click_button('OK')
-  end
-end
-
-# Retourne une instance de l'inscrite (utilisable seulement
-# à partir du moment où elle est inscrite)
+DUSER = TUnan::DUSER
 def inscrite
-  @inscrite ||= begin
-    id = User.table_users.get(where: "mail = '#{DUSER[:mail]}'")[:id]
-    User.new(id)
-  end
+  TUnan.inscrite
 end
-
+def go_and_identify_inscrite
+  TUnan.go_and_identify_inscrite
+end
 feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
 
 
@@ -277,51 +257,4 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
 
   end
 
-
-  scenario 'Inscrite vient faire son premier travail' do
-
-    go_and_identify_inscrite
-    expect(page).to have_content("Bienvenue, #{DUSER[:pseudo]}")
-
-    shot('after-signin-3e')
-
-    # Pour le moment, aucune préférence n'est réglé pour rejoindre
-    # le centre de travail, mais ça pourrait être fait à
-    # l'avenir.
-    if page.has_link?('rejoindre votre centre de travail')
-      click_link('rejoindre votre centre de travail')
-    end
-
-    expect(page).to have_content("Le Programme “Un An Un Script”")
-    expect(page).to have_css('h2', text: 'Votre centre de travail')
-    expect(page).not_to have_css('h3', text: 'Tâches')
-    expect(page).to have_link('Tâches')
-    click_link('Tâches')
-    expect(page).to have_css('h3', text: 'Tâches')
-
-    # Ici, la table des travaux de l'auteur existe, mais aucun
-    # travail ne doit avec été encore enregistré
-    table_travaux = site.dbm_table(:users_tables, "unan_works_#{inscrite.id}")
-    expect(table_travaux).to be_exist
-    expect(table_travaux.count).to eq 0
-
-    # Le tout premier travail va être démarré
-    expect(page).to have_css('div.work')
-    within('div.work') do
-      expect(page).to have_link('Démarrer ce travail')
-      click_link('Démarrer ce travail')
-    end
-
-    expect(page).to have_content('Votre centre de travail')
-    expect(table_travaux.count).to eq 1
-
-    # TODO Le travail doit être marqué à démarrer
-    # TODO Un bouton pour finir le travail doit être affiché
-    # TODO La pastille doit avoir changé
-
-    # sleep 60
-
-    shot('panneau-des-taches')
-
-  end
 end

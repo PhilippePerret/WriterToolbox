@@ -243,9 +243,7 @@ class CurPDay
       rbt.each do |type, liste|
         rbt[type] = liste.sort_by{|h| - h[:ended_at]}
       end
-      debug "table des travaux récents : #{rbt.pretty_inspect}"
-      # On rend finalement la liste
-      rbt
+      return rbt
     end
   end
 
