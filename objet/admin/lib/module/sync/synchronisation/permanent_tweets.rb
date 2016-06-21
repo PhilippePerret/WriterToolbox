@@ -16,7 +16,10 @@ class PTweets
 
   def synchronize sync
     @sync = sync
+    @nombre_synchronisations = 0
     raise "Les tweets permanents ne sont pas encore synchronisables. Implémenter la méthode synchronize dans #{__FILE__}"
+
+    report "  = NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}"
   rescue Exception => e
     error e.message
     false

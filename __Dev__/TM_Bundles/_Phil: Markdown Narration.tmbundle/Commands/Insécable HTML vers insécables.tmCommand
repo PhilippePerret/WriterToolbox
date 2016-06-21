@@ -12,7 +12,7 @@
 contenu = STDIN.read
 
 contenu.gsub!(/\&amp;nbsp\;/, ' ')
-['tt', 'em', 'personnage', 'acteur', 'auteur', 'realisateur'].each do |tag|
+['tt', 'personnage', 'acteur', 'auteur', 'realisateur'].each do |tag|
   contenu.gsub!(/&lt;#{tag}&gt;(.*?)&lt;\/#{tag}&gt;/){
     str = $1
     if str.index(/[ \/\-]/).nil?
@@ -22,13 +22,29 @@ contenu.gsub!(/\&amp;nbsp\;/, ' ')
     end
   }
 end
+
+# NE PAS TRAITER strong !!! 
 {
-  'b' =&gt; '**', 'strong' =&gt; '**', 'i' =&gt; '*'
+  'b' =&gt; '**', 'i' =&gt; '*', 'em' =&gt; '*'
 }.each do |badtag, autour|
   contenu.gsub!(/&lt;#{badtag}&gt;(.*?)&lt;\/#{badtag}&gt;/){
     "#{autour}#{$1}#{autour}"
   }
 end
+
+# Les scènes pour les analyses
+# [[scene:34|scène de préparation des cookies|true]]
+reg = /\[\[scene:([0-9]+)(\|(.*?))?\]\]/
+
+contenu.gsub!(reg){
+  "SCENE[#{$1}#{$2}]"
+}
+
+# Les mots du scénodico
+reg = /\[\[mot:([0-9]+)\|(.*?)\]\]/
+contenu.gsub!(reg){
+  "MOT[#{$1}|#{$2}]"
+}
 
 puts contenu
 

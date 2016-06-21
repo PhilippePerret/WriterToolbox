@@ -2,21 +2,21 @@
 =begin
   Module pour TextMate permettant de récupérer la balise mot d'un mot
 =end
-require 'sqlite3'
+require 'mysql2'
 
 class Scenodico
-  BASE_SCENODICO = '/Users/philippeperret/Sites/WriterToolbox/database/data/scenodico.db'
+  require_relative 'data_mysql'
   class << self
-
+    
     attr_reader :extrait
-
+    
     # Méthode qui retourne un code de type snippet pour mettre la balise
     # correspond à l'extrait de mot.
     # Si un seul mot correspond à la recherche, on peut retourner un snippet
     # simple, sinon on retourne un snippet permettant de choisir le mot.
     def get_as_snippet extrait_mot
       @extrait = extrait_mot
-      mots = get
+      mots = submit_requete
       if mots.count == 1
         "MOT[#{mots.first}]"
       elsif mots.count == 0
@@ -27,32 +27,29 @@ class Scenodico
         "MOT[${1|#{mots.join(',')}|}]$0"
       end
     end
-    def get
-      submit_requete
-    end
-
+    
     def submit_requete
-      pdb = database.prepare requete
-      rs =
-        pdb.execute.collect do |paire|
-          id, mot = paire
-          "#{id}|${2:#{mot.downcase}}"
-        end
-      return rs
+      client.query(requete).collect do |hmot|
+        id  = hmot['id']
+        mot = hmot['mot']
+        "#{id}|${2:#{mot.downcase}}"
+       end
     rescue Exception => e
       return [e.message]
     end
-    def database
+    def client
+      @client ||= begin
+        Mysql2::Client.new(DATA_MYSQL.merge(database: 'boite-a-outils_biblio'))
+      end
     end
-
+    
     def requete
       ext = extrait.gsub(/'/, "\\'")
       where_clause = "mot LIKE '%#{ext}%'"
       <<-SQL
 SELECT id, mot
-  FROM mots
-  WHERE #{where_clause}
-  COLLATE NOCASE;
+  FROM scenodico
+  WHERE #{where_clause};
       SQL
     end
   end #<< self

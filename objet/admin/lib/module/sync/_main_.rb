@@ -41,6 +41,8 @@ class Sync
     synchronize_affiches if param('sync_affiches') == 'on'
     # Synchronise le tweets permanents
     synchronize_permanent_tweets if param('sync_tweets') == 'on'
+    # Synchroniser les updates
+    synchronize_updates   if param('sync_updates') == 'on'
 
 
     # Construction de la sortie

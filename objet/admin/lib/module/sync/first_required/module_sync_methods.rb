@@ -59,6 +59,12 @@
 
   MÉTHODES MYSQL
   --------------
+
+    reset
+
+        Pour tout resetter lorsque l'on change de nom de
+        table par exemple dans une synchronisation.
+        
     Dans la classe utilisant ces méthodes il faut impérativement
     définir `db_suffix` (suffixe de la base de données) et
     `table_name` (nom de la table dans la base).
@@ -111,7 +117,7 @@ module CommonSyncMethods
   # La méthode retourne le nombre de synchronisations
   # opérées, i.e. le nombre de fichiers détruits dans
   # dis_folder et le nombre d'uploads.
-  # 
+  #
   def sync_files loc_folder, dis_folder
     @nombre_synchronisations ||= 0
 

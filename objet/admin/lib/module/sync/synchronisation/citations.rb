@@ -26,7 +26,7 @@ class Sync
     @report << "* Synchronisation immédiate des citations"
     if Citations.instance.synchronize(self)
       @suivi << "= Synchronisation des citations OK"
-      @report << "= Synchronisation des citations OPÉRÉE AVEC SUCCÈS"
+      @report << "= Synchronisation des citations OPÉRÉE AVEC SUCCÈS".in_span(class: 'blue')
     else
       @suivi << "# Problème en synchronisation les citations"
     end
@@ -60,7 +60,7 @@ class Citations
     # Dans les autres cas, c'est la citation locale qui a raison.
     dis_citations.each do |cid, dis_citation|
       cids_dis << cid
-      suivi "*Traitement de citation ##{cid}"
+      suivi "* Traitement de citation ##{cid}"
       # Données de la citations locale
       loc_citation = loc_citations[cid]
 
@@ -91,6 +91,17 @@ class Citations
         # ==================================
         report "Citation ##{cid} DISTANTE actualisée."
       end
+    end
+
+    # Ajoute sur la base distante des nouvelles citations
+    # ajoutées en locale
+    loc_citations.each do |cid, loc_data|
+      next if dis_citations.key?(cid)
+      # ======= ACTUALISATION ============
+      dis_table.insert(loc_data)
+      nombre_modifications += 1
+      # ==================================
+      report "  = Ajout de la citation DISTANTE ##{cid}"
     end
 
     report "NOMBRE MODIFICATIONS : #{nombre_modifications}"

@@ -21,22 +21,29 @@ end
 %>
 
 <form class="dim2080" action="admin/sync" method="POST">
+  <div class="small right btns">
+    <span>Cocher :</span>
+    <%= 'tout'.in_a(onclick: 'Sync.coche_all()') %>
+    <%= 'rien'.in_a(onclick: 'Sync.decoche_all()') %>
+    <%= 'inverse'.in_a(onclick: 'Sync.inverse_all()') %>
+  </div>
   <%= 'synchroniser'.in_hidden(name:'operation') %>
   <%=
   [
-    ['les citations', 'citations'],
+    ['les actualisations', 'updates'],
     ['les tâches',    'taches'],
+    ['les tweets permanents (À IMPLÉMENTER)', 'tweets'],
+    ['les citations', 'citations'],
     ['la Collection Narration', 'narration'],
     ['le programme UN AN UN SCRIPT', 'uaus'],
-    ['les analyses de films', 'analyses'],
-    ['les affiches de films', 'affiches'],
-    ['les tweets permanents', 'tweets'],
+    ['les analyses de films (À IMPLÉMENTER)', 'analyses'],
     ['le Scénodico', 'scenodico'],
-    ['le Filmodico', 'filmodico']
+    ['le Filmodico (+ affiches)', 'filmodico'],
+    ['le forum (inutile, normalement) (À IMPLÉMENTER)', 'forum']
   ].collect do |choses, key|
     is_checked = param("sync_#{key}".to_sym) == 'on'
-    "Synchroniser #{choses}".in_checkbox(name: "sync_#{key}", checked: is_checked).in_div
-  end.join('')
+    "Synchroniser #{choses}".in_checkbox(name: "sync_#{key}", class: 'cbsync', checked: is_checked).in_div
+  end.join('').in_div(id: 'liste_synchros')
   %>
   <%= 'Synchroniser'.in_submit(class:'btn').in_div(class: 'buttons') %>
 </form>
