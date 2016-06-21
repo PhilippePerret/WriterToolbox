@@ -8,6 +8,11 @@ class Console
   # Les arguments transmis au méthodes principales
   attr_reader :args
 
+  def run_test_rspec args
+    thisf = File.expand_path('.')
+    sub_log `cd #{thisf};#{RSPEC_COMMAND} #{args} 2>&1`
+  end
+
   def run_a_test args = nil
     @args = args
     site.require_module 'test'

@@ -11,6 +11,7 @@ Ce travail doit être contenu sous forme de liste dans la variable
 `travaux_ids` qui est renseignée à mesure que l'auteur avance dans
 les jours et qu'il exécute des travaux.
 =end
+debug "-> unan/bureau/panneau/taches.rb"
 Unan::require_module 'abs_work'
 
 class Unan
@@ -27,11 +28,13 @@ class Bureau
 
   def tasks
     @tasks ||= begin
+      debug "-> Bureau#tasks (pour obtenir current_pday.undone(:task))"
       current_pday.undone(:task).collect do |wdata|
+        debug "wdata = #{wdata.inspect}"
         inst = Unan::Program::AbsWork::get( wdata[:id] )
         # Les données relatives qui doivent être passées à
         # AbsWork pour déterminer son `rwork` (RelatifWork)
-        inst.relative_data= {
+        inst.relative_data = {
           indice_pday:          wdata[:indice_pday],
           indice_current_pday:  current_pday.indice,
           user_id:              auteur.id,
@@ -90,3 +93,4 @@ case param :operation
 when 'bureau_save_travail'
   bureau.save_travail
 end
+debug "<- unan/bureau/panneau/taches.rb"

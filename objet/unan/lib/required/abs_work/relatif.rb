@@ -37,11 +37,18 @@ class AbsWork
   #   :user_id              ID de l'auteur du travail
   #   :indice_pday          Indice du jour où le travail a démarré
   #   :indice_current_pday  Indice du jour de travail courant
+  #   :work_id              ID du travail relatif
   attr_accessor :relative_data
 
   # {Unan::Program::AbsWork::RelatifWork} Le travail relatif
   def rwork
-    @rwork ||= RelatifWork::new(self, relative_data)
+    @rwork ||= begin
+      debug "-> rwork de l'absolute works ##{id}"
+      debug "   avec relative_data : #{relative_data.inspect}"
+      debug "   (si work_id est nil ci-dessus, ça explique le started? false)"
+      rw = RelatifWork::new(self, relative_data)
+      rw
+    end
   end
 
   # ---------------------------------------------------------------------

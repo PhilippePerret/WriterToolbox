@@ -111,6 +111,6 @@ site.alert_apres_login = :twice_a_day
 # ---------------------------------------------------------------------
 # TESTS
 # Chemin d'accès au binaire `rpsec` pour lancer les tests
-# façon console. Pour l'obtenir, taper `which rspec` dans le
+# façon console. Pour obtenir cette valeur, taper `which rspec` dans le
 # Terminal.
 site.rspec_command = File.join(HOME, '.rbenv/shims/rspec')

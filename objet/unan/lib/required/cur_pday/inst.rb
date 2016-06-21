@@ -138,7 +138,7 @@ class CurPDay
   def started_by_type
     @started_by_type ||= begin
       h = {}
-      where = "status < 9 AND created_at < #{NOW} AND program_id = #{program_id}"
+      where = "status < 9 AND created_at < #{NOW + 1} AND program_id = #{program_id}"
       # Note : Le "created_at < NOW" ci-dessus permet de ne
       # pas tenir compte des travaux reprogrammés.
       # Mais pour le moment, on ne peut plus reprogrammer un
@@ -221,9 +221,6 @@ class CurPDay
       # On relève le hash des données travail.
       il_y_a_dix_pdays = (NOW - (10.days * auteur.program.coefficient_duree)).to_i
       where = "status = 9 AND ended_at > #{il_y_a_dix_pdays} AND program_id = #{program_id}"
-      # debug "Rythme : #{auteur.program.rythme}"
-      # debug "Coefficient durée : #{auteur.program.coefficient_duree}"
-      # debug "il_y_a_dix_pdays = #{il_y_a_dix_pdays}::#{il_y_a_dix_pdays.class} (#{il_y_a_dix_pdays.as_human_date(true, true)})"
 
       auteur.table_works.select(where: where).each do |wdata|
         wid = wdata[:id]
@@ -243,7 +240,7 @@ class CurPDay
       rbt.each do |type, liste|
         rbt[type] = liste.sort_by{|h| - h[:ended_at]}
       end
-      return rbt
+      rbt
     end
   end
 
@@ -355,12 +352,13 @@ class CurPDay
           pairid  = "#{wid}:#{idpday}"
           type    = Unan::Program::AbsWork::TYPES[wdata[:type_w]][:type]
           # Est-ce qu'un travail existe ?
-          work_id = if works_started.has_key?(pairid)
-            work_id = works_started[pairid][:id]
-            work_id
-          else
-            nil
-          end
+          work_id =
+            if works_started.key?(pairid)
+              work_id = works_started[pairid][:id]
+              work_id
+            else
+              nil
+            end
           is_started = work_id != nil
           # Est-ce un travail du jour. Si c'est le cas, on
           # l'enregistre dans la liste des nouveaux travaux
@@ -428,15 +426,18 @@ class CurPDay
   # fois le même abs-work qui est utilisé plusieurs jours
   # différents.
   def works_started options = nil
-    @works_started || started_by_type
+    @works_started || begin
+      started_by_type
+    end
 
-    options ||= Hash::new
-    options[:as] = :hdata unless options.has_key?(:as)
+    options ||= {}
+    options[:as] = :hdata unless options.key?(:as)
 
     case options[:as]
     when :hdata then @works_started
     end
   end
+
   # Retourne un {Hash} avec en clé une clé composée par :
   #   '<abswork id>:<abspday>'
   # et en valeur true

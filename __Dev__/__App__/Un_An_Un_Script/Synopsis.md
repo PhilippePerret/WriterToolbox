@@ -17,3 +17,15 @@ Lors de l'inscription sont créés :
       (avec le type '1UN1SCRIPT')
       (C'est cette ligne qui permet de savoir si l'user est
        abonné au programme : il doit être à jour de son paiement)
+
+## Démarrage d'un travail
+
+Lorsque l'auteur rejoint son bureau (son centre de travail), il trouve la liste de ses tâches dans un onglet “Tâches”. Ces tâches sont marqué d'un bouton "Démarrer ce travail" qui permet de démarrer ce travail (pour que l'auteur puisse préciser qu'il a pris en compte ce travail.)
+
+Lorsqu'il clique ce bouton, la route suivante est appelée :
+
+    'work/<id travail>/start?in=unan/program'
+
+Cela appelle le fichier :
+
+    ./objet/unan/program/work/start.rb
