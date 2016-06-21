@@ -6,9 +6,9 @@ def schema_table_scenodico
   <<-MYSQL
 CREATE TABLE scenodico
   (
-    id INTEGER AUTO_INCREMENT,
-    mot VARCHAR(255) NOT NULL,
-    definition TEXT NOT NULL,
+    id          INTEGER       AUTO_INCREMENT,
+    mot         VARCHAR(255)  NOT NULL,
+    definition TEXT           NOT NULL,
 
     categories  VARCHAR(200),
     synonymes   VARCHAR(200),

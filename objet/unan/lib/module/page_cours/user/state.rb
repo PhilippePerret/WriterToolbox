@@ -74,6 +74,7 @@ class UPage
     awork_id = nil
     apday_id = nil
     Unan::table_absolute_pdays.select(data_req).each do |pdata|
+      pid = pdata[:id]
       next if pdata[:works].nil?
       wids = pdata[:works].split(' ').collect{ |e| e.to_i }
       if wids.include?(awork_ids[0])
@@ -84,8 +85,8 @@ class UPage
         apday_id = pid.freeze           # item
       end
     end
-    debug "ID d'absolute work : #{awork_id}"
-    debug "ID de PDay trouvé : #{apday_id}"
+    # debug "ID d'absolute work : #{awork_id}"
+    # debug "ID de PDay trouvé : #{apday_id}"
     # On a maintenant toutes les données nécessaires pour créer
     # le travail. On charge le module qui le fait
     require './objet/unan/lib/module/work/create.rb'

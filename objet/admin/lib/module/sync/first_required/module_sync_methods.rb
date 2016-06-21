@@ -28,6 +28,15 @@
     distant_folder, en synchronisant le dossier distant sur
     le dossier local (mais pas l'inverse)
 
+    Le module appelant doit utiliser `@nombre_synchronisations`
+    pour compter le nombre d'actualisation. Dans le cas
+    contraire, la méthode retourne le nombre de fichiers
+    détruits ou uploadés.
+
+    La méthode incrémente @nombre_synchronisations et inscrit
+    dans le rapport (report) et le suivi tout ce qu'il faut
+    savoir.
+
   get_distant_files distant_folder
 
     Retourne la liste des fichiers du dossier distant `distant_folder`
@@ -71,6 +80,15 @@
 =end
 module CommonSyncMethods
 
+  # Adresse du serveur SSH sous la forme "<user>@<adresse ssh>"
+  # Note : Défini dans './objet/site/data_synchro.rb'
+  def serveur_ssh
+    @serveur_ssh ||= begin
+      require './objet/site/data_synchro.rb'
+      Synchro::new().serveur_ssh
+    end
+  end
+
   def reset
     db_reset
   end
@@ -87,7 +105,16 @@ module CommonSyncMethods
   #   MÉTHODES FICHIERS
   # ---------------------------------------------------------------------
 
+  # Synchronise le dossier +dis_folder+ avec le dossier
+  # +loc_folder+ (seulement dans ce sens).
+  #
+  # La méthode retourne le nombre de synchronisations
+  # opérées, i.e. le nombre de fichiers détruits dans
+  # dis_folder et le nombre d'uploads.
+  # 
   def sync_files loc_folder, dis_folder
+    @nombre_synchronisations ||= 0
+
     loc_files = get_local_files(loc_folder)
     dis_files = get_distant_files(dis_folder)
     report "  Nombre fichiers locaux   : #{loc_files.count}"
@@ -111,7 +138,7 @@ module CommonSyncMethods
         upload_file(loc_fullpath, dis_fullpath)
         # ============================================
 
-        report "= OK"
+        report "    = OK"
         @nombre_synchronisations += 1
       elsif dis_mtime > loc_mtime
         suivi "Bizarre, le fichier distant #{loc_path} est plus jeune que le fichier local (local: #{loc_mtime.inspect} / distant: #{dis_mtime.inspect})…"
@@ -135,6 +162,8 @@ module CommonSyncMethods
     else
       report "Aucun fichiers distants à détruire."
     end
+
+    return @nombre_synchronisations
   end
 
   # Méthode qui récupère les données des fichiers online.

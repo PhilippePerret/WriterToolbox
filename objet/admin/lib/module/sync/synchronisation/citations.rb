@@ -82,7 +82,7 @@ class Citations
       if loc_citation != dis_citation
         loc_citation.each do |k, v|
           if v != dis_citation[k]
-            suivi "    Propriété #{:k} différente."
+            suivi "    Propriété :#{k} différente."
           end
         end
         # ======= ACTUALISATION ============

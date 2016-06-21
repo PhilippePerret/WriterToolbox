@@ -147,18 +147,6 @@ class CNarration
   def db_suffix   ; @db_suffix  ||= :cnarration end
   def table_name  ; @table_name ||= 'narration' end
 
-
-  # Adresse du serveur SSH sous la forme "<user>@<adresse ssh>"
-  # Note : Défini dans './objet/site/data_synchro.rb'
-  def serveur_ssh
-    @serveur_ssh ||= begin
-      require './objet/site/data_synchro.rb'
-      Synchro::new().serveur_ssh
-    end
-  end
-  alias :serveur_ssh_boa :serveur_ssh
-
-
 end #/CNarration
 
 # Pour la table 'tdms'
