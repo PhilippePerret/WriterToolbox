@@ -10,12 +10,14 @@
 #   Section affichant les tâches courantes à exécuter
 # ---------------------------------------------------------------------
 %>
-<% if tasks.count > 0 %>
-  <%= tasks.collect { |iabswork| iabswork.as_card }.join %>
-<% else %>
-  <p class='small discret'>Vous n'avez aucun travail courant.</p>
-  <%= message_si_aucun_travail %>
-<% end %>
+<section id="current_works">
+  <% if tasks.count > 0 %>
+    <%= tasks.collect { |iabswork| iabswork.as_card }.join %>
+  <% else %>
+    <p class='small discret'>Vous n'avez aucun travail courant.</p>
+    <%= message_si_aucun_travail %>
+  <% end %>
+</section>
 
 <%
 # ---------------------------------------------------------------------
@@ -24,10 +26,10 @@
 %>
 <hr />
 <section id="completed_works">
-<% if last_tasks.count > 0 %>
-  <h4>Tâches récemment achevées</h4>
-  <%= last_tasks.collect{ |iabswork| iabswork.as_card_relative(as_recent: true) }.join %>
-<% else %>
-  <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>
-<% end %>
+  <% if last_tasks.count > 0 %>
+    <h4>Tâches récemment achevées</h4>
+    <%= last_tasks.collect{ |iabswork| iabswork.as_card_relative(as_recent: true) }.join %>
+  <% else %>
+    <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>
+  <% end %>
 </section>

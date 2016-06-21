@@ -43,11 +43,7 @@ class AbsWork
   # {Unan::Program::AbsWork::RelatifWork} Le travail relatif
   def rwork
     @rwork ||= begin
-      debug "-> rwork de l'absolute works ##{id}"
-      debug "   avec relative_data : #{relative_data.inspect}"
-      debug "   (si work_id est nil ci-dessus, ça explique le started? false)"
-      rw = RelatifWork::new(self, relative_data)
-      rw
+      RelatifWork::new(self, relative_data)
     end
   end
 

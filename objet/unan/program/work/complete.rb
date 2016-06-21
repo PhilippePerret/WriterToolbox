@@ -22,12 +22,12 @@ begin
   debug "[complete.rb] work.status = #{work.status.inspect}"
 
   # Ce travail ne doit pas avoir déjà été marqué terminé
-  raise "Ce travail est déjà marqué terminé…" if work.completed?
+  !work.completed? || raise('Ce travail est déjà marqué terminé…')
 
   # Marquer ce travail terminé
   work.set_complete
 
-  raise "Le travail devrait avoir été marqué terminé…" unless work.completed?
+  work.completed? || raise('Le travail devrait avoir été marqué terminé…')
 
 rescue Exception => e
   error e.message

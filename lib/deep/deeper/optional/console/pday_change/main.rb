@@ -26,11 +26,7 @@ class User
   #               choisi un nombre au hasard.
   def change_pday pday_indice, params = nil
     # debug "-> change_pday(pday_indice=#{pday_indice.inspect}, params=#{params.inspect})"
-    params ||= Hash::new
-
-    # Le total de ses points mis à zéro
-    set_var(:total_points => 0)
-    set_var(:total_points_program => 0)
+    params ||= {}
 
     # Réglage et analyse des options
     # Le rythme adopté par l'user, soit dans les paramètres

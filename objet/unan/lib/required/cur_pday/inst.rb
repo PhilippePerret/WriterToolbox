@@ -338,8 +338,11 @@ class CurPDay
       }
       @works_undone_as_hdata ||= begin
         res = {}
-        Unan::table_absolute_works.select(where: "id IN (#{ids.join(',')})").collect do |h|
-          res.merge! h[:id] => h
+        unless ids.empty?
+          where = "id IN (#{ids.join(',')})"
+          Unan::table_absolute_works.select(where: where).collect do |h|
+            res.merge! h[:id] => h
+          end
         end
         # On ajoute certaines données utiles, dont :
         #   * Le type de travail (:task, :page, :forum ou :quiz)
@@ -451,7 +454,7 @@ class CurPDay
       h
     end
 
-    options ||= Hash::new
+    options ||= {}
     options[:as] = :hdata unless options.has_key?(:as)
 
     case options[:as]

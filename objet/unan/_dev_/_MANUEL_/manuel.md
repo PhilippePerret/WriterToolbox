@@ -290,14 +290,11 @@ Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :
 
     total_points_projet
 
+        OBSOLÈTE : UTILISER user.points ou user.program.points
+
         {Fixnum} Total des points courants sur le projet courant.
         C'est cette valeur qui est utilisée pour connaitre le grade
         de l'user dans Unan::Program::DATA_POINTS
-
-    total_points
-
-        {Fixnum} Total des points de l'auteur, tous programmes
-        confondus.
 
 <a name='jourprogrammecourant'></a>
 

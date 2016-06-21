@@ -31,9 +31,37 @@ require 'capybara-webkit'
 Capybara.javascript_driver  = :selenium
 Capybara.default_driver     = :selenium
 
+# Pour Chrome
+# Le seul problème avec Chrome est qu'on ne peut pas
+# screenshoter toute la page, mais seulement la vue
+# du port actuelle (taille fenêtre)
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
+
+# Capybara.default_driver = :safari
+# Capybara.register_driver :safari do |app|
+# options = {
+# :js_errors => false,
+# :timeout => 360,
+# :debug => false,
+# :inspector => false,
+# }
+# Capybara::Selenium::Driver.new(app, :browser => :safari)
+# end
+
+# Firefox plante
+# Capybara.default_driver = :firefox
+# Capybara.register_driver :firefox do |app|
+#   options = {
+#   :js_errors => true,
+#   :timeout => 360,
+#   :debug => false,
+#   :inspector => false,
+#   }
+#   Capybara::Selenium::Driver.new(app, :browser => :firefox)
+# end
+
 
 # On requiert tout ce que requiert l'index du site
 # Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?
@@ -209,7 +237,19 @@ RSpec.configure do |config|
 
   # Pour catcher les messages débug
   def debug str
-    puts "DBG: #{str.strip}\n"
+    str =
+      case str
+      when String then str.strip
+      when Fixnum, Float then str
+      when Hash, Array then str.pretty_inspect
+      else
+        if str.respond_to?(:message)
+          str.message + "\n" + str.backtrace.join("\n")
+        else
+          str.inspect
+        end
+      end
+    puts "DBG: #{str}\n"
   end
   # Pour catcher les messages log (par exemple pour le cron)
   def log str
@@ -250,7 +290,14 @@ RSpec.configure do |config|
 
   # La fenêtre ouverte par capybara
   def resize_window
-    page.driver.browser.manage.window.resize_to(1300, 600)
+    # page.driver.browser.manage.window.resize_to(1300, 600)
+    # page.driver.browser.manage.window.resize_to('100%', '100%')
+    # page.driver.browser.manage.window.maximize
+    # page.driver.browser.manage.window(50)
+    # puts page.driver.browser.manage.window.methods.join("\n")
+    page.driver.browser.manage.window.resize_to(1300, 5000)
+    page.driver.browser.manage.window.maximize
+
   end
 
   # ---------------------------------------------------------------------

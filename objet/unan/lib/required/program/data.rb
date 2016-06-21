@@ -18,13 +18,17 @@ class Program
   # {User} Auteur du programme
   def auteur_id     ; @auteur_id  ||= get(:auteur_id)    end
   # {String} Options du programme
-  def options       ; @options    ||= get(:options) || ""  end
-  def points        ; @points     ||= get(:points) || 0   end
-  def created_at    ; @created_at ||= get(:created_at)  end
-  def updated_at    ; @updated_at ||= get(:updated_at)  end
+  def options       ; @options    ||= get(:options) || ""   end
+  def created_at    ; @created_at ||= get(:created_at)      end
+  def updated_at    ; @updated_at ||= get(:updated_at)      end
   # {Fixnum} Le rythme
   # ATTENTION : c'est une préférence, pas une donnée du programme
   def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
+
+  # Valeurs rechargées chaque fois
+  def points
+    get(:points) || 0
+  end
 
   # {Fixnum} Jour-programme courant
   # On peut le définir par <auteur>.program.current_pday = <i jour programme>

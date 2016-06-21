@@ -28,9 +28,7 @@ class Bureau
 
   def tasks
     @tasks ||= begin
-      debug "-> Bureau#tasks (pour obtenir current_pday.undone(:task))"
       current_pday.undone(:task).collect do |wdata|
-        debug "wdata = #{wdata.inspect}"
         inst = Unan::Program::AbsWork::get( wdata[:id] )
         # Les données relatives qui doivent être passées à
         # AbsWork pour déterminer son `rwork` (RelatifWork)

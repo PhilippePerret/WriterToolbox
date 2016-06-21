@@ -5,6 +5,8 @@
     require_relative 'required'
   … en haut des fichiers pour requérir toutes les librairies de ce module
 =end
+require './lib/required'
+require_relative 'mail_auteur.rb' # => MAIL_USER
 
 def table_programs
   @table_programs ||= site.dbm_table(:unan, 'programs', online = true)

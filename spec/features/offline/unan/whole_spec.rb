@@ -9,9 +9,7 @@ DUSER = TUnan::DUSER
 def inscrite
   TUnan.inscrite
 end
-def go_and_identify_inscrite
-  TUnan.go_and_identify_inscrite
-end
+
 feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
 
 
@@ -236,7 +234,7 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
     hinscrite = table_users_offline.get(where: "mail = '#{DUSER[:mail]}'")
     # Une instance User
 
-    go_and_identify_inscrite
+    go_and_identify DUSER[:mail], DUSER[:password]
     shot('apres-identification')
 
     expect(page).to have_css('div.error', text: "Désolé #{DUSER[:pseudo]}, mais vous ne pouvez pas vous reconnecter avant d’avoir confirmé votre adresse-mail.")

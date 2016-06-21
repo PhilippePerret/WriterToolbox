@@ -4,8 +4,6 @@
   Pour voir toutes les tables de l'inscrit.
 
 =end
-require './lib/required'
-require_relative 'mail_auteur.rb' # => MAIL_USER
 require_relative 'required'
 
 duser = User.table.get(where: {mail: MAIL_USER })
@@ -20,11 +18,41 @@ puts "AUTEUR : #{duser[:pseudo]}"
 puts "RYTHME : #{dprogram[:rythme]}"
 puts "JOUR COURANT AUTEUR : #{dprogram[:current_pday]} (depuis le #{dprogram[:current_pday_start].as_human_date(true, true, ' ')})"
 
+# Pour instancier la tables des travaux
+table_works(user_id)
+
+# ---------------------------------------------------------------------
+#   MODIFICATION D'UNE DONNÉE WORKS EN ONLINE
+# 
+#   Note : il s'agit bien d'une modification de la donnée DISTANTE
+# ---------------------------------------------------------------------
+WORK_ID = 14
+
+w = table_works.get(WORK_ID)
+puts "= Données initiales ="
+puts w.pretty_inspect
+
+# MODIFICATIONS (il faut aussi débloquer la ligne plus bas)
+w.merge!(
+  status:   9,
+  ended_at: w[:updated_at] + 30*60
+)
+puts "= Données modifiées ="
+puts w.pretty_inspect
+
+# ---------------------------------------------------------------------
+# DÉBLOQUER CETTE LIGNE POUR QUE LA DONNÉE SOIT VRAIMENT MODIFIÉE
+# ---------------------------------------------------------------------
+# table_works.update(w.delete(:id), w)
+
+
+exit 0
+
 # ---------------------------------------------------------------------
 #   AFFICHAGE DES TRAVAUX 
 # ---------------------------------------------------------------------
 
-if table_works(user_id).exist?
+if table_works.exist?
   puts "\n\n\n" + '-'*80
   puts "___ LISTE DES WORKS DE #{pseudo} (#{table_works.count}) ___"
   works_done    = []

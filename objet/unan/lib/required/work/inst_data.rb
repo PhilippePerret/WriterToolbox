@@ -21,13 +21,7 @@ class Work
   # {Unan::Program::AbsWork} Le travail absolu auquel fait référence
   # ce travail d'auteur.
   def abs_work
-    @abs_work ||= begin
-      aw = Unan::Program::AbsWork::get(abs_work_id)
-      debug "aw.class = #{aw.class}"
-      debug "abs_work_id = #{abs_work_id.inspect}"
-      debug "aw.duree = #{aw.duree.inspect}"
-      aw
-    end
+    @abs_work ||= Unan::Program::AbsWork::get(abs_work_id)
   end
 
   # ---------------------------------------------------------------------

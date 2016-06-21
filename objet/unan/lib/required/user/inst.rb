@@ -28,24 +28,16 @@ class User
     cur_pday.undone(quoi).count
   end
 
-  def total_points
-    @total_points ||= get_var(:total_points, 0)
-  end
-  def total_points_program
-    @total_points_program ||= get_var(:total_points_program, 0)
+  # Nombre de poins de l'auteur pour son programme
+  # courant.
+  def points
+    program.points
   end
 
   def add_points nb_points
     return if nb_points.to_i == 0
-    new_total_points = self.total_points + nb_points
-    set_var( :total_points => new_total_points )
-    @total_points = new_total_points
-    unless program.nil?
-      tot_pts_programme = total_points_program + nb_points
-      set_var(:total_points_program => tot_pts_programme)
-      program.set(:points => tot_pts_programme)
-      @total_points_program = tot_pts_programme
-    end
+    tot_pts_programme = points + nb_points
+    program.set(:points => tot_pts_programme)
   end
 
   # Return TRUE si l'user vient de s'inscrire au programme

@@ -32,7 +32,13 @@ class TUnan
       table_programs = site.dbm_table(:unan, 'programs')
       table_projets = site.dbm_table(:unan, 'projets')
 
-      table_programs.update( {where: {auteur_id: id}}, {created_at: created_at, updated_at: created_at, current_pday: xday } )
+      table_programs.update( {where: {auteur_id: id}}, {
+        created_at:   created_at,
+        updated_at:   created_at,
+        current_pday: xday,
+        current_pday_start: NOW - (xday - 1) * 24 * 3600,
+        points:       0
+        })
       table_projets.update({where: {auteur_id: id}}, {created_at: created_at, updated_at: created_at} )
 
       # On détruit toutes ses tables Unan (variables et autres)
