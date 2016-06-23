@@ -48,6 +48,27 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
       it 'contient l’invite avec le pseudo de l’auteur' do
         expect(report).to include "Bonjour #{up.pseudo}"
       end
+      it 'contient le cadre chiffré' do
+        expect(report).to have_tag('div#cadre_chiffres')
+      end
+      it 'le cadre chiffré contient le nombre de points' do
+        expect(report).to have_tag('div#cadre_chiffres') do
+          with_tag 'span#nombre_points', text: up.program.points
+        end
+      end
+      it 'le cadre chiffré contient l’indice du jour-programme' do
+        expect(report).to have_tag('div#cadre_chiffres') do
+          with_tag 'span#jour_programme', text: up.program.current_pday
+        end
+      end
+      it 'le cadre chiffré contient la note générale' do
+        expect(report).to have_tag('div#cadre_chiffres') do
+          with_tag 'span#note_generale', text: /#{Regexp.escape up.current_pday.note_generale.to_s}/
+        end
+      end
+      it 'contient le message général' do
+        expect(report).to have_tag('div#message_general')
+      end
       it 'contient une section pour l’inventaire' do
         expect(report).to have_tag('section#unan_inventory')
       end

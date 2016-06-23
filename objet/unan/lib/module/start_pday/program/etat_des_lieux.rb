@@ -23,49 +23,14 @@ class Program
   def etat_des_lieux
 
     # S'il n'y a aucun travail à faire (tous exécutés), on peut
-    # s'en retourner tout de suite.
-    return true if cur_pday.undone(:all).count == 0
+    # s'en retourner tout de suite. Mais en fait, ça ne peut pas
+    # arriver car il y a toujours, au moins, des travaux à
+    # poursuivre. Aucun jour n'a aucun travail, pas même le tout
+    # premier.
+    # return true if cur_pday.undone(:all).count == 0
 
-    # Pour consigner le nombre d'avertissements par niveau en
-    # enregistrant les instances travaux dans les listes.
-    # Par exemple, la donnée de clé 3 correspond à l'avertissement
-    # de niveau 3 et contient dans sa liste tous les travaux qui
-    # ont atteint ce niveau d'avertissement
-    #
-    # (*) Les abs-works augemntés contiennent en plus un
-    #     indice de P-Day et un work-id si le travail a
-    #     été défini.
-    avertissements = {
-      1 => Array::new(), # Liste de données AbsWork augmentées (*)
-      2 => Array::new(),
-      3 => Array::new(),
-      4 => Array::new(),
-      5 => Array::new(),
-      6 => Array::new(),
-      # Nombre total d'avertissements
-      total:              0,
-      # Nombre d'avertissements supérieurs à 4, donc
-      # d'avertissement graves
-      greater_than_four:  0
-    }
-
-    cur_pday.undone(:all).each do |wdata|
-      niv_alerte = Unan::Program::Alerts::niveau_alerte_depassement(wdata[:depassement])
-      unless niv_alerte.nil?
-        # Travail en dépassement
-        avertissements[niv_alerte] << wdata
-        avertissements[:total] += 1
-        avertissements[:greater_than_four] += 1 if niv_alerte > 4
-        message_alerte = Unan::Program::Alerts::message_alerte_depassement(niv_alerte)
-        wdata.merge!(
-          css:            'warning',
-          message_alerte: message_alerte
-          )
-      end
-    end
-
-    # On passe les avertissements au CurPDay du programme
-    cur_pday.avertissements= avertissements
+    # Les avertissements calculés
+    avertissements = auteur.current_pday.warnings
 
     # S'il y a plus de 5 travaux en niveau d'avertissement
     # supérieur à 4 (:greater_than_four) il faut avertir

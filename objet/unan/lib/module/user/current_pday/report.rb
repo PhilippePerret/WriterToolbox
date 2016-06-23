@@ -31,18 +31,15 @@ class CurrentPDay
   def introduction
     c = ''
     c << welcome
-    # (c << avertissements_serieux) rescue nil
-    # (c << avertissements_mineurs) rescue nil
-    # (c << titre_rapport.in_h2)    rescue nil
-    # (c << numero_jour_programme)  rescue nil
-    # (c << nombre_points)          rescue nil
-    # (c << css)                    rescue nil
+    c << titre_rapport
+    c << avertissements
+    c << cadre_chiffres
     return c
   end
 
   def built_report
     c = ''
-    # (c << message_general)              rescue nil
+    c << message_general
     c << section_travaux_overrun
     c << section_travaux_unstarted
     c << section_nouveaux_travaux
@@ -51,6 +48,23 @@ class CurrentPDay
     c.in_section(id:'unan_inventory')
   end
 
+  # ---------------------------------------------------------------------
+  #   MÉTHODES DE CONSTRUCTION
+  # ---------------------------------------------------------------------
+
+  def titre_rapport
+    "Rapport de travail Un An Un Script<br>#{NOW.as_human_date(false, false, ' ')}".in_h2
+  end
+  # Le cadre contenant le nombre de point et l'indice
+  # du jour programme.
+  def cadre_chiffres
+    c = ''
+    c << numero_jour_programme
+    c << numero_jour_reel
+    c << nombre_points
+    c << message_note_generale
+    c.in_div(id: 'cadre_chiffres').in_div(class: 'center')
+  end
 
   # ---------------------------------------------------------------------
   #   Sections des travaux
@@ -178,7 +192,7 @@ class CurrentPDay
           ''
         end
         # La rangée LI finale
-        ('- ' + hw[:awork][:titre] + ajout).in_li(class: 'work')
+        ('<span class="tiret">-</span>' + hw[:awork][:titre] + ajout).in_li(class: 'work')
       end.join('')
     end.join('').in_ul(class: 'listw', id: "listw-#{ltype}")
   end

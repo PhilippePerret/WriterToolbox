@@ -3,7 +3,11 @@ body
 
 a, a:visited, a:link, a:hover
   text-decoration   : none
-  
+
+.center
+  text-align  : center
+.fright
+  float : right
 .small
   font-size : 11pt
 .italic
@@ -16,6 +20,23 @@ a, a:visited, a:link, a:hover
   color : #559
 .red, .warning
   color : red
+
+span.points
+  font-weight   : bold
+  font-size     : 1.05em
+  font-family   : Georgia
+  
+div#cadre_chiffres
+  display     : inline-block
+  margin      : 1em
+  padding     : 1em
+  border      : 1px solid #CCC
+  border-radius : 1em
+  width       : 24em
+  text-align  : left
+  > div
+    clear         : both
+    margin-bottom : 10px
   
 section#unan_inventory
 
@@ -54,6 +75,12 @@ section#unan_inventory
       div.listew_titre
         color         : #b5b5b5
         font-style    : italic
+      // Pour les tirets commençant les li
+      li
+        position  : relative
+        span.tiret
+          position  : absolute
+          left      : -0.5em
     
 span#signature
   font-size     : 12.5pt
