@@ -39,20 +39,27 @@ class Bureau
   # de l'user, pour boucler dessus et les afficher, ou autre
   # travail.
   def works
-    @works ||= works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
+    @works ||= begin
+      # works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
+      []
+    end
   end
 
   # {Array} Liste ordonnée des IDs de travaux à accomplir par
   # l'auteur
   def works_ids
     @works_ids ||= begin
-      current_pday.works_undone.keys
+      # current_pday.works_undone.keys
+      []
     end
   end
 
   # Instance {Unan::Program::CurPDay} du jour-programme courant
   def current_pday
-    @current_pday ||= Unan::Program::CurPDay::new(current_pday_id)
+    @current_pday ||= begin
+      # Unan::Program::CurPDay::new(current_pday_id)
+      nil
+    end
   end
 
   def current_pday_id

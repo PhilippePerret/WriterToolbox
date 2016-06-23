@@ -19,13 +19,18 @@ class User
   #
   # Permet notamment d'obtenir les travaux inachevés, etc.
   def cur_pday
-    @cur_pday ||= Unan::Program::CurPDay::new(program.current_pday)
+    @cur_pday ||= begin
+      # Unan::Program::CurPDay::new(program.current_pday)
+      # TODO Devra être remplacé par current_pday si nécessaire
+      nil
+    end
   end
 
   # Retourne le nombre de +quoi+ de l'user (nombre de
   # messages forum, de pages de cours à lire, etc.)
   def nombre_de quoi
-    cur_pday.undone(quoi).count
+    0
+    # cur_pday.undone(quoi).count
   end
 
   # Nombre de poins de l'auteur pour son programme

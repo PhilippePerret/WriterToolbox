@@ -52,9 +52,10 @@ class << self
   def data_request
     data_request ||= begin
       where = []
-      where << where_in('citation')  if in_citation?
-      where << where_in('auteur')    if in_auteur?
-      where << where_in('source')    if in_source?
+      where << where_in('citation')     if in_citation?
+      where << where_in('auteur')       if in_auteur?
+      where << where_in('source')       if in_source?
+      where << where_in('description')  if in_explicitation?
       {
         where:    where.join(' OR '),
         order:    'citation',
@@ -70,21 +71,23 @@ class << self
     end.join( all_words? ? ' AND ' : ' OR ')
   end
 
-  def searched;     @searched     end
-  def in_citation?; @in_quote     end
-  def in_auteur?;   @in_auteur    end
-  def in_source?;   @in_source    end
-  def all_words?;   @all_words    end
+  def searched;           @searched     end
+  def in_citation?;       @in_quote     end
+  def in_auteur?;         @in_auteur    end
+  def in_source?;         @in_source    end
+  def in_explicitation?;  @in_explicitation end
+  def all_words?;         @all_words    end
 
   def check_data
     @searched = dquote[:searched].nil_if_empty
     @searched != nil || raise('Il faut définir le texte à rechercher ! :-)')
     @searched.gsub!(/(d|l|qu)['’]/, '\1 ')
     @searched = @searched.split(' ')
-    @in_auteur  = dquote[:in_auteur]    == 'on'
-    @in_quote   = dquote[:in_citation]  == 'on'
-    @in_source  = dquote[:in_source]    == 'on'
-    @in_auteur || @in_quote || @in_source || raise('Il faut indiquer dans quoi chercher le texte ! :-)')
+    @in_auteur        = dquote[:in_auteur]        == 'on'
+    @in_quote         = dquote[:in_citation]      == 'on'
+    @in_source        = dquote[:in_source]        == 'on'
+    @in_explicitation = dquote[:in_explicitation] == 'on'
+    @in_auteur || @in_quote || @in_source || @in_explicitation || raise('Il faut indiquer dans quoi chercher le texte ! :-)')
 
     @all_words = dquote[:all_words] == 'on'
   rescue Exception => e

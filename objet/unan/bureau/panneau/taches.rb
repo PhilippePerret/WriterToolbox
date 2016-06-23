@@ -11,11 +11,12 @@ Ce travail doit être contenu sous forme de liste dans la variable
 `travaux_ids` qui est renseignée à mesure que l'auteur avance dans
 les jours et qu'il exécute des travaux.
 =end
-debug "-> unan/bureau/panneau/taches.rb"
 Unan::require_module 'abs_work'
 
 class Unan
 class Bureau
+
+
 
   # cf. l'explication dans le fichier home.rb
   def missing_data
@@ -26,20 +27,49 @@ class Bureau
     end
   end
 
+  # Les tâches non démarrées
+  # Array d'instance Unan::Program::AbsWork augmentées des
+  # données relatives
+  def tasks_unstarted
+    @tasks_unstarted ||= begin
+      user.aworks_unstarted_type(:task).collect do |kpaire, haw|
+        Unan::Program::AbsWork.get(haw[:id])
+      end
+    end
+  end
+  # Les tâches non achevées
+  def tasks_undone
+    @tasks_undone ||= begin
+      user.uworks_undone_type(:task).collect do |kpaire, haw|
+        awork = Unan::Program::AbsWork.get(haw[:abs_work_id])
+      end
+    end
+  end
+  # Les tâches récemment achevées
+  def tasks_recent
+    @tasks_recent ||= begin
+      user.uworks_recent_type(:task).collect do |kpaire, haw|
+        awork = Unan::Program::AbsWork.get(haw[:abs_work_id])
+      end
+    end
+  end
+
   def tasks
     @tasks ||= begin
-      current_pday.undone(:task).collect do |wdata|
-        inst = Unan::Program::AbsWork::get( wdata[:id] )
-        # Les données relatives qui doivent être passées à
-        # AbsWork pour déterminer son `rwork` (RelatifWork)
-        inst.relative_data = {
-          indice_pday:          wdata[:indice_pday],
-          indice_current_pday:  current_pday.indice,
-          user_id:              auteur.id,
-          work_id:              wdata[:work_id]
-        }
-        inst
-      end
+
+      []
+      # current_pday.undone(:task).collect do |wdata|
+      #   inst = Unan::Program::AbsWork::get( wdata[:id] )
+      #   # Les données relatives qui doivent être passées à
+      #   # AbsWork pour déterminer son `rwork` (RelatifWork)
+      #   inst.relative_data = {
+      #     indice_pday:          wdata[:indice_pday],
+      #     indice_current_pday:  current_pday.indice,
+      #     user_id:              auteur.id,
+      #     work_id:              wdata[:work_id]
+      #   }
+      #   inst
+      # end
     end
   end
 
@@ -47,19 +77,21 @@ class Bureau
   #
   def last_tasks
     @last_tasks ||= begin
-      # Attention, ici, contrairement à `tasks`, ce sont des
-      # hash avec les données du work (Unan::Program::Work) pas
-      # avec les données du
-      current_pday.recent(:task).collect do |wdata|
-        inst = Unan::Program::AbsWork::get( wdata[:abs_work_id] )
-        inst.relative_data= {
-          indice_pday:          wdata[:abs_pday],
-          indice_current_pday:  current_pday.indice,
-          user_id:              auteur.id,
-          work_id:              wdata[:id]
-        }
-        inst
-      end
+
+      []
+      # # Attention, ici, contrairement à `tasks`, ce sont des
+      # # hash avec les données du work (Unan::Program::Work) pas
+      # # avec les données du
+      # current_pday.recent(:task).collect do |wdata|
+      #   inst = Unan::Program::AbsWork::get( wdata[:abs_work_id] )
+      #   inst.relative_data= {
+      #     indice_pday:          wdata[:abs_pday],
+      #     indice_current_pday:  current_pday.indice,
+      #     user_id:              auteur.id,
+      #     work_id:              wdata[:id]
+      #   }
+      #   inst
+      # end
     end
   end
 
@@ -79,7 +111,6 @@ class Work
   # achevés (mis en bas de page) et que donc, certaines informations
   # comme les dates, ne sont pas toujours affichées.
   def output
-    Unan.require_module('abs_work')
     self.as_card
   end
 end #/Work
