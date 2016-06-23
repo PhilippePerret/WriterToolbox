@@ -28,6 +28,7 @@ class Filmodico
     @sync = sync
     @nombre_synchronisations = 0
     synchronize_fiches_database
+    synchronize_films_analyses
     synchronize_affiches
     if @nombre_synchronisations > 0
       report "  NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
@@ -46,6 +47,7 @@ class Filmodico
   # local qu'on modifie.
   def synchronize_fiches_database
     report "  * Synchronisation des fiches dans les bases de données"
+    self.table_name = 'filmodico'
     dis_rows.each do |fid, dis_data|
       loc_data = loc_rows[fid]
 
@@ -83,7 +85,61 @@ class Filmodico
     report "  = Synchronisation des affiches OK"
   end
 
+  # Il faut également synchroniser la table des film
+  def synchronize_films_analyses
+    report "  * Synchronisation de la table 'films_analyses'"
+
+    self.table_name = "films_analyses"
+
+    dis_rows.each do |fid, dis_fdata|
+
+      loc_fdata = loc_rows[fid]
+
+      dis_fdata_sans_id = dis_fdata.dup
+      dis_fdata_sans_id.delete(:id)
+      unless loc_fdata.nil?
+        loc_fdata_sans_id = loc_fdata.dup
+        loc_fdata_sans_id.delete(:id)
+      end
+
+
+      if loc_fdata.nil?
+        # Donnée inexistante sur le site distant (normalement,
+        # ça ne devrait pas pouvoir exister)
+        # => Créer la donnée sur le site distant
+        # ============ ACTUALISATION =============
+          loc_table.insert(dis_fdata)
+          @nombre_synchronisations += 1
+        # =========================================
+        report "  * Création de la donnée film ##{fid} LOCALE (#{dis_fdata.inspect})"
+      elsif dis_fdata != loc_fdata
+        # Les données sont divergentes
+        # => Il faut actualiser les données distantes, car c'est
+        #    toujours en offline qu'on les modifie.
+        #    On fait quand même une vérification sur updated_at
+        #     pour être sûr.
+        if dis_fdata[:updated_at] < loc_fdata[:updated_at]
+          # loc -> dis
+          # ============ ACTUALISATION =============
+            dis_table.update(fid, loc_fdata_sans_id)
+            @nombre_synchronisations += 1
+          # =========================================
+          report "  = Actualisation de la donnée DISTANTE ##{fid}"
+        else
+          # dis -> loc
+          # ============ ACTUALISATION =============
+            loc_table.update(fid, dis_fdata_sans_id)
+            @nombre_synchronisations += 1
+          # =========================================
+          report "  = Actualisation de la donnée LOCALE ##{fid}"
+        end
+      else
+        # Les deux données sont identiques => rien à faire
+      end
+    end
+    report "  * Table 'films_analyses' synchronisée"
+  end
+
   def db_suffix ; @db_suffix ||= :biblio        end
-  def table_name ; @table_name ||= 'filmodico'  end
 end #/Filmodico
 end #/Sync

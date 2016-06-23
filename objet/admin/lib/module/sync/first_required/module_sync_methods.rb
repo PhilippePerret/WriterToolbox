@@ -64,7 +64,7 @@
 
         Pour tout resetter lorsque l'on change de nom de
         table par exemple dans une synchronisation.
-        
+
     Dans la classe utilisant ces méthodes il faut impérativement
     définir `db_suffix` (suffixe de la base de données) et
     `table_name` (nom de la table dans la base).
@@ -85,6 +85,19 @@
       }
 =end
 module CommonSyncMethods
+
+  # Peut être surclassé par les méthodes de la
+  # classe chargeant le module.
+  attr_reader :table_name
+
+  # Définit le nom de la table de la base de données mais
+  # surtout reset tout pour pouvoir rafraichir toutes les
+  # informations courantes.
+  def table_name= valeur
+    @table_name = valeur
+    reset
+  end
+
 
   # Adresse du serveur SSH sous la forme "<user>@<adresse ssh>"
   # Note : Défini dans './objet/site/data_synchro.rb'

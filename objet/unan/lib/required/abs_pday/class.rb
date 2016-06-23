@@ -26,7 +26,7 @@ class AbsPDay
     def all
       @all ||= begin
         Unan::table_absolute_pdays.select(colonnes:[:id]).collect do |pddata|
-          Unan::Program::AbsPDay::new(pdid)
+          Unan::Program::AbsPDay::new(pddata[:id])
         end
       end
     end

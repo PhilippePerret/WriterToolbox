@@ -32,7 +32,11 @@
 
     <% if user.admin? %>
       <hr />
-      <%= lien.console("Console", target:nil) %>
+      <% if user.manitou? %>
+        <%= lien.console("Console", target:nil) %>
+        <%= 'SYNC'.in_a(href: 'admin/sync') %>
+      <% end %>
+
       <a href="admin/dashboard">Dashboard</a>
       <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
     <% end %>

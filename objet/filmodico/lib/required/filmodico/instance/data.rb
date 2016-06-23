@@ -33,7 +33,7 @@ class Filmodico
     @titre = @titre.force_encoding('utf-8')
   end
   def dejson_people raw
-    return "" if raw.nil?
+    return [] if raw.nil_if_empty.nil?
     raw = JSON.parse(raw)
     if raw.first.instance_of?(String)
       raw =
@@ -42,6 +42,10 @@ class Filmodico
         end
     end
     return raw.to_sym
+  rescue Exception => e
+    debug "Problème avec la rangée : #{raw.inspect}"
+    debug e
+    []
   end
 
 end

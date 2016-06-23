@@ -34,7 +34,7 @@ class Filmodico
     def edit_by_sym_id
       sym_id = param_data[:sym].nil_if_empty
       return error("Il faut fournir le SYM ID du film") if sym_id.nil?
-      id = table_films_analyse.select(where:{sym: sym_id}).first[:id]
+      id = table_films_analyses.select(where:{sym: sym_id}).first[:id]
       prepare_edition_film table_filmodico.get(id)
     end
 
@@ -84,7 +84,7 @@ class Filmodico
           data2save_analyse.merge!(sym: dfilm[:sym])
         end
       end
-      Filmodico::table_films_analyse.update(id, data2save_analyse)
+      Filmodico::table_films_analyses.update(id, data2save_analyse)
     end
     # Transmettre l'affiche si nécessaire
     upload_affiche_if_needed unless ONLINE
@@ -101,12 +101,14 @@ class Filmodico
       duree:            @duree,
       duree_generique:  @duree_generique,
       pays:             @pays,
-      realisateur:      @realisateur,
-      auteurs:          @auteurs,
-      producteurs:      @producteurs,
-      musique:          @musique,
-      acteurs:          @acteurs
+      realisateur:      @realisateur.to_json,
+      auteurs:          @auteurs.to_json,
+      producteurs:      @producteurs.to_json,
+      musique:          @musique.to_json,
+      acteurs:          @acteurs.to_json
     }
+    debug "@data2save : #{@data2save.pretty_inspect}"
+    @data2save
   end
   def data2save_analyse
     @data2save_analyse ||= {
