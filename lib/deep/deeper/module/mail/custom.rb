@@ -83,9 +83,7 @@ div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;t
       tmp_mail_path.write Marshal.dump(hash_data_message_plus)
     end
     def tmp_mail_path
-      p = tmp_mails_folder + tmp_mail_name
-      debug "Path du mail in temp : #{p}"
-      p
+      tmp_mails_folder + tmp_mail_name
     end
     def tmp_mails_folder
       @tmp_mails_folder ||= begin

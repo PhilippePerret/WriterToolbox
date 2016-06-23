@@ -5,118 +5,74 @@ Extension de la class User pour le CRON
 class User
 class << self
 
+  def log message
+    safed_log message rescue nil
+  end
+
   # Méthode principale appelée toutes les heures par le cron job
   # pour voir s'il faut passer un programme au jour suivant.
   #
-  # Cette méthode vérifie aussi les travaux reprogrammés de l'user
-  # Rappel : Ces travaux reprogrammés sont reconnaissables au fait
-  # qu'il ont une date de création dans le futur.
-  # 
+  # Si c'est le cas, et que l'auteur veut recevoir un rapport
+  # quotidien, on construit son rapport et on lui envoie.
+  #
+  # Rappel : Maintenant, c'est la classe User::CurrentPDay qui
+  # fait ce rapport et construit le mail. Noter qu'elle est
+  # chargée automatiquement à partir du moment où on utilise :
+  #   <user>.current_pday[...]
+  # Noter que ce `current_pday` n'a rien à voir avoir la même
+  # propriété de <user>.program qui ne fait que retourner le
+  # jour-programme courant.
+  #
+  # Je refais entièrement cette méthode.
   def traite_users_unanunscript
 
-    # Pour le moment, puisqu'il y a un bug, je ne produis
-    # le rapport qu'une seule fois par jour.
-    unless Time.now.hour == 0
-      safed_log '= Traitement UN AN UN SCRIPT une seule fois par jour en attendant que ça fonctionne.'
-      return
-    end
+    # RAPPEL : CETTE MÉTHODE EST APPELÉE TOUTES LES HEURES
 
-    # Charger les librairies propres aux Unan::Program pour voir
-    # s'il faut passer au jour suivant et passer le programme au
-    # jour suivant
-    Unan::require_module 'start_pday'
+    site.require_objet 'unan'
 
-    log "= Nombre d'auteurs en activité : #{users_en_activite.count}"
-    log "= IDs : #{users_en_activite.collect{|a| a.id }.pretty_join}\n"
-
-    # Pour initialiser le rapport administration
-    Cron::rapport_admin.init
-
-    # Boucler sur tous les programmes en activité
-    users_en_activite.each do |auteur|
-
-      log "\n* TRAITEMENT USER EN ACTIVITÉ : #{auteur.pseudo} (##{auteur.id})"
-
-      # On doit mettre l'auteur en user courant pour
-      # toutes les méthodes et propriétés qui font
-      # usage de `user`
-      User::current = auteur
-
-      entete_message = "Le programme ##{auteur.program.id} de #{auteur.pseudo} (##{auteur.id}) "
-
-      log "= User::current : #{auteur.id} (#{auteur.pseudo})"
-
-      # Normalement, ça ne devrait pas être possible, mais apparemment
-      # ça arrive
-      if auteur.program.nil?
-        log "# Bizarrement, l'auteur id:#{auteur.id}/pseudo:#{auteur.pseudo} est considéré comme auteur en activité, mais `auteur.program` retour nil."
-        next
-      else
-        log "= L'ID programme de #{auteur.pseudo} est : ##{auteur.program.id}"
-      end
-
-      log "= Jour-programme courant de #{auteur.pseudo} : #{auteur.program.current_pday.inspect}"
-
-      # On teste pour savoir si l'auteur doit passer au jour-programme
-      # suivant, en fonction de l'heure et de son rythme d'avancée.
-      # Si nécessaire (i.e. s'il y a changement de jour, nouveaux travaux,
-      # etc.) cette méthode exécutera tout ce qu'il faut exécuter, avec
-      # l'envoi des mails d'annonce, etc.
-      resultat = auteur.program.test_if_next_pday
-      if resultat != nil
-        if resultat[:errors].empty?
-          log "--- #{entete_message} a été passé au jour-programme suivant avec succès (P-Day #{auteur.program.current_pday})."
-        else
-          error_log "--- #{entete_message} N'a PAS pu être passé au jour-programme suivant pour les erreurs suivantes : #{resultat[:errors].pretty_join}."
-        end
-      else
-        log "--- #{entete_message} n'a pas eu besoin d'être passé au jour-programme suivant."
-      end
-
-      # Si l'auteur n'a pas été passé au jour suivant, mais que l'on est
-      # la première heure d'un nouveau jour et que l'auteur a demandé à
-      # avoir un rapport quotidien, alors il faut faire l'état des lieux de
-      # son programme.
-      # Cet état des lieux lui récapitulera son travail en l'alertant si
-      # des choses sont en retard.
-      # Noter que le mail est toujours construit car il fabrique un
-      # panneau d'alerte qui sera aussi affiché dans le bureau de
-      # l'auteur lorsqu'il rejoindra son bureau.
-      #
-      # [METTRE TRUE ICI POUR FORCER LE RAPPORT]
-      if resultat == nil && Time.now.hour == 0
-        log "--- État des lieux de première heure nécessaire"
-        log "    * État des lieux"
-        auteur.program.etat_des_lieux
-        log "    * Envoi du mail"
-        if auteur.report.send_by_mail
-          log "    = État des lieux de première heure et envoi mail OK"
-        else
-          errors_auteur = auteur.errors.join("\n")
-          error_log "    # Problème au cours de l'envoi du mail de l'état des lieux : #{errors_auteur}"
-        end
-      else
-        # On envoie le mail de l'auteur que si nécessaire
-        auteur.send_mail_if_needed
-      end
-
-
-    end # / fin de boucle sur tous les auteurs en activité
-
-  end
-
-  # {Array of User} Retourne la liste de tous les auteurs
-  # du programme UN AN UN SCRIPT en activité
-  #
-  # TODO : Attention, ici, il va y avoir un problème quand un
-  # auteur suivra son deuxième programme, si cela arrive.
-  def users_en_activite
-    @users_en_activite ||= begin
-      where_clause = "options LIKE '1%'"
-      Unan::table_programs.select(where:where_clause, colonnes:[:auteur_id]).collect do |pdata|
-        User::new( pdata[:auteur_id] )
-      end.compact
+    # Boucle sur toutes les auteurs suivant le programme
+    drequest = {
+      where:    'options LIKE "1%"'
+    }
+    Unan.table_programs.select(drequest).each do |hprog|
+      traite_program_unanunscript hprog
     end
   end
+
+  def traite_program_unanunscript hprog
+    auteur_id   = hprog[:auteur_id]
+    pday        = hprog[:current_pday]
+    pday_start  = hprog[:current_pday_start]
+    rythme      = hprog[:rythme]
+
+    # Calcul du début du prochain jour
+    next_pday_start = (pday_start + 1.day.to_f * (5.0 / rythme)).to_i
+
+    # Conditions pour que le programme soit passé au jour suivant:
+    # 1. Il faut que l'on ait dépassé la date du début du jour-suivant
+    # Noter que lorsque ça se produit, puisque le début du jour-programme
+    # sera modifié, la valeur de next_pday_start sera poussée au lendemain
+    # et donc il faudra attendre que le temps arrive à nouveau à cette
+    # valeur pour ré-envoyer le rapport.
+    #
+    if NOW > next_pday_start
+      # On produit le changement de jour
+      Unan::Program.new(hprog[:id]).current_pday= pday + 1
+      # On prend l'auteur
+      auteur = User.new(auteur_id)
+      # On lui envoie le rapport de changement de jour-programme
+      auteur.current_pday.send_rapport_quotidien
+      # On ajoute ça au safed_log
+      log "Auteur ##{auteur.id} (#{auteur.pseudo}) passé au jour-programme #{pday+1} avec succès."
+      return true # pour simplifier les tests
+    else
+      return false # pour simplifier les tests
+    end
+  rescue Exception => e
+    debug e
+    error_log "Impossible d'envoyer le rapport : #{e.message} (consulter le débug)"
+    return nil
+  end
+
 end # << self
 end #/User

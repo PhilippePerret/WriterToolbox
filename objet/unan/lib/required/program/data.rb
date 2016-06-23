@@ -56,7 +56,7 @@ class Program
   # @usage : On MULTIPLIE la durée réelle par ce nombre pour
   # obtenir la durée-programme.
   #     DURÉE_PROGRAMME = DURÉE_RÉELLE * coefficient_duree
-  # =>  DURÉE_RÉELLE = DURÉE_PROGRAMME.to_f / coefficient_duree
+  # =>  DURÉE_RÉELLE    = DURÉE_PROGRAMME.to_f / coefficient_duree
   # ATTENTION : si cette méthode est déplacée, il faut modifier
   # le path dans la méthode `user#etat_des_lieux_programme_unan`
   # qui charge ce fichier (en standalone) pour calculer les

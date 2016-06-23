@@ -8,16 +8,12 @@
 class User
 class CurrentPDay
 
-  # = main =
-  #
-  # Produit le code du mail qui doit être envoyé à l'auteur
-  #
-  def mail_quotidien
-
-  end
-
   # Retourne le code HTML complet du rapport
-  def report
+  #
+  # C'est le texte qui sera transmis à l'auteur suivant
+  # le programme.
+  # 
+  def rapport_complet
     styles_css + introduction + built_report
   end
 
