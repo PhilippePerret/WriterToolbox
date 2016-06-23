@@ -74,47 +74,12 @@ class UAUSReport
     )
   end
 
-  def assemblage_rapport
-    introduction +
-    built_report
-  end
-
-  def introduction
-    c = String::new
-    (c << welcome)                rescue nil
-    (c << avertissements_serieux) rescue nil
-    (c << avertissements_mineurs) rescue nil
-    (c << titre_rapport.in_h2)    rescue nil
-    (c << numero_jour_programme)  rescue nil
-    (c << nombre_points)          rescue nil
-    (c << css)                    rescue nil
-    return c
-  end
 
   def titre_rapport
     @titre_rapport ||= "Rapport du #{NOW.as_human_date(true, false, ' ')}"
   end
 
-  # Construction du rapport de l'état des lieux de l'auteur
-  # RETURN Le code HTML du rapport construit
-  def built_report
-    c = String::new
-    (c << message_general)              rescue nil
-    (c << section_travaux_overtimed)    rescue nil
-    (c << section_travaux_non_started)  rescue nil
-    (c << section_nouveaux_travaux)     rescue nil
-    (c << section_travaux_poursuivis)   rescue nil
-    (c << section_liens)                rescue nil
-    c.in_section(id:'unan_inventory')
-  end
 
-
-  def welcome
-    <<-HTML
-<p>Bonjour #{pseudo},</p>
-<p class='small italic'>Veuillez trouver ci-dessous le rapport de votre travail sur le programme UN AN UN SCRIPT de <a href="#{site.distant_url}">#{site.name}</a>.</p>
-    HTML
-  end
   # ---------------------------------------------------------------------
   #   Construction de la section des avertissements (introduction)
   # ---------------------------------------------------------------------
@@ -157,22 +122,6 @@ class UAUSReport
   #   Méthodes de construction du rapport
   # ---------------------------------------------------------------------
 
-  def section_liens
-    <<-HTML
-<fieldset>
-  <legend>Liens utiles</legend>
-  <ul class='small'>
-    <li><a href="#{url_bureau_unan}">Rejoindre votre bureau</a></li>
-    <li><a href="#{url_bureau_unan}&cong=preferences">Régler vos préférences</a></li>
-    <li><a href="#{url_bureau_unan}&cong=aide">Aide pour le programme</a></li>
-  </ul>
-</fieldset>
-    HTML
-  end
-
-  def url_bureau_unan
-    @url_bureau_unan ||= "#{site.distant_url}/bureau/home?in=unan"
-  end
 
   # Traite toutes les listes de travaux par type
   #

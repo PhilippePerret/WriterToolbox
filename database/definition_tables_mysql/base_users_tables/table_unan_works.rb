@@ -39,6 +39,8 @@ CREATE TABLE unan_works_#{user_id}
     # Indice du jour-programme de ce travail. Car le
     # même travail absolu peut donner lieu à plusieurs
     # travaux dans plusieurs jours-programme différents.
+    # C'est le PDay du jour où ce travail aurait dû être
+    # commencé, même s'il a été "démarré" le lendemain.
     abs_pday INTEGER(4) NOT NULL,
 
     # STATUS

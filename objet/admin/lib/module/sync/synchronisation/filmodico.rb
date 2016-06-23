@@ -3,7 +3,7 @@ class Sync
   def synchronize_filmodico
     @report << "* Synchronisation du FILMODICO"
     if Sync::Filmodico.instance.synchronize(self)
-      @report << "= Synchronisation du FILMODICO OPÉRÉE AVEC SUCCÈS".in_span(class:'blue')
+      @report << "= Synchronisation du FILMODICO OPÉRÉE AVEC SUCCÈS"
     else
       mess_err = "# ERREUR pendant la synchronisation du FILMODICO".in_span(class: 'warning')
       @report << mess_err
@@ -29,7 +29,9 @@ class Filmodico
     @nombre_synchronisations = 0
     synchronize_fiches_database
     synchronize_affiches
-    report "  NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}"
+    if @nombre_synchronisations > 0
+      report "  NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+    end
   rescue Exception => e
     error e.message
     false

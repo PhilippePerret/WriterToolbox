@@ -11,6 +11,7 @@ class << self
   # Cette méthode vérifie aussi les travaux reprogrammés de l'user
   # Rappel : Ces travaux reprogrammés sont reconnaissables au fait
   # qu'il ont une date de création dans le futur.
+  # 
   def traite_users_unanunscript
 
     # Pour le moment, puisqu'il y a un bug, je ne produis

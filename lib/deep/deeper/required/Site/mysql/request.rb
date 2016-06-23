@@ -319,7 +319,6 @@ DELETE FROM #{dbm_table.name}
     @prepared_values = []
     @request = "SELECT COUNT(*) FROM #{dbm_table.name} #{where_clause} LIMIT 1"
     resultat = exec
-    debug "resultat : #{resultat.inspect}"
     unless resultat.nil?
       resultat.first.values.first > 0
     else

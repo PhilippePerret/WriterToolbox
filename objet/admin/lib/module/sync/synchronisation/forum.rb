@@ -3,7 +3,7 @@ class Sync
   def synchronize_forum
     @report << "* Synchronisation du FORUM"
     if Sync::Forum.instance.synchronize(self)
-      @report << "= Synchronisation du FORUM opérée avec SUCCÈS".in_span(class:'blue')
+      @report << "= Synchronisation du FORUM opérée avec SUCCÈS"
     else
       mess_err = "# ERREUR pendant la synchronisation du FORUM".in_span(class: 'warning')
       @report << mess_err
@@ -31,7 +31,9 @@ class Forum
       @table_name = table_name
       reset
     end
-    report "  = NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}"
+    if @nombre_synchronisations > 0
+      report "  = NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+    end
   rescue Exception => e
     error e.message
     false

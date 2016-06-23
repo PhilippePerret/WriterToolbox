@@ -1,6 +1,6 @@
 # encoding: UTF-8
 =begin
-
+ 
 Instance CurPDay pour gérer le pday courant
 
 C'est une classe ESSENTIELLE qui permet de savoir où se trouve

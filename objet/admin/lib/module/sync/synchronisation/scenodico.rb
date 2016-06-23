@@ -3,7 +3,7 @@ class Sync
   def synchronize_scenodico
     @report << "* Synchronisation du SCÉNODICO"
     if Sync::Scenodico.instance.synchronize(self)
-      @report << "= Synchronisation du SCÉNODICO OPÉRÉE AVEC SUCCÈS".in_span(class:'blue')
+      @report << "= Synchronisation du SCÉNODICO OPÉRÉE AVEC SUCCÈS"
     else
       mess_err = "# ERREUR pendant la synchronisation du SCÉNODICO".in_span(class: 'warning')
       @report << mess_err
@@ -43,7 +43,9 @@ class Scenodico
       end
     end
 
-    report "  NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}"
+    if @nombre_synchronisations > 0
+      report "  NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+    end
   rescue Exception => e
     error e.message
     false

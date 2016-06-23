@@ -26,7 +26,7 @@ class Sync
     @report << "* Synchronisation immédiate des citations"
     if Citations.instance.synchronize(self)
       @suivi << "= Synchronisation des citations OK"
-      @report << "= Synchronisation des citations OPÉRÉE AVEC SUCCÈS".in_span(class: 'blue')
+      @report << "= Synchronisation des citations OPÉRÉE AVEC SUCCÈS"
     else
       @suivi << "# Problème en synchronisation les citations"
     end
@@ -35,6 +35,8 @@ class Sync
 class Citations
   include Singleton
   include CommonSyncMethods
+
+  attr_reader :nombre_synchronisations
 
   # Méthode principale qui synchronise les citations entre
   # la table locale et la table distante.
@@ -49,7 +51,7 @@ class Citations
     loc_citations = loc_rows
     report "Nombre de citations locales   : #{loc_citations.count}"
 
-    nombre_modifications = 0
+    @nombre_synchronisations = 0
 
     # On conserve les ID des citations distantes pour savoir
     # s'il y a eu des ajouts
@@ -67,7 +69,7 @@ class Citations
       if loc_citation[:last_sent] != dis_citation[:last_sent]
         # ================== ACTUALISATION ===========================
         loc_table.update(cid, { last_sent: dis_citation[:last_sent] })
-        nombre_modifications += 1
+        @nombre_synchronisations += 1
         # ============================================================
         report "Citation ##{cid} LOCALE : :last_sent modifié (#{loc_citation[:last_sent].inspect} -> #{dis_citation[:last_sent].inspect})"
         # Note : Il faut aussi modifier :last_sent dans la donnée
@@ -87,7 +89,7 @@ class Citations
         end
         # ======= ACTUALISATION ============
         dis_table.update(cid, loc_citation)
-        nombre_modifications += 1
+        @nombre_synchronisations += 1
         # ==================================
         report "Citation ##{cid} DISTANTE actualisée."
       end
@@ -99,12 +101,14 @@ class Citations
       next if dis_citations.key?(cid)
       # ======= ACTUALISATION ============
       dis_table.insert(loc_data)
-      nombre_modifications += 1
+      @nombre_synchronisations += 1
       # ==================================
       report "  = Ajout de la citation DISTANTE ##{cid}"
     end
 
-    report "NOMBRE MODIFICATIONS : #{nombre_modifications}"
+    unless @nombre_synchronisations == 0
+      report "NOMBRE SYNCRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+    end
   rescue Exception => e
     debug e
     error "# ERREUR AU COURS DE LA SYNCHRONISATION DES CITATIONS : #{e.message}"

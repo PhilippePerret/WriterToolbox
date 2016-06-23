@@ -14,7 +14,7 @@ class Sync
     @report << "* Synchronisation immédiate des TÂCHES"
     if HotTaches.instance.synchronize(self)
       @suivi << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS"
-      @report << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS".in_span(class: 'blue')
+      @report << "= Synchronisation des TÂCHES OPÉRÉE AVEC SUCCÈS"
     else
       mess_err = "# Synchronisation des tâches impossible"
       @suivi << mess_err
@@ -152,7 +152,9 @@ class HotTaches
 
     end # / fin de boucle sur les tâches distantes restantes
 
-    report "NOMBRE SYNCHRONISATIONS : #{nombre_synchronisations}"
+    if nombre_synchronisations > 0
+      report "NOMBRE SYNCHRONISATIONS : #{nombre_synchronisations}".in_span(class: 'blue bold')
+    end
   rescue Exception => e
   else
     true

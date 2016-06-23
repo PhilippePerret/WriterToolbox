@@ -30,7 +30,7 @@ class Cron
   #   indiquée par le nombre. 13 => envoi du safed_log à 13
   #   heures.
   #
-  SEND_SAFED_LOG = 4
+  SEND_SAFED_LOG = 8
 
 
 class << self

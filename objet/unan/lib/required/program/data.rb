@@ -39,8 +39,8 @@ class Program
   # sa date de démarrage)
   def current_pday= valeur
     set(current_pday: valeur, current_pday_start: NOW)
-    @current_pday       = valeur
-    @current_pday_start = NOW
+    # @current_pday       = valeur
+    # @current_pday_start = NOW
   end
   # {Fixnum} Timestamp du démarrage du jour-programme courant
   def current_pday_start; @current_pday_start ||= get(:current_pday_start)  end
