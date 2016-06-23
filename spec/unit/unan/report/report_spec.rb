@@ -9,6 +9,21 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
     Unan.require_module 'user/current_pday'
   end
 
+  def write_report_in fname, report
+    fpath = SuperFile::new("./tmp/rspec/#{fname}")
+    fpath.remove if fpath.exist?
+    fpath.write <<-HTML
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+      <title>Mail</title>
+    </head>
+    <body>#{report}</body></html>
+    HTML
+    puts "Rapport écrit dans #{fpath}"
+  end
+
   context 'Pour un auteur qui a un peu de tout' do
     before(:all) do
       prepare_auteur( pday: 10, done_upto: 4 )
@@ -18,21 +33,6 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
     it 'auteur est défini' do
       expect(up).not_to eq nil
       expect(up).to be_instance_of User
-    end
-
-    def write_report_in fname, report
-      fpath = SuperFile::new("./tmp/rspec/#{fname}")
-      fpath.remove if fpath.exist?
-      fpath.write <<-HTML
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <title>Mail</title>
-      </head>
-      <body>#{report}</body></html>
-      HTML
-      puts "Rapport écrit dans #{fpath}"
     end
 
     describe '#report' do
@@ -167,6 +167,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
     before(:all) do
       prepare_auteur( pday: 10, done_upto: 10 )
       @report = @up.current_pday.report
+      write_report_in("sans_depassements.html", @report)
     end
     let(:report) { @report }
 

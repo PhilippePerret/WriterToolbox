@@ -60,7 +60,7 @@ class CurrentPDay
     "<span id='nombre_points' class='points fright'>#{program.points}</span><span>Compte actuel de points :</span>".in_div(id:'div_nombre_points')
   end
   def message_note_generale
-    "<span id='note_generale' class='fright points'>#{note_generale} (#{mark_progression})</span>Note générale du jour précédent : ".in_div
+    "<span class='fright'><span id='note_generale' class='points'>#{note_generale_humaine}</span> (#{mark_progression})</span>Note générale du jour précédent : ".in_div
   end
 
   # Retourne le message principal

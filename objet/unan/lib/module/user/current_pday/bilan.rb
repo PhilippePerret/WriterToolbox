@@ -22,6 +22,14 @@ class CurrentPDay
   def note_generale
     ((9 - retard_from_0_to_9).to_f * 20 / 9).round(1)
   end
+  def note_generale_humaine
+    ng = note_generale
+    if ng.to_i == ng
+      ng.to_i
+    else
+      ng
+    end.to_s + '/20'
+  end
   # Retourne la marque (HTML) de progression, en fonction
   # du fait que l'auteur est en progression ou non.
   def mark_progression
