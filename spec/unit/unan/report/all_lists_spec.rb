@@ -184,23 +184,23 @@ describe 'Avec des travaux en retard' do
   # ---------------------------------------------------------------------
   #   Les travaux qui se poursuivent
   # ---------------------------------------------------------------------
-  describe 'uworks_poursuivre' do
+  describe 'uworks_goon' do
     it 'répond et retourne une liste de travaux' do
-      expect(up.current_pday).to respond_to :uworks_poursuivre
-      res = up.current_pday.uworks_poursuivre
+      expect(up.current_pday).to respond_to :uworks_goon
+      res = up.current_pday.uworks_goon
       expect(res).to be_instance_of Array
       premier = res.first
       expect(premier).not_to eq nil
       expect(premier).to be_instance_of Hash
     end
     it 'ne doit contenir que des travaux en dépassement' do
-      up.current_pday.uworks_poursuivre.each do |hw|
+      up.current_pday.uworks_goon.each do |hw|
         expect(hw[:pday] + hw[:duree]).to be >= 10
       end
     end
-    describe 'chaque élément de uworks_poursuivre contient…' do
+    describe 'chaque élément de uworks_goon contient…' do
       before(:all) do
-        @h = @up.current_pday.uworks_poursuivre.first
+        @h = @up.current_pday.uworks_goon.first
       end
       let(:h) { @h }
       it ':awork_id, l’identifiant du travail absolu' do
@@ -240,14 +240,14 @@ describe 'Avec des travaux en retard' do
         end
       end
 
-      nb_poursuis_in_method = up.current_pday.uworks_poursuivre.count
+      nb_poursuis_in_method = up.current_pday.uworks_goon.count
       nb_poursuis_in_table  = poursuis.count
       nb_overruns_in_method = up.current_pday.uworks_overrun.count
       nb_overruns_in_table  = overruns.count
 
       if nb_poursuis_in_method != nb_poursuis_in_table
         puts "\n\nCES DEUX TABLES DEVRAIENT ÊTRE IDENTIQUES"
-        puts "up.current_pday.uworks_poursuivre :\n#{up.current_pday.uworks_poursuivre.pretty_inspect}"
+        puts "up.current_pday.uworks_goon :\n#{up.current_pday.uworks_goon.pretty_inspect}"
         puts "poursuis :\n #{poursuis.pretty_inspect}"
       end
 

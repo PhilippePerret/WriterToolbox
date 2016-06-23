@@ -11,7 +11,8 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
 
   context 'Pour un auteur qui a un peu de tout' do
     before(:all) do
-      prepare_auteur( pday: 10 )
+      prepare_auteur( pday: 10, done_upto: 4 )
+      @up.program.set rythme: 6
     end
     let(:up) { @up }
     it 'auteur est défini' do
@@ -19,9 +20,25 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
       expect(up).to be_instance_of User
     end
 
+    def write_report_in fname, report
+      fpath = SuperFile::new("./tmp/rspec/#{fname}")
+      fpath.remove if fpath.exist?
+      fpath.write <<-HTML
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>Mail</title>
+      </head>
+      <body>#{report}</body></html>
+      HTML
+      puts "Rapport écrit dans #{fpath}"
+    end
+
     describe '#report' do
       before(:all) do
         @report = @up.current_pday.report
+        write_report_in("avec_depassements.html", @report)
       end
       let(:report) { @report }
       it 'répond et retourne un String' do
@@ -35,11 +52,89 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
         expect(report).to have_tag('section#unan_inventory')
       end
 
+      it 'contient le fieldset des nouveaux travaux' do
+        expect(report).to have_tag('fieldset#fs_new_works')
+      end
+      it 'le fieldset des nouveaux travaux contient la bonne légende' do
+        nb = up.current_pday.uworks_ofday.count
+        expect(report).to have_tag('fieldset#fs_new_works') do
+          with_tag 'legend', text: "Nouveaux travaux (#{nb})"
+        end
+      end
+      it 'le fieldset des nouveaux travaux contient le texte explicatif' do
+        expect(report).to have_tag('fieldset#fs_new_works') do
+          with_tag 'div.explication', text: /des nouveaux travaux/
+        end
+      end
+      it 'le fieldset des nouveaux travaux liste tous les nouveaux travaux' do
+        expect(report).to have_tag('fieldset#fs_new_works') do
+          up.current_pday.uworks_ofday.each do |hw|
+            titre = Unan.table_absolute_works.get(hw[:awork_id])[:titre].strip_tags
+            with_tag 'li.work', text: /#{Regexp.escape titre}/
+          end
+        end
+      end
+
       it 'contient le fieldset des travaux en dépassement' do
         expect(report).to have_tag('fieldset#fs_works_overrun')
       end
+      it 'le fieldset des dépassements contient la bonne légende' do
+        nb = up.current_pday.uworks_overrun.count
+        expect(report).to have_tag('fieldset#fs_works_overrun') do
+          with_tag 'legend', text: "Travaux en dépassement (#{nb})"
+        end
+      end
+      it 'le fieldset des dépassements contient un div d’explication' do
+        expect(report).to have_tag('fieldset#fs_works_overrun') do
+          with_tag 'div.explication', text: /en dépassement d'échéance/
+        end
+      end
+      it 'contient un item pour chaque travail en dépassement' do
+        up.current_pday.uworks_overrun.each do |uw|
+          awork = Unan.table_absolute_works.get(uw[:awork_id])
+          titre = awork[:titre]
+          expect(report).to have_tag('fieldset#fs_works_overrun') do
+            with_tag 'li', text: /#{Regexp.escape titre}/
+          end
+        end
+      end
       it 'contient le fieldset des travaux à démarrer' do
         expect(report).to have_tag('fieldset#fs_works_unstarted')
+      end
+      it 'le fieldset des travaux à démarrer contient son texte explicatif' do
+        expect(report).to have_tag('fieldset#fs_works_unstarted') do
+          with_tag 'div.explication', text: /être démarrés/
+        end
+      end
+      it 'contient une ligne par travaux à démarrer' do
+        expect(report).to have_tag('fieldset#fs_works_unstarted') do
+          up.current_pday.uworks_unstarted.each do |uw|
+            titre = Unan.table_absolute_works.get(uw[:awork_id])[:titre].strip_tags
+            with_tag 'li', text: /#{Regexp.escape titre}/
+          end
+        end
+      end
+      it 'contient le fieldset des travaux qui se poursuivent' do
+        expect(report).to have_tag('fieldset#fs_poursuivis')
+      end
+      it 'le fieldset des travaux poursuivis possède sa bonne légende' do
+        nb = up.current_pday.uworks_goon.count
+        expect(report).to have_tag('fieldset#fs_poursuivis') do
+          with_tag 'legend', text: "Travaux poursuivis (#{nb})"
+        end
+      end
+      it 'le fieldset des travaux poursuivis contient son div d’explication' do
+        expect(report).to have_tag('fieldset#fs_poursuivis') do
+          with_tag 'div.explication', text: /à poursuivre/
+        end
+      end
+      it 'le fieldset des travaux poursuivis contient sa liste de travaux' do
+        expect(report).to have_tag('fieldset#fs_poursuivis') do
+          up.current_pday.uworks_goon.each do |uw|
+            titre = Unan.table_absolute_works.get(uw[:awork_id])[:titre].strip_tags
+            with_tag 'li.work', text: /#{Regexp.escape titre}/
+          end
+        end
       end
       it 'contient le fieldset des liens utiles' do
         expect(report).to have_tag('fieldset#fs_liens_utiles')
@@ -49,7 +144,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
 
   context 'Pour un auteur qui n’a aucun dépassement' do
     before(:all) do
-      prepare_auteur( pday: 10, done_upto: 9 )
+      prepare_auteur( pday: 10, done_upto: 10 )
       @report = @up.current_pday.report
     end
     let(:report) { @report }

@@ -21,6 +21,10 @@ def prepare_auteur options = nil
   @hprog != nil || raise('Il faut créer un auteur pour le programme UN AN UN SCRIPT')
   @program_id   = @hprog[:id]
   @auteur_id    = @hprog[:auteur_id]
+
+  puts "@auteur_id : #{@auteur_id}"
+  @auteur_id != nil || raise('Aucun auteur n’a pu être trouvé…')
+
   @up = User.new(@auteur_id)
 
   # On va augmenter le current_pday de l'auteur pour qu'il

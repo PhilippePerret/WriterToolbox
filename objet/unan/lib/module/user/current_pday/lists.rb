@@ -100,9 +100,9 @@ class CurrentPDay
   #   {:reste} (nombre de jours restants avant l'échéance)
   #   Ce nombre peut être égal à zéro
   #
-  def uworks_poursuivre
-    decompose_travaux if @uworks_poursuivre === nil
-    @uworks_poursuivre
+  def uworks_goon
+    decompose_travaux if @uworks_goon === nil
+    @uworks_goon
   end
 
   # Array des travaux en dépassement de temps
@@ -167,7 +167,7 @@ class CurrentPDay
   #     été démarrés, sinon c'est dans les travaux à
   #     démarrer qu'ils apparaitront.
   #   - La liste des travaux qui se poursuivent
-  #     => @uworks_poursuivre
+  #     => @uworks_goon
   #     La propriété :reste est ajoutée au hash, avec le nombre
   #     de jours-programme restant.
   #     Un "travail qui se poursuit" est un travail qui :
@@ -182,7 +182,7 @@ class CurrentPDay
     # Les travaux en dépassement
     @uworks_overrun     = []
     # Les travaux à poursuivre
-    @uworks_poursuivre  = []
+    @uworks_goon  = []
     # Les travaux qui auraient dû être démarrés
     @uworks_unstarted   = []
     # Les nouveaux travaux du jour
@@ -214,7 +214,7 @@ class CurrentPDay
           # Si le jour-programme de ce travail est inférieur à
           # aujourd'hui, c'est un travail à poursuivre
           # Un travail à poursuivre normalement
-          @uworks_poursuivre << haw.merge(awork_id: haw[:id], uwork_id: uwork_id, reste: reste)
+          @uworks_goon << haw.merge(awork_id: haw[:id], uwork_id: uwork_id, reste: reste)
           # debug "    À poursuivre"
         end
       else

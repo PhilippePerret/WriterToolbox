@@ -21,9 +21,7 @@ class Program
   def options       ; @options    ||= get(:options) || ""   end
   def created_at    ; @created_at ||= get(:created_at)      end
   def updated_at    ; @updated_at ||= get(:updated_at)      end
-  # {Fixnum} Le rythme
-  # ATTENTION : c'est une préférence, pas une donnée du programme
-  def rythme        ; @rythme ||= user.preference(:rythme) || RYTHME_STANDARD end
+  def rythme        ; @rythme     ||= get(:rythme)          end
 
   # Valeurs rechargées chaque fois
   def points
@@ -57,8 +55,8 @@ class Program
   # Coefficient de durée du jour-programme du programme courant
   # @usage : On MULTIPLIE la durée réelle par ce nombre pour
   # obtenir la durée-programme.
-  # DURÉE_RÉELLE * coefficient_duree = DURÉE_PROGRAMME
-  # => DURÉE_RÉELLE = DURÉE_PROGRAMME.to_f / coefficiant_duree
+  #     DURÉE_PROGRAMME = DURÉE_RÉELLE * coefficient_duree
+  # =>  DURÉE_RÉELLE = DURÉE_PROGRAMME.to_f / coefficient_duree
   # ATTENTION : si cette méthode est déplacée, il faut modifier
   # le path dans la méthode `user#etat_des_lieux_programme_unan`
   # qui charge ce fichier (en standalone) pour calculer les
