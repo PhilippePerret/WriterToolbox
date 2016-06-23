@@ -308,6 +308,13 @@ unan:
       <li>auteurs => Manuel pour les deux sexes.</li>
       </ul>
   -
+    command:        unan send me rapport|report &lt;pseudo|ID&gt;
+    description:    M'envoie le rapport quotidien de l'auteur désigné par pseudo ou ID
+    note: |
+      Si pseudo ou ID n'est pas précisé, le programme retourne la
+      liste des auteurs suivant le programme en ONLINE afin de pouvoir
+      en choisir un.
+  -
     command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
     description:    Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.
     note:           Cette commande ne peut s'utiliser qu'en OFFLINE.

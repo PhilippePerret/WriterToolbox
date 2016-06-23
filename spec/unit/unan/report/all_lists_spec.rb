@@ -8,7 +8,7 @@ describe 'Avec des travaux en retard' do
   before(:all) do
     # Librairies requises
     site.require_objet 'unan'
-    Unan.require_module('user/current_pday')
+    Unan.require_module('current_pday_user')
 
     # Gros travail de préparation
     prepare_auteur( pday: 10 )

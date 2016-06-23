@@ -92,6 +92,8 @@ class Console
     when /^unan /
       console.require 'unan_unscript'
       case line.downcase
+      when /^unan send me (rapport|report)/
+        return unan_simule_envoi_rapport (line.split(' ').last)
       when /^unan (build|construire|construis) manuel auteur(e|s)?$/
         return unan_build_manuel(line.split(' ').last)
       when "unan points"

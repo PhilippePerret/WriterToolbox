@@ -15,7 +15,7 @@ describe 'Bilan quotidien de l’auteur suivant le programme UN AN UN SCRIPT' do
     @auteur_id    = @hprog[:auteur_id]
     @up = User.new(@auteur_id)
     site.require_objet 'unan'
-    Unan.require_module('user/current_pday')
+    Unan.require_module('current_pday_user')
 
   end
 

@@ -39,7 +39,7 @@
   # ---------------------------------------------------------------------
   #   Lien permanent
   # ---------------------------------------------------------------------
-  if site.current_route.nil?
+  if site.current_route.nil? || site.current_route.route == 'admin/console'
     ""
   else
     style = "font-size:11pt;width:500px"

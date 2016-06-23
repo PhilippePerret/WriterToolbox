@@ -6,7 +6,7 @@
 describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
   before(:all) do
     site.require_objet 'unan'
-    Unan.require_module 'user/current_pday'
+    Unan.require_module 'current_pday_user'
   end
 
   def write_report_in fname, report

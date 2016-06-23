@@ -4,6 +4,44 @@ class SiteHtml
 class Admin
 class Console
 
+  def unan_simule_envoi_rapport ref_user
+    if OFFLINE
+      return 'Cette commande doit impérativement s’utiliser ONLINE'
+    end
+    site.require_objet 'unan'
+    if ref_user =~ /^(report|rapport)$/
+      # Aucun user n'a été spécifié, il faut retourner la liste des
+      # auteur suivant le programme
+      res =
+        Unan.table_programs.select(where: 'options LIKE "1%"').collect do |hprog|
+          auteur = User.new(hprog[:auteur_id])
+          "#{auteur.pseudo} (##{auteur.id})".in_li
+        end.join('').in_ul
+      sub_log(res)
+      "Aucun auteur spécifié, je retourne la liste des auteurs suivant le programme."
+    else
+      ref_user =
+        if ref_user.numeric?
+          # => Par ID
+          ref_user.to_i
+        else
+          # => Par pseudo
+          hu = table_user.select(where: "pseudo = '#{ref_user}'").first
+          hu != nil || raise("Aucun auteur n'a pu être trouvé avec le pseudo '#{ref_user}'…")
+          hu[:id]
+        end
+      u = User.new(ref_user)
+      rapport = u.current_pday.rapport_complet
+      sub_log 'Rapport envoyé par mail :'.in_h3 + rapport
+      site.send_mail_to_admin(
+        subject: 'Simulation envoi rapport à auteur UN AN UN SCRIPT',
+        message: rapport,
+        formated: true,
+        force_offline: true
+      )
+      "Mail envoyé aussi dans la boite."
+    end
+  end
 
   def unan_build_manuel pour
     site.require_gem 'latexbook'

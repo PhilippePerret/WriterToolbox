@@ -12,10 +12,11 @@ class CurrentPDay
   #
   # C'est le texte qui sera transmis à l'auteur suivant
   # le programme.
-  # 
+  #
   def rapport_complet
     styles_css + introduction + built_report
   end
+  alias :whole_report :rapport_complet
 
 
   def styles_css
