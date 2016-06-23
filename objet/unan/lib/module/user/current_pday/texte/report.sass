@@ -1,0 +1,59 @@
+body
+  font-size   : 13.2pt
+
+a, a:visited, a:link, a:hover
+  text-decoration   : none
+  
+.small
+  font-size : 11pt
+.italic
+  font-style  : italic
+.orange
+  color : orange
+.blue 
+  color : #007
+.paleblue
+  color : #559
+.red, .warning
+  color : red
+  
+section#unan_inventory
+
+  //Le message général donnant la tonalité du message
+  div#message_general
+    margin    : 2em
+    font-size : 1.12em
+  
+  font-size : 13pt
+  
+  fieldset.fs_works
+    margin-bottom   : 1em
+    // Le div contenant les explications sur la section des
+    // travaux courante
+    div.explication
+      opacity     : 0.6
+      font-size   : 0.8em
+      font-style  : italic
+      &:hover
+        opacity   : 1
+    
+    // Spécialement pour la liste des travaux en dépassement
+    &#fs_works_overrun
+      ul, legend
+        color   : red
+    // Spécialement pour la liste des travaux à démarrer
+    &#fs_works_unstarted
+      ul, legend
+        color   : #ff6800
+    ul
+      padding   : 0 1em 0 2em
+      margin    : 0.5em 0
+      list-style  : none
+      
+      // Pour les texte 'Tâche à démarrer', etc.
+      div.listew_titre
+        color         : #b5b5b5
+        font-style    : italic
+    
+span#signature
+  font-size     : 12.5pt

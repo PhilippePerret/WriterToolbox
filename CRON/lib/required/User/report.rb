@@ -122,96 +122,6 @@ class UAUSReport
   #   Méthodes de construction du rapport
   # ---------------------------------------------------------------------
 
-
-  # Traite toutes les listes de travaux par type
-  #
-  # +kliste+ est le nom de la méthode qui définit les travaux,
-  # par exemple :nouveaux pour les nouveaux ou :overtimed pour
-  # les travaux en dépassement. Cette méthode est une méthode
-  # de `Unan::Program::CurPDay` qui retourne une liste d'instances
-  #
-  # C'est la méthode qui est utilisée pour traiter toutes les
-  # listes de travaux, nouveaux, poursuivis ou en dépassement
-  # ci-dessous.
-  #
-  # La liste finale est composée ainsi :
-  #     - Titre du type (tâche, page, quiz ou forum)
-  #       - travail 1
-  #       - travail 2
-  #       ...
-  #       - travail N
-  #     - Titre du type
-  #       - travail 1
-  #       - travail 2
-  #     etc.
-  #
-  def traite_liste_travaux kliste
-    safed_log "Traitement de la liste #{kliste.inspect}"
-    max_depassement = 0
-    liste_tous_travaux = [:task, :page, :quiz, :forum].collect do |ltype|
-
-      # La liste des travaux (Array de Hash)
-      #
-      liste_travaux = cur_pday.send(kliste, ltype)
-
-      # S'il n'y a aucun travail de ce type, on peut s'en
-      # retourner pour passer au type suivant
-      next if liste_travaux.empty?
-
-      # Le titre sous-section, en fonction du type (tâche,
-      # page, etc.)
-      titre_sous_section =
-      case kliste
-      when :unstarted
-        case ltype
-        when :task  then "Tâches à démarrer"
-        when :page  then "Cours à marquer “vus”"
-        when :forum then "Actions Forum prendre en compte"
-        end
-      else
-        case ltype
-        when :task  then "Tâches à accomplir"
-        when :page  then "Pages de cours à lire ou relire"
-        when :quiz  then "Questionnaires à remplir"
-        when :forum then "Actions Forum à faire"
-        end
-      end
-
-      sous_lis = liste_travaux.sort_by{|wdata| wdata[:reste]}.collect do |wdata|
-
-        titre = wdata[:titre]
-
-        dep   = wdata[:depassement]
-        reste = wdata[:reste]
-        max_depassement = dep if dep != nil && dep > max_depassement
-        info_end = if reste == 0
-          "Ce travail doit être effectué aujourd'hui".in_span(class:'orange')
-        elsif reste > 1
-          "Travail à effectuer dans les #{reste} jours.".in_span(class:'blue')
-        elsif reste == 1
-          "Ce travail doit être effectué aujourd'hui ou demain".in_span
-        elsif dep > 1
-          "Travail en dépassement de #{dep} jours.".in_span(class:'warning')
-        elsif dep == 1
-          "Petit dépassement d'un jour.".in_div(class:'warning')
-        end.in_div(class:'info_end')
-
-        # Construction de la ligne pour ce travail
-        (titre + info_end).in_li(class: wdata[:css])
-
-      end.join
-
-      (
-        titre_sous_section.in_span(class:'sous_titre_section') +
-        sous_lis.in_ul
-      ).in_li
-
-
-    end.join.in_ul(id:"liste_travaux_#{kliste}", class:'liste_travaux')
-
-    liste_tous_travaux
-  end
-
   # TODO: Gérer aussi le nombre de dépassement pour avoir un
   # message qui dépendra vraiment de chaque cas.
 
@@ -236,101 +146,20 @@ class UAUSReport
 
     # Le message dépend aussi du stade où en est l'auteur,
     # différent si c'est au début du programme ou à la fin
-    stade_programme =
-      if cur_pday.indice < 100
-        :debut
-      elsif cur_pday.indice <= 260
-        :milieu
-      elsif cur_pday.indice > 260
-        :fin
-      end
 
-    retard = case true
-    when nombre_cisi > 20 then 9
-    when nombre_cisi > 10 then 8
-    when nombre_cisi > 0  then 7
-    when nombre_trqu > 20 then 6
-    when nombre_trqu > 10 then 5
-    when nombre_trqu > 0  then 4
-    when nombre_unde > 20 then 3
-    when nombre_unde > 10 then 2
-    when nombre_unde > 0  then 1
-    else 0
-    end
 
-    # Enregistrement de la valeur de retard dans le
-    # programme de l'auteur
-    retards_as_array = (auteur.program.retards || "").split('')
-    retards_as_array[cur_pday.indice] = retard
-    retards = retards_as_array.collect{|r| r.nil? ? '0': r}.join('') # utilisé aussi plus bas
-    auteur.program.set(retards: retards)
 
-    # FRÉQUENCE DES RETARDS
-    #
-    # S'il y a un problème, est-ce un accident ou l'auteur est-il
-    # coutumier du fait ? Compter le nombre de fois où
-    # l'auteur est passé au même niveau ou au-dessus pour
-    # déterminer le pourcentage de retard
-    #
-    # Noter que ça peut être également un accident de n'avoir
-    # aucun retard ;-) si l'auteur en a toujours eu.
-    #
-    # Cette procédure n'est faite que si l'auteur est
-    # depuis plus d'un mois dans son programme. Elle est inutile
-    # avant car ça produirait des résultats aberrants comme, par
-    # exemple, des valeurs de 100% lorsqu'il n'a qu'un jour de
-    # programme dans les pattes.
-    #
-    if cur_pday.indice > 30 && retard > 0
-      nombre_retards_egal_ou_sup = 0
-      nombre_retards = retards_as_array.count
-      retards.split('').each do |r|
-        r = r.to_i
-        nombre_retards_egal_ou_sup += 0 if r >= retard
-      end
-
-      pct_retards_egaux_ou_sup = ((nombre_retards_egal_ou_sup.to_f / nombre_retards) * 100).to_i
-
-      frequence = case true
-      when pct_retards_egaux_ou_sup < 10  then :accident
-      when pct_retards_egaux_ou_sup < 30  then :rare
-      when pct_retards_egaux_ou_sup < 50  then :frequent
-      when pct_retards_egaux_ou_sup < 70  then :souvent
-      else :systematique
-      end
-    else
-      # Trop tôt ou pas de retard
-      frequence = nil
-    end
 
     safed_log "    = retard   = #{retard}"
     safed_log "    = retards  = #{auteur.program.retards}"
     safed_log "    = frequence ? #{frequence.inspect}"
 
-    # Si le retard est conséquent, le signaler à l'administration
-    if retard > 3
-      message_admin_retard = <<-ERB
-<div class='warning'>DÉPASSEMENT TROP CONSÉQUENT DE #{auteur.pseudo} (##{auteur.id}) :</div>
-<pre>
-      Retard aujourd'hui  : #{retard}
-      Données des retards : #{retards}
-      Jour-programme      : #{auteur.program.current_pday}
-</pre>
-      ERB
-      Cron::Admin::report << message_admin_retard
-    end
 
     # Le message principal
     mess = data_messages[retard][stade_programme]
     # L'ajout du message de fréquence
     mess += data_messages[frequence][stade_programme] if frequence != nil
 
-    class_message = case true
-    when retard == 0  then 'blue'
-    when retard < 4   then 'paleblue'
-    when retard < 7   then 'orange'
-    else 'red'
-    end
 
     # On retourne le message après avoir corrigé certaines
     # variables dynamique, à commencer par le pseudo.
@@ -340,12 +169,6 @@ class UAUSReport
     }).in_div(id:'message_general', class: class_message)
   end
 
-  # Grande table contenant les messages en fonction du retard
-  # et du fait qu'on se trouve au début, au milieu ou à la fin
-  # du programme.
-  def data_messages
-    @data_messages ||= YAML::load_file(_('messages_retards.yaml'))
-  end
 
   # Section avec la liste des travaux qui auraient dû
   # être démarrés mais qui ne l'ont pas été.

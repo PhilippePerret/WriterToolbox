@@ -18,7 +18,14 @@ class CurrentPDay
 
   # Retourne le code HTML complet du rapport
   def report
-    introduction + built_report
+    styles_css + introduction + built_report
+  end
+
+
+  def styles_css
+    '<style type="text/css">' +
+      SuperFile.new(_('texte/report.css')).read +
+    '</style>'
   end
 
   def introduction
@@ -59,7 +66,7 @@ class CurrentPDay
     c = ''
     c << texte_type('explications_overrun').in_div(class: 'explication')
     c << traite_liste_travaux(uworks_overrun, :overrun)
-    c.in_fieldset(id: 'fs_works_overrun', legend: "Travaux en dépassement (#{uworks_overrun.count})")
+    c.in_fieldset(id: 'fs_works_overrun', class: 'fs_works', legend: "Travaux en dépassement (#{uworks_overrun.count})")
   end
 
   def section_travaux_unstarted
@@ -67,7 +74,7 @@ class CurrentPDay
     c = ''
     c << texte_type('explications_unstarted').in_div(class: 'explication')
     c << traite_liste_travaux(uworks_unstarted, :unstarted)
-    c.in_fieldset(id: 'fs_works_unstarted', legend: "Travaux à démarrer (#{uworks_unstarted.count})")
+    c.in_fieldset(id: 'fs_works_unstarted', class: 'fs_works', legend: "Travaux à démarrer (#{uworks_unstarted.count})")
   end
 
   def section_nouveaux_travaux
@@ -75,7 +82,7 @@ class CurrentPDay
     c = ''
     c << texte_type('explications_new').in_div(class: 'explication')
     c << traite_liste_travaux(uworks_ofday, :new)
-    c.in_fieldset(id: 'fs_new_works', legend: "Nouveaux travaux (#{uworks_ofday.count})")
+    c.in_fieldset(id: 'fs_new_works', class: 'fs_works', legend: "Nouveaux travaux (#{uworks_ofday.count})")
   end
 
   def section_travaux_poursuivis #goon
@@ -83,7 +90,7 @@ class CurrentPDay
     c = ''
     c << texte_type('explications_goon').in_div(class: 'explication')
     c << traite_liste_travaux(uworks_goon, :goon)
-    c.in_fieldset(id: 'fs_poursuivis', legend: "Travaux poursuivis (#{uworks_goon.count})")
+    c.in_fieldset(id: 'fs_poursuivis', class: 'fs_works', legend: "Travaux poursuivis (#{uworks_goon.count})")
   end
 
   # ---------------------------------------------------------------------
@@ -162,16 +169,16 @@ class CurrentPDay
         ajout =
         case ltype
         when :overrun
-          " (#{jours_real hw[:overrun]} de dépassement)"
+          " (<strong>#{jours_real hw[:overrun]} de dépassement</strong>)"
         when :goon
           " (reste #{jours_real hw[:reste]})"
         when :unstarted
-          " (depuis #{jours_real hw[:since]})"
+          " (depuis <strong>#{jours_real hw[:since]}</strong>)"
         else
           ''
         end
         # La rangée LI finale
-        (hw[:awork][:titre] + ajout).in_li(class: 'work')
+        ('- ' + hw[:awork][:titre] + ajout).in_li(class: 'work')
       end.join('')
     end.join('').in_ul(class: 'listw', id: "listw-#{ltype}")
   end
@@ -188,7 +195,9 @@ class CurrentPDay
     nombre_jours, portion_jour = rj.to_s.split('.')
     s_jour = nombre_jours.to_i > 1 ? 's' : ''
     portion_jour = portion_jour.to_i
-    if portion_jour < 10 # 0 à 11
+    if portion_jour == 0
+      "#{nombre_jours} jour#{s_jour}"
+    elsif portion_jour < 10 # 0 à 11
       if nombre_jours.to_i > 1
         "un peu plus de #{nombre_jours} jour#{s_jour}"
       else
