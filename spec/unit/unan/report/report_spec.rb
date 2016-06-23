@@ -35,15 +35,15 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
       expect(up).to be_instance_of User
     end
 
-    describe '#report' do
+    describe '#rapport_complet' do
       before(:all) do
-        @report = @up.current_pday.report
+        @report = @up.current_pday.rapport_complet
         write_report_in("avec_depassements.html", @report)
       end
       let(:report) { @report }
       it 'répond et retourne un String' do
-        expect(up.current_pday).to respond_to :report
-        expect(up.current_pday.report).to be_instance_of String
+        expect(up.current_pday).to respond_to :rapport_complet
+        expect(up.current_pday.rapport_complet).to be_instance_of String
       end
       it 'contient l’invite avec le pseudo de l’auteur' do
         expect(report).to include "Bonjour #{up.pseudo}"
@@ -166,7 +166,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
   context 'Pour un auteur qui n’a aucun dépassement' do
     before(:all) do
       prepare_auteur( pday: 10, done_upto: 10 )
-      @report = @up.current_pday.report
+      @report = @up.current_pday.rapport_complet
       write_report_in("sans_depassements.html", @report)
     end
     let(:report) { @report }

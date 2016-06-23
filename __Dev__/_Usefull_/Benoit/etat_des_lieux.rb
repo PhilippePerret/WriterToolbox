@@ -177,12 +177,7 @@ class Benoit
   #   Méthodes de réparation
   # ---------------------------------------------------------------------
   def restart_program
-    puts "* Redémarrage du programme…"
-    Unan::require_module 'start_pday'
-    Unan::Program::StarterPDay::new(program).activer_first_pday
-    puts "= Programme redémarré avec succès = "
-  rescue Exception => e
-    puts "### ERREUR EN RESTARTANT LE PROGRAMME : #{e.message}"
+    raise "À ré-implémenter"
   end
 end
 def benoit; @benoit ||= Benoit.instance end

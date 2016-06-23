@@ -4,7 +4,7 @@
 describe 'Changement de jour-programme' do
   before(:all) do
     site.require_objet 'unan'
-    require './CRON/lib/required/UnAnUnScript/User/traite_users.rb'
+    require './CRON/lib/required/UnAnUnScript/traite_users.rb'
 
   end
 

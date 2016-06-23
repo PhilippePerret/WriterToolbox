@@ -7,7 +7,7 @@
 site.require_objet 'unan'
 describe 'Jour-programme courant de l’auteur' do
   before(:all) do
-    pdata = site.dbm_table(:unan, 'programs').select.first
+    pdata = Unan.table_programs.select.first
     pdata != nil || raise('Impossible de trouver un auteur suivant le programme UN AN UN SCRIPT.')
     up_id = pdata[:auteur_id]
     @program_id = pdata[:id]
@@ -24,30 +24,22 @@ describe 'Jour-programme courant de l’auteur' do
     end
   end
 
-  let(:upday) { up.current_pday }
-
   describe 'auteur' do
     it 'répond et retourne l’instance de l’auteur' do
-      expect(upday).to respond_to :auteur
-      expect(upday.auteur.id).to eq up.id
+      expect(up.current_pday).to respond_to :auteur
+      expect(up.current_pday.auteur.id).to eq up.id
     end
   end
   describe 'program' do
     it 'répond et retourne le programme de l’user' do
-      expect(upday).to respond_to :program
-      expect(upday.program.id).to eq up.program.id
-    end
-  end
-  describe 'index' do
-    it 'répond et retourne l’index courant, donc le jour' do
-      expect(upday).to respond_to :index
-      expect(upday.index).to eq @index_jour_courant
+      expect(up.current_pday).to respond_to :program
+      expect(up.current_pday.program.id).to eq up.program.id
     end
   end
   describe 'day' do
-    it 'répond et retourne l’index du jour courant' do
-      expect(upday).to respond_to :day
-      expect(upday.day).to eq @index_jour_courant
+    it 'répond et retourne l’index courant, donc le jour' do
+      expect(up.current_pday).to respond_to :day
+      expect(up.current_pday.day).to eq @index_jour_courant
     end
   end
 end
