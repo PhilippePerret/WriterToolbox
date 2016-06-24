@@ -39,7 +39,7 @@ class Question
     # la question, dans le cas où c'est une correction de
     # formulaire, sans modifier la propriété `reponses`
     # originale.
-    thereps = reponses.dup
+    thereps = real_array_reponses.dup
 
     # Si c'est une correction de questionnaire, il faut
     # faire un premier tour sur les réponses pour les comparer avec
@@ -94,7 +94,6 @@ class Question
         else
           # => Une "meilleure" réponse
           rights_sorted   = rights.sort_by{ |k, h| h[:points] }
-          debug "rights_sorted : #{rights_sorted.inspect}"
           rights_inverse  = rights_sorted.reverse
           first_right     = rights_inverse.first || []
           first_right[1] || { id: nil } # erreur

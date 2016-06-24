@@ -8,7 +8,11 @@ class Program
 class AbsWork
 
   def as_card options = nil
-    Unan::Quiz.new(item_id).as_card(self)
+    if options[:as_recent]
+      "[UN QUESTIONNAIRE RÉCENT]"
+    else
+      Unan::Quiz.new(item_id).as_card(self)
+    end
   end
   alias :as_card_relative :as_card
 
@@ -33,14 +37,17 @@ class Quiz
       # Questionnaire non démarré => Un cadre pour le démarrer
       form_start_quiz
     else
-      output_in_container +
-      (correction? ? mark_work_done : '')
+      output_in_container
     end
   end
 
   def not_started?
+    awid    = awork_id    || awork.id
+    awpday  = awork_pday  || awork.pday
+    awid != nil   || (return !error('Impossible de savoir si le quiz est démarré : pas d’identifiant de work absolu défini.'))
+    awpday != nil || (return !error('Impossible de savoir si le quiz est démarré : pas de jour-programme précisé.'))
     drequest = {
-      where: "abs_work_id = #{awork.id} AND abs_pday = #{awork.pday}",
+      where: "abs_work_id = #{awid} AND abs_pday = #{awpday}",
       colonnes:[]
     }
     auteur.table_works.count(drequest) == 0
@@ -104,6 +111,7 @@ class Quiz
       form << 'bureau_save_quiz'.in_hidden(name:'operation')
       form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
       form << awork.id.in_hidden(name: 'quiz[awork_id]', id: 'quiz_awork_id')
+      form << awork.pday.in_hidden(name: 'quiz[awork_pday]', id: 'quiz_awork_pday')
       if work != nil
         form << work.id.to_s.in_hidden(name:'quiz[work_id]', id:"quiz_work_id-#{id}")
       end

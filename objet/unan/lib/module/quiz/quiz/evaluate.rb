@@ -10,6 +10,7 @@ class Unan
 class Quiz
 
   attr_reader :awork_id
+  attr_reader :awork_pday
 
   # = main =
   #
@@ -35,17 +36,16 @@ class Quiz
   def evaluate_and_save args
 
     # On en aura besoin pour la sauvegarde du résultat
-    @awork_id = args[:awork_id]
+    @awork_id   = args[:awork_id]
+    @awork_pday = args[:awork_pday]
 
-    # Evaluation du question
+    # Evaluation du questionnaire
+    #
+    # is_conforme est false si le questionnaire n'a pas
+    # été rempli complètement. Dans ce cas, on le réaffiche
+    # en remettant les réponses déjà données.
     is_conforme = evalute_quiz
-
-    if false == is_conforme
-      # Le formulaire n'est pas conforme (il manque des réponses)
-      # on doit le réafficher en affichant un message d'erreur
-      # à l'auteur.
-      return
-    end
+    return false unless is_conforme
 
     # Si ce n'est pas un questionnaire multi (utilisable plusieurs
     # fois) et qu'il est déjà enregistré, il faut envoyer une
@@ -71,8 +71,7 @@ class Quiz
     end
 
     # Marquer le travail de l'auteur comme accompli.
-    uwork_id = auteur.table_works.get(where_clause, {colonnes:[]})[:id]
-    Unan::Program::Work.new(auteur, uwork_id).set_complete( addpoint = false )
+    work.set_complete( addpoint = false )
 
     # Si c'est une validation des acquis et que le questionnaire
     # n'est pas validé (note insuffisante), il faut le reprogrammer
@@ -112,7 +111,7 @@ class Quiz
     @for_correction = true
 
     # Récolte des réponses par type de question
-    @auteur_reponses  = {}
+    @reponses_auteur  = {}
     # Nombre de points total marqués par l'user
     # Note : Peut être nil sur certains questionnaires, sans
     # que cela ne génère de problème.
@@ -136,7 +135,6 @@ class Quiz
 
       # L'ID de la question
       qid = question.id
-      debug "Question ID ##{qid}"
 
       # On récupère la valeur donnée à la question, qui doit
       # être forcément définie.
@@ -147,7 +145,7 @@ class Quiz
       # les Fixnum des identifiants de chaque item choisi.
       if hvalue[:error]
         une_erreur = true
-        @auteur_reponses.merge!( qid => { qid:qid, type:'error' } )
+        @reponses_auteur.merge!( qid => { qid:qid, type:'error' } )
       else
         # Pour remettre les réponses en cas de ré-affichage
         hvalue[:jid] = "#{hvalue[:tagname]}##{prefix}_#{hvalue[:jid]}"
@@ -163,14 +161,14 @@ class Quiz
           value:  hvalue[:rep_value]
         }
         # debug "hreponse : #{hreponse.inspect}"
-        @auteur_reponses.merge!( qid => hreponse )
+        @reponses_auteur.merge!( qid => hreponse )
         @auteur_points  += hreponse[:points] unless hreponse[:points].nil?
         @max_points     += hreponse[:max]    unless hreponse[:max].nil?
       end
 
     end # /Fin de la boucle sur chaque question
 
-    debug "@auteur_reponses : #{@auteur_reponses.pretty_inspect}"
+    debug "@reponses_auteur : #{@reponses_auteur.pretty_inspect}"
 
     # Une erreur avec le questionnaire, c'est-à-dire que toutes les
     # réponses n'ont pas été fournie par l'utilisateur.

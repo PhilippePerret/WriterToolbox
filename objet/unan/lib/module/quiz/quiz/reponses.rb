@@ -9,10 +9,12 @@ class Quiz
   # corrections ou non, pour simplifier le code. C'est le code
   # qui est par exemple transmis à javascript pour remettre les
   # réponses qui ont été fournies par l'user.
-  def auteur_reponses
-    @auteur_reponses ||= begin
-      uquiz = auteur.quizes(quiz_id: id).values.last
-      uquiz.nil? ? {} : uquiz.reponses
+  def reponses_auteur
+    @reponses_auteur ||= begin
+      quiz = auteur.table_quiz.get(where:{quiz_id: id, program_id: auteur.program_id})
+      r = quiz[:reponses]
+      debug "reponses de quiz #{id} : #{r.inspect}:#{r.class}"
+      r
     end
   end
 

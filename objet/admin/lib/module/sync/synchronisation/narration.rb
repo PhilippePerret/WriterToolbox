@@ -83,7 +83,7 @@ class CNarration
           # Autre donnée différente. Dans ce cas, on prend
           # la date de dernière modification pour savoir quelle
           # donnée doit être actualisée
-          if loc_data[:udpated_at] > dis_data[:updated_at]
+          if loc_data[:udpated_at].to_i > dis_data[:updated_at].to_i
             # OK => actualisation de la donnée distante
             dis_table.update(pid, loc_data)
             @nombre_synchronisations += 1

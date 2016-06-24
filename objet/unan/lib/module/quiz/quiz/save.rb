@@ -25,13 +25,14 @@ class Quiz
       # du questionnaire lui-même. Mais ici, +id+ correspond
       # à l'identifiant absolu du quiz absolu, pas à celui
       # de l'auteur.
-      quiz_id:    id,
-      work_id:    awork_id,
-      type:       type,
-      reponses:   (multi? ? nil : auteur_reponses.to_json),
-      points:     auteur_points,
-      max_points: max_points,
-      created_at: NOW
+      quiz_id:      id,
+      program_id:   auteur.program.id,
+      work_id:      awork_id,
+      type:         type,
+      reponses:     (multi? ? nil : reponses_auteur.to_json),
+      points:       auteur_points,
+      max_points:   max_points,
+      created_at:   NOW
     }
   end
 

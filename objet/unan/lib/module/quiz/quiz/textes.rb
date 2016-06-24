@@ -9,25 +9,6 @@ pouvoir ne le charger que lorsque c'est indispensable.
 class Unan
 class Quiz
 
-  # = main =
-  #
-  # Méthode principale qui construit le retour à afficher
-  # pour l'utilisateur après sa soumission du questionnaire.
-  #
-  # Ce retour est composé principalement de deux choses : l'affichage
-  # des résultats avec les bonnes réponses en vert et les mauvaises en
-  # rouge et l'affichage des raisons des résultats.
-  # Il comprend également tous les textes par rapport à ces
-  # résultats.
-  #
-  def commented_output
-    @commented_output ||= begin
-      texte_per_quiz_type     +
-      texte_per_ecart_moyenne +
-      detail_bonnes_reponses    # utilise la méthode `build`
-    end
-  end
-
   # Retourne le questionnaire avec les bonnes réponses mises
   # en exergue ainsi que l'explication des choix.
   # Note : Seulement pour le type quiz et validation d'acquis

@@ -37,7 +37,6 @@ class Console
 
     wanted = case wanted
     when 'exemples'     then 'exemple'
-    when 'quizes'       then 'quiz'
     when 'pages_cours', 'pages', 'page'  then 'page_cours'
     when 'works'        then 'work'
     when 'pdays'        then 'pday'

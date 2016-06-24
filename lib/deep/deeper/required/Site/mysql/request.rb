@@ -389,7 +389,10 @@ DELETE FROM #{dbm_table.name}
           prepared_statement.execute( *prepared_values )
         end
       rescue Exception => e
-        debug e
+        debug "# ERREUR MYSQL : #{e.message}" rescue nil
+        debug "# REQUEST : #{final_request}" rescue nil
+        debug "# VALEURS PRÉPARÉES : #{prepared_values.inspect}" rescue nil
+        debug e.backtrace.join("\n") rescue nil
         raise e
       end
     # Si on passe ici c'est que la requête a pu être exécutée.

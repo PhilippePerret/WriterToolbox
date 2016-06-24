@@ -91,7 +91,7 @@ class UPage
     lien_marquer_page =
       if not_vue? # <= toute nouvelle page
         title = "Marquer cette page comme vue (elle restera à marquer lue quand vous l'aurez consultée entièrement)"
-        "Marquer la page VUE".in_a(class:'warning', title:title, href:"#{bureau.route_to_this}&pid=#{id}&awid=#{awork.id}&pday=#{awork.pday}&op=markvue")
+        "Marquer ce travail VU".in_a(class:'warning', title:title, href:"#{bureau.route_to_this}&pid=#{id}&awid=#{awork.id}&pday=#{awork.pday}&op=markvue")
       elsif not_lue? # <= page déjà prise en compte, mais pas encore lu deux fois
         title = "Marquer cette page comme lue"
         "Marquer la page lue".in_a(title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=marklue")

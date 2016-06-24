@@ -67,7 +67,7 @@ class Question
   # pas le même.
   def max_points
     @max_points ||= begin
-      liste_points = reponses.collect{|hrep| hrep[:points]}.compact
+      liste_points = real_array_reponses.collect{|hrep| hrep[:points]}.compact
       # debug "liste_points : #{liste_points.inspect}"
       if type_c == 'c'
         liste_points.inject(:+)

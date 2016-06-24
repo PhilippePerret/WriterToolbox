@@ -1,6 +1,11 @@
 <%
 # Panneau des questionnaires à remplir
 %>
-<%= bureau.section_unstarted_works(:quiz) %>
-<%= bureau.section_undone_works(:quiz) %>
-<%= bureau.section_recent_works(:quiz) %>
+<% if bureau.current_quiz_output.nil? %>
+  <%= bureau.section_unstarted_works(:quiz) %>
+  <%= bureau.section_undone_works(:quiz) %>
+  <%= bureau.section_recent_works(:quiz) %>
+<% else %>
+  <% # Quand un questionnaire vient d'être soumis %>
+  <%= bureau.current_quiz_output %>
+<% end %>

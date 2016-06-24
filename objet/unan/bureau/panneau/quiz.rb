@@ -3,6 +3,8 @@ Unan::require_module 'quiz'
 class Unan
 class Bureau
 
+  attr_accessor :current_quiz_output
+
   def missing_data
     @missing_data ||= begin
       nil # pour le moment
@@ -20,9 +22,18 @@ when 'bureau_save_quiz'
   quiz_id = param(:quiz)[:id].to_i_inn
   quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
   quiz = Unan::Quiz::get(quiz_id)
-  quiz.evaluate_and_save(awork_id: param(:quiz)[:awork_id])
-  # Étudier et construire le retour en fonction du questionnaire
-  quiz.commented_output
+
+  awork_id    = param(:quiz)[:awork_id].to_i
+  awork_pday  = param(:quiz)[:awork_pday].to_i
+  bureau.current_quiz_output =
+    if quiz.evaluate_and_save( awork_id: awork_id, awork_pday: awork_pday )
+      quiz.commented_out
+    else
+      # Étudier et construire le retour en fonction du questionnaire
+      # qu'il ait été rempli correctement ou non.
+      awork = Unan::Program::AbsWork.new(awork_id, {pday: awork_pday})
+      quiz.as_card(awork) + quiz.code_for_regle_reponses
+    end
 when 'quiz_reuse'
   # L'auteur passe par ici quand il veut recommencer un quiz
   # réutilisable (multi?). Pour pouvoir le réutiliser, on
@@ -43,28 +54,6 @@ when 'quiz_reuse'
       # Son identifiant, qu'on va ajouter aux listes des
       # travaux courants
       quiz_work_id  = quiz_work.id
-
-      # Ici, il faudrait faire quelque chose pour indiquer
-      # qu'il ne faut pas afficher les résultats. Pour le
-      # moment, je vais essayer en n'enregistrant pas les
-      # résultats d'un tel test.
-
-      cur_quizes  = user.get_var(:quiz_ids)
-      cur_works   = user.get_var(:works_ids)
-
-      # Suite à un bug, on retire ce qui n'est pas des nombres
-      cur_quizes  = cur_quizes.select{|e| e.instance_of?(Fixnum)}
-      cur_works   = cur_works.select{|e| e.instance_of?(Fixnum)}
-
-      new_quizes = (cur_quizes << quiz_work_id).uniq
-      new_works  = (cur_works << quiz_work_id ).uniq
-      user.set_var(:quiz_ids,  new_quizes)
-      user.set_var(:works_ids, new_works)
-
-      # Pour forcer l'actualisation, au cas où, mais normalement,
-      # la méthode bureau.quizes n'a pas encore été appelée, ici
-      bureau.instance_variable_set('@quizes', nil)
-
     else
       error "Vous ne pouvez pas recommencer ce questionnaire, voyons…"
     end

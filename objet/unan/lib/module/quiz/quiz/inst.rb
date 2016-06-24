@@ -38,10 +38,20 @@ class Quiz
   end
 
   # Travail (Unan::Program::Work) correspondant
-  # à ce questionnaire, ou NIL si aucun travail (quand on le
-  # remplie pour la première fois, quand on le teste, etc.).
+  # à ce questionnaire.
   def work
-    @work ||= auteur.program.work( uquiz.work_id )
+    @work ||= begin
+      drequest = {
+        where:    {
+          abs_work_id:  awork_id || awork.id,
+          program_id:   auteur.program.id,
+          abs_pday:     awork_pday || awork.pday
+        },
+        colonnes: []
+      }
+      wid = auteur.table_works.get(drequest)[:id]
+      Unan::Program::Work.new(auteur, wid)
+    end
   end
 
   # Retourne l'User::UQuiz pour ce quiz, qu'il existe ou

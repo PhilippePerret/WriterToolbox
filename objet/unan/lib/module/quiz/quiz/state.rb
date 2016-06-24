@@ -27,6 +27,7 @@ class Quiz
   def correction?
     !!@for_correction
   end
+  alias :for_correction? :correction?
 
   # Return true si le questionnaire valide les acquis, i.e. s'il
   # est supérieur au minimum de points requis.

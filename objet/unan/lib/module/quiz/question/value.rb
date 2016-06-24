@@ -14,9 +14,7 @@ class Question
   #   - calculer la note du questionnaire au besoin
   #
   def value
-    debug "-> Question#value"
     jid = "q_#{id}" # "quiz-X_" sera ajouté dans la méthode d'appel
-    debug "jid = #{jid}\ntype_c = #{type_c.inspect}"
     case type_c
     when "r"
       case type_a
@@ -31,7 +29,7 @@ class Question
         # ATTENTION ICI, je ne suis pas certain que les réponses
         # fonctionnent par incréments réguliers… S'ils fonctionnent par
         # ID alors la méthode ci-dessous ne fonctionnera pas.
-        hreponse = reponses[ireponse - 1]
+        hreponse = real_array_reponses[ireponse - 1]
         # Noter que pour un menu select, il n'y a toujours une
         # valeur définie.
         return hreponse.merge(ref_balise)
@@ -42,19 +40,16 @@ class Question
         unless val.nil?
           ireponse = val.to_i
           ref_balise.merge!(rep_value: ireponse)
-          hreponse = reponses[ireponse - 1]
-          # debug "hreponse = #{hreponse.inspect}"
+          hreponse = real_array_reponses[ireponse - 1]
           return hreponse.merge(ref_balise) unless hreponse.nil?
         end
         return ref_balise.merge( error:true )
       end
     when "c"
-      debug "type_a = #{type_a}"
       case type_a
       when "m"
         # debug "-> select (multiple)"
         vals = param(:quiz)[jid.to_sym]
-        debug "vals = #{vals.inspect}"
         vals = [vals] unless vals.nil? || vals.instance_of?(Array)
         # debug "vals = #{vals.inspect}"
         ref_balise = { tagname:'select', type:'sem', jid:jid, value:vals }
@@ -63,7 +58,7 @@ class Question
           ids     = Array::new
           vals.each do |val|
             irep = val.split('_')[1].to_i
-            hrep = reponses[irep - 1]
+            hrep = real_array_reponses[irep - 1]
             points += hrep[:points]
             ids << irep
           end
@@ -76,9 +71,7 @@ class Question
         vals    = []
         ids     = []
         points  = 0
-        reps = reponses # ne pas traiter reponses, qui est une méthode
-        reps = JSON.parse(reps, symbolize_names: true)
-        reps.each do |reponse|
+        real_array_reponses.each do |reponse|
           name = "#{jid}_r_#{reponse[:id]}".freeze
           val = param(:quiz)[name.to_sym]
           # debug "param(:quiz)[name.to_sym] : #{param(:quiz)[name.to_sym].inspect}"
@@ -94,6 +87,22 @@ class Question
         end
         return ref_balise.merge(error:true)
       end
+    end
+  end
+
+  # Le array dejsonné des réponses au questionnaire
+  def real_array_reponses
+    @real_array_reponses ||= begin
+      arr = JSON.parse(reponses, symbolize_names: true)
+      if arr.first.instance_of?(String)
+        # Il arrive que les éléments intérieurs du Array n'aient
+        # pas été transformés en Hash de données
+        arr =
+          arr.collect do |hstring|
+            JSON.parse(hstring, symbolize_names: true)
+          end
+      end
+      arr
     end
   end
 end #/Question
