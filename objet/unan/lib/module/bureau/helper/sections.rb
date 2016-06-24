@@ -12,10 +12,10 @@ class Unan
 class Bureau
 
   DATA_NAME_BY_TYPE = {
-    task:   {sing: "Tâche",         plur: "Tâches",         fini: 'achevée',  e: 'e', le: "La"},
-    page:   {sing: "Page cours",    plur: "Pages cours",    fini: 'lue',      e: 'e', le: "La"},
-    quiz:   {sing: "Quiz",          plur: "Quiz",           fini: 'rempli',   e: '',  le: "Le"},
-    forum:  {sing: "Action forum", plur: "Actions forum",  fini: 'accomplie',e: 'e', le: "L’"}
+    task:   {sing: "Tâche",         plur: "Tâches",         fini: 'achevée',  e: 'e', le: "La", starter: "démarrer"},
+    page:   {sing: "Page de cours", plur: "Pages de cours", fini: 'lue',      e: 'e', le: "La", starter: "marquer vue"},
+    quiz:   {sing: "Quiz",          plur: "Quiz",           fini: 'rempli',   e: '',  le: "Le", starter: "remplir"},
+    forum:  {sing: "Action forum",  plur: "Actions forum",  fini: 'accomplie',e: 'e', le: "L’", starter: "prendre en compte"}
   }
 
   # ---------------------------------------------------------------------
@@ -26,10 +26,13 @@ class Bureau
   #
   # +type+ (:task, :page, :quiz ou :forum)
   def section_unstarted_works type
-    arr = auteur.tasks_unstarted(type)
+    dname = DATA_NAME_BY_TYPE[type]
+    demarrer  = dname[:starter]
+    choses    = dname[:plur]
+    arr = auteur.works_unstarted(type)
     if arr.count > 0
       (
-        "<h4>#{DATA_NAME_BY_TYPE[type][:plur]} à démarrer</h4>" +
+        "<h4>#{choses} à #{demarrer}</h4>" +
         arr.collect{ |awork| awork.as_card(auteur: bureau.auteur) }.join('')
       ).in_section(id: 'works_unstarted')
     else
@@ -41,12 +44,14 @@ class Bureau
   #
   # +type+ (:task, :page, :quiz ou :forum)
   def section_undone_works type
-    arr = auteur.tasks_undone(type)
+    dname = DATA_NAME_BY_TYPE[type]
+    e     = dname[:e]
+    chose = dname[:sing].downcase
+    arr = auteur.works_undone(type)
     if arr.count > 0
       arr.collect{ |awork| awork.as_card(auteur: bureau.auteur) }.join('')
     else
-      '<p class="small discret">Vous n’avez aucun travail courant.</p>' +
-      message_si_aucun_travail
+      "<p class='small discret'>Vous n’avez aucun#{e} #{chose} courant#{e}.</p>"
     end.in_section(id: 'current_works')
   end
 
@@ -54,15 +59,16 @@ class Bureau
   #
   # +type+ (:task, :page, :quiz ou :forum)
   def section_recent_works type
-    arr = auteur.tasks_recent(type)
-    fini = DATA_NAME_BY_TYPE[type][:fini]
+    dname = DATA_NAME_BY_TYPE[type]
+    e     = dname[:e]
+    chose = dname[:sing].downcase
+    fini  = dname[:fini]
+    arr = auteur.works_recent(type)
     '<hr />' +
     if arr.count > 0
-      "<h4>#{DATA_NAME_BY_TYPE[type][:plur]} récemment #{fini}s</h4>" +
+      "<h4>#{dname[:plur]} récemment #{fini}s</h4>" +
       arr.collect{ |awork| awork.as_card_relative(auteur: bureau.auteur, as_recent: true) }.join('')
     else
-      e = DATA_NAME_BY_TYPE[type][:e]
-      chose = DATA_NAME_BY_TYPE[type][:sing].downcase
       "<p class='small discret'>Aucun#{e} #{chose} récent#{e} n'a été #{fini}.</p>"
     end.in_section(id: 'completed_works')
   end

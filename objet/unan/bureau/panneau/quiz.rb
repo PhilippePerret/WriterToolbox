@@ -11,29 +11,6 @@ class Bureau
     Unan::Quiz::get(quiz_id).evaluate_and_save
   end
 
-  # {Array of User::UQuiz} Liste des derniers questionnaires remplis,
-  # pour information sur le bureau (panneau des quiz)
-  # ATTENTION : Il s'agit d'instances User::UQuiz et
-  # PAS des instances Unan::Quiz
-  #
-  def last_quiz
-    @last_quiz ||= user.quizes(created_after: NOW - 4.days)
-  end
-
-  # Retourne true si l'user a des questionnaires à remplir
-  def has_quiz?
-    quizes.count > 0
-  end
-
-  # Retourne un Array de Unan::Quiz (questionnaires à remplir)
-  def quizes
-    @quizes ||= begin
-      current_pday.undone(:quiz).collect do |hdata|
-        Unan::Quiz::get(hdata[:item_id])
-      end
-    end
-  end
-
   def missing_data
     @missing_data ||= begin
       nil # pour le moment

@@ -41,19 +41,6 @@ class Bureau
   end
 
   # ---------------------------------------------------------------------
-  #   Méthodes pour les travaux
-  # ---------------------------------------------------------------------
-  # {Array} Liste des instances Unan::Program::Travaux courantes
-  # de l'user, pour boucler dessus et les afficher, ou autre
-  # travail.
-  def works
-    @works ||= begin
-      # works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
-      []
-    end
-  end
-
-  # ---------------------------------------------------------------------
   #   Méthodes pour les PANNEAUX
   #
   # Cf. plus bas les méthodes pour les onglets
@@ -204,7 +191,7 @@ class Bureau
     end
     def has_travaux_to_start?
       @has_travaux_ot_start ||= begin
-        bureau.current_pday.nombre_tostart_of_type( data[:knombre] ) > 0
+        user.works_unstarted(id).count > 0
       end
     end
     # Si des travaux sont à démarrer, le nombre est mis

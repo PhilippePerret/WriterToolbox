@@ -47,7 +47,7 @@ class User
     icp = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
 
     nombre_travaux = icp.nombre_travaux_courant
-    nombre_tasks_undone = icp.undone(:task).count
+    nombre_works_undone = icp.undone(:task).count
     nombre_pages_undone = icp.undone(:page).count
     nombre_quiz_undone  = icp.undone(:quiz).count
     nombre_tostart      = icp.undone(:all).count - icp.started(:all).count
@@ -56,7 +56,7 @@ class User
     taches = Array::new
     taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
     taches << "#{travaux_s nombre_travaux} en cours.".in_div(class:'bold') +
-              "Tâches quelconques : #{nombre_tasks_undone}".in_div +
+              "Tâches quelconques : #{nombre_works_undone}".in_div +
               "Pages de cours à lire : #{nombre_pages_undone}.".in_div +
               "Quiz à remplir : #{nombre_quiz_undone}.".in_div
     taches << if nombre_tostart > 0

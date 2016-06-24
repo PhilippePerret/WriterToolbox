@@ -1,20 +1,28 @@
 # encoding: UTF-8
 class User
 
+  # Retourne le nombre de +quoi+ de l'user (nombre de
+  # messages forum, de pages de cours à lire, etc.)
+  def nombre_de quoi
+    works_unstarted(quoi).count + works_undone(quoi).count
+  end
 
   # Les tâches non démarrées
   # Array d'instance Unan::Program::AbsWork augmentées des
   # données relatives
-  def tasks_unstarted type = :task
-    @tasks_unstarted ||= begin
+  def works_unstarted type = :task
+    debug "-> works_unstarted(type = #{type})"
+    @works_unstarted ||= {}
+    @works_unstarted[type] ||= begin
       aworks_unstarted_type(type).collect do |kpaire, haw|
         Unan::Program::AbsWork.get(haw[:id])
       end
     end
   end
   # Les tâches non achevées
-  def tasks_undone type = :task
-    @tasks_undone ||= begin
+  def works_undone type = :task
+    @works_undone ||= {}
+    @works_undone[type] ||= begin
       uworks_undone_type(type).collect do |kpaire, haw|
         awork = Unan::Program::AbsWork.get( haw[:abs_work_id] )
         awork.set_relative_data( relatives(haw) )
@@ -22,8 +30,9 @@ class User
     end
   end
   # Les tâches récemment achevées
-  def tasks_recent type = :task
-    @tasks_recent ||= begin
+  def works_recent type = :task
+    @works_recent ||= {}
+    @works_recent[type] ||= begin
       uworks_recent_type(type).collect do |kpaire, haw|
         awork = Unan::Program::AbsWork.get( haw[:abs_work_id] )
         awork.set_relative_data( relatives(haw) )
@@ -65,6 +74,7 @@ class User
   #
   #
   def aworks_unstarted_type type_expected
+
     h = {}
     aworks_unstarted.each do |kpaire, hw|
       type_sym = Unan::Program::AbsWork::TYPES[hw[:type_w]][:type] # p.e. :task
@@ -126,7 +136,7 @@ class User
   # ici
   def define_aworks_unstarted
     drequest = {
-      where:  "id < #{program.current_pday}",
+      where:  "id <= #{program.current_pday}",
       colonnes: [:works]
     }
     @aworks_unstarted = {}
