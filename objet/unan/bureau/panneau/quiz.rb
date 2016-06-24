@@ -3,14 +3,6 @@ Unan::require_module 'quiz'
 class Unan
 class Bureau
 
-  # Enregistrement d'un questionnaire
-  # L'opération est complexe
-  def save_quiz
-    quiz_id = param(:quiz)[:id].to_i_inn
-    raise "Aucun questionnaire n'a été soumis…" if quiz_id == nil
-    Unan::Quiz::get(quiz_id).evaluate_and_save
-  end
-
   def missing_data
     @missing_data ||= begin
       nil # pour le moment
@@ -25,7 +17,12 @@ end #/Unan
 # Pour lancer la sauvegarde des données du questionnaire
 case param(:operation)
 when 'bureau_save_quiz'
-  bureau.save_quiz
+  quiz_id = param(:quiz)[:id].to_i_inn
+  quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
+  quiz = Unan::Quiz::get(quiz_id)
+  quiz.evaluate_and_save(awork_id: param(:quiz)[:awork_id])
+  # Étudier et construire le retour en fonction du questionnaire
+  quiz.commented_output
 when 'quiz_reuse'
   # L'auteur passe par ici quand il veut recommencer un quiz
   # réutilisable (multi?). Pour pouvoir le réutiliser, on

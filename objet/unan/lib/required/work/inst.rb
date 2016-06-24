@@ -27,6 +27,7 @@ class Work
   # +wid+ Identifiant du travail. Note : CE N'EST PLUS l'id
   # du travail absolu. Note : Il est nil à l'instanciation
   def initialize program, wid
+    program = program.program if program.instance_of?(User)
     @program  = program
     @id       = wid
   end

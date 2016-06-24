@@ -96,7 +96,7 @@ class HotTaches
           # Cas 2.2 La tache distante n'a pas les mêmes données
           #   => On regarde le :updated_at pour savoir quelle tâche est
           #      la plus à jour.
-          if loc_htache[:updated_at] > dis_htache[:updated_at]
+          if loc_htache[:updated_at] >= dis_htache[:updated_at]
             # Tâche locale modifiée plus récemment que tâche distante
             # =============== MODIFICATION ===============
             dis_table.update(dis_tid, loc_htache_sans_id)

@@ -13,7 +13,9 @@ CREATE TABLE unan_quiz_#{user_id}
     # ID
     # --
     # IDentifiant unique et universel d'un questionnaire
-    # rempli par l'auteur
+    # rempli par l'auteur. Attention, il ne correspond pas
+    # à l'identifiant du Quiz, qui est contenu, lui, dans
+    # la propriété `quiz_id` ci-dessous.
     id INTEGER AUTO_INCREMENT,
 
     # PROGRAM_ID

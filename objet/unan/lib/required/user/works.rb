@@ -11,7 +11,6 @@ class User
   # Array d'instance Unan::Program::AbsWork augmentées des
   # données relatives
   def works_unstarted type = :task
-    debug "-> works_unstarted(type = #{type.inspect})"
     @works_unstarted ||= {}
     @works_unstarted[type] ||= begin
       arr =

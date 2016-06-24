@@ -102,6 +102,7 @@ class Console
       end
 
       # On peut actualiser la tache
+      htache.merge!(updated_at: NOW)
       itache.set(htache)
 
     rescue Exception => e

@@ -2,8 +2,20 @@
 class Unan
 class Quiz
 
+  # Retourne true si le questionnaire existe
   def exist?
-    Unan::table_quiz.count(where:{id: id}) > 0
+    Unan::table_quiz.count(where:{id: id}, colonnes: []) > 0
+  end
+
+  # Retourne true si l'auteur possède déjà ce
+  # questionnaire dans sa table des quiz. Attention, s'il suit
+  # plusieurs programmes, il peut s'agit d'un ancien programme
+  def auteur_has_this_quiz?
+    drequest = {
+      where:    {quiz_id: id, program_id: auteur.program.id},
+      colonnes: []
+    }
+    auteur.table_quiz.count(drequest) > 0
   end
 
   # Retourne true si c'est un affichage du questionnaire pour

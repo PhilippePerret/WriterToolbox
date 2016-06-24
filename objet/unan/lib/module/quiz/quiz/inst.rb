@@ -4,7 +4,10 @@ class Quiz
 
   include MethodesMySQL
 
+  # Identifiant unique du questionnaire
   attr_reader :id
+
+
   def initialize id
     @id = id
   end
@@ -57,22 +60,6 @@ class Quiz
   # impérativement pour poursuivre)
   def type_validation
     @type_validation ||= TYPES[type][:type_v]
-  end
-
-  # {Array} Retourne la liste des instances Unan::Quiz::Question des
-  # questions du questionnaires.
-  def questions
-    @questions ||= sorted_questions_ids.collect { |qid| Question::new(qid, self.id) }
-  end
-
-  # {Array} La liste des IDs des questions du questionnaire
-  # Si desordre?, alors l'ordre initial est shufflé
-  def sorted_questions_ids
-    @sorted_questions_ids ||= begin
-      arr = questions_ids.split(' ').collect { |qid| qid.to_i }
-      arr = arr.shuffle.shuffle.shuffle if desordre?
-      arr
-    end
   end
 
   # {Fixnum|Nil} Nombre de points maximum pour ce questionnaire, ou

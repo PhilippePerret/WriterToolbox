@@ -33,7 +33,6 @@ class Quiz
       # Questionnaire non démarré => Un cadre pour le démarrer
       form_start_quiz
     else
-      "[LE QUIZ ##{id} DE WORK ##{awork.id} (du jour #{awork.pday}) SOUS FORME DE CARD]"
       output_in_container +
       (correction? ? mark_work_done : '')
     end
@@ -41,9 +40,9 @@ class Quiz
 
   def not_started?
     drequest = {
-      where: "abs_work_id = #{awork.id} AND abs_pday = #{awork.pday}"
+      where: "abs_work_id = #{awork.id} AND abs_pday = #{awork.pday}",
+      colonnes:[]
     }
-    debug "drequest : #{drequest.inspect}"
     auteur.table_works.count(drequest) == 0
   end
   def form_start_quiz
@@ -104,6 +103,7 @@ class Quiz
       form = ''
       form << 'bureau_save_quiz'.in_hidden(name:'operation')
       form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
+      form << awork.id.in_hidden(name: 'quiz[awork_id]', id: 'quiz_awork_id')
       if work != nil
         form << work.id.to_s.in_hidden(name:'quiz[work_id]', id:"quiz_work_id-#{id}")
       end
