@@ -11,11 +11,17 @@ class User
   # Array d'instance Unan::Program::AbsWork augmentées des
   # données relatives
   def works_unstarted type = :task
+    debug "-> works_unstarted(type = #{type.inspect})"
     @works_unstarted ||= {}
     @works_unstarted[type] ||= begin
+      arr =
       aworks_unstarted_type(type).collect do |kpaire, haw|
         Unan::Program::AbsWork.new( haw[:id], {pday: haw[:pday]} )
       end
+      if type == :quiz
+        debug "Liste des quiz : #{arr.collect{|w| w.id}}"
+      end
+      arr
     end
   end
   # Les tâches non achevées
@@ -23,7 +29,7 @@ class User
     @works_undone ||= {}
     @works_undone[type] ||= begin
       uworks_undone_type(type).collect do |kpaire, haw|
-        awork = Unan::Program::AbsWork.get( haw[:abs_work_id] )
+        awork = Unan::Program::AbsWork.new( haw[:abs_work_id], {pday: haw[:pday]} )
         awork.set_relative_data( relatives(haw) )
       end
     end
@@ -73,11 +79,12 @@ class User
   #
   #
   def aworks_unstarted_type type_expected
-
+    debug "-> aworks_unstarted_type(type_expected = #{type_expected.inspect})"
     h = {}
     aworks_unstarted.each do |kpaire, hw|
       type_sym = Unan::Program::AbsWork::TYPES[hw[:type_w]][:type] # p.e. :task
       next if type_sym != type_expected
+      debug "type_sym = #{type_sym.inspect}, on le prend"
       h.merge!(kpaire => hw)
     end
     return h
@@ -168,9 +175,9 @@ class User
       kpaire = "#{hw[:abs_work_id]}-#{hw[:abs_pday]}"
       @uworks_all.merge!(kpaire => hw)
       if hw[:status] == 9
-        @uworks_done.merge!(kpaire => hw)
+        @uworks_done.merge!(kpaire => hw.merge(pday: hw[:abs_pday]))
       else
-        @uworks_undone.merge!(kpaire => hw)
+        @uworks_undone.merge!(kpaire => hw.merge(pday: hw[:abs_pday]))
       end
     end
   end

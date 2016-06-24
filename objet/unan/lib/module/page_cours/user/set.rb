@@ -1,18 +1,7 @@
 # encoding: UTF-8
 class User
 class UPage
-  def set_lue
-    create unless exist?
-    self.status= (status | BIT_LUE)
-  end
-  def set_in_tdm
-    create unless exist?
-    self.status= (status | BIT_TDM)
-  end
-  def set_points_affected
-    create unless exist?
-    self.status= (status | BIT_PTS)
-  end
+
 
   # La méthode pour marquer une page vue est spéciale dans le
   # sens où elle doit :
@@ -46,6 +35,38 @@ class UPage
     set( :work_id => iwork.id )
     # debug "ID du work créé :  #{iwork.id}"
     return iwork
+  end
+
+  # Marque la page comme lue
+  # ------------------------
+  # Cela la passe au statut 3 (status) et la retire des :pages_ids de
+  # l'auteur si elle s'y trouve
+  # Note : Cette méthode se trouve ici et non pas seulement dans
+  # le panneau des pages à lire par l'auteur car on peut marquer une
+  # page lue depuis les pages elles-mêmes.
+  def set_lue
+    self.status= (status | BIT_LUE)
+    auteur.program.work(work_id).set_complete( !points_affected? )
+    points_affected? || set_points_affected
+    flash "Page marquée lue."
+  end
+
+  def set_a_relire
+    auteur.program.work(work_id).set(ended_at: nil, status: 1)
+    self.status= (self.status|BIT_LUE) -  BIT_LUE
+    flash "Page re-marquée à lire."
+  end
+
+  # ---------------------------------------------------------------------
+  #   Sous-méthodes
+  # ---------------------------------------------------------------------
+
+  def set_in_tdm
+    self.status= (status | BIT_TDM)
+  end
+  def set_points_affected
+    create unless exist?
+    self.status= (status | BIT_PTS)
   end
 
 end #/UPage

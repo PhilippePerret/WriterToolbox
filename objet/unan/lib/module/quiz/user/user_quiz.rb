@@ -79,6 +79,11 @@ class User
       @reponses   ||= JSON.parse(get(:reponses), symbolize_names: true)
     end
 
+    def get_all
+      super
+      @reponses.nil? || @reponses = JSON.parse(@reponses, symbolize_names: true)
+    end
+
     # Pour faire une sortie simple du quiz
     # Elle sert soit pour le bureau, dans le panneau Quiz, quand le
     # questionnaire a été rempli récemment, soit dans la partie qui

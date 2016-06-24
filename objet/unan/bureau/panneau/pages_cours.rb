@@ -25,9 +25,9 @@ when 'markvue'
   upage.set_vue
   flash "Page marquée vue, vous pouvez à présent la lire."
 when 'marklue'
-  upage.marquer_lue
+  upage.set_lue
 when 'unmarklue'
-  upage.remarquer_a_lire
+  upage.set_a_relire
 when 'addtdmperso'
   upage.set_in_tdm
   flash "Cette page a été ajoutée à votre table des matières personnelle."

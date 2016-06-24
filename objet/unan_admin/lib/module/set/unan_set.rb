@@ -15,6 +15,14 @@ class User
       set_default_values
     end
 
+    def log mess
+      begin
+        console.sub_log "#{mess}\n"
+      rescue
+        debug mess
+      end
+    end
+
     # Méthode qui applique les valeurs par défaut
     def set_default_values
       args.key?(:pday)          || @args.merge!(pday: 1)
@@ -27,6 +35,9 @@ class User
     #  Procède à l'opération
     # =======================
     def proceed
+      log "<pre style='white-space: pre-wrap;font-size:12pt;'>"
+      log "Préparation d'un d'auteur UN AN UN SCRIPT"
+      log "Auteur : #{auteur.pseudo}"
       reset_all
       # Réglage des données du programme en fonction
       # des choix. Noter que le nombre de points sera
@@ -35,15 +46,18 @@ class User
       # Réglage des travaux exécutés
       set_done_works
       flash "Programme 1A1S de #{auteur.pseudo} resetté au jour-programme #{args[:pday]}"
+      log '</pre>'
     end
 
     # ---------------------------------------------------------------------
 
     # Reset complet de l'auteur
     def reset_all
+      log "-> reset_all"
       recreate_table_works
       recreate_table_pages_cours
       recreate_table_quiz
+      log "<- reset_all"
     end
 
     def coef_duree
@@ -51,6 +65,7 @@ class User
     end
 
     def set_program_data
+      log "-> set_program_data"
       created_at = NOW - (args[:pday] * coef_duree )
       new_data = {
         current_pday:         args[:pday],
@@ -61,11 +76,13 @@ class User
         points:               args[:points]
       }
       auteur.program.set(new_data)
+      log "<- set_program_data"
     end
 
     # Réglage des travaux effectués
     def set_done_works
       return if args[:done_upto].nil?
+      log "-> set_done_works"
       upto = args[:done_upto]
       upto <= args[:pday] || raise('La valeur `done_upto` doit être inférieure ou égale au jour-programme courant, voyons.')
       undones = args[:nombre_undone]
@@ -95,26 +112,33 @@ class User
         end
       end
       @args[:points] = nombre_points
+      log "<- set_done_works"
     end
 
     # ---------------------------------------------------------------------
 
     def recreate_table_works
+      log "* Destruction et reconstruction de la table des works de l'auteur…"
       table_works = site.dbm_table(:users_tables, "unan_works_#{auteur.id}")
       table_works.destroy if table_works.exist?
       table_works.create
+      log "  = OK"
     end
 
     def recreate_table_pages_cours
+      log "* Déstruction et reconstruction de la table des pages de cours de l'auteur…"
       table_pages_cours = auteur.table_pages_cours
       # table_pages_cours = site.dbm_table(:users_tables, "unan_pages_cours_#{auteur.id}")
       table_pages_cours.destroy if table_pages_cours.exist?
       table_pages_cours.create
+      log "  = OK"
     end
     def recreate_table_quiz
+      log "* Déstruction et reconstruction de la table des questionnaires de l'auteur…"
       table_quiz = auteur.table_quiz
       table_quiz.destroy if table_quiz.exist?
       table_quiz.create
+      log "  = OK"
     end
 
     # ---------------------------------------------------------------------
