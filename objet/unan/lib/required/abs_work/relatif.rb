@@ -38,7 +38,11 @@ class AbsWork
   #   :indice_pday          Indice du jour où le travail a démarré
   #   :indice_current_pday  Indice du jour de travail courant
   #   :work_id              ID du travail relatif
-  attr_accessor :relative_data
+  attr_reader :relative_data
+  def set_relative_data h
+    @relative_data = h
+    return self
+  end
 
   # {Unan::Program::AbsWork::RelatifWork} Le travail relatif
   def rwork

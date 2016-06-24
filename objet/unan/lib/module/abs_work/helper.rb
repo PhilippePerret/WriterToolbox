@@ -8,6 +8,48 @@ class Program
 class AbsWork
 
 
+  # Construction du travail sous forme de carte
+  #   - pour le centre de travail de l'auteur
+  #   - pour l'affichage jour par jour de l'administration
+  #
+  # +params+
+  #   :from       S'il est indiqué, précise le jour pour lequel
+  #               ce travail est affiché. Par exemple, ça peut
+  #               être le jour 3 jours plus tard que le jour où
+  #               ce travail doit être joué. Dans ce cas, on donne
+  #               plus (+) d'indications, comme par exemple le
+  #               nombre de jours déjà pris sur le travail et le
+  #               nombre de jours restant.
+  #   :auteur     L'instance User (utile pour d'autres méthodes)
+  #
+  def as_card params = nil
+    # cas du bureau normal de l'auteur d'un programme UAUS
+    return as_card_relative unless relative_data.nil?
+
+    params ||= Hash::new
+    classes_css = ['work']
+    if params[:from]
+      if (duree - params[:from] == 0)
+        classes_css << 'last_day'
+      elsif params[:from] == 0
+        classes_css << 'first_day'
+      end
+    end
+
+
+    # Composition de la carte (attention, c'est la version
+    # "absolue", celle qui est affichée pour l'administrateur)
+    (
+      (
+        human_type_w.in_span(class:'type') +
+        titre.in_span(class:'titre')
+      ).in_div(class:'div_titre') +
+      div_travail + # avec exemples et pages cours
+      autres_infos_travail(params[:from]) +
+      buttons_edit
+    ).in_div(class:classes_css.join(' '))
+  end
+
   # Affichage de la carte quand elle doit être
   # propre à un travail et un auteur (c'était avant une
   # méthode de Work). C'est la carte qui est affichée dans
@@ -94,56 +136,6 @@ class AbsWork
     else # :tasks
       ['abs_work', 'unan', id]
     end
-  end
-
-  # Pour l'affichage du work sous forme de carte. Pour le moment,
-  # ne sert que pour l'affichage du p-day par show.erb et pour
-  # l'affichage jour-par-jour de l'administration (et peut-être
-  # aussi de l'auteur, pourquoi pas ?).
-  #
-  # +params+
-  #   :from       S'il est indiqué, précise le jour pour lequel
-  #               ce travail est affiché. Par exemple, ça peut
-  #               être le jour 3 jours plus tard que le jour où
-  #               ce travail doit être joué. Dans ce cas, on donne
-  #               plus (+) d'indications, comme par exemple le
-  #               nombre de jours déjà pris sur le travail et le
-  #               nombre de jours restant.
-  #
-  # TODO: Si @relative_data n'est pas nil, c'est un hash qui
-  # contient des données permettant d'adapter très exactement
-  # l'affichage pour un auteur particulier un jour-programme
-  # particulier.
-  # TODO: Cf. l'affichage as_card de Work pour reprendre la
-  # même forme (ou presque) ici. Consulter aussi les CSS
-  #
-  def as_card params = nil
-
-    # cas du bureau normal de l'auteur d'un programme UAUS
-    return as_card_relative unless relative_data.nil?
-
-    params ||= Hash::new
-    classes_css = ['work']
-    if params[:from]
-      if (duree - params[:from] == 0)
-        classes_css << 'last_day'
-      elsif params[:from] == 0
-        classes_css << 'first_day'
-      end
-    end
-
-
-    # Composition de la carte (attention, c'est la version
-    # "absolue", celle qui est affichée pour l'administrateur)
-    (
-      (
-        human_type_w.in_span(class:'type') +
-        titre.in_span(class:'titre')
-      ).in_div(class:'div_titre') +
-      div_travail + # avec exemples et pages cours
-      autres_infos_travail(params[:from]) +
-      buttons_edit
-    ).in_div(class:classes_css.join(' '))
   end
 
   # ---------------------------------------------------------------------

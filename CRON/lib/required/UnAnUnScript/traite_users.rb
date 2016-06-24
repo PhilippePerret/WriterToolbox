@@ -3,6 +3,12 @@
 Extension de la class User pour le CRON
 =end
 class User
+
+  # Mettre à true pour qu'un rapport quotidien d'état
+  # sur le programme UN AN UN SCRIPT soit aussi envoyé
+  # à l'administration
+  UNAN_DAILY_REPORT_FOR_ADMIN = true
+  
 class << self
 
   def log message
@@ -62,6 +68,14 @@ class << self
       auteur = User.new(auteur_id)
       # On lui envoie le rapport de changement de jour-programme
       auteur.current_pday.send_rapport_quotidien
+      if UNAN_DAILY_REPORT_FOR_ADMIN
+        # On envoie aussi le rapport à l'administrateur
+        site.send_mail_to_admin(
+          subject:  "UNAN - Rapport envoyé à #{auteur.pseudo}",
+          message: auteur.current_pday.rapport_complet,
+          formated: true
+        )
+      end
       # On ajoute ça au safed_log
       log "Auteur ##{auteur.id} (#{auteur.pseudo}) passé au jour-programme #{pday+1} avec succès."
       return true # pour simplifier les tests

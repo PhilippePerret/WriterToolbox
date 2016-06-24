@@ -35,14 +35,7 @@
   # TODO Proposer quelques questions quand il n'y a pas de corrections
   %>
 <% end %>
-<section id="completed_works">
-<% if last_quiz.count > 0 %>
-  <hr />
-  <h3>Questionnaires récemment achevés</h3>
-  <ul id="last_quizes">
-    <%= last_quiz.collect { |qid, iquiz| iquiz.output_as_li }.join %>
-  </ul>
-<% else %>
-  <p class='small discret'>Aucun questionnaire récent n'a été rempli.</p>
-<% end %>
-</section>
+
+<%= bureau.section_unstarted_works(:quiz) %>
+<%= bureau.section_undone_works(:quiz) %>
+<%= bureau.section_recent_works(:quiz) %>

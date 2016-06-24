@@ -8,61 +8,10 @@
 #           ou mise de côté pour lecture                          (status 3)
 #
 %>
-<p class='small right'>Retrouvez ici toutes les pages de cours à lire.</p>
-
-<% if works.count == 0 %><%= message_si_aucun_travail %><% end %>
-
-<%
-# ---------------------------------------------------------------------
-#   Section des pages à marquer vues (nouvelles)
-#
-%>
-<section class='pages_cours'>
-
-<h4>Nouvelles pages de cours</h4>
-<% if new_pages_cours.count > 0 %>
-  <% new_pages_cours.each do |upage| %>
-    <%= upage.output_bureau %>
-  <% end %>
-<% else %>
-  <p style="margin-left:4em">Aucune nouvelle page de cours.</p>
-<% end %>
-<%
-# ---------------------------------------------------------------------
-#   Section des pages à marquer lues
-#
-%>
-<hr />
-<h4>Pages à lire</h4>
-<% if pages_cours.count > 0 %>
-  <% pages_cours.each do |upage| %>
-    <%= upage.output_bureau %>
-  <% end %>
-<% elsif new_pages_cours.count > 0 %>
-  <p style="margin-left:4em">Aucune page à lire pour le moment, mais vous en avez à marquer “VUE” ci-dessus.</p>
-<% else %>
-  <%# Aucune page de cours à lire %>
-  <p style="margin-left:4em">Vous n'avez aucune page de cours à lire. Vous pouvez peut-être en profiter pour feuilleter les livres en ligne de la <%= Unan::lien_collection_narration %><% if last_pages_cours.count > 0 %> ou revoir une des pages précédentes<% end %>.</p>
-  <% if user.program.created_at > (NOW - 7.days) %>
-    <p style="margin-left:4em">Puisque vous êtes au début de votre travail sur ce programme, vous pouvez également consulter l'aide pour mieux comprendre son fonctionnement et ses principes.</p>
-  <% end %>
+<% if bureau.pday < 20 %>
+  <p class='small right'>Retrouvez ici toutes les pages de cours à lire.</p>
 <% end %>
 
-</section>
-
-<%
-# ---------------------------------------------------------------------
-#   Section des pages récemment lues
-#
-%>
-<section id="completed_works" class="pages_cours">
-  <hr />
-  <h4>Dernières pages de cours lues</h4>
-  <% if last_pages_cours.count > 0 %>
-    <% last_pages_cours.each do |upage| %>
-      <%= upage.output_bureau %>
-    <% end %>
-  <% else %>
-    <p style="margin-left:4em">Aucune page récemment lue.</p>
-  <% end %>
-</section>
+<%= bureau.section_unstarted_works(:page) %>
+<%= bureau.section_undone_works(:page) %>
+<%= bureau.section_recent_works(:page) %>

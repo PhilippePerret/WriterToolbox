@@ -11,16 +11,24 @@ Unan::require_module 'bureau'
 unless user.identified? && user.unanunscript?
   # Ça peut arriver par exemple lorsque l'user règle ses préférences
   # après login sur cette page, sans savoir ce que c'est.
+  # Ça doit pouvoir arriver aussi quand on vient d'un lien dans
+  # un mail.
   redirect_to 'unan/home'
 end
 
 class Unan
 class Bureau
 
+  # Pour le moment
+  # Plus tard, permettra de visiter des bureaux en tant
+  # qu'administrateur
+  def auteur= u;  @auteur = u       end
+  def auteur;     @auteur ||= user  end
 
-  # Raccourci pour pouvoir utiliser `auteur` comme `user`
-  def auteur
-    user
+  # Le jour-program courant
+  # @usage      bureau.pday
+  def pday
+    @pday ||= auteur.program.current_pday
   end
   # ---------------------------------------------------------------------
   #   Messages communs à tous les panneaux
@@ -43,31 +51,6 @@ class Bureau
       # works_ids.collect { |wid| Unan::Program::Work::new(user.program, wid) }
       []
     end
-  end
-
-  # {Array} Liste ordonnée des IDs de travaux à accomplir par
-  # l'auteur
-  def works_ids
-    @works_ids ||= begin
-      # current_pday.works_undone.keys
-      []
-    end
-  end
-
-  # Instance {Unan::Program::CurPDay} du jour-programme courant
-  def current_pday
-    @current_pday ||= begin
-      # Unan::Program::CurPDay::new(current_pday_id)
-      nil
-    end
-  end
-
-  def current_pday_id
-    @current_pday_id ||= user.program.current_pday
-  end
-
-  def table_travaux
-    @table_travaux ||= User.table_works
   end
 
   # ---------------------------------------------------------------------

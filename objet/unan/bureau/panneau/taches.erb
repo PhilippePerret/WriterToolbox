@@ -1,50 +1,12 @@
 <%
 # Note : C'est le programme qui est bindé à cette vue
 %>
-<p class='small right'>
-  Retrouvez tous les jours ici le travail que vous avez à accomplir.
-</p>
+<% if bureau.pday < 20 %>
+  <p class='small right'>
+    Retrouvez dans votre bureau, chaque jour, le travail que vous avez à accomplir.
+  </p>
+<% end %>
 
-<%
-# ---------------------------------------------------------------------
-#   Section affichant les tâches courantes à exécuter
-# ---------------------------------------------------------------------
-%>
-<section id="works_unstarted">
-  <% tasks_unstarted.each do |awork| %>
-    <%= "Tache non démarrée #{awork.id}" %>
-  <% end %>
-</section>
-
-<section id="current_works">
-  <% arr = tasks_undone %>
-  <% if arr.count > 0 %>
-    <%= arr.collect{ |awork| awork.as_card }.join %>
-  <% else %>
-    <p class='small discret'>Vous n'avez aucun travail courant.</p>
-    <%= message_si_aucun_travail %>
-  <% end %>
-</section>
-
-<%
-# ---------------------------------------------------------------------
-#   Section affichant les tâches achevées récemment
-# ---------------------------------------------------------------------
-%>
-<hr />
-<section id="completed_works">
-  <% arr = tasks_recent %>
-  <% if arr.count > 0 %>
-    <h4>Tâches récemment achevées</h4>
-    <% arr.each do |awork| %>
-      <%= "Tâches récemment achevée #{awork.id}" %>
-    <% end %>
-  <% else %>
-  <% end %>
-  <!-- <% if last_tasks.count > 0 %>
-    <h4>Tâches récemment achevées</h4>
-    <%= last_tasks.collect{ |iabswork| iabswork.as_card_relative(as_recent: true) }.join %>
-  <% else %>
-    <p class='small discret'>Aucune tâche récente n'a été effectuée.</p>
-  <% end %> -->
-</section>
+<%= bureau.section_unstarted_works(:task) %>
+<%= bureau.section_undone_works(:task) %>
+<%= bureau.section_recent_works(:task) %>

@@ -1,5 +1,47 @@
 # encoding: UTF-8
 class User
+
+
+  # Les tâches non démarrées
+  # Array d'instance Unan::Program::AbsWork augmentées des
+  # données relatives
+  def tasks_unstarted type = :task
+    @tasks_unstarted ||= begin
+      aworks_unstarted_type(type).collect do |kpaire, haw|
+        Unan::Program::AbsWork.get(haw[:id])
+      end
+    end
+  end
+  # Les tâches non achevées
+  def tasks_undone type = :task
+    @tasks_undone ||= begin
+      uworks_undone_type(type).collect do |kpaire, haw|
+        awork = Unan::Program::AbsWork.get( haw[:abs_work_id] )
+        awork.set_relative_data( relatives(haw) )
+      end
+    end
+  end
+  # Les tâches récemment achevées
+  def tasks_recent type = :task
+    @tasks_recent ||= begin
+      uworks_recent_type(type).collect do |kpaire, haw|
+        awork = Unan::Program::AbsWork.get( haw[:abs_work_id] )
+        awork.set_relative_data( relatives(haw) )
+      end
+    end
+  end
+
+  def relatives h
+    {
+      indice_pday:          h[:abs_pday],
+      indice_current_pday:  program.current_pday,
+      user_id:              self.id,
+      work_id:              h[:id]
+    }
+  end
+
+  # ---------------------------------------------------------------------
+
   # ---------------------------------------------------------------------
   # Retourne la liste de travaux de type +type+ qui
   # peut être :task, :quiz, :page ou :forum
@@ -11,7 +53,7 @@ class User
     uworks_undone.each do |kpaire, hw|
       type_w = hw[:options][0..1].to_i
       type_sym = Unan::Program::AbsWork::TYPES[type_w][:type] # p.e. :task
-      next nil if type_sym != type_expected
+      next if type_sym != type_expected
       h.merge! kpaire => hw
     end
     return h
@@ -35,9 +77,12 @@ class User
   def uworks_recent_type type_expected
     h = {}
     pday = program.current_pday
-    @uworks_done.each do |kpaire, huw|
-      next if huw[:abs_pday] < (pday - 5)
-      h.merge! kpaire => huw
+    @uworks_done.each do |kpaire, hw|
+      next if hw[:abs_pday] < (pday - 5)
+      type_w = hw[:options][0..1].to_i
+      type_sym = Unan::Program::AbsWork::TYPES[type_w][:type] # p.e. :task
+      next if type_sym != type_expected
+    h.merge! kpaire => hw
     end
     return h
   end

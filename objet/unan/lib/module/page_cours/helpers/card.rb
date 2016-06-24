@@ -1,0 +1,112 @@
+# encoding: UTF-8
+=begin
+
+  Extension des classes :
+    Unan::Program::AbsWork
+    Unan::Program::PageCours
+  pour l'affichage de la page dans le bureau
+
+  Noter que ces méthodes découlent de la rationalisation de
+  l'affichage du bureau, avec quelques méthodes qui gèrent
+  les travaux.
+=end
+class Unan
+class Program
+class AbsWork
+
+  # Quel que soit le travail, ce sont ces deux méthodes, `as_card`
+  # et `as_card_relative` qui sont appelées pour retourner le code
+  # des trois modes d'affichage :
+  #   - travaux à démarrer (donc ici : page à marquer vue)
+  #   - travaux en cours (inachevés)
+  #   - travaux récents
+  #
+  def as_card options
+    options ||= {}
+    options.key?(:auteur) || options.merge!(auteur: user)
+    upage = User::UPage.new(options[:auteur], item_id)
+    upage.output_bureau
+  end
+  # La carte relative est identique à la carte normale,
+  # c'est à l'intérieur de la construction qu'on fait
+  # la différence
+  alias :as_card_relative :as_card
+  # def as_card_relative options
+  #   options ||= {}
+  #   options.key?(:auteur) || options.merge!(auteur: user)
+  #   upage.output_bureau
+  # end
+end #/AbsWork
+end #/Program
+end #/Unan
+
+
+class User
+class UPage
+
+  # Affichage de la page de cours pour le bureau. C'est juste un
+  # résumé de la page, avec un lien pour la voir entièrement et
+  # des boutons pour la marquer vue, lue et terminée.
+  def output_bureau
+    (
+      titre_page      +
+      resume_page     +
+      boutons_page
+    ).in_div(class:'work page')
+  end
+
+  def infos_if_admin
+    return '' unless user.admin? || OFFLINE
+    "Page ##{id}".in_span(class:'tiny', style:'margin-right:1em')
+  end
+
+  def titre_page
+    (
+      (
+        infos_if_admin +
+        "#{lien_read}"
+      ).in_div(class:'fright') +
+      page_cours.titre
+    ).in_div(class:'titre')
+  end
+
+  # Description de la page
+  # Noter qu'il s'agit de la description enregistrée dans les
+  # données absolues de la page.
+  def resume_page
+    (
+      page_cours.description
+    ).in_div(class:'description')
+  end
+
+  # Lien pour lire la page dans
+  def lien_read
+    return "" unless vue?
+    " Lire la page ".in_a(href:"page_cours/#{id}/show?in=unan", class:'inwork', target:'_page_cours_')
+  end
+
+
+  def boutons_page
+    # Suivant le status de la UPage, il faut présenter un bouton différent
+    lien_marquer_page = if not_vue? # <= toute nouvelle page
+      title = "Marquer cette page comme vue (elle restera à marquer lue quand vous l'aurez consultée entièrement)"
+      "Démarrer cette lecture".in_a(class:'warning', title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=markvue")
+    elsif not_lue? # <= page déjà prise en compte, mais pas encore lu deux fois
+      title = "Marquer cette page comme lue"
+      "Marquer la page lue".in_a(title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=marklue")
+    else
+      title = "Remettre la page à lire ci-dessus."
+      "Remettre à lire".in_a(title:title, href:"#{bureau.route_to_this}&pid=#{id}&op=unmarklue")
+    end
+
+    title = "Ajouter cette page de cours à votre table des matières personnelle"
+    lien_to_tdm_perso = "Ajouter à TdM perso".in_a(title: title, href:"#{bureau.route_to_this}&pid=#{id}&op=addtdmperso")
+
+    (
+      lien_to_tdm_perso +
+      lien_marquer_page
+    ).in_div(class:'buttons')
+  end
+
+end #/UPage
+end #/User

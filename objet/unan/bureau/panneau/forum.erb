@@ -1,17 +1,12 @@
 <%
 # Panneau des messages du forum à lire
 %>
-<% if missing_data %>
-<% end %>
 
-<% if works.count == 0 %><%= message_si_aucun_travail %><% end %>
-<% if messages_forum.count > 0 %>
+<section>
   <p>
-    Les messages ne sont pas encore affichés par cette méthode.
+    Pour le moment, aucune action forum n'est mise en place.
   </p>
-<% else %>
-  <%# Aucun message à lire, valider ou répondre %>
-  <p class='big air'>
-    Vous n'avez aucun message forum à consulter, valider et vous n'avez aucune réponse à donner. N'hésitez cependant pas à faire un petit tour sur <%= Unan::lien_forum("le forum") %>.
+  <p>
+    Plus tard, ici, vous pourrez trouver des suggestions de messages à lire ou d'action à faire sur le forum, comme proposer un de vos textes en lecture.
   </p>
-<% end %>
+</section>
