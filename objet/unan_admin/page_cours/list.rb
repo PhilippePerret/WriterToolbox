@@ -82,7 +82,7 @@ end
 
 
 def table_pages_cours
-  @table_pages_cours ||= Unan::Program::PageCours::table_pages_cours
+  @table_pages_cours ||= Unan.table_pages_cours
 end
 def pages_cours
   @pages_cours ||= begin

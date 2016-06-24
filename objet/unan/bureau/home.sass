@@ -50,8 +50,12 @@ div.panneau_onglet
     line-height   : 1.3em
   span
     display       : inline-block
+    &.info
+      font-size     : 12.1pt
     &.libelle
-      font-size     : 12.8pt
+      font-size     : 12.1pt
+      margin-left   : 1em
+      margin-right  : 4px !important
     
   div.work
     padding           : 1em
@@ -76,6 +80,14 @@ div.panneau_onglet
       margin-bottom     : 1em
       font-weight       : bold
       font-size         : 1.1em
+      
+      // Pour le type de travail dans les tâches
+      span.type
+        float         : right
+        font-weight   : normal
+        font-size     : 0.85em
+        font-style    : italic
+        color         : #777
     div.details
       padding           : 0.5em
       &, *

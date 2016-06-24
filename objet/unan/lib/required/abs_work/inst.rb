@@ -15,8 +15,24 @@ class AbsWork
 
   attr_reader :id
 
-  def initialize wid
+  # Valeurs relatives définissables à la volée
+  # lire ci-dessous à l'instanciation
+  # Le jour-programme éventuel
+  attr_reader :pday
+
+  # +Options+ permet de définir des choses relatives, par
+  # exemple le :pday du travail qu'on instancie. par défaut,
+  # un abs-work n'a pas de pday puisqu'il peut être utilisé par
+  # plusieurs jours-programme, mais lorsqu'on l'instancie pour
+  # l'affichage dans le bureau de l'auteur (ou autre), il peut
+  # concerner un jour particulier. C'est en mettant +options+
+  # à {pday: <le jour programme>} qu'on peut le faire
+  #
+  def initialize wid, options = nil
     @id = wid.to_i_inn
+    unless options.nil?
+      options.each{|k, v| instance_variable_set("@#{k}", v)}
+    end
   end
 
   # ---------------------------------------------------------------------

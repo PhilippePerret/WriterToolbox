@@ -15,7 +15,6 @@ class Program
 class PageCours
 
   def content
-    debug "Je passe par ce content (fullpath = #{fullpath})"
     @content ||= begin
       fullpath.read
     end
@@ -32,7 +31,7 @@ class PageCours
   end
 
   def table_pages_cours
-    @table_pages_cours ||= Unan::Program::PageCours::table_pages_cours
+    @table_pages_cours ||= Unan.table_pages_cours
   end
   alias :table :table_pages_cours
 

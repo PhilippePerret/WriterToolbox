@@ -27,7 +27,7 @@ class PageCours
 
     # Table des pages de cours
     def table_pages_cours
-      @table_pages_cours ||= site.dbm_table(:unan, 'pages_cours')
+      @table_pages_cours ||= Unan.table_pages_cours
     end
     alias :table :table_pages_cours
 

@@ -191,7 +191,7 @@ class Bureau
     end
     def has_travaux_to_start?
       @has_travaux_ot_start ||= begin
-        user.works_unstarted(id).count > 0
+        bureau.auteur.works_unstarted(data[:knombre]).count > 0
       end
     end
     # Si des travaux sont à démarrer, le nombre est mis

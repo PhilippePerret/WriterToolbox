@@ -11,11 +11,10 @@ class User
   # Array d'instance Unan::Program::AbsWork augmentées des
   # données relatives
   def works_unstarted type = :task
-    debug "-> works_unstarted(type = #{type})"
     @works_unstarted ||= {}
     @works_unstarted[type] ||= begin
       aworks_unstarted_type(type).collect do |kpaire, haw|
-        Unan::Program::AbsWork.get(haw[:id])
+        Unan::Program::AbsWork.new( haw[:id], {pday: haw[:pday]} )
       end
     end
   end
@@ -154,7 +153,7 @@ class User
           # Ce travail est démarré
           next
         else
-          @aworks_unstarted.merge!( kpaire => Unan.table_absolute_works.get(awid.to_i) )
+          @aworks_unstarted.merge!( kpaire => Unan.table_absolute_works.get(awid.to_i).merge(pday: pday) )
         end
       end
     end

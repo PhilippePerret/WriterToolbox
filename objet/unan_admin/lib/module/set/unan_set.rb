@@ -42,6 +42,8 @@ class User
     # Reset complet de l'auteur
     def reset_all
       recreate_table_works
+      recreate_table_pages_cours
+      recreate_table_quiz
     end
 
     def coef_duree
@@ -99,8 +101,20 @@ class User
 
     def recreate_table_works
       table_works = site.dbm_table(:users_tables, "unan_works_#{auteur.id}")
-      table_works.destroy
+      table_works.destroy if table_works.exist?
       table_works.create
+    end
+
+    def recreate_table_pages_cours
+      table_pages_cours = auteur.table_pages_cours
+      # table_pages_cours = site.dbm_table(:users_tables, "unan_pages_cours_#{auteur.id}")
+      table_pages_cours.destroy if table_pages_cours.exist?
+      table_pages_cours.create
+    end
+    def recreate_table_quiz
+      table_quiz = auteur.table_quiz
+      table_quiz.destroy if table_quiz.exist?
+      table_quiz.create
     end
 
     # ---------------------------------------------------------------------

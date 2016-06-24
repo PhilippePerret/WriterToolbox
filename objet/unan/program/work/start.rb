@@ -10,32 +10,35 @@ la procédure de changement de jour-programme de l'auteur)
 raise_unless user.unanunscript? || user.admin?
 
 begin
-  # L'user courant doit avoir un programme actif, sinon, ça n'a aucun sens
-  raise "Piratage" unless user.program
 
   require './objet/unan/lib/module/work/create.rb'
 
-  abs_work_id = param(:awork).to_i
-  raise "Ce work absolu est impossible" if abs_work_id == 0
-  work_pday   = param(:wpday).to_i
-  raise "Le jour-programme du work doit être défini." if work_pday == 0
+  # Dans la route
+  awork_id  = site.current_route.objet_id.to_i
+  work_pday = param(:wpday).to_i
+
+  # Checks
+  awork_id > 0 || raise('L’ID du work absolu est impossible.')
+  work_pday > 0   || raise('Le jour-programme du work doit être défini.')
+
+  # Il faut que ce jour-programme soit inférieur ou égal au jour-programme
+  # courant de l'auteur, sinon c'est impossible
+  work_pday <= user.program.current_pday || raise('Ce jour-programme est impossible, voyons…')
 
   # Il faut vérifier que ce jour-programme définit bien ce travail
   # absolu. Dans le cas contraire, c'est un petit malin qui essaie
   # de passer en force
   ipday = Unan::Program::AbsPDay::get(work_pday)
-  unless ipday.works(:as_ids).include?( abs_work_id)
-    raise "Aucun travail de ce type dans le jour-programme spécifié"
-  end
+  lworks = ipday.works(:as_ids)
+  lworks.include?( awork_id) || raise("Aucun travail d'ID ##{awork_id} le #{work_pday}<sup>e</sup> jour-programme…")
 
   # Instance du nouveau travail
   work = create_new_work_for_user(
     user:         user,
-    abs_work_id:  abs_work_id,
+    abs_work_id:  awork_id,
     indice_pday:  work_pday,
   )
-
-  raise "Le travail devrait avoir été marqué démarré…" unless work.started?
+  work.started? || raise('Le travail devrait avoir été marqué démarré…')
 
 rescue Exception => e
   error e.message

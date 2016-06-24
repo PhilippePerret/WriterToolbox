@@ -1,7 +1,5 @@
 # encoding: UTF-8
-if user.admin?
-  site.require_objet 'unan_admin'
-end
+site.require_objet 'unan_admin' if user.admin?
 
 class Unan
 class Program
@@ -36,14 +34,14 @@ class AbsWork
       end
     end
 
-
     # Composition de la carte (attention, c'est la version
     # "absolue", celle qui est affichée pour l'administrateur)
     (
       (
         human_type_w.in_span(class:'type') +
-        titre.in_span(class:'titre')
-      ).in_div(class:'div_titre') +
+        titre.in_span
+      ).in_div(class:'titre') +
+      form_pour_marquer_started_or_fini(started = false) +
       div_travail + # avec exemples et pages cours
       autres_infos_travail(params[:from]) +
       buttons_edit
@@ -169,12 +167,27 @@ class AbsWork
   # Un lien pour soit marquer le travail démarré (s'il n'a pas encore été
   # démarré) soit pour le marquer fini (s'il a été fini). Dans les deux cas,
   # c'est un lien normal qui exécute une action avant de revenir ici.
-  def form_pour_marquer_started_or_fini
-    return "" if rwork.completed?
-    if rwork.started?
+  #
+  # +started+ permet d'appeler la méthode lorsque c'est un travail
+  # qui n'est pas démarré.
+  # TODO Il faudra de toute façon repenser les choses ici puisqu'il est
+  # absurde de parler de travail relatif lorsque c'est un travail qui
+  # n'est pas démarré (et qui, donc, par définition, ne peut pas posséder
+  # de travail relatif de l'auteur)
+  def form_pour_marquer_started_or_fini started = true
+    completed, started, this_pday =
+      if started == false
+        [false, false, self.pday]
+        #  Note : self.pday a dû être défini à l'instanciation
+      else
+        [rwork.completed?, rwork.started?, rwork.indice_pday]
+      end
+    return '' if completed
+    this_pday != nil || raise('Le jour programme ne devrait pas être nil (dans form_pour_marquer_started_or_fini)')
+    if started
       "Marquer ce travail fini".in_a(href:"work/#{rwork.id}/complete?in=unan/program&cong=taches")
     else
-      "Démarrer ce travail".in_a(class:'warning',href:"work/start?in=unan/program&cong=taches&awork=#{id}&wpday=#{rwork.indice_pday}")
+      "Démarrer ce travail".in_a(class:'warning',href:"work/#{id}/start?in=unan/program&cong=taches&wpday=#{this_pday}")
     end.in_div(class:'buttons')
   end
 
@@ -224,7 +237,7 @@ class AbsWork
     end
     (
       travail + item_link + div_exemples + div_pages_cours
-    ).in_div(class:'travail')
+    ).in_div(class:'details')
   end
 
   # Retourne le code HTML pour le div contenant les exemples,
