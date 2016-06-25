@@ -308,6 +308,14 @@ unan:
       <li>auteurs => Manuel pour les deux sexes.</li>
       </ul>
   -
+    command:        run change_pday_benoit
+    description: |
+      Pour passer Benoit à un jour-programme particulier.
+    note: |
+      Cf. le script ./lib/app/console_scripts/change_pday_benoit.rb pour
+      faire les réglages du changement (avant qu'on puisse envoyer des
+      arguments)
+  -
     command:        unan send me rapport|report &lt;pseudo|ID&gt;
     description:    M'envoie le rapport quotidien de l'auteur désigné par pseudo ou ID
     note: |

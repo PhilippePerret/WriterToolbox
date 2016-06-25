@@ -30,6 +30,9 @@ class Bureau
     demarrer  = dname[:starter]
     choses    = dname[:plur]
     arr = auteur.works_unstarted(type)
+    if type == :quiz
+      debug "Nombre de quiz non démarrés : #{arr.count}"
+    end
     if arr.count > 0
       (
         "<h4>#{choses} à #{demarrer}</h4>" +
@@ -48,6 +51,9 @@ class Bureau
     e     = dname[:e]
     chose = dname[:sing].downcase
     arr = auteur.works_undone(type)
+    if type == :quiz
+      debug "Nombre de quiz démarrés mais à faire : #{arr.count}"
+    end
     if arr.count > 0
       arr.collect{ |awork| awork.as_card(auteur: bureau.auteur) }.join('')
     else
@@ -64,6 +70,9 @@ class Bureau
     chose = dname[:sing].downcase
     fini  = dname[:fini]
     arr = auteur.works_recent(type)
+    if type == :quiz
+      debug "Nombre de quiz récents : #{arr.count}"
+    end
     '<hr />' +
     if arr.count > 0
       "<h4>#{dname[:plur]} récemment #{fini}s</h4>" +

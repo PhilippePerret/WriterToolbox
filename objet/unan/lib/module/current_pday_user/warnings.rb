@@ -31,7 +31,7 @@ class CurrentPDay
       #     indice de P-Day et un work-id si le travail a
       #     été défini.
 
-      (uworks_overrun + uworks_unstarted).each do |uw|
+      (uworks_overrun + aworks_unstarted).each do |uw|
         niv_alerte = niveau_alerte_per_overrun( uw[:overrun] || uw[:since])
         next if niv_alerte.nil?
         # Travail en dépassement

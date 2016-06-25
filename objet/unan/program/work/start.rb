@@ -38,7 +38,11 @@ begin
     abs_work_id:  awork_id,
     indice_pday:  work_pday,
   )
-  work.started? || raise('Le travail devrait avoir été marqué démarré…')
+  if work != nil
+    work.started? || raise('Le travail devrait avoir été marqué démarré…')
+  else
+    # C'est une recréation accidentelle du travail, il ne faut rien faire
+  end
 
 rescue Exception => e
   error e.message

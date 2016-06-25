@@ -168,8 +168,9 @@ class AbsWork
 
   def displayed_infos
     @displayed_infos ||= begin
+      itemid = item_id ? "item ID ##{item_id}/" : ''
       (
-        "#{titre}".in_span(class:'bold') + " [work ##{id}]".in_span(class:'id') +
+        "#{titre}".in_span(class:'bold') + " [#{itemid}work ##{id}]".in_span(class:'id') +
         ("Type W : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
         "P-Days #{jour_depart} à #{jour_fin}".in_div +
         ("Travail : ".in_span(class:'libelle') + "#{travail}").in_div(class:'italic') +

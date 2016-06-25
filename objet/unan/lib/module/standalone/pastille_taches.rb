@@ -35,53 +35,51 @@ class User
   #   :css      La classe à donner à la pastille (en fait : la couleur du fond)
   #   :href     L'URL qu'il faut rejoindre pour voir les tâches.
   def data_pastille_etat_des_lieux
-    # Pour obtenir les méthodes qui permettent de comparer
-    # les travaux exécutés aux travaux non démarrés en utilisant
-    # l'instance Unan::Program::CurPDay (current_pday)
-    # SuperFile::new('./objet/unan/lib/required/user').require
-    # SuperFile::new('./objet/unan/lib/required/cur_pday').require
-    # SuperFile::new('./objet/unan/lib/required/program').require
-
     site.require_objet('unan')
 
-    icp = Unan::Program::CurPDay::new( self.program.current_pday, self.id )
+    icp = self.current_pday
 
-    nombre_travaux = icp.nombre_travaux_courant
-    nombre_works_undone = icp.undone(:task).count
-    nombre_pages_undone = icp.undone(:page).count
-    nombre_quiz_undone  = icp.undone(:quiz).count
-    nombre_tostart      = icp.undone(:all).count - icp.started(:all).count
-    nombre_depassements = 0 # TODO: À RÉGLER
+    nombre_done     = icp.uworks_done.count
+    nombre_undone   = icp.uworks_undone.count
+    nombre_goon     = icp.uworks_goon.count
+    nombre_unstart  = icp.aworks_unstarted.count
+    nombre_nouveaux = icp.uworks_ofday.count
+    nombre_overrun  = icp.uworks_overrun.count
+
+    nombre_depuis_debut = icp.aworks_until_today.count
+
+    # Le nombre total de travaux à faire, tous confondus
+    nombre_travaux = nombre_depuis_debut - nombre_done
+
+    # Le nombre de travaux à démarrer, en comptant les
+    # travaux du jour s'ils ne sont pas démarrés
+    # À quoi correspondent les travaux à démarrer ?
+    # Ce sont
+    nombre_a_demarrer = nombre_travaux - (nombre_undone + nombre_done)
+
+    # nombre_works_in_table = self.table_works.count
+    # debug "Nombre travaux dans la table : #{nombre_works_in_table}"
 
     taches = Array::new
     taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
-    taches << "#{travaux_s nombre_travaux} en cours.".in_div(class:'bold') +
-              "Tâches quelconques : #{nombre_works_undone}".in_div +
-              "Pages de cours à lire : #{nombre_pages_undone}.".in_div +
-              "Quiz à remplir : #{nombre_quiz_undone}.".in_div
-    taches << if nombre_tostart > 0
-      nombre_tasks_tostart  = icp.undone(:task).count  - icp.started(:task).count
-      nombre_pages_tostart  = icp.undone(:page).count  - icp.started(:page).count
-      nombre_quiz_tostart   = icp.undone(:quiz).count  - icp.started(:quiz).count
-      nombre_forum_tostart  = icp.undone(:forum).count - icp.started(:forum).count
-      (
-        "#{travaux_s nombre_tostart} à amorcer :".in_div(class:'bold') +
-        (nombre_tasks_tostart > 0 ? "  - Tâches à démarrer : #{nombre_tasks_tostart}".in_div : "") +
-        (nombre_pages_tostart > 0 ? "  - Cours à marquer “vu” : #{nombre_pages_tostart}".in_div : '') +
-        (nombre_forum_tostart > 0 ? "  - Messages       : #{nombre_forum_tostart}".in_div : '') +
-        (nombre_quiz_tostart  > 0 ? "  - Quiz à remplir : #{nombre_quiz_tostart}".in_div : '')
-      ).in_div(class:'red')
+    taches << "Travaux courants : #{nombre_travaux}".in_div(class:'bold') +
+              "Inachevés  : #{nombre_undone}".in_div +
+              "Poursuivis : #{nombre_goon}".in_div +
+              "Nouveaux   : #{nombre_nouveaux}".in_div +
+              "À démarrer : #{nombre_a_demarrer}.".in_div(class: (nombre_unstart > 0 ? 'red bold' : '')) +
+              '<br>' +
+              "Nombre depuis début : #{nombre_depuis_debut}".in_div(class: 'bold')
 
-    else
-      "Aucun travail à démarrer."
+    if nombre_overrun > 0
+      taches << "Dépassement : #{nombre_overrun}".in_div(class: 'red')
     end
-    taches << "Échéance dépassée pour #{travaux_s nombre_depassements}.".in_span(class:'bold red') if nombre_depassements > 0
 
-    css = if (nombre_tostart + nombre_depassements) > 0
-      'red'
-    else
-      'green'
-    end
+    css =
+      if (nombre_unstart + nombre_overrun) > 0
+        'red'
+      else
+        'green'
+      end
     {taches: taches, title: nil, background: css, nombre: nombre_travaux, href:"bureau/home?in=unan"}
   end
   def travaux_s nombre

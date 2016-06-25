@@ -51,12 +51,17 @@ class User
 
     # ---------------------------------------------------------------------
 
+    def pday
+      @pday ||= args[:pday] || auteur.program.current_pday
+    end
+
     # Reset complet de l'auteur
     def reset_all
       log "-> reset_all"
       recreate_table_works
       recreate_table_pages_cours
       recreate_table_quiz
+      recreate_paiement
       log "<- reset_all"
     end
 
@@ -66,9 +71,9 @@ class User
 
     def set_program_data
       log "-> set_program_data"
-      created_at = NOW - (args[:pday] * coef_duree )
+      created_at = NOW - (pday * coef_duree )
       new_data = {
-        current_pday:         args[:pday],
+        current_pday:         pday,
         current_pday_start:   NOW,
         rythme:               args[:rythme],
         created_at:           created_at,
@@ -84,7 +89,7 @@ class User
       return if args[:done_upto].nil?
       log "-> set_done_works"
       upto = args[:done_upto]
-      upto <= args[:pday] || raise('La valeur `done_upto` doit être inférieure ou égale au jour-programme courant, voyons.')
+      upto <= pday || raise('La valeur `done_upto` doit être inférieure ou égale au jour-programme courant, voyons.')
       undones = args[:nombre_undone]
       nombre_points = 0
       Unan.table_absolute_pdays.select(where: "id <= #{args[:done_upto]}").each do |hpday|
@@ -96,7 +101,7 @@ class User
           awork = Unan::Program::AbsWork.new(wid)
           nombre_points += awork.points || 0
           # Faire un enregistrement dans la table des travaux
-          dtime = NOW - ((args[:pday] - this_pday).days * coef_duree)
+          dtime = NOW - ((pday - this_pday).days * coef_duree)
           data_work = {
             program_id:     auteur.program.id,
             abs_work_id:    awork.id,
@@ -126,7 +131,7 @@ class User
     end
 
     def recreate_table_pages_cours
-      log "* Déstruction et reconstruction de la table des pages de cours de l'auteur…"
+      log "* Destruction et reconstruction de la table des pages de cours de l'auteur…"
       table_pages_cours = auteur.table_pages_cours
       # table_pages_cours = site.dbm_table(:users_tables, "unan_pages_cours_#{auteur.id}")
       table_pages_cours.destroy if table_pages_cours.exist?
@@ -134,10 +139,23 @@ class User
       log "  = OK"
     end
     def recreate_table_quiz
-      log "* Déstruction et reconstruction de la table des questionnaires de l'auteur…"
+      log "* Destruction et reconstruction de la table des questionnaires de l'auteur…"
       table_quiz = auteur.table_quiz
       table_quiz.destroy if table_quiz.exist?
       table_quiz.create
+      log "  = OK"
+    end
+    def recreate_paiement
+      log "* Recréation du paiements"
+      User.table_paiements.delete(where: {user_id: auteur.id})
+      data_paiement = {
+        user_id:    auteur.id,
+        montant:    19.8,
+        objet_id:   '1AN1SCRIPT',
+        created_at: (NOW - (pday.days * coef_duree)),
+        facture:    'EC-08R60522T08193748'
+      }
+      User.table_paiements.insert(data_paiement)
       log "  = OK"
     end
 
@@ -146,7 +164,7 @@ class User
     # ---------------------------------------------------------------------
     # Réglage du jour-programme courant
     def set_pday
-      auteur.program.current_pday = args[:pday]
+      auteur.program.current_pday = pday
     end
 
   end #/UnanSet

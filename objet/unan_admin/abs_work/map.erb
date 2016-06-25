@@ -41,9 +41,7 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
     <div class="titre_zone" style="top:<%= top_titre(:quiz) %>px">Quiz</div>
     <div class="titre_zone" style="top:<%= top_titre(:forum) %>px">Forum</div>
     <% Unan::Program::AbsPDay::all.each do |pday| %>
-      <% debug "PDay ##{pday.id}" %>
       <% pday.works(:as_instance).each do |work| %>
-        <% debug "\tWork ##{work.id}" %>
         <%= work.in_map( pday.id ) %>
       <% end %>
     <% end %>

@@ -5,11 +5,13 @@
 
 =end
 
+PDAY = 1
+
 site.require_objet 'unan'
 site.require_objet 'unan_admin'
 UnanAdmin.require_module 'set'
 
 benoit = User.get(2)
 benoit.unan_set(
-  pday: 2
+  pday: PDAY
 )

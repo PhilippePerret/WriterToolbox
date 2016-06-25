@@ -81,11 +81,11 @@ class CurrentPDay
   end
 
   def section_travaux_unstarted
-    return '' if uworks_unstarted.count == 0
+    return '' if aworks_unstarted.count == 0
     c = ''
     c << texte_type('explications_unstarted').in_div(class: 'explication')
-    c << traite_liste_travaux(uworks_unstarted, :unstarted)
-    c.in_fieldset(id: 'fs_works_unstarted', class: 'fs_works', legend: "Travaux à démarrer (#{uworks_unstarted.count})")
+    c << traite_liste_travaux(aworks_unstarted, :unstarted)
+    c.in_fieldset(id: 'fs_works_unstarted', class: 'fs_works', legend: "Travaux à démarrer (#{aworks_unstarted.count})")
   end
 
   def section_nouveaux_travaux
@@ -124,7 +124,7 @@ class CurrentPDay
     SuperFile.new(_("texte/#{faffixe}.erb")).deserb(self)
   end
   # Méthode qui reçoit une liste de travaux tels que formée par
-  # le module `lists` (c'est-à-dire les listes uworks_unstarted, etc.)
+  # le module `lists` (c'est-à-dire les listes aworks_unstarted, etc.)
   # et qui retourne un UL contenant les travaux classés par type avec
   # un titre.
   #

@@ -256,16 +256,16 @@ describe 'Avec des travaux en retard' do
     end
   end
 
-  describe 'uworks_unstarted' do
+  describe 'aworks_unstarted' do
     it 'répond et retourne un Array de Hash' do
-      expect(up.current_pday).to respond_to :uworks_unstarted
-      res = up.current_pday.uworks_unstarted
+      expect(up.current_pday).to respond_to :aworks_unstarted
+      res = up.current_pday.aworks_unstarted
       expect(res).to be_instance_of Array
       expect(res.first).to be_instance_of Hash
     end
-    describe 'un élément de uworks_unstarted contient les propriétés' do
+    describe 'un élément de aworks_unstarted contient les propriétés' do
       before(:all) do
-        @h = @up.current_pday.uworks_unstarted.first
+        @h = @up.current_pday.aworks_unstarted.first
       end
       let(:h) { @h }
       it ':since, le nombre de jours depuis quand le travail aurait dû être démarré' do

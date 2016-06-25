@@ -36,7 +36,7 @@ class Program
   # Définit le nouveau jour-programme (en définissant également
   # sa date de démarrage)
   def current_pday= valeur
-    set(current_pday: valeur, current_pday_start: NOW)
+    set(current_pday: valeur.to_i, current_pday_start: NOW)
     # @current_pday       = valeur
     # @current_pday_start = NOW
   end

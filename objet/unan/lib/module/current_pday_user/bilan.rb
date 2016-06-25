@@ -71,7 +71,7 @@ class CurrentPDay
     @nombre_overrun ||= uworks_overrun.count
   end
   def nombre_unstarted
-    @nombre_unstarted ||= uworks_unstarted.count
+    @nombre_unstarted ||= aworks_unstarted.count
   end
   def nombre_new
     @nombre_new ||= uworks_ofday.count

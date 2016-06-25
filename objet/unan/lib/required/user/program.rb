@@ -4,20 +4,22 @@ Extension de User propre au programme
 =end
 class User
 
-  # {Unan::Program} Le programme courant (ou nil)
-  def program
-    @program ||= begin
-      begin
-        raise "ID NE DEVRAIT PAS ÊTRE NIL DANS User#program" if self.id.nil?
-      rescue Exception => e
-        debug e.message
-        debug e.backtrace.join("\n")
-      end
-      Unan::Program::get_current_program_of(self.id)
-    end
-  end
-  
+  # cf. ./lib/app/required/user/unanunscript.rb
+  # # {Unan::Program} Le programme courant (ou nil)
+  # def program
+  #   @program ||= begin
+  #     begin
+  #       raise "ID NE DEVRAIT PAS ÊTRE NIL DANS User#program" if self.id.nil?
+  #     rescue Exception => e
+  #       debug e.message
+  #       debug e.backtrace.join("\n")
+  #     end
+  #     Unan::Program::get_current_program_of(self.id)
+  #   end
+  # end
+
   # ID du programme de l'user
+  # -------------------------
   # Noter que ça ne fonctionne pas comme habituellement : ici, la
   # propriété ne permettra pas de définir l'instance, c'est au
   # contraire l'instance (program ci-dessus) qui permet de

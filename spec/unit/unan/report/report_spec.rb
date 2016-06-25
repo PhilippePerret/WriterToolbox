@@ -129,7 +129,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
       end
       it 'contient une ligne par travaux à démarrer' do
         expect(report).to have_tag('fieldset#fs_works_unstarted') do
-          up.current_pday.uworks_unstarted.each do |uw|
+          up.current_pday.aworks_unstarted.each do |uw|
             titre = Unan.table_absolute_works.get(uw[:awork_id])[:titre].strip_tags
             with_tag 'li', text: /#{Regexp.escape titre}/
           end

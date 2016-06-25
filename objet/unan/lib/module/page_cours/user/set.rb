@@ -31,9 +31,10 @@ class UPage
       abs_work_id:  awork_id,
       indice_pday:  apday_id
     )
-    # Mémoriser ce travail pour cet page
-    set( :work_id => iwork.id )
-    # debug "ID du work créé :  #{iwork.id}"
+    unless iwork.nil?
+      # Mémoriser ce travail pour cet page
+      set( :work_id => iwork.id )
+    end
     return iwork
   end
 

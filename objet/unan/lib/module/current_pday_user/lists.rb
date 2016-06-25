@@ -1,6 +1,43 @@
 # encoding: UTF-8
 =begin
 
+  RÉSUMÉ DES LISTES
+  =================
+
+    (pour le contenu des listes, cf. CONTENU DES LISTES)
+
+    uwork_undone
+    ------------
+
+        Liste des travaux inachevés.
+
+    awork_unstarted
+    ---------------
+
+        Liste des travaux qui auraient dû être démarrés au cours
+        des jours précédents.
+
+        ATTENTION : Il ne s'agit PAS de TOUS les travaux à démarrer
+        mais seulement des travaux qui AURAIENT DU être démarrés
+        dans les jours précédents. Donc un travail du jour ne peut
+        être contenu dans cette liste.
+
+  CONTENU DES LISTES
+  ==================
+
+      Chaque liste est un Array contenant des Hash contenant les
+      propriétés de chaque travail.
+
+      Certaines listes possèdent des propriétés particulières :
+        :reste    pour un travail undone
+        :since    pour un travail unstarted
+        :overrun  pour un travail en dépassement
+        (chaque propriété ci-dessus est un nombre de jours-programme)
+
+
+  DESCRIPTION/EXPLICATION
+  =======================
+
   Extension de la class User::CurrentPDay pour faire le
   bilan du jour courant de l'auteur.
 
@@ -64,9 +101,9 @@ class CurrentPDay
 
   # Travaux récents, c'est-à-dire terminés dans les 10
   # jours programmes précédents
-  def uworks_recents
-    releve_done_and_undone if @uworks_recents === nil
-    @uworks_recents
+  def uworks_recent
+    releve_done_and_undone if @uworks_recent === nil
+    @uworks_recent
   end
 
   # Les nouveaux travaux. Ce sont les travaux du jour, qui
@@ -135,9 +172,9 @@ class CurrentPDay
   # la propriété :since qui définit depuis combien de
   # jours-programme le travail aurait dû être démarré
   #
-  def uworks_unstarted
-    decompose_travaux if @uworks_unstarted === nil
-    @uworks_unstarted
+  def aworks_unstarted
+    decompose_travaux if @aworks_unstarted === nil
+    @aworks_unstarted
   end
 
   # Array de Hash contenant les travaux effectués jusqu'à
@@ -175,7 +212,7 @@ class CurrentPDay
   #     - n'a pas dépassé son échéance
   #   - La liste des travaux à démarrer (hormis les travaux
   #     du jour-programme courant)
-  #     @uworks_unstarted
+  #     @aworks_unstarted
   #
   def decompose_travaux
 
@@ -183,10 +220,14 @@ class CurrentPDay
     @uworks_overrun     = []
     # Les travaux à poursuivre
     @uworks_goon  = []
-    # Les travaux qui auraient dû être démarrés
-    @uworks_unstarted   = []
+    # Les travaux qui auraient dû être démarrés (*)
+    @aworks_unstarted   = []
     # Les nouveaux travaux du jour
     @uworks_ofday       = []
+
+    # (*) Les travaux non démarrés sont des travaux existants
+    # qui ne possèdent pas leur enregistrement dans les
+    # travaux de l'auteur.
 
     # On ne garde des travaux absolus que ceux qui n'ont pas
     # été terminés. Noter qu'on ne peut pas utiliser
@@ -194,13 +235,22 @@ class CurrentPDay
     aworks_until_today.each do |haw|
       # debug "[decompose_travaux]---"
       # debug "--- haw: #{haw.inspect}"
+
+      # Si c'est un travail du jour (qu'il soit démarré ou
+      # non), on l'enregistre dans la liste des nouveaux
+      # travaux.
+      # Noter qu'on ne peut pas le faire dans les if/elsif
+      # ci-dessous car un travail démarré ne serait plus
+      # pris en compte.
+      @uworks_ofday << haw if haw[:pday] == day
+
       # On exclue les travaux terminés
       wkey = "#{haw[:id]}-#{haw[:pday]}"
       reste = (haw[:pday] + haw[:duree]) - day
       if auworks_done_ids.key?( wkey )
         # Un travail terminé
         # Inutile de le consigner dans @uworks_done puisque
-        # cette liste a due être établie justement pour définir
+        # cette liste a du être établie justement pour définir
         # le hash auworks_done_ids utilisé ici.
         # debug "    Terminé"
       elsif auworks_undone_ids.key?( wkey )
@@ -220,12 +270,11 @@ class CurrentPDay
       else
         # C'est un travail non démarré, soit un travail
         # du jour soit un travail qui aurait dû être
-        # démarré avant
+        # démarré avant.
+        # Noter : les travaux du jour sont définis avant
         haw.merge!( awork_id: haw[:id] )
         if haw[:pday] < day
-          @uworks_unstarted << haw.merge(since: day - haw[:pday])
-        else
-          @uworks_ofday << haw
+          @aworks_unstarted << haw.merge(since: day - haw[:pday])
         end
       end
     end
@@ -259,7 +308,7 @@ class CurrentPDay
   #   - les travaux achevés
   #     => @uworks_done
   #   - les travaux achevés dans les 10 derniers jours-programme
-  #     => @uworks_recents
+  #     => @uworks_recent
   #     Note : ils sont aussi dans @uworks_done
   #   - les travaux inachevés
   #     => @uworks_undone
@@ -277,7 +326,7 @@ class CurrentPDay
       colonnes: [:abs_pday, :abs_work_id, :status]
     }
     @uworks_done        = []
-    @uworks_recents     = []
+    @uworks_recent     = []
     @uworks_undone      = []
     @auworks_done_ids   = {}
     @auworks_undone_ids = {}
@@ -301,7 +350,7 @@ class CurrentPDay
         @uworks_done << dnwork
         @auworks_done_ids.merge!(sid => duwork)
         if dnwork[:pday] > day - 10
-          @uworks_recents << dnwork
+          @uworks_recent << dnwork
         end
       else
         # Travaux inachevés
