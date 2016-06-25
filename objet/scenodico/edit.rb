@@ -15,9 +15,9 @@ class Scenodico
     # listes sont enregistrées en string simple.
     def prepare_pour_champs imot
       hmot = imot.get_all
-      # [:relatifs, :contraires, :synonymes, :categories].each do |key|
-        # hmot[key] = hmot.delete(key).join(' ') unless hmot[key].nil?
-      # end
+      [:relatifs, :contraires, :synonymes, :categories].each do |key|
+        hmot[key].nil? || hmot[key] = hmot.delete(key).join(' ')
+      end
       return hmot
     end
 

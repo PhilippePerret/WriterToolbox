@@ -14,11 +14,16 @@ class Mot
     (get(key) || "").split(' ')
   end
   def get_all
-    super
+    res = super
     [:synonymes, :contraires, :relatifs, :categories].each do |k|
       v = instance_variable_get("@#{k}")
-      instance_variable_set("@#{k}", v.split(' ')) if v != nil
+      unless v.nil?
+        v = v.split(' ')
+        instance_variable_set("@#{k}", v)
+        res[k] = v
+      end
     end
+    res
   end
 
   def table ; @table ||= Scenodico.table_mots end

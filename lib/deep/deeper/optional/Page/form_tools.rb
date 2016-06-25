@@ -208,7 +208,7 @@ class Page
         param_value = if Page::FormTools::prefix.nil?
           param(prop.to_sym)
         else
-          (param(Page::FormTools::prefix)||Hash::new)[prop.to_sym]
+          (param(Page::FormTools.prefix)||Hash.new)[prop.to_sym]
         end.nil_if_empty
 
         # debug "param_value = #{param_value.inspect}"

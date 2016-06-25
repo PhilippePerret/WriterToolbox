@@ -16,6 +16,7 @@ form.prefix = "mot"
 if param(:mot).nil? && site.objet.instance_of?(Scenodico::Mot)
   param(:mot => Scenodico::prepare_pour_champs(site.objet))
 end
+
 %>
 <p class='small tres discret italic'>
   La BOITE À OUTILS et l'atelier ICARE possèdent chacun la base de données Scénodico. C'est la BOITE À OUTILS qui contient le fichier de référence.
@@ -72,6 +73,7 @@ end
   <%# TYPE DÉFINITION %>
   <%= form.field_select("Type", 'type_def', nil, {values:types_def_for_select}) %>
 
+
   <%# RELATIFS %>
   <%= form.field_text("Relatifs", 'relatifs', nil) %>
   <%= liste_relatifs(:relatifs) %>
@@ -89,6 +91,7 @@ end
 
   <%# CATÉGORIES %>
   <%= form.field_text("Catégories", 'categories', nil, {class:'milong', text_after: menu_categories}) %>
+
 
   <%= form.field_textarea("Liens", 'liens', nil) %>
   <%= form.field_description("Mettre les liens les uns en dessous des autres, en séparant par des '::' l'adresse URL du titre à donner au lien.") %>
