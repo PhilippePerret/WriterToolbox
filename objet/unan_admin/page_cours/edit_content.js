@@ -54,14 +54,15 @@ $(document).ready(function(){
   PageCours.etat_normal = !PageCours.etat_normal ;
   PageCours.toggle_interface();
 
+
   Snippets.set_scopes_to([
     "text.html",
     "text.erb",
     {
-      'work' : {replace:"[work::$1::$2] $0"},
-      'page' : {replace:"[page::$1::$2] $0"},
-      'film' : {replace:"[film::$1] $0"},
-      'mot'  : {replace:"[mot::$1::$2] $0"}
+      'work' : {replace:"WORK[$1|$2] $0"},
+      'page' : {replace:"PAGE[$1|$2] $0"},
+      'film' : {replace:"FILM[$1] $0"},
+      'mot'  : {replace:"MOT[$1|$2] $0"}
     }
     ])
 

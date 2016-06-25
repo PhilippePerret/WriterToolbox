@@ -10,7 +10,6 @@ class PageCours
   class << self
 
     def save
-      debug "data_page : #{data_page.pretty_inspect}"
       check_values_page_cours || return
 
       # Au cas où, retirer les valeurs qui ne doivent
@@ -20,7 +19,7 @@ class PageCours
       data_page.delete(:id) if data_page[:id].nil?
       data_page.merge!(updated_at: NOW.to_i)
 
-      debug "data_page enregistrées : #{data_page.inspect}"
+      # debug "data_page enregistrées : #{data_page.inspect}"
 
       if new_page?
         data_page.merge!(created_at: NOW.to_i)
@@ -48,7 +47,9 @@ class PageCours
       else
 
         # ===> UPDATE ICI <===
+        debug "--> update de la page"
         table_pages_cours.set(page_id, data_page)
+        debug "<-- update de la page"
 
       end
       flash "Page ##{@page_id} enregistrée avec succès."
@@ -115,7 +116,7 @@ class PageCours
     # valeurs.)
     def data_page
       @data_page ||= begin
-        h = Hash::new
+        h = Hash.new
         param(:page_cours).collect do |k,v|
           h.merge!(k => v.nil_if_empty )
         end
@@ -268,30 +269,6 @@ class PageCours
       table_pages_cours.get(pid) || {}
     end
 
-    # Crée le fichier de cours s'il n'existe pas et que la
-    # case à cocher "créer le fichier" est coché
-    def create_file_page_cours sfile
-      return if sfile.exist?
-      idandtitre = "##{data_page[:id]} #{data_page[:titre]}"
-      content = case sfile.extension
-      when 'txt'
-        "[Contenu de la page #{data_page[:titre]}]"
-      when 'tex'
-        "% Page #{data_page[:titre]}\n\n[Contenu de la page #{idandtitre}]"
-      when 'erb'
-        "<%\n# #{idandtitre} \n%>\n<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
-      when 'html', 'htm'
-        "<h3>#{data_page[:titre]}</h3>\n<p>[Contenu de la page #{data_page[:titre]}]</p>"
-      when 'md'
-        "<!-- Contenu de la page #{idandtitre} -->\n\n"
-      else
-        flash "l'extension #{sfile.extension} n'est pas traitée dans la création automatique des fichiers."
-        nil
-      end
-      return if content.nil?
-      sfile.write content
-    end
-
     def open_page
       ipage = Unan::Program::PageCours::get(page_id)
       debug "Page ##{ipage.id}"
@@ -326,7 +303,9 @@ case param(:operation)
 when "open_page_cours"
   Unan::Program::PageCours::open_page
 when "save_page_cours"
-  Unan::Program::PageCours::save
+  debug "--> Unan::Program::PageCours.save"
+  Unan::Program::PageCours.save
+  debug "<-- Unan::Program::PageCours.save"
 when "edit_page_cours"
   # UnanAdmin::PageCours::edit
 end

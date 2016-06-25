@@ -3,7 +3,7 @@ class Unan
 class Program
 class PageCours
 
-  def folder_by_type type
+  def folder_by_type # type
     if TYPES_PAGE.key?( type )
       TYPES_PAGE[type][:folder]
     else

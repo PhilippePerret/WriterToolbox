@@ -86,24 +86,27 @@ class AbsWork
     # Sauvegarde de l'abswork. Méthode appelée en bas de ce
     # module lorsque l'opération est "save_abs_work"
     def save
-
+      debug "-> AbsWork.save"
       # On vérifie la validité des données ou on s'en retourne
       check_data_abs_work || return
 
       save_data || return
 
       flash "Work ##{data[:id]} enregistré."
+      debug "<- AbsWork.save"
     end
 
     def save_data
-      debug data_to_save.pretty_inspect
+      debug "-> AbsWork.save_data"
+      # debug data_to_save.pretty_inspect
       if data_to_save[:id]
-        Unan::table_absolute_works.set(data_to_save)
+        Unan::table_absolute_works.set(data_to_save[:id], data_to_save)
       else
         data[:id] = Unan::table_absolute_works.insert(data_to_save)
         param(:work => data)
       end
     rescue Exception => e
+      debug e
       error e.message
     else
       return true

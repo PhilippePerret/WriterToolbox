@@ -63,16 +63,16 @@ class << self
       "\n             Rythme : #{rythme} "
     if NOW < next_pday_start
       log "Devra être envoyé dans #{(next_pday_start - NOW).as_duree}"
-      # begin
-      #   site.send_mail_to_admin(
-      #     subject:  "UNAN - Rapport (qui serait) envoyé à #{auteur.pseudo}",
-      #     message: auteur.current_pday.rapport_complet,
-      #     formated: true
-      #   )
-      # rescue Exception => e
-      #   log "### Impossible d'envoyer le rapport à l'administrateur : #{e.message}"
-      #   log e.backtrace.join("\n")
-      # end
+      begin
+        site.send_mail_to_admin(
+          subject:  "UNAN - Rapport (qui serait) envoyé à #{auteur.pseudo}",
+          message: auteur.current_pday.rapport_complet,
+          formated: true
+        )
+      rescue Exception => e
+        log "### Impossible d'envoyer le rapport à l'administrateur : #{e.message}"
+        log e.backtrace.join("\n")
+      end
     end
 
     # Conditions pour que le programme soit passé au jour suivant:
@@ -94,8 +94,13 @@ class << self
       # régler si ça n'est pas le cas.
       if daily_report_must_be_send_to auteur
         log "  *** Envoi du mail quotidien nécessaire ***"
+
         # On lui envoie le rapport de changement de jour-programme
+        # TODO : POUR LE MOMENT, COMME ÇA NE FONCTIONNE PAS
+        # ENCORE TRÈS BIEN, JE N'ENVOIE PAS LE RAPPORT, MAIS J'EN
+        # FAIS UNE COPIE À L'ADMINISTRATEUR.
         auteur.current_pday.send_rapport_quotidien
+
         if UNAN_DAILY_REPORT_FOR_ADMIN
           # On envoie aussi le rapport à l'administrateur
           site.send_mail_to_admin(

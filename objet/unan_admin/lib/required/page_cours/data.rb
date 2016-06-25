@@ -16,7 +16,38 @@ class PageCours
 
   def content
     @content ||= begin
+      create_file_page_cours unless fullpath.exist?
       fullpath.read
+    end
+  end
+
+  # Crée le fichier de cours s'il n'existe pas et que la
+  # case à cocher "créer le fichier" est coché
+  def create_file_page_cours
+    return if fullpath.exist?
+    idandtitre = "##{id} #{titre}"
+    content =
+      case fullpath.extension
+      when 'txt'
+        "[Contenu de la page #{titre}]"
+      when 'tex'
+        "% Page #{titre}\n\n[Contenu de la page #{idandtitre}]"
+      when 'erb'
+        "<%\n# #{idandtitre} \n%>\n<h3>#{titre}</h3>\n<p>[Contenu de la page #{titre}]</p>"
+      when 'html', 'htm'
+        "<h3>#{titre}</h3>\n<p>[Contenu de la page #{titre}]</p>"
+      when 'md'
+        "<!-- Contenu de la page #{idandtitre} -->\n\n"
+      else
+        flash "l'extension #{fullpath.extension} n'est pas traitée dans la création automatique des fichiers."
+        nil
+      end
+    return if content.nil?
+    fullpath.write content
+    if fullpath.exist?
+      flash "Le fichier a été créé avec succès."
+    else
+      error "Le fichier n'a pas pu être créé pour une raison inconnue."
     end
   end
 
