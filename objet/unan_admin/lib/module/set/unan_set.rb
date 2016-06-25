@@ -71,7 +71,7 @@ class User
 
     def set_program_data
       log "-> set_program_data"
-      created_at = NOW - (pday * coef_duree )
+      created_at = NOW - (pday.days * coef_duree )
       new_data = {
         current_pday:         pday,
         current_pday_start:   NOW,

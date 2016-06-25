@@ -52,9 +52,7 @@ class Program
   # Retourne le nombre de jour réel depuis le
   # début du programme
   def nombre_jour_reels_from_start as = :nombre
-    @jrs ||= begin
-      ((NOW.to_i - created_at) / 1.days)
-    end
+    @jrs ||= ((NOW - created_at) / 1.days)
     case as
     when :human, :humain
       mark = @jrs == 1 ? "er" : "e"

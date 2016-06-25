@@ -27,7 +27,7 @@ when 'bureau_save_quiz'
   awork_pday  = param(:quiz)[:awork_pday].to_i
   bureau.current_quiz_output =
     if quiz.evaluate_and_save( awork_id: awork_id, awork_pday: awork_pday )
-      quiz.commented_out
+      quiz.commented_output
     else
       # Étudier et construire le retour en fonction du questionnaire
       # qu'il ait été rempli correctement ou non.

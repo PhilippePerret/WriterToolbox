@@ -11,10 +11,11 @@ class Quiz
   # réponses qui ont été fournies par l'user.
   def reponses_auteur
     @reponses_auteur ||= begin
-      quiz = auteur.table_quiz.get(where:{quiz_id: id, program_id: auteur.program_id})
-      r = quiz[:reponses]
-      debug "reponses de quiz #{id} : #{r.inspect}:#{r.class}"
-      r
+      if quiz = auteur.table_quiz.get(where:{quiz_id: id, program_id: auteur.program_id})
+        JSON.parse( quiz, symbolize_names: true )
+      else
+        {}
+      end
     end
   end
 

@@ -7,5 +7,12 @@
   <%= bureau.section_recent_works(:quiz) %>
 <% else %>
   <% # Quand un questionnaire vient d'être soumis %>
+  <%
+def lien_back_to_list
+  'Revenir à la liste complète'.in_a(href:'bureau/home?in=unan&cong=quiz').in_div(class: 'right small')
+end
+  %>
+  <%= lien_back_to_list %>
   <%= bureau.current_quiz_output %>
+  <%= lien_back_to_list %>
 <% end %>

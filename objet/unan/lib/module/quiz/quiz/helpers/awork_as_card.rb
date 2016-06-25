@@ -9,7 +9,7 @@ class AbsWork
 
   def as_card options = nil
     if options[:as_recent]
-      "[UN QUESTIONNAIRE RÉCENT]"
+      Unan::Quiz.new(item_id).as_recent_card(self)
     else
       Unan::Quiz.new(item_id).as_card(self)
     end
@@ -41,6 +41,11 @@ class Quiz
     end
   end
 
+  def as_recent_card awork = nil
+    @awork = awork
+    form_recent_quiz
+  end
+
   def not_started?
     awid    = awork_id    || awork.id
     awpday  = awork_pday  || awork.pday
@@ -55,7 +60,13 @@ class Quiz
   def form_start_quiz
     (
       titre_quiz      +
-      boutons_quiz
+      boutons_start_quiz
+    ).in_div(class:'work quiz')
+  end
+  def form_recent_quiz
+    (
+      titre_quiz      +
+      boutons_recent_quiz
     ).in_div(class:'work quiz')
   end
   def titre_quiz
@@ -74,7 +85,7 @@ class Quiz
     type == 0 ? 'Type non défini' : TYPES[type][:hname]
   end
 
-  def boutons_quiz
+  def boutons_start_quiz
     dbouton = {
       class: 'warning',
       href:  "work/#{awork.id}/start?in=unan/program&wpday=#{awork.pday}&cong=quiz"
@@ -82,6 +93,18 @@ class Quiz
     (
       'Démarrer ce questionnaire'.in_a(dbouton)
     ).in_div(class:'buttons')
+  end
+  def boutons_recent_quiz
+    # TODO : RAJOUTER CE BOUTON LORSQU'ON quiz/show SERA OPÉRATIONNEL
+    return ''
+    dbouton = {
+      class:  'btn small',
+      href:  "quiz/#{id}/show?in=unan&user_id=#{bureau.auteur.id}",
+      target: :new
+    }
+    return (
+      'Revoir ce quiz'.in_a(dbouton)
+    ).in_div(class: 'right') # ne pas mettre .buttons, il serait caché
   end
 
 

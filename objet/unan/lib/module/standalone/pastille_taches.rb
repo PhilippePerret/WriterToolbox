@@ -63,7 +63,6 @@ class User
     taches = Array::new
     taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
     taches << "Travaux courants : #{nombre_travaux}".in_div(class:'bold') +
-              "Inachevés  : #{nombre_undone}".in_div +
               "Poursuivis : #{nombre_goon}".in_div +
               "Nouveaux   : #{nombre_nouveaux}".in_div +
               "À démarrer : #{nombre_a_demarrer}.".in_div(class: (nombre_unstart > 0 ? 'red bold' : '')) +
