@@ -63,16 +63,16 @@ class << self
       "\n             Rythme : #{rythme} "
     if NOW < next_pday_start
       log "Devra être envoyé dans #{(next_pday_start - NOW).as_duree}"
-      begin
-        site.send_mail_to_admin(
-          subject:  "UNAN - Rapport (qui serait) envoyé à #{auteur.pseudo}",
-          message: auteur.current_pday.rapport_complet,
-          formated: true
-        )
-      rescue Exception => e
-        log "### Impossible d'envoyer le rapport à l'administrateur : #{e.message}"
-        log e.backtrace.join("\n")
-      end
+      # begin
+      #   site.send_mail_to_admin(
+      #     subject:  "UNAN - Rapport (qui serait) envoyé à #{auteur.pseudo}",
+      #     message: auteur.current_pday.rapport_complet,
+      #     formated: true
+      #   )
+      # rescue Exception => e
+      #   log "### Impossible d'envoyer le rapport à l'administrateur : #{e.message}"
+      #   log e.backtrace.join("\n")
+      # end
     end
 
     # Conditions pour que le programme soit passé au jour suivant:
