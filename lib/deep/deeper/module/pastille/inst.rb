@@ -47,7 +47,12 @@ class Pastille
   end
 
   def bloc_taches
-    @bloc_taches ||= taches.join('<br>').in_div(class:'taches')
+    @bloc_taches ||= begin
+      case taches
+      when String then taches
+      else taches.join('<br>')
+      end.in_div(class:'taches')
+    end
   end
 end #/Pastille
 end #/SiteHtml

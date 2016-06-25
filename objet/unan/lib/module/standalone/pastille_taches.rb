@@ -60,18 +60,18 @@ class User
     # nombre_works_in_table = self.table_works.count
     # debug "Nombre travaux dans la table : #{nombre_works_in_table}"
 
-    taches = Array::new
+    taches = []
     taches << "TRAVAUX UN AN UN SCRIPT".in_div(class:'underline bold')
-    taches << "Travaux courants : #{nombre_travaux}".in_div(class:'bold') +
-              "Poursuivis : #{nombre_goon}".in_div +
-              "Nouveaux   : #{nombre_nouveaux}".in_div +
-              "À démarrer : #{nombre_a_demarrer}.".in_div(class: (nombre_unstart > 0 ? 'red bold' : '')) +
-              '<br>' +
-              "Nombre depuis début : #{nombre_depuis_debut}".in_div(class: 'bold')
-
+    taches << tache_and_nombre('Travaux courants', nombre_travaux, 'bold')
     if nombre_overrun > 0
-      taches << "Dépassement : #{nombre_overrun}".in_div(class: 'red')
+      taches << tache_and_nombre('Dépassement', nombre_overrun, 'red')
     end
+    taches << tache_and_nombre('Poursuivis', nombre_goon)
+    taches << tache_and_nombre('Nouveau', nombre_nouveaux)
+    taches << tache_and_nombre('À démarrer', nombre_a_demarrer, (nombre_unstart > 0 ? 'red bold' : ''))
+    taches << '<br>' +
+              tache_and_nombre('Depuis le début', nombre_depuis_debut, 'bold')
+
 
     css =
       if (nombre_unstart + nombre_overrun) > 0
@@ -79,9 +79,14 @@ class User
       else
         'green'
       end
-    {taches: taches, title: nil, background: css, nombre: nombre_travaux, href:"bureau/home?in=unan"}
+    {taches: taches.join(''), title: nil, background: css, nombre: nombre_travaux, href:"bureau/home?in=unan"}
   end
-  def travaux_s nombre
-    "#{nombre} trava#{nombre > 1 ? 'ux' : 'il'}"
+  def tache_and_nombre tache, nombre, css = nil
+    data_div = {}
+    css.nil? || data_div.merge!(class: css)
+    (
+      "#{nombre}".in_span(class: 'fright') +
+      "#{tache} :".in_span
+    ).in_div(data_div)
   end
 end
