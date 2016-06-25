@@ -14,7 +14,21 @@ def prepare_auteur options = nil
   UnanAdmin.require_module 'set'
 
   # On prend un auteur
-  @hprog        = site.dbm_table(:unan, 'programs').select.first
+  drequest = {}
+  if options[:auteur_id]
+    drequest = {
+      where: {auteur_id: options[:auteur_id]},
+      order: 'created_at DESC',
+      limit: 1
+    }
+  end
+
+  @hprog =
+    if drequest.empty?
+      site.dbm_table(:unan, 'programs').select.first
+    else
+      site.dbm_table(:unan, 'programs').select(drequest).first
+    end
   @hprog != nil     || raise('Il faut créer un auteur pour le programme UN AN UN SCRIPT')
   @program_id   = @hprog[:id]
   @auteur_id    = @hprog[:auteur_id]

@@ -74,7 +74,7 @@ class CurrentPDay
     @nombre_unstarted ||= aworks_unstarted.count
   end
   def nombre_new
-    @nombre_new ||= uworks_ofday.count
+    @nombre_new ||= aworks_ofday.count
   end
   def nombre_goon
     @nombre_goon ||= uworks_goon.count

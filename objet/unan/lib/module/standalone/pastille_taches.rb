@@ -43,7 +43,7 @@ class User
     nombre_undone   = icp.uworks_undone.count
     nombre_goon     = icp.uworks_goon.count
     nombre_unstart  = icp.aworks_unstarted.count
-    nombre_nouveaux = icp.uworks_ofday.count
+    nombre_nouveaux = icp.aworks_ofday.count
     nombre_overrun  = icp.uworks_overrun.count
 
     nombre_depuis_debut = icp.aworks_until_today.count

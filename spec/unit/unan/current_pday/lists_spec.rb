@@ -6,11 +6,11 @@
 describe 'Listes de jour-programme courant (user.current_pday)' do
   before(:all) do
     site.require_objet 'unan'
+    prepare_auteur pday: 1
   end
   let(:cp) { @cp }
   context 'Un auteur au premier jour du programme' do
     before(:all) do
-      prepare_auteur pday: 1
       @cp = @up.current_pday
     end
     describe '#aworks_until_today' do
@@ -61,13 +61,13 @@ describe 'Listes de jour-programme courant (user.current_pday)' do
         expect(cp.uworks_recent.count).to eq 0
       end
     end
-    describe '#uworks_ofday' do
+    describe '#aworks_ofday' do
       it 'répond et retourne une liste' do
-        expect(cp).to respond_to :uworks_ofday
-        expect(cp.uworks_ofday).to be_instance_of Array
+        expect(cp).to respond_to :aworks_ofday
+        expect(cp.aworks_ofday).to be_instance_of Array
       end
       it 'retourne un élément' do
-        expect(cp.uworks_ofday.count).to eq 1
+        expect(cp.aworks_ofday.count).to eq 1
       end
     end
     describe '#uworks_overrun' do
@@ -78,6 +78,25 @@ describe 'Listes de jour-programme courant (user.current_pday)' do
       it 'retourne aucun élément' do
         expect(cp.uworks_overrun.count).to eq 0
       end
+    end
+  end
+
+
+  context 'Un autre au deuxième jour du programme' do
+    before(:all) do
+      prepare_auteur( auteur_id: @up.id, pday: 2 )
+      @cp = @up.current_pday
+      # On calcule ici les valeurs
+      # TODO
+    end
+    it '#aworks_until_today retourne au moins 5 works' do
+      expect(cp.aworks_until_today.count).to be >= 5
+    end
+    it '#aworks_unstarted doit retourner au moins 1 work' do
+      expect(cp.aworks_unstarted.count).to be >= 1
+    end
+    it '#aworks_ofday doit retourner au moins 4 travaux' do
+      expect(cp.aworks_ofday.count).to be >= 4
     end
   end
 end

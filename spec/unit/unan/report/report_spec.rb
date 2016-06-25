@@ -77,7 +77,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
         expect(report).to have_tag('fieldset#fs_new_works')
       end
       it 'le fieldset des nouveaux travaux contient la bonne légende' do
-        nb = up.current_pday.uworks_ofday.count
+        nb = up.current_pday.aworks_ofday.count
         expect(report).to have_tag('fieldset#fs_new_works') do
           with_tag 'legend', text: "Nouveaux travaux (#{nb})"
         end
@@ -89,7 +89,7 @@ describe 'Mail envoyé à l’auteur inscrit au programme UN AN UN SCRIPT' do
       end
       it 'le fieldset des nouveaux travaux liste tous les nouveaux travaux' do
         expect(report).to have_tag('fieldset#fs_new_works') do
-          up.current_pday.uworks_ofday.each do |hw|
+          up.current_pday.aworks_ofday.each do |hw|
             titre = Unan.table_absolute_works.get(hw[:awork_id])[:titre].strip_tags
             with_tag 'li.work', text: /#{Regexp.escape titre}/
           end

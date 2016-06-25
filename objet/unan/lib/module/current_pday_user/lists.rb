@@ -116,9 +116,9 @@ class CurrentPDay
   #
   # Pour connaitre la constitution de chaque élément de l'array,
   # cf. ci-dessus HASH DES WORKS
-  def uworks_ofday
-    decompose_travaux if @uworks_ofday === nil
-    @uworks_ofday
+  def aworks_ofday
+    decompose_travaux if @aworks_ofday === nil
+    @aworks_ofday
   end
 
   # Array des travaux en cours sans retard
@@ -223,7 +223,7 @@ class CurrentPDay
     # Les travaux qui auraient dû être démarrés (*)
     @aworks_unstarted   = []
     # Les nouveaux travaux du jour
-    @uworks_ofday       = []
+    @aworks_ofday       = []
 
     # (*) Les travaux non démarrés sont des travaux existants
     # qui ne possèdent pas leur enregistrement dans les
@@ -242,7 +242,7 @@ class CurrentPDay
       # Noter qu'on ne peut pas le faire dans les if/elsif
       # ci-dessous car un travail démarré ne serait plus
       # pris en compte.
-      @uworks_ofday << haw if haw[:pday] == day
+      @aworks_ofday << haw if haw[:pday] == day
 
       # On exclue les travaux terminés
       wkey = "#{haw[:id]}-#{haw[:pday]}"

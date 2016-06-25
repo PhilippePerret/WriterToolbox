@@ -89,11 +89,11 @@ class CurrentPDay
   end
 
   def section_nouveaux_travaux
-    return '' if uworks_ofday.count == 0
+    return '' if aworks_ofday.count == 0
     c = ''
     c << texte_type('explications_new').in_div(class: 'explication')
-    c << traite_liste_travaux(uworks_ofday, :new)
-    c.in_fieldset(id: 'fs_new_works', class: 'fs_works', legend: "Nouveaux travaux (#{uworks_ofday.count})")
+    c << traite_liste_travaux(aworks_ofday, :new)
+    c.in_fieldset(id: 'fs_new_works', class: 'fs_works', legend: "Nouveaux travaux (#{aworks_ofday.count})")
   end
 
   def section_travaux_poursuivis #goon

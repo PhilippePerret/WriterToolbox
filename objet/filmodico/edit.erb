@@ -2,8 +2,8 @@
 # Formulaire d'édition d'un film du scénodico et d'analyse
 raise_unless_admin
 %>
+<% page.title = "Filmodico" %>
 <%= Filmodico::titre_h1("Édition de film") %>
-
 <% if OFFLINE %>
   <p class='air warning'>L'édition des fiches de films ne se fait qu'en ONLINE</p>
   <p>Il faut ensuite rappatrier le fichier ./database/data/filmodico.db modifié.</p>

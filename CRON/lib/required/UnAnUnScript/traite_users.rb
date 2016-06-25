@@ -11,8 +11,8 @@ class User
 
 class << self
 
-  def log message
-    safed_log message rescue nil
+  def log mess
+    safed_log mess
   end
 
   # Méthode principale appelée toutes les heures par le cron job
@@ -132,7 +132,7 @@ class << self
     # ne lui envoie que s'il a des nouveaux travaux ou des
     # dépassements.
     cp = auteur.current_pday
-    nombre_ofday    = cp.uworks_ofday.count
+    nombre_ofday    = cp.aworks_ofday.count
     nombre_overrun  = cp.uworks_overrun.count
     alerte =  nombre_ofday > 0 || nombre_overrun > 0
     if alerte

@@ -13,12 +13,19 @@ class SiteHtml
   # +data_mail+ a juste à définir :
   #   :message
   #   :subject
+  #
+  # La méthode peut être utilisée par le cron job par exemple
+  # et, dans ce cas, l'user ne doit pas être défini, il faut
+  # donc mettre le mail du site.
+  #
   def send_mail_to_admin data_mail
-    data_mail.merge!(
-      from: user.mail,
-      to:   site.mail
-    )
-    send_mail data_mail
+    expediteur =
+      if user && user.instance_of?(User) && user.mail
+        user.mail
+      else
+        site.mail
+      end
+    send_mail data_mail.merge(from: expediteur, to: site.mail)
   end
 
 end
