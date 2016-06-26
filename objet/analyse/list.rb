@@ -44,10 +44,12 @@ class TDM
   def films
     @films ||= begin
       flag = case type
-      when :complete  then "1______1%"
+      when :small     then "1______11%"
+        # Note : il faut mettre :small avant :complete sinon les
+        # complète prendraient les :small aussi.
+      when :complete  then "1______10%"
       when :en_cours  then "1____1%"
       when :inacheves then "1____0_0%"
-      when :small     then "1______11%"
       end
       FilmAnalyse::table_films.select(where:"options LIKE '#{flag}'", order:"annee DESC")
     end
