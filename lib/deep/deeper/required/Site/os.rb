@@ -8,6 +8,19 @@
 =end
 class SiteHtml
 
+  def os
+    @os ||= begin
+      case true
+      when windows? then 'Windows'
+      when apple?   then 'Apple'
+      when unix?    then 'Unix'
+      end
+    end
+    debug "@os : #{@os.inspect}"
+    debug "windows? #{windows?.inspect} / apple? #{apple?.inspect} / unix? #{unix?.inspect}"
+    @os
+  end
+
   def os_path arr
     arr.join(os_delimiter)
   end
@@ -22,11 +35,11 @@ class SiteHtml
   end
   alias :os_delimiteur :os_delimiter
   alias :os_delimitor :os_delimiter
-  
+
   def os_folder_documents
     @os_folder_documents ||= begin
       case true
-      when apple?   then 'Documents'
+      when apple?   then '~/Documents'
       when windows? then 'C:\Mes Documents'
       when unix?    then 'Documents'
       end
@@ -34,25 +47,18 @@ class SiteHtml
   end
 
   def windows?
-    true
+    @is_windows = ENV['HTTP_USER_AGENT'].match(/Windows/) != nil if @is_windows === nil
+    @is_windows
   end
 
   def apple?
-    false
+    @is_apple = ENV['HTTP_USER_AGENT'].match(/Macintosh/) != nil if @is_apple === nil
+    @is_apple
   end
   alias :mac? :apple?
 
   def unix?
-    false
+    !windows? && !apple?
   end
 
-  def os
-    @os ||= begin
-      case true
-      when windows? then 'Windows'
-      when apple?   then 'Apple'
-      when unix?    then 'Unix'
-      end
-    end
-  end
 end
