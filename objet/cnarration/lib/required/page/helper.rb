@@ -17,7 +17,7 @@ class Page
   # Le lien pour éditer le texte n'est présent que si c'est vraiment
   # une page, pas un titre de chapitre/sous-chapitre
   def liens_edition_if_admin
-    return "" unless OFFLINE && user.admin? 
+    return "" unless OFFLINE && user.admin?
     (
       lien_edit_text + lien_edit_data + lien_give_code
     ).in_div(class:'btns fright small')
@@ -34,7 +34,8 @@ class Page
     tit = titre.gsub(/'/,'’')
     ref_simple      = "#{id}|#{tit}"
     ref_with_ancre  = "#{id}|ANCRE|#{tit}"
-    "[&lt;-&gt;]".in_a(onclick:"UI.clip({'Icare':'collection::#{id}', 'Narration':'REF[#{ref_simple}]', 'Avec ancre':'REF[#{ref_with_ancre}]'})")
+    ref_route       = "page/#{id}/show?in=cnarration"
+    "[&lt;-&gt;]".in_a(onclick:"UI.clip({'Route':'#{ref_route}', 'Narration':'REF[#{ref_simple}]', 'Avec ancre':'REF[#{ref_with_ancre}]'})")
   end
   # Code HTML pour le code du lien permanent
   def permanent_link

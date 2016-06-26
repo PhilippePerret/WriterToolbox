@@ -1,5 +1,13 @@
 > J'ai vu que les liens tweets disparaissaient. Peut-être parce que la table site_cold.db est actualisé sur le site (à surveiller). En attendant, pour qu'il n'y ait pas de problème, on met toujours les tweets ici.
 
+Et si l'on se rafraichissait la mémoire avec une vue d'ensemble du #PFA ?! http://bit.ly/28Wc1RZ
+
+Comment bien choisir son histoire ?… http://bit.ly/290D8i5
+
+Votre structure est-elle suffisamment compliquée pour être intéressante ?… (question piège) http://bit.ly/215bEHF
+
+Mais très concrètement, sur le papier, savez-vous ce que signifie “construire sa structure” ?… http://bit.ly/1sv1Kns
+
 ««« Ne jamais chercher à compliquer, chercher à simplifier en permanence. »»» http://bit.ly/25niuyw
 
 ««« Une histoire, c'est très simple. La seule difficulté consiste à parvenir à cette simplicité. »»» http://bit.ly/25j7EGk
