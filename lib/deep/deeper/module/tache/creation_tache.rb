@@ -201,10 +201,10 @@ class Taches
     # _o, _i etc.
     def query_string
       @query_string ||= begin
-        qs = @qs_init.as_hash_from_query_string
+        qs = (@qs_init || '').as_hash_from_query_string
         # On retire les valeurs inutiles
         [:_o].each { |k| qs.delete k }
-        qs.collect{|k,v| "#{k}=#{v}"}.join('&').nil_if_empty
+        qs.collect{|k,v| "#{k}=#{v}"}.join('&').nil_if_empty || ''
       end
     end
 

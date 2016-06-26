@@ -243,7 +243,7 @@ class Page
       unless ENV['QUERY_STRING'].nil?
         ENV['QUERY_STRING'].dup.as_hash_from_query_string
       else
-        Hash::new
+        Hash.new
       end
     end
 end
@@ -252,7 +252,7 @@ class ::String
   # Méthode décomposant le query string envoyé pour
   # l'exploder en un hash non traité.
   def as_hash_from_query_string
-    h = Hash::new
+    h = Hash.new
     self.split('&').each do |propvalue|
       key, value = propvalue.split('=')
       h.merge! key.to_sym => ( page.real_value( URI.unescape( value.to_s ) ) )
