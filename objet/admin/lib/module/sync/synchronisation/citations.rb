@@ -26,7 +26,6 @@ class Sync
     @report << "* Synchronisation immédiate des citations"
     if Citations.instance.synchronize(self)
       @suivi << "= Synchronisation des citations OK"
-      @report << "= Synchronisation des citations OPÉRÉE AVEC SUCCÈS"
     else
       @suivi << "# Problème en synchronisation les citations"
     end
@@ -107,7 +106,8 @@ class Citations
     end
 
     unless @nombre_synchronisations == 0
-      report "NOMBRE SYNCRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+      report "  NOMBRE SYNCRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+      report '  = Synchronisation des citations OPÉRÉE AVEC SUCCÈS'.in_span(class: 'blue bold')
     end
   rescue Exception => e
     debug e

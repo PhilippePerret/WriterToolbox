@@ -3,7 +3,7 @@ class Sync
   def synchronize_updates
     @report << "* Synchronisation des UPDATES"
     if Sync::Updates.instance.synchronize(self)
-      @report << "= Synchronisation des UPDATES opérée avec SUCCÈS"
+      @suivi << "= Synchronisation des UPDATES opérée avec SUCCÈS"
     else
       mess_err = "# ERREUR pendant la synchronisation des UPDATES".in_span(class: 'warning')
       @report << mess_err
@@ -45,6 +45,7 @@ class Updates
     end
     if @nombre_synchronisations > 0
       report "  = NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+      report '  = Synchronisation des UPDATES opérée avec SUCCÈS'.in_span(class: 'blue bold')
     end
   rescue Exception => e
     error e.message

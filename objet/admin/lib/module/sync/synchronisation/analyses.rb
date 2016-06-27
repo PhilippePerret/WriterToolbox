@@ -3,7 +3,7 @@ class Sync
   def synchronize_analyses
     @report << "* Synchronisation des Analyses de films"
     if Sync::Analyses.instance.synchronize(self)
-      @report << "= Synchronisation des Analyses de films OPÉRÉE AVEC SUCCÈS"
+      # OK
     else
       mess_err = "# ERREUR pendant la synchronisation des Analyses de films".in_span(class: 'warning')
       @report << mess_err
@@ -22,6 +22,7 @@ class Analyses
     synchronize_fichiers_analyses
     if @nombre_synchronisations > 0
       report "  NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue')
+      report '  Synchronisation des Analyses de films OPÉRÉE AVEC SUCCÈS'.in_span(class: 'blue')
     end
   rescue Exception => e
     debug e

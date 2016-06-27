@@ -3,7 +3,7 @@ class Sync
   def synchronize_uaus
     @report << "* SYNCHRONISATION DU PROGRAMME UN AN UN SCRIPT"
     if UAUS.instance.synchronize(self)
-      @report << "= Synchronisation du programme UN AN UN SCRIPT opéré avec SUCCÈS"
+      @suivi << "= Synchronisation du programme UN AN UN SCRIPT opéré avec SUCCÈS"
     else
       mess_err = "# PROBLÈME EN SYNCHRONISATION UN AN UN SCRIPT".in_span(class: 'warning')
       @report << mess_err
@@ -22,6 +22,7 @@ class UAUS
     synchronize_fichiers
     if @nombre_synchronisations > 0
       report "  = NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
+      report '  = Synchronisation du programme UN AN UN SCRIPT opéré avec SUCCÈS'.in_span(class: 'blue bold')
     end
   end
 
