@@ -54,6 +54,10 @@ class PageCours
       end
       flash "Page ##{@page_id} enregistrée avec succès."
       param(page_cours: data_page)
+
+    rescue Exception => e
+      debug e
+      error "Un problème est survenu : #{e.message}"
     end
 
     # Méthode qui associe la page-cours à un work

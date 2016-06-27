@@ -1,4 +1,23 @@
 > Note : Je rassemble ici les explicitations de citations afin de pouvoir les reprendre s'il y a un problème.
+# 296
+<p>Injonction de Stéphane Mallarmé contre le hasard, contre le MOT[41|deus ex machina], tous ces moments des récits mal construits — qui heureusement forment les fonds de tiroir — où l'on peut s'exclamer “Comme par hasard, il se passe ceci quand il fait cela !”.</p>
+
+<p>C'est le moment typique où un personnage passe <em>comme par hasard</em> derrière une porte au moment où <em>comme par hasard</em> on est en train de parler de lui…</p>
+
+<p>Non seulement le poète nous exhorte à ne pas y avoir recours, mais il indique en même temps que tout hasard peut être <em>feint</em>, c'est-à-dire peut être travaillé pour qu'il ne se produise pas au détriment de l'auteur mais qu'il soit exigé par l'histoire elle-même.</p>
+
+<p>Un des secrets de la feinte est de <em>préparer</em> ce moment, c'est-à-dire de le rendre obligatoire, inévitable, par la narration même. Si le personnage a <em>toutes les raisons</em> de se trouver derrière cette porte et que les autres personnages ont <em>toutes les raisons</em> de parler de lui à ce moment précis, alors il n'y aura plus de hasard, plus de <em>deus ex machina</em>.</p>
+
+# 342
+<p>Bel aveu d'humilité de la part de l'immense créateur qu'est David Lynch. Il invoque la perfection qu'on ne peut jamais atteindre malgré tous nos efforts, il parle de la justesse nécessaire des éléments pour que se produise l'alchimie, il parle de la synergie indispensable et de la durée incompressible des efforts et du travail à produire.</p>
+
+<p>Je n'aurais envie que de souligner le “perfectionner chaque élément” pour atteindre la synergie. David Lynch donne ici une leçon et une direction d'élaboration du récit : il ne faut pas travailler les éléments — les scènes par exemple — de façon indépendante, il faut les perfectionner, les améliorer, à l'intérieur et par rapport à l'ensemble qu'elles forment, par rapport à l'interaction qu'elles peuvent entretenir avec les autres éléments — les autres scènes.</p>
+
+<p>Il faut chercher avant tout les <em>vibrations</em>, les <em>résonances</em> que chaque élément peut avoir avec un autre. Et chercher toujours ces éléments-là qui rentreront en vibration et en résonance pour produire un effet supérieur à la somme de leur effet respectif.</p>
+
+<p>Raconter une histoire d'amour est une chose. Raconter le fonctionnement d'un <em>operating system</em> (un système d'exploitation d'ordinateur) est une autre chose. Mais raconter ces deux éléments en même temps dans une histoire qui montre un homme tomber amoureux de son système d'exploitation produit une synergie parfaite, un effet bien supérieur à l'effet de l'histoire d'amour additionné à l'effet — presque nul — d'un récit sur un OS (*).</p>
+
+<p class='small italic'>(*) On aura bien entendu reconnu le film FILM[Her2013].</p>
 
 #282
 <p>

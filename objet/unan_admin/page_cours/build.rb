@@ -1,6 +1,8 @@
 # encoding: UTF-8
 =begin
 
+OBSOLÈTE : MAINTENANT, LA PAGE EST CONSTRUITE À CHAQUE ENREGSISTREMENT
+
 Module de construction de la page semi-dynamique.
 
 Elle transforme notamment toutes les balises et laisse
@@ -8,6 +10,7 @@ uniquement les textes dynamiques de type %{variable} qui
 seront traités à la volée au chargement de la page.
 
 =end
+UnanAdmin.require_module 'page_cours'
 
 class Unan
 class Program

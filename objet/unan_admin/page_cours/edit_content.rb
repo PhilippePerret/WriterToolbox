@@ -5,6 +5,9 @@ Extension de la class UnanAdmin::PageCours et ses méthods d'instance
 pour l'actualisation du code de la page originale.
 
 =end
+UnanAdmin.require_module 'page_cours'
+include MethodesBuildPageSemiDynamique
+
 class Unan
 class Program
 class PageCours
@@ -17,6 +20,8 @@ class PageCours
     # Enregistrer le nouveau contenu
     fullpath.write content
     flash "Page ##{id} enregistrée dans son fichier."
+    # Et on la (re)construit
+    rebuild
   rescue Exception => e
     fullpath.remove if fullpath.exist?
     fullpath.write fullpath_backup.read
@@ -26,6 +31,14 @@ class PageCours
     fullpath_backup.remove if fullpath_backup.exist?
     # Actualisation de la date de dernière modification
     set(updated_at: NOW)
+  end
+
+  # Méthode de construction de la page (on le fait maintenant
+  # à chaque sauvegarde de la page)
+  def rebuild
+    debug "-> PageCours#rebuild"
+    build_page_semi_dynamique
+    debug "<- PageCours#rebuild"
   end
 
   # Correction du contenu.
