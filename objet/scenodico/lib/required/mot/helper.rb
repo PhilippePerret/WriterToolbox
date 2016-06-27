@@ -44,7 +44,11 @@ class Mot
 
   def liens_formated
     return nil if liens.nil?
-    liens.collect { |lien| lien.in_a(href:lien) }.join(' – ')
+    get(:liens).force_encoding('utf-8').split("\n").collect do |lien|
+      href, titre = lien.split('::')
+      titre ||= href
+      titre.in_a(href: href, target: :new) 
+    end.join('<br>')
   end
 end #/Mot
 end #/Scenodico

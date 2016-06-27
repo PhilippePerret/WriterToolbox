@@ -27,13 +27,17 @@ class Scenodico
         # Donnée locale inexistante
         # => Il faut la créer en local
         # ===== ACTUALISATION ========
+        loc_table.insert(dis_data)
         @nombre_synchronisations += 1
         # ============================
         report "  = Mot #{dis_data[:mot]} ajouté en local."
       elsif loc_data != dis_data
         # Donnée locale différente de la donnée distante
         # => Il faut actualiser la donnée locale
+        dis_data_sans_id = dis_data.dup
+        dis_data_sans_id.delete(:id)
         # ===== ACTUALISATION ========
+        loc_table.update(mid, dis_data_sans_id)
         @nombre_synchronisations += 1
         # ============================
         report "  = Mot #{dis_data[:mot]} actualisé en local."

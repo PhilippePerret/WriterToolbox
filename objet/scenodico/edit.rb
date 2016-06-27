@@ -115,7 +115,6 @@ class Scenodico
 
       # - liens -
       @liens = data_param[:liens].nil_if_empty
-      @liens = @liens.split("\n") unless @liens.nil?
 
     rescue Exception => e
       debug e

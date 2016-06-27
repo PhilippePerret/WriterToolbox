@@ -1,4 +1,15 @@
-> J'ai vu que les liens tweets disparaissaient. Peut-être parce que la table site_cold.db est actualisé sur le site (à surveiller). En attendant, pour qu'il n'y ait pas de problème, on met toujours les tweets ici.
+
+# Pages à ajouter
+
+## Page 300 (à ajouter)
+Et si tout ce qu'on vous avait raconté sur la façon de lancer une histoire était faux ?… http://bit.ly/28YsftS
+
+# Page 334
+“Ça n'est pas à l'auteur de décider de la fonction d'un évènement.”
+quand OK et faire lien bitly)
+
+
+## Pages déjà ajoutées
 
 Et si l'on se rafraichissait la mémoire avec une vue d'ensemble du #PFA ?! http://bit.ly/28Wc1RZ
 
@@ -63,15 +74,3 @@ Très concrètement, construire la structure, qu'est-ce que c'est ? (La Structu
 “L'élaboration de la structure, c'est l'obsession pour la simplicité et l'évidence.” (La Structure) http://bit.ly/215bEHF
 
 Des exemples parfaits de PFA - #TheMazeRunner #Her #Rocky #ThelmaLouise #DancerInTheDark (La Structure) http://bit.ly/28hIdHP
-
-=== À INTRODUIRE ===
-
-“L’évidence d’une œuvre est toujours Le fruit d’un long et laborieux effort.” (Le mirage des méthodes)
-(page 325 quand ok, et faire le lien bitly)
-
-
-“C'est l'histoire qui doit décider des choix, jamais l'auteur.”
-(page 324, quand OK, et faire le lien bitly)
-
-“Ça n'est pas à l'auteur de décider de la fonction d'un évènement.”
-(page 334, quand OK et faire lien bitly)
