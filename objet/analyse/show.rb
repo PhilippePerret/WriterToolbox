@@ -13,11 +13,12 @@ class << self
   #
   # Sortie du code de la page à afficher
   def output
-    titre_page = if film.analyse_tm? && !film.analyse_mye?
-      ""
-    else
-      FilmAnalyse::titre_h1( film.titre, {onglets_top: true} )
-    end
+    titre_page =
+      if film.analyse_tm? && !film.analyse_mye?
+        ""
+      else
+        FilmAnalyse::titre_h1( film.titre, {onglets_top: true} )
+      end
 
     titre_page +
     if ! film.exist?
@@ -59,6 +60,8 @@ class << self
 $(document).ready(function(){
   $('section').hide();
   $('section#content').show();
+  var l = ['form#taches_widget', 'section#social_network', 'div#div_permanent_link'];
+  $(l).each(function(i,o){$(o).hide()})
 })
 </script>
       HTML

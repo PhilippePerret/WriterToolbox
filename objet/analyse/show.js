@@ -260,6 +260,7 @@ $.extend(window.Scenes,{
   inited: false,
   init:function(){
     this.TIMELINE_SCENES    = $('div#timeline_scenes');
+    if(this.TIMELINE_SCENES.lenght == 0){return}
     this.TIMELINE_H         = $('div#timeline_scenes div.timeline-h') ;
     this.TIMELINE_V         = $('div#timeline_scenes div.timeline-v') ;
     this.CALQUE_PFA = PFA.CALQUE = $('div#pfa') ;
@@ -270,8 +271,10 @@ $.extend(window.Scenes,{
 
     // On fait les calculs
     this.PFA_WIDTH            = this.CALQUE_PFA.width();
-    this.PFA_OFFSET_LEFT      = this.CALQUE_PFA.offset().left ;
-    this.TIMELINE_OFFSET_LEFT = this.TIMELINE_H.offset().left ;
+    if (this.CALQUE_PFA.lenght){
+      this.PFA_OFFSET_LEFT      = this.CALQUE_PFA.offset().left;
+      this.TIMELINE_OFFSET_LEFT = this.TIMELINE_H.offset().left ;
+    }
 
     // On prépare la liste des scènes (Scenes.scenes)
     this.prepare_map_scenes();

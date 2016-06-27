@@ -24,6 +24,7 @@
 
     </div>
   <%  end %>
+  <section id="social_network">
   <%
   # /Bloc d'encouragement à l'abonnement
   # ---------------------------------------------------------------------
@@ -64,7 +65,12 @@
           >Facebook</div>
     </div>
 
-    </div>
+  </div>
+  </section>
+  <%# Fin section#social_network %>
+
+
+
   <%= page.content_route || page.home %>
 
   <%=
@@ -78,7 +84,7 @@
     (
       "Lien permanent ".in_span(class:'tiny') +
       "#{site.distant_url}/#{site.current_route.route}".in_input_text(style:style, onfocus:"this.select()")
-    ).in_div(style: 'margin-top:6em')
+    ).in_div(id: 'div_permanent_link', style: 'margin-top:6em')
   end
   %>
 

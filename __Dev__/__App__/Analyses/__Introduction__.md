@@ -24,6 +24,9 @@ Les films analysés se trouvent dans :
 
     ./data/analyse/film_tm/
 
+Les analyses TM s'affichent de façon particulière puisqu'elles masquent tous les éléments inutiles de l'interface pour prendre toute la largeur de la page. C'est dans le fichier `./objet/analyse/show.rb`, dans la méthode `output_as_analyse_tm` qu'est implémenté le masquage de tous les éléments de l'interface.
+
+
 ## Les analyses MD-YAML
 
 Les films analysés sont définis dans le dossier :
