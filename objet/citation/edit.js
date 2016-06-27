@@ -33,8 +33,6 @@ $.extend(window.Citation,{
     code = code.replace(/<\/p><p( |>)/g, function(m, p1){
       return "</p>\n\n<p" + p1
     })
-      .replace(/<\/p>/g, "\n</p>")
-      .replace(/<p(.*)>/g, function(m, p1){return "<p"+p1+">\n"})
     $('textarea#citation_description').val(code);
   }
 

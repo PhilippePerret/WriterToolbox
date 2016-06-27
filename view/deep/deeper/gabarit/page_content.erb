@@ -1,8 +1,39 @@
 <section id="content">
+  <%# ------- BLOC ABONNEMENT --------- %>
+  <%
+  # Quand faut-il l'afficher ou ne pas l'afficher ?
+  afficher = true
+  afficher = false if user.admin? || user.subscribed? || user.unanunscript?
+  if site.current_route.nil?
+    afficher = false
+  else
+    croute = site.current_route.route
+    # debug "croute : '#{croute}'"
+    afficher = false if ['user/noprofil', 'site/home', 'user/paiement', 'user/signup'].include?( croute )
+  end
+
+  if afficher
+  %>
+    <div id="bloc_encourage_subscribe">
+      <div class='fright center' style="margin-left:2em">
+        <%= lien.subscribe('S’ABONNER !', {class: 'darkgreen btn'}) %>
+        <br>
+        <%= lien.aide(3, {titre: 'En savoir plus…', class: nil}) %>
+      </div>
+      La Boite à Outils a <strong>BESOIN DE VOUS</strong> pour exister et poursuivre sa mission de propagation du savoir. <strong>SOUTENEZ-LA</strong> en vous abonnant pour seulement <strong><%= site.tarif_humain %> pour toute une année</strong> !
+
+    </div>
+  <%  end %>
+  <%
+  # /Bloc d'encouragement à l'abonnement
+  # ---------------------------------------------------------------------
+  %>
   <% unless OFFLINE %>
+  <%# ------- TWITTER --------- %>
   <%
       page.add_javascript('./lib/deep/deeper/js/optional/twitter.js')
   %>
+    <%# ------- FACEBOOK --------- %>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -12,6 +43,7 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
   <% end %>
+  <%# ------- TWITTER --------- %>
   <div class="fright" style="margin-right:-6em;margin-top:2em">
     <div style="width:150px;max-width:150px;line-height:1em;">
       <div style="margin:0"><a

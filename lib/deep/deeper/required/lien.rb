@@ -63,18 +63,25 @@ class Lien
   # @usage      lien.information(xxx[, options])
   # +aide_id+ {Fixnum} Identifiant du fichier d'aide, correspondant
   #           au fichier dans le dossier ./objet/aide/lib/data/texte
-  def information aide_id, options = nil
-    options ||= {}
-    options[:class] ||= ''
-    options[:class] << ' lkaide discret'
+  # +options+ {Hash|String} Options définissant le lien
+  #           OU le texte du lien lui-meême.
+  def aide aide_id, options = nil
+    options ||= Hash.new
+    options = {titre: options} if options.instance_of?(String)
+    options.key?(:titre) || options.merge!(titre: image('pictos/picto_info_dark.png'))
+    unless options.key?(:class)
+      options[:class] ||= ''
+      options[:class] << ' lkaide discret'
+      options[:class] = options[:class].strip
+    end
     options.key?(:target) || options[:target] = '_blank'
     options.merge!(
       href:   "aide/#{aide_id}/show",
-      class:  options[:class].strip
+      class:  options[:class]
     )
-    image('pictos/picto_info_dark.png').in_a(options)
+    options.delete(:titre).in_a(options)
   end
-  alias :aide :information
+  alias :information :aide
 
   # Similaire à `build` mais avec un nom plus parlant et l'ordre
   # est celui de Markdown. Les arguments sont également plus
