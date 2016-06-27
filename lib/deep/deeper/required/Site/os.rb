@@ -39,8 +39,8 @@ class SiteHtml
   def os_folder_documents
     @os_folder_documents ||= begin
       case true
-      when apple?   then '~/Documents'
-      when windows? then 'C:\Mes Documents'
+      when apple?   then "/Utilisateurs/#{user.pseudo}/Documents"
+      when windows? then "C:\\Users\\#{user.pseudo}\\Documents"
       when unix?    then 'Documents'
       end
     end

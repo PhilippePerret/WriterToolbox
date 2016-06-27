@@ -128,17 +128,31 @@ class Lien
   alias :sabonner :subscribe
   alias :abonnement :subscribe
 
+  # +options+
+  #   :visible    Si true, le bouton ne sera pas discret
+  #   :align      Si défini, position du bouton, qui peut être
+  #               :left, :right ou :center
+  #   :filled     Si true, le bouton est vert avec le texte en
+  #               blanc (donc très visible)
   def bouton_subscribe options = nil
     # type: :arrow_cadre
     options ||= {}
     options.key?(:tarif) || options.merge!(tarif: true)
+    options.key?(:align) || options.merge!(align: 'right')
+
+    css_bouton = ['cadre']
+    options[:filled] && css_bouton << 'bgvert'
+
     options[:titre] ||= begin
       tarif = options[:tarif] ? "<br>(pour #{site.tarif_humain}/an)".in_span(class:'tiny') : ''
       (
         "#{ARROW} S'ABONNER" + tarif
-      ).in_div(class: 'cadre', style:'display:inline-block;line-height:0.6em')
+      ).in_div(class: css_bouton.join(' '), style:'display:inline-block;line-height:0.6em;width:136px;')
     end
-    subscribe(options[:titre], class: 'small vert discret').in_div(class:'right vert')
+    css = ['small vert']
+    options[:visible] || css << 'discret'
+    css_div = [options[:align].to_s]
+    subscribe(options[:titre], class: css.join(' ')).in_div(class: css_div.join(' '))
   end
   alias :bouton_abonnement :bouton_subscribe
 

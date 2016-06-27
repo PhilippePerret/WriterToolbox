@@ -13,6 +13,22 @@ Rappel : c'est un singleton, on appelle les méthodes par :
 =end
 class Lien
 
+  # Pour écrire dans la page un texte un plus explicatif sur
+  # les raisons de s'abonner au site. On indique simplement en
+  # amorce le texte qui correspond à la page. Par exemple, dans
+  # la section Citations, un non abonné ne peut consulter que
+  # 5 citations. À la sixième, il trouve le texte "Pour consulter
+  # d'autre citation, merci de soutenir le travail de la boite à
+  # outils etc.". Le texte à partir de ", merci de soutinir" est
+  # fourni ici.
+  def bloc_soutien amorce
+    (
+      '<img src="./view/img/mascotte/mascotte-50pc.png" style="float:left;margin-right:1em;margin-bottom:1em;" />' +
+      "#{amorce}, merci de soutenir les efforts et le travail de #{site.name} en vous abonnant ! ;-)<br>Cela représente une petite somme pour vous, mais c'est d'une aide infinie et préciseuse pour nous !" +
+      bouton_subscribe(align: :right, visible: true, filled: true).in_div(class: 'big air')
+    ).in_div(style: 'font-weight: bold;padding:3em 4em 0em 1em;width:70%;margin-left:10%;font-size:14pt;', class: 'cadre air')
+  end
+
   # Lien vers le programme UN AN UN SCRIPT
   def unanunscript titre = nil, options = nil
     titre ||= "programme #{UN_AN_UN_SCRIPT}"

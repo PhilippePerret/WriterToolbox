@@ -96,9 +96,6 @@ class << self
         log "  *** Envoi du mail quotidien nécessaire ***"
 
         # On lui envoie le rapport de changement de jour-programme
-        # TODO : POUR LE MOMENT, COMME ÇA NE FONCTIONNE PAS
-        # ENCORE TRÈS BIEN, JE N'ENVOIE PAS LE RAPPORT, MAIS J'EN
-        # FAIS UNE COPIE À L'ADMINISTRATEUR.
         auteur.current_pday.send_rapport_quotidien
 
         if UNAN_DAILY_REPORT_FOR_ADMIN
@@ -121,7 +118,7 @@ class << self
     end
   rescue Exception => e
     debug e
-    error_log "Impossible d'envoyer le rapport : #{e.message} (consulter le débug)"
+    error_log e, "Impossible d'envoyer le rapport"
     return nil
   end
 

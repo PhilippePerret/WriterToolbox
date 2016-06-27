@@ -29,6 +29,17 @@ class SiteHtml
     require_all_in dos
   end
 
+  # Pour pouvoir utiliser la syntaxe `site.require_module ...` et
+  # charger un module se trouvant dans ./objet/site/lib/module/
+  def require_module_objet module_name
+    p = site.folder_objet+"site/lib/module/#{module_name}"
+    if p.exist?
+      p.require
+    else
+      error "Impossible de trouver le module #{p}…"
+    end
+  end
+
   # Requiert tout (ruby, css, js) dans le dossier +dossier+
   # +dossier+ Un path {String} ou un {SuperFile}
   # C'est pour le moment uniquement pour les tests qu'on a besoin

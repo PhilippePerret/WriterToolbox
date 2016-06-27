@@ -55,6 +55,9 @@
   :fin:     *commes_4
 5:
   :commun:  &commes_5 ""
+  :debut:   *commes_5
+  :milieu:  *commes_5
+  :fin:     *commes_5
 6:
   :commun:  &commes_6 "Vous décrochez complètement du programme…"
   :debut:   *commes_6

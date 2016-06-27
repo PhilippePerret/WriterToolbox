@@ -94,8 +94,7 @@ class SafedErrorLog
         {format: 'html'}
       )
     rescue Exception => e
-      error_log "Impossible d'envoyer le rapport d'erreur : #{e.message}"
-      error_log e.backtrace.join("\n")
+      error_log e, "Impossible d'envoyer le rapport d'erreur"
     end
   end # << self
 

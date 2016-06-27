@@ -26,7 +26,7 @@ class Tweet
           safed_log "  = #{message_retour}"
           safed_log "  = Envoi Tweet Permanent OK."
         else
-          error_log "  ### [#{Time.now}] PROBLÈME ENVOI DES TWEETS : #{message_retour}"
+          error_log "[#{Time.now}] PROBLÈME ENVOI DES TWEETS : #{message_retour}"
         end
 
       else
@@ -39,7 +39,7 @@ class Tweet
           mess_citation, citation_id = tweet_citation
           site.tweet( mess_citation, dont_check_length: false)
         rescue Exception => e
-          error_log( e, 'Impossible d’envoyer la citation' )
+          error_log e, 'Impossible d’envoyer la citation'
         else
           safed_log "  = Envoi Tweet de la CITATION ##{citation_id} (OK)."
         end

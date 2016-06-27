@@ -67,7 +67,7 @@ module DataChecker
     rescue DataCheckError => e
       self.ok = false
       errcode = e.code
-      errmess = DATA_ERREURS[errcode] % {
+      errmess = (DATA_ERREURS[errcode] || "Code erreur non défini : #{err_code}") % {
         hname:    dcheck[:hname],
         expected: e.expected,
         actual:   (e.actual || value)

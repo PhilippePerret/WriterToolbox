@@ -23,7 +23,7 @@ class << self
     nettoyage_logs_cron
 
   rescue Exception => e
-    error_log e, "# ERREUR AU COURS DU NETTOYAGE"
+    error_log e, "ERREUR AU COURS DU NETTOYAGE"
   end
 
   def nettoyage_rapports_connexions
@@ -74,7 +74,7 @@ class << self
         next if File.stat(p).mtime > il_y_a_une_heure
         File.unlink p
       rescue Exception => e
-        error_log e, "    # Problème avec le fichier #{p}"
+        error_log e, "Problème avec le fichier #{p}"
       else
         nombre += 1
       end

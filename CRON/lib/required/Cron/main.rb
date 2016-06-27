@@ -150,7 +150,7 @@ class << self
       Forum::check_new_messages
       safed_log "     <- Cron::traitement_messages_forum"
     rescue Exception => e
-      error_log e, "### PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM"
+      error_log e, "PROBLÈME EN CHECKANT LES NOUVEAUX MESSAGES SUR LE FORUM"
     end
   end
 
@@ -163,7 +163,7 @@ class << self
     begin
       site.require_objet 'unan'
     rescue Exception => e
-      error_log e, "### IMPOSSIBLE DE REQUÉRIR L'OBJET `unan`"
+      error_log e, "IMPOSSIBLE DE REQUÉRIR L'OBJET `unan`"
       return false
     end
 

@@ -1,5 +1,19 @@
 <%
 # Pour l'affichage d'une citation d'auteur
 %>
+<%
+if user.subscribed? || user.admin?
+  is_consultable = true
+else
+  app.session['citations'] ||= []
+  app.session['citations'] << site.current_route.objet_id
+  app.session['citations'] = app.session['citations'].uniq
+  is_consultable = app.session['citations'].count < 5
+end
+%>
 <%= Citation.titre_h1 %>
-<%= Citation::current.output %>
+<% if is_consultable %>
+  <%= Citation::current.output %>
+<% else %>
+  <%= lien.bloc_soutien('Pour pouvoir consulter d’autres citations') %>
+<% end %>

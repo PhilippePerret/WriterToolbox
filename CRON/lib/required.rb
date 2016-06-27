@@ -45,7 +45,7 @@ begin
   Cron::run
   safed_log "= STEP 2 OK ="
 rescue Exception => e
-  error_log "### PROBLÈME AU COURS DE Cron::run : #{e.message}"
+  error_log e, "PROBLÈME AU COURS DE Cron.run"
 end
 
 safed_log "<- #{__FILE__}"
