@@ -1,5 +1,18 @@
 > Note : Je rassemble ici les explicitations de citations afin de pouvoir les reprendre s'il y a un problème.
 
+#282
+<p>
+Pertinente leçon de vie sur le ridicule et l'intelligence qui sous-entend qu'il n'y a de ridicule en rien ni en personne, comme il n'y a de risible en rien ni en personne.
+</p>
+
+<p>Cela tient au fait que le ridicule repose sur les pires valeurs, sur les conventions, sur les pensées uniques, sur les <em>a priori</em>
+ et leur cortège de clichés. C'est seulement en s'adossant à ces mauvaises valeurs, par bêtise, que l'on peut juger quelqu'un ou quelque chose ridicule.
+</p>
+
+<p>
+Et quand il ne repose pas sur ces mauvaises valeurs, c'est au mépris et à la suffisance que le ridicule fait appel — c'est-à-dire là aussi des traits de caractère bien éloignés de l'intelligence véritable.
+</p>
+
 # 338
 <p>On pourrait ajouter qu'il y en a une troisième, qui est peut-être celle des plus grands créateurs : la façon qui consiste à être aussi fort dans le contenu — ce qui est dit — que dans le style — comment c'est dit —, ou encore aussi attentif à la forme qu'au fond.</p>
 

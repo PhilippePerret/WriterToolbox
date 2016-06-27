@@ -96,6 +96,7 @@ class SafedErrorLog
     rescue Exception => e
       error_log e, "Impossible d'envoyer le rapport d'erreur"
     end
+    
   end # << self
 
   # ---------------------------------------------------------------------
