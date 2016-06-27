@@ -51,8 +51,10 @@ class SiteHtml
   # ---------------------------------------------------------------------
 
   def incipit
+    lien_phil = '<auteur class="darkcharte">Philippe Perret</auteur>'.in_a(href: "site/phil")
     (
-      "Un site entièrement dévolu au ".in_span(class:'bold') +
+      '<img id="medaillon_phil_accueil" src="./view/img/divers/phil.png" class="fleft" style="" />' +
+      "Le site de #{lien_phil} entièrement dévolu au ".in_span(class:'bold') +
       "développement de vos histoires".in_span(class:'bold darkcharte') +
       "."
     ).in_p(class:'small', id:'incipit')

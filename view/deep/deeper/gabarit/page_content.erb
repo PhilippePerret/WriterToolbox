@@ -9,7 +9,7 @@
   else
     croute = site.current_route.route
     # debug "croute : '#{croute}'"
-    afficher = false if ['user/noprofil', 'site/home', 'user/paiement', 'user/signup'].include?( croute )
+    afficher = false if ['user/signin', 'user/noprofil', 'site/home', 'user/signup'].include?(croute) || croute.match(/(deconnexion|paiement)/)
   end
 
   if afficher
