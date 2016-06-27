@@ -7,7 +7,7 @@ class Taches
 
     def get tache_id
       tache_id = tache_id.to_i
-      @instances ||= Hash::new
+      @instances ||= Hash.new
       @instances[tache_id] ||= Tache::new(tache_id)
     end
 

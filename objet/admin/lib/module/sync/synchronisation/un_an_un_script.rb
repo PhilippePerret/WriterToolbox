@@ -24,6 +24,7 @@ class UAUS
       report "  = NOMBRE DE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')
       report '  = Synchronisation du programme UN AN UN SCRIPT opéré avec SUCCÈS'.in_span(class: 'blue bold')
     end
+    true
   end
 
   # Méthode principale de synchronisation des données

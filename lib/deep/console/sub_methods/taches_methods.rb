@@ -95,7 +95,7 @@ class Console
         admin_id = admin_id.to_i
         htache.merge!(admin_id: admin_id)
       end
-      htache.merge!(state: htache.delete(:statut)) if htache.has_key?(:statut)
+      htache.merge!(state: htache.delete(:statut)) if htache.key?(:statut)
       if htache.key?(:state)
         htache[:state] = itache.test_statut_tache(htache[:state])
         raise "Impossible d'actualiser la tache." if htache[:state] == false

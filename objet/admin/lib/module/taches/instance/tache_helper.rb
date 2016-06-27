@@ -10,11 +10,25 @@ class Tache
       bouton_ok +
       div_tache +
       div_infos_tache
-    ).in_li(class:'tache')
+    ).in_li(class: li_class.join(' '))
+  end
+
+  # Définit la class css en fonction du state de la
+  # tâche
+  def li_class
+    css = ['tache']
+    if state > 6 # très importante
+      css << 'tres_importante'
+    elsif state > 3
+      css << 'importante'
+    end
+    css
   end
 
   def div_tache
-    @div_tache ||= "#{tache}".in_span(class:'tache')
+    @div_tache ||= begin
+      "#{tache}".in_span(class:'tache')
+    end
   end
   def div_infos_tache
     (

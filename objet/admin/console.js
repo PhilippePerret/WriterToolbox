@@ -4,7 +4,7 @@ $.extend(window.RSConsole, {
 
   Snippets: {
     'URL': {replace:"http://www.laboiteaoutilsdelauteur.fr"},
-    'tache': {replace:"new tache pour:Phil le:$1 tache: $2"},
+    'tache': {replace:"new tache pour:Phil le:$1 tache: $2 state: $3"},
     'update':{replace:'update message:$1 le:$2 route:$3 type:$4 annonce:$5 degre:$6'}
   },
 
@@ -96,7 +96,8 @@ $.extend(window.RSConsole, {
   KNOW_SUJETS: {
     'twit': 'twitter', 'tweet': 'twitter', 'tweete':'twitter',
     'test': 'test',
-    'update': 'updates', 'updates': 'updates'
+    'update': 'updates', 'updates': 'updates',
+    'tache': 'taches'
   },
   sujet_courant: null,
   detecte_sujet: function(tested){
@@ -145,7 +146,22 @@ Pour afficher le contenu des bases de données à la fin des __\
 tests (rappel : les bases de données sont backupées dans un) __\
 dossier temporaire. __\
 ",
-// AIDE UPDATES
+      // AIDE TACHES
+      taches: " \
+POUR AJOUTER UNE TÂCHE À FAIRE __\
+__\
+tache  La tâche à exécuter __\
+le     Permet de définir l'échéance. On peut utiliser une __\
+       date précise en JJ MM AAAA __\
+       Ou un diminutif comme auj (today) dem (demain) __\
+       Ou une opération (+2 pour après-demain) __
+__\
+state  Permet de définir l'importance de la tâche __\
+       De 0 (valeur par défaut si vide) - importance normale __\
+       À  8  Valeur d'importance maximale. __\
+       (Ne pas mettre 9, ça serait une tâche finie.__\
+      "
+      // AIDE UPDATES
       updates: " \
 POUR AJOUTER UNE ACTUALISATION __\
 __\
