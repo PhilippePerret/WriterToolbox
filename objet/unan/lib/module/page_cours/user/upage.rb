@@ -46,7 +46,11 @@ class UPage
   def index_tdm ; @index_tdm  ||= get(:index_tdm) end
   def work_id   ; @work_id    ||= get(:work_id)   end
   def lectures
-    @lectures   ||= JSON.parse(get(:lectures) || "[]", symbolize_names: true)
+    @lectures   ||= begin
+      lecs = get(:lectures).nil_if_empty
+      lecs = '[]' if lecs == '0' # une erreur
+      JSON.parse(lecs || "[]", symbolize_names: true)
+    end
   end
 
   # ---------------------------------------------------------------------

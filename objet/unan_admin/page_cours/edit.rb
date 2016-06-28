@@ -248,7 +248,7 @@ class PageCours
         fullpath = site.folder_data + "unan/pages_cours/#{data_page[:type]}/#{path}"
         unless fullpath.exist?
           if creer_fichier_is_inexistant?
-            create_file_page_cours(fullpath)
+            # On ne fait plus rien, il sera créé quand on l'ouvrira
           else
             raise "Le fichier `#{fullpath.to_s}` est introuvable… Il faut le créer avant d'enregistrer la donnée.<br/>Noter qu'il suffit pour ça de cocher la case pour créer le fichier s'il n'existe pas."
           end

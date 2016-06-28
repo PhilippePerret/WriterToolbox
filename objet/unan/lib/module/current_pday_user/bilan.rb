@@ -47,7 +47,14 @@ class CurrentPDay
   def note_generale_veille
     @note_generale_veille ||= begin
       if day > 1
-        ng = program.retards[day - 1].to_i
+        retard_veille =
+          if program.retards.nil?
+            program.set(retards: '0')
+            '0'
+          else
+            program.retards[day - 1]
+          end
+        ng = retard_veille.to_i
         ((9 - ng).to_f * 20 / 9).round(1)
       else
         nil

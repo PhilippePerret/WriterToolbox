@@ -13,6 +13,11 @@ class PageCours
   # Sortie complète de la page de cours à écrire dans la page
   # Note : Ajoute également une lecture à l'user.
   def output options = nil
+    # Cas spécial de l'administrateur visitant cette page
+    if user.admin? && !user.unanunscript?
+      # On prend Benoit
+      return 'Cette page doit être lue par Benoit pour être affichée.'.in_div(class: 'warning')
+    end
     user.add_lecture_page_cours(self) if user.unanunscript?
     titre.in_h2 + read
   rescue Exception => e
