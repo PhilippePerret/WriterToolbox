@@ -83,6 +83,23 @@ class CurrentPDay
   def program_id; @program_id ||= program.id      end
 
   # ---------------------------------------------------------------------
+  #   Méthodes fonctionnelles
+  # ---------------------------------------------------------------------
+  def reset_all_list
+    @uworks_done        = nil
+    @uworks_undone      = nil
+    @uworks_recent      = nil
+    @todays_aworks      = nil
+    @auworks_done_ids   = nil
+    @auworks_undone_ids = nil
+    @aworks_ofday       = nil
+    @uworks_goon        = nil
+    @uworks_overrun     = nil
+    @aworks_unstarted   = nil
+    @aworks_until_today = nil
+  end
+
+  # ---------------------------------------------------------------------
   #   Les informations importantes pour le mail quotidien
   # ---------------------------------------------------------------------
 
@@ -184,7 +201,6 @@ class CurrentPDay
     releve_done_and_undone if @uworks_done === nil
     @uworks_done
   end
-
 
   # / Fin des méthodes utiles pour le bilan de mail
   # ---------------------------------------------------------------------
@@ -303,7 +319,6 @@ class CurrentPDay
     @auworks_undone_ids
   end
 
-
   # Grande méthode relevant les listes de travaux suivants :
   #   - les travaux achevés
   #     => @uworks_done
@@ -382,6 +397,7 @@ class CurrentPDay
   # indique le jour-programme du travail (ce qui n'est pas indiqué
   # normalement, un travail pouvant appartenir à plusieurs jours)
   #
+
   def aworks_until_today
     @aworks_until_today ||= begin
       # Pour consigner le résultat final

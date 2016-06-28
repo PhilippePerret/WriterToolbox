@@ -1,12 +1,12 @@
-## Opérations courantes {#operations-courantes}
+# Opérations courantes {#operations-courantes}
 
 Cette section présente les opérations de base du programme \unan{} qu'il est bon de connaitre, mais cette section est là aussi pour vous permettre de les retrouver facilement.
 
-### Rejoindre le site {#rejoindre-le-site}
+## Rejoindre le site {#rejoindre-le-site}
 
 Pour rejoindre le site, tapez l'adresse : \url{\urlsite{}}} dans la barre de navigation de votre navigateur favori.
 
-### S'identifier au site {#vous-identifier}
+## S'identifier au site {#vous-identifier}
 
 Si vous êtes inscrit\fem{e} ou abonné\fem{e} au site, pour vous identifier :
 
@@ -17,7 +17,7 @@ Si vous êtes inscrit\fem{e} ou abonné\fem{e} au site, pour vous identifier :
 
 Si vous n'avez pas commis d'erreur, vous devez être redirigé\fem{e} vers votre bureau de travail ou votre profil suivant vos [préférences][].
 
-### Rejoindre son bureau de travail {#rejoindre-bureau-travail}
+## Rejoindre son bureau de travail {#rejoindre-bureau-travail}
 
 Pour rejoindre votre bureau de travail sur le site de \boa{}, il suffit de :
 

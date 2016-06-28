@@ -15,4 +15,10 @@ class User
       CurrentPDay::new(self)
     end
   end
+  # Pour forcer le recalcul du jour-programme courant (et ses
+  # listes) après un changement de statut.
+  def reset_current_pday
+    @current_pday = nil
+    current_pday.reset_all_list
+  end
 end

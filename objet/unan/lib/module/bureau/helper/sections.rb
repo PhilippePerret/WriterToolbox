@@ -21,7 +21,7 @@ class Bureau
   # ---------------------------------------------------------------------
   #   SECTIONS PRINCIPALES
   # ---------------------------------------------------------------------
-
+ 
   # Section des travaux à démarrer
   #
   # +type+ (:task, :page, :quiz ou :forum)
