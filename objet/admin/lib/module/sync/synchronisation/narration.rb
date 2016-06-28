@@ -68,6 +68,9 @@ class CNarration
     loc_rows.each do |pid, loc_data|
       dis_data = dis_rows[pid]
 
+      # debug "loc_data: #{loc_data.inspect}"
+      # debug "dis_data: #{dis_data.inspect}"
+
       if loc_data != dis_data
         # Données différentes
         # Si c'est le niveau de développement qui a changé, il faut
@@ -77,25 +80,29 @@ class CNarration
         # un problème si c'est en online que la modification est la plus
         # récente, ce qui ne devrait pas vraiment arriver)
         if loc_data[:options][1] != dis_data[:options][1]
+          debug "NIV DEV DIFFÉRENT (#{loc_data[:options]} / #{dis_data[:options]})"
           # NIVEAU DE DÉVELOPPEMENT DIFFÉRENT
-          update_niveau_developpement(pid, loc_data, dis_data)
+          loc_data = update_niveau_developpement(pid, loc_data, dis_data)
+          debug "loc_data après : #{loc_data.inspect}"
           @nombre_synchronisations += 1
-        else
-          # Autre donnée différente. Dans ce cas, on prend
-          # la date de dernière modification pour savoir quelle
-          # donnée doit être actualisée
-          if loc_data[:udpated_at].to_i > dis_data[:updated_at].to_i
-            # OK => actualisation de la donnée distante
-            dis_table.update(pid, loc_data)
-            @nombre_synchronisations += 1
-          else
-            # Actualisation de la donnée locale, mais attention,
-            # c'est bizarre puisqu'on ne devrait pas modifier les
-            # données en distant.
-            loc_table.update(pid, dis_data)
-            @nombre_synchronisations += 1
-          end
         end
+        # Autre donnée différente. Dans ce cas, on prend
+        # la date de dernière modification pour savoir quelle
+        # donnée doit être actualisée
+        loc_plus_jeune          = loc_data[:udpated_at].to_i > dis_data[:updated_at].to_i
+        loc_priorite_plus_jeune = loc_data[:options].length > dis_data[:options].length
+        if loc_plus_jeune || loc_priorite_plus_jeune
+          # OK => actualisation de la donnée distante
+          debug "dis_table actualisée pour ##{loc_data[:id]}"
+          dis_table.update(pid, loc_data)
+          @nombre_synchronisations += 1
+        end
+        #   # Actualisation de la donnée locale, mais attention,
+        #   # c'est bizarre puisqu'on ne devrait pas modifier les
+        #   # données en distant.
+        #   loc_table.update(pid, dis_data)
+        #   @nombre_synchronisations += 1
+        # end
       else
         suivi "Pages ##{pid} loc/dis identifiques"
       end
@@ -135,16 +142,24 @@ class CNarration
   # ---------------------------------------------------------------------
 
   # Pour actualiser le niveau de développement d'une page
+  #
+  # Retourne la donnée locale actualisée
   def update_niveau_developpement(pid, loc_data, dis_data)
     loc_niv = loc_data[:options][1].to_i
     dis_niv = dis_data[:options][1].to_i
+    good_niv = loc_niv > dis_niv ? loc_niv : dis_niv
+
+    loc_data[:options][1] = good_niv.to_s
+    dis_data[:options][1] = good_niv.to_s
+
     if loc_niv > dis_niv
-      dis_table.update(pid, {options: loc_data[:options]})
+      dis_table.update(pid, {options: dis_data[:options]})
       report "Niveau de développement de ##{pid} passé à #{loc_niv}"
     else
-      loc_table.update(pid, {options: dis_data[:options]})
+      loc_table.update(pid, {options: loc_data[:options]})
       report "Niveau de développement de ##{pid} passé à #{dis_niv}"
     end
+    return loc_data
   end
 
   def db_suffix   ; @db_suffix  ||= :cnarration end

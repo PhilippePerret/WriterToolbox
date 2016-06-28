@@ -24,7 +24,9 @@ class UPage
   end
 
   def create
+    debug "-> Upage#create"
     table.insert(data2save.merge(created_at: NOW))
+    @is_exist = true
   end
   def data2save
     @data2save ||= {
@@ -66,7 +68,10 @@ class UPage
   #   Méthodes
   # ---------------------------------------------------------------------
   def add_lecture
+    debug "UPage#add_lecture"
+    debug "exist? #{exist?.inspect}"
     create unless exist?
+    debug "exist? #{exist?.inspect}"
     set(lectures: (lectures << NOW) )
   end
 

@@ -145,6 +145,16 @@ class Console
 
       # --- BASES DE DONNÉES ---
 
+    when /^mysql online$/
+      require './data/secret/mysql'
+      dms = DATA_MYSQL[:online]
+      sub_log "mysql -h #{dms[:host]} -u #{dms[:username]} -p#{dms[:password]}"
+      return ""
+    when /^mysql offline$/
+      require './data/secret/mysql'
+      dms = DATA_MYSQL[:offline]
+      sub_log "mysql -h #{dms[:host]} -u #{dms[:username]} -p#{dms[:password]}"
+      return ""
     when /^backup table ([^\.]+)\.(.+?)$/
       db, tbl = line.scan(/^backup table ([^\.]+)\.(.+?)$/).first
       backup_data_from_all "#{db}.db", tbl

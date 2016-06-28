@@ -177,7 +177,14 @@ databases:
     command:      kill|destroy table &lt;base&gt;.&lt;table&gt;
     description:  Détruit complètement la table spécifiée. À utiliser avec la plus grande prudence donc.
     note:         Il est plus prudent de faire un backup de la table avant (cf. ci-dessous)
-
+  -
+    command:      mysql online
+    description: |
+      Retourne le code pour se connecter par le Terminal à mysql sur
+      le site distant
+    note: |
+      La même commande mais avec `offline` existe pour la base locale
+      mais elle est plus simple à se souvenir.
   -
     command:      backup table &lt;base&gt;.&lt;table&gt;
     description:  |

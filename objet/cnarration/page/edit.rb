@@ -59,6 +59,7 @@ class Page
       param(:epage => param(:epage).merge(id: @id))
       flash "Page ##{@id} créée avec succès."
     else
+      debug "options : #{options.inspect}"
       Cnarration::table_pages.update(id, data2save)
       flash "Page ##{id} updatée."
     end
@@ -117,15 +118,15 @@ class Page
   end
   # Options, Bit 2
   def nivdev
-    @nivdev ||= data_params[:nivdev]
+    data_params[:nivdev]
   end
   # Options, Bit 3
   def enligne
-    @enligne ||= data_params[:enligne].to_i
+    data_params[:enligne].to_i
   end
   # Priorité de traitement, Bit 4
   def priorite
-    @priorite ||= data_params[:priorite]
+    data_params[:priorite]
   end
   # / fin définition options
   # ---------------------------------------------------------------------
