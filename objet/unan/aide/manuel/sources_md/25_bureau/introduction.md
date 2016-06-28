@@ -1,4 +1,4 @@
-# Le bureau de travail {#bureau}
+# Le bureau de travail {#bureautravail}
 
 ## Introduction {#introduction-bureau}
 

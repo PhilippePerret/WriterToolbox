@@ -17,4 +17,7 @@ Peut-on contacter d'autres auteurs du programme ?
 Où peut-on joindre Philippe Perret ?
 : Vous pouvez le joindre en utilisant son mail : \mailphil{phil@laboiteaoutilsdelauteur.fr} ou en passant par l'\mailadmin{administration}.
 
+Dans le message, il est stipulé : Aucun travail en retard. Donc rien de précis à faire pour le moment ?
+: Chaque travail à faire possède une échéance précise (1 jour, 10 jours, 3 mois…). Un travail est en retard lorsque cette échéance est dépassée. Donc, l'indication “aucun travail en retard” précise seulement qu'il n'y a aucun travail en dépassement d'échéance, mais elle indique aussi forcément, par induction, qu'il y a des travaux en cours ;-).
+
 ^
