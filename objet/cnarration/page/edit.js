@@ -133,6 +133,15 @@ $.extend(window.Cnarration,{
     ];
     UI.init_form(listes);
     this.on_change_type_page("1")
+  },
+
+  // Méthode appelée quand on change le niveau de
+  // développement de la page. Permet d'afficher le
+  // menu pour le state de la tâche, pour déterminer si
+  // c'est une tâche urgente ou non
+  on_change_niveau_developpement:function(niv){
+    var is_lecture = niv == 6 || niv == 8 ;
+    $('select#epage_tache_state').css('visibility', is_lecture ? 'visible' : 'hidden');
   }
 
 })
@@ -182,5 +191,7 @@ $(document).ready(function(){
       return false;
     }
   })
+
+  $('select#epage_nivdev').bind('change',function(){Cnarration.on_change_niveau_developpement(parseInt($(this).val()))})
 
 })

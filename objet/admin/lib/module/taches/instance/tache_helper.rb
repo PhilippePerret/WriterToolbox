@@ -17,10 +17,10 @@ class Tache
   # tâche
   def li_class
     css = ['tache']
-    if state > 6 # très importante
-      css << 'tres_importante'
-    elsif state > 3
-      css << 'importante'
+    if state > 5 # très importante
+      css << 'prioritaire'
+    elsif state > 2
+      css << 'important'
     end
     css
   end

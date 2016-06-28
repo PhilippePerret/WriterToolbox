@@ -2,7 +2,8 @@
 class Cnarration
 class Page
 
-  # BIT 1
+  # 1er BIT
+  # =======
   # Le type de la page, pour savoir si c'est une vrai page ou
   # un chapitre ou sous-chapitre.
   #
@@ -14,8 +15,8 @@ class Page
     @type ||= options[0].to_i
   end
 
-  # BIT 2
-  #
+  # 2e BIT
+  # ======
   # Détermine le niveau de développement, de 1 à 'a'
   # 10 = Page achevée (mais c'est en 'a', base 11)
   # 9  = Page achevée
@@ -28,8 +29,8 @@ class Page
     @developpement ||= options[1].to_i(11)
   end
 
-  # BIT 3 - seulement version en ligne
-  #
+  # 3e BIT = seulement version en ligne
+  # ======
   # Détermine si la page doit être imprimée par la
   # collection ou si c'est seulement une page pour
   # la version en ligne.
@@ -42,6 +43,20 @@ class Page
   #
   def printed_version
     @printed_version ||= options[2].to_i
+  end
+
+  # 4e BIT = importance lecture
+  # ======
+  # Ce bit permet de définir le degré d'importance de
+  # traitement de la page (au niveau de la lecture comme
+  # au niveau de la correction). Ces valeurs correspondent
+  # aux valeurs de state des tâches, c'est-à-dire :
+  # De 0 à 2 : tache à traiter normalement (traitement normal)
+  # De 3 à 5 : tâche importante (traitement important)
+  # De 6 à 8 : tâche prioritaire (traitement prioritaire)
+  #
+  def priorite
+    @priorite ||= options[3].to_i
   end
 
 end #/Page

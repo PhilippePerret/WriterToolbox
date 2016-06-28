@@ -1,4 +1,35 @@
 > Note : Je rassemble ici les explicitations de citations afin de pouvoir les reprendre s'il y a un problème.
+#340
+<p>Pour Malraux, et pour faire bref, la <em>naissance</em> d'une œuvre serait toujours conditionnée par la <em>connaissance</em> d'une autre œuvre. Ça n'est pas la vie qui produirait un tableau, ce serait un tableau. Ça n'est pas la vie qui conduirait le scénariste à écrire un film, ça serait un autre film. Ça n'est pas la vie qui conduirait à un roman, mais un autre roman. Bien entendu, on peut être d'accord, ou pas.</p>
+<p>Le terme “à l'origine”, est ici important. Cette lutte, d'après Malraux, entre l'œuvre — la forme — de référence et l'œuvre en devenir n'interviendrait qu'au moment où l'œuvre en devenir nait, c'est-à-dire le moment où le créateur en a l'idée, idée qui serait bien entendu suscitée par l'œuvre de référence.</p>
+<p>Dans l'absolu, chacun pourra entendre cette lutte de diverses façons : certains pourront y voir la difficulté à se sortir de la simple imitation, d'autres pourront y voir la volonté de nier l'œuvre de référence, de la combattre en prenant d'autres options qu'elle, d'autres, s'il s'agit d'œuvres de référence mineures, pourront y voir aussi la conviction d'être capable de mieux faire, d'autres encore pourront y sentir la difficulté à faire germer la différence en devenir, écrasé par le poids d'une œuvre de référence trop imposante.</p>
+<p>Mais on peut entendre ce “à l'origine” aussi comme l'explication de l'origine véritable de l'œuvre, de la force, de l'énergie, qui la ferait naitre. Comme un big bang, l'œuvre naitrait d'une tension — d'une <em>lutte</em> — entre un passé et un futur, entre l'imitation et la potentialité d'un nouveau.</p>
+
+#328
+<p>Dans le contexte des sentiments, on comprend parfaitement la justesse de cette affirmation : on peut admirer quelqu'un sans l'aimer, et l'admiration (*) n'est donc pas nécessairement de l'amour, quand bien même il serait nécessaire à cet amour.</p>
+
+<p>Mais on peut avoir le même sentiment dans le contexte de l'art : on peut admirer beaucoup de choses dans une œuvre sans l'aimer. On peut louer sa maitrise, son éclat, l'ambition artistique de son auteur, on peut admirer son style sans pourtant l'<em>aimer</em>, du plus profond de soi, comme on peut aimer les œuvres qui nous touchent, qui nous parlent en particulier.</p>
+
+<p class="small italic">(*) Il semble, à la lecture de nombreux messages sur la toile, que beaucoup de personnes mettent une charge émotionnelle très forte dans le terme “admiration”. En réalité, il n'en est rien, ce terme qui étymologiquement pourrait signifier “ce qui vient après l'étonnement”, possède une charge infiniment plus faible que la “dévotion” ou le fait d'être  “subjugué” par exemple (il semble qu'il y ait souvent confusion avec ces termes). Et contrairement à ce qui est dit, admirer est un état actif plus qu'il n'est passif. Quand on admire un paysage, on l'observe, on le regarde de façon active.</p>
+
+#350
+<p>Dans cette affirmation, Malraux oppose le monde des émotions et celui de la raison, soulignant que le premier est bon pour l'œuvre tandis que le second est susceptible de l'annihiler.</p>
+<p>Barthes s'est certainement appuyé sur cette citation lorsqu'il a pensé CITATION[50|la sienne].</p>
+
+#276
+<p>Dans la fable, le père, laboureur, fais croire à ses enfants qu'ils vont trouver un trésor s'ils labourent leur champ au lieu de le vendre. Ici, “fonds” se termine bien par un “s” et signifie bien qu'il s'agit de possessions, de biens matériels. Les enfants ne trouveront pas de trésor, mais gagneront beaucoup à s'être occupé du champ. Comme le disent les derniers mots de la fable : “le travail est un trésor”.</p>
+<p>Mais j'aurais envie aussi d'entendre cette fable en retirant le “s” : le <em>fond</em>, alors, ce sont les <em>idées</em>. Et il est vrai que les idées sont en général ce qui fait le moins défaut lorsque l'on aborde un travail de création. Il n'y a que les individus qui ne se servent pas assez souvent de leur imagination qui pensent ne pas avoir d'idées. On a même souvent trop d'idées, et le premier effort consiste à les trier et à les sélectionner avec soin.</p>
+<p>Avoir des idées est une chose, mais savoir les <em>formuler</em>, voilà toute la difficulté, et voilà ce qui demande de prendre de la peine.</p>
+<p>L'idée, le fond, vient facilement, mais la mettre en forme, la formuler, voilà ce qui demande beaucoup de travail à celui qui veut créer et parvenir à l'œuvre la meilleure. C'est le travail qui conduit au trésor.</p>
+
+#330
+<p>Plutôt que d'entendre dans cette affirmation du ministre de la culture de Charles de Gaulle un retour d'expérience… je préfère y trouver un encouragement à ne pas laisser jouer le déterminisme et, quel que soit son milieu d'origine, quel que soit le contexte culturel dans lequel on nait et grandit, à comprendre que la culture est toujours à la portée de celui qui veut bien se battre pour l'acquérir.</p>
+<p>Elle sous-entend aussi peut-être, quelque part, que la <em>vraie</em> culture, celle qui peut être profitable à l'individu, doit être acquise par un acte volontaire, une <em>proaction</em> et qu'au contraire la culture dont on hérite, aussi élevée soit-elle, ne peut être une culture aussi profitable.</p>
+
+# 281
+<p>Il est vrai que ce que l'on maitrise bien apporte plus de plaisir que ce qui nous demande des efforts. Il est vrai que ce dont nous tirons le meilleur nous flatte plus que ce dont nous avons du mal à tirer du bon.</p>
+<p>Cependant, dans l'apprentissage particulièrement, il est important d'aborder tous les <em>instruments</em> avec la même patience et la même envie, que ce soit l'instrument <em>structure</em>, l'instrument <em>personnage</em>, l'instrument <em>thème</em>, etc., afin de non seulement pouvoir en tirer du plaisir mais encore plus : être capable d'en procurer à autrui !</p>
+
 # 296
 <p>Injonction de Stéphane Mallarmé contre le hasard, contre le MOT[41|deus ex machina], tous ces moments des récits mal construits — qui heureusement forment les fonds de tiroir — où l'on peut s'exclamer “Comme par hasard, il se passe ceci quand il fait cela !”.</p>
 

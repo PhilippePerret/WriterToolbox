@@ -20,9 +20,7 @@ class Page
 
     # Sauve la page courante et retourne l'instance
     def save_page
-      ipage = new()
-      ipage.save
-      return ipage
+      new().save
     end
 
     def page_id
@@ -31,7 +29,6 @@ class Page
 
     def prepare_edition_of ipage
       hpage = ipage.get_all
-      debug "hpage: #{hpage.pretty_inspect}"
       hpage.merge!(
         # Note : il ne faut faire ni appel à `type` ni à `options`
         # directement car ils sont redéfinis ci-dessous pour
@@ -46,16 +43,17 @@ class Page
   # ---------------------------------------------------------------------
   #   Instance
   # ---------------------------------------------------------------------
+
+  # Sauvegarde de la page (ou du titre)
+  #
+  # RETURN L'instance de la page (self)
   def save
     @id = self.class::page_id
     @is_new_page = (@id == nil)
 
     check_param_or_raise || return
 
-    debug "data2save : #{data2save.pretty_inspect}"
-    # flash "Je peux sauver la page"
-    # return
-
+    # ENREGISTREMENT DANS LA TABLE
     if new?
       @id = Cnarration::table_pages.insert(data2save.merge(created_at: NOW))
       param(:epage => param(:epage).merge(id: @id))
@@ -65,6 +63,7 @@ class Page
       flash "Page ##{id} updatée."
     end
 
+    # CRÉATION DU FICHIER PHYSIQUE
     # Que ce soit pour une création ou une actualisation, si
     # on demande à créer le fichier s'il n'existe pas, il faut
     # le créer.
@@ -79,6 +78,7 @@ class Page
     # des changements
     reset_tdm_livre_in_session
 
+    return self
   end
 
   def data2save
@@ -109,7 +109,7 @@ class Page
   #   Définition des options
   # ---------------------------------------------------------------------
   def options
-    @options ||= "#{type}#{nivdev}#{enligne}"
+    @options ||= "#{type}#{nivdev}#{enligne}#{priorite}"
   end
   # Options, Bit 1
   def type
@@ -122,6 +122,10 @@ class Page
   # Options, Bit 3
   def enligne
     @enligne ||= data_params[:enligne].to_i
+  end
+  # Priorité de traitement, Bit 4
+  def priorite
+    @priorite ||= data_params[:priorite]
   end
   # / fin définition options
   # ---------------------------------------------------------------------
@@ -182,7 +186,7 @@ end #/Cnarration
 
 case param(:operation)
 when 'edit_page'
-  Cnarration::Page::edit_page
+  Cnarration::Page.edit_page
 when 'save_page'
-  Cnarration::Page::save_page
+  Cnarration::Page.save_page
 end

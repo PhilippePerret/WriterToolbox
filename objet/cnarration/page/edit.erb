@@ -19,9 +19,9 @@ end
 
 if param(:epage).nil?
   if epage.nil?
-    param(:epage => Hash::new)
+    param(:epage => Hash.new)
   else
-    param(:epage => Cnarration::Page::prepare_edition_of(epage))
+    param(:epage => Cnarration::Page.prepare_edition_of(epage))
   end
 end
 %>
@@ -63,6 +63,13 @@ menu_books = options_books.in_select(name:"epage[livre_id]", id:"epage_livre_id"
 boutons_books = ("tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_book_tdm', this)()", target:'_blank') +
 "Edit Tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_to_edit_book_tdm', this)()", target:'_blank')).in_span(class:'btns')
 
+# Menu pour déterminer l'importance de la lecture si le
+# niveau de développement est celui-là.
+values_priorites_traitement = [
+  ['1', 'normal'],
+  ['4', 'important'],
+  ['7', 'prioritaire']
+]
 %>
 <form id="form_edit_page" class="dim2080" action="page/edit?in=cnarration" method="POST" accept-charset="utf8">
   <%= 'edit_page'.in_hidden(name:'operation', id:'operation') %>
@@ -90,7 +97,7 @@ boutons_books = ("tdm".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration,'got_t
 
   <%# NIVEAU DÉVELOPPEMENT (bit 2 des options) %>
   <%= form.field_select("Développement", 'nivdev', nil, {values: values_niveau_developpement_select}) %>
-
+  <%= form.field_select('Traitement', 'priorite', nil, {values: values_priorites_traitement, text_before: 'Traitement'}) %>
   <%= form.submit_button("Enregistrer", onclick:"$.proxy(Cnarration,'on_submit_form')()") %>
 </form>
 <% end %>

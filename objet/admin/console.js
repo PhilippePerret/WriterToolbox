@@ -154,13 +154,13 @@ tache  La tâche à exécuter __\
 le     Permet de définir l'échéance. On peut utiliser une __\
        date précise en JJ MM AAAA __\
        Ou un diminutif comme auj (today) dem (demain) __\
-       Ou une opération (+2 pour après-demain) __
+       Ou une opération (+2 pour après-demain) __\
 __\
 state  Permet de définir l'importance de la tâche __\
        De 0 (valeur par défaut si vide) - importance normale __\
        À  8  Valeur d'importance maximale. __\
        (Ne pas mettre 9, ça serait une tâche finie.__\
-      "
+      ",
       // AIDE UPDATES
       updates: " \
 POUR AJOUTER UNE ACTUALISATION __\
