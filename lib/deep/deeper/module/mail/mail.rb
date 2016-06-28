@@ -16,6 +16,8 @@ class SiteHtml
   # Paramètres supplémentaires :
   #     :formated         Si true, le message n'est pas traité
   #     :force_offline    Si true, le mail est envoyé même en OFFLINE
+  #     :no_header_subject  Si true, on ne rajoute pas dans le sujet le
+  #                         préfixe du site.
   #     :signature        Si FALSE, la signature n'est pas apposée.
   #                       True par défaut
   #     :data             Hash de données à utiliser pour le message
@@ -24,7 +26,7 @@ class SiteHtml
   # de l'erreur dans le cas contraire.
   #
   def exec_send_mail data_mail
-    Mail::new(data_mail).send
+    Mail.new(data_mail).send
   rescue Exception => e
     error e.message
     return e
@@ -106,7 +108,11 @@ module MailModuleMethods
   # Pour le sujet du message
   def subject
     @subject ||= "(sans sujet)"
-    "#{header_subject}#{@subject}"
+    if @no_header_subject.nil?
+      "#{header_subject}#{@subject}"
+    else
+      @subject
+    end
   end
   def content_type
     if get_class(:content_type).nil?
@@ -124,7 +130,7 @@ module MailModuleMethods
       ).in_div(id:'message_content')
     # Si le body style est défini, on met le code dans un div
     # contenant ce body style.
-    c = c.in_div(style: SiteHtml::Mail::body_style) if SiteHtml::Mail::respond_to?(:body_style)
+    c = c.in_div(style: SiteHtml::Mail.body_style) if SiteHtml::Mail::respond_to?(:body_style)
     return c
   end
 

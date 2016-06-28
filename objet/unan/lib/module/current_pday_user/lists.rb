@@ -77,12 +77,6 @@ class User
 class CurrentPDay
 
   # ---------------------------------------------------------------------
-  #   Quelques raccourcis utiles
-  # ---------------------------------------------------------------------
-  def program;    @program    ||= auteur.program  end
-  def program_id; @program_id ||= program.id      end
-
-  # ---------------------------------------------------------------------
   #   Méthodes fonctionnelles
   # ---------------------------------------------------------------------
   def reset_all_list
@@ -233,13 +227,13 @@ class CurrentPDay
   def decompose_travaux
 
     # Les travaux en dépassement
-    @uworks_overrun     = []
+    @uworks_overrun    = []
     # Les travaux à poursuivre
-    @uworks_goon  = []
+    @uworks_goon       = []
     # Les travaux qui auraient dû être démarrés (*)
-    @aworks_unstarted   = []
+    @aworks_unstarted  = []
     # Les nouveaux travaux du jour
-    @aworks_ofday       = []
+    @aworks_ofday      = []
 
     # (*) Les travaux non démarrés sont des travaux existants
     # qui ne possèdent pas leur enregistrement dans les

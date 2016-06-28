@@ -5,16 +5,12 @@ class CurrentPDay
   # Méthode qui sauve dans la propriété :retards du
   # programme courant la valeur du retard du jour
   def save_retard_program
-    arr_retards = (auteur.program.retards || "").split('')
+    arr_retards = (program.retards || "").split('')
     arr_retards[day] = retard_from_0_to_9
     retards = arr_retards.collect{|r| r.nil? ? '0': r}.join('')
     program.set(retards: retards)
   end
 
-
-  def analyse_depassements
-
-  end
 
   # La note générale pour la journée, en fonction de l'état
   # général.
@@ -172,7 +168,9 @@ class CurrentPDay
   #
   def stade_programme
     @stade_programme ||= begin
-      if day < 100
+      if day < 11
+        :toutdebut
+      elsif day < 100
         :debut
       elsif day <= 260
         :milieu

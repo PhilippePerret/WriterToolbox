@@ -10,8 +10,6 @@ require 'yaml'
 class User
 class CurrentPDay
 
-  def pseudo ; @pseudo ||= auteur.pseudo end
-
   # ---------------------------------------------------------------------
   #   Construction de la section des avertissements (introduction)
   # ---------------------------------------------------------------------
@@ -37,7 +35,9 @@ class CurrentPDay
   # Noter que rien n'est affiché s'il y a des avertissements sérieux
   def avertissements_mineurs
     s = nombre_warnings_mineurs > 1 ? 's' : ''
-    "Notez, #{pseudo}, que vous avez #{nombre_warnings_mineurs} alerte#{s} mineure#{s}.".in_span(class:'warning')
+    # On ne met pas de style rouge dans les 10 premiers jours
+    css = day > 9 ? 'warning' : nil
+    "Notez, #{pseudo}, que vous avez #{nombre_warnings_mineurs} alerte#{s} mineure#{s}.".in_span(class: css)
   end
 
   def nombre_warnings
@@ -53,13 +53,30 @@ class CurrentPDay
   def numero_jour_programme
     "<span class='points fright'><span id='jour_programme'>#{day}</span><sup>e</sup></span>Jour-programme :".in_div
   end
+  # Indication du jour réel
+  #
+  # Comme le nombre peut varier d'un en fonction du moment de la
+  # journée où on émet le rapport, si le rythme est de 5 et que le
+  # jour programme correspond au jour réel d'à peu près 1, les met
+  # les deux à la même valeur.
   def numero_jour_reel
-    "<span class='points fright'><span id='jour_reel'>#{real_day}</span><sup>e</sup></span>Jour réel :".in_div
+    hrealday =
+      if rythme == 5 && (real_day + 1 == day)
+        real_day + 1
+      else
+        real_day
+      end
+    "<span class='points fright'><span id='jour_reel'>#{hrealday}</span><sup>e</sup></span>Jour réel :".in_div
   end
   def nombre_points
     "<span id='nombre_points' class='points fright'>#{program.points}</span><span>Compte actuel de points :</span>".in_div(id:'div_nombre_points')
   end
+  # Message contenant la note générale
+  #
+  # On ne l'indique que si on n'est pas dans les 10
+  # premiers jours
   def message_note_generale
+    return '' if day < 10
     "<span class='fright'><span id='note_generale' class='points'>#{note_generale_humaine}</span> (#{mark_progression})</span>Note générale du jour précédent : ".in_div
   end
 
