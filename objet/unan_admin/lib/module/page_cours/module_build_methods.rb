@@ -15,10 +15,12 @@ module MethodesBuildPageSemiDynamique
   attr_reader :content_dyna
 
   def build_page_semi_dynamique
-    debug "-> build_page_semi_dynamique"
-    debug "#{fullpath} -> #{fullpath_semidyn}"
+    site.require_module 'kramdown'
 
     @content_dyna = content.to_s
+
+    @content_dyna = @content_dyna.mef_document(output_format = :html)
+    @content_dyna = @content_dyna.formate_balises_propres
 
     corrige_balises_unan_unscript || return
 
@@ -43,7 +45,7 @@ module MethodesBuildPageSemiDynamique
       tout    = $0
       work_id = $1.to_i
       titre   = $3.nil_if_empty
-      Unan::Program::AbsWork::get(work_id).lien_show(titre)
+      Unan::Program::AbsWork.get(work_id).lien_show(titre)
     }
 
   rescue Exception => e

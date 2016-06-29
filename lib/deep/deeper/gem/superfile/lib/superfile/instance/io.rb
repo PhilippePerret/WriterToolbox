@@ -2,8 +2,8 @@
 require 'erb'
 
 class SuperFile
-  
-  
+
+
   # Ecrit le texte +str+ dans le fichier
   def write str
     unless exist? && directory?
@@ -18,7 +18,7 @@ class SuperFile
       raise "Can't write a folder…"
     end
   end
-  
+
   # Ajoute du texte au fichier (ou le crée)
   def add str
     if !exist? || file?
@@ -30,9 +30,9 @@ class SuperFile
     end
   end
   alias :append :add
-  
-  
-  # Lit le fichier ou retourne la liste des NOMS de files du 
+
+
+  # Lit le fichier ou retourne la liste des NOMS de files du
   # dossier
   def read
     raise ERRORS[:inexistant] % {path: path} unless exist?
@@ -44,7 +44,7 @@ class SuperFile
       Dir.glob("#{path}/*").collect {|m| File.basename(m) }
     end
   end
-  
+
   # Lit le fichier est l'écrit dans la sortie standard
   alias :top_puts :puts
   def puts
@@ -56,7 +56,7 @@ class SuperFile
       top_puts read
     end
   end
-  
+
   # @return le code HTML du fichier en fonction de son format
   # +bind+ Si la méthode est appelée directement (pour obtenir le code
   # du fichier), on peut fournir en premier argument l'objet à binder
@@ -74,7 +74,7 @@ class SuperFile
       c << case extension
       when 'erb'
         self.deserb @bind
-      when 'html', 'htm', 'txt'  
+      when 'html', 'htm', 'txt'
         read
       when 'md', 'markdown'
         # Pour un fichier Markdown, on essaie toujours de lire son fichier
@@ -91,7 +91,7 @@ class SuperFile
       end
     end
   end
-  
+
   # {String}
   # Déserbe le fichier (si c'est un fichier ERB) et retourne son contenu
   # +bindee+    L'objet bindé à la vue, éventuellement
@@ -104,7 +104,13 @@ class SuperFile
       end
       bindee = bindee.bind unless bindee.class == Binding
     end
-    ERB::new( read ).result( bindee )
+    # debug "read : #{read.inspect.gsub(/</,'&lt;')}"
+    begin
+      ERB.new( read ).result( bindee )
+    rescue Exception => e
+      debug e
+      "[PROBLÈME AVEC LA VUE #{path}]"
+    end
   end
-  
+
 end

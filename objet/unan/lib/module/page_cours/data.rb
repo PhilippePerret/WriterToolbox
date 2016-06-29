@@ -28,7 +28,7 @@ class PageCours
   # +auteur+ Instance User de l'auteur, par défaut user courant.
   def upage auteur = nil
     auteur ||= user
-    User::UPage::get(auteur, self.id)
+    User::UPage.get(auteur, self.id)
   end
 
 

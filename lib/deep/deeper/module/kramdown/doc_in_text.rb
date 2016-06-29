@@ -69,13 +69,15 @@ class MEFDocument
 
   def traite_code_as_html
     return (@codet.in_pre(class:classes.join(' ')) + self.legend) if brut?
-    res = if events?
-      @codet.traite_as_events_html
-    elsif scenario?
-      @codet.traite_as_script_per_format(:html)
-    else
-      lines.collect{ |l| l.traite_as_line_of_document_per_format }.join('')
-    end
+    # Si c'est un document de classe 'brut', on ne passe pas par là
+    res =
+      if events?
+        @codet.traite_as_events_html
+      elsif scenario?
+        @codet.traite_as_script_per_format(:html)
+      else
+        lines.collect{ |l| l.traite_as_line_of_document_per_format }.join('')
+      end
 
     @codet = unless brut?
       res.traite_as_document_content_html
@@ -212,12 +214,21 @@ class ::String
   end
 
   def mef_document output_format = :html
+    debug "-> mef_document(format = #{output_format})"
     return self unless self.match(/\nDOC\//)
-    str = (self + "\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
-      classes_css = $1.freeze
-      doc_content = $2.freeze
-      MEFDocument::new(doc_content, classes_css).output(output_format)
-    }
+    str = self.gsub(/\r/,'')
+    if ("#{str}\n").match(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m)
+      debug "Je contiens un document"
+    else
+      debug "Je n'ai pas trouvé le document"
+    end
+    str =
+      ("#{str}\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
+        classes_css = $1.freeze
+        doc_content = $2.freeze
+        debug "Je vais traiter un document de classe #{classes_css}"
+        MEFDocument.new(doc_content, classes_css).output(output_format)
+      }
     return str
   end
 
@@ -328,8 +339,8 @@ class ::String
     else
       # Tout autre format que :latex, donc :html
       case self
-      when /^(\#+) /
-        tout, dieses, titre = self.match(/^(\#+) (.*?)$/).to_a
+      when /^(#+) /
+        tout, dieses, titre = self.match(/^(#+) (.*?)$/).to_a
         ht = "h#{dieses.length}"
         "<#{ht}>#{titre.traite_as_markdown_per_format}</#{ht}>"
       when /^(  |\t)/

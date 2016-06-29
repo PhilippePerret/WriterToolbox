@@ -18,3 +18,4 @@ Et surtout par les fichiers du dossier :
 Les toute dernières actualités sont consignées dans le fichier :
 
     ./hot/last_actualites.rb
+

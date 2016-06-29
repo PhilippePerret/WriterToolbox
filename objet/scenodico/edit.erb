@@ -2,7 +2,7 @@
 # Vue pour l'édition du mot
 raise_unless_admin
 %>
-<%= Scenodico::titre_h1("Édition de mot") %>
+<%= Scenodico.titre_h1("Édition de mot") %>
 <% if OFFLINE %>
   <p class='air warning'>
     Pour le moment, comme Marion corrige les définitions ONLINE, il faut éditer le dictionnaire seulement en ONLINE.
@@ -91,7 +91,6 @@ end
 
   <%# CATÉGORIES %>
   <%= form.field_text("Catégories", 'categories', nil, {class:'milong', text_after: menu_categories}) %>
-
 
   <%= form.field_textarea("Liens", 'liens', nil) %>
   <%= form.field_description("Mettre les liens les uns en dessous des autres, en séparant par des '::' l'adresse URL du titre à donner au lien.") %>

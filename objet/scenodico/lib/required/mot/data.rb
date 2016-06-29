@@ -4,14 +4,14 @@ class Mot
 
   def mot         ; @mot        ||= get(:mot)             end
   def definition  ; @definition ||= get(:definition)      end
-  def liens       ; @liens      ||= get(:liens)           end
+  def liens       ; @liens      ||= get(:liens).force_encoding('utf-8') end
   def synonymes   ; @synonymes  ||= dejoint(:synonymes)   end
   def contraires  ; @contraires ||= dejoint(:contraires)  end
   def relatifs    ; @relatifs   ||= dejoint(:relatifs)    end
   def categories  ; @categories ||= dejoint(:categories)  end
 
   def dejoint key
-    (get(key) || "").split(' ')
+    ( get(key) || "" ).split(' ')
   end
   def get_all
     res = super
@@ -23,6 +23,7 @@ class Mot
         res[k] = v
       end
     end
+    @liens.nil? || @liens = res[:liens] = @liens.force_encoding('utf-8')
     res
   end
 

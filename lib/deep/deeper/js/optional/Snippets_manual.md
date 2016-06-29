@@ -25,7 +25,7 @@
 
 > Note : Pour une utilisation dans les sites RESTFULL, il faut importer cette librairie à l'aide du code :
 
-    page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.1.js").to_s)
+    page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
 
 Voici une présentation succinte de l'utilisation des snippets. Cette définition peut se faire par exemple quand on focusse sur une champ d'édition.
 

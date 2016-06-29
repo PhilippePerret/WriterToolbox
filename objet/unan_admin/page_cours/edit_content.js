@@ -3,6 +3,35 @@ if(undefined==window.PageCours){window.PageCours = new Object()}
 $.extend(window.PageCours,{
   etat_normal: true,
 
+  enable_shortcuts:function(){
+    $('textarea#page_cours_content').bind('keypress',function(ev){
+      PageCours.onkeypress(ev);
+    })
+  },
+  disable_shortcuts:function(){
+    $('textarea#page_cours_content').unbind('keypress')
+  },
+
+  onkeypress:function(ev){
+    if(ev.metaKey){
+      // F.show("Méta key avec touche " + ev.charCode);
+      if(ev.charCode==115 /* s */){
+        // On enregistre le code
+        ev.stopPropagation();
+        ev.preventDefault();
+        $('form#form_edit_page_cours').submit();
+        return false
+      } else if (ev.charCode == 112 /* P */){
+        // Prévisualiser la page
+        ev.stopPropagation();
+        ev.preventDefault();
+        var wnd = window.open("page_cours/41/show?in=unan", 'visualisation_page_cours')
+        return false
+      }
+
+    }
+  },
+
   toggle_interface:function(){
     if (this.etat_normal){
       this.set_interface();
@@ -57,6 +86,9 @@ $(document).ready(function(){
 
   Snippets.set_scopes_to([
     "text.html",
+    {
+      'paction' : { replace: "<p class=\"user_action\">\n$1\n</p>\n$0"}
+    },
     "text.erb",
     {
       'work' : {replace:"WORK[$1|$2] $0"},
@@ -67,10 +99,13 @@ $(document).ready(function(){
     ])
 
   $('textarea#page_cours_content').bind('focus',function(){
-    Snippets.watch($(this))
+    Snippets.watch($(this));
+    PageCours.enable_shortcuts();
   })
   $('textarea#page_cours_content').bind('blur',function(){
-    Snippets.unwatch($(this))
+    Snippets.unwatch($(this));
+    PageCours.disable_shortcuts();
   })
 
+  $('textarea#page_cours_content').focus();
 })

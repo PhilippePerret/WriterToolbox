@@ -51,8 +51,7 @@ class User
     # page elle-même, qui doit exister. Mais pour chaque page de cours,
     # on fait un enregistrement propre à l'user dans sa table 'pages_cours'
     # où sont consignées ses informations)
-    upage = User::UPage::get(self, ipage.id)
-    debug "-> UPage#add_lecture"
+    upage = User::UPage.get(self, ipage.id)
     upage.add_lecture
     upage.set_lue unless upage.lue?
   end
