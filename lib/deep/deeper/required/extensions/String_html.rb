@@ -135,9 +135,9 @@ class String
   # est escapé par CGI, contrairement à la version par String qui n'est
   # pas touchée.
   def in_a attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     qs = attrs.delete(:query_string)
-    if attrs.has_key?(:href)
+    if attrs.key?(:href)
       unless qs.nil?
         href = attrs[:href]
         href += href.match(/\?/) ? '&' : '?'
@@ -150,6 +150,13 @@ class String
       end
     else
       attrs.merge!( :href => 'javascript:void(0)' )
+    end
+    if attrs.key?(:target)
+      attrs[:target] =
+        case attrs[:target]
+        when :new, :blank then '_blank'
+        else attrs[:target]
+        end
     end
     html_balise 'a', attrs
   end

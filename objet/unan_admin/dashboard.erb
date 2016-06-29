@@ -9,8 +9,9 @@
 <%
 http = "http://localhost/WriterToolbox"
 %>
-<div class="small right">
-  <%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program") %>
+<div class="small right btns">
+  <%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program", target: :new) %>
+  <%= 'Position des auteurs (RÉELLE)'.in_a(href: "#{site.distant_url}/unan/cal_auteurs", target: :new) %>
 </div>
 <fieldset class='tools'>
   <legend>CARTES</legend>
