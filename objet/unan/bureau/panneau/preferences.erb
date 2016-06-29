@@ -30,7 +30,23 @@
 
   <%= form.field_checkbox("Récapitulatif journalier", 'pref_daily_summary', user.preference(:daily_summary)) %>
   <%= form.field_description("Si vous cochez cette case, un mail vous sera envoyé quotidiemment pour faire un point sur votre avancée. Dans le cas contraire, vous ne recevrez un mail que lorsqu'en cas de nouveau travail à fournir.") %>
-  <%= form.field_checkbox("") %>
+
+  <%
+  # MENU DE L'HEURE DE L'ENVOI DU MAIL
+  # ----------------------------------
+  visu, heure =
+    if user.preference(:fixed_time_mail)
+      [true, user.preference(:dayly_mail_time)]
+    else
+      [false, 4]
+    end
+  menu_heure_fixed_time =
+    (
+      (4..14).in_select(selected: heure, id: 'dayly_mail_time', name: 'dayly_mail_time', class: 'inline') +
+      ' heures'
+    ).in_span(id: 'span_fixed_time', visible: visu)
+  %>
+  <%= form.field_checkbox("Envoyer le mail quotidien à", 'pref_fixed_time_mail', user.preference(:fixed_time_mail), {onchange: 'Prefs.on_check_fixed_time(this)', text_after: menu_heure_fixed_time}) %>
 
   <%= form.field_checkbox("Pastille taches dans l'entête de page", 'pref_pastille_taches', user.preference(:pastille_taches)) %>
   <%= form.field_description("Si vous cochez cette case, une pastille indiquant le nombre de tâches à exécuter s'affichera toujours en haut à droite de votre fenêtre. En cliquant dessus, vous pourrez rejoindre votre bureau à tout moment.") %>

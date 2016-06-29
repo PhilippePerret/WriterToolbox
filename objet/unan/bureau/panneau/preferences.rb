@@ -10,7 +10,8 @@ class Bureau
     @user_preferences ||= {
       bureau_after_login:   false,
       daily_summary:        false,
-      pastille_taches:      false
+      pastille_taches:      false,
+      fixed_time_mail:      false,
     }
   end
 
@@ -42,7 +43,14 @@ class Bureau
           end
         end
       user_preferences.merge! key => def_value
-      if key == :bureau_after_login
+      if key == :fixed_time_mail
+        # Si c'est la préférence d'envoi du mail quotidien
+        # à heure fixe, il faut mémoriser l'heure choisi
+        # par l'auteur.
+        dayly_mail_time = param(:dayly_mail_time)
+        debug "Heure choisie : #{dayly_mail_time} heures"
+        user_preferences.merge!(dayly_mail_time: dayly_mail_time.to_i)
+      elsif key == :bureau_after_login
         # Réglage de la redirection après le login
         # Si elle est réglée ici, il faut la régler aussi
         # pour la préférence définie dans le profil.

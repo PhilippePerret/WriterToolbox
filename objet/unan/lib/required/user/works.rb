@@ -13,14 +13,9 @@ class User
   def works_unstarted type = :task
     @works_unstarted ||= {}
     @works_unstarted[type] ||= begin
-      arr =
       aworks_unstarted_type(type).collect do |kpaire, haw|
         Unan::Program::AbsWork.new( haw[:id], {pday: haw[:pday]} )
       end
-      if type == :quiz
-        debug "Liste des quiz : #{arr.collect{|w| w.id}}"
-      end
-      arr
     end
   end
   # Les tâches non achevées
@@ -78,12 +73,10 @@ class User
   #
   #
   def aworks_unstarted_type type_expected
-    debug "-> aworks_unstarted_type(type_expected = #{type_expected.inspect})"
     h = {}
     aworks_unstarted.each do |kpaire, hw|
       type_sym = Unan::Program::AbsWork::TYPES[hw[:type_w]][:type] # p.e. :task
       next if type_sym != type_expected
-      debug "type_sym = #{type_sym.inspect}, on le prend"
       h.merge!(kpaire => hw)
     end
     return h
