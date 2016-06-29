@@ -30,6 +30,7 @@
 
   <%= form.field_checkbox("Récapitulatif journalier", 'pref_daily_summary', user.preference(:daily_summary)) %>
   <%= form.field_description("Si vous cochez cette case, un mail vous sera envoyé quotidiemment pour faire un point sur votre avancée. Dans le cas contraire, vous ne recevrez un mail que lorsqu'en cas de nouveau travail à fournir.") %>
+  <%= form.field_checkbox("") %>
 
   <%= form.field_checkbox("Pastille taches dans l'entête de page", 'pref_pastille_taches', user.preference(:pastille_taches)) %>
   <%= form.field_description("Si vous cochez cette case, une pastille indiquant le nombre de tâches à exécuter s'affichera toujours en haut à droite de votre fenêtre. En cliquant dessus, vous pourrez rejoindre votre bureau à tout moment.") %>

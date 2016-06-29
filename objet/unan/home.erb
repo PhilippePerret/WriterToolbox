@@ -7,19 +7,26 @@
   <%
     # LES OUTILS SI L'UTILISATEUR EST L'ADMINISTRATEUR
     if user.admin? %>
-    <div class='admin_tools right small'>
-      <%= "Outils administrateur".in_div %>
-    <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
-    </div>
+      <div class='admin_tools right small btns'>
+        <span>[Admin]</span>
+        <%= "Outils".in_a(href: 'unan_admin/dashboard') %>
+        <span> - </span>
+        <%= "Calendrier général".in_a(href:"abs_pday/cal?in=unan/program") %>
+      </div>
     <% end %>
 
 <% end %>
 
 <%
-
+ajout_abonned =
+  if true #user.subscribed?
+    "<strike>#{Unan.tarif_humain}</strike> (<b>#{(Unan.tarif - site.tarif)}0 € seulement</b> puisque vous êtes déjà abonné#{user.f_e} !)"
+  else
+    "#{Unan.tarif_humain} pour toute une année"
+  end
 lien_subscribe_program = (
   "S’inscrire au programme".in_a(href:"unan/paiement", style:'color:white;font-size:16pt') +
-  "<br>#{Unan::tarif_humain} pour toute une année".in_span(class: 'tiny center')
+  "<br>#{ajout_abonned}".in_span(class: 'tiny center')
   ).in_div(class: 'btn', style: 'background-color:green;color:white;display:inline-block;text-align:center;padding:1em 2em')
 
 
@@ -46,9 +53,9 @@ if user.identified?
       # Un user identifié mais qui ne suit pas le programme
       # un an un script
 %>
-  <div class="right"><%= lien_subscribe_program %></div>
   <p class='small right red'>Vous ne suivez pas (encore) le programme “Un An Un Script”.</p>
-  <p class='right'>
+  <div class="center air"><%= lien_subscribe_program %></div>
+  <p class='right air'>
     <%= "#{DOIGT}Découvrir le programme UN AN UN SCRIPT en profondeur".in_a(href:"aide/overview?in=unan") %>
   </p>
 <%

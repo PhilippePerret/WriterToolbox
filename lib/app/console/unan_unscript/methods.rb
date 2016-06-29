@@ -44,6 +44,17 @@ class Console
   end
 
   def unan_build_manuel pour
+    # On peut rassembler ici les ERREURS POSSIBLES qui empêchent
+    # la compilation du fichier, afin d'en informer l'admin quand
+    # on compile le fichier.
+    sub_log(<<-HTML)
+    <p>Les erreurs pouvant subvenir sont les suivantes :</p>
+    <ul>
+      <li>Des tirets plats ont été utilisés pour les noms de fichiers d'images ;</li>
+      <li>Extensions de fichiers d'image incorrects (je crois que PNG — ou PDF — est le bon format) ;</li>
+      <li>De façon générale, peut-être des tirets plats ont-ils été utilisés, il ne faut le faire EN AUCUN CAS.</li>
+    </ul>
+    HTML
     site.require_gem 'latexbook'
     ibook = LaTexBook::new((site.folder_objet+'unan/aide/manuel/latexbook').to_s)
     versions = case pour
@@ -63,6 +74,7 @@ class Console
     end
     return ""
   end
+
   # Méthode qui affichage dans le sublog la valeur des points
   # jour après jour dans le programme UN AN UN SCRIPT
   def unan_affiche_points_sur_lannee
