@@ -76,7 +76,7 @@ class Quiz
         type_quiz.in_span(class: 'type')
       ).in_div(class:'fright') +
       self.titre
-    ).in_div(class:'titre')
+    ).in_div(class: 'titre')
 
   end
 
@@ -143,7 +143,7 @@ class Quiz
       form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
 
       html = ""
-      html << titre.in_div(class:'titre') unless no_titre?
+      html << "<h5 class='titre'>#{titre}</h5>" unless no_titre?
       html << form.force_encoding('utf-8').in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
       html
     end
