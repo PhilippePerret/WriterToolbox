@@ -1,6 +1,20 @@
 Dossier contenant les textes d'aide
 
-# Comment créer un lien d'aide vers un de ces fichiers
+* [Comment choisir entre fichier MD et ERB ?](#commentchoisirentremdeterb)
+* [Comment créer un lien d'aide vers ces fichiers](#creerunlinedaideverscesficheirs)
+
+
+<a name='commentchoisirentremdeterb'></a>
+
+## Comment choisir entre fichier MD et ERB ?
+
+Les fichiers markdown sont plus simples à rédiger mais ne permettent pas la souplesse des fichiers ERB au niveau des variables ou des codes ruby utiles.
+
+Il faut employer `Markdown` lorsqu'on ne doit pas féminiser le texte.
+
+<a name='creerunlinedaideverscesficheirs'></a>
+
+## Comment créer un lien d'aide vers ces fichiers
 
 Lien qui sera un point d'interrogation lié au fichier d'aide :
 

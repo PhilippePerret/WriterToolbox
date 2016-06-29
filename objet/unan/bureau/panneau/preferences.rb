@@ -47,9 +47,8 @@ class Bureau
         # Si c'est la préférence d'envoi du mail quotidien
         # à heure fixe, il faut mémoriser l'heure choisi
         # par l'auteur.
-        dayly_mail_time = param(:dayly_mail_time)
-        debug "Heure choisie : #{dayly_mail_time} heures"
-        user_preferences.merge!(dayly_mail_time: dayly_mail_time.to_i)
+        dayly_mail_hour = param(:dayly_mail_hour)
+        user_preferences.merge!(dayly_mail_hour: dayly_mail_hour.to_i)
       elsif key == :bureau_after_login
         # Réglage de la redirection après le login
         # Si elle est réglée ici, il faut la régler aussi

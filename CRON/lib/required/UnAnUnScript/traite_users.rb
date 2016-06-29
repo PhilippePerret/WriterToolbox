@@ -45,6 +45,31 @@ class << self
     log "<- traite_users_unanunscript"
   end
 
+  # Méthode qui traite le programme dont les données sont
+  # transmises dans +hprog+
+  #
+  # Elle va regarder s'il faut envoyer le rapport quotidien de
+  # l'auteur.
+  #
+  # Deux cas peuvent provoquer l'envoi du rapport :
+  #   1. Il est l'heure de l'envoyer, car on a atteint l'heure
+  #      du jour-programme suivant.
+  #   2. L'auteur a demandé à recevoir le mail quotidien à une
+  #      heure fixe (dayly_mail_hour) et on a atteint ce temps
+  #
+  # Noter que si l'auteur est à un autre rythme que 5, seul le
+  # premier cas est pertinent.
+  #
+  # Noter aussi le système pour la gestion d'envoi du mail à
+  # heure fixe. En fait, on change tout simplement l'heure de
+  # départ du programme pour que le changement de jour se fasse
+  # toujours à cette heure-là. Une fois réglée, on n'a plus rien
+  # à faire.
+  # Donc, ici, on se contente de vérifier que si l'auteur veut
+  # recevoir son mail à heure fixe et qu'il a bien un rythme de
+  # 5, l'heure de son prochain envoi sera l'heure déterminé par
+  # ses préférences.
+  #
   def traite_program_unanunscript hprog
     auteur_id   = hprog[:auteur_id]
     pday        = hprog[:current_pday]
@@ -56,12 +81,45 @@ class << self
     auteur = User.new(auteur_id)
     log "    Auteur : #{auteur.pseudo} (##{auteur.id})"
 
+    # Si l'auteur veut recevoir son mail à heure fixe et qu'il
+    # est bien en rythme 5, il faut vérifier que l'heure de son
+    # prochain envoi correspond bien à l'heure qu'il a choisi.
+    # Dans le cas contraire, il faut modifier l'heure de son
+    # prochain envoi. Noter que ça peut intervenir à n'importe
+    # quelle heure.
+    begin
+      if auteur.preference(:fixed_time_mail)
+        if rythme == 5
+          heure_choisie = auteur.preference(:dayly_mail_hour).to_i
+          jour_start    = Time.at(pday_start)
+          heure_start   = jour_start.hour
+          if heure_start != heure_choisie
+            # L'heure choisie ne correspond pas à l'heure de
+            # démarrage du jour-programme courant. On modifie
+            # cette heure pour que ça corresponde. C'est-à-dire
+            # qu'on prend le jour de démarrage en référence,
+            # et qu'on règle le pday_start à l'heure choisie
+            heure_good = Time.new(jour_start.year, jour_start.month, jour_start.day, heure_choisie, 0, 0)
+            pday_start = hprog[:current_pday_start] = heure_good.to_i
+            auteur.program.set(current_pday_start: pday_start)
+          end
+        else
+          # Ça n'a pas de sens pour un rythme qui ne correspond
+          # pas à : 1 jour-programme = 1 jour réel
+      end
+    rescue Exception => e
+      debug e
+      error_log e, "Impossible de mettre l'heure d'envoi du rapport quotidien à l'heure choisie (#{heure_choisie})…"
+    end
+
     # Calcul du début du prochain jour
     next_pday_start = (pday_start + 1.day.to_f * (5.0 / rythme)).to_i
     log "  = next_pday_start : #{next_pday_start}" +
       "\n                NOW : #{NOW}" +
       "\n             Rythme : #{rythme} "
-    if NOW < next_pday_start
+
+    # Il n'est pas encore l'heure
+    if NOW <= next_pday_start
       log "Devra être envoyé dans #{(next_pday_start - NOW).as_duree}"
       # begin
       #   site.send_mail_to_admin(
@@ -77,10 +135,12 @@ class << self
 
     # Conditions pour que le programme soit passé au jour suivant:
     # 1. Il faut que l'on ait dépassé la date du début du jour-suivant
-    # Noter que lorsque ça se produit, puisque le début du jour-programme
-    # sera modifié, la valeur de next_pday_start sera poussée au lendemain
-    # et donc il faudra attendre que le temps arrive à nouveau à cette
-    # valeur pour ré-envoyer le rapport.
+    #   Noter que lorsque ça se produit, puisque le début du jour-programme
+    #   sera modifié, la valeur de next_pday_start sera poussée au lendemain
+    #   et donc il faudra attendre que le temps arrive à nouveau à cette
+    #   valeur pour ré-envoyer le rapport.
+    # OU
+    # 2. Il est l'heure à laquelle l'auteur veut recevoir son mail
     #
     if NOW > next_pday_start
       log "  --- Changement de jour"
