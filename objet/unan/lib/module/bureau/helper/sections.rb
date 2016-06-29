@@ -21,7 +21,7 @@ class Bureau
   # ---------------------------------------------------------------------
   #   SECTIONS PRINCIPALES
   # ---------------------------------------------------------------------
- 
+
   # Section des travaux à démarrer
   #
   # +type+ (:task, :page, :quiz ou :forum)
@@ -29,10 +29,16 @@ class Bureau
     dname = DATA_NAME_BY_TYPE[type]
     demarrer  = dname[:starter]
     choses    = dname[:plur]
+    # Ci-dessous, on force le rafraichissement pour que la
+    # liste soit à jour même lorsque l'on vient de marquer
+    # un travail vu ou démarré.
+    # Dans le cas contraire, lorsque c'est une page de cours,
+    # elle reste dans la section des pages à marquer "vu" si
+    # on garde le même user.
+    # Attention, faire @auteur = nil ne suffit pas car @auteur
+    # prend la valeur de l'user courrant
+    @auteur = User.current = User.new(auteur.id)
     arr = auteur.works_unstarted(type)
-    if type == :quiz
-      debug "Nombre de quiz non démarrés : #{arr.count}"
-    end
     if arr.count > 0
       (
         "<h4>#{choses} à #{demarrer}</h4>" +
