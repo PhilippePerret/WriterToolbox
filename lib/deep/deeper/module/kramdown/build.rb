@@ -40,7 +40,7 @@ class ::String
   #
   def kramdown options = nil
 
-    options ||= Hash::new
+    options ||= Hash.new
     options[:output_format] = :html unless options.key?(:output_format)
 
     owner = options[:owner]
@@ -82,6 +82,7 @@ class ::String
         begin
           res = eval(code)
         rescue Exception => e
+          debug e
           "# ERREUR EN ÉVALUANT : #{code} : #{e.message}"
         else
           if egal != nil
@@ -222,7 +223,7 @@ class SuperFile
   #                   de liens.
   #
   def kramdown options = nil
-    options ||= Hash::new
+    options ||= Hash.new
 
     # On doit produire un code ERB
     options[:output_format] ||= :erb

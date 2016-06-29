@@ -25,7 +25,7 @@ class << self
     }
     Unan.table_programs.select(drequest).collect do |hprog|
       auteur = User.new(hprog[:auteur_id])
-      debug "auteur position : #{auteur.cal_position.inspect} (jour #{auteur.program.current_pday})"
+      # debug "auteur position : #{auteur.cal_position.inspect} (jour #{auteur.program.current_pday})"
       a = auteur.avatar
       @nombre_auteurs_per_pday[auteur.pday] += 1
       a # pour le collect
@@ -81,7 +81,6 @@ class User
     ).in_div(class: css)
   end
   def div_infos(valign_infos, halign_infos)
-    # return ""
     @div_infos ||= begin
       c = ''
       c << picto
@@ -95,9 +94,18 @@ class User
         c << line_info('Documents en cours', current_pday.uworks_undone.count)
         c << line_info('Non démarrés', nombre_unstarted, nombre_unstarted > 0 ? 'red' : nil)
         c << line_info('En dépassement', nombre_overrun, nombre_overrun > 0 ? 'red' : nil)
+        c << div_contact
       end
       c.in_div(class: "infos #{valign_infos} #{halign_infos}")
     end
+  end
+
+  # Le div permettant de contacter l'auteur (en fait,
+  # un renvoi vers le formulaire de contact)
+  def div_contact
+    return '' unless user.admin? # ici il s'agit de l'auteur courant
+    '<hr>' +
+    'Le contacter/message type'.in_a(href: "unan_admin/contact?uid=#{id}", target: :new)
   end
 
   # Couleur générale de fond en fonction de l'état
