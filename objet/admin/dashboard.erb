@@ -29,12 +29,12 @@ if user.phil?
    %>
    <%=
     (
-      "Analyses".in_a(href:'admin/dashboard?in=analyse')
+      "Analyses".in_a(href: 'admin/dashboard?in=analyse')
     ).in_div(class:'admin_tool')
    %>
    <%=
     (
-      "Bitly".in_a(href:"bitly/main")
+      "Bitly".in_a(href: 'https://app.bitly.com/bitlinks/1TkHhvC', target: :new)
     ).in_div(class:'admin_tool')
     %>
    <% end %>

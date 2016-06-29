@@ -22,14 +22,14 @@ site.require 'form_tools'
 question_id = (site.current_route.objet_id || param(:question_id) || (param(:question)||Hash::new)[:id]).to_i_inn
 if question_id != nil
   debug "question_id : #{question_id}"
-  iquestion = Unan::Quiz::Question::new(question_id)
+  iquestion = Unan::Quiz::Question.new(question_id)
   if iquestion.exist?
     dquestion = iquestion.get_all
     dquestion.merge!(
       type_a: iquestion.type_a,
       type_c: iquestion.type_c
     )
-    debug dquestion
+    # debug dquestion
   else
     dquestion = iquestion = nil
   end
@@ -77,7 +77,7 @@ lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(Question,'on_want_dest
     case form.objet[:reponses]
     when String then form.objet[:reponses]
     else form.objet[:reponses].to_json
-    end
+    end.force_encoding('utf-8')
   %></textarea>
 
 

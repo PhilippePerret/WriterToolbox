@@ -133,8 +133,12 @@ class Quiz
       form = ''
       form << 'bureau_save_quiz'.in_hidden(name:'operation')
       form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
-      form << awork.id.in_hidden(name: 'quiz[awork_id]', id: 'quiz_awork_id')
-      form << awork.pday.in_hidden(name: 'quiz[awork_pday]', id: 'quiz_awork_pday')
+      unless awork.nil?
+        # Se produit lorsque l'on édite le formulaire en dehors
+        # du travail normal (administration)
+        form << awork.id.in_hidden(name: 'quiz[awork_id]', id: 'quiz_awork_id')
+        form << awork.pday.in_hidden(name: 'quiz[awork_pday]', id: 'quiz_awork_pday')
+      end
       if work != nil
         form << work.id.to_s.in_hidden(name:'quiz[work_id]', id:"quiz_work_id-#{id}")
       end

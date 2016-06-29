@@ -41,16 +41,22 @@ class Quiz
   # à ce questionnaire.
   def work
     @work ||= begin
-      drequest = {
-        where:    {
-          abs_work_id:  awork_id || awork.id,
-          program_id:   auteur.program.id,
-          abs_pday:     awork_pday || awork.pday
-        },
-        colonnes: []
-      }
-      wid = auteur.table_works.get(drequest)[:id]
-      Unan::Program::Work.new(auteur, wid)
+      if awork.nil?
+        # Se produit lorsque c'est une édition du
+        # quiz
+        nil
+      else
+        drequest = {
+          where:    {
+            abs_work_id:  awork_id || awork.id,
+            program_id:   auteur.program.id,
+            abs_pday:     awork_pday || awork.pday
+          },
+          colonnes: []
+        }
+        wid = auteur.table_works.get(drequest)[:id]
+        Unan::Program::Work.new(auteur, wid)
+      end
     end
   end
 

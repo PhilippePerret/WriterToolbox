@@ -11,7 +11,7 @@ class Quiz
   # réponses qui ont été fournies par l'user.
   def reponses_auteur
     @reponses_auteur ||= begin
-      if quiz = auteur.table_quiz.get(where:{quiz_id: id, program_id: auteur.program_id})
+      if auteur && (quiz = auteur.table_quiz.get(where:{quiz_id: id, program_id: auteur.program_id}))
         JSON.parse( quiz, symbolize_names: true )
       else
         {}

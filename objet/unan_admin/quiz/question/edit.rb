@@ -16,7 +16,7 @@ class Question
       if question_id.nil?
         error "Il faut indiquer l'identifiant de la question à détruire…"
         return
-      elsif Unan::table_questions.count(where:{id: question_id}) == 0
+      elsif Unan.table_questions.count(where:{id: question_id}) == 0
         flash "La question ##{question_id} n'existe pas ou plus."
       else
         Unan::table_questions.delete(question_id)
