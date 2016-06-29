@@ -23,6 +23,8 @@ class Sync
   #
   def synchroniser
 
+    # Synchronisation du site
+    synchronize_site_files if param('sync_site_files') == 'on'
     # Synchronisation des tâches
     synchronize_taches    if param('sync_taches') == 'on'
     # Synchronisation des citations

@@ -5,7 +5,7 @@
 
 =end
 
-PDAY = 3
+PDAY = 10
 
 site.require_objet 'unan'
 site.require_objet 'unan_admin'
