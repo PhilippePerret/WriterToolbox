@@ -16,13 +16,23 @@ class PageCours
     # Cas spécial de l'administrateur visitant cette page
     if user.admin? && !user.unanunscript?
       # On prend Benoit
-      return 'Cette page doit être lue par Benoit pour être affichée.'.in_div(class: 'warning')
+      error 'Cette page est lue par Benoit pour être affichée correctement.'
+      user_init_id = user.id.freeze
+      user = User.get(2) # Benoit
+      User.current = user
+    else
+      user_init_id = nil
     end
-    user.add_lecture_page_cours(self) if user.unanunscript?
+    user.add_lecture_page_cours(self) if user_init_id
     titre.in_h2 + read
   rescue Exception => e
     debug e
-    "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister]"
+    "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister (lire le débug)]"
+  ensure
+    unless user_init_id.nil?
+      # On remet l'utilisateur initial
+      User.current = User.get(user_init_id)
+    end
   end
 end #/PageCours
 end #/Program
