@@ -49,10 +49,18 @@ class UPage
   def output_bureau awork
     @awork = awork
     (
-      titre_page      +
-      resume_page     +
+      titre_page        +
+      resume_page       +
+      infos_temporelles +
       boutons_page
     ).in_div(class:'work page')
+  end
+
+  # Donne les informations temporelles sur la page de cours,
+  # donc la date de fin de lecture principalement et le nombre
+  # de jour qu'il reste pour la lire.
+  def infos_temporelles
+    @awork.rwork.div_echeance
   end
 
   def infos_if_admin

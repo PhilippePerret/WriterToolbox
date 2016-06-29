@@ -287,7 +287,7 @@ class AbsWork
       infos_durees_travail(from)
     ).in_div(class:'autres_infos')
   end
-  # +from+ Cf. l'explicaiton dans la méthode principale `as_card`
+  # +from+ Cf. l'explication dans la méthode principale `as_card`
   def infos_durees_travail from = nil
     s_duree = duree > 1 ? "s" : ""
     pars = [["Durée", duree, "&nbsp;p-jour#{s_duree}"]]

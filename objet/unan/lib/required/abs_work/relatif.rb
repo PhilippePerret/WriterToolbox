@@ -232,7 +232,7 @@ class AbsWork
     # temporelles du travail, c'est-à-dire la durée qu'il doit faire,
     # sa date de début et de fin, si l'échéance est dépassée, etc.
     def div_echeance
-      return "" if completed?
+      return '' if completed?
       mess_duree, css = message_duree_travail
       mess_echeance   = message_echeance_travail( css )
       mess_reste_jours = message_jours_restants_or_depassement
@@ -275,7 +275,7 @@ class AbsWork
           "Vous êtes en dépassement de <span class='exbig'>#{depassement.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
         else
           (
-            "Reste".in_span(class:'libelle va_bottom') +
+            'Reste'.in_span(class:'libelle va_bottom', style: 'margin-right:1em !important') +
             human_reste.in_span(class:'mark_fort')
           ).in_span(class:'fright', style:'margin-top:4px;display:inline-block;margin-left:1em;vertical-align:middle')
         end

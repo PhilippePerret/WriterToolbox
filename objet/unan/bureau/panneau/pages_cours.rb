@@ -8,8 +8,6 @@ class Bureau
   # Cf. l'explication dans home.rb
   def missing_data
     @missing_data ||= begin
-      # TODO Indiquer avec cette méthode quand des pages auraient dû être lues,
-      # ou marquées lues et que la date a été dépassée.
       nil # pour le moment
     end
   end

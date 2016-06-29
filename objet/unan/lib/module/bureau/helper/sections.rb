@@ -57,9 +57,6 @@ class Bureau
     e     = dname[:e]
     chose = dname[:sing].downcase
     arr = auteur.works_undone(type)
-    if type == :quiz
-      debug "Nombre de quiz démarrés mais à faire : #{arr.count}"
-    end
     if arr.count > 0
       arr.collect{ |awork| awork.as_card(auteur: bureau.auteur) }.join('')
     else
