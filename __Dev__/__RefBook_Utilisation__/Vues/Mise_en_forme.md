@@ -150,6 +150,20 @@ Valeurs utilisables : 40, 50, 60, 80, 100, 120, 140, 150, 180, 200, 240, 280, 3
 
 Par exemple, le code `<div class="w80">...</div>` produira un DIV de largeur de 80 pixels.
 
+De la même manière, on peut générer des retraits à l'aide des chiffres à l'aide de la classe `mg` :
+
+    mg quarante       Une marge droite de quarante
+
+On peut trouver :
+
+    mg cinq
+    mg dix
+    mg quinze
+    mg vingt
+    mg vingtcinq
+    mg trente
+    mg trentecinq
+
 <a name='donneestabulaires'></a>
 
 ### Données tabulaires

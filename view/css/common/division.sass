@@ -50,6 +50,35 @@ span.mark_fort
 .retrait5
   margin-left   : 5em
 
+// Pour simuler du code PRE, mais ne pas mettre de white-space, pour
+// que les retours-chariot fassent leur travail.
+.pre, .code
+  font-family     : courier new
+  font-size       : 1em !important
+  text-align      : left !important
+// Quand ce sont des paragraphes, on espace d'un, quand ce sont des
+// div, on n'ajoute pas d'air entre les paragraphes
+p.pre
+  margin-top      : 1em
+div.pre
+  margin-top      : 0em
+  
+.mg
+  &.cinq
+    margin-left : 5%
+  &.dix
+    margin-left : 10%
+  &.quinze
+    margin-left : 15%
+  &.vingt
+    margin-left : 20%
+  &.vingtcinq
+    margin-left : 25%
+  &.trente
+    margin-left : 30%
+  &.trentecinq
+    margin-left : 35%
+
 .mg10pc
   margin-left   : 10%
   margin-right  : 10%

@@ -20,12 +20,12 @@ class PageCours
       # On prend Benoit
       flash 'Cette page est lue par Benoit pour être affichée correctement.'
       user_init_id = user.id.freeze
-      User.current = User.get(2)
+      User.current = Unan.auteurs(as: :instance).first # User.get(2)
     else
       user_init_id = nil
     end
     user_init_id != nil || user.add_lecture_page_cours(self)
-    titre.in_h2 + read
+    titre.in_h2 + read.formate_balises_propres
   rescue Exception => e
     debug e
     "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister (lire le débug)]"

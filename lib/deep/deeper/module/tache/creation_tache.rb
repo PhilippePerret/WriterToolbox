@@ -59,7 +59,7 @@ class Taches
       @route        = datainst[:current_route]
       @last_route   = datainst[:last_route].nil_if_empty
       @qs_init      = datainst[:query_string].nil_if_empty
-      @titre_page   = datainst[:titre_page].nil_if_empty
+      @titre_page   = datainst[:titre_page].strip_tags.nil_if_empty
     end
 
     # Créer la tâche
