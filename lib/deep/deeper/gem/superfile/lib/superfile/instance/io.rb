@@ -109,7 +109,7 @@ class SuperFile
       ERB.new( read ).result( bindee )
     rescue Exception => e
       debug e
-      "[PROBLÈME AVEC LA VUE #{path}]"
+      "[PROBLÈME AVEC LA VUE #{path} : #{e.message}]"
     end
   end
 

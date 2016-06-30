@@ -15,7 +15,7 @@ $.extend(window.PageCours,{
   onkeypress:function(ev){
     if(ev.metaKey){
       // F.show("Méta key avec touche " + ev.charCode);
-      if(ev.charCode==115 /* s */){
+      if(ev.charCode == 115 /* s */){
         // On enregistre le code
         ev.stopPropagation();
         ev.preventDefault();
@@ -25,11 +25,16 @@ $.extend(window.PageCours,{
         // Prévisualiser la page
         ev.stopPropagation();
         ev.preventDefault();
-        var wnd = window.open("page_cours/41/show?in=unan", 'visualisation_page_cours')
+        var wnd = window.open('page_cours/'+this.page_id()+'/show?in=unan', 'visualisation_page_cours')
         return false
       }
 
     }
+  },
+
+  // Retourne le numéro de la page courante
+  page_id:function(){
+    return parseInt( $('input#page_id').val() );
   },
 
   toggle_interface:function(){
@@ -38,8 +43,6 @@ $.extend(window.PageCours,{
     } else {
       this.unset_interface();
     }
-    this.etat_normal = !this.etat_normal ;
-    $('input#interface_state').val(this.etat_normal ? 'not_optimized' : 'optimized')
   },
   // Régler l'interface pour qu'il se concentre sur la page à
   // éditer, en la fixant
@@ -48,31 +51,33 @@ $.extend(window.PageCours,{
     'div#btns_admin_footer', 'div#bande_bas_de_page'
   ],
   set_interface:function(){
-    $(this.liste_objets_to_hide).each(function(i,o){
-      $(o).hide();
-    })
-    $('section#content').css({
-      'position': 'fixed',
-      'top': '0',
-      'left': '0',
-      'margin': '0'
-    })
-    $('h1').css({'font-size': '15pt'});
-    $('a#btn_optimize').html("Ré-initialise l'interface");
+    UI.bloquer_la_page(true);
+    $('textarea#page_cours_content').css({height: '600px', 'min-height':'600px'})
+    // $(this.liste_objets_to_hide).each(function(i,o){
+    //   $(o).hide();
+    // })
+    // $('section#content').css({
+    //   'position': 'fixed',
+    //   'top': '0',
+    //   'left': '0',
+    //   'margin': '0'
+    // })
+    // $('h1').css({'font-size': '15pt'});
   },
   // Remet l'interface dans sa position normale
   unset_interface:function(){
-    $(this.liste_objets_to_hide).each(function(i,o){
-      $(o).show();
-    })
-    $('section#content').css({
-      'position': 'relative',
-      'top': null,
-      'left': null,
-      'margin-left': '134px'
-    })
-    $('h1').css({'font-size': '2.1em'});
-    $('a#btn_optimize').html("Optimise l'interface");
+    UI.bloquer_la_page(false);
+    $('textarea#page_cours_content').css({height: '100px'})
+    // $(this.liste_objets_to_hide).each(function(i,o){
+    //   $(o).show();
+    // })
+    // $('section#content').css({
+    //   'position': 'relative',
+    //   'top': null,
+    //   'left': null,
+    //   'margin-left': '134px'
+    // })
+    // $('h1').css({'font-size': '2.1em'});
   }
 
 })

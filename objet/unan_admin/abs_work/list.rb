@@ -36,7 +36,7 @@ class AbsWork
 
         unless where_clause.empty?
           where_clause = where_clause.join(' AND ')
-          where_clause += " COLLATE NOCASE" if true # filter[:nocase] == 'on'
+          # where_clause += " COLLATE NOCASE" if true # filter[:nocase] == 'on'
         else
           nil
         end

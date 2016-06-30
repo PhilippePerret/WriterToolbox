@@ -33,6 +33,11 @@ page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").t
         d'action à effecture par
         l'utilisateur.
 
+  user.projet.titre_as_folder
+
+    => Renvoie le nom du projet,
+       en tant que titre de dossier.
+
   <img src="view/img/clavier/K_Command.png" /> + <img src="view/img/clavier/K_S.png" /> = Sauvegarder
   <img src="view/img/clavier/K_Command.png" /> + <img src="view/img/clavier/K_P.png" /> = Prévisualiser
 </pre>
@@ -45,6 +50,10 @@ page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").t
 <form id="form_edit_page_cours" class="" action="page_cours/<%= page_id %>/edit_content?in=unan_admin" method="POST">
   <%= "save_page_content".in_hidden(name:'operation') %>
   <%= "not_optimized".in_hidden(name:"interface_state", id:"interface_state") %>
+  <%=
+    # ID de la page, mais ne sert que pour javascript et pour le moment
+    # seulement pour la prévisualisation de la page
+    page_id.in_hidden(id: 'page_id') %>
   <textarea name="page_cours[content]" id="page_cours_content"><%=
     page_cours.content
   %></textarea>

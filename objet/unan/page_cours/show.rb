@@ -4,6 +4,8 @@
 Méthodes pour l'affichage de la page
 
 =end
+raise_unless user.unanunscript? || user.admin?
+
 Unan::require_module 'page_cours'
 
 class Unan
@@ -14,25 +16,22 @@ class PageCours
   # Note : Ajoute également une lecture à l'user.
   def output options = nil
     # Cas spécial de l'administrateur visitant cette page
-    if user.admin? && !user.unanunscript?
+    if !user.unanunscript?
       # On prend Benoit
-      error 'Cette page est lue par Benoit pour être affichée correctement.'
+      flash 'Cette page est lue par Benoit pour être affichée correctement.'
       user_init_id = user.id.freeze
-      user = User.get(2) # Benoit
-      User.current = user
+      User.current = User.get(2)
     else
       user_init_id = nil
     end
-    user.add_lecture_page_cours(self) if user_init_id
+    user_init_id != nil || user.add_lecture_page_cours(self)
     titre.in_h2 + read
   rescue Exception => e
     debug e
     "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister (lire le débug)]"
   ensure
-    unless user_init_id.nil?
-      # On remet l'utilisateur initial
-      User.current = User.get(user_init_id)
-    end
+    # On remet l'utilisateur initial
+    user_init_id.nil? || User.current = User.get(user_init_id)
   end
 end #/PageCours
 end #/Program
