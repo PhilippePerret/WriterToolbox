@@ -21,15 +21,16 @@ lien_show = if form.objet_id.nil?
 else
   "Visualiser".in_a(href:"exemple/#{form.objet_id}/show?in=unan", class:'btn small')
 end
-lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'small btn')
+lien_init = 'Init new'.in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'small btn')
 
+lien_save = 'Sauver'.in_submit(class: 'btn small')
 %>
 <form id="form_exemple_edit" class="dim2080" action="exemple/<%= form.objet[:id] %>/edit?in=unan_admin" method="POST">
 
   <%= "save_exemple".in_hidden(name:'operation', id:'operation') %>
 
   <%# ID %>
-  <%= form.field_text('ID', 'id', nil, {class:'short', text_after:"#{lien_edit} #{lien_show} #{lien_init}"}) %>
+  <%= form.field_text('ID', 'id', nil, {class:'short', text_after:"#{lien_edit} #{lien_show} #{lien_init} #{lien_save}"}) %>
 
   <%# TITRE %>
   <%= form.field_text("Titre", 'titre', nil) %>
@@ -51,7 +52,7 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
 
   <%# SOURCE %>
   <%= form.field_text("Source", 'source', nil) %>
-  <%= form.field_description("Source de l'exemple, de façon simple, comme “Tiré du film XXX” ou “Exemple personnel inventé pour ce travail.”") %>
+  <%= form.field_description("Source de l'exemple. Si existe, sera précédé du text “Exemple tiré de ”, donc la donnée peut-être une balise ou une liste de balise films.") %>
 
   <%# SOURCE TYPE (plusieurs valeurs définissant la valeur finale) %>
   <%= form.field_select("Type", 'source_src', nil, {values: Unan::Program::Exemple::TYPES_SOURCES}) %>
@@ -62,9 +63,3 @@ lien_init = "Init new".in_a(onclick:"$.proxy(Exemple, 'init_new')()", class:'sma
 
   <%= form.submit_button("Enregistrer l'exemple") %>
 </form>
-<%
-# Pour bloquer la fenêtre
-%>
-<script type="text/javascript">
-$(document).ready(function(){UI.bloquer_la_page(true)})
-</script>

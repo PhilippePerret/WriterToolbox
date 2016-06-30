@@ -43,13 +43,16 @@ class Exemple
   end
   def div_infos
     (
-      "Exemple tiré de".in_span(class:'libelle') + source   +
+      "Exemple tiré de".in_span(class:'libelle') + source_formated   +
       "sujet".in_span(class:'libelle')   + sujet_humain      +
       "année".in_span(class:'libelle')   + source_year.to_s  +
-      "créé le".in_span(class:'libelle') + created_at.as_human_date
+      "créé/modifié le".in_span(class:'libelle') + created_at.as_human_date
     ).in_div(class:'infos')
   end
 
+  def source_formated
+    @source_formated ||= source.formate_balises_films
+  end
   def sujet_humain
     @sujet_humain ||= Unan::SujetCible::new(sujet).human_name
   end

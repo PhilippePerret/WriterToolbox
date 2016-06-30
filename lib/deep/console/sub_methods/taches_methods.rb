@@ -155,35 +155,43 @@ class Console
         ::Admin::Taches::new().taches
       end
 
-      # Format de la réponse, en fonction
-      format_ligne = if options.has_key?(:admin)
-        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
-      else
-        "<div class='small'>T.%{tid} %{tache}</div><div class='right tiny'>Pour : %{owner} - Échéance : %{echeance} — %{reste}</div>"
-      end
+      # Format de l'affichage, en fonction du lecteur
+      format_ligne =
+        if options.key?(:admin)
+          "<div class='small%{css}'>T.%{tid} %{tache}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
+        else
+          "<div class='small%{css}'>T.%{tid} %{tache}</div><div class='right tiny'>Pour : %{owner} - Échéance : %{echeance} — %{reste}</div>"
+        end
 
       if task_list.count > 0
         lt = task_list.collect do |itask|
           owner     = itask.admin.pseudo
-          echeance  = if itask.echeance
-            Time.at(itask.echeance).strftime("%d/%m/%y")
-          else
-            "aucune"
-          end
-          reste = if itask.echeance
-            r = ( (itask.echeance - NOW) / 1.day ) + 1
-            if r == 0
-              "doit être finie aujourd'hui".in_span(class:'blue')
-            elsif r > 0
-              "dans #{r} jour#{r > 1 ? 's' : ''}"
-            else
-              "devrait être finie depuis #{r} jour#{r > 1 ? 's' : ''}".in_span(class:'warning')
+          css =
+            if itask.state < 3    then ' discret'
+            elsif itask.state < 6 then ' important'
+            else ' prioritaire'
             end
-          else
-            "---"
-          end
+          echeance  =
+            if itask.echeance
+              Time.at(itask.echeance).strftime("%d/%m/%y")
+            else
+              "aucune"
+            end
+          reste =
+            if itask.echeance
+              r = ( (itask.echeance - NOW) / 1.day ) + 1
+              if r == 0
+                "doit être finie aujourd'hui".in_span(class:'blue')
+              elsif r > 0
+                "dans #{r} jour#{r > 1 ? 's' : ''}"
+              else
+                "devrait être finie depuis #{r} jour#{r > 1 ? 's' : ''}".in_span(class:'warning')
+              end
+            else
+              "---"
+            end
           (
-            format_ligne % {tid: itask.id, tache: itask.tache, echeance: echeance, owner: owner, reste: reste}
+            format_ligne % {tid: itask.id, tache: itask.tache, echeance: echeance, owner: owner, reste: reste, css: css}
           ).in_div
         end.join('')
       else
