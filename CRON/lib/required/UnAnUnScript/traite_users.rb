@@ -106,6 +106,7 @@ class << self
         else
           # Ça n'a pas de sens pour un rythme qui ne correspond
           # pas à : 1 jour-programme = 1 jour réel
+        end
       end
     rescue Exception => e
       debug e
