@@ -1,4 +1,21 @@
 > Note : Je rassemble ici les explicitations de citations afin de pouvoir les reprendre s'il y a un problème.
+#351
+<p>Étonnamment, le bon sens semble être dans l'écriture la qualité la moins partagée. La plupart des erreurs, des faiblesses, des écueils de la narration des apprentis-auteurs découle souvent d'un simple manque de bon sens. On ne peut leur en vouloir : il y a tant à gérer parfois, tant de choses à apprendre, tant de choses à prendre en compte, que la faculté de bon sens peut s'en trouver passagèrement altérée.</p>
+
+<p>Il convient pourtant d'y revenir toujours et de tenter toujours de prendre de la hauteur, de la distance, par rapport à ce qu'on écrit pour se poser la question du simple bon sens.</p>
+
+<p>Et le bon sens, ça commence tout simplement par se poser la question : “Est-ce que tu ferais vraiment ça à sa place ?” en s'interrogeant sur le comportement d'un personnage ou alors “Est-ce que ça te semble vraiment possible ?” en s'inquiétant d'un évènement ou encore “Est-ce qu'on dirait vraiment ça ? et est-ce qu'on le dirait comme ça ?” en sous-pesant un dialogue.</p>
+
+<p>Car même si chaque histoire est différente, si chaque personnage est différent, si chaque façon de parler est propre et différente, il n'en demeure pas moins qu'il existe de nombreux points commun dans nos attitudes, dans nos réactions et dans ce qui est possible de se passer. Qui qu'on soit , on se précipitera toujours en voyant un enfant s'apprêter à traverser une route sans regarder alors qu'un camion approche.</p>
+#96
+<p>J'aime beaucoup cet extrait du voyage du bout de la nuit qui sonne comme une invitation à lâcher prise, à ne pas vouloir comprendre — donc vouloir contrôler.</p>
+
+<p>On ne peut créer autrement. Une histoire, un récit, c'est une chose beaucoup trop complexe pour l'aborder de façon rationnelle, en essayant de la <em>comprendre</em>. Elle met en jeu beaucoup trop de paramètres, de plans différents, de connaissances humaines, psychologiques, structurelles, stylistiques, historiques, un sens des proportions, un sens du général autant que du particulier, et par-dessus tout cela, il faut en plus des idées.</p>
+
+<p>Et comme le souligne avec justesse cet extrait, tout se fait “en même temps”. Car chaque chose interagit avec une autre et avec l'ensemble tout entier. Modifier un simple mot de dialogue peut avoir de graves répercussions sur la structure générale, parfois quelques dizaines de page ou de minutes plus loin. Inverser deux scènes peut métamorphoser l'idiosyncrasie du personnage.</p>
+
+<p>Apprendre à écrire cette chose incroyablement fragile qu'est un récit ne peut se faire par la raison, la compréhension. Ça ne peut être qu'une longue et lente imprégnation, par la pratique et la vie.</p>
+
 #340
 <p>Pour Malraux, et pour faire bref, la <em>naissance</em> d'une œuvre serait toujours conditionnée par la <em>connaissance</em> d'une autre œuvre. Ça n'est pas la vie qui produirait un tableau, ce serait un tableau. Ça n'est pas la vie qui conduirait le scénariste à écrire un film, ça serait un autre film. Ça n'est pas la vie qui conduirait à un roman, mais un autre roman. Bien entendu, on peut être d'accord, ou pas.</p>
 <p>Le terme “à l'origine”, est ici important. Cette lutte, d'après Malraux, entre l'œuvre — la forme — de référence et l'œuvre en devenir n'interviendrait qu'au moment où l'œuvre en devenir nait, c'est-à-dire le moment où le créateur en a l'idée, idée qui serait bien entendu suscitée par l'œuvre de référence.</p>
