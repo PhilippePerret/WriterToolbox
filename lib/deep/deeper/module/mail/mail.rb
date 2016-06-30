@@ -53,7 +53,7 @@ module MailModuleMethods
       v = case v
       when FalseClass, TrueClass, Fixnum then v
       else
-        v = v.strip
+        v = v.strip if v.respond_to?(:strip)
         v == "" ? nil : v
       end
       instance_variable_set("@#{k}", v)

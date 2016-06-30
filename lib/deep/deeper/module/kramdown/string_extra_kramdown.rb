@@ -55,7 +55,7 @@ class ::String
     }
   }
   def kramdown_encart output_format = :html
-    str = self[1..-2].strip # pour enlever les croches
+    str = (self[1..-2] || '').strip # pour enlever les croches
     replacement = REPLACEMENTS_PER_FORMAT[output_format][:br]
     str.gsub!(/\\n/, replacement)
     case output_format

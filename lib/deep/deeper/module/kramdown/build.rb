@@ -78,7 +78,8 @@ class ::String
     elsif code.match(/<\%/)
       code = code.gsub(/<\%(= )?(.+?)\%>/){
         egal = $1.freeze
-        code = $2.strip.freeze
+        code = $2
+        code = code.strip.freeze rescue nil
         begin
           res = eval(code)
         rescue Exception => e

@@ -310,6 +310,10 @@ class ::String
     else
       res.strip.sub(/^<p>(.*?)<\/p>$/,'\1')
     end
+  rescue Exception => e
+    debug e
+    error "Impossible de traiter markdown per format : #{e.message}"
+    self
   end
 
   # Traitement d'une ligne comme la ligne d'un document quand elle
