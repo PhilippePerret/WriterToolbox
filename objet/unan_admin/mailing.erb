@@ -1,0 +1,79 @@
+<%
+# Formulaire de contact permettant de joindre les auteurs qui
+# suivent le programme UN AN UN SCRIPT.
+# Il est donc réservé à l'administrateur.
+raise_unless_admin
+# Ce formulaire permet :
+#   - d'envoyer un message à TOUS les auteurs suivant le programme
+#   - d'envoyer un MESSAGE TYPE à un auteur en particulier
+#   - d'envoyer un message personnel à un auteur
+#   - d'enregistrer un nouveau message type.
+%>
+<%= UnanAdmin.titre_h1('Formulaire de contact')%>
+<%
+# Si le query-string ou les paramètres contiennent `uid`, c'est l'ID
+# de l'auteur à contacter.
+%>
+<p class='italic small discret'>
+  Noter que ce formulaire sert SEULEMENT à contacter les auteurs du programme UN AN UN SCRIPT.
+</p>
+<%
+site.require 'form_tools'
+form.prefix= 'contact'
+
+envoi_a_tous = param(:uid).nil?
+
+# Pour choisir un message type
+values_messages_type = UnanAdmin::Contact.menu_values_messages_type
+
+# Pour les formats
+values_format = [
+  ['htm', 'HTML'],
+  ['erb', 'ERB'],
+  ['md', 'Markdown/Kramdown']
+]
+%>
+<%= if envoi_a_tous
+      'Envoi à tous les auteurs qui suivent le programme'
+    else
+      "Envoi du message à #{destinataire.pseudo} (##{destinataire.id})" +
+      ' (envoyer à tous)'.in_a(href: 'unan_admin/contact')
+    end.in_p(class: 'bold')
+%>
+<form id="unanadmin_contact_form" class="dim2080" action="unan_admin/mailing" method="POST">
+  <%= 'soumettre_contact_form'.in_hidden(name: 'operation') %>
+  <% if param(:uid) %>
+    <%= param(:uid).in_hidden(name: 'uid') %>
+  <% end %>
+  <%= form.field_select('', 'mtype', nil, {values: values_messages_type}) %>
+  <%= form.field_description('Ce message type pourra être modifié à partir du moment où il est choisi (c’est toujours le sujet et le message ci-dessous qui sont envoyé)') %>
+  <%= form.field_text('Sujet', 'subject') %>
+  <%= form.field_description('Noter que même en cas de message type, si ce sujet est (re)défini, il sera utilisé à la place du sujet du message-type.') %>
+  <%= form.field_textarea('Message', 'message', nil, {style:'height:280px'}) %>
+  <div class='row'><span class='libelle'></span><span class='value small'>
+    Pour faire référence à l'auteur, utiliser la variable `auteur`. Par exemple : `<%= '<' %>%= auteur.pseudo %>`.
+  </span>
+  <%= form.field_select('Format', 'format', nil, {values: values_format}) %>
+  <%= form.field_description('Noter que quel que soit le format choisi, les balises ERB seront toujours évaluées au moment d’envoyer le message.') %>
+  <% if OFFLINE %>
+    <% if envoi_a_tous %>
+      <%= form.field_checkbox('Prendre la liste des vrais auteurs (sur site)', 'real_writers') %>
+    <% end %>
+    <%= form.field_checkbox('Envoyer vraiment le mail (bien qu’on soit offline)', 'force_offline') %>
+
+  <% end %>
+  <%= form.field_checkbox('Mémoriser comme message-type (et ne pas envoyer)', 'memorize', nil, {onchange: 'UnanAdmin.on_check_memorize_as_mtype(this)'}) %>
+  <%
+    displayed =
+      if param(:contact) && param(:contact)[:memorize] == 'on'
+        'block'
+      else
+        'none'
+      end
+  %>
+  <div id="div_mtype_titre" style="display:<%= displayed %>;">
+    <%= form.field_text('Titre message type', 'mtype_titre', nil) %>
+    <%= form.field_description('C’est le titre non pas du message mais qui apparaitra dans le menu ci-dessus pour choisir le message-type.') %>
+  </div>
+  <%= form.submit_button('Soumettre') %>
+</form>

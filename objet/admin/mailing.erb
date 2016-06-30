@@ -1,28 +1,28 @@
 <%
-# Formulaire de contact permettant de joindre les auteurs qui
-# suivent le programme UN AN UN SCRIPT.
-# Il est donc réservé à l'administrateur.
+# Formulaire de contact permettant de joindre tous les inscritset
+# abonnés
+#
+# Ce module est réservé à un administrateur
 raise_unless_admin
 # Ce formulaire permet :
-#   - d'envoyer un message à TOUS les auteurs suivant le programme
-#   - d'envoyer un MESSAGE TYPE à un auteur en particulier
-#   - d'envoyer un message personnel à un auteur
+#   - d'envoyer un message/message-type à TOUS les inscrits
+#   - d'envoyer un message/message-type à TOUS les abonnés courants
+#   - d'envoyer un message:message-type à un inscrit/abonné en particulier
 #   - d'enregistrer un nouveau message type.
 %>
-<%= UnanAdmin.titre_h1('Formulaire de contact')%>
+<%= ::Admin.titre_h1('Mailing')%>
 <%
 # Si le query-string ou les paramètres contiennent `uid`, c'est l'ID
 # de l'auteur à contacter.
 %>
-<p class='italic small discret'>
-  Noter que ce formulaire sert SEULEMENT à contacter les auteurs du programme UN AN UN SCRIPT.
-</p>
 <%
 site.require 'form_tools'
-form.prefix= 'contact'
+form.prefix= 'mailing'
+
+envoi_a_tous = param(:uid).nil?
 
 # Pour choisir un message type
-values_messages_type = UnanAdmin::Contact.menu_values_messages_type
+values_messages_type = ::Admin::Mailing.menu_values_messages_type
 
 # Pour les formats
 values_format = [
@@ -31,14 +31,14 @@ values_format = [
   ['md', 'Markdown/Kramdown']
 ]
 %>
-<%= if param(:uid).nil?
-      'Envoi à tous les auteurs qui suivent le programme'
+<%= if envoi_a_tous
+      'Envoi en nombre'
     else
       "Envoi du message à #{destinataire.pseudo} (##{destinataire.id})" +
       ' (envoyer à tous)'.in_a(href: 'unan_admin/contact')
     end.in_p(class: 'bold')
 %>
-<form id="unanadmin_contact_form" class="dim2080" action="unan_admin/contact" method="POST">
+<form id="mailing_form" class="dim2080" action="admin/mailing" method="POST">
   <%= 'soumettre_contact_form'.in_hidden(name: 'operation') %>
   <% if param(:uid) %>
     <%= param(:uid).in_hidden(name: 'uid') %>
@@ -53,7 +53,24 @@ values_format = [
   </span>
   <%= form.field_select('Format', 'format', nil, {values: values_format}) %>
   <%= form.field_description('Noter que quel que soit le format choisi, les balises ERB seront toujours évaluées au moment d’envoyer le message.') %>
-  <%= form.field_checkbox('Mémoriser comme message-type (et ne pas envoyer)', 'memorize', nil, {onchange: 'UnanAdmin.on_check_memorize_as_mtype(this)'}) %>
+  <% if OFFLINE %>
+    <% if envoi_a_tous %>
+      <%= form.field_checkbox('Prendre la liste des vrais users (sur site)', 'real_users') %>
+      <%=
+        destinataires_types = [
+          ['all',         'Inscrits et abonnés'],
+          ['abonned',     'Abonnés seulement'],
+          ['purinscrits', 'Inscrits NON abonnés'],
+          ['admins',      'Administrateurs'],
+          ['analystes',   'Analystes']
+        ]
+        form.field_select('Destinataires', 'sent_to', nil, {values: destinataires_types})
+      %>
+    <% end %>
+    <%= form.field_checkbox('Envoyer vraiment le mail (bien qu’on soit offline)', 'force_offline') %>
+
+  <% end %>
+  <%= form.field_checkbox('Mémoriser comme message-type (et ne pas envoyer)', 'memorize', nil, {onchange: 'Mailing.on_check_memorize_as_mtype(this)'}) %>
   <%
     displayed =
       if param(:contact) && param(:contact)[:memorize] == 'on'

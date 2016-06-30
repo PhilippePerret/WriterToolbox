@@ -12,10 +12,22 @@ class << self
   #                               en clé l'id de l'auteur
   #
   #     :filtre   Permet de filtrer les auteurs à considérer
-  # 
+  #
+  #     :real_writers
+  #           Si on est en offline, et que cette propriété est
+  #           true, on utilise quand même la liste des auteurs
+  #           réels.
+  #
   def auteurs options = nil
+    options ||= Hash.new
     @auteurs_ids ||= begin
-      table_programs.select(colonnes: [:auteur_id]).collect do |hprog|
+      table_progs =
+        if options.key?(:real_writers) && options[:real_writers]
+          site.dbm_table(:unan, 'programs', online = true)
+        else
+          self.table_programs
+        end
+      table_progs.select(colonnes: [:auteur_id]).collect do |hprog|
         hprog[:auteur_id]
       end
     end

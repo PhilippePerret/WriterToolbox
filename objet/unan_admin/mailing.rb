@@ -44,9 +44,7 @@ end #/ << self
   # ---------------------------------------------------------------------
   #   L'instance du mail à envoyer
   # ---------------------------------------------------------------------
-  def initialize
 
-  end
 
   def submit
     check_data_or_raise || return
@@ -66,19 +64,29 @@ end #/ << self
   # ---------------------------------------------------------------------
   def send
     @nombre_messages = 0
-    destinataires.each do |writer|
-      @auteur = writer # pour le déserbage
+    # Si on est offline et qu'on ne doit pas forcer l'envoi,
+    # on écrit à qui aurait été envoyé le message.
+    liste_pseudos = Array.new
+    debug "destinataires.class = #{destinataires.class}"
+    destinataires.each do |hwriter|
+      debug "\n\nWriter : #{hwriter[:pseudo]} (#{hwriter[:id]})"
+      debug "#{hwriter.pretty_inspect}"
+      @auteur = AuteurUnan.new(hwriter) # pour le déserbage
       data_mail = {
-        to:       writer.mail,
-        subject:  'B.O.A. UN AN UN SCRIPT - ' + ERB.new(prepared_subject).result(bind),
-        message:  ERB.new(prepared_message).result(bind),
-        # force_offline: true,
-        no_header_subject: true,
+        to:                 @auteur.mail,
+        subject:            'B.O.A. UN AN UN SCRIPT - ' + ERB.new(prepared_subject).result(bind),
+        message:            ERB.new(prepared_message).result(bind),
+        force_offline:      force_offline?,
+        no_header_subject:  true,
         formated: true
       }
       # debug "\n\n-- data_mail : #{data_mail.pretty_inspect}"
       site.send_mail(data_mail)
+      liste_pseudos << @auteur.pseudo
       @nombre_messages += 1
+    end
+    if OFFLINE && ! force_offline?
+      flash "Le mail aurait été envoyé à #{liste_pseudos.pretty_join}."
     end
   rescue Exception => e
     debug e
@@ -90,12 +98,23 @@ end #/ << self
   def nombre_messages
     @nombre_messages ||= 0
   end
+
+  # Retourne une liste Array de Hash des données utiles
+  # des auteurs.
+  #
+  # Noter qu'on ne travaille pas avec des instances User
+  # car le module peut travailler avec des données online
+  #
   def destinataires
     @destinataires ||= begin
       if envoi_tous?
-        Unan.auteurs(as: :instance, current: true)
+        dauts = {as: :ids, current: true}
+        dauts.merge!( real_writers: real_writers? ) if OFFLINE
+        liste_ids = Unan.auteurs(dauts)
+        tbl = site.dbm_table(:hot, 'users', online = real_writers?)
+        tbl.select(where: "id IN (  #{liste_ids.join(', ')} )")
       else
-        [destinataire]
+        [destinataire.get_all]
       end
     end
   end
@@ -115,10 +134,23 @@ end #/ << self
   #   Méthodes d'état
   # ---------------------------------------------------------------------
   def message_type?
-    @pour_message_type = data[:memorize] == 'on'
+    @pour_message_type = data[:memorize] == 'on' if @pour_message_type === nil
+    @pour_message_type
   end
   def envoi_tous?
     true == destinataire.nil?
+  end
+  # Renvoie true si l'on est en offline mais qu'il faut quand même
+  # envoyer le message à tous les vrais auteurs.
+  def real_writers?
+    @for_real_writers = data[:real_writers] == 'on' if @for_real_writers === nil
+    @for_real_writers
+  end
+  # Renvoie true s'il faut forcer l'envoi même si on est
+  # en offline
+  def force_offline?
+    @force_offline = data[:force_offline] == 'on' if @force_offline === nil
+    @force_offline
   end
 
   # ---------------------------------------------------------------------
@@ -206,7 +238,23 @@ end #/ << self
     @data ||= param(:contact)
   end
 
-
+  # ---------------------------------------------------------------------
+  #   Classe UnanAdmin::Contact::AuteurUnan
+  #
+  #   Classe qui répond aux variables dans le mail de type
+  #   <%= auteur.pseudo %>
+  #   On ne peut pas utiliser la classe User normal car il est
+  #   possible qu'on soit en local et qu'on travaille avec des
+  #   auteur du site distant (qui n'ont donc pas leurs données
+  #   dans la base locale)
+  #
+  # ---------------------------------------------------------------------
+  class AuteurUnan
+    attr_reader :id, :pseudo, :patronyme, :mail, :options, :created_at
+    def initialize data
+      data.each{|k,v| instance_variable_set("@#{k}", v)}
+    end
+  end
 end #/Contact
 end #/UnanAdmin
 
