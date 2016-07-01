@@ -65,6 +65,7 @@ class Synchro
     [
       './lib/deep/deeper/module/synchronisation/',
       './CRON/log/',
+      './CRON_LOCAL/',
       './CRON/rapports_connexions/',
       './view/img/CHANTIER'
     ]

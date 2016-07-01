@@ -129,7 +129,9 @@ class << self
   def requerir_les_librairies_du_site
     safed_log "     -> Cron::requerir_les_librairies_du_site"
     begin
-      require "./lib/required"
+      Dir.chdir(APP_FOLDER) do
+        require "./lib/required"
+      end
       safed_log "     <- Cron::requerir_les_librairies_du_site"
     rescue Exception => e
       error_log e, "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE"

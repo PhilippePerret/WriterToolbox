@@ -187,7 +187,7 @@ class << self
     need_daily_report = auteur.preference(:pref_daily_summary)
     # Valeur par défaut
     if need_daily_report === nil
-      auteur.set_preference( :pref_need_daily_report => true )
+      auteur.set_preference( :pref_daily_summary => true )
       need_daily_report = true
     end
     return true if need_daily_report

@@ -1,0 +1,108 @@
+# encoding: UTF-8
+=begin
+
+  Le présent module est composé dans le but de faire un cron-job
+  qui fonctionne en local plutôt qu'en online suite aux problèmes
+  qui se sont posés pour la librairie mysql2.
+
+  Il est appelé toutes les heures lorsque l'ordinateur est
+  allumé.
+
+  TODO
+    Il pourra même être utilisé pour déposer en online des
+    fichiers de données qui permettront au cron online de
+    fonctionner sans les bases de données
+
+=end
+APP_FOLDER = File.expand_path(File.dirname File.dirname(__FILE__))
+
+require 'singleton'
+class LocCron
+  include Singleton
+
+
+  # Extension de LocCron pour écrire les messages
+  #
+  # Note : l'idée, contrairement à ce qui était fait avant,
+  # est de charger les librairies petit à petit à mesure
+  # qu'on doit faire les jobs. Cela empêche de tout bloquer
+  # dès le départ.
+  #
+  require_relative 'lib/required/log'
+
+  # Initialisation
+  #
+  # Rappel : on se trouve à la racine de l'application, donc
+  # on peut faire comme si on était sur le site.
+  def init
+    log "\n\n\n==== CRON JOB DU #{Time.now} ====\n\n"
+    # On requiert toutes les librairies du site
+    # Si le moindre problème survient, on ne poursuit
+    # pas
+    require './lib/required'
+    # On requiert toutes les librairies de ce cron
+    # local
+    Dir["#{APP_FOLDER}/CRON_LOCAL/lib/required/**/*.rb"].each{|m| require m}
+  rescue Exception => e
+    log "ERREUR FATALE EN CHARGEANT LES LIBRAIRIES", e
+    false
+  else
+    true # pour procéder aux jobs
+  end
+
+
+  def run
+    # On se place dans le dossier de l'application
+    begin
+      # ---------------------------------------------------------------------
+      #   PRÉAMBULE
+      # ---------------------------------------------------------------------
+      log "root : #{File.expand_path('.')}"
+
+      # ---------------------------------------------------------------------
+      #   CRON JOBS
+      # ---------------------------------------------------------------------
+      run_job 'un_an_un_script'
+
+      run_job 'connexions'
+
+      # ---------------------------------------------------------------------
+      #   FINAL
+      # ---------------------------------------------------------------------
+
+    rescue Exception => e
+      log "ERREUR MAJEURE dans LocCron.run", e
+    end
+  end
+
+  # ---------------------------------------------------------------------
+  # Exécuter un job
+  # ---------------------------------------------------------------------
+  #
+  # Un "job" est un fichier se trouvant dans ./lib/job qui
+  # charge une extension de LocCron qui définit la méthode de
+  # même nom que le fichier lui-même et qui est appelée pour
+  # exécuter le job.
+  #
+  def run_job job_name
+    require_relative "lib/job/#{job_name}"
+    send(job_name.to_sym)
+  rescue Exception => e
+    log "PROBLÈME EN JOUANT LE JOB : #{job_name}", e
+  end
+
+
+
+end #/LocCron
+
+def locron
+  @locron ||= LocCron.instance
+end
+
+# Initialisation et lancement du programme
+#
+# S'il se produit la moindre erreur à l'initialisation (qui, notamment,
+# charge toutes les librairies du site), on ne procède pas aux jobs
+Dir.chdir(APP_FOLDER) do
+  locron.init && locron.run
+end
