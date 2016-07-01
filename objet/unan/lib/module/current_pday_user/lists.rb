@@ -73,8 +73,8 @@
 
 
 =end
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
 
   # ---------------------------------------------------------------------
   #   Méthodes fonctionnelles
@@ -428,4 +428,4 @@ class CurrentPDay
   end
 
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

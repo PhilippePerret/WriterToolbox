@@ -1,6 +1,6 @@
 # encoding: UTF-8
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
 
   # Méthode qui sauve dans la propriété :retards du
   # programme courant la valeur du retard du jour
@@ -180,4 +180,4 @@ class CurrentPDay
     end
   end
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

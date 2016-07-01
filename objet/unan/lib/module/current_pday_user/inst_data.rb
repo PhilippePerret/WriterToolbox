@@ -1,6 +1,6 @@
 # encoding: UTF-8
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
   # Auteur du current pday
   attr_reader :auteur
 
@@ -22,4 +22,4 @@ class CurrentPDay
   alias :index :day
 
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

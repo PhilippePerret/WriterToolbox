@@ -8,6 +8,17 @@ qui chargera toutes les librairies du site, ce qui sera fait plus tard
 
 =end
 
+# Pour tenter de régler le problème de mysql2 introuvable
+begin
+  require 'mysql2'
+rescue Exception => e
+  # On tente de charger le gem mysql2
+  # Note : on pourrait aussi simplement lire la liste des gems
+  `export GEM_HOME=$HOME/.gems;gem install mysql2 --no-doc`
+  require 'mysql2' rescue nil
+end
+
+
 # Pour charger le traitement des messages
 # safed
 require "#{THIS_FOLDER}/lib/required/logs"

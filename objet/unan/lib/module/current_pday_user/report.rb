@@ -5,8 +5,8 @@
   "quotidien" de l'auteur suivant le programme UN AN UN SCRIPT
 
 =end
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
 
   # Retourne le code HTML complet du rapport
   #
@@ -233,4 +233,4 @@ class CurrentPDay
   def bind; binding() end
 
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

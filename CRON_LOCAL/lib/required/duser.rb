@@ -53,7 +53,17 @@ class DUser
     table_variables.get(where: "name = 'pref_#{key}'")
   end
 
+  # Toutes les tables DISTANTES de l'auteur
   def table_variables
-    @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
+    @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}", online = true)
+  end
+  def table_works
+    @table_works ||= site.dbm_table(:users_tables, "unan_works_#{id}", online = true)
+  end
+  def table_quiz
+    @table_quiz ||= site.dbm_table(:users_tables, "unan_quiz_#{id}", online = true)
+  end
+  def table_pages_cours
+    @table_pages_cours ||= site.dbm_table(:users_tables, "unan_pages_cours_#{id}", online = true)
   end
 end

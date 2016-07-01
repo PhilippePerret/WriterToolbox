@@ -51,6 +51,8 @@ class << self
     # Dir.chdir("/home/boite-a-outils/www/") do
     Dir.chdir(APP_FOLDER) do
 
+      $: << '../.gems/gems'
+
       safed_log "Racine dans le Dir.chdir = #{File.expand_path('.')}"
 
       log "\n\n---> Nettoyage des lieux"

@@ -1,64 +1,25 @@
 # encoding: UTF-8
-=begin
-
-  Extension de LocCron traitant en local les auteurs distants du
-  programme UN AN UN SCRIPT et les faisant passer au jour suivant
-  si c'est nécessaire.
-
-  Extension de la classe DUser pour s'adapter au programme.
-
-=end
-class LocCron
-
-  # Méthode principale qui s'occupe du programme
-  # UN AN UN SCRIPT.
-  #
-  # Il s'assure notamment de faire passer les auteurs
-  # qui le doivent au jour suivant.
-  def un_an_un_script
-    log "* Traitement du programme UN AN UN SCRIPT"
-
-    # Boucle sur les auteurs.
-    # +auteur+ est une instance DUser de l'auteur, donc
-    # avec les données distantes.
-    auteurs.each do |auteur|
-      log "  ** Traitement auteur #{auteur.pseudo}"
-      log "     Prochaine heure d'envoi : #{auteur.next_pday_start.as_human_date(true, true, ' ')} (#{next_pday_start})", :info
-      if auteur.send_unan_report?
-        log "     * Rapport doit être envoyé"
-
-      else
-        # S'il n'est pas encore temps d'envoyer le rapport ou
-        # que ça n'est pas nécessaire, on ne fait rien
-        log "     = Pas de rapport"
-      end
-    end # /fin de boucle sur tous les auteurs
-    log "  = /fin traitement du programme UN AN UN SCRIPT"
-  end
-
-
-  # Retourne un Array d'instances DUser de tous les auteurs qui
-  # sont en train de suivre le programme UN AN UN SCRIPT
-  #
-  # Noter qu'il s'agit ici des données réelles, sur le site
-  # 
-  def auteurs
-    @auteurs ||= begin
-      drequest = {where: 'options LIKE "1%"'}
-      table_programs.select(drequest).collect do |huser|
-        DUser.new( huser[:auteur_id], huser.merge( prefix: 'program' ) )
-      end
-    end
-  end
-
-  def table_programs
-    @table_programs ||= site.dbm_table(:unan, 'programs', online = true)
-  end
-end #/LocCron
-
+site.require_objet 'unan'
+Unan.require_module 'current_pday_user'
 
 class DUser
 
+  include CurrentPDayClass
+
+  # Pour envoyer un message à l'user
+  def send_mail data_mail
+    site.send_mail( data_mail.merge(to: self.mail) )
+  end
+
+  def current_pday
+    @current_pday ||= CurrentPDay::new(self)
+  end
+
+  def program
+    @program ||= begin
+      Unan::Program.get_current_program_of(id)
+    end
+  end
   # RETURN true si on doit envoyer le rapport à l'auteur
   # On doit l'envoyer si :
   #   - l'auteur veut recevoir ses rapports quotidien
@@ -130,7 +91,12 @@ class DUser
   # RETURN true si l'auteur a des nouveaux travaux ou
   # des travaux en dépassement
   def has_new_or_overrun_work?
-    false
+    @has_new_or_overrun_work ||= begin
+      cp = current_pday
+      nombre_ofday    = cp.aworks_ofday.count
+      nombre_overrun  = cp.uworks_overrun.count
+      nombre_ofday > 0 || nombre_overrun > 0
+    end
   end
 
   # RETURN l'heure à laquelle l'auteur veut peut-être qu'on

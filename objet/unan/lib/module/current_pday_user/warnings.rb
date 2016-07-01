@@ -1,6 +1,6 @@
 # encoding: UTF-8
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
 
   # AVERTISSEMENTS
   #
@@ -98,5 +98,6 @@ class CurrentPDay
     end
   end
 
+
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

@@ -7,8 +7,8 @@ class Program
 
     def get program_id
       program_id = program_id.to_i
-      @instances ||= Hash::new
-      @instances[program_id] ||= new(program_id)
+      @instances              ||= Hash.new
+      @instances[program_id]  ||= new(program_id)
     end
 
     # {Unan::Program|NilClass} Retourne le dernier programme suivi

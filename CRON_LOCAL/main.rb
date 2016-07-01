@@ -85,7 +85,20 @@ class LocCron
   # exécuter le job.
   #
   def run_job job_name
-    require_relative "lib/job/#{job_name}"
+    path_as_folder  = "#{APP_FOLDER}/CRON_LOCAL/lib/job/#{job_name}"
+    path_as_file    = "#{path_as_folder}.rb"
+    if File.exist?(path_as_file)
+      log "    Chargement du job `#{job_name}` en tant que SIMPLE FICHIER", :info
+      require_relative "lib/job/#{job_name}"
+    elsif File.exist?(path_as_folder)
+      log "    Chargement du job `#{job_name}` en tant que DOSSIER", :info
+      Dir["#{path_as_folder}/**/*.rb"].each do |m|
+        log "chargement du module #{m}", :info
+        require m
+      end
+    else
+      raise "Impossible de trouver le fichier ou le dossier #{path_as_folder}(.rb). Je dois renoncer à exécuter ce job."
+    end
     send(job_name.to_sym)
   rescue Exception => e
     log "PROBLÈME EN JOUANT LE JOB : #{job_name}", e

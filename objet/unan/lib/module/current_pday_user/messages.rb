@@ -6,9 +6,8 @@
 
 =end
 require 'yaml'
-
-class User
-class CurrentPDay
+module CurrentPDayClass
+  class CurrentPDay
 
   # ---------------------------------------------------------------------
   #   Construction de la section des avertissements (introduction)
@@ -120,4 +119,4 @@ class CurrentPDay
   end
 
 end #/CurrentPDay
-end #/User
+end #/module CurrentPDayClass

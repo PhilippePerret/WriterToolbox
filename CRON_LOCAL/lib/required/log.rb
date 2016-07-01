@@ -25,7 +25,7 @@ class LocCron
       end
       mess_error = "###[#{Time.now}] #{mess} : #{type}"
       logref      .puts mess_error
-      logreferror .puts mess_error
+      logerrorref .puts mess_error
     end
   end
   def logref
