@@ -1,4 +1,4 @@
-SAFED LOG DU 14 06 2016 - 00:53
+SAFED LOG DU 01 07 2016 - 00:58
 (Ce fichier est un log sûr qui devrait être créé quelles que soient les circonstances)
 RACINE : /Users/philippeperret/Sites/WriterToolbox
 
@@ -18,11 +18,10 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
     - Nettoyage des vieux rapports de connexion
     = OK (0 destructions)
     - Nettoyage du debug.log
-    - Inexistant -
+    = OK
     - Nettoyage des rapports de synchronisation générale
      = 0 fichiers rapport de synchronisation détruits     = Nettoyage OK
     - Nettoyage des logs cron (un an un script)
-     = 1 fichiers-log détruits
 
 
 ----------------------------------------------------------------------
@@ -34,8 +33,7 @@ Racine dans le Dir.chdir = /Users/philippeperret/Sites/WriterToolbox
 ----------------------------------------------------------------------
 [Cron::run] Mails d'actualité quotidiens
   -> Annonce last updates
-   = Mails actualité envoyés à 5 utilisateurs : Phil, Benoit, Marion, Pseudo, Autrevoir.
-   = Envoi des mails d'actualité OK
+   = Envoi effectué dans les dernières 23 heures   <- (annonces last updates)
 
 
 ----------------------------------------------------------------------
@@ -46,29 +44,9 @@ Fréquence de rapport connexion : ":twice_a_day"
 			* Résumé des connexions par IP
 			. = /Users/philippeperret/Sites/WriterToolbox
 			-> rationalise_connexions
-			RÉSULTATS À ENVOYER :
-Titre : Rapport ONLINE des connexions du 2016-06-14 00:53:03 +0200
-Message :
-<pre style='font-size:9pt'>
-Rapport ONLINE des connexions du 2016-06-14 00:53:03 +0200
-
-IP                   Nb   Durée Whois                          De       à        Routes
-
-Nombre total d'IPs : 0
-IPs connues : 0
-IPs inconnues : 0
-=== IPs INCONNUES ===
-
-
-
-=== IPs CONNUES ===
-
-
-=== ROUTES PAR IPS ===
-
-</pre><p class='small'>La durée est exprimée en secondes.</p>
-<p class='small'>Ces rapports de connexions peuvent être récupérés en fichier dans le dossier `./CRON/rapports_connexions/`.</p>
-
+			   -> Envoi du rapport de connexion à l'administration
+			      Mail : phil@laboiteaoutilsdelauteur.fr
+			    <- OK Rapport envoyé avec succès
 			  = Résumé des connexions OK
 			<- SiteHtml::Connexions::resume
 
@@ -79,24 +57,29 @@ IPs inconnues : 0
   = Calcul si envoi est nécessaire
   = Heure courante : 0 / Fréquence : toutes les 3 heures
   = Envoi requis : OUI
-Les prochaines citations à expliciter sont les citations : 49, 54, 94, 80, 22, 87, 68, 92, 42, 89
-  = Envoi Tweet de la CITATION #91 (OK).
+Les prochaines citations à expliciter sont les citations : 373, 385, 391, 134, 396, 139, 390, 119, 127, 42
+  = Envoi Tweet de la CITATION #137 (OK).
 
 
 ----------------------------------------------------------------------
 [Cron::run] Traitement du programme UN AN UN SCRIPT
      -> Cron::traitement_programme_un_an_un_script
-nombre_avertissements_mineurs : 5::Fixnum
-    = retard   = 1
-    = retards  = 0000001111
-    = frequence ? nil
-Traitement de la liste :overtimed
-Traitement de la liste :nouveaux
-Traitement de la liste :poursuivis
-    = retard   = 0
-    = retards  = 000
-    = frequence ? nil
-Traitement de la liste :nouveaux
+-> traite_users_unanunscript
+  * Traitement du programme #1 de l'auteur #264
+    Auteur : Cyrille (#264)
+  = next_pday_start : 1467360026
+                NOW : 1467327480
+             Rythme : 5 
+Devra être envoyé dans 9h02'26"
+   = Pas d'envoi nécessaire.
+  * Traitement du programme #2 de l'auteur #263
+    Auteur : Papillon (#263)
+  = next_pday_start : 1467360026
+                NOW : 1467327480
+             Rythme : 5 
+Devra être envoyé dans 9h02'26"
+   = Pas d'envoi nécessaire.
+<- traite_users_unanunscript
      <- Cron::traitement_programme_un_an_un_script
 
 
@@ -115,4 +98,4 @@ Traitement de la liste :nouveaux
 
 
 === FIN DU SAFED LOG SANS ERREUR FATALE ===
---- FIN DU SAFED LOG (14 06 2016 - 00:53) ---
+--- FIN DU SAFED LOG (01 07 2016 - 00:58) ---

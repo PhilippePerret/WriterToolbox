@@ -6,6 +6,10 @@ NOTE : Il doit être exécutable.
 
 =end
 
+## En cas de bug récurrent (envoi de rapport en boucle), décommenter la
+## ligne suivante et uploader le fichier
+# exit
+
 THIS_FOLDER = File.expand_path(File.dirname(__FILE__))
 RACINE      = File.expand_path(File.join(THIS_FOLDER, '..'))
 ONLINE      = RACINE.split('/').last == "WriterToolbox"

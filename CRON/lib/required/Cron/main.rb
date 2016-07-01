@@ -61,7 +61,7 @@ class << self
       # Noter que si on n'y parvient pas, l'erreur est fatale,
       # on doit forcément s'arrêter là.
       safed_log "#{separation}[Cron::run] Requérir toutes les librairies du site"
-      requerir_les_librairies_du_site
+      requerir_les_librairies_du_site || return
 
       # Mails d'actualité
       safed_log "#{separation}[Cron::run] Mails d'actualité quotidiens"
@@ -135,7 +135,9 @@ class << self
       error_log e, "### IMPOSSIBLE DE CHARGER LES LIBRAIRIES DU SITE"
       log "# Impossible de charger les librairies du site : #{e.message}"
       log e.backtrace.join("\n")
-      exit(1)
+      false # pour interrompre
+    else
+      true # pour poursuivre
     end
   end
 
