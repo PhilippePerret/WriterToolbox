@@ -10,13 +10,19 @@
 http = "http://localhost/WriterToolbox"
 %>
 <div class="small right btns">
+  <%= 'Mailing'.in_a(href: 'unan_admin/mailing', target: :new) %>
+  <span> - </span>
   <%= "Plan général du programme".in_a(href:"abs_pday/cal?in=unan/program", target: :new) %>
+  <span> - </span>
   <span>Position des auteurs : </span>
   <%= 'RÉELLE'.in_a(href: "#{site.distant_url}/unan/cal_auteurs", target: :new) %>
   <% if OFFLINE %>
     <%= 'Offline'.in_a(href: 'unan/cal_auteurs', target: :new) %>
   <% end %>
 </div>
+
+
+
 <fieldset class='tools'>
   <legend>CARTES</legend>
   <%= "WORKS ****".in_a(href:"abs_work/map?in=unan_admin", class:'larger') %>

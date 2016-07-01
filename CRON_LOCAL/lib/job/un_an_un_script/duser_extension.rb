@@ -29,7 +29,9 @@ class DUser
         current_pday_start: next_pday_start,
         updated_at:         NOW
       })
-    @program = nil # pour forcer l'actualisation
+    # pour forcer l'actualisation
+    @program      = nil 
+    @current_pday = nil
   end
 
   # RETURN true si on doit envoyer le rapport à l'auteur

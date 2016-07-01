@@ -68,7 +68,13 @@ end #/ << self
     # on écrit à qui aurait été envoyé le message.
     liste_pseudos = Array.new
     debug "destinataires.class = #{destinataires.class}"
-    destinataires.each do |hwriter|
+    # Pour m'envoyer aussi le message
+    require './data/secret/data_phil'
+    hphil = {
+      pseudo: "Phil", mail: DATA_PHIL[:mail],
+      patronyme: "Philippe Perret", options: "37100000", sexe: 'H'
+    }
+    (destinataires << hphil).each do |hwriter|
       debug "\n\nWriter : #{hwriter[:pseudo]} (#{hwriter[:id]})"
       debug "#{hwriter.pretty_inspect}"
       @auteur = AuteurUnan.new(hwriter) # pour le déserbage
