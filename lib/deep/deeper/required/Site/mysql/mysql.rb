@@ -1,6 +1,4 @@
 # encoding: UTF-8
-require 'mysql2'
-
 class SiteHtml
 
   # Retourne l'instance SiteHtml::DBM_TABLE de la table MySQL

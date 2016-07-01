@@ -51,7 +51,7 @@ end
 
 # On peut maintenant requérir tous les gems
 require 'singleton'
-# require 'sqlite3'
+require 'mysql2'
 require 'json'
 
 
