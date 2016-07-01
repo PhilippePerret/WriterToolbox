@@ -62,13 +62,27 @@ class LocCron
       # ---------------------------------------------------------------------
       #   CRON JOBS
       # ---------------------------------------------------------------------
+
+      # UN AN UN SCRIPT
+      # ===============
+      # C'est l'urgence absolue, pour que les auteurs du programme
+      # reçoivent toujours leur rapport quotidien, même s'il y a
+      # un problème sur le site.
       run_job 'un_an_un_script'
 
+      # CONNEXIONS
+      # ==========
+      # L'analyse des connexions qui se sont produites depuis le
+      # dernier rapport, pour voir ce que font les moteurs de
+      # recherche et ce que font les visiteurs normaux.
       run_job 'connexions'
 
       # ---------------------------------------------------------------------
       #   FINAL
       # ---------------------------------------------------------------------
+
+      # On finit par envoyer le rapport à l'administrateur
+      run_job 'rapport_final'
 
     rescue Exception => e
       log "ERREUR MAJEURE dans LocCron.run", e

@@ -20,13 +20,30 @@ class DUser
       Unan::Program.get_current_program_of(id)
     end
   end
+
+  # Méthode qui passe le programme au jour suivant
+  def passe_programme_au_jour_suivant
+    Unan.table_programs.set(
+      program.id, {
+        current_pday:       program.current_pday + 1,
+        current_pday_start: next_pday_start,
+        updated_at:         NOW
+      })
+    @program = nil # pour forcer l'actualisation
+  end
+
   # RETURN true si on doit envoyer le rapport à l'auteur
   # On doit l'envoyer si :
   #   - l'auteur veut recevoir ses rapports quotidien
   #   OU - il a de nouveaux travaux ou des travaux en retard
   #   - l'heure de l'envoi est arrivée.
   def send_unan_report?
-    time_to_send_unan_report? && ( want_daily_mail? || has_new_or_overrun_work? )
+    if time_to_send_unan_report?
+      passe_programme_au_jour_suivant
+      return want_daily_mail? || has_new_or_overrun_work?
+    else # Non, il n'est pas encore temps
+      false
+    end
   end
 
   # ---------------------------------------------------------------------
@@ -58,7 +75,7 @@ class DUser
               # et qu'on règle le pday_start à l'heure choisie
               heure_good = Time.new(jour_start.year, jour_start.month, jour_start.day, heure_choisie, 0, 0)
               pday_start = heure_good.to_i
-              locron.table_programs.set(program_id, { current_pday_start: pday_start } )
+              Unan.table_programs.set(program_id, { current_pday_start: pday_start } )
             end
           else
             # Ça n'a pas de sens pour un rythme qui ne correspond
@@ -80,6 +97,7 @@ class DUser
   def time_to_send_unan_report?
     return NOW > next_pday_start
   end
+
   # RETURN true si l'auteur veut recevoir son rapport
   # quotidiennement.
   def want_daily_mail?

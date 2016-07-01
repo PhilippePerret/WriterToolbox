@@ -35,12 +35,12 @@ class LocCron
       if auteur.send_unan_report?
         log "     * Le rapport doit être envoyé"
         # On procède à l'envoi du rapport quotidien
-        force_offline = false # en attendant que ça fonctionne
+        # Noter qu'ici, on le fait vraiment
+        force_offline = true
         auteur.current_pday.send_rapport_quotidien(force_offline)
         log "     = Longueur rapport :\n#{auteur.current_pday.rapport_complet}"
         # Envoi du rapport à l'administrateur (pour vérification)
         sent_rapport_unan_to_admin auteur if SEND_RAPPORT_TO_ADMIN
-        end
       else
         log "     = Pas de rapport"
       end

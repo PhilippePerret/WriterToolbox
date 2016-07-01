@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class LocCron
 
+  attr_reader :nombre_erreurs
+
   # Pour enregistrer un message normal :
   #   log <le message>
   # Pour ajouter une précision au message suivant
@@ -20,6 +22,8 @@ class LocCron
       logref.puts "    ((#{mess}))"
     else # :error
       # Un message d'erreur
+      @nombre_erreurs ||= 0
+      @nombre_erreurs += 1
       if type.respond_to?(:backtrace)
         type = type.message + "\n" + type.backtrace.join("\n")
       end
