@@ -29,3 +29,17 @@ $.extend(window.AbsPDay,{
     })
   }
 })
+
+
+$(document).ready(function(){
+
+  // Le code pour rendre les textareas sensibles aux
+  // Snippets
+  Snippets.set_scopes_to([
+    'text.erb', 'text.html'
+  ]);
+  $('textarea').bind('focus',function(){Snippets.watch(($(this)))})
+  $('textarea').bind('blur',function(){Snippets.unwatch(($(this)))})
+
+
+})

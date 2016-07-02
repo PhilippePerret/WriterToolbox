@@ -12,4 +12,18 @@ $.extend(window.AbsWork,{
   init_new:function(){
     window.location.href = 'abs_work/edit?in=unan_admin';
   }
+
+});
+
+$(document).ready(function(){
+
+  // Le code pour rendre les textareas sensibles aux
+  // Snippets
+  Snippets.set_scopes_to([
+    'text.erb', 'text.html'
+  ]);
+  $('textarea').bind('focus',function(){Snippets.watch(($(this)))})
+  $('textarea').bind('blur',function(){Snippets.unwatch(($(this)))})
+
+
 })

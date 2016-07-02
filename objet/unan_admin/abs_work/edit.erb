@@ -4,6 +4,8 @@ raise_unless_admin
 %>
 <%
 # Formulaire d'édition d'un travail
+
+page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
 %>
 
 <%
@@ -201,12 +203,12 @@ form.error_fields   = errfields unless errfields.empty?
   <%# Description du `travail` %>
   <%# Note : Sera mis à "" pour éditer un autre travail en entrant un ID à la main %>
   <%= form.field_textarea("Travail", 'travail', "", {style: 'width:100%;height:300px;'}) %>
-  <%= form.field_description("Le travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
+  <%= form.field_description("Code ERB du travail exact à accomplir au cours de cette phrase de travail. Notez que pour les questionnaires et autres quiz, des textes tout préparés sont déjà prévus, il est donc inutile de les écrire.") %>
 
 
   <%# Résultat attendu %>
   <%= form.field_textarea("Résultat", 'resultat',"", {style:'width:100%'}) %>
-  <%= form.field_description("Le type de résultat attendu, exprimé de façon littéraire et convivial, comme si on parlait à l'auteur.") %>
+  <%= form.field_description("Code ERB du type de résultat attendu, exprimé de façon littéraire et convivial, comme si on parlait à l'auteur.") %>
 
   <%# support du résultat = forme du résultat (bit 1 de la data `type_resultat`)%>
   <%= form.field_select("Support du résultat", 'support', "", {values: Unan::SUPPORTS_RESULTAT}) %>

@@ -20,24 +20,31 @@ un tour des documents principaux.
 *** Brainstorming (PDay 28 à 56)
 Phase de brainstorming sur le projet, ou plus exactement sur "les"
 projets possibles.
-**** Tour 1 sur la Stt, Persos, Dyn, Them, Docu (PDay 29 à 42)
+**** TR1 Sur tous les documents (PDay 28 à 41)
 Pendant 14 jours on va alterner assez rapidement un premier tour sur
 les différents documents, en comptant deux jours par documents.
-****** DONE Expliquer ce principe du brainstorming dans le premier document
-       CLOSED: [2016-07-02 Sam 14:06]
-****** TODO Présenter les documents qu'on va travailler
-STRUCTURE PERSONNAGES DYNAMIQUE THÉMATIQUE RECHERCHE ET DOCUMENTATION
-ANALYSE (UN DES SIX AUTRES SUIVANT BESOIN)
-****** TODO Trouver les deux autres documents pour en avoir 7 sur 14 jours
-****** TODO Mettre en place rapidement les pistes de recherche et de documentation
+***** TR1 Brainstorming STT (PDay 28-29)
+Réfléchir à ce qui peut faire la forme générale et notamment les
+principaux segments et les scènes-clés.
+***** TR1 Brainstorming PER (PDay 30-31)
+Réfléchir aux personnages possibles, pour le moment sans autres indications.
+***** TR1 Brainstorming DOC (PDay 32-33)
 - lister les thèmes sur lequels il va falloir faire de la recherche
 - Comment à essayer de prendre contact avec les gens (forums,
   connaissances personnelles)
 - Ne pas oublier de mettre en garde contre l'aspect chronophage et
   hypnotisant de la documentation.
-**** Tour 2 sur la Stt, Persos, Dyn, Them, Docu ((PDay 43 à 56)
+***** TR1 Brainstorming DYN (PDay 34-35)
+***** TR1 Brainstorming THE (PDay 36-37)
+***** TR1 Brainstorming ANA (PDay 38-39)
+***** TR1 Brainstorming PER (PDay 40-41)
+Alors que le premier tour sur les personnages était consacré au
+protagoniste et à l'antagoniste, ici on va s'intéresser
+particulièrement aux autres personnages.
+**** TOUR 2 sur touts les documents (PDay 42 à 55)
 ****** TODO Ajouter ici aussi les deux autres documents 
-*** Première ébauche (PDay 57 à 84)
+
+*** Première ébauche (PDay 56 à 84)
 **** Tour 3 sur la Stt, Persos, Dyn  (PDay 57 à 63)
 On passe ici deux jours sur chaque document (deux sessions de travail)
 ****** TODO On doit trouver une particularité pour chaque retour du document

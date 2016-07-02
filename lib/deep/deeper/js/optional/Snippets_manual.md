@@ -18,6 +18,41 @@
 
 > Rappel : Un “snippet” consiste à taper le début d'un mot (ou tout autre signe) puis à faire TABULATION pour obtenir le reste. Par exemple, pour écrire un paragraphe en HTML (<p>...</p>) on tape “p” puis tabulation.
 
+* [Exemple type d'utilisation](#exempletype)
+<a name='exempletype'></a>
+
+## Exemple type d'utilisation
+
+Voici un exemple type d'utilisation, pour que tous les textarea d'une page d'édition répondent aux snippets HTML et ERB.
+
+La page ERB ou ruby doit appeler le module Javascript :
+
+~~~erb
+
+# VÉRIFIER LA VERSION DU MODULE SNIPPETS
+page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
+
+~~~
+
+Et dans le fichier javascript on doit trouver :
+
+~~~javascript
+
+$(document).ready(function(){
+
+  // Le code pour rendre les textareas sensibles aux
+  // Snippets
+  Snippets.set_scopes_to([
+    'text.erb', 'text.html'
+  ]);
+  $('textarea').bind('focus',function(){Snippets.watch(($(this)))})
+  $('textarea').bind('blur',function(){Snippets.unwatch(($(this)))})
+
+
+})
+
+
+~~~
 
 <a name='utilisation_des_snippets'></a>
 
