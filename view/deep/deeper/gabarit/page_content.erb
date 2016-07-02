@@ -1,29 +1,24 @@
 <section id="content">
-  <%# ------- BLOC ABONNEMENT --------- %>
-  <%
-  # Quand faut-il l'afficher ou ne pas l'afficher ?
-  afficher = true
-  afficher = false if user.admin? || user.subscribed? || user.unanunscript?
-  if site.current_route.nil?
-    afficher = false
-  else
-    croute = site.current_route.route
-    # debug "croute : '#{croute}'"
-    afficher = false if ['user/signin', 'user/noprofil', 'site/home', 'user/signup'].include?(croute) || croute.match(/(deconnexion|paiement)/)
-  end
-
-  if afficher
+  <%=
+  # ------------------------------------------------------------
+  #    Nom de fichier  pour lecteur
+  #    Ce widget propose un champ de saisie avec à l'intérieur
+  #    un nom de fichier que le lecteur peut utiliser pour
+  #    désigner la page courante.
+  # ------------------------------------------------------------
+  page.helper_filename_lecteur if user.admin?
   %>
-    <div id="bloc_encourage_subscribe">
-      <div class='fright center' style="margin-left:2em">
-        <%= lien.subscribe('S’ABONNER !', {class: 'darkgreen btn'}) %>
-        <br>
-        <%= lien.aide(3, {titre: 'En savoir plus…', class: nil}) %>
-      </div>
-      La Boite à Outils a <strong>BESOIN DE VOUS</strong> pour exister et poursuivre sa mission de propagation du savoir. <strong>SOUTENEZ-LA</strong> en vous abonnant pour seulement <strong><%= site.tarif_humain %> pour toute une année</strong> !
 
-    </div>
-  <%  end %>
+
+    <%=
+    # --------------------------------------------------------------
+    #  BLOC D'ABONNEMENT
+    #  Il ne s'affiche que sous certaines conditions pour certains
+    #  lecteurs
+    # --------------------------------------------------------------
+    page.helper_bloc_abonnement
+    %>
+
   <section id="social_network">
   <%
   # /Bloc d'encouragement à l'abonnement
@@ -72,6 +67,8 @@
 
 
   <%= page.content_route || page.home %>
+
+  
 
   <%=
   # ---------------------------------------------------------------------

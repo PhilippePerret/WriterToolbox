@@ -8,11 +8,12 @@
   -----------------------
 
 =end
+Unan.require_module 'current_pday_user'
+
 class User
+  include CurrentPDayClass
   def current_pday
     @current_pday ||= begin
-      Unan.require_module 'current_pday_user'
-      extend CurrentPDay
       CurrentPDay::new(self)
     end
   end

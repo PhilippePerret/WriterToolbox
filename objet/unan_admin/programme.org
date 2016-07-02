@@ -1,0 +1,119 @@
+(note : ce fichier doit être édité par emacs - mode ORG employé)
+
+Ce fichier décrit le programme complet UN AN UN SCRIPT de manière
+littéraire, pour le travailler en profondeur.
+
+Rappel :
+Pour déplier un titre : TAB
+Pour replier un titre : MAJ + TAB
+
+* Tâches
+** TODO Préparer le programme complet du programme UN AN UN SCRIPT
+** TODO Voir comment préparer les étapes générales
+* PROGRAMME COMPLET
+** Préparation (1 mois)(PJ 1 à 27)
+Cette préparation doit permettre à l'auteur de "s'échauffer".
+** Brainstorming et première ébauche (PDay 28 à 84)
+Dans cette partie, il va s'agir de préparer le terrain de
+l'histoire. On va commencer sur la spirale de développement en faisant
+un tour des documents principaux.
+*** Brainstorming (PDay 28 à 56)
+Phase de brainstorming sur le projet, ou plus exactement sur "les"
+projets possibles.
+**** Tour 1 sur la Stt, Persos, Dyn, Them, Docu (PDay 29 à 42)
+Pendant 14 jours on va alterner assez rapidement un premier tour sur
+les différents documents, en comptant deux jours par documents.
+****** DONE Expliquer ce principe du brainstorming dans le premier document
+       CLOSED: [2016-07-02 Sam 14:06]
+****** TODO Présenter les documents qu'on va travailler
+STRUCTURE PERSONNAGES DYNAMIQUE THÉMATIQUE RECHERCHE ET DOCUMENTATION
+ANALYSE (UN DES SIX AUTRES SUIVANT BESOIN)
+****** TODO Trouver les deux autres documents pour en avoir 7 sur 14 jours
+****** TODO Mettre en place rapidement les pistes de recherche et de documentation
+- lister les thèmes sur lequels il va falloir faire de la recherche
+- Comment à essayer de prendre contact avec les gens (forums,
+  connaissances personnelles)
+- Ne pas oublier de mettre en garde contre l'aspect chronophage et
+  hypnotisant de la documentation.
+**** Tour 2 sur la Stt, Persos, Dyn, Them, Docu ((PDay 43 à 56)
+****** TODO Ajouter ici aussi les deux autres documents 
+*** Première ébauche (PDay 57 à 84)
+**** Tour 3 sur la Stt, Persos, Dyn  (PDay 57 à 63)
+On passe ici deux jours sur chaque document (deux sessions de travail)
+****** TODO On doit trouver une particularité pour chaque retour du document
+Par exemple, une fois, sur le document du personnage, il faut
+travailler les relations entre les personnages. 
+Pour la structure, les scènes-clé, les segments, les pics
+(brainstorming même quand les choses sont bien avancées)
+**** Tour 3 sur Them, Docu, (un troisième) (PDay 64 à 70)
+**** Tour 4 sur Stt, Persos, Dyn (PDay 71 à 77)
+**** Tour 4 sur Them, Docu, (un troisième) (PDay 78 à 84)
+** Appronfondissement de l'histoire (PDay 85 à 140)
+Dans l'approfondissement, on passe encore plus de temps sur chaque
+élément.
+*** Premier tour d'approfondissement (PDay 85 à 112)
+**** Tour 5 sur Stt et les Persos (PDay 85 à 98)
+**** Tour 5 sur la Dyna et la Them (PDay 99 à 112)
+*** Second tour d'approfondissement (PDay 113 à 140)
+**** Tour 6 sur Stt et les Persos (PDay 113 à 126)
+**** Tour 5 sur Docu et (autre) (PDay 127 à 140)
+** Renforcement de l'histoire (PDay 141 à 196)
+*** Premier tour de renforcement (PDay 141 à 168))
+*** Second tour de renforcement (PDay 169 à 196)
+** Première finalisation (PDay 197 à 224)
+*** Premier tour de finalisation (PDay 197 à 210)
+*** Second tour de finalisation (PDay 211 à 224)
+** Vérification pré-scénario (PDay 225 à 252)
+Ce petit mois de travail va permettre d'affiner une dernière fois les
+choses et surtout de procéder à toutes les vérifications possibles. Le
+but est d'arriver au 253e jour avec un plan parfait pour attaquer le
+scénario ou le manuscrit. Au cours de ce temps, il va aussi s'agir de
+finaliser toutes les petites choses à achever.
+*** TODO Mettre au point tous les questionnaires
+Ces questionnaires doivent permettre de vérifier tous les aspects du
+traitement. Comme je n'aurai pas le temps de finir toutes les
+questions dans la collection Narration, ça sera l'inverse : ce sont
+les questions posées ici qui serviront à alimenter la collection.
+** Première version du scénario (PDay 253 à 294)
+Ici, on va lever un peu le pied par rapport aux pages de cours et
+autre, pour se concentrer vraiment sur le travail à fournir sur le
+scénario ou le manuscrit. Les seules pages à faire seront les pages
+sur la rédaction, les points à voir.
+*** Premier jet sans s'arrêter (PDay 253 à à 280)
+Concrètement ça correspond à écrire 3 pages par jour.
+**** TODO Bien faire une page sur le nombre de pages à produire par jour
+- Noter que ce nombre de pages dépend du rythme. Peut-être suggérer à
+l'auteur de réduire ce rythme pour cette partie seulement, afin
+d'avoir plus de temps.
+- Bien dire que ce nombre de pages doit absolument respecter les
+  durées définies pour les scènes. On ne doit absolument dépasser, ou
+  alors pas plus d'un dixième de temps.
+**** TODO En milieu du temps (PDay 266/267), proposer changement de rythme
+Dans une page, proposer à l'auteur de ralentir son rythme s'il est en
+retard sur ce qu'il doit produire. À ce moment-là, il devrait avoir
+fait la moitié du scénario/manuscrit. 
+*** Travail de réécriture sur le premier jet (PDay 281 à 294)
+**** TODO Parler dans la première page de la déception possible.
+Annoncer au tout départ (PDay 281) que l'auteur va devoir lire son
+premier jet et qu'il peut être déçu (renvoi à la page de cours
+là-dessus)
+**** TODO Proposer de faire lire le scénario par un lecteur automatique
+En disant bien que c'est une lecture impitoyable.
+- Dire aussi qu'il faut régler le débit de voix dès les premières
+  pages pour que ça colle.
+** Analyse de la première version du scénario (PDay 295 à 308)
+*** Todo
+**** TODO Faire les questionnaires qui doivent permettre de faire cette analyse
+**** TODO Grosse partie de cours sur ce qu'est l'analyse
+** Seconde finalisation de l'histoire (PDay 309 à 336)
+Peut-être qu'on peut proposer ici d'attaquer directement pour avoir
+plus de temps s'il n'y a pas beaucoup de choses à
+re-réfléchir. Normalement, il y a eu suffisamment de préparation pour
+ne pas avoir trop à faire. 
+** Deuxième version du scénario ou du manuscrit (PDay 337 à 364)
+Dans cette séquence, même chose que pour la première version : pas
+trop de cours, juste des éléments de clarté, par exemple c'est dans
+cette partie qu'on va chercher à supprimer tous les mots qui ne
+servent à rien. Surtout dans les dialogues où il ne doit pas y avoir
+un mot en trop.
+*** TODO Comment achever le programme (en commençant quelques jours avant)

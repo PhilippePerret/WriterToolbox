@@ -2,41 +2,41 @@
 # Définition de l'entête du site
 %>
 <section id="header">
-  <img id="logo_long"
-    src="./view/img/logo/laptop.jpg"
-    alt="" />
-  <span id="site_title"><a href=""><%= site.logo_title %></a></span>
+    <img id="logo_long"
+	 src="./view/img/logo/laptop.jpg"
+	 alt="" />
+    <span id="site_title"><a href=""><%= site.logo_title %></a></span>
 </section>
 <%
-  # Insertion de la pastille indiquant les tâches à exécuter
-  # si c'est un administrateur et que les options le réclament.
-  # La valeur `display_taches_for_administrator` est défini
-  # dans le fichier config  : ./objet/site/config.rb
-  if site.display_taches_for_administrator && user.admin? %>
+# Insertion de la pastille indiquant les tâches à exécuter
+# si c'est un administrateur et que les options le réclament.
+# La valeur `display_taches_for_administrator` est défini
+    # dans le fichier config  : ./objet/site/config.rb
+    if site.display_taches_for_administrator && user.admin? %>
     <%=
-      site.require_objet 'admin'
-      ::Admin::require_module 'taches'
-      ::Admin::Taches::pastille_taches_administrator
+    site.require_objet 'admin'
+    ::Admin::require_module 'taches'
+    ::Admin::Taches::pastille_taches_administrator
     %>
 <% end %>
 
 <%
-  # Insertion de la pastille indiquant à un user suivant le
-  # programme UN AN UN SCRIPT qui veut qu'on lui indique
-  # toujours en entête le nombre de tâches qu'il a à
-  # exécuter.
-  if user.unanunscript? && user.preference(:pastille_taches)
+# Insertion de la pastille indiquant à un user suivant le
+# programme UN AN UN SCRIPT qui veut qu'on lui indique
+# toujours en entête le nombre de tâches qu'il a à
+# exécuter.
+if user.unanunscript? && user.preference(:pastille_taches)
     require './objet/unan/lib/module/standalone/pastille_taches.rb'
-    %>
+%>
     <%= user.set_pastille_taches %>
 <% end %>
 
 <%
-  # Si c'est un administrateur qui visite, il faut insérer au besoin
-  # le widget pour les tâches (pour ajouter une tâche concernant la
-  # page).
-  if user.admin?
+# Si c'est un administrateur qui visite, il faut insérer au besoin
+# le widget pour les tâches (pour ajouter une tâche concernant la
+# page).
+if user.admin?
     site.require_module('tache')
 %>
-  <%= ::Admin::Taches::widget %>
+    <%= ::Admin::Taches::widget %>
 <% end %>

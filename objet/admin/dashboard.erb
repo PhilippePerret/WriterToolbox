@@ -1,45 +1,50 @@
 <%
 # Vue principale pour le tableau de bord d'administration
 raise_unless_admin
-
-def synchronisation_forum
-  return "" unless user.manitou?
-  "Synchronisation…".in_a(href:'forum/synchro')
-end
+    
+    def synchronisation_forum
+	user.manitou? || (return '')
+	"Synchronisation…".in_a(href:'forum/synchro')
+    end
 %>
 <%= Admin::titre_h1 %>
 <p class='small italic discret'>Bienvenue dans le tableau de bord d'administration du site.</p>
 
 <%
 # On affiche les différents outils OFFLINE que si c'est moi
-if user.phil?
-  %>
-<div id="admin_tools">
-  <%= "Console".in_a(href:'admin/console').in_div(class:'admin_tool') %>
-  <% if OFFLINE %>
-   <%=
-     (
-       "SYNCHRONISATION".in_a(href:"admin/sync")
-     ).in_div(class:'admin_tool')
-   %>
-  <%=
-    (
-      "Forum".in_a(href:'forum/dashboard')
-    ).in_div(class:'admin_tool')
-   %>
-   <%=
-    (
-      "Analyses".in_a(href: 'admin/dashboard?in=analyse')
-    ).in_div(class:'admin_tool')
-   %>
-   <%=
-    (
-      "Bitly".in_a(href: 'https://app.bitly.com/bitlinks/1TkHhvC', target: :new)
-    ).in_div(class:'admin_tool')
-    %>
-   <% end %>
-</div><%# div#admin_tools %>
-
+    if user.phil?
+%>
+    <div id="admin_tools">
+	<%= "Console".in_a(href:'admin/console').in_div(class:'admin_tool') %>
+	<% if OFFLINE %>
+	    <%=
+	    (
+		"SYNCHRONISATION".in_a(href:"admin/sync")
+	    ).in_div(class:'admin_tool')
+	    %>
+	    <%=
+	    (
+		"Forum".in_a(href:'forum/dashboard')
+	    ).in_div(class:'admin_tool')
+	    %>
+	    <%=
+	    (
+		"Analyses".in_a(href: 'admin/dashboard?in=analyse')
+	    ).in_div(class:'admin_tool')
+	    %>
+	    <%=
+	    (
+		"Bitly".in_a(href: 'https://app.bitly.com/bitlinks/1TkHhvC', target: :new)
+	    ).in_div(class:'admin_tool')
+	    %>
+	    <%=
+	    (
+		'Mailing'.in_a(href: 'admin/mailing', target: :new)
+	    ).in_div(class:'admin_tool')
+	    %>
+	<% end %>
+    </div><%# div#admin_tools %>
+    
 <%
 end # si user.phil?
 %>

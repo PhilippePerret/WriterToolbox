@@ -1,9 +1,10 @@
-# encoding: UTF-8
+# encoding: utf-8
 =begin
 
-  Le présent module est composé dans le but de faire un cron-job
-  qui fonctionne en local plutôt qu'en online suite aux problèmes
-  qui se sont posés pour la librairie mysql2.
+  Le présent module est composé dans le but de faire un
+  cron-job qui fonctionne en local plutôt qu'en online 
+  suite aux problèmes qui se sont posés pour la librairie
+   mysql2.
 
   Il est appelé toutes les heures lorsque l'ordinateur est
   allumé.
@@ -36,13 +37,16 @@ class LocCron
   # on peut faire comme si on était sur le site.
   def init
     log "\n\n\n==== CRON JOB DU #{Time.now} ====\n\n"
+
     # On requiert toutes les librairies du site
     # Si le moindre problème survient, on ne poursuit
     # pas
     require './lib/required'
+
     # On requiert toutes les librairies de ce cron
     # local
     Dir["#{APP_FOLDER}/CRON_LOCAL/lib/required/**/*.rb"].each{|m| require m}
+
   rescue Exception => e
     log "ERREUR FATALE EN CHARGEANT LES LIBRAIRIES", e
     false
@@ -72,10 +76,17 @@ class LocCron
 
       # CONNEXIONS
       # ==========
+      # TODO Ce module n'est pas encore implémenté
       # L'analyse des connexions qui se sont produites depuis le
       # dernier rapport, pour voir ce que font les moteurs de
       # recherche et ce que font les visiteurs normaux.
       run_job 'connexions'
+
+      # TWEETS ET CITATIONS
+      # ===================
+      # Module qui s'occupe d'envoyer les tweets permanents ou les citations
+      # en fonction de l'heure qu'il est.
+      run_job 'tweets_et_citations'
 
       # ---------------------------------------------------------------------
       #   FINAL

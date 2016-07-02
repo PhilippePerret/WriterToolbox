@@ -1,5 +1,48 @@
-# encoding: UTF-8
+# encoding: utf-8
 class Page
+
+  # RETURN Le code HTML à copier dans la page en bas qui donne au lecteur
+  # un nom de fichier pour nommer son fichier de correction
+  def helper_filename_lecteur
+    route =
+      if site.current_route.nil?
+        'site/home'
+      else
+        site.current_route.route
+      end
+    filename = route.gsub(/[\/\?\&=]/,'_') + '_corrs'
+    filename.in_input(class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px').in_div(class: 'right')
+  end
+
+  # RETURN le bloc d'abonnement qui s'affiche lorsque le visiteur n'est pas
+  # abonné au site, pour l'encourager à s'y inscrire ou s'y abonner
+  def helper_bloc_abonnement
+    # Quand faut-il l'afficher ou ne pas l'afficher ?
+    afficher = true
+    afficher = false if user.admin? || user.subscribed? || user.unanunscript?
+    afficher = afficher && 
+    if site.current_route.nil?
+      false
+    else
+      croute = site.current_route.route
+      if ['user/signin', 'user/noprofil', 'site/home', 'user/signup'].include?(croute) || croute.match(/(deconnexion|paiement)/)
+        false
+      else
+        true
+      end
+    end
+
+    afficher || (return '')
+    (
+      (
+        lien.subscribe('S’ABONNER !', {class: 'darkgreen btn'}) +
+        '<br>' +
+        lien.aide(3, {titre: 'En savoir plus…', class: nil, style:'margin-top:7px;display:block'})
+      ).in_div(class: 'fright center', style: 'margin-left: 2em') +
+      "La Boite à Outils a <strong>BESOIN DE VOUS</strong> pour exister et poursuivre sa mission de propagation du savoir. <strong>SOUTENEZ-LA</strong> en vous abonnant pour seulement <strong>#{site.tarif_humain} pour toute une année</strong> !".in_div
+    ). in_div(id: 'bloc_encourage_subscribe')
+  end
+
 
   # Définit le titre à affiche dans la fenêtre et dans
   # l'historique du navigateur

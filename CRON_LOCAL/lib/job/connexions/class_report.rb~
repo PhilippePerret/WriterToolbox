@@ -1,0 +1,17 @@
+utf8
+class LocCron
+  class CReport # pour "Connexions Report"
+
+    def initialize
+      # Pour le moment, rien à faire
+      
+    end
+
+    # ------------------------------------------------------------
+    # Raccourcis
+    # ------------------------------------------------------------
+    def log mess, error = nil
+      locron.log mess, error
+    end
+  end #/CReport
+end #/LocCron
