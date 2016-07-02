@@ -85,7 +85,7 @@ $.extend(window.PageCours,{
 
 $(document).ready(function(){
   PageCours.etat_normal = $('input#interface_state').val() == "optimized";
-  PageCours.etat_normal = !PageCours.etat_normal ;
+  PageCours.etat_normal = !!PageCours.etat_normal ;
   PageCours.toggle_interface();
 
 

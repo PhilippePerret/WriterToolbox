@@ -45,7 +45,7 @@ page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").t
 
 <div id="top_tools" class="tiny right" style="margin-top:0!important;">
   <%= "Visualiser".in_a(href:"page_cours/#{page_id}/show?in=unan", target:'_show_page_') %>
-  <%= "Optimise l'interface".in_a(id:'btn_optimize',onclick:"$.proxy(PageCours,'toggle_interface')()") %>
+  <%= lien.edit_file(page_cours.fullpath.expanded_path, titre: 'ÉDITER AVEC ÉDITEUR') %>
 </div>
 <form id="form_edit_page_cours" class="" action="page_cours/<%= page_id %>/edit_content?in=unan_admin" method="POST">
   <%= "save_page_content".in_hidden(name:'operation') %>
