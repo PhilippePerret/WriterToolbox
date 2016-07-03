@@ -19,12 +19,14 @@ module MethodesBuildPageSemiDynamique
 
     @content_dyna = content.to_s
 
-    @content_dyna = @content_dyna.mef_document(output_format = :html)
-    @content_dyna = @content_dyna.formate_balises_propres
+    debug "@content_dyna : #{@content_dyna.gsub(/</,'&lt;')}"
 
-    corrige_balises_unan_unscript || return
+    # @content_dyna = @content_dyna.mef_document(output_format = :html)
+    # @content_dyna = @content_dyna.formate_balises_propres
 
-    corrige_balises_pages_cours || return
+    # corrige_balises_unan_unscript || return
+    #
+    # corrige_balises_pages_cours || return
 
     save_content_dynamique
 

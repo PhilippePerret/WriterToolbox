@@ -1,0 +1,29 @@
+# Essai de document pour créer un formulaire de façon manuelle, qui va 
+# être transformé ensuite en vrai questionnaire dans la base de
+# donnée.
+# 
+#+TITLE: Questionnaire fictif dans le mode org-mode d'Emacs
+#+AUTHOR: Philippe Perret
+#+DATE: 3 juillet 2016
+#+TYPE: Validation
+
+
+* La première question
+#+TYPE: validation
+** Une première mauvaise réponse
+   0
+** Une deuxème mauvaise réponse
+   0
+** Une troisième bonne réponse
+   20
+
+* La deuxième question
+  validation checkbox
+** Un premier choix
+   10
+** Un deuxième choix
+   0
+** Un troisième choix
+   15
+** Un quatrième choix
+   -5

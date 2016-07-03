@@ -1,3 +1,8 @@
+# +TITLE: Programme UN AN UN SCRIPT jour à jour
+# +AUTHOR: Philippe Perret
+# +MAIL:   phil@laboiteaoutilsdelauteur.fr
+
+
 (note : ce fichier doit être édité par emacs - mode ORG employé)
 
 Ce fichier décrit le programme complet UN AN UN SCRIPT de manière
@@ -20,7 +25,7 @@ un tour des documents principaux.
 *** Brainstorming (PDay 28 à 56)
 Phase de brainstorming sur le projet, ou plus exactement sur "les"
 projets possibles.
-**** TR1 Sur tous les documents (PDay 28 à 41)
+**** TOUR 1 (TR1) Sur tous les documents (PDay 28 à 41)
 Pendant 14 jours on va alterner assez rapidement un premier tour sur
 les différents documents, en comptant deux jours par documents.
 ***** TR1 Brainstorming STT (PDay 28-29)
@@ -41,9 +46,13 @@ Réfléchir aux personnages possibles, pour le moment sans autres indications.
 Alors que le premier tour sur les personnages était consacré au
 protagoniste et à l'antagoniste, ici on va s'intéresser
 particulièrement aux autres personnages.
-**** TOUR 2 sur touts les documents (PDay 42 à 55)
-****** TODO Ajouter ici aussi les deux autres documents
-
+**** TOUR 2 (TR2)sur tous les documents (PDay 42 à 55)
+***** Deux jours pour souffler un peu (PDay 42-43)
+On va réserver ces deux jours pour faire un petit point et souffler un
+peu. Le seul travail sera de remplir des questionnaires par rapport à
+ce qu'on a fait jusqu'à présent, des vérifications des connaissances,
+ce genre de choses.
+***** TR2
 *** Première ébauche (PDay 56 à 84)
 **** Tour 3 sur la Stt, Persos, Dyn  (PDay 57 à 63)
 On passe ici deux jours sur chaque document (deux sessions de travail)

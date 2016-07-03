@@ -118,7 +118,6 @@ class LocCron
     elsif File.exist?(path_as_folder)
       log "    Chargement du job `#{job_name}` en tant que DOSSIER", :info
       Dir["#{path_as_folder}/**/*.rb"].each do |m|
-        log "chargement du module #{m}", :info
         require m
       end
     else

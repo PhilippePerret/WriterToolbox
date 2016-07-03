@@ -1,0 +1,14 @@
+# encoding: UTF-8
+class OrgQuiz
+
+  # Les lignes du fichier, sans aucun traitement en particulier
+  def lines
+    @lines ||= begin
+               end
+  end
+
+  # Le path du fichier org-mode, mais en SuperFile
+  def path
+    @path ||= SuperFile.new(@filepath)
+  end
+end

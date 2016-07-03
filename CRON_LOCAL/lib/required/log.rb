@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 class LocCron
 
   attr_reader :nombre_erreurs
@@ -15,11 +15,11 @@ class LocCron
     case type
     when :notice
       # Un message normal
-      logref.puts "---[#{Time.now}] #{mess}"
+      logref.puts "\n---[#{Time.now}] #{mess}\n"
     when :add
-      logref.puts "    #{mess}"
+      logref.puts "    #{mess}\n"
     when :info
-      logref.puts "    ((#{mess}))"
+      logref.puts "    ((#{mess}))\n"
     else # :error
       # Un message d'erreur
       @nombre_erreurs ||= 0
@@ -27,7 +27,7 @@ class LocCron
       if type.respond_to?(:backtrace)
         type = type.message + "\n" + type.backtrace.join("\n")
       end
-      mess_error = "###[#{Time.now}] #{mess} : #{type}"
+      mess_error = "\n\n###[#{Time.now}] #{mess} : #{type}\n"
       logref      .puts mess_error
       logerrorref .puts mess_error
     end

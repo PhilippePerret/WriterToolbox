@@ -63,6 +63,7 @@ class PageCours
     # Il faut charger le module administration de construction d'une
     # page semi-dynamique.
     SuperFile.new('./objet/unan_admin/lib/module/page_cours/module_build_methods.rb').require
+    SuperFile.new('./objet/unan_admin/lib/required/page_cours').require
     extend MethodesBuildPageSemiDynamique
     build_page_semi_dynamique
   end
