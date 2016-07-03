@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 =begin
 
 Méthodes pour l'affichage de la page
@@ -24,15 +24,49 @@ class PageCours
     else
       user_init_id = nil
     end
+    # Peut-être faut-il reconstruire la page, si elle a été
+    # modifié dans un éditeur externe.
+    rebuild_page_cours if page_out_of_date?
+    # Si c'est vraiment un auteur du programme qui visite, on
+    # lui enregistre cette lecture.
     user_init_id != nil || user.add_lecture_page_cours(self)
+    # Enfin, on peut renvoyer le texte de la page et son
+    # titre pour affichage.
     titre.in_h2 + read.formate_balises_propres
   rescue Exception => e
     debug e
     "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister (lire le débug)]"
   ensure
-    # On remet l'utilisateur initial
+    # On remet l'utilisateur initial (pour construire l'affichage courant
+    # de la page, lorsque c'était un administrateur qui visitait la page
+    # on a dû utiliser un vrai auteur du programme).
     user_init_id.nil? || User.current = User.get(user_init_id)
   end
+
+  # RETURN true si la page n'est pas à jour.
+  #
+  # On le sait en comparant la date de la page qui contient le
+  # code original avec la page semi-dynamique.
+  #
+  # Noter que ça n'arrive que lorsque la page est édité dans un
+  # éditeur externe, sinon, la page est actualisée automatiquement
+  #
+  def page_out_of_date?
+    fullpath_semidyn.exist? || (return true)
+    fullpath.mtime > fullpath_semidyn.mtime
+  end
+
+  # Méthode qui demande la reconstruction de la page si elle
+  # n'est pas à jour
+  def rebuild_page_cours
+    flash 'Reconstruction de la page semi-dynamique…'
+    # Il faut charger le module administration de construction d'une
+    # page semi-dynamique.
+    SuperFile.new('./objet/unan_admin/lib/module/page_cours/module_build_methods.rb').require
+    extend MethodesBuildPageSemiDynamique
+    build_page_semi_dynamique
+  end
+  
 end #/PageCours
 end #/Program
 end #/Unan

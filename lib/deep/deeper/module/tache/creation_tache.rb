@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 =begin
 
 Ce module permet d'insérer dans la page, lorsque l'on est administrateur,
@@ -10,8 +10,14 @@ class ::Admin
 class Taches
   class << self
 
+    # = main =
+    # 
     # Méthode appelée par Ajax par le widget pour
     # créer une nouvelle tâche
+    #
+    # Toutes les informations transmises se trouvent dans
+    # le paramètre `tache'.
+    # 
     def create_tache_from_widget
       new_tache = NewTache::new(param(:tache))
       res = new_tache.create
@@ -38,6 +44,9 @@ class Taches
     # {String} La route de la page
     attr_reader :route
 
+    # {Fixnum} Importance de la tâche
+    attr_reader :importance
+    
     # {String} La "last-route" de la page, donc la route
     # appelée avant de l'atteindre
     attr_reader :last_route
@@ -60,6 +69,7 @@ class Taches
       @last_route   = datainst[:last_route].nil_if_empty
       @qs_init      = datainst[:query_string].nil_if_empty
       @titre_page   = datainst[:titre_page].strip_tags.nil_if_empty
+      @importance   = datainst[:importance].to_i
     end
 
     # Créer la tâche
@@ -69,16 +79,16 @@ class Taches
         admin_id:     nil,
         description:  detail, # ajouté parfois au message aussi
         echeance:     echeance,
-        state:        0,
+        state:        importance,
         created_at:   NOW,
         updated_at:   NOW
       }
 
-      # Une instance de la table
+      # Une instance de la table contenant toutes les taches
       tbl = site.dbm_table(:hot, 'taches')
 
       # On crée la tâche pour chaque destinataire
-      @taches_ids = Array::new
+      @taches_ids = Array.new
       destinataires.each do |u|
         @taches_ids << tbl.insert(data_tache.merge(admin_id: u.id))
       end

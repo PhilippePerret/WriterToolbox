@@ -16,33 +16,23 @@
   span#span_titre
     color             : white
   
-  // Le bouton pour créer la tâche
-  a#btn_create_tache
-    // Non affiché par défaut (il ne le sera que lorsqu'on survolera
-    // le widget)
-    display           : none
-    color             : white
-  // Le div pour ajouter le détail
-  textarea#tache_detail
-    display           : none
-    
-  // Quand on survole le widget
-  &:hover
-    width   : auto
-    opacity : 1
-    // On masque le titre
-    span#span_titre
-      display         : none
-    // On affiche le menu des types de tâche
+  // DIV qui contient l'intérieur caché du widget, qui apparaitra
+  // lorsqu'on passera la souris dessus
+  div#inner_widget
+    display : none
+    // Le bouton pour créer la tâche
+    a#btn_create_tache
+      // Non affiché par défaut (il ne le sera que lorsqu'on survolera
+      // le widget)
+      color             : white
+    // Le menu des (types de) tâche
     select#tache_id
-      display : block
       padding : 0
       margin  : 0
       option
         padding   : 0
         margin    : 0
-
-    // On affiche le bouton pour créer la tache
+    // Le bouton pour créer la tache
     a#btn_create_tache
       display         : inline-block
       text-align      : right
@@ -51,10 +41,17 @@
       padding         : 4px
     // Le div détail quand on le voit
     textarea#tache_detail
-      display         : block
       width           : 98%
       height          : 34px
-        
-  select#tache_id
-    display       : none
+    
+  // Quand on survole le widget
+  &:hover
+    width   : auto
+    opacity : 1
+    // On masque le titre
+    span#span_titre
+      display       : none
+    // ON affiche l'intérieur
+    div#inner_widget
+      display         : block
     

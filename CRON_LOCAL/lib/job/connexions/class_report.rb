@@ -1,5 +1,5 @@
-# coding: utf-8
-utf8
+# encoding: UTF-8
+
 class LocCron
   class CReport # pour "Connexions Report"
 
@@ -7,10 +7,10 @@ class LocCron
     # combien d'heures il faut envoyer le rapport. Par exemple, la
     # valeur 6 signifie : envoyer le rapport toutes les 6 heures.
     FREQUENCE_RAPPORT_CONNEXION = 6
-    
+
     def initialize
       # Pour le moment, rien à faire
-      
+
     end
 
     # = main =
@@ -35,13 +35,13 @@ class LocCron
     def rapport_needed?
       Time.now.hour % FREQUENCE_RAPPORT_CONNEXION == 0
     end
-    
+
     # ------------------------------------------------------------
     # Raccourcis
     # ------------------------------------------------------------
     def log mess, error = nil
       locron.log mess, error
     end
-    
+
   end #/CReport
 end #/LocCron

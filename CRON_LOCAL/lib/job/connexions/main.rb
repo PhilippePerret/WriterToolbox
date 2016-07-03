@@ -1,4 +1,10 @@
-# coding: utf-8
+# encoding: UTF-8
+=begin
+
+Module qui s'occupe de l'établissement des statistiques de connexions
+qui s'enregistrent dans la table hot à chaque chargement de page.
+
+=end
 class LocCron
 
   # Méthode principale traitant les connexions au site

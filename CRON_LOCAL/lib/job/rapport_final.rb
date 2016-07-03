@@ -8,7 +8,8 @@
 class LocCron
 
   # Méthode principale qui envoie le rapport à l'administrateur
-  def rapport_admin
+  def rapport_final
+    @nombre_erreurs ||= 0
     if @nombre_erreurs > 0
 
     end
@@ -17,7 +18,13 @@ class LocCron
     areport = String.new
 
     if File.exist?(logerrorpath)
-      areport << "<strong class='warning' style='display:block;margin:2em;border:1px solid red;'>#{@nombre_erreurs} se sont produites lors du dernier cron LOCAL…</strong>"
+      mess =
+        if @nombre_erreurs > 1
+          "#{@nombre_erreurs} erreurs se sont produites"
+        else
+          'Une erreur s’est produite'
+        end
+      areport << "<strong class='warning' style='display:block;margin:2em;border:1px solid red;font-size:13pt'>#{@mess} au cours du dernier cron LOCAL…</strong>"
       areport << File.open(logerrorpath,'rb'){|f| f.read.force_encoding('utf-8')}
     end
 
