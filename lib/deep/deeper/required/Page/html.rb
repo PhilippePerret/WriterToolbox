@@ -1,4 +1,8 @@
 # encoding: utf-8
+
+SNIPPETS_VERSION = '1.3'
+PATH_MODULE_JS_SNIPPETS = File.join('.', 'lib', 'deep', 'deeper', 'js', 'optional', "Snippets_#{SNIPPETS_VERSION}.js")
+
 class Page
 
   # RETURN Le code HTML à copier dans la page en bas qui donne au lecteur
@@ -11,7 +15,7 @@ class Page
         site.current_route.route
       end
     filename = route.gsub(/[\/\?\&=]/,'_') + '_corrs'
-    filename.in_input(class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px').in_div(class: 'right')
+    filename.in_input(id: 'page_route_as_filename', class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px').in_div(class: 'right')
   end
 
   # RETURN le bloc d'abonnement qui s'affiche lorsque le visiteur n'est pas
@@ -20,7 +24,7 @@ class Page
     # Quand faut-il l'afficher ou ne pas l'afficher ?
     afficher = true
     afficher = false if user.admin? || user.subscribed? || user.unanunscript?
-    afficher = afficher && 
+    afficher = afficher &&
     if site.current_route.nil?
       false
     else

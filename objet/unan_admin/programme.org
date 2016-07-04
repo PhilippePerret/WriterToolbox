@@ -52,7 +52,16 @@ On va réserver ces deux jours pour faire un petit point et souffler un
 peu. Le seul travail sera de remplir des questionnaires par rapport à
 ce qu'on a fait jusqu'à présent, des vérifications des connaissances,
 ce genre de choses.
-***** TR2
+***** TR2 Structure (PDay 44-45)
+Deuxième tour sur le document, pour affiner le travail précédent.
+***** TR2 Personnages (PDay 46-47)
+***** TR2 Documentation (PDay 48-49)
+
+***** TR2 Dynamique (PDay 50-51)
+***** TR2 Thématique (PDay 52-53)
+***** TR2 Analyse (PDay 54-55)
+Ici, on va simplement reprendre le même travail que pour les jours
+38-39, mais sur un autre film.
 *** Première ébauche (PDay 56 à 84)
 **** Tour 3 sur la Stt, Persos, Dyn  (PDay 57 à 63)
 On passe ici deux jours sur chaque document (deux sessions de travail)

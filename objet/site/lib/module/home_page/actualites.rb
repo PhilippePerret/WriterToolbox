@@ -10,16 +10,6 @@ un changement dans les informations.
 =end
 class SiteHtml
 
-  # Voir le fichier ./hot/spotlight.rb qui définit SPOTLIGHT
-  def section_spotlight
-    require './hot/spotlight'
-    lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
-    (
-      "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
-      "#{DOIGT_WHITE}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
-    ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
-  end
-
   # Section des dernières actualités, en bas de la page
   # d'accueil.
   def section_hot_news

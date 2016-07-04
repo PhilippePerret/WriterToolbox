@@ -85,7 +85,7 @@ class LocCron
   # Méthode d'envoi du tweet permanent
   #
   def send_tweet_permanent
-    ok, message_retour = Tweet.auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
+    ok, message_retour = SiteHtml::Tweet.auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
     log "  = Tweet permanent envoyé"
   rescue Exception => e
     log "Problème lors de l'envoi du tweet permanent.", e

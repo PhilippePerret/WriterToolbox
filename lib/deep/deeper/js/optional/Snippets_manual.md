@@ -29,8 +29,7 @@ La page ERB ou ruby doit appeler le module Javascript :
 
 ~~~erb
 
-# VÉRIFIER LA VERSION DU MODULE SNIPPETS
-page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
+page.add_javascript(PATH_MODULE_JS_SNIPPETS)
 
 ~~~
 
@@ -60,7 +59,7 @@ $(document).ready(function(){
 
 > Note : Pour une utilisation dans les sites RESTFULL, il faut importer cette librairie à l'aide du code :
 
-    page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
+    page.add_javascript(PATH_MODULE_JS_SNIPPETS)
 
 Voici une présentation succinte de l'utilisation des snippets. Cette définition peut se faire par exemple quand on focusse sur une champ d'édition.
 

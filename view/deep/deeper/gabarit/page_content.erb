@@ -19,56 +19,23 @@
     page.helper_bloc_abonnement
     %>
 
-  <section id="social_network">
   <%
-  # /Bloc d'encouragement à l'abonnement
-  # ---------------------------------------------------------------------
-  %>
-  <% unless OFFLINE %>
-  <%# ------- TWITTER --------- %>
-  <%
-      page.add_javascript('./lib/deep/deeper/js/optional/twitter.js')
-  %>
-    <%# ------- FACEBOOK --------- %>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.6";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    unless OFFLINE
+      # Scripts pour FACEBOOK et TWITTER
+      %>
+
+      <% page.add_javascript('./lib/deep/deeper/js/optional/twitter.js') %>
+      <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.6";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
   <% end %>
-  <%# ------- TWITTER --------- %>
-  <div class="fright" style="margin-right:-6em;margin-top:2em">
-    <div style="width:150px;max-width:150px;line-height:1em;">
-      <div style="margin:0"><a
-        id="twitter-button"
-        class="twitter-share-button"
-        href="https://twitter.com/intent/tweet"
-        data-size='medium'
-        >
-        Tweet</a></div>
-        <div
-          class="fb-like"
-          data-href="https://www.facebook.com/laboiteaoutilsdelauteur"
-          data-layout="button"
-          data-action="like"
-          data-show-faces="false"
-          data-share="true"
-          style="margin:0"
-          >Facebook</div>
-    </div>
-
-  </div>
-  </section>
-  <%# Fin section#social_network %>
-
-
 
   <%= page.content_route || page.home %>
-
-  
 
   <%=
   # ---------------------------------------------------------------------

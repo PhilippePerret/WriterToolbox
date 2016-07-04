@@ -19,14 +19,17 @@ class OrgQuiz
 
   # Enregistrement des données du quiz
   def create_quiz
-
+    debug ""
+    debug "Insertion dans la table du questionnaire : #{dataquiz2save}"
+    #@id = table_quiz.insert(dataquiz2save)
   end
   # Enregistrement des questions
   def create_questions
     @qdata[:questions].each do |dquestion|
       dquestion.delete(:id)
       dquestion[:reponses] = dquestion[:reponses].to_json
-      qid = table_questions.insert(dquestion)
+      debug "Insertion dans la table des questions de #{dquestion.inspect}"
+      # qid = table_questions.insert(dquestion)
       @qdata[:questions_ids] << qid
     end
   end

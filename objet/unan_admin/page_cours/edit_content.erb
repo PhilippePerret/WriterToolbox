@@ -4,8 +4,7 @@ raise_unless_admin
 %>
 <%
 page_id = site.current_route.objet_id
-
-page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
+page.add_javascript(PATH_MODULE_JS_SNIPPETS)
 
 %>
 <h1>Édition page cours #<%= page_cours.id %> (type: <%= page_cours.type %>)</h1>

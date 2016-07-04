@@ -25,7 +25,7 @@ class Pastille
 
   # {StringHTML} Code HTML de la pastille
   def output
-    (apastille + bloc_taches).in_div(class:'div_pastille_taches')
+    (apastille + bloc_taches).in_div(id: 'div_pastille_taches')
   end
 
   # Détermine les valeurs de la pastille

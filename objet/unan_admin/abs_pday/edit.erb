@@ -2,7 +2,7 @@
 # Édition d'un p-day absolu
 raise_unless_admin
 
-page.add_javascript((site.folder_deeper_javascript+"optional/Snippets_1.2.js").to_s)
+page.add_javascript(PATH_MODULE_JS_SNIPPETS)
 
 site.require 'form_tools'
 form.prefix = 'pday'

@@ -13,7 +13,8 @@ class SiteHtml
   def home_page_content_code
     (
       section_spotlight +
-      cadre_independance_flottant
+      cadre_independance_flottant +
+      cadre_reseaux_sociaux
     ).in_div(class:'fright', style:'margin-top:20px') +
     incipit +
     image_accueil +
@@ -27,6 +28,19 @@ class SiteHtml
   # ---------------------------------------------------------------------
   #   Les éléments visuels
   # ---------------------------------------------------------------------
+
+  # Voir le fichier ./hot/spotlight.rb qui définit SPOTLIGHT
+  def section_spotlight
+    require './hot/spotlight'
+    lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
+    (
+    # '<hr>' +
+      # "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
+      #{DOIGT_WHITE}
+      "#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
+    ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
+  end
+
   def image_accueil
     image('divers/logo.png', id:'homeimage', width:"340px").in_div(class:'center')
   end
@@ -61,24 +75,51 @@ class SiteHtml
   end
 
   def cadre_independance_flottant
-    signup_link = ("S’INSCRIRE " +
-    "(gratuit)".in_span(class:'tiny')
-    ).in_a(id:'btn_signup',href:"user/signup", class:'btn')
-    subscribe_link = (
-      "S’ABONNER " +
-      "(#{site.tarif_humain}/an)".in_span(class:'tiny')
-    ).in_a(id:'btn_subscribe', href:"user/paiement", class:'btn')
+    signup_link = 'S’INSCRIRE'.in_a(id:'btn_signup',href:"user/signup", class:'btn')
+    subscribe_link =
+      'S’ABONNER'.in_a(id:'btn_subscribe', href:"user/paiement", class:'btn')
+      #{signup_link}
     <<-HTML
-<div id="cadre_independance">
-#{signup_link}
-<p>
-  Pour n'afficher <strong>aucune publicité</strong> et proposer néanmoins un
-   <strong>contenu de qualité</strong>, certains outils requièrent un abonnement d'un montant de
-   <strong>#{site.tarif_humain} pour une année</strong>
-   (soit #{site.tarif_humain_par_mois}).
-</p>
-#{subscribe_link}
+    <div id="cadre_independance">
+    <p><strong>Soutenez le site</strong> pour qu'il continue de proposer un
+       contenu de qualité en vous abonnant pour #{site.tarif_humain} / an.
+    </p>
+    #{subscribe_link}
+    </div>
+    HTML
+  end
+
+  # Cadre pour contenir les liens vers facebook et
+  # twitter
+  def cadre_reseaux_sociaux
+    <<-HTML
+<div id="cadre_reseaux_sociaux">
+  #{picto_facebook}
+  #{picto_twitter}
 </div>
+    HTML
+  end
+  def picto_facebook
+    <<-HTML
+    <div
+      class="fb-like"
+      data-href="https://www.facebook.com/laboiteaoutilsdelauteur"
+      data-layout="button"
+      data-action="like"
+      data-show-faces="false"
+      data-share="true"
+      style="margin:0"
+      >Facebook</div>
+    HTML
+  end
+  def picto_twitter
+    <<-HTML
+    <div style="margin:0"><a
+      id="twitter-button"
+      class="twitter-share-button"
+      href="https://twitter.com/intent/tweet"
+      data-size='medium'
+      >Tweet</a></div>
     HTML
   end
 
