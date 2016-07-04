@@ -1,0 +1,24 @@
+<%
+# Une console pour le programme UN AN UN SCRIPT
+
+# Réservé aux grands manitous
+raise_unless_admin
+%>
+<form id="form_console" class="" action="unan_admin/console" method="POST">
+  <textarea id="console" name="console"><%= param(:console) %></textarea>
+  <div class='right'>
+    <input type="submit" value="Soumettre" class="btn" style="font-size: 11pt" />
+  </div>
+</form>
+<%
+# ---------------- RETOUR ---------------
+%>
+<%= console.output %>
+<%
+# ---------------- AIDES ----------------
+%>
+<hr/>
+<pre class="small">
+  <b>new page narration &lt;page-id>[ &lt;jour-programme>]</b>
+        Ajoute une page de cours pour une page narration
+</pre>

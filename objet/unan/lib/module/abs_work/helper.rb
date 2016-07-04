@@ -24,7 +24,7 @@ class AbsWork
     # cas du bureau normal de l'auteur d'un programme UAUS
     return as_card_relative unless relative_data.nil?
 
-    params ||= Hash::new
+    params ||= Hash.new
     classes_css = ['work']
     if params[:from]
       if (duree - params[:from] == 0)

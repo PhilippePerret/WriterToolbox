@@ -92,7 +92,7 @@ CREATE TABLE absolute_works
     # leur table respective.
     item_id INTEGER,
 
-    # Exemples
+    # EXEMPLES
     # --------
     # Exemples de travaux réalisés, le plus souvent tirés de films,
     # même lorsqu'il s'agit de pitch, synopsis, etc.

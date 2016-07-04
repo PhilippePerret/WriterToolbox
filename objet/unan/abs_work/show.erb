@@ -31,8 +31,11 @@ def iwork
   @iwork ||= begin
     benoit = User::get(2)
     abs_work_id = site.current_route.objet_id
-    w = Unan::Program::Work::new(benoit.program, abs_work_id)
+    w = Unan::Program::Work.new(benoit.program, abs_work_id)
     w.instance_variable_set('@abs_work_id', abs_work_id)
+    if param(:pday)
+      w.instance_variable_set('@pday', param(:pday).to_i)
+    end
     w
   end
 end
