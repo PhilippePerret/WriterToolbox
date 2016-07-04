@@ -192,8 +192,14 @@ class AbsWork
   end
 
   # Les détails de la tâche
+  #
+  # TODO C'est certainement ici qu'il faudra traiter le fait
+  # qu'un travail peut être une lecture de page de la collection
+  # narration. OU REVENIR EN ARRIÈRE et créer vraiment une page
+  # de cours quand c'est une page de la collection Narration,
+  # pour qu'elle apparaisse à côté.
   def details_tache
-    return "" if rwork.completed?
+    return '' if rwork.completed?
     (
       span_type_tache +
       span_resultat
