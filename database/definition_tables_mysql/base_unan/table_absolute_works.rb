@@ -28,11 +28,9 @@ CREATE TABLE absolute_works
     # ----
     # Il est constitué de 16 chiffres/lettres définissant 8 paramètres
     # pour le type du travail.
-    #   BIT 1-2   [OBSOLÈTE cf. type_w ci-dessus] (typeW) Le type général,
-    #     page de cours à lire, travail
-    #     sur la définition de l'histoire, action à accomplir comme créer
-    #     des dossiers, etc. C'est un nombre de 0 à 99
-    #     Cf. la liste Unan::Program::AbsWork::TYPES
+    #   BIT 1   Mis à 1 si l'item_id est une page de la collection
+    #           narration.
+    #   BIT 2   Inutilisé
     #   BIT 3-4 (narrative_target) Cible principal du travail, à savoir:
     #     1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
     #     nombres sont donnés en pure illustration et ne correspondent

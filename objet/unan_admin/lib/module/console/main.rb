@@ -20,7 +20,11 @@ class Console
   end
 
   # Pour ajouter des messages en sortie
-  # 
+  #
+  # @usage:   console.add_message <le message ou la liste>
+  # Alternative:
+  #           console.output <message ou array de message>
+  #
   def add_message mess
     @output ||= []
     case mess
@@ -33,8 +37,12 @@ class Console
   # = main =
   #
   # Retour le texte à écrire en retour
-  def output
-    (@output || []).join("<br>")
+  def output mess = nil
+    if mess.nil?
+      (@output || []).join("<br>")
+    else
+      add_message mess
+    end
   end
 
   # Le code complet et épuré envoyé dans la console

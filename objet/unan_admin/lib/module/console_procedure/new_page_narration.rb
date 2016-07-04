@@ -61,9 +61,9 @@ class Console
     def create_absolute_work
       titre = '%s<span class="tiny"> (collection Narration)</span>' % titre_page
       data_work = {
-        titre:            "Page de cours",
+        titre:            titre,
         type_w:           20,
-        type:             '004200',
+        type:             '104200', # le 1 au début = page narration
         type_resultat:    '810',
         duree:            4,
         travail:          'Page de cours à lire.',
@@ -96,7 +96,7 @@ class Console
         # Il faut ajouter le travail aux travaux que le jour
         # contient peut-être déjà
         works = table_pdays.get( pday, colonnes: [:works])[:works]
-        works = ((works || '').split(' ') << pday).join(' ')
+        works = ((works || '').split(' ') << abs_work_id).join(' ')
         table_pdays.update(pday, { works: works })
       end
     end
