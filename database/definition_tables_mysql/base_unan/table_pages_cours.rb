@@ -43,6 +43,8 @@ CREATE TABLE pages_cours
     # DESCRIPTION
     # -----------
     # Description optionnelle de cette page de cours.
+    # Elle peut être définie même pour une page de la collection
+    # Narration
     description TEXT,
 
     # NARRATION_ID
@@ -66,7 +68,7 @@ CREATE TABLE pages_cours
     # OPTIONS
     # -------
     # Permettent de définir si la page est finie, si elle est
-    # affichable, etc.
+    # affichable, etc. Inutilisé pour la page Narration.
     options VARCHAR(32),
 
     # UPDATED_AT

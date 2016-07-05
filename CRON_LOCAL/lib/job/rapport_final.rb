@@ -7,12 +7,21 @@
 =end
 class LocCron
 
+  # Pour savoir s'il faut ou non envoyer le rapport à 
+  # l'administrateur. Noter que ça l'enverra quand même
+  # en cas d'erreur.
+  SEND_REPORT_TO_ADMIN = false 
+
   # Méthode principale qui envoie le rapport à l'administrateur
   def rapport_final
     @nombre_erreurs ||= 0
-    if @nombre_erreurs > 0
 
-    end
+    
+    # En fait il faut envoyer le rapport seulement si la constante
+    # le demande et/ou s'il y a des erreurs. Donc si le nombre d
+    # 'erreurs est nil et qu'il ne faut pas envoyer le rapport, 
+    # alors on peut s'en retourner illico.
+    next if !SEND_REPORT_TO_ADMIN && @nombre_erreurs == 0
 
     # Initialisation du rapport administrateur
     areport = String.new

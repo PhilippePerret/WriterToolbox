@@ -21,8 +21,19 @@ class Console
 
   class NPage
 
-    attr_reader :id, :pday
+    # {Fixnum} ID de la page narration
+    attr_reader :id
+
+    # {Fixnum|Nil} Jour programme, s'il est défini
+    attr_reader :pday
+
+    # Liste des erreurs rencontrées, qui pourront
+    # être lues en utilisant <instance>.errors
     attr_reader :errors
+
+    # L'ID de la page de cours programme qui a
+    # été construite pour la page Narration
+    attr_reader :page_cours_id
 
     # L'ID du travail absolu qui a été construit
     # pour la page
@@ -30,7 +41,7 @@ class Console
 
     def initialize args
       @id   = args[:page_id].to_i
-      @pday = args[:pday] # peu être nil
+      @pday = args[:pday] # peut être nil
       @pday == nil || @pday = @pday.to_i
     end
 
@@ -39,6 +50,11 @@ class Console
     # Méthode principale créant la page
     #
     def create
+      # Création de la page de cours UNAN qui doit être créée
+      # Pour recevoir la page Narration. C'est son ID qui sera
+      # enregistré dans le work absolu
+      create_page_cours || return
+
       # Création du travail absolu
       create_absolute_work || return
       # Lien pour éditer tout de suite le travail
@@ -57,20 +73,42 @@ class Console
       error "Problème en créant la page."
     end
 
+    # Création de la page de cours qui recevra la page
+    # narration
+    def create_page_cours
+      data_page = {
+        path:         nil,
+        handler:      nil,
+        titre:        nil,
+        description:  nil,
+        narration_id: id,
+        type:         'N',
+        options:      nil,
+        created_at:   NOW,
+        updated_at:   NOW
+      }
+      @page_cours_id = table_pages_cours.insert(data_page)
+    rescue Exception => e
+      debug e
+      error e.message
+      false
+    else
+      true
+    end
     # Création du travail absolu
     def create_absolute_work
       titre = '%s<span class="tiny"> (collection Narration)</span>' % titre_page
       data_work = {
         titre:            titre,
         type_w:           20,
-        type:             '104200', # le 1 au début = page narration
+        type:             '004200',
         type_resultat:    '810',
         duree:            4,
         travail:          'Page de cours à lire.',
         parent:           nil,
         prev_work:        nil,
         resultat:         'Une page de cours lue.',
-        item_id:          id,
+        item_id:          page_cours_id,
         exemples:         nil,
         pages_cours_ids:  nil,
         points:           100,
@@ -124,6 +162,9 @@ class Console
     end
 
     # Raccourcis
+    def table_pages_cours
+      @table_pages_cours ||= Unan.table_pages_cours
+    end
     def table_works
       @table_works ||= Unan.table_absolute_works
     end
