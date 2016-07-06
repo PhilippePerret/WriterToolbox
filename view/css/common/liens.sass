@@ -1,3 +1,5 @@
+@import 'charte'
+
 *[onclick]
   cursor        : pointer
 
@@ -19,13 +21,15 @@ a, a:hover, a:link, a:visited
       padding             : 0.9px 11px 2.9px !important
       letter-spacing      : 1px !important
 
+// Pour les liens sous forme de gros titre avec une première lettre
+// différente comme les liens principaux sur Boite Outils Auteur
 span.first_letter_main_link
   font-size   : 24pt
-  color       : #CAFF5B
+  color       : $darkcharte // #CAFF5B
   font-weight : bold
 span.other_letters_main_link
   font-size   : 20pt
-  color       : white
+  color       : #87D54D
   font-weight : bold
   
 a.mainlink

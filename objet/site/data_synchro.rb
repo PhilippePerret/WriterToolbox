@@ -87,6 +87,7 @@ end
 class Synchro
   def folders_2_check
     {
+      'CRON2'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'CRON/lib'  => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'lib'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
