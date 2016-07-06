@@ -71,7 +71,14 @@ class CNarration
       # debug "loc_data: #{loc_data.inspect}"
       # debug "dis_data: #{dis_data.inspect}"
 
-      if loc_data != dis_data
+      if dis_data.nil?
+        # C'est la création d'une nouvelle page en local
+        # ======== ACTUALISATION =======
+        dis_table.insert(loc_data)
+        @nombre_synchronisations += 1
+        # ==============================
+        report "CRÉATION de la page (ou titre) DISTANT : #{loc_data.inspect}"
+      elsif loc_data != dis_data
         # Données différentes
         # Si c'est le niveau de développement qui a changé, il faut
         # updater le niveau le plus bas.

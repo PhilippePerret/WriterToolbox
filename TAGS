@@ -1,30 +1,0 @@
-
-CRON/mini_cron.rb,26
-      first_line 70,2279
-
-CRON_LOCAL/main.rb,28
-  rescue Exception 50,1374
-
-hot/last_actualites.rb,45
-    drequest 12,340
-    liste_actus 18,507
-
-spec/spec_helper.rb,94
-Capybara.javascript_driver javascript_driver31,1192
-      @site 202,6915
-    str 240,8195
-
-test/essai_spec.rb,28
-  r.has_tag(has_tag21,328
-
-test/run.rb,0
-
-lib/required.rb,0
-
-lib/preambule.rb,0
-
-hot/spotlight.rb,0
-
-config/upload.rb,0
-
-CRON/hour_cron.rb,0

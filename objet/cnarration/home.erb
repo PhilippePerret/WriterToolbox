@@ -5,15 +5,20 @@
 <%
 site.require_objet 'unan'
 %>
+
+<%= Cnarration::dernier_inventaire %>
+
 <p>
   Cette section est le <span class='bold'>WORK IN PROGRESS</span> de la conception de la <strong>COLLECTION NARRATION</strong>, le cours de dramaturgie et d'écriture de <%= 'Philippe Perret'.in_a(href: 'site/phil', class: 'people') %>.
 </p>
 <p><span class='warning'>“Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration.</span>
 </p>
 
-<%= Cnarration::dernier_inventaire %>
-
 <p>Vous pouvez même y participer en donnant votre avis sur les pages.</p>
+
+<p class="small">
+  Ce “work in progress” explique certaines valeurs qui peuvent paraitre aberrantes, comme un nombre de pages supérieur au nombre de pages de total. Au moment où j'écris cet avertissement, l'ouvrage sur la structure indique “135/120”. Il faut comprendre le premier chiffre comme le nombre actuel de pages et le second comme le nombre de pages du livre final — des pages seront fatalement supprimées ou raccourcies, c'est la dure loi de l'édition ;-).
+</p>
 
 <p class='small'>
   Cette collection est un ensemble d'ouvrages consacrés à la narration dont chaque volume se concentre sur un domaine particulier (les personnages, la structure, les documents de travail, etc.). Conçue et rédigée par <strong>Philippe Perret</strong>, elle est le produit d'une réflexion pédagogique et d'un accompagnement de très nombreux auteurs durant plus de <%= Time.now.year - 1996 %> ans, notamment au sein de l'<%= "Atelier ICARE".in_a(target:'_blank', href:"http://www.atelier-icare.net") %> dont sont issus <%= "auteurs professionnels, films, romans, livres pour la jeunesse et autres Bandes-dessinées".in_a(target:'_blank', href:"http://www.atelier-icare.net/overview?ovw=reussites") %>.
