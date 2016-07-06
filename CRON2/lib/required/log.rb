@@ -30,12 +30,14 @@ class CRON2
                 @logref ||= begin 
                               rf = File.open(logpath, 'a')
                               rf.write("\n\n\n======= CRON-JOB du #{Time.now} =========\n\n")
+                              rf
                             end
             end
             def logerrorref
                 @logerrorref ||= begin
                                      rf = File.open(logerrorpath, 'a')
                                      rf.write("\n\n\n========= CRON-ERRORS du #{Time.now} ======\n\n")
+                                     rf
                                  end
             end
         end #/ << self

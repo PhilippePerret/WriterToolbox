@@ -22,7 +22,7 @@ flog =
 rflog = File.open(flog, 'wb')
 
 # On écrit la date du log
-rflog.puts "CRON2 lancé le #{Time.now}"
+rflog.puts "--- CRON2 lancé le #{Time.now}"
 
 
 begin
@@ -31,4 +31,6 @@ rescue Exception => e
     rflog.puts "# ERREUR FATALE : #{e.message}"
     rflog.puts e.backtrace.join("\n")
 end
+
+rflog.puts "    CRON2 achevé le #{Time.now}"
 

@@ -21,6 +21,7 @@ class CRON2
       # La toute première libraire qu'il faut charger, pour pouvoir écrire
       # les messages de log.
       require "#{THIS_FOLDER}/lib/required/log.rb"
+      Dir["#{THIS_FOLDER}/lib/required/**/*.rb"].each{|m| require m}
       true
   end
 
@@ -32,6 +33,17 @@ class CRON2
   #
   def run
       log "*** CRON2.run ***"
+
+      # On essaie de charger toutes les librairies du site pour
+      # bénéficier de tous les outils.
+      # Noter que cette procédure est assez spéciale puisque si
+      # elle échoue, on interromp le programme
+      run_procedure('require_all_site') || return
+
+      # On traite le programme UN AN UN SCRIPT à commencer le
+      # changement de jour des auteurs qui doivent passer au
+      # jour suivant.
+      run_procedure('un_an_un_script')
 
       # On envoie finalement le rapport à l'administrateur, mais 
       # seulement s'il le veut ou si c'est nécessaire suite à 
@@ -56,15 +68,22 @@ class CRON2
   #
   def run_procedure proc_name
 
-      proc_path = File.join(THIS_FOLDER, 'lib', 'procedure', "#{proc_name}.rb")
-      File.exist?(proc_path) || raise("La procédure #{proc_path} n'existe pas...")
-      require proc_path
+      proc_folder_path = File.join(THIS_FOLDER, 'lib', 'procedure', "#{proc_name}")
+      proc_path = "#{proc_folder_path}.rb"
+      if File.exist? proc_folder_path
+          Dir["#{proc_folder_path}/**/*.rb"].each{|m| require m}
+      elsif File.exist? proc_path
+          require proc_path
+      else
+          raise "Impossible de trouver la procédure #{proc_name}, ni en fichier ni en dossier…" 
+      end
       self.respond_to?(proc_name.to_sym) || raise("La procédure #{proc_name} devrait définir la méthode de même nom.")
 
+      log " ** Lancement de la procédure #{proc_name}..."
       Dir.chdir(APP_FOLDER) do 
         self.send(proc_name.to_sym)
       end
-
+      log " == Procédure #{proc_name} exécutée avec succès."
   rescue Exception => e
       log "Problème avec la procédure #{proc_name}", e
       false
