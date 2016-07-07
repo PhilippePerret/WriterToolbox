@@ -18,10 +18,6 @@ class CRON2
     #
     def un_an_un_script
 
-        log "POUR VOIR LE DOSSIER RACINE (.) : #{File.expand_path('.')}"
-        site.require_objet 'unan'
-        Unan.require_module 'current_pday_user'
-
         # On répète l'opération pour chaque auteur du programme
         auteurs.each do |auteur|
             log "Traitement de l'auteur #{auteur.pseudo}"
@@ -51,7 +47,7 @@ class CRON2
                             # Données de la requête pour ne sélectionner que les programmes
                             # qui sont en cours.
                             where = "options LIKE '1%'"
-                            table_programmes.select(where: where)
+                            table_programs.select(where: where)
                         end
     end
 
