@@ -323,8 +323,15 @@ unan:
       liste des auteurs suivant le programme en ONLINE afin de pouvoir
       en choisir un.
   -
+    command:        detruire programme &lt;pseudo|id&gt;
+    description: |
+      Détruit le programme UN AN UN SCRIPT de l'user désigné.
+    note: |
+      Il faut une confirmation pour que ça fonctionne, elle se fait par le
+      biais du numéro de facture qu'il faut ajouter au bout de la commande.
+  -
     command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
-    description:    Détruit tous les programmes “Un An Un Script” de l'user et détruit aussi son dossier dans `./database/data/unan/user/` comme s'il n'avait jamais procédé à un seul programme. Permet de tester l'inscription au programme.
+    description:    Détruit tous les programmes “Un An Un Script” de l'user.
     note:           Cette commande ne peut s'utiliser qu'en OFFLINE.
   -
     command:        set benoit to pday &lt;x p-day (1-start)&gt;

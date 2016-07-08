@@ -89,6 +89,10 @@ class Console
 
       # --- PROGRAMME UN AN UN SCRIPT ---
 
+    when /^detruire programme /
+      # Pour détruire le programme d'un auteur
+      console.require 'unan_unscript'
+      return unan_detruire_programme_auteur line.sub(/^detruire programme /,'').strip 
     when /^unan /
       console.require 'unan_unscript'
       case line.downcase

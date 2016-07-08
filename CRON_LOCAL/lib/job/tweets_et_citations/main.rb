@@ -76,10 +76,11 @@ class LocCron
 
   # Méthode qui procède à l'envoi de la citation
   def send_citation
+    citation_id = nil # pour le message d'erreur, if nay
     mess_citation, citation_id = citation_to_send
     site.tweet( mess_citation, dont_check_length: true)
   rescue Exception => e
-    log "Problème en envoyant la citation", e
+    log "Problème en envoyant la citation ##{citation_id.inspect}", e
   end
 
   # Méthode d'envoi du tweet permanent

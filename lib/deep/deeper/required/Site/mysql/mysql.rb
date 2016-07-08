@@ -190,6 +190,7 @@ SELECT UPDATE_TIME
     self.class.tables.delete("#{type}.#{name}")
     exists? == false
   end
+  alias :drop :destroy
 
   # ---------------------------------------------------------------------
   #   Méthodes utiles à la création de la table

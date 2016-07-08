@@ -12,7 +12,7 @@ class CRON2
     # de façon assez sale. Maintenant, il faut le mettre ici et le régler
     # ici.
     #
-    FREQUENCE_RAPPORT_CONNEXIONS = :one_an_hour
+    FREQUENCE_RAPPORT_CONNEXIONS = :twice_a_day
 
     # = main =
     #
@@ -42,18 +42,18 @@ class CRON2
     def rapport_needed?
         case FREQUENCE_RAPPORT_CONNEXIONS
         when nil
-        when ":tout_de_suite", ":now"
-            false # c'est géré autrement
-        when ":one_an_hour", ":une_par_heure"
+        when :tout_de_suite, :now
+            return true
+        when :one_an_hour, :une_par_heure
             return true # puisque c'est le cron horaire
-        when ':twice_a_day', 'deux_par_jour'
+        when :twice_a_day, :deux_par_jour
             return premiere_heure || now.hour == 12
-        when ":one_a_day", ":une_page_jour"
+        when :one_a_day, :une_page_jour
             # Retourne true si on est dans la première heure du jour
             return premiere_heure
-        when ":one_a_week", ":une_par_semaine"
+        when :one_a_week, :une_par_semaine
             return now.wday == 1 && premiere_heure
-        when ":one_a_month", ":une_par_mois"
+        when :one_a_month, :une_par_mois
             return now.mday == 1 && premiere_heure
         else
             return false

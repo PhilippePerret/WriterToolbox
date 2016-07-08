@@ -54,8 +54,22 @@ class CRON2
             force_offline:  true
         )
 
+        # Si tout s'est bien passé, on peut détruire les fichiers logs
+        detruire_fichiers_logs
     end #/send_mail_admin
 
+    # Destruction des fichiers logs
+    #
+    # Notes :
+    #   - la méthode ne sera appelée que si tout s'est bien passé
+    #   - les fichiers seront quand même reconstruits (peut-être) si d'autres
+    #     messages sont ajoutés ensuite. Mais ils feront partie du prochain
+    #     log
+    #
+    def detruire_fichiers_logs
+        File.unlink logfile if File.exist? logfile
+        File.unlink logerrorfile if File.exist? logerrorfile
+    end
     def logfile
         @logfile ||= CRON2::Log.logpath
     end

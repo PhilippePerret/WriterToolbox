@@ -16,7 +16,8 @@ class Program
   #   Data du programme
   # ---------------------------------------------------------------------
   # {User} Auteur du programme
-  def auteur_id     ; @auteur_id  ||= get(:auteur_id)    end
+  def auteur_id     ; @auteur_id  ||= get(:auteur_id)       end
+  def projet_id     ; @projet_id  ||= get(:projet_id)       end
   # {String} Options du programme
   def options       ; @options    ||= get(:options) || ""   end
   def created_at    ; @created_at ||= get(:created_at)      end
