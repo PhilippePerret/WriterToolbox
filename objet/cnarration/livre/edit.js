@@ -152,3 +152,5 @@ $('document').ready(function(){
     connectWith: '.livre_tdm'
   })
 })
+
+$(document).ready(function(){UI.bloquer_la_page(true)})

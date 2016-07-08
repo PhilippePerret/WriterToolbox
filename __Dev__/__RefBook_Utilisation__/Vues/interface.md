@@ -13,4 +13,4 @@ Parfois, il peut être utile de "bloquer" la fenêtre, i.e. de la mettre en posi
     $(document).ready(function(){UI.bloquer_la_page(true)})
     </script>
 
-TODO : FAIRE que la méthode ajoute un bouton dans la page pour sortir de cet état.
+Note : si la vue possède un fichier .js associé, on peut simplement copier à la fin le code entre les balises script.

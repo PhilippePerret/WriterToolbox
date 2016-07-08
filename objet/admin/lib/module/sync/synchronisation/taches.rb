@@ -142,7 +142,7 @@ class HotTaches
       else
         # Nouvelle tâche distante à ajouter en local
         # =========== MODIFICATION ==========
-        # loc_table.insert(dis_htache_sans_id)
+        loc_table.insert(dis_htache_sans_id)
         nombre_synchronisations += 1
         # ===================================
         report "Tâche distante ##{dis_tid} ajoutée en local (#{dis_extrait})"
