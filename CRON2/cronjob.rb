@@ -7,15 +7,15 @@
 require 'singleton'
 
 THIS_FOLDER = File.expand_path(File.dirname(__FILE__))
-APP_FOLDER  = File.dirname(THIS_FOLDER)
+APP_FOLDER = FOLDER_APP = File.dirname(THIS_FOLDER)
 
 class CRON2
-    include Singleton  
+    include Singleton
     def init
         # Initialisation du cronjob
         # On charge les librairies utiles. Noter que contrairement à l'ancien
-        # cronjob, ici, on ne charge que le minimum et c'est chaque procédure 
-        # qui chargement automatiquement ce dont elle aura besoin. De cette 
+        # cronjob, ici, on ne charge que le minimum et c'est chaque procédure
+        # qui chargement automatiquement ce dont elle aura besoin. De cette
         # façon on évitera tous les problèmes.
 
         # La toute première libraire qu'il faut charger, pour pouvoir écrire
@@ -46,7 +46,7 @@ class CRON2
         run_procedure 'un_an_un_script'
 
         # Traitement des connexions qui ont eu lieu depuis le
-        # dernier rapport. La fréquence d'envoi dépend d'une 
+        # dernier rapport. La fréquence d'envoi dépend d'une
         # constante définie dans le module stats_connexions.rb
         run_procedure 'stats_connexions'
 
@@ -55,8 +55,18 @@ class CRON2
         # fichier tweets_et_citations/main.rb
         run_procedure 'tweets_et_citations'
 
-        # On envoie finalement le rapport à l'administrateur, mais 
-        # seulement s'il le veut ou si c'est nécessaire suite à 
+        # Envoyer à tous les inscrits qui le souhaient un
+        # mail précisant les dernières actualisations de la
+        # boite, avec des liens qui permettent de s'y 
+        # rendre aussitôt.
+        # run_procedure 'mailing_updates'
+
+        # Pour procéder au nettoyage du site, pour empêcher
+        # les éléments de s'accumuler
+        run_procedure 'nettoyage_site'
+
+        # On envoie finalement le rapport à l'administrateur, mais
+        # seulement s'il le veut ou si c'est nécessaire suite à
         # des erreurs.
         run_procedure 'send_mail_admin'
 
@@ -77,7 +87,7 @@ class CRON2
     # - le nom de la méthode dans ce fichier
     #
     # La procédure doit renvoyer trois valeurs, NIL, FALSE ou TRUE qui définissent
-    # trois comportements différents : 
+    # trois comportements différents :
     #   NIL : La procédure n'a pas été exécutée, pour des raisons normales
     #         par exemple parce qu'il n'était pas l'heure.
     #   TRUE  La procédure a été exécutée avec succès.
@@ -85,7 +95,7 @@ class CRON2
     #         c'est cette méthode qui le prend en charge.
     def run_procedure proc_name
         retour_procedure = nil
-        Dir.chdir(APP_FOLDER) do 
+        Dir.chdir(APP_FOLDER) do
             proc_folder_path = File.join(THIS_FOLDER, 'lib', 'procedure', "#{proc_name}")
             proc_path = "#{proc_folder_path}.rb"
             if File.exist? proc_folder_path
@@ -93,7 +103,7 @@ class CRON2
             elsif File.exist? proc_path
                 require proc_path
             else
-                raise "Impossible de trouver la procédure #{proc_name}, ni en fichier ni en dossier…" 
+                raise "Impossible de trouver la procédure #{proc_name}, ni en fichier ni en dossier…"
             end
             self.respond_to?(proc_name.to_sym) || raise("La procédure #{proc_name} devrait définir la méthode de même nom.")
 
@@ -121,4 +131,3 @@ end
 
 # Au chargement, on initialise le cronjob et on le lance
 cronjob.init && cronjob.run
-
