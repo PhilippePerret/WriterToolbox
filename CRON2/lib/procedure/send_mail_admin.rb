@@ -57,10 +57,7 @@ class CRON2
         )
 
         # Si tout s'est bien passé, on peut détruire les fichiers logs
-        # Pour le moment, je ne le fais plus, car les messages envoyés semblent
-        # mauvais et je ne peux plus vérifier les fichiers, sinon.
-        # TODO: Le remettre quand tout sera OK
-        # detruire_fichiers_logs
+        detruire_fichiers_logs
 
 
     end #/send_mail_admin

@@ -125,6 +125,8 @@ class SiteHtml
         [true, "#{nombre} tweet#{s} permanent#{s} ré-expédié#{s}."]
       end
 
+      # NOTE : Le problème ci-dessous a été réglé.
+      #
       # Un grave problème se pose avec les tweets : leurs données
       # ne s'actualisent pas (:count et :last_sent). J'utilise donc
       # cette méthode pour forcer cette actualisation au maximum.
