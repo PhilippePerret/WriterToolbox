@@ -38,21 +38,25 @@ class CRON2
         # bénéficier de tous les outils.
         # Noter que cette procédure est assez spéciale puisque si
         # elle échoue, on interromp le programme
+        putslog '  --> require_all_site'
         run_procedure('require_all_site') || return
 
         # On traite le programme UN AN UN SCRIPT à commencer le
         # changement de jour des auteurs qui doivent passer au
         # jour suivant.
+        putslog '  --> un_an_un_script'
         run_procedure 'un_an_un_script'
 
         # Traitement des connexions qui ont eu lieu depuis le
         # dernier rapport. La fréquence d'envoi dépend d'une
         # constante définie dans le module stats_connexions.rb
+        putslog '  --> stats_connexions'
         run_procedure 'stats_connexions'
 
         # Envoi d'un tweet permanent ou des citations suivant
         # l'heure et suivant les préférences définies par le
         # fichier tweets_et_citations/main.rb
+        putslog '  --> tweets_et_citations'
         run_procedure 'tweets_et_citations'
 
         # Envoyer à tous les inscrits qui le souhaient un
@@ -63,11 +67,13 @@ class CRON2
 
         # Pour procéder au nettoyage du site, pour empêcher
         # les éléments de s'accumuler
+        putslog '  --> nettoyage_site'
         run_procedure 'nettoyage_site'
 
         # On envoie finalement le rapport à l'administrateur, mais
         # seulement s'il le veut ou si c'est nécessaire suite à
         # des erreurs.
+        putslog '  --> send_mail_admin'
         run_procedure 'send_mail_admin'
 
         log "=== CRON2.run exécuté avec succès ==="

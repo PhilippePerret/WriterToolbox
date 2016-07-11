@@ -40,12 +40,16 @@ class CRON2
         true
     end
     def rapport_needed?
+        premiere_heure = Time.now.hour == 0
+        now = Time.now
         case FREQUENCE_RAPPORT_CONNEXIONS
         when nil
         when :tout_de_suite, :now
             return true
         when :one_an_hour, :une_par_heure
             return true # puisque c'est le cron horaire
+        when :four_times_a_day
+            return now.hour % 6 == 0
         when :twice_a_day, :deux_par_jour
             return premiere_heure || now.hour == 12
         when :one_a_day, :une_page_jour

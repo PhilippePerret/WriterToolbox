@@ -36,7 +36,9 @@ class CRON2
 
         # On ajoute toujours le rapport normal s'il faut un rapport
         # complet. Sinon, on indique juste un message simple
-        areport << File.open(logfile,'rb'){|f| f.read.force_encoding('utf-8')}
+        if File.exist?(logfile)
+            areport << File.open(logfile,'rb'){|f| f.read.force_encoding('utf-8')}
+        end
 
 
         # On transforme les retours chariot en DIV et on définit la
@@ -55,7 +57,12 @@ class CRON2
         )
 
         # Si tout s'est bien passé, on peut détruire les fichiers logs
-        detruire_fichiers_logs
+        # Pour le moment, je ne le fais plus, car les messages envoyés semblent
+        # mauvais et je ne peux plus vérifier les fichiers, sinon.
+        # TODO: Le remettre quand tout sera OK
+        # detruire_fichiers_logs
+
+
     end #/send_mail_admin
 
     # Destruction des fichiers logs

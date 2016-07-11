@@ -5,32 +5,69 @@
 # Il a été séparé pour offrir une certitude d'avoir une marque
 # de démarrage même en cas de problème.
 
+# Mettre à true pour que le suivi minimum (rflog) soit
+# envoyé à l'administrateur. Cela permet de savoir si la
+# base a été exécutée avec succès.
+SEND_RFLOG_TO_ADMIN = true
+
 
 # On évite toute incertitude sur le lancement
-flog =
-  if File.exist?('./www')
-      # Distant
-      "./www/CRON2/cron2_runner.log"
-  elsif File.exist?('./CRON2')
-     # Local
-      './CRON2/cron2_runner.log'
-  else
-      './cron2_runner.log'
-  end
+# en générant un log isolé du reste et qui devrait
+# être envoyé à la fin du cron-job.
+# TODO : Pour qu'il soit vraiment isolé, il faudrait
+# que la procédure d'envoi par mail soit indépendante
+# complètement du site, alors que là elle utilise 
+# encore des procédures du site.
+def flog
+    @flog ||= begin 
+                  if File.exist?('./www')
+                      # Distant
+                      "./www/CRON2/cron2_runner.log"
+                  elsif File.exist?('./CRON2')
+                      # Local
+                      './CRON2/cron2_runner.log'
+                  else
+                      './cron2_runner.log'
+                  end
+              end
+end
 
 # Le fichier
-rflog = File.open(flog, 'wb')
+def rflog
+    @rflog ||= File.open(flog, 'a') 
+end
+
+def putslog mess
+    rflog.puts mess
+end
+
+# On détruit le fichier s'il existe
+File.unlink flog if File.exist? flog
 
 # On écrit la date du log
-rflog.puts "--- CRON2 lancé le #{Time.now}"
+putslog "--- CRON2 lancé le #{Time.now}"
 
 
 begin
-  require_relative 'cronjob'
+    require_relative 'cronjob'
 rescue Exception => e
-    rflog.puts "# ERREUR FATALE : #{e.message}"
-    rflog.puts e.backtrace.join("\n")
+    putslog "# ERREUR FATALE : #{e.message}"
+    putslog e.backtrace.join("\n")
 end
 
-rflog.puts "    CRON2 achevé le #{Time.now}"
+putslog "    CRON2 achevé le #{Time.now}"
 
+# On essaie d'envoyer ça à l'administrateur si
+# nécessaire
+if SEND_RFLOG_TO_ADMIN
+    begin
+        rflog.close
+        rflog_content = File.open(flog,'rb'){|f| f.read.force_encoding('utf-8')}
+        site.send_mail_to_admin(
+            subject: 'CRON Rflog minimum',
+            message: rflog_content,
+            formated: false
+        )
+    rescue Exception => e
+    end
+end
