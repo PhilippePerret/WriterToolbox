@@ -67,7 +67,7 @@ def mise_en_forme_page_line hpage
       "[edit]".in_a(class:'tiny', target:'_blank', href:"page_cours/#{hpage[:id]}/edit?in=unan_admin") +
       "[voir]".in_a(class:'tiny', target:'_blank', href:"page_cours/#{hpage[:id]}/show?in=unan")
     ).in_div(class:'btns fright') +
-   "[#{hpage[:id]}] #{hpage[:titre]}".in_span(title:"#{hpage[:description].purified.strip_tags}")
+   "[#{hpage[:id]}] #{hpage[:titre]}".in_span(title:"#{(hpage[:description]||'').purified.strip_tags.nil_if_empty}")
   ).in_li(class:classes_css.join(' '), style:'margin-top:8px')
 end
 def mise_en_forme_page_line_narration hpage

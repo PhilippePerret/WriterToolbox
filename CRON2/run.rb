@@ -11,6 +11,27 @@
 SEND_RFLOG_TO_ADMIN = true
 
 
+# Ici, j'essaie de créer une classe principale pour
+# pouvoir mémoriser les choses générales que le message principal
+# devra renvoyer.
+class MCron
+    class << self
+        def add_message mess
+            @messages ||= []
+            @messages << mess
+        end
+        def messages_formated format = :html
+            return nil if @messages.nil?
+            delimiteur =
+                case format
+                when :html then '<br>'
+                when :plain then "\n"
+                end
+            @messages.join(delimiteur)
+        end
+    end # << self
+end #/MCron
+
 # On évite toute incertitude sur le lancement
 # en générant un log isolé du reste et qui devrait
 # être envoyé à la fin du cron-job.
@@ -39,7 +60,17 @@ end
 
 def putslog mess
     rflog.puts mess
+    begin
+        MCron.add_message mess
+    rescue Exception => e
+        # Ici, on pourrait faire quelque chose pour signaler l'erreur
+    end
 end
+
+# ----------------------------------------------------
+#  Début des opérations
+#  ---------------------------------------------------
+
 
 # On détruit le fichier s'il existe
 File.unlink flog if File.exist? flog
@@ -61,12 +92,12 @@ putslog "    CRON2 achevé le #{Time.now}"
 # nécessaire
 if SEND_RFLOG_TO_ADMIN
     begin
-        rflog.close
-        rflog_content = File.open(flog,'rb'){|f| f.read.force_encoding('utf-8')}
+        # On essaie l'envoi par les messages mémorisés, pas par ceux
+        # enregistrés dans le fichier
         site.send_mail_to_admin(
-            subject: 'CRON Rflog minimum',
-            message: rflog_content,
-            formated: false
+            subject: "CRONJOB DU #{Time.now} - Messages mémorisés",
+            message: MCron.messages_formated(:html),
+            formated: true
         )
     rescue Exception => e
     end

@@ -42,7 +42,7 @@ hot/
 
 *.log
 
-
+*.swp
 
 CRON/rapports_connexions/
 

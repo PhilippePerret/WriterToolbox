@@ -196,7 +196,7 @@ class PageCours
           end
 
           # On force le type
-          @data_page[:type]     = 'cnarration'
+          @data_page[:type]     = 'N'
 
           if @data_page[:titre].nil?
             # Composer un titre du genre "Chapitre “” dans la collection Narration"

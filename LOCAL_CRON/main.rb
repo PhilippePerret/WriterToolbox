@@ -3,7 +3,7 @@
 # Module pour faire des tâches sur le site local
 #
 #
-require 'file-utils'
+require 'fileutils'
 require 'singleton'
 
 THIS_FOLDER = File.dirname(File.expand_path(__FILE__))
@@ -58,21 +58,22 @@ class LCron
     def nettoyage_rapports_synchro
         Dir["#{folder_rapports_synchro}/*.html"].each do |path|
             name = File.basename(path, File.extname(path))
-            dname = name.split('-')
-            heure = dname[-2].to_i
-            minute = dname[-1].to_i
-            #next if Time.now.hour.between?()
+            date = name.split('_').last
+            ddate = date.split('-').collect{|e| e.to_i}
+            annee, mois, jour, heures, minutes = ddate
+            time_file = Time.new(annee, mois, jour, heures, minutes)
+            next if time_file > Time.now - 3600
+            # Sinon, on détruit le fichier
+            File.unlink path
         end
     end
     def folder_rapports_synchro
         @folder_rapports_synchro ||= "#{APP_FOLDER}/lib/deep/deeper/module/synchronisation/synchronisation/output"
     end #/Cron
-
-    def lcron
-        @lcron ||= LCron.instance
-    end
-
-
 end # /LCron
 
-    lcron.run
+def lcron
+    @lcron ||= LCron.instance
+end
+
+lcron.run
