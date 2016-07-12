@@ -52,3 +52,7 @@ lib/deep/deeper/gem/latexbook/lib/compilation/sources/
 .curl_request_header
 
 spec/screenshots/
+
+*.swp
+
+LOCAL_CRON/.main.rb.swp
