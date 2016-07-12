@@ -121,7 +121,7 @@ class Console
     #   :admin  Si défini, l'id (string) ou le pseudo de l'administrateur
     #           dont il faut voir les tâches
     def show_liste_taches options = nil
-      options ||= Hash::new
+      options ||= Hash.new
       site.require_objet 'admin'
       ::Admin::require_module 'taches'
 
@@ -164,40 +164,83 @@ class Console
         end
 
       if task_list.count > 0
-        lt = task_list.collect do |itask|
+        # Pour mettre la liste des tâches
+        # Rappel : c'est maintenant un ensemble de quatre groupes :
+        # - les tâches dont l'échéance a été dépassée,
+        # - les tâches qui doivent être accomplies dans la journée
+        # - les tâches avec échéance à accomplir plus tard
+        # - les tâches sans échéance.
+        # des tâches à faire plus tard.
+        lt = {
+          overrun:  Array.new,
+          today:    Array.new,
+          proche:   Array.new,
+          futur:    Array.new,
+          sans:     Array.new # Sans échéance
+        }
+        task_list.collect do |itask|
           owner     = itask.admin.pseudo
           css =
             if itask.state < 3    then ' discret'
             elsif itask.state < 6 then ' important'
             else ' prioritaire'
             end
+          has_echeance = !!itask.echeance
           echeance  =
             if itask.echeance
               Time.at(itask.echeance).strftime("%d/%m/%y")
             else
               "aucune"
             end
+          # Pour savoir où ranger la tâche
           reste =
             if itask.echeance
               r = ( (itask.echeance - NOW) / 1.day ) + 1
               if r == 0
+                etat = :today
                 "doit être finie aujourd'hui".in_span(class:'blue')
               elsif r > 0
+                etat = r > 7 ? :futur : :proche
                 "dans #{r} jour#{r > 1 ? 's' : ''}"
               else
+                etat = :overrun
                 "devrait être finie depuis #{r} jour#{r > 1 ? 's' : ''}".in_span(class:'warning')
               end
             else
+              etat = :sans
               "---"
             end
-          (
+
+          t = (
             format_ligne % {tid: itask.id, tache: itask.tache, echeance: echeance, owner: owner, reste: reste, css: css}
           ).in_div
-        end.join('')
+
+          lt[etat] << t
+        end #/fin de la boucle
+
+        # Construction du listing définitif
+        listing = String.new
+        lt[:overrun].empty? || begin
+          listing << lt[:overrun].join('').in_fieldset(legend: "En dépassement d'échéance", class: 'overrun')
+        end
+        lt[:today].empty? || begin
+          listing << lt[:today].join('').in_fieldset(legend: "À finir aujourd'hui", class: 'today')
+        end
+        lt[:proche].empty? || begin
+          listing << lt[:proche].join('').in_fieldset(legend: "Tâches proches", class: 'proche')
+        end
+        lt[:futur].empty? || begin
+          listing << lt[:futur].join('').in_fieldset(legend: "Tâches futures", class: 'futur')
+        end
+        lt[:sans].empty? || begin
+          listing << lt[:sans].join('').in_fieldset(legend: "Sans échéance", class: 'sans_echeance')
+        end
+
+
       else
-        lt = "Aucune tâche trouvée."
+        listing = "Aucune tâche trouvée."
       end
-      sub_log lt
+      sub_log listing
       return ""
     end
 

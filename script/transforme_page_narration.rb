@@ -34,6 +34,9 @@ class MFile
         @is_str ||= extension == "str"
     end
 
+    def is_tex?
+        @is_tex ||= extension == 'tex'
+    end
     def extension
         @extension ||= File.extname(name)[1..-1]
     end
@@ -59,6 +62,21 @@ class MFile
             c = c.gsub(/#{Regexp::escape bad}/, bon)
         end
 
+        # Version Tex
+        if is_tex?
+            c = c.gsub(/\\personnage\{(.*?)\}/){
+                "personnage:|#{$1}|"
+            }
+            c = c.gsub(/\\emph\{(.*?)\}/){
+                "*#{$1}*"
+            }
+            c = c.gsub(/\\exergue\{(.*)\}/){
+                "> #{$1}"
+            }
+            c = c.gsub(/\\tterm{(.*?)\}/){
+                "tt:|#{$1}|"
+            }
+        end
         # Version STR
         if is_str?
             # Les commentaires fonctionnent comme en ruby, avec un dièse
@@ -106,7 +124,7 @@ class MFile
         c = c.gsub(/^(=+)(.*)\1$/){
             traite_titre_page($2.strip.freeze, $1.freeze.length)
         }
-
+        
         c = c.gsub(/\\(chapter|section|subsection)\{(.*?)(\|(.*?))?\}/){
             div = $1.freeze
             titre = $2.freeze
