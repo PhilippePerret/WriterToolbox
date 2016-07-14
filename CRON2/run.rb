@@ -8,7 +8,7 @@
 # Mettre à true pour que le suivi minimum (rflog) soit
 # envoyé à l'administrateur. Cela permet de savoir si la
 # base a été exécutée avec succès.
-SEND_RFLOG_TO_ADMIN = true
+SEND_RFLOG_TO_ADMIN = false
 
 
 # Ici, j'essaie de créer une classe principale pour

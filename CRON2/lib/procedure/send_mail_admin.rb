@@ -5,7 +5,7 @@
 class CRON2
 
 
-    SEND_REPORT_TO_ADMIN = true
+    SEND_REPORT_TO_ADMIN = false
 
     # La méthode principale qui envoie le mail final à l'administrateur
     # si c'est nécessaire, c'est-à-dire si la constante SEND_MAIL est à

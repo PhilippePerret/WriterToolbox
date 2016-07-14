@@ -17,6 +17,7 @@ class Page
   # Retourne true si l'utilisateur courant peut
   # consulter la page en entier, retourne false
   # s'il ne peut en consulter que le tiers.
+  #
   # Les bots google ou des moteurs de recherche
   # connus peuvent consulter aussi les pages.
   def consultable?

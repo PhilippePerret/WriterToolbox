@@ -1,5 +1,8 @@
 <%
 # Affichage d'une page de la collection Narration
+#
+# Note importante : cette page peut être abordée par un
+# icarien depuis son bureau.
 %>
 <%
 def ipage
@@ -7,6 +10,7 @@ def ipage
 end
 %>
 <%= Cnarration::titre_h1 ipage.livre.titre %>
+<% if param(:fromicare) == '1' %><%= ipage.encart_icarien %><% end %>
 <%= ipage.liens_edition_if_admin %>
 <%= ipage.boutons_navigation(:top) %>
 <%= ipage.output %>
