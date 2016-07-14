@@ -118,11 +118,11 @@ class SiteHtml
         end
       rescue Exception => e
         bt = e.backtrace.join("\n")
-        [false, "Les tweets permanents n'ont pas pu être envoyés : #{e.message}\n#{bt}"]
+        [false, "Les tweets permanents n'ont pas pu être envoyés : #{e.message}\n#{bt}", []]
       else
         # On retourne un résultat positif d'opération
         s = nombre > 1 ? 's' : ''
-        [true, "#{nombre} tweet#{s} permanent#{s} ré-expédié#{s}."]
+        [true, "#{nombre} tweet#{s} permanent#{s} ré-expédié#{s}.", tweets_ids]
       end
 
       # NOTE : Le problème ci-dessous a été réglé.

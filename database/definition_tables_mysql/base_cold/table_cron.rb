@@ -12,7 +12,7 @@ def schema_table_cron
 CREATE TABLE cron
   (
     id INTEGER AUTO_INCREMENT,
-    
+
     # CODE
     # ------
     # Un code de 5 chiffres ou lettre pour désigner l'action
@@ -35,6 +35,11 @@ CREATE TABLE cron
     # genre de choses.
     description TEXT,
 
+    #  DATA
+    # ------
+    # Pour enregistrer une donnée quelconque
+    data BLOB,
+    
     created_at  INTEGER(10)       NOT NULL,
 
 

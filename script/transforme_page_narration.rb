@@ -37,6 +37,9 @@ class MFile
     def is_tex?
         @is_tex ||= extension == 'tex'
     end
+    def is_html?
+      @is_html ||= extension == 'htm' || extension == 'html'
+    end
     def extension
         @extension ||= File.extname(name)[1..-1]
     end
@@ -62,7 +65,7 @@ class MFile
             c = c.gsub(/#{Regexp::escape bad}/, bon)
         end
 
-        # Version Tex
+       # Version Tex
         if is_tex?
             c = c.gsub(/\\personnage\{(.*?)\}/){
                 "personnage:|#{$1}|"
@@ -147,7 +150,7 @@ class MFile
         }
 
         # Les termes techniques et autres balises span
-        c = c.gsub(/<span class='(tt|auteur|personnage|acteur)'>(.*?)<\/span>/, '<\1>\2</\1>')
+        c = c.gsub(/<span class='(tt|auteur|personnage|acteur)'>(.*?)<\/span>/, '\1:|\2|')
         c = c.gsub(/<em>(.*?)<\/em>/, '*\1*')
         c = c.gsub(/em:\|(.+?)\|/, '*\1*')
         c = c.gsub(/em:(.+?)\b/, '*\1*')

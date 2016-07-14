@@ -1,6 +1,6 @@
 # encoding: UTF-8
 #
-# Module qui permet d'envoyer les mails des dernières actualisations aux membres 
+# Module qui permet d'envoyer les mails des dernières actualisations aux membres
 # inscrits à la boite à outils
 #
 class CRON2
@@ -56,10 +56,13 @@ class CRON2
             #
             def annonce_last_updates
 
+              # Pour pouvoir enregistrer le dernier
+              # message dans l'historique.
+              message_final = nil
                 # On envoie le mail à tous les destinataires
                 #
                 user_list =
-                    destinataires.collect do |u_id|
+                  destinataires.collect do |u_id|
 
                     u = User.new(u_id)
 
@@ -108,10 +111,13 @@ class CRON2
                         )
 
                         u.pseudo # pour la collecte
-                    end.compact
+                  end.compact
 
-                    log "   = Mails actualité envoyés à #{user_list.count} utilisateurs : #{user_list.join(', ')}."
-                    log "   = Envoi des mails d'actualité OK"
+                  log "   = Mails actualité envoyés à #{user_list.count} utilisateurs : #{user_list.join(', ')}."
+                  log "   = Envoi des mails d'actualité OK"
+                  # === Enregistrement de la ligne d'historique ===
+                  CRON2::Histo.add(code: '31001', data: user_list.count, description: message_final)
+                  # ================================================
             rescue Exception => e
                 log "Erreur en envoyant les mails d'actualité", e
                 false

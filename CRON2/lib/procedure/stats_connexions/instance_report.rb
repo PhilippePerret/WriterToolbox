@@ -35,6 +35,7 @@ class CRON2
             )
             if res === true
                 log "    <- OK Rapport envoyé avec succès"
+                CRON2::Histo.add(code: '20101')
             else
                 mess_err = ["# ERREUR EN TRANSMETTANT LE RAPPORT :"]
                 mess_err << res.message

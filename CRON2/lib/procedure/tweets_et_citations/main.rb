@@ -84,6 +84,7 @@ class CRON2
             def send_citation
                 mess_citation, citation_id = citation_to_send
                 site.tweet( mess_citation, dont_check_length: true)
+                CRON2::Histo.add(code: '25101', data: citation_id)
             rescue Exception => e
                 log "Problème en envoyant la citation", e
             end
@@ -91,8 +92,9 @@ class CRON2
             # Méthode d'envoi du tweet permanent
             #
             def send_tweet_permanent
-                ok, message_retour = SiteHtml::Tweet.auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
+                ok, message_retour, tweets_ids = SiteHtml::Tweet.auto_tweet(NOMBRE_PERMANENT_TWEETS_SEND)
                 log "  = Tweet permanent envoyé"
+                CRON2::Histo.add(code: '26101', data: tweets_ids.join(','))
             rescue Exception => e
                 log "Problème lors de l'envoi du tweet permanent.", e
             end
