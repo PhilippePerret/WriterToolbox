@@ -31,9 +31,27 @@ class STdm
 
   end
   def output
-    items.collect do |iid|
-      Item.new(self, iid).as_li
-    end.join('')
+    chapitre_courant      = nil
+    sous_chapitre_courant = nil
+    instances = items.collect do |iid|
+      iitem = Item.new(self, iid)
+      if iitem.chapitre?
+        chapitre_courant = iitem
+        chapitre_courant.sous_chapitres = Array.new
+        chapitre_courant.pages          = Array.new
+      elsif iitem.sous_chapitre?
+        sous_chapitre_courant = iitem
+        sous_chapitre_courant.pages = Array.new
+        chapitre_courant.sous_chapitres << sous_chapitre_courant
+      else
+        chapitre_courant.pages      << iitem
+        sous_chapitre_courant.pages << iitem
+      end
+
+      # Pour le collect
+      iitem
+    end
+    instances.collect{ |iitem| iitem.as_li }.join('')
   end
   def items
     @items ||= begin
@@ -57,6 +75,11 @@ class STdm
     # cet élément
     attr_reader :tdm
     attr_reader :id
+
+    # Pour les titres
+    attr_accessor :sous_chapitres
+    attr_accessor :pages
+
     def initialize tdm, id
       @tdm = tdm
       @id = id
@@ -85,15 +108,16 @@ class STdm
       when :page
         div_infos_page
       when :sous_chapitre
-        ''
+        div_infos_sous_chapitre
       when :chapitre
-        ''
+        div_infos_chapitre
       end
     end
 
     # DIV DES INFOS DE LA PAGE
     def div_infos_page
       (
+        div_nombre_pages +
         btn_voir_page +
         btn_edit_data +
         btn_edit_text +
@@ -101,6 +125,28 @@ class STdm
       ).in_div(class: 'iinfos')
     end
 
+    # DIV DES INFOS POUR LE SOUS-CHAPITRE
+    def div_infos_sous_chapitre
+      sfiles = pages.count > 1 ? 's' : ''
+      spages = nombre_pages > 1 ? 's' : ''
+      (
+        "#{pages.count} fichier#{sfiles} - #{nombre_pages} page#{spages}"
+      ).in_div(class: 'iinfos')
+    end
+
+    # DIV DES INFOS POUR LE SOUSCHAPITRE
+    def div_infos_chapitre
+      sschap = sous_chapitres.count > 1 ? 's' : ''
+      (
+        "#{sous_chapitres.count} sous-chapitre#{sschap} - #{pages.count} fichiers - #{nombre_pages} pages"
+      ).in_div(class: 'iinfos')
+    end
+
+    # Le div qui indique le nombre de pages approximatif
+    # de la section.
+    def div_nombre_pages
+      "#{nombre_pages} p.".in_span(class: 'nbpgs')
+    end
     def btn_edit_data
       img = '<img src="view/img/pictos/btn_data.png" title="Éditer les données" />'
       img.in_a(href: "page/#{id}/edit?in=cnarration", target: :new)
@@ -153,6 +199,9 @@ class STdm
     def path
       @path ||= File.join('.', 'data', 'unan', 'pages_cours', 'cnarration', Cnarration::LIVRES[tdm.livre_id][:folder], "#{handler}.md")
     end
+    def path_semidyn
+      @path_semidyn ||= SuperFile.new(File.join('.', 'data', 'unan', 'pages_semidyn', 'cnarration', Cnarration::LIVRES[tdm.livre_id][:folder], "#{handler}.erb"))
+    end
     def type
       case options[0].to_i
       when 1 then :page
@@ -164,6 +213,42 @@ class STdm
     # Niveau de développement
     def developpement
       @developpement ||= options[1].to_i(11)
+    end
+
+    # Nombre de page approximatif
+    def nombre_pages
+      @nombre_pages ||= begin
+        case type
+        when :page
+          if path_semidyn.exist?
+            path_semidyn.read.nombre_pages
+          else
+            # Si le fichier dyn n'existe pas (page pas encore construite)
+            # on lit simplement le fichier normal.
+            File.open(path,'r'){|f|f.read.force_encoding('utf-8')}.nombre_pages
+          end
+        when :sous_chapitre
+          nb = 0
+          pages.each { |ipage| nb += ipage.nombre_pages }
+          nb.round(1)
+        when :chapitre
+          nb = 0
+          sous_chapitres.each {|ischap| nb += ischap.nombre_pages }
+          nb.round
+        end
+      end
+    end
+
+    # ---------------------------------------------------------------------
+
+    def chapitre?
+      @is_chapitre ||= type == :chapitre
+    end
+    def sous_chapitre?
+      @is_sous_chapitre ||= type == :sous_chapitre
+    end
+    def page?
+      @is_page ||= type == :page
     end
 
     # ---------------------------------------------------------------------

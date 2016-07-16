@@ -39,7 +39,7 @@ class String
   # suppression de toutes les balises HTML et en considérant
   # qu'il y a +signes_per_page+ signes par page
   def nombre_pages signes_per_page = 1500, options = nil
-    (self.strip_tags.length.to_f / signes_per_page).round(2)
+    (self.gsub(/<%=(.*?)%>/,'\\1').strip_tags.length.to_f / signes_per_page).round(2)
   end
 
   # Renvoie le nombre de signes dans le self après la
@@ -48,7 +48,7 @@ class String
   # Pour les code ERB qui retourne quelque chose à marquer,
   # on met un texte fictif.
   def nombre_signes
-    self.gsub(/<%=(.*?)%>/,'CODE-ERB-FICTIF').strip_tags.length
+    self.gsub(/<%=(.*?)%>/,'\\1').strip_tags.length
   end
 
   # ---------------------------------------------------------------------
