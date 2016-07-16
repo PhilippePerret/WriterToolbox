@@ -4,10 +4,23 @@
 # de la collection Narration, avec un indication maximum des
 # informations.
 #
+raise_unless_admin
+
+param(:livre_id) || param(livre_id: 1)
 
 require './objet/cnarration/lib/required/constants.rb'
 
 class STdm
+
+  class << self
+
+    def menu_livres
+      Cnarration::LIVRES.collect do |lid, ldata|
+        [lid, ldata[:hname]]
+      end.in_select(name: 'livre_id', id: 'livre_id', selected: param(:livre_id), onchange: 'this.form.submit()').in_form(id: 'form_livre_id', action:'admin/smart_tdm?in=cnarration')
+    end
+
+  end #/<< self
 
 
   # IDentifiant du livre de la table des matières courante
