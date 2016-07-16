@@ -39,13 +39,16 @@ class STdm
         chapitre_courant = iitem
         chapitre_courant.sous_chapitres = Array.new
         chapitre_courant.pages          = Array.new
+        sous_chapitre_courant = nil
       elsif iitem.sous_chapitre?
         sous_chapitre_courant = iitem
         sous_chapitre_courant.pages = Array.new
         chapitre_courant.sous_chapitres << sous_chapitre_courant
       else
         chapitre_courant.pages      << iitem
-        sous_chapitre_courant.pages << iitem
+        unless sous_chapitre_courant.nil?
+          sous_chapitre_courant.pages << iitem
+        end
       end
 
       # Pour le collect
