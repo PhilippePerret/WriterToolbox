@@ -64,6 +64,14 @@ div.pre
   margin-top      : 0em
   
 .mg
+  position    : relative
+
+  div.notemarge
+    position      : absolute
+    text-align    : left
+    font-size     : 13.8pt
+    line-height   : 1.1em
+
   &.cinq
     margin-left : 5%
   &.dix
@@ -76,8 +84,12 @@ div.pre
     margin-left : 25%
   &.trente
     margin-left : 30%
+    div.notemarge
+      margin-left   : -40%
+      width         : 30%    
   &.trentecinq
     margin-left : 35%
+
 
 .mg10pc
   margin-left   : 10%

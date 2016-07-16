@@ -5,6 +5,13 @@
   @usage
 
     href: "site/open_md_file?path=le/path/du/fichier.md"
+
+  NOTE
+
+    Il vaut mieux utiliser le fichier open_file avec l'href:
+
+    "site/open_file?path=le/path[&app=application]"
+    
 =end
 def osascript(script)
   command = "osascript -e \"#{script}\" 2>&1"

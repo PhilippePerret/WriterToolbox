@@ -123,6 +123,7 @@ class CRON2
         code:         code, # code de 5 chiffres
         intitule:     intitule,
         description:  description,
+        data:         data[:data],
         created_at:   NOW
       }
     end

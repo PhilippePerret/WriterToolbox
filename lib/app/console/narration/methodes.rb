@@ -47,7 +47,7 @@ class Console
     else
       sub_log(pages.collect do |hpage|
         ipage = Cnarration::Page::get(hpage[:id])
-        hpage[:titre].in_a(target:"_blank",href:"site/open_md_file?path=#{CGI::escape ipage.fullpath}").in_li
+        hpage[:titre].in_a(target: :new,href:"site/open_file?path=#{CGI::escape ipage.fullpath}").in_li
       end.join.in_ul(class:'tdm'))
     end
 

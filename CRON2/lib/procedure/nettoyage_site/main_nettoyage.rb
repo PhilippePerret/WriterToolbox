@@ -7,7 +7,8 @@ class CRON2
     @files_count = 0
     nettoyage_rapports_connexions
     nettoyage_log_debug
-    CRON2::Histo::add(code: '11100', data: @files_count)
+    # On n'enregistre l'historique que s'il y a eu un fichier détruit
+    @files_count > 0 && CRON2::Histo::add(code: '11100', data: @files_count)
   end
 
   # Nettoyage des rapports de connexions qui sont créés chaque fois

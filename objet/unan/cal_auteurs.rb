@@ -105,7 +105,7 @@ class User
   def div_contact
     return '' unless user.admin? # ici il s'agit de l'auteur courant
     '<hr>' +
-    'Le contacter/message type'.in_a(href: "unan_admin/contact?uid=#{id}", target: :new)
+    'Le contacter/message type'.in_a(href: "unan_admin/mailing?uid=#{id}", target: :new)
   end
 
   # Couleur générale de fond en fonction de l'état

@@ -1,0 +1,15 @@
+<% 
+  # Ce module permet d'afficher les tables des matières
+# de chaque livre avec une information intelligente, c'est-à-dire
+# l'indication sur le nombre de pages, l'état de développement, etc.
+# pour chaque fichier.
+#
+# Il y a aussi tous les liens pour éditer les fichiers.
+#
+#
+%>
+
+<h1>TDMs Narration</h1>
+<div id="tdm">
+  <%= STdm.new(param(:livre_id)||1).output %>
+</div>

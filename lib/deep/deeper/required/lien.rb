@@ -182,8 +182,7 @@ class Lien
 
     url = case File.extname(path)
     when '.md'
-      "site/open_md_file?path=#{path}" if user.admin?
-      # "site/open_md_file?path=#{CGI::escape path}" if user.admin?
+      "site/open_file?path=#{path}" if user.admin?
     else
       case editor
       when :atom

@@ -235,7 +235,7 @@ class CRON2
             # RETURN true si c'est un tweet permanent qui doit être
             # envoyé
             def tweet_must_be_sent?
-                Time.now.hour % (FREQUENCE_TWEETS_SUR_CITATIONS * FREQUENCE_ENVOI_TWEETS_ET_CITATION) == 0
+                Time.now.hour == (FREQUENCE_TWEETS_SUR_CITATIONS * FREQUENCE_ENVOI_TWEETS_ET_CITATION)
             end
 
             # On redéfinit la table des tweets permanents pour pouvoir utiliser
