@@ -39,7 +39,11 @@ EXPLICATIONS = {
 # ---------------------------------------------------------------------
 %>
 
-<% unless user.subscribed? || user.admin? %>
+<% if user.subscribed? %>
+  <div class="right small">En tant qu'abonné, <%= user.pseudo %>, vous pouvez utiliser le calculateur de structure.</div>
+<% elsif user.admin? %>
+  <!-- Rien -->
+<% else %>
   <p class='right'><span class='warning small'>L'outil pour calculer sa structure parfaite n'est utilisable que par les abonnés.</span></p>
 <% end %>
 
