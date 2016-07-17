@@ -54,7 +54,48 @@ class STdm
       # Pour le collect
       iitem
     end
-    instances.collect{ |iitem| iitem.as_li }.join('')
+
+    # Construction du code HTML de la table des matières
+    ctdm = String.new
+    chapitre_courant  = nil
+    schapitre_courant = nil
+    instances.collect do |iitem|
+      # Si l'élément est un chapitre et qu'il y a  un
+      # chapitre courant, il faut fermer le chapitre courant
+      if iitem.chapitre?
+        # Fermeture du sous-chapitre courant, if any
+        if schapitre_courant
+          ctdm << '</div>'
+          schapitre_courant = nil
+        end
+        # Fermeture du chapitre courant, if any
+        if chapitre_courant
+          ctdm << '</div>'
+        end
+        chapitre_courant = iitem
+      end
+
+      if iitem.sous_chapitre?
+        if schapitre_courant
+          ctdm << '</div>'
+          schapitre_courant = nil
+        end
+        schapitre_courant = iitem
+      end
+
+      # On ajoute l'élément
+      ctdm << iitem.as_li
+
+      # On ouvre l'intérieur du contenu du chapitre ou
+      # du sous-chapitre si c'est nécessaire
+      if iitem.chapitre?
+        ctdm << "<div id='inner_chap-#{iitem.id}' class='inner_chapitre'>"
+      elsif iitem.sous_chapitre?
+        ctdm << "<div id='inner_schap-#{iitem.id}' class='inner_sous_chapitre'>"
+      end
+
+    end
+    ctdm
   end
   def items
     @items ||= begin
@@ -92,7 +133,7 @@ class STdm
       (
         div_infos +
         "[#{id}]".in_span(class: 'iid') +
-        titre.in_span(class: 'ititre')
+        titre_in_span
       ).in_div(class: "#{type}")
     end
 
@@ -100,6 +141,22 @@ class STdm
     #   ÉLÉMENTS VISUELS
     # ---------------------------------------------------------------------
 
+    # SPAN contenant le titre.
+    #
+    # Pour un chapitre ou un sous-chapitre, c'est un lien qui
+    # permet d'ouvrir ou le refermer les titres
+    def titre_in_span
+      tit =
+        case type
+        when :chapitre
+          titre.in_a(onclick: "$('div#inner_chap-#{id}').toggle()")
+        when :sous_chapitre
+          titre.in_a(onclick: "$('div#inner_schap-#{id}').toggle()")
+        when :page
+          titre
+        end
+      tit.in_span(class: 'ititre')
+    end
     # Le div contenant les informations sur la page ou le chapitre
     #
     # Noter une grande différence : pour la page, ce sont les informations

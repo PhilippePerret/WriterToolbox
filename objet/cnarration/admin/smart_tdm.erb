@@ -12,6 +12,11 @@ raise_unless_admin
 
 <h1>TDMs Narration</h1>
 <%= STdm.menu_livres %>
+<div class="right small btns">
+  <%= 'Tout'.in_a(onclick: "$.proxy(STdm, 'show_all')()") %>
+  <%= 'Chapitres'.in_a(onclick: "$.proxy(STdm, 'only_chapitres')()") %>
+  <%= 'Sous-chapitres'.in_a(onclick: "$.proxy(STdm, 'only_sous_chapitres')()") %>
+</div>
 <div id="tdm">
   <%= STdm.new(param(:livre_id)).output %>
 </div>
