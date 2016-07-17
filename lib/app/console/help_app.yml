@@ -107,11 +107,12 @@ narration:
     type:           TITLE
     description:    Collection Narration
   -
-    command:        synchronize database narration
+    command:        smart tdms narration
     description: |
-      Synchronise le fichier `cnarration.db`, base de données des pages de la collection Narration, en conservant les niveaux de développement les plus grands, qui ont pu être modifiés en online ou en offline.
+      Affiche les tables des matières en version intelligente.
     note: |
-      On peut faire également `synchro base narration`.
+      La version intelligente signifie qu'est indiqué le nombre de pages,
+      le niveau de développement, etc.
   -
     command:        (open|ouvrir) page narration &lt;page ID|portion titre&gt;
     description: |

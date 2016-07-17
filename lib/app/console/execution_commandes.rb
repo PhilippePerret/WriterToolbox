@@ -34,6 +34,9 @@ class Console
 
       # --- NARRATION ---
 
+    when /^smart tdms? narration$/
+      redirect_to 'admin/smart_tdm?in=cnarration'
+      return ""
     when /^narration (sortie|output|export) latex(.*?)$/
       console.require 'narration'
       sortie_latex line.sub(/^narration (sortie|output|export) latex/,'')
@@ -92,7 +95,7 @@ class Console
     when /^detruire programme /
       # Pour détruire le programme d'un auteur
       console.require 'unan_unscript'
-      return unan_detruire_programme_auteur line.sub(/^detruire programme /,'').strip 
+      return unan_detruire_programme_auteur line.sub(/^detruire programme /,'').strip
     when /^unan /
       console.require 'unan_unscript'
       case line.downcase
