@@ -39,10 +39,12 @@ end
   <%= div_row('Pseudo'        , pseudo ) %>
   <%= div_row('Inscription'   , created_at.as_human_date(true, true) ) %>
   <%= div_row('Grade forum'   , mark_forum + grade_humain ) %>
-  <% unless user.admin? %>
-    <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
-  <% else %>
+  <% if user.admin? %>
     <%= div_row('Grade site', "Administra#{f_trice} de niveau #{get_option(:admin)}") %>
+  <% elsif user.icarien_actif? %>
+    <%= div_row('Icarien actif', "En tant qu'<strong>icarien actif</strong>, vous avez un accès complet au site.") %>
+  <% else %>
+    <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
   <% end %>
   <% unless user.manitou? %>
     <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>

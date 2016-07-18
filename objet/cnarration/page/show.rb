@@ -34,7 +34,7 @@ class Cnarration
         # la page. Ici, on regarde juste le niveau de développement par
         # rapport au visiteur pour savoir si on affiche un message de niveau
         # insuffisant ou la page.
-        if developpement < 8 && !user.admin? && !(user.unanunscript? && developpement > 5)
+        if developpement < 8 && !user.admin?
           message_niveau_developpement_insuffisant
         else
           if false == path_semidyn.exist? || out_of_date?

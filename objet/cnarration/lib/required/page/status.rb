@@ -21,7 +21,7 @@ class Page
   # Les bots google ou des moteurs de recherche
   # connus peuvent consulter aussi les pages.
   def consultable?
-    return user.subscribed? || user.admin? || user.moteur_recherche?
+    return user.subscribed? || user.admin? || user.icarien_actif? || user.moteur_recherche?
   end
 
   def only_enligne?
