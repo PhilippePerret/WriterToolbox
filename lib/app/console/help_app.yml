@@ -417,3 +417,26 @@ unan:
     note: |
       Pour le moment, ces commandes n'ont pas encore été mises en commandes
       générales, on peut les trouver ci-dessous.
+
+# ---------------------------------------------------------------------
+#   ATELIER ICARE
+# ---------------------------------------------------------------------
+icare:
+  -
+    type:           TITLE
+    description:    L’Atelier ICARE
+  -
+    command:        set icarien &lt;pseudo|ID&gt; (actif|on)
+    description: |
+      Permet de définir que l'icarien désigné par le pseudo est un
+      icarien actif et qu'il peut donc consulter entièrement le site.
+    note: |
+      L'ID est celui sur le BOA, pas sur l'atelier
+  -
+    command:        set icarien &lt;pseudo|ID&gt; (inactif|off)
+    description: |
+      Permet de définir que l'icarien désigné par le pseudo ou l'ID
+      est un icarien inactif et qu'il n'a plus d'accès complet au
+      site.
+    note: |
+      L'ID est celui sur le BOA, pas sur l'atelier

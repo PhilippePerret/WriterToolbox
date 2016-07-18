@@ -11,6 +11,11 @@ class Console
 
     case line.downcase
 
+      # --- ICARE ---
+    when /^set icarien (.*?) (inactif|actif|on|off)$/
+      console.require 'icare'
+      return set_icarien line
+
       # --- CITATION ---
 
     when /^new citation$/
