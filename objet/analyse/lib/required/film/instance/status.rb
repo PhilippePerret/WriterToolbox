@@ -9,7 +9,7 @@ class Film
     # consulter les analyses, quel que soit leur stade
     # d'avancement.
     # Un bot google aussi
-    return true if user.admin? || user.real_analyste? || user.moteur_recherche?
+    return true if user.authorized? || user.real_analyste?
 
     # Pour les autres utilisateurs, il faut que l'analyse
     # soit au moins lisible pour qu'ils puissent la consulter

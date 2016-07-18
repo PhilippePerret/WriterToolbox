@@ -67,7 +67,7 @@ class Cnarration
       @full_page = path_semidyn.deserb
       # Si l'user est abonné ou que le texte fait moins de 3000
       # signes, on retourne le texte tel quel
-      return (full_page_with_exergue || @full_page) if consultable? || @full_page.length < 2500
+      return (full_page_with_exergue || @full_page) if user.authorized? || @full_page.length < 2500
 
       # Si l'utilisateur n'est pas abonné, on tronque la page
       # et on ajoute un message l'invitant à s'abonner.
@@ -251,7 +251,7 @@ class Cnarration
     # {StringHTML} Retourne le code HTML du bloc d'évaluation de
     # la page
     def bloc_evaluation
-      return "" unless consultable?
+      user.authorized? || ( return '' )
       we = user.f_e.freeze
       menu_interet = [
         ["0", "endormi#{we}"],
@@ -324,18 +324,3 @@ class Cnarration
 
   end #/Page
 end #/Cnarration
-
-
-class User
-
-  # Méthode qui retourne true si l'user courant peut lire
-  # la page de cours.
-  # Les visiteurs autorisés sont :
-  #   - les abonnés
-  #   - les auteurs du programmes un an un script
-  #   - les icariens actifs
-  #   - les administrateurs
-  def authorized?
-    user.subscribed? || user.unanunscript? || user.icarien_actif? || user.admin?
-  end
-end

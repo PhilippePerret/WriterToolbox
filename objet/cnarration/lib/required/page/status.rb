@@ -14,16 +14,6 @@ class Page
   def sous_chapitre?  ; type == 2 end
   def chapitre?       ; type == 3 end
 
-  # Retourne true si l'utilisateur courant peut
-  # consulter la page en entier, retourne false
-  # s'il ne peut en consulter que le tiers.
-  #
-  # Les bots google ou des moteurs de recherche
-  # connus peuvent consulter aussi les pages.
-  def consultable?
-    return user.subscribed? || user.admin? || user.icarien_actif? || user.moteur_recherche?
-  end
-
   def only_enligne?
     @only_enligne ||= printed_version == 1
   end
