@@ -39,12 +39,21 @@ class ErrorNotOwner < StandardError; end
 # Barrière anti non-identifié
 # Cf. RefBook > Protection.md
 def raise_unless_identified
-  raise ErrorUnidentified unless user.identified?
+  # raise ErrorUnidentified unless user.identified?
+  error 'Vous devez être identifié(e) pour rejoindre cette page.'
+  redirect_to 'user/signin'
 end
 # Barrière anti non-administrateur
+# Si l'user n'est pas identifié, on l'envoie plutôt à l'identification
+# Sinon, il rejoint la page d'erreur normale.
 # Cf. RefBook > Protection.md
 def raise_unless_admin
-  raise ErrorNoAdmin unless user.admin?
+  if user.identified?
+    raise ErrorNoAdmin unless user.admin?
+  else
+    error 'Vous devez être identifié(e) pour rejoindre cette page.'
+    redirect_to 'user/signin'
+  end
 end
 # Barrière anti non quelque chose
 # Cf. RefBook > Protection.md

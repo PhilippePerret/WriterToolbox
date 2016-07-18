@@ -28,7 +28,7 @@ form.objet  =
 <%
 bouton_show = 'voir'.in_a(class: 'btn tiny', onclick: "return $.proxy(Citation,'show_citation', this)()", target: '_blank')
 %>
-<form class="dim2080" action="citation/edit" method="POST">
+<form id="citation_edit" class="dim2080" action="citation/edit" method="POST">
   <%= 'save_citation'.in_hidden(name: 'operation') %>
   <%= form.field_text('ID', 'id', nil, {class: 'short', text_after: bouton_show}) %>
   <%= form.field_textarea('Citation', 'citation') %>
