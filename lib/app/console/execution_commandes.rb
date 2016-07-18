@@ -11,6 +11,12 @@ class Console
 
     case line.downcase
 
+      # --- CITATION ---
+
+    when /^new citation$/
+      redirect_to 'citation/edit'
+      return ''
+
       # --- FILMODICO ---
 
     when /liste? films/

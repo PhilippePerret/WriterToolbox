@@ -54,7 +54,9 @@ liens:
     command:        "`balise film &lt;extrait de titre&gt;`"
     description:    Retourne les liens vers les films correspondant à l'extrait de titre.
 
-# SCÉNODICO
+# ---------------------------------------------------------------------
+#   SCÉNODICO
+# ---------------------------------------------------------------------
 scenodico:
   -
     type:           TITLE
@@ -79,7 +81,9 @@ scenodico:
     command:        goto|aller nouveau_mot
     description:    Rejoint le formulaire pour créer un nouveau mot du scénodico.
 
+# ---------------------------------------------------------------------
 # FILMODICO
+# ---------------------------------------------------------------------
 filmodico:
   -
     type:           TITLE
@@ -240,6 +244,26 @@ narration:
       Plus tard, peut-être que la compilation sera faite automatiquement.
 
 # ---------------------------------------------------------------------
+#   CITATIONS
+# ---------------------------------------------------------------------
+citations:
+  -
+    type:         TITLE
+    description:  Les Citations
+  -
+    command:      new citation
+    description: |
+      Pour créer une nouvelle citation.
+  -
+    command:      goto citation/&lt;ID&gt;/show
+    description: |
+      Pour afficher la citation d'identifiant ID
+  -
+    command:      goto citation/&lt;ID&gt;/edit
+    description: |
+      Pour éditer la citation d'identifiant ID.
+
+# ---------------------------------------------------------------------
 #   ANALYSE DE FILM
 # ---------------------------------------------------------------------
 analyse:
@@ -286,6 +310,7 @@ analyse:
 
 # ---------------------------------------------------------------------
 # PROGRAMME UN AN UN SCRIPT
+# ---------------------------------------------------------------------
 unan:
   -
     type:           TITLE
