@@ -162,19 +162,38 @@ class Cnarration
     # Le message de page en cours d'écriture et pas encore
     # prête pour la lecture
     def message_niveau_developpement_insuffisant
-      lien_subscribe =
-        if user.subscribed? || user.unanunscript?
-          ''
-        else
-          lien.bouton_subscribe
-        end
+      if user.authorized?
+        mess_dev_insuffisant_authorized
+      else
+        mess_dev_insuffisant_non_authorized
+      end
+    end
+
+    # Message en cas de niveau de développement de la page
+    # insuffisant pour un utilisateur autorisé, c'est-à-dire un
+    # abonné, un auteur du programme un an un script ou un icarien
+    # actif.
+    def mess_dev_insuffisant_authorized
       <<-HTML
 <div class="red air">
-  Cette page est en cours de rédaction et ne peut être consultée. Elle est au niveau de développement #{developpement} et elle sera consultable à partir du niveau 8.
+  #{user.pseudo}, cette page est en cours de rédaction. Son niveau de développement est #{developpement}, vous pourrez la consulter à partir du niveau 8.
 </div>
-#{lien_subscribe}
     HTML
     end
+
+    # Message en cas de niveau de développement de la page
+    # insuffisant pour un utilisateur non autorisé, c'est-à-dire
+    # un simple inscrit ou un simple visiteur
+    def mess_dev_insuffisant_non_authorized
+      <<-HTML
+<div class="red air">
+  Cette page est en cours de rédaction et ne peut être consultée même partiellement. Pour la consulter entièrement, vous devez être abonné.
+</div>
+#{lien.bouton_subscribe}
+    HTML
+    end
+
+
     # Le message d'abonnement demandé pour que l'user puisse lire
     # l'intégralité de la page.
     def message_abonnement_required
@@ -305,3 +324,18 @@ class Cnarration
 
   end #/Page
 end #/Cnarration
+
+
+class User
+
+  # Méthode qui retourne true si l'user courant peut lire
+  # la page de cours.
+  # Les visiteurs autorisés sont :
+  #   - les abonnés
+  #   - les auteurs du programmes un an un script
+  #   - les icariens actifs
+  #   - les administrateurs
+  def authorized?
+    user.subscribed? || user.unanunscript? || user.icarien_actif? || user.admin?
+  end
+end
