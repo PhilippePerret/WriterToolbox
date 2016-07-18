@@ -10,9 +10,19 @@ end
 mot.get_all
 # debug "mot : #{mot.data.pretty_inspect}"
 
-lien_edit_if_admin = if user.admin?
-  "[Edit]".in_a(href:"scenodico/#{mot.id}/edit", class:'small').in_div(class:'fright')
-else "" end
+lien_edit =
+  if user.admin?
+    "[Edit]".in_a(href:"scenodico/#{mot.id}/edit", class:'small')
+  else
+    ''
+  end
+
+lien_code =
+  if user.admin?
+    '[code]'.in_a(onclick:"UI.clip({'Code': 'MOT[#{mot.id}|#{mot.mot.downcase}]'})")
+  else
+    ''
+  end
 
 disp_word = (user.admin? ? ("[##{mot.id}]".in_span(class:'tiny', style:'vertical-align:super') + " ") : "") + mot.mot
 
@@ -25,7 +35,7 @@ def build_row libelle, contenu
 end
 %>
 <%= Scenodico::titre_h1 %>
-<%= lien_edit_if_admin %>
+<%= (lien_edit + lien_code).in_div(class: 'fright small') %>
 <h2><%= disp_word %></h2>
 <div class="dim4060">
   <%= mot.definition_formated.in_div(id:'mot_definition') %>
