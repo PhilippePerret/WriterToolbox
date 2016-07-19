@@ -114,26 +114,38 @@ class SiteHtml
     derniere_nouvelles_unan
   end
 
+  # Dernières nouvelles du programme UN AN UN SCRIPT
+  # On pioche trois actualités parmi les inscriptions ou les
+  # activités générales.
   def derniere_nouvelles_unan
+    d = Hash.new
     # Les dernières inscriptions (if any)
-    unan_dernieres_inscriptions +
+    d.merge! unan_dernieres_inscriptions
     # Les dernières activités sur le programme
-    unan_dernieres_activites
-    # Des actualités "forcées"
+    d.merge! unan_dernieres_activites
+
+    # On prend les trois dernières et on les retourne
+    # pour les mettre dans la fenêtre
+    d.sort_by{ |k, v| k }[0..2].collect{ |k, actu| actu }.join('')
+
   end
   def unan_dernieres_inscriptions
     request_data = {
       order: 'created_at DESC',
       limit: 3,
-      colonnes: [:id, :auteur_id, :projet_id, :updated_at]
+      colonnes: [:id, :auteur_id, :projet_id, :updated_at, :created_at]
     }
-    site.dbm_table(:unan, 'programs').select(request_data).collect do |arrdata|
-      uid, pid, created_at = arrdata
-      upseudo = User::get(uid).pseudo
+    data = Hash.new
+    site.dbm_table(:unan, 'programs').select(request_data).each do |hdata|
+      uid = hdata[:auteur_id]
+      pid = hdata[:projet_id]
+      created_at = hdata[:created_at]
+      upseudo = User.get(uid).pseudo
       # TODO: Pour le moment, on n'indique pas la date
       # "#{DOIGT}Inscription #{upseudo} #{as_small_date created_at}"
-      "#{DOIGT}Inscription #{upseudo}".in_div(class:'actu')
-    end.join('')
+      data.merge! created_at => "#{DOIGT}Inscription de #{upseudo}".in_div(class:'actu')
+    end
+    return data
   end
   def unan_dernieres_activites
     request_data = {
@@ -141,14 +153,17 @@ class SiteHtml
       limit: 3,
       colonnes: [:id, :auteur_id, :projet_id, :updated_at]
     }
-    site.dbm_table(:unan, 'programs').select(request_data).collect do |arrdata|
-      pid, puser, pprojet, pupdate = arrdata
-      puser = User::get(puser).pseudo
+    data = Hash.new
+    site.dbm_table(:unan, 'programs').select(request_data).each do |hdata|
+      uid         = hdata[:auteur_id]
+      pid         = hdata[:projet_id]
+      updated_at  = hdata[:updated_at]
+      upseudo = User.get(uid).pseudo
       # TODO: Pour le moment on n'indique pas la date, on le
       # fera lorsqu'il y aura pas mal d'auteurs en travail
-      # "#{DOIGT}Projet de #{puser} #{as_small_date pupdate}"
-      "#{DOIGT}Projet de #{puser}".in_div(class:'actu')
-    end.join('')
+      data.merge! updated_at => "#{DOIGT}Projet de #{upseudo} #{as_small_date updated_at}".in_div(class:'actu')
+    end
+    return data
   end
 
   # ---------------------------------------------------------------------
