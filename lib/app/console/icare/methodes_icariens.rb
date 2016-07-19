@@ -26,11 +26,13 @@ class Console
       error "L'icarien #{de_prop} `#{ref_icarien}` est introuvable."
     else
       opts = duser[:options]
+      opts = opts.split('') # Car il n'y en a peut-être pas 32
       bit31 = opts[31]
       if bit31 == valeur_bit
         error "l'icarien #{duser[:pseudo]} (#{duser[:id]}) est déjà dans l'état #{new_etat} sur le site distant."
       else
         opts[31] = valeur_bit
+        opts = opts.collect{|e| e || 0}.join('')
         table.update(duser[:id], options: opts)
         flash "Icarien #{duser[:pseudo]} (#{duser[:id]}) a été mis à l'état #{new_etat} sur le site distant."
       end
