@@ -35,6 +35,10 @@ module MethodesBaseMySQL
     @client ||= Mysql2::Client.new(client_data.merge(database: db_name))
   end
 
+  def client_sans_db
+    @client_sans_db ||= Mysql2::Client.new(client_data)
+  end
+
   # Les données pour se connecter à la base mySql
   # soit en local soit en distant.
   def client_data

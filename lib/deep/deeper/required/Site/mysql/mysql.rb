@@ -12,6 +12,24 @@ class SiteHtml
     DBM_BASE.execute(db_suffix, request, options)
   end
 
+  # Pour exécuter une requête sur mysql, en dehors de toute
+  # base et de toute table. Par exemple pour obtenir la
+  # liste des bases de données.
+  #
+  #
+  def mysql_execute request, options = nil
+    request.end_with?(';') || request += ';'
+    res = DBM_BASE.client_sans_db.query(request)
+    if res.nil?
+      true
+    else
+      res.collect { |row| row }
+    end
+  rescue Exception => e
+    debug e
+    return false
+  end
+
 class DBM_TABLE # DBM_TABLE pour DataBase Mysql
 
   # ---------------------------------------------------------------------
@@ -55,6 +73,15 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     def folder_path_schema_tables type = nil
       @folder_path_schema_tables ||= site.folder_database + 'definition_tables_mysql'
       type ? @folder_path_schema_tables + "base_#{type}" : @folder_path_schema_tables
+    end
+
+    # Retourne true si la base de données +dbname+ existe
+    def database_exist? dbname
+      client_sans_db.query('SHOW DATABASES;').each do |row|
+        debug "row = #{row.inspect}"
+        return true if row['Database'] == dbname
+      end
+      return false
     end
 
   end #/<< self

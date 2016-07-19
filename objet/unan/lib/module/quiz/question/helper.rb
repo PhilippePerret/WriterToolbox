@@ -26,11 +26,12 @@ class Question
       return "[Question ##{id} inexistante]"
     end
 
-    correction_questionnaire = if quiz_id.nil?
-       user_reponse != nil
-     else
-       quiz.correction?
-     end
+    correction_questionnaire =
+      if quiz_id.nil?
+        user_reponse != nil
+      else
+        quiz.correction?
+      end
 
     # Préfix de tous les objets DOM
     prefix = quiz_id.nil? ? "quiz" : "quiz-#{quiz_id}"
@@ -54,8 +55,8 @@ class Question
       # On part du principe que cette question a bien été répondu
       reponse_is_right = true
 
-      rights = Hash::new
-      wrongs = Hash::new
+      rights = Hash.new
+      wrongs = Hash.new
       # On fait d'abord un Hash des réponses pour pouvoir les
       # manipuler plus facilement
       hreponses = Hash::new

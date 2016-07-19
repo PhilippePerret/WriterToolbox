@@ -7,18 +7,25 @@ class Scenodico
   extend MethodesMainObjets
 
   DATA_ONGLETS = {
-    'Accueil'       => "scenodico/home",
-    'Dictionnaire'  => "scenodico/list",
-    'Recherche'     => "scenodico/search",
-    'Proposer'      => "scenodico/proposer"
+    'Accueil'       => 'scenodico/home',
+    'Dictionnaire'  => 'scenodico/list',
+    'Quiz'          => 'scenodico/quiz',
+    'Recherche'     => 'scenodico/search',
+    'Proposer'      => 'scenodico/proposer'
   }
+
   class << self
 
     def titre ; @titre ||= "Le Scénodico".freeze end
 
     def data_onglets
       donglets = DATA_ONGLETS
-      donglets.merge!("Nouveau" => "scenodico/edit") if user.admin?
+      if user.admin?
+        donglets.merge!(
+          'Nouveau'     => 'scenodico/edit',
+          '[Edit Quiz]' => 'scenodico/quiz_edit'
+          )
+      end
       return donglets
     end
 

@@ -6,7 +6,7 @@ class Scenodico
     def get mid
       mid = mid.to_i
       @instances      ||= {}
-      @instances[mid] ||= Scenodico::Mot::new(mid)
+      @instances[mid] ||= Scenodico::Mot.new(mid)
     end
 
     # +options+

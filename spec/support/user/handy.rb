@@ -13,6 +13,11 @@ def go_and_identify mail, password
   end
 end
 
+def identify_phil
+  require './data/secret/data_phil'
+  go_and_identify DATA_PHIL[:mail], DATA_PHIL[:password]
+end
+
 # Retourne un pseudo aléatoire d'une longeur de 6 à 16 lettres
 # à peu près
 def random_pseudo
@@ -80,13 +85,13 @@ def get_any_user options = nil
   raise "Impossible de trouver des users répondant aux conditions…" if ids.empty?
 
   uid = ids.shuffle.shuffle.first
-  u = User::new(uid)
+  u = User.new(uid)
   expect(u).to be_instance_of(User)
   return u
 end
 
 def phil
-  u = User::new(1)
+  u = User.new(1)
   expect(u).to be_instance_of(User)
   expect(u).to be_admin
   return u
