@@ -6,10 +6,7 @@ raise_unless_admin
 <%= Filmodico::titre_h1("Édition de film") %>
 <% if OFFLINE %>
   <p class='air warning'>L'édition des fiches de films ne se fait qu'en ONLINE</p>
-  <p>Il faut ensuite rappatrier le fichier ./database/data/filmodico.db modifié.</p>
-  <p>
-    <%= "Ramener le fichier `./database/data/filmodico.db` modifié.".in_a(href:"filmodico/synchro") %>
-  </p>
+  <%= 'Éditer le film en online'.in_a(href: "#{site.distant_url}/filmodico/#{site.route.objet_id}/edit") %>
 <% else %>
 <%
 site.require 'form_tools'

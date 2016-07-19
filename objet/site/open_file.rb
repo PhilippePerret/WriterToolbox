@@ -19,11 +19,15 @@ mais seulement si l'on est un administrateur.
 raise_unless_admin
 
 path = param(:path) || param(:file) || (raise "Aucun fichier n'est défini !" )
-path = File.expand_path(path)
+File.exist?(path) || path = File.expand_path(path)
+debug "Path à ouvrir: #{path}"
 if File.exist? path
   # osascript "tell application \\\"#{param(:app)}\\\" to open \\\"#{param(:path).gsub(/\//,':')}\\\""
   app = param(:app) || "TextMate"
-  `open -a #{app} #{path}`
+  cmd = "open -a #{app} #{path}"
+  debug "Command: #{cmd}"
+  # On exécute la commande
+  `#{cmd}`
   flash "Ouverture de #{path} dans #{app}"
 else
   error "La page #{path} est introuvable. Impossible de l'ouvrir."
