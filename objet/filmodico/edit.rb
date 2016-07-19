@@ -39,6 +39,7 @@ class Filmodico
     end
 
     def prepare_edition_film hfilm
+      debug "hfilm = #{hfilm.pretty_inspect}"
       hfilm.merge!(
         realisateur: hfilm.delete(:realisateur).as_people_in_textarea,
         auteurs: (hfilm.delete(:auteurs)||[]).as_people_in_textarea,
@@ -239,6 +240,30 @@ class Filmodico
 
 end #/Filmodico
 
+class ::String
+  # En passant en MySql, les "people" sont souvent encore
+  # en string. Il faut les transformer en Array
+  def as_people_in_textarea
+    arr = self
+    arr = JSON.load(arr)
+    if arr.first.instance_of?(String)
+      arr.collect!{ |e| JSON.load(e).to_sym }
+    end
+    arr.as_people_in_textarea
+  end
+
+  # En passant en MySql, les "people" sont souvent encore
+  # en string. Il faut les transformer en Array
+  def as_acteurs_in_textarea
+    arr = self
+    arr = JSON.load(arr)
+    if arr.first.instance_of?(String)
+      arr.collect!{ |e| JSON.load(e).to_sym }
+    end
+    arr.as_acteurs_in_textarea
+  end
+
+end
 class ::Array
   def as_people_in_textarea
     self.collect do |hpeople|
