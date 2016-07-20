@@ -70,7 +70,9 @@ class Quiz
   # pour que les méthodes dbm du site puisse construire les tables.
   #
   # Noter qu'il faut également créer la base et les tables en online
-  # pour pouvoir ensuite synchroniser les deux.
+  # pour pouvoir ensuite synchroniser les deux. MAIS comme il semble
+  # que l'on ne puisse pas créer de base sur le site distant de cette
+  # façon là, il faut d'abord le faire manuellement
   #
   def database_create
 
@@ -78,60 +80,80 @@ class Quiz
 
     require './data/secret/mysql'
     client_data_offline = DATA_MYSQL[:offline]
-    client_data_online  = DATA_MYSQL[:online]
     client_offline = Mysql2::Client.new(client_data_offline)
-    client_online  = Mysql2::Client.new(client_data_online)
 
-    # Création de la base
-    request = 'DROP DATABASE IF EXISTS `#{database_fullname}`;CREATE DATABASE `#{database_fullname}`;'
+    # La base de données distante doit exister pour pouvoir
+    # procéder à la création. On la crée par CURL et par l'API de
+    # alwaysdata
+    database_online_exist? || create_database_online
+    # On vérifie que la base a bien été créée.
+    database_online_exist? || raise("La base ONLINE `#{database_fullname}` n'a pas pu être créée par l'API d'always data… Cela doit peut-être être fait depuis le tableau de bord alwaydata.")
 
-    res = client_offline.query(request)
-    debug "Retour requête offline : #{res.inspect}"
-    res = client_online.query(request)
-    debug "Retour requête online : #{res.inspect}"
+    debug "NOM DATABASE : #{database_fullname}"
 
+    # Création de la base local
+    ["DROP DATABASE IF EXISTS `#{database_fullname}`;", "CREATE DATABASE `#{database_fullname}`;"
+    ].each do |request|
+      res = client_offline.query(request)
+      debug "     Retour requête offline : #{res.inspect}"
+      debug "   - OK OFFLINE"
+    end
 
-    # where = OFFLINE ? 'DISTANT' : 'LOCAL'
-    #
-    # # Chemin d'accès aux dossiers contenant le schéma des tables
-    # dos_src = './database/definition_tables_mysql/base_quiz'
-    # dos_dst = "./database/definition_tables_mysql/base_#{database_relname}"
-    #
-    # site.mysql_execute("CREATE DATABASE `#{database_fullname}`;") || begin
-    #   # Invoqué si la requête a planté
-    #   raise "Impossible de créer la base de données #{database_fullname}…"
-    # end
-    # debug "-> Base de données #{database_fullname} créée."
-    # debug "\n\nPOUR CRÉER LA BASE DE DONNÉES :\n\tCREATE DATABASE `#{database_fullname}`;"
-    # flash "Vous devez créer la base de données `#{database_fullname}` sur le site #{where}. Le code a été mis dans le debug (chercher : CREATE DATABASE)"
-    #
-    # # On fait une copie exacte du dossier contenant les schémas
-    # # des tables
-    # FileUtils.cp_r dos_src, dos_dst
-    #
-    # # On demande la construction des tables (simplement en les
-    # # appelant)
-    # debug "\nSI NÉCESSAIRE, APPELER LE CODE SUIVANT POUR CRÉER LES BASES SUR LE SITE #{OFFLINE ? 'DISTANT' : 'LOCAL'} (*)."
-    # ['quiz', 'questions', 'resultats'].each do |table_name|
-    #   rs = site.dbm_table(database_relname, table_name)
-    #   # On la met directement dans l'instance pour gagner du
-    #   # temps (et des vérifications)
-    #   instance_variable_set("@table_#{table_name}", rs)
-    #   debug "\tsite.dbm_table('#{database_relname}', '#{table_name}')"
-    # end
-    # debug "MAIS ATTENTION, IL EST IMPÉRATIF D'AVOIR *DUPLIQUÉ* LE DOSSIER `./database/definition_tables_mysql/base_quiz` SUR LE SITE #{where}"
-    # debug "EN LE RENOMMANT : `base_#{database_relname}`"
+    # Maintenant, on va créer les tables dans la base online et la
+    # base offline
+
+    # On utilise la base de donnée
+    client_offline.query("USE `#{database_fullname}`")
+    client_online.query("USE `#{database_fullname}`")
+
+    # Le dossier source contenant la définition des schémas des
+    # tables.
+    dos_src = './database/definition_tables_mysql/base_quiz'
+    Dir["#{dos_src}/table_*.rb"].each do |ftable|
+      tb_name = File.basename(ftable, File.extname(ftable)).sub(/^table_/,'')
+      debug "CRÉATION TABLE : #{tb_name}"
+      # On prend le code de création de la table
+      require ftable
+      code_creation_table = send("schema_table_#{tb_name}".to_sym)
+      # Création de la table
+      client_offline.query(code_creation_table + ';')
+      client_online.query("DROP TABLE IF EXISTS #{tb_name}")
+      client_online.query(code_creation_table + ';')
+    end
 
   rescue Exception => e
     debug e
+    @database_is_existing = false
     error e.message
   else
     @database_is_existing = true
-  ensure
-    # # Dans tous les cas…
-    # # On détruit le dossier contenant les schémas des tables
-    # # dans le dossier provisoire de la base (qui ne servira plus)
-    # FileUtils.rm_rf(dos_dst) if File.exist?(dos_dst)
+  end
+
+  def client_online
+    @client_online ||= begin
+      require './data/secret/mysql'
+      Mysql2::Client.new(DATA_MYSQL[:online])
+    end
+  end
+
+  # Pour la création de la base de données ONLINE, il faut
+  # passer par l'API de AlwaysData
+  def create_database_online
+    require './data/secret/api_alwaysdata'
+    url = 'https://api.alwaysdata.com/v1/database/'
+    datacmd = '{"encoding": "utf8", "name": "' + database_fullname + '", "type": "MYSQL", "permissions": {"118479": "NONE", "118479_phil": "FULL", "118479_user": "READONLY"}}'
+    cmd = "CURL --basic --user #{AD_API[:api_key]}: #{url} --request POST --data '#{datacmd}'"
+    debug "CMD : #{cmd}"
+    res = `#{cmd} 2>&1`
+    debug "RETOUR CURL CRÉATION DATABASE #{database_fullname} ONLINE : #{res.inspect}"
+  end
+
+  def database_online_exist?
+    @client_online = nil # pour reforcer (utile ?…)
+    client_online.query('SHOW DATABASES;').each do |row|
+      return true if row['Database'] == database_fullname
+    end
+    return false
   end
 
 end #/Quiz

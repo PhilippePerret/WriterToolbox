@@ -8,9 +8,9 @@ site.require_module 'quiz'
 class ::Quiz
 
   # Pour définir la database (elle aura pour nom final :
-  # `boite-a-outils_quiz_scenodico`)
-  # 
+  # `boite-a-outils_quiz_biblio`)
+  #
   def prefix_base
-    @prefix_base ||= 'scenodico'
+    @prefix_base ||= 'biblio'
   end
 end

@@ -27,6 +27,14 @@ class ::Quiz
     dform[:id]    ||= 'edition_quiz'
     dform[:class] ||= 'dim2080'
     tform.prefix= 'quiz'
+
+    # Liste des groupes
+    # TODO: Plus tard, les récupérer dans la table elle-même (table des
+    # quiz)
+    liste_groupes = [['', 'Choisir parmi…'],['scenodico', 'Scénodico'], ['filmodico', "Filmodico"]]
+    onclick = "$('input#quiz_groupe').val(this.value)"
+    menu_groupes = liste_groupes.in_select(onchange: onclick)
+
     mess_id = "ID du quiz : #{id}".in_span(id: 'quizid', class: 'fright')
     (
       # Identifiant, qui doit être défini à l'instanciation
@@ -34,6 +42,8 @@ class ::Quiz
       (id || '').in_hidden(name:'quiz[id]', id: 'quiz_id') +
       'save_data_quiz'.in_hidden(name: 'operation') +
       tform.field_text('Titre', 'titre', titre) +
+      tform.field_text('Groupe', 'groupe', groupe, {class: 'medium', text_after: menu_groupes}) +
+      tform.field_description("Une base pouvant contenir des questionnaires de type varié (par exemple sur le scénodico ET sur le filmodico) on peut préciser par ce groupe les groupes possibles.") +
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random') +
       tform.field_text('', 'max_questions', nil, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +

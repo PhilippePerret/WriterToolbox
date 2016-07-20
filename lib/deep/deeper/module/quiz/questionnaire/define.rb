@@ -15,10 +15,15 @@ if user.manitou?
     # quelques alertes pour prévenir quand même l'administrateur
     # qui procède à la création.
     def save_data
+      debug "data2save : #{data2save.inspect}"
       if exist?
+        debug "-> Update du quiz #{id}"
         table_quiz.update(id, data2save)
+        flash "Quiz ##{id} actualisé avec succès."
       else
+        debug "-> Création du quiz"
         @id = table_quiz.insert(data2save.merge(created_at: NOW))
+        flash "Quiz #{id} créé avec succès."
       end
     end
 

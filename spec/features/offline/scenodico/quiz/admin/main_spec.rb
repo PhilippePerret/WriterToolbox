@@ -3,8 +3,8 @@ feature "Test de la base d'administration du quiz du scénodico" do
 
   def table_quiz
     @table_quiz ||= begin
-      if SiteHtml::DBM_TABLE.database_exist?('boite-a-outils_quiz_scenario')
-        site.dbm_table('quiz_scenodico', 'quiz', online = false)
+      if SiteHtml::DBM_TABLE.database_exist?('boite-a-outils_quiz_biblio')
+        site.dbm_table('quiz_biblio', 'quiz', online = false)
       end
     end
   end
@@ -79,6 +79,9 @@ feature "Test de la base d'administration du quiz du scénodico" do
 
       # L'IDentifiant, affiché sous forme de texte
       with_tag 'span', with: {id: "quizid"}, text: "ID du quiz : 1"
+
+      # Le groupe auquel appartient le quiz
+      with_tag 'input', with: {type: 'text', id: 'quiz_groupe', name: 'quiz[groupe]'}
 
       # Le type de questionnaire
       with_tag 'select', with: {id: 'quiz_type', name: 'quiz[type]'} do

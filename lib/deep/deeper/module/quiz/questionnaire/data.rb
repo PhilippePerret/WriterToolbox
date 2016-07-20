@@ -13,6 +13,7 @@ class Quiz
   #   DATA enregistrées
   # ---------------------------------------------------------------------
   def titre; @titre ||= get(:titre) end
+  def groupe; @groupe ||= get(:groupe) end
   def options; @options ||= get(:options) end
   def questions_ids; @questions_ids ||= (get(:questions_ids) || '').split(' ') end
   def description; @description ||= get(:description) end
