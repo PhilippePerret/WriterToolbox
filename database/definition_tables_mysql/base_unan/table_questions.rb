@@ -1,4 +1,4 @@
-encoding: UTF-8
+# encoding: UTF-8
 def schema_table_questions
   <<-MYSQL
 CREATE TABLE questions

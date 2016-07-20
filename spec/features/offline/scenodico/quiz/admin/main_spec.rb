@@ -1,11 +1,29 @@
 
 feature "Test de la base d'administration du quiz du scénodico" do
+
+  def table_quiz
+    @table_quiz ||= begin
+      if SiteHtml::DBM_TABLE.database_exist?('boite-a-outils_quiz_scenario')
+        site.dbm_table('quiz_scenodico', 'quiz', online = false)
+      end
+    end
+  end
+
   before(:all) do
-    puts "-> Je conserve les valeurs actuelles du quiz"
+    if table_quiz
+      @quiz_data_init = table_quiz.get(1)
+      puts "-> Je conserve les valeurs actuelles du quiz (#{@quiz_data_init.inspect})"
+    else
+      puts "Pas de table des quiz scénodico, pas de données à conserver"
+    end
   end
 
   after(:all) do
-    puts "-> Je remets les valeurs du quiz"
+    if @quiz_data_init.nil?
+      puts "-> Les valeurs du quiz ne sont pas encore définies"
+    else
+      puts "-> Je remets les valeurs initiales du quiz (#{@quiz_data_init.inspect})"
+    end
   end
 
   let(:home_scenodico) { "#{site.local_url}/scenodico/home" }
@@ -99,6 +117,15 @@ feature "Test de la base d'administration du quiz du scénodico" do
 
     expect(page).to have_tag('form', with: {id: 'edition_quiz'})
 
-    puts "J'ai fini de modifier les valeurs du quiz"
+    new_titre = "Quiz scénodico du #{Time.now}"
+    within('form#edition_quiz') do
+      fill_in('quiz_titre', with: new_titre)
+      click_button("Enregistrer")
+    end
+    shot 'after-submit-form'
+
+    # Le nouveau titre a été enregistré
+    dquiz = table_quiz.get(1)
+    expect(dquiz[:titre]).to eq new_titre
   end
 end

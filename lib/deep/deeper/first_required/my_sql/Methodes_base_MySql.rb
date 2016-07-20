@@ -5,44 +5,38 @@ module MethodesBaseMySQL
   # les opérations
   def define_is_offline force_online
     if ONLINE
-      @is_offline = false
+      @@is_offline = false
     else
-      unless force_online === !@is_offline
-        @is_offline =
-          case force_online
-          when NilClass then OFFLINE
-          else !force_online
-          end
-        reset
-      end
+      @@is_offline =
+        case force_online
+        when NilClass then OFFLINE
+        when false    then true   # Pour la clarté (!force_online)
+        when true     then false  # Pour la clarté (!force_online)
+        end
     end
   end
 
   def offline?
-    @is_offline = OFFLINE if @is_offline === nil
-    @is_offline
-  end
-
-  # Au cours de la même session, on peut faire appel à la
-  # base local ou distante. Il faut donc pouvoir reseter les
-  # données
-  def reset
-    @client_data  = nil
-    @client       = nil
+    @@is_offline = ( OFFLINE == true ) if @@is_offline === nil
+    @@is_offline
   end
 
   def client
-    @client ||= Mysql2::Client.new(client_data.merge(database: db_name))
+    Mysql2::Client.new(client_data.merge(database: db_name))
   end
 
   def client_sans_db
-    @client_sans_db ||= Mysql2::Client.new(client_data)
+    Mysql2::Client.new(client_data)
   end
 
   # Les données pour se connecter à la base mySql
   # soit en local soit en distant.
   def client_data
-    @client_data ||= ( offline? ? client_data_offline : client_data_online )
+    if offline?
+      client_data_offline
+    else
+      client_data_online
+    end
   end
 
   def client_data_offline
@@ -56,10 +50,10 @@ module MethodesBaseMySQL
   end
 
   def db_name
-    @db_name ||= prefix_name + suffix_name.to_s
+    @@db_name ||= prefix_name + suffix_name.to_s
   end
 
-  def suffix_name ; @suffix_name end
+  def suffix_name ; @@suffix_name end
 
   # Le préfixe du nom (de la base de données) en fonction
   # du fait qu'on est online ou offline
@@ -68,7 +62,7 @@ module MethodesBaseMySQL
   # online comme en offline.
   #
   def prefix_name
-    @prefix_name ||= 'boite-a-outils_'
+    @@prefix_name ||= 'boite-a-outils_'
   end
 
 end

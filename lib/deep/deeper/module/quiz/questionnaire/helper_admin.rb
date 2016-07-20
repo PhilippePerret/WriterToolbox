@@ -13,10 +13,17 @@ class ::Quiz
   # {StrintHTML} Retourne le code HTML pour le formulaire d'édition du
   # quiz.
   #
+  # C'est aussi cette méthode qui teste pour voir s'il faut enregistrer
+  # le formulaire.
+  #
   # +dform+ {Hash} contenant les attributs du formulaire et
   # principalement :
   #   :action       l'action
   def form dform
+
+
+    save_data if param(:operation) == 'save_data_quiz'
+
     dform[:id]    ||= 'edition_quiz'
     dform[:class] ||= 'dim2080'
     tform.prefix= 'quiz'
@@ -25,6 +32,7 @@ class ::Quiz
       # Identifiant, qui doit être défini à l'instanciation
       # du quiz
       (id || '').in_hidden(name:'quiz[id]', id: 'quiz_id') +
+      'save_data_quiz'.in_hidden(name: 'operation') +
       tform.field_text('Titre', 'titre', titre) +
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random') +

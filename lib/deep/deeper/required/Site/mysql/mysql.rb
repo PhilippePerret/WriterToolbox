@@ -17,8 +17,9 @@ class SiteHtml
   # liste des bases de données.
   #
   #
-  def mysql_execute request, options = nil
+  def mysql_execute request, online = nil
     request.end_with?(';') || request += ';'
+    DBM_TABLE.define_is_offline online
     res = DBM_BASE.client_sans_db.query(request)
     if res.nil?
       true
@@ -78,7 +79,6 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # Retourne true si la base de données +dbname+ existe
     def database_exist? dbname
       client_sans_db.query('SHOW DATABASES;').each do |row|
-        debug "row = #{row.inspect}"
         return true if row['Database'] == dbname
       end
       return false
@@ -243,7 +243,7 @@ SELECT UPDATE_TIME
     @prefix_name = dname.join('_')
   end
 
-  # Chemin d'accès au schéma de la base
+  # Chemin d'accès au schéma de la table
   def schema_path
     @schema_path ||= begin
       sp =
