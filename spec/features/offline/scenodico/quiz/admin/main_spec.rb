@@ -114,15 +114,24 @@ feature "Test de la base d'administration du quiz du scénodico" do
 
     site.require_module 'quiz'
 
+    new_titre = "Quiz scénodico du #{Time.now}"
+    new_liste_questions = '10 9 8 7 6 5'
+
+    dquiz = table_quiz.get(1)
+    expect(dquiz[:titre]).not_to eq new_titre
+    expect(dquiz[:question_ids]).not_to eq new_liste_questions
+
+
+
     identify_phil
     visit home_scenodico
     click_link '[Edit Quiz]'
 
     expect(page).to have_tag('form', with: {id: 'edition_quiz'})
 
-    new_titre = "Quiz scénodico du #{Time.now}"
     within('form#edition_quiz') do
       fill_in('quiz_titre', with: new_titre)
+      fill_in('quiz_questions_ids', with: new_liste_questions)
       click_button("Enregistrer")
     end
     shot 'after-submit-form'
@@ -130,5 +139,6 @@ feature "Test de la base d'administration du quiz du scénodico" do
     # Le nouveau titre a été enregistré
     dquiz = table_quiz.get(1)
     expect(dquiz[:titre]).to eq new_titre
+    expect(dquiz[:questions_ids]).to eq new_liste_questions
   end
 end

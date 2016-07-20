@@ -288,6 +288,13 @@ RSpec.configure do |config|
     resize_window
   end
 
+  def visit_route route, options = nil
+    options ||= {}
+    visit (options[:online] ? home_online : home) + '/' + route
+    resize_window
+  end
+  alias :visite_route :visit_route
+
   # La fenêtre ouverte par capybara
   def resize_window
     # page.driver.browser.manage.window.resize_to(1300, 600)
