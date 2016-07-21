@@ -8,10 +8,10 @@ class App
   end
 
   def error
-    @error ||= ErrorDealer::new
+    @error ||= ErrorDealer.new
   end
   def notice
-    @notice ||= MessageDealer::new
+    @notice ||= MessageDealer.new
   end
 
   # ---------------------------------------------------------------------
@@ -20,7 +20,7 @@ class App
   class MessageDealer
     attr_reader :messages
     def initialize
-      @messages = Array::new
+      @messages = Array.new
     end
     def add mess, options = nil
       @messages << mess
@@ -38,14 +38,14 @@ class App
   class ErrorDealer
     attr_reader :errors
     def initialize
-      @errors = Array::new
+      @errors = Array.new
     end
     def add err, options = nil
       @errors << err
       return false
     end
     def output
-      return "" if errors.empty?
+      return '' if errors.empty?
       @output ||= begin
         errors.collect do |e|
           m = case e
