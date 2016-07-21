@@ -49,6 +49,23 @@ class Filmodico
   def synchronize_fiches_database
     report "  * Synchronisation des fiches dans les bases de données"
     self.table_name = 'filmodico'
+
+    # Quelquefois, on doit actualiser en online une
+    # fiche qui a été supprimée (suite à un problème, par exemple, on
+    # peut détruire la fiche online)
+    loc_rows.each do |fid, loc_data|
+      dis_data = dis_rows[fid]
+      if dis_data.nil?
+        # => Il faut la créer
+        # ==== ACTUALISATION ===========
+          dis_table.insert(loc_data)
+          @nombre_synchronisations += 1
+        # ==============================
+        report "    = (Re?)Création de la fiche ONLINE du film #{loc_data[:titre]}"
+      end
+    end
+
+    # Les cas les plus fréquents : nouvelle fiche en online
     dis_rows.each do |fid, dis_data|
       loc_data = loc_rows[fid]
 
