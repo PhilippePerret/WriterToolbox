@@ -267,11 +267,14 @@ end
 class ::Array
   def as_people_in_textarea
     self.collect do |hpeople|
+      hpeople = hpeople.to_sym
+      debug "hpeople = #{hpeople.inspect}"
       "#{hpeople[:prenom]}, #{hpeople[:nom]}"
     end.join("\n")
   end
   def as_acteurs_in_textarea
     self.collect do |ha|
+      ha = ha.to_sym
       lig = "#{ha[:prenom]}, #{ha[:nom]}, #{ha[:prenom_perso]}, #{ha[:nom_perso]}, #{ha[:fonction] || ha[:fonction_perso]}".strip
       begin
         lig = lig[0..-2].strip
