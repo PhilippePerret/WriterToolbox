@@ -3,8 +3,8 @@
 * [Envoi d'une requête](#envoidunerequetee)
 * [Propriétés définissables](#proprietesdefinissables)
 * [Renvoi de données aux programmes](#renvoiededonnees)
-* [Message de retour](#messagederetour)
-* [Erreur de retour](#erreurderetour)
+* [Messages de retour](#messagederetour)
+* [Erreurs de retour](#erreurderetour)
 * [Auto-sélection du contenu des champs de texte quand focus](#autoselectquandfocus)
 
 
@@ -12,33 +12,40 @@
 
 ## Envoi d'une requête
 
-La donnée indispensable pour envoyer une requête Ajax est la donnée `url` qui définit la route à employer, exactement comme on le ferait depuis une page avec un lien normal.
+OBSOLÈTE : La donnée indispensable pour envoyer une requête Ajax est la donnée `url` qui définit la route à employer, exactement comme on le ferait depuis une page avec un lien normal.
+
+C'est maintenant l'argument `route` qu'il faut définir.
 
 Par exemple, si on veut invoquer le script :
 
     ./objet/mon_objet/mon_module
 
-… on définit l'url à :
+… on définit `route` à :
 
     mon_objet/mon_module
 
 Donc :
 
     Ajax.send({
-      url: "mon_objet/mon_module",
+      route: "mon_objet/mon_module",
       ma_donnee_1: "<les données envoyées>",
       ma_donnee_2: "<autre donnée>",
       onreturn: $.proxy(la méthode pour poursuivre)
       })
 
-Noter que pour le moment l'url ne fonctionne pas avec les sous-objets. Donc on ne peut pas faire :
+OBSOLÈTE : Noter que pour le moment l'url ne fonctionne pas avec les sous-objets. Donc on ne peut pas faire :
 
     url: "livre/folders?in=cnarration"
 
+Maintenant, on peut très bien fonctionner avec les sous-objets :
+
+    route: "livre/folders?in=cnarration"
+
 <a name='proprietesdefinissables'></a>
 
-## Propriétés définissables
+## Propriétés à définir
 
+Il faut définir la méthode javascript qui traitera le retour ajax.
 
     onreturn:       Méthode de retour
 
@@ -54,16 +61,21 @@ Noter que pour le moment l'url ne fonctionne pas avec les sous-objets. Donc on n
 
 <a name='messagederetour'></a>
 
-## Message de retour
+## Messages de retour
 
-    Ajax << {message: "Le message de retour"}
+On utilise la méthode `flash` de façon tout à fait normale pour ajouter des messages notice.
+
+Noter que ces messages de retour s'affichent automatiquement, sans autre forme de programmation.
 
 <a name='erreurderetour'></a>
 
 ## Erreur de retour
 
-    Ajax << {error: "Erreur de retour"}
+Pour ajouter des messages d'erreur, on utilise tout naturellement la méthode `error`
 
+    error 'Une erreur qui sera retournée et affichée.'
+
+Noter qu'elles s'affichent automatiquement sans autre intervention.
 
 <a name='autoselectquandfocus'></a>
 
