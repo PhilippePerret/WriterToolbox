@@ -78,25 +78,25 @@ class Quiz
 
     OFFLINE || raise('Un quiz doit se créer obligatoirement sur le site local.')
 
-    require './data/secret/mysql'
-    client_data_offline = DATA_MYSQL[:offline]
-    client_offline = Mysql2::Client.new(client_data_offline)
-
     # La base de données distante doit exister pour pouvoir
     # procéder à la création. On la crée par CURL et par l'API de
     # alwaysdata
     database_online_exist? || create_database_online
     # On vérifie que la base a bien été créée.
-    database_online_exist? || raise("La base ONLINE `#{database_fullname}` n'a pas pu être créée par l'API d'always data… Cela doit peut-être être fait depuis le tableau de bord alwaydata.")
+    database_online_exist? || raise("La base ONLINE `#{database_fullname}` n'existe pas, après création par l'API d'always data… Cela doit peut-être être fait depuis le tableau de bord alwaydata.")
 
     debug "NOM DATABASE : #{database_fullname}"
 
-    # Création de la base local
+    # Création de la base locale
     ["DROP DATABASE IF EXISTS `#{database_fullname}`;", "CREATE DATABASE `#{database_fullname}`;"
     ].each do |request|
       res = client_offline.query(request)
-      debug "     Retour requête offline : #{res.inspect}"
-      debug "   - OK OFFLINE"
+    end
+
+    if database_offline_exists?
+      debug "Base locale créée avec succès."
+    else
+      raise('la base locale n’a pas été créée, je dois abandonner.')
     end
 
     # Maintenant, on va créer les tables dans la base online et la
@@ -132,7 +132,13 @@ class Quiz
   def client_online
     @client_online ||= begin
       require './data/secret/mysql'
-      Mysql2::Client.new(DATA_MYSQL[:online])
+      Mysql2::Client.new( DATA_MYSQL[:online] )
+    end
+  end
+  def client_offline
+    @client_offline ||= begin
+      require './data/secret/mysql'
+      Mysql2::Client.new( DATA_MYSQL[:offline] )
     end
   end
 
@@ -148,9 +154,26 @@ class Quiz
     debug "RETOUR CURL CRÉATION DATABASE #{database_fullname} ONLINE : #{res.inspect}"
   end
 
+  # Return true si la base online existe.
+  #
+  # On utilise maintenant l'API d'alwaysdata pour avoir
+  # une liste correcte des bases de données.
+  #
   def database_online_exist?
-    @client_online = nil # pour reforcer (utile ?…)
-    client_online.query('SHOW DATABASES;').each do |row|
+    require './data/secret/api_alwaysdata'
+    url = 'https://api.alwaysdata.com/v1/database/'
+    cmd = "CURL --basic --user #{AD_API[:api_key]}: #{url}"
+    res = `#{cmd}`
+    # debug "RETOUR CURL DATABASES : #{res.inspect}"
+    JSON.load(res).each do |hdb|
+      return true if hdb['name'] == database_fullname
+    end
+    return false
+  end
+
+  def database_offline_exists?
+    client_offline.query('SHOW DATABASES;').each do |row|
+      debug "Database offline : #{row['Database']}"
       return true if row['Database'] == database_fullname
     end
     return false
