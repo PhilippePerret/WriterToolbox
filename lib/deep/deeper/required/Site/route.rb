@@ -23,19 +23,26 @@ class SiteHtml
   attr_reader :current_route
 
   def route
-    @route ||= SiteHtml::Route::new
+    @route ||= SiteHtml::Route.new
   end
 
   # Exécution de la route, si elle est définie
   def execute_route
     # debug "-> SiteHtml::execute_route"
 
+    if site.ajax? && param(:route)
+      reg = /([a-zA-Z_]+)(?:\/([0-9]+))?\/([a-zA-Z_]+)(?:\?in=([a-zA-Z_]+))?/
+      # tout, objet, objet_id, method, context = param(:route).match(reg).to_a
+      droute = param(:route).match(reg).to_a
+      send(:set_params_route, *droute[1..-1])
+    end
+
     if param(:__o)
 
       # Sinon, on crée une instance route, qui va posséder toutes
       # les données des paramètres (context, objet, objet_id et
       # method)
-      @current_route = iroute = Route::new
+      @current_route = iroute = Route.new
 
       debug "\nObjet    = #{iroute.objet.inspect}"     +
             "\nObjet ID = #{iroute.objet_id.inspect}"  +
@@ -237,7 +244,7 @@ class SiteHtml
     def all_folders_lib_required
       # debug "-> Route::all_folders_lib_required"
       @all_folders_lib_required ||= begin
-        folders = Array::new
+        folders = Array.new
         # Le dossier ./lib/deep/deeper/required/<objet cam>
         folders << folder_restsite
         # Le dossier ./objet/<objet>/lib/required (même si un
@@ -263,7 +270,7 @@ class SiteHtml
     # un contexte est défini)
     def folders_required_of_context
       @folders_required_of_context ||= begin
-        curpath = Array::new
+        curpath = Array.new
         context.split('/').collect do |folder_name|
           curpath << folder_name
           site.folder_objet + "#{File.join(*curpath)}/lib/required"
@@ -335,7 +342,7 @@ class SiteHtml
     # ruby, etc.
     def instance_vue
       # debug "-> Route::instance_vue"
-      @instance_vue ||= Vue::new(segment_path)
+      @instance_vue ||= Vue.new(segment_path)
     end
 
     # ---------------------------------------------------------------------
