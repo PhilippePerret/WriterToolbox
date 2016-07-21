@@ -4,7 +4,7 @@ class ::Quiz
 
     # Options par défaut
     def type_default
-      @type_default ||= 'Orv'
+      @type_default ||= '0rv'
     end
 
     # Dans les options (1er bit) le type de question (pas encore utilisé)

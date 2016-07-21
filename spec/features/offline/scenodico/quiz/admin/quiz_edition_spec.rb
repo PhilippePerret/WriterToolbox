@@ -8,6 +8,9 @@ feature "Test de la base d'administration du quiz du scénodico" do
       end
     end
   end
+  def table_questions
+    @table_questions ||= site.dbm_table('quiz_biblio', 'questions', online = false)
+  end
 
   before(:all) do
     if table_quiz
@@ -18,7 +21,7 @@ feature "Test de la base d'administration du quiz du scénodico" do
     end
   end
 
-  after(:all) do
+  after(:each) do
     if @quiz_data_init.nil?
       puts "-> Les valeurs du quiz ne sont pas encore définies"
     else
@@ -27,7 +30,7 @@ feature "Test de la base d'administration du quiz du scénodico" do
   end
 
   let(:home_scenodico) { "#{site.local_url}/scenodico/home" }
-  scenario "Un administrateur trouver le lien pour éditer le quiz" do
+  scenario "Un administrateur trouve le lien pour éditer le quiz" do
 
 
     visit home_scenodico
@@ -140,5 +143,34 @@ feature "Test de la base d'administration du quiz du scénodico" do
     dquiz = table_quiz.get(1)
     expect(dquiz[:titre]).to eq new_titre
     expect(dquiz[:questions_ids]).to eq new_liste_questions
+  end
+
+  scenario 'Le formulaire permet d’éditer les questions' do
+    site.require_module 'quiz'
+
+    dquiz = table_quiz.get(1)
+
+    qids = (dquiz[:questions_ids] || '').split(' ')
+    expect(qids).not_to be_empty
+    puts "Questions IDs : #{qids.pretty_join}"
+
+    dquestions = table_questions.select(where: "id IN (#{qids.join(', ')})")
+
+    expect(dquestions).not_to be_empty
+    identify_phil
+    visit home_scenodico
+    click_link '[Edit Quiz]'
+
+    # Toutes les questions doivent être affichées par leur
+    # titre (la question)
+    dquestions.each do |dquestion|
+      puts "Question : #{dquestion.inspect}"
+      within('form#edition_quiz') do
+        expect(page).to have_link(dquestion[:question])
+        expect(page).to have_tag('a', with: {onclick: 'QuizQuestion.edit(this)', 'data-qid' => dquestion[:id].to_s, 'data-quiz' => 'quiz_biblio'})
+      end
+    end
+
+
   end
 end

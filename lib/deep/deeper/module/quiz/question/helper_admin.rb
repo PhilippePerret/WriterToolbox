@@ -39,7 +39,9 @@ class ::Quiz
           # RAISON
           tform.field_textarea("Raison bonne réponse", 'raison', nil) +
           tform.field_description("Dans le cas d'un vrai test, on peut donner ici la raison de la bonne réponse et aussi pourquoi les autres réponses ne sont pas valables.") +
-          tform.submit_button("Enregistrer la question", {onclick:"$('form#edition_question_edit input#operation').val('save_data_question_quiz')"})
+          # Le bouton submit, qui met également la valeur 'operation' (elle n'est pas
+          # mise par défaut pour éviter d'enregistrer une question avec la touche entrée)
+          tform.submit_button("Enregistrer la question", {onclick:"$('form#edition_question_quiz input#operation').val('save_data_question_quiz')"})
 
         ).in_form(dform)
       end

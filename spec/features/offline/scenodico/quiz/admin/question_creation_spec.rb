@@ -2,11 +2,29 @@
 
 Module de test d'une nouvelle question
 
+Ce test permet de savoir si on peut créer une nouvelle question.
+Il se sert du questionnaire 1 de la table 'quiz_biblio' qui concerne
+le scénodico (questionnaire facile).
+
 =end
 feature "Création d'une nouvelle question" do
 
   def table_questions
     @table_questions ||= site.dbm_table('quiz_biblio', 'questions')
+  end
+  def table_quiz
+    @table_quiz ||= site.dbm_table('quiz_biblio', 'quiz')
+  end
+
+  before(:all) do
+    # Pour récupérer les questions créées
+    $questions2destroy = Array.new
+  end
+  after(:all) do
+    # Si des questions ont été créées, il faut les détruire
+    if $questions2destroy.count > 0
+      table_questions.delete(where: "id IN (#{$questions2destroy.join(', ')})")
+    end
   end
 
   scenario "L'administrateur trouve un lien sur le formulaire du quiz pour créer une nouvelle question" do
@@ -17,20 +35,23 @@ feature "Création d'une nouvelle question" do
     # C'est un lien qui ouvre simplement le formulaire des questions
     # sous le formulaire du questionnaire.
     click_link 'Nouvelle question'
+    sleep 1
     expect(page).to have_css('form#edition_question_quiz')
     expect(page).not_to have_css('form#edition_quiz')
+
     expect(page).to have_tag('form', with: {id: 'edition_question_quiz'}) do
       with_tag 'input', with: {id: 'question_question', name: 'question[question]'}
-      # Il n'y a PAS encore de réponse
-      without_tag 'input', with: {id: 'question_reponse_1_libelle', name: 'question[reponse_1][libelle]'}
-      # Il y a un menu pour le type
       with_tag 'select', with: {id: 'question_type_f', name: 'question[type_f]'}
-      with_tag 'select', with: {id: 'question_type_c', name: 'question[type_c]'}
       with_tag 'select', with: {id: 'question_type_a', name: 'question[type_a]'}
-      # Champ pour l'indication
+      with_tag 'select', with: {id: 'question_type_c', name: 'question[type_c]'}
       with_tag 'textarea', with: {id: 'question_indication', name: 'question[indication]'}
       with_tag 'textarea', with: {id: 'question_raison', name: 'question[raison]'}
+      # Je ne sais pas pourquoi, mais il faut mettre les without_tag après,
+      # sinon ça merde sur les autres conditions, comme s'il n'y avait plus
+      # de contexte.
+      without_tag( 'input', with: {id: 'question_reponse_1_libelle', name: 'question[reponse_1][libelle]'} )
     end
+
   end
 
   scenario 'L’administrateur peut créer une nouvelle question' do
@@ -100,10 +121,31 @@ feature "Création d'une nouvelle question" do
     expect(table_questions.count).to eq nombre_questions_init + 1
     # On récupère la dernière question
     dq = table_questions.select(limit: 1, order: 'id DESC').first
-    puts "Données enregistrées : #{dq.inspect}"
+    qid = dq[:id]
+    # Pour que la question soit détruite à la fin.
+    $questions2destroy << qid
     expect(dq[:question]).to eq qdata[:question]
     expect(dq[:raison]).to eq qdata[:raison]
     expect(dq[:indication]).to eq nil
     expect(dq[:type]).to eq qdata[:type]
+
+
+    # Il faut tester que la question est bien ajoutée aux
+    # questions du quiz. Si c'est le cas, on actualise tout
+    # de suite la liste des questions.
+    dquiz = table_quiz.get(1)
+    qids = (dquiz[:questions_ids] || '').split(' ')
+    expect(qids).to include qid.to_s
+    thelast = qids.last.to_i
+
+    # Si c'est bien le cas, on retire cet identifiant pour
+    # ne pas modifier le questionnaire.
+    qids.pop
+    table_quiz.update(1, questions_ids: qids.join(' '))
+
+    # Ça doit bien être le dernier
+    expect(thelast).to eq qid
+
+
   end
 end

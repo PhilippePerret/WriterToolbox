@@ -60,11 +60,22 @@ class ::Quiz
       tform.field_text('Questions', 'questions_ids', nil) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
       tform.field_description('Liste des IDs de questions, séparés par des espaces. Noter que s’il y a un nombre maximum de questions définies et que l’ordre est aléatoire, on peut ne pas préciser l’ordre. S’il est défini, on prendra les X questions dans cette liste.') +
+      div_questions +
       tform.field_textarea('Description', 'description', nil) +
       tform.field_description('Cette description est destinée à l’utilisateur. Elle sera placée en haut du questionnaire.') +
       tform.submit_button('Enregistrer')
     ).in_form(dform) +
     Quiz::Question.formulaire_edition_question(self, dform)
+  end
+
+  # Retourne le div qui contient les questions du questionnaire, avec des
+  # boutons pour les retirer ou les éditer
+  def div_questions
+    questions_ids.count > 0 || ( return '' )
+    dquestions = table_questions.select(where: "id IN (#{questions_ids.join(', ')})")
+    dquestions.collect do |dquestion|
+      dquestion[:question].in_a(onclick: "QuizQuestion.edit(this)", 'data-qid' => dquestion[:id], 'data-quiz' => database_relname).in_li
+    end.join('').in_ul(id: 'questions')
   end
 
 end

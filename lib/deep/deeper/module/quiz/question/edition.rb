@@ -25,7 +25,13 @@ if user.manitou?
           quiz.exist? || raise('Il faut enregistrer le questionnaire avant de pouvoir lui affecter une question.')
           qid = param(:question)[:id].nil_if_empty
           qid.nil? || qid = qid.to_i
-          Question.new(quiz, qid).save
+          question = Question.new(quiz, qid)
+          if question.save
+            quiz.add_question( question )
+          else
+            # Impossible d'enregistrer la question dans le quiz puisque
+            # la question n'a pas pu être sauvée
+          end
         rescue Exception => e
           debug e
           error e.message
@@ -37,8 +43,11 @@ if user.manitou?
       # ---------------------------------------------------------------------
 
       # Méthode principale qui sauve la question
+      #
+      # RETURN true si l'opération s'est bien passée, false
+      # dans le cas contraire.
       def save
-        prepare_and_check_data2save || return
+        prepare_and_check_data2save || (return false)
         if exist?
           table.update(id, data2save)
           flash "Question ##{id} actualisée."
@@ -46,6 +55,7 @@ if user.manitou?
           @id = table.insert(data2save.merge(created_at: NOW))
           flash "Question ##{id} créée avec succès."
         end
+        return true
       end
 
       def data2save
