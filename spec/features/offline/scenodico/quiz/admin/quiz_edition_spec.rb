@@ -145,14 +145,13 @@ feature "Test de la base d'administration du quiz du scénodico" do
     expect(dquiz[:questions_ids]).to eq new_liste_questions
   end
 
-  scenario 'Le formulaire permet d’éditer les questions' do
+  scenario 'Le formulaire contient la liste éditable des questions' do
     site.require_module 'quiz'
 
     dquiz = table_quiz.get(1)
 
     qids = (dquiz[:questions_ids] || '').split(' ')
     expect(qids).not_to be_empty
-    puts "Questions IDs : #{qids.pretty_join}"
 
     dquestions = table_questions.select(where: "id IN (#{qids.join(', ')})")
 
@@ -164,17 +163,47 @@ feature "Test de la base d'administration du quiz du scénodico" do
     # Toutes les questions doivent être affichées par leur
     # titre (la question)
     dquestions.each do |dquestion|
-      puts "Question : #{dquestion.inspect}"
       within('form#edition_quiz') do
-        expect(page).to have_link(dquestion[:question])
         expect(page).to have_tag('li', with: {'data-qid' => dquestion[:id].to_s}) do
-          with_tag('span', text: dquestion[:question])
-          with_tag( 'a', with: {class: 'btn tiny', onclick: 'QuizQuestion.edit(this)', 'data-qid' => dquestion[:id].to_s, 'data-quiz' => 'quiz_biblio'}, text: 'edit')
+          with_tag('span', text: /#{Regexp::escape dquestion[:question]}/)
+          with_tag( 'a', with: {class: 'tiny', onclick: 'QuizQuestion.edit(this)', 'data-qid' => dquestion[:id].to_s, 'data-quiz' => 'quiz_biblio'}, text: 'edit')
+          with_tag('a', with: {class: 'tiny'}, text: 'sup')
         end
 
       end
     end
 
 
+  end
+
+  scenario 'On peut éditer une question depuis la liste des questions' do
+    site.require_module 'quiz'
+    dquiz = table_quiz.get(1)
+    # Les questions
+    qids = (dquiz[:questions_ids] || '').split(' ')
+    expect(qids).not_to be_empty
+    dquestions = table_questions.select(where: "id IN (#{qids.join(', ')})")
+    expect(dquestions).not_to be_empty
+
+    identify_phil
+    visit home_scenodico
+    click_link '[Edit Quiz]'
+
+    expect(page).to have_css('form#edition_quiz')
+    expect(page).not_to have_css('form#edition_question_quiz')
+
+    # === Test ===
+    dquestion = dquestions.first
+    within("form#edition_quiz li#li-q-#{dquestion[:id]}") do
+      click_link('edit')
+    end
+
+    # La question est passée en édition
+    expect(page).not_to have_css('form#edition_quiz')
+    expect(page).to have_css('form#edition_question_quiz')
+
+    expect(page).to have_tag('form', with:{id: 'edition_question_quiz'}) do
+      with_tag('input', with: {id: 'question_question', value: dquestion[:question] })
+    end
   end
 end

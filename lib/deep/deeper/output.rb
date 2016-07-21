@@ -20,6 +20,7 @@ class SiteHtml
   end
 
   # Retourne TRUE si c'est une requête Ajax
+  # @usage      if site.ajax? ...
   def ajax?
     @is_ajax = ( param(:ajx).to_s == "1" ) if @is_ajax === nil
     @is_ajax
