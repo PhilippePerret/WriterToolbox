@@ -3,7 +3,7 @@
 site.require 'form_tools'
 alias :tform :form
 
-class Quiz
+class ::Quiz
   class Question
     class << self
 
@@ -11,7 +11,8 @@ class Quiz
       #
       # Rappel : pour des questions de facilité, ce formulaire
       # est placé sous le formulaire d'édition du quiz
-      def formulaire_edition_question dform
+      def formulaire_edition_question quiz, dform, question = nil
+        question ||= new(quiz, nil)
         dform[:id] = 'edition_question_quiz'
         dform.merge!(style:'display:none')
         tform.prefix= 'question'
@@ -29,9 +30,9 @@ class Quiz
           tform.field_text('Question', 'question', nil, {class:'bold'}) +
           champs_reponses +
           # TYPE (checkbox ou radio)
-          tform.field_select("Type",      'type_f', nil, {values: ::Quiz::Question::TYPES}) +
-          tform.field_select("Choix",     'type_c', nil, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (checkboxes)"]]}) +
-          tform.field_select("Affichage", 'type_a', nil, {values: [['c', "L'un en dessous de l'autre"], ['l', "En ligne"], ['m', "En menu"]]}) +
+          tform.field_select("Type",      'type_f', type_f, {values: ::Quiz::Question::TYPES}) +
+          tform.field_select("Choix",     'type_c', type_c, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (checkboxes)"]]}) +
+          tform.field_select("Affichage", 'type_a', type_a, {values: [['v', "L'un en dessous de l'autre"], ['h', "En ligne"], ['m', "En menu"]]}) +
           # INDICATION
           tform.field_textarea("Indication", 'indication', nil) +
           tform.field_description("Cette indication sera écrite en petit sous la question et permettra à l'auteur de mieux comprendre cette question. Notez qu'il y a déjà une indication automatique lorsque ce sont des checkboxes au lieu des boutons-radio.") +

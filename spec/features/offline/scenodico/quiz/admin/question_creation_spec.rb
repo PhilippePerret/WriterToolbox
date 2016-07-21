@@ -57,11 +57,18 @@ feature "Création d'une nouvelle question" do
       type_a: 'c', # pour l'alignement
       options:      "0rc" # r ou c pour le 2e, c, l, ou m pour le 3e
     }
+
+    sleep 30
+    
+    expect(page).to have_css('form#edition_question_quiz select#question_type_c')
+
     within('form#edition_question_quiz') do
       fill_in('question[question]',   with: qdata[:question])
       fill_in('question[indication]', with: qdata[:indication])
       fill_in('question[raison]',     with: qdata[:raison])
-      select(qdata[:type_c], from: 'question_type_c')
+      within('select#question_type_c') do
+        select(qdata[:type_c], from: 'question_type_c')
+      end #question_type_c
       select(qdata[:type_a], from: 'question_type_a')
       select(qdata[:type_f], from: 'question_type_f')
     end

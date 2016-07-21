@@ -64,7 +64,7 @@ class ::Quiz
       tform.field_description('Cette description est destinée à l’utilisateur. Elle sera placée en haut du questionnaire.') +
       tform.submit_button('Enregistrer')
     ).in_form(dform) +
-    Quiz::Question.formulaire_edition_question(dform)
+    Quiz::Question.formulaire_edition_question(self, dform)
   end
 
 end
