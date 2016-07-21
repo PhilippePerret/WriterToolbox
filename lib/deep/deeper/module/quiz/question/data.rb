@@ -12,14 +12,14 @@ class ::Quiz
     # ---------------------------------------------------------------------
     #   DATA ENREGISTRÉES
     # ---------------------------------------------------------------------
-    def options
-      @options ||= get(:options) || options_default
+    def type
+      @type ||= get(:type) || type_default
     end
     # ---------------------------------------------------------------------
     #   DATA VOLATILES
     # ---------------------------------------------------------------------
 
     # Pour les options, voir le fichier options.rb
-    
+
   end #/Question
 end #/Quiz

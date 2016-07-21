@@ -52,25 +52,21 @@ feature "Création d'une nouvelle question" do
       ],
       indication:   "", # ne rien mettre
       raison:       "La raison du choix de la réponse 3.",
-      type_f: '0', # type de question, une seule valeur pour le
-      type_c: 'r', # pour "radio"
-      type_a: 'c', # pour l'alignement
-      options:      "0rc" # r ou c pour le 2e, c, l, ou m pour le 3e
+      type_f: 'Indifférent', # type de question, une seule valeur pour le
+      type_c: 'Un seul choix (radio)', #'r', # pour "radio"
+      type_a: 'L\'un en dessous de l\'autre', # pour l'alignement
+      type:   "0rv" # donnée enregistrée
     }
 
-    sleep 30
-    
     expect(page).to have_css('form#edition_question_quiz select#question_type_c')
 
     within('form#edition_question_quiz') do
       fill_in('question[question]',   with: qdata[:question])
       fill_in('question[indication]', with: qdata[:indication])
       fill_in('question[raison]',     with: qdata[:raison])
-      within('select#question_type_c') do
-        select(qdata[:type_c], from: 'question_type_c')
-      end #question_type_c
-      select(qdata[:type_a], from: 'question_type_a')
-      select(qdata[:type_f], from: 'question_type_f')
+      select(qdata[:type_c], from: 'question[type_c]')
+      select(qdata[:type_a], from: 'question[type_a]')
+      select(qdata[:type_f], from: 'question[type_f]')
     end
 
     # Le bouton pour ajouter une réponse
@@ -108,6 +104,6 @@ feature "Création d'une nouvelle question" do
     expect(dq[:question]).to eq qdata[:question]
     expect(dq[:raison]).to eq qdata[:raison]
     expect(dq[:indication]).to eq nil
-    expect(dq[:options]).to eq qdata[:options]
+    expect(dq[:type]).to eq qdata[:type]
   end
 end

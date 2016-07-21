@@ -2,7 +2,7 @@
 class ::Quiz
   class Question
     TYPES = {
-      0 => {hname: "Pas de type pour le moment"}
+      0 => {hname: "Indifférent"}
     }
   end #/Question
 end #/Quiz
