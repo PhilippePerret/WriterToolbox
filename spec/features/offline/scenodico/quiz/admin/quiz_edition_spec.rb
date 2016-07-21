@@ -167,7 +167,11 @@ feature "Test de la base d'administration du quiz du scénodico" do
       puts "Question : #{dquestion.inspect}"
       within('form#edition_quiz') do
         expect(page).to have_link(dquestion[:question])
-        expect(page).to have_tag('a', with: {onclick: 'QuizQuestion.edit(this)', 'data-qid' => dquestion[:id].to_s, 'data-quiz' => 'quiz_biblio'})
+        expect(page).to have_tag('li', with: {'data-qid' => dquestion[:id].to_s}) do
+          with_tag('span', text: dquestion[:question])
+          with_tag( 'a', with: {class: 'btn tiny', onclick: 'QuizQuestion.edit(this)', 'data-qid' => dquestion[:id].to_s, 'data-quiz' => 'quiz_biblio'}, text: 'edit')
+        end
+
       end
     end
 

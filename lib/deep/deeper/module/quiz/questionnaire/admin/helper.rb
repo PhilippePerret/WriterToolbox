@@ -30,8 +30,10 @@ class ::Quiz
       Question.save_data_question(self)
     end
 
-    # Il faut ajouter les javascripts du dossier js
-    page.add_javascript Dir["#{site.folder_module}/quiz/js/*.js"]
+    # Il faut ajouter les javascripts du dossier js et les css
+    # du dossier css
+    page.add_javascript Dir["#{site.folder_module}/quiz/js/**/*.js"]
+    page.add_css Dir["#{site.folder_module}/quiz/css/**/*.css"]
 
     dform[:id]    ||= 'edition_quiz'
     dform[:class] ||= 'dim2080'
@@ -57,25 +59,40 @@ class ::Quiz
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random') +
       tform.field_text('', 'max_questions', nil, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
-      tform.field_text('Questions', 'questions_ids', nil) +
+      tform.field_text('Questions', 'questions_ids', questions_ids.join(' ')) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
       tform.field_description('Liste des IDs de questions, séparés par des espaces. Noter que s’il y a un nombre maximum de questions définies et que l’ordre est aléatoire, on peut ne pas préciser l’ordre. S’il est défini, on prendra les X questions dans cette liste.') +
-      div_questions +
+      ul_questions +
       tform.field_textarea('Description', 'description', nil) +
       tform.field_description('Cette description est destinée à l’utilisateur. Elle sera placée en haut du questionnaire.') +
       tform.submit_button('Enregistrer')
     ).in_form(dform) +
     Quiz::Question.formulaire_edition_question(self, dform)
+
   end
 
   # Retourne le div qui contient les questions du questionnaire, avec des
   # boutons pour les retirer ou les éditer
-  def div_questions
+  def ul_questions
     questions_ids.count > 0 || ( return '' )
     dquestions = table_questions.select(where: "id IN (#{questions_ids.join(', ')})")
-    dquestions.collect do |dquestion|
-      dquestion[:question].in_a(onclick: "QuizQuestion.edit(this)", 'data-qid' => dquestion[:id], 'data-quiz' => database_relname).in_li
-    end.join('').in_ul(id: 'questions')
+
+    ul = dquestions.collect do |dquestion|
+      qid = dquestion[:id]
+      (
+        (
+          'edit'.in_a(class: 'tiny', onclick: "QuizQuestion.edit(this)", 'data-qid' => qid, 'data-quiz' => database_relname) +
+          'sup'.in_a(class: 'tiny', onclick: "$('li#li-q-#{qid}').remove();QuizQuestion.reordonne_questions()")
+        ).in_div(class: 'btns fright tiny') +
+        dquestion[:question].in_span
+      ).in_li(id: "li-q-#{qid}", 'data-qid' => qid)
+
+    end.join('').in_ul(id: 'ul_questions')
+
+    (
+      'Questions, qui peuvent être agencées ou supprimées simplement en utilisant le bouton “sup” pour les supprimer ou en les déplaçant à la souris. Il faut ensuite <strong>penser à enregistrer</strong>.'.in_div(class:'tiny') +
+      ul
+    ).in_fieldset(id: 'fs_questions', legend: 'Liste des questions')
   end
 
 end

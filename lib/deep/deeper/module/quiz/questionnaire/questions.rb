@@ -24,6 +24,7 @@ class ::Quiz
     end
     qids << qid
     set(questions_ids: qids.join(' '))
+    @questions_ids = qids # car mis en String sur la ligne précédente
   rescue Exception => e
     debug e
     error e.message
