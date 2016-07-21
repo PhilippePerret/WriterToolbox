@@ -26,7 +26,6 @@ class ::Quiz
           # On ne met pas tout de suite l'opération pour éviter les erreurs
           ''.in_hidden(name:'operation', id:'operation') +
           tform.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_edit_question} #{lien_destroy_question} #{lien_init_question}"}) +
-          tform.field_description("Mettre ID à rien pour générer une nouvelle question.") +
           tform.field_text('Question', 'question', nil, {class:'bold'}) +
           champs_reponses +
           # TYPE (checkbox ou radio)

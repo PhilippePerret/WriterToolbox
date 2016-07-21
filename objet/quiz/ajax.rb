@@ -12,6 +12,7 @@ when 'question'
   dquestion.each do |k, v|
     dquestion[k] = v.force_encoding('utf-8') if v.instance_of? String
   end
+  # dquestion[:reponses] = JSON.parse(dquestion[:reponses])
   Ajax << {question: dquestion}
 when 'quiz'
   Ajax << {message: "Je dois retourner un questionnaire"}
