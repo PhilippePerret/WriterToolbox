@@ -7,13 +7,19 @@ CREATE TABLE questions
 
     question VARCHAR(255) NOT NULL,
 
-    # INDICATION
-    # -----------
-    # Une indication optionnelle à ajouter sous la question,
-    # en petit, pour aider à faire le choix.
-    # Remarquer qu'une indication automatique existe lorsque la question
-    # comporte plusieurs choix à cocher (checkbox au lieu de radion).
-    indication TEXT,
+    #  GROUPE
+    # --------
+    # Comme les quiz, les questions appartiennent à des groupes.
+    # Cela permet simplement de les trier à l'affichage, lorsque plusieurs
+    # types de questionnaires appartiennent à la même base. Par exemple, les
+    # questionnaire sur le scénodico et sur le filmodico sont tous dans la
+    # base 'quiz_biblio'. On peut donc, grâce à ce groupe, obtenir seulement
+    # les questions qui appartiennent à l'un ou à l'autre
+    #
+    # Le groupe ne se définit pas dans le questionnaire de la question,
+    # il est automatiquement attribué en fonction du groupe du questionnaire
+    # 
+    groupe VARCHAR(100),
 
     # REPONSES
     # ----------------------
@@ -22,6 +28,15 @@ CREATE TABLE questions
     # Voir le format dans le programme.
     # Chaque réponse définit sa valeur en points.
     reponses BLOB NOT NULL,
+
+
+    # INDICATION
+    # -----------
+    # Une indication optionnelle à ajouter sous la question,
+    # en petit, pour aider à faire le choix.
+    # Remarquer qu'une indication automatique existe lorsque la question
+    # comporte plusieurs choix à cocher (checkbox au lieu de radion).
+    indication TEXT,
 
     #  TYPE
     # ------

@@ -27,7 +27,7 @@ class ::Quiz
       save_data
     when 'save_data_question_quiz'
       # Enregistrement des données de la question éditée
-      save_data_question
+      Question.save_data_question(self)
     end
 
     # Il faut ajouter les javascripts du dossier js

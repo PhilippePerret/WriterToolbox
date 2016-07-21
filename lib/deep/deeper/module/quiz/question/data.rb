@@ -12,9 +12,11 @@ class ::Quiz
     # ---------------------------------------------------------------------
     #   DATA ENREGISTRÉES
     # ---------------------------------------------------------------------
-    def type
-      @type ||= get(:type) || type_default
-    end
+    def question    ; @question   ||= get(:question)    end
+    def reponses    ; @reponses   ||= get(:reponses)    end
+    def raison      ; @raison     ||= get(:raison)      end
+    def indication  ; @indication ||= get(:indication)  end
+    def type        ; @type       ||= get(:type) || type_default end
     # ---------------------------------------------------------------------
     #   DATA VOLATILES
     # ---------------------------------------------------------------------
