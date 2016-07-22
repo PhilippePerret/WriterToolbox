@@ -9,7 +9,6 @@ class Quiz
 
     # Code HTML d'affichage de la question
     def output
-      debug "Question ID : #{id.inspect}"
       c = String.new
       c << question.in_div(class: 'q', id: "q-#{id}")
       indication.nil? || c << indication.in_div(class: 'indication')
