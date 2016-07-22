@@ -127,7 +127,7 @@ class Quiz
           better_reps = [irep]
           points_max  = hrep[:pts].to_i
         elsif hrep[:pts].to_i == points_max
-          better_reps << [irep]
+          better_reps << irep
         end
       end
 

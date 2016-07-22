@@ -48,15 +48,15 @@ class Quiz
         #   false     C'est la mauvaise valeur choisie par l'user
         #   nil       C'est une autre valeur mauvaise
         if ureponse
-          best_reps = ureponse[:best_rep] || []
-          good_rep  = ureponse[:good_rep]
-          is_good   = (good_rep == ireponse || best_reps.include?(ireponse))
-          case uselection
-          when true
-            is_good = is_good ? true : false
-          when false
-            is_good = is_good ? true : nil
-          end
+          best_reps = ureponse[:best_reps] || [ureponse[:good_rep]]
+          is_good =
+            if best_reps.include?(ireponse)
+              true
+            elsif uselection
+              false
+            else
+              nil
+            end
           hreponse.merge!(is_good: is_good)
         end
 
@@ -98,7 +98,7 @@ class Quiz
         if checkbox?
           libelle.in_checkbox(
             name:     "#{question.quiz.prefix_reponse}[rep#{question.id}_#{index}]",
-            selected: selection_user?
+            checked: selection_user?
           )
         else
           libelle.in_radio(

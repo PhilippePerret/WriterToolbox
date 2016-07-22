@@ -17,10 +17,14 @@ div.quiz
         border            : 1px solid green
         font-size         : 0.85em
         padding           : 1em
+        margin-top        : 0.5em
+        a
+          // color             : blue !important
+          background-color  : #DDFFDD !important
       // Une question à réponse correcte
       &.good
         background-color  : #DDFFDD !important
-        *      
+        *
           background-color  : #DDFFDD !important
       // Une question à problème ou sans réponse
       &.bad
@@ -54,6 +58,7 @@ div.quiz
             border            : 1px solid #00FF00
             *
               background-color  : #68BE68 !important
+              color             : white !important
           // Une mauvaise réponse
           &.bad
             background-color  : #F55 !important

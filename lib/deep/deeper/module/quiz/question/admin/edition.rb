@@ -73,7 +73,7 @@ if user.manitou?
             question:     question,
             groupe:       quiz.groupe,
             reponses:     reponses,
-            type:         type,
+            type:         type_gathered,
             raison:       raison,
             indication:   indication,
             updated_at:   NOW
@@ -110,6 +110,10 @@ if user.manitou?
         error e.message
       else
         true
+      end
+
+      def type_gathered
+        "#{data_param[:type_f]}#{data_param[:type_c]}#{data_param[:type_a]}"
       end
 
       def data_param

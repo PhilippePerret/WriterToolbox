@@ -14,7 +14,6 @@ class ::Quiz
       def formulaire_edition_question quiz, dform, question = nil
         question ||= new(quiz, nil)
         dform[:id] = 'edition_question_quiz'
-        dform.merge!(style:'display:none')
         tform.prefix= 'question'
         form.objet  = param(:question) || Hash.new # pour le moment
         bouton_generate_yaml_file = "Entrer les données à partir d'un fichier YAML".in_a(href:'question/from_yaml?in=unan_admin/quiz')
