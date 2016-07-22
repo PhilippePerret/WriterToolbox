@@ -100,7 +100,7 @@ class SiteHtml
     # la sous-classe (si contexte) correspondant à la route
     iroute.method_call
 
-    debug "<- SiteHtml::execute_route"
+    # debug "<- SiteHtml::execute_route"
 
     # ---------------------------------------------------------------------
     #   Gestion de toutes les erreurs possibles

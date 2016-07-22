@@ -271,6 +271,18 @@ RSpec.configure do |config|
   #   Concernant la navigation (features)
   # ---------------------------------------------------------------------
 
+  def offline?
+    @is_offline = OFFLINE if @is_offline === nil
+    @is_offline
+  end
+  def online?; !offline? end
+  def set_offline value = true
+    @is_offline = value
+  end
+  def set_online value = true
+    @is_offline = !value
+  end
+
   # Pour pouvoir utiliser `visit home`
   def home
     @home ||= "#{site.local_url}"
@@ -301,10 +313,15 @@ RSpec.configure do |config|
     # page.driver.browser.manage.window.resize_to('100%', '100%')
     # page.driver.browser.manage.window.maximize
     # page.driver.browser.manage.window(50)
-    # puts page.driver.browser.manage.window.methods.join("\n")
     page.driver.browser.manage.window.resize_to(1300, 5000)
     page.driver.browser.manage.window.maximize
 
+    # Tentatives (vaines) pour mettre Chrome en premier plan
+    #
+    # puts page.driver.browser.methods.join("\n")
+    # page.driver.browser.manage.window.display
+    # puts page.methods.join("\n")
+    # page.switch_to_window(page.windows[0])
   end
 
   # ---------------------------------------------------------------------
