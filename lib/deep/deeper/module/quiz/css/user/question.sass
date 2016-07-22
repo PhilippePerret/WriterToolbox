@@ -8,13 +8,22 @@ div.quiz
 
   form.quiz
     div.question
-      font-size   : 15.2pt
-      padding     : 1em !important
-
+      font-size     : 15.2pt
+      padding       : 1em !important
+      margin-bottom : 4px
+      // Le div contenant la raison de la bonne réponse
+      div.raison
+        background-color  : #CFC !important
+        border            : 1px solid green
+        font-size         : 0.85em
+        padding           : 1em
+      // Une question à réponse correcte
+      &.good
+        background-color  : #DDFFDD !important
+        *      
+          background-color  : #DDFFDD !important
       // Une question à problème ou sans réponse
-      &.warning
-        display           : block !important
-        border-radius     : 0 !important
+      &.bad
         border-width      : 1px !important
         color             : black
         background-color  : #ff8181 !important
@@ -38,6 +47,21 @@ div.quiz
         list-style    : none
         margin        : 0.7em 0 0 3.5em
         font-size     : 0.85em
+        li
+          // Une bonne réponse
+          &.good
+            background-color  : #68BE68 !important
+            border            : 1px solid #00FF00
+            *
+              background-color  : #68BE68 !important
+          // Une mauvaise réponse
+          &.bad
+            background-color  : #F55 !important
+            border            : 1px solid red
+            *
+              background-color  : #F55 !important
+              text-decoration   : line-through
+            
         // affichage en ligne (horizontal)
         &.h
           li

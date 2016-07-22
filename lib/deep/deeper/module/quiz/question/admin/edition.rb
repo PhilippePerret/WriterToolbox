@@ -90,7 +90,7 @@ if user.manitou?
           lib_reponse = dreponse[:libelle].nil_if_empty
           lib_reponse != nil || next
           pts_reponse = dreponse[:points].nil_if_empty
-          reponses << {lib: lib_reponse, pts: pts_reponse}
+          reponses << {lib: lib_reponse, pts: pts_reponse.to_i}
         end
         reponses.count > 0 || raise('Il faut impérativement donner des réponses avec libellés.')
         @reponses   = reponses.to_json
