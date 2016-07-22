@@ -111,3 +111,9 @@ def quiz
     end
   end
 end
+
+case param(:operation)
+when 'evaluate_quiz'
+  # On passe par ici quand on soumet le quiz
+  quiz.evaluate
+end

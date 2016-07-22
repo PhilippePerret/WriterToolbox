@@ -1,5 +1,31 @@
 div.quiz
   padding     : 1em
+  // Le DIV pour le résultat
+  div.quiz_resultat
+    border-bottom     : 1px solid #999
+    padding-bottom    : 2em
+    margin-bottom     : 2em
+    background-color  : #DDD
+    padding           : 2em
+    border-radius     : 1em 1em 0 0
+    div
+      &.good
+        color           : blue
+      &.bad
+        color           : red
+      &.moyen
+        color           : black
+    div#div_note_finale
+      margin-bottom   : 1em
+      font-size       : 2em
+      font-weight     : bold
+      font-family     : Georgia
+      span#note_finale
+        float           : right
+    div#message_general
+      font-size       : 1.3em
+      margin-bottom   : 2em
+
   // Le DIV contenant la description du quiz, si elle est
   // définie.
   div.quiz_description

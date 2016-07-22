@@ -1,6 +1,19 @@
 # encoding: UTF-8
 class ::Quiz
 
+  # Retourne un Hash avec en clé l'identifiant de la question
+  # et en valeur l'instance {Quiz::Question} de la question du
+  # quiz courant
+  def hquestions
+    @hquestions ||= begin
+      h = Hash.new
+      questions_ids.each do |qid|
+        h.merge!( qid => Question.new(self, qid) )
+      end
+      h
+    end
+  end
+
   # Retourne la liste des questions à afficher en fonction des
   # choix :
   #   - Il peut y avoir un nombre limité de questions à afficher

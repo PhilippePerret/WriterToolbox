@@ -11,6 +11,7 @@ class Quiz
     def output
       c = String.new
       c << question.in_div(class: 'q', id: "q-#{id}")
+      # Les indications éventuelles sur la question
       indication.nil? || c << indication.in_div(class: 'indication')
       c << ul_reponses
       c.in_div(class: 'question')
@@ -47,9 +48,9 @@ class Quiz
       # Code HTML de la réponse
       def output
         if checkbox?
-          libelle.in_checkbox(name: "reponse-#{question.id}-#{index}")
+          libelle.in_checkbox(name: "#{question.quiz.prefix_reponse}[rep#{question.id}_#{index}]")
         else
-          libelle.in_radio(name: "reponse-#{question.id}", value: index.to_s)
+          libelle.in_radio(name: "#{question.quiz.prefix_reponse}[rep#{question.id}]", value: index.to_s)
         end.in_li
       end
 

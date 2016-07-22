@@ -63,15 +63,16 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
       with_tag 'div', with: {class: 'quiz_description'}, text: /#{Regexp.escape dquiz[:description]}/
     end
 
+    prefname = "q#{dquiz[:id]}r"
     expect(page).to have_tag('form', with: {class: 'quiz'}) do
+
+      with_tag 'input', with: {type: 'hidden', name: 'quiz[time]'}
+
       dquiz[:questions_ids].split(' ').each do |qid|
 
         qid = qid.to_i
         dquestion = dquestions[qid]
         class_css_reponses = ['r']
-
-
-
 
         # Un DIV pour la question
         with_tag 'div', with: {class: 'question'}
@@ -85,9 +86,9 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
         expect(reponses).not_to be_empty
         reponses.to_sym.each_with_index do |dreponse, ireponse|
           if type_checkbox
-            with_tag 'input', with: {type: 'checkbox', name: "reponse-#{qid}-#{ireponse}"}
+            with_tag 'input', with: {type: 'checkbox', name: "#{prefname}[rep#{qid}_#{ireponse}]"}
           else # type radio
-            with_tag 'input', with: {type: 'radio', name: "reponse-#{qid}", value: "#{ireponse}"}
+            with_tag 'input', with: {type: 'radio', name: "#{prefname}[rep#{qid}]", value: "#{ireponse}"}
           end
           with_tag 'label', text: /#{Regexp.escape dreponse[:lib]}/
         end
