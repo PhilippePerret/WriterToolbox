@@ -112,7 +112,7 @@ OFFLINE = !ONLINE;
       # On ne joue plus sur l'opacité du bandeau supérieur 'section#header'
       # 'div#chapiteau_logo' se trouve maintenant dans left_margin donc
       # on n'a pas besoin de le traiter non plus.
-      ['section#left_margin', 'section#footer'].collect do |jid|
+      ['section#left_margin'].collect do |jid|
         "#{jid}{opacity:#{low_opacity}}"
       end.join("\n")
     else
@@ -130,4 +130,21 @@ OFFLINE = !ONLINE;
     CSSS
   end
 
+
+  # Retourne le div pour le lien permanent vers la page
+  # courante (if any)
+  #
+  # @usage    <%= page.permanent_link %>
+  #
+  def permanent_link
+    if site.current_route.nil? || site.current_route.route == 'admin/console'
+      ""
+    else
+      style = "font-size:11pt;width:500px"
+      (
+        "Lien permanent ".in_span(class:'tiny') +
+        "#{site.distant_url}/#{site.current_route.route}".in_input_text(style:style, onfocus:"this.select()")
+      ).in_div(id: 'div_permanent_link', style: 'margin:0 0 2px 13em')
+    end
+  end
 end

@@ -37,19 +37,4 @@
 
   <%= page.content_route || page.home %>
 
-  <%=
-  # ---------------------------------------------------------------------
-  #   Lien permanent
-  # ---------------------------------------------------------------------
-  if site.current_route.nil? || site.current_route.route == 'admin/console'
-    ""
-  else
-    style = "font-size:11pt;width:500px"
-    (
-      "Lien permanent ".in_span(class:'tiny') +
-      "#{site.distant_url}/#{site.current_route.route}".in_input_text(style:style, onfocus:"this.select()")
-    ).in_div(id: 'div_permanent_link', style: 'margin-top:6em')
-  end
-  %>
-
 </section>

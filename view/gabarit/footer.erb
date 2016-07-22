@@ -3,6 +3,7 @@
   <% if OFFLINE || user.admin? %>
     <div id="btns_admin_footer" class="right" style="margin-right:1em"><%= "Debug".in_a(class:'tiny', onclick:"$('section#debug').toggle()") %></div>
   <% end %>
+  <%= page.permanent_link %>
   <div id="bande_bas_de_page"></div>
   <div id="footer_content">
     <%= "Accueil".in_a(href:"") %>

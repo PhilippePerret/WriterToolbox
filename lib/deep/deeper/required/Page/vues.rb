@@ -63,7 +63,6 @@ class Page
   end
 
   def content
-    debug "-> page#content"
     @content ||= begin
       (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
     rescue Exception => e
@@ -104,11 +103,16 @@ class Page
   #
   def content_route
     @content_route ||= begin
-      if site.current_route && site.current_route.vue
-        site.current_route.vue.output
+      if site.current_route
+        if site.current_route.vue
+          site.current_route.vue.output
+        else
+          # C'est ici qu'on passe en cas de mauvaise route.
+          (site.folder_deeper_view + 'page/error_unknown_route.erb').deserb()
+        end
       else
-        # C'est ici qu'on passe en cas de mauvaise route.
-        (site.folder_deeper_view + 'page/error_unknown_route.erb').deserb()
+        # L'accueil
+        nil
       end
     rescue Exception => e
       self.fatal_error = e
