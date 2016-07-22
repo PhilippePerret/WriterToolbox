@@ -129,7 +129,7 @@ class Filmodico
           loc_table.insert(dis_fdata)
           @nombre_synchronisations += 1
         # =========================================
-        report "  * Création de la donnée film ##{fid} LOCALE (#{dis_fdata.inspect})"
+        report "  * Création de la donnée film ##{fid} LOCALE (#{dis_fdata[:titre]})"
       elsif dis_fdata != loc_fdata
         # Les données sont divergentes
         # => Il faut actualiser les données distantes, car c'est
@@ -142,14 +142,14 @@ class Filmodico
             dis_table.update(fid, loc_fdata_sans_id)
             @nombre_synchronisations += 1
           # =========================================
-          report "  = Actualisation de la donnée DISTANTE ##{fid}"
+          report "  = Actualisation de la donnée DISTANTE ##{fid} (#{loc_fdata_sans_id[:titre]})"
         else
           # dis -> loc
           # ============ ACTUALISATION =============
             loc_table.update(fid, dis_fdata_sans_id)
             @nombre_synchronisations += 1
           # =========================================
-          report "  = Actualisation de la donnée LOCALE ##{fid}"
+          report "  = Actualisation de la donnée LOCALE ##{fid} (#{dis_fdata_sans_id[:titre]})"
         end
       else
         # Les deux données sont identiques => rien à faire

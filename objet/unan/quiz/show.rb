@@ -25,8 +25,8 @@ end
 # un administrateur par exemple.
 def user_quiz
   @user_quiz ||= begin
-    auteur = param(:user_id) ? User::get(param(:user_id).to_i) : user
+    auteur = param(:user_id) ? User.get(param(:user_id).to_i) : user
     qid = site.current_route.objet_id.to_i
-    User::UQuiz::get( qid, auteur )
+    User::UQuiz.get( qid, auteur )
   end
 end

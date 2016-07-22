@@ -10,7 +10,7 @@ class ::Quiz
   # Pour définir la database (elle aura pour nom final :
   # `boite-a-outils_quiz_biblio`)
   #
-  def prefix_base
-    @prefix_base ||= 'biblio'
+  def suffix_base
+    @suffix_base ||= 'biblio'
   end
 end

@@ -87,9 +87,9 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
   def build options = nil
     unless_not_exists
 
-    options ||= Hash::new
+    options ||= Hash.new
 
-    html = String::new
+    html = String.new
     html << description.in_div(class:'description') if description?
     html << questions.collect do |iquestion|
       iquestion.output( user.admin? ? nil : reponses_auteur[iquestion.id] )

@@ -77,6 +77,9 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     end
 
     # Retourne true si la base de données +dbname+ existe
+    #
+    # @usage      existe = SiteHtml::DBM_TABLE.database_exist?(db_nom_complet)
+    # 
     def database_exist? dbname
       client_sans_db.query('SHOW DATABASES;').each do |row|
         return true if row['Database'] == dbname
