@@ -11,7 +11,12 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
   scenario "Pas d'affichage si la vue est appelée sans toutes les données requises" do
     visite_route 'quiz/show'
     expect(page).to have_tag('h1', text: 'Quizzzz !')
-    expect(page).to have_message('Impossible d’affichage le quiz…')
+    expect(page).to have_message('Houps ! Questionnaire inconnu…')
+  end
+  scenario 'Pas de questionnaire si le paramètre `qdbr` est mauvais (pas de base)' do
+    visite_route 'quiz/show?qdbr=mauvaisesuffixbase'
+    expect(page).to have_tag('h1', text: 'Quizzzz !')
+    expect(page).to have_message('Houps ! Questionnaire inconnu…')
   end
 
   scenario 'Avec les bonnes données, le quiz s’affiche' do
