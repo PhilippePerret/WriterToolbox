@@ -1,5 +1,8 @@
 # encoding: UTF-8
-# require 'json'
+
+# Si ce n'est pas un administrateur, on raise tout de suite
+raise_unless_admin
+
 
 case param(:want)
 when 'question'

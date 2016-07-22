@@ -1,0 +1,63 @@
+form.quiz
+  margin-bottom : 4em
+  // clear         : both
+div.quiz
+  padding     : 1em
+  // width       : 720px
+  // max-width   : 720px
+  &.no_titre
+    border        : none
+    margin-top    : 2em
+    margin-bottom : 2em
+  div.titre
+    font-weight   : bold
+    font-size     : 23.2pt
+    font-family   : inherit
+  div.description
+    font-size     : 12.4pt
+    margin-left   : 13em
+    margin-top    : 1em
+    color         : #777
+    font-style    : italic
+  div.questions
+    margin-top    : 3em
+    div.question
+      margin-top        : 2em
+      background-color  : #F1F1F1
+      &.error, &.warning
+        background-color  : #ff7373
+        border            : 6px solid red
+        div.q
+          color : #FFFFBF !important
+      &.good
+        background-color  : #73FF73
+        border            : 6px solid green
+      // LI contenant les réponses (une réponse par LI)
+      li
+        &.best
+          background-color  : #EFE
+          border            : 1px solid #AFA
+        &.good
+          background-color  : #BFB
+          border            : 1px solid green
+        &.wrong
+          background-color  : #FBB
+          border            : 1px solid red
+        span.exg
+          font-weight       : bold
+          color             : green
+      // Le div contenant la raison de la bonne réponse quand c'est
+      // une correction de questionnaire
+      div.raison
+        border      : 1px solid green
+        padding     : 0.75em
+        margin-left : 4em
+        margin-top  : 1em
+        font-size   : 0.75em
+        line-height : 1.7em
+
+ul#last_quizes
+  li.quiz
+    background-color      : #DEB887
+    padding               : 0.3em 1.1em 0.5em
+    border-radius         : 0.3em

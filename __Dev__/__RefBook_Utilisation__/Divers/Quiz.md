@@ -27,10 +27,10 @@ Il le fait en créant un module définissant :
 
       # Le suffixe de la base qui contient tout.
       # Le nom exact dans MySQL dépendra de l'application. Pour le
-      # BOA ce sera `boite-a-outils_quiz_scenodico` (quiz est automatiquement
+      # BOA ce sera `boite-a-outils_quiz_biblio` (quiz est automatiquement
       # ajouté pour éviter tout conflit de nom)
       def suffix_base
-        @suffix_base ||= :scenodico
+        @suffix_base ||= :biblio
       end
 
     end

@@ -36,7 +36,7 @@ class Quiz
   # Le nom de la base de données en fonction du préfixe définies
   # par le module appelant
   def database_relname
-    @database_relname ||= "quiz_#{prefix_base}"
+    @database_relname ||= "quiz_#{suffix_base}"
   end
   def database_fullname
     @database_fullname ||= "boite-a-outils_#{database_relname}"
