@@ -11,6 +11,7 @@ if user.manitou?
   class ::Quiz
     class Question
       class << self
+
         # Méthode principale appelée quand on soumet le formulaire
         # pour enregistrer la question.
         # Noter que ça passe d'abord par le fichier helper_admin du
@@ -19,6 +20,13 @@ if user.manitou?
         #
         # Toutes les données sont contenues dans le paramètre :question
         #
+        # On enregistre directement la question dans la quiz qui est
+        # actuellement édité, mais seulement si c'est une nouvelle
+        # question. Noter que ça peut poser un problème dans le cas où
+        # on veuille ajouter une question à un questionnaire alors que
+        # cette question est en édition (est-ce que ça peut vraiment
+        # survenir ?)
+        #
         def save_data_question quiz
           # On ne peut pas enregistrer de question pour un quiz
           # qui n'est pas encore enregistré
@@ -26,8 +34,9 @@ if user.manitou?
           qid = param(:question)[:id].nil_if_empty
           qid.nil? || qid = qid.to_i
           question = Question.new(quiz, qid)
+          is_new_question = !question.exist?
           if question.save
-            quiz.add_question( question )
+            quiz.add_question( question ) if is_new_question
           else
             # Impossible d'enregistrer la question dans le quiz puisque
             # la question n'a pas pu être sauvée

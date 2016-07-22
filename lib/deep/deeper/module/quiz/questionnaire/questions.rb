@@ -33,6 +33,8 @@ class ::Quiz
   #   - l'identifiant de la question
   #
   # RETURN true en cas d'ajout, false dans le cas contraire.
+  # Mais false peut être renvoyé simplement si la question appartient
+  # déjà au questionnaire.
   #
   def add_question q_ref
     qid =
@@ -44,9 +46,7 @@ class ::Quiz
       end
     qid != nil || raise('La question n’a pas d’identifiant… Impossible de l’ajouter.')
     qids = (get(:questions_ids) || '').split(' ')
-    if qids.include?( qid.to_s )
-      raise 'Cette question se trouve déjà dans le questionnaire.'
-    end
+    return false if qids.include?( qid.to_s )
     qids << qid
     set(questions_ids: qids.join(' '))
     @questions_ids = qids # car mis en String sur la ligne précédente
