@@ -26,10 +26,22 @@ class SiteHtml
     @route ||= SiteHtml::Route.new
   end
 
+  # = main =
+  #
   # Exécution de la route, si elle est définie
+  #
+  # C'est la première méthode qui est appelée quand on vient
+  # de l'index (cf. ./lib/deep/deeper/output.rb).
+  #
+  # Noter que ce n'est pas ici qu'est géré une mauvaise route (une
+  # route conduisant nulle page). Une mauvaise route est gérée dans
+  # la méthode Page#content_route dans le fichier page/vues.rb
+  #
   def execute_route
     # debug "-> SiteHtml::execute_route"
 
+    # Appel ajax avec le paramètre `route` définissant la route
+    # à suivre.
     if site.ajax? && param(:route)
       reg = /([a-zA-Z_]+)(?:\/([0-9]+))?\/([a-zA-Z_]+)(?:\?in=([a-zA-Z_]+))?/
       # tout, objet, objet_id, method, context = param(:route).match(reg).to_a
@@ -58,9 +70,9 @@ class SiteHtml
 
     # Si aucun objet n'est défini dans la route, on peut s'en
     # retourner immédiatement.
-    # Noter qu'on doit le faire ici pour que la dernière connexion
-    # de l'user soit prise en compte même lorsque __o n'est pas
-    # défini.
+    # Noter qu'on doit le faire ici , après `set_last_connexion`
+    # pour que la dernière connexion de l'user soit prise en
+    # compte même lorsque __o n'est pas défini.
     return if param(:__o).nil?
 
     # La méthode qui va charger tout ce qui est défini par rapport
@@ -88,7 +100,7 @@ class SiteHtml
     # la sous-classe (si contexte) correspondant à la route
     iroute.method_call
 
-    # debug "<- SiteHtml::execute_route"
+    debug "<- SiteHtml::execute_route"
 
     # ---------------------------------------------------------------------
     #   Gestion de toutes les erreurs possibles
@@ -333,7 +345,6 @@ class SiteHtml
     # Noter que des fichiers attachés à la vue (ruby, css, js) peuvent
     # exister sans que la vue existe.
     def vue
-      # debug "-> Route::vue"
       @vue ||= ( instance_vue.exist? ? instance_vue : nil )
     end
 
@@ -341,7 +352,6 @@ class SiteHtml
     # utile, par exemple, pour charger les éventuelles js,
     # ruby, etc.
     def instance_vue
-      # debug "-> Route::instance_vue"
       @instance_vue ||= Vue.new(segment_path)
     end
 
@@ -358,7 +368,6 @@ class SiteHtml
     # Ce sujet sert notamment à savoir ce qu'il faut binder à une vue
     # en fonction de la route.
     def sujet
-      # debug "-> Route::sujet"
       @sujet ||= ( instance || classe )
     end
 
@@ -367,7 +376,6 @@ class SiteHtml
     #   Objet::             S'il n'y a pas de contexte
     # RETURN la classe ou NIL si elle n'existe pas
     def classe
-      # debug "-> Route::classe"
       @classe ||= begin
         if context != nil
           if Object.constants.include?(context.camelize.to_sym)
@@ -376,19 +384,15 @@ class SiteHtml
             if main_class.constants.include?(objet_cam.to_sym)
               main_class.const_get(objet_cam) # p.e. Forum::Message
             else
-              # debug "[SiteHtml::Route#classe] Le contexte #{context.camelize} ne connait pas la sous-classe #{objet_cam}"
               nil
             end
           else
-            # debug "[SiteHtml::Route#classe] Contexte défini (#{context.camelize}) mais INCONNU."
             nil
           end
         else
           if Object.constants.include?(objet_cam.to_sym)
-            # debug "[SiteHtml::Route#classe] Pas de contexte, la classe #{objet_cam} existe, on la prend"
             Object.const_get(objet_cam)
           else
-            # debug "[SiteHtml::Route#classe] Pas de contexte et objet #{objet_cam} INCONNU"
             nil
           end
         end
@@ -398,7 +402,6 @@ class SiteHtml
     # L'instance demandée, si objet_id est défini et que la
     # classe existe.
     def instance
-      # debug "-> Route::instance"
       @instance ||= begin
         if objet_id.nil? || classe.nil? || classe.name == "Admin"
           nil

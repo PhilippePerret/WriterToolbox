@@ -9,6 +9,10 @@ class Page
 
   attr_accessor :fatal_error
 
+  # = main =
+  #
+  # Méthode appelée juste après l'exécution de la route
+  #
   # Il faut "précharger" l'entête et le contenu de la page pour
   # définir toutes les choses avant d'appeler les méthodes qui
   # vont charger les css, les js, les messages, etc.
@@ -59,6 +63,7 @@ class Page
   end
 
   def content
+    debug "-> page#content"
     @content ||= begin
       (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
     rescue Exception => e
@@ -93,10 +98,17 @@ class Page
 
   # Si une route est définie, contenant au moins 'objet' et 'method'
   # la vue objet/<objet>/<methode>.erb, si elle existe, est chargée
+  #
+  # Si la route n'est pas définie ou qu'elle est mauvaise, la méthode
+  # retourne NIL ce qui provoque le chargement de la page d'accueil.
+  #
   def content_route
     @content_route ||= begin
       if site.current_route && site.current_route.vue
         site.current_route.vue.output
+      else
+        # C'est ici qu'on passe en cas de mauvaise route.
+        (site.folder_deeper_view + 'page/error_unknown_route.erb').deserb()
       end
     rescue Exception => e
       self.fatal_error = e
