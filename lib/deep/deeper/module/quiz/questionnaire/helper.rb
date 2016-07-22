@@ -11,7 +11,18 @@ class Quiz
   def build
     options = Hash.new # pour le moment (voir si nécessaire)
     # Affichage du questionnaire pour remplissage
-    f = ''
+
+    # Le code complet retourné
+    "<h2 class='titre'>#{titre}</h2>" +
+    (
+      div_description +
+      html_form
+    ).in_div(class: 'quiz')
+  end
+
+  # Code HTML pour le formulaire du quiz
+  def html_form
+    f = String.new
     f << 'evaluate_quiz'.in_hidden(name:'operation')
     f << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
     f << questions_formated
@@ -19,10 +30,12 @@ class Quiz
 
     form_action = "quiz/#{id}/show?qbdr=#{suffix_base}"
     f = f.force_encoding('utf-8').in_form(id:"form_quiz", class:'quiz', action: form_action)
+  end
 
-    # Le code complet retourné
-    "<h2 class='titre'>#{titre}</h2>" +
-    f.in_div(class: 'quiz')
+  # Code HTML pour la description du quiz, si elle existe
+  def div_description
+    return '' if description.nil?
+    description.in_div(class: 'quiz_description')
   end
 
   # Retourne la liste des questions mises en bon format

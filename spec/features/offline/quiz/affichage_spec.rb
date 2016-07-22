@@ -57,6 +57,12 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
 
     # On contrôle que tout est bien affiché
     expect(page).to have_tag('div', with: {class: 'quiz'})
+
+    # Il doit y avoir un div pour la description du questionnaire
+    expect(page).to have_tag('div', with: {class: 'quiz'}) do
+      with_tag 'div', with: {class: 'quiz_description'}, text: /#{Regexp.escape dquiz[:description]}/
+    end
+
     expect(page).to have_tag('form', with: {class: 'quiz'}) do
       dquiz[:questions_ids].split(' ').each do |qid|
 
