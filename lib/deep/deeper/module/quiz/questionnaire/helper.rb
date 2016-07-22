@@ -10,33 +10,24 @@ class Quiz
   # quiz
   def build
     options = Hash.new # pour le moment (voir si nécessaire)
-
     # Affichage du questionnaire pour remplissage
     f = ''
     f << 'evaluate_quiz'.in_hidden(name:'operation')
     f << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
     f << questions_formated
-    f << 'Soumettre le questionnaire'.in_submit(class: 'btn')
+    f << 'Soumettre le questionnaire'.in_submit(class: 'btn').in_div(class: 'buttons')
 
-    html = ""
-    html << "<h2 class='titre'>#{titre}</h2>"
     form_action = "quiz/#{id}/show?qbdr=#{suffix_base}"
-    html << f.force_encoding('utf-8').in_form(id:"form_quiz", class:'quiz', action: form_action)
-    html
+    f = f.force_encoding('utf-8').in_form(id:"form_quiz", class:'quiz', action: form_action)
 
+    # Le code complet retourné
+    "<h2 class='titre'>#{titre}</h2>" +
+    f.in_div(class: 'quiz')
   end
 
+  # Retourne la liste des questions mises en bon format
   def questions_formated
-    '[Questions formatées]'
-  end
-
-  # Retourne la liste des questions à afficher en fonction des
-  # choix :
-  #   - Il peut y avoir un nombre limité de questions à afficher
-  #   - Il peut y avoir un ordre aléatoire
-  def questions_ids_2_display
-
-    ids = ids.shuffle.shuffle if aleatoire?
+    questions_ids_2_display.collect{ |qid| Question.new(self, qid).output }.join('')
   end
 
 end

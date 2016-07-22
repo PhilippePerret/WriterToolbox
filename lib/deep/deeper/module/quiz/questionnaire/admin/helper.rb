@@ -57,6 +57,8 @@ class ::Quiz
       tform.field_text('Groupe', 'groupe', groupe, {class: 'medium', text_after: menu_groupes}) +
       tform.field_description("Une base pouvant contenir des questionnaires de type varié (par exemple sur le scénodico ET sur le filmodico) on peut préciser par ce groupe les groupes possibles.") +
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
+      tform.field_checkbox('Mettre en quiz courant', 'quiz_courant') +
+      tform.field_description('Si cette case est cochée, le quiz sera mis en quiz courant et remplacera le quiz courant s’il existe.') +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random') +
       tform.field_text('', 'max_questions', nil, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
       tform.field_text('Questions', 'questions_ids', questions_ids.join(' ')) +

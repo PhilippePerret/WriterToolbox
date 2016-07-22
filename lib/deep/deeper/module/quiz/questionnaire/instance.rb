@@ -9,6 +9,14 @@ class ::Quiz
     @id = qid
   end
 
+  # Le suffixe base qui permettra de savoir dans quelle base est
+  # enregistré le questionnaire.
+  # Ce suffixe peut être déterminé soit par `quiz.suffix_base = `
+  # soit par une méthode def suffix_base; valeur end qui surclassera
+  # la méthode courante
+  def suffix_base; @suffix_base end
+  def suffix_base= value; @suffix_base = value end
+
 
   # Retourne true si le questionnaire existe déjà
   #

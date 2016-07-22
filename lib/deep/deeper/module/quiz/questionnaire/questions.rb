@@ -1,6 +1,18 @@
 # encoding: UTF-8
 class ::Quiz
 
+  # Retourne la liste des questions à afficher en fonction des
+  # choix :
+  #   - Il peut y avoir un nombre limité de questions à afficher
+  #   - Il peut y avoir un ordre aléatoire
+  def questions_ids_2_display
+    @questions_ids_2_display ||= begin
+      ids = questions_ids.dup
+      ids = ids.shuffle.shuffle if aleatoire?
+      nombre_max_questions ? ids[0..nombre_max_questions - 1] : ids
+    end
+  end
+
   # Pour ajouter une question
   #
   # +q_ref+ est une référence à la question qui peut être :

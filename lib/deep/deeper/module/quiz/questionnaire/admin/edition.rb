@@ -14,6 +14,7 @@ if user.manitou?
     # On n'empêche jamais d'enregistrer la donnée, mais on fait
     # quelques alertes pour prévenir quand même l'administrateur
     # qui procède à la création.
+    #
     def save_data
       debug "data2save : #{data2save.inspect}"
       if exist?
@@ -24,6 +25,22 @@ if user.manitou?
         debug "-> Création du quiz"
         @id = table_quiz.insert(data2save.merge(created_at: NOW))
         flash "Quiz #{id} créé avec succès."
+      end
+      # Si le quiz doit être mis en quiz data, il faut modifier les
+      # options du quiz courant actuel s'il existe.
+      # Noter qu'il faut écarter le quiz courant, qui vient être mis
+      # en courant.
+      if @must_be_quiz_courant
+        dcurrent = table_quiz.get(where: "options LIKE '1%' AND id != #{id}")
+        if dcurrent.nil?
+          # Rien a à faire, il n'y a pas de quiz courant
+        else
+          # Il ne faut plus que ce quiz soit courant
+          opts = dcurrent[:options]
+          opts[0] = '0'
+          table_quiz.update(dcurrent[:id], { options: opts })
+          debug "Quiz courant précédent (#{dcurrent[:id]}) décourantisé."
+        end
       end
     end
 
@@ -48,10 +65,14 @@ if user.manitou?
     # h qui contient les données qui seront enregistrées dans la
     # table quiz
     def assemble_options_in h
-      bit_random = h.delete(:random) || '0'
+      @must_be_quiz_courant = h.delete(:quiz_courant) == 'on'
+      bit_courant = @must_be_quiz_courant ? '1' : '0'
+      bit_random  = h.delete(:random) == 'on' ? '1' : '0'
       # Le nombre maximum de questions par formulaire, sur 3 chiffres
-      bits_maxq  = (h.delete(:max_questions).nil_if_empty || '0').rjust(3,'0')
-      @options = "#{bit_random}#{bits_maxq}"
+      bits_maxq  = (h.delete(:max_questions).nil_if_empty || '0').rjust(3,'-')
+
+      # Constition des options
+      @options = "#{bit_courant}#{bit_random}#{bits_maxq}"
       h.merge!(options: @options)
       # Pour que ce soit clair qu'il faut le retourner
       return h

@@ -11,7 +11,7 @@ class ::Quiz
 
     def initialize quiz, qid = nil
       @quiz = quiz
-      @id   = id
+      @id   = qid
     end
 
   end #/Question

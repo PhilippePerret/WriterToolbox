@@ -13,6 +13,8 @@ class ::Quiz
   #   id != 0 || super(id)
   # end
 
+  # Méthode principale appelée pour afficher le
+  # questionnaire
   def output
     if id.nil? || id == 0
       output_on_error :id_nil
@@ -21,6 +23,10 @@ class ::Quiz
     elsif !enable?
       output_on_error :unable
     else
+      # Il faut ajouter les javascripts du dossier js/user et les css
+      # du dossier css/user
+      page.add_javascript Dir["#{site.folder_module}/quiz/js/user/**/*.js"]
+      page.add_css Dir["#{site.folder_module}/quiz/css/user/**/*.css"]
       build
     end
   end
@@ -70,7 +76,8 @@ end
 # l'affichage, sans conditions
 class NoQuiz
   def output
-    'Houps ! Questionnnaire inconnu… :-('.in_div(class: 'big air warning')
+    'Houps ! Questionnaire inconnu… :-('.in_div(class: 'big air warning') +
+    (OFFLINE ? "(#{Quiz.error})".in_p(class: 'tiny') : '')
   end
 end
 
@@ -98,7 +105,6 @@ def quiz
         NoQuiz.new
       else
         q
-        flash "Quiz courant"
       end
     else
       site.objet

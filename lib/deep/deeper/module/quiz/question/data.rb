@@ -17,11 +17,22 @@ class ::Quiz
     def raison      ; @raison     ||= get(:raison)      end
     def indication  ; @indication ||= get(:indication)  end
     def type        ; @type       ||= get(:type) || type_default end
+
+    # Pour les options, voir le fichier options.rb
+
     # ---------------------------------------------------------------------
     #   DATA VOLATILES
     # ---------------------------------------------------------------------
 
-    # Pour les options, voir le fichier options.rb
+    def hreponses
+      @hreponses ||= begin
+        if reponses.nil?
+          {}
+        else
+          JSON.parse(reponses).to_sym
+        end
+      end
+    end
 
   end #/Question
 end #/Quiz
