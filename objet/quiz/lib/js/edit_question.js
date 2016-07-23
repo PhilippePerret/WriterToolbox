@@ -37,6 +37,7 @@ $.extend(window.QuizQuestion,{
 
   // Méthode appelée par le bouton "+ Réponse" dans le formulaire
   new_reponse:function(){
+    // Il faut vider complètement le formulaire
     this.build_reponse_field();
     $('input#question_reponse_'+this.last_id_reponse+'_libelle').focus();
   },
@@ -61,6 +62,9 @@ $.extend(window.QuizQuestion,{
     })
   },
   edit_poursuivre: function(rajax){
+
+    // Il faut vider complètement le formulaire
+    this.init_new_question();
 
     // Il faut cacher le formulaire du quiz et
     // afficher le formulaire de la question

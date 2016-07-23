@@ -1,0 +1,20 @@
+<%
+# Pour revoir un quiz précédent
+#
+# Seuls les auteurs autorisés peuvent le faire.
+
+%>
+<h1>Quizzzz !</h1>
+<% if user.authorized? %>
+  <p>
+    Ré-affichage du quiz.
+  </p>
+<% else %>
+  <p>
+    En qualité de simple <%= user.htype %>, vous ne pouvez pas consulter vos quiz précédents.
+  </p>
+  <p>
+    Pour le faire, vous devez être abonné<%= user.f_e %>.
+  </p>
+  <%= lien.subscribe %>
+<% end %>

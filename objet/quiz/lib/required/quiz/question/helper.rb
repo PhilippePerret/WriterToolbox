@@ -28,12 +28,12 @@ class Quiz
     #       manquante.
     def output
       c = String.new
-      c << question.in_div(class: 'q', id: "q-#{id}")
+      c << question.in_div(class: 'q', id: "q-#{id}-question")
       # Les indications éventuelles sur la question
       indication.nil? || c << indication.in_div(class: 'indication')
       c << ul_reponses
       c << div_raison if ureponse && !ureponse[:is_good]
-      c.in_div(class: "question #{class_output}".strip)
+      c.in_div(id: "question-#{id}", class: "question #{class_output}".strip)
     end
 
     # La classe générale de la question en fonction des réponses
@@ -57,31 +57,40 @@ class Quiz
     def ul_reponses
       class_css = ['r', type_a]
       ul = ''
-      hreponses.each_with_index do |hreponse, ireponse|
-        # Cette réponse est-elle sélectionnée par l'user ?
-        uselection = (ureponse && ureponse[:rep_index].include?(ireponse))
+      hreponses.each_with_index do |hreponse, irep|
 
-        hreponse.merge!(index: ireponse, type: type_c, uselection: uselection)
+        # Cette réponse est-elle sélectionnée par l'user ?
+        is_selection_user = !!(ureponse && ureponse[:rep_index].include?(irep))
+
+        uselection = (ureponse && ureponse[:rep_index].include?(irep))
+
+        hreponse.merge!(index: irep, type: type_c, uselection: uselection)
 
         if evaluation?
           # Si c'est une correction (ureponse != nil), il faut indiquer si
           # la réponse courante est une bonne réponse ou une mauvaise
           # réponse.
-          # is_good peut avoir trois valeurs :
+          # is_correct peut avoir trois valeurs :
           #   true      C'est la bonne valeur à mettre en exergue
           #   false     C'est la mauvaise valeur choisie par l'user
           #   nil       C'est une autre valeur mauvaise
           if ureponse
-            best_reps = ureponse[:best_reps] || [ureponse[:good_rep]]
-            is_good =
-              if best_reps.include?(ireponse)
+            is_good_reponse = ureponse[:better_reps].include?(irep)
+            is_correct =
+              if is_good_reponse
+                # C'est une bonne réponse, choisie ou non par
+                # l'user
                 true
-              elsif uselection
+              elsif is_selection_user
+                # C'est une mauvaise réponse, mais c'est celle
+                # choisie par l'user
                 false
               else
+                # C'est une mauvaise réponse, mais elle n'est pas
+                # choisie par l'user
                 nil
               end
-            hreponse.merge!(is_good: is_good)
+            hreponse.merge!(is_correct: is_correct)
           end
         end
         # On construit le LI de la réponse et on l'ajoute à la quesiton
@@ -130,16 +139,17 @@ class Quiz
             value: index.to_s,
             checked: selection_user?
             )
-        end.in_li(class: class_reponse)
+        end.in_li(id: "q-#{question.id}-r-#{index}", class: class_reponse)
       end
 
       # La classe en fonction du fait que c'est une bonne
       # réponse ou non (seulement quand c'est une correction)
       def class_reponse
-        case @data[:is_good]
-        when NilClass then nil
+        case @data[:is_correct]
+        when NilClass   then nil
         when FalseClass then 'bad'
-        when TrueClass  then 'good'
+        when TrueClass  then
+          selection_user? ? 'good' : 'goodbad'
         else raise ":is_good a une valeur inconnue… Glourps…"
         end
       end
@@ -156,11 +166,6 @@ class Quiz
       def radio?
         @is_radio = type == 'r' if  @is_radio === nil
         @is_radio
-      end
-
-      # True si c'est une bonne réponse
-      def bonne_reponse?
-        @data[:is_good] == true
       end
 
       # True si l'user l'a sélectionné

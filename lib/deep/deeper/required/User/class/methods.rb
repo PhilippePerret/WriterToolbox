@@ -27,7 +27,7 @@ class User
         expected = res[:cpassword]
         compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
         ok = expected == compared
-        User::new( res[:id] ).login if ok
+        User.new( res[:id] ).login if ok
         return ok
       end
     end

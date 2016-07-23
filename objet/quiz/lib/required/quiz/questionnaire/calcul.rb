@@ -5,10 +5,18 @@ class Quiz
   #
   # Méthode principale appelée lorsque l'on clique sur le bouton
   # pour soumettre le quiz
+  #
+  # Si la questionnaire a bien été enregistré, elle construit le
+  # rapport à afficher, avec le résultat et les réponses corrigées.
+  #
+  # Si c'est un user inscrit (abonné, unanunscript, etc.), on
+  # enregistre son quiz dans la table des résultats.
+  #
   def evaluate
     if ureponses.nil?
       @error = :aucune_reponse
       @report = 'Voyons ! Il faut remplir le quiz, pour obtenir une évaluation !'
+      @do_evaluation = false
     elsif pas_toutes_les_reponses?
       @error = :nombre_reponses_insuffisant
       @report = 'Il faut répondre à toutes les questions, pour obtenir une évaluation intéressante.'
@@ -18,6 +26,7 @@ class Quiz
       # On calcule le rapport
       @do_evaluation = true
       report
+      save_resultat if user.identified?
     end
   end
 
@@ -89,6 +98,7 @@ class Quiz
   #     :points       Nombre de points pour cette question
   #     :upoints      Nombre de points marqués par l'user pour cette
   #                   question
+  #     :is_correct
   #
   def ureponses
     @ureponses ||= begin
@@ -127,46 +137,45 @@ class Quiz
       urep[:upoints] =
         case index_reponse
         when Array  # checkboxes
-          sum = 0
-          index_reponse.each do |irep|
-            sum += question.hreponses[irep][:pts].to_i
-          end
-          sum
+          index_reponse.collect{|irep| question.hreponses[irep][:pts].to_i }.inject(:+)
         when Fixnum # radio
           question.hreponses[index_reponse][:pts].to_i
         end
+      debug "Question : #{question.question}"
+      debug "index_reponse : #{index_reponse.inspect}"
+      debug "urep[:upoints] = #{urep[:upoints].inspect}"
+
+
       # Les meilleures réponses
-      points_max  = 0
-      better_reps = Array.new
+      #
+      # On prend toute réponse qui est supérieure à 0,
+      # mais en mettant de côté la meilleure réponse d'entre
+      # toutes.
+      #
+      urep[:better_reps]  = Array.new
+      urep[:best_rep]     = 0
+      urep[:points]       = 0
       question.hreponses.each_with_index do |hrep, irep|
-        if hrep[:pts].to_i > points_max
-          better_reps = [irep]
-          points_max  = hrep[:pts].to_i
-        elsif hrep[:pts].to_i == points_max
-          better_reps << irep
+        pts = hrep[:pts].to_i
+        if pts > 0
+          urep[:better_reps]  << irep
+          urep[:points] += pts
         end
+        urep[:best_rep]     = irep  if pts > urep[:best_rep]
       end
 
-      # On affecte les valeurs des meilleures réponses
-      if better_reps.count == 1
-        urep[:good_rep]   = better_reps.first
-        urep[:points]     = points_max
-      else
-        urep[:best_reps]  = better_reps
-        urep[:points]     = 0
-        better_reps.each do |irep|
-          urep[:points] += question.hreponses[irep][:pts].to_i
-        end
+      # S'il n'y a qu'une seule bonne réponse, on la met
+      # dans :good_rep
+      if urep[:better_reps].count == 1
+        urep[:good_rep] = urep[:better_reps].first
       end
 
       # On peut déterminer si la réponse est bonne ou non
       # Elle est simplement bonne si le nombre de points est
       # équivalent au nombre de points pour la question.
-      urep[:is_good] = urep[:points] == urep[:upoints]
+      # urep[:is_good] = urep[:points] == urep[:upoints]
 
-      # La meilleure réponse (s'il n'y a qu'une seule meilleure
-      # réponse)
-
+      debug "urep[:points] = #{urep[:points].inspect}"
       # On remet le hash de la question corrigé
       ureps[qid] = urep
     end
@@ -185,6 +194,8 @@ class Quiz
       hrep = {
         qid:            nil,  # ID de la question
         is_good:        nil,  # True si la réponse est correcte
+        is_correct:     nil,  # true: bonne réponse, false: mauvaise réponse
+                              # choisie par l'user, nil: mauvaise réponse
         rep_index:      nil,  # Index (ou liste) de la réponse choisie
         good_rep:       nil,  # La bonne valeur (if any)
         best_reps:      nil,  # Les meilleures valeurs (if plusieurs)

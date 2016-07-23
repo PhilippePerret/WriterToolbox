@@ -18,11 +18,21 @@ CREATE TABLE resultats
     # User, si identifié, qui a rempli ce questionnaire
     user_id INTEGER,
 
+    #  QUIZ_ID
+    # ---------
+    # Identifiant du quiz
+    quiz_id INTEGER NOT NULL,
+
     # REPONSES
     # --------
     # Réponses du visiteur, c'est un hash en string contenant
     # les réponses (format JSON).
     reponses BLOB NOT NULL,
+
+    #  NOTE
+    # ------
+    # La note sur 20 obtenue
+    note DECIMAL(3, 1) NOT NULL,
 
     # POINTS
     # ------

@@ -57,14 +57,21 @@ div.quiz
           // Une bonne réponse
           &.good
             background-color  : #68BE68 !important
-            border            : 1px solid #00FF00
+            border            : 2px solid #00FF00
             *
               background-color  : #68BE68 !important
               color             : white !important
+          // Une bonne réponse non choisie par l'user
+          // (pour les checkbox)
+          &.goodbad
+            background-color  : #68BE68 !important
+            border            : 2px solid red !important
+            *
+              background-color  : #68BE68 !important
           // Une mauvaise réponse
           &.bad
             background-color  : #F55 !important
-            border            : 1px solid red
+            border            : 2px solid red
             *
               background-color  : #F55 !important
               text-decoration   : line-through

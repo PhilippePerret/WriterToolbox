@@ -59,38 +59,57 @@ end
 # ---------------------------------------------------------------------
 %>
 <h3>Forum</h3>
-<p>Vous n'avez aucun message en attente.</p>
-<p>Vous n'avez aucune question en attente.</p>
+<fieldset id="forum">
+  <legend>Forum</legend>
+  <p>Vous n'avez aucun message en attente.</p>
+  <p>Vous n'avez aucune question en attente.</p>
+</fieldset>
 
 <%
 # ---------------------------------------------------------------------
 #   UN AN UN SCRIPT
 # ---------------------------------------------------------------------
 %>
-<h3>Programme <%= UN_AN_UN_SCRIPT %></h3>
-<% if unanunscript? %>
-  <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
-<% else %>
-  <p>Vous ne suivez pas le <%= lien.unanunscript %>.</p>
-<% end %>
+<fieldset id="unanunscript">
+  <legend>Programme <%= UN_AN_UN_SCRIPT %></legend>
+  <% if unanunscript? %>
+    <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
+  <% else %>
+    <p>Vous ne suivez pas le <%= lien.unanunscript %>.</p>
+  <% end %>
+</fieldset>
 
 <%
 # ---------------------------------------------------------------------
 #   PRÉFÉRENCES
 # ---------------------------------------------------------------------
 %>
-<h3>Préférences</h3>
-<form action="user/<%= user.id %>/profil" method="POST">
-  <%= 'save_preferences'.in_hidden(name:'operation') %>
-  <ul>
-    <%= ("Recevoir le mail des dernières actualités #{menu_mail_updates}" + lien.aide(4)).in_li %>
-    <%= ("Après l'identification, rejoindre #{menu_goto_after_signin}" + lien.aide(1)).in_li %>
-  </ul>
-  <%= "Enregistrer".in_submit(class: 'btn small discret').in_div(class: 'buttons') %>
-</form>
+<fieldset id="preferences">
+  <legend>Préférences</legend>
+  <form action="user/<%= user.id %>/profil" method="POST">
+    <%= 'save_preferences'.in_hidden(name:'operation') %>
+    <ul>
+      <%= ("Recevoir le mail des dernières actualités #{menu_mail_updates}" + lien.aide(4)).in_li %>
+      <%= ("Après l'identification, rejoindre #{menu_goto_after_signin}" + lien.aide(1)).in_li %>
+    </ul>
+    <%= "Enregistrer".in_submit(class: 'btn small discret').in_div(class: 'buttons') %>
+  </form>
+</fieldset>
 
 <% if user.admin? %><%= sous_vue('admin') %><% end %>
 
+<%
+# -------------- QUIZ -----------------
+%>
+<fieldset id='fs_quizes'>
+  <legend>Quiz</legend>
+  <p class="small italic discret">Retrouvez ci-dessous tous les quiz que vous avez exécutés.</p>
+  <%= user.liste_quizes %>
+</fieldset>
+
+<%
+# ------------- DESTRUCTION DU COMPTE ---------------
+%>
 <h3>Destruction du compte</h3>
 
 <div class="right air air">

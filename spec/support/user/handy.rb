@@ -2,7 +2,16 @@
 =begin
 Handy méthodes pour les user
 =end
-def go_and_identify mail, password
+
+# alias def identify
+def go_and_identify mail, password = nil
+  mail, password =
+    case mail
+    when String then [mail, password]
+    when Hash   then [mail[:mail], mail[:password]]
+    else raise 'Format de mail incorrect pour une identification'
+    end
+
   visit_home
   click_link('S\'identifier')
   expect(page).to have_css('form#form_user_login')
@@ -12,6 +21,7 @@ def go_and_identify mail, password
     click_button('OK')
   end
 end
+alias :identify :go_and_identify
 
 def identify_phil
   require './data/secret/data_phil'
@@ -98,7 +108,7 @@ def phil
 end
 
 def benoit
-  u = User::new(2)
+  u = User.new(2)
   expect(u).to be_instance_of(User)
   expect(u.pseudo).to eq "Benoit"
   return u
@@ -107,35 +117,43 @@ end
 # +options+
 #
 #   :unanunscript   Si true, l'inscrit au programme
+#   :subscriber     Si true, crée un abonné
 #   :current        Si true, le met en user courant
 #
 #   Toutes les autres propriétés servent à décrire les
 #   données de l'user, qui seront enregistrées dans la
 #   table
 def create_user options = nil
+  require 'digest/md5'
   now = Time.now.to_i
-  options ||= Hash::new
+  options ||= Hash.new
 
   # Retirer les valeurs qui ne doivent pas être enregistrées
   programme_1a1s = options.delete(:unanunscript)
+  subscriber     = options.delete(:subscriber) == true
   mettre_courant = options.delete(:current) || programme_1a1s
 
   sexe    = ["H","F"][rand(2)]
   prenom  = UserSpec::random_prenom(sexe)
 
+
   options[:sexe]        ||= sexe
   options[:pseudo]      ||= "#{prenom.normalized}#{options[:sexe]}#{now}"
   options[:patronyme]   ||= "#{prenom} Patro #{options[:sexe]} N#{now}"
   options[:mail]        ||= "mail#{options[:sexe]}#{now}@chez.moi"
-  options[:options]     ||= ""
-  options[:cpassword]   ||= "0123"*8
-  options[:session_id] = app.session.session_id unless options.has_key?(:session_id)
+  options[:options]     ||= "001000000000000000"
+  options[:session_id] = app.session.session_id unless options.key?(:session_id)
   options[:created_at]  ||= now
   options[:updated_at]  ||= now
+
+  pwd = options.delete(:password) || "0123"*4
   options[:salt]        ||= "dubonsel"
+  cpwd = Digest::MD5.hexdigest("#{pwd}#{options[:mail]}#{options[:salt]}")
+  options[:cpassword] = cpwd
+
 
   @id = User::table_users.insert(options)
-  new_user = User::get(@id)
+  new_user = User.get(@id)
   # debug "ID du nouvel user créé par `create_user` des tests : #{new_user.id.inspect}"
 
   # Mettre en courant lorsqu'on en a fait explicitement la
@@ -149,6 +167,16 @@ def create_user options = nil
     site.require_objet 'unan'
     (Unan::folder_modules + 'signup_user.rb').require
     new_user.signup_program_uaus
+  elsif subscriber
+    data_paiement = {
+      user_id:    new_user.id,
+      objet_id:  'ABONNEMENT',
+      montant:    6.9,
+      facture:    'EC-38P44270A51102219',
+      created_at:  Time.now.to_i
+    }
+    table_paiements = site.dbm_table(:cold, 'paiements')
+    table_paiements.insert(data_paiement)
   end
 
   return new_user

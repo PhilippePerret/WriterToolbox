@@ -10,6 +10,42 @@ unless user.identified?
   redirect_to 'user/signin'
 end
 
+
+class User
+
+  # Retourne la liste UL des LI des quizes
+  # OU Un message indiquant qu'il n'y a pas de questionnaires
+  # enregistrés pour l'user.
+  def liste_quizes
+    results     = Array.new
+    quizes      = Hash.new # clé = id du quiz, value = Hash de données
+    quizes_ids  = Array.new # pour récupérer les titres
+    ['biblio'].each do |suffix_base|
+      subase = "quiz_#{suffix_base}"
+      table = site.dbm_table(subase, 'resultats')
+      arr_results = table.select(where: "user_id = #{id}", colonnes: [:quiz_id, :note, :created_at], order: 'created_at DESC')
+      next if arr_results.empty?
+      # Il y a des quiz
+      quizes_ids = arr_results.collect{|hq| hq[:quiz_id]}
+      results += arr_results.collect{|hq| hq.merge(suffix_base: suffix_base)}
+      site.dbm_table(subase, 'quiz').select(where: "id IN (#{quizes_ids.join(', ')})", colonnes: [:titre]).each do |hq|
+        quizes.merge!(hq[:id] => hq)
+      end
+    end
+
+    if results.empty?
+      'Vous n’avez aucun questionnaire enregistré.'.in_p
+    else
+      # On fait la liste des quiz
+      results.collect do |hres|
+        href = "quiz/#{hres[:id]}/reshow?qdbr=#{hres[:suffix_base]}"
+        (quizes[hres[:quiz_id]][:titre] + " - #{hres[:created_at].as_human_date}, #{hres[:note].to_f.to_s}/20".in_span(class: 'tiny')).in_a(href: href).in_li(class: 'quiz')
+      end.join('').in_ul(id: 'ul_quizes')
+    end
+  end
+
+end #/User
+
 case param(:operation)
 
 when 'save_preferences'
