@@ -9,7 +9,7 @@ class Scenodico
   DATA_ONGLETS = {
     'Accueil'       => 'scenodico/home',
     'Dictionnaire'  => 'scenodico/list',
-    'Quiz'          => 'scenodico/quiz',
+    'Quiz'          => 'quiz/10/show?qdbr=biblio',
     'Recherche'     => 'scenodico/search',
     'Proposer'      => 'scenodico/proposer'
   }
@@ -23,7 +23,7 @@ class Scenodico
       if user.admin?
         donglets.merge!(
           'Nouveau'     => 'scenodico/edit',
-          '[Edit Quiz]' => 'scenodico/quiz_edit'
+          '[Edit Quiz]' => 'quiz/10/edit?qdbr=biblio'
           )
       end
       return donglets
