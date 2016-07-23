@@ -10,6 +10,14 @@
 =end
 class Quiz
 
+  # Le suffixe base qui permettra de savoir dans quelle base est
+  # enregistré le questionnaire.
+  # Ce suffixe peut être déterminé soit :
+  #   - par l'url avec le paramètre 'qdbr' (privilégié)
+  #   - par `quiz.suffix_base = `
+  def suffix_base; @suffix_base || self.class.suffix_base end
+
+
   def table_resultats
     @table_resultats ||= begin
       database_exist? || database_create

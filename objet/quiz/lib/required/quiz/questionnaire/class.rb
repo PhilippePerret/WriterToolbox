@@ -1,5 +1,9 @@
 # encoding: UTF-8
 class ::Quiz
+
+  # Les méthodes principales de n'importe quel objet RestSite
+  extend MethodesMainObjets
+
   class << self
 
     attr_reader :error
@@ -48,6 +52,13 @@ class ::Quiz
       SiteHtml::DBM_TABLE.database_exist?("boite-a-outils_quiz_#{suffix_base}")
     end
 
+    # Suffix du nom de la base courant
+    # {String ou Nil}
+    #
+    # IL est contenu dans la variable qdbr (qui signifie "q" pour "quiz",
+    # "db" pour "database" et "r" pour relname, le nom relatif, sans 'quiz'
+    # et sans la racine des bases de données — 'boite-a-outils' pour le BOA)
+    #
     def suffix_base
       @suffix_base ||= param(:qdbr).nil_if_empty
     end

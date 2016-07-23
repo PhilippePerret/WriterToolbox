@@ -113,7 +113,7 @@ if user.manitou?
       end
 
       def type_gathered
-        "#{data_param[:type_f]}#{data_param[:type_c]}#{data_param[:type_a]}"
+        "#{data_param[:type_f]}#{data_param[:type_c]}#{data_param[:type_a]}#{data_param[:masked] == 'on' ? '1' : '0'}"
       end
 
       def data_param

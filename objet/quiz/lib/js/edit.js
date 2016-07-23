@@ -3,43 +3,16 @@ if(undefined == window.QuizQuestion){window.QuizQuestion = {}}
 $.extend(window.QuizQuestion,{
   last_id_reponse:0,
 
-  init_new:function(){
-    var champs_valeurs = [
-      'input#question_id',
-      "input#question_question",
-      'textarea#question_raison',
-      'textarea#reponses_json'
-    ];
-    var champs_vide_html = [
-      'div#reponses'
-    ];
-    var champs_select = [
-      'question_type_f',
-      'question_type_c',
-      'question_type_a'
-    ];
-    var champs_uncheck = [
-
-    ];
-    UI.init_form({
-      val:      champs_valeurs,
-      select:   champs_select,
-      uncheck:  champs_uncheck,
-      empty:    champs_vide_html
-    })
-    $('input#question_nombre_reponses').val('0')
-    QuizQuestion.last_id_reponse = 0 ;
-    $("input#question_question").focus();
-  },
-
-  // Tout ré-initialiser pour une nouvelle question
-  reset_all: function(){
-  },
-
-  // Méthode appelée par le bouton "+ Réponse" dans le formulaire
-  new_reponse:function(){
-    this.build_reponse_field();
-    $('input#question_reponse_'+this.last_id_reponse+'_libelle').focus();
+  // Méthode appelée par le bouton "Nouvelle question" du formulaire
+  //
+  new_question: function(){
+    // On ré-initialise tous les champs, dans le cas où une
+    // question aie été éditée précédemment
+    this.init_new_question()
+    // On masque le formulaire du quiz pour faire apparaitre
+    // le formulaire de la question
+    $('form#edition_question_quiz').show();
+    $('form#edition_quiz').hide()
   },
 
   // Construction des réponses qui ont pu déjà être données
@@ -56,6 +29,7 @@ $.extend(window.QuizQuestion,{
 
   //
   build_reponse_field:function(rep_id, rep_libelle, rep_points){
+
     if (undefined == rep_id ){
       rep_id = ++this.last_id_reponse
       rep_libelle = "" ;

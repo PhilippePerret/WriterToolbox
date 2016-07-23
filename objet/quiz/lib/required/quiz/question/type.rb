@@ -2,9 +2,9 @@
 class ::Quiz
   class Question
 
-    # Options par défaut
+    # Options (type) par défaut
     def type_default
-      @type_default ||= '0rv'
+      @type_default ||= '0rv0'
     end
 
     # Dans les options (1er bit) le type de question (pas encore utilisé)
@@ -20,6 +20,13 @@ class ::Quiz
     # horizontal ou 'm' pour 'menu')
     def type_a
       @type_a ||= type[2]
+    end
+
+    # Pour savoir si la question est masquée, i.e. si elle ne doit pas
+    # apparaitre dans la liste de toutes les questions, pour alléger
+    # l'affichage de cette liste.
+    def masked?
+      @is_masked ||= type[3].to_i == 1
     end
 
   end #/Question

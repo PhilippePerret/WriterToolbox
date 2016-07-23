@@ -16,17 +16,15 @@ if user.manitou?
     # qui procède à la création.
     #
     def save_data
-      debug "data2save : #{data2save.inspect}"
+      # debug "data2save : #{data2save.inspect}"
       if exist?
-        debug "-> Update du quiz #{id}"
         table_quiz.update(id, data2save)
         flash "Quiz ##{id} actualisé avec succès."
       else
-        debug "-> Création du quiz"
         @id = table_quiz.insert(data2save.merge(created_at: NOW))
         flash "Quiz #{id} créé avec succès."
       end
-      # Si le quiz doit être mis en quiz data, il faut modifier les
+      # Si le quiz doit être mis en QUIZ COURANT, il faut modifier les
       # options du quiz courant actuel s'il existe.
       # Noter qu'il faut écarter le quiz courant, qui vient être mis
       # en courant.

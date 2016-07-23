@@ -4,8 +4,6 @@
   Module permettant l'affichage du quiz
 
 =end
-site.require_module 'quiz'
-
 
 class ::Quiz
 
@@ -25,8 +23,10 @@ class ::Quiz
     else
       # Il faut ajouter les javascripts du dossier js/user et les css
       # du dossier css/user
-      page.add_javascript Dir["#{site.folder_module}/quiz/js/user/**/*.js"]
-      page.add_css Dir["#{site.folder_module}/quiz/css/user/**/*.css"]
+      # Il faut ajouter les javascripts du dossier js et les css
+      # du dossier css
+      page.add_javascript Dir["#{Quiz.folder_lib}/js/user/**/*.js"]
+      page.add_css Dir["#{Quiz.folder_lib}/css/user/**/*.css"]
       build
     end
   end
@@ -54,62 +54,6 @@ class ::Quiz
     user.authorized? || self.current?
   end
 
-  # Suffix du nom de la base
-  #
-  # IL est contenu dans la variable qdbr (qui signifie "q" pour "quiz",
-  # "db" pour "database" et "r" pour relname, le nom relatif, sans 'quiz'
-  # et sans la racine des bases de données — 'boite-a-outils' pour le BOA)
-  def suffix_base
-    @suffix_base ||= begin
-      sb = param(:qdbr).nil_if_empty
-      if SiteHtml::DBM_TABLE.database_exist?("boite-a-outils_quiz_#{sb}")
-        sb
-      else
-        nil
-      end
-    end
-  end
-end
-
-# Utile quand aucun questionnaire n'est défini, on crée une
-# instance NoQuiz pour la mettre dans `quiz` pour gérer facilement
-# l'affichage, sans conditions
-class NoQuiz
-  def output
-    'Houps ! Questionnaire inconnu… :-('.in_div(class: 'big air warning') +
-    (OFFLINE ? "(#{Quiz.error})".in_p(class: 'tiny') : '')
-  end
-end
-
-
-# Le quiz courant, défini par les paramètres de l'url,
-# s'ils sont bien définis.
-#
-# Différents cas peuvent se produire :
-#   Cas 1 - Aucun ID dans l'url
-#     =>  Pas d'objet_id pour la route,
-#     Si qdbr est défini dans les paramètres
-#       =>  On prend le questionnaire courant
-#     Sinon
-#       => Une erreur fatale
-#   Cas 2 - Un ID dans l'url mais qui n'existe pas
-#     => On crée l'instance, mais elle dira que le questionnaire
-#       n'existe pas.
-#   Cas 3 - Un ID valide dans l'URL
-#     Tout est normal.
-def quiz
-  @quiz ||= begin
-    if site.route.objet_id.nil?
-      q = ::Quiz.current
-      if q.nil?
-        NoQuiz.new
-      else
-        q
-      end
-    else
-      site.objet
-    end
-  end
 end
 
 case param(:operation)

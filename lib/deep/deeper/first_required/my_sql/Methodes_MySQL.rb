@@ -56,7 +56,14 @@ module MethodesMySQL
 
   # Dispatche les données +hdata+ dans les variables d'instance
   def dispatch hdata
-    hdata.each { |k, v| instance_variable_set( "@#{k}", v ) }
+    case hdata
+    when Hash
+      hdata.each { |k, v| instance_variable_set( "@#{k}", v ) }
+    when NilClass
+      raise 'Les données à dispatcher sont vides.'
+    else
+      raise "Impossible de dispatcher un ensemble de données de type #{hdata.class}…"
+    end
   end
 
   # Relève toutes les données dans la table

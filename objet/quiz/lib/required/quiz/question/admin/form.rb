@@ -17,20 +17,27 @@ class ::Quiz
         tform.prefix= 'question'
         form.objet  = param(:question) || Hash.new # pour le moment
         bouton_generate_yaml_file = "Entrer les données à partir d'un fichier YAML".in_a(href:'question/from_yaml?in=unan_admin/quiz')
-        lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(QuizQuestion, 'init_new')()")
+        lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(QuizQuestion, 'init_new_question')()")
         lien_edit_question    = "Edit".in_a(onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
         lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(QuizQuestion,'on_want_destroy')()", class:'small btn warning')
 
         (
           # On ne met pas tout de suite l'opération pour éviter les erreurs
           ''.in_hidden(name:'operation', id:'operation') +
+          quiz.suffix_base.in_hidden(name: 'qdbr') +
+          # Un lien pour revenir au quiz sans enregistrer la question
+          'Retour au quiz'.in_a(onclick: 'QuizQuestion.back_to_quiz()', class: 'small').in_div(class: 'right') +
           tform.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_edit_question} #{lien_destroy_question} #{lien_init_question}"}) +
           tform.field_text('Question', 'question', nil, {class:'bold'}) +
           champs_reponses +
-          # TYPE (checkbox ou radio)
+
+          # TYPE (radio ou checkbox, alignement, type, masqué, etc.)
           tform.field_select("Type",      'type_f', question.type_f, {values: ::Quiz::Question::TYPES}) +
           tform.field_select("Choix",     'type_c', question.type_c, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (checkboxes)"]]}) +
           tform.field_select("Affichage", 'type_a', question.type_a, {values: [['v', "L'un en dessous de l'autre"], ['h', "En ligne"], ['m', "En menu"]]}) +
+          tform.field_checkbox('Ne pas afficher dans la liste de toutes les questions', 'masked', question.masked?) +
+          tform.field_description('Si cette case est cochée, la question n’apparaitra pas dans la liste de toutes questions (cela permet d’alléger cette liste pour choisir des questions.)') +
+
           # INDICATION
           tform.field_textarea("Indication", 'indication', nil) +
           tform.field_description("Cette indication sera écrite en petit sous la question et permettra à l'auteur de mieux comprendre cette question. Notez qu'il y a déjà une indication automatique lorsque ce sont des checkboxes au lieu des boutons-radio.") +

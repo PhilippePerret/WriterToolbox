@@ -14,12 +14,22 @@ class ::Quiz
   # quiz.
   #
   # C'est aussi cette méthode qui teste pour voir s'il faut enregistrer
-  # le formulaire.
+  # le formulaire (en fonction du param :operation).
   #
   # +dform+ {Hash} contenant les attributs du formulaire et
   # principalement :
   #   :action       l'action
-  def form dform
+  def form dform = nil
+
+    # Vérifications préliminaire
+    id != nil || raise('Il faut fournir l’identifiant du quiz à éditer.')
+    suffix_base != nil || raise('Il faut fournir le suffix-base du quiz.')
+    self.class.database_exist? || raise("La base de données #{database_fullname} est introuvable…")
+
+    dform           ||= Hash.new
+    dform[:action]  ||= "quiz/#{id}/edit"
+    dform[:id]      ||= 'edition_quiz'
+    dform[:class]   ||= 'dim2080'
 
     case param(:operation)
     when 'save_data_quiz'
@@ -32,12 +42,14 @@ class ::Quiz
 
     # Il faut ajouter les javascripts du dossier js et les css
     # du dossier css
-    page.add_javascript Dir["#{site.folder_module}/quiz/js/**/*.js"]
-    page.add_css Dir["#{site.folder_module}/quiz/css/**/*.css"]
+    page.add_javascript Dir["#{Quiz.folder_lib}/js/**/*.js"]
+    page.add_css Dir["#{Quiz.folder_lib}/css/**/*.css"]
 
-    dform[:id]    ||= 'edition_quiz'
-    dform[:class] ||= 'dim2080'
     tform.prefix= 'quiz'
+
+    debug "suffix_base : #{suffix_base.inspect}"
+    debug "ID quiz : #{id.inspect}"
+    debug "DATA QUIZ : #{get_all.pretty_inspect}"
 
     # Liste des groupes
     # TODO: Plus tard, les récupérer dans la table elle-même (table des
@@ -45,14 +57,28 @@ class ::Quiz
     liste_groupes = [['', 'Choisir parmi…'],['scenodico', 'Scénodico'], ['filmodico', "Filmodico"]]
     onclick = "$('input#quiz_groupe').val(this.value)"
     menu_groupes = liste_groupes.in_select(onchange: onclick)
-    bouton_new_question = 'Nouvelle question'.in_a(onclick: "$('form#edition_question_quiz').show();$('form#edition_quiz').hide()")
+    bouton_new_question = 'Nouvelle question'.in_a(onclick: 'QuizQuestion.new_question()')
 
     mess_id = "ID du quiz : #{id}".in_span(id: 'quizid', class: 'fright')
+
+    # Les Ids de questions (après l'enregistrement, elles sont transformées
+    # en String)
+    case questions_ids
+    when Array
+      # OK
+    when String then
+      @questions_ids = questions_ids.split(' ')
+    else
+      raise('Les questions_ids ont un format invalide ' + "(#{questions_ids.class})")
+    end
+
     (
       # Identifiant, qui doit être défini à l'instanciation
       # du quiz
       (id || '').in_hidden(name:'quiz[id]', id: 'quiz_id') +
       'save_data_quiz'.in_hidden(name: 'operation') +
+      suffix_base.in_hidden(name: 'qdbr') +
+      line_identifiant_et_bouton +
       tform.field_text('Titre', 'titre', titre) +
       tform.field_text('Groupe', 'groupe', groupe, {class: 'medium', text_after: menu_groupes}) +
       tform.field_description("Une base pouvant contenir des questionnaires de type varié (par exemple sur le scénodico ET sur le filmodico) on peut préciser par ce groupe les groupes possibles.") +
@@ -71,6 +97,15 @@ class ::Quiz
     ).in_form(dform) +
     Quiz::Question.formulaire_edition_question(self, dform)
 
+  end
+
+  # Code HTML de la ligne de formulaire contenant l'identifiant
+  # du formulaire et les boutons d'édition
+  def line_identifiant_et_bouton
+    # Bouton pour afficher le questionnaire
+    btn_show = 'Aperçu'.in_a(class: 'btn small', href: "quiz/#{id}/show?qdbr=#{suffix_base}", target: :new)
+    btn_init = 'Init new'.in_a(onclick: "QuizQuestion.init_new()")
+    tform.field_raw('', '', nil, {field: "#{btn_show}"})
   end
 
   # Retourne le div qui contient les questions du questionnaire, avec des
