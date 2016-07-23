@@ -106,7 +106,7 @@ class Quiz
     #
     def div_raison
       raison != nil && evaluation? || ( return '' )
-      raison.formate_balises_propres.in_div(class: 'raison')
+      (raison.formate_balises_propres.deserb).in_div(class: 'raison')
     end
 
     # ---------------------------------------------------------------------
