@@ -7,11 +7,25 @@
 class Quiz
   class Question
 
+    def evaluation?; @do_evaluation ||= quiz.evaluation? end
+    def exergue_reponses_manquantes?
+      @do_exergue_reponses_manquantes || quiz.exergue_reponses_manquantes?
+    end
+
     # Code HTML d'affichage de la question
     # Retourne le DIV contenant la question
     #
     # Son style peut varier si c'est une affichage de résultat
     #
+    # Rappels :
+    #   evaluation?
+    #     est mis à true s'il faut faire l'évaluation des résultat
+    #     donné (quand ils ont été donnés). Lorsqu'il manque
+    #     des réponses, par exemple, il ne faut pas faire l'évaluation
+    #     mais seulement indiquer les réponses manquantes.
+    #   exergue_reponses_manquantes?
+    #       Mis à true quand on doit simplement indiquer les réponses
+    #       manquante.
     def output
       c = String.new
       c << question.in_div(class: 'q', id: "q-#{id}")
@@ -26,8 +40,17 @@ class Quiz
     # qui ont peut-être été données
     #
     def class_output
-      ureponse != nil || ( return '' )
-      ureponse[:is_good] ? 'good' : 'bad'
+      if ureponse == nil
+        # Pas de réponse donnée à cette question. Ça peut correspondre à
+        # un simple affichage du questionnaire ou une réponse oubliée
+        if exergue_reponses_manquantes?
+          'bad'
+        else
+          ''
+        end
+      elsif evaluation?
+        ureponse[:is_good] ? 'good' : 'bad'
+      end
     end
 
     # Code HTML de la liste des réponses
@@ -40,26 +63,27 @@ class Quiz
 
         hreponse.merge!(index: ireponse, type: type_c, uselection: uselection)
 
-        # Si c'est une correction (ureponse != nil), il faut indiquer si
-        # la réponse courante est une bonne réponse ou une mauvaise
-        # réponse.
-        # is_good peut avoir trois valeurs :
-        #   true      C'est la bonne valeur à mettre en exergue
-        #   false     C'est la mauvaise valeur choisie par l'user
-        #   nil       C'est une autre valeur mauvaise
-        if ureponse
-          best_reps = ureponse[:best_reps] || [ureponse[:good_rep]]
-          is_good =
-            if best_reps.include?(ireponse)
-              true
-            elsif uselection
-              false
-            else
-              nil
-            end
-          hreponse.merge!(is_good: is_good)
+        if evaluation?
+          # Si c'est une correction (ureponse != nil), il faut indiquer si
+          # la réponse courante est une bonne réponse ou une mauvaise
+          # réponse.
+          # is_good peut avoir trois valeurs :
+          #   true      C'est la bonne valeur à mettre en exergue
+          #   false     C'est la mauvaise valeur choisie par l'user
+          #   nil       C'est une autre valeur mauvaise
+          if ureponse
+            best_reps = ureponse[:best_reps] || [ureponse[:good_rep]]
+            is_good =
+              if best_reps.include?(ireponse)
+                true
+              elsif uselection
+                false
+              else
+                nil
+              end
+            hreponse.merge!(is_good: is_good)
+          end
         end
-
         # On construit le LI de la réponse et on l'ajoute à la quesiton
         ul << Reponse.new(self, hreponse).output
       end
@@ -72,7 +96,7 @@ class Quiz
     # correction et que la réponse est mauvaise.
     #
     def div_raison
-      raison != nil || ( return '' )
+      raison != nil && evaluation? || ( return '' )
       raison.formate_balises_propres.in_div(class: 'raison')
     end
 

@@ -72,8 +72,7 @@ if user.manitou?
       # Constition des options
       @options = "#{bit_courant}#{bit_random}#{bits_maxq}"
       h.merge!(options: @options)
-      # Pour que ce soit clair qu'il faut le retourner
-      return h
+      return h # pour la clarté
     end
 
   end

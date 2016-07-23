@@ -10,11 +10,11 @@ class Quiz
   # quiz
   def build
     options = Hash.new # pour le moment (voir si nécessaire)
-    # Affichage du questionnaire pour remplissage
 
+    # Affichage du questionnaire pour remplissage
     # Le code complet retourné
-    "<h2 class='titre'>#{titre}</h2>" +
     (
+      "<h2 class='titre'>#{titre}</h2>" +
       resultat        + # seulement après soumission
       div_description +
       html_form

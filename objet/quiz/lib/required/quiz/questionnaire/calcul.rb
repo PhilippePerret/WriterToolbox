@@ -12,10 +12,27 @@ class Quiz
     elsif pas_toutes_les_reponses?
       @error = :nombre_reponses_insuffisant
       @report = 'Il faut répondre à toutes les questions, pour obtenir une évaluation intéressante.'
+      @do_evaluation                  = false
+      @do_exergue_reponses_manquantes = true
     else
       # On calcule le rapport
+      @do_evaluation = true
       report
     end
+  end
+
+  # Pour savoir s'il faut faire une évaluation ou simplement
+  # remettre les réponses qui avaient été données.
+  # Cela est nécessaire par exemple lorsque l'user en donne pas
+  # toutes les réponses.
+  def evaluation?
+    @do_evaluation = false if @do_evaluation === nil
+    @do_evaluation
+  end
+
+  def exergue_reponses_manquantes?
+    @do_exergue_reponses_manquantes = false if @do_exergue_reponses_manquantes === nil
+    @do_exergue_reponses_manquantes
   end
 
   # Retourne TRUE si toutes les réponses n'ont pas été
@@ -76,14 +93,13 @@ class Quiz
   def ureponses
     @ureponses ||= begin
       if param(prefix_reponse).nil?
-        ureps = nil
+        nil
       else
         # On récupère les réponses de l'user
         ureps = get_indexes_reponses
         # On met dans le hash les valeurs de chaque réponse
-        ureps = calcule_points(ureps)
+        calcule_points(ureps)
       end
-      ureps
     end
   end
 

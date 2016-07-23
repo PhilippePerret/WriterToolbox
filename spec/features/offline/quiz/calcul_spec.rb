@@ -53,7 +53,16 @@ feature "Vérification des calculs du quiz" do
   end
 
   scenario 'Quand l’utilisateur ne soumet pas toutes les réponses' do
-    pending "à implémenter"
+    visite_route 'quiz/1/show?qdbr=biblio'
+    expect(page).to have_css('h1', text: 'Quizzzz !')
+    within('form#form_quiz') do
+      # On sélectionne une première réponse
+      choose('Il faut répondre à toutes les questions, pour obtenir une évaluation intéressante.')
+      click_button 'Soumettre le quiz'
+    end
+
+    # === Test ===
+    expect(page).to have_content('Voyons ! Il faut remplir le quiz, pour obtenir une évaluation !')
   end
 
   scenario 'Quand l’user soumet toutes les réponses' do
