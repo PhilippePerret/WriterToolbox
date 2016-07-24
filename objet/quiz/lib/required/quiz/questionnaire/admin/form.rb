@@ -50,9 +50,9 @@ class ::Quiz
 
     tform.prefix= 'quiz'
 
-    debug "suffix_base : #{suffix_base.inspect}"
-    debug "ID quiz : #{id.inspect}"
-    debug "DATA QUIZ : #{get_all.pretty_inspect}"
+    # debug "suffix_base : #{suffix_base.inspect}"
+    # debug "ID quiz : #{id.inspect}"
+    # debug "DATA QUIZ : #{get_all.pretty_inspect}"
 
     # Liste des groupes
     # TODO: Plus tard, les récupérer dans la table elle-même (table des
@@ -105,7 +105,7 @@ class ::Quiz
       cb_quiz_courant +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random', random?) +
       tform.field_text('', 'max_questions', nombre_max_questions, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
-      tform.field_text('Questions', 'questions_ids', questions_ids.join(' ')) +
+      tform.field_text("Questions (#{questions_ids.count})", 'questions_ids', questions_ids.join(' ')) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
       tform.field_description('Liste des IDs de questions, séparés par des espaces. Noter que s’il y a un nombre maximum de questions définies et que l’ordre est aléatoire, on peut ne pas préciser l’ordre. S’il est défini, on prendra les X questions dans cette liste.') +
       ul_questions +
