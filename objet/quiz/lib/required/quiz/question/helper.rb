@@ -56,7 +56,7 @@ class Quiz
     # Code HTML de la liste des réponses
     def ul_reponses
       class_css = ['r', type_a]
-      ul = ''
+      lireponses = Array.new
       hreponses.each_with_index do |hreponse, irep|
 
         # Cette réponse est-elle sélectionnée par l'user ?
@@ -93,9 +93,11 @@ class Quiz
           end
         end
         # On construit le LI de la réponse et on l'ajoute à la quesiton
-        ul << Reponse.new(self, hreponse).output
+        lireponses << Reponse.new(self, hreponse).output
       end
-      ul.in_ul(class: class_css.join(' '))
+      # On mélange les réponses
+      lireponses = lireponses.shuffle.shuffle
+      lireponses.join('').in_ul(class: class_css.join(' '))
     end
 
     # Retourne le code HTML de la raison
