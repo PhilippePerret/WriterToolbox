@@ -89,6 +89,9 @@ module CommonSyncMethods
   # Peut être surclassé par les méthodes de la
   # classe chargeant le module.
   attr_reader :table_name
+  # Peut-être surclassé par les méthodes de la
+  # classe chargeant le module
+  attr_reader :db_suffix
 
   # Définit le nom de la table de la base de données mais
   # surtout reset tout pour pouvoir rafraichir toutes les

@@ -1,6 +1,24 @@
 # encoding: UTF-8
 class Sync
 
+  # Liste des modules de synchronisation
+  # 
+  MODULES2SYNC = [
+    ['les fichiers du site',          'site_files'],
+    ['les actualisations',            'updates'],
+    ['les tâches',                    'taches'],
+    ['les tweets permanents',         'tweets'],
+    ['les citations',                 'citations'],
+    ['la Collection Narration',       'narration'],
+    ['le programme UN AN UN SCRIPT',  'uaus'],
+    ['les analyses de films',         'analyses'],
+    ['Tous les Quiz',                 'quizes'],
+    ['le Scénodico',                  'scenodico'],
+    ['le Filmodico (+ affiches)',     'filmodico'],
+    ['le forum (inutile, normalement) (À IMPLÉMENTER)', 'forum']
+  ]
+
+
   # {Array} Pour le rapport
   # @usage : sync.report << "message"
   attr_reader :report
@@ -19,11 +37,12 @@ class Sync
 
   # = main =
   #
-  # Nouvelle méthode principale
+  # Méthode principale appelant tous les modules de
+  # synchronisation.
   #
   def synchroniser
 
-    # Synchronisation du site
+    # Synchronisation du site (tous les fichiers)
     synchronize_site_files if param('sync_site_files') == 'on'
     # Synchronisation des tâches
     synchronize_taches    if param('sync_taches') == 'on'
@@ -33,6 +52,8 @@ class Sync
     synchronize_narration if param('sync_narration') == 'on'
     # Synchronisation du programme UN AN UN SCRIPT
     synchronize_uaus      if param('sync_uaus') == 'on'
+    # Synchronisation des quiz
+    synchronize_quizes    if param('sync_quizes') == 'on'
     # Synchronise le FIlmodico
     synchronize_filmodico if param('sync_filmodico') == 'on'
     # Synchronise le SCÉNODICO

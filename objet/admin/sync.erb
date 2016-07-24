@@ -29,19 +29,7 @@ end
   </div>
   <%= 'synchroniser'.in_hidden(name:'operation') %>
   <%=
-  [
-    ['les fichiers du site',          'site_files'],
-    ['les actualisations',            'updates'],
-    ['les tâches',                    'taches'],
-    ['les tweets permanents',         'tweets'],
-    ['les citations',                 'citations'],
-    ['la Collection Narration',       'narration'],
-    ['le programme UN AN UN SCRIPT',  'uaus'],
-    ['les analyses de films',         'analyses'],
-    ['le Scénodico',                  'scenodico'],
-    ['le Filmodico (+ affiches)',     'filmodico'],
-    ['le forum (inutile, normalement) (À IMPLÉMENTER)', 'forum']
-  ].collect do |choses, key|
+  Sync::MODULES2SYNC.collect do |choses, key|
     is_checked = param("sync_#{key}".to_sym) == 'on'
     "Synchroniser #{choses}".in_checkbox(name: "sync_#{key}", class: 'cbsync', checked: is_checked).in_div
   end.join('').in_div(id: 'liste_synchros')
