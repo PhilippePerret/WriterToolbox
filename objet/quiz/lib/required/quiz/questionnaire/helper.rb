@@ -40,7 +40,7 @@ class Quiz
   # Code HTML pour la description du quiz, si elle existe
   def div_description
     return '' if description.nil?
-    description.in_div(class: 'quiz_description')
+    (description.deserb.formate_balises_propres).in_div(class: 'quiz_description')
   end
 
   # Retourne la liste des questions mises en bon format
