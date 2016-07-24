@@ -1,6 +1,12 @@
 <%
 # Vue permettant de créer un nouveau Quiz
 %>
+
+<%
+# Accès réservé à un administrateur
+raise_unless_admin
+%>
+
 <%= Quiz.titre_h1('Nouveau quiz') %>
 <p class="italic">
   Choisir la base dans laquelle créer le nouveau questionnaire.

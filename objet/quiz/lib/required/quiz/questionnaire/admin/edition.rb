@@ -22,7 +22,7 @@ if user.manitou?
         flash "Quiz ##{id} actualisé avec succès."
       else
         @id = table_quiz.insert(data2save.merge(created_at: NOW))
-        flash "Quiz #{id} créé avec succès."
+        flash "Quiz ##{id} créé avec succès."
       end
       # Si le quiz doit être mis en QUIZ COURANT, il faut modifier les
       # options du quiz courant actuel s'il existe.

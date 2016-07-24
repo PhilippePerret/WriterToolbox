@@ -19,17 +19,14 @@ class ::Quiz
   # +dform+ {Hash} contenant les attributs du formulaire et
   # principalement :
   #   :action       l'action
-  def form dform = nil
+  def form
 
     # Vérifications préliminaire
     suffix_base != nil || raise('Il faut fournir le suffix-base du quiz.')
     self.class.database_exist? || raise("La base de données #{database_fullname} est introuvable…")
 
-    dform           ||= Hash.new
-    dform[:action]  ||= "quiz/#{id}/edit"
-    dform[:id]      ||= 'edition_quiz'
-    dform[:class]   ||= 'dim2080'
-
+    # Actions à accomplir, par exemple la sauvegarde
+    # du questionnaire ou d'une question
     case param(:operation)
     when 'save_data_quiz'
       # Enregistrement des données du questionnaire
@@ -38,6 +35,13 @@ class ::Quiz
       # Enregistrement des données de la question éditée
       Question.save_data_question(self)
     end
+
+    # Attributs pour le formulaire
+    dform = {
+      action: "quiz/#{id}/edit",
+      id:     'edition_quiz',
+      class:  'dim2080'
+    }
 
     # Il faut ajouter les javascripts du dossier js et les css
     # du dossier css
