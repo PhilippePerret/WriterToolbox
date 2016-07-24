@@ -37,16 +37,14 @@ class ::Quiz
             colonnes: []
           }
           quiz_courants = table_quiz.select(drequest)
-          debug "quiz_courants : #{quiz_courants.inspect}"
           if quiz_courants.empty?
             @error = 'Pas de quiz courant dans cette base de données.'
             nil
           else
             qid_current = quiz_courants.first[:id]
             debug "qid_current = #{qid_current}"
-            q = new(qid_current)
-            q.suffix_base= suffix_base
-            q
+            @suffix_base = suffix_base
+            new(qid_current)
           end
         end
       end
@@ -80,14 +78,7 @@ class ::Quiz
     #             recherche.
     def get_quiz_courant options = nil
       options ||= {}
-      
-      # On va commencer par chercher les bases de données
-      # qui sont des quiz.
-      suffixes_quiz = Array.new
-      SiteHtml::DBM_TABLE.databases.each do |dbname|
-        dbname.start_with?("#{SiteHtml::DBBASE_PREFIX}quiz_") || next
-        suffixes_quiz << dbname.sub(/#{Regexp.escape SiteHtml::DBBASE_PREFIX}quiz_/o, '')
-      end
+
 
       # On regarde dans ces bases s'il y a un quiz courant. Si c'est le
       # cas, on le prend.
@@ -100,7 +91,7 @@ class ::Quiz
         order: 'created_at DESC',
         colonnes: []
       }
-      suffixes_quiz.each do |sufbase|
+      all_suffixes_quiz.each do |sufbase|
         dquiz = site.dbm_table("quiz_#{sufbase}", 'quiz').select(drequest).first
         dquiz != nil || next
         quiz_courant = ::Quiz.new(dquiz[:id])

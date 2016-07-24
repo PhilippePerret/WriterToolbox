@@ -310,8 +310,12 @@ class SiteHtml
     # il doit être impérativement défini dans le dossier
     # 'lib/required' de l'objet pour pouvoir être chargé
     # avant l'appel de cette méthode.
+    #
+    # On n'appelle pas cette méthode si la méthode de l'url
+    # est 'new'
     def method_call
       # debug "-> Route::method_call"
+      return if method_sym == :new
       sujet.send(method_sym) if method_sym != nil && sujet.respond_to?(method_sym)
     end
 

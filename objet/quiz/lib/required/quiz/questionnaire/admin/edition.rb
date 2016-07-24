@@ -33,7 +33,7 @@ if user.manitou?
         if dcurrent.nil?
           # Rien a à faire, il n'y a pas de quiz courant
         else
-          # Il ne faut plus que ce quiz soit courant
+          # Le quiz courant ne doit plus l'être
           opts = dcurrent.options
           opts[0] = '0'
           dcurrent.set(options: opts)
@@ -63,16 +63,30 @@ if user.manitou?
     # h qui contient les données qui seront enregistrées dans la
     # table quiz
     def assemble_options_in h
-      @must_be_quiz_courant = h.delete(:quiz_courant) == 'on'
-      bit_courant = @must_be_quiz_courant ? '1' : '0'
+      h = traite_current h
       bit_random  = h.delete(:random) == 'on' ? '1' : '0'
       # Le nombre maximum de questions par formulaire, sur 3 chiffres
       bits_maxq  = (h.delete(:max_questions).nil_if_empty || '0').rjust(3,'-')
 
       # Constition des options
-      @options = "#{bit_courant}#{bit_random}#{bits_maxq}"
+      @options = "#{@bit_courant}#{bit_random}#{bits_maxq}"
       h.merge!(options: @options)
       return h # pour la clarté
+    end
+
+    def traite_current h
+      @bit_courant = h.delete(:quiz_courant) == 'on' ? '1' : '0'
+      if exist?
+        # Le quiz courant doit être modifié, mais seulement
+        # si ce quiz édité n'est pas le quiz courant
+        @must_be_quiz_courant = ! current?
+      else
+        # Si ce quiz n'existe pas encore (création) alors
+        # il faut obligatoirement modifier le quiz courant
+        # si ce nouveau quiz doit être mis en courant
+        @must_be_quiz_courant = @bit_courant == '1'
+      end
+      return h
     end
 
   end

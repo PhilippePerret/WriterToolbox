@@ -22,7 +22,6 @@ class ::Quiz
   def form dform = nil
 
     # Vérifications préliminaire
-    id != nil || raise('Il faut fournir l’identifiant du quiz à éditer.')
     suffix_base != nil || raise('Il faut fournir le suffix-base du quiz.')
     self.class.database_exist? || raise("La base de données #{database_fullname} est introuvable…")
 
@@ -54,7 +53,11 @@ class ::Quiz
     # Liste des groupes
     # TODO: Plus tard, les récupérer dans la table elle-même (table des
     # quiz)
-    liste_groupes = [['', 'Choisir parmi…'],['scenodico', 'Scénodico'], ['filmodico', "Filmodico"]]
+    liste_groupes = [
+      ['', 'Choisir parmi…'],
+      ['scenodico', 'Scénodico'],
+      ['filmodico', "Filmodico"]
+    ]
     onclick = "$('input#quiz_groupe').val(this.value)"
     menu_groupes = liste_groupes.in_select(onchange: onclick)
     bouton_new_question = 'Nouvelle question'.in_a(onclick: 'QuizQuestion.new_question()')
@@ -72,6 +75,18 @@ class ::Quiz
       raise('Les questions_ids ont un format invalide ' + "(#{questions_ids.class})")
     end
 
+    # La case à cocher pour mettre en quiz courant, ou le texte
+    # indiquant qu'il est en quiz courant
+    cb_quiz_courant =
+      if current?
+        messcurrent = 'Ce quiz est le quiz courant. La seule façon de le changer est de mettre un autre quiz en quiz courant (car il faut qu’il y ait toujours un quiz courant).'.in_p(class: 'tiny')
+        hiddencurrent = 'on'.in_hidden(name:'quiz[quiz_courant]')
+        tform.field_raw('', '', nil, {field: messcurrent + hiddencurrent})
+      else
+        tform.field_checkbox('Mettre en quiz courant', 'quiz_courant') +
+        tform.field_description('Si cette case est cochée, le quiz sera mis en quiz courant et remplacera le quiz courant s’il existe.')
+      end
+
     (
       # Identifiant, qui doit être défini à l'instanciation
       # du quiz
@@ -83,10 +98,9 @@ class ::Quiz
       tform.field_text('Groupe', 'groupe', groupe, {class: 'medium', text_after: menu_groupes}) +
       tform.field_description("Une base pouvant contenir des questionnaires de type varié (par exemple sur le scénodico ET sur le filmodico) on peut préciser par ce groupe les groupes possibles.") +
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
-      tform.field_checkbox('Mettre en quiz courant', 'quiz_courant') +
-      tform.field_description('Si cette case est cochée, le quiz sera mis en quiz courant et remplacera le quiz courant s’il existe.') +
-      tform.field_checkbox('Ordre aléatoire pour les questions', 'random') +
-      tform.field_text('', 'max_questions', nil, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
+      cb_quiz_courant +
+      tform.field_checkbox('Ordre aléatoire pour les questions', 'random', random?) +
+      tform.field_text('', 'max_questions', nombre_max_questions, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
       tform.field_text('Questions', 'questions_ids', questions_ids.join(' ')) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
       tform.field_description('Liste des IDs de questions, séparés par des espaces. Noter que s’il y a un nombre maximum de questions définies et que l’ordre est aléatoire, on peut ne pas préciser l’ordre. S’il est défini, on prendra les X questions dans cette liste.') +

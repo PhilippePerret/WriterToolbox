@@ -9,8 +9,17 @@ class Quiz
   # Valeurs des bits d'options
   OPTIONS = {
     0 => {hname: 'courant', description: '1: quiz courant, 0: pas courant'},
-    1 => {hname: 'aléatoire', description: '1: questions dans un ordre aléatoire, 0: questions dans ordre prédéfini'}
+    1 => {hname: 'aléatoire', description: '1: questions dans un ordre aléatoire, 0: questions dans ordre prédéfini'},
+    2 => {hname: 'Centaine du nombre max de questions ou -', description: nil},
+    3 => {hname: 'Dizaine du nombre max de questions ou -', description: nil},
+    4 => {hname: 'Unité du nombre max de questions ou 0', description: nil}
   }
+
+  # Les options par défaut. Obligatoire pour gérer l'édition
+  # correcte d'un nouveau quiz.
+  def default_options
+    @default_options ||= "00--0"
+  end
 
   # 1er bit des options
   def current?
@@ -18,9 +27,10 @@ class Quiz
   end
 
   # 2e bit des optionis
-  def aleatoire?
+  def random?
     options[1].to_i == 1
   end
+  alias :aleatoire? :random?
 
   # Bits 3 à 5 des options ('-' mis pour '0')
   #

@@ -1,0 +1,12 @@
+<%
+# Vue permettant de créer un nouveau Quiz
+%>
+<%= Quiz.titre_h1('Nouveau quiz') %>
+<p class="italic">
+  Choisir la base dans laquelle créer le nouveau questionnaire.
+</p>
+<p class=''>
+  <% Quiz.all_suffixes_quiz.collect do |sufbase| %>
+    <%= "Nouveau quiz dans la base “#{sufbase.capitalize}”".in_a(href: "quiz/edit?qdbr=#{sufbase}").in_p %>
+  <% end.join('') %>
+</p>
