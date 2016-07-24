@@ -31,7 +31,7 @@ class Scenodico
 
     # Retourne la route qui conduit au dernier quiz sur le
     # scénodico
-    def route_last_quiz for = 'show'
+    def route_last_quiz to = 'show'
       drequest = {
         where: "groupe = 'scenodico'",
         order: 'created_at DESC',
@@ -39,7 +39,7 @@ class Scenodico
         colonnes: []
       }
       id_last = site.dbm_table('quiz_biblio', 'quiz').select(drequest).first[:id]
-      "quiz/#{id_last}/edit?qdbr=biblio"
+      "quiz/#{id_last}/#{to}?qdbr=biblio"
     end
 
   end #/<<self

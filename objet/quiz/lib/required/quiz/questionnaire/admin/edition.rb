@@ -26,17 +26,17 @@ if user.manitou?
       end
       # Si le quiz doit être mis en QUIZ COURANT, il faut modifier les
       # options du quiz courant actuel s'il existe.
-      # Noter qu'il faut écarter le quiz courant, qui vient être mis
+      # Noter qu'il faut écarter le quiz courant, qui vient d'être mis
       # en courant.
       if @must_be_quiz_courant
-        dcurrent = table_quiz.get(where: "options LIKE '1%' AND id != #{id}")
+        dcurrent = self.class.get_quiz_courant(but: id)
         if dcurrent.nil?
           # Rien a à faire, il n'y a pas de quiz courant
         else
           # Il ne faut plus que ce quiz soit courant
-          opts = dcurrent[:options]
+          opts = dcurrent.options
           opts[0] = '0'
-          table_quiz.update(dcurrent[:id], { options: opts })
+          dcurrent.set(options: opts)
           debug "Quiz courant précédent (#{dcurrent[:id]}) décourantisé."
         end
       end

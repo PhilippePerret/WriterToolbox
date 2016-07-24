@@ -23,7 +23,9 @@ class ::Quiz
           # On essaie d'obtenir ce suffixe en checkant toutes les
           # bases de données. Si on le trouve, on retourne l'instance
           # Quiz du questionnaire.
-          cherche_quiz_courant
+          # L'erreur sera mise à nil si un quiz est trouvé.
+          @error = 'Suffixe de base non fourni'
+          get_quiz_courant
         elsif !database_exist?
           @error = 'Base de données inexistante avec le suffixe fourni'
           nil
@@ -72,8 +74,13 @@ class ::Quiz
     # Méthode qui cherche le quiz courant
     # Elle retourne soit l'instance du Quiz trouvé, soit nil.
     # (il est impératif de trouver un de ces deux valeurs seulement)
-    def cherche_quiz_courant
-
+    #
+    # +options+
+    #   :but      Si précisé, c'est l'ID qu'il faut écarter de la
+    #             recherche.
+    def get_quiz_courant options = nil
+      options ||= {}
+      
       # On va commencer par chercher les bases de données
       # qui sont des quiz.
       suffixes_quiz = Array.new
@@ -85,8 +92,10 @@ class ::Quiz
       # On regarde dans ces bases s'il y a un quiz courant. Si c'est le
       # cas, on le prend.
       quiz_courant = nil
+      where = "SUBSTRING(options,1,1) = '1'"
+      where += " AND id != #{options[:but]}" if options[:but]
       drequest = {
-        where: "SUBSTRING(options,1,1) = '1'",
+        where: where,
         limit: 1,
         order: 'created_at DESC',
         colonnes: []
@@ -101,9 +110,9 @@ class ::Quiz
 
       # S'il n'y a aucun quiz courant, on signale l'erreur
       if quiz_courant.nil?
-        @error = 'Suffixe de base non fourni'
         nil
       else
+        @error = nil
         quiz_courant
       end
     end

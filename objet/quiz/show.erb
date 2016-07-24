@@ -2,4 +2,5 @@
 # Affichage du quiz
 %>
 <h1>Quizzzz !</h1>
+<% if user.manitou? %><%= quiz.liens_admin %><% end %>
 <%= quiz.output %>
