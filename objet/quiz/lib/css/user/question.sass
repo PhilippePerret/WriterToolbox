@@ -11,16 +11,6 @@ div.quiz
       font-size     : 15.2pt
       padding       : 1em !important
       margin-bottom : 4px
-      // Le div contenant la raison de la bonne réponse
-      div.raison
-        background-color  : #CFC !important
-        border            : 1px solid green
-        font-size         : 0.85em
-        padding           : 1em
-        margin-top        : 0.5em
-        a
-          // color             : blue !important
-          background-color  : #DDFFDD !important
       // Une question à réponse correcte
       &.good
         background-color  : #DDFFDD !important
@@ -28,13 +18,13 @@ div.quiz
           background-color  : #DDFFDD !important
       // Une question à problème ou sans réponse
       &.bad
-        border-width      : 1px !important
+        border-width      : 1px
         color             : black
-        background-color  : #ff8181 !important
+        background-color  : #ff8181  !important
         *
-          background-color  : #ff8181 !important
+          background-color  : #ff8181
         div.q
-          border-bottom-color : white !important
+          border-bottom-color : white
 
       // La question
       div.q
@@ -65,9 +55,14 @@ div.quiz
           // (pour les checkbox)
           &.goodbad
             background-color  : #68BE68 !important
-            border            : 2px solid red !important
+            border            : 2px solid #00FF00
             *
               background-color  : #68BE68 !important
+            // Pour une bonne réponse oubliée, on entoure
+            // le checkbox if any
+            input[type="checkbox"]
+              box-shadow    : 4px 4px #ff0000
+            
           // Une mauvaise réponse
           &.bad
             background-color  : #F55 !important

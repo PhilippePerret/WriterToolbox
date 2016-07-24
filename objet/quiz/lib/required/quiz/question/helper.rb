@@ -49,7 +49,7 @@ class Quiz
           ''
         end
       elsif evaluation?
-        ureponse[:is_good] ? 'good' : 'bad'
+        ureponse[:is_correct] ? 'good' : 'bad'
       end
     end
 
@@ -73,24 +73,23 @@ class Quiz
           # is_correct peut avoir trois valeurs :
           #   true      C'est la bonne valeur à mettre en exergue
           #   false     C'est la mauvaise valeur choisie par l'user
-          #   nil       C'est une autre valeur mauvaise
+          #   nil       C'est une mauvaise valeur quelconque, non
+          #             choisie par l'user.
           if ureponse
-            is_good_reponse = ureponse[:better_reps].include?(irep)
-            is_correct =
-              if is_good_reponse
-                # C'est une bonne réponse, choisie ou non par
-                # l'user
-                true
-              elsif is_selection_user
-                # C'est une mauvaise réponse, mais c'est celle
-                # choisie par l'user
-                false
-              else
-                # C'est une mauvaise réponse, mais elle n'est pas
-                # choisie par l'user
-                nil
+            is_good_reponse =
+              case ureponse[:type]
+              when :checkbox  then ureponse[:better_reps].include?(irep)
+              when :radio     then ureponse[:good_rep] == irep
               end
-            hreponse.merge!(is_correct: is_correct)
+            type_reponse =
+              if is_good_reponse
+                is_selection_user ? :good_selected : :good_notselected
+              elsif is_selection_user
+                :bad_selected
+              else
+                :bad_notselected
+              end
+            hreponse.merge!(type_reponse: type_reponse)
           end
         end
         # On construit le LI de la réponse et on l'ajoute à la quesiton
@@ -145,12 +144,11 @@ class Quiz
       # La classe en fonction du fait que c'est une bonne
       # réponse ou non (seulement quand c'est une correction)
       def class_reponse
-        case @data[:is_correct]
-        when NilClass   then nil
-        when FalseClass then 'bad'
-        when TrueClass  then
-          selection_user? ? 'good' : 'goodbad'
-        else raise ":is_good a une valeur inconnue… Glourps…"
+        case @data[:type_reponse]
+        when :good_selected     then 'good'
+        when :good_notselected  then 'goodbad'
+        when :bad_selected      then 'bad'
+        else nil
         end
       end
 

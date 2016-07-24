@@ -89,16 +89,18 @@ class Quiz
   # C'est un Hash qui contient en clé l'ID de la question et en valeur
   # un Hash contenant :
   #   :qid            ID de la question
+  #   :type           :radio ou :checkbox
   #   :rep_index      L'index de la réponse pour un radio
   #                   Les index des réponses pour un checkbox
   #   Seront définis plus tard :
-  #     :good_value   Index de la bonne valeur si une seule
-  #     :best_value   Index de la meilleure valeur si plusieurs
+  #     :better_reps  Index de valeurs positives
+  #     :best_rep     Index de la meilleure valeur si plusieurs
   #                   Ou liste des index si plusieurs meilleures
-  #     :points       Nombre de points pour cette question
+  #     :points       Nombre total de points pour cette question
   #     :upoints      Nombre de points marqués par l'user pour cette
   #                   question
-  #     :is_correct
+  #     :is_correct   Est mis à true si l'utilisateur a choisi la bonne
+  #                   réponse.
   #
   def ureponses
     @ureponses ||= begin
@@ -107,7 +109,8 @@ class Quiz
       else
         # On récupère les réponses de l'user
         ureps = get_indexes_reponses
-        # On met dans le hash les valeurs de chaque réponse
+        # On renseigne le hash des valeurs de chaque réponse
+        # comparées aussi aux réponses de l'utilisateur
         calcule_points(ureps)
       end
     end
@@ -132,7 +135,16 @@ class Quiz
   def calcule_points ureps
     ureps.each do |qid, urep|
       question = hquestions[qid]
+
+      # Réponse(s) de l'utilisateur
+      # Si c'est un checkbox, c'est une liste des indexes
+      # choisis, si c'est un radio, c'est seulement la valeur
+      # de l'index de la réponse choisie (qui est forcément définie)
       index_reponse = urep[:rep_index]
+
+      is_checkbox = urep[:type] == :checkbox
+      is_radio    = urep[:type] == :radio
+
       # Le nombre de points marqués par l'user
       urep[:upoints] =
         case index_reponse
@@ -152,31 +164,58 @@ class Quiz
       # mais en mettant de côté la meilleure réponse d'entre
       # toutes.
       #
+      # Pour un checkbox, le nombre de points pour la question
+      # correspond à la somme de tous les points.
+      # Pour un radio, le nombre de points pour la question
+      # correspond au nombre de points maximaum
+      #
       urep[:better_reps]  = Array.new
-      urep[:best_rep]     = 0
       urep[:points]       = 0
       question.hreponses.each_with_index do |hrep, irep|
         pts = hrep[:pts].to_i
-        if pts > 0
-          urep[:better_reps]  << irep
+        # On ajoute l'index de réponse à la liste des
+        # meilleures réponses si le nombre de points est
+        # positif
+        urep[:better_reps] << irep if pts > 0
+
+        if is_checkbox
+          # Pour des checkbox, le nombre de points de la question
+          # correspond à la somme de toutes les valeurs (0 ou non)
           urep[:points] += pts
+        else
+          # Pour des boutons radio, dont plusieurs peuvent avoir une
+          # valeur positive (dégradé de valeur de réponse), on prend
+          # la valeur maximum.
+          #
+          # On met cette réponse en meilleure réponse si c'est
+          # elle qui a le plus de points et que c'est une
+          # question radio
+          # Attention : la valeur peut être surclassée par les
+          # réponses suivantes, donc ça n'est certainement pas
+          # ici qu'il faut voir si c'est la réponse correcte
+          # pour l'user.
+          if pts > urep[:points]
+            urep[:good_rep] = irep
+            urep[:points]   = pts
+          end
         end
-        urep[:best_rep]     = irep  if pts > urep[:best_rep]
       end
 
       # S'il n'y a qu'une seule bonne réponse, on la met
-      # dans :good_rep
-      if urep[:better_reps].count == 1
+      # dans :good_rep si on se trouve avec un bouton
+      # radio
+      if urep[:type] == :radio && urep[:better_reps].count == 1
         urep[:good_rep] = urep[:better_reps].first
       end
 
       # On peut déterminer si la réponse est bonne ou non
       # Elle est simplement bonne si le nombre de points est
       # équivalent au nombre de points pour la question.
-      # urep[:is_good] = urep[:points] == urep[:upoints]
+      urep[:is_correct] = urep[:points] == urep[:upoints]
 
-      debug "urep[:points] = #{urep[:points].inspect}"
-      # On remet le hash de la question corrigé
+
+      debug "urep = #{urep.inspect}"
+      # On remet le hash de la question entièrement renseignée
       ureps[qid] = urep
     end
     return ureps
@@ -193,6 +232,7 @@ class Quiz
     param(prefix_reponse).each do |kquestion, valeur|
       hrep = {
         qid:            nil,  # ID de la question
+        type:           nil,  # Le type, :radio ou :checkbox
         is_good:        nil,  # True si la réponse est correcte
         is_correct:     nil,  # true: bonne réponse, false: mauvaise réponse
                               # choisie par l'user, nil: mauvaise réponse
@@ -210,6 +250,7 @@ class Quiz
 
 
       if q_id.match(/_/) # => checkbox
+        hrep[:type] = :checkbox
         # Traitement d'un checkbox. Il peut déjà exister un
         # champ hrep
         q_id, index_reponse = q_id.split('_').collect{|e| e.to_i}
@@ -228,7 +269,8 @@ class Quiz
         hrep[:rep_index] << index_reponse.to_i
       else # => radio
         q_id = q_id.to_i
-        hrep[:rep_index] = valeur.to_i
+        hrep[:type]       = :radio
+        hrep[:rep_index]  = valeur.to_i
       end
 
       # On ajoute les valeurs calculées
