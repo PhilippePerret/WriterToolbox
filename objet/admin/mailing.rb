@@ -18,6 +18,22 @@ class Admin
 class Mailing
 class << self
 
+  def apercu_mail; @apercu_mail end
+  def apercu_mail= value; @apercu_mail = value end
+
+  def add_output str
+    flash "-> add_output"
+    @output ||= String.new
+    @output << str
+  end
+
+  # Sortie pour information
+  # Ça peut être le mail envoyé ainsi que la liste des
+  # destinataires
+  def output
+    (@output || '') + apercu_mail
+  end
+
   # Méthode principale pour soumettre le formulaire
   # Soit pour envoyer le message, soit pour enregistrer un
   # nouveau message type
@@ -62,13 +78,17 @@ end #/ << self
   # ---------------------------------------------------------------------
   #   Méthodes d'envoi
   # ---------------------------------------------------------------------
+
   def send
     @nombre_messages = 0
     # Si on est offline et qu'on ne doit pas forcer l'envoi,
     # on écrit à qui aurait été envoyé le message.
     liste_pseudos = Array.new
     destinataires.each do |umailing|
-      @auteur = umailing # pour le déserbage
+      @auteur = umailing # pour le déserbage, class {UserMailing}
+          # Noter que ça peut être aussi des icariens, eux aussi
+          # de classe {UserMailing}
+
       data_mail = {
         to:                 @auteur.mail,
         subject:            ERB.new(prepared_subject).result(bind),
@@ -77,18 +97,22 @@ end #/ << self
         formated: true
       }
       # debug "\n\n-- data_mail : #{data_mail.pretty_inspect}"
+      if self.class.apercu_mail.nil?
+        self.class.apercu_mail= ("Sujet: #{data_mail[:subject]}<br/>"+data_mail[:message]).in_fieldset(legend: "Aperçu du message")
+      end
       site.send_mail(data_mail)
       liste_pseudos << @auteur.pseudo
       @nombre_messages += 1
     end
     if OFFLINE && !force_offline?
+      flash "-> ici"
       liste_humaine =
         if liste_pseudos.empty?
           'personne'
         else
           liste_pseudos.pretty_join
         end
-      flash "Le mail aurait été envoyé à #{liste_humaine}."
+      self.class.add_output( "Le mail aurait été envoyé à #{liste_humaine}.".in_div)
     end
   rescue Exception => e
     debug e
@@ -130,24 +154,26 @@ end #/ << self
         # destinataires
         #
         # Clause where en fonction des users recherchés
-        where_clause =
+        wclause =
           case data[:sent_to]
           when 'all'
             # Tous les inscrits/abonnés (donc sauf les détruits)
-            "" # tout sauf détruit
+            nil # tout sauf détruit
           when 'abonned'
             # Les abonnés
-            "AND id IN ( #{user_ids_abonned.join(', ')} )"
+            "id IN (#{user_ids_abonned.join(', ')})"
           when 'admins'
             "CAST(SUBSTRING(options,1,1) AS UNSIGNED) & 1 > 0"
           when 'purinscrits'
-            "id NOT IN ( #{user_ids_abonned.join(', ')} )"
+            "id NOT IN (#{user_ids_abonned.join(', ')})"
           when 'analystes'
             "SUBSTRING(options,18,1) = '1'"
           else raise "Type des destinataires inconnus : #{data[:sent_to]}"
           end
           # Ajouter qu'il ne faut pas prendre les détruits
-          where_clause = "SUBSTRING(options,3,1) != '1' AND #{where_clause}"
+        where_clause = ["SUBSTRING(options,4,1) != '1'"]
+        where_clause << wclause unless wclause.nil?
+        where_clause = where_clause.join(' AND ')
 
         # Traiter tous les users qui répondent à la
         # requête.
@@ -155,15 +181,126 @@ end #/ << self
         # pas de vraies instances User qu'on fait (impossible avec
         # les users distants), c'est une classe d'utilisateur propre
         # au mailing (Admin::Mailing::UserMailing)
-        # 
-        tbl.select(where: where_clause).collect do |huser|
-          UserMailing.new(huser)
-        end
+        #
+        mails_out = Array.new
+        dests =
+          tbl.select(where: where_clause).collect do |huser|
+            mails_out << huser[:mail]
+            UserMailing.new(huser)
+          end
+
+        debug "Nombre de dests : #{dests.count}"
+
+        dests += instances_icariens(mails_out) if data[:to_icariens] == 'on'
+
+        # Tous les destinataires
+        dests
       else
+        # Sinon on retourne seulement le destinataire
         [destinataire]
       end
     end
   end
+
+  # Méthode retournant une liste d'instance {UserMailing} des
+  # icariens, si demandé par l'annonce
+  #
+  # Si le fichier sqlite distant existe, on l'utilise, sinon,
+  # c'est que Icare fonctionne maintenant avec MySQL et on récupère
+  # les données simplement avec Mysql2
+  #
+  def instances_icariens mails_out
+    require 'sqlite3'
+    dbpath = File.join('.', 'tmp', 'icariens.db')
+    File.unlink dbpath if File.exist? dbpath
+    dis_path = "www/storage/db/icariens.db"
+    cmd = "scp serveur_icare:#{dis_path} ./tmp/icariens.db"
+    `#{cmd}`
+    if File.exist? dbpath
+      # Options converties
+      bit_admin   = '0' # sera réglé plus bas
+      bit_forum   = '0' # grade forum
+      bit_mail    = '0' # mail confirmé (réglé plus bas)
+      bit_detruit = '0'
+      options_converties = "#{bit_admin}#{bit_forum}#{bit_mail}#{bit_detruit}"
+      options_converties = options_converties.ljust(32,'0')
+      options_converties[31] = '1' # icarien
+
+      # On crée toutes les instances UserMailing
+      #
+      # C'est ce collect qui est retourné
+      get_icariens_as_hash(mails_out).collect do |ic_id, ic_data|
+        # Les données utiles :
+        # attr_reader :id, :pseudo, :patronyme, :mail, :options, :created_at
+
+        # Le bit admin
+        options_converties[0] = ic_id == 0 ? '1' : '0'
+        options_converties[2] = ic_data[:confirmed] ? '1' : '0'
+        UserMailing.new(
+          id: ic_id,
+          pseudo: ic_data[:pseudo], patronyme: ic_data[:pseudo],
+          mail: ic_data[:mail], created_at: ic_data[:created_at],
+          options: options_converties
+        )
+      end
+    else
+      error "Le fichier icariens.db n'a pas pu être downloadé, impossible de récupérer les icariens… Le message ne leur sera pas envoyé."
+      []
+    end
+  end
+
+  # Retourne un hash des icariens avec en clé leur identifiant
+  # et en Hash leurs données
+  def get_icariens_as_hash( mails_out )
+    dbpath = File.join('.', 'tmp', 'icariens.db')
+    db = SQLite3::Database.new(dbpath)
+    icariens = Hash.new
+    db.execute('SELECT * FROM icariens;').each do |arr_ic|
+      id, mail, pseudo, sexe, mod_uid, icmodule_id, state, autres = arr_ic
+      icariens.merge!(
+      id.to_i => {
+        id: id.to_i,
+        mail: mail, pseudo: pseudo, sexe: sexe, state: state,
+        options: nil, confirmed: nil
+      }
+      )
+    end
+    db.execute('SELECT * FROM complete_data;').each do |arr_ic|
+      id, created_at, updated_at, naissance, pwd, cpwd, confirmed, options, autres = arr_ic
+      icariens[id.to_i].merge!(
+        options:    options,
+        confirmed:  confirmed == 1
+      )
+    end
+
+    # Les mails à retirer des envois, pour différentes raisons à commencer
+    # par le fait que l'adresse n'existe plus.
+    mails_out += [
+      'domideso@hotmail.fr', 'rocha_dilma@hotmail.com',
+      'mahidalila@aol.com'
+    ]
+
+    # On supprime les icariens qui ne veulent pas recevoir de
+    # messages. Ce sont les icariens qui ont le troisième bit
+    # d'option à 0 (donc le bit d'index 2)
+    icariens.keys.each do |icid|
+      dic = icariens[icid]
+      if dic[:confirmed] == false
+        exclu = icariens.delete(icid)
+        debug "EXCLU NON CONFIRMÉ : #{exclu[:pseudo]}"
+      elsif icariens[icid][:options][1] == '0'
+        # Il faut exclure de la liste
+        exclu = icariens.delete(icid)
+        debug "EXCLU : #{exclu[:pseudo]} (#{exclu[:mail]})"
+      elsif mails_out.include? icariens[icid][:mail]
+        exclu = icariens.delete(icid)
+        debug "MAIL EXCLU : #{exclu[:pseudo]} (#{exclu[:mail]})"
+      end
+    end
+
+    icariens
+  end
+
   def bind; binding() end
 
   # ---------------------------------------------------------------------
@@ -293,6 +430,9 @@ end #/ << self
   #   possible qu'on soit en local et qu'on travaille avec des
   #   auteur du site distant (qui n'ont donc pas leurs données
   #   dans la base locale)
+  #
+  #   D'autre part, cette classe est aussi utilisée par les
+  #   icariens quand il faut aussi leur envoyer l'annonce.
   #
   # ---------------------------------------------------------------------
   class UserMailing

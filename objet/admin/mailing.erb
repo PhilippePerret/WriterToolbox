@@ -38,6 +38,19 @@ values_format = [
       ' (envoyer à tous)'.in_a(href: 'unan_admin/contact')
     end.in_p(class: 'bold')
 %>
+<%
+# ---------------------------------------------------------------------
+#   APERÇU
+%>
+<% unless Admin::Mailing.output.nil? %>
+  <%= ::Admin::Mailing.output %>
+  <hr>
+<% end %>
+
+<%
+# ---------------------------------------------------------------------
+#   FORMULAIRE D'ENVOI
+%>
 <form id="mailing_form" class="dim2080" action="admin/mailing" method="POST">
   <%= 'soumettre_contact_form'.in_hidden(name: 'operation') %>
   <% if param(:uid) %>
@@ -66,6 +79,11 @@ values_format = [
         ]
         form.field_select('Destinataires', 'sent_to', nil, {values: destinataires_types})
       %>
+    <% end %>
+    <% if OFFLINE %>
+      <%= form.field_checkbox('Envoyer l’annonce aussi à tous les icariens', 'to_icariens') %>
+    <% else %>
+      <%= form.field_raw('Icariens', '', nil, {field: 'En ONLINE, on ne peut pas faire d’envoi aux icariens.'}) %>
     <% end %>
     <%= form.field_checkbox('Envoyer vraiment le mail (bien qu’on soit offline)', 'force_offline') %>
 
