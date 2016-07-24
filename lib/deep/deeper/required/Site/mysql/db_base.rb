@@ -1,9 +1,17 @@
 # encoding: UTF-8
 # Dir["./lib/deep/deeper/first_required/my_sql/**/*.rb"].each{|m|require m}
 class SiteHtml
+
+  # Préfixe de toutes les bases
+  # Soit être réglé pour chaque site.
+  #
+  # @usage :      SiteHtml::DBBASE_PREFIX
+  DBBASE_PREFIX = 'boite-a-outils_'
+
 class DBM_BASE
 
   extend MethodesBaseMySQL
+
 
   class << self
 

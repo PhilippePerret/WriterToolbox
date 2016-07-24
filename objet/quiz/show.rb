@@ -57,7 +57,6 @@ class ::Quiz
 end
 
 case param(:operation)
-when 'evaluate_quiz'
-  # On passe par ici quand on soumet le quiz
+when 'evaluate_quiz' # soumission du quiz
   quiz.evaluate
 end
