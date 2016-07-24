@@ -32,7 +32,7 @@ class SiteHtml
   # Voir le fichier ./hot/spotlight.rb qui définit SPOTLIGHT
   def section_spotlight
     require './hot/spotlight'
-    lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href])
+    lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href]).in_div(id: 'main_thing')
     (
     # '<hr>' +
       # "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
