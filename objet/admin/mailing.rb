@@ -22,7 +22,6 @@ class << self
   def apercu_mail= value; @apercu_mail = value end
 
   def add_output str
-    flash "-> add_output"
     @output ||= String.new
     @output << str
   end
@@ -104,16 +103,15 @@ end #/ << self
       liste_pseudos << @auteur.pseudo
       @nombre_messages += 1
     end
-    if OFFLINE && !force_offline?
-      flash "-> ici"
-      liste_humaine =
-        if liste_pseudos.empty?
-          'personne'
-        else
-          liste_pseudos.pretty_join
-        end
-      self.class.add_output( "Le mail aurait été envoyé à #{liste_humaine}.".in_div)
-    end
+    vraiment_sent = ONLINE || (OFFLINE && force_offline?)
+    liste_humaine =
+      if liste_pseudos.empty?
+        'personne'
+      else
+        liste_pseudos.pretty_join
+      end
+    self.class.add_output( "Le mail #{vraiment_sent ? 'a' : 'aurait'} été envoyé à #{liste_humaine}.".in_div)
+    return vraiment_sent
   rescue Exception => e
     debug e
     error e.message
