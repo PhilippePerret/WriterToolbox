@@ -24,8 +24,8 @@ class CRON2
       log "  -Prochaine heure d'envoi : #{auteur.next_pday_start.as_human_date(true, true, ' ')} (#{auteur.next_pday_start})"
       if auteur.send_unan_report?
         auteur.current_pday.send_rapport_quotidien
-        CRON2::Histo.add(code: '', data: auteur.id)
         SEND_RAPPORT_TO_ADMIN && send_rapport_unan_to_admin(auteur)
+        CRON2::Histo.add(code: '77201', data: auteur.id)
       end
     end
   end
@@ -33,9 +33,9 @@ class CRON2
   # Transmission à l'administrateur du programme de l'auteur
   def send_rapport_unan_to_admin auteur
     site.send_mail_to_admin(
-      subject:    "UN AN - Rapport envoyé à #{auteur.pseudo}",
-      message:    auteur.current_pday.rapport_complet,
-      formated:   true
+    subject:    "UN AN - Rapport envoyé à #{auteur.pseudo}",
+    message:    auteur.current_pday.rapport_complet,
+    formated:   true
     )
   rescue Exception => e
     log "Problème en envoyant le rapport d'auteur à l'administrateur", e
@@ -45,18 +45,18 @@ class CRON2
   # suivent le programme UN AN UN SCRIPT
   def auteurs
     @auteurs ||= begin
-                   programmes.collect{|hp| DUser.new(hp[:auteur_id])}
-                 end
+      programmes.collect{|hp| DUser.new(hp[:auteur_id])}
+    end
   end
 
   # Retourne la liste des programmes courant
   def programmes
     @programmes ||= begin
-                      # Données de la requête pour ne sélectionner que les programmes
-                      # qui sont en cours.
-                      where = "options LIKE '1%'"
-                      table_programs.select(where: where)
-                    end
+      # Données de la requête pour ne sélectionner que les programmes
+      # qui sont en cours.
+      where = "options LIKE '1%'"
+      table_programs.select(where: where)
+    end
   end
 
   # Table contenant tous les programmes
