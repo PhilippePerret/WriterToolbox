@@ -22,6 +22,7 @@ class CRON2
     CODES = {
       '00000' => {value: '00000', intitule: 'Opération non définie', hname: 'Non défini'},
       '31001' => {value: '31001', intitule: 'Mail actualités', hname: 'actualités', data: 'Nombre d’envois', description: 'Mail envoyé'},
+      '31011' => {value: '31011', intitule: 'Erreur envoi mail actualités', hname: 'actualités', data: nil, description: 'Erreur rencontrée'},
       '11100' => {value: '11100', intitule: 'Nettoyage du site', hname: 'Nettoyage', data: 'Nombre de fichiers détruits', description: nil},
       '20101' => {value: '20001', intitule: 'Rapport des connexions', hname: 'Connexions', data: nil, description: nil},
       '25101' => {value: '25101', intitule: 'Envoi d’une citation', hname: 'Citation', data: 'ID de la citation envoyée', description: nil},
@@ -57,7 +58,8 @@ class CRON2
         {bit: 2, value: 2, svalue: :mail}     # un envoi par mail
       ],
       [ # bit 3
-        {bit: 3, value: 0, svalue: :none}
+        {bit: 3, value: 0, svalue: :none},
+        {bit: 3, value: 1, svalue: :error}
       ],
       [ # bit 4
         {bit: 4, value: 0, svalue: :none}
