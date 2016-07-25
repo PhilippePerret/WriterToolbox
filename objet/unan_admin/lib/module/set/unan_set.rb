@@ -148,14 +148,28 @@ class User
     def recreate_paiement
       log "* Recréation du paiements"
       User.table_paiements.delete(where: {user_id: auteur.id})
+      now = (NOW - (pday.days * coef_duree))
       data_paiement = {
         user_id:    auteur.id,
         montant:    19.8,
         objet_id:   '1AN1SCRIPT',
-        created_at: (NOW - (pday.days * coef_duree)),
+        created_at: now,
         facture:    'EC-08R60522T08193748'
       }
       User.table_paiements.insert(data_paiement)
+
+      User.table_autorisations.delete(where: "user_id = #{auteur.id} && raison = '1AN1SCRIPT'")
+      data_autorisation = {
+        user_id: auteur.id,
+        raison: "1AN1SCRIPT",
+        start_time:     now,
+        end_time:       (now) + (2.years),
+        created_at:     now,
+        updated_at:     now,
+        nombre_jours:   (2 * 365)
+      }
+      User.table_autorisations.insert(data_autorisation)
+
       log "  = OK"
     end
 

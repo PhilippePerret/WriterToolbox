@@ -180,7 +180,9 @@ class ::Fixnum
     self * DUREE_JOUR * 365
   end
   alias :year :years
-
+  alias :an   :years
+  alias :ans  :years
+  
   ##
   # Retourne le timestamp sous forme de date pour l'enregistrement
   # dans le calendrier en date inversée

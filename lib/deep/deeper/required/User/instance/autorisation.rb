@@ -9,6 +9,12 @@
 =end
 class User
 
+  # Requiert tous les modules utiles aux autorisations compliquées
+  def require_modules_autorisation
+    Dir["./lib/app/module/user_autorisation/**/*.rb"].each{ |m| require m }
+    site.require_module 'user_autorisation'
+  end
+
   # Retourne true si l'user possède une autorisation qui
   # couvre la date courante
   def authorized?
@@ -36,7 +42,7 @@ class User
   #
   def patch_modification_users
     debug "-> patch_modification_users"
-    site.require_module 'user_autorisation'
+    require_modules_autorisation
     return do_patch_modification_users
   end
 
@@ -90,7 +96,7 @@ class User
   # Méthode qui ajoute des jours d'autorisation à l'user
   #
   def add_jours_abonnement args
-    site.require_module 'user_autorisation'
+    require_modules_autorisation
     do_add_jours_abonnement args
   end
 
@@ -99,7 +105,7 @@ class User
   # être une expression régulière, comme `/^QUIZ ` pour toutes
   # les autorisations qui viennent des quiz
   def autorisations_for_raison raison
-    site.require_module 'user_autorisation'
+    require_modules_autorisation
     do_autorisations_for_raison raison
   end
 

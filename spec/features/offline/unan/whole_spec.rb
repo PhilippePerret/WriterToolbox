@@ -94,13 +94,25 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
     # directement à l'adresse.
     # Mais avant, il faut créer un enregistrement du paiement pour
     # que ça fonctionne
+    now = Time.now.to_i
     User.table_paiements.insert(
       user_id:    DUSER[:id],
       objet_id:   '1AN1SCRIPT',
       montant:    19.8,
       facture:    token,
-      created_at: Time.now.to_i
+      created_at: now
     )
+    data_autorisation = {
+      user_id: DUSER[:id],
+      raison: "1AN1SCRIPT",
+      start_time: now - 3600,
+      end_time:   (now - 3600) + (2 * 365.days),
+      created_at: now - 3600,
+      updated_at: now - 3600,
+      nombre_jours: (2 * 365)
+    }
+    User.table_autorisations.insert(data_autorisation)
+    
     visit "#{site.local_url}/paiement/on_ok?in=unan"
 
     # Ça doit construire UN PROGRAMME valide pour l'user

@@ -9,6 +9,8 @@
 
   NOTES IMPORTANTES
 
+    * Voir les méthodes propres à l'application dans le dossier
+      ./lib/app/module/user_autorisations/
     * Un même utilisateur peut avoir plusieurs rangées d'autorisation,
       ceci afin de toujours savoir d'où provient l'autorisation.
       Par exemple, si elle vient d'un quiz en particulier, l'autorisation
@@ -40,18 +42,15 @@ class User
         args.merge!( end_time: stime + nbjours.days )
       end
     end
-    dauto = {
-      user_id: id,
+
+    add_autorisation(
+      type:         :autre_raison,
+      raison:       args[:raison],
       nombre_jours: args[:nombre_jours],
       start_time:   args[:start_time],
-      end_time:     args[:end_time],
-      raison:       args[:raison],
       privileges:   args[:privileges],
-      created_at:   NOW,
-      updated_at:   NOW
-    }
-    table_autorisations.insert(dauto)
-    reset_autorisations
+      end_time:     args[:end_time]
+    )
   end
 
   # Appeler User#autorisations_for_raison

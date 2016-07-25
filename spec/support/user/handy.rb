@@ -167,16 +167,37 @@ def create_user options = nil
     site.require_objet 'unan'
     (Unan::folder_modules + 'signup_user.rb').require
     new_user.signup_program_uaus
+    data_autorisation = {
+      user_id: new_user.id,
+      raison: "1AN1SCRIPT",
+      start_time: now - 3600,
+      end_time:   (now - 3600) + (2 * 365.days),
+      created_at: now - 3600,
+      updated_at: now - 3600,
+      nombre_jours: (2 * 365)
+    }
+    User.table_autorisations.insert(data_autorisation)
   elsif subscriber
+    now = Time.now.to_i
     data_paiement = {
       user_id:    new_user.id,
       objet_id:  'ABONNEMENT',
       montant:    6.9,
       facture:    'EC-38P44270A51102219',
-      created_at:  Time.now.to_i
+      created_at:  now
     }
     table_paiements = site.dbm_table(:cold, 'paiements')
     table_paiements.insert(data_paiement)
+    data_autorisation = {
+      user_id: new_user.id,
+      raison: "ABONNEMENT",
+      start_time: now - 3600,
+      end_time:   (now - 3600) + 365.days,
+      created_at: now - 3600,
+      updated_at: now - 3600,
+      nombre_jours: 365
+    }
+    User.table_autorisations.insert(data_autorisation)
   end
 
   return new_user

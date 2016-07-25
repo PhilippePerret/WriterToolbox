@@ -14,9 +14,14 @@ class User
       @table_connexions ||= site.dbm_table(:hot, 'connexions')
     end
 
+    def table_autorisations
+      @table_autorisations ||= site.dbm_table(:hot, 'autorisations')
+    end
+
     def table_paiements
       @table_paiements ||= site.dbm_table(:cold, 'paiements')
     end
+
 
 
   end

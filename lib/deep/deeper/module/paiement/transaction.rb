@@ -148,10 +148,14 @@ class Paiement
   end
 
   # Enregistrer le paiement
+  #
+  # On enregistre le paiement dans la table des paiements et
+  # on appelle ensuite la méthode `on_paiement` qui va permettre
+  # notamment de créer l'enregistrement dans la table des
+  # autorisations en fonction du paiement.
   def save_paiement
-    # debug "-> save_paiement"
-    # debug "= data_paiement : #{data_paiement.inspect}"
     User.table_paiements.insert(data_paiement)
+    User.new(data_paiement[:user_id]).on_paiement(data_paiement)
   end
 
   # Envoyer un mail de confirmation à l'user
