@@ -26,7 +26,11 @@ class Quiz
       # On calcule le rapport
       @do_evaluation = true
       report
-      save_resultat if user.identified?
+      # Enregistrement du résultat :
+      #   - dans la table des résultats pour l'user s'il est identifié
+      #   - toujours dans la table général :cold, quiz qui consigne toutes
+      #     les notes et toutes les soumissions.
+      save_resultat
     end
   end
 
@@ -153,9 +157,9 @@ class Quiz
         when Fixnum # radio
           question.hreponses[index_reponse][:pts].to_i
         end
-      debug "Question : #{question.question}"
-      debug "index_reponse : #{index_reponse.inspect}"
-      debug "urep[:upoints] = #{urep[:upoints].inspect}"
+      # debug "Question : #{question.question}"
+      # debug "index_reponse : #{index_reponse.inspect}"
+      # debug "urep[:upoints] = #{urep[:upoints].inspect}"
 
 
       # Les meilleures réponses
@@ -214,7 +218,6 @@ class Quiz
       urep[:is_correct] = urep[:points] == urep[:upoints]
 
 
-      debug "urep = #{urep.inspect}"
       # On remet le hash de la question entièrement renseignée
       ureps[qid] = urep
     end
