@@ -40,9 +40,52 @@ class ::Quiz
 
   def message_note_finale
     @message_note_finale ||= begin
+      debug "current_note_max : #{current_note_max.to_f}"
+      debug "unote_finale = #{unote_finale.to_f}"
       if current_note_max && (unote_finale > 15 && unote_finale > current_note_max)
-        image_mascotte(class: 'fleft', points: 31) +
-        "Bravo à vous ! Non seulement c'est un résultat excellent mais c'est également la meilleure note obtenue à ce test !"
+        # L'user a obtenu la note maximale pour ce quiz.
+        # S'il est inscrit, il peut obtenir des jours d'abonnement gratuits,
+        # mais seulement s'il n'en a pas déjà obtenu par le biais de ce
+        # formulaire ou par le biais d'autres formulaire
+
+        raison_jours = "QUIZ #{suffix_base} #{id}"
+
+        # On doit déterminer si l'user peut bénéficier des jours gratuits
+        can_have_jours = begin
+          if user.identified?
+            if user.autorisations_for_raison(raison_jours).count > 0
+              flash('(Vous avez déjà obtenu des jours d’abonnement pour ce quiz)')
+              false
+            elsif user.autorisations_for_raison(/^QUIZ /).count > 5
+              flash('Vous avez déjà obtenu des jours d’abonnement pour 5 quiz. C’est le maximum)')
+              false
+            elsif user.autorisation_a_vie?
+              false
+            else
+              # Dans tous les autres cas, on peut obtenir les jours
+              # gratuits
+              true
+            end
+          else
+            flash('Si vous aviez été inscrit(e), vous auriez pu obtenir 31 jours d’abonnement gratuits.')
+            false
+          end
+        end
+        data_image = {class: 'fleft'}
+        if can_have_jours
+          data_image.merge!(
+            points: 31,
+            raison: raison_jours
+            )
+        end
+        ajout_message_jours =
+          if can_have_jours
+            ' (vous pouvez cliquer sur la mascotte ci-contre pour obtenir 31 jours d’abonnement gratuits !)'.in_span(class: 'small')
+          else
+            ''
+          end
+        image_mascotte(data_image) +
+        "Bravo à vous ! Non seulement c'est un résultat excellent mais c'est également la meilleure note obtenue à ce test !#{ajout_message_jours}"
       elsif current_note_min && (unote_finale < 10 && unote_finale < current_note_min)
         "Non seulement ça n'est pas une très bonne note, mais c'est en plus la pire note obtenue à ce test !… :-( Vraiment navré pour vous."
       else

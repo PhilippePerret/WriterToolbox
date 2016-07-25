@@ -43,7 +43,7 @@ class Quiz
   # la note obtenue par l'user)
   attr_reader :current_note_max, :current_note_min
   def get_data_generales
-    return if data_generales.nil?
+    return nil if data_generales.nil?
     @current_note_max = data_generales[:note_max]
     @current_note_min = data_generales[:note_min]
   end

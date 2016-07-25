@@ -31,7 +31,7 @@ CREATE TABLE resultats
 
     #  NOTE
     # ------
-    # La note sur 20 obtenue
+    # La note obtenue (sur 20)
     note DECIMAL(3, 1) NOT NULL,
 
     # POINTS
@@ -39,6 +39,14 @@ CREATE TABLE resultats
     # Nombre de points marqué pour ce questionnaire, pour éviter
     # d'avoir à les recalculer.
     points INTEGER(4) NOT NULL,
+
+    # OPTIONS
+    # -------
+    # Options
+    # Inutilisées pour le moment. Ça pourra servir par exemple
+    # pour savoir si on peut afficher ou annoncer le résultat de
+    # ce test.
+    options VARCHAR(8) DEFAULT '00000000',
 
     # CREATED_AT
     # ----------

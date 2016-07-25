@@ -34,15 +34,18 @@ PUNAISE_GOLD  = picto_punaise('gold')
 #   +
 #   :points   Si défini, le nombre de jours d'abonnements
 #             gagnés si on clique sur la mascotte.
-# 
+#   :raison   Si points est défini, on définit la raison qui
+#             sera enregistrée avec l'ajout des jours.
+#
 def image_mascotte options = nil
   options ||= Hash.new
   points = options.delete(:points)
   if points
-    app.session['nombre_points']      = points
-    app.session['session_id_points']  = app.session.session_id
+    app.session['nombre_points_gratuits']      = points
+    app.session['session_id_points_gratuits']  = app.session.session_id
+    app.session['raison_points_gratuits']      = options.delete(:raison) 
     img = "./view/img/mascotte/mascotte-50pc.png".in_image
-    img = img.in_a(href: "site/marque_points")
+    img = img.in_a(href: "site/points_abonnement")
     img = (
       img +
       'cliquez-moi…'.in_div(style: 'font-size:9pt;text-align:center;color:#777')
