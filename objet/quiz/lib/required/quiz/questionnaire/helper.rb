@@ -87,7 +87,8 @@ class Quiz
       end
     end
     if data_generales.nil?
-      c << 'Vous êtes le tout premier à remplir ce quiz !'.in_div
+      # c << 'Vous êtes le tout premier à remplir ce quiz !'.in_div
+      c << ''
     else
       c << "Vous êtes le #{data_generales[:count] + 1}<sup>e</sup> visiteur à remplir ce quiz".in_div
       c << (
