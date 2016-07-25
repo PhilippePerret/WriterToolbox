@@ -121,7 +121,7 @@ class CRON2
         elsif code && CRON2::Histo::CODES[code]
           CRON2::Histo::CODES[code][:intitule]
         else
-          '[sans intitulé]'
+          "[pas d'intitulé pour code #{code.inspect}]"
         end
       end
     end
