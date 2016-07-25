@@ -25,6 +25,15 @@ class Quiz
     end
   end
 
+  # Les données générales du quiz
+  # Donc dans la table :cold 'quiz'
+  def data_generales
+    @data_generales ||= begin
+      whereclause = "quiz_id = #{id} AND suffix_base = '#{suffix_base}'"
+      site.dbm_table(:cold, 'quiz').get(where: whereclause)
+    end
+  end
+
   # ---------------------------------------------------------------------
   #   DATA volatiles
   # ---------------------------------------------------------------------

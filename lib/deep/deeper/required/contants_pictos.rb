@@ -27,3 +27,28 @@ end
 PUNAISE_ROUGE = picto_punaise('red')
 PUNAISE_WHITE = picto_punaise('white')
 PUNAISE_GOLD  = picto_punaise('gold')
+
+# Retourne l'image de la mascotte du site
+# +options+
+#   Tous les attriuts qui seront transmis à in_image
+#   +
+#   :points   Si défini, le nombre de jours d'abonnements
+#             gagnés si on clique sur la mascotte.
+# 
+def image_mascotte options = nil
+  options ||= Hash.new
+  points = options.delete(:points)
+  if points
+    app.session['nombre_points']      = points
+    app.session['session_id_points']  = app.session.session_id
+    img = "./view/img/mascotte/mascotte-50pc.png".in_image
+    img = img.in_a(href: "site/marque_points")
+    img = (
+      img +
+      'cliquez-moi…'.in_div(style: 'font-size:9pt;text-align:center;color:#777')
+    ).in_div(options)
+  else
+    img = "./view/img/mascotte/mascotte-50pc.png".in_image(options)
+  end
+  return img
+end

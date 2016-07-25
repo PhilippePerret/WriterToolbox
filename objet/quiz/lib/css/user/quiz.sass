@@ -30,12 +30,26 @@ div.quiz
 
   // Le DIV contenant la description du quiz, si elle est
   // définie.
-  div.quiz_description
+  div#quiz_description
     font-size     : 15pt
-    // font-style    : italic
-    font-weight   : bold
-    padding       : 1em 4em
-    margin-bottom : 1em
+    div#quiz_defi
+      float       : right
+      width       : 200px
+      margin      : 0 0 1em 1em
+      padding     : 1em
+      text-align  : left
+      font-style  : italic
+      font-size   : 0.9em
+      span#best_note
+        font-weight   : bold
+        font-size     : 1.3em
+    div#qdescription
+      font-weight   : bold
+      padding       : 1em
+      margin-bottom : 1em
+    div#infos_generales
+      margin-left   : 18em
+      font-size     : 0.75em
     
   // Le formulaire contenant toutes les questions et
   // toutes les réponses.

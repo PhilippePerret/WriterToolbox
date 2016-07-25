@@ -13,6 +13,11 @@ class Quiz
   # enregistre son quiz dans la table des résultats.
   #
   def evaluate
+    # Avant d'établir le rapport on met de côté les data générales
+    # qui peuvent être enregistrées afin de pouvoir mieux commenter la
+    # note obtenue par l'utilisateur
+    get_data_generales
+
     if ureponses.nil?
       @error = :aucune_reponse
       @report = 'Voyons ! Il faut remplir le quiz, pour obtenir une évaluation !'
@@ -33,6 +38,16 @@ class Quiz
       save_resultat
     end
   end
+
+  # Note maximale et minimale obtenue à ce test (pour commenter
+  # la note obtenue par l'user)
+  attr_reader :current_note_max, :current_note_min
+  def get_data_generales
+    return if data_generales.nil?
+    @current_note_max = data_generales[:note_max]
+    @current_note_min = data_generales[:note_min]
+  end
+
 
   # Pour savoir s'il faut faire une évaluation ou simplement
   # remettre les réponses qui avaient été données.
