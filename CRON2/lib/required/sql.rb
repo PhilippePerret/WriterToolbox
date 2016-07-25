@@ -18,7 +18,7 @@ class CRON2
     # :intitule     L'intitulé par défaut, quand n'est pas précisé
     # :data         Ce qui est enregistré dans la propriété :data
     # :description  Ce qui est enregistré dans la propriété :description
-    # 
+    #
     CODES = {
       '00000' => {value: '00000', intitule: 'Opération non définie', hname: 'Non défini'},
       '31001' => {value: '31001', intitule: 'Mail actualités', hname: 'actualités', data: 'Nombre d’envois', description: 'Mail envoyé'},
@@ -107,11 +107,23 @@ class CRON2
     # ---------------------------------------------------------------------
     def code
       @code ||= begin
-        data[:code]
+        if data
+          data[:code]
+        else
+          nil
+        end
       end
     end
     def intitule
-      @intitule ||= data[:intitule] || CRON2::Histo::CODES[code][:intitule]
+      @intitule ||= begin
+        if data && data[:intitule]
+          data[:intitule]
+        elsif code && CRON2::Histo::CODES[code]
+          CRON2::Histo::CODES[code][:intitule]
+        else
+          '[sans intitulé]'
+        end
+      end
     end
     def description
       @description ||= data[:description]
