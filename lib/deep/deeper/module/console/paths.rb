@@ -11,6 +11,11 @@ class Console
     @folder_app ||= site.folder_lib + 'app/console'
   end
 
+  # Dossier deep/console
+  def folder_deep_console
+    @folder_deep_console ||= site.folder_lib + 'deep/console'
+  end
+
 end #/Console
 end #/Admin
 end #/SiteHtml

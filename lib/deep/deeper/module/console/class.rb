@@ -1,6 +1,8 @@
 # encoding: UTF-8
 
-require_folder "./lib/deep/console"
+require_folder "./lib/deep/console/sub_methods"
+require './lib/deep/console/execution'
+require './lib/deep/console/help'
 
 class SiteHtml
 class Admin

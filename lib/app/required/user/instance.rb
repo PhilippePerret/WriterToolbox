@@ -17,13 +17,15 @@ class User
   # indispensable, on crée cette méthode qui sera surclassée par
   # l'autre
   def unanunscript?
-    debug "-> unanunscript?"
     user.identified? || ( return false )
-    where = []
-    where << "auteur_id = #{user.id}"
-    where << 'options LIKE "1%"'
-    where << 'options NOT LIKE "__1%"'
-    where = where.join(' AND ')
-    site.dbm_table(:unan, 'programs').count(where: where) > 0
+    if @is_unanunscript === nil
+      where = []
+      where << "auteur_id = #{user.id}"
+      where << 'options LIKE "1%"'
+      where << 'options NOT LIKE "__1%"'
+      where = where.join(' AND ')
+      @is_unanunscript = site.dbm_table(:unan, 'programs').count(where: where) > 0
+    end
+    @is_unanunscript
   end
 end #/User

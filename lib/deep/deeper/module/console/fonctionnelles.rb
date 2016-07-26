@@ -22,6 +22,11 @@ class Console
   end
   alias :load :require
 
+  # Chargement d'un dossier de sub-méthodes
+  def require_submethods folder_name
+    (folder_deep_console + "submethods/#{folder_name}").require
+  end
+
   # Une ligne à ajouter au code exécuté, qui sera remis dans
   # la console
   def add_code line
