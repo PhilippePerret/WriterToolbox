@@ -182,14 +182,14 @@ class CRON2
           return
         end
 
-      date_expiration = temps_fin.as_human_date(true, true, ' ')
+      date_expiration = temps_fin.as_human_date(true, true, ' ', 'à')
 
       # Un mail doit être envoyé à l'user
       u = User.new(huser[:id])
       message = <<-HTML
       <p>#{u.pseudo},</p>
       <p>Je vous informe que votre autorisation d’accès complet à
-        #{site.name} expire dans #{moins_de_jours} (#{date_expiration}).</p>
+        #{site.name} expire dans #{moins_de_jours} (le #{date_expiration}).</p>
       <p>Si vous souhaitez continuer de profiter pleinement de toutes les
       ressources du site et surtout <strong>soutenir ses efforts par votre
       participation</strong>, nous espérons que vous penserez à vous
