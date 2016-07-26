@@ -4,6 +4,7 @@
   * [Grade d'administration](#gradedadministration)
   * [Grade du forum](#gradeforumeuser)
   * [Confirmation du mail](#confirmationmail)
+* [Autologin de l'utilisateur](#autologineuser)
 * [Redirection après l'identification (login)](#redirectionapreslogin)
 * [Opérations après identification](#operationsapreslidentification)
 * [Destruction d'un utilisateur](#destructionuser)
@@ -55,6 +56,23 @@ Cf. le fichier ./lib/deep/deeper/required/User/constants.rb pour les valeurs que
 Pour être tout à fait enregistré, l'utilisateur doit confirmer son mail en répondant au mail qui lui a été envoyé.
 
 Cela met son BIT 3 à 1
+
+
+
+<a name='autologineuser'></a>
+
+## Autologin de l'utilisateur
+
+On peut autologuer l'utilisateur en utilisant la méthode :
+
+    User#autologin
+
+Cette méthode ne peut bien entendu pas être appelée directement, elle doit l'être par le biais, par exemple, d'un ticket. Ce ticket peut avoir comme code :
+
+    User.new(<user id>).autologin(route: 'route/afficher');flash(\"\#{user.pseudo}, je vous ai autologué.\")
+
+Ce code autologuera l'user et lui affichera un message contenu son pseudo.
+
 
 ---------------------------------------------------------------------
 
