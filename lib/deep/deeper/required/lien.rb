@@ -175,25 +175,27 @@ class Lien
   # Les fichiers Markdown sont ouverts par l'application "MarkdownLife"
   # si c'est réglé dans le fichier configuration
   def edit_file path, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     editor  = options.delete(:editor) || site.default_editor || :atom
     titre   = options.delete(:titre) || "Ouvrir"
     line    = options.delete(:line)
 
-    url = case File.extname(path)
-    when '.md'
-      "site/open_file?path=#{path}" if user.admin?
-    else
-      case editor
-      when :atom
-        "atm://open?url=file://#{path}"
-      when :textmate
-        "txmt://open/?url=file://#{path}"
+    url =
+      case File.extname(path)
+      when '.md'
+        "site/open_file?path=#{path}" if user.admin?
       else
-        "site/open_file?path=#{path}&app=#{editor}"
+        case editor
+        when :atom
+          "atm://open?url=file://#{path}"
+        when :textmate
+          "site/open_file?path=#{path}"
+          # "txmt://open/?url=file://#{path}"
+        else
+          "site/open_file?path=#{path}&app=#{editor}"
+        end
+        # On compose le lien et on le renvoie
       end
-      # On compose le lien et on le renvoie
-    end
     url += "&line=#{line}" unless line.nil?
     build( url, titre, options )
   end

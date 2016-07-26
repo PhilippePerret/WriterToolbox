@@ -52,6 +52,13 @@ lien_open_page =
     ""
   end
 
+lien_open_in_textmate =
+  if page_id
+    lien.edit_file(ipage.fullpath.expanded_path, editor: :textmate, titre: 'Edit text with TextMate')
+  else
+    ''
+  end
+
 # Les liens pour visualiser ou éditer la page narration lorsque cette
 # page de cours est liée à une page narration
 liens_page_narration =
@@ -77,7 +84,7 @@ liens_page_narration =
 
 <form id="form_edit_page_cours" class="dim2080" action="page_cours/edit?in=unan_admin" method="POST">
   <%= "edit_page_cours".in_hidden(name:'operation', id:'operation') %>
-  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_read_page} #{lien_open_page}", onchange:"set_href_lien_read(this)"}) %>
+  <%= form.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_read_page} #{lien_open_page} #{lien_open_in_textmate}", onchange:"set_href_lien_read(this)"}) %>
   <%= form.field_description("Mettre l'identifiant à vide pour créer une nouvelle page.") %>
   <%= form.field_text("Titre", 'titre', "") %>
   <% value_cb_associer = param(:pn) ? true : nil %>

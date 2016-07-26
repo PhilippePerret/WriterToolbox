@@ -1,19 +1,5 @@
 # Tweet permanent
 
-## 174
-Le lecteur doit comprendre le texte à mesure qu'il le lit. (in “La Clarté”)
-
-La première formulation est souvent la plus forte. (in “La Clarté”)
-
-On ne peut mesurer sa compétence à la clarté qu’en faisant lire ce que l’on écrit. (in “La Clarté”)
-
-Écrire toujours le nécessaire et le suffisant. (in “La Clarté”)
-
-Une phrase n’est jamais seule. (in “La Clarté”)
-
-La clarté procède d’une grande précision. (in “La Clarté”)
-
-Pour être entendue, une information doit toujours être répétée. (in “La Clarté”)
 
 ---------------------------------------------------------------------
 
