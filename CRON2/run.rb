@@ -37,10 +37,10 @@ end #/MCron
 # être envoyé à la fin du cron-job.
 # TODO : Pour qu'il soit vraiment isolé, il faudrait
 # que la procédure d'envoi par mail soit indépendante
-# complètement du site, alors que là elle utilise 
+# complètement du site, alors que là elle utilise
 # encore des procédures du site.
 def flog
-  @flog ||= begin 
+  @flog ||= begin
     if File.exist?('./www')
       # Distant
       "./www/CRON2/cron2_runner.log"
@@ -55,7 +55,7 @@ end
 
 # Le fichier
 def rflog
-  @rflog ||= File.open(flog, 'a') 
+  @rflog ||= File.open(flog, 'a')
 end
 
 def putslog mess
@@ -80,6 +80,8 @@ putslog "--- CRON2 lancé le #{Time.now}"
 
 
 begin
+  # Charge le cronjob, ce qui l'initie et le lance
+  # automatiquement (sauf si CRON_FOR_TEST est à true)
   require_relative 'cronjob'
 rescue Exception => e
   putslog "# ERREUR FATALE : #{e.message}"

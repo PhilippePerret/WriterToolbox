@@ -57,7 +57,7 @@ describe 'Changement de jour-programme' do
       # La date de début doit avoir changé
       expect(prog.current_pday_start).to be_between(now - 10, now + 10)
       # L'auteur doit avoir reçu un mail
-      expect(auteur).to have_mail_with(
+      expect(auteur).to have_mail(
         subject: /UN AN UN SCRIPT - Rapport journalier/,
         sent_after: now - 1
       )

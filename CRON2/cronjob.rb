@@ -131,4 +131,7 @@ def cronjob
 end
 
 # Au chargement, on initialise le cronjob et on le lance
-cronjob.init && cronjob.run
+cronjob.init
+unless defined?(CRON_FOR_TEST) && CRON_FOR_TEST
+  cronjob.run
+end

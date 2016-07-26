@@ -70,7 +70,7 @@ feature "Inscription d'un nouveau membre" do
     ticket_id_in_table = res[:id]
     puts "Un ticket a été créé pour l'user avec les bonnes données"
 
-    expect(user).to have_mail_with(
+    expect(user).to have_mail(
       sent_after:     start_time,
       subject:        "Confirmez votre inscription"
     )

@@ -31,7 +31,7 @@ class MailMatcher
     end
   end
 end
-RSpec::Matchers::define :have_mails_with do |params|
+RSpec::Matchers::define :have_mails do |params|
   match do |qui|
     @qui      = qui
     @params   = params
@@ -67,9 +67,9 @@ RSpec::Matchers::define :have_mails_with do |params|
   end
 end
 
-RSpec::Matchers::define :have_mail_with do |params|
+RSpec::Matchers::define :have_mail do |params|
   match do |owner|
-    expect(owner).to have_mails_with params.merge(:only_one => true)
+    expect(owner).to have_mails params.merge(:only_one => true)
   end
   failure_message do |owner|
     "Aucun mail adressé à #{params[:to]} n'a été trouvé avec les paramètres #{params.inspect}.\n#{MailMatcher::message_added}"
@@ -90,7 +90,7 @@ def search_mails_with data
   get_mails.each do |mail|
     all_ok = true
     # On répète avec toutes les données cherchées (transmises
-    # à have_mail_with)
+    # à have_mail)
     data.each do |k, v|
       case k
       when :subject_strict, :message_strict

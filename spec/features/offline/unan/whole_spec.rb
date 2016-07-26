@@ -137,19 +137,19 @@ feature "Test d'une inscription au programme UN AN UN SCRIPT (OFFLINE)" do
     expect(hprojet[:created_at]).to be > start_time
 
     # Envoi des mails (pas en online)
-    expect(phil).to have_mail_with(
+    expect(phil).to have_mail(
       sent_after: start_time,
       subject:    "Nouvelle inscription (##{DUSER[:id]})"
     )
-    expect(inscrite).to have_mail_with(
+    expect(inscrite).to have_mail(
       sent_after: start_time,
       subject:    'Premières explications'
     )
-    expect(inscrite).to have_mail_with(
+    expect(inscrite).to have_mail(
       sent_after: start_time,
       subject:    'Confirmation inscription'
     )
-    expect(inscrite).to have_mail_with(
+    expect(inscrite).to have_mail(
       sent_after: start_time,
       subject: 'Merci de confirmer votre mail'
     )
