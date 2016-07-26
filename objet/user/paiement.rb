@@ -18,9 +18,11 @@ else
   # La méthode de consignation du paiement
   class SiteHtml::Paiement
     # Après validation du paiement, on peut l'enregistrer. En fait
-    # cela consiste en deux opérations :
+    # cela consiste en trois opérations :
     #   1. Indiquer que l'user a payé en modifiant ses bits options
     #   2. Enregistrer le paiement dans la table des paiements
+    #   3. Enregistrement dans la table des autorisations, pour la
+    #      durée correspondant à l'abonnement.
     # def after_validation_paiement
     # end
   end

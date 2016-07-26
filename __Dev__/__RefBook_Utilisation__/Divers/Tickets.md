@@ -14,7 +14,9 @@ L'utilisateur s'inscrit. Un mail lui est alors envoyé pour qu'il valide son ins
 
 Pour créer un ticket, il faut :
 
-    un ID de ticket     (alphanumérique que 32 signes max)
+    un ID de ticket     (alphanumérique de 32 signes max)
+                        Si on met nil à la méthode create_ticket, ça
+                        affecte automatiquement un id valide et unique
 
     un CODE à exécuter  (de préférence l'appel à une méthode qui se chargera
                          de tout)
@@ -22,6 +24,10 @@ Pour créer un ticket, il faut :
 Puis on appelle la méthode `app.create_ticket` avec cet ID et ce CODE pour le créer.
 
     letick = app.create_ticket(ticket_id, ticket_code)
+
+    OU (pour obtenir un id automatiquement)
+
+    letick = app.create_ticket(nil, ticket_code)
 
 Ensuite, il suffit utiliser le lien à coller dans un mail par exemple :
 
@@ -41,17 +47,29 @@ Noter qu'il est inutile de dire à `app` de quel ticket il s'agit puisqu'elle co
 
 Le code à exécuter (second argument fourni à `create_ticket`) doit être du code ruby valide. Le mieux est d'utiliser une méthode existante qui va se charger du travail. Par exemple :
 
-    code = "User::get(#{user.id}).execute_cette_fonction"
+    code = "User.get(#{user.id}).execute_cette_fonction"
 
 En supposant que l'utilisateur courant ait l'id 12, le code suivant sera enregistré dans le ticket :
 
-    "User::get(12).execute_cette_fonction"
+    "User.get(12).execute_cette_fonction"
 
 C'est ce code qui sera exécuté lorsque le ticket sera exécuté :
 
-    eval("User::get(12).execute_cette_fonction")
+    eval("User.get(12).execute_cette_fonction")
 
 <a name='fonctionnementinterne'></a>
+
+### Methode d'auto-login
+
+Une méthode très pratique avec les tickets permet d'auto-logger l'user et de le rediriger vers la route voulu :
+
+    User#autologin <args>
+
+Avec `args` qui peut définir `:route`, la route à prendre.
+
+Par exemple :
+
+    ticket_code = User.new(12).autologin(route: 'user/paiement')
 
 ## Fonctionnement interne des tickets
 

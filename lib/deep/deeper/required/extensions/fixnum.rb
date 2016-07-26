@@ -168,6 +168,10 @@ class ::Fixnum
     "#{jrs}#{hrs}#{mns}#{options[:umin]}#{sec}#{options[:usec]}"
   end
 
+  def hours
+    self * 3600
+  end
+  alias :hour :hours
 
   # @usage : <nombre>.day ou <nombre>.days
   # Retourne le nombre de secondes correspondantes
@@ -176,13 +180,16 @@ class ::Fixnum
   end
   alias :day :days
 
+  def weeks
+    self * 7 * DUREE_JOUR
+  end
+  alias :week :weeks
+
   def years
     self * DUREE_JOUR * 365
   end
   alias :year :years
-  alias :an   :years
-  alias :ans  :years
-  
+
   ##
   # Retourne le timestamp sous forme de date pour l'enregistrement
   # dans le calendrier en date inversée

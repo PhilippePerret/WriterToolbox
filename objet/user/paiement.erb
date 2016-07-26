@@ -4,7 +4,6 @@
 # Note : concerne seulement le paiement pour l'abonnement aux outils
 # pas au programme 1an1script.
 #
-debug "-> ./objet/user/paiement.erb"
 %>
 <% if user.paiements_ok? %>
   <%
@@ -28,6 +27,3 @@ debug "-> ./objet/user/paiement.erb"
   <h1>Section de paiement</h1>
   <%= site.paiement.output %>
 <% end %>
-<%
-debug "<- ./objet/user/paiement.erb"
-%>
