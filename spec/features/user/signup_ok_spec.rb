@@ -5,9 +5,10 @@ feature "Inscription d'un nouveau membre" do
 
     degel 'aucun-programme'
 
-    start_time = Time.now.to_i
+    start_time = Time.now.to_i - 1
 
-    nombre_users = User::table_users.count.freeze
+    nombre_users = User.table_users.count.freeze
+    nombre_autorisations = User.table_autorisations.count.freeze
 
     visit home
 
@@ -60,7 +61,7 @@ feature "Inscription d'un nouveau membre" do
     puts "L'auteur n'est pas encore validé"
 
     # Le dernier user créé donc celui-ci
-    u = User::get(last_user[:id])
+    u = User.get(last_user[:id])
 
     # Un ticket a été créé pour lui
     site.require_module 'ticket'
@@ -72,7 +73,7 @@ feature "Inscription d'un nouveau membre" do
 
     expect(user).to have_mail(
       sent_after:     start_time,
-      subject:        "Confirmez votre inscription"
+      subject:        'Merci de confirmer votre mail'
     )
     puts "Un mail lui est envoyé pour confirmer son inscription"
     mail_user = MailMatcher::mail_found
@@ -84,6 +85,19 @@ feature "Inscription d'un nouveau membre" do
     puts "ID du ticket dans le message : #{ticket_id}"
     expect(ticket_id).to eq ticket_id_in_table
     puts "Le ticket contenu dans le mail correspond au numéro de ticket dans la table"
+
+    # ---------------------------------------------------------------------
+    # Test de l'autorisation
+
+    # Il doit y avoir une autorisation de plus
+    expect(User.table_autorisations.count).to eq nombre_autorisations + 1
+    # Une autorisation doit avoir été créée pour l'auteur
+    dautos = User.table_autorisations.select(where: {user_id: u.id})
+    expect(dautos).not_to be_empty
+    dauto = dautos.first
+    expect(dauto[:raison]).to eq 'ABONNEMENT'
+    expect(dauto[:end_time]).not_to eq nil
+    expect(dauto[:end_time]).to be > (start_time + 1.year - 1000)
 
     gel 'testint-apres-signup-valide'
   end

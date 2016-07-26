@@ -152,12 +152,12 @@ class CNarration
   #
   # Retourne la donnée locale actualisée
   def update_niveau_developpement(pid, loc_data, dis_data)
-    loc_niv = loc_data[:options][1].to_i
-    dis_niv = dis_data[:options][1].to_i
+    loc_niv = loc_data[:options][1].to_i(11)
+    dis_niv = dis_data[:options][1].to_i(11)
     good_niv = loc_niv > dis_niv ? loc_niv : dis_niv
 
-    loc_data[:options][1] = good_niv.to_s
-    dis_data[:options][1] = good_niv.to_s
+    loc_data[:options][1] = good_niv.to_s(11)
+    dis_data[:options][1] = good_niv.to_s(11)
 
     if loc_niv > dis_niv
       dis_table.update(pid, {options: dis_data[:options]})

@@ -30,6 +30,21 @@ class MailMatcher
       @message_to_add = nil
     end
   end
+
+  # ---------------------------------------------------------------------
+  #   Instance MailMatcher pour tester le mail
+  # ---------------------------------------------------------------------
+
+  attr_reader :data
+  attr_reader :subject, :message,
+  # Instancitation, avec les données qui sont relevées (démarshalisées)
+  # dans le fichier enregistré
+  def initialize data
+    @data = data
+    data.each{ |k,v| instance_variable_set("@#{k}", v)}
+  end
+
+
 end
 RSpec::Matchers::define :have_mails do |params|
   match do |qui|
@@ -92,6 +107,7 @@ def search_mails_with data
     # On répète avec toutes les données cherchées (transmises
     # à have_mail)
     data.each do |k, v|
+      ok =
       case k
       when :subject_strict, :message_strict
         next
