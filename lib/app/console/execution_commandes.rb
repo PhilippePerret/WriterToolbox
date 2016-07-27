@@ -71,9 +71,6 @@ class Console
     when /^(check|vérifier) pages narration out$/
       console.require 'narration'
       check_pages_narration_out_tdm
-    when /^synchro(ni[zs]e)? (data)?base narration$/
-      console.require 'narration'
-      run_synchronize_database_narration
     when /^balise question$/
       console.require 'narration'
       bals, retour = give_balise_of_question

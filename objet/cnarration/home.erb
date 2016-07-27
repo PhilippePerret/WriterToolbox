@@ -6,13 +6,16 @@
 site.require_objet 'unan'
 %>
 
-<%= Cnarration::dernier_inventaire %>
-
 <p>
   Cette section est le <span class='bold'>WORK IN PROGRESS</span> de la conception de la <strong>COLLECTION NARRATION</strong>, le cours de dramaturgie et d'écriture de <%= 'Philippe Perret'.in_a(href: 'site/phil', class: 'people') %>.
 </p>
-<p><span class='warning'>“Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration.</span>
-</p>
+<p><span class='warning'>“Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration.</span></p>
+
+
+
+<%= Cnarration::dernier_inventaire %>
+
+
 
 <p>Vous pouvez même y participer en donnant votre avis sur les pages.</p>
 

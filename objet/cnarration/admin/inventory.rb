@@ -16,18 +16,12 @@ class << self
     separator = "\n\n#{'-'*50}\n\n"
     nombre_max_pages_per_niveau = pages_per_niveau.collect{|bid,barr|barr.count}.max
 
-    pages_version_papier = 0
-    pages_version_online = 0
-
-
     # -----------------------------
     #     Texte à retourner
     # -----------------------------
     separator +
     "=== Données générales ===\n\n" +
     "Nombre total de fichiers  : #{pages.count}\n" +
-    "  Fichiers version papier : #{pages_version_papier}\n" +
-    "  Fichiers only online    : #{pages_version_online}\n" +
     "Nombre de chapitres  : #{chapitres.count}\n" +
     "Nombre de sous-chaps : #{sous_chapitres.count}" +
     separator +
@@ -96,8 +90,11 @@ class << self
         pages:    nil,
         signes:   nil,
         sections: nil, # = fichiers
-        expected: dbook[:nbp_expected]
+        expected: dbook[:nbp_expected],
+        pages_per_niveau: Hash.new
         })
+
+
       # Pour le nombre de pages et de caractères
       nombre_fichiers         = 0
       nombre_fichiers_online  = 0
@@ -107,12 +104,32 @@ class << self
       nombre_pages_moy        = 0
       nombre_papes_pap_moy    = 0 # pages version papier
       nombre_signes           = 0
+
       unless arr_book.nil?
         nombre_fichiers = arr_book.count
+
+        # Boucle sur chaque livre
         arr_book.each do |hpage|
           @rapport_string << "  - #{dbook[:folder]}/#{hpage[:handler]}"
           ipage = Cnarration::Page::get(hpage[:id])
           nb_pgs_moy = ipage.nombre_pages_1750
+
+          # On mémorise, par livre et par niveau de développement,
+          # les fichiers et le nombre de pages
+          nivp = ipage.developpement
+          @table_per_book[livre_id][:pages_per_niveau].key?(nivp) || begin
+            @table_per_book[livre_id][:pages_per_niveau].merge!(
+              nivp => {
+                nombre_pages: 0,
+                files:        Array.new
+              }
+            )
+          end
+          @table_per_book[livre_id][:pages_per_niveau][nivp][:nombre_pages] += nb_pgs_moy
+          @table_per_book[livre_id][:pages_per_niveau][nivp][:files] << hpage[:id]
+
+
+
           if ipage.papier?
             # C'est une page qui doit être affichée dans la
             # version papier de la collection.
@@ -196,6 +213,10 @@ class << self
     # en ligne, de façon graphique
     graphe_pour_accueil_etat_collection
 
+    # On produit le petit code du graphe des pages comme
+    # ci-dessus mais juste pour les pages achevées
+    graphe_accueil_etat_pages_achevees
+
     # On retourne le texte résultat
     tableau_stats
   end
@@ -203,30 +224,111 @@ class << self
   # Produit et écrit le graphe de l'état actuel de la collection
   # pour l'accueil de la collection
   def graphe_pour_accueil_etat_collection
+    coef_longueur = 4
+    row_height    = '18px'
+
     code = @table_per_book.collect do |bid, bdata|
       bname    = bdata[:name]
       expected = bdata[:expected]
       sections = bdata[:sections]
       pages    = bdata[:pages]
-      signes   = bdata[:signes]
+      # signes   = bdata[:signes]
 
       # Pourcentage exécuté
       pct_done  = ((pages.to_f / expected) * 100).to_i
       pct_done = 100 if pct_done > 100
       pct_reste = 100 - pct_done
 
-      coef_longueur = 4
-      row_height    = '18px'
+      (
+        bname.in_span(style:"padding-right:12px;text-align:right;display:inline-block;width:300px;overflow:hidden") +
+        "".in_span(class: 'done all', style:"width:#{pct_done*coef_longueur}px;") +
+        "".in_span(class: 'undo all', style:"width:#{pct_reste*coef_longueur}px;") +
+        "#{pages}/#{expected}".in_span(class: 'pages')
+      ).in_div(class:'bookrang', onclick:"document.location.href='livre/#{bid}/tdm?in=cnarration'")
+    end.join.in_div(id:"cnarration_inventory", style:"line-height:1em")
+
+    code = "<h4>Nombre de pages en développement par livre</h4>" +
+            styles_css_graphiques_pages +
+            code
+    (Cnarration::folder+"cnarration_inventory.html").write code
+  end
+
+  # Produit et écrit le graphe de l'état actuel de la collection
+  # pour l'accueil de la collection MAIS EN NE CONSIDÉRANT QUE
+  # LES PAGES ACHEVÉES
+  def graphe_accueil_etat_pages_achevees
+
+    coef_longueur = 4
+    row_height    = '18px'
+
+    code = @table_per_book.collect do |bid, bdata|
+      bname    = bdata[:name]
+      expected = bdata[:expected]
+
+      nombre_pages_achevees = 0
+      nombre_files_acheves  = 0
+
+      (8..10).each do |niveau|
+        data_niveau_x = bdata[:pages_per_niveau][niveau]
+        data_niveau_x != nil || next
+        nombre_pages_achevees += data_niveau_x[:nombre_pages]
+        nombre_files_acheves  += data_niveau_x[:files].count
+      end
+
+      nombre_pages_achevees = nombre_pages_achevees.ceil
+
+      pages = nombre_pages_achevees
+      # signes   = bdata[:signes]
+
+      # Pourcentage exécuté
+      pct_done  = ((pages.to_f / expected) * 100).to_i
+      pct_done = 100 if pct_done > 100
+      pct_reste = 100 - pct_done
 
       (
         bname.in_span(style:"padding-right:12px;text-align:right;display:inline-block;width:300px;overflow:hidden") +
-        "".in_span(style:"display:inline-block;width:#{pct_done*coef_longueur}px;background-color:green;height:#{row_height}") +
-        "".in_span(style:"display:inline-block;width:#{pct_reste*coef_longueur}px;background-color:mediumaquamarine;height:#{row_height}") +
-        "#{pages}/#{expected}".in_span(style:"padding-left:12px;font-size:8.5pt;vertical-align:super;")
-      ).in_div(class:'bookrang', style:'font-size:11pt;vertical-align:middle', onclick:"document.location.href='livre/#{bid}/tdm?in=cnarration'")
-    end.join.in_div(id:"cnarration_inventory", style:"line-height:1em")
+        "".in_span(class: 'done end', style:"width:#{pct_done*coef_longueur}px;") +
+        "".in_span(class: 'undo end', style:"width:#{pct_reste*coef_longueur}px;") +
+        "#{pages}/#{expected}".in_span(class: 'pages')
+      ).in_div(class:'bookrang', onclick:"document.location.href='livre/#{bid}/tdm?in=cnarration'")
+    end.join.in_div(id:"cnarration_inventory_done", style:"line-height:1em")
+    #
+    code = "<h4>Nombre de pages achevées par livre</h4>"+
+            code
+    (Cnarration::folder+"cnarration_inventory.html").append code
+  end
 
-    (Cnarration::folder+"cnarration_inventory.html").write code
+  def styles_css_graphiques_pages
+    <<-EOD
+<style type="text/css">
+div.bookrang {
+  font-size:11pt;
+  vertical-align:middle
+}
+div.bookrang span.done {
+  display:inline-block;
+  height:18px;
+}
+div.bookrang span.undo {
+  display:inline-block;
+  height:18px;
+}
+/* Graphique de toutes les pages */
+div.bookrang span.undo.all{background-color:mediumaquamarine;}
+div.bookrang span.done.all{background-color:green;}
+
+/* Graphique des pages achevées */
+div.bookrang span.undo.end{background-color:#cdfff5;}
+div.bookrang span.done.end{background-color: #477078;}
+
+div.bookrang span.pages {
+  padding-left:12px;
+  font-size:8.5pt;
+  vertical-align:super;
+}
+</style>
+
+    EOD
   end
 
   # Reçoit un nombre quelconque et un nombre max et retourne le

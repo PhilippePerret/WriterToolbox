@@ -86,16 +86,6 @@ class Console
     return ""
   end
 
-  # Commande complexe qui synchronise la base de données cnarration.db
-  # en vérifiant le niveau de développement des pages pour garder les
-  # modifications qui ont pu être faites online et offline.
-  def run_synchronize_database_narration
-    flash "Base de données Narration synchronisée."
-    require './objet/cnarration/synchro.rb'
-    SynchroNarration::synchronise_database_narration
-    return ""
-  end
-
   # RETURN La balise pour insérer une référence à
   # la page dans le document pour la page de référence
   # +page_ref+ qui est une portion du titre.
