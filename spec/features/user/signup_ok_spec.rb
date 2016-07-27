@@ -3,8 +3,6 @@ feature "Inscription d'un nouveau membre" do
 
   scenario "Un nouveau membre s'inscrit avec succès" do
 
-    degel 'aucun-programme'
-
     start_time = Time.now.to_i - 1
 
     nombre_users = User.table_users.count.freeze
@@ -71,14 +69,17 @@ feature "Inscription d'un nouveau membre" do
     ticket_id_in_table = res[:id]
     puts "Un ticket a été créé pour l'user avec les bonnes données"
 
-    expect(user).to have_mail(
+    expect(u).to have_mail(
       sent_after:     start_time,
       subject:        'Merci de confirmer votre mail'
     )
     puts "Un mail lui est envoyé pour confirmer son inscription"
-    mail_user = MailMatcher::mail_found
+
+    mail_user = MailMatcher::mails_found.first
+    # => Instance MailMatcher
+
     # puts mail_user.pretty_inspect
-    message = mail_user[:message]
+    message = mail_user.message_content
     expect(message).to include "confirmer votre adresse-mail"
     puts "Le mail contient le bon message"
     ticket_id = message.match(/\?tckid\=([a-zA-Z0-9]+)/).to_a[1]
@@ -89,16 +90,10 @@ feature "Inscription d'un nouveau membre" do
     # ---------------------------------------------------------------------
     # Test de l'autorisation
 
-    # Il doit y avoir une autorisation de plus
-    expect(User.table_autorisations.count).to eq nombre_autorisations + 1
-    # Une autorisation doit avoir été créée pour l'auteur
-    dautos = User.table_autorisations.select(where: {user_id: u.id})
-    expect(dautos).not_to be_empty
-    dauto = dautos.first
-    expect(dauto[:raison]).to eq 'ABONNEMENT'
-    expect(dauto[:end_time]).not_to eq nil
-    expect(dauto[:end_time]).to be > (start_time + 1.year - 1000)
+    # Il NE doit PAS y avoir une autorisation de plus, puisque
+    # c'est ici une simple inscription, sans abonnement
+    expect(User.table_autorisations.count).to eq nombre_autorisations
+    expect(User.table_autorisations.count(where:{user_id: u.id})).to eq 0
 
-    gel 'testint-apres-signup-valide'
   end
 end

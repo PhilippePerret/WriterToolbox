@@ -164,7 +164,7 @@ class Paiement
     site.send_mail(
       from:     site.mail,
       to:       user.mail,
-      subject:  "Confirmation de votre paiement",
+      subject:  'Confirmation de votre paiement',
       message:  facture,
       formated: true
     )

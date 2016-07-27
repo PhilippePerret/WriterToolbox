@@ -31,7 +31,12 @@ class MailMatcher
   def message_content
     if message.match(/id="message_content"/)
       dochtml = Nokogiri::HTML(message)
-      dochtml.css('div#message_content > div:first').inner_html
+      # dochtml.css('div#message_content > div:first').inner_html
+      inner = dochtml.css('div#message_content').inner_html
+      # Et on supprime la signature et la suite si elles existent
+      offset = inner.index('<span id="signature"')
+      inner = inner[0..offset-1].strip if offset > 0
+      inner
     else
       message
     end

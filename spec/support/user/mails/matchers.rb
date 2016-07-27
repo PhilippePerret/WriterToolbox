@@ -45,6 +45,7 @@ end
 
 RSpec::Matchers::define :have_mail do |params|
   match do |owner|
+    owner.instance_of?(User) || raise('Il faut fournir un User à la méthode de test `have_mail` !')
     expect(owner).to have_mails((params || {}).merge(:only_one => true))
   end
   failure_message do |owner|
@@ -53,6 +54,7 @@ RSpec::Matchers::define :have_mail do |params|
     if MailMatcher::mails_found.count > 1
       "Plusieurs mails adressés à #{params[:to]} ont été trouvés, avec les paramètres transmis…"
     else
+      # En cas d'erreur lorsqu'on cherche un mail
       "Aucun mail adressé à #{params[:to]} n'a été trouvé avec les paramètres #{params.inspect}.\n#{MailMatcher::message_added}"
     end
   end

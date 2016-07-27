@@ -159,7 +159,7 @@ RSpec.configure do |config|
 
   config.before :suite do
 
-    reset_mails
+    remove_mails
 
     empty_screenshot_folder
 
@@ -172,12 +172,15 @@ RSpec.configure do |config|
 
     # Un Array contenant les instances ou les identifiants des
     # users qu'il faudra détruire à la fin des tests.
-    $users_2_destroy = Array::new
+    # On peut y mettre indifféremment des Identifiants (Fixnum),
+    # des instances user ({User}) ou des Hash de données (contenant
+    # au moins :id)
+    $users_2_destroy = Array.new
 
     # On fait un gel du site actuel pour pouvoir le remettre
     # ensuite.
-    SiteHtml.instance.require_module('gel')
-    SiteHtml::Gel::gel('before-test')
+    # SiteHtml.instance.require_module('gel')
+    # SiteHtml::Gel::gel('before-test')
 
   end
 
@@ -186,12 +189,27 @@ RSpec.configure do |config|
 
   end
 
+  # À exécuter à la toute fin des tests
   config.after :suite do
-    debug "\n\n"
 
-    SiteHtml.instance.require_module('gel')
-    SiteHtml::Gel::degel('before-test')
+    # SiteHtml.instance.require_module('gel')
+    # SiteHtml::Gel::degel('before-test')
 
+    # Si la liste n'est pas vide, on détruit tous les
+    # users créés
+    unless $users_2_destroy.empty?
+      # On transforme la liste en liste d'identifiants
+      $users_2_destroy.collect! do |ref_u|
+        case ref_u
+        when Hash   then ref_u[:id]
+        when User   then ref_u.id
+        when Fixnum then ref_u
+        else
+          nil
+        end
+      end.compact
+      User.table.delete(where: "id IN (#{$users_2_destroy.join(', ')})")
+    end
   end
 
 
