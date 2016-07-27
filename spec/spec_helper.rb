@@ -150,6 +150,13 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
+  config.before :each do
+    # Permet simplement d'afficher les résultats au fur et à mesure,
+    # dans Atom (je crois que dans le terminal ça fonctionne déjà
+    # comme ça)
+    sleep 0.03
+  end
+
   config.before :suite do
 
     reset_mails
