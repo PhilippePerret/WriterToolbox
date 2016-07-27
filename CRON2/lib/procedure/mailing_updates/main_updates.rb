@@ -17,7 +17,7 @@ class CRON2
       def send_mail
         # Pas d'annonce si ça n'est pas l'heure (minuit)
         Time.now.hour == 0 || return
-        
+
         # Pas d'annonce si la dernière annonce remonte à moins de 23 heures
         # C'est une protection dans le cas où plusieurs cron seraient appelés
         # dans l'heure, ce qui arrive souvent quand on teste.
@@ -29,7 +29,7 @@ class CRON2
         no_updates_this_week    = last_week_updates.empty?
         no_updates_no_samedi    = no_updates_today && !samedi?
         samedi_but_no_updates   = samedi? && no_updates_this_week
-        
+
         (no_updates_no_samedi || samedi_but_no_updates ) && return
 
         # ----------------------------------------------
@@ -41,7 +41,7 @@ class CRON2
         end
 
       end
-      
+
       def http
         @http ||= "http://www.laboiteaoutilsdelauteur.fr"
       end
@@ -110,13 +110,13 @@ class CRON2
       else
         true
       end
-      
+
       # Le message final complet, en fonction de l'user et de ses
       # préférences mail
       def full_message_final u, pref_mail
         data_template = {
-          pseudo: u.pseudo, 
-          id:     u.id, 
+          pseudo: u.pseudo,
+          id:     u.id,
           # Message d'abonnement en fin de mail
           # Si l'user est abonné, on le remercie, sinon on lui propose
           # de soutenir le site en s'abonnant.
@@ -124,8 +124,8 @@ class CRON2
         }
         (pref_mail == 'weekly' ? template_week_message : template_message) % data_template
       end
-      
-      
+
+
       # Message de fin de mail à envoyer en fonction de la "position" de
       # l'user, s'il est abonné ou non.
       # TODO Il faudra modifier les tests ci-dessous en tenant compte du
@@ -144,7 +144,7 @@ class CRON2
         @template_message ||= begin
           <<-HTML
 <p class="small">%{pseudo}, nous sommes heureux de vous faire part des dernières actualités
-  de la BOITE À OUTILS DE L'AUTEUR.</p>
+  de la BOITE À OUTILS DE L'AUTEUR en date du <strong>#{(Time.now.to_i - 10.hours).as_human_date}</strong>.</p>
   #{ul_last_updates}
   <p class="tiny">Notez que nous ne sommes nullement là pour vous
     importuner, aussi,
