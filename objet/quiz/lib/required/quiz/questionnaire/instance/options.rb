@@ -12,7 +12,8 @@ class Quiz
     1 => {hname: 'aléatoire', description: '1: questions dans un ordre aléatoire, 0: questions dans ordre prédéfini'},
     2 => {hname: 'Centaine du nombre max de questions ou -', description: nil},
     3 => {hname: 'Dizaine du nombre max de questions ou -', description: nil},
-    4 => {hname: 'Unité du nombre max de questions ou 0', description: nil}
+    4 => {hname: 'Unité du nombre max de questions ou 0', description: nil},
+    5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test'}
   }
 
   # Les options par défaut. Obligatoire pour gérer l'édition
@@ -43,6 +44,10 @@ class Quiz
     end
   end
 
+  # Noter que pour le moment il faut le régler manuellement
+  def hors_liste?
+    options[5].to_i == 1
+  end
 
 
 end #/Quiz

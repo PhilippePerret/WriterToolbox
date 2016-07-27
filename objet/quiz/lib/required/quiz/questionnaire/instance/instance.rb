@@ -5,8 +5,14 @@ class ::Quiz
   # de la base de données courante.
   attr_reader :id
 
-  def initialize qid
+  # +qid+ Identifiant du quiz dans sa base de données.
+  # +suffix_base+ permet de le définir explicitement à l'instanciation,
+  # par exemple lorsqu'il y a une liste de quiz provenant de différentes
+  # bases.
+  #
+  def initialize qid, suffix_base = nil
     @id = qid
+    @suffix_base = suffix_base
   end
 
   # Retourne true si le questionnaire existe déjà

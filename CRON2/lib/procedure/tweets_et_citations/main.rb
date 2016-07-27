@@ -86,7 +86,7 @@ class CRON2
         site.tweet( mess_citation, dont_check_length: true)
         CRON2::Histo.add(code: '25101', data: citation_id, description: "Citation à #{Time.now.hour} heures")
       rescue Exception => e
-        log "Problème en envoyant la citation", e
+        log "Problème en envoyant la citation ##{citation_id}", e
       end
 
       # Méthode d'envoi du tweet permanent

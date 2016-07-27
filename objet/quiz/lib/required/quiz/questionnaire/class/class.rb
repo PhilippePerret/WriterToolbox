@@ -42,7 +42,6 @@ class ::Quiz
             nil
           else
             qid_current = quiz_courants.first[:id]
-            debug "qid_current = #{qid_current}"
             @suffix_base = suffix_base
             new(qid_current)
           end
@@ -65,9 +64,12 @@ class ::Quiz
     # "db" pour "database" et "r" pour relname, le nom relatif, sans 'quiz'
     # et sans la racine des bases de données — 'boite-a-outils' pour le BOA)
     #
+    # Il peut être défini explicitement par les test avec
+    # Quiz.suffix_base=
     def suffix_base
       @suffix_base ||= param(:qdbr).nil_if_empty
     end
+    def suffix_base= value; @suffix_base = value end
 
     # Méthode qui cherche le quiz courant
     # Elle retourne soit l'instance du Quiz trouvé, soit nil.

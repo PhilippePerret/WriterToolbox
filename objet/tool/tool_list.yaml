@@ -35,6 +35,12 @@ screencasts:
   description: |
     Des didacticiels en vidéo qui permettent d'améliorer de façon significative son écriture, aussi bien au niveau de la qualité de ce qui est produit que de la quantité.
 
+quizzzz:
+  name:       Les quizzzz
+  folder:     quiz
+  home:       quiz/show
+  description: |
+    Des quiz et autres questionnaires pour tester ses connaissances en narration et en jargon scénaristique.
 facture:
   name:       La facture d’auteur
   folder:     facture

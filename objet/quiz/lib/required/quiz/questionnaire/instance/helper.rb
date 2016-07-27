@@ -52,12 +52,16 @@ class Quiz
     if ureponses.nil?
       (
         (avant_description_quiz || '') +
-        (description || '').deserb.formate_balises_propres.in_div(id: 'qdescription') +
+        description_formated +
         (apres_description_quiz || '')
       ).in_div(id: 'quiz_description')
     else
       ''
     end
+  end
+
+  def description_formated
+    @description_formated ||= (description || '').deserb.formate_balises_propres.in_div(id: 'qdescription')
   end
 
   def avant_description_quiz
@@ -95,7 +99,7 @@ class Quiz
               "Note moyenne : <strong>#{data_generales[:moyenne].to_f}/20</strong> - " +
               "la plus faible : <strong>#{data_generales[:note_min].to_f}/20</strong>"
             ).in_div
-      c << "Premier test : #{data_generales[:created_at].as_human_date(true, true)}<br />Dernier test : #{data_generales[:updated_at].as_human_date(true, true)}".in_div
+      c << "Premier test : #{data_generales[:created_at].as_human_date(true, true, nil, 'à')}<br />Dernier test : #{data_generales[:updated_at].as_human_date(true, true, nil, 'à')}".in_div
     end
     return c.in_div(id: 'infos_generales')
   rescue Exception => e

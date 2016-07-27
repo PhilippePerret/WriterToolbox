@@ -10,22 +10,6 @@
 =end
 class Quiz
 
-  class << self
-
-    # Tous les suffixes de bases de données dans toutes les
-    # bases de données du site.
-    def all_suffixes_quiz
-      @all_suffixes_quiz ||= begin
-        SiteHtml::DBM_TABLE.databases.collect do |dbname|
-          dbname.start_with?("#{SiteHtml::DBBASE_PREFIX}quiz_") || (next nil)
-          dbname.sub(/#{Regexp.escape SiteHtml::DBBASE_PREFIX}quiz_/o, '')
-        end.compact
-      end
-    end
-
-
-  end #/ << self Quiz
-
   # Le suffixe base qui permettra de savoir dans quelle base est
   # enregistré le questionnaire.
   # Ce suffixe peut être déterminé soit :
