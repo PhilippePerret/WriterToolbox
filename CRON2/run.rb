@@ -88,6 +88,13 @@ rescue Exception => e
   putslog e.backtrace.join("\n")
 end
 
+begin
+  CRON2::SuperLog.send_superlog_if_required
+rescue Exception => e
+  putslog "# ERREUR À L'ENVOI DU SUPER-LOG : #{e.message}"
+  putslog e.backtrace.join("\n")
+end
+
 putslog "    CRON2 achevé le #{Time.now}"
 
 # On essaie d'envoyer ça à l'administrateur si
