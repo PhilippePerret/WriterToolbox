@@ -5,6 +5,13 @@
 #
 class DUser
 
+  # Nombre de travaux en dépassements et de non démarrés maximum
+  # avant que le programme se "bloque", c'est-à-dire qu'il ne puisse
+  # plus passer au jour suivant avant la résorbtion du problème.
+  NOMBRE_MAX_OVERRUNS   = 20
+  NOMBRE_MAX_UNSTARTED  = 30
+
+
   # ID de l'user, l'auteur du programme UN AN UN SCRIPT
   attr_reader :id
 
@@ -16,7 +23,7 @@ class DUser
   # étendant de cette façon-là. Et appeler cette méthode en bas de fichier
   # pour être sûr de les initialiser
   def self.init
-    include MethodesMySQL 
+    include MethodesMySQL
     site.require_objet 'unan'
     Unan.require_module 'current_pday_user'
     include CurrentPDayClass
@@ -71,14 +78,59 @@ class DUser
     # On doit l'envoyer si :
     #   - l'auteur veut recevoir ses rapports quotidien
     #   OU - il a de nouveaux travaux ou des travaux en retard
-    #   - l'heure de l'envoi est arrivée.
+    #   - l'heure de l'envoi est arrivée et que l'auteur n'a
+    #     pas trop de retards
     def send_unan_report?
       if time_to_send_unan_report?
-        passe_programme_au_jour_suivant
-        return want_daily_mail? || has_new_or_overrun_work?
+        if too_many_overruns?
+          # Si l'auteur a trop de travaux en retard, on lui
+          # envoie un simple mail pour l'informer qu'on ne peut
+          # pas le passer au jour suivant
+          send_mail_too_manu_overruns
+        else
+          # Sinon, on le passe au jour suivant
+          passe_programme_au_jour_suivant
+          return want_daily_mail? || has_new_or_overrun_work?
+        end
       else # Non, il n'est pas encore temps
         false
       end
+    end
+
+    # Retourne true si l'auteur a trop de travaux en retard et
+    # à démarrer.
+    # Cela dépend des valeurs NOMBRE_MAX_OVERRUNS et NOMBRE_MAX_UNSTARTED
+    def too_many_overruns?
+      current_day.nombre_overrun >= NOMBRE_MAX_OVERRUNS || current_day.nombre_unstarted >= NOMBRE_MAX_UNSTARTED
+    end
+
+    # Envoi un message à l'auteur pour l'informer qu'on n'a
+    # pas pu le passer au jour suivant à cause de son trop
+    # grand nombre de retards
+    def send_mail_too_manu_overruns
+      message = <<-HTML
+      <p>#{pseudo},</p>
+      <p>
+        Nous en sommes vraiment désolés, mais nous ne pouvons pas vous
+        faire passer au jour-programme suivant de votre programme UN AN
+        UN SCRIPT car votre nombre de travaux en retard est trop important.
+      </p>
+      <p>
+        Pour remédier à cette situation, merci d'effectuer les travaux
+        nécessaires. Le programme repartira normalement dès que vous
+        aurez résorbé au moins en partie cette situation.
+      </p>
+      <p>
+        Bon courage !
+      </p>
+      HTML
+      message = message.gsub(/\n/,' ').gsub(/ +/, ' ')
+      send_mail(
+        subject:    'Passage au jour-programme suivant impossible',
+        message:    message,
+        formated: true
+      )
+      superlog "=# #{pseudo} n'a pas pu être passé au jour-programme suivant de son programme UN AN UN SCRIPT : trop de retards (#{current_day.nombre_unstarted} — max : #{NOMBRE_MAX_UNSTARTED}) ou de dépassements (#{current_day.nombre_overrun} — max : #{NOMBRE_MAX_OVERRUNS})."
     end
 
     # ---------------------------------------------------------------------
