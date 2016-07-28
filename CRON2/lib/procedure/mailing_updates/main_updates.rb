@@ -144,7 +144,7 @@ class CRON2
         @template_message ||= begin
           <<-HTML
 <p class="small">%{pseudo}, nous sommes heureux de vous faire part des dernières actualités
-  de la BOITE À OUTILS DE L'AUTEUR en date du <strong>#{(Time.now.to_i - 10.hours).as_human_date}</strong>.</p>
+  de la BOITE À OUTILS DE L'AUTEUR en date du <strong>#{(Time.now.to_i - 10.hours).as_human_date(true, false, ' ')}</strong>.</p>
   #{ul_last_updates}
   <p class="tiny">Notez que nous ne sommes nullement là pour vous
     importuner, aussi,

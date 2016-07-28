@@ -10,6 +10,9 @@ class CRON2
 
         require './lib/required'
 
+        # On aura toujours besoin des mails
+        site.require_module 'mail'
+
     end
 
 end#/CRON2

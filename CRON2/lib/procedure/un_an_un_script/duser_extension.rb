@@ -74,7 +74,14 @@ class DUser
       @current_pday = nil
     end
 
-    # RETURN true si on doit envoyer le rapport à l'auteur
+    # RETURN true si on doit envoyer le rapport à l'auteur et
+    # false dans le cas contraire.
+    #
+    # Noter que la méthode, si l'auteur est en trop grand
+    # dépassement, retourne false mais envoie un mail à
+    # l'auteur pour lui dire que son programme est bloqué en
+    # attendant qu'il se remette à jour.
+    #
     # On doit l'envoyer si :
     #   - l'auteur veut recevoir ses rapports quotidien
     #   OU - il a de nouveaux travaux ou des travaux en retard
@@ -86,7 +93,8 @@ class DUser
           # Si l'auteur a trop de travaux en retard, on lui
           # envoie un simple mail pour l'informer qu'on ne peut
           # pas le passer au jour suivant
-          send_mail_too_manu_overruns
+          send_mail_too_many_overruns
+          return false
         else
           # Sinon, on le passe au jour suivant
           passe_programme_au_jour_suivant
@@ -101,24 +109,29 @@ class DUser
     # à démarrer.
     # Cela dépend des valeurs NOMBRE_MAX_OVERRUNS et NOMBRE_MAX_UNSTARTED
     def too_many_overruns?
-      current_day.nombre_overrun >= NOMBRE_MAX_OVERRUNS || current_day.nombre_unstarted >= NOMBRE_MAX_UNSTARTED
+      current_pday.nombre_overrun >= NOMBRE_MAX_OVERRUNS || current_pday.nombre_unstarted >= NOMBRE_MAX_UNSTARTED
     end
 
     # Envoi un message à l'auteur pour l'informer qu'on n'a
     # pas pu le passer au jour suivant à cause de son trop
     # grand nombre de retards
-    def send_mail_too_manu_overruns
+    def send_mail_too_many_overruns
       message = <<-HTML
       <p>#{pseudo},</p>
       <p>
-        Nous en sommes vraiment désolés, mais nous ne pouvons pas vous
-        faire passer au jour-programme suivant de votre programme UN AN
-        UN SCRIPT car votre nombre de travaux en retard est trop important.
+        Nous ne pouvons pas vous
+        faire passer au jour-programme UN AN
+        UN SCRIPT suivant car votre nombre de travaux en retard est trop
+        important.
       </p>
       <p>
         Pour remédier à cette situation, merci d'effectuer les travaux
         nécessaires. Le programme repartira normalement dès que vous
         aurez résorbé au moins en partie cette situation.
+      </p>
+      <p>
+        Pas de panique ! Le programme reprendra dès que vous aurez résorbé
+        la situation.
       </p>
       <p>
         Bon courage !
@@ -130,7 +143,7 @@ class DUser
         message:    message,
         formated: true
       )
-      superlog "=# #{pseudo} n'a pas pu être passé au jour-programme suivant de son programme UN AN UN SCRIPT : trop de retards (#{current_day.nombre_unstarted} — max : #{NOMBRE_MAX_UNSTARTED}) ou de dépassements (#{current_day.nombre_overrun} — max : #{NOMBRE_MAX_OVERRUNS})."
+      superlog "=# #{pseudo} n'a pas pu être passé au jour-programme suivant de son programme UN AN UN SCRIPT : trop de retards (#{current_pday.nombre_unstarted} — max : #{NOMBRE_MAX_UNSTARTED}) ou de dépassements (#{current_pday.nombre_overrun} — max : #{NOMBRE_MAX_OVERRUNS})."
     end
 
     # ---------------------------------------------------------------------
