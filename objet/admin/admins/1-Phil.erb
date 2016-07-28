@@ -22,6 +22,6 @@ raise_unless user.pseudo == 'Phil' && user.id == 1
       uid = File.basename(p).split('-')[0].to_i
       next if user.id == uid || uid == 1
     %>
-    <%= Vue::new(p.sub(/^\.\/objet\//,'')).output %>
+    <%= Vue.new(p.sub(/^\.\/objet\//,'')).output %>
   <% end %>
 </div>

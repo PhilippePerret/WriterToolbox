@@ -149,7 +149,7 @@ class Bureau
     def panneau
       @panneau ||= begin
         Onglet::current.titre_panneau +
-        Vue::new(id.to_s, bureau.folder_panneaux, bureau).output
+        Vue.new(id.to_s, bureau.folder_panneaux, bureau).output
       end
     end
 

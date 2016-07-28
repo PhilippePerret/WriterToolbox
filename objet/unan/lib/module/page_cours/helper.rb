@@ -26,7 +26,7 @@ class PageCours
       site.require_objet 'cnarration'
       npage = Cnarration::Page::get(narration_id)
       site.instance_variable_set("@objet", npage)
-      return Vue::new('cnarration/page/show.erb').output
+      return Vue.new('cnarration/page/show.erb').output
 
       # Ça, ça marche, mais ça n'affiche que la page, pas les
       # boutons de navigation et autre.

@@ -60,7 +60,6 @@ class DUser
   def program_rythme; @program_rythme ||= program.rythme      end
   def program_created_at; @program_created_at ||= program.created_at end
 
-
   # Méthode qui passe le programme au jour suivant
   def passe_programme_au_jour_suivant
     Unan.table_programs.set(
@@ -69,9 +68,9 @@ class DUser
       current_pday_start: next_pday_start,
       updated_at:         NOW
       })
-      # pour forcer l'actualisation
-      @program      = nil
-      @current_pday = nil
+    # pour forcer l'actualisation
+    @program      = nil
+    @current_pday = nil
     end
 
     # RETURN true si on doit envoyer le rapport à l'auteur et
@@ -93,6 +92,7 @@ class DUser
           # Si l'auteur a trop de travaux en retard, on lui
           # envoie un simple mail pour l'informer qu'on ne peut
           # pas le passer au jour suivant
+          repousse_pday_start_to_lendemain
           send_mail_too_many_overruns
           return false
         else
@@ -110,6 +110,20 @@ class DUser
     # Cela dépend des valeurs NOMBRE_MAX_OVERRUNS et NOMBRE_MAX_UNSTARTED
     def too_many_overruns?
       current_pday.nombre_overrun >= NOMBRE_MAX_OVERRUNS || current_pday.nombre_unstarted >= NOMBRE_MAX_UNSTARTED
+    end
+
+    # Méthode pour repousser la date de prochain pday start
+    # au lendemain, lorsque l'auteur a trop de dépassements et
+    # de travaux non démarrés
+    def repousse_pday_start_to_lendemain
+      Unan.table_programs.set(
+      program.id, {
+        current_pday_start: next_pday_start,
+        updated_at:         NOW
+        })
+      # pour forcer l'actualisation
+      @program      = nil
+      @current_pday = nil
     end
 
     # Envoi un message à l'auteur pour l'informer qu'on n'a

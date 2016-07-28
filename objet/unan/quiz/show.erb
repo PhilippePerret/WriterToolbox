@@ -25,5 +25,5 @@
   site.require_objet 'unan_admin'
   UnanAdmin::require_module 'quiz'
   %>
-  <%= Vue::new("simulation.erb", site.folder_objet + "unan_admin/quiz/").output %>
+  <%= Vue.new("simulation.erb", site.folder_objet + "unan_admin/quiz/").output %>
 <% end %>

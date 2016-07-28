@@ -36,7 +36,7 @@ class Page
   end
 
   def output_error error_id
-    Vue::new("error_#{error_id}.erb", folder_error_for(error_id), site).output +
+    Vue.new("error_#{error_id}.erb", folder_error_for(error_id), site).output +
     lien_backward
   end
 

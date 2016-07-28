@@ -12,7 +12,7 @@ class Unan
     # Permet de charger une vue
     # @usage  Unan::view('path/relatif/depuis/dossier/objet_sans_erb')
     def view path
-      Vue::new(path, Unan.folder, Unan).output
+      Vue.new(path, Unan.folder, Unan).output
     end
 
     # Return un lien HTML pour rejoindre le bureau

@@ -38,3 +38,7 @@
   <%= page.content_route || page.home %>
 
 </section>
+<%
+# La section commentaires de page, si requis
+%>
+<%= page.comments if page.comments? %>

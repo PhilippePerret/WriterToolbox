@@ -40,7 +40,7 @@ class Page
   # view/deep/gabarit/header.erb
   def header
     @header ||= begin
-      vue = Vue::new('header', site.folder_custom_gabarit)
+      vue = Vue.new('header', site.folder_custom_gabarit)
       vue.output
     rescue Exception => e
       self.fatal_error = e
@@ -50,7 +50,7 @@ class Page
 
   def footer
     @footer ||= begin
-      vue = Vue::new('footer', site.folder_custom_gabarit)
+      vue = Vue.new('footer', site.folder_custom_gabarit)
       if vue.exist?
         vue.output
       else
@@ -82,7 +82,7 @@ class Page
 
   def left_margin
     @left_margin ||= begin
-      Vue::new('left_margin', site.folder_custom_gabarit).output
+      Vue.new('left_margin', site.folder_custom_gabarit).output
     rescue Exception => e
       self.fatal_error = e
       "[PROBLÈME DE LEFT-MARGIN : #{e.message}]"
@@ -135,7 +135,7 @@ class Page
   #
   # @syntaxe    page.view(<file name>, <dossier objet>, <bindee>)
   def view relpath, dossier = nil, bindee = nil
-    Vue::new(relpath, dossier, bindee).output
+    Vue.new(relpath, dossier, bindee).output
   end
   alias :vue :view
 

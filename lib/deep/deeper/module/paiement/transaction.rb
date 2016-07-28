@@ -66,7 +66,7 @@ class Paiement
       # Si vraiment une application doit utiliser des formulaires
       # différents en fonction du context, il faut modifier pour
       # que le
-      self.output = Vue::new(form_affixe_path, nil, self).output
+      self.output = Vue.new(form_affixe_path, nil, self).output
     end
   end
 
@@ -134,9 +134,9 @@ class Paiement
     @token    = param(:token)
     @payer_id = param(:PayerID)
     if valider_paiement
-      self.output = Vue::new("#{context}/paiement/on_ok", nil, self).output
+      self.output = Vue.new("#{context}/paiement/on_ok", nil, self).output
     else
-      self.output = Vue::new("#{context}/paiement/on_error", nil, self).output
+      self.output = Vue.new("#{context}/paiement/on_error", nil, self).output
     end
   end
 
@@ -144,7 +144,7 @@ class Paiement
   # d'exécuter le paiement.
   # TODO : Il faut faire un test pour voir si la vue existe
   def on_cancel
-    self.output = Vue::new("#{context}/paiement/on_cancel", nil, self).output
+    self.output = Vue.new("#{context}/paiement/on_cancel", nil, self).output
   end
 
   # Enregistrer le paiement
