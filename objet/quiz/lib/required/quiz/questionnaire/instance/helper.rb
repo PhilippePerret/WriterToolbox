@@ -15,8 +15,8 @@ class Quiz
     # Le code complet retourné
     (
       "<h2 class='titre'>#{titre}</h2>" +
-      resultat        + # seulement après soumission
-      div_description +
+      resultat          + # seulement après soumission
+      div_introduction  + # description, etc.
       html_form
     ).in_div(class: 'quiz')
   end
@@ -48,7 +48,7 @@ class Quiz
   end
 
   # Code HTML pour la description du quiz, si elle existe
-  def div_description
+  def div_introduction
     if ureponses.nil?
       (
         (avant_description_quiz || '') +
@@ -73,7 +73,10 @@ class Quiz
     else
       if data_generales[:note_max] < 20
         best_note = "#{data_generales[:note_max].to_f}/20"
-        c << "Serez-vous capable de battre la meilleure note obtenue ? #{best_note.in_span(id: 'best_note')}".in_div
+        c << (
+              "Serez-vous capable de battre la meilleure note obtenue ? #{best_note.in_span(id: 'best_note')}" +
+              ' (et gagner un mois d’abonnement gratuit au site ;-))'.in_span(class: 'small')
+              ).in_div
       end
     end
     return c.in_div(id: 'quiz_defi')

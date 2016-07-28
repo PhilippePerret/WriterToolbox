@@ -21,6 +21,8 @@ class ::Quiz
     elsif !enable?
       output_on_error :unable
     else
+      # === Construction du quiz ===
+      # 
       # Il faut ajouter les javascripts du dossier js/user et les css
       # du dossier css/user
       # Il faut ajouter les javascripts du dossier js et les css
