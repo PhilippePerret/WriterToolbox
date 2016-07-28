@@ -15,7 +15,7 @@
       form.prefix= 'pcomments'
       %>
       <%= site.current_route.route.in_hidden(name: 'pcomments[route]') %>
-      <%= form.field_textarea("Commentaire", 'comment', nil) %>
+      <%= form.field_textarea("Votre commentaire sur cette page, #{user.pseudo}", 'comment', nil) %>
       <%= form.submit_button('Publier') %>
     </form>
   <% else %>

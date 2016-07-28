@@ -3,6 +3,10 @@
 La classe `Comments` permet de gérer les commentaires sur les pages du site.
 
 * [Rendre une page sensible aux commentaires](#rendreunepagesensibleauxcommentaires)
+
+
+
+
 <a name='rendreunepagesensibleauxcommentaires'></a>
 
 ## Rendre une page sensible aux commentaires
@@ -21,4 +25,12 @@ Par exemple :
 
     <% enable_comments %>
 
-Cela gère tout le système de commentaire et d'affichage.
+Ensuite, tout se gère tout seul.
+
+
+* [Valider des commentaires](#validerdescommentaires)
+<a name='validerdescommentaires'></a>
+
+## Valider des commentaires
+
+Par défaut — et pour le moment — les commentaires doivent être validés.
