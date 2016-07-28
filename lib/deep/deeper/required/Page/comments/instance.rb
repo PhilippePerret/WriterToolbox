@@ -2,6 +2,8 @@
 class Page
   class Comments
 
+    include MethodesMySQL
+
     # Toutes les données envoyées
     # Cette donnée est importante car elle sert notamment à la
     # création du commentaire
@@ -10,12 +12,26 @@ class Page
     attr_reader :id, :pseudo, :user_id
     attr_reader :route, :comment, :date
     attr_reader :votes_up, :votes_down
-    attr_reader :options
     attr_reader :created_at, :updated_at
+    # Les propriétés qui peuvent être appelées sans charger toutes
+    # les données et en instanciant avec seulement l'identifiant du
+    # commentaire (validation par exemple)
+    def options   ; @options ||= get(:options)  end
 
+    # On peut soit instancier le commentaire avec toutes ses
+    # données, soit avec son identifiant Fixnum
     def initialize hdata
-      @data = hdata
-      hdata.each{|k, v| instance_variable_set("@#{k}", v)}
+      case hdata
+      when Hash
+        @data = hdata
+        hdata.each{|k, v| instance_variable_set("@#{k}", v)}
+      when Fixnum
+        @id = hdata
+      end
+    end
+
+    def valided?
+      @is_valided ||= options[0].to_i == 1
     end
 
     def as_li
@@ -31,6 +47,7 @@ class Page
     def div_infos
       (
       span_date +
+      span_numero +
       span_auteur
       ).in_div(class: 'infos')
     end
@@ -44,7 +61,7 @@ class Page
       bs << bouton_vote_down
       if user.admin?
         bs << bouton_detruire
-        bs << bouton_valider
+        valided? || bs << bouton_valider
       end
       bs.in_div(class: 'boutons btns')
     end
@@ -55,6 +72,10 @@ class Page
     end
     def span_auteur
       pseudo.in_span(class: 'auteur')
+    end
+    def span_numero
+      user.admin? || (return '')
+      "##{id}".in_span(class: 'id')
     end
 
     def bouton_vote_up
@@ -68,10 +89,14 @@ class Page
       ).in_a
     end
     def bouton_detruire
-      'détruire'.in_a(class: 'warning tiny btn', href: "")
+      'détruire'.in_a(class: 'warning tiny btn', href: "page_comments/#{id}/list?in=site&action=destroy")
     end
     def bouton_valider
-      'valider'.in_a(class: 'btn tiny', href: "")
+      'valider'.in_a(class: 'btn tiny', href: "page_comments/#{id}/list?in=site&action=valider")
+    end
+
+    def table
+      @table ||= self.class.table
     end
 
   end #/Comments

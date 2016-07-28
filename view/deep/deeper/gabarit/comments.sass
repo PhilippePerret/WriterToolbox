@@ -40,37 +40,43 @@ section#page_comments
     background-color  : white
     font-style        : italic
     
-  //Liste des commentaires validés
-  ul#ul_page_comments
-    list-style  : none
-    margin      : 0
-    padding     : 0
-    li
-      border            : 1px solid #CCC
-      padding           : 0
-      margin            : 1em 0
-      background-color  : white
-      div.infos
-        background-color  : $darkcharte
-        color             : white
-        font-size         : 0.85em
-        padding           : 4px 1em
-        span.date
-          float   : right
-          font-style  : italic
-          font-size   : 0.9em
-      // Le div contenant le commentaire
-      div.comment
-        margin-left     : 4em
-        padding         : 2em
-        font-size       : 0.89em
-      // Les boutons en bas du bloc
-      div.boutons
-        margin-left     : 4em
-        margin-top      : 1em
-        margin-bottom   : 0.5em
-        border-top      : 1px solid black
-        text-align      : right
-        &, *
-          font-size       : 0.85em
-        
+//Liste des commentaires validés
+// NOTE : Elle n'est pas mise sous section#page_comments car on
+// s'en sert aussi pour la page 'page_comments/list'
+ul#ul_page_comments, ul.ul_page_comments
+  list-style  : none
+  margin      : 0
+  padding     : 0
+  li
+    border            : 1px solid #CCC
+    padding           : 0
+    margin            : 1em 0
+    background-color  : white
+    div.infos
+      background-color  : $darkcharte
+      color             : white
+      font-size         : 0.85em
+      padding           : 4px 1em
+      span.date
+        float       : right
+        font-style  : italic
+        font-size   : 0.9em
+      span.id
+        float         : right
+        font-family   : Georgia
+        margin-right  : 1em
+    // Le div contenant le commentaire
+    div.comment
+      margin-left     : 4em
+      padding         : 2em
+      font-size       : 0.89em
+    // Les boutons en bas du bloc
+    div.boutons
+      margin-left     : 4em
+      margin-top      : 1em
+      margin-bottom   : 0.5em
+      border-top      : 1px solid black
+      text-align      : right
+      &, *
+        font-size       : 0.85em
+      

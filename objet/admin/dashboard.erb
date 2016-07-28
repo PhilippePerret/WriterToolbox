@@ -1,7 +1,7 @@
 <%
 # Vue principale pour le tableau de bord d'administration
 raise_unless_admin
-    
+
     def synchronisation_forum
 	user.manitou? || (return '')
 	"Synchronisation…".in_a(href:'forum/synchro')
@@ -16,11 +16,14 @@ raise_unless_admin
 %>
     <div id="admin_tools">
 	<%= "Console".in_a(href:'admin/console').in_div(class:'admin_tool') %>
+  <%=
+  (
+    'Commentaires de pages'.in_a(href:'page_comments/list?in=site')
+  ).in_div(class:'admin_tool')
+
+  %>
 	<% if OFFLINE %>
 	    <%=
-	    (
-		"SYNCHRONISATION".in_a(href:"admin/sync")
-	    ).in_div(class:'admin_tool')
 	    %>
 	    <%=
 	    (
@@ -44,7 +47,7 @@ raise_unless_admin
 	    %>
 	<% end %>
     </div><%# div#admin_tools %>
-    
+
 <%
 end # si user.phil?
 %>
