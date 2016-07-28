@@ -184,9 +184,9 @@ RSpec.configure do |config|
 
   end
 
-  # À faire avant chaque module de test
+  # À faire avant chaque module de test (donc chaque fichier)
   config.before :all do
-
+    User.current = nil
   end
 
   # À exécuter à la toute fin des tests
@@ -260,6 +260,19 @@ RSpec.configure do |config|
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
   end
 
+  # Pour définir la route dans les tests unitaires
+  #
+  # +route+ peut être formée avec un contexte :
+  #   objet/objet_id/method?in=context
+  #
+  def set_route route
+    reg = /([a-zA-Z_]+)(?:\/([0-9]+))?\/([a-zA-Z_]+)(?:\?in=([a-zA-Z_]+))?/
+    droute = route.match(reg).to_a
+    site.send(:set_params_route, *droute[1..-1])
+    site.execute_route
+  end
+
+
   # Pour catcher les messages débug
   def debug str
     str =
@@ -275,6 +288,8 @@ RSpec.configure do |config|
         end
       end
     puts "DBG: #{str}\n"
+  rescue Exception => e
+    # ne rien faire
   end
   # Pour catcher les messages log (par exemple pour le cron)
   def log str

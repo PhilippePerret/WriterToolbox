@@ -27,6 +27,10 @@ def identify_phil
   require './data/secret/data_phil'
   go_and_identify DATA_PHIL[:mail], DATA_PHIL[:password]
 end
+def identify_benoit
+  require './data/secret/data_benoit'
+  go_and_identify DATA_BENOIT[:mail], DATA_BENOIT[:password]
+end
 
 # Retourne un pseudo aléatoire d'une longeur de 6 à 16 lettres
 # à peu près
@@ -110,7 +114,6 @@ end
 def benoit
   u = User.new(2)
   expect(u).to be_instance_of(User)
-  expect(u.pseudo).to eq "Benoit"
   return u
 end
 
@@ -152,14 +155,14 @@ def create_user options = nil
   options[:cpassword] = cpwd
 
 
-  @id = User::table_users.insert(options)
+  @id = User.table_users.insert(options)
   new_user = User.get(@id)
   # debug "ID du nouvel user créé par `create_user` des tests : #{new_user.id.inspect}"
 
   # Mettre en courant lorsqu'on en a fait explicitement la
   # demande ou lorsqu'un programme UN AN UN SCRIPT doit être
   # instancié pour l'auteur.
-  User::current= new_user if mettre_courant || programme_1a1s
+  User.current= new_user if mettre_courant || programme_1a1s
 
   # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il
   # faut simuler son inscription

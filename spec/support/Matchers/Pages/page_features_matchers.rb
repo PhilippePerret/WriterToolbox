@@ -121,8 +121,14 @@ module Capybara
       error ||= "La page ne contient aucun message" unless self.has_css?('div#flash')
       unless self.has_css?('div#flash div.notice', text: /#{Regexp::escape mess}/)
         messages = self.execute_script("return $('div#flash').html()")
-        messages = messages.scan(/<div class="notice">(.*?)<\/div>/).collect{ |e| "“#{e.first}”" }
-        error ||= "La page contient les messages #{messages.pretty_join} mais pas le message “#{mess}”"
+        lemessage =
+          if messages.nil?
+            "La page ne contient aucun message."
+          else
+            messages = messages.scan(/<div class="notice">(.*?)<\/div>/).collect{ |e| "“#{e.first}”" }
+            "La page contient les messages #{messages.pretty_join} mais pas le message “#{mess}”"
+          end
+        error ||= lemessage
       end
       !error or raise Capybara::ExpectationNotMet, error
     end

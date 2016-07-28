@@ -26,6 +26,13 @@ class User
     # une instance User en tout cas.
     def current= u
       @current = u
+      reset_current_user if u.nil?
+    end
+
+    # Permet, pour les tests, de réinitialiser complètement
+    # à nil l'user (lorsqu'il a été défini précédemment par exemple)
+    def reset_current_user
+      app.session['user_id'] = nil
     end
 
     # {User} Retourne l'utilisateur courant. Le récupère
@@ -38,7 +45,6 @@ class User
     #     permettant notamment de régler l'opacité de l'interface
     def current
       @current ||= begin
-        debug "-> current (@current non défini)"
         # debug "-> current (app.session['user_id'] = #{app.session['user_id']})"
         user_id =
           if app.session['user_id'].nil?
@@ -48,12 +54,9 @@ class User
           end
 
         # l'user courant
-        curuser = User::new(user_id)
+        curuser = User.new(user_id)
 
         user_id && curuser.incremente_nombre_pages
-
-        debug "user_id = #{user_id}"
-        debug "<- current"
 
         # Pour le mettre dans @current
         curuser
