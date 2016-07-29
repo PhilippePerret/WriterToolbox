@@ -272,7 +272,7 @@ STDOUT.write Marshal::dump(res)
   # en clé l'identifiant.
   # cf. plus haut pour options
   def rows( table, options = nil )
-    options ||= {}
+    options ||= Hash.new
     main_key = options.delete(:main_key) || :id
     # Si la clé principale n'est pas :id, il faut ajouter la
     # main-key à la liste des colonnes si cette liste est définie

@@ -10,6 +10,8 @@ class Page
     class << self
       def create_comment
         new_com = new(data_new_comment)
+        # On corrige le commentaire avant de l'enregistrer
+        new_com.formate_comment
         if new_com.create
           flash "Merci #{user.pseudo} pour votre commentaire. Il sera validé très prochainement."
           # On envoie le mail d'information à l'administration
@@ -47,9 +49,6 @@ class Page
       def comment_purified dcom
         cp = dcom[:comment].nil_if_empty
         cp != nil || (return nil) # sera traité plus tard
-        @comment = cp
-        cp = comment_formated.nil_if_empty
-        cp != nil || (return nil)
         return cp
       end
     end #/<<self
@@ -85,7 +84,7 @@ class Page
     # de valider directement le commentaire.
     def ticket
       @ticket ||= begin
-        ticket_code = "Page::Comments.valider_comment(#{id})"
+        ticket_code = "User.autologin_admin(:phil);Page::Comments.valider_comment(#{id});User.delogin_admin"
         app.create_ticket(nil, ticket_code)
       end
     end

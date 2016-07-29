@@ -4,9 +4,14 @@ class Comments
   class << self
 
     def valider_comment pcom_id
-      user.admin? || raise
+      user.admin? || raise('Seul un administrateur peut valider le message.')
+      new_comment = new(pcom_id)
+      new_comment.validate
       flash "Commentaire validé."
-      new(pcom_id).validate
+      redirect_to( new_comment.route ) rescue nil
+    rescue Exception => e
+      debug e
+      error e.message
     end
     def destroy_comment pcom_id
       user.admin? || raise

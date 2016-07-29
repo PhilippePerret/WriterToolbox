@@ -9,7 +9,7 @@ class Page
     #
     # Prend le commentaire original et le formate
     #
-    def comment_formated
+    def formate_comment
       c = comment.dup
       c = c.strip
       # On supprime les textes entre balises et les balises elles-mêmes
@@ -44,7 +44,11 @@ class Page
       c = c.split("\n\n").collect do |par|
         par.strip.in_p
       end.join('')
-      return c
+
+      c = c.nil_if_empty
+      c != nil || raise('Votre commentaire est incorrect…')
+
+      @comment = c
     end
 
   end #/Comments

@@ -2,12 +2,13 @@
 class Sync
 
   # Liste des modules de synchronisation
-  # 
+  #
   MODULES2SYNC = [
     ['les fichiers du site',          'site_files'],
+    ['les commentaires de pages',     'page_comments'],
     ['les actualisations',            'updates'],
     ['les tâches',                    'taches'],
-    ['les tweets permanents',         'tweets'],
+    ['les tweets permanents',         'permanent_tweets'],
     ['les citations',                 'citations'],
     ['la Collection Narration',       'narration'],
     ['le programme UN AN UN SCRIPT',  'uaus'],
@@ -42,30 +43,36 @@ class Sync
   #
   def synchroniser
 
-    # Synchronisation du site (tous les fichiers)
-    synchronize_site_files if param('sync_site_files') == 'on'
-    # Synchronisation des tâches
-    synchronize_taches    if param('sync_taches') == 'on'
-    # Synchronisation des citations
-    synchronize_citations if param('sync_citations') == 'on'
-    # Narration
-    synchronize_narration if param('sync_narration') == 'on'
-    # Synchronisation du programme UN AN UN SCRIPT
-    synchronize_uaus      if param('sync_uaus') == 'on'
-    # Synchronisation des quiz
-    synchronize_quizes    if param('sync_quizes') == 'on'
-    # Synchronise le FIlmodico
-    synchronize_filmodico if param('sync_filmodico') == 'on'
-    # Synchronise le SCÉNODICO
-    synchronize_scenodico if param('sync_scenodico') == 'on'
-    # Synchronise les analyses de films
-    synchronize_analyses if param('sync_analyses') == 'on'
-    # Synchronise le affiches de films
-    synchronize_affiches if param('sync_affiches') == 'on'
+    MODULES2SYNC.each do |hname, ident|
+      # ident = p.e. 'site_files'
+      if param("sync_#{ident}") == 'on'
+        send("synchronize_#{ident}".to_sym)
+      end
+    end
+    # # Synchronisation du site (tous les fichiers)
+    # synchronize_site_files if param('sync_site_files') == 'on'
+    # # Synchronisation des tâches
+    # synchronize_taches    if param('sync_taches') == 'on'
+    # # Synchronisation des citations
+    # synchronize_citations if param('sync_citations') == 'on'
+    # # Narration
+    # synchronize_narration if param('sync_narration') == 'on'
+    # # Synchronisation du programme UN AN UN SCRIPT
+    # synchronize_uaus      if param('sync_uaus') == 'on'
+    # # Synchronisation des quiz
+    # synchronize_quizes    if param('sync_quizes') == 'on'
+    # # Synchronise le FIlmodico
+    # synchronize_filmodico if param('sync_filmodico') == 'on'
+    # # Synchronise le SCÉNODICO
+    # synchronize_scenodico if param('sync_scenodico') == 'on'
+    # # Synchronise les analyses de films
+    # synchronize_analyses if param('sync_analyses') == 'on'
+    # # Synchronise le affiches de films
+    # synchronize_affiches if param('sync_affiches') == 'on'
     # Synchronise le tweets permanents
-    synchronize_permanent_tweets if param('sync_tweets') == 'on'
-    # Synchroniser les updates
-    synchronize_updates   if param('sync_updates') == 'on'
+    # synchronize_permanent_tweets if param('sync_tweets') == 'on'
+    # # Synchroniser les updates
+    # synchronize_updates   if param('sync_updates') == 'on'
 
 
     # Construction de la sortie
