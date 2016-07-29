@@ -37,7 +37,7 @@ Par exemple en haut d'une vue :
     ou
     (pour interdire à une administrateur ou un user abonné au site)
 
-    <% raise_unless( user.admin? || user.subscribed? ) %>
+    <% raise_unless( user.admin? || user.suscribed? ) %>
 
     ou
 

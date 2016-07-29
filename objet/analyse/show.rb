@@ -97,7 +97,7 @@ $(document).ready(function(){
     # On construit le message d'interdiction en fonction du film et
     # du statut de l'user
     statut_required, actionlink = case true
-    when film.need_subscribed?
+    when film.need_suscribed?
       ["abonné", lien.subscribe("#{DOIGT}S'ABONNER (pour #{site.tarif_humain}/AN)").in_span(class:'small')]
     when film.need_signedup?
       ["inscrit", lien.signup("#{DOIGT}S'INSCRIRE (gratuitement)").in_div(class:'small')]

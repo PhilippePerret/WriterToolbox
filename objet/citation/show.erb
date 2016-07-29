@@ -1,8 +1,10 @@
 <%
 # Pour l'affichage d'une citation d'auteur
+
+enable_comments
 %>
 <%
-if user.subscribed? || user.admin?
+if user.suscribed? || user.admin?
   is_consultable = true
 else
   app.session['citations'] ||= []

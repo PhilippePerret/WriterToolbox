@@ -1,5 +1,10 @@
-<%= Video::titre_h1 %>
-<%= Video::list %>
+<%
+# Accueil de la section vidéo (liste des vidéos)
+
+enable_comments
+%>
+<%= Video.titre_h1 %>
+<%= Video.list %>
 <h3>Vidéos à venir</h3>
 <ul class='small'>
   <li>Écriture organique (2<sup>nde</sup> partie)</li>

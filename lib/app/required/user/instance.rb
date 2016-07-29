@@ -9,7 +9,7 @@ class User
   # #   - les icariens actifs
   # #   - les administrateurs
   # def authorized?
-  #   subscribed? || unanunscript? || icarien_actif? || admin?
+  #   suscribed? || unanunscript? || icarien_actif? || admin?
   # end
 
   # Cette méthode existe dans le programme UN AN UN SCRIPT, mais

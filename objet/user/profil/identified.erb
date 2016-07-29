@@ -11,8 +11,8 @@ def div_row libelle, value, options = nil
     value.in_span(class:'value')
   ).in_div(options)
 end
-def mark_subscribed
-  return OUI if subscribed?
+def mark_suscribed
+  return OUI if suscribed?
   "#{NON} #{lien.subscribe('(S’abonner)', class:'small')}"
 end
 def mark_unanunscript
@@ -44,7 +44,7 @@ end
   <% elsif user.icarien_actif? %>
     <%= div_row('Icarien actif', "En tant qu'<strong>icarien actif</strong>, vous avez un accès complet au site.") %>
   <% else %>
-    <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
+    <%= div_row('Abonné'        , why_subscribe + mark_suscribed) %>
   <% end %>
   <% unless user.manitou? %>
     <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>

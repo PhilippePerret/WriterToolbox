@@ -54,7 +54,7 @@ class User
     last_abonnement && last_abonnement > anprev
   end
   alias :paiement_ok? :paiements_ok?
-  alias :subscribed? :paiements_ok?
+  alias :suscribed? :paiements_ok?
 
   # Cette propriété est mise à true lorsque l'user vient de
   # s'inscrire, qu'il devrait confirmer son mail, mais qu'il

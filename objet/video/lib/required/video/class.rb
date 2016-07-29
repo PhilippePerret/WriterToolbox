@@ -15,7 +15,7 @@ class Video
       load_data
       DATA_VIDEOS.collect do |vid, vdata|
         new(vdata).as_li
-      end.join.in_ul(id:"videos", class:'tdm')
+      end.join.in_ul(id:"videos", class:'')
     end
 
     def load_data

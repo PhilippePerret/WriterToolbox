@@ -1,10 +1,12 @@
 <%
 # Formulaire permettant de faire une recherche sur les pages de
 # la collection Narration
+
+enable_comments
 %>
 <%= Cnarration::titre_h1("Recherche") %>
 
-<% if user.admin? # || user.subscribed?
+<% if user.admin? # || user.suscribed?
   %>
   <%
     if param(:operation) == 'proceed_search_in_narration'
@@ -14,7 +16,7 @@
   <%= Cnarration::Search::formulaire    %>
   <%= Cnarration::Search::result  %>
 
-<% elsif false == user.subscribed? %>
+<% elsif false == user.suscribed? %>
 <p>
   Désolé, seuls les abonnés à
   <%= site.name %> peuvent faire une recherche dans les pages de la collection narration.

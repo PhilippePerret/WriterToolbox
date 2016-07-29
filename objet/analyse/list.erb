@@ -10,13 +10,14 @@
 
 page.title = "Analyses de films"
 
+enable_comments
 %>
 <%= FilmAnalyse::titre_h1("Liste des analyses") %>
 <p class='small italic'>
-  <% if user.subscribed? || user.real_analyste? || user.admin? %>
+  <% if user.suscribed? || user.real_analyste? || user.admin? %>
   En tant qu'<%=
   case true
-  when user.subscribed?     then "abonné"
+  when user.suscribed?     then "abonné"
   when user.real_analyste?  then "analyste"
   when user.admin?          then "administrateur"
   end

@@ -1,0 +1,19 @@
+<%
+# Accueil du programme UN AN UN SCRIPT pour un simple inscrit au site
+%>
+<%= Unan::titre_h1 %>
+<%
+
+ajout_abonned = "#{Unan.tarif_humain} pour toute une année"
+
+lien_subscribe_program = (
+  "S’inscrire au programme".in_a(href:"unan/paiement", style:'color:white;font-size:16pt') +
+  "<br>#{ajout_abonned}".in_span(class: 'tiny center')
+  ).in_div(class: 'btn', style: 'background-color:green;color:white;display:inline-block;text-align:center;padding:1em 2em')
+
+%>
+<p class='small right red'>Vous ne suivez pas (encore) le programme “Un An Un Script”.</p>
+<div class="center air"><%= lien_subscribe_program %></div>
+<p class='right air'>
+  <%= "#{DOIGT}Découvrir le programme UN AN UN SCRIPT en profondeur".in_a(href:"aide/overview?in=unan") %>
+</p>

@@ -17,7 +17,7 @@
 <div class="tiny">
   <% if user.admin? %>
     (*) Noter que le bouton “Calculer” apparait parce que vous êtes administrateur.
-  <% elsif user.subscribed? %>
+  <% elsif user.suscribed? %>
     (*) Noter que  le bouton “Calculer” n'apparait que parce que vous êtes abonné<%= user.f_e %> au site.
   <% else %>
     (*) Noter que le bouton “Calculer” n'apparait pas puisque vous n'êtes pas abonné<%= user.f_e %> au site (<%= (lien.subscribe "vous abonner, pour #{site.tarif_humain} par an, soit #{site.tarif_humain_par_mois}") %>).

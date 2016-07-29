@@ -20,7 +20,7 @@ class Film
   # BIT 3 (abonné)
   # Mis à 1 s'il faut que l'user soit abonné pour
   # consulter le film
-  def bit_subscribed; @bit_subscribed ||= gbit(2) end
+  def bit_suscribed; @bit_suscribed ||= gbit(2) end
   # BIT 4
   # Définit le type de l'analyse (comparaison de bit)
   #   1 => TM

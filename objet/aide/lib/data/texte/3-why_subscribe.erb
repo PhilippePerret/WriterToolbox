@@ -12,9 +12,9 @@
 <p>
   Pour ce qui est de la seconde question concernant le recours à cet abonnement — alors que certaines ressources étaient jusque-là gratuites —, il se justifie par le fait que le site, moralement contre le phénomène de prolifération publicitaire, n'en a pas moins besoin de ressources financières pour continuer de pouvoir proposer un contenu utile et de qualité.
 </p>
-<% if user.subscribed? %>
+<% if user.suscribed? %>
   <p>
-    Aussi, la <em>Boite à Outils</em> vous remercie-t-elle beaucoup, vous, fidèle abonné<%= user.f_e %>, de la soutenir depuis le <%= user.subscribed_at.as_human_date %> !
+    Aussi, la <em>Boite à Outils</em> vous remercie-t-elle beaucoup, vous, fidèle abonné<%= user.f_e %>, de la soutenir depuis le <%= user.suscribed_at.as_human_date %> !
   </p>
 <% else %>
   <p>

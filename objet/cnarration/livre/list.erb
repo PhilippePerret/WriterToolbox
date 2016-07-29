@@ -1,8 +1,10 @@
 <%
 # Vue pour la liste des ouvrages de la collection
+
+enable_comments
 %>
 <%= Cnarration::titre_h1("Livres") %>
 <%= Cnarration::Livre::as_ul %>
-<% unless user.subscribed? %>
+<% unless user.suscribed? %>
   <p class='small italic'>Notez que sans abonnement, vous bénéficiez d'un accès limité à la collection.</p>
 <% end %>

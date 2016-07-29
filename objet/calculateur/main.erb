@@ -1,5 +1,7 @@
 <%
 # Page d'accueil et principale du calculateur de structure
+
+enable_comments
 %>
 <%= SttCalculator::titre_h1 %>
 
@@ -39,7 +41,7 @@ EXPLICATIONS = {
 # ---------------------------------------------------------------------
 %>
 
-<% if user.subscribed? %>
+<% if user.suscribed? %>
   <div class="right small">En tant qu'abonné, <%= user.pseudo %>, vous pouvez utiliser le calculateur de structure.</div>
 <% elsif user.admin? %>
   <!-- Rien -->

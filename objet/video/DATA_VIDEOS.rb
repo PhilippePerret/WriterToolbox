@@ -42,7 +42,7 @@ class Video
 
     2 => {
       id:           2,
-      titre:        "Les Raccourcis-clavier indispensables",
+      titre:        "Les raccourcis-clavier indispensables",
       ref:          'XjaO9kcnGOU',
       type:         :youtube,
       date:         "Juillet 2015",

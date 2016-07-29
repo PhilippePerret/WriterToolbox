@@ -41,7 +41,7 @@ class Video
   end
 
   def visible?
-    @is_visible ||= user.admin? || (level==1) || (level==2 && user.identified?) || (level==3 && user.subscribed?)
+    @is_visible ||= user.admin? || (level==1) || (level==2 && user.identified?) || (level==3 && user.suscribed?)
   end
 
   def frame_youtube
