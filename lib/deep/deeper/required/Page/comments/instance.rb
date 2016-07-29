@@ -57,7 +57,6 @@ class Page
     def div_boutons
       bs = String.new
       bs << bouton_vote_up
-      bs << ' | '.in_span
       bs << bouton_vote_down
       if user.admin?
         bs << bouton_detruire
@@ -80,13 +79,15 @@ class Page
 
     def bouton_vote_up
       (
-        '+1 (' + votes_up.to_s.in_span(class: 'votesup') + ')'
-      ).in_a
+        "+ #{votes_up.to_s.in_span(class: 'upvotes')} ".in_span +
+        '+1'.in_a(onclick:"PComments.upvote(#{id})", class: 'btn tiny discret')
+      )
     end
     def bouton_vote_down
       (
-        '-1 (' + votes_down.to_s.in_span(class: 'votesdown') + ')'
-      ).in_a
+        '-1'.in_a(onclick:"PComments.downvote(#{id})", class: 'btn tiny discret') +
+        "- #{votes_down.to_s.in_span(class: 'downvotes')}".in_span
+      )
     end
     def bouton_detruire
       'détruire'.in_a(class: 'warning tiny btn', href: "page_comments/#{id}/list?in=site&action=destroy")
