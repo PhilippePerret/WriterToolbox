@@ -57,8 +57,13 @@ class Page
     end
 
     # Div contenant le commentaire formaté
+    #
+    # Noter que le commentaire a été formaté à l'enregistrement
+    # (pour ne faire qu'une seule fois l'opération et vérifier
+    # le texte)
+    # 
     def div_commentaire
-      comment_formated.in_div(class: 'comment')
+      comment.in_div(class: 'comment')
     end
 
     def div_boutons

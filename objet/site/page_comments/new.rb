@@ -47,9 +47,9 @@ class Page
       def comment_purified dcom
         cp = dcom[:comment].nil_if_empty
         cp != nil || (return nil) # sera traité plus tard
-
-        # On met en forme les balises spéciales
-
+        @comment = cp
+        cp = comment_formated.nil_if_empty
+        cp != nil || (return nil)
         return cp
       end
     end #/<<self
