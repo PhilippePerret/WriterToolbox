@@ -34,6 +34,10 @@ class Page
       @is_valided ||= options[0].to_i == 1
     end
 
+    # = main =
+    #
+    # Code HTML du commentaire dans sa liste
+    #
     def as_li
       (
         div_infos +
@@ -51,9 +55,12 @@ class Page
       span_auteur
       ).in_div(class: 'infos')
     end
+
+    # Div contenant le commentaire formaté
     def div_commentaire
-      comment.in_div(class: 'comment')
+      comment_formated.in_div(class: 'comment')
     end
+
     def div_boutons
       bs = String.new
       bs << bouton_vote_up
