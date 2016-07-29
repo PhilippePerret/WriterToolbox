@@ -118,11 +118,17 @@ module Capybara
     end
     def has_notice? mess = nil
       error = false
-      error ||= "La page ne contient aucun message" unless self.has_css?('div#flash')
-      unless self.has_css?('div#flash div.notice', text: /#{Regexp::escape mess}/)
+      no_message = !self.has_css?('div#flash')
+      error ||= "La page ne contient aucun message" if no_message
+      reg_mess =
+        case mess
+        when Regexp then mess
+        else /#{Regexp::escape mess}/
+        end
+      unless self.has_css?('div#flash div.notice', text: reg_mess )
         messages = self.execute_script("return $('div#flash').html()")
         lemessage =
-          if messages.nil?
+          if no_message
             "La page ne contient aucun message."
           else
             messages = messages.scan(/<div class="notice">(.*?)<\/div>/).collect{ |e| "“#{e.first}”" }

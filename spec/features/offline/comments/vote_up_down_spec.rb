@@ -4,6 +4,9 @@
 
 =end
 feature "Votes up et down sur les commentaires de page" do
+  before(:each) do
+    benoit.set_vars(page_comments_ids: [])
+  end
   scenario 'Un utilisateur non inscrit ne peut pas voter pour un commentaire' do
     visite_route "site/test"
 
@@ -21,7 +24,7 @@ feature "Votes up et down sur les commentaires de page" do
       expect(page).to have_link '-1'
       click_link '+1'
     end
-    expect(page).to have_notice('Désolé, seuls les visiteurs inscrits peuvent voter.')
+    expect(page).to have_error('Désolé, seuls les visiteurs inscrits peuvent voter.')
     # Le nombre de votes ne doit pas avoir changé
     dcom = Page::Comments.table.get(pcom_id)
     expect(dcom[:votes_up]).to eq upvotes_init
@@ -50,7 +53,6 @@ feature "Votes up et down sur les commentaires de page" do
     dcom = Page::Comments.table.get(pcom_id)
     expect(dcom[:votes_up]).to eq upvotes_init + 1
     expect(dcom[:votes_down]).to eq downvotes_init
-
   end
 
   scenario 'Un utilisateur inscrit peut voter (DOWN) pour un commentaire' do
@@ -74,6 +76,8 @@ feature "Votes up et down sur les commentaires de page" do
       click_link '-1'
       puts "Benoit clique sur -1 pour le 3e commentaire"
     end
+    # Il faut laisser le temps au script ajax
+    sleep 1
     # Le update vote doit avoir été enregistré
     dcom = Page::Comments.table.get(pcom_id)
     expect(dcom[:votes_up]).to eq upvotes_init
@@ -88,6 +92,35 @@ feature "Votes up et down sur les commentaires de page" do
 
 
   scenario 'Un utilisateur ne peut pas voter plusieurs fois pour le même commentaire de page' do
+    identify_benoit
+    visite_route "site/test"
+    pcom_id = page.find('ul#ul_page_comments > li:nth-child(2)')[:id]
+    pcom_id = pcom_id.split('-').last.to_i
+
+    # On récupère les valeurs du commentaire avant de le modifier
+    dcom = Page::Comments.table.get(pcom_id)
+    upvotes_init = dcom[:votes_up].freeze
+    downvotes_init = dcom[:votes_down].freeze
+
+    within('ul#ul_page_comments > li:nth-child(2)') do
+      click_link '+1'
+    end
+
+    # Le update vote doit avoir été enregistré
+    expect(page).to have_notice("Merci #{benoit.pseudo} pour votre vote.")
+    dcom = Page::Comments.table.get(pcom_id)
+    expect(dcom[:votes_up]).to eq upvotes_init + 1
+    expect(dcom[:votes_down]).to eq downvotes_init
+
+    # ===> TEST <===
+    within('ul#ul_page_comments > li:nth-child(2)') do
+      click_link '+1'
+    end
+    # Le update vote NE doit PAS avoir été enregistré
+    expect(page).to have_error('Vous ne pouvez voter qu’une seule fois pour un commentaire.')
+    dcom = Page::Comments.table.get(pcom_id)
+    expect(dcom[:votes_up]).to eq upvotes_init + 1
+    expect(dcom[:votes_down]).to eq downvotes_init
 
   end
 end

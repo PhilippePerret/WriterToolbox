@@ -11,7 +11,7 @@ class User
   # fonctionne en name: <valeur>)
   def variables
     @variables ||= begin
-      h = Hash::new
+      h = Hash.new
       table_variables.select.each do |d|
         h.merge! d[:name].to_sym => var_value_to_real(d)
       end
