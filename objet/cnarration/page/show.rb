@@ -229,23 +229,17 @@ class Cnarration
     # Retourne les boutons de navigation pour atteindre
     # les pages précédente et suivante
     def boutons_navigation where = :top
-      ( lien_prev_page + lien_tdm + lien_next_page ).in_div(class:"right nav #{where}")
+      ( lien_prev_page + lien_tdm + lien_next_page ).in_nav(class:"buttons #{where}")
     end
 
     def lien_tdm
       "T.d.M".in_a(href:"livre/#{livre_id}/tdm?in=cnarration").in_div(class:'lktdm')
     end
     def lien_prev_page
-      visibility = prev_page_id.nil? ? 'hidden' : 'visible'
-      (
-        "←".in_a(href:"page/#{prev_page_id}/show?in=cnarration")
-      ).in_div(style:"visibility:#{visibility}")
+      lien.backward_button( href: "page/#{prev_page_id}/show?in=cnarration", visible: !prev_page_id.nil?)
     end
     def lien_next_page
-      visibility = next_page_id.nil? ? 'hidden' : 'visible'
-      (
-        "→".in_a(href:"page/#{next_page_id}/show?in=cnarration")
-      ).in_div(style:"visibility:#{visibility}")
+      lien.forward_button(href: "page/#{next_page_id}/show?in=cnarration", visible: !next_page_id.nil?)
     end
 
     # {StringHTML} Retourne le code HTML du bloc d'évaluation de

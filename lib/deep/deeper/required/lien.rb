@@ -53,6 +53,46 @@ class Lien
     end
   end
 
+  # Retourne les boutons avant et après uniformisés
+  #
+  # +args+  Doit au moins contenir :
+  #         :href/route       L'URL pour rejoindre la page précédente
+  #
+  # Ces boutons sont placés dans un div.nav. On peut se servir de
+  # l'attribut :class pour redéfinir la classe de ce div (qui gardera
+  # cependant toujours la class 'nav')
+  #
+  def backward_button args
+    args = normalize_args_buttons args
+    "←".in_a(href: args[:href]).in_div(style: args[:style], class: args[:class])
+  end
+  alias :bouton_backward :backward_button
+  def forward_button args
+    args = normalize_args_buttons( args )
+    "→".in_a(href: args[:href]).in_div(style: args[:style], class: args[:class])
+  end
+  alias :bouton_forward :forward_button
+
+  def normalize_args_buttons args
+    # Style
+    style = Array.new
+    is_visible = args.key?(:visible) ? args[:visible] : true
+    args.key?(:visible) && style << "visibility:#{args[:visible] ? 'visible' : 'hidden'}"
+    args.key?(:style)   && style << args[:style]
+
+    args[:style] =
+      case true
+      when style.empty? then nil
+      else style.join(';')
+      end
+
+    # Class CSS
+    classe = ['nav']
+    args.key?(:class) && classe << args[:class]
+    args[:class] = classe.join(' ')
+
+    return args
+  end
 
   # Retourne un lien qui est l'image du point d'interrogation
   # conduisant à un fichier d'aide d'ID +aide_id+

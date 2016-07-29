@@ -27,18 +27,56 @@ class Page
         args ||= Hash.new
         args[:from] ||= 0
         args[:to]   ||= 50
+        args[:from] = args[:from].to_i
+        args[:to]   = args[:to].to_i
         nombre =
           if args[:to]
             args[:to] - args[:from]
           else
-            args[:nombre]
+            args[:nombre].to_i
           end
-        debug "Nombre : #{nombre}"
-        table.select(where: 'SUBSTRING(options,1,1) = "1"', offset: args[:from], limit: nombre).collect do |hcom|
+        # debug "Nombre : #{nombre}"
+        current_route = nil
+        boutons_navigation(:top, args[:from], nombre_commentaires) +
+        table.select(where: 'SUBSTRING(options,1,1) = "1"', offset: args[:from], limit: nombre, order: 'route').collect do |hcom|
+          lien_route =
+            if current_route == hcom[:route]
+              ''
+            else
+              current_route = hcom[:route]
+              "⦿ Page #{hcom[:route]}".in_a(href: current_route, target: :new, class: 'bold').in_div(class: 'bold', style: 'margin-top:3em;padding-top:1em;border-top:1px solid #555;margin-bottom:4em')
+            end
+          lien_route +
           new(hcom).as_li
-        end.join('').in_ul(id: 'ul_comments_valided', class: 'ul_page_comments')
+        end.join('').in_ul(id: 'ul_comments_valided', class: 'ul_page_comments') +
+        boutons_navigation(:bottom, args[:from], nombre_commentaires)
       end
 
+      def boutons_navigation where = :bottom, from, nombre_max
+        (bouton_backward(from) + bouton_forward(from, nombre_max)).in_nav(class: "buttons #{where}")
+      end
+
+      def bouton_backward from
+        href = "page_comments/list?in=site&from_comment=#{from - 50}&to_comment=#{from - 1}"
+        lien.bouton_backward( href: href, visible: from > 0 )
+      end
+      def bouton_forward from, nombre_max
+        href = "page_comments/list?in=site&from_comment=#{from + 50}&to_comment=#{from + 99}"
+        lien.bouton_forward( href: href, visible: (from + 50) < nombre_max)
+      end
+
+
+      def nombre_commentaires
+        @nombre_commentaires ||= begin
+          if app.session['nombre_total_page_comments'].nil?
+            debug "Je compte le nombre de commantaires"
+            app.session['nombre_total_page_comments'] = table.count(where: 'SUBSTRING(options,1,1) = "1"')
+          else
+            debug "Je reprends le nombre de commentaires dans session"
+            app.session['nombre_total_page_comments']
+          end
+        end
+      end
     end #/<< self
   end #/Comments
 end #/Page

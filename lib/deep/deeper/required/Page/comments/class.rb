@@ -31,6 +31,12 @@ class Page
         @comments_on === true
       end
 
+      # Réinitialisation des valeurs après un changement
+      def reset
+        app.session['nombre_total_page_comments'] = nil
+        @nombre_commentaires = nil
+      end
+
 
       def set_comments_on
         @comments_on = true

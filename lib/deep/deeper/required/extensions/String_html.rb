@@ -110,6 +110,7 @@ class String
   def in_h4       attrs = nil;  html_balise 'h4',       attrs end
   def in_h niv;   attrs = nil;  html_balise "h#{niv}",  attrs end
   def in_div      attrs = nil;  html_balise 'div',      attrs end
+  def in_nav      attrs = nil;  html_balise 'nav',      attrs end
   def in_pre      attrs = nil;  html_balise 'pre',      attrs end
   def in_span     attrs = nil;  html_balise 'span',     attrs end
   def in_p        attrs = nil;  html_balise 'p',        attrs end

@@ -4,6 +4,7 @@
 * [Liens de forme route](#liendeformeroute)
 * [Liens d'aide et d'information (?)](#liendinformation)
 * [Liens avec flèche et cadre](#lienavecflecheetcadre)
+* [Boutons avant/après uniformisés](#boutonavantapres)
 * [Liens RestSite par défaut](#lienspardefautsrestsite)
 * [Liens propres à l'application](#liensproprealapplication)
 * [Liens pour éditer des fichiers dans un éditeur](#liendeditiondefichier)
@@ -68,6 +69,24 @@ Les liens d'information (qui doivent obligatoirement renvoyer à un fichier d'ai
 On peut ajouter des options qui seront ajoutées à la balise :
 
     <%= lien.information(12, {float: right})
+
+<a name='boutonavantapres'></a>
+
+## Boutons avant/après uniformisés
+
+On trouve par exemple ces boutons dans les pages Narration ainsi que dans le panneau permettant de lire tous les commentaires.
+
+    lien.bouton_backward href: <href/route>
+    lien.bouton_forward href: <href/route>
+
+Alias :
+
+    lien.backward_button
+    lien.forward_button
+
+Leur aspect peut être redéfini dans :
+
+    ./lib/app/handy/liens.rb
 
 
 <a name="lienspardefautsrestsite"></a>

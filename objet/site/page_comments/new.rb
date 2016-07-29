@@ -14,6 +14,8 @@ class Page
           flash "Merci #{user.pseudo} pour votre commentaire. Il sera validé très prochainement."
           # On envoie le mail d'information à l'administration
           new_com.avertissement_administration
+          # Pour forcer le recalcul, au cas où
+          reset
         else
           error "Impossible d’enregistrer ce commentaire."
         end
