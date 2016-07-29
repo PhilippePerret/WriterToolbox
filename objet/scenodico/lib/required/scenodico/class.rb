@@ -38,7 +38,7 @@ class Scenodico
       when :data      then @mots
       when :id, :ids  then @mots.collect { |h| h[:id] }
       when :instance, :instances
-        @mots.collect { |h| Scenodico::Mot::new(h[:id])}
+        @mots.collect { |h| Scenodico::Mot.new(h[:id])}
       else
         hmots = {}
         @mots.each { |h| hmots.merge! h[:id] => h }
