@@ -67,8 +67,10 @@ class CRON2
         site.require_module 'twitter'
         if tweet_must_be_sent?
           send_tweet_permanent
+          superlog 'Tweet permanent envoyé.'
         else
           send_citation
+          superlog 'Citation envoyée.'
         end
       rescue Exception => e
         raise e

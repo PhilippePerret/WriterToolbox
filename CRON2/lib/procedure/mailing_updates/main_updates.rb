@@ -38,6 +38,7 @@ class CRON2
         if annonce_last_updates
           # On indique l'heure du dernier envoi lorsque tout s'est bien passé
           site.set_last_date(:mail_updates)
+          superlog 'Dernières actualités envoyées'
         end
 
       end

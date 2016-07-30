@@ -9,7 +9,7 @@ class CRON2
     class << self
       def superlog mess, options = nil
         @superlogs ||= Array.new
-        @superlogs << mess
+        @superlogs << "--- #{mess}"
       end
 
       def clocktime
@@ -20,7 +20,7 @@ class CRON2
       def output
         @superlogs ||= ['Aucun message super-log']
         "Super-log du cron du #{clocktime}" +
-        @superlogs.collect{|m| m.in_div}.join('')
+        @superlogs.collect{|m| m.in_p(class: 'small').join('')
       end
 
       # Envoi le message à l'administrateur si c'est nécessaire

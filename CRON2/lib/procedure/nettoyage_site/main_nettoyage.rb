@@ -8,7 +8,10 @@ class CRON2
     nettoyage_rapports_connexions
     nettoyage_log_debug
     # On n'enregistre l'historique que s'il y a eu un fichier détruit
-    @files_count > 0 && CRON2::Histo::add(code: '11100', data: @files_count)
+    if @files_count > 0
+      CRON2::Histo::add(code: '11100', data: @files_count)
+      superlog "#{@files_count} fichiers nettoyés."
+    end
   end
 
   # Nettoyage des rapports de connexions qui sont créés chaque fois
@@ -22,7 +25,7 @@ class CRON2
     end
   end
 
-  # Destruction du fichier debug.log 
+  # Destruction du fichier debug.log
   #
   # C'est important car il peut prendre beaucoup de place suivant
   # les messages qu'on demande.
@@ -32,7 +35,7 @@ class CRON2
   def nettoyage_log_debug
     return if Time.now.hour < 23
     p = "#{FOLDER_APP}/debug.log"
-    if File.exist?(p) 
+    if File.exist?(p)
       File.unlink(p)
       @files_count += 1
     end

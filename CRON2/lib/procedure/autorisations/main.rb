@@ -23,6 +23,8 @@ class CRON2
       @autorisations = nil
     end
 
+    # = main =
+    #
     # Vérifie les autorisations des utilisateurs.
     #
     #   1. Les autorisations arrivées à expiration sont
@@ -118,6 +120,8 @@ class CRON2
         # Il faut détruire le autorisations expirées
         User.table_autorisations.delete(where: "id IN (#{autoids_to_destroy.join(', ')})")
       end
+
+      superlog 'Check des autorisations opéré.'
 
     end  #/fin de la grande méthode check_autorisations
 
