@@ -141,7 +141,7 @@ class CRON2
           where:    nil,
           order:    'last_sent ASC',
           limit:    40 + nombre_candidates_voulues,
-          colonnes: [:citation, :auteur, :bitly, :last_sent, :id]
+          colonnes: [:citation, :auteur, :bitly, :last_sent, :id, :description]
           )
           all_candidates = all_candidates.shuffle.shuffle
           candidates = all_candidates[0..nombre_candidates_voulues - 1]
@@ -173,31 +173,22 @@ class CRON2
               hcit[:last_sent] += 1
               tbl_citations.update( cid, { last_sent: hcit[:last_sent] })
             end
-            mess_admin << "<li>" +
-            "<a href='http://localhost/WriterToolbox/citation/#{cid}/edit'>" +
-            "Citation ##{cid}" +
-            "</a> [#{hcit[:last_sent]}] : #{hcit[:citation]}" +
-            "</li>"
+
+            # On ajoute cette citation aux citations à m'envoyer,
+            # mais seulement si elles n'ont pas déjà d'explicitation
+            if hcit[:description].nil_if_empty.nil?
+              mess_admin << "<li>" +
+              "<a href='http://localhost/WriterToolbox/citation/#{cid}/edit'>" +
+              "Citation ##{cid}" +
+              "</a> [#{hcit[:last_sent]}] : #{hcit[:citation]}" +
+              "</li>"
+            end
           end
 
           # On doit me transmettre les candidates pour que j'en
-          # écrive la définition.
+          # écrive l'explicitation.
+          send_next_citations_to_admin mess_admin
 
-          begin
-            mess_admin =
-            "<p>Citations à expliciter :</p>" +
-            '<ul>' + mess_admin.join('') + '</ul>' +
-            '<p>Les premières seront les premières diffusées.</p>'
-
-            site.send_mail_to_admin(
-            message:       mess_admin,
-            subject:       'Citations à expliciter',
-            force_offline: true,
-            formated:      true
-            )
-          rescue Exception => e
-            log 'Impossible de transmettre les prochaines citations à expliciter', e
-          end
           log "   Les prochaines citations à expliciter sont les citations : " +
           candidates.collect{|hc| hc[:id]}.join(', ')
 
@@ -225,6 +216,28 @@ class CRON2
           # ---------------------------------------
           ["#{citation}#{auteur}#{bitly}", citation_id]
         end
+      end
+
+      # Méthode qui envoie les prochaines citations à
+      # l'administrateur, pour explicitation
+      #
+      # On le fait qu'entre 4 heures et 6 heures du matin
+      def send_next_citations_to_admin mess_admin
+        heure = Time.now.hour
+        heure > 3 && heure < 7 || return
+        mess_admin =
+        "<p>Prochaines citations à expliciter :</p>" +
+        '<ul>' + mess_admin.join('') + '</ul>' +
+        '<p>Les premières seront les premières diffusées.</p>'
+
+        site.send_mail_to_admin(
+        message:       mess_admin,
+        subject:       'Citations à expliciter',
+        force_offline: true,
+        formated:      true
+        )
+      rescue Exception => e
+        log 'Impossible de transmettre les prochaines citations à expliciter', e
       end
 
       # RETURN true si un envoi doit être fait, citation ou tweet
