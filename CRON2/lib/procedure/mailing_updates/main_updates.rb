@@ -24,12 +24,6 @@ class CRON2
         # L'heure est également enregistré dans la table des dernières dates
         site.get_last_date(:mail_updates, 0) < (Time.now - 23*3600).to_i || return
 
-        # Pas d'annonce s'il n'y a rien à annoncer
-        no_updates_today        = last_updates.empty?
-        no_updates_this_week    = last_week_updates.empty?
-        no_updates_no_samedi    = no_updates_today && !samedi?
-        samedi_but_no_updates   = samedi? && no_updates_this_week
-
         (no_updates_no_samedi || samedi_but_no_updates ) && return
 
         # ----------------------------------------------
@@ -43,8 +37,21 @@ class CRON2
 
       end
 
-      def http
-        @http ||= "http://www.laboiteaoutilsdelauteur.fr"
+      def no_updates_today
+        @no_updates_today = last_updates.empty? if @no_updates_today === nil
+        @no_updates_today
+      end
+      def no_updates_this_week
+        @no_updates_this_week = last_week_updates.empty? if @no_updates_this_week === nil
+        @no_updates_this_week
+      end
+      def no_updates_no_samedi
+        @no_updates_no_samedi = no_updates_today && !samedi? if @no_updates_no_samedi === nil
+        @no_updates_no_samedi
+      end
+      def samedi_but_no_updates
+        @samedi_but_no_updates = samedi? && no_updates_this_week if @samedi_but_no_updates === nil
+        @samedi_but_no_updates
       end
 
       def samedi?
@@ -52,6 +59,9 @@ class CRON2
         @is_samedi
       end
 
+      def http
+        @http ||= "http://www.laboiteaoutilsdelauteur.fr"
+      end
 
       # = main =
       #
@@ -80,6 +90,9 @@ class CRON2
           # Noter bien qu'on passe ici le samedi, même s'il n'y a
           # aucune update aujourd'hui, mais qu'il y en a eu pendant
           # la semaine
+
+          # ERROR : no_updates_today
+
           next if pref_mail == 'never'
           next if !samedi? && pref_mail == 'weekly'
           next if samedi? && pref_mail != 'weekly' && no_updates_today
@@ -134,8 +147,8 @@ class CRON2
       # à voir dans la table des autorisations.
       def message_souscription_by_user u
         case true
-        when u.admin?         then (message_administrateur % {pseudo: u.pseudo})
-        when u.suscribed?    then message_remerciement
+        when u.admin?     then (message_administrateur % {pseudo: u.pseudo})
+        when u.suscribed? then message_remerciement
         else message_sabonner
         end
       end

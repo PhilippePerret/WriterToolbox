@@ -200,18 +200,16 @@ class CRON2
           bitly     = " #{prochaine[:bitly]}"
           citation  = prochaine[:citation]
 
-          # Citation finale
-          if "#{citation}#{auteur}#{bitly}".length > 139
-            while "#{citation}#{auteur}#{bitly}".length > 135
-              citation = citation[0..-2]
-            end
-            citation = citation + '[…] '
-          end
-
           # On indique la date d'envoi de cette dernière
           # citation
           tbl_citations.update(citation_id, { last_sent: Time.now.to_i })
 
+          # Citation finale
+          citation_init = citation.dup
+          while "#{citation}#{auteur}#{bitly}".length > 139
+            citation_init = citation_init[0..-2]
+            citation = citation_init + ' […] '
+          end
 
           # ---------------------------------------
           # Ce qui sera mis dans @citation_to_send

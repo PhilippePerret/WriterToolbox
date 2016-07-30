@@ -119,6 +119,7 @@ class CRON2
       unless autoids_to_destroy.empty?
         # Il faut détruire le autorisations expirées
         User.table_autorisations.delete(where: "id IN (#{autoids_to_destroy.join(', ')})")
+        CRON2::Histo.add( code: '41300', data: autoids_to_destroy.join(',') )
       end
 
       superlog 'Check des autorisations opéré.'

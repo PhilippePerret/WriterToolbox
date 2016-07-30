@@ -27,7 +27,8 @@ class CRON2
       '20101' => {value: '20001', intitule: 'Rapport des connexions', hname: 'Connexions', data: nil, description: nil},
       '25101' => {value: '25101', intitule: 'Envoi d’une citation', hname: 'Citation', data: 'ID de la citation envoyée', description: nil},
       '26101' => {value: '26101', intitule: 'Envoi d’un tweet permanent', hname: 'Tweet permanent', data: 'IDs des tweets envoyé', description: nil},
-      '77201' => {value: '77201', intitule: 'Rapport quotidien à un auteur UAUS', hname: 'Rapport Unan', data: 'ID de l’auteur', description: nil}
+      '77201' => {value: '77201', intitule: 'Rapport quotidien à un auteur UAUS', hname: 'Rapport Unan', data: 'ID de l’auteur', description: nil},
+      '41300' => {value: '41300', intitule: 'Destruction d’une autorisation (abonnement ou autre)', hname: 'Autorisation', data: 'IDs autorisations détruites', description: nil}
     }
 
     # --- Définition des 5 valeurs du code ---
@@ -55,7 +56,8 @@ class CRON2
       [ # bit 2 (type d'opération)
         {bit: 2, value: 0, svalue: :none},
         {bit: 2, value: 1, svalue: :files},
-        {bit: 2, value: 2, svalue: :mail}     # un envoi par mail
+        {bit: 2, value: 2, svalue: :mail},     # un envoi par mail
+        {bit: 3: value: 3, svalue: :status, desc: 'Changement de statut'}
       ],
       [ # bit 3
         {bit: 3, value: 0, svalue: :none},
