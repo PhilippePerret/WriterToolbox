@@ -26,15 +26,16 @@ class Taches
     # Ce widget se présente comme un petit rectangle qui s'ouvre,
     # quand on passe la souris dessus, affichant une liste de différentes
     # tâche à choisir, comme corriger un bug ou lire par le lecteur.
-    # 
+    #
     def widget
       (
         "Tâche…".in_span(id:"span_titre") +
         (
           hidden_informations +
-          menu_types_taches +
-          menu_importance +
-          textarea_detail +
+          menu_types_taches   +
+          menu_importance     +
+          menu_echeance       +
+          textarea_detail     +
           bouton_to_create_tache
         ).in_div(id: 'inner_widget')
       ).in_form(id:"taches_widget")
@@ -77,7 +78,7 @@ class Taches
         onclick: "$.proxy(TachesWidget,'create_tache')()"
       ).in_div(class: 'right')
     end
-    
+
     # Un champ de saisie pour ajouter des détails à propos de la tâche, pour préciser
     # par exemple un bug.
     def textarea_detail
@@ -93,6 +94,17 @@ class Taches
         ['5', 'importante'],
         ['7', 'prioritaire']
       ].in_select(id: 'tache_importance', name: 'tache[importance]')
+    end
+    def menu_echeance
+      liste_echeances = [
+        ['1', 'pour demain'],
+        ['2', 'pour après-demain']
+      ]
+      (3..30).each do |ijour|
+        liste_echeances << [ijour.to_s, "pour dans #{ijour} jours"]
+      end
+
+      liste_echeances.in_select(id: 'tache_importance', name: 'tache[importance]')
     end
     def menu_types_taches
       all_taches.collect do |value,title|

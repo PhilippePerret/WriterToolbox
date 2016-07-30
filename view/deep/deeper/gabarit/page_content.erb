@@ -35,6 +35,11 @@
       }(document, 'script', 'facebook-jssdk'));</script>
   <% end %>
 
+  <%
+  # ===========================================
+  #     Le contenu véritablement de la page
+  # ===========================================
+  %>
   <%= page.content_route || page.home %>
 
   <%

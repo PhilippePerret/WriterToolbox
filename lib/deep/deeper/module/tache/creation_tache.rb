@@ -11,15 +11,15 @@ class Taches
   class << self
 
     # = main =
-    # 
+    #
     # Méthode appelée par Ajax par le widget pour
     # créer une nouvelle tâche
     #
     # Toutes les informations transmises se trouvent dans
     # le paramètre `tache'.
-    # 
+    #
     def create_tache_from_widget
-      new_tache = NewTache::new(param(:tache))
+      new_tache = NewTache.new(param(:tache))
       res = new_tache.create
       if res.nil?
         Ajax << { message: new_tache.message_confirmation }
@@ -46,7 +46,7 @@ class Taches
 
     # {Fixnum} Importance de la tâche
     attr_reader :importance
-    
+
     # {String} La "last-route" de la page, donc la route
     # appelée avant de l'atteindre
     attr_reader :last_route

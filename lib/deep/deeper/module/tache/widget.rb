@@ -42,14 +42,5 @@ class Taches
     }
   }
 
-  class << self
-
-  end #/ << self ::Admin::Taches
-
-
-  class Tache
-
-  end #/Tache
-
 end #/Taches
 end #/Admin
