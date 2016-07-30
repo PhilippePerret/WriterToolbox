@@ -38,8 +38,10 @@ class Page
     #
     # Code HTML du commentaire dans sa liste
     #
-    def as_li
+    def as_li options = nil
+      options ||= Hash.new
       (
+        div_route(options[:show_route]) +
         div_infos +
         div_commentaire +
         div_boutons
@@ -48,6 +50,10 @@ class Page
     def li_id; @li_id ||= "li_pcomment-#{id}" end
 
 
+    def div_route showit
+      showit || (return '')
+      "⦿ Page #{route}".in_a(href: route, target: :new, class: 'bold').in_div(class: 'cp_route')
+    end
     def div_infos
       (
       span_date +
@@ -61,7 +67,7 @@ class Page
     # Noter que le commentaire a été formaté à l'enregistrement
     # (pour ne faire qu'une seule fois l'opération et vérifier
     # le texte)
-    # 
+    #
     def div_commentaire
       comment.in_div(class: 'comment')
     end

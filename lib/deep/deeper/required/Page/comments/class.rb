@@ -31,6 +31,17 @@ class Page
         @comments_on === true
       end
 
+      # Retourne TRUE s'il faut afficher le formulaire.
+      #
+      # Est mis à faux par exemple quand l'user vient de rentrer
+      # un commentaire sur une page, pour éviter qu'il n'ait envie
+      # d'en enregistrer un autre.
+      #
+      def display_formulaire?
+        @display_formulaire = true if @display_formulaire === nil
+        @display_formulaire
+      end
+
       # Réinitialisation des valeurs après un changement
       def reset
         app.session['nombre_total_page_comments'] = nil

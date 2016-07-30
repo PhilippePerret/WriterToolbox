@@ -4,7 +4,18 @@
 
 =end
 feature "Votes up et down sur les commentaires de page" do
+  def tablec
+    @tablec ||= Page::Comments.table
+  end
   before(:each) do
+    whereclause = "route = 'site/test' AND SUBSTRING(options,1,1) = '1'"
+    if tablec.count(where: whereclause) < 10
+      create_page_comments(
+        nombre:   10,
+        route:    'site/test',
+        valided:  10
+      )
+    end
     benoit.set_vars(page_comments_ids: [])
   end
   scenario 'Un utilisateur non inscrit ne peut pas voter pour un commentaire' do

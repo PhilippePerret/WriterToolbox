@@ -39,15 +39,20 @@ class Page
         current_route = nil
         boutons_navigation(:top, args[:from], nombre_commentaires) +
         table.select(where: 'SUBSTRING(options,1,1) = "1"', offset: args[:from], limit: nombre, order: 'route').collect do |hcom|
-          lien_route =
-            if current_route == hcom[:route]
-              ''
-            else
-              current_route = hcom[:route]
-              "⦿ Page #{hcom[:route]}".in_a(href: current_route, target: :new, class: 'bold').in_div(class: 'bold', style: 'margin-top:3em;padding-top:1em;border-top:1px solid #555;margin-bottom:4em')
-            end
-          lien_route +
-          new(hcom).as_li
+          # lien_route =
+          #   if current_route == hcom[:route]
+          #     ''
+          #   else
+          #     current_route = hcom[:route]
+          #     "⦿ Page #{hcom[:route]}".in_a(href: current_route, target: :new, class: 'bold').in_div(class: 'bold', style: 'margin-top:3em;padding-top:1em;border-top:1px solid #555;margin-bottom:4em')
+          #   end
+
+          same_route = current_route == hcom[:route]
+          same_route || current_route = hcom[:route]
+          # Je supprime la route pour voir si c'est ça qui gêne
+          # lien_route +
+          new(hcom).as_li(show_route: !same_route) # => collect
+
         end.join('').in_ul(id: 'ul_comments_valided', class: 'ul_page_comments') +
         boutons_navigation(:bottom, args[:from], nombre_commentaires)
       end

@@ -40,6 +40,6 @@
   <%
   # La section commentaires de page, si requis
   %>
-  <%= page.comments if page.comments? %>
+  <%= page.comments if page.comments? && Page::Comments.display_formulaire? %>
 
 </section>

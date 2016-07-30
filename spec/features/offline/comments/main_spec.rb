@@ -5,6 +5,14 @@
 =end
 feature "Commentaires sur une page (Comments)" do
 
+  before(:each) do
+    # On détruit tous les commentaires de benoit à chaque
+    # test pour ne pas avoir de problème
+    # NON : ÇA POSE PLEIN DE PROBLÈME AILLEURS, DONC l'employer
+    # au cas par cas.
+    # table_page_comments.delete(where: {user_id: 2})
+  end
+
   def table_page_comments
     @table_page_comments ||= site.dbm_table(:cold, 'page_comments')
   end
@@ -24,6 +32,7 @@ feature "Commentaires sur une page (Comments)" do
   scenario 'un visiteur inscrit et identifié peut déposer un commentaire' do
 
     start_time = Time.now.to_i - 1
+    table_page_comments.delete(where: {user_id: 2})
     count_init = table_page_comments.count
 
     identify_benoit
@@ -48,6 +57,10 @@ feature "Commentaires sur une page (Comments)" do
     # pris en compte
     expect(page).to have_notice("Merci #{benoit.pseudo} pour votre commentaire. Il sera validé très prochainement.")
     puts "Un message lui annonce que son message sera publié"
+
+    expect(page).not_to have_css('form#form_page_comments')
+    puts "Le formulaire n'apparait plus dans la page."
+
     # Le commentaire a dû être enregistré
     expect(table_page_comments.count).to be count_init + 1
     dcom = table_page_comments.select(where: "created_at > #{start_time}").first

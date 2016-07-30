@@ -47,11 +47,20 @@ ul#ul_page_comments, ul.ul_page_comments
   list-style  : none
   margin      : 0
   padding     : 0
-  li
+  li.pcomment
     border            : 1px solid #CCC
     padding           : 0
     margin            : 1em 0
     background-color  : white
+    // La route peut être indiquée dans le LI, au-dessus
+    // Elle ressemble à un titre dans le listing de tous les commentaires
+    // sur le site.
+    div.cp_route
+      margin-top    : 3em
+      padding-top   : 1em
+      border-top    : 1px solid #555
+      margin-bottom : 4em
+      font-weight   : bold
     div.infos
       background-color  : $darkcharte
       color             : white

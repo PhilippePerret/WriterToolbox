@@ -2,6 +2,9 @@
 # L'administrateur peut trouver la liste de tous les commentaires à valider
 
 feature "Validation des commentaires de page par l'administrateur" do
+  def tablec
+    @tablec ||= Page::Comments.table
+  end
   scenario "L'administrateur peut rejoindre la liste des commentaires" do
     identify_phil
     visite_route "page_comments/list?in=site"
@@ -13,10 +16,10 @@ feature "Validation des commentaires de page par l'administrateur" do
     puts "L'administrateur trouve la liste des commentaires non validés"
   end
   def count_valided
-    Page::Comments.table.count(where:'options LIKE "1%"')
+    tablec.count(where:'options LIKE "1%"')
   end
   def count_non_valided
-    Page::Comments.table.count(where:'options LIKE "0%"')
+    tablec.count(where:'options LIKE "0%"')
   end
   scenario 'L’administrateur peut valider un commentaire' do
     identify_phil
@@ -42,7 +45,14 @@ feature "Validation des commentaires de page par l'administrateur" do
     puts "L'user NE trouve pas la liste des commentaires non validés"
   end
   scenario 'Un non administrateur ne peut pas valider un commentaire (en forçant la route)' do
-    dcom_id = Page::Comments.table.select(where: "options LIKE '0%'").first[:id]
+    begin
+      dcom = tablec.select(where: "options LIKE '0%'").first
+      dcom != nil || raise
+    rescue Exception => e
+      create_page_comments 15
+      retry
+    end
+    dcom_id = dcom[:id]
     count_non_valided_init = count_non_valided
     count_valided_init = count_valided
     route = "page_comments/#{dcom_id}/list?in=site&action=valider"

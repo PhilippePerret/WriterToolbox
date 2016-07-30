@@ -8,6 +8,12 @@
 class Page
   class Comments
     class << self
+
+      # = main =
+      #
+      # Méthode principale appelée pour créer le nouveau
+      # commentaire après vérifications diverses.
+      #
       def create_comment
         new_com = new(data_new_comment)
         # On corrige le commentaire avant de l'enregistrer
@@ -18,6 +24,8 @@ class Page
           new_com.avertissement_administration
           # Pour forcer le recalcul, au cas où
           reset
+          # Pour empêcher d'afficher le formulaire
+          @display_formulaire = false
         else
           error "Impossible d’enregistrer ce commentaire."
         end
@@ -65,14 +73,25 @@ class Page
     end
 
     # Vérification des valeurs
+    #
+    # En plus des vérifications normales, on s'assure que l'user
+    # n'a pas laissé un message dans l'heure précédente sur cette
+    # page, ce qui n'est possible que pour un administrateur
+    #
     def check_values
-      comment != nil || raise('Il faut impérativement fournir un commentaire valide !')
-      route != nil || raise('La route doit être définie.')
-      user_id != nil  || raise('Votre identifiant devrait être défini…')
+      comment != nil          || raise('Il faut impérativement fournir un commentaire valide !')
+      route != nil            || raise('La route doit être définie.')
+      user_id != nil          || raise('Votre identifiant devrait être défini…')
       ucheck = User.new(user_id)
-      ucheck.exist? || raise('Cet identifiant ne correspond à aucun utilisateur…')
-      pseudo != nil || raise('Le pseudo devrait être défini…')
+      ucheck.exist?           || raise('Cet identifiant ne correspond à aucun utilisateur…')
+      pseudo != nil           || raise('Le pseudo devrait être défini…')
       ucheck.pseudo == pseudo || raise('Le pseudo ne correspond pas… Bizarre, bizarre…')
+
+      unless user.admin?
+        whereclause = ["user_id = #{user_id}", "route = '#{route}'", "created_at > #{NOW - 1.hour}"].join(' AND ')
+        dreq = {where: whereclause}
+        table.count(dreq) == 0 || raise('Vous devez laisser une heure entre deux commentaires sur la même page.')
+      end
     rescue Exception => e
       error e.message
       false
