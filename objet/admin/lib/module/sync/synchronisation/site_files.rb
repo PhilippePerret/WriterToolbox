@@ -2,7 +2,7 @@
 class Sync
 
   def synchronize_site_files
-    @report << "* Synchronisation de tous les ficheirs du site"
+    @report << "* Synchronisation de tous les fichiers du site"
     (site.folder_deeper + 'module/synchronisation/synchronisation.rb').require
     @report << "= Synchronisation de tous les fichiers opérée avec succès"
   rescue Exception => e

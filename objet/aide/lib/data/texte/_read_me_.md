@@ -1,7 +1,7 @@
 Dossier contenant les textes d'aide
 
 * [Comment choisir entre fichier MD et ERB ?](#commentchoisirentremdeterb)
-* [Comment créer un lien d'aide vers ces fichiers](#creerunlinedaideverscesficheirs)
+* [Comment créer un lien d'aide vers ces fichiers](#creerunlinedaideverscesfichiers)
 
 
 <a name='commentchoisirentremdeterb'></a>
@@ -12,7 +12,7 @@ Les fichiers markdown sont plus simples à rédiger mais ne permettent pas la so
 
 Il faut employer `Markdown` lorsqu'on ne doit pas féminiser le texte.
 
-<a name='creerunlinedaideverscesficheirs'></a>
+<a name='creerunlinedaideverscesfichiers'></a>
 
 ## Comment créer un lien d'aide vers ces fichiers
 
