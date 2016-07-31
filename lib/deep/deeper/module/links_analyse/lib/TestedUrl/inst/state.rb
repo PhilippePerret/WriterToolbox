@@ -23,9 +23,6 @@ class TestedUrl
   # Retourne TRUE si c'est un lien externe
   def hors_site?
     @is_hors_site = (entete_http? && !full_url_base?) if @is_hors_site === nil
-    if @is_hors_site
-      puts "ROUTE HORS BASE (`route') : #{route}"
-    end
     @is_hors_site
   end
 

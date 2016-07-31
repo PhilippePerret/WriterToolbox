@@ -11,6 +11,7 @@ class TestedUrl
       @routes = ['site/home']
       @hroutes = {
         'site/home' => {
+          route:      'site/home',
           call_count: 10,
           call_texts: [nil],
           call_froms: [nil],
@@ -71,6 +72,7 @@ class TestedUrl
               # ajouter la route aux routes à tester
               @hroutes.merge!(
                 link.href => {
+                  route:      link.href,
                   call_count: 1,
                   call_texts: [link.text],
                   call_froms: [testedurl.id],
@@ -79,8 +81,6 @@ class TestedUrl
               )
               @routes << link.href
             end
-            # debug "TEXT : #{link.text}"
-            # debug "HREF : #{link.href}"
 
           end #/ fin de boucle sur chaque lien trouvé
         end #/Fin de si c'est une url hors de la base courante

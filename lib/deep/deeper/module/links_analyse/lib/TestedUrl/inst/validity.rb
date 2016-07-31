@@ -17,12 +17,14 @@ class TestedUrl
         @is_valide = referer.page_has_anchor?(ancre_of_route)
         if false == @is_valide
           error "ANCRE INTROUVABLE : #{ancre_of_route.inspect}"
-          puts "code : #{referer.raw_code}"
         end
       elsif hors_site?
         # Pour une page hors site, il suffit que l'header retourne
         # un code correct, donc 200 ou 3xx pour que ce soit bon
         @is_valide = page_hors_site_valide?
+        if false == @is_valide
+          error "STATUS HTML RETOURNÉ : #{html_status}"
+        end
       else
         # Check de la validité de la page URL spécifié
         @is_valide = check_if_valide
@@ -54,14 +56,25 @@ class TestedUrl
   end
 
   # Ancre contenue par la route
-  #
   def ancre_of_route
     @ancre_of_route ||= route.split('#').last
   end
 
-
+  #
   def page_hors_site_valide?
-    html_status >= 200 && html_status <= 307
+    return true if route.match(/\.wikipedia\./)
+    begin
+      status_ok = html_status >= 200 && html_status <= 307
+      raise if false == status_ok && route.start_with?('https')
+    rescue Exception => e
+      # Pour les routes https, il faut faire une vérification plus profonde
+      # car elles peuvent ne pas renvoyer de
+      # J'essaie d'abord avec une route sans s
+      @route = route.sub(/^https/,'http')
+      @html_status = nil
+      retry
+    end
+    return status_ok
   end
 
 end #/TestedUrl
