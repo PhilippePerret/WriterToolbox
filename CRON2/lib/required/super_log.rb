@@ -20,7 +20,7 @@ class CRON2
       def output
         @superlogs ||= ['Aucun message super-log']
         "Super-log du cron du #{clocktime}" +
-        @superlogs.collect{|m| m.in_p(class: 'small').join('')
+        @superlogs.collect{|m| m.in_p(class: 'small')}.join('')
       end
 
       # Envoi le message à l'administrateur si c'est nécessaire

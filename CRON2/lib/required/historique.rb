@@ -57,7 +57,7 @@ class CRON2
         {bit: 2, value: 0, svalue: :none},
         {bit: 2, value: 1, svalue: :files},
         {bit: 2, value: 2, svalue: :mail},     # un envoi par mail
-        {bit: 3: value: 3, svalue: :status, desc: 'Changement de statut'}
+        {bit: 3, value: 3, svalue: :status, desc: 'Changement de statut'}
       ],
       [ # bit 3
         {bit: 3, value: 0, svalue: :none},
