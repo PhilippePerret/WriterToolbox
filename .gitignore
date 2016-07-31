@@ -56,3 +56,5 @@ spec/screenshots/
 *.swp
 
 LOCAL_CRON/.main.rb.swp
+
+.remote-sync.json

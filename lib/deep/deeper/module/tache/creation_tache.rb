@@ -41,6 +41,10 @@ class Taches
     # {String} Détail (if any) de la tâche
     attr_reader :detail
 
+    # {Fixnum} Nombre de jours pour l'échéance
+    # Cf. la méthode `echeance_time`, qui retourne l'échéance exacte
+    attr_reader :echeance
+
     # {String} La route de la page
     attr_reader :route
 
@@ -70,6 +74,7 @@ class Taches
       @qs_init      = datainst[:query_string].nil_if_empty
       @titre_page   = datainst[:titre_page].strip_tags.nil_if_empty
       @importance   = datainst[:importance].to_i
+      @echeance     = datainst[:echeance].to_i
     end
 
     # Créer la tâche
@@ -78,7 +83,7 @@ class Taches
         tache:        content,
         admin_id:     nil,
         description:  detail, # ajouté parfois au message aussi
-        echeance:     echeance,
+        echeance:     echeance_time,
         state:        importance,
         created_at:   NOW,
         updated_at:   NOW
@@ -122,9 +127,11 @@ class Taches
     end
 
     # {Fixnum} Échéance pour la tâche, en fonction de son
-    # type
-    def echeance
-      @echeance ||= NOW + data_absolues[:echeance]
+    # type ou de la valeur spécifiée dans le menu échéance
+    def echeance_time
+      @echeance_time ||= begin
+        NOW + echeance.days
+      end
     end
 
     def template
@@ -213,7 +220,7 @@ class Taches
       @query_string ||= begin
         qs = (@qs_init || '').as_hash_from_query_string
         # On retire les valeurs inutiles
-        [:_o].each { |k| qs.delete k }
+        [:__o, :__i, :__m].each { |k| qs.delete k }
         qs.collect{|k,v| "#{k}=#{v}"}.join('&').nil_if_empty || ''
       end
     end

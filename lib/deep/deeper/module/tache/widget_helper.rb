@@ -87,13 +87,19 @@ class Taches
       )
     end
 
+    # Type de la tâche à effectuer
+    def menu_types_taches
+      all_taches.collect do |value,title|
+        title.in_option(value: value)
+      end.join('').in_select(id:"tache_id", name:"tache[id]", size: 7)
+    end
     # Un menu pour définir l'importance de la tâche
     def menu_importance
       [
         ['3', 'normale'],
         ['5', 'importante'],
         ['7', 'prioritaire']
-      ].in_select(id: 'tache_importance', name: 'tache[importance]')
+      ].in_select(id: 'tache_importance', name: 'tache[importance]', size: 7)
     end
     def menu_echeance
       liste_echeances = [
@@ -104,12 +110,8 @@ class Taches
         liste_echeances << [ijour.to_s, "pour dans #{ijour} jours"]
       end
 
-      liste_echeances.in_select(id: 'tache_importance', name: 'tache[importance]')
-    end
-    def menu_types_taches
-      all_taches.collect do |value,title|
-        title.in_option(value: value)
-      end.join('').in_select(id:"tache_id", name:"tache[id]")
+      theselected = '7'
+      liste_echeances.in_select(id: 'tache_echeance', name: 'tache[echeance]', selected: theselected, size: 7)
     end
 
     def all_taches
