@@ -30,7 +30,7 @@ CREATE TABLE projets
     # ----------
     # ID du programme auquel est associé le projet.
     # C'est une valeur non nulle car un projet ne peut pas
-    # être dissocié d'un programme UN AN UN SCRIPT
+    # être dissocié d'un programme ÉCRIRE UN ROMAN/FILM EN UN AN
     program_id INTEGER NOT NULL,
 
     # RÉSUMÉ

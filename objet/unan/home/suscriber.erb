@@ -1,6 +1,6 @@
 <%
 # Page d'accueil pour un user abonné, mais ne suivant pas le
-# programme UN AN UN SCRIPT
+# programme UN AN
 %>
 <%= Unan::titre_h1 %>
 <%
@@ -13,8 +13,8 @@ lien_subscribe_program = (
   ).in_div(class: 'btn', style: 'background-color:green;color:white;display:inline-block;text-align:center;padding:1em 2em')
 
 %>
-<p class='small right red'>Vous ne suivez pas (encore) le programme “Un An Un Script”.</p>
+<p class='small right red'>Vous ne suivez pas (encore) le programme “<%= Unan::PROGNAME_MAJ %>”.</p>
 <div class="center air"><%= lien_subscribe_program %></div>
 <p class='right air'>
-  <%= "#{DOIGT}Découvrir le programme UN AN UN SCRIPT en profondeur".in_a(href:"aide/overview?in=unan") %>
+  <%= "#{DOIGT}Découvrir le programme #{Unan::PROGNAME_MAJ} en profondeur".in_a(href:"aide/overview?in=unan") %>
 </p>

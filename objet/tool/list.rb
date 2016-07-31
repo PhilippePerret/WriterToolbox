@@ -42,7 +42,7 @@ class Tool
       (
         "<h4>Accès rapide</h4>" +
         list.collect do |tid, tdata|
-          tdata[:name].in_a(class:'small block', href:tdata[:home])
+          (tdata[:shortname] || tdata[:name]).in_a(class:'small block', href:tdata[:home])
         end.join
       ).in_div(id:"tools_quick_list", class:'border inline fright')
     end
@@ -50,9 +50,7 @@ class Tool
     # {Hash} Retourne la liste de tous les outils avec leur
     # description, tirée du fichier YAML
     def list
-      @list ||= begin
-        YAML.load_file(data_file.to_s).to_sym
-      end
+      @list ||= YAML.load(data_file.read.deserb).to_sym
     end
 
     # {SuperFile} Fichier contenant les données

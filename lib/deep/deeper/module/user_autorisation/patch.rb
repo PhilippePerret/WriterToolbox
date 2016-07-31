@@ -16,7 +16,7 @@ class User
         dauto = {
           start_time: dpaie[:created_at],
           end_time:   dpaie[:created_at] + (365 * 2).days,
-          raison:     "UN AN UN SCRIPT"
+          raison:     "UNANUNSCRIPT"
         }
         true
       elsif dpaie = try_paiement_abonnement

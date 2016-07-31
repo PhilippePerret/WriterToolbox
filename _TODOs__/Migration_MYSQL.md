@@ -32,7 +32,7 @@ balises :
 
 ## Une base cold, une base hot
 
-Au lieu de plein de bases de données, on utilise seulement deux bases, une pour les informations cold, celles qui ne bougent pas, comme les données du programme UN AN UN SCRIPT ou les pages narrations. Et une autre hot pour les informations qui sont souvent modifiées, comme les connexions, etc.
+Au lieu de plein de bases de données, on utilise seulement deux bases, une pour les informations cold, celles qui ne bougent pas, comme les données du programme UN AN ou les pages narrations. Et une autre hot pour les informations qui sont souvent modifiées, comme les connexions, etc.
 
 
 <a name='definitiondestablesendur'></a>

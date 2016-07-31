@@ -4,7 +4,7 @@
 
 L'idée serait de faire un module 'quiz' qui permette de faire n'importe quel type de questionnaire (uniforme sur le site).
 
-On peut se servir du module qui est déjà employé par le programme UN AN UN SCRIPT ou repartir d'une base nouvelle pour justement améliorer le fonctionnement.
+On peut se servir du module qui est déjà employé par le programme UN AN ou repartir d'une base nouvelle pour justement améliorer le fonctionnement.
 
 ## REQUIS
 

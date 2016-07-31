@@ -1,4 +1,4 @@
-# Synopsis du programme UN AN UN SCRIPT
+# Synopsis du programme ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN
 
 L'idée de ce document est de consigner tout ce qui se passent sur les procédures normales du programme.
 

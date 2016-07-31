@@ -3,7 +3,7 @@
 raise_unless( user.admin? || user.unanunscript? )
 %>
 <p>
-  <%= user.pseudo %>, nous sommes vraiment désolés d'apprendre que vous voulez renoncer au programme UN AN UN SCRIPT.
+  <%= user.pseudo %>, nous sommes vraiment désolés d'apprendre que vous voulez renoncer au programme <%= Unan::PROGNAME_DIM_MAJ %>.
 </p>
 <p class='small'>
   Pour confirmer votre abandon, veuillez cliquer sur le bouton de confirmation ci-dessous.

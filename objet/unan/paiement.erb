@@ -1,5 +1,5 @@
 <%
-# Vue pour le paiement de l'inscription au programme UN AN UN SCRIPT
+# Vue pour le paiement de l'inscription au programme UN AN
 #
 # NOTE : C'est le module `paiement.rb` au même niveau que ce fichier
 # qui appelle la méthode `make_transaction` qui permet de procéder
@@ -15,7 +15,7 @@ if user.unanunscript?
   debug "[paiement.erb] user.unanunscript? OUI"
 
   # Si l'utilisateur vient juste de souscrire au programme
-  # UN AN UN SCRIPT, on lui fait un accueil chaleureux
+  # UN AN, on lui fait un accueil chaleureux
   # NOTE C'est celui qui est est contenu dans on_ok.erb, qu'on
   # peut obtenir par site.paiement.output
 
@@ -82,7 +82,7 @@ else
       # vers le paiment paypal en fin de processus. Donc un renvoi ici par
       # la route "user/paiement?in=unan"
 
-    %><p class='small'>L'inscription au programme “Un An Un Script” vous abonne aussi pendant deux ans au site et vous offre donc un accès complet à tous les autres outils. Merci de bien vouloir remplir le formulaire ci-dessous afin de mieux vous faire connaitre à nous.</p>
+    %><p class='small'>L'inscription au programme “<%= Unan::PROGNAME_DIM_MAJ %>” vous abonne aussi pendant deux ans au site et vous offre donc un accès complet à tous les autres outils. Merci de bien vouloir remplir le formulaire ci-dessous afin de mieux vous faire connaitre à nous.</p>
     <%=
       page.view('user/signup')
     %><%

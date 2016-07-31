@@ -12,10 +12,10 @@ class DUser
   NOMBRE_MAX_UNSTARTED  = 30
 
 
-  # ID de l'user, l'auteur du programme UN AN UN SCRIPT
+  # ID de l'user, l'auteur du programme UAUS
   attr_reader :id
 
-  # Pour un auteur du programme UN AN UN SCRIPT
+  # Pour un auteur du programme UAUS
   attr_reader :program_id
 
   # Comme ces modules sont appelés depuis une méthode (run_procedure), on
@@ -158,7 +158,7 @@ class DUser
       message:    message,
       formated: true
     )
-    superlog "#{pseudo} n'a pas pu être passé au jour-programme suivant de son programme UN AN UN SCRIPT : trop de retards (#{current_pday.nombre_unstarted} — max : #{NOMBRE_MAX_UNSTARTED}) ou de dépassements (#{current_pday.nombre_overrun} — max : #{NOMBRE_MAX_OVERRUNS})."
+    superlog "#{pseudo} n'a pas pu être passé au jour-programme suivant de son programme #{Unan::PROGNAME_DIM_MAJ} : trop de retards (#{current_pday.nombre_unstarted} — max : #{NOMBRE_MAX_UNSTARTED}) ou de dépassements (#{current_pday.nombre_overrun} — max : #{NOMBRE_MAX_OVERRUNS})."
   end
 
   # ---------------------------------------------------------------------

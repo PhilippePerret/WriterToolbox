@@ -36,7 +36,7 @@ class User
     # =======================
     def proceed
       log "<pre style='white-space: pre-wrap;font-size:12pt;'>"
-      log "Préparation d'un d'auteur UN AN UN SCRIPT"
+      log "Préparation d'un d'auteur #{Unan::PROGNAME_DIM_MAJ}"
       log "Auteur : #{auteur.pseudo}"
       reset_all
       # Réglage des données du programme en fonction

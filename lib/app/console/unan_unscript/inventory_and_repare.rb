@@ -19,7 +19,7 @@ class Console
     site.require_objet 'unan'
 
     @rapport = Array::new
-    @rapport << "Rapport du programme UN AN UN SCRIPT".in_h2
+    @rapport << "Rapport du programme ÉCRIRE UN FILM/ROMAN EN UN AN".in_h2
 
     nombre_auteurs            = Unan::table_programs.select(distinct: true, colonnes:[:auteur_id]).count
     add_rap "Nombre auteurs", nombre_auteurs
@@ -79,7 +79,7 @@ class Console
 
   def reparation_programme_unan
     site.require_objet 'unan'
-    "Programme UN AN UN SCRIPT réparé.\n# Cf. ci-dessous ce qui a été opéré"
+    "Programme ÉCRIRE UN FILM/ROMAN EN UN AN réparé.\n# Cf. ci-dessous ce qui a été opéré"
   end
 
 end #/Console

@@ -43,7 +43,7 @@ class Program
 
       data_mail = {
         from:           user.mail,
-        subject:        "ABANDON D'UN PROGRAMME UN AN UN SCRIPT",
+        subject:        "ABANDON D'UN PROGRAMME UAUS",
         message:        message_admin_abandon,
         formated:       true,
         force_offline:  true
@@ -57,7 +57,7 @@ class Program
     def message_admin_abandon
       <<-HTML
 <p>Phil</p>
-<p>Je t'informe d'un ABANDON de programme UN AN UN SCRIPT.</p>
+<p>Je t'informe d'un ABANDON de programme #{Unan::PROGNAME_DIM_MAJ}.</p>
 <pre style="font-size:11pt">
     User             : #{user.pseudo} (##{user.id})
     Date             : #{Today.as_jj_mm_yy}

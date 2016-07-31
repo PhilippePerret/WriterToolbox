@@ -27,7 +27,7 @@ Noter que cette méthode `SuperFile#kramdown` traite plus de choses que le parse
 
 ## Ajouter un code Markdown commun avant tous les fichiers
 
-Typiquement, ça peut servir pour ajouter des définitions de liens qui seront utilisés par tous les fichiers source d'un livre PDF à produire d'après Markdown (cf. par exemple l'utilisation pour le manuel de l'auteur du programme UN AN UN SCRIPT — ./objet/unan/manuel/)
+Typiquement, ça peut servir pour ajouter des définitions de liens qui seront utilisés par tous les fichiers source d'un livre PDF à produire d'après Markdown (cf. par exemple l'utilisation pour le manuel de l'auteur du programme UN AN — ./objet/unan/manuel/)
 
 Il suffit, avant d'appeler la méthode `<superfile>.kramdown` d'insérer le code :
 

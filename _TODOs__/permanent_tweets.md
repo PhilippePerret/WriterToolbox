@@ -43,7 +43,7 @@ Mais très concrètement, sur le papier, savez-vous ce que signifie “construir
 
 ««« Il n'y a que ceux qui renoncent qui ne parviennent à rien. »»» (Le Premier jet) http://bit.ly/24gHbXL
 
-“Parvenir à un script en un an, c'est possible avec le programme UN AN UN SCRIPT !” http://bit.ly/1UtuQwv #UnAnUnScript
+“Parvenir à un script en un an, c'est possible avec le programme UN AN !” http://bit.ly/1UtuQwv #UnAnUnScript
 
 “Ne pas confondre OBJECTIF et ENJEU.” (la Dynamique dramatique) http://bit.ly/1t9BLCG
 

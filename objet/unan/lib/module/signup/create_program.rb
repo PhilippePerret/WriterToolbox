@@ -17,7 +17,7 @@ class << self
   # -------------------------------
   # La méthode est appelée suite au paiement du programme
   # par un nouveau user (ou par les tests lorsque l'on crée
-  # un user qui suit le programme UN AN UN SCRIPT)
+  # un user qui suit le programme UN AN)
   #
   # +auteur+ Instance User de l'auteur pour lequel on fabrique
   # ce programme. Cet argument a été introduit pour gérer les

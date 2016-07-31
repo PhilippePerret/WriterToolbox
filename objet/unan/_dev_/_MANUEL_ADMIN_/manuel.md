@@ -1,6 +1,6 @@
-# Manuel de développement du programme UN AN UN SCRIPT
+# Manuel de développement du programme ÉCRIRE UN FILM/ROMAN EN UN AN
 
-> Ce manuel en un seul fichier est censé fournir une information rapide sur le développement du programme UN AN UN SCRIPT. Il doit être produit en PDF à chaque changement, et ce PDF doit pouvoir être chargé depuis n'importe quelle grande partie du site.
+> Ce manuel en un seul fichier est censé fournir une information rapide sur le développement du programme ÉCRIRE UN FILM/ROMAN EN UN AN. Il doit être produit en PDF à chaque changement, et ce PDF doit pouvoir être chargé depuis n'importe quelle grande partie du site.
 
 * [Généralités](#generalitessurleprogramme)
   * [Description du programme](#descriptiongeneraleduprogramme)
@@ -11,7 +11,7 @@
 * [Helpers de liens](#helpersdeliensdivers)
   * [Liens vers les panneaux principaux](#liensverslespanneauxprincipaux)
 * [Synopsis du parcours d'un auteur](#synopsistravailauteur)
-  * [Démarrage du programme UN AN UN SCRIPT](#demarrageduprogramme)
+  * [Démarrage du programme ÉCRIRE UN FILM/ROMAN EN UN AN](#demarrageduprogramme)
   * [Changement des jours-programme](#changementdesjoursprogramme)
 * [Les Préférences de l'auteur](#lespreferencesdelauteur)
   * [Convention de nommage](#conventionpourlesnoms)
@@ -95,7 +95,7 @@ Chaque auteur inscrit au programme possède un bureau, son centre de travail né
 
 ### Bases de données
 
-Il existe trois types de base de données dans le programme UN AN UN SCRIPT :
+Il existe trois types de base de données dans le programme ÉCRIRE UN FILM/ROMAN EN UN AN :
 
 1. **unan_cold**.
 
@@ -159,9 +159,9 @@ Note : Ces liens sont définis dans le fichier `./objet/unan/lib/required/Bureau
 
 <a name='demarrageduprogramme'></a>
 
-### Démarrage du programme UN AN UN SCRIPT
+### Démarrage du programme ÉCRIRE UN FILM/ROMAN EN UN AN
 
-Un programme UN AN UN SCRIPT se démarre lorsque l'auteur s'inscrit au programme, c'est-à-dire au moment précis où il revient du site PayPal après le paiement de son inscription.
+Un programme ÉCRIRE UN FILM/ROMAN EN UN AN se démarre lorsque l'auteur s'inscrit au programme, c'est-à-dire au moment précis où il revient du site PayPal après le paiement de son inscription.
 
 > Note : Le montant de ce paiement est défini dans le fichier `./objet/unan/lib/required/unan/class.rb` dans la méthode `tarif`.
 
@@ -177,7 +177,7 @@ on_ok.rb charge le module `./objet/unan/lib/module/signup_user.rb` et appelle da
 
 Cette méthode :
 
-* Crée le programme UN AN UN SCRIPT de l'auteur
+* Crée le programme ÉCRIRE UN FILM/ROMAN EN UN AN de l'auteur
 * Crée le projet de l'auteur
 * Crée ses tables dans la base de données propre au programme (chaque programme possède sa propre base de données, même lorsqu'il est suivi par le même auteur).
 * Instancie le premier "jour-programme" de l'auteur, ce qui va avoir pour conséquence de définir son travail (cf. program.start_pday ci-dessous).
@@ -234,7 +234,7 @@ Pour récupérer la valeur :
 Par exemple :
 
     user.preference(:bureau_after_login)
-    # => true s'il faut rejoindre le bureau "Un an un script" après
+    # => true s'il faut rejoindre le bureau "UN AN" après
     # l'identification.
 
 
@@ -250,7 +250,7 @@ Note : En fait, faire appel à la méthode `User#preferences` évite simplement
 
 ### Ajout d'une nouvelle préférence
 
-Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :
+Pour ajouter une nouvelle préférence programme ÉCRIRE UN FILM/ROMAN EN UN AN, il faut :
 
 * lui définir un nom original,
 * ajouter un checkbox et une explication pour cette préférence dans la vue `./objet/unan/bureau/panneau/preferences.erb`,
@@ -267,7 +267,7 @@ Pour ajouter une nouvelle préférence programme UN AN UN SCRIPT, il faut :
 
 ### Listing complet des variables courantes
 
-**Cette liste doit tenir à jour la liste complète des variables dans la table `variables` d'un user inscrit au programme UN AN UN SCRIPT.**
+**Cette liste doit tenir à jour la liste complète des variables dans la table `variables` d'un user inscrit au programme ÉCRIRE UN FILM/ROMAN EN UN AN.**
 
 **Noter que les variables sont classées dans leur ordre d'importance et donc qu'on trouve pêle-mêle des préférences et des variables normales.**
 
@@ -346,7 +346,7 @@ Les messages sont définis dans le fichier YAML :
 
 ## Programme de l'auteur
 
-Tout auteur (user) inscrit au programme UN AN UN SCRIPT possède une instance `Unan::Program` consignée dans la table `programs` de `unan_hot.db`.
+Tout auteur (user) inscrit au programme ÉCRIRE UN FILM/ROMAN EN UN AN possède une instance `Unan::Program` consignée dans la table `programs` de `unan_hot.db`.
 
 <a name='nombredepointsdelauteur'></a>
 
@@ -402,9 +402,9 @@ Toutes les heures, un `cron-job` est lancé, conséquent, qui permet de contrôl
 * les encourager à poursuivre,
 * leur accorder des bonus en cas de bon comportement.
 
-> Noter que ce cron-job n'est pas exclusivement réservé au programme UN AN UN SCRIPT, il sert à toutes les tâches du site. Mais il est toujours lancé en “mode sans échec” pour ne jamais s'interrompre.
+> Noter que ce cron-job n'est pas exclusivement réservé au programme ÉCRIRE UN FILM/ROMAN EN UN AN, il sert à toutes les tâches du site. Mais il est toujours lancé en “mode sans échec” pour ne jamais s'interrompre.
 
-Ce fichier décrit le travail du cron-job qui suit les auteurs suivant le programme UN AN UN SCRIPT.
+Ce fichier décrit le travail du cron-job qui suit les auteurs suivant le programme ÉCRIRE UN FILM/ROMAN EN UN AN.
 
 Tous les éléments du cron-job se trouvent dans le dossier `./CRON` qui doit être placé à la racine complète de l'hébergement (pas du site, donc avant le `www`).
 
@@ -429,8 +429,8 @@ Le fichier `./lib/required.rb` charge des librairies de cron puis appelle la mé
           la page.
         * Il appelle ensuite la méthode
           `traitement_programme_un_an_un_script` qui va se charger du
-          traitement des programmes UN AN UN SCRIPT.
-          Cf. [Traitement des programmes un an un script](#traitementprogrammesunanunscript)
+          traitement des programmes ÉCRIRE UN FILM/ROMAN EN UN AN.
+          Cf. [Traitement des programmes UNAN](#traitementprogrammesunanunscript)
         * Il appelle ensuite la méthode `traitement_messages_forum` qui va
           se charger du traitement des messages de forum, pour avertir des
           nouvelles publications. Cf. [Traitement des messages du forum](#traitementmessagesforum)
@@ -491,7 +491,7 @@ Noter que cette méthode ne génèrera un rapport/mail pour l'auteur que s'il ch
 
 ## Rythme de l'auteur
 
-Le rythme auquel on suit le programme UN AN UN SCRIPT est une donnée fondamentale du programme.
+Le rythme auquel on suit le programme ÉCRIRE UN FILM/ROMAN EN UN AN est une donnée fondamentale du programme.
 
 Ce rythme a une valeur de **5** quand il est *moyen*, c'est-à-dire qu'un jour-réel correspond à un *jour-programme*.
 

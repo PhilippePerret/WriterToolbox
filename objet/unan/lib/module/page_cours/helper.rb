@@ -13,7 +13,7 @@ class PageCours
   # Méthode appelée (indirectement) par la fenêtre show.erb.
   # Indirectement mais c'est la méthode principale, et elle
   # est utilisée aussi bien pour les fichier Narration que
-  # pour les fichiers purement du programme UN AN UN SCRIPT.
+  # pour les fichiers purement du programme UN AN.
   #
   # {String} Retourne le code HTML de la page en fonction
   # de son type (extension)

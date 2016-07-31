@@ -2,7 +2,7 @@
 =begin
 
   Extension de la classe User pour le programme
-  UN AN UN SCRIPT
+  ÉCRIRE UN FILM/ROMAN EN UN AN
 
 =end
 class User

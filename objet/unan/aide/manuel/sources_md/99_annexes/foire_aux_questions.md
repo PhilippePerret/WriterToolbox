@@ -1,8 +1,8 @@
 ## Foire aux questions {#faq}
 
 Quelle est la différence entre un module à l'[Atelier Icare](http://www.atelier-icare.net) et ce programme ?
-: Hormis le fait que la pédagogie employée est la même, les deux choses sont foncièrement différentes. À l'atelier Icare, on est accompagné de près, on est suivi le long du développement de son projet. On est en rapport direct, en discussion, avec Philippe Perret, le pédagogue. À l'opposé, le programme UN AN UN SCRIPT est pensé pour offrir une autonomie totale à l'auteur. Il reste seul, mais il n'est pas livré à lui-même, il suit une sorte de route éclairée par un guide pédagogue.
-: Bien entendu, la différence se fait également au niveau du tarif de l'un et de l'autre, qui sont en rapport de leur différence. Le programme UN AN UN SCRIPT a vraiment été pensé pour être accessible à toutes les bourses alors que l'[atelier Icare](http://www.atelier-icare.net) est un véritable investissement financier.
+: Hormis le fait que la pédagogie employée est la même, les deux choses sont foncièrement différentes. À l'atelier Icare, on est accompagné de près, on est suivi le long du développement de son projet. On est en rapport direct, en discussion, avec Philippe Perret, le pédagogue. À l'opposé, le programme unan{} est pensé pour offrir une autonomie totale à l'auteur. Il reste seul, mais il n'est pas livré à lui-même, il suit une sorte de route éclairée par un guide pédagogue.
+: Bien entendu, la différence se fait également au niveau du tarif de l'un et de l'autre, qui sont en rapport de leur différence. Le programme unan{} a vraiment été pensé pour être accessible à toutes les bourses alors que l'[atelier Icare](http://www.atelier-icare.net) est un véritable investissement financier.
 
 Est-ce que l'inscription au site vaut inscription au programme ?
 : Non, l'inscription au site \boa{} et l'inscription au programme \unan{} sont deux choses bien distinctes.

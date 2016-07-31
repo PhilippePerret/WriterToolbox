@@ -10,7 +10,7 @@ class UnanAdmin
       page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
       page.title = page_title
 
-      "Administration UN AN UN SCRIPT".in_h1 +
+      "Administration #{Unan::PROGNAME_DIM_MAJ}".in_h1 +
       (sous_titre.nil? ? "" : sous_titre.in_h2)
     end
 

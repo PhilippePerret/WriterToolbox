@@ -13,7 +13,7 @@ class Console
     (Unan::folder_modules + 'signup_user.rb').require
     u.signup_program_uaus
     User::current = User::get(current_user_id)
-    "Programme UN AN UN SCRIPT initié avec succès pour #{u.pseudo} (##{u.id})"
+    "Programme ÉCRIRE UN FILM/ROMAN EN UN AN initié avec succès pour #{u.pseudo} (##{u.id})"
   end
 
   # Programme pour détruire un user
@@ -40,7 +40,7 @@ class Console
       hpaiement = User.table_paiements.select(where: {user_id: u.id, objet_id: '1AN1SCRIPT'}, order: 'created_at DESC', limit: 1).first
       debug "hpaiement : #{hpaiement.pretty_inspect}"
       if hpaiement.nil?
-        raise '\n<span class="red">Cet utilisateur ne possède aucun paiment pour un programme UN AN UN SCRIPT…</span>'
+        raise '\n<span class="red">Cet utilisateur ne possède aucun paiment pour un programme ÉCRIRE UN FILM/ROMAN EN UN AN…</span>'
       end
       invoice = hpaiement[:facture]
       sub_log "\nPar mesure de sécurité, il faut ajouter ce numéro de facture après la référence de l'auteur dans la console :".in_div

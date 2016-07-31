@@ -77,9 +77,9 @@ class User
     debug "  = Messages forum détruits"
   end
 
-  # Destruction des programmes UN AN UN SCRIPT
+  # Destruction des programmes UN AN
   def destroy_programmes_unan
-    debug "  * Destruction des programmes & projets UN AN UN SCRIPT"
+    debug "  * Destruction des programmes & projets UAUS"
     # On charge tout ce qui concerne Unan, on en aura
     # besoin plus bas (pour les bases de données)
     site.require_objet 'unan'

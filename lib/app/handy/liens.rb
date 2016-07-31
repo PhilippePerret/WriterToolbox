@@ -29,12 +29,12 @@ class Lien
     ).in_div(style: 'font-weight: bold;padding:3em 4em 0em 1em;width:70%;margin-left:10%;font-size:14pt;', class: 'cadre air')
   end
 
-  # Lien vers le programme UN AN UN SCRIPT
+  # Lien vers le programme ÉCRIRE UN FILM/ROMAN EN UN AN
   def unanunscript titre = nil, options = nil
     titre ||= "programme #{UN_AN_UN_SCRIPT}"
     build('unan/home', titre, options)
   end
-  # Lien vers l'inscription au programme UN AN UN SCRIPT
+  # Lien vers l'inscription au programme ÉCRIRE UN FILM/ROMAN EN UN AN
   def unanunscript_subscribe titre = nil, options = nil
     titre ||= "S'inscrire au programme #{UN_AN_UN_SCRIPT}"
     build("unan/paiement", titre, options)

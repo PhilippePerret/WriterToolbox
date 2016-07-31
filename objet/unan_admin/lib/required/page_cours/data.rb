@@ -55,7 +55,7 @@ class PageCours
     @data ||= table_pages_cours.get(id)
   end
 
-  # Type de la page (page un an un script, ou narration, ou
+  # Type de la page (page UN AN, ou narration, ou
   # collection narration)
   def type
     @type ||= data[:type] || get(:type)

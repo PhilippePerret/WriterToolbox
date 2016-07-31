@@ -5,7 +5,7 @@
   * [Table des table of content des livres](#tabledestablesdesmatieres)
 
 
-Pour le moment, les fichiers originaux de la collection Narration se trouve dans le programme UN AN UN SCRIPT :
+Pour le moment, les fichiers originaux de la collection Narration se trouve dans le programme UN AN :
 
     ./data/unan/pages_cours/cnarration/
 

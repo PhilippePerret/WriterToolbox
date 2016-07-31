@@ -5,7 +5,7 @@ module CurrentPDayClass
   # Envoi du rapport par mail
   def send_rapport_quotidien force_offline = false
     auteur.send_mail(
-      subject:            "B.O.A. UN AN UN SCRIPT - Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
+      subject:            "B.O.A. UN AN - Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
       no_header_subject:  true,
       message:            rapport_complet,
       formated:           true,

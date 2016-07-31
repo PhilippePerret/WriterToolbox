@@ -66,7 +66,7 @@ Exemples :
     cold          Par exemple pour les citations, les tweets permanents
     cnarration    Toutes les tables pour la collection narration
     biblio        Pour le filmodico et le scénodico
-    unan          Pour le programme UN AN UN SCRIPT
+    unan          Pour le programme UN AN
     forum         Pour le forum
 
 `requête`

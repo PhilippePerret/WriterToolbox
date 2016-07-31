@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-  Définition de la table pour un programme “Un An Un script”
+  Définition de la table pour un programme UN AN
   Ce sont les données générales
 =end
 def schema_table_programs

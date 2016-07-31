@@ -40,7 +40,7 @@ class CRON2
     # elle échoue, on interromp le programme
     run_procedure('require_all_site') || return
 
-    # On traite le programme UN AN UN SCRIPT à commencer le
+    # On traite le programme UN AN à commencer le
     # changement de jour des auteurs qui doivent passer au
     # jour suivant.
     run_procedure 'un_an_un_script'

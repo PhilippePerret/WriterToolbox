@@ -23,7 +23,7 @@ Sitôt l'inscription et le paiement accepté, vous êtes inscrit\fem{e} au progr
 
 * [rejoindre le site](#rejoindre-site),
 * cliquer sur le bouton "s'inscrire" dans la marge gauche,
-* sur le formulaire qui s'affiche, **cocher la case "Inscription au programme Un an Un script"**,
+* sur le formulaire qui s'affiche, **cocher la case "Inscription au programme ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN"**,
 * finir de remplir le formulaire et le soumettre.
 
 Sitôt l'inscription et le paiement accepté, vous êtes inscrit\fem{e} au programme et vous pouvez d'ores et déjà le commencer.

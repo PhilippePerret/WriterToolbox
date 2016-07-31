@@ -5,7 +5,7 @@ raise_unless_admin
 <% if param(:opt) == 'pages_narration_out' %>
   <h3>Pages narration hors programme</h3>
   <div class='tiny discret'>
-    <div>Les pages ci-dessous appartiennent toutes à la Collection Narration mais ne sont pas utilisées par le programme UN AN UN SCRIPT.</div>
+    <div>Les pages ci-dessous appartiennent toutes à la Collection Narration mais ne sont pas utilisées par le programme <%= Unan::PROGNAME_MAJ %>.</div>
     <div>Il suffit de cliquer sur le bouton “ADD” pour ajouter la page au programme en rejoignant un formulaire qu'il suffira de soumettre tel quel.</div>
   </div>
   <%= liste_pages_narration_hors_programme %>
@@ -13,7 +13,7 @@ raise_unless_admin
 
 
 <h3>Pages narration <em>in</em> programme</h3>
-<div class="fright"><%= "Voir les pages non utilisées".in_a(class:'tiny', href:"page_cours/list?in=unan_admin&opt=pages_narration_out", title:"Cet outil permet de faire la liste des pages de la collection Narration qui ne sont pas utilisées par le programme UN AN UN SCRIPT (afin de les ajouter).") %></div>
+<div class="fright"><%= "Voir les pages non utilisées".in_a(class:'tiny', href:"page_cours/list?in=unan_admin&opt=pages_narration_out", title:"Cet outil permet de faire la liste des pages de la collection Narration qui ne sont pas utilisées par le programme #{Unan::PROGNAME_MAJ} (afin de les ajouter).") %></div>
 <div class='tiny discret' style="width:65%">
   <div>Les pages ci-dessous appartiennent toutes à la Collection Narration</div>
   <div>L'identifiant entre crochets est l'identifiant de la page cours, pas celui de la page de la collection.</div>
@@ -24,5 +24,5 @@ raise_unless_admin
 <%= liste_pages_narration %>
 
 <h3>“Vraies” pages programme</h3>
-<div class='tiny discret'><div>Les pages ci-dessous n'appartiennent pas à la Collection Narration, elles sont propres au programme UN AN UN SCRIPT.</div></div>
+<div class='tiny discret'><div>Les pages ci-dessous n'appartiennent pas à la Collection Narration, elles sont propres au programme <%= Unan::PROGNAME_DIM_MAJ %>.</div></div>
 <%= liste_pages_unan %>

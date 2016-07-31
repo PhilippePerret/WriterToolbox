@@ -3,7 +3,7 @@
 
 Class Unan::Program::Cal
 ------------------------
-Gestion du calendrier du programme Un an un script pour l'auteur courant
+Gestion du calendrier du programme UN AN pour l'auteur courant
 
 =end
 class Unan
@@ -82,7 +82,7 @@ class Cal
   # ---------------------------------------------------------------------
   #   Méthodes d'helper
   # ---------------------------------------------------------------------
-  
+
 
 end # /Cal
 end # /Program

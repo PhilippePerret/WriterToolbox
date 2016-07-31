@@ -2,7 +2,7 @@
 =begin
 
 Définition de la table `pdays` qui définit précisément le travail (les
-travaux) à accomplir pour chaque jour du programme Un An Un Script.
+travaux) à accomplir pour chaque jour du programme UN AN.
 Donc il y a 365 pdays définis dans cette table.
 =end
 def schema_table_absolute_pdays

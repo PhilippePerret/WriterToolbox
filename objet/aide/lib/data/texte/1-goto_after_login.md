@@ -12,7 +12,7 @@ Les valeurs possibles sont les suivantes, suivies de l'indication de l'endroit d
 
 * **votre profil**. -> La page principale de votre profil ;
 * **dernière page consultée**. -> La dernière page que vous avez visitée lors de votre dernière visite ;
-* **votre programme UN AN UN SCRIPT**. Si vous suivez [le programme UN AN UN SCRIPT](unan/home), vous pouvez rejoindre directement votre bureau de travail ;
+* **votre programme ÉCRIRE UN FILM/ROMAN EN UN AN**. Si vous suivez [le programme ÉCRIRE UN FILM/UN ROMAN EN UN AN](unan/home), vous pouvez rejoindre directement votre bureau de travail ;
 * **l'accueil du site**. -> la “[home page](site/home)”, où se trouvent par exemple un aperçu des dernières actualités ;
 * **la collection Narration**. -> Page d'accueil de la [collection Narration](cnarration/home) ;
 * **le forum**. -> Page principale du [Forum d'écriture](forum/home) ;

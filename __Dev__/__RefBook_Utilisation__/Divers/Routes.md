@@ -174,7 +174,7 @@ Dans le fichier `./objet/forum/message/destroy.rb` on trouve le code :
 
 ### Instancier un autre objet que celui de la route/contexte
 
-Le problème s'est posé avec les questionnaires, pour leur simulation en mode administration. La route était (c'est le programme UN AN UN SCRIPT) :
+Le problème s'est posé avec les questionnaires, pour leur simulation en mode administration. La route était (c'est le programme UN AN) :
 
     quiz/<id>/simulation?in=unan_admin
 

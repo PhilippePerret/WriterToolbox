@@ -98,7 +98,7 @@ class Console
     #   console.require 'analyses'
     #   Analyses.instance.liens_balises_vers(line.sub(/^(lien|balise) analyse /,'').strip)
 
-      # --- PROGRAMME UN AN UN SCRIPT ---
+      # --- PROGRAMME ÉCRIRE UN FILM/ROMAN EN UN AN ---
 
     when /^detruire programme /
       # Pour détruire le programme d'un auteur
@@ -140,7 +140,7 @@ class Console
       console.require 'narration'
       ( liste_pages_narration_of_niveau last_word )
     # ---------------------------------------------------------------------
-    # PROGRAMME UN AN UN SCRIPT
+    # PROGRAMME ÉCRIRE UN FILM/ROMAN EN UN AN
     # ---------------------------------------------------------------------
     when /^unan (nouveau|nouvelle)/i
       ( goto_section "unan_new_#{last_word}" )

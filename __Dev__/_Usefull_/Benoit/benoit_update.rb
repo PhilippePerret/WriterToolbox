@@ -9,7 +9,7 @@ puisse servir pour les tests principaux et notamment le cron-job.
 # ---------------------------------------------------------------------
 #   QUELQUES DONNÉES À DÉFINIR
 
-# Date de démarrage du programme UN AN UN SCRIPT.
+# Date de démarrage du programme UN AN.
 # Par défaut, c'est maintenant, mais on peut vouloir le mettre
 # à une autre date.
 

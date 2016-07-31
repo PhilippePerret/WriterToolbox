@@ -5,7 +5,7 @@ class Lien
   # Pour définir le format de sortie général.
   # Utilisé par l'export en LaTex de la collection Narration
   # Utilisé par la construction du manuel (Markdown) d'utilisation
-  # du programme UN AN UN SCRIPT.
+  # du programme ÉCRIRE UN FILM/ROMAN EN UN AN.
   #
   attr_writer :output_format
   def output_format

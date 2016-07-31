@@ -2,8 +2,8 @@
 =begin
 
 Schéma de la table 'pages_cours' qui consigne toutes les
-informations sur les pages utilisées pour le programme UN AN UN SCRIPT
-et sert notamment à gérer les handlers de page
+informations sur les pages utilisées pour le programme ÉCRIRE UN ROMAN/FILM
+EN UN AN et sert notamment à gérer les handlers de page
 
 =end
 def schema_table_pages_cours
@@ -61,7 +61,7 @@ CREATE TABLE pages_cours
     # page spécialement affectée au programme, etc.
     # C'est ce type qui détermine comment interpréter le path
     # pour savoir où trouver la page
-    # U = Programme Un An Un Script
+    # U = Programme UN AN
     # N = Collection Narration
     type CHAR(1) NOT NULL,
 

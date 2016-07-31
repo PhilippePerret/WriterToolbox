@@ -40,7 +40,7 @@ class SiteHtml
     return true if mtime < db_forum.last_update
     debug "   = Base Forum : #{db_forum.last_update} (OK)" if debugit
     return true if table_unan_programs.last_update > mtime
-    debug "   = Programmes Un an un script (OK)" if debugit
+    debug "   = Programmes UN AN (OK)" if debugit
     return true if mtime < data_videos.mtime
     debug "   = Données vidéos : #{data_videos.mtime} (OK)" if debugit
     return true if mtime < data_divers_actus.mtime
@@ -54,7 +54,7 @@ class SiteHtml
   def db_cnarration;  @db_cnarration  ||= site.dbm_table(:cnarration, 'narration')  end
   def db_forum;       @db_forum       ||= site.dbm_table(:forum, 'posts')           end
 
-  # Table des programmes Un An Un Script
+  # Table des programmes UN AN
   def table_unan_programs
     @table_unan_programs ||= site.dbm_table(:unan, 'programs')
   end

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Module pour le traitement des auteurs qui suivent le programme
-# UN AN UN SCRIPT + quelques petites autres choses sans importance
+# UAUS + quelques petites autres choses sans importance
 #
 class CRON2
 
@@ -42,7 +42,7 @@ class CRON2
   end
 
   # Retourne la liste (Array) des instances DUser des auteurs qui
-  # suivent le programme UN AN UN SCRIPT
+  # suivent le programme UAUS
   def auteurs
     @auteurs ||= begin
       programmes.collect{|hp| DUser.new(hp[:auteur_id])}

@@ -1,7 +1,7 @@
 <%
 #
 # NOTE Cette vue sert aussi bien à l'inscription au site qu'à
-#      l'inscription au programme UN AN UN SCRIPT.
+#      l'inscription au programme UN AN.
 #
 signup_for_unanunscript = site.current_route.route == "unan/paiement"
 %>
@@ -36,7 +36,7 @@ form.prefix = 'user'
   <%= form.field_text("Mail", 'mail', nil, {class:'milong', confirmation:true}) %>
   <%= form.field_text("Mot de passe", 'password', nil, {class:'milong', confirmation:true}) %>
   <% if signup_for_unanunscript %>
-    <%= form.field_checkbox("S'abonner au programme UN AN UN SCRIPT", 'subscribe', 'on') %>
+    <%= form.field_checkbox("S'abonner au programme #{Unan::PROGNAME_MINI_MAJ}", 'subscribe', 'on') %>
   <% else %>
     <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: "<br>(Pourquoi s'abonner ?)".in_a(href:'aide/3/show', target:'_blank', class:'small')}) %>
   <% end %>

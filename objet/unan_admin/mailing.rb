@@ -80,7 +80,7 @@ end #/ << self
       @auteur = AuteurUnan.new(hwriter) # pour le déserbage
       data_mail = {
         to:                 @auteur.mail,
-        subject:            'B.O.A. UN AN UN SCRIPT - ' + ERB.new(prepared_subject).result(bind),
+        subject:            "B.O.A.  - #{Unan::PROGNAME_MINI_MAJ}" + ERB.new(prepared_subject).result(bind),
         message:            ERB.new(prepared_message).result(bind),
         force_offline:      force_offline?,
         no_header_subject:  true,

@@ -106,15 +106,15 @@ class SiteHtml
   end
 
   # ---------------------------------------------------------------------
-  #   PROGRAMME UN AN UN SCRIPT
+  #   PROGRAMME UN AN
   # ---------------------------------------------------------------------
   def bloc_actualite_unan_unscript
-    titre_bloc_actu("UN AN UN SCRIPT", 'unan/home') +
+    titre_bloc_actu("#{Unan::PROGNAME_MINI_MAJ}", 'unan/home') +
     "Actualités du programme :<br>".in_span(class:'label') +
     derniere_nouvelles_unan
   end
 
-  # Dernières nouvelles du programme UN AN UN SCRIPT
+  # Dernières nouvelles du programme UN AN
   # On pioche trois actualités parmi les inscriptions ou les
   # activités générales.
   def derniere_nouvelles_unan

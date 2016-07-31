@@ -15,9 +15,9 @@ class Categorie
       description:"Tout ce qui concerne le forum, le règlement, la charte de bonne conduite, etc."
     },
     unanunscript:{
-      hname: "Le programme “UN AN UN SCRIPT”",
+      hname: "Le programme “ÉCRIRE UN FILM/ROMAN EN UN AN”",
       id: 3,
-      description: "Tout ce qui concerne le programme UN AN UN SCRIPT, les documents à commenter, les résultats, etc."
+      description: "Tout ce qui concerne le programme ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN, les documents à commenter, les résultats, etc."
     },
     ecriture:{
       hname:"L'Écriture",

@@ -94,7 +94,7 @@ class Bureau
 
   class Onglet
 
-    # Onglets du bureau Un An Un Script d'un user suivant le programme
+    # Onglets du bureau UN AN d'un user suivant le programme
     ONGLETS = {
       state:        {id: :state,        titre:"État",     plain_titre: "État général du programme"},
       projet:       {id: :projet,       titre:"Projet"},

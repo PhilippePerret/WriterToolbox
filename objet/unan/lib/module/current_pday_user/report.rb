@@ -2,7 +2,7 @@
 =begin
 
   Extension à la classe User::CurrentPDay pour construire le mail
-  "quotidien" de l'auteur suivant le programme UN AN UN SCRIPT
+  "quotidien" de l'auteur suivant le programme UN AN
 
 =end
 module CurrentPDayClass
@@ -50,7 +50,7 @@ module CurrentPDayClass
   # ---------------------------------------------------------------------
 
   def titre_rapport
-    "Rapport de travail Un An Un Script<br>#{NOW.as_human_date(false, false, ' ')}".in_h2
+    "Rapport de travail UN AN<br>#{NOW.as_human_date(false, false, ' ')}".in_h2
   end
   # Le cadre contenant le nombre de point et l'indice
   # du jour programme.

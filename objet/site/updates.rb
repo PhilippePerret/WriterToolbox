@@ -37,7 +37,7 @@ UPDATES AUTOMATIQUES
     type = narration
   - Une nouvelle analyse de film qui passe à lisible
     type = analyse
-  - Une amélioration du programme un an un script
+  - Une amélioration du programme UN AN
     type = unan
   - Une nouvelle vidéo
     type = video

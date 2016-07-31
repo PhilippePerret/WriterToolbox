@@ -34,7 +34,7 @@ class Console
       rapport = u.current_pday.rapport_complet
       sub_log 'Rapport envoyé par mail :'.in_h3 + rapport
       site.send_mail_to_admin(
-        subject: 'Simulation envoi rapport à auteur UN AN UN SCRIPT',
+        subject: 'Simulation envoi rapport à auteur ÉCRIRE UN FILM/ROMAN EN UN AN',
         message: rapport,
         formated: true,
         force_offline: true
@@ -76,7 +76,7 @@ class Console
   end
 
   # Méthode qui affichage dans le sublog la valeur des points
-  # jour après jour dans le programme UN AN UN SCRIPT
+  # jour après jour dans le programme ÉCRIRE UN FILM/ROMAN EN UN AN
   def unan_affiche_points_sur_lannee
     Unan::require_module 'quiz'
     debug "  Unan::Program::DATA_POINTS: #{  Unan::Program::DATA_POINTS.inspect}"

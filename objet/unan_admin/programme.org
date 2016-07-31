@@ -1,11 +1,11 @@
-# +TITLE: Programme UN AN UN SCRIPT jour à jour
+# +TITLE: Programme UN AN jour à jour
 # +AUTHOR: Philippe Perret
 # +MAIL:   phil@laboiteaoutilsdelauteur.fr
 
 
 (note : ce fichier doit être édité par emacs - mode ORG employé)
 
-Ce fichier décrit le programme complet UN AN UN SCRIPT de manière
+Ce fichier décrit le programme complet UN AN de manière
 littéraire, pour le travailler en profondeur.
 
 Rappel :
@@ -13,7 +13,7 @@ Pour déplier un titre : TAB
 Pour replier un titre : MAJ + TAB
 
 * Tâches
-** TODO Préparer le programme complet du programme UN AN UN SCRIPT
+** TODO Préparer le programme complet du programme UN AN
 ** TODO Voir comment préparer les étapes générales
 * PROGRAMME COMPLET
 ** Préparation (1 mois)(PJ 1 à 27)

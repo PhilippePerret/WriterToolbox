@@ -26,7 +26,7 @@ class Cnarration
         # Si le niveau de développement de la page est insuffisant, on
         # affiche un message de non lecture possible.
         # Le niveau de développement est fixé à 8 pour un lecteur
-        # normal et à 6 pour un lecteur du programme UN AN UN SCRIPT
+        # normal et à 6 pour un lecteur du programme UNAN
         # TODO Quand toutes les pages de narration seront à un bon
         # niveau on pourra supprimer ça.
         #
@@ -171,7 +171,7 @@ class Cnarration
 
     # Message en cas de niveau de développement de la page
     # insuffisant pour un utilisateur autorisé, c'est-à-dire un
-    # abonné, un auteur du programme un an un script ou un icarien
+    # abonné, un auteur du programme UN AN ou un icarien
     # actif.
     def mess_dev_insuffisant_authorized
       <<-HTML

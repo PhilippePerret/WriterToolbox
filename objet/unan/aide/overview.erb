@@ -1,11 +1,11 @@
 <%
 # Page d'accueil pour découvrir le programme 1 AN 1 SCRIPT
 %>
-<%= Unan::Aide::titre("Présentation") %>
+<%= Unan::Aide.titre("Présentation") %>
 
 <h4>C'est quoi ce drôle de programme ?…</h4>
 <p>
-  <strong>UN AN UN SCRIPT</strong> est un programme inspiré des méthodes et des techniques des meilleurs auteurs et scénaristes qui, au cours d'<strong>une année</strong>, vous accompagne dans <strong>l'écriture d'un film, d'un roman ou d'une BD</strong>, tout en vous enseignant l'<strong>art de la narration</strong>.
+  <strong><%= Unan::PROGNAME_MAJ %></strong> est un programme inspiré des méthodes et des techniques des meilleurs auteurs et scénaristes qui, au cours d'<strong>une année</strong>, vous accompagne dans <strong>l'écriture d'un film, d'un roman ou d'une BD</strong>, tout en vous enseignant l'<strong>art de la narration</strong>.
 </p>
 <p class='small'>
   Cela signifie qu'au cours de ce programme d'apprentissage et de création qui <strong>vous suit au quotidien</strong>, vous êtes amené<%= user.f_e %> à travailler tant au niveau de la <strong>pratique</strong> qu'au niveau de la <strong>théorie</strong>, que vous développez votre <strong>savoir</strong> tout autant que votre <strong>savoir-faire</strong>. Soyez assuré<%= f_e %> qu'il n'existe aucune autre voie pour développer avec bénéfice votre talent et vos compétences littéraires ou cinématographiques.
@@ -68,5 +68,5 @@
 
 <h4>À vos marques…</h4>
 <p>
-  Vous vous sentez prêt ou prête à vous lancer ?… Alors n'attendez plus et <a href="unan/paiement" class='bold'>inscrivez-vous</a> de ce pas au programme “Un An Un Script” ! :-D
+  Vous vous sentez prêt ou prête à vous lancer ?… Alors n'attendez plus et <a href="unan/paiement" class='bold'>inscrivez-vous</a> de ce pas au programme “<%= Unan::PROGNAME_MAJ %>” ! :-D
 </p>

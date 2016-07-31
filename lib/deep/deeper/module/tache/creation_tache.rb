@@ -154,13 +154,13 @@ class Taches
 
     # {String} LIEU principal de la tâche, par exemple les
     # analyses ou la collection Narration, pour indiquer dans le
-    # premier mot du message à se fait la tâche
+    # premier mot du message où se fait la tâche
     def word_place
       @word_place ||= begin
         case true
         when narration?   then "NARRATION "
         when analyse?     then "ANALYSES "
-        when unan?        then "UN AN UN SCRIPT "
+        when unan?        then "UNAN "
         else
           case objet
           when "analyse"    then "ANALYSES "

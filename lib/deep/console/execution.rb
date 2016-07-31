@@ -235,7 +235,7 @@ class Console
   end
   # On exécute la ligne (si on peut) comme une ligne composée
   # de `get <something> of <something else> <id something else>`
-  # Par exemple, c'est ce qui est utilisé pour UN AN UN SCRIPT
+  # Par exemple, c'est ce qui est utilisé pour ÉCRIRE UN FILM/ROMAN EN UN AN
   # pour retrouver un work d'une page de cours, un p-day d'un
   # questionnaire, etc.
   def execute_as_get_of_line line

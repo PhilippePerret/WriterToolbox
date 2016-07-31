@@ -38,7 +38,7 @@ class User
           app.session['for_paiement'] = "1"
           newuser.login
           if pour_unanunscript
-            # => Page de paiement du programme UN AN UN SCRIPT
+            # => Page de paiement du programme UN AN
             redirect_to 'unan/paiement'
           else
             # => Page de paiement de l'ABONNEMENT au site
@@ -123,7 +123,7 @@ class User
       # Les données sont invalides, on doit rediriger vers
       # la page du formulaire d'inscription (user/signup)
       # Il y a peut-être un contexte, comme lorsque l'on crée
-      # l'user pour un programme UN AN UN SCRIPT.
+      # l'user pour un programme UN AN.
       # redirect_to 'user/signup'
       redirection = "user/signup"
       unless site.current_route.context.nil?

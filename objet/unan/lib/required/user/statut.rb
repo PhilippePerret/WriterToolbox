@@ -1,6 +1,6 @@
 # encoding: UTF-8
 =begin
-Extension des instances User pour le programme UN AN UN SCRIPT
+Extension des instances User pour le programme UN AN
 méthodes de status
 =end
 class User

@@ -28,7 +28,7 @@ class User
   GOTOS_AFTER_LOGIN = {
     '0' => { hname: 'votre profil', route: nil },
     '1' => { hname: 'votre dernière page consultée', route: nil},
-    '2' => { hname: 'votre programme UN AN UN SCRIPT', route: 'bureau/home?in=unan'},
+    '2' => { hname: "votre programme ÉCRIRE UN FILM/ROMAN EN UN AN", route: 'bureau/home?in=unan'},
     '3' => { hname: 'l’accueil du site', route: 'site/home'},
     '4' => { hname: 'la collection Narration', route: 'cnarration/home'},
     '5' => { hname: 'le forum', route: 'forum/home'},

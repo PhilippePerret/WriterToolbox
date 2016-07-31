@@ -3,7 +3,7 @@
 
 Class Program (Unan::Program)
 ------------------------------
-Instance d'un programme un an un script suivi par un auteur.
+Instance d'un programme UN AN suivi par un auteur.
 
 Note : À la fin de ce module est définie la méthode `program` qui
 permet d'obtenir l'instance du programme courant.

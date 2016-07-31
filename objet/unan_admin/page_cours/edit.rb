@@ -187,7 +187,7 @@ class PageCours
           if new_page?
             # En cas de nouvelle page
             # Il faut s'assurer que cette page Narration n'existe pas
-            # encore en tant que page de cours UN AN UN SCRIPT
+            # encore en tant que page de cours UN AN
             where = "narration_id = #{nid}"
             if table_pages_cours.count(where:where) > 0
               pcid = table_pages_cours.select(where: where,colonnes:[]).first[:id]

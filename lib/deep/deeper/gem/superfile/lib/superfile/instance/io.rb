@@ -96,7 +96,7 @@ class SuperFile
   # Déserbe le fichier (si c'est un fichier ERB) et retourne son contenu
   # +bindee+    L'objet bindé à la vue, éventuellement
   def deserb bindee = nil
-    raise "Ce fichier n'est pas un fichier ERB." unless extension == 'erb'
+    # raise "Ce fichier n'est pas un fichier ERB." unless extension == 'erb'
     bindee ||= @bind
     unless bindee.nil?
       if bindee.class != Binding && false == bindee.respond_to?(:bind)

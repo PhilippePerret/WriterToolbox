@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-Pour le suivi des auteurs du programme UN AN UN SCRIPT
+Pour le suivi des auteurs du programme UNAN
 
 =end
 raise_unless_admin

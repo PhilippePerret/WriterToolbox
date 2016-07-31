@@ -25,10 +25,10 @@ liens:
       OPTIONS peut contenir `:to` qui peut avoir la valeur : :recherche, :home, :livres
   -
     command:        lien.unanunscript
-    description:    Lien vers le programme UN AN UN SCRIPT
+    description:    Lien vers le programme ÉCRIRE UN FILM/ROMAN EN UN AN
   -
     command:        lien.unanunscript_subscribe
-    description:    Souscription au programme un an un script
+    description:    Souscription au programme UN AN
   -
     command:        "`lien.analyses_de_films` ou `lien.analyses`"
     description:    Analyses de film
@@ -309,15 +309,15 @@ analyse:
       de l'identifiant du film voulu.
 
 # ---------------------------------------------------------------------
-# PROGRAMME UN AN UN SCRIPT
+# PROGRAMME ÉCRIRE UN FILM/ROMAN EN UN AN
 # ---------------------------------------------------------------------
 unan:
   -
     type:           TITLE
-    description:    Le Programme UN AN UN SCRIPT
+    description:    Le Programme ÉCRIRE UN FILM/ROMAN EN UN AN
   -
     command:        goto|aller unanunscript
-    description:    Rejoindre la section du programme UN AN UN SCRIPT
+    description:    Rejoindre la section du programme ÉCRIRE UN FILM/ROMAN EN UN AN
   -
     command:        Unan points
     description: |
@@ -351,13 +351,13 @@ unan:
   -
     command:        detruire programme &lt;pseudo|id&gt;
     description: |
-      Détruit le programme UN AN UN SCRIPT de l'user désigné.
+      Détruit le programme ÉCRIRE UN FILM/ROMAN EN UN AN de l'user désigné.
     note: |
       Il faut une confirmation pour que ça fonctionne, elle se fait par le
       biais du numéro de facture qu'il faut ajouter au bout de la commande.
   -
     command:        "detruire programmes de `&lt;pseudo&gt;|&lt;id&gt;"
-    description:    Détruit tous les programmes “Un An Un Script” de l'user.
+    description:    Détruit tous les programmes “UN AN” de l'user.
     note:           Cette commande ne peut s'utiliser qu'en OFFLINE.
   -
     command:        set benoit to pday &lt;x p-day (1-start)&gt;
@@ -380,11 +380,11 @@ unan:
   -
     command:        "`Unan état des lieux` ou `Unan inventory`"
     description:    |
-      Procède à un état des lieux du programme UN AN UN SCRIPT, c'est-à-dire consulte les tables pour faire le rapport. C'est en quelques sortes une version simplifiée de l'affichage de toutes les tables.
+      Procède à un état des lieux du programme ÉCRIRE UN FILM/ROMAN EN UN AN, c'est-à-dire consulte les tables pour faire le rapport. C'est en quelques sortes une version simplifiée de l'affichage de toutes les tables.
   -
     command:        Unan repare
     description:  |
-      Répare le programme UN AN UN SCRIPT. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.
+      Répare le programme ÉCRIRE UN FILM/ROMAN EN UN AN. Utile souvent après les tests, pour détruire les choses qui ne l'ont pas été à la fin des tests. Mais normalement, maintenant, avec les gels, ça doit être inutile.
   -
     command:        Unan init program for &lt;ID de user existant&gt;
     description:    Pour initier un programme pour un utilisateur existant.

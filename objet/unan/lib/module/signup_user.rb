@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class ::User
 
-  # Procédure principale qui inscrit l'user au programme UN AN UN SCRIPT
+  # Procédure principale qui inscrit l'user au programme UN AN
   # tout de suite après le paiement de son module.
   #
   # Note : c'est une procédure hyper protégée (mode sans échec) pour
@@ -11,7 +11,7 @@ class ::User
   #
   def signup_program_uaus
 
-    debug "\n\n=== INSTANCIATION D'UN PROGRAMME UN AN UN SCRIPT ===\n\n"
+    debug "\n\n=== INSTANCIATION D'UN PROGRAMME UN AN ===\n\n"
     # Pour consigner toutes les erreurs qui sont survenues et
     # pouvoir y remédier.
     # À l'intérieur d'une autre méthode ou de l'instance

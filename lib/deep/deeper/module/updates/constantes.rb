@@ -11,7 +11,7 @@ class Updates
     site:       {hname: 'La Boite à Outils'},
     narration:  {hname: 'Collection Narration'},
     analyse:    {hname: 'Analyse de film'},
-    unan:       {hname: 'Programme UN AN UN SCRIPT'},
+    unan:       {hname: 'Programme UNAN'},
     video:      {hname: 'Tutoriel-vidéo'},
     forum:      {hname: 'Forum'},
     filmodico:  {hname: 'Filmodico'},

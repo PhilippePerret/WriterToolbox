@@ -1,6 +1,6 @@
 <%
 # Formulaire de contact permettant de joindre les auteurs qui
-# suivent le programme UN AN UN SCRIPT.
+# suivent le programme UN AN.
 # Il est donc réservé à l'administrateur.
 raise_unless_admin
 # Ce formulaire permet :
@@ -15,7 +15,7 @@ raise_unless_admin
 # de l'auteur à contacter.
 %>
 <p class='italic small discret'>
-  Noter que ce formulaire sert SEULEMENT à contacter les auteurs du programme UN AN UN SCRIPT.
+  Noter que ce formulaire sert SEULEMENT à contacter les auteurs du programme <%= Unan::PROGNAME_MAJ %>.
 </p>
 <%
 site.require 'form_tools'

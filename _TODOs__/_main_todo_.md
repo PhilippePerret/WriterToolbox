@@ -5,7 +5,7 @@
 253 (goto citation/253/edit)
 (c'est la dernière, elles ont toutes été checkées)
 
-# Entrée d'une page de Narration en page de cours UN AN UN SCRIPT
+# Entrée d'une page de Narration en page de cours UN AN
 
 => On entre une ligne comme :
 

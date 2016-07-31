@@ -2,7 +2,7 @@
 =begin
 
   On atteint ce module après qu'on a rempli son formulaire d'inscription
-  au programme UN AN UN SCRIPT.
+  au programme UN AN.
   Noter qu'on ne passe pas là QUE lorsque l'on n'est pas encore inscrit
   sur le site et qu'il faut donc faire une inscription complète.
 

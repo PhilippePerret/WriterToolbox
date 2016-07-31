@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
 
-Pour consulter le programme UN AN UN SCRIPT jour après jour
+Pour consulter le programme UN AN jour après jour
 
 =end
 

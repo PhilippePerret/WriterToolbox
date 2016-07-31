@@ -4,7 +4,7 @@
 Module contenant les méthodes nécessaires pour construire les pages de cours
 semi-dynamiques.
 
-Ce module est utilisé par le programme UN AN UN SCRIPT aussi bien que par
+Ce module est utilisé par le programme UN AN aussi bien que par
 la collection Narration pour le traitement de ses pages propres.
 
 =end
@@ -38,7 +38,7 @@ module MethodesBuildPageSemiDynamique
     true
   end
 
-  # Corriger les balises UN AN UN SCRIPT
+  # Corriger les balises UN AN
   # Il s'agit des balises qui conduisent à d'autres travaux
   # [work::<id>::<titre>]
   def corrige_balises_unan_unscript

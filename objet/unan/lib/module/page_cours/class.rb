@@ -5,12 +5,12 @@ class PageCours
 
   # Le type de page
   # Maintenant il n'y a plus que deux types : soit c'est une page
-  # qui appartient au programme UN AN UN SCRIPT (donc qui ne peut
+  # qui appartient au programme UN AN (donc qui ne peut
   # pas être une page de cours) soit c'est une page de la collection
   # narration qui reprend toutes les anciennes pages du livre
   # Narration
   TYPES_PAGE = {
-    'U' => {type: 'U', hname:"Programme UN AN UN SCRIPT", folder: 'program'},
+    'U' => {type: 'U', hname:"Programme UN AN", folder: 'program'},
     'N' => {type: 'N', hname:"Collection Narration", folder: 'cnarration'}
   }
 

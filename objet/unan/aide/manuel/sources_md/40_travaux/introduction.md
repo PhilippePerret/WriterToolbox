@@ -2,7 +2,7 @@
 
 ## Introduction aux travaux
 
-Les \enquote{travaux} sont toutes les actions que vous avez à accomplir au cours du programme “UN AN UN SCRIPT”. Parmi ces travaux, on trouve pêle-mêle :
+Les \enquote{travaux} sont toutes les actions que vous avez à accomplir au cours du programme “unan{}”. Parmi ces travaux, on trouve pêle-mêle :
 
 * lire une page de cours ;
 * rédiger des documents de travail concernant votre projet ;

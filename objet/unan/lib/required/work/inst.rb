@@ -3,7 +3,7 @@
 
 Class Unan::Program::Work
 -------------------------------
-Un travail du programme Un An Un Script exécuté par un auteur.
+Un travail du programme UN AN exécuté par un auteur.
 Il renvoie directement à un travail absolu dont il est l'instance
 pour l'auteur.
 

@@ -15,7 +15,7 @@ CREATE TABLE unan_works_#{user_id}
     # ID
     # --
     # IDentifiant unique et universel d'un travail d'un
-    # auteur du programme UN AN UN SCRIPT
+    # auteur du programme ÉCRIRE UN FILM/ROMAN EN UN AN
     # Noter que cet identifiant n'est plus le même que l'id
     # du travail absolu auquel il est associé
     id INTEGER AUTO_INCREMENT,

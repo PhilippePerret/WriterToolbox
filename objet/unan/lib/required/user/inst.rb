@@ -1,6 +1,6 @@
 # encoding: UTF-8
 =begin
-Extension de la class User pour le programme UN AN UN SCRIPT
+Extension de la class User pour le programme UN AN
 =end
 require 'json'
 
@@ -27,9 +27,9 @@ class User
   end
 
   # Return TRUE si l'user vient de s'inscrire au programme
-  # un an un script
+  # UN AN
 
-  # RETURN true si l'user suit le programme Un An Un Script
+  # RETURN true si l'user suit le programme UN AN
   # On le sait à partir du moment où il possède un programme
   # ACTIF dans la table des programmes
   def unanunscript?

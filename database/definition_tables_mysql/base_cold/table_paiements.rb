@@ -2,7 +2,7 @@
 =begin
 
   Schéma de la table des paiements. C'est-à-dire les
-  abonnements au site (PAS le programme UN AN UN SCRIPT).
+  abonnements au site (PAS le programme UAUS).
 
 =end
 def schema_table_paiements
@@ -23,7 +23,7 @@ CREATE TABLE paiements
     # --------
     # L'objet du paiement, par exemple "ABONNEMENT" pour un
     # abonnement au site ou "1AN1SCRIPT" pour une inscription au
-    # programme UN AN UN SCRIPT.
+    # programme ÉCRIRE UN ROMAN/FILM EN UN AN.
     objet_id VARCHAR(200) NOT NULL,
 
     # MONTANT

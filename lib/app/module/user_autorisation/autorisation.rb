@@ -11,7 +11,7 @@ class User
 
   # Méthode principale ajoutant une autorisation en fonction
   # de args[:type] qui peut avoir la valeur :
-  #   :unan             Programme un an un script
+  #   :unan             Programme UN AN
   #   :suscribe         Abonnement normal d'un an
   #   :icarien_actif    Un icarien actif
   def add_autorisation args
@@ -53,7 +53,7 @@ class User
 
   def data_autorisation_unan args
     dauto = data_autorisations_default(args)
-    dauto[:raison]       = 'UN AN UN SCRIPT'
+    dauto[:raison]       = 'UNANUNSCRIPT'
     dauto[:nombre_jours] = 2 * 365
     return dauto
   end
@@ -99,7 +99,7 @@ class User
   end
 
   # Méthode appelée après l'enregistrement d'un paiement, soit pour
-  # l'abonnement soit pour le programme un an un script
+  # l'abonnement soit pour le programme UN AN
   def do_on_paiement data_paiement
     case data_paiement[:objet_id]
     when '1AN1SCRIPT'

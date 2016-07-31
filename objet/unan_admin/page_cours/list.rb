@@ -3,7 +3,7 @@ raise_unless_admin
 site.require_objet('cnarration')
 
 # Liste UL des pages narration qui sont utilisées
-# dans le programme UN AN UN SCRIPT
+# dans le programme UN AN
 def liste_pages_narration
   pages_narration.collect do |hpage|
     mise_en_forme_page_line(hpage)
@@ -12,7 +12,7 @@ end
 
 # Retourne le code HTML de la liste de toutes les
 # pages de la collection narration qui NE SONT PAS utilisées
-# dans le programme UN AN UN SCRIPT
+# dans le programme UN AN
 def liste_pages_narration_hors_programme
   data_request = {
     where:    "options LIKE '1%'",
