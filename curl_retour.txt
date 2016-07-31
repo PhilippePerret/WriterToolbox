@@ -1,0 +1,7 @@
+HTTP/1.1 200 OK
+Date: Sun, 31 Jul 2016 09:23:06 GMT
+Server: Apache/2.4.18 (Unix) PHP/7.0.1
+Set-Cookie: SESSRESTSITEWTB=99a9e9efb3d774c6482b9b808c1de159; path=/WriterToolbox; expires=Sun, 31 Jul 2016 10:23:07 GMT
+Content-Length: 15629
+Content-Type: text/html
+
