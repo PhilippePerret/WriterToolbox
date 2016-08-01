@@ -20,6 +20,12 @@ class TestedPage
     route.start_with?('#')
   end
 
+  # Retourne TRUE si l'url se termine par une ancre (mais n'est
+  # pas seulement une ancre comme la méthode ci-dessus)
+  def url_with_ancre?
+    url_anchor != nil
+  end
+
   # Retourne TRUE si c'est un lien externe
   def hors_site?
     @is_hors_site = (entete_http? && !full_url_base?) if @is_hors_site === nil

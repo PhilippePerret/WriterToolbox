@@ -65,8 +65,21 @@ fieldset#invalides
     border        : 1px solid #BBB
     padding       : 0.5em
     margin-bottom : 1em
+    position      : relative
+    // Le span contenant le bouton pour fermer le div d'une
+    // route invalide, quand on l'a corrigée
+    span.btn_close
+      display           : inline-block
+      position          : absolute
+      right             : 0px
+      top               : 0px
+      padding           : 4px 8px
+      background-color  : #555
+      color             : white 
+    
     div.main
       margin-bottom : 1em
+      padding-right : 2em // pour la croix de fermeture
       span.route
         font-weight : bold
         color       : red !important

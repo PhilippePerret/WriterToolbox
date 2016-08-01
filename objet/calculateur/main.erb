@@ -25,16 +25,38 @@ def label_value label_id
   "?".in_label(id: label_id, class:'time_value')
 end
 
+def lien_mot titre, mid
+  titre.in_a(onclick:"MOTS.show(#{mid})", class: 'sceno')
+end
+exposition            = lien_mot('EXPOSITION', 51)
+developpement         = lien_mot('DÉVELOPPEMENT', 42)
+denouement            = lien_mot('DÉNOUEMENT', 38)
+inc_perturbateur      = lien_mot('Incident Perturbateur', 305)
+inc_declencheur       = lien_mot('Incident Déclencheur', 67)
+declar_objetif        = lien_mot('déclaration de l’objectif', 198)
+protagoniste          = lien_mot('protagoniste', 8)
+perso_fondam          = lien_mot('Personnage Fondamental', 211)
+objectif_fondam       = lien_mot('Objectif Fondamental', 10)
+qdf                   = lien_mot('Question Dramatique Fondamentale', 210)
+rdf                   = lien_mot('Réponse Dramatique Fondamentale', 209)
+antagoniste           = lien_mot('Antagonisme', 167)
+moyens                = lien_mot('moyens', 202)
+crise                 = lien_mot('Crise', 199)
+climax                = lien_mot('Climax', 185)
+premier_pivot         = lien_mot('Premier Pivot', 91)
+cle_de_voute          = lien_mot('Clé de Voûte', 37)
+second_pivot         = lien_mot('Second Pivot', 91)
+
 EXPLICATIONS = {
-  exposition:     "L’<a href=\"#\" onclick=\"return MOTS.show(51)\" class=\"sceno\">EXPOSITION</a> est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le <a href=\"#\" onclick=\"return MOTS.show(211)\" class=\"sceno\">Personnage Fondamental</a> (<a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a>), 2) défini l’<a href=\"#\" onclick=\"return MOTS.show(10)\" class=\"sceno\">Objectif Fondamental</a> ou la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>, 3) défini l’<a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">Antagonisme</a>.",
-  developpement:  "Le <a href=\"#\" onclick=\"return MOTS.show(42)\" class=\"sceno\">DÉVELOPPEMENT</a> est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des <a href=\"#\" onclick=\"return MOTS.show(202)\" class=\"sceno\">moyens</a> utilisés par le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> pour atteindre son but.",
-  denouement:     "Le <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">DÉNOUEMENT</a> correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>, où sera donné la RDF, réponse à la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>. Le d. peut être amené ou commencer par une <a href=\"#\" onclick=\"return MOTS.show(199)\" class=\"sceno\">Crise</a>.",
-  incidentdec:    "L’<a href='#' onclick=\"return MOTS.show(305)\" class='sceno'>Incident Perturbateur</a> et l’<a href=\"#\" onclick=\"return MOTS.show(67)\" class=\"sceno\">Incident Déclencheur</a> sont les deux évènements qui déclenchent le film et qui en quelque sorte le rendent possible. NB : Ces nœuds sont des <i>nœuds mobiles</i> et leur durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’ils se situent entre les #{span_unite}s définies.",
-  decobjectif:    "La <a href='#' onclick=\"return MOTS.show(198)\" class='sceno'>déclaration de l’objectif</a> est le moment du film où un objectif clair se définit (est perceptible par le lecteur/spectateur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la <a href=\"#\" onclick=\"return MOTS.show(210)\" class=\"sceno\">Question Dramatique Fondamentale</a>",
-  pivot1:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">premier pivot</a> est le nœud dramatique qui fait entrer le film dans son développement. Ça peut être le moment où le <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> prend la décision d'entrer en action, décide ou accepte d’agir.",
-  cledevoute:     "La <a href=\"#\" onclick=\"return MOTS.show(37)\" class=\"sceno\">Clé de Voûte</a> est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Il relance souvent l’histoire dans une direction nouvelle.",
-  pivot2:         "Le <a href=\"#\" onclick=\"return MOTS.show(91)\" class=\"sceno\">Second Pivot</a> est l’évènement qui fait entrer l’histoire dans son <a href=\"#\" onclick=\"return MOTS.show(38)\" class=\"sceno\">dénouement</a>. C’est le pendant du Pivot 1.",
-  climax:         "Le <a href=\"#\" onclick=\"return MOTS.show(185)\" class=\"sceno\">climax</a> est le moment du film (souvent une scène) où s’opposent frontalement <a href=\"#\" onclick=\"return MOTS.show(8)\" class=\"sceno\">protagoniste</a> et <a href=\"#\" onclick=\"return MOTS.show(167)\" class=\"sceno\">antagonisme</a>. Le résultat de cette opposition fournira dans la scène ou juste après la <a href=\"#\" onclick=\"return MOTS.show(209)\" class=\"sceno\">Réponse Dramatique Fondamentale</a>."
+  exposition:     "L’#{exposition} est le premier acte du film. Elle s’étend sur le premier quart du film. C’est le lieu où est principalement : 1) défini le #{perso_fondam} (#{protagoniste}), 2) défini l’#{objectif_fondam} ou la #{qdf}, 3) défini l’#{antagoniste}.",
+  developpement:  "Le #{developpement} est le deuxième acte, le plus long (deux fois plus long que les deux autres). Il s’étend sur le deuxième et troisième quart-temps de l’histoire. C’est le lieu des #{moyens} utilisés par le #{protagoniste} pour atteindre son but.",
+  denouement:     "Le #{denouement} correspond au dernier acte de l’histoire (dernier quart-temps). C’est le lieu qui verra l’opposition frontale entre #{protagoniste} et #{antagoniste}, où sera donné la RDF, réponse à la #{qdf}. Le d. peut être amené ou commencer par une #{crise}.",
+  incidentdec:    "L’#{inc_perturbateur} et l’#{inc_declencheur} sont les deux évènements qui déclenchent le film et qui en quelque sorte le rendent possible. NB : Ces nœuds sont des <i>nœuds mobiles</i> et leur durée est variable (de quelques lignes à plusieurs pages). Mais il est bon qu’ils se situent entre les #{span_unite}s définies.",
+  decobjectif:    "La #{declar_objetif} est le moment du film où un objectif clair se définit (est perceptible par le lecteur/spectateur). Quand il n’y a pas d’objectif, c’est le lieu où est posée clairement la #{qdf}",
+  pivot1:         "Le #{premier_pivot} est le nœud dramatique qui fait entrer le film dans son développement. Ça peut être le moment où le #{protagoniste} prend la décision d'entrer en action, décide ou accepte d’agir.",
+  cledevoute:     "La #{cle_de_voute} est un <i>nœud dramatique fixe</i> situé au milieu du film. Il est optionnel, mais structure fortement le récit. Il relance souvent l’histoire dans une direction nouvelle.",
+  pivot2:         "Le #{second_pivot} est l’évènement qui fait entrer l’histoire dans son #{denouement}. C’est le pendant du Pivot 1.",
+  climax:         "Le #{climax} est le moment du film (souvent une scène) où s’opposent frontalement #{protagoniste} et #{antagoniste}. Le résultat de cette opposition fournira dans la scène ou juste après la #{rdf}."
 
 }
 

@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <title><%= TestedPage::Report.titre %></title>
     <link rel="stylesheet" href="master.css" media="screen" title="" charset="utf-8">
+    <script type="text/javascript">
+function DOMRemove(element_id, parent_id){
+  document.getElementById(parent_id).removeChild(document.getElementById(element_id));
+}
+    </script>
   </head>
   <body>
     <h1><%= TestedPage::Report.titre %></h1>
@@ -17,7 +22,14 @@
     <!-- RAPPORT DES INVALIDITÉS -->
     <fieldset id="invalides">
       <legend>Routes/pages invalides</legend>
-      <%= TestedPage::Report.rapport_invalidites %>
+      <%
+      # On met un div#linvalidites pour pouvoir détruire
+      # avec removeChild par javascript (qui a besoin du
+      # parent, puisque remove() est déconseillé).
+      %>
+      <div id="linvalidites">
+        <%= TestedPage::Report.rapport_invalidites %>
+      </div>
     </fieldset>
 
     <!-- RAPPORT DES FRÉQUENCES -->

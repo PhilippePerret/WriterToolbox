@@ -59,6 +59,18 @@ class TestedPage
       # / Fin du case format
     end
 
+    # Retourne la durée de l'opération, en secondes
+    #
+    def duree_operation
+      seconds = end_time.to_i - start_time.to_i
+      minutes = seconds / 60
+      seconds = seconds % 60
+      s_mns = minutes > 1 ? 's' : ''
+      s_scs = seconds > 1 ? 's' : ''
+      hduree = "#{seconds} seconde#{s_scs}"
+      minutes == 0 || hduree = "#{minutes} minute#{s_mns} #{hduree}"
+      return hduree
+    end
 
     def pages_sorted_by_calls
       @pages_sorted_by_calls ||= begin
@@ -96,18 +108,6 @@ class TestedPage
       "Links Analysis du #{Time.now}"
     end
 
-    def in_tag tag, content, options = nil
-      options ||= Hash.new
-      attrs = []
-      attrs << "id='#{options[:id]}'" if options.key?(:id)
-      attrs << "class='#{options[:class]}'" if options.key?(:class)
-      attrs << "style='#{options[:style]}'" if options.key?(:style)
-      attrs = attrs.empty? ? '' : ' ' + attrs.join(' ')
-      "<#{tag}#{attrs}>#{content}</#{tag}>"
-    end
-    def in_div content, options = nil; in_tag('div', content, options) end
-    def in_span content, options = nil; in_tag('span', content, options) end
-
     # = main =
     #
     # Retourne le code pour les infos générales sur
@@ -115,6 +115,7 @@ class TestedPage
     def general_infos
       # Nombre de routes totales testées
       c = ""
+
       c << in_div(
         in_span(TestedPage.instances.count, class: 'fvalue') +
         in_span('Nombre de routes testées', class: 'libelle'),
@@ -134,6 +135,12 @@ class TestedPage
       c << in_div(
         in_span(TestedPage.invalides.count, class: css.join(' ')) +
         in_span('Nombre de routes invalides', class: 'libelle'),
+        class: 'ligne_value'
+      )
+
+      c << in_div(
+        in_span(TestedPage.duree_operation, class: 'fvalue') +
+        in_span('Durée de l’opération', class: 'libelle'),
         class: 'ligne_value'
       )
 
@@ -180,7 +187,14 @@ class TestedPage
 
       TestedPage.invalides.collect do |route|
         tpage = TestedPage[route]
+
+        div_id = "div_route_#{route.gsub(/\//,'_')}"
+
         c = ''
+
+        c << in_span("<a href=\"javascript:void(0)\" onclick=\"DOMRemove('#{div_id}', 'linvalidites')\">x</a>", class: 'btn_close')
+
+        # Pour indiquer la route et pouvoir l'atteindre
         c << in_div(
           in_span("<a href='#{tpage.url}' target='_blank'>#{tpage.url}</a>", class: 'link_url') +
           in_span(tpage.route, class: 'route'),
@@ -198,8 +212,8 @@ class TestedPage
           )
         # Un lien pour ouvrir un des referrer de la route, c'est-à-dire
         # une page qui l'ouvre.
-        href_referrer = File.join(TestedPage.base_url, tpage.call_froms.last)
-        link_to_referrer = "<a href='#{href_referrer}' target='_blank'>#{href_referrer}</a>"
+        referrer = TestedPage[tpage.call_froms.last]
+        link_to_referrer = "<a href='#{referrer.url}' target='_blank'>#{referrer.url}</a>"
         div_link_to_referrer =
           in_div(
             in_span('Appelée par exemple par…', class: 'libelle') +
@@ -219,7 +233,8 @@ class TestedPage
                 )
 
         # Le code HTML total, dans un div
-        in_div(c, class: 'bad_route')
+        # Pour le collect
+        in_div(c, class: 'bad_route', id: div_id)
 
       end.join('')
     end
@@ -233,7 +248,23 @@ class TestedPage
       File.open(path_gabarit,'rb'){|f|f.read.force_encoding('utf-8')}
     end
 
+    # ---------------------------------------------------------------------
+    #   Méthodes fonctionnelles
+    # ---------------------------------------------------------------------
+
     def bind; binding() end
+
+    def in_tag tag, content, options = nil
+      options ||= Hash.new
+      attrs = []
+      attrs << "id='#{options[:id]}'" if options.key?(:id)
+      attrs << "class='#{options[:class]}'" if options.key?(:class)
+      attrs << "style='#{options[:style]}'" if options.key?(:style)
+      attrs = attrs.empty? ? '' : ' ' + attrs.join(' ')
+      "<#{tag}#{attrs}>#{content}</#{tag}>"
+    end
+    def in_div content, options = nil; in_tag('div', content, options) end
+    def in_span content, options = nil; in_tag('span', content, options) end
 
     # Path du rapport
     def path

@@ -1,6 +1,29 @@
 # encoding: UTF-8
 class TestedPage
 
+  def url
+    @url ||= begin
+      case route
+      when  /^https?\:\/\// then route
+      else File.join(self.class.base_url, route)
+      end
+    end
+  end
+
+  # La profondeur du lien, de page en page.
+  # La première page testée à une profondeur de 0, les
+  # pages de ses liens ont une profondeur de 1, les liens
+  # de ces pages ont une profondeur de 2, etc.
+  #
+  # Les pages pouvant être appelées par différentes
+  # pages, elles ont différentes profondeurs, d'où
+  # une liste pour garder leur profondeur.
+  def depths ; @depths ||= Array.new end
+
+  # La première profondeur. Elle sert notamment quand on ne
+  # doit aller que jusqu'à une certaine profondeur.
+  def depth; @depth ||= depths.first end
+
   # Le nombre d'appels de cette page
   def call_count ; @call_count ||= 0 end
   def call_count= value; @call_count = value end

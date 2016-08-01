@@ -15,21 +15,22 @@ class TestedPage
         # ne soit pas entourée de mauvais guillemets
         @is_valide = false
         error "URL INVALIDE DANS SA FORME (#{@errors_format_url.join(', ')})"
+      elsif url_with_ancre?
+        # Check d'une URL avec une ancre, la page courante doit
+        # contenir l'ancre spécifiée
+        @is_valide = self.page_has_anchor?(url_anchor)
+        @is_valide || error("ANCRE INTROUVABLE : #{url_anchor}")
       elsif ancre?
         # Check d'une ancre seule. Le code de la page doit posséder
         # l'ancre spécié, soit sous forme d'un <a name> soit sous forme
         # d'élément d'identifiant correspondant à l'ancre.
         @is_valide = referer.page_has_anchor?(ancre_of_route)
-        if false == @is_valide
-          error "ANCRE INTROUVABLE : #{ancre_of_route.inspect}"
-        end
+        @is_valide || error("ANCRE INTROUVABLE : #{ancre_of_route.inspect}")
       elsif hors_site?
         # Pour une page hors site, il suffit que l'header retourne
         # un code correct, donc 200 ou 3xx pour que ce soit bon
         @is_valide = page_hors_site_valide?
-        if false == @is_valide
-          error "STATUS HTML RETOURNÉ : #{html_status}"
-        end
+        @is_valide || error("STATUS HTML RETOURNÉ : #{html_status}")
       else
         # Check de la validité de la page URL spécifié
         @is_valide = check_if_valide

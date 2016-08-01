@@ -11,27 +11,17 @@ class TestedPage
   #
   attr_accessor :id
 
-  attr_reader :route
+  attr_reader :route_init, :route, :url_anchor
 
   # Liste Array des erreurs éventuellement rencontrées
   attr_reader :errors
 
   # Instanciation d'une url
   def initialize route
-    @route = route.strip
+    @route_init = route.strip
+    @route, @url_anchor = @route_init.split('#')
     self.class << self
     @errors = Array.new
   end
 
-  def url
-    @url ||= begin
-      case route
-      when  /^https?\:\/\// then route
-      else File.join(self.class.base_url, route)
-      end
-    end
-  end
-
-
-
-end
+end #/TestedPage
