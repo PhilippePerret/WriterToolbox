@@ -25,8 +25,8 @@ end
 def mark_forum
   @mark_forum ||= lien.aide(5, class:'fright')
 end
-def why_subscribe
-  @why_subscribe ||= lien.aide(3, class:'fright')
+def why_suscribe
+  @why_suscribe ||= lien.aide(3, class:'fright')
 end
 def lien_modifier_mdp
   @lien_modifier_mdp ||= 'Modifier le mot de passe'.in_a(href:'user/change_mdp')
@@ -44,7 +44,7 @@ end
   <% elsif user.icarien_actif? %>
     <%= div_row('Icarien actif', "En tant qu'<strong>icarien actif</strong>, vous avez un accès complet au site.") %>
   <% else %>
-    <%= div_row('Abonné'        , why_subscribe + mark_suscribed) %>
+    <%= div_row('Abonné'        , why_suscribe + mark_suscribed) %>
   <% end %>
   <% unless user.manitou? %>
     <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>

@@ -22,6 +22,23 @@ class TestedPage
     end
   end
 
+  # Le code brut, avec toutes les balises transformées en
+  # entités HTML pour affichage dans la page HTML
+  #
+  # En plus, on épure le code et on le rend plus lisible
+  #
+  def raw_code_report
+    rc = raw_code.force_encoding('utf-8').gsub(/</,'&lt;').gsub(/>/,'&gt;')
+    rc = rc.gsub(/\n([ \t ]*)\n/, "\n")
+    rc = rc.gsub(/\n+/, "\n")
+    rc = rc.gsub(/&lt;section/, "\n\n&lt;section")
+    rc = rc.gsub(/&lt;\/section&gt;/, "&lt;/section&gt;\n\n")
+    return rc
+  rescue Exception => e
+    debug e
+    return "[PROBLÈME AVEC LE CODE DE CETTE PAGE : #{e.message}]"
+  end
+
   # L'instance NokogiriTextHelper qui permet de faire des
   # recherche et des vérifications sur le code de la page
   # (p.e. méthode have_tag)

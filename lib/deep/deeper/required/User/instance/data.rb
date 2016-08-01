@@ -22,7 +22,14 @@ class User
 
   def bind; binding() end
 
-  def pseudo      ; @pseudo     ||= get(:pseudo)        end
+  # Pseudo de l'user
+  # ----------------
+  # Même lorsqu'il n'est pas identifié, il a un pseudo
+  def pseudo
+    @pseudo ||= begin
+      identified? ? get(:pseudo) : 'Ernest'
+    end
+  end
   def mail        ; @mail       ||= get(:mail)          end
   def sexe        ; @sexe       ||= get(:sexe)          end
   def patronyme   ; @patronyme  ||= get(:patronyme)     end

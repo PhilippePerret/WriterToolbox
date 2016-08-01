@@ -1,43 +1,10 @@
 # encoding: UTF-8
 =begin
-  Définitions propre à l'application
 
   Notamment la méthode TestedPage#valide? qui détermine comment
   on considère qu'une page est valide.
 
 =end
-# Pour tester le programme, limiter le nombre de routes
-# testées
-# Mettre à NIL pour les tester toutes.
-NOMBRE_MAX_ROUTES_TESTED = nil
-
-# Pour tester onlin ou offline
-TEST_ONLINE = false # false => test local
-
-# Mettre à TRUE pour que la boucle s'interrompe à la première
-# erreur rencontrée
-FAIL_FAST = true
-
-# Mettre à TRUE pour voir les routes collectées sur chaque page au
-# fil de l'analyse
-SHOW_ROUTES_ON_TESTING = false
-
-# Route de démarrage du test
-#
-# Par défaut, c'est 'site/home'
-#
-# Pour essayer une unique route, par exemple une route qui pose problème
-# Mais penser qu'il faut indiquer ici la route de la page qui contient
-# le lien qui pose problème, pas le lien lui-même.
-# Par exemple, en créant ce test, la route http://www.laboiteaoutilsdelauteur.fr
-# posait problème — oui, je sais, un comble — mais c'est la page
-# scenodico/251/show qui la contenait, donc c'est elle qu'il fallait que
-# je mette en seule page à tester
-# Régler aussi NOMBRE_MAX_ROUTES_TESTED ci-dessus pour limiter le test, mais
-# penser à laisser un nombre assez grand pour comprendre la route à tester à
-# l'intérieur de la page s'il y en a beaucoup avant.
-# ROUTE_START = 'scenodico/251/show'
-
 
 # ---------------------------------------------------------------------
 
@@ -70,6 +37,15 @@ class TestedPage
     if self.matches?('div#flash div', with: {class: 'error'})
       nokogiri.css('div#flash div.error').each do |message_erreur|
         error "MESSAGE ERREUR TROUVÉ : #{message_erreur.inner_html}"
+      end
+    end
+
+    # === MESSAGE INDIQUANT UNE ERREUR FATALE ===
+    # Note : pour le moment, elle n'est produite que lorsqu'il
+    # y a un problème avec un SuperFile pour déserber le fichier
+    if self.matches?('div', with: {class: 'fatal_error'})
+      nokogiri.css('div.fatal_error').each do |message_erreur|
+        error "MESSAGE FATAL ERROR TROUVÉ : #{message_erreur.inner_html}"
       end
     end
 

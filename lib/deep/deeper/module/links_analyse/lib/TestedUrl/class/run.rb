@@ -60,11 +60,16 @@ class TestedPage
       # de toutes les routes à prendre
       # url = File.join(base_url, route)
 
-      say "* #{iroute_tested} * Test de la route #{route}"
-
       # On récupère l'instance de la TestedPage qui va
       # être traitée à présent
       testedpage = TestedPage[route]
+
+
+      if VERBOSE
+        say "* #{iroute_tested} * Test de la route #{route}"
+      else
+        say (testedpage.valide? ? '*' : 'F') + " #{iroute_tested}"
+      end
 
       # On regarde si cette page est valide, si elle correspond
       # à ce qu'on attend d'elle.
@@ -77,7 +82,7 @@ class TestedPage
         if FAIL_FAST
           say "#{RETRAIT}### " + testedpage.errors.join("\n#{RETRAIT}### ")
           say "#{RETRAIT}### Commande curl: #{testedpage.curl_command}"
-          say "#{RETRAIT}### <a href=\"#{url}\">#{url}</a>" # pour y aller directement
+          say "#{RETRAIT}### <a href=\"#{testedpage.url}\">#{testedpage.url}</a>" # pour y aller directement
           say "\n\nCODE DE LA PAGE :\n#{testedpage.raw_code}"
           return false
         else
@@ -91,6 +96,7 @@ class TestedPage
       # cette page, sauf si c'est une page à l'extérieur du
       # site lui-même
       unless testedpage.hors_site?
+        self.links_count += testedpage.links.count
         testedpage.links.each do |link|
           # On ne prend pas les routes javascript
           next if link.javascript?

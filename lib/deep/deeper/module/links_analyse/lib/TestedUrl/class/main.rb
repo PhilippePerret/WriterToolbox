@@ -21,7 +21,7 @@ class TestedPage
 
 
 
-    # Liste des ID des pages (instances TestedPage) invalides
+    # Liste des routes des pages (instances TestedPage) invalides
     # Note : dans leur @errors, on trouve la liste de leurs
     # erreurs.
     #
@@ -29,6 +29,9 @@ class TestedPage
     # peut utiliser: TestedPage[<id>]
     #
     attr_reader :invalides
+
+    # Compte total de liens
+    attr_accessor :links_count
 
     def base_url
       @base_url ||= online? ? BASE_URL : BASE_URL_LOCAL
@@ -38,15 +41,15 @@ class TestedPage
     end
 
     def init
-      @instances = Hash.new
-      @invalides = Array.new
+      @instances    = Hash.new
+      @invalides    = Array.new
+      @links_count  = 0
     end
 
     # Ajoute une page invalide
-    # OBSOLÈTE
-    # Maintenant, on doit marquer la page testée comme invalide
-    # Mais on peut quand même conserver les routes invalides,
-    # à la rigueur.
+    #
+    # On pourrait passer en revue chaque instance TestedPage,
+    # mais la variable @invalides sera plus pratique.
     def add_invalide route
       @invalides << route
     end

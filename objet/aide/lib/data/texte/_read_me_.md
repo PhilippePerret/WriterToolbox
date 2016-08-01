@@ -27,7 +27,7 @@ Lien avec un titre spécifique :
 
     lien.aide(<numéro>, <titre>)
 
-Par exemple, pour rejoindre la page d'aide sur les raisons de l'abonnement, qui s'appelle `3-why_subscribe.erb`, utiliser :
+Par exemple, pour rejoindre la page d'aide sur les raisons de l'abonnement, qui s'appelle `3-why_suscribe.erb`, utiliser :
 
     <%= lien.aide(3, "Pourquoi s'abonner") %>
 

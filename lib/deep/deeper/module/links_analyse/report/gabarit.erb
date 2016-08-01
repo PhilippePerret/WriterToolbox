@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= TestedPage::Report.titre %></title>
+    <link rel="stylesheet" href="master.css" media="screen" title="" charset="utf-8">
+  </head>
+  <body>
+    <h1><%= TestedPage::Report.titre %></h1>
+
+    <!-- RAPPORT DES DONNÉES GÉNÉRALES -->
+    <fieldset id="general_infos">
+      <legend>Informations générales</legend>
+      <%= TestedPage::Report.general_infos %>
+    </fieldset>
+
+    <!-- RAPPORT DES INVALIDITÉS -->
+    <fieldset id="invalides">
+      <legend>Routes/pages invalides</legend>
+      <%= TestedPage::Report.rapport_invalidites %>
+    </fieldset>
+
+    <!-- RAPPORT DES FRÉQUENCES -->
+    <fieldset id="frequences">
+      <legend>Fréquence des appels</legend>
+      <%= TestedPage::Report.rapport_frequence %>
+    </fieldset>
+
+  </body>
+</html>

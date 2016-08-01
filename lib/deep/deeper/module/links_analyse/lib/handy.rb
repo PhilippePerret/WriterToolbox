@@ -1,4 +1,17 @@
 # encoding: UTF-8
+
+# if VERBOSE
+#   alias :top_puts :puts
+#   def puts foo
+#     top_puts foo
+#   end
+# else
+#   def puts foo
+#     @lesputs ||= Array.new
+#     @lesputs << foo
+#   end
+# end
+
 def say mess
   puts mess
 end
