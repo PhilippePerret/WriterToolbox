@@ -24,5 +24,3 @@ require_relative 'lib/required'
 TestedPage.init
 TestedPage.run
 TestedPage.report
-
-say TestedPage.instances.first.html_status

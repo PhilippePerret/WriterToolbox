@@ -22,10 +22,10 @@ class TestedPage
       say "\n\n"
 
       pages_sorted = instances.values.sort_by{|v| v.call_count}
-      plus_visited  = pages_sorted.first
-      moins_visited = pages_sorted.last
-      say "= Route la plus visitée    : #{plus_visited.route}"
-      say "= Route la moins visitée   : #{moins_visited.route}"
+      plus_visited  = pages_sorted.last
+      moins_visited = pages_sorted.first
+      say "= Route la plus visitée    : #{plus_visited.route} - #{plus_visited.call_count} fois"
+      say "= Route la moins visitée   : #{moins_visited.route} - #{moins_visited.call_count} fois"
 
       say "\n\n"
 

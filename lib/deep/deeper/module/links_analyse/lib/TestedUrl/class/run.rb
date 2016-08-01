@@ -8,8 +8,16 @@ class TestedPage
     #
     def run
 
-      @routes = ['site/home']
-      hroute  = TestedPage.new('site/home')
+      if !defined?(ROUTE_START) || ROUTE_START.nil?
+        @routes = ['site/home']
+      else
+        @routes = [ROUTE_START]
+      end
+
+      # On instancie la toute première TestedPage pour qu'elle
+      # existe (dès qu'on trouve une route/href dans une page,
+      # on instancie une TestedPage pour elle)
+      hroute  = TestedPage.new(@routes.first)
       hroute.call_count = 1
       hroute.call_texts = [nil]
       hroute.call_froms = [nil]
@@ -19,7 +27,7 @@ class TestedPage
       iroute_tested = 0
 
       # On boucle sur les routes tant qu'il y en a.
-      while route = @routes.pop
+      while route = @routes.shift
         begin
           # Pour les essais, on interromp au bout d'un certain nombre de
           # routes testées
@@ -45,14 +53,14 @@ class TestedPage
     #
     # Retourne TRUE pour continuer de tester les routes, ou retourne
     # FALSE pour interrompre.
-    # 
+    #
     def test_route route, iroute_tested
 
       # La route complète, telle qu'enregistrée dans la liste
       # de toutes les routes à prendre
       # url = File.join(base_url, route)
 
-      say "*** Test de la route #{route}"
+      say "* #{iroute_tested} * Test de la route #{route}"
 
       # On récupère l'instance de la TestedPage qui va
       # être traitée à présent
@@ -67,7 +75,10 @@ class TestedPage
         # première erreur rencontrée et afficher l'erreur.
         # Sinon, on passe à la suite.
         if FAIL_FAST
-          say "#{RETRAIT}### " + testedpage.errors.join("#{RETRAIT}### ")
+          say "#{RETRAIT}### " + testedpage.errors.join("\n#{RETRAIT}### ")
+          say "#{RETRAIT}### Commande curl: #{testedpage.curl_command}"
+          say "#{RETRAIT}### <a href=\"#{url}\">#{url}</a>" # pour y aller directement
+          say "\n\nCODE DE LA PAGE :\n#{testedpage.raw_code}"
           return false
         else
           return true
@@ -84,9 +95,14 @@ class TestedPage
           # On ne prend pas les routes javascript
           next if link.javascript?
 
-          # Une nouvelle route à ajouter
+          # Une route appelée dans la page. Elle peut avoir déjà
+          # été traitée ou non.
           new_route = link.href
-          say "Nouvelle route : #{new_route.inspect}"
+
+          if SHOW_ROUTES_ON_TESTING
+            say "Cette page appelle : #{new_route.inspect}"
+          end
+
           # On ne prend pas les routes qu'on a déjà traitées mais on
           # ajouter une valeur de présence et on passe à la suite.
           if TestedPage.exist?(new_route)

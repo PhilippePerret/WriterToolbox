@@ -10,7 +10,12 @@ class TestedPage
   # app.rb pour chaque application
   def valide?
     if @is_valide === nil
-      if ancre?
+      if false == format_url_valide?
+        # Avant tout, il faut que l'URL soit valide, par exemple qu'elle
+        # ne soit pas entourée de mauvais guillemets
+        @is_valide = false
+        error "URL INVALIDE DANS SA FORME (#{@errors_format_url.join(', ')})"
+      elsif ancre?
         # Check d'une ancre seule. Le code de la page doit posséder
         # l'ancre spécié, soit sous forme d'un <a name> soit sous forme
         # d'élément d'identifiant correspondant à l'ancre.
@@ -75,6 +80,19 @@ class TestedPage
       retry
     end
     return status_ok
+  end
+
+
+  # Retourne true si l'url est valide dans sa forme et false
+  # dans le cas contraire.
+  # Renseigne @errors_format_url avec les problèmes rencontrés.
+  def format_url_valide?
+    @errors_format_url = Array.new
+    if @route.match(/^("|'|“)/) || @route.match(/("|'|”)$/)
+      @errors_format_url << "Mauvais guillemets autour de l'URL"
+    end
+
+    return @errors_format_url.count == 0
   end
 
 end #/TestedPage

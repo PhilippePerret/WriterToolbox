@@ -18,6 +18,27 @@ TEST_ONLINE = false # false => test local
 # erreur rencontrée
 FAIL_FAST = true
 
+# Mettre à TRUE pour voir les routes collectées sur chaque page au
+# fil de l'analyse
+SHOW_ROUTES_ON_TESTING = false
+
+# Route de démarrage du test
+#
+# Par défaut, c'est 'site/home'
+#
+# Pour essayer une unique route, par exemple une route qui pose problème
+# Mais penser qu'il faut indiquer ici la route de la page qui contient
+# le lien qui pose problème, pas le lien lui-même.
+# Par exemple, en créant ce test, la route http://www.laboiteaoutilsdelauteur.fr
+# posait problème — oui, je sais, un comble — mais c'est la page
+# scenodico/251/show qui la contenait, donc c'est elle qu'il fallait que
+# je mette en seule page à tester
+# Régler aussi NOMBRE_MAX_ROUTES_TESTED ci-dessus pour limiter le test, mais
+# penser à laisser un nombre assez grand pour comprendre la route à tester à
+# l'intérieur de la page s'il y en a beaucoup avant.
+# ROUTE_START = 'scenodico/251/show'
+
+
 # ---------------------------------------------------------------------
 
 class TestedPage

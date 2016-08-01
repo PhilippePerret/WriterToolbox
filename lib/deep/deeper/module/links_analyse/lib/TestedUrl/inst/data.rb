@@ -25,7 +25,7 @@ class TestedPage
   # Status retourné
   def html_status
     @html_status ||= begin
-      c = `curl -I -s #{url}`
+      c = `#{curl_command_header_only}`
       c = c.gsub(/\r/,'')
       firstline   = c.split("\n").first
       hs = nil
