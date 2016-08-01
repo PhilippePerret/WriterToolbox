@@ -1,8 +1,11 @@
 <%
 # Vue pour poser une nouvelle question
-raise_unless_identified
 %>
 <%= forum.titre_h1("Question") %>
+
+<%
+  if user.identified?
+%>
 <%
 
 site.require 'form_tools'
@@ -28,3 +31,20 @@ div_explication = div_explication.in_p(class:'small')
   <%= form.field_checkbox("M'avertir des réponses par mail", 'suivre', nil) %>
   <%= form.submit_button("Soumettre") %>
 </form>
+
+<%
+
+else
+  # ---------------------------------------------------------------------
+  # Pour un user non identifié.
+  # ---------------------------------------------------------------------
+%>
+<p class="red cadre">
+  Par mesure de prudence, vous devez <%= lien.signup('être inscrit') %> pour pouvoir poser une question sur le forum (notez que cette <%= lien.signup('inscription') %> est gratuite).
+</p>
+
+<%
+
+end
+
+%>

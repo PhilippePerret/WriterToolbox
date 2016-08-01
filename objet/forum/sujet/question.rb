@@ -4,9 +4,6 @@
 Crée une nouvelle question
 =end
 
-# L'user doit être au moins identifié pour pouvoir
-# poser une question technique.
-raise_unless_identified
 class Forum
   def self.save_question
     hquestion = param(:question)

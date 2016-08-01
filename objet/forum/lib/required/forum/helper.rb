@@ -26,14 +26,16 @@ class Forum
   DATA_ONGLETS =  {
     "Soumettre"         => 'sujet/question?in=forum',
     "Messages"          => 'post/list?in=forum',
-    "Sujets"            => 'sujet/list?in=forum',
-    "Vos préférences"   => 'user/preferences?in=forum'
+    "Sujets"            => 'sujet/list?in=forum'
   }
 
   def data_onglets
     hongs = DATA_ONGLETS
     if param(:forum_current_sujet)
       hongs.merge!("Revenir" => "sujet/#{param(:forum_current_sujet)}/read?in=forum")
+    end
+    if user.identified?
+      hongs.merge!("Vos préférences" => 'user/preferences?in=forum')
     end
     if user.admin?
       hongs.merge!(
