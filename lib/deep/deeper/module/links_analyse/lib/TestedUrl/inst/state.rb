@@ -4,7 +4,7 @@
   Module de méthode par l'état (les méthodes-question) de l'url testée
 
 =end
-class TestedUrl
+class TestedPage
 
   # Retourne TRUE si la route commence par http:// ou https://
   def entete_http?

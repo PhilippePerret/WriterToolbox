@@ -1,18 +1,25 @@
 # encoding: UTF-8
-class TestedUrl
+class TestedPage
 
-  # Donnée complète enregistrée dans @hroutes, le résultat de
-  # toutes les routes consultées
-  def hroute
-    self.class.hroutes[route]
-  end
+  # Le nombre d'appels de cette page
+  def call_count ; @call_count ||= 0 end
+  def call_count= value; @call_count = value end
 
-  # {TestedUrl} Page ayant appelé cette page
+  # Liste des textes qui ont appelé cette route
+  def call_texts  ; @call_texts ||= Array.new end
+  def call_texts= val; @call_texts = val end
+
+  # Liste des IDs des instance TestedPage qui ont
+  # appelé cette route
+  def call_froms  ; @call_froms ||= Array.new end
+  def call_froms= val; @call_froms = val end
+
+  # {TestedPage} Page ayant appelé cette page
   #
   # Pour le moment, on s'en sert par exemple pour obtenir le code
   # d'une page ayant défini une route-ancre.
   def referer
-    self.class[hroute[:testedurl]]
+    TestedPage[call_froms.last]
   end
 
   # Status retourné

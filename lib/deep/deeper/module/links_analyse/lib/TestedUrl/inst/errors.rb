@@ -2,8 +2,14 @@
 =begin
 
 =end
-class TestedUrl
+class TestedPage
 
+  # Méthode principale pour indiquer que la page est invalide
+  def set_invalide
+    @is_valide = false
+    self.class.add_invalide route
+    say "#{RETRAIT}# INVALIDE"
+  end
 
   # Consigner une erreur dans @errors
   def error err
@@ -11,4 +17,4 @@ class TestedUrl
   end
 
 
-end #/TestedUrl
+end #/TestedPage

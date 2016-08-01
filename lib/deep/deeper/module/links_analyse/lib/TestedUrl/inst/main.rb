@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class TestedUrl
+class TestedPage
   # ---------------------------------------------------------------------
   #   Instance
   # ---------------------------------------------------------------------
@@ -7,7 +7,7 @@ class TestedUrl
   # IDentifiant de l'instance dans la classe
   #
   # Pour la récupérer :
-  #     instance = TestedUrl[<id>]
+  #     instance = TestedPage[<id>]
   #
   attr_accessor :id
 
@@ -59,11 +59,11 @@ class TestedUrl
   end
 
   # Retourne la liste de tous les liens de l'url
-  # C'est un Array d'instances TestedUrl::Link
+  # C'est un Array d'instances TestedPage::Link
   def links
     @links ||= begin
       l = Array.new
-      nokogiri.css('a').each_with_index do |link, ilink|
+      nokogiri.css('a[href]').each_with_index do |link, ilink|
         link = Link.new(link, ilink)
         l << link
       end

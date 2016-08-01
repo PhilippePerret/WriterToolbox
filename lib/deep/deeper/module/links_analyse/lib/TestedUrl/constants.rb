@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class TestedUrl
+class TestedPage
 
   # Forcément l'adresse ONLINE
   BASE_URL = 'http://www.laboiteaoutilsdelauteur.fr'

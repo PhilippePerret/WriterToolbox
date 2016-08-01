@@ -2,7 +2,7 @@
 =begin
   Définitions propre à l'application
 
-  Notamment la méthode TestedUrl#valide? qui détermine comment
+  Notamment la méthode TestedPage#valide? qui détermine comment
   on considère qu'une page est valide.
 
 =end
@@ -20,7 +20,7 @@ FAIL_FAST = true
 
 # ---------------------------------------------------------------------
 
-class TestedUrl
+class TestedPage
 
   # Return TRUE si l'url testée est valide, au niveau de son
   # contenu, ou FALSE dans le cas contraire, en mettant de @errors

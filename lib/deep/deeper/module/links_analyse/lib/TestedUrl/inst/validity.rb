@@ -2,7 +2,7 @@
 =begin
   Module de méthodes checkant la validité de la page
 =end
-class TestedUrl
+class TestedPage
 
   # Méthode principale checkant la validité de la
   # page.
@@ -77,4 +77,4 @@ class TestedUrl
     return status_ok
   end
 
-end #/TestedUrl
+end #/TestedPage

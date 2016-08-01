@@ -1,6 +1,13 @@
 # encoding: UTF-8
 =begin
 
+  Pour lancer ce script :
+    Dans Atom :         CMD + i
+    Dans TextMate :     CMD + r
+    Dans le terminal (meilleure solution):
+      > cd /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/links_analyse
+      > ruby main.rb
+
   Fichier principal qui doit être appelé.
 
   La première partie contient des choses qui doivent être définies
@@ -14,8 +21,8 @@ include RSpecHtmlMatchers
 
 require_relative 'lib/required'
 
-TestedUrl.init
-TestedUrl.run
-TestedUrl.report
+TestedPage.init
+TestedPage.run
+TestedPage.report
 
-say TestedUrl.instances.first.html_status
+say TestedPage.instances.first.html_status

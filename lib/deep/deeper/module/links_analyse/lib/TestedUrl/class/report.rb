@@ -2,7 +2,7 @@
 =begin
 
 =end
-class TestedUrl
+class TestedPage
   class << self
 
     # = main =
@@ -16,16 +16,16 @@ class TestedUrl
       say "= ANALYSE DES LIENS DU #{Time.now}"
       say "="*80
       say "\n\n"
-      say "= NOMBRE DE ROUTES TESTÉES : #{hroutes.count}"
+      say "= NOMBRE DE ROUTES TESTÉES : #{instances.count}"
       say "= NOMBRE PAGES INVALIDES   : #{invalides.count}"
-      say "= NOMBRE PAGES VALIDES     : #{hroutes.count - invalides.count}"
+      say "= NOMBRE PAGES VALIDES     : #{instances.count - invalides.count}"
       say "\n\n"
 
-      routes_sorted = hroutes.sort_by{|k,v| v[:call_count]}
-      plus_visited  = routes_sorted.values.first
-      moins_visited = routes_sorted.values.last
-      say "= Route la plus visitée    : #{plus_visited[:route]}"
-      say "= Route la moins visitée   : #{moins_visited[:route]}"
+      pages_sorted = instances.values.sort_by{|v| v.call_count}
+      plus_visited  = pages_sorted.first
+      moins_visited = pages_sorted.last
+      say "= Route la plus visitée    : #{plus_visited.route}"
+      say "= Route la moins visitée   : #{moins_visited.route}"
 
       say "\n\n"
 
@@ -37,4 +37,4 @@ class TestedUrl
     end
 
   end #/ << self
-end #/TestedUrl
+end #/TestedPage

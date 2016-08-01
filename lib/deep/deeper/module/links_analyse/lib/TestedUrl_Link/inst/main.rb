@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class TestedUrl
+class TestedPage
   class Link
 
     # Index du lien dans la page
@@ -22,7 +22,10 @@ class TestedUrl
 
     # L'attribut HREF du lien
     def href
-      @href ||= nokoxmlelement.attr('href')
+      @href ||= begin
+        h = nokoxmlelement.attr('href')
+        h != '' ? h : 'site/home'
+      end
     end
 
     # Retourne true si c'est un lien javascript (donc ne conduisant pas,
@@ -33,4 +36,4 @@ class TestedUrl
     end
 
   end #/Link
-end #/TestedUrl
+end #/TestedPage
