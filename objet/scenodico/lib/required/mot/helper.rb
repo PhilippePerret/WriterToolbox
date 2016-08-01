@@ -23,7 +23,7 @@ class Mot
   end
 
   def definition_formated
-    ( formate definition )
+    ( formate definition ).deserb
   end
 
   def relatifs_formated
@@ -47,7 +47,7 @@ class Mot
     get(:liens).force_encoding('utf-8').split("\n").collect do |lien|
       href, titre = lien.split('::')
       titre ||= href
-      titre.in_a(href: href, target: :new) 
+      titre.in_a(href: href, target: :new)
     end.join('<br>')
   end
 end #/Mot

@@ -58,7 +58,7 @@ class Scenodico
       @is_new_mot = ( nil == @id )
       check_data_to_save_or_raise || return
       if new?
-        debug "Création du mot : #{data2save.pretty_inspect}"
+        # debug "Création du mot : #{data2save.pretty_inspect}"
         @id = Scenodico::table_mots.insert( data2save )
         flash "Nouveau mot ##{@id} créé avec succès."
         param(:mot => data_param.merge(id: @id, id_interdata: @id_interdata))
@@ -73,10 +73,10 @@ class Scenodico
         mot:            @mot,
         type_def:       @type_def.to_i,
         definition:     @definition,
-        relatifs:       (@relatifs || '').join(' '),
-        synonymes:      (@synonymes || '').join(' '),
-        contraires:     (@contraires || '').join(' '),
-        categories:     (@categories || '').join(' '),
+        relatifs:       (@relatifs || []).join(' '),
+        synonymes:      (@synonymes || []).join(' '),
+        contraires:     (@contraires || []).join(' '),
+        categories:     (@categories || []).join(' '),
         liens:          @liens
       }
     end
