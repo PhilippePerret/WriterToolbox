@@ -12,7 +12,7 @@ class Sujet
   # ce sujet.
   def followers
     @followers ||= begin
-      res = table_follows.select( where: "sujet_id = #{id} AND user_id IS NULL", colonnes:[:items] )
+      res = table_follows.select(where: "sujet_id = #{id} AND user_id IS NULL", colonnes:[:items] )
       if res.empty?
         @followers_row_id = nil
         []
