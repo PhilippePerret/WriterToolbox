@@ -68,7 +68,9 @@ class TestedPage
       if VERBOSE
         say "* #{iroute_tested} * Test de la route #{route}"
       else
-        say (testedpage.valide? ? '*' : 'F') + " #{iroute_tested}"
+        # say (testedpage.valide? ? '*' : 'F') + " #{iroute_tested}"
+        color = testedpage.valide? ? '32' : '31'
+        print "\e[1;#{color}m*\e[0m"
       end
 
       # On regarde si cette page est valide, si elle correspond

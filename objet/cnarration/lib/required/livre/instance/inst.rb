@@ -12,7 +12,7 @@ class Livre
   def folder_name;  @folder_name  ||= data[:folder] end
 
   def tdm params = nil
-    @tdm ||= Tdm::new(self)
+    @tdm ||= Tdm.new(self)
   end
 
   def data
