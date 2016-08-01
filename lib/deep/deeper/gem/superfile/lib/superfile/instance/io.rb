@@ -95,6 +95,11 @@ class SuperFile
   # {String}
   # Déserbe le fichier (si c'est un fichier ERB) et retourne son contenu
   # +bindee+    L'objet bindé à la vue, éventuellement
+  #
+  # Il est bon d'implémenter une méthode générale `send_error_to_admin`
+  # qui sera appelée en cas d'erreur, pour rapporter cette erreur
+  # à l'administrateur.
+  #
   def deserb bindee = nil
     # raise "Ce fichier n'est pas un fichier ERB." unless extension == 'erb'
     bindee ||= @bind
@@ -109,7 +114,14 @@ class SuperFile
       ERB.new( read ).result( bindee )
     rescue Exception => e
       debug e
-      "[PROBLÈME AVEC LA VUE #{path} : #{e.message.gsub(/</,'&lt;')}]"
+      ajout_avertissement =
+        begin
+          send(:send_error_to_admin, {exception: e, file: self.path.to_s, from: 'Déserbage d’un SuperFile'})
+          '<div class="small">Nous venons d’informer l’administration de ce problème. Il sera résolu rapidement. Merci de votre indulgence et de votre patience.</div>'
+        rescue
+          ''
+        end
+      "<div class='fatal_error'>PROBLÈME AVEC LA VUE #{path} : #{e.message.gsub(/</,'&lt;')}.</div>#{ajout_avertissement}"
     end
   end
 
