@@ -211,12 +211,10 @@ class TestedPage
         tpage = TestedPage[route]
 
         # Par erreur, il peut arriver que la page
-        # n'existe pas. Peut-être lorsque la merge
-        # s'est mal passée
-        if tpage.nil?
-          debug "# PROBLÈME AVEC LA ROUTE : #{route} (la TestedPage n'existe pas/plus)"
-          next
-        end
+        # n'existe pas. Peut-être lorsque le merge
+        # s'est mal passé ou qu'on n'a pas pu trouvé la route dans les
+        # invalides.
+        tpage != nil || next
 
         # Identifiant du div qui contiendra la route invalide
         div_id = "div_route_#{route.gsub(/\//,'_')}".gsub(/[^a-zA-Z0-9_]/,'')
@@ -253,7 +251,7 @@ class TestedPage
 
         # Le code HTML de la page, si demandé
         pre_raw_code =
-          if false # pour le moment on ne l'affiche pas
+          if show_code_html?
             in_div('Code brut de la page (ci-dessous, glisser la souris pour le faire apparaitre)') +
             in_tag('pre', tpage.raw_code_report, class: 'raw_code')
           else

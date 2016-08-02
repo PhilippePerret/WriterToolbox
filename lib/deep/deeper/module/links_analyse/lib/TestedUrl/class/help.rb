@@ -44,6 +44,9 @@ main.rb[ <options>]
                       Utile surtout pour les tests de l'analyzer.
   -D/--dumped-data    Reprendre les données consignées dans le fichier Marshal
                       lors de la dernière analyse.
+  -x/--code-html      Si présent, on ajoute le code HTML des pages erronées.
+                      False par défaut, ça prend de la place et ça n'est pas
+                      toujours utile.
 
   EXEMPLES
   --------
@@ -56,7 +59,10 @@ main.rb[ <options>]
 
       Version raccourcie :
 
-        main.rb -r=ma/route -d=1
+        main.rb -r=ma/route -d=1 -x
+
+        # Le '-x' permet d'afficher le code HTML de la page si elle
+        # est erronée.
 
       #{'-'*60}
       Reprendre les données consignées dans la dernière analyse et

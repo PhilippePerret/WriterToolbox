@@ -233,13 +233,25 @@ class Cnarration
     end
 
     def lien_tdm
-      "T.d.M".in_a(href:"livre/#{livre_id}/tdm?in=cnarration").in_div(class:'lktdm')
+      "Table des matières".in_a(href:"livre/#{livre_id}/tdm?in=cnarration").in_div(class:'nav lktdm')
     end
     def lien_prev_page
-      lien.backward_button( href: "page/#{prev_page_id}/show?in=cnarration", visible: !prev_page_id.nil?)
+      href =
+        if prev_page_id.nil?
+          'javascript:void(0)'
+        else
+          "page/#{prev_page_id}/show?in=cnarration"
+        end
+      lien.backward_button( href: href, visible: !prev_page_id.nil?)
     end
     def lien_next_page
-      lien.forward_button(href: "page/#{next_page_id}/show?in=cnarration", visible: !next_page_id.nil?)
+      href =
+        if next_page_id.nil?
+          'javascript:void(0)'
+        else
+          "page/#{next_page_id}/show?in=cnarration"
+        end
+      lien.forward_button(href: href, visible: !next_page_id.nil?)
     end
 
     # {StringHTML} Retourne le code HTML du bloc d'évaluation de

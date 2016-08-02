@@ -18,9 +18,11 @@ class TestedPage
     'm' => 'max-routes',
     'o' => 'online',
     'r' => 'from-route',
-    'v' => 'verbose'
+    'v' => 'verbose',
+    'x' => 'code-html'
   }
   DATA_OPTIONS = {
+    'code-html'     => {hname: 'Affichage du code HTML de la page', report: 'Code HTML de la page'},
     'depth'         => {hname: 'Profondeur des fouilles', report: "Profondeur de la recherche"},
     'dumped-data'   => {hname: 'Reprise des données enregistrées', report: 'Reprise des données enregistrées'},
     'from-route'    => {hname: 'La route initiale', report: 'Route initial'},
@@ -103,6 +105,9 @@ class TestedPage
       # recommencer l'analyse
       # => dumped_data?
       options.key?('dumped-data') || @options['dumped-data'] = !!USE_DUMPED_DATA
+      # Faut-il afficher le code HTML de la page dans le rapport ? (false
+      # par défaut)
+      options.key?('code-html') || @options['code-html'] = false
 
     end
 
@@ -129,6 +134,9 @@ class TestedPage
     end
     def dumped_data?
       options['dumped-data']
+    end
+    def show_code_html?
+      options['code-html']
     end
 
 
