@@ -18,13 +18,44 @@ class TestedPage
   # passer dans --data
   def curl_command
     @curl_command ||= begin
-      justurl, data = url.split('?')
-      if data.nil?
-        "curl -s #{justurl}"
+      if real_curl_data.nil?
+        "curl -s #{real_curl_url}"
       else
-        "curl -s --data \"#{data}\" #{justurl}"
+        "curl -s --data \"#{real_curl_data}\" #{real_curl_url}"
       end
     end
+  end
+
+  # La "vraie" url qui va être utilisée par la commande CURL, en fonction
+  # des paramètres du site
+  def real_curl_url
+    @real_curl_url ||= begin
+      curl_url, @real_curl_data = url.split('?')
+      # Si les données de particularité de route définissent quelque chose
+      # en fonction du context (paramètre 'in')
+      if DATA_ROUTES.key?(:context)
+        # Si la propriété définissant les particularités des routes
+        # définit quelque chose pour le contexte courant de la route courante
+        if DATA_ROUTES[:context].key?(context)
+          dcontext = DATA_ROUTES[:context][context]
+          if dcontext.key?(:add_to_url)
+            curl_url += dcontext[:add_to_url]
+          end
+          if dcontext.key?(:add_to_data_url)
+            if @real_curl_data.nil?
+              @real_curl_data = dcontext[:add_to_data_url]
+            else
+              @real_curl_data += "&#{dcontext[:add_to_data_url]}"
+            end
+          end
+        end
+      end
+      curl_url
+    end
+  end
+  def real_curl_data
+    @real_curl_data || real_curl_url
+    @real_curl_data
   end
 
   # Retourne la commande Curl pour obtenir l'entête seulement
@@ -35,10 +66,6 @@ class TestedPage
     @curl_command_header_only ||= begin
       justurl, data = url.split('?')
       "curl -I -s #{url}"
-      # if data.nil?
-      # else
-      #   "curl -I --data \"#{data}\" #{justurl}"
-      # end
     end
   end
 

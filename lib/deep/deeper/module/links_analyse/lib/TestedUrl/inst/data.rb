@@ -10,6 +10,21 @@ class TestedPage
     end
   end
 
+  # Décomposition de la route lorsqu'elle est transmise
+  # pour l'identification
+  # 
+  # Les données objet, objet_id, method et context de la route
+  # courante. Permet de faire certaines opérations sur les urls vraiment
+  # appelées suivant DATA_ROUTES
+  attr_reader :context, :objet, :objet_id, :method
+  def decompose_route
+    route_init != nil || return
+    @route, @url_anchor = @route_init.split('#')
+    @route != nil || return
+    reg = /([a-zA-Z_]+)(?:\/([0-9]+))?\/([a-zA-Z_]+)(?:\?in=([a-zA-Z_]+))?/o
+    tout, @objet, @objet_id, @method, @context = route.match(reg).to_a
+  end
+
   # La profondeur du lien, de page en page.
   # La première page testée à une profondeur de 0, les
   # pages de ses liens ont une profondeur de 1, les liens

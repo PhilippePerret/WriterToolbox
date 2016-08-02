@@ -3,10 +3,24 @@
 # Les routes qui ne seront pas analysées
 #
 # Mettre à nil si aucune route n'est à exclure
-# 
+#
 EXCLUDED_ROUTES = {
   'manuel/home?in=analyse&operation=charger_manuel_femme' => true,
   'manuel/home?in=analyse&operation=charger_manuel_homme' => true
+}
+
+# Cette table permet de définir tout un tas de chose par rapport aux
+# routes à tester.
+DATA_ROUTES = {
+  # À faire si le contexte de la route est…
+  context: {
+    'cnarration' => {
+      # Si le contexte de la route (attribut `in`) est 'cnarration', on
+      # ajoute 'authips=1' à l'url appelée pour permettre une authentification
+      # par l'IP juste sur ces pages.
+      add_to_data_url: 'authips=1'
+    }
+  }
 }
 
 # Option ligne command : -v/--verbose

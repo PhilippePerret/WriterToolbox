@@ -19,7 +19,7 @@ class TestedPage
   # Instanciation d'une url
   def initialize route
     @route_init = route.strip
-    @route, @url_anchor = @route_init.split('#')
+    decompose_route
     self.class << self
     @errors = Array.new
   end
