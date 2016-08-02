@@ -22,5 +22,8 @@ include RSpecHtmlMatchers
 require_relative 'lib/required'
 
 TestedPage.init
-TestedPage.run
-TestedPage.report
+if TestedPage.aide?
+  TestedPage.help
+elsif TestedPage.run
+  TestedPage.report
+end

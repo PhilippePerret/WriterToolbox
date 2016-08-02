@@ -89,6 +89,7 @@ class TestedPage
   # Renseigne @errors_format_url avec les problèmes rencontrés.
   def format_url_valide?
     @errors_format_url = Array.new
+    @route != nil || (return false)
     if @route.match(/^("|'|“)/) || @route.match(/("|'|”)$/)
       @errors_format_url << "Mauvais guillemets autour de l'URL"
     end

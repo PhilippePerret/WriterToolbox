@@ -43,12 +43,23 @@ class TestedPage
   # recherche et des vérifications sur le code de la page
   # (p.e. méthode have_tag)
   #
+  # Le @dumping_data est mis à true quand on est en train de
+  # dumper les données dans le fichier Marshal. Cela permet
+  # de zapper ces valeurs/classe qui n'implémentent pas la
+  # méthode _dump_data qui permet de les marshaliser
   def nokotexthelper
-    @nokotexthelper ||= NokogiriTextHelper.new(raw_code)
+    @nokotexthelper ||= begin
+      NokogiriTextHelper.new(raw_code)
+    end
   end
 
   # L'instance Nokogiri qui permet de récupérer des éléments
   # de la page
+  #
+  # Le @dumping_data est mis à true quand on est en train de
+  # dumper les données dans le fichier Marshal. Cela permet
+  # de zapper ces valeurs/classe qui n'implémentent pas la
+  # méthode _dump_data qui permet de les marshaliser
   def nokogiri
     @nokogiri ||= begin
       Nokogiri::HTML(raw_code)

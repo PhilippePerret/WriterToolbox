@@ -1,10 +1,13 @@
 # encoding: UTF-8
 
+# Option ligne command : -v/--verbose
 VERBOSE = false
 
 # Pour tester le programme, limiter le nombre de routes
 # testées
 # Mettre à NIL pour les tester toutes.
+#
+# Option ligne de commande : -m/--max-routes
 NOMBRE_MAX_ROUTES_TESTED = nil
 
 # Format de sortie
@@ -14,6 +17,7 @@ NOMBRE_MAX_ROUTES_TESTED = nil
 #             les styles et les liens permettant d'ouvrir les
 #             routes et autres
 #
+# Option de ligne de commande : -f=.../--report-format
 REPORT_FORMAT = :html
 
 # Browser avec lequel il faut ouvrir le rapport
@@ -26,10 +30,14 @@ REPORT_FORMAT = :html
 BROWSER_APP = 'Opera'
 
 # Pour tester online ou offline
+#
+# Option de ligne de commande : -o/--online
 TEST_ONLINE = false # false => test local
 
 # Mettre à TRUE pour que la boucle s'interrompe à la première
 # erreur rencontrée
+#
+# Option de ligne de commande : --fail-fast
 FAIL_FAST = false
 
 # Profondeur maximale
@@ -38,11 +46,15 @@ FAIL_FAST = false
 # tous les liens.
 #
 # Si la profondeur est de 1, seuls les liens de la page définie
-# par ROUTE_START (cf. ci-desous) seront traités.
+# par FROM_ROUTE (cf. ci-desous) seront traités.
+#
+# Option de ligne de commande : -d=…/--depth=…
 DEPTH_MAX = nil
 
 # Mettre à TRUE pour voir les routes collectées sur chaque page au
 # fil de l'analyse
+#
+# Option de ligne de commande : -i/--infos
 SHOW_ROUTES_ON_TESTING = false
 
 # Route de démarrage du test
@@ -59,4 +71,13 @@ SHOW_ROUTES_ON_TESTING = false
 # Régler aussi NOMBRE_MAX_ROUTES_TESTED ci-dessus pour limiter le test, mais
 # penser à laisser un nombre assez grand pour comprendre la route à tester à
 # l'intérieur de la page s'il y en a beaucoup avant.
-# ROUTE_START = 'site/updates'
+#
+# Option de ligne de commande : -r=…/-from-route=…
+# FROM_ROUTE = 'site/updates'
+
+# Si TRUE, le programme utilise les données consignées à la fin
+# de la dernière analyse dans le fichier Marshal au lieu de
+# recommencer complètement l'analyse.
+#
+# Option de ligne de commande : -D/--dumped-data
+USE_DUMPED_DATA = false

@@ -11,7 +11,7 @@ class TestedPage
     #
     def report
 
-      case REPORT_FORMAT
+      case options['report-format']
       when :html
         report_html
       else
@@ -95,6 +95,11 @@ class TestedPage
   class Report
   class << self
 
+    # Raccourci
+    def options
+      @options ||= TestedPage.options
+    end
+
     # = main =
     # Construit la version HTML du rapport et l'ouvre
     #
@@ -105,7 +110,7 @@ class TestedPage
 
     # Titre humain du rapport
     def titre
-      "Links Analysis du #{Time.now}"
+      "Links Analysis du #{Time.now.strftime('%d %m %Y à %H:%M')}"
     end
 
     # = main =
@@ -116,6 +121,20 @@ class TestedPage
       # Nombre de routes totales testées
       c = ""
 
+      # Options choisies
+      # ----------------
+      # On ne prend pas les options dont la valeur est false
+      # ou nil
+      options_choisies = options.collect do |k, v|
+        DATA_OPTIONS[k].key?(:report) || (next nil)
+        v != nil && v != false || (next nil)
+        "#{DATA_OPTIONS[k][:report]} : #{v.inspect}"
+      end.compact.join(', ')
+      c << in_div(
+        "Options : #{options_choisies}",
+        class: 'ligne_value'
+      )
+      # Nombre total de routes testées
       c << in_div(
         in_span(TestedPage.instances.count, class: 'fvalue') +
         in_span('Nombre de routes testées', class: 'libelle'),
@@ -160,7 +179,7 @@ class TestedPage
         TestedPage.routes_les_plus_visitees.collect do |tpage|
           in_div(
             in_span("#{tpage.call_count} fois", class: 'fright') +
-            in_span("#{tpage.route}")
+            in_span("#{tpage.link_to}")
             )
         end.join('')
 
@@ -168,7 +187,7 @@ class TestedPage
         TestedPage.routes_les_moins_visitees.collect do |tpage|
           in_div(
             in_span("#{tpage.call_count} fois", class: 'fright') +
-            in_span("#{tpage.route}")
+            in_span("#{tpage.link_to}")
             )
         end.join('')
 

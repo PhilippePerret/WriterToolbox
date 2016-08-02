@@ -7,11 +7,23 @@ class TestedPage
     # Méthode principale appelée pour lancer l'analyse
     #
     def run
+      puts ''
       @start_time = Time.now.to_f
-      links_analyze
-      merge_similar_routes
-      save_data_in_marshal
+      analyse_est_requise =
+        if dumped_data?
+          get_data_from_marshal
+        else
+          true
+        end
+      if analyse_est_requise
+        init
+        links_analyze
+        merge_similar_routes
+        save_data_in_marshal
+      end
       @end_time = Time.now.to_f
+      puts "\n\n"
+      return true
     end
 
     # = sous-main =
@@ -20,11 +32,7 @@ class TestedPage
     #
     def links_analyze
 
-      if !defined?(ROUTE_START) || ROUTE_START.nil?
-        @routes = ['site/home']
-      else
-        @routes = [ROUTE_START]
-      end
+      @routes = [ options['from-route'] ]
 
       # On instancie la toute première TestedPage pour qu'elle
       # existe (dès qu'on trouve une route/href dans une page,
@@ -61,7 +69,7 @@ class TestedPage
       end
       # / Fin du while tant qu'il y a des routes
     end
-    # / Fin de .run
+    # / Fin de .links_analyze
 
     # Teste complet de la route +route+
     #
@@ -81,15 +89,12 @@ class TestedPage
       # Si la profondeur maximum est définie et que la
       # page a une profondeur supérieure à cette
       # profondeur max, on ne la traite pas
-      if DEPTH_MAX && testedpage.depth > DEPTH_MAX
-        return true
-      end
+      depth_max.nil? || testedpage.depth < depth_max || (return true)
 
 
-      if VERBOSE
+      if verbose? || infos?
         say "* #{iroute_tested} * Test de la route #{route}"
       else
-        # say (testedpage.valide? ? '*' : 'F') + " #{iroute_tested}"
         color = testedpage.valide? ? '32' : '31'
         print "\e[1;#{color}m*\e[0m"
       end
@@ -130,9 +135,7 @@ class TestedPage
           # été traitée ou non.
           new_route = link.href
 
-          if SHOW_ROUTES_ON_TESTING
-            say "Cette page appelle : #{new_route.inspect}"
-          end
+          say "Cette page appelle : #{new_route.inspect}" if infos?
 
           # On ne prend pas les routes qu'on a déjà traitées mais on
           # ajouter une valeur de présence et on passe à la suite.
@@ -203,10 +206,12 @@ class TestedPage
             self.instances[tpage.route].merge( tpage )
           end
         end
+
         # Ajouter cette route_init dans la liste des
         # instances à détruire
         liste_instances_with_anchor << route_init
       end
+      # /Fin de boucle sur chaque instance
 
       # On détruit les instances à détruire
       liste_instances_with_anchor.each do |route_init|
@@ -216,9 +221,10 @@ class TestedPage
         # faut la remplacer
         is_invalide || next
         offset = invalides.index(route_init)
-        invalides.delete_at(offset)
-        end
+        offset != nil || next
+        self.invalides.delete_at(offset)
       end
+      # /FIn de la liste des instances avec ancres
 
     end
     # / Fin de la méthode `merge_similar_routes`
@@ -229,7 +235,7 @@ class TestedPage
     # Rappel : Le nombre se définit dans le fichier app.rb, comme
     # tout ce qui concerne l'application en propre.
     def iroute_max? ir
-      !!(NOMBRE_MAX_ROUTES_TESTED && ir > NOMBRE_MAX_ROUTES_TESTED)
+      !!(options['max-routes'] && ir > options['max-routes'])
     end
 
 

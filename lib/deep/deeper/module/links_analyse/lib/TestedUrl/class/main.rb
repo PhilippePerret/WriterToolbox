@@ -6,14 +6,13 @@ class TestedPage
     def base_url
       @base_url ||= online? ? BASE_URL : BASE_URL_LOCAL
     end
-    def online?
-      TEST_ONLINE
-    end
 
     def init
+      @options      = Hash.new
       @instances    = Hash.new
       @invalides    = Array.new
       @links_count  = 0
+      analyze_options
     end
 
     # Ajoute une page invalide
