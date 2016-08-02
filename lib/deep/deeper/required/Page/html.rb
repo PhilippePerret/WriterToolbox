@@ -129,6 +129,7 @@ OFFLINE = !ONLINE;
 <style type="text/css">
 #{low_opacities}
 .adminonly{#{user.admin? ? '' : 'display:none;'}}
+#{raw_css_for_app if self.respond_to?(:raw_css_for_app)}
 </style>
     CSSS
   end
