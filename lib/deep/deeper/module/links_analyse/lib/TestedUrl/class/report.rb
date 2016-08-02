@@ -202,12 +202,18 @@ class TestedPage
     # = main =
     #
     # Méthode principale renvoyant le code pour indiquer les
-    # invalidités des pages
+    # invalidités des pages.
+    # Return '' si aucune route invalide n'a été trouvée.
+    #
     def rapport_invalidites
+
+      return '' if TestedPage.invalides.empty?
       # # Pour le test :
       # TestedPage.instance_variable_set('@invalides', TestedPage.instances.keys[0..4])
 
-      TestedPage.invalides.collect do |route|
+      in_tag('fieldset',
+        in_tag('legend', "Routes/pages invalides (#{TestedPage.invalides.count})") +
+        TestedPage.invalides.collect do |route|
         tpage = TestedPage[route]
 
         # Par erreur, il peut arriver que la page
@@ -273,7 +279,10 @@ class TestedPage
           id: div_id
         )
 
-      end.join("\n\n\n")
+      end.join("\n\n\n"),
+      id: 'invalides'
+      ) #/ in_tag('fieldset')
+
     end
 
 

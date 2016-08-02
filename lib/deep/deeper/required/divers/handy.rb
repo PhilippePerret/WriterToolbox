@@ -16,7 +16,11 @@
 #   :from           La provenance de l'erreur, même si elle peut
 #                   être retrouvée dans backtrace
 def send_error_to_admin args
-  err = args[:exception]
+  message, backtrace =
+    case args[:exception]
+    when String then [args[:exception], '']
+    else [args[:exception].message, "BACKTRACE \n" + args[:exception].backtrace.join("\n")]
+    end
   message = <<-HTML
 <p>Erreur sur #{site.name}</p>
 <p>
@@ -26,9 +30,8 @@ def send_error_to_admin args
   User : #{user.identified? ? "#{user.pseudo} (#{user.id})" : '- inconnu -'}
 </p>
 <pre style="font-size:11pt">
-  MESSAGE : #{err.message}
-  BACKTRACE
-  #{err.backtrace.join("\n")}
+  MESSAGE : #{message}
+  #{backtrace}
 </pre>
   HTML
   # Ajout des informations supplémentaires

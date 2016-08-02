@@ -20,10 +20,7 @@ function DOMRemove(element_id, parent_id){
     </fieldset>
 
     <!-- RAPPORT DES INVALIDITÉS -->
-    <fieldset id="invalides">
-      <legend>Routes/pages invalides</legend>
-      <%= TestedPage::Report.rapport_invalidites %>
-    </fieldset>
+    <%= TestedPage::Report.rapport_invalidites %>
 
     <!-- RAPPORT DES FRÉQUENCES -->
     <fieldset id="frequences">

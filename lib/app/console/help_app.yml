@@ -140,6 +140,15 @@ narration:
           <li>`niveau: NIVEAU_DE_0_A_9` pour définir le niveau de développement</li>
         </ul>
   -
+    command:        '&lt;relecture&gt;Portion en relecture&lt;/relecture&gt;'
+    description: |
+      Permet d'indiquer à Marion une portion de texte à relire dans une
+      page qui a déjà été achevée.
+    note: |
+      Penser à remettre la page en relecture.
+      TODO: Il faudrait un type spécial pour indiquer que c'est juste
+      une relecture partielle, pas complète.
+  -
     command:        recherche narration
     description:    Rejoindre le formulaire de recherche dans la collection Narration.
   -

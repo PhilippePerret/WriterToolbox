@@ -6,7 +6,9 @@
 #
 EXCLUDED_ROUTES = {
   'manuel/home?in=analyse&operation=charger_manuel_femme' => true,
-  'manuel/home?in=analyse&operation=charger_manuel_homme' => true
+  'manuel/home?in=analyse&operation=charger_manuel_homme' => true,
+  'aide/home?in=unan&operation=charger_manuel_femme'      => true,
+  'aide/home?in=unan&operation=charger_manuel_homme'      => true
 }
 
 # Cette table permet de définir tout un tas de chose par rapport aux

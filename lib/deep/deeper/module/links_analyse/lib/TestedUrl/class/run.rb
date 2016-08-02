@@ -9,13 +9,7 @@ class TestedPage
     def run
       puts ''
       @start_time = Time.now.to_f
-      analyse_est_requise =
-        if dumped_data?
-          get_data_from_marshal
-        else
-          true
-        end
-      if analyse_est_requise
+      if (dumped_data? ? get_data_from_marshal : true)
         init
         links_analyze
         merge_similar_routes
@@ -55,9 +49,6 @@ class TestedPage
           # routes testées
           iroute_max?( iroute_tested ) ? break : iroute_tested += 1
 
-          # Si la route doit être excluse, il ne faut pas la prendre
-          next if excluded_route?(route)
-
           # === TEST DE LA ROUTE ===
           if test_route route, iroute_tested
             # OK
@@ -74,12 +65,6 @@ class TestedPage
     end
     # / Fin de .links_analyze
 
-    # Retourne TRUE si la route fournie en argument est à
-    # exclure (EXCLUDED_ROUTE)
-    def excluded_route? route
-      defined?(EXCLUDED_ROUTE) && EXCLUDED_ROUTE!=nil && false == EXCLUDED_ROUTE.key?(route)
-    end
-
     # Teste complet de la route +route+
     #
     # Retourne TRUE pour continuer de tester les routes, ou retourne
@@ -94,6 +79,9 @@ class TestedPage
       # On récupère l'instance de la TestedPage qui va
       # être traitée à présent
       testedpage = TestedPage[route]
+
+      # Si la route doit être excluse, il ne faut pas la prendre
+      return if testedpage.has_route_excluded?
 
       # Si la profondeur maximum est définie et que la
       # page a une profondeur supérieure à cette

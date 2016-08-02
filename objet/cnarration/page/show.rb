@@ -44,14 +44,20 @@ class Cnarration
             build
           end
           if developpement < 8
-            'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air')
+            'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air', style: 'margin-bottom:4em;')
           else
             ''
           end + page_content_by_user
         end
+      avertissement_relecture =
+        if user.admin? && final_page_content.match(/<relecture>/)
+          '<relecture>Attention, ce texte achevé ne demande qu’une relecture des passages qui se trouvent dans cette couleur.</relecture>'.in_div(class: 'cadre air big')
+        else
+          ''
+        end
       if path_semidyn.exist?
         (
-          titre.in_h1 + final_page_content
+          titre.in_h1 + avertissement_relecture + final_page_content
         ).in_div(id:'page_cours')
       else
         error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."

@@ -6,6 +6,14 @@
 =end
 class TestedPage
 
+  # Retourne TRUE si la page est exclue
+  def has_route_excluded?
+    if @has_route_excluded === nil
+      @has_route_excluded = defined?(EXCLUDED_ROUTES) && EXCLUDED_ROUTES!=nil && EXCLUDED_ROUTES.key?(route)
+    end
+    @has_route_excluded
+  end
+
   # Retourne TRUE si la route commence par http:// ou https://
   def entete_http?
     !!route.match(/^https?:\/\//)
