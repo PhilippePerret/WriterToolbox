@@ -39,7 +39,13 @@ class TestedPage
     def analyze_options
 
       ARGV.each do |arg|
-        k, v = arg.split('=')
+        offset_egal = arg.index('=')
+        k, v =
+          if offset_egal.nil?
+            [arg, nil]
+          else
+            [arg[0..offset_egal-1], arg[offset_egal+1..-1]]
+          end
         opt =
           if k.start_with?('--')
             k[2..-1]

@@ -22,14 +22,7 @@ function DOMRemove(element_id, parent_id){
     <!-- RAPPORT DES INVALIDITÉS -->
     <fieldset id="invalides">
       <legend>Routes/pages invalides</legend>
-      <%
-      # On met un div#linvalidites pour pouvoir détruire
-      # avec removeChild par javascript (qui a besoin du
-      # parent, puisque remove() est déconseillé).
-      %>
-      <div id="linvalidites">
-        <%= TestedPage::Report.rapport_invalidites %>
-      </div>
+      <%= TestedPage::Report.rapport_invalidites %>
     </fieldset>
 
     <!-- RAPPORT DES FRÉQUENCES -->

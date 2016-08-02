@@ -59,7 +59,8 @@ class TestedPage
       # / Fin du case format
     end
 
-    # Retourne la durée de l'opération, en secondes
+    # Retourne la durée de l'opération totale d'analyse, en
+    # secondes, pour les infos générales
     #
     def duree_operation
       seconds = end_time.to_i - start_time.to_i
@@ -79,6 +80,7 @@ class TestedPage
     end
 
     def routes_les_plus_visitees nombre = 20
+      nombre < pages_sorted_by_calls.count || nombre = (pages_sorted_by_calls.count - 1)
       pages_sorted_by_calls[-nombre..-1].reverse
     end
     def routes_les_moins_visitees nombre = 10
@@ -157,6 +159,7 @@ class TestedPage
         class: 'ligne_value'
       )
 
+      # Indication de la durée totale de l'opération
       c << in_div(
         in_span(TestedPage.duree_operation, class: 'fvalue') +
         in_span('Durée de l’opération', class: 'libelle'),
@@ -215,18 +218,19 @@ class TestedPage
           next
         end
 
-        div_id = "div_route_#{route.gsub(/\//,'_')}"
+        # Identifiant du div qui contiendra la route invalide
+        div_id = "div_route_#{route.gsub(/\//,'_')}".gsub(/[^a-zA-Z0-9_]/,'')
 
-        c = ''
-
-        c << in_span("<a href=\"javascript:void(0)\" onclick=\"DOMRemove('#{div_id}', 'linvalidites')\">x</a>", class: 'btn_close')
+        lien_fermeture = "<a href=\"javascript:void(0)\" onclick=\"DOMRemove('#{div_id}','invalides')\">x</a>"
+        bouton_fermeture = in_span(lien_fermeture, class: 'btn_close')
 
         # Pour indiquer la route et pouvoir l'atteindre
-        c << in_div(
+        main_line = in_div(
           in_span("<a href='#{tpage.url}' target='_blank'>#{tpage.url}</a>", class: 'link_url') +
           in_span(tpage.route, class: 'route'),
           class: 'main'
             )
+
         errors_list =
           tpage.errors.collect do |err|
             in_div(err, class: 'error')
@@ -247,23 +251,31 @@ class TestedPage
             in_span(link_to_referrer, class: 'value')
           )
 
+        # Le code HTML de la page, si demandé
         pre_raw_code =
-          in_div('Code brut de la page (ci-dessus, glisser la souris pour le faire apparaitre)') +
-          in_tag('pre', tpage.raw_code_report, class: 'raw_code')
+          if false # pour le moment on ne l'affiche pas
+            in_div('Code brut de la page (ci-dessous, glisser la souris pour le faire apparaitre)') +
+            in_tag('pre', tpage.raw_code_report, class: 'raw_code')
+          else
+            ''
+          end
 
-        c << in_div(
-                div_link_to_referrer +
-                div_nombre_errors +
-                div_errors_list +
-                pre_raw_code,
-                class: 'ligne_value'
-                )
+        codeline =
+          bouton_fermeture      +
+          main_line             +
+          div_link_to_referrer  +
+          div_nombre_errors     +
+          div_errors_list       +
+          pre_raw_code          +
+          ''
 
-        # Le code HTML total, dans un div
-        # Pour le collect
-        in_div(c, class: 'bad_route', id: div_id)
+        in_div(
+          codeline,
+          class: 'ligne_value bad_route',
+          id: div_id
+        )
 
-      end.join('')
+      end.join("\n\n\n")
     end
 
 
@@ -290,7 +302,7 @@ class TestedPage
       attrs = attrs.empty? ? '' : ' ' + attrs.join(' ')
       "<#{tag}#{attrs}>#{content}</#{tag}>"
     end
-    def in_div content, options = nil; in_tag('div', content, options) end
+    def in_div content, options = nil; "\n\n" + in_tag('div', content, options) end
     def in_span content, options = nil; in_tag('span', content, options) end
 
     # Path du rapport
