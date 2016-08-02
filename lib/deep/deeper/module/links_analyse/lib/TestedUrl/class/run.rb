@@ -55,6 +55,9 @@ class TestedPage
           # routes testées
           iroute_max?( iroute_tested ) ? break : iroute_tested += 1
 
+          # Si la route doit être excluse, il ne faut pas la prendre
+          next if excluded_route?(route)
+
           # === TEST DE LA ROUTE ===
           if test_route route, iroute_tested
             # OK
@@ -70,6 +73,12 @@ class TestedPage
       # / Fin du while tant qu'il y a des routes
     end
     # / Fin de .links_analyze
+
+    # Retourne TRUE si la route fournie en argument est à
+    # exclure (EXCLUDED_ROUTE)
+    def excluded_route? route
+      defined?(EXCLUDED_ROUTE) && EXCLUDED_ROUTE!=nil && false == EXCLUDED_ROUTE.key?(route)
+    end
 
     # Teste complet de la route +route+
     #

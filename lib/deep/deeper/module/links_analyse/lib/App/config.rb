@@ -1,5 +1,14 @@
 # encoding: UTF-8
 
+# Les routes qui ne seront pas analysées
+#
+# Mettre à nil si aucune route n'est à exclure
+# 
+EXCLUDED_ROUTES = {
+  'manuel/home?in=analyse&operation=charger_manuel_femme' => true,
+  'manuel/home?in=analyse&operation=charger_manuel_homme' => true
+}
+
 # Option ligne command : -v/--verbose
 VERBOSE = false
 
