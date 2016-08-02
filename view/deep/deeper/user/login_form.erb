@@ -27,6 +27,12 @@ backto =
     ""
   end
 %>
+
+<%=
+  # Éventuellement, un message d'erreur, typiquement quand l'user a
+  # voulu rejoindre une page qui nécessitait une identification.
+  page.error_in_page
+  %>
 <form id="form_user_login" action="user/login" method="POST">
   <div class="content"><%# ça définit le style %>
     <input type="text" id="login_mail" name="login[mail]" placeholder="Votre mail" value="" />

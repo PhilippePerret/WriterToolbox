@@ -1,5 +1,11 @@
 # TODO
 
+# Autorisations exceptionnelles
+
+Mettre en place un système qui permette une visite complète exceptionnelle, à l'usage du links analyzer du site :
+Pour certaines pages, comme les fichiers narration, on autorise la lecteur complète de la page, pour la vérifier.
+Pour ce faire, on crée un fichier de nom d'un md5 (online/offline) et on met cette valeur dans l'url pour la variable `autorisation_exceptionnelle`. Quand le site trouve cette variable, elle regarde si le fichier existe et donne l'autorisation exceptionnelle (en détruisant le fichier, qui doit être reconstruit chaque fois)
+
 # Citations en doublon
 
 253 (goto citation/253/edit)

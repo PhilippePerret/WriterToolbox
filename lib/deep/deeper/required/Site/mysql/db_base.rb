@@ -12,7 +12,6 @@ class DBM_BASE
 
   extend MethodesBaseMySQL
 
-
   class << self
 
     attr_reader :options
@@ -35,15 +34,22 @@ class DBM_BASE
     #                   contient des '?'
     #     :symbolize_names
     #                   Pour retourner des hash symbolisés (true par défaut)
-    def execute db_suffix, request, options = nil
-      @options          = options || {}
+    def execute db_suffix, request, opts = nil
+      @options          = opts || Hash.new
       @options.key?(:symbolize_names) || @options[:symbolize_names] = true
-      define_is_offline options[:online]
+      define_is_offline @options[:online]
       @suffix_name      = db_suffix
-      @prepared_values  = options[:values].nil_if_empty
+      @prepared_values  = @options[:values].nil_if_empty
       @request          = request
       @request.end_with?(';') || @request += ';'
       exec
+    end
+
+    # Méthode appelée par la méthode suffix_name du module
+    # MethodesBaseMySQL lorsque @@suffix_name n'est pas défini. Il faut
+    # lui renvoyer la valeur de @suffix_name (un seul arobase).
+    def get_suffix_name
+      @suffix_name
     end
 
     # = main =

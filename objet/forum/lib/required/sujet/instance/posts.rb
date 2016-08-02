@@ -44,7 +44,9 @@ class Sujet
 
       # ---------------------------------------------
       # Relève des messages
+      debug "request : #{request.inspect}"
       res_request = site.db_execute(:forum, request)
+      debug "res_request : #{res_request.inspect}"
       # ---------------------------------------------
       # Note  : Seuls les messages qui possède un vote sont relevés.
       # debug res_request
@@ -61,21 +63,29 @@ class Sujet
       # Pour les questions techniques, on affiche toujours tous les
       # messages, on ne fonctionne pas en panneaux. Donc il faut récupérer
       # tous les messages du sujet qui n'ont pas reçu de votes et qui,
-      # donc, ne font pas partie de la liste ci-dessus.
+      # donc, ne font pas partie de la liste ci-dessus (s'il y a des
+      # éléments dans la liste ci-dessus).
 
       if [:hash, :data].include?(return_as)
         # Si on demande à retourner les données, il faut relever
         # même les posts qui ont été trouvés avec un vote (ci-dessus)
-        where_clause = "id IN (#{posts_ids.join(', ')})"
-        data_request = {where:where_clause}
+        data_request = Hash.new
+        if posts_ids.count > 0
+          where_clause = "id IN (#{posts_ids.join(', ')})"
+          data_request.merge! where: where_clause
+        end
         data_request.merge!(colonnes:[]) unless [:hash, :data].include?(return_as)
         posts = Forum::table_posts.select(data_request)
       end
 
       # On finit par relever tous les posts qui n'ont pas de vote, en les
       # classant chronologiquement.
-      where_clause = "id NOT IN (#{posts_ids.join(', ')}) AND sujet_id = #{id}"
-      data_request = {where:where_clause, order:"created_at DESC"}
+      data_request = Hash.new
+      data_request.merge!( order: 'created_at DESC' )
+      if posts_ids.count > 0
+        where_clause = "id NOT IN (#{posts_ids.join(', ')}) AND sujet_id = #{id}"
+        data_request = {where:where_clause}
+      end
       data_request.merge!(colonnes:[]) unless [:hash, :data].include?(return_as)
       Forum.table_posts.select(data_request).each do |dpost|
         posts.merge! dpost[:id] => dpost

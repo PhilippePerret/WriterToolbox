@@ -28,6 +28,25 @@ class Page
   attr_accessor :error_message
   attr_accessor :error_backtrace
 
+  # Permet de consigner et de récupérer une erreur à mettre dans la
+  # page plutôt que dans le flash erreur.
+  # Inauguré pour les routes qui nécessitent d'être identifiées et
+  # conduisent au formulaire d'identification.
+  # L'erreur doit être inscrite dans un div 'error_in_page' pour ne
+  # pas être considéré par LINKS ANALYZER comme des erreurs fonctionnelles.
+  #
+  # @usage
+  #   Pour définir l'erreur : page.error_in_page '<le message d’erreur>'
+  #   Pour l'insérer dans la page : <%= page.error_in_page %>
+  def error_in_page err = nil
+    if err.nil?
+      @error_in_page != nil || ( return '' )
+      @error_in_page.in_div(class: 'error_in_page')
+    else
+      @error_in_page = err
+    end
+  end
+
   def lien_backward
     "Revenir à la page précédente".in_a(href:(site.route.last||page.error.redirection)).in_div(class:'right')
   rescue Exception => e

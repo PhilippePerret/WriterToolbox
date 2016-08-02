@@ -53,7 +53,7 @@ module MethodesBaseMySQL
     @@db_name ||= prefix_name + suffix_name.to_s
   end
 
-  def suffix_name ; @@suffix_name end
+  def suffix_name ; @@suffix_name ||= get_suffix_name end
 
   # Le préfixe du nom (de la base de données) en fonction
   # du fait qu'on est online ou offline

@@ -56,10 +56,13 @@ class ::Quiz
     'Éditer'.in_a(href: "quiz/#{id}/edit?qdbr=#{suffix_base}", class: 'tiny btn discret')
   end
   def hdate_creation
-    (
-      "Création#{THIN}:#{THIN}" +
-      created_at.as_human_date(true, false).in_span(class: 'cdate')
-    ).in_span
+    cdate =
+      if created_at.nil?
+        '- Date non spécifiée -'
+      else
+        created_at.as_human_date(true, false)
+      end
+    "Création#{THIN}:#{THIN} #{cdate.in_span(class: 'cdate')}".in_span
   end
   def span_nombre_fois
     data_generales || (return '')

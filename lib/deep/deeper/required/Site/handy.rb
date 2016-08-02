@@ -40,7 +40,9 @@ class ErrorNotOwner < StandardError; end
 # Cf. RefBook > Protection.md
 def raise_unless_identified
   unless @error_must_identified_done
-    error 'Vous devez être identifié(e) pour rejoindre cette page.'
+    # L'erreur qu'on doit faire apparaitre dans la page, pas
+    # dans un message flash
+    page.error_in_page 'Vous devez être connu du site pour rejoindre la page demandée. Merci de vous identifier ci-dessous.'
     redirect_to 'user/signin'
     @error_must_identified_done = true
   end

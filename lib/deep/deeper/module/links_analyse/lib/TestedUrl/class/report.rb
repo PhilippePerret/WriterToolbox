@@ -251,7 +251,7 @@ class TestedPage
 
         # Le code HTML de la page, si demandé
         pre_raw_code =
-          if show_code_html?
+          if TestedPage.show_code_html?
             in_div('Code brut de la page (ci-dessous, glisser la souris pour le faire apparaitre)') +
             in_tag('pre', tpage.raw_code_report, class: 'raw_code')
           else
@@ -305,7 +305,7 @@ class TestedPage
 
     # Path du rapport
     def path
-      @path ||= File.join(folder, 'report.html')
+      @path ||= File.join(folder, "report_#{TestedPage.online? ? 'ONLINE' : 'OFFLINE'}.html")
     end
     def path_gabarit
       @path_gabarit ||= File.join(folder, 'gabarit.erb')
