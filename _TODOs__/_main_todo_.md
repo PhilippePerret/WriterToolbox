@@ -6,6 +6,10 @@ Mettre en place un système qui permette une visite complète exceptionnelle, à
 Pour certaines pages, comme les fichiers narration, on autorise la lecteur complète de la page, pour la vérifier.
 Pour ce faire, on crée un fichier de nom d'un md5 (online/offline) et on met cette valeur dans l'url pour la variable `autorisation_exceptionnelle`. Quand le site trouve cette variable, elle regarde si le fichier existe et donne l'autorisation exceptionnelle (en détruisant le fichier, qui doit être reconstruit chaque fois)
 
+# OU :
+
+Fonctionner avec une liste d'adresses IP autorisées (./data/secret/authorized_ips) et, lorsque la variable 'authips' est à 1 dans l'url, alors le programme regarde si l'IP de l'utilisateur est dans les IPS courantes et l'autorise (mais sans le loguer).
+
 # Citations en doublon
 
 253 (goto citation/253/edit)

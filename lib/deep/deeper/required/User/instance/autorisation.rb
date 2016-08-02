@@ -18,24 +18,40 @@ class User
   # Retourne true si l'user possède une autorisation qui
   # couvre la date courante
   def authorized?
-    identified? || ( return false )
     if @is_authorized === nil
-      @is_authorized =
-        if admin? || moteur_recherche?
-          true
-        elsif authorized_from.nil? || authorized_upto.nil?
-          # Sera calculé après par le patch ci-dessous
-          false
-        else
-          (authorized_from <= NOW && authorized_upto > (NOW + 30))
-        end
+      if authorized_by_ip?
+        @is_authorized = true
+      else
+        identified? || ( return false )
+        @is_authorized =
+          if admin? || moteur_recherche?
+            true
+          elsif authorized_from.nil? || authorized_upto.nil?
+            # Sera calculé après par le patch ci-dessous
+            false
+          else
+            (authorized_from <= NOW && authorized_upto > (NOW + 30))
+          end
 
-      # Patch d'autorisation en attendant que tous les autorisés
-      # soient corrigés
-      @is_authorized ||= patch_modification_users
+        # Patch d'autorisation en attendant que tous les autorisés
+        # soient corrigés
+        @is_authorized ||= patch_modification_users
+      end
       debug "@is_authorized : #{@is_authorized.inspect}"
     end
     @is_authorized
+  end
+
+  # Si le paramètre :authips se trouve dans le query-string (donc dans les
+  # params), le programme regarde si l'IP de l'user courant est une des
+  # IPs autorisées. Si c'est le cas, il lui donne toutes les autorisations
+  # (MAIS NE LE LOGGUE PAS, DONC ÇA N'EST VALABLE QUE POUR UNE SEULE PAGE)
+  def authorized_by_ip?
+    param(:authips) == '1' || ( return false )
+    File.exist?('./data/secret/authorized_ips.rb') || (return false)
+    require './data/secret/authorized_ips'
+    # TODO : Plus tard, on pourra définir un niveau de privilège par IP
+    AUTHORIZED_IPS.key?(user.ip)
   end
 
   # RETURN la valeur de @is_authorized
