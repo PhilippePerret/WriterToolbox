@@ -34,7 +34,7 @@ class TestedPage
   def curl_command_header_only
     @curl_command_header_only ||= begin
       justurl, data = url.split('?')
-      "curl -I #{url}"
+      "curl -I -s #{url}"
       # if data.nil?
       # else
       #   "curl -I --data \"#{data}\" #{justurl}"

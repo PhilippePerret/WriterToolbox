@@ -2,14 +2,23 @@
 class TestedPage
   class << self
 
-    attr_reader :start_time, :end_time
-
     # = main =
     #
     # Méthode principale appelée pour lancer l'analyse
     #
     def run
       @start_time = Time.now.to_f
+      links_analyze
+      merge_similar_routes
+      save_data_in_marshal
+      @end_time = Time.now.to_f
+    end
+
+    # = sous-main =
+    #
+    # Analyse récursive de tous les liens du site
+    #
+    def links_analyze
 
       if !defined?(ROUTE_START) || ROUTE_START.nil?
         @routes = ['site/home']
@@ -51,50 +60,6 @@ class TestedPage
         end
       end
       # / Fin du while tant qu'il y a des routes
-
-      # Avant de faire l'évaluation, il faut tenir compte du
-      # fait que certaines routes ont conduit à des instances
-      # différentes, mais qu'il faut les compter comme une seule
-      # dans la suite.
-      # C'est le cas dès qu'il y a une ancre. Par exemple, les
-      # routes :
-      #   ma/route
-      #   ma/route#une_ancre
-      # … sont deux instances différentes et il le faut, puisque
-      # la première est valide si la page est valide mais la
-      # seconde est valide si l'ancre est trouvée dans la page
-      # Ici, cependant, nous allons merger ces deux instances.
-      # On se sert pour ça de leur paramètres 'route' qui est
-      # forcément identique puisqu'il a été "purifié" à l'instanciation.
-      liste_instances_with_anchor = Array.new
-      self.instances.each do |route_init, tpage|
-        # On ne traite que les TestedPage qui ont une ancre
-        tpage.url_anchor != nil || next
-        # Si une page existe avec la route simple (sans
-        # l'ancre) on doit merger les deux pages et mémoriser
-        # la route_init courant pour la détruire dans les
-        # instances
-        if self.instances.key?(tpage.route)
-          # Une petite vérification au cas où : il ne faudrait
-          # pas que ce soit le même objet !
-          if self.instances[tpage.route].object_id == tpage.object_id
-            debug "# IMPOSSIBLE DE MERGER LA ROUTE #{tpage.route}"
-          else
-            # On merge les deux instances
-            self.instances[tpage.route].merge( tpage )
-          end
-        end
-        # Ajouter cette route_init dans la liste des
-        # instances à détruire
-        liste_instances_with_anchor << route_init
-      end
-
-      # On détruit les instances à détruire
-      liste_instances_with_anchor.each do |route_init|
-        TestedPage.instances.delete(route_init)
-      end
-
-      @end_time = Time.now.to_f
     end
     # / Fin de .run
 
@@ -203,6 +168,60 @@ class TestedPage
       return true
     end
     #/ Fin de la méthode de test de la route .test_route
+
+
+    def merge_similar_routes
+      # Avant de faire l'évaluation, il faut tenir compte du
+      # fait que certaines routes ont conduit à des instances
+      # différentes, mais qu'il faut les compter comme une seule
+      # dans la suite.
+      # C'est le cas dès qu'il y a une ancre. Par exemple, les
+      # routes :
+      #   ma/route
+      #   ma/route#une_ancre
+      # … sont deux instances différentes et il le faut, puisque
+      # la première est valide si la page est valide mais la
+      # seconde est valide si l'ancre est trouvée dans la page
+      # Ici, cependant, nous allons merger ces deux instances.
+      # On se sert pour ça de leur paramètres 'route' qui est
+      # forcément identique puisqu'il a été "purifié" à l'instanciation.
+      liste_instances_with_anchor = Array.new
+      self.instances.each do |route_init, tpage|
+        # On ne traite que les TestedPage qui ont une ancre
+        tpage.url_anchor != nil || next
+        # Si une page existe avec la route simple (sans
+        # l'ancre) on doit merger les deux pages et mémoriser
+        # la route_init courant pour la détruire dans les
+        # instances
+        if self.instances.key?(tpage.route)
+          # Une petite vérification au cas où : il ne faudrait
+          # pas que ce soit le même objet !
+          if self.instances[tpage.route].object_id == tpage.object_id
+            debug "# IMPOSSIBLE DE MERGER LA ROUTE #{tpage.route}"
+          else
+            # On merge les deux instances
+            self.instances[tpage.route].merge( tpage )
+          end
+        end
+        # Ajouter cette route_init dans la liste des
+        # instances à détruire
+        liste_instances_with_anchor << route_init
+      end
+
+      # On détruit les instances à détruire
+      liste_instances_with_anchor.each do |route_init|
+        is_invalide = !TestedPage[route_init].valide?
+        TestedPage.instances.delete(route_init)
+        # Si la route est utilisée dans les invalides, il
+        # faut la remplacer
+        is_invalide || next
+        offset = invalides.index(route_init)
+        invalides.delete_at(offset)
+        end
+      end
+
+    end
+    # / Fin de la méthode `merge_similar_routes`
 
     # Retourne TRUE si un nombre de routes à tester maximum a été
     # décidé et qu'il est atteint.

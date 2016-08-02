@@ -3,36 +3,6 @@ class TestedPage
 
   class << self
 
-    # {Hash} comportant en clé la route de la page testée
-    # et en valeur l'instance TestedPage qui contient toutes
-    # les données.
-    attr_reader :instances
-
-    # # {Hash} GROSSE TABLE CONTENANT TOUS LES RÉSULTATS
-    # # OBSOLÈTE. Voir @instances, maintenant
-    # attr_reader :hroutes
-
-    # {Array} de toutes les routes à tester. On s'arrête lorsque
-    # la liste est vide.
-    # Les éléments sont les routes, donc les clés des instances, qu'on
-    # peut récupérer par :
-    #   TestedPage[<route>]
-    attr_reader :routes
-
-
-
-    # Liste des routes des pages (instances TestedPage) invalides
-    # Note : dans leur @errors, on trouve la liste de leurs
-    # erreurs.
-    #
-    # Pour les récupérer en tant qu'instance TestedPage, on
-    # peut utiliser: TestedPage[<id>]
-    #
-    attr_reader :invalides
-
-    # Compte total de liens
-    attr_accessor :links_count
-
     def base_url
       @base_url ||= online? ? BASE_URL : BASE_URL_LOCAL
     end

@@ -19,7 +19,7 @@ C'est la formule préférée.
     # Ou prendre le path absolu du fichier main.rb
 
     > cd /Users/philippeperret/Sites/WriterToolbox/lib/deep/deeper/module/links_analyse
-    > ruby main
+    > ruby main.rb
 
 <a name='lancerdanstextemate'></a>
 

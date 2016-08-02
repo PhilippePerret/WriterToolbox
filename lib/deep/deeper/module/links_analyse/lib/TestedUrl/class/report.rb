@@ -188,6 +188,14 @@ class TestedPage
       TestedPage.invalides.collect do |route|
         tpage = TestedPage[route]
 
+        # Par erreur, il peut arriver que la page
+        # n'existe pas. Peut-être lorsque la merge
+        # s'est mal passée
+        if tpage.nil?
+          debug "# PROBLÈME AVEC LA ROUTE : #{route} (la TestedPage n'existe pas/plus)"
+          next
+        end
+
         div_id = "div_route_#{route.gsub(/\//,'_')}"
 
         c = ''
