@@ -8,6 +8,12 @@
 function DOMRemove(element_id, parent_id){
   document.getElementById(parent_id).removeChild(document.getElementById(element_id));
 }
+function toggleElement(element_id){
+  var e = document.getElementById(element_id);
+  var etat = e.style.display ;
+  var new_etat = etat == 'block' ? 'none' : 'block' ;
+  e.style.display = new_etat
+}
     </script>
   </head>
   <body>
@@ -22,10 +28,16 @@ function DOMRemove(element_id, parent_id){
     <!-- RAPPORT DES INVALIDITÉS -->
     <%= TestedPage::Report.rapport_invalidites %>
 
-    <!-- RAPPORT DES FRÉQUENCES -->
+    <!-- RAPPORT DES PLUS GRANDES/PETITES FRÉQUENCES -->
     <fieldset id="frequences">
       <legend>Fréquence des appels</legend>
       <%= TestedPage::Report.rapport_frequence %>
+    </fieldset>
+
+    <!-- RAPPORT COMPLET DES ROUTES -->
+    <fieldset id="data_routes">
+      <legend>Données de toutes les routes</legend>
+      <pre><%= TestedPage::Report.data_all_routes %></pre>
     </fieldset>
 
   </body>

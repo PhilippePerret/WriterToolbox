@@ -15,46 +15,7 @@ class TestedPage
       when :html
         report_html
       else
-
-        say "\n\n\n"
-        say "="*80
-        say "= ANALYSE DES LIENS DU #{Time.now}"
-        say "="*80
-        say "\n\n"
-        say "= NOMBRE DE ROUTES TESTÉES : #{instances.count}"
-        say "= NOMBRE PAGES INVALIDES   : #{invalides.count}"
-        say "= NOMBRE PAGES VALIDES     : #{instances.count - invalides.count}"
-        say "\n"
-
-        say "\n==============================="
-        say   "= 20 ROUTES LES PLUS VISITÉES ="
-        say   "==============================="
-        routes_les_plus_visitees.each do |tpage|
-          say "= #{tpage.route} - #{tpage.call_count} fois"
-        end
-        say "\n================================="
-        say   "= 10 ROUTES LES MOINS VISITÉES  ="
-        say   "================================="
-        routes_les_moins_visitees.each do |tpage|
-          say "= #{tpage.route} - #{tpage.call_count} fois"
-        end
-        say "\n"
-
-        # ---------------------------------------------------------------------
-        #   Pages invalides
-        if invalides.count > 0
-          say "\n========================="
-          say   "= PAGES INVALIDES (#{invalides.count}) ="
-          say   "========================="
-          invalides.each do |route|
-            tpage = instances[route]
-            errs = tpage.errors.join("\n")
-            say "# Route : #{route}"
-            say "# Invalidité : #{errs}"
-          end
-        else
-          say "= AUCUNE PAGE INVALIDE ! ="
-        end
+        report_console
       end
       # / Fin du case format
     end
@@ -309,6 +270,54 @@ class TestedPage
 
     end
 
+    # = main =
+    #
+    # Code à déposer dans le fieldset des données de toutes les routes
+    #
+    # Ce code est mis dans un PRE (cf. gabarit.erb)
+    def data_all_routes
+      entete = ''.ljust(40) + ''.ljust(6) + '    Depth'.ljust(14) +
+      "\n" + '-'.ljust(64) +
+      "\n" + 'Route'.ljust(40) + 'Calls'.ljust(6) + ' min  moy  max ' + 'Errs'.rjust(4) +
+      "\n" + '-'.ljust(64) +
+      "\n"
+
+      {
+        :route        => {titre: "route", reverse: false},
+        :call_count   => {titre: "nombre d'appel dans les pages", reverse: true},
+        :depth_min    => {titre: "Profondeurs", reverse: true},
+        :errors_count => {titre: "nombre d'erreurs", reverse: true}
+      }.collect do |skey, dkey|
+
+        # Classement suivant la clé
+        sorted_data = TestedPage.instances.sort_by{|k, v| v.send(skey) }
+        sorted_data = sorted_data.reverse if dkey[:reverse]
+
+        div_id = "alldata_#{skey}"
+
+        "<h3><a href=\"javascript:void(0)\" onclick=\"toggleElement('#{div_id}')\">Classement par #{dkey[:titre]}</a></h3>" +
+        "<div id='#{div_id}' style='display:none'>" +
+        entete +
+        sorted_data.collect do |route, tpage|
+          froute    = tpage.route.ljust(40)
+          nb_froms  = tpage.call_froms.count.to_s.ljust(6)
+
+          depth_min = tpage.depth_min.to_s.ljust(4)
+          depth_moy = tpage.depth_moy.to_s.rjust(5)
+          depth_max = tpage.depth_max.to_s.rjust(5)
+
+          nb_errors = tpage.errors_count.to_s.rjust(4)
+
+          # La ligne constituée
+          froute + nb_froms + depth_min + depth_moy + depth_max + nb_errors
+        end.join("\n") +
+        '</div>'
+        # /Fin de boucle sur toutes les routes
+      end.join('')
+      # /Fin de boucle sur tous les types de classement
+    end
+    # /Fin de data_all_routes
+
 
     def code_html
       # require 'erb'
@@ -350,4 +359,52 @@ class TestedPage
 
   end #/ << self TestedPage::Report
   end #/Report
+
+  # ---------------------------------------------------------------------
+  # ATTENTION, ON REVIENT DANS TestedPage
+
+  # Rapport console, lorsque le format de sortie est :brut/'brut'
+  def report_console
+    say "\n\n\n"
+    say "="*80
+    say "= ANALYSE DES LIENS DU #{Time.now}"
+    say "="*80
+    say "\n\n"
+    say "= NOMBRE DE ROUTES TESTÉES : #{instances.count}"
+    say "= NOMBRE PAGES INVALIDES   : #{invalides.count}"
+    say "= NOMBRE PAGES VALIDES     : #{instances.count - invalides.count}"
+    say "\n"
+
+    say "\n==============================="
+    say   "= 20 ROUTES LES PLUS VISITÉES ="
+    say   "==============================="
+    routes_les_plus_visitees.each do |tpage|
+      say "= #{tpage.route} - #{tpage.call_count} fois"
+    end
+    say "\n================================="
+    say   "= 10 ROUTES LES MOINS VISITÉES  ="
+    say   "================================="
+    routes_les_moins_visitees.each do |tpage|
+      say "= #{tpage.route} - #{tpage.call_count} fois"
+    end
+    say "\n"
+
+    # ---------------------------------------------------------------------
+    #   Pages invalides
+    if invalides.count > 0
+      say "\n========================="
+      say   "= PAGES INVALIDES (#{invalides.count}) ="
+      say   "========================="
+      invalides.each do |route|
+        tpage = instances[route]
+        errs = tpage.errors.join("\n")
+        say "# Route : #{route}"
+        say "# Invalidité : #{errs}"
+      end
+    else
+      say "= AUCUNE PAGE INVALIDE ! ="
+    end
+  end
+  # /Fin du rapport TestedPage::console
+
 end #/TestedPage

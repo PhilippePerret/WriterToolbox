@@ -38,6 +38,14 @@ class TestedPage
   # La première profondeur. Elle sert notamment quand on ne
   # doit aller que jusqu'à une certaine profondeur.
   def depth; @depth ||= depths.first end
+  # La plus petite profondeur
+  def depth_min; depths.min end
+  # La plus grande profondeur
+  def depth_max; depths.max end
+  # La profondeur moyenne
+  def depth_moy
+    (depths.inject(:+).to_f / depths.count).round(1)
+  end
 
   # Le nombre d'appels de cette page
   def call_count ; @call_count ||= 0 end
@@ -51,6 +59,13 @@ class TestedPage
   # appelé cette route
   def call_froms  ; @call_froms ||= Array.new end
   def call_froms= val; @call_froms = val end
+
+  # Retourne le nombre d'erreurs rencontrées sur la
+  # page (pour le rapport final - mis en méthode pour servir
+  # de clé de classement)
+  def errors_count
+    @errors.count
+  end
 
   # {TestedPage} Page ayant appelé cette page
   #

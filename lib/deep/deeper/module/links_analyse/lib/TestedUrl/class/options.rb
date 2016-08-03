@@ -87,6 +87,10 @@ class TestedPage
       options.key?('fail-fast') || @options['fail-fast'] = FAIL_FAST
       # Nombre maximum de routes testées
       options.key?('max-routes') || @options['max-routes'] = NOMBRE_MAX_ROUTES_TESTED
+      unless @options['max-routes'].nil?
+        @options['max-routes'] = @options['max-routes'].to_i
+      end
+
       # Format de rapport de sortie
       options.key?('report-format') || @options['report-format'] = REPORT_FORMAT || :html
       @options['report-format'] = options['report-format'].to_sym
