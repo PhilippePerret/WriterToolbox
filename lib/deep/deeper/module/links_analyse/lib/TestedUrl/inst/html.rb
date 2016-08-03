@@ -71,7 +71,12 @@ class TestedPage
     debug raw_code.gsub(/</,'&lt;').gsub(/>/,'&gt;')
   end
 
-  # Retourne la liste de tous les liens de l'url
+  # Pour le rapport final
+  def links_count
+    @links_count ||= links.count
+  end
+  
+  # Retourne la liste de tous les liens de la page
   # C'est un Array d'instances TestedPage::Link
   def links
     @links ||= begin

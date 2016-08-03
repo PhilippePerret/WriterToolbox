@@ -1,6 +1,18 @@
 # encoding: UTF-8
 class TestedPage
 
+  # Retourne un Hash contenant les données minimales à enregistrer
+  # dans le fichier Marshal
+  def data_marshal
+    h = Hash.new
+    [:url, :route_init, :route, :call_count, :call_froms, :call_texts,
+      :depths
+    ].each do |prop|
+      h.merge!( prop => self.send(prop) )
+    end
+    return h
+  end
+
   def url
     @url ||= begin
       case route

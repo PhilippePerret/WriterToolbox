@@ -9,8 +9,15 @@ class TestedPage
     def run
       puts ''
       @start_time = Time.now.to_f
-      if (dumped_data? ? get_data_from_marshal : true)
-        init
+      init
+      if (dumped_data? ? !get_data_from_marshal : true)
+
+        # Pour le moment, on s'arrête toujours là
+        if dumped_data?
+          say 'Les données n’ont pas pu être récupérées donc je repasse par là (je m’arrête pour le moment).'
+          return
+        end
+
         links_analyze
         merge_similar_routes
         save_data_in_marshal

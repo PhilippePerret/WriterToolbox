@@ -276,17 +276,18 @@ class TestedPage
     #
     # Ce code est mis dans un PRE (cf. gabarit.erb)
     def data_all_routes
-      entete = ''.ljust(40) + ''.ljust(6) + '    Depth'.ljust(14) +
-      "\n" + '-'.ljust(64) +
-      "\n" + 'Route'.ljust(40) + 'Calls'.ljust(6) + ' min  moy  max ' + 'Errs'.rjust(4) +
-      "\n" + '-'.ljust(64) +
+      entete = ''.ljust(40) + ''.ljust(6) + ''.ljust(6) + '    Depth'.ljust(14) +
+      "\n" + '-'*72 +
+      "\n" + 'Route'.ljust(40) + 'Links'.ljust(6) + 'Calls'.ljust(6) + ' min  moy  max ' + 'Errs'.rjust(4) +
+      "\n" + '-'*72 +
       "\n"
 
       {
         :route        => {titre: "route", reverse: false},
         :call_count   => {titre: "nombre d'appel dans les pages", reverse: true},
-        :depth_min    => {titre: "Profondeurs", reverse: true},
-        :errors_count => {titre: "nombre d'erreurs", reverse: true}
+        :depth_max    => {titre: "profondeurs", reverse: false},
+        :errors_count => {titre: "nombre d'erreurs", reverse: true},
+        :links_count  => {titre: 'nombre de liens partants', reverse: true}
       }.collect do |skey, dkey|
 
         # Classement suivant la clé
@@ -300,6 +301,7 @@ class TestedPage
         entete +
         sorted_data.collect do |route, tpage|
           froute    = tpage.route.ljust(40)
+          nb_links  = tpage.links.count.to_s.ljust(6)
           nb_froms  = tpage.call_froms.count.to_s.ljust(6)
 
           depth_min = tpage.depth_min.to_s.ljust(4)
@@ -309,7 +311,7 @@ class TestedPage
           nb_errors = tpage.errors_count.to_s.rjust(4)
 
           # La ligne constituée
-          froute + nb_froms + depth_min + depth_moy + depth_max + nb_errors
+          froute + nb_links + nb_froms + depth_min + depth_moy + depth_max + nb_errors
         end.join("\n") +
         '</div>'
         # /Fin de boucle sur toutes les routes
