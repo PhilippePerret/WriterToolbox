@@ -18,6 +18,10 @@ class TestedPage
       @end_time = Time.now.to_f
       puts "\n\n"
       return true
+    rescue Exception => e
+      debug "ERREUR FATALE DANS TestedPage::run : #{e.message}"
+      debug e.backtrace.join("\n")
+      return false
     end
 
     # = sous-main =
@@ -53,12 +57,16 @@ class TestedPage
           if test_route route, iroute_tested
             # OK
           else
+            # On passe ici quand `test_route` retourne false ou nil. Attention,
+            # quand on reprogramme cette méthode, on peut avoir oublié de
+            # retourner TRUE, ce qui va provoquer l'arrêt inopiné.
+            # say "test_route a retourné FALSE => break pour fin"
             break
           end
 
         rescue Exception => e
-          debug e
           say "# ERREUR FATALE EN TESTANT LA ROUTE #{route.inspect} : #{e.message}"
+          debug e
         end
       end
       # / Fin du while tant qu'il y a des routes
@@ -68,7 +76,8 @@ class TestedPage
     # Teste complet de la route +route+
     #
     # Retourne TRUE pour continuer de tester les routes, ou retourne
-    # FALSE pour interrompre.
+    # FALSE pour interrompre la boucle (cela arrêtera le test et lancera
+    # l'écriture du rapport).
     #
     def test_route route, iroute_tested
 
@@ -81,7 +90,8 @@ class TestedPage
       testedpage = TestedPage[route]
 
       # Si la route doit être excluse, il ne faut pas la prendre
-      return if testedpage.has_route_excluded?
+      # On doit retourner true pour ne pas interrompre la boucle
+      return true if testedpage.has_route_excluded?
 
       # Si la profondeur maximum est définie et que la
       # page a une profondeur supérieure à cette
@@ -90,7 +100,7 @@ class TestedPage
 
 
       if verbose? || infos?
-        say "* #{iroute_tested} * Test de la route #{route}"
+        say "* #{iroute_tested} / #{@routes.count} * Tested route: #{route}"
       else
         color = testedpage.valide? ? '32' : '31'
         print "\e[1;#{color}m*\e[0m"
@@ -132,7 +142,7 @@ class TestedPage
           # été traitée ou non.
           new_route = link.href
 
-          say "Cette page appelle : #{new_route.inspect}" if infos?
+          say "Linked to: #{new_route.inspect}" if infos?
 
           # On ne prend pas les routes qu'on a déjà traitées mais on
           # ajouter une valeur de présence et on passe à la suite.

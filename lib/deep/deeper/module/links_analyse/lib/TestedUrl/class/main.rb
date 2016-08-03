@@ -8,10 +8,11 @@ class TestedPage
     end
 
     def init
-      @options      = Hash.new
-      @instances    = Hash.new
-      @invalides    = Array.new
-      @links_count  = 0
+      @options              = Hash.new
+      @instances            = Hash.new
+      @invalides            = Array.new
+      @links_count          = 0
+      @routes_exclues_count = 0
       analyze_options
     end
 

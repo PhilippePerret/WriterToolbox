@@ -10,6 +10,7 @@ class TestedPage
   def has_route_excluded?
     if @has_route_excluded === nil
       @has_route_excluded = defined?(EXCLUDED_ROUTES) && EXCLUDED_ROUTES!=nil && EXCLUDED_ROUTES.key?(route)
+      TestedPage.routes_exclues_count += 1 if @has_route_excluded
     end
     @has_route_excluded
   end

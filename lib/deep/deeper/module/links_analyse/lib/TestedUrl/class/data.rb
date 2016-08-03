@@ -36,6 +36,9 @@ class TestedPage
     #
     attr_reader :invalides
 
+    # Nombre de routes exclues par EXCLUDED_ROUTES
+    attr_accessor :routes_exclues_count
+
     # Compte total de liens. On pourrait les compter dans les instances,
     # mais c'est pour avoir un rapport plus rapide.
     attr_accessor :links_count
@@ -82,7 +85,7 @@ class TestedPage
     end
 
     def path_marshal
-      @path_marshal ||= File.join(MAIN_FOLDER, 'report', 'marshal_data.msh')
+      @path_marshal ||= File.join(MAIN_FOLDER, 'output', 'marshal_data.msh')
     end
 
   end #/ << self

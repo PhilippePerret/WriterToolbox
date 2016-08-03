@@ -120,22 +120,9 @@ class TestedPage
     # Retourne le code pour les infos générales sur
     # l'analyse.
     def general_infos
-      # Nombre de routes totales testées
-      c = ""
+      c = String.new
 
-      # Options choisies
-      # ----------------
-      # On ne prend pas les options dont la valeur est false
-      # ou nil
-      options_choisies = options.collect do |k, v|
-        DATA_OPTIONS[k].key?(:report) || (next nil)
-        v != nil && v != false || (next nil)
-        "#{DATA_OPTIONS[k][:report]} : #{v.inspect}"
-      end.compact.join(', ')
-      c << in_div(
-        "Options : #{options_choisies}",
-        class: 'ligne_value'
-      )
+
       # Nombre total de routes testées
       c << in_div(
         in_span(TestedPage.instances.count, class: 'fvalue') +
@@ -163,6 +150,38 @@ class TestedPage
       c << in_div(
         in_span(TestedPage.duree_operation, class: 'fvalue') +
         in_span('Durée de l’opération', class: 'libelle'),
+        class: 'ligne_value'
+      )
+
+      # Nombre de routes exclues
+      c << in_div(
+        in_span(TestedPage.routes_exclues_count, class: 'fvalue') +
+        in_span("Nombre de routes exclues", class: 'libelle'),
+        class: 'ligne_value'
+      )
+
+      # Options choisies
+      # ----------------
+      # On ne prend pas les options dont la valeur est false
+      # ou nil
+      options_choisies = options.collect do |k, v|
+        # Si la propriété :report de l'option n'est pas définie,
+        # c'est qu'il ne faut pas l'afficher dans le rapport. Et inversement,
+        # toute propriété :report présente indique qu'on peut afficher l'option
+        # dans le rapport (si elle est définie)
+        DATA_OPTIONS[k].key?(:report) || (next nil)
+        case v
+        when FalseClass then next
+        when NilClass
+          case k
+          when 'depth' then v = Float::INFINITY
+          else next
+          end
+        end
+        "#{DATA_OPTIONS[k][:report]} : #{v.inspect}"
+      end.compact.join(', ')
+      c << in_div(
+        "Options : #{options_choisies}",
         class: 'ligne_value'
       )
 
@@ -321,7 +340,7 @@ class TestedPage
     end
 
     def folder
-      @folder ||= File.join(MAIN_FOLDER,'report')
+      @folder ||= File.join(MAIN_FOLDER,'output')
     end
 
   end #/ << self TestedPage::Report

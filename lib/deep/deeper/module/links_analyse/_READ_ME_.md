@@ -4,11 +4,11 @@
 * [Lancer l'analyseur dans TextMate](#lancerdanstextemate)
 * [Lancer l'analyseur dans Atom](#lanceranlyserfromatom)
 
-Ce module est destiné à vérifier que tous les liens de toutes les pages du site sont valides, renvoient à des pages existantes et valides.
+Ce module est destiné à vérifier que tous les liens de toutes les pages du site sont valides et renvoient à des pages existantes et valides.
 
 Cette opération peut se faire sur le site local comme sur le site distant.
 
-Comme l'opération peut être longue, on l'appelle forcément de façon isolée.
+Comme l'opération peut être longue (elle prend une dizaine de minute pour tester 1500 liens de pages de différentes tailles), on l'appelle forcément de façon isolée, de préférence par le Terminal.
 
 <a name='lanceranalyseurdansterminal'></a>
 
