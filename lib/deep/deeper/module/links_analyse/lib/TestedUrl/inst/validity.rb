@@ -70,25 +70,13 @@ class TestedPage
 
   #
   def page_hors_site_valide?
-    return true if route.match(/\.wikipedia\./)
     begin
-      status_ok =
-        case true
-        when html_status >= 200 && html_status <= 307
-          true
-        when html_status == 403
-          # On considère que si le site rejette l'accès la page
-          # est valide. Mais il faudrait pouvoir la tester par un
-          # autre biais.
-          true
-        else
-          false
-        end
+      status_ok = html_status >= 200 && html_status <= 307
       raise if false == status_ok && route.start_with?('https')
     rescue Exception => e
       # Pour les routes https, il faut faire une vérification plus profonde
-      # car elles peuvent ne pas renvoyer de
-      # J'essaie d'abord avec une route sans s
+      # car elles peuvent ne pas renvoyer de bonne valeur si elles sont
+      # sécurisées
       @route = route.sub(/^https/,'http')
       @html_status = nil
       retry

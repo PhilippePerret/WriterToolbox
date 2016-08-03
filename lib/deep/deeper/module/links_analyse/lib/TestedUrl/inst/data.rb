@@ -12,7 +12,7 @@ class TestedPage
 
   # Décomposition de la route lorsqu'elle est transmise
   # pour l'identification
-  # 
+  #
   # Les données objet, objet_id, method et context de la route
   # courante. Permet de faire certaines opérations sur les urls vraiment
   # appelées suivant DATA_ROUTES
@@ -61,19 +61,14 @@ class TestedPage
   end
 
   # Status retourné
+  #
+  # On utilise cette méthode lorsqu'il s'agit d'un site externe
   def html_status
     @html_status ||= begin
-      c = `#{curl_command_header_only}`
-      c = c.gsub(/\r/,'')
-      firstline   = c.split("\n").first
-      hs = nil
-      firstline.split(' ').each do |w|
-        if w.length == 3 && w.to_i.to_s == w
-          hs = w.to_i
-          break
-        end
-      end
-      hs
+      require 'net/http'
+      uri = URI(url)
+      response = Net::HTTP.get_response(uri)
+      response.code.to_i
     end
   end
 
