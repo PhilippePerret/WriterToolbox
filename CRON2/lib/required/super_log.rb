@@ -7,9 +7,15 @@
 class CRON2
   class SuperLog
     class << self
+
+
       def superlog mess, options = nil
         @superlogs ||= Array.new
-        @superlogs << "--- #{mess}"
+        options ||= Hash.new
+        amorce = options[:error] ? '###' : '---'
+        messform = "#{amorce} #{mess}"
+        options[:error] && messform = "<span class='warning'>#{messform}</span>"
+        @superlogs << messform
       end
 
       def clocktime
@@ -20,7 +26,7 @@ class CRON2
       def output
         @superlogs ||= ['Aucun message super-log']
         "Super-log du cron du #{clocktime}" +
-        @superlogs.collect{|m| m.in_p(class: 'small')}.join('')
+        @superlogs.collect{|m| m.in_div(class: 'small')}.join('')
       end
 
       # Envoi le message à l'administrateur si c'est nécessaire
@@ -43,6 +49,8 @@ end #/CRON2
 # Le superlog doit être utilisé pour envoyer des messages dans le log
 # principal envoyé quoditiennement à l'administrateur.
 # Il faut vraiment mettre les messages indispensables.
+#
+# Note mettre options[:error] à true pour signaler que c'est une erreur
 def superlog mess, options = nil
   CRON2::SuperLog.superlog mess, options
 end

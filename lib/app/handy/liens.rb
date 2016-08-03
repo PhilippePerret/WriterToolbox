@@ -284,7 +284,7 @@ class Lien
     when :latex
       "\\livre{#{titre}}\\cite{#{ref}}"
     else
-      "<span class='livre'>#{titre}</span>"
+      "<span class='livre'>#{titre}</span> (#{hlivre[:auteur]}, #{hlivre[:annee]})"
     end
   end
 

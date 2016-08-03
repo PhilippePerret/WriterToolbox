@@ -70,6 +70,7 @@ class TestedPage
 
   #
   def page_hors_site_valide?
+    return true if route.match(/\.wikipedia\./)
     begin
       status_ok = html_status >= 200 && html_status <= 307
       raise if false == status_ok && route.start_with?('https')

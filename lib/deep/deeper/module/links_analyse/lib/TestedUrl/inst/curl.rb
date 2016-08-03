@@ -17,6 +17,8 @@ class TestedPage
   # L'url peut contenir des données, etc., que la commande fait
   # passer dans --data
   def curl_command
+    # say "Commande curl jouée : #{real_curl_url}"
+    # say "Avec données : #{real_curl_data.inspect}"
     @curl_command ||= begin
       if real_curl_data.nil?
         "curl -s #{real_curl_url}"

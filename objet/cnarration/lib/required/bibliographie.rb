@@ -48,6 +48,14 @@ class Cnarration
       annee:    1998,
       editeur:  "Encres de Siagne",
       isbn:     "979-10-90461-05-5"
+    },
+    'PSYFEE1976' => {
+      id:       'PSYFEE1976',
+      titre:    'Psychanalyse des contes de fées',
+      auteur:   'Bruno Bettelheim',
+      annee:    1976,
+      editeur:  'Pocket (sept. 1999)',
+      isbn:     '978-2266095785'
     }
   }
 

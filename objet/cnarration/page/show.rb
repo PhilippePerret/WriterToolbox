@@ -20,51 +20,56 @@ class Cnarration
     # n'est pas abonné, et un message lui est fourni pour qu'il
     # s'abonne.
     def output_as_page
-      # Si la page n'a pas un niveau de développement suffisant,
-      # on affiche un message d'alerte
-      final_page_content =
-        # Si le niveau de développement de la page est insuffisant, on
-        # affiche un message de non lecture possible.
-        # Le niveau de développement est fixé à 8 pour un lecteur
-        # normal et à 6 pour un lecteur du programme UNAN
-        # TODO Quand toutes les pages de narration seront à un bon
-        # niveau on pourra supprimer ça.
-        #
-        # Noter que ça n'est pas ici qu'on vérifie l'accessibilité de
-        # la page. Ici, on regarde juste le niveau de développement par
-        # rapport au visiteur pour savoir si on affiche un message de niveau
-        # insuffisant ou la page.
-        if developpement < 8 && !user.admin?
-          message_niveau_developpement_insuffisant
-        else
-          if false == path_semidyn.exist? || out_of_date?
-            # La page semi-dynamique n'est pas encore construite, il
-            # faut la construire. Pour ça, on utilise kramdown.
-            Cnarration::require_module 'page'
-            build
-          end
-          if developpement < 8
-            'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air', style: 'margin-bottom:4em;')
-          else
-            ''
-          end + page_content_by_user
-        end
       avertissement_relecture =
-        if user.admin? && final_page_content.match(/<relecture>/)
+        if user.admin? && page_content_by_niveau_developpement.match(/<relecture>/)
           '<relecture>Attention, ce texte achevé ne demande qu’une relecture des passages qui se trouvent dans cette couleur.</relecture>'.in_div(class: 'cadre air big')
         else
           ''
         end
       if path_semidyn.exist?
         (
-          titre.in_h1 + avertissement_relecture + final_page_content
+          titre.in_h1 + avertissement_relecture + page_content_by_niveau_developpement
         ).in_div(id:'page_cours')
       else
-        error "Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique)."
+        error 'Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique).'
       end
     rescue Exception => e
       debug e
       error e.message
+    end
+
+    # Si le niveau de développement de la page est insuffisant, on
+    # affiche un message de non lecture possible.
+    # Le niveau de développement est fixé à 8 pour un lecteur
+    # normal et à 6 pour un lecteur du programme UNAN
+    # TODO Quand toutes les pages de narration seront à un bon
+    # niveau on pourra supprimer ça.
+    #
+    # Noter que ça n'est pas ici qu'on vérifie l'accessibilité de
+    # la page. Ici, on regarde juste le niveau de développement par
+    # rapport au visiteur pour savoir si on affiche un message de niveau
+    # insuffisant ou la page.
+    #
+    # Ci-dessous, le fait d'utiliser @authorization_level plutôt
+    # que `!user.admin?` permet d'utiliser l'autorisation par IP avec
+    # authips à 1 dans l'url.
+    def page_content_by_niveau_developpement
+      full_autorisation = user.admin? || user.authorization_level.to_i > 3
+      if developpement < 8 && false == full_autorisation
+        message_niveau_developpement_insuffisant
+      else
+        if false == path_semidyn.exist? || out_of_date?
+          # La page semi-dynamique n'est pas encore construite, il
+          # faut la construire. Pour ça, on utilise kramdown.
+          Cnarration::require_module 'page'
+          build
+        end
+        if developpement < 8
+          'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air', style: 'margin-bottom:4em;')
+        else
+          ''
+        end + page_content_by_user
+      end
     end
 
     # Le contenu de la page en fonction de l'abonnement
@@ -73,6 +78,7 @@ class Cnarration
       @full_page = path_semidyn.deserb
       # Si l'user est abonné ou que le texte fait moins de 3000
       # signes, on retourne le texte tel quel
+      debug "Dans page_content_by_user, user.authorized? renvoie #{user.authorized?.inspect}"
       return (full_page_with_exergue || @full_page) if user.authorized? || @full_page.length < 2500
 
       # Si l'utilisateur n'est pas abonné, on tronque la page
@@ -184,7 +190,7 @@ class Cnarration
 <div class="red air">
   #{user.pseudo}, cette page est en cours de rédaction. Son niveau de développement est #{developpement}, vous pourrez la consulter à partir du niveau 8.
 </div>
-    HTML
+      HTML
     end
 
     # Message en cas de niveau de développement de la page
@@ -196,7 +202,7 @@ class Cnarration
   Cette page est en cours de rédaction et ne peut être consultée même partiellement. Pour la consulter entièrement, vous devez être abonné.
 </div>
 #{lien.bouton_subscribe}
-    HTML
+      HTML
     end
 
 
@@ -215,8 +221,8 @@ class Cnarration
 </p>
   </div>
 </div>
-      HTML
-                                       end
+        HTML
+      end
     end
 
     def output_as_sous_chapitre

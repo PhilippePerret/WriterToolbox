@@ -65,6 +65,10 @@ class CRON2
     # les éléments de s'accumuler
     run_procedure 'nettoyage_site'
 
+    # POur procéder à l'analyse de toutes les pages et de
+    # tous les liens du site (gros travail)
+    run_procedure 'links_analyzer'
+
     # On envoie finalement le rapport à l'administrateur, mais
     # seulement s'il le veut ou si c'est nécessaire suite à
     # des erreurs.

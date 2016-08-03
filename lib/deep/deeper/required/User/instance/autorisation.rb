@@ -9,6 +9,22 @@
 =end
 class User
 
+  # Niveau d'autorisation
+  #
+  # Pour le moment, cette donnée n'est pas encore utilisé, elle
+  # est définie lorsque l'on obtient une autorisation par IP, comme
+  # pour le module LINKS ANALYZER qui a besoin d'avoir un accès complet
+  # aux page de narration.
+  # Cette valeur correspond à la valeur d'administration.
+  def authorization_level
+    # Si le niveau d'autorisation n'est pas encore défini, c'est que
+    # ce niveau a été appelé avant la méthode authorized? qui le
+    # définit. On l'appelle donc pour le définir.
+    authorized? if @authorization_level === nil
+    @authorization_level
+  end
+  def authorization_level= value; @authorization_level = value end
+
   # Requiert tous les modules utiles aux autorisations compliquées
   def require_modules_autorisation
     Dir["./lib/app/module/user_autorisation/**/*.rb"].each{ |m| require m }
@@ -48,10 +64,17 @@ class User
   # (MAIS NE LE LOGGUE PAS, DONC ÇA N'EST VALABLE QUE POUR UNE SEULE PAGE)
   def authorized_by_ip?
     param(:authips) == '1' || ( return false )
+    # debug "Test de l'autorisation par IP"
     File.exist?('./data/secret/authorized_ips.rb') || (return false)
     require './data/secret/authorized_ips'
-    # TODO : Plus tard, on pourra définir un niveau de privilège par IP
-    AUTHORIZED_IPS.key?(user.ip)
+    # La valeur de AUTHORIZED_IPS[user.ip] est un nombre, 9 pour
+    # grand manitou.
+    if AUTHORIZED_IPS.key?(self.ip)
+      @authorization_level = AUTHORIZED_IPS[self.ip]
+      true
+    else
+      false
+    end
   end
 
   # RETURN la valeur de @is_authorized

@@ -130,7 +130,7 @@ class Console
     when /dialogue/   then ["le_dialogue", 9]
     when /analyse/    then ["lanalyse_de_films", 10]
     else
-      [nil, "Impossible de trouver le lien pour le livre de référence #{livre_ref}"]
+      [nil, "Impossible de trouver le lien pour le livre de référence #{livre_ref}."]
     end
 
     # Livre introuvable
@@ -138,6 +138,9 @@ class Console
     if suf_lien.nil?
       liens_livres = liens_livres_bibliographie(livre_ref)
       if liens_livres.nil?
+        lien_edit_bibliographie = lien.edit_file(File.expand_path('./objet/cnarration/lib/required/bibliographie.rb'), {editor: :atom})
+        lk = "Pour ajouter un nouveau livre, éditer le fichier #{lien_edit_bibliographie}."
+        sub_log lk
         return [nil, livre_id]
       else
         return [liens_livres, ""]

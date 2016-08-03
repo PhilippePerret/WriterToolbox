@@ -267,7 +267,12 @@ class TestedPage
         # Un lien pour ouvrir un des referrer de la route, c'est-à-dire
         # une page qui l'ouvre.
         referrer = TestedPage[tpage.call_froms.last]
-        link_to_referrer = "<a href='#{referrer.url}' target='_blank'>#{referrer.url}</a>"
+        link_to_referrer =
+         case referrer
+         when NilClass then '- aucun referrer trouvé -'
+         else
+           "<a href='#{referrer.url}' target='_blank'>#{referrer.url}</a>"
+         end
         div_link_to_referrer =
           in_div(
             in_span('Appelée par exemple par…', class: 'libelle') +
