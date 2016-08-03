@@ -56,7 +56,7 @@ def raise_unless_admin
     raise ErrorNoAdmin unless user.admin?
   else
     unless @error_must_identified_done
-      error 'Vous devez être identifié(e) pour rejoindre cette page.'
+      page.error_in_page 'Vous devez être administrateur du site pour rejoindre la page demandée. Merci de vous identifier ci-dessous.'
       redirect_to 'user/signin'
       @error_must_identified_done = true
     end
