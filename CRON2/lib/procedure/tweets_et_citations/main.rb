@@ -140,10 +140,10 @@ class CRON2
           nombre_candidates_voulues = 10 - nombre_prochaines
 
           all_candidates = tbl_citations.select(
-          where:    nil,
-          order:    'last_sent ASC',
-          limit:    40 + nombre_candidates_voulues,
-          colonnes: [:citation, :auteur, :bitly, :last_sent, :id, :description]
+            where:    nil,
+            order:    'last_sent ASC',
+            limit:    40 + nombre_candidates_voulues,
+            colonnes: [:citation, :auteur, :bitly, :last_sent, :id, :description]
           )
           all_candidates = all_candidates.shuffle.shuffle
           candidates = all_candidates[0..nombre_candidates_voulues - 1]
@@ -226,9 +226,9 @@ class CRON2
         heure = Time.now.hour
         heure > 3 && heure < 7 || return
         mess_admin =
-        "<p>Prochaines citations à expliciter :</p>" +
-        '<ul>' + mess_admin.join('') + '</ul>' +
-        '<p>Les premières seront les premières diffusées.</p>'
+          "<p>Prochaines citations à expliciter :</p>"  +
+          '<ul>' + mess_admin.join('') + '</ul>'        +
+          '<p>Les premières seront les premières diffusées.</p>'
 
         site.send_mail_to_admin(
         message:       mess_admin,
