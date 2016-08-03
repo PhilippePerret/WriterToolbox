@@ -10,7 +10,7 @@ class CRON2
 
   # Méthode principale appelée par le cron
   def links_analyzer
-    if Time.now.hour == 11
+    if Time.now.hour == 13
       LinksAnalyzer.new.check
     end
   end
