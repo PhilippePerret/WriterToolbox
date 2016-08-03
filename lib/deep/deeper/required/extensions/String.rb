@@ -16,6 +16,20 @@ class String
 
   end # << self
 
+
+  # Changer un bit dans le texte, en l'allongeant si
+  # nécessaire
+  # TODO Implémenter la méthode set_bit!
+  #
+  # +ibit+ Indice du bit à modifier
+  # +valbit+ Valeur à donner au bit +ibit+
+  #
+  def set_bit ibit, valbit
+    opts = self.split('')
+    opts[ibit] = valbit
+    opts.collect{|e| e.to_i}.join('')
+  end
+
   # Par exemple, lorsqu'un argument de fonction peut être
   # un array ou un string, cette méthode permet de ne pas
   # avoir à tester si l'élément est un array ou non.

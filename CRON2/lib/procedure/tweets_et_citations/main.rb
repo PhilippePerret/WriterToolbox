@@ -206,15 +206,20 @@ class CRON2
 
           # Citation finale
           citation_init = citation.dup
-          while "#{citation}#{auteur}#{bitly}".length > 139
+          while "#{citation}#{auteur}#{bitly}".length > 138
             citation_init = citation_init[0..-2]
             citation = citation_init + ' […] '
           end
 
+          full_citation = "#{citation}#{auteur}#{bitly}"
+
+          log "    Tweet de la citation envoyée : #{full_citation}"
+          log "    Longeur de la citation envoyée : #{full_citation.length}"
+
           # ---------------------------------------
           # Ce qui sera mis dans @citation_to_send
           # ---------------------------------------
-          ["#{citation}#{auteur}#{bitly}", citation_id]
+          [full_citation, citation_id]
         end
       end
 

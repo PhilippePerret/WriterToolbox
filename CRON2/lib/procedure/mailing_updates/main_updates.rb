@@ -7,6 +7,8 @@ class CRON2
   # Méthode principale appelée par le run
   def mailing_updates
     Updates.send_mail
+  rescue Exception => e
+    superlog "Impossible d'envoyer les actualités : #{e.message}", {error: true}
   end
 
   class Updates
@@ -22,7 +24,9 @@ class CRON2
         # C'est une protection dans le cas où plusieurs cron seraient appelés
         # dans l'heure, ce qui arrive souvent quand on teste.
         # L'heure est également enregistré dans la table des dernières dates
-        site.get_last_date(:mail_updates, 0) < (Time.now - 23*3600).to_i || return
+        # OBSOLÈTE puisque maintenant, puisque les actualités sont marquées
+        # envoyées, on ne peut pas les envoyer deux fois.
+        # site.get_last_date(:mail_updates, 0) < (Time.now - 23*3600).to_i || return
 
         (no_updates_no_samedi || samedi_but_no_updates ) && return
 
@@ -30,7 +34,12 @@ class CRON2
         # On procède à l'envoi des dernières actualités
         # ----------------------------------------------
         if annonce_last_updates
+          # On marque que les updates ont été envoyées
+          set_updates_anounced
           # On indique l'heure du dernier envoi lorsque tout s'est bien passé
+          # Mais noter que cette indication n'est plus vraiment utile depuis
+          # qu'on utilise deux bits d'options pour connaitre les actualités
+          # à envoyer.
           site.set_last_date(:mail_updates)
           superlog 'Dernières actualités envoyées'
         end
@@ -277,13 +286,7 @@ class CRON2
 
       # Liste des dernières actualisations
       def last_updates
-        @last_updates ||= begin
-          now   = Time.now
-          hier  = now - (3600*24)
-          hier_matin  = Time.new(hier.year, hier.month, hier.day, 0, 0, 0).to_i
-          ce_matin    = Time.new(now.year, now.month, now.day, 0, 0, 0).to_i
-          get_updates(from = hier_matin, to = ce_matin)
-        end
+        @last_updates ||= get_updates(for_week = false)
       end
 
       # Liste des dernièers actualités de la semaine précédente
@@ -292,33 +295,59 @@ class CRON2
       def last_week_updates
         @last_week_updates ||= begin
           if samedi?
-            now  = Time.now
-            awa  = now - (7*3600*24) # a week ago
-            awa_matin = Time.new(awa.year, awa.month, awa.day, 0, 0, 0).to_i
-            now_matin = Time.new(now.year, now.month, now.day, 0, 0, 0).to_i
-            get_updates(from = awa_matin, to = now_matin)
+            get_updates(for_week = true)
           else
-            [] # plutôt que NIL pour le test empty?
+            [] # plutôt que NIL, pour le test empty?
           end
         end
       end
 
       # Retourne les updates de +from+ (compris) à +to+ (non compris)
-      def get_updates from, to
+      def get_updates for_week
         # -> MYSQL UPDATES
         where = []
         # On ne fait plus de filtre par degré d'importance, mais
         # seulement si l'update doit être annoncée ou non.
         # where << "CAST(SUBSTRING(options,1,1) AS UNSIGNED) > 6"
-        where << "created_at >= #{from} AND created_at < #{to}"
         where << "annonce > 0"
+        if for_week
+          where << "SUBSTRING(options,3,1) != 1"
+        else
+          where << "SUBSTRING(options,2,1) != 1"
+        end
+        # On n'annonce jamais les actualités de plus
+        # d'un mois
+        a_month_ago = NOW - 4.weeks
+        where << "created_at > #{a_month_ago}"
+
         where = where.join(' AND ')
-        res = table_updates.select(where: where, order: 'created_at ASC, type')
+        table_updates.select(where: where, order: 'created_at ASC, type')
       rescue Exception => e
         error_log e
         []
-      else
-        res
+      end
+
+      # = main =
+      #
+      # Méthode général appelée après l'envoi des dernières
+      # actualités, qui change les bit des updates pour indiquer
+      # qu'elles ont bien été envoyées aujourd'hui.
+      #
+      # Fonctionne aussi bien ppour les annonces quotidiennes que
+      # pour les annonces hebdomadaire (2e bit d'options)
+      #
+      def set_updates_anounced
+        # On utilise les variables elles-même (avec les @) plutôt que
+        # les méthodes. De cette façon, on ne traite que ce qui a réellement
+        # été traité/renseigné avant
+        (@last_updates || []).each do |dactu|
+          table_updates.update(dactu[:id], {options: dactu[:options].set_bit(1, 1) })
+        end
+
+        (@last_week_updates || []).each do |dactu|
+          table_updates.update(dactu[:id], {options: dactu[:options].set_bit(2, 1) })
+        end
+
       end
 
       # La table contenant toutes les updates

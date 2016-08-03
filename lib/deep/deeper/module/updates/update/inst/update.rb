@@ -86,7 +86,7 @@ class Update
   def type        ; @type       ||= data[:type]               end
   def route       ; @route      ||= data[:route]              end
   def annonce     ; @annonce    ||= data[:annonce]            end
-  def options     ; @options    ||= data[:options]            end
+  def options     ; @options    ||= data[:options] || ''      end
   def created_at  ; @created_at ||= data[:created_at] || NOW  end
 
   #
@@ -115,12 +115,6 @@ class Update
       up != nil || raise("L'update d'ID ##{id} est inconnue…")
       up
     end
-  end
-
-  # L'update est importante si son niveau de degré est
-  # supérieur ou égal à 7
-  def importante?
-    (options||"")[0].to_s.to_i >= 7
   end
 
   # Vérification des données transmises
