@@ -29,6 +29,8 @@ class TestedPage
       elsif hors_site?
         # Pour une page hors site, il suffit que l'header retourne
         # un code correct, donc 200 ou 3xx pour que ce soit bon
+        # Une analyse plus approfondie peut être faite si le retour
+        # est 403
         @is_valide = page_hors_site_valide?
         @is_valide || error("STATUS HTML RETOURNÉ : #{html_status}")
       else
@@ -70,7 +72,18 @@ class TestedPage
   def page_hors_site_valide?
     return true if route.match(/\.wikipedia\./)
     begin
-      status_ok = html_status >= 200 && html_status <= 307
+      status_ok =
+        case true
+        when html_status >= 200 && html_status <= 307
+          true
+        when html_status == 403
+          # On considère que si le site rejette l'accès la page
+          # est valide. Mais il faudrait pouvoir la tester par un
+          # autre biais.
+          true
+        else
+          false
+        end
       raise if false == status_ok && route.start_with?('https')
     rescue Exception => e
       # Pour les routes https, il faut faire une vérification plus profonde
