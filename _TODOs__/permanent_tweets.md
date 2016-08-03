@@ -1,7 +1,11 @@
 # Tweet permanent
 
+# À TRAITER
 
----------------------------------------------------------------------
+# Page 54
+Trois dimensions suffisent à produire l’illusion d’une personne réelle. http://bit.ly/2aRvnfh
+
+Dans une histoire, tout est affaire d’illusion : http://bit.ly/2aRvnfh
 
 
 # Page 334

@@ -106,4 +106,4 @@ class RSBitly
   def data
     @data ||= param(:bitly) || {}
   end
-end
+end #/RSBitly

@@ -14,11 +14,24 @@ class Page
       else
         site.current_route.route
       end
+    # On ne fait rien pour toutes les routes qui commencent
+    # par 'admin'
+    return '' if route.split('/').first == 'admin'
+
+    # Le lien Bitly vers la page, le crée si nécessaire
+    site.require_objet 'bitly'
+    b = RSBitly.new
+    b.long_url = "#{site.distant_url}/#{route}"
+    bitlink = b.short_url # => le lien bitly
+
     # Il arrive qu'on ne puisse pas obtenir l'user suivant à
     # une erreur. Donc
     mpseudo = user.pseudo.downcase rescue 'nopseudo'
     filename = route.gsub(/[\/\?\&=]/,'_') + '_by_' + mpseudo
-    filename.in_input(id: 'page_route_as_filename', class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px').in_div(class: 'right')
+    (
+      bitlink.in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width: 200px') +
+      filename.in_input(id: 'page_route_as_filename', class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px')
+    ).in_div(class: 'right')
   end
 
   # RETURN le bloc d'abonnement qui s'affiche lorsque le visiteur n'est pas

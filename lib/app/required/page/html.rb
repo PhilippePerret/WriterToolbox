@@ -5,7 +5,7 @@ class Page
   # de l'application
   def raw_css_for_app
     <<-CSS
-relecture, relecture *{color:#{user.admin? ? 'goldenrod' : 'inherit'} !important}
+relecture *, relecture{display:inline;color:#{user.admin? ? 'goldenrod' : 'inherit'} !important}
     CSS
   end
 end
