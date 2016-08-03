@@ -73,17 +73,25 @@ class TestedPage
 
   # Pour le rapport final
   def links_count
-    @links_count ||= links.count
+    @links_count ||= begin
+      if hors_site?
+        0
+      else
+        links.count
+      end
+    end
   end
-  
+
   # Retourne la liste de tous les liens de la page
   # C'est un Array d'instances TestedPage::Link
   def links
     @links ||= begin
       l = Array.new
-      nokogiri.css('a[href]').each_with_index do |link, ilink|
-        link = Link.new(link, ilink)
-        l << link
+      unless hors_site?
+        nokogiri.css('a[href]').each_with_index do |link, ilink|
+          link = Link.new(link, ilink)
+          l << link
+        end
       end
       l
     end

@@ -37,7 +37,7 @@ span.fvalue
   
 // Tous les div des fieldsets
 fieldset
-  &#general_infos, &#frequences
+  &#general_infos, &#frequences, &#data_routes > div
     margin-top  : 2em
     legend
       color       : #777
@@ -51,6 +51,11 @@ fieldset
       &:hover
         background-color  : #006af8
         color             : white !important
+// Fieldset des datas de toutes les routes
+fieldset#data_routes
+  > div
+    > div
+      white-space   : pre
 // Fieldset des infos générales
 fieldset#general_infos
   // C'est plutôt un tableau

@@ -276,18 +276,17 @@ class TestedPage
     #
     # Ce code est mis dans un PRE (cf. gabarit.erb)
     def data_all_routes
-      entete = ''.ljust(40) + ''.ljust(6) + ''.ljust(6) + '    Depth'.ljust(14) +
-      "\n" + '-'*72 +
-      "\n" + 'Route'.ljust(40) + 'Links'.ljust(6) + 'Calls'.ljust(6) + ' min  moy  max ' + 'Errs'.rjust(4) +
-      "\n" + '-'*72 +
-      "\n"
+      entete = in_div(''.ljust(60) + ''.ljust(6) + ''.ljust(6) + '    Depth'.ljust(14)) +
+        in_div('-'*92) +
+        in_div('Route'.ljust(60) + 'Links'.ljust(6) + 'Calls'.ljust(6) + ' min  moy  max ' + 'Errs'.rjust(4)) +
+        in_div('-'*92)
 
       {
-        :route        => {titre: "route", reverse: false},
-        :call_count   => {titre: "nombre d'appel dans les pages", reverse: true},
-        :depth_max    => {titre: "profondeurs", reverse: false},
-        :errors_count => {titre: "nombre d'erreurs", reverse: true},
-        :links_count  => {titre: 'nombre de liens partants', reverse: true}
+        :route        => {titre: 'routes (alphabétique)', reverse: false},
+        :call_count   => {titre: 'nombre d’appel depuis autres pages (calls)', reverse: true},
+        :depth_max    => {titre: 'profondeurs (depth max)', reverse: false},
+        :errors_count => {titre: 'nombre d’erreurs (errs)', reverse: true},
+        :links_count  => {titre: 'nombre de liens sortants (links)', reverse: true}
       }.collect do |skey, dkey|
 
         # Classement suivant la clé
@@ -300,7 +299,7 @@ class TestedPage
         "<div id='#{div_id}' style='display:none'>" +
         entete +
         sorted_data.collect do |route, tpage|
-          froute    = tpage.route.ljust(40)
+          froute    = tpage.route.ljust(60)
           nb_links  = tpage.links.count.to_s.ljust(6)
           nb_froms  = tpage.call_froms.count.to_s.ljust(6)
 
@@ -311,8 +310,8 @@ class TestedPage
           nb_errors = tpage.errors_count.to_s.rjust(4)
 
           # La ligne constituée
-          froute + nb_links + nb_froms + depth_min + depth_moy + depth_max + nb_errors
-        end.join("\n") +
+          in_div(froute + nb_links + nb_froms + depth_min + depth_moy + depth_max + nb_errors)
+        end.join('') +
         '</div>'
         # /Fin de boucle sur toutes les routes
       end.join('')

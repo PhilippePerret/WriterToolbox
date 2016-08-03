@@ -101,6 +101,7 @@ class TestedPage
         end
         @invalides    = data[:invalides]
         @links_count  = data[:links_count]
+        say "= Data récupérées avec succès dans les fichiers Marshal ="
         return true
       else
         debug "Le fichier marshal (#{path_marshal}) n'existe pas. Impossible de récupérer les données."
