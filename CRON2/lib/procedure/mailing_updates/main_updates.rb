@@ -41,6 +41,7 @@ class CRON2
           # qu'on utilise deux bits d'options pour connaitre les actualités
           # à envoyer.
           site.set_last_date(:mail_updates)
+          log "   = Mailing updates OK (fin de procédure)"
           superlog 'Dernières actualités envoyées'
         end
 
@@ -337,16 +338,21 @@ class CRON2
       # pour les annonces hebdomadaire (2e bit d'options)
       #
       def set_updates_anounced
+        nombre_marqued = 0
         # On utilise les variables elles-même (avec les @) plutôt que
         # les méthodes. De cette façon, on ne traite que ce qui a réellement
         # été traité/renseigné avant
         (@last_updates || []).each do |dactu|
           table_updates.update(dactu[:id], {options: dactu[:options].set_bit(1, 1) })
+          nombre_marqued += 1
         end
 
         (@last_week_updates || []).each do |dactu|
           table_updates.update(dactu[:id], {options: dactu[:options].set_bit(2, 1) })
+          nombre_marqued += 1
         end
+
+        log "   = Updates marquées annoncées (#{nombre_marqued})"
 
       end
 

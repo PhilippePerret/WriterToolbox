@@ -214,7 +214,7 @@ class CRON2
           full_citation = "#{citation}#{auteur}#{bitly}"
 
           log "    Tweet de la citation envoyée : #{full_citation}"
-          log "    Longeur de la citation envoyée : #{full_citation.length}"
+          log "    Longueur de la citation envoyée : #{full_citation.length}"
 
           # ---------------------------------------
           # Ce qui sera mis dans @citation_to_send
