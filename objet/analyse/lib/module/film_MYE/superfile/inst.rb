@@ -15,7 +15,7 @@ class SuperFile
   end
 
   def deyamelize
-    YAML::load_file(self.to_s).to_sym
+    YAML.load_file(self.to_s).to_sym
   end
 
   def yaml_content

@@ -213,16 +213,18 @@ AIDE FORMATAGE DOCUMENT PROCÉDÉS
   end
   def traite_content_as_notes
     yaml_content.collect do |nid, ndata|
-      debug "(#{nid}) ndata : #{ndata.inspect}"
+      # debug "(#{nid}) ndata : #{ndata.inspect}"
       if ndata.instance_of?(Array)
         nid, ndata = convert_array_to_hash(ndata)
         error "Problème de formatage avec le fichier #{self.to_s}"
       end
+      debug "ndata : #{ndata.inspect}"
       idnote = "Note ##{nid}".in_div(class:'fright tiny italic')
       "#{idnote}#{ndata[:titre]}".in_dt +
       (
         intitule_of(ndata)      +
         description_of(ndata)   +
+        notes_of(ndata)         +
         traite_relatifs( ndata[:relatifs] )
       ).in_dd
     end.join.in_dl
@@ -232,14 +234,18 @@ AIDE FORMATAGE DOCUMENT PROCÉDÉS
   # thèmes
   def traite_content_as_themes
     yaml_content.collect do |key, hvalue|
-      htheme = case hvalue[:nature_theme]
-      when :concret   then "concret"
-      when :abstrait  then "abstrait"
-      when :both      then "abstrait et concret"
-      end
+      htheme =
+        case hvalue[:nature_theme]
+        when :concret   then 'concret'
+        when :abstrait  then 'abstrait'
+        when :both      then 'abstrait et concret'
+        else                 'de nature inconnue'
+        end
+      description = hvalue[:description]
 
       "<a name='theme-#{key}'></a>" +
       "#{hvalue[:libelle]}".in_dt +
+      (description ? description.in_dd : '') +
       "Thème #{htheme}".in_dd
     end.join.in_dl
   end
@@ -585,8 +591,10 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     libnval('Facteur O', h[:facteurO] || h[:facteur_o])
   end
   def intitule_of h, key_alt = nil
-    value = h[:intitule] || h[key_alt] || "" unless key_alt.nil?
-    libnval('Intitulé', value)
+    value = h[:intitule] || h[:libelle]
+    value ||= h[key_alt] unless key_alt.nil?
+    value ||= ''
+    libnval('', value.in_span(class: 'bold'))
   end
   def installation_of h
     libnval('Installation', h[:installation])
@@ -604,7 +612,8 @@ Trouvez ci-dessous une liste des MOT[19|ironies dramatiques] relevées dans le f
     libnval('Résolution', h[:resolution])
   end
   def notes_of h
-    libnval('Notes', h[:notes])
+    notes = h[:notes] || h[:note]
+    notes ? libnval('Note(s)', notes) : ''
   end
   def scenes_of h
     return "" if h[:scenes].to_s == ""

@@ -15,7 +15,7 @@ class FilmAnalyse
         end
       end
 
-      options ||= Hash::new
+      options ||= Hash.new
       options[:as] ||= :data
 
       case options[:as]

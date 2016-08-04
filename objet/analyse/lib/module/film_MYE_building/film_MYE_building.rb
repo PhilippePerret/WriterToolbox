@@ -77,11 +77,12 @@ class Film
     # Note : @alerte_tdm_pas_etablie_necessaire est défini dans le fichier
     # ./objet/analyse/lib/module/film_MYE/film_extension/instance/tdm.rb
     # dans la méthode `affixe2titre`
-    table_of_content = if tdm_file.exist? || @alerte_tdm_pas_etablie_necessaire.nil?
-      ""
-    else
-      "La table des matières de cette analyse n'est pas encore établie. Les fichiers sont donc affichés “tels quels” ici.".in_div(class:'grand air warning')
-    end
+    table_of_content =
+      if tdm_file.exist? || @alerte_tdm_pas_etablie_necessaire.nil?
+        ""
+      else
+        "La table des matières de cette analyse n'est pas encore établie. Les fichiers sont donc affichés “tels quels” ici.".in_div(class:'grand air warning')
+      end
 
     # On ne met la table des matières que s'il y a plus de
     # deux fichiers d'analyse ou que le texte est assez long
@@ -115,11 +116,13 @@ class Film
       # Path du fichier -> SuperFile
       frelpath = fdata[:path]
       fpath   = folder_in_films_mye + frelpath
-      sfile = ( SuperFile::new fpath )
+      sfile = ( SuperFile.new fpath )
       fdata.merge!( sfile: sfile )
+      # Une ancre éventuelle ajouté au-dessus du titre
+      ancre = fdata[:ancre] ? "<a name=\"#{fdata[:ancre]}\"></a>" : ''
 
-      # Titre du document
-      ftitre  = fdata[:titre].nil? ? "" : "<h3>#{fdata[:titre]}</h3>"
+      # Titre du document (avec ancre éventuelle)
+      ftitre  = ancre + ( fdata[:titre] ? "<h3>#{fdata[:titre]}</h3>" : '')
 
       # Incipit
       fincipit = fdata[:incipit].nil? ? "" : fdata[:incipit].in_p(class:'italic small')

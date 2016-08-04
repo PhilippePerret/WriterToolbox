@@ -214,19 +214,14 @@ class ::String
   end
 
   def mef_document output_format = :html
-    debug "-> mef_document(format = #{output_format})"
     return self unless self.match(/\nDOC\//)
     str = self.gsub(/\r/,'')
     if ("#{str}\n").match(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m)
-      debug "Je contiens un document"
-    else
-      debug "Je n'ai pas trouvé le document"
     end
     str =
       ("#{str}\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
         classes_css = $1.freeze
         doc_content = $2.freeze
-        debug "Je vais traiter un document de classe #{classes_css}"
         MEFDocument.new(doc_content, classes_css).output(output_format)
       }
     return str

@@ -4,6 +4,7 @@
 * [Dossier des analyses](#dossierdesanalyses)
 * [Nom du dossier de l'analyse](#nomdudossierdanalyse)
 * [Constitution du dossier d'analyse](#constitutiondudossier)
+* * [Fichier table des matières `tdm.yaml`](#fichiertabledesmatières)
 
 <a name='introduction'></a>
 
@@ -35,7 +36,7 @@ Le dossier de l'analyse générale doit correspondre au `film_id` du film. ATTEN
 
     introduction.md     Fichier markdown servant d'introduction
     tdm.yaml            Fichier YAML contenant la table des matières de
-                        l'analyse
+                        l'analyse. Cf. Table des matières plus bas
     (dossiers)          Des dossiers contenant les articles
     (fichiers.yaml)     Des fichiers YAML contenant d'autres données
                         récoltées au cours de analyses.
@@ -53,3 +54,39 @@ L'affichage de ces données se fait à présent par le même module que les ana
 
 C'est à pr
 Noter que cette vue ERB utilise le module `lib/module/archives` des analyses pour s'afficher.
+
+<a name='fichiertabledesmatières'></a>
+
+## Fichier table des matières `tdm.yaml`
+
+Ce fichier ressemble à :
+
+
+    -
+      path:   fiche/themes.md
+      titre:  À propos des thèmes du film
+    -
+      path:   fiche/personnages.md
+      titre:  Quelques notes sur les personnages
+    -
+      path:   evc/scenier.evc
+      titre:  Scénier du film
+      ancre:  evcscenierevcscenierdufilm
+      introduction: |
+        Scénier complet du film qui pourra servir de base de référence à
+        toute analyse complémentaire. On peut trouver le début du
+        MOT[38|Dénouement] dont nous parlons au début de ce document (à `1:34:00`) en
+        <a href="analyse/128/show#scenier-denouement">cliquant ici</a>.
+
+
+On peut noter la dernière donnée qui définit tous les attributs possibles :
+
+    path        Le path du fichier
+    titre       Le titre qui sera affiché au-dessus du fichier
+    ancre       Pour définir une ancre explicitement.
+                Noter que tous les titres définissent une ancre, dans la
+                propriété :anchor, mais qu'ici on peut avoir une ancre plus
+                parlante.
+    description
+                Une description qui sera affichée au-dessus du contenu du
+                fichier, par exemple pour l'introduire.

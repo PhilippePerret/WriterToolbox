@@ -16,7 +16,7 @@ class TestedPage
   #
   # Définit toutes les erreurs rencontrées
   #
-  def check_if_valide
+  def check_if_valide_for_app
     # Éléments qu'on doit forcément trouver dans la page
     [
       'section#header', 'section#content', 'section#footer',

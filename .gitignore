@@ -48,6 +48,7 @@ CRON/rapports_connexions/
 
 lib/deep/deeper/gem/latexbook/lib/compilation/sources/
 
+lib/deep/deeper/module/links_analyzer/output/routes_msh/
 
 .curl_request_header
 
@@ -62,4 +63,3 @@ LOCAL_CRON/.main.rb.swp
 *.msh
 
 
-lib/deep/deeper/module/links_analyzer/output/routes_msh/*.msh

@@ -39,10 +39,58 @@ class TestedPage
         @is_valide || error("STATUS HTML RETOURNÉ : #{html_status}")
       else
         # Check de la validité de la page URL spécifié
-        @is_valide = check_if_valide
+        # C'est ici que l'application peut définir elle-même en quoi
+        # une page est valide, mais elle peut déjà le faire au travers
+        # de la donnée DATA_ROUTES qu'il faut donc analyser d'abord si
+        # elle est définie
+        @valide_on_gene = check_if_valide_general
+        @valide_for_app = check_if_valide_for_app
+        @is_valide = @valide_on_gene && @valide_for_app
       end
     end
     @is_valide
+  end
+
+  # Premier check de la page une fois tous les premiers checks sur la
+  # route (url) opérés.
+  # Note : Ça s'appelle '_general', mais cette méthode dépend aussi des
+  # données de l'application.
+  # TODO: Au final, dans l'idéal, il ne faudrait que la donnée DATA_ROUTES
+  # pour définir ce qui constitue une page valide.
+  #
+  # Ce check n'est nécessaire que si des DATA_ROUTES sont définis.
+  #
+  # Elle retourne TRUE en cas de succès (ou d'absence de test à faire)
+  # et false dans le cas contraire, en renseignant la propriété @errors de
+  # la route testée
+  def check_if_valide_general
+    defined?(DATA_ROUTES) || (return true)
+    resultat = true
+    if DATA_ROUTES.key?(:context) && DATA_ROUTES[:context].key?(context)
+      droute = DATA_ROUTES[:context][context]
+    end
+    if DATA_ROUTES.key?(:objet) && DATA_ROUTES[:objet].key?(objet)
+      droute = DATA_ROUTES[:objet][objet]
+      if droute.key?(:has_tag) || droute.key?(:has_tags)
+        has_tags = Array.new
+        has_tags << [ droute[:has_tag] ] if droute.key?(:has_tag)
+        has_tags += droute[:has_tags]   if droute.key?(:has_tags)
+        unknow_tag = false
+        has_tags.each do |has_tag|
+          if matches?(*has_tag)
+            # puts "La balise #{has_tag.inspect} a été trouvée."
+            next
+          else
+            # La balise est inconnue
+            unknow_tag = true
+            error "Balise #{has_tag.inspect} introuvable"
+          end
+        end
+        # /Fin de boucle sur toutes les balises attendues
+        resultat = resultat && false == unknow_tag
+      end
+    end
+    return resultat
   end
 
   # Return TRUE si le code de la page courante contient le tag

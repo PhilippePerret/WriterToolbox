@@ -24,8 +24,12 @@ DATA_ROUTES = {
     }
   },
   objet: {
+    # Quand l'objet — le premier mot de la route — est 'analyse'
     'analyse' => {
-      add_to_data_url: 'authips=1'
+      add_to_data_url: 'authips=1',
+      has_tags: [
+        ['h1', {text: 'Les Analyses de films'}]
+      ]
     }
   }
 }
