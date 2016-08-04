@@ -1,2 +1,2 @@
 {:urlI".http://localhost/WriterToolbox/video/home:ET:route_initI"video/home;T:
-routeI"video/home;T:call_counti:call_froms[I"site/home;TI"tool/list;T@@@I"video/1/show;TI"video/2/show;T:call_texts[I"DIDACTITIELS-VIDÉO;TI"Les didacticiels-vidéo;TI"Les didacticiels-vidéo;TI",-&gt; rejoindre Les didacticiels-vidéo;TI"Accueil;TI"Accueil;TI"Accueil;T:depths[iiiiiii
+routeI"video/home;T:call_counti	:call_froms[	I"site/home;TI"tool/list;T@@:call_texts[	I"DIDACTITIELS-VIDÉO;TI"Les didacticiels-vidéo;TI"Les didacticiels-vidéo;TI",-&gt; rejoindre Les didacticiels-vidéo;T:depths[	iiii

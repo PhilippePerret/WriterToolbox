@@ -1,2 +1,2 @@
 {:urlI";http://localhost/WriterToolbox/sujet/question?in=forum:ET:route_initI"sujet/question?in=forum;T:
-routeI"sujet/question?in=forum;T:call_counti	:call_froms[	I"forum/home;TI"post/1/read?in=forum;TI"post/2/read?in=forum;TI"post/3/read?in=forum;T:call_texts[	I"Soumettre;TI"Soumettre;TI"Soumettre;TI"Soumettre;T:depths[	iiii
+routeI"sujet/question?in=forum;T:call_counti:call_froms[I"forum/home;T:call_texts[I"Soumettre;T:depths[i
