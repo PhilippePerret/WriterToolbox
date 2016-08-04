@@ -25,7 +25,7 @@ class TestedPage
     'code-html'     => {hname: 'Affichage du code HTML de la page', report: 'Code HTML de la page'},
     'depth'         => {hname: 'Profondeur des fouilles', report: "Profondeur de la recherche"},
     'dumped-data'   => {hname: 'Reprise des données enregistrées', report: 'Reprise des données enregistrées'},
-    'from-route'    => {hname: 'La route initiale', report: 'Route initial'},
+    'from-route'    => {hname: 'La route initiale', report: 'Route initiale'},
     'help'          => {hname: 'Aide'},
     'infos'         => {hname: 'Informations sur les liens relevés'},
     'max-routes'    => {hname: 'Nombre maximum de routes testées', report: 'Nombre maximum de routes'},

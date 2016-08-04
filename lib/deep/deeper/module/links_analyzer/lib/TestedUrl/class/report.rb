@@ -29,8 +29,8 @@ class TestedPage
       seconds = seconds % 60
       s_mns = minutes > 1 ? 's' : ''
       s_scs = seconds > 1 ? 's' : ''
-      hduree = "#{seconds} seconde#{s_scs}"
-      minutes == 0 || hduree = "#{minutes} minute#{s_mns} #{hduree}"
+      hduree = "#{seconds} sec#{s_scs}"
+      minutes == 0 || hduree = "#{minutes} mn#{s_mns} #{hduree}"
       return hduree
     end
 
@@ -139,12 +139,13 @@ class TestedPage
           else next
           end
         end
-        "#{DATA_OPTIONS[k][:report]} : #{v.inspect}"
-      end.compact.join(', ')
-      c << in_div(
-        "Options : #{options_choisies}",
-        class: 'ligne_value'
-      )
+        in_div(
+          in_span("#{v}", class: 'fvalue') +
+          in_span(DATA_OPTIONS[k][:report], class: 'libelle'),
+          class: 'ligne_value'
+        )
+      end.compact.join('')
+      c << options_choisies
 
       return c.force_encoding('utf-8')
     end
