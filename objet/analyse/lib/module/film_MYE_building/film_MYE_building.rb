@@ -139,7 +139,7 @@ class Film
         fincipit +
         fintroduction +
         (
-          "<!-- ADMIN -->" + box_edition(fdata) + "<!-- /ADMIN -->" +
+          '<ADMIN>' + box_edition(fdata) + '</ADMIN>' +
           case sfile.extension
           when 'md'   then sfile.as_kramdown
           when 'yaml' then sfile.as_yaml
@@ -178,7 +178,7 @@ class Film
 
     # On fait le fichier de l'user final en supprimant
     # tous les codes réservés à l'administration
-    whole_code_file_user = whole_code_file.gsub(/<\!\-\- ADMIN \-\->(.*?)<!\-\- \/ADMIN \-\->/,'')
+    whole_code_file_user = whole_code_file.gsub(/<ADMIN>(.*?)<\/ADMIN>/,'')
 
     # On enregistre le code dans un fichier HTML
     html_mye_file.remove if html_mye_file.exist?
