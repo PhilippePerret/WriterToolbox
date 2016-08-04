@@ -53,6 +53,7 @@ describe 'Procédure d’épuration des autorisations' do
   describe 'Destruction d’une autorisation dépassée' do
     before(:each) do
       reset_mails
+      CRON2::Autorisations.reset_all
       if @id_new_auto.nil? || User.table_autorisations.get(@id_new_auto).nil?
         dauto = {
           user_id:      @u.id,
@@ -78,6 +79,7 @@ describe 'Procédure d’épuration des autorisations' do
       autotable.update(@id_new_auto, {end_time: NOW + 3.days - 4.hours})
       # --- On traite les autorisations ---
       cron.autorisations
+      # --- On fait le CHECK ---
       expect(@u).to have_mail(
         sent_after:   start_time,
         subject:      'État de votre abonnement',

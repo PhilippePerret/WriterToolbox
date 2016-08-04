@@ -31,10 +31,7 @@ class << self
       # Analyse de film de type "TM"
       # output_as_analyse_tm
       FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
-      (
-        'Les analyse de type “TM” nécessitent une largeur complète, elles s’ouvrent donc dans une autre fenêtre.<br><br>' +
-        "Ouvrir l'analyse de #{film.titre}".in_a(href: film.html_file.to_s, target: :new, class: 'cadre')
-      ).in_p
+      output_as_analyse_tm
     elsif film.analyse_mye?
       fiche_film +
       output_as_analyse_mye
@@ -54,23 +51,10 @@ class << self
 
   def output_as_analyse_tm
     if film.html_file.exist?
-      <<-HTML
-<iframe
-  id="frame_analyse"
-  width="100%"
-  height="100%"
-  src="#{film.html_file.to_s}"
-  style="position:fixed;top:0;left:0"></iframe>
-<div id="div_bouton_back"><a href="analyse/list">Liste analyses</a></div>
-<script type="text/javascript">
-$(document).ready(function(){
-  $('section').hide();
-  $('section#content').show();
-  var l = ['form#taches_widget', 'section#social_network', 'div#div_permanent_link'];
-  $(l).each(function(i,o){$(o).hide()})
-})
-</script>
-      HTML
+      (
+        'Les analyse de type “TM” nécessitent une largeur complète, elles s’ouvrent donc dans une autre fenêtre.<br><br>' +
+        "Ouvrir l'analyse de #{film.titre}".in_a(href: film.html_file.to_s, target: :new, class: 'cadre')
+      ).in_p
     else
       # <= FILM TM INTROUVABLE
       "Désolé, cette analyse du film “#{film.titre}” est actuellement introuvable…".in_div(class:'air warning') +

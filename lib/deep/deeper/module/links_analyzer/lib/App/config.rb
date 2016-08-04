@@ -11,6 +11,14 @@ EXCLUDED_ROUTES = {
   'aide/home?in=unan&operation=charger_manuel_homme'      => true
 }
 
+# Le test est fait sur File.dirname(route). Si c'est une clé de
+# EXCLUDED_FOLDERS, on n'étudie pas la route.
+# Si :check_status est à true, on vérifiera que l'appel de la page
+# retourne quand même 200 (donc que la page se charge bien)
+EXCLUDED_FOLDERS = {
+  './data/analyse/films_tm' => {check_status: true}
+}
+
 # Cette table permet de définir tout un tas de chose par rapport aux
 # routes à tester.
 DATA_ROUTES = {

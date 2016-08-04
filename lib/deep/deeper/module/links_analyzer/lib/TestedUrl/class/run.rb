@@ -100,6 +100,16 @@ class TestedPage
       # On doit retourner true pour ne pas interrompre la boucle
       return true if testedpage.has_route_excluded?
 
+      # Si la route appartient à un dossier à exclure, il ne faut
+      # pas la prendre. Noter que c'est surtout utile pour certains
+      # fichiers spéciaux comme les analyses de films de type TM qui
+      # ouvrent un fichier Html qui ne contient pas le gabarit de la
+      # page.
+      # Contrairement à la méthode has_route_excluded? ci-dessus, on
+      # s'assure quand même que le fichier retourne un statut 200.
+      # On doit retourner true pour ne pas interrompre la boucle
+      return true if testedpage.has_folder_excluded?
+
       # Si la profondeur maximum est définie et que la
       # page a une profondeur supérieure à cette
       # profondeur max, on ne la traite pas

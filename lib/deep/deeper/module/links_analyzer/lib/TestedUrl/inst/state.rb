@@ -15,6 +15,22 @@ class TestedPage
     @has_route_excluded
   end
 
+  def has_folder_excluded?
+    if @has_folder_excluded === nil
+      @has_folder_excluded = defined?(EXCLUDED_FOLDERS) && EXCLUDED_FOLDERS!=nil && EXCLUDED_FOLDERS.key?(File.dirname(route))
+      TestedPage.routes_exclues_count += 1 if @has_route_excluded
+      # Si la route doit être exclue, on s'assure quand même qu'elle retourne
+      # un statut html de 200 si check_status est true.
+      if @has_folder_excluded
+        data_folder_exclude = EXCLUDED_FOLDERS[File.dirname(route)]
+        if data_folder_exclude[:check_status]
+          html_status == 200 || set_invalide
+        end
+      end
+    end
+    @has_folder_excluded
+  end
+
   # Retourne TRUE si la route commence par http:// ou https://
   def entete_http?
     !!route.match(/^https?:\/\//)
