@@ -17,18 +17,24 @@ class << self
       if film.analyse_tm? && !film.analyse_mye?
         ""
       else
-        FilmAnalyse::titre_h1( film.titre, {onglets_top: true} )
+        FilmAnalyse.titre_h1( film.titre, {onglets_top: true} )
       end
 
     titre_page +
     if ! film.exist?
       message_film_doesnt_exist
     elsif ! film.consultable?
+      FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
       message_film_non_consultable_par_user +
       fiche_film
     elsif film.analyse_tm? && !film.analyse_mye?
       # Analyse de film de type "TM"
-      output_as_analyse_tm
+      # output_as_analyse_tm
+      FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
+      (
+        'Les analyse de type “TM” nécessitent une largeur complète, elles s’ouvrent donc dans une autre fenêtre.<br><br>' +
+        "Ouvrir l'analyse de #{film.titre}".in_a(href: film.html_file.to_s, target: :new, class: 'cadre')
+      ).in_p
     elsif film.analyse_mye?
       fiche_film +
       output_as_analyse_mye
