@@ -3,6 +3,9 @@
 * [Obtenir la liste des gels (en console)](#obtenirlalistedesgels)
 * [Procéder à un gel ou un dégel par la console](#procederaungeloudegelconsole)
 
+OBSOLÈTE : ON N'UTILISE PLUS LES GELS DEPUIS LE PASSAGE À MYSQL.
+IL FAUT TROUVER LE MOYEN DE FONCTIONNER AUTREMENT, PEUT-ÊTRE EN CRÉANT D'AUTRES BASES ET D'AUTRES TABLES SPÉCIALEMENT POUR LES TESTS.
+
 Pour effectuer des tests, on peut utiliser les gels.
 
 Un “gel” est comme une photographie du site, qui permet de revenir dans un état précédent ou précis sans problème.

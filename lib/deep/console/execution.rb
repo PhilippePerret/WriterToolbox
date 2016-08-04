@@ -219,9 +219,12 @@ class Console
     when /^test$/
 
       # --- TESTS ---
-
-      if line =~ /^test show db/
+      case line
+      when /^test show db/
         return (show_db_after_tests line.sub(/^test show db/,'').strip)
+      when /^test (liens|links|pages)/
+        require_submethods 'links_analyzer'
+        return test_all_pages line.sub(/^test (liens|links|pages)/,'').strip
       else
         return ( run_a_test reste_line )
       end

@@ -51,7 +51,7 @@ class CRON2
       @rapport_path ||= File.join(module_folder, 'output', 'report_ONLINE.html')
     end
     def module_folder
-      @module_folder ||= './lib/deep/deeper/module/links_analyse'
+      @module_folder ||= './lib/deep/deeper/module/links_analyzer'
     end
   end #/LinksAnalyzer
 end #/CRON2

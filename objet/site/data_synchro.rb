@@ -66,7 +66,7 @@ class Synchro
       './lib/deep/deeper/module/synchronisation/',
       './LOCAL_CRON/',
       './view/img/CHANTIER',
-      './lib/deep/deeper/module/links_analyse/output/routes_msh/'
+      './lib/deep/deeper/module/links_analyzer/output/routes_msh/'
     ]
   end
 end

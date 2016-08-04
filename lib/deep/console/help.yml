@@ -83,6 +83,14 @@ test:
       <li><b>mini</b>. Test minimal qui s'assure que la base du site fonctionne</li>
       </ul>
   -
+    command:      test (liens|links)[ &lt;options&gt;]
+    description: |
+      Commande qui lance le LINKS ANALYZER qui va analyser toutes les pages
+      du site et tous les liens pour vérifier leur conformité.
+    note: |
+      Pour les options, pour le moment, il faut lancer le main.rb dans le
+      terminal avec l'option -h.
+  -
     command:      "`test run`  ou `run test`"
     description: |
       Joue le fichier ./test/run.rb qui détermine les tests à faire.
