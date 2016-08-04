@@ -106,10 +106,10 @@ class TestedPage
       depth_max.nil? || testedpage.depth < depth_max || (return true)
 
 
+      color = testedpage.valide? ? '32' : '31'
       if verbose? || infos?
-        say "* #{iroute_tested} / #{@routes.count} * Tested route: #{route}"
+        say "\e[1;#{color}m* #{iroute_tested} / #{@routes.count} * Tested route: #{route}\e[0m"
       else
-        color = testedpage.valide? ? '32' : '31'
         print "\e[1;#{color}m*\e[0m"
       end
 
