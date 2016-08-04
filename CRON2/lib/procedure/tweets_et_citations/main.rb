@@ -116,9 +116,9 @@ class CRON2
           # avant envoi)
           where = 'last_sent > 0 AND last_sent < 11'
           prochaines = tbl_citations.select(
-          where: where,
-          order: 'last_sent ASC',
-          colonnes: [:citation, :auteur, :bitly, :last_sent]
+            where: where,
+            order: 'last_sent ASC',
+            colonnes: [:citation, :auteur, :bitly, :last_sent, :description]
           )
 
           # La citation qui doit être envoyée maintenant
