@@ -1,7 +1,2 @@
 {:urlI"6http://localhost/WriterToolbox/analyse/participer:ET:route_initI"analyse/participer;T:
-routeI"analyse/participer;T:call_counti
-:call_froms[
-I"analyse/home;T@
-I"analyse/7/show;TI"analyse/8/show;TI"analyse/16/show;T:call_texts[
-I"Participer;TI"participer aux analyses;TI"Participer;TI"Participer;TI"Participer;T:depths[
-iiiii
+routeI"analyse/participer;T:call_counti :call_froms[ I"analyse/31/show;TI"analyse/home;T@I"analyse/list;T@I"manuel/home?in=analyse;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;TI"analyse/31/show;T:call_texts[ I"Participer;TI"Participer;TI"participer aux analyses;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;TI"Participer;T:depths[ iiiiiiiiiiiiiiiiiiiiiiiiiii

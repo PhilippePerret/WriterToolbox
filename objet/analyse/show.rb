@@ -40,7 +40,7 @@ class << self
   # Retourne le code HTML de la fiche du film pour
   def fiche_film
     site.require_objet 'filmodico'
-    Filmodico::get(film.id).as_card(css = true)
+    Filmodico.get(film.id).as_card(css = true)
   end
   # ---------------------------------------------------------------------
   #   TYPES DE SORTIE
@@ -76,7 +76,7 @@ $(document).ready(function(){
   # Note : La méthode <film>.analyse_display est implémentée
   # plus bas dans ce fichier.
   def output_as_analyse_mye
-    FilmAnalyse::require_module 'film_MYE'
+    FilmAnalyse.require_module 'film_MYE'
     <<-HTML
 <script type="text/javascript">
   Film.duree = #{film.duree};

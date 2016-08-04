@@ -33,6 +33,7 @@ class TestedPage
   def real_curl_url
     @real_curl_url ||= begin
       curl_url, @real_curl_data = url.split('?')
+
       # Si les données de particularité de route définissent quelque chose
       # en fonction du context (paramètre 'in')
       if DATA_ROUTES.key?(:context)
@@ -40,21 +41,41 @@ class TestedPage
         # définit quelque chose pour le contexte courant de la route courante
         if DATA_ROUTES[:context].key?(context)
           dcontext = DATA_ROUTES[:context][context]
-          if dcontext.key?(:add_to_url)
-            curl_url += dcontext[:add_to_url]
-          end
-          if dcontext.key?(:add_to_data_url)
-            if @real_curl_data.nil?
-              @real_curl_data = dcontext[:add_to_data_url]
-            else
-              @real_curl_data += "&#{dcontext[:add_to_data_url]}"
-            end
-          end
+          curl_url = ajouts_curl_from_data_routes curl_url, dcontext
         end
       end
+      # /Fin de si DATA_ROUTES définit la clé :context
+      if DATA_ROUTES.key?(:objet)
+        # Si la propriété définissant les particularités des routes
+        # (DATA_ROUTES) définit quelque chose pour l'objet (premier mot
+        # de la route) courant, il faut le traiter
+        if DATA_ROUTES[:objet].key?(objet)
+          dobjet = DATA_ROUTES[:objet][objet]
+          curl_url = ajouts_curl_from_data_routes curl_url, dobjet
+        end
+      end
+      # /Fin de si DATA_ROUTES définit la clé :objet
       curl_url
     end
   end
+  def ajouts_curl_from_data_routes curl_url, data_ajout
+
+    # Ajout à l'url envoyé par Curl
+    if data_ajout.key?(:add_to_url)
+      curl_url += dcontext[:add_to_url]
+    end
+    # Ajout aux données transmise par Curl
+    if data_ajout.key?(:add_to_data_url)
+      if @real_curl_data.nil?
+        @real_curl_data = data_ajout[:add_to_data_url]
+      else
+        @real_curl_data += "&#{data_ajout[:add_to_data_url]}"
+      end
+    end
+    return curl_url
+  end
+
+
   def real_curl_data
     @real_curl_data || real_curl_url
     @real_curl_data

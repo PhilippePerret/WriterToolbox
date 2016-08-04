@@ -22,6 +22,11 @@ DATA_ROUTES = {
       # par l'IP juste sur ces pages.
       add_to_data_url: 'authips=1'
     }
+  },
+  objet: {
+    'analyse' => {
+      add_to_data_url: 'authips=1'
+    }
   }
 }
 

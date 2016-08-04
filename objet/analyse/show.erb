@@ -1,5 +1,3 @@
 <%# Affiche l'analyse du film courant, qu'elle soit "TM" ou normale %>
-<%
-enable_comments
-%>
-<%= FilmAnalyse::Show::output %>
+<% enable_comments %>
+<%= FilmAnalyse::Show.output %>
