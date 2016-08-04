@@ -216,7 +216,13 @@ class Lien
     film_id =
       case film_ref
       when String
-        @table_filmodico.select(where: {film_id: film_ref}, colonnes:[]).first[:id]
+        film_for_id = @table_filmodico.select(where: {film_id: film_ref}, colonnes:[]).first
+        if film_for_id.nil?
+          error "Impossible d'obtenir le lien vers le film #{film_ref}."
+          nil
+        else
+          film_for_id[:id]
+        end
       when Fixnum
         film_ref
       else

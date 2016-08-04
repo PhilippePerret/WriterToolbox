@@ -21,10 +21,10 @@ class << self
       end
 
     titre_page +
-    if ! film.exist?
+    if !film.exist?
       message_film_doesnt_exist
-    elsif ! film.consultable?
-      FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
+    elsif !film.consultable?
+      (titre_page == '' ? FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) : '') +
       message_film_non_consultable_par_user +
       fiche_film
     elsif film.analyse_tm? && !film.analyse_mye?
