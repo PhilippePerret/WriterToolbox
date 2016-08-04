@@ -60,3 +60,6 @@ LOCAL_CRON/.main.rb.swp
 .remote-sync.json
 
 *.msh
+
+
+lib/deep/deeper/module/links_analyzer/output/routes_msh/*.msh

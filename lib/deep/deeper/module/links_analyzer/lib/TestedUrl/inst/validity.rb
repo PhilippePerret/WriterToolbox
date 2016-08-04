@@ -20,10 +20,14 @@ class TestedPage
         # contenir l'ancre spécifiée
         @is_valide = self.page_has_anchor?(url_anchor)
         @is_valide || error("ANCRE INTROUVABLE : #{url_anchor}")
-      elsif ancre?
+      elsif is_ancre?
         # Check d'une ancre seule. Le code de la page doit posséder
         # l'ancre spécié, soit sous forme d'un <a name> soit sous forme
         # d'élément d'identifiant correspondant à l'ancre.
+        #
+        # Note : Le `referer` ci-dessous peut paraitre étrange mais il
+        # a été vérifié et il est bon (la route courante est une ancre seule,
+        # un lien enregistré alors qu'on analysait la page `referer`)
         @is_valide = referer.page_has_anchor?(ancre_of_route)
         @is_valide || error("ANCRE INTROUVABLE : #{ancre_of_route.inspect}")
       elsif hors_site?
@@ -65,7 +69,7 @@ class TestedPage
 
   # Ancre contenue par la route
   def ancre_of_route
-    @ancre_of_route ||= route.split('#').last
+    @ancre_of_route ||= route_init.split('#').last
   end
 
   #

@@ -7,7 +7,7 @@ class TestedPage
     # Méthode principale appelée pour lancer l'analyse
     #
     def run
-      puts ''
+      puts '' # pour de l'air en console
       @start_time = Time.now.to_f
       init
       if (dumped_data? ? !get_data_from_marshal : true)

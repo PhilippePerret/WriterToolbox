@@ -25,14 +25,14 @@ class TestedPage
   end
 
   # Retourne TRUE si la route est simplement une ancre
-  def ancre?
-    route.start_with?('#')
+  def is_ancre?
+    route_init.start_with?('#')
   end
 
   # Retourne TRUE si l'url se termine par une ancre (mais n'est
   # pas seulement une ancre comme la méthode ci-dessus)
   def url_with_ancre?
-    url_anchor != nil
+    url_anchor != nil && !is_ancre?
   end
 
   # Retourne TRUE si c'est un lien externe
