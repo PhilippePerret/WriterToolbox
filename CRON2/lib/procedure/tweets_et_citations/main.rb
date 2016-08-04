@@ -143,7 +143,7 @@ class CRON2
             where:    nil,
             order:    'last_sent ASC',
             limit:    40 + nombre_candidates_voulues,
-            colonnes: [:citation, :auteur, :bitly, :last_sent, :id, :description]
+            colonnes: [:citation, :auteur, :bitly, :last_sent, :description]
           )
           all_candidates = all_candidates.shuffle.shuffle
           candidates = all_candidates[0..nombre_candidates_voulues - 1]
@@ -178,12 +178,16 @@ class CRON2
 
             # On ajoute cette citation aux citations à m'envoyer,
             # mais seulement si elles n'ont pas déjà d'explicitation
-            if hcit[:description].nil_if_empty.nil?
-              mess_admin << "<li>" +
-              "<a href='http://localhost/WriterToolbox/citation/#{cid}/edit'>" +
-              "Citation ##{cid}" +
-              "</a> [#{hcit[:last_sent]}] : #{hcit[:citation]}" +
-              "</li>"
+            if hcit.key? :description
+              if hcit[:description].to_s.length == 0
+                mess_admin << "<li>" +
+                "<a href='http://localhost/WriterToolbox/citation/#{cid}/edit'>" +
+                "Citation ##{cid}" +
+                "</a> [#{hcit[:last_sent]}] : #{hcit[:citation]}" +
+                "</li>"
+              end
+            else
+              superlog('Il faut régler le problème des descriptions de citations : la clé :description n’est pas connue.', error: true)
             end
           end
 
