@@ -126,14 +126,15 @@ class Console
       ::Admin::require_module 'taches'
 
       # On relève la liste des tâches
-      task_list = if options[:all]
+      task_list =
+      if options[:all]
         sub_log "liste de toutes les taches".in_h3
-        ::Admin.table_taches.select(order: "echeance DESC", colonnes:[]).collect do |htache|
-          ::Admin::Taches::Tache::new(htache[:id])
+        ::Admin.table_taches.select(order: "echeance DESC, state DESC", colonnes:[]).collect do |htache|
+          ::Admin::Taches::Tache.new(htache[:id])
         end
       elsif options.key?( :admin )
         unless options[:admin].to_s.numeric?
-          admin = User::get_by_pseudo(options[:admin])
+          admin = User.get_by_pseudo(options[:admin])
           if admin.pseudo == "Marion" && admin.options[0..1] != "15"
             opts = admin.options
             opts[0..1] = "15"
@@ -146,13 +147,13 @@ class Console
           admin = User::get(options[:admin].to_i)
         end
         sub_log "liste des taches de #{admin.pseudo}".in_h3
-        ::Admin::Taches::new().taches.collect do |itache|
+        ::Admin::Taches.new.taches.collect do |itache|
           next if itache.admin_id != admin.id
           itache
         end.compact
       else
         sub_log "liste des taches en cours".in_h3
-        ::Admin::Taches::new().taches
+        ::Admin::Taches.new.taches
       end
 
       # Format de l'affichage, en fonction du lecteur

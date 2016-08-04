@@ -51,7 +51,7 @@ class Taches
     #   litache = itache.as_li
     #   owned_current ? (@ladmin << litache) : (@lothers << litache)
     # end
-    Admin.table_taches.select(where: 'state < 9', order: "echeance ASC").each do |tdata|
+    Admin.table_taches.select(where: 'state < 9', order: 'echeance ASC, state DESC').each do |tdata|
       tid = tdata[:id]
       owned_current = tdata[:admin_id] == admin_id
       itache = Tache::new(tid)
@@ -80,10 +80,10 @@ class Taches
     @taches = nil if options != nil
     @taches ||= begin
       options ||= {}
-      where = options[:where] || "state < 9"
+      where = options[:where] || 'state < 9'
       where += " AND admin_id = #{admin_id}" unless admin_id.nil?
       options.merge!(where: where)
-      options.merge!(order: "echeance ASC")  unless options.key?(:order)
+      options.merge!(order: 'echeance ASC, state DESC')  unless options.key?(:order)
       tache_with_echeance = []
       tache_without_echeance = []
       Admin.table_taches.select(options).each do |tdata|
