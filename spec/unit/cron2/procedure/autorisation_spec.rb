@@ -53,7 +53,6 @@ describe 'Procédure d’épuration des autorisations' do
   describe 'Destruction d’une autorisation dépassée' do
     before(:each) do
       reset_mails
-      CRON2::Autorisations.reset_all
       if @id_new_auto.nil? || User.table_autorisations.get(@id_new_auto).nil?
         dauto = {
           user_id:      @u.id,
@@ -74,8 +73,10 @@ describe 'Procédure d’épuration des autorisations' do
       expect(autotable.count).to eq @count_autos_init - 1
       expect(autotable.count(drequest)).to eq 0
     end
+
+
     it 'une autorisation terminée dans 3 jours lance un mail' do
-      start_time = Time.now.to_i - 1
+      start_time = NOW - 1
       autotable.update(@id_new_auto, {end_time: NOW + 3.days - 4.hours})
       # --- On traite les autorisations ---
       cron.autorisations
@@ -88,8 +89,11 @@ describe 'Procédure d’épuration des autorisations' do
       # L'autorisation n'a pas été supprimée
       expect(autotable.count(where:{id: @id_new_auto})).to eq 1
     end
+
+
+
     it 'une autorisation qui se termine dans une semaine lance un mail conforme' do
-      start_time = Time.now.to_i - 1
+      start_time = NOW - 1
       autotable.update(@id_new_auto, {end_time: NOW + 1.week - 4.hours})
       cron.autorisations
       expect(@u).to have_mail(
@@ -115,7 +119,7 @@ describe 'Procédure d’épuration des autorisations' do
         created_at: NOW,
         updated_at: NOW
       }
-      start_time = Time.now.to_i - 1
+      start_time = NOW - 1
       autotable.insert(dauto)
       cron.autorisations
       expect(@u).not_to have_mail(
@@ -124,7 +128,7 @@ describe 'Procédure d’épuration des autorisations' do
       )
     end
     it 'une autorisation qui se termine dans trois semaines quand elle a duré plus de 30 semaines génère un mail d’avertissement' do
-      start_time = Time.now.to_i - 1
+      start_time = NOW - 1
       autotable.update(@id_new_auto, {
           start_time: NOW - 1.year,
           end_time: NOW + 3.week - 4.hours
@@ -146,7 +150,7 @@ describe 'Procédure d’épuration des autorisations' do
   describe 'Création du ticket lorsqu’un user arrive à expiration' do
     before(:all) do
       reset_mails
-      @start = Time.now.to_i - 1
+      @start = NOW - 1
       autotable.delete
       @idauto = autotable.insert({
           user_id:        @u.id,

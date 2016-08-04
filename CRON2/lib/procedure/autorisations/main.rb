@@ -79,8 +79,8 @@ class CRON2
         #
         # Noter que si l'user est traité ici, c'est parce qu'il avait
         # des autorisations, et s'il n'a plus d'autorisations ici,
-        # c'est que son abonnement est terminé (tous ses enregistrements
-        # s'il en a plusieurs)
+        # c'est que son abonnement est terminé (pour tous ses
+        # enregistrements s'il en a plusieurs)
         #
         if good_autos.empty?
           fin_echeance_abonnement huser
@@ -172,6 +172,12 @@ class CRON2
       dans_trois_semaines   = NOW + 3.weeks
       trente_semaines_avant = NOW - 30.weeks
 
+      # puts [
+      #   "temps_fin - dans_trois_heures = #{temps_fin - dans_trois_heures}",
+      #   "temps_fin - dans_trois_jours  = #{temps_fin - dans_trois_jours}",
+      #   "temps_fin - dans_une_semaine  = #{temps_fin - dans_une_semaine}"
+      # ].join("\n")
+
       moins_de_jours =
         case true
         when temps_fin < dans_trois_heures
@@ -188,6 +194,9 @@ class CRON2
         end
 
       date_expiration = temps_fin.as_human_date(true, true, ' ', 'à')
+
+      # puts "date_expiration : #{date_expiration}"
+      # puts "Un mail doit être envoyé"
 
       # Un mail doit être envoyé à l'user
       u = User.new(huser[:id])

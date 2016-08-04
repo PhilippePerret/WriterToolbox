@@ -106,7 +106,8 @@ class TestedPage
       # ouvrent un fichier Html qui ne contient pas le gabarit de la
       # page.
       # Contrairement à la méthode has_route_excluded? ci-dessus, on
-      # s'assure quand même que le fichier retourne un statut 200.
+      # s'assure quand même que le fichier retourne un statut 200 si
+      # cela est demandé dans la configuration.
       # On doit retourner true pour ne pas interrompre la boucle
       return true if testedpage.has_folder_excluded?
 
