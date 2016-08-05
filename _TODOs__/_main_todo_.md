@@ -1,5 +1,11 @@
 # TODO
 
+# Citation à remplacer
+
+(goto citation/285/edit) La citation 285 de Lévi-Strauss
+(goto citation/228/edit) 228 (doublon)
+
+
 # Autorisations exceptionnelles
 
 Mettre en place un système qui permette une visite complète exceptionnelle, à l'usage du links analyzer du site :
@@ -9,11 +15,6 @@ Pour ce faire, on crée un fichier de nom d'un md5 (online/offline) et on met ce
 # OU :
 
 Fonctionner avec une liste d'adresses IP autorisées (./data/secret/authorized_ips) et, lorsque la variable 'authips' est à 1 dans l'url, alors le programme regarde si l'IP de l'utilisateur est dans les IPS courantes et l'autorise (mais sans le loguer).
-
-# Citations en doublon
-
-253 (goto citation/253/edit)
-(c'est la dernière, elles ont toutes été checkées)
 
 # Entrée d'une page de Narration en page de cours UN AN
 

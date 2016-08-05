@@ -39,6 +39,9 @@ class Paiement
   # retour du paiement
   attr_reader :token
 
+  # {String} Le PayerId de la transaction
+  attr_reader :payer_id
+
   # {String} La description du paiement, au cas où
   attr_accessor :description
 
@@ -79,11 +82,6 @@ class Paiement
       RETURNURL:                        url_retour_ok
     }
   end
-
-  def payer_id
-    @payer_id ||= param(:PayerID) || param(:payer_id)
-  end
-
 
 end #/Paiement
 end #/SiteHtml

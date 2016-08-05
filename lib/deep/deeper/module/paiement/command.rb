@@ -23,7 +23,7 @@ class Paiement
 
       def sandbox?
         if @is_sandbox === nil
-           @is_sandbox = SiteHtml::Paiement::sandbox?
+           @is_sandbox = SiteHtml::Paiement.sandbox?
         end
         @is_sandbox
       end
@@ -49,7 +49,7 @@ class Paiement
     def initialize paiement, description = nil
       @paiement     = paiement
       @description  = description
-      @querystring  = Array::new
+      @querystring  = Array.new
       add_authentification
     end
 
@@ -111,7 +111,7 @@ class Paiement
       end
     end
     def success?
-      @is_success ||= response[:ack] == "Success"
+      @is_success ||= response[:ack] == 'Success'
     end
 
     # La requête qui sera exécutée

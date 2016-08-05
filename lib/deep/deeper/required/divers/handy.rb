@@ -9,6 +9,8 @@
 # erreur.
 #
 # +args+
+#   Peut être soit simplement l'erreur elle-même, soit un Hash
+#   contenant :
 #   :exception      L'erreur complète rencontrée, avec #message et
 #                   # backtrace
 #   :url            L'url, if any.
@@ -16,11 +18,19 @@
 #   :from           La provenance de l'erreur, même si elle peut
 #                   être retrouvée dans backtrace
 def send_error_to_admin args
+  args =
+    case args
+    when Hash then args
+    else {exception: args}
+    end
+
   message, backtrace =
     case args[:exception]
     when String then [args[:exception], '']
     else [args[:exception].message, "BACKTRACE \n" + args[:exception].backtrace.join("\n")]
     end
+
+
   message = <<-HTML
 <p>Erreur sur #{site.name}</p>
 <p>

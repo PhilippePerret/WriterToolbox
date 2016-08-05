@@ -4,7 +4,7 @@ class SiteHtml
   # Le paiement courant
   # @usage : site.paiement.<méthode>
   def paiement
-    @paiement ||= Paiement::new
+    @paiement ||= Paiement.new
   end
 
   class Paiement

@@ -18,7 +18,7 @@ class Admin
 class Mailing
 class << self
 
-  def apercu_mail; @apercu_mail end
+  def apercu_mail; @apercu_mail || '' end
   def apercu_mail= value; @apercu_mail = value end
 
   def add_output str

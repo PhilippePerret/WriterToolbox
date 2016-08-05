@@ -35,7 +35,7 @@ class SiteHtml
     def valider_paiement
       # debug "-> valider_paiement"
       # Instancier une commande Paypal
-      command = Command::new(self, "Validation du paiement effectué")
+      command = Command.new(self, "Validation du paiement effectué")
 
       # Paramètres de la transaction
       command << {
@@ -49,7 +49,7 @@ class SiteHtml
       # === Exécuter la requête ===
       command.exec
 
-      debug "Validation du paiement : #{command.success? ? 'OUI' : 'NON'}"
+      # debug "Validation du paiement : #{command.success? ? 'OUI' : 'NON'}"
 
       # Test du résultat
       if command.success?
@@ -67,12 +67,14 @@ class SiteHtml
         return true
       else
         err =  "Une erreur s'est produite : #{command.response[:l_shortmessage0]} / #{command.response[:l_longmessage0]}"
+        send_error_to_admin err
         debug err
         return error err
       end
 
     rescue Exception => e
       error "Une erreur s'est malheureusement produite."
+      send_error_to_admin(e)
       debug e.message
       debug e.backtrace.join("\n")
       debug "\n"+ "="*80
@@ -92,7 +94,7 @@ class SiteHtml
     def details_paiement
       # On ne donnera une réponse positive que si le retour est
       # successful.
-      command = Command::new(self, "Récupération des détails de paiement")
+      command = Command.new(self, "Récupération des détails de paiement")
 
       # Les paramètres de la transaction
       command << {

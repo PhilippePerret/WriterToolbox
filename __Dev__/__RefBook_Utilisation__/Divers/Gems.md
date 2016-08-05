@@ -37,7 +37,9 @@ En fait, il suffit d'envoyer la commande d'installation au site lui-même.
 
 Donc je peux copier-coller la commande ci-dessous dans n'importe quel fichier qui sera lu au chargement de l'application, par exemple à la fin du fichier `./lib/required.rb` :
 
-        debug `echo "<mot de passe>" | sudo -S gem install NOM_DU_GEM`
+        # debug `echo "<mot de passe>" | sudo -S gem install NOM_DU_GEM`
+        gem install NOM_DU_GEM`
+        # Normalement, maintenant, il ne faut plus être su
 
 <a name='installationsurlesitedistant'></a>
 

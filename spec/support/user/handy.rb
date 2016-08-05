@@ -117,6 +117,32 @@ def benoit
   return u
 end
 
+# Retourne des données au hasard mais valides pour un
+# user. Le hash retourné contient toutes les données
+# utiles pour le formulaire d'inscription.
+def random_user_data mail = nil, password = nil
+  now       = Time.now.to_i
+  sexe      = ["H","F"][rand(2)]
+  hsexe     = {'H' => 'un homme', 'F' => 'une femme'}[sexe]
+  prenom    = UserSpec::random_prenom(sexe)
+  salt      = "dubonsel"
+  mail      ||= "mail#{sexe}#{now}@chez.moi"
+  password  ||= "unmotdepasse"
+  cpassword = Digest::MD5.hexdigest("#{password}#{mail}#{salt}")
+
+  {
+    pseudo:     "#{prenom.normalized}#{sexe}",
+    patronyme:  "#{prenom} Patro #{sexe} N#{now}",
+    mail:       mail,
+    sexe:       sexe,
+    hsexe:      hsexe,
+    options:    "001000000000000000",
+    salt:       salt,
+    password:   password,
+    cpassword:  cpassword
+  }
+end
+
 # +options+
 #
 #   :unanunscript   Si true, l'inscrit au programme
@@ -136,21 +162,19 @@ def create_user options = nil
   subscriber     = options.delete(:subscriber) == true
   mettre_courant = options.delete(:current) || programme_1a1s
 
-  sexe    = ["H","F"][rand(2)]
-  prenom  = UserSpec::random_prenom(sexe)
+  druser = random_user_data
 
-
-  options[:sexe]        ||= sexe
-  options[:pseudo]      ||= "#{prenom.normalized}#{options[:sexe]}#{now}"
-  options[:patronyme]   ||= "#{prenom} Patro #{options[:sexe]} N#{now}"
-  options[:mail]        ||= "mail#{options[:sexe]}#{now}@chez.moi"
-  options[:options]     ||= "001000000000000000"
+  options[:sexe]        ||= druser[:sexe]
+  options[:pseudo]      ||= druser[:pseudo]
+  options[:patronyme]   ||= druser[:patronyme]
+  options[:mail]        ||= druser[:mail]
+  options[:options]     ||= druser[:options]
   options[:session_id] = app.session.session_id unless options.key?(:session_id)
   options[:created_at]  ||= now
   options[:updated_at]  ||= now
 
-  pwd = options.delete(:password) || "0123"*4
-  options[:salt]        ||= "dubonsel"
+  pwd = options.delete(:password) || druser[:password]
+  options[:salt]        ||= druser[:salt]
   cpwd = Digest::MD5.hexdigest("#{pwd}#{options[:mail]}#{options[:salt]}")
   options[:cpassword] = cpwd
 
@@ -204,5 +228,35 @@ def create_user options = nil
   end
 
   return new_user
+
+end
+
+# Détruit des users dans la table offline, sans toucher aux 10
+# premiers
+#
+def remove_users upto = :all
+  drequest = {
+    where: "id > 10",
+    colonnes: []
+  }
+  case upto
+  when Fixnum then drequest.merge!(limit: upto)
+  when :all
+    # Rien à faire
+  end
+
+  ids = User.table.select(drequest).collect{|h| h[:id]}
+
+  # On les détruit dans la table
+  User.table.delete(drequest)
+
+  # drequest = {where: "user_id IN (#{ids.join(',')})"}
+  drequest = {where: "user_id > 10"}
+
+  # On les détruit dans la table des paiements
+  User.table_paiements.delete(drequest)
+
+  # On les détruit dans la table des autorisations
+  User.table_autorisations.delete(drequest)
 
 end

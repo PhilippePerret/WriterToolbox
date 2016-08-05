@@ -51,7 +51,7 @@ class Paiement
       # paiement.
       # Ensuite, la page affichera le formulaire avec le logo PayPal
       # pour pouvoir payer (note : ce formulaire est défini dans la
-      # page paiement.erb mais c'est une méthode d'helper qui fourni
+      # page paiement.erb mais c'est une méthode d'helper qui fournit
       # le code du formulaire : site.paiement.form).
       init
       # Noter que le formulaire est par défaut le formulaire du
@@ -64,8 +64,7 @@ class Paiement
       # Le context doit aussi pouvoir répondre à :montant pour fixer
       # le montant attendu.
       # Si vraiment une application doit utiliser des formulaires
-      # différents en fonction du context, il faut modifier pour
-      # que le
+      # différents en fonction du context, il faut modifier.
       self.output = Vue.new(form_affixe_path, nil, self).output
     end
   end
@@ -133,6 +132,7 @@ class Paiement
   def on_ok
     @token    = param(:token)
     @payer_id = param(:PayerID)
+    debug "ICI : @payer_id = #{@payer_id.inspect}"
     if valider_paiement
       self.output = Vue.new("#{context}/paiement/on_ok", nil, self).output
     else
