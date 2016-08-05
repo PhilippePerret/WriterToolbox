@@ -125,10 +125,10 @@ class String
     str.gsub!(/CITATION\[([0-9]+)\|(.*?)\]/){ lien.citation($1.to_i, $2.to_s) }
     str
   end
-  
+
   def formate_balises_films
     str = self
-    str.gsub!(/FILM\[(.*?)\]/){ lien.film($1.to_s) }
+    str.gsub!(/FILM\[(.*?)(?:\|(.*?))?\]/){ lien.film($1.to_s, {titre: $2}) }
     str
   end
 

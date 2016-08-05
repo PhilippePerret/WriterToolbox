@@ -197,7 +197,7 @@ class Lien
       @lib_filmodico_already_required = true
     end
 
-    options ||= {}
+    options ||= Hash.new
 
 
     # On mémorise les films déjà cités pour ne pas mettre plusieurs
@@ -248,7 +248,7 @@ class Lien
       titre_premiere_fois, titre_autres_fois =
         if ifilm != nil
           titre_autres_fois = "#{ifilm.titre.in_span(class:'titre')}"
-          t = "#{ifilm.titre.in_span(class:'titre')} ("
+          t = "#{(options.delete(:titre) || ifilm.titre).in_span(class:'titre')} ("
           t << ifilm.titre_fr.in_span(class:'italic') + " – " if ifilm.titre_fr.to_s != ""
           realisateur = ifilm.realisateur.collect do |hreal|
             "#{hreal[:prenom]} #{hreal[:nom]}"
