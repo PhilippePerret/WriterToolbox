@@ -1,8 +1,19 @@
 # encoding: UTF-8
+=begin
+
+  Test complet d'un abonnement, entièrement piloté.
+
+  Le test procède au paiement sur le site PayPal de l'abonnement.
+
+=end
 feature "Test d'un abonnement à la boite à outils" do
   scenario "Un visiteur peut s'inscrire et prendre un abonnement" do
 
     remove_users :all
+
+    # Nombre actuelle d'autorisation
+    nombre_autorisations = User.table_autorisations.count.freeze
+    puts "Nombre d'autorisations au départ : #{nombre_autorisations}"
 
     start_time = Time.now.to_i
     data = random_user_data
@@ -61,6 +72,8 @@ feature "Test d'un abonnement à la boite à outils" do
     end
     sleep 2
 
+    require './data/secret/data_benoit'
+
     puts "#{IL} remplit le formulaire PayPal avec ses données…"
     code_javascript = <<-JS
 var iframe;
@@ -68,8 +81,8 @@ for(iframe = 0; iframe < 4; ++iframe){
   if(window.frames[iframe].document.getElementById('email')){break}
 }
 var doc = window.frames[iframe].document;
-doc.getElementById('email').value='benoit.ackerman@yahoo.fr';
-doc.getElementById('password').value='bozoleclown';
+doc.getElementById('email').value='#{DATA_BENOIT[:mail]}';
+doc.getElementById('password').value='#{DATA_BENOIT[:password]}';
 doc.getElementById('btnLogin').click();
     JS
     page.execute_script(code_javascript.gsub(/\n/,''))
@@ -79,14 +92,34 @@ doc.getElementById('btnLogin').click();
       puts "J'attends que la page pour continuer apparaissent…"
       sleep 1
     end
+    puts "#{IL} attend 6 secondes"
+    js_attente = "return document.getElementById('continue_abovefold');"
+    while page.execute_script(js_attente) == nil
+      sleep 0.5
+    end
+    puts "Le bouton a été trouvé"
     sleep 2
+    shot 'page-paypal-continuer'
     puts "#{pseudo} clique le bouton “Continuer” pour procéder au paiement"
-    page.execute_script('document.getElementById("continue_abovefold").click()')
-    puts "#{pseudo} attend qu'on revienne de PayPal…"
-    sleep 10
-    # sleep 10*60 #pour laisser le temps de récupérer le payerid
+    require 'timeout'
+    Timeout::timeout(20*60) do
+      # Je hacke un peu... pour essayer d'attendre sans erreur si c'est
+      # trop long.
+      page.execute_script('document.getElementById("continue_abovefold").click()')
+      puts "#{pseudo} attend qu'on revienne de PayPal…"
+    end
+    until page.has_css?('section#footer')
+      sleep 1
+    end
+    shot 'retour-site-after-paiement'
 
+    expect(page).to have_content( "MERCI, #{pseudo} !")
+    puts "#{pseudo} trouve le message de confirmation !"
     expect(page).not_to have_css('#flash div.error')
+    puts "Aucune erreur ne s'est produite !"
+
+    # On attend un peu que tout ait été fait
+    sleep 2
 
 
     # ---------------------------------------------------------------------
@@ -101,14 +134,25 @@ doc.getElementById('btnLogin').click();
     puts "#{pseudo} a reçu un mail confirmant son paiement, avec sa facture"
     # # TODO Un mail a été envoyé à l'admin pour informer de l'abonnement
     # Apparemment, il n'y a pas d'envoi… bizarre…
-    puts MailMatcher.mails_found.pretty_inspect
+    # puts MailMatcher.mails_found.pretty_inspect
+
+    puts "L'administration doit recevoir un mail annonçant la nouvelle inscription…"
     expect(phil).to have_mail(
-      sent_after:  start_time
+      sent_after:   start_time,
+      subject:      'Nouvelle inscription',
+      message:      [pseudo, "##{duser[:id]}"]
     )
-    puts "Mails pour l'administrateur trouvés"
+
+    puts "L'administration doit recevoir un mail annonçant le paiement…"
+    expect(phil).to have_mail(
+      sent_after:   start_time
+    )
+
+    puts "Mails pour l'administrateur trouvés !"
 
     # Le nouvel abonné doit avec une autorisation
     puts "#{pseudo} doit posséder une autorisation dans la table…"
+    puts "Nombre d'autorisations après paiement : #{User.table_autorisations.count}"
     expect(User.table_autorisations.count).to eq nombre_autorisations + 1
     expect(User.table_autorisations.count(where:{user_id: u.id})).to eq 1
     puts "Il y a une nouvelle autorisation et elle appartient à #{pseudo}"
