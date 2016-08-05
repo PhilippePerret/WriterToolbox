@@ -56,9 +56,14 @@ class SiteHtml
 
         # Enregistrement du paiement dans la base de données
         save_paiement
+
         # Envoi d'un mail à l'utilisateur pour lui confirmer
         # le paiement
         send_mail_to_user
+
+        # Envoi d'un mail à l'administration pour informer
+        # du paiement
+        mail_administration_annonce_paiement
 
         # S'il y a une méthode de fin de processus, il faut
         # l'appeler. Dans le cas contraire, on s'arrête là.

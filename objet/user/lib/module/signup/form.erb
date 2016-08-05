@@ -30,16 +30,28 @@ form.prefix = 'user'
 %>
 <form id="form_user_signup" class="dim3070" action="<%= signup_for_unanunscript ? 'unan' : 'user' %>/create" method="POST">
   <%= (param(:route_after_signup)||param(:ras)||"").in_hidden(name:'route_after_signup') %>
-  <%= form.field_text("Pseudo", 'pseudo', nil, {class:'milong'}) %>
-  <%= form.field_text("Patronyme", 'patronyme', nil, {class:'milong'}) %>
-  <%= form.field_select("Vous êtes…", 'sexe', nil, {values: [["F", "une femme"], ["H", "un homme"]]}) %>
-  <%= form.field_text("Mail", 'mail', nil, {class:'milong', confirmation:true}) %>
-  <%= form.field_text("Mot de passe", 'password', nil, {class:'milong', confirmation:true}) %>
-  <% if signup_for_unanunscript %>
-    <%= form.field_checkbox("S'abonner au programme #{Unan::PROGNAME_MINI_MAJ}", 'subscribe', 'on') %>
-  <% else %>
-    <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: "<br>(Pourquoi s'abonner ?)".in_a(href:'aide/3/show', target:'_blank', class:'small')}) %>
-  <% end %>
-  <%= form.field_text("Test anti-robot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile :<br>".in_span(class:'small')}) %>
-  <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons') %>
+
+  <fieldset>
+    <legend>Identité</legend>
+    <%= form.field_text("Pseudo", 'pseudo', nil) %>
+    <%= form.field_text("Patronyme", 'patronyme', nil) %>
+    <%= form.field_select("Vous êtes…", 'sexe', nil, {values: [["F", "une femme"], ["H", "un homme"]]}) %>
+  </fieldset>
+  <fieldset>
+    <legend>Contact et accès au site</legend>
+    <%= form.field_text("Mail", 'mail', nil) %>
+    <%= form.field_text("Confirmation mail", 'mail_confirmation', nil) %>
+    <%= form.field_text("Mot de passe", 'password', nil) %>
+    <%= form.field_text("Confirmation m.d.p", 'password_confirmation', nil) %>
+  </fieldset>
+  <fieldset>
+    <legend>Abonnement</legend>
+    <% if signup_for_unanunscript %>
+      <%= form.field_checkbox("S'abonner au programme #{Unan::PROGNAME_MINI_MAJ}", 'subscribe', 'on') %>
+    <% else %>
+      <%= form.field_checkbox("S'abonner au site"+" (pour #{site.tarif_humain}/an)".in_span(class:'small'), 'subscribe', nil, {text_after: 'Pourquoi s’abonner ?'.in_a(href:'aide/3/show', target: :new, class:'small').in_div(class: 'right', style:'margin-top:1em')}) %>
+    <% end %>
+  </fieldset>
+  <%= form.field_text("Antirobot", 'captcha', nil, {class:'short', text_before: "Nombre de jours dans une année bisextile : ".in_span(class:'small')}) %>
+  <%= "S'inscrire".in_submit(class:'btn').in_div(class:'buttons', style: 'margin-top:3em') %>
 </form>

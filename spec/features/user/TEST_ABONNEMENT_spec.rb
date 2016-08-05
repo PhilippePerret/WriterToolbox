@@ -5,6 +5,22 @@
 
   Le test procède au paiement sur le site PayPal de l'abonnement.
 
+  Le test procède à :
+
+    - l'inscription de l'user
+    - la confirmation du mail de l'user
+
+
+  Le test s'assure que :
+
+    - l'user soit bien inscrit
+    - que son mail ait bien été confirmé
+    - qu'un message de bienvenue soit envoyé
+    - qu'un mail de facture ait été envoyé
+    - qu'un mail d'annonce de l'inscription a été envoyé à l'administration
+    - qu'un mail d'annonce de l'abonnement a été envoyé à l'administration
+    - qu'une autorisation d'un an ait été accordée à l'user
+
 =end
 feature "Test d'un abonnement à la boite à outils" do
   scenario "Un visiteur peut s'inscrire et prendre un abonnement" do
@@ -25,7 +41,7 @@ feature "Test d'un abonnement à la boite à outils" do
     UN_USER = is_femme ? 'une useuse' : 'un user'
     E       = is_femme ? 'e' : ''
 
-    puts "#{UN_USER} nommé#{E} #{pseudo} rejoint le site le #{start_time.as_human_date(true, true, ' ', 'à')}"
+    puts "#{UN_USER.capitalize} nommé#{E} #{pseudo} rejoint le site le #{start_time.as_human_date(true, true, ' ', 'à')}"
     visit home
 
     puts "#{IL} rejoint le formulaire d'inscription pour s'inscrire…"
@@ -145,7 +161,9 @@ doc.getElementById('btnLogin').click();
 
     puts "L'administration doit recevoir un mail annonçant le paiement…"
     expect(phil).to have_mail(
-      sent_after:   start_time
+      sent_after:   start_time,
+      subject:      'Nouvel abonnement au site',
+      message:      [pseudo, "##{duser[:id]}", "Facture envoyée"]
     )
 
     puts "Mails pour l'administrateur trouvés !"

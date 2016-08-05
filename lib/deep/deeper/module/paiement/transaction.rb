@@ -128,11 +128,9 @@ class Paiement
   # Méthode appelée suite au paiement réussi par l'user
   # Noter qu'il faut encore valider le paiement auprès de
   # Paypal et l'enregistrer sur le site
-  # TODO : Il faut faire un test pour voir si la vue existe
   def on_ok
     @token    = param(:token)
     @payer_id = param(:PayerID)
-    debug "ICI : @payer_id = #{@payer_id.inspect}"
     if valider_paiement
       self.output = Vue.new("#{context}/paiement/on_ok", nil, self).output
     else
@@ -142,7 +140,6 @@ class Paiement
 
   # Méthode appelée suite à l'annulation ou l'impossibilité
   # d'exécuter le paiement.
-  # TODO : Il faut faire un test pour voir si la vue existe
   def on_cancel
     self.output = Vue.new("#{context}/paiement/on_cancel", nil, self).output
   end
@@ -169,12 +166,42 @@ class Paiement
       formated: true
     )
   end
+
+  # Envoyer le mail à l'administration pour informer du
+  # paiement
+  def mail_administration_annonce_paiement
+    # return # pour faire échouer les tests
+    mess = <<-TXT
+<p>Phil,</p>
+<p>Je te fais part d'un nouvel abonnement, celui de :</p>
+<pre>PSEUDO : #{user.pseudo} IDENTIFIANT : ##{user.id}</pre>
+<p>Facture envoyée à #{user.pseudo} :</p>
+#{table_facture}
+    TXT
+
+    site.send_mail_to_admin(
+      subject:  'Nouvel abonnement au site',
+      message:  mess,
+      formated: true
+    )
+  end
+
   # {StringHTML} Retourne le code pour la facture
   def facture
     @facture ||= begin
       <<-HTML
 <p>Bonjour #{user.pseudo},</p>
 <p>Veuillez trouver ci-dessous votre facture pour votre dernier paiement.</p>
+<p>Bien à vous et au plaisir ! :-)</p>
+#{table_facture}
+<p>#{site.name}</p>
+      HTML
+    end
+  end
+
+  def table_facture
+    @table_facture ||= begin
+      <<-HTML
 <style type="text/css">
 table#facture{border:2px solid}
 table#facture tr{border: 1px solid}
@@ -210,8 +237,6 @@ table#facture td{padding: 1px}
     <td>#{montant_humain}</td>
   </tr>
 </table>
-<p>Bien à vous et au plaisir ! :-)</p>
-<p>#{site.name}</p>
       HTML
     end
   end
