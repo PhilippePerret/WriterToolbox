@@ -212,7 +212,7 @@ class CRON2
           citation_init = citation.dup
           while "#{citation}#{auteur}#{bitly}".length > 138
             citation_init = citation_init[0..-2]
-            citation = citation_init + ' […] '
+            citation = citation_init + ' […] ' # pas d'insécable !
           end
 
           full_citation = "#{citation}#{auteur}#{bitly}"
