@@ -78,6 +78,8 @@ RSpec.configure do |config|
   # Pour les tests have_tag etc.
   config.include RSpecHtmlMatchers
 
+  # config.include ModuleFormLikeStepDefinition
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -260,6 +262,10 @@ RSpec.configure do |config|
   # -----------------
   def test titre
     puts "\e[1m\e[4;30m#{titre}\e[0m" if verbose?
+  end
+  def success message
+    puts "\e[32m#{message}\e[0m" if verbose?
+    sleep 0.1
   end
 
   # Détermine s'il faut afficher les messages principalement
