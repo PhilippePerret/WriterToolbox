@@ -1,7 +1,7 @@
 <%
 # Vue pour poser une nouvelle question
 %>
-<%= forum.titre_h1("Question") %>
+<%= forum.titre_h1('Question/sujet') %>
 
 <%
   if user.identified?
@@ -22,7 +22,7 @@ HTML
 div_explication = div_explication.in_p(class:'small')
 
 %>
-<form class="dim2080" action="sujet/question?in=forum" method="POST">
+<form id="form_nouveau_sujet" class="dim2080" action="sujet/question?in=forum" method="POST">
   <%= "save_question".in_hidden(name: 'operation')          %>
   <%= last_route.in_hidden( name: 'question_last_route' )   %>
   <%= form.field_raw("", '', nil, {field: div_explication}) %>

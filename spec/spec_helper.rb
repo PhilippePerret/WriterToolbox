@@ -256,6 +256,20 @@ RSpec.configure do |config|
     Unan::Program::instance_variables.each{|k|Unan::Program::remove_instance_variable(k)}
   end
 
+  #  Titre d'un test
+  # -----------------
+  def test titre
+    puts "\e[1m\e[4;30m#{titre}\e[0m" if verbose?
+  end
+
+  # Détermine s'il faut afficher les messages principalement
+  # des 'steps définitions' façon rspec (pas cucumber)
+  def verbose?
+    # Pour le moment, je mets toujours à true, mais ensuite il
+    # faudra pouvoir le régler autrement.
+    true
+  end
+
   def require_folder folder
     Dir["#{folder}/**/*.rb"].each{ |m| require m }
   end

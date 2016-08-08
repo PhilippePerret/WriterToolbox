@@ -19,13 +19,17 @@ class Page
     return '' if route.split('/').first == 'admin'
 
     # Le lien Bitly vers la page, le crée si nécessaire
-    begin
-      site.require_objet 'bitly'
-      b = RSBitly.new
-      b.long_url = "#{site.distant_url}/#{route}"
-      bitlink = b.short_url # => le lien bitly
-      bitlink_field = bitlink.in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width: 200px')
-    rescue
+    if OFFLINE
+      begin
+        site.require_objet 'bitly'
+        b = RSBitly.new
+        b.long_url = "#{site.distant_url}/#{route}"
+        bitlink = b.short_url # => le lien bitly
+        bitlink_field = bitlink.in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width: 200px')
+      rescue
+        bitlink_field = ''
+      end
+    else
       bitlink_field = ''
     end
 
