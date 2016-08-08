@@ -15,7 +15,7 @@ feature "Test du fonctionnement des pdays" do
 
     go_and_identify DUSER[:mail], DUSER[:password]
 
-    expect(page).to have_content("Bienvenue, #{DUSER[:pseudo]}")
+    la_page_affiche "Bienvenue, #{DUSER[:pseudo]}"
 
     shot('after-signin-3e')
 

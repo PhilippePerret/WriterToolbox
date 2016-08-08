@@ -3,16 +3,25 @@ class SiteHtml
 class Admin
 class Console
 
+  def change_pday_benoit pday_indice, params = nil
+    # Il faut d'abord s'assure que Benoit suive bien le programme
+    # UAUS
+    benoit = User.get(2)
+    init_program_1an1script_for(2) unless benoit.unanunscript?
+    benoit.program.current_pday= pday_indice
+
+  end
+
   def init_program_1an1script_for user_id
     raise "Le dernier mot doit être l'identifiant de l'user" unless user_id.instance_of?(Fixnum) || user_id.numeric?
-    current_user_id = User::current.id.freeze
-    u = User::get(user_id.to_i)
+    current_user_id = User.current.id.freeze
+    u = User.get(user_id.to_i)
     raise "L'user ##{user_id} est inconnu au bataillon…" unless u.exist?
-    User::current = u
+    User.current = u
     site.require_objet 'unan'
     (Unan::folder_modules + 'signup_user.rb').require
     u.signup_program_uaus
-    User::current = User::get(current_user_id)
+    User.current = User.get(current_user_id)
     "Programme ÉCRIRE UN FILM/ROMAN EN UN AN initié avec succès pour #{u.pseudo} (##{u.id})"
   end
 

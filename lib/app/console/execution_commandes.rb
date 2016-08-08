@@ -160,14 +160,8 @@ class Console
     if (found = line.match(/^(?:balise|lien) (livre|film|analyse|mot|page|user|question|checkup) (.*?)(?: (ERB|erb))?$/).to_a).count > 0
       ( main_traitement_balise found[1..-1] )
     elsif ( found = line.match(/^set benoit to pday ([0-9]+)(?: with (\{(?:.*?)\}))?$/).to_a).count > 0
-      (site.folder_lib_optional + 'console/pday_change/main.rb').require
-      pday_indice = found[1].to_i
-      params = found[2]
-      params = eval(params) unless params.nil?
-      # debug "--> User::get(2).change_pday(pday_indice=#{pday_indice}, params=#{params.inspect})"
-      site.require_objet 'unan'
-      Unan::require_module 'quiz'
-      User::get(2).change_pday pday_indice, params
+      console.require 'unan_unscript'
+      change_pday_benoit found[1].to_i, eval(found[2] || 'nil')
     else
       return false # pour chercher la commande autrement
     end
