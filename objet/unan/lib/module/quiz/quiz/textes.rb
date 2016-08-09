@@ -15,7 +15,7 @@ class Quiz
   # Note : On utilise le moteur de fabrication du questionnaire modulé
   # avec les réponses de l'utilisateur.
   def detail_bonnes_reponses
-    return "" if type_validation == :renseignements
+    return '' if type_validation == :renseignements
     "Veuillez trouver ci-dessous le détail de vos bonnes et mauvaises réponses.".in_div(class:'small italic') +
     build
   end
@@ -23,7 +23,7 @@ class Quiz
   # Le texte ne fonctionne du type de questionnaire et du résultat
   # général de l'auteur.
   def texte_per_quiz_type
-    t = Array::new
+    t = Array.new
     case type_validation
     when :renseignements
       # Pour les prises de renseignement et les sondages

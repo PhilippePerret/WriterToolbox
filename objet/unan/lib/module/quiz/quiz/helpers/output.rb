@@ -18,8 +18,11 @@ class Quiz
   #
   def commented_output
     if for_correction?
-      texte_per_quiz_type     +
-      texte_per_ecart_moyenne +
+      (
+        texte_per_quiz_type     +
+        texte_per_ecart_moyenne +
+        code_for_regle_reponses
+      ).in_div(class: 'resultat_quiz') +
       detail_bonnes_reponses    # utilise la méthode `build`
     else
       # Un ré-affichage du questionnaire, mais où il

@@ -171,7 +171,7 @@ class Program
       end
       # Ici, on a nos 5 derniers travaux finis (ou moins, ou rien)
       ids_works.collect do |wid|
-        Unan::Program::Work::new(self, wid)
+        Unan::Program::Work.new(self, wid)
       end
     end
   end

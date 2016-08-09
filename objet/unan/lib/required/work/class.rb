@@ -8,7 +8,7 @@ class Work
     def get program, wid
       # debug "-> Unan::Program::Work::get (program = #{program.inspect} / wid = #{wid.inspect})"
       wid = wid.to_i_inn
-      @instances      ||= {}
+      @instances      ||= Hash.new
       @instances[wid] ||= new(program, wid)
     end
 

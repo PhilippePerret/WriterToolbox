@@ -17,7 +17,7 @@ Module pour créer un travail (Unan::Program::Work)
 #   :indice_pday        {Fixnum}    Indice du PDay de ce travail
 #
 def create_new_work_for_user wdata
-  auteur = wdata[:user] || User::get(wdata[:user_id])
+  auteur = wdata[:user] || User.get(wdata[:user_id])
 
   # Avant de créer le travail, il faut s'assurer qu'il
   # n'existe pas déjà, ce qui se produit lorsque l'user
@@ -37,7 +37,7 @@ def create_new_work_for_user wdata
   # Pour le type de travail
   awork = Unan::Program::AbsWork::get(awork_id)
   # Création de l'instance et enregistrement
-  iwork = Unan::Program::Work::new( auteur.program, nil )
+  iwork = Unan::Program::Work.new( auteur.program, nil )
   iwork.data2save= {
     program_id:   progr_id,
     abs_work_id:  awork_id,

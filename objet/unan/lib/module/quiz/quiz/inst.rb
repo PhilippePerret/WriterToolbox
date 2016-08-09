@@ -37,27 +37,33 @@ class Quiz
     @auteur = quser
   end
 
-  # Travail (Unan::Program::Work) correspondant
+  # Travail propre ({Unan::Program::Work}) correspondant
   # à ce questionnaire.
   def work
     @work ||= begin
-      if awork.nil?
+      if awork.nil? && awork_id.nil?
         # Se produit lorsque c'est une édition du
-        # quiz
+        # quiz ou lorsque le quiz est enregistré pour
+        # la première fois.
         nil
       else
-        drequest = {
-          where:    {
-            abs_work_id:  awork_id || awork.id,
-            program_id:   auteur.program.id,
-            abs_pday:     awork_pday || awork.pday
-          },
-          colonnes: []
-        }
-        wid = auteur.table_works.get(drequest)[:id]
-        Unan::Program::Work.new(auteur, wid)
+        get_work_of_quiz
       end
     end
+  end
+
+  # Récupère le Unan::Program::Work du quiz courant
+  def get_work_of_quiz
+    drequest = {
+      where:    {
+        abs_work_id:  awork_id || awork.id,
+        program_id:   auteur.program.id,
+        abs_pday:     awork_pday || awork.pday
+      },
+      colonnes: Array.new
+    }
+    wid = auteur.table_works.get(drequest)[:id]
+    Unan::Program::Work.new(auteur, wid)
   end
 
   # Retourne l'User::UQuiz pour ce quiz, qu'il existe ou
@@ -66,7 +72,7 @@ class Quiz
   # précisé, c'est l'auteur courant (user) qui est pris en
   # référence.
   def uquiz quser = nil
-    User::UQuiz::get(self.id, quser)
+    User::UQuiz.get(self.id, quser)
   end
 
   # Retourne le type-validation du questionnaire, qui peut
@@ -107,12 +113,12 @@ class Quiz
   # ---------------------------------------------------------------------
   def previous_version
     @previous_version ||= begin
-      previous_version_id.nil? ? nil : Unan::Quiz::new(previous_version_id)
+      previous_version_id.nil? ? nil : Unan::Quiz.new(previous_version_id)
     end
   end
   def next_version
     @next_version ||= begin
-      next_version_id.nil? ? nil : Unan::Quiz::new(next_version_id)
+      next_version_id.nil? ? nil : Unan::Quiz.new(next_version_id)
     end
   end
 

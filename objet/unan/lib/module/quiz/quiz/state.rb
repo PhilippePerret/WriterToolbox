@@ -4,7 +4,7 @@ class Quiz
 
   # Retourne true si le questionnaire existe
   def exist?
-    Unan::table_quiz.count(where:{id: id}, colonnes: []) > 0
+    Unan::table_quiz.count(where: { id: id }, colonnes: []) > 0
   end
 
   # Retourne true si l'auteur possède déjà ce

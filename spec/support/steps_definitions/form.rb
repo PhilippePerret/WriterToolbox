@@ -90,6 +90,7 @@
         when :text, :textarea then form.fill_in(ref, with: value)
         when :select    then form.select(value, from: ref)
         when :checkbox  then form.send(value ? :check : :uncheck, ref)
+        when :radio     then form.choose(ref)
         else
           raise "Je ne sais pas encore traiter un champ de type #{type.inspect}."
         end

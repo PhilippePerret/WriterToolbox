@@ -1,5 +1,18 @@
 # encoding: UTF-8
 
+# On réinitialise complètement un auteur du programme UNAN, souvent
+# avant de le passer à un jour précis : User#set_pday_to <id>
+#
+# Note : pour le moment, ça ne détruit pas le programme de l'auteur
+# s'il en a
+# 
+def reset_auteur_unan auteur
+  site.require_objet 'unan'
+  auteur.instance_of?(User) || auteur = User.get(auteur)
+  auteur.table_quiz.delete
+  auteur.table_works.delete
+
+end
 # Prépare un auteur pour le programme UN AN UN SCRIPT
 #
 # +options+

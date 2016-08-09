@@ -61,13 +61,13 @@ class Quiz
     (
       titre_quiz      +
       boutons_start_quiz
-    ).in_div(class:'work quiz')
+    ).in_div(id: "work-quiz-#{awork.id}", class:'work quiz')
   end
   def form_recent_quiz
     (
       titre_quiz      +
       boutons_recent_quiz
-    ).in_div(class:'work quiz')
+    ).in_div(id: "work-quiz-#{awork.id}", class:'work quiz')
   end
   def titre_quiz
     (

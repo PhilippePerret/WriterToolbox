@@ -5,8 +5,10 @@ class Quiz
   # Enregistrement du quiz, après son évaluation et avant
   # son réaffichage.
   #
-  # Note : Ici, on ne connait pas encore le travail auteur
-  # associé à ce questionnaire, donc il faut le retrouver
+  # Note : Ici, normalement, le quiz n'a pas encore de travail
+  # propre (Unan::Program::Work). Il faut donc le créer, cela
+  # produit l'instance @work
+  #
   def save_this_quiz
     auteur.table_quiz.insert(data2save.merge(work_id: work.id))
   end
@@ -45,7 +47,7 @@ class Quiz
   # Noter qu'on ne compte les points, dans le cas où c'est un
   # questionnaire ré-utilisable, que la première fois
   def mark_work_done
-    return error( "Impossible de trouver le travail de ce questionnaire…" ) if work.nil?
+    return error( 'Impossible de trouver le travail de ce questionnaire…' ) if work.nil?
     doit_ajouter_points = !(multi? && quiz_existe_deja?)
     work.set_complete( doit_ajouter_points )
   end
@@ -68,7 +70,7 @@ class Quiz
       created_at:   NOW + nombre_jours.days,
       updated_at:   NOW + nombre_jours.days
     }
-    new_work = Unan::Program::Work::new(work.program, nil)
+    new_work = Unan::Program::Work.new(work.program, nil)
     new_work.instance_variable_set('@data2save', hnew_work)
     new_work_id = new_work.create
   end
