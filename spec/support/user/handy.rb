@@ -189,42 +189,34 @@ def create_user options = nil
   User.current= new_user if mettre_courant || programme_1a1s
 
   # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il
-  # faut simuler son inscription
-  if programme_1a1s
-    site.require_objet 'unan'
-    (Unan::folder_modules + 'signup_user.rb').require
-    new_user.signup_program_uaus
+  # faut simuler son inscription au niveau des autorisations
+  if subscriber || programme_1a1s
+    if programme_1a1s
+      site.require_objet 'unan'
+      (Unan.folder_modules + 'signup_user.rb').require
+      new_user.signup_program_uaus
+    end
     data_autorisation = {
       user_id: new_user.id,
-      raison: "1AN1SCRIPT",
+      raison: (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
       start_time: now - 3600,
-      end_time:   (now - 3600) + (2 * 365.days),
+      end_time:   (now - 3600) + ((programme_1a1s ? 2 : 1) * 365.days),
       created_at: now - 3600,
       updated_at: now - 3600,
       nombre_jours: (2 * 365)
     }
     User.table_autorisations.insert(data_autorisation)
-  elsif subscriber
+
     now = Time.now.to_i
     data_paiement = {
       user_id:    new_user.id,
-      objet_id:  'ABONNEMENT',
-      montant:    6.9,
+      objet_id:   (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
+      montant:    (programme_1a1s ? Unan.tarif : site.tarif),
       facture:    'EC-38P44270A51102219',
       created_at:  now
     }
     table_paiements = site.dbm_table(:cold, 'paiements')
     table_paiements.insert(data_paiement)
-    data_autorisation = {
-      user_id: new_user.id,
-      raison: "ABONNEMENT",
-      start_time: now - 3600,
-      end_time:   (now - 3600) + 365.days,
-      created_at: now - 3600,
-      updated_at: now - 3600,
-      nombre_jours: 365
-    }
-    User.table_autorisations.insert(data_autorisation)
   end
 
   return new_user
@@ -236,7 +228,7 @@ end
 #
 def remove_users upto = :all
   drequest = {
-    where: "id > 10",
+    where: "id > 3",
     colonnes: []
   }
   case upto
@@ -249,9 +241,6 @@ def remove_users upto = :all
 
   # On les détruit dans la table
   User.table.delete(drequest)
-
-  # drequest = {where: "user_id IN (#{ids.join(',')})"}
-  drequest = {where: "user_id > 10"}
 
   # On les détruit dans la table des paiements
   User.table_paiements.delete(drequest)

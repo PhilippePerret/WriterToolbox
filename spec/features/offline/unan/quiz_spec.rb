@@ -7,7 +7,6 @@
   suivant le programme.
 
 =end
-TITRE_PAGE_UNAN = 'UN FILM/ROMAN EN UN AN'
 feature "Enregistrement d'un questionnaire du programme UNAN" do
   scenario "Benoit trouve le questionnaire (non démarré) de son deuxième jour" do
     test 'Benoit trouve le questionnaire de son deuxième jour'

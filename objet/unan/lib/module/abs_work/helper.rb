@@ -35,7 +35,8 @@ class AbsWork
     end
 
     # Composition de la carte (attention, c'est la version
-    # "absolue", celle qui est affichée pour l'administrateur)
+    # "absolue", celle qui est affichée pour l'admin ET lorsque le
+    # travail est affiché quand il n'est pas encore commencé)
     (
       (
         human_type_w.in_span(class:'type') +
@@ -45,7 +46,7 @@ class AbsWork
       div_travail + # avec exemples et pages cours
       autres_infos_travail(params[:from]) +
       buttons_edit
-    ).in_div(class:classes_css.join(' '))
+    ).in_div(id: "work-#{id}", class:classes_css.join(' '))
   end
 
   # Affichage de la carte quand elle doit être

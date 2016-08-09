@@ -261,10 +261,12 @@ RSpec.configure do |config|
   #  Titre d'un test
   # -----------------
   def test titre
-    puts "\e[1m\e[4;30m#{titre}\e[0m" if verbose?
+    verbose? || return
+    puts "\e[1m\e[4;30m#{titre}\e[0m"
   end
   def success message
-    puts "\e[32m#{message}\e[0m" if verbose?
+    verbose? || return
+    puts "\e[32m#{message}\e[0m"
     sleep 0.1
   end
 

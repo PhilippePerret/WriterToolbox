@@ -6,73 +6,64 @@ end
 
 feature "Test du fonctionnement des pdays" do
   scenario 'Inscrite vient faire son tout premier travail' do
+    test "DUSER[:pseudo] vient faire son tout premier travail"
 
-    start_time = Time.now.to_i - 1
+    start_time = NOW - 1
 
     # On refait partir inscrite depuis le premier jour
-    TUnan.reset_inscrite( xday = 1 )
+    reset_auteur_unan inscrite
+    inscrite.set_pday_to 1
 
 
-    go_and_identify DUSER[:mail], DUSER[:password]
+    go_and_identify( DUSER[:mail], DUSER[:password] )
 
-    la_page_affiche "Bienvenue, #{DUSER[:pseudo]}"
+    la_page_affiche "Bienvenue, #{inscrite.pseudo}"
 
     shot('after-signin-3e')
 
     # Pour le moment, aucune préférence n'est réglé pour rejoindre
     # le centre de travail, mais ça pourrait être fait à
     # l'avenir.
-    if page.has_link?('rejoindre votre centre de travail')
-      click_link('rejoindre votre centre de travail')
-    end
+    la_page_a_le_lien 'rejoindre votre centre de travail'
+    click_link('rejoindre votre centre de travail')
 
-    expect(page).to have_content("Le Programme “Un An Un Script”")
-    expect(page).to have_css('h2', text: 'Votre centre de travail')
-    expect(page).not_to have_css('h3', text: 'Tâches')
-    expect(page).to have_link('Tâches')
-    click_link('Tâches')
-    expect(page).to have_css('h3', text: 'Tâches')
+    la_page_a_pour_titre TITRE_PAGE_UNAN
+    la_page_a_pour_soustitre 'Votre centre de travail'
+    la_page_napas_la_balise 'h3', text: 'Tâches'
+    la_page_a_le_lien 'Tâches (1)'
+    click_link 'Tâches (1)'
+    la_page_a_la_balise 'h3', text: 'Tâches'
 
     # Ici, la table des travaux de l'auteur existe, mais aucun
     # travail ne doit avec été encore enregistré
-    table_travaux = site.dbm_table(:users_tables, "unan_works_#{inscrite.id}")
-    expect(table_travaux).to be_exist
-    expect(table_travaux.count).to eq 0
+    expect(inscrite.table_works.count).to eq 0
+    success "#{inscrite.pseudo} n'a pas encore de work propre enregistré."
 
     # Le tout premier travail va être démarré
-    expect(page).to have_css('div#work-8.work')
-    within('div#work-8.work') do
-      expect(page).to have_link('Démarrer ce travail')
-      click_link('Démarrer ce travail')
-    end
-
-    expect(page).to have_content('Votre centre de travail')
-    within('div#work-8') do
-      expect(page).to have_link("Marquer ce travail fini")
-    end
+    la_page_a_la_balise 'div', id: 'work-8', class: 'work'
+    la_page_a_le_lien 'Démarrer ce travail', in: 'div#work-8.work'
+    click_link('Démarrer ce travail')
     shot 'after-start-first-work'
+    la_page_a_le_lien 'Marquer ce travail fini', in: 'div#work-8'
+    success "#{inscrite.pseudo} démarre le travail #8 avec succès."
+
 
     # Un premier work a été enregistré
-    expect(table_travaux.count).to eq 1
+    expect(inscrite.table_works.count).to eq 1
+    success "Un nouveau travail (work) a été enregistré pour #{inscrite.pseudo}."
 
     # On prend les données du travail pour vérifier
-    dwork = table_travaux.select(where: 'created_at > ?', values: [start_time]).first
+    dwork = inscrite.table_works.select(where: 'created_at > ?', values: [start_time]).first
     expect(dwork[:abs_work_id]) .to eq 8
     expect(dwork[:status])      .to eq 1
     expect(dwork[:abs_pday])    .to eq 1
     expect(dwork[:points])      .to eq 0
-
-    within('div#work-8.work') do
-      expect(page).not_to have_link('Démarrer ce travail')
-    end
-
-    # TODO La pastille doit avoir changé
-
+    la_page_napas_le_lien 'Démarrer ce travail', in: 'div#work-8'
     shot('panneau-des-taches')
 
   end
 
-  scenario 'Inscrite vient marque son premier travail fini au jour deux' do
+  scenario 'Inscrite vient marquer son premier travail fini au jour deux' do
 
     # NOTE : IL FAUT AVOIR JOUÉ LE TEST PRÉCÉDENT, QUI A
     # INITIALISER INSCRITE
@@ -143,7 +134,4 @@ feature "Test du fonctionnement des pdays" do
 
   end
 
-  scenario 'Le jour suivant, Inscrite trouve de nouveaux travaux' do
-    pending "à implémenter"
-  end
 end

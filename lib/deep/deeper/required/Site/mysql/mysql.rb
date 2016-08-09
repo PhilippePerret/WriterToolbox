@@ -298,9 +298,7 @@ SELECT UPDATE_TIME
 
   def create
     client.query( code_creation_schema )
-    if force_query_existence
-      debug "Table #{name} créée avec succès dans #{db_name}"
-    else
+    unless force_query_existence
       raise("La table #{name} n'a pas été crée, dans #{db_name}…")
     end
   end

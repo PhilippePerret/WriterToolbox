@@ -11,7 +11,6 @@ class ::User
   #
   def signup_program_uaus
 
-    debug "\n\n=== INSTANCIATION D'UN PROGRAMME UN AN ===\n\n"
     # Pour consigner toutes les erreurs qui sont survenues et
     # pouvoir y remédier.
     # À l'intérieur d'une autre méthode ou de l'instance
@@ -41,9 +40,7 @@ class ::User
     end
 
     # Signaler les erreurs au cas où
-    if @errors.empty?
-      debug "=== PROGRAMME 1 AN 1 SCRIPT INSTANCIÉ AVEC SUCCÈS ==="
-    else
+    unless @errors.empty?
       error "Des erreurs sont malheureusement survenues au cours de votre inscription (merci de les signaler à l'administration, qui s'efforcera de régler le problème) :"
       error @errors.collect { |merr| merr.in_div }.join
     end
@@ -63,7 +60,6 @@ class ::User
       # Création du programme (dans la table générale des programmes)
       @program_id = Unan::Program.create self
       raise "@program_id (ID du programme créé) ne devrait pas être nil…" if @program_id.nil?
-      debug "ID du nouveau programme : #{@program_id}"
       # On définit le programme pour ne pas avoir de problèmes par
       # la suite avec `user.program` ou `auteur.program`
       @program = Unan::Program::new(@program_id)
@@ -75,7 +71,6 @@ class ::User
       # Création du projet (dans la table générale des projets)
       @projet_id  = Unan::Projet::create self
       raise "@projet_id (ID du projet créé) ne devrait pas être nil…" if @projet_id.nil?
-      debug "ID du nouveau projet : #{@projet_id}"
     rescue Exception => e
       @errors << "Impossible de créer le projet : #{e.message}"
     end
@@ -114,7 +109,7 @@ class ::User
       message:  mail_to_admin.deserb( self ),
       formated: true
     }
-    Unan::send_mail( data_mail )
+    Unan.send_mail( data_mail )
     les_mails_pour_error.shift
 
   rescue Exception => e

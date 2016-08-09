@@ -1,0 +1,3 @@
+# encoding: UTF-8
+
+TITRE_PAGE_UNAN = 'UN FILM/ROMAN EN UN AN'
