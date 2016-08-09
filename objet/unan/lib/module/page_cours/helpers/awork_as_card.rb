@@ -22,7 +22,7 @@ class AbsWork
   #   - travaux récents
   #
   def as_card options
-    options ||= {}
+    options ||= Hash.new
     options.key?(:auteur) || options.merge!(auteur: user)
     upage = User::UPage.new(options[:auteur], item_id)
     upage.output_bureau( self )

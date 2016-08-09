@@ -17,11 +17,11 @@ end #/Unan
 
 
 
-upage = User::UPage::new(bureau.auteur, param(:pid).to_i) unless param(:pid).nil?
+upage = User::UPage.new(bureau.auteur, param(:pid).to_i) unless param(:pid).nil?
 case param(:op)
 when 'markvue'
   upage.set_vue
-  upage = User::UPage::new(bureau.auteur, param(:pid).to_i)
+  upage = User::UPage.new(bureau.auteur, param(:pid).to_i)
   bureau.auteur.reset_current_pday
   flash "Page marquée vue, vous pouvez à présent la lire."
 when 'marklue'

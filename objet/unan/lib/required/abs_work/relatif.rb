@@ -44,10 +44,10 @@ class AbsWork
     return self
   end
 
-  # {Unan::Program::AbsWork::RelatifWork} Le travail relatif
+  # {Unan::Program::AbsWork::RelatifWork} Le travail relatif, s'il existe.
   def rwork
     @rwork ||= begin
-      RelatifWork::new(self, relative_data)
+      RelatifWork::new(self, relative_data || {user_id: user.id, work_id: nil})
     end
   end
 
@@ -109,8 +109,12 @@ class AbsWork
     # OU NIL si le travail n'a pas encore été démarré
     def work
       @work ||= begin
-        work_id.nil? ? nil : Unan::Program::Work::get(program, work_id)
+        work_id.nil? ? nil : Unan::Program::Work.get(program, work_id)
       end
+    end
+
+    def work_relatif?
+      work_id != nil
     end
 
     # Jour-programme courant de l'auteur.
@@ -140,14 +144,26 @@ class AbsWork
     # dans la donnée Work mais pris par rapport aux indices de
     # jour-programme et au jour-programme de l'user)
     def started_at
-      @started_at ||= (Today::start - diff_jours_real.days)
+      @started_at ||= begin
+        if work_relatif?
+          (Today.start - diff_jours_real.days)
+        else
+          '- Non défini -'
+        end
+      end
     end
 
     # {Fixnum} Timestamp (en secondes) de la fin attendue du travail
     # Noter que c'est le temps réel, en tenant compte du rythme
     # du programme de l'auteur.
     def expected_at
-      @expected_at ||= (started_at + duree_secondes_real)
+      @expected_at ||= begin
+        if work_relatif?
+          (started_at + duree_secondes_real)
+        else
+          '- Non défini -'
+        end
+      end
     end
 
     # {Fixnum} Nombre de jour-programme de différence
@@ -159,17 +175,36 @@ class AbsWork
     # Noter qu'il s'agit du nombre de jours-programme,
     # pas du nombre de jours réels. Pour avoir le nombre
     # de jours réels, utiliser la données `diff_jours_real`
+    #
     def diff_jours
-      @diff_jours ||= auteur_pday - indice_pday
+      @diff_jours ||= begin
+        if work_relatif?
+          auteur_pday - indice_pday
+        else
+          '- Non défini -'
+        end
+      end
     end
     def diff_jours_real
-      @diff_jours_real ||= diff_jours.as_real_duree(coef_duree)
+      @diff_jours_real ||= begin
+        if work_relatif?
+          diff_jours.as_real_duree(coef_duree)
+        else
+          '- Non défini -'
+        end
+      end
     end
 
     # {Fixnum} Nombre de jours de dépassement ou
     # NIL s'il n'y a pas de dépassement
     def depassement
-      @depassement ||= diff_jours - duree
+      @depassement ||= begin
+        if work_relatif?
+          diff_jours - duree
+        else
+          '- Non défini -'
+        end
+      end
     end
     def depassement_real
       @depassement_real ||= depassement_real.as_real_duree(coef_duree)
@@ -201,7 +236,9 @@ class AbsWork
 
     # Retourne TRUE si le travail est en dépassement
     def depassement?
-      @is_depassement ||= depassement > 0
+      @is_depassement ||= begin
+        depassement > 0
+      end
     end
 
     # Pour le moment, on ne peut pas savoir si le travail a
@@ -232,11 +269,10 @@ class AbsWork
     # temporelles du travail, c'est-à-dire la durée qu'il doit faire,
     # sa date de début et de fin, si l'échéance est dépassée, etc.
     def div_echeance
-      return '' if completed?
+      return '' if completed? || false == work_relatif?
       mess_duree, css = message_duree_travail
       mess_echeance   = message_echeance_travail( css )
       mess_reste_jours = message_jours_restants_or_depassement
-
       (
         mess_reste_jours      +
         mess_duree.in_div     +
