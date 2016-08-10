@@ -17,116 +17,163 @@ def options_from_args args
   options ||= Hash.new
   args != nil || ( return options )
   options.merge!(text: /#{Regexp.escape args.delete(:text)}/) if args.key?(:text)
+  options.merge!(success: args.delete(:success)) if args.key?(:success)
   options.merge!(in: args.delete(:in)) if args.key?(:in)
   options.merge!(with: args)
 end
 
 
 def la_page_a_pour_titre titre
-  expect(page).to have_tag('h1', text: /#{Regexp.escape titre}/)
-  success "La page a pour titre “#{titre}”" if verbose?
+  la_page_a_la_balise 'h1', text: titre, success: "La page a pour titre “#{titre}”."
 end
 alias :la_page_a_le_titre :la_page_a_pour_titre
 
 def la_page_napas_pour_titre titre
-  expect(page).not_to have_tag('h1', text: /#{Regexp.escape titre}/)
-  success "La page n'a pas pour titre “#{titre}”" if verbose?
+  la_page_napas_la_balise 'h1', text: titre, success: "La page n'a pas pour titre “#{titre}”."
 end
 
 def la_page_a_pour_soustitre stitre
-  expect(page).to have_tag('h2', text: /#{Regexp.escape stitre}/)
-  success "La page a pour sous-titre “#{stitre}”" if verbose?
+  la_page_a_la_balise 'h2', text: stitre, success: "La page a pour sous-titre “#{stitre}”."
 end
 alias :la_page_a_le_soustitre :la_page_a_pour_soustitre
 
 def la_page_napas_pour_soustitre stitre
-  expect(page).not_to have_tag('h2', text: /#{Regexp.escape stitre}/)
-  success "La page n'a pas pour sous-titre “#{stitre}”" if verbose?
+  la_page_napas_la_balise 'h2', text: stitre, success: "La page n'a pas pour sous-titre “#{stitre}”."
 end
 
 def la_page_affiche texte, options = nil
   options = options_from_args(options)
+  mess_succ = options[:success] || "La page affiche le texte “#{texte}”."
   if options.key? :in
     within(options.delete(:in)){expect(page).to have_content(texte)}
   else
     expect(page).to have_content(texte)
   end
-  success "La page affiche le texte “#{texte}”." if verbose?
+  success mess_succ
 end
 
-def la_page_n_affiche_pas texte, options = nil
+def la_page_naffiche_pas texte, options = nil
   options = options_from_args(options)
+  mess_succ = options[:success] || "La page n'affiche pas le texte “#{texte}”."
   if options.key? :in
     within(options.delete(:in)){expect(page).not_to have_content(texte)}
   else
     expect(page).not_to have_content(texte)
   end
-  success "La page affiche le texte “#{texte}”."
+  success mess_succ
 end
 
 def la_page_a_le_lien titre, options = nil
   options = options_from_args(options)
+  mess_succ = options[:success] || "La page a le lien “#{titre}”."
   options.merge!(text: titre)
   if options.key? :in
     within(options.delete(:in)){ expect(page).to have_tag('a', options) }
   else
     expect(page).to have_tag('a', options)
   end
-  success "La page a le lien “#{titre}”"
+  success mess_succ
 end
 
 def la_page_napas_le_lien titre, options = nil
-  puts '-> la_page_napas_le_lien'
   options = options_from_args(options)
+  mess_succ = options[:success] || "La page n'a pas le lien “#{titre}”."
   options.merge!(text: titre)
-  puts "options : #{options.inspect}"
   if options.key? :in
-    puts "within #{options[:in]}"
     within(options.delete(:in)){ expect(page).not_to have_tag('a', options) }
   else
     expect(page).not_to have_tag('a', options)
   end
-  success "La page n'a pas le lien “#{titre}”"
+  success mess_succ
 end
 
 def la_page_a_la_balise tagname, args = nil
   options = options_from_args(args)
+  mess_succ = options[:success] || "La page possède la balise #{tagname} (arguments : #{options.inspect})"
   if options.key? :in
     within(options.delete(:in)){ expect(page).to have_tag(tagname, options) }
   else
     expect(page).to have_tag(tagname, options)
   end
-  success "La page possède la balise #{tagname} (arguments : #{options.inspect})"
+  success mess_succ
 end
 def la_page_napas_la_balise tagname, args = nil
   options = options_from_args(args)
+  mess_succ = options[:success] || "La page ne possède pas la balise #{tagname} (arguments : #{options.inspect})."
   if options.key? :in
     within(options.delete(:in)){ expect(page).not_to have_tag(tagname, options) }
   else
     expect(page).not_to have_tag(tagname, options)
   end
-  success "La page ne possède pas la balise #{tagname} (arguments : #{options.inspect})"
+  success mess_succ
 end
 # +options+ peut définir :in, l'élément (formulaire) dans lequel
 # se trouve l'objet
-def la_page_a_une_liste ul_id, options = nil
-  options ||= Hash.new
-  options[:with] ||= Hash.new
-  options[:with].merge!(id: ul_id)
-  expect(page).to have_tag("#{options[:in]} select", options)
-  success "La page a une liste UL##{ul_id}" if verbose?
+def la_page_a_la_liste ul_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page contient la liste UL##{ul_id}."
+  la_page_a_la_balise 'ul', args.merge(id: ul_id)
 end
+alias :la_page_a_une_liste :la_page_a_la_liste
+def la_page_napas_la_liste ul_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page ne contient pas la liste UL##{ul_id}."
+  la_page_napas_la_balise 'ul', args.merge(id: ul_id)
+end
+
+def la_page_a_le_menu select_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page contient le menu select##{ul_id}."
+  la_page_a_la_balise 'select', args.merge(id: select_id)
+end
+def la_page_napas_le_menu select_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page ne contient pas le menu select##{ul_id}."
+  la_page_napas_la_balise 'select', args.merge(id: select_id)
+end
+
+
+def la_page_a_la_section section_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page contient la section ##{section_id}."
+  la_page_a_la_balise 'section', args.merge(id: section_id)
+end
+def la_page_napas_la_section section_id, args = nil
+  args ||= Hash.new
+  args[:success] ||= "La page ne contient pas la section ##{section_id}."
+  la_page_napas_la_balise 'section', args.merge(id: section_id)
+end
+
 
 def la_page_a_le_message mess, options = nil
   options ||= Hash.new
+  mess_succ = options[:success] || "La page affiche le message flash “#{mess}”."
   options.merge!(text: /#{Regexp.escape mess}/)
+  tr = 0; while (tr += 1) < 20
+    page.has_css?('div#flash div.notice', options) ? break : (sleep 1)
+  end
   expect(page).to have_tag('div#flash div.notice', options)
-  success "La page affiche le message flash “#{mess}”."
+  success mess_succ
+end
+def la_page_napas_le_message mess, options = nil
+  options ||= Hash.new
+  mess_succ = options[:success] || "La page n'affiche pas le message flash “#{mess}”."
+  options.merge!(text: /#{Regexp.escape mess}/)
+  expect(page).not_to have_tag('div#flash div.notice', options)
+  success mess_succ
 end
 
+#
+#
+# Note : pour ce test, on attend quelques secondes si c'est en
+# ajax.
 def la_page_a_l_erreur err, options = nil
   options ||= Hash.new
+  ajax = options[:ajax] == true
   options.merge!(text: /#{Regexp.escape err}/)
+  tr = 0; while (tr += 1) < 20
+    page.has_css?('div#flash div.error', options) ? break : (sleep 1)
+  end
   expect(page).to have_tag('div#flash div.error', options)
   success "La page affiche le message d'erreur flash “#{err}”."
 end

@@ -21,27 +21,31 @@ feature "Test d'une redirection après login" do
 
   scenario 'Si l’administrateur est loggué, il arrive directement à l’adresse' do
 
+    test 'Un administrateur loggué arrive à sa page préférée'
+
     visit 'http://localhost/WriterToolbox'
     click_link 'S\'identifier'
-    expect(page).to have_css('form#form_user_login')
+    la_page_a_le_formulaire 'form_user_login'
 
-    # L'administrateur s'identifie
-    within('form#form_user_login') do
-      fill_in('login_mail', with: data_admin[:mail])
-      fill_in('login_password', with: data_admin[:password])
-      click_button 'OK'
-    end
+    dform = {
+      'login_mail'      => {value: data_admin[:mail]} ,
+      'login_password'  => {value: data_admin[:password]}
+    }
+    phil.remplit_le_formulaire(page.find('form#form_user_login')).
+      avec(dform).
+      et_le_soumet('OK')
+    success 'Phil s’identifie.'
 
     shot 'after-login'
 
     visit url_edit
-
     shot 'after-new-url'
-    expect(page).to have_css('form#citation_edit')
+
+    la_page_a_le_formulaire('citation_edit')
     shot('form-edition-citation')
-    expect(page).to have_css('h1', text: 'Citations d\'auteurs')
-    # C'est bien la citation voulue qui est éditée
-    expect(page).to have_tag('input[type="text"]', {value: '181'})
+
+    la_page_a_pour_titre 'Citations d\'auteurs'
+    la_page_a_la_balise 'input', type: 'text', value: '181'
 
   end
 
@@ -51,33 +55,34 @@ feature "Test d'une redirection après login" do
 
     # La page n'est pas celle de l'édition des citations, mais
     # la page d'identification.
-    expect(page).not_to have_css('h1', text: 'Citations d\'auteurs')
-    expect(page).to have_css('h1', text: 'Identification')
-    expect(page).to have_css('form#form_user_login')
+    la_page_napas_pour_titre 'Citations d\'auteurs'
+    la_page_a_pour_titre 'Identification'
+    la_page_a_le_formulaire 'form_user_login'
 
     # L'URL de destination finale doit être mémorisé dans
     # le formulaire d'identification
     # expect(page).to have_css('input[type="hidden"]', {type: 'hidden'})
 
-    # L'administrateur s'identifie
-    within('form#form_user_login') do
-      fill_in('login_mail', with: data_admin[:mail])
-      fill_in('login_password', with: data_admin[:password])
-      click_button 'OK'
-    end
+    dform = {
+      'login_mail'      => {value: data_admin[:mail]} ,
+      'login_password'  => {value: data_admin[:password]}
+    }
+    phil.remplit_le_formulaire(page.find('form#form_user_login')).
+      avec(dform).
+      et_le_soumet('OK')
+    success 'Phil s’identifie.'
 
     # C'est ici que se passe le test, que l'administrateur doit
     # être redirigé vers la page page.
 
     # La page est celle de l'édition des citations avec la
     # citation voulue éditée
-    expect(page).to have_css('form#citation_edit')
+    la_page_a_le_formulaire 'citation_edit'
     shot('after-redirection')
-    expect(page).not_to have_css('h1', text: 'Identification')
-    expect(page).to have_css('h1', text: 'Citations d\'auteurs')
-    # C'est bien la citation voulue qui est éditée
-    expect(page).to have_tag('input[type="text"]', {value: '181'})
 
+    la_page_napas_pour_titre 'Identification'
+    la_page_a_pour_titre 'Citations d\'auteurs'
+    la_page_a_la_balise 'input', type: 'text', value: '181'
 
   end
 end

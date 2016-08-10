@@ -22,7 +22,7 @@ class MailMatcher
     @errors = Array.new
     # puts "Vérification d'un mail adressé à #{to}"
     message_strict = hmatch.delete(:message_strict)
-    puts "message_strict = #{message_strict.inspect}" if verbose
+    # puts "message_strict = #{message_strict.inspect}" if verbose
     subject_strict = hmatch.delete(:subject_strict)
     # Pour atteindre la propriété et la valeur attendue
     # dans l'exception levée
@@ -32,7 +32,7 @@ class MailMatcher
       prop      = pro
       expected  = exp
       if verbose
-        puts "Propriété #{prop.inspect} testée contre #{expected.inspect}"
+        # puts "Propriété #{prop.inspect} testée contre #{expected.inspect}"
       end
       case prop
       when :subject

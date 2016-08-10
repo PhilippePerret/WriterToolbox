@@ -40,6 +40,7 @@ def create_page_comments args
   prev_is_valided = false
   nombre.times.each do |itime|
 
+    puts "itime comment : #{itime}"
     # L'auteur du commentaire : soit celui spécifié,
     # soit un utilisateur au hasard
     u =
@@ -66,8 +67,8 @@ def create_page_comments args
       when :all   then '1'
       when :none  then '0'
       else
-        prev_is_valided ? '0' : '1'
         prev_is_valided = !prev_is_valided
+        prev_is_valided ? '1' : '0'
       end
 
     dcom = {
@@ -86,6 +87,7 @@ def create_page_comments args
       )
     end
     Page::Comments.table.insert(dcom)
+    puts "Commentaire #{dcom.inspect} inséré."
   end
 
 end

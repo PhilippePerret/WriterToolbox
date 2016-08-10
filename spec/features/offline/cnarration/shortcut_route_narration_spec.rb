@@ -6,11 +6,12 @@
 =end
 feature "Utilisation du lien raccourci `narration/id/show` pour voir une page narration" do
   scenario "la route narration/id/show conduit à la bonne page narration" do
+    test 'La route narration/id/show conduit à la bonne page narration'
     identify_phil # pour voir la page quoi qu'elle soit
     visite_route 'narration/300/show'
-    expect(page).not_to have_content("la route narration/300/show est inconnue sur ce site")
-    expect(page).to have_tag('h1', text: /Collection Narration/)
-    expect(page).to have_tag('h2', text: /La Structure/)
-    expect(page).to have_tag('div#page_cours h1', text: /#{Regexp.escape "L'incident perturbateur (scène-clé)"}/i)
+    la_page_naffiche_pas 'la route narration/300/show est inconnue sur ce site'
+    la_page_a_pour_titre 'Collection Narration'
+    la_page_a_pour_soustitre 'La Structure'
+    la_page_a_la_balise 'h1', in: 'div#page_cours', text: "L'incident perturbateur (scène-clé)"
   end
 end

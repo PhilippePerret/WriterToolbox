@@ -39,7 +39,7 @@ feature "Création d'un nouveau sujet" do
     le_forum_a_le_sujet(question)
     le_sujet_forum(question).napas_de_messages
     le_sujet_forum(question).nestpas_valided
-    phil.a_recu_un_mail(
+    phil.a_recu_le_mail(
       sent_after: start_time,
       subject:    "Nouveau sujet"
     )
@@ -69,7 +69,7 @@ feature "Création d'un nouveau sujet" do
     le_forum_a_le_sujet(@nouvelle_question)
     le_sujet_forum(@nouvelle_question).napas_de_messages
     le_sujet_forum(@nouvelle_question).est_valided
-    phil.a_recu_un_mail(
+    phil.a_recu_le_mail(
       sent_after: start_time,
       subject:    "Nouveau sujet"
     )
