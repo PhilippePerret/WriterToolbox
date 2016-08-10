@@ -37,7 +37,7 @@ if user.manitou?
           opts = dcurrent.options
           opts[0] = '0'
           dcurrent.set(options: opts)
-          debug "Quiz courant précédent (#{dcurrent[:id]}) décourantisé."
+          debug "Quiz courant précédent (#{dcurrent.id}) décourantisé."
         end
       end
     end

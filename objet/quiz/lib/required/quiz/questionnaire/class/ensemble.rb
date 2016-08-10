@@ -24,6 +24,9 @@ class ::Quiz
     # Array des instances Quiz de tous les quiz
     #
     # Noter que les quiz hors list ne sont pas retournés par cette liste
+    # "hors liste" signifie que le 6e bit des options est à 1, il faut le
+    # régler manuellement, comme par exemple pour les quiz de test.
+    # 
     def allquiz
       @allquiz ||= begin
         arr = Array.new

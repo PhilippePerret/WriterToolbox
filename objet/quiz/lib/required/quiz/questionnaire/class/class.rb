@@ -18,8 +18,11 @@ class ::Quiz
     # les bases.
     #
     def current
+      debug "-> current"
       @current ||= begin
+        debug "-> begin de current"
         if suffix_base.nil?
+          debug "-> suffix_base est nil"
           # On essaie d'obtenir ce suffixe en checkant toutes les
           # bases de données. Si on le trouve, on retourne l'instance
           # Quiz du questionnaire.
@@ -28,7 +31,7 @@ class ::Quiz
           get_quiz_courant
         elsif !database_exist?
           @error = 'Base de données inexistante avec le suffixe fourni'
-          nil
+          get_quiz_courant
         else
           drequest = {
             where: "SUBSTRING(options,1,1) = '1' ",
@@ -39,7 +42,7 @@ class ::Quiz
           quiz_courants = table_quiz.select(drequest)
           if quiz_courants.empty?
             @error = 'Pas de quiz courant dans cette base de données.'
-            nil
+            get_quiz_courant
           else
             qid_current = quiz_courants.first[:id]
             @suffix_base = suffix_base
@@ -47,6 +50,8 @@ class ::Quiz
           end
         end
       end
+      @current != nil || raise('LE QUIZ COURANT NE DEVRAIT JAMAIS POUVOIR ÊTRE NUL')
+      @current
     end
 
     def table_quiz
@@ -79,9 +84,8 @@ class ::Quiz
     #   :but      Si précisé, c'est l'ID qu'il faut écarter de la
     #             recherche.
     def get_quiz_courant options = nil
-      options ||= {}
-
-
+      debug "-> get_quiz_courant"
+      options ||= Hash.new
       # On regarde dans ces bases s'il y a un quiz courant. Si c'est le
       # cas, on le prend.
       quiz_courant = nil
@@ -103,11 +107,22 @@ class ::Quiz
 
       # S'il n'y a aucun quiz courant, on signale l'erreur
       if quiz_courant.nil?
-        nil
+        debug "quiz_courant est nil"
+        # On fait une dernière tentative en prenant le dernier quiz
+        very_last_quiz
       else
         @error = nil
         quiz_courant
       end
+    end
+
+    # {Quiz} Retourne le tout dernier quiz, sans le mettre en
+    # quiz courant.
+    def very_last_quiz
+      debug "-> very_last_quiz"
+      l = allquiz.sort_by{|q| q.created_at}.last
+      debug "ID : #{l.id} / CLASS: #{l.class}"
+      l
     end
 
   end #/<<self

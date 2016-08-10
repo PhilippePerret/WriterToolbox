@@ -29,16 +29,14 @@ feature "Création d'une nouvelle question" do
 
   scenario "L'administrateur trouve un lien sur le formulaire du quiz pour créer une nouvelle question" do
     identify_phil
-    visit_route 'scenodico/quiz_edit'
+    visit_route 'quiz/1/edit?qdbr=biblio'
+    la_page_a_le_lien 'Nouvelle question'
     expect(page).to have_link('Nouvelle question')
     expect(page).not_to have_css('form#edition_question_quiz')
     # C'est un lien qui ouvre simplement le formulaire des questions
     # sous le formulaire du questionnaire.
     click_link 'Nouvelle question'
-    sleep 1
-    expect(page).to have_css('form#edition_question_quiz')
-    expect(page).not_to have_css('form#edition_quiz')
-
+    la_page_a_le_formulaire 'edition_question_quiz'
     expect(page).to have_tag('form', with: {id: 'edition_question_quiz'}) do
       with_tag 'input', with: {id: 'question_question', name: 'question[question]'}
       with_tag 'select', with: {id: 'question_type_f', name: 'question[type_f]'}
@@ -56,12 +54,16 @@ feature "Création d'une nouvelle question" do
 
   scenario 'L’administrateur peut créer une nouvelle question' do
 
+    test 'L’administrateur peut créer une nouvelle question'
+
     nombre_questions_init = table_questions.count
+    puts "Il y a #{nombre_questions_init} questions au départ"
 
     identify_phil
-    visit_route 'scenodico/quiz_edit'
+    visit_route 'quiz/1/edit?qdbr=biblio'
+    puts "Phil rejoint la route quiz/1/edit?qdbr=biblio"
     click_link 'Nouvelle question'
-    expect(page).to have_css('form#edition_question_quiz')
+    la_page_a_le_formulaire 'edition_question_quiz'
 
     qdata = {
       question: "La question du #{Time.now}",
@@ -79,19 +81,20 @@ feature "Création d'une nouvelle question" do
       type:   "0rv" # donnée enregistrée
     }
 
-    expect(page).to have_css('form#edition_question_quiz select#question_type_c')
-
-    within('form#edition_question_quiz') do
-      fill_in('question[question]',   with: qdata[:question])
-      fill_in('question[indication]', with: qdata[:indication])
-      fill_in('question[raison]',     with: qdata[:raison])
-      select(qdata[:type_c], from: 'question[type_c]')
-      select(qdata[:type_a], from: 'question[type_a]')
-      select(qdata[:type_f], from: 'question[type_f]')
-    end
+    la_page_a_le_menu 'question_type_c', in: 'form#edition_question_quiz'
+    benoit.remplit_le_formulaire(page.find('form#edition_question_quiz')).
+      avec(
+        'question[question]'    => {value: qdata[:question]},
+        'question[indication]'  => {value: qdata[:indication]},
+        'question[raison]'      => {value: qdata[:raison]},
+        'question[type_c]'      => {type: :select, value: qdata[:type_c]},
+        'question[type_a]'      => {type: :select, value: qdata[:type_a]},
+        'question[type_f]'      => {type: :select, value: qdata[:type_f]},
+      )
 
     # Le bouton pour ajouter une réponse
-    expect(page).to have_link('+ réponse')
+    la_page_a_le_lien '+ réponse', in: 'form#edition_question_quiz',
+      success: "Le formulaire possède le bouton “+ réponse” pour ajouter une réponse."
 
     qdata[:reponses].each_with_index do |dreponse, irep|
       irealrep = irep + 1

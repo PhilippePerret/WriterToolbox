@@ -24,15 +24,13 @@
 #     Tout est normal.
 def quiz
   @quiz ||= begin
-    if site.route.objet_id.nil?
-      q = ::Quiz.current
-      if q.nil?
-        NoQuiz.new
+    q =
+      if site.route.objet_id.nil?
+        ::Quiz.current
       else
-        q
+        site.objet
       end
-    else
-      site.objet
-    end
+    q != nil || raise('LE QUIZ NE DEVRAIT JAMAIS POUVOIR ÊTRE NUL.')
+    q
   end
 end

@@ -16,16 +16,12 @@ class ::Quiz
           dongs.merge!(
             'Nouveau quiz'      => 'quiz/new',
             'Edit quiz courant' => "quiz/#{current.id}/edit?qdbr=#{current.suffix_base}"
-          )
+            )
         end
-        if current
-          unless current.id == site.route.objet_id && current.suffix_base == suffix_base
-            dongs.merge!('Quiz courant' => "quiz/#{current.id}/show")
-          end
+        unless current.id == site.route.objet_id && current.suffix_base == suffix_base
+          dongs.merge!('Quiz courant' => "quiz/#{current.id}/show")
         end
-        dongs.merge!(
-          'Tous les quizzzz' => 'quiz/list'
-        )
+        dongs.merge!('Tous les quizzzz' => 'quiz/list')
       end
     end
 

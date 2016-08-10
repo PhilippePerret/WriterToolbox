@@ -28,12 +28,16 @@ class Quiz
     #       manquante.
     def output
       c = String.new
-      c << question.in_div(class: 'q', id: "q-#{id}-question")
+      c << question_formated.in_div(class: 'q', id: "q-#{id}-question")
       # Les indications éventuelles sur la question
       indication.nil? || c << indication.in_div(class: 'indication')
       c << ul_reponses
       c << div_raison if ureponse && !ureponse[:is_good]
       c.in_div(id: "question-#{id}", class: "question #{class_output}".strip)
+    end
+
+    def question_formated
+      @question_formated ||= question.formate_balises_propres
     end
 
     # La classe générale de la question en fonction des réponses
