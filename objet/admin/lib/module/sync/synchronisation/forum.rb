@@ -17,7 +17,6 @@ class Forum
   def synchronize sync
     @sync = sync
     @nombre_synchronisations = 0
-    raise "Le forum n'est pas encore synchronisables. Implémenter la méthode synchronize dans #{__FILE__}"
 
     # On doit synchroniser toutes les tables distantes
     # vers locales.
@@ -28,8 +27,15 @@ class Forum
       'posts', 'posts_content', 'sujets',
       'follows', 'posts_votes'
     ].each do |table_name|
+      report "  * Traitement table #{table_name}"
       @table_name = table_name
-      reset
+      reset # pour prendre en compte
+      loc_table.delete
+      dis_rows.each do |rid, dis_data|
+        loc_table.insert(dis_data)
+        report "    - Rangée ##{rid}"
+        @nombre_synchronisations += 1
+      end
     end
     if @nombre_synchronisations > 0
       report "  = NOMBRE SYNCHRONISATIONS : #{@nombre_synchronisations}".in_span(class: 'blue bold')

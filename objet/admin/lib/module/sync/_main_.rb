@@ -16,7 +16,7 @@ class Sync
     ['Tous les Quiz',                 'quizes'],
     ['le Scénodico',                  'scenodico'],
     ['le Filmodico (+ affiches)',     'filmodico'],
-    ['le forum (inutile, normalement) (À IMPLÉMENTER)', 'forum']
+    ['le forum',                      'forum']
   ]
 
 
