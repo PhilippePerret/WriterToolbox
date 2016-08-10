@@ -18,6 +18,24 @@ class Forum
     # Créer le sujet
     def create
       @id = Forum.table_sujets.insert( data4create.merge(created_at: NOW) )
+      mail_to_admin
+    end
+
+    def mail_to_admin
+      data_mail = {
+        subject:  'Nouveau sujet sur le forum',
+        formated:  true,
+        message: <<-HTML
+        <p>Phil</p>,
+        <p>Un nouveau sujet forum est à valider.</p>
+        <table>
+          <tr><td>ID</td><td>#{id}</td></tr>
+          <tr><td>Titre</td><td>#{titre}</td></tr>
+          <tr><td>Créateur</td><td>#{user.pseudo} (##{user.id})</td></tr>
+        </table>
+        HTML
+      }
+      site.send_mail_to_admin data_mail
     end
 
     def data4create

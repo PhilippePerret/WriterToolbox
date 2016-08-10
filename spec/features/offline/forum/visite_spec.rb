@@ -12,9 +12,7 @@ feature "Visite du forum par un user non identifié (Marc)" do
     click_link 'OUTILS'
     click_link(TITRE_LIEN_FORUM, match: :first)
 
-    puts "Marc trouve le bon titre de section"
     la_page_a_pour_titre TITRE_FORUM
-    puts "Marc trouve le bon titre de sous-section"
     la_page_a_pour_soustitre 'Accueil'
     {
       # 'Vos préférences' => 'user/preferences?in=forum',
@@ -25,8 +23,8 @@ feature "Visite du forum par un user non identifié (Marc)" do
       la_page_a_le_lien( titre, { href: href } )
     end
 
-    puts "Marc ne trouve pas d'onglet “Vos préférences”"
-    la_page_napas_le_lien 'Vos préférences'
+    la_page_napas_le_lien 'Vos préférences',
+      success: "Marc ne trouve pas d'onglet “Vos préférences”"
   end
 
   scenario 'Marc, non identifié, peut rejoindre les différentes parties' do

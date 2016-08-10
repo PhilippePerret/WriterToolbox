@@ -41,7 +41,8 @@ feature "Création d'un nouveau sujet" do
     le_sujet_forum(question).nestpas_valided
     phil.a_recu_le_mail(
       sent_after: start_time,
-      subject:    "Nouveau sujet"
+      subject:    'Nouveau sujet sur le forum',
+      message:    [benoit.pseudo, "##{benoit.id}", "Un nouveau sujet forum est à valider."]
     )
   end
   scenario 'Un inscript possédant le grade suffisant (5) peut créer un sujet' do

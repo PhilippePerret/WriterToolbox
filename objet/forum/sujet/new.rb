@@ -7,7 +7,7 @@ Crée un nouveau sujet et le met en édition
 # L'user doit avoir le grade suffisant
 raise_unless user.grade > 4
 
-sujet = Forum::Sujet::new
+sujet = Forum::Sujet.new
 sujet.name = param(:new_topic_name)
 sujet.create
 redirect_to "sujet/#{sujet.id}/edit?in=forum"
