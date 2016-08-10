@@ -24,13 +24,25 @@
 #     Tout est normal.
 def quiz
   @quiz ||= begin
-    q =
-      if site.route.objet_id.nil?
-        ::Quiz.current
-      else
-        site.objet
-      end
-    q != nil || raise('LE QUIZ NE DEVRAIT JAMAIS POUVOIR ÊTRE NUL.')
-    q
+    # TODO Il faut gérer ici tous les cas possibles
+    # On essaie de prendre le questionnaire si les données sont
+    # fournies
+    # On doit voir si l'user courant peut voir le questionnaire
+    # qu'il veut voir.
+    # En premier dernier recours, on doit afficher le questionnaire
+    # courant.
+    # En tout dernier recours, c'est-à-dire sans questionnaire
+    # courant, on prend le dernier quiz créé qui n'est pas en fabrication
+    # et on
+    # TODO : Il faut utiliser un bit d'option pour indiquer que le
+    # quiz est en fabrication
+    # TODO : IL FAUT UN SYSTÈME qui définisse automatiquement le dernier
+    # quiz fabriqué comme quiz courant lorsque ce dernier n'est pas
+    # défini. Et on avertit l'administration de cette opération.
+    if site.route.objet_id.nil?
+      ::Quiz.current
+    else
+      site.objet
+    end || raise('LE QUIZ NE DOIT JAMAIS ÊTRE NUL.')
   end
 end

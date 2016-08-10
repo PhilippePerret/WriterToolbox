@@ -33,11 +33,16 @@ class SiteHtml
   def section_spotlight
     require './hot/spotlight'
     lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href]).in_div(id: 'main_thing')
+    image =
+      if SPOTLIGHT[:img]
+        src = "view/img/#{SPOTLIGHT[:img]}"
+        "<img src='#{src}' style='float:left;margin-right:8px;' />"
+      else '' end
     (
     # '<hr>' +
       # "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
       #{DOIGT_WHITE}
-      "#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
+      "#{image}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
     ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
   end
 

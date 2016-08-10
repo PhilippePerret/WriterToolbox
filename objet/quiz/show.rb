@@ -22,11 +22,14 @@ class ::Quiz
       output_on_error :unable
     else
       # === Construction du quiz ===
-      # 
+      #
       # Il faut ajouter les javascripts du dossier js/user et les css
       # du dossier css/user
       # Il faut ajouter les javascripts du dossier js et les css
       # du dossier css
+      if @error
+        error @error
+      end
       page.add_javascript Dir["#{Quiz.folder_lib}/js/user/**/*.js"]
       page.add_css Dir["#{Quiz.folder_lib}/css/user/**/*.css"]
       build
