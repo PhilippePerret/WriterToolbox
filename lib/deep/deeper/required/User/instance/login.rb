@@ -50,24 +50,26 @@ class User
   # petit à petit à mesure que l'utilisateur visite les pages)
   def login
 
-    unless mail_confirmed? || admin? || for_paiement?
-      error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
-            ' confirmé votre adresse-mail.' +
-            '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
-            ' qui vous a été transmis par mail après votre inscription. Merci de' +
-            ' vérifier votre boite aux lettres virtuelle.' +
-            '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
-            '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
-      # redirect_to :home
-      redirect_to 'user/deconnexion'
-      return # Pour ne pas enregistrer de message de bienvenue
+    # Si le mail n'est pas confirmé
+    if false == mail_confirmed?
+      # Sauf si on passe par ici pour un paiement (retour de PayPal)
+      unless for_paiement?
+        error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
+              ' confirmé votre adresse-mail.' +
+              '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
+              ' qui vous a été transmis par mail après votre inscription. Merci de' +
+              ' vérifier votre boite aux lettres virtuelle.' +
+              '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
+              '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
+        redirect_to 'user/deconnexion'
+        return # Pour ne pas enregistrer de message de bienvenue
+      end
     end
 
     proceed_login
 
-
     require './data/secret/known_users.rb'
-    flash( if KNOWN_USERS.has_key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil
+    flash( if KNOWN_USERS.key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil
       KNOWN_USERS[id][:messages_accueil].shuffle.shuffle.first
     else
       'Bienvenue, %s !' % pseudo

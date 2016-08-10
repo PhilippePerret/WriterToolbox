@@ -20,12 +20,12 @@ class User
         # ou autre
         return false
       else
-        mail = login_data[:mail]
-        pasw = login_data[:password]
-        res = table_users.select(where: {mail: mail}, colonnes: [:salt, :cpassword, :mail]).first
+        umail = login_data[:mail]
+        upass = login_data[:password]
+        res = table_users.select(where: {mail: umail}, colonnes: [:salt, :cpassword, :mail]).first
         return false if res.nil?
         expected = res[:cpassword]
-        compared = Digest::MD5.hexdigest("#{pasw}#{mail}#{res[:salt]}")
+        compared = Digest::MD5.hexdigest("#{upass}#{umail}#{res[:salt]}")
         ok = expected == compared
         User.new( res[:id] ).login if ok
         return ok
