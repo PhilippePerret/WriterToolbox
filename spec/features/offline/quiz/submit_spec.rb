@@ -105,8 +105,11 @@ feature "Vérification des calculs du quiz" do
     # fin de processus
     # et mettre le premier en quiz courant
     @dquiz_courant = table_quiz_biblio.select(where: "options LIKE '1%'").first
+    if @dquiz_courant.nil?
+      @dquiz_courant = table_quiz_biblio.select.first
+      table_quiz_biblio.update(@dquiz_courant[:id], options: @dquiz_courant[:options].set_bit(0,1))
+    end
     @quiz_courant_id = @dquiz_courant[:id]
-    puts "@quiz_courant_id = #{@quiz_courant_id.inspect}"
 
     @dquiz_un = table_quiz_biblio.get(1)
     opts = @dquiz_un[:options]
@@ -120,15 +123,12 @@ feature "Vérification des calculs du quiz" do
   after(:all) do
     begin
       # Remettre le quiz courant
-      puts "@quiz_courant_id à remettre = #{@quiz_courant_id.inspect}"
-      puts "Options du quiz ##{@quiz_courant_id} remises à : #{@dquiz_courant[:options].inspect}"
       table_quiz_biblio.update(@quiz_courant_id, {options: @dquiz_courant[:options]})
       # On force toujours la remise à 0 (même en cas d'erreur, quand
       # le premier bit a été laissé à 1 par erreur au cours d'un test précédent)
       opts = @dquiz_un[:options]
       opts[0] = '0'
       table_quiz_biblio.update(1, options: opts)
-      puts "Options du quiz #1 remises à #{opts.inspect}"
     rescue Exception => e
       puts "ERREUR : #{e.message}"
       puts e.backtrace.join("\n")
@@ -136,7 +136,6 @@ feature "Vérification des calculs du quiz" do
     begin
       if $users2destroy.count > 0
         site.dbm_table(:hot, 'users').delete(where: "id IN (#{$users2destroy.join(', ')})")
-        puts "Users supprimés : #{$users2destroy.pretty_join}"
       end
     rescue Exception => e
       puts "ERREUR : #{e.message}"
@@ -146,10 +145,10 @@ feature "Vérification des calculs du quiz" do
 
   scenario 'Quand l’utilisateur ne soumet aucune réponse' do
     visite_route 'quiz/1/show?qdbr=biblio'
-    expect(page).to have_css('h1', text: 'Quizzzz !')
-    expect(page).to have_tag('form#form_quiz') do
-      with_tag 'input', with: {type: 'submit', value: 'Soumettre le quiz'}
-    end
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', in: 'form#form_quiz', type: 'submit', value: 'Soumettre le quiz',
+      success: 'Le quiz possède un bouton pour le soumettre.'
     within('form#form_quiz') do
       click_button 'Soumettre le quiz'
     end
@@ -271,7 +270,7 @@ feature "Vérification des calculs du quiz" do
     prenom  = UserSpec::random_prenom('F')
     umail   = 'unmail@yahoo.fr'
     upwd    = 'sonmotdepasse'
-    uinscrit = create_user(pseudo: prenom, mail: umail, password: upwd)
+    uinscrit = create_user(pseudo: prenom, mail: umail, password: upwd, sexe: 'F')
     $users2destroy << uinscrit.id
 
     # Au cas où, on détruit tous les questionnaires de cet
@@ -398,7 +397,7 @@ feature "Vérification des calculs du quiz" do
     shot 'user-in-reshow-quiz'
     expect(page).not_to have_content('En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents')
 
-    pending "Implémenter la suite : le ré-affichage du quiz de l'auteur"
+    # pending "Implémenter la suite : le ré-affichage du quiz de l'auteur"
     # NOTE : Un message disant qu'il peut revoir et même refaire son quiz en tant qu'abonné.
   end
 end

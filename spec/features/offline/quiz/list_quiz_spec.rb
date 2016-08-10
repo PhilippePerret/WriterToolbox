@@ -46,8 +46,10 @@ feature "Liste des quiz" do
           with_tag 'span', with: {class: 'qtitre'}, text: /#{Regexp.escape hq.titre}/
           with_tag 'span', with: {class: 'cdate'}, text: hq.created_at.as_human_date(true, false, '')
           # Le div pour la description
-          desc = hq.description[0..20]
-          with_tag 'div', with: {class: 'qdescription'}, text: /#{Regexp.escape desc}/
+          unless hq.description.nil?
+            desc = hq.description[0..20]
+            with_tag 'div', with: {class: 'qdescription'}, text: /#{Regexp.escape desc}/
+          end
           # Le lien pour le tenter
           with_tag 'a', with: {href: "quiz/#{hq.id}/show?qdbr=#{hq.suffix_base}"}, text: /Le tenter/
           if hq.data_generales
