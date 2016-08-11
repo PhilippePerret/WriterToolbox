@@ -5,154 +5,148 @@ feature "Liste des quiz" do
   before(:all) do
     site.require_objet 'quiz'
   end
-  scenario 'Un visiteur quelconque peut rejoindre la liste des quiz depuis l’accueil' do
-    visit_home
-    expect(page).to have_link 'OUTILS'
-    click_link 'OUTILS'
-    expect(page).to have_tag('h1', text: /Outils d'écriture/)
-    puts "Il rejoint la liste des outils"
-    within('div#tools_quick_list') do
-      expect(page).to have_link 'Les quizzzz'
-    end
-    puts "On trouve le lien bouton dans l'accès rapide aux outils"
-    within('dl') do
-      expect(page).to have_link 'Les quizzzz'
-    end
-    puts "Il trouve un lien bouton dans la liste détaillée des outils"
-    puts "Il clique le lien Quizzzz"
-    within('div#tools_quick_list') do
-      click_link 'Les quizzzz'
-    end
 
-    expect(page).to have_tag('h1', text: /Quizzzz/)
-    puts "Il rejoint l'accueil des quiz (le quiz courant)"
-    expect(page).to have_link('Tous les quizzzz')
-    puts "Il trouve un lien pour rejoindre la liste des quiz"
-    click_link 'Tous les quizzzz'
-    expect(page).to have_tag('h2', text: /Tous les quizzzz/)
-    expect(page).to have_tag('ul', with: {id: 'quizes'})
-
+  def get_autre_quiz
+    currentq = Quiz.get_current_quiz
+    autreq = nil
+    Quiz.allquiz.each do |q|
+      return q if q.id != currentq.id
+    end
   end
 
-  scenario 'Seuls les quiz consultables sont affichés' do
-    test 'Pour un visiteur même abonné, la liste n’affiche que les quiz consultables'
+  scenario 'Un visiteur quelconque peut rejoindre la liste des quiz depuis l’accueil' do
+    test 'Un visiteur quelconque peut rejoindre la liste des quiz depuis l’accueil'
+    visit_home
+    la_page_a_le_lien 'OUTILS'
+    puts "Le visiteur clique le lien OUTILS"
+    click_link 'OUTILS'
+    la_page_a_pour_titre 'Outils d\'écriture'
+    la_page_a_le_lien 'Les quizzzz', in: 'div#tools_quick_list',
+      success: "Un lien dans la liste rapide conduit à la liste des quiz"
+    la_page_a_le_lien 'Les quizzzz', in: 'dl',
+      success: "Un lien dans la liste complète des outils conduit à la liste des quiz."
+    within('div#tools_quick_list'){click_link 'Les quizzzz'}
+    puts "Le visiteur clique le lien 'Les quizzzz'"
+
+    # === VÉRIFICATION ===
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_lien 'Tous les quizzzz'
+    click_link 'Tous les quizzzz'
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre 'Tous les quizzzz'
+    la_page_a_la_liste 'quizes', class: 'quiz_list'
+    la_page_napas_la_balise 'h3', text: 'Questionnaires hors-liste'
+    la_page_napas_la_liste 'quizes_hors_liste', class: 'quiz_list'
+  end
+
+  scenario 'Tous les quiz sont affichés pour un administrateur' do
+    test 'Pour un administrateur, tous les quiz sont affichés'
+    identify_phil
+    click_link 'OUTILS'
+    la_page_a_le_lien 'Les quizzzz', in: 'div#tools_quick_list',
+      success: "Un lien dans la liste rapide conduit à la liste des quiz"
+    la_page_a_le_lien 'Les quizzzz', in: 'dl',
+      success: "Un lien dans la liste complète des outils conduit à la liste des quiz."
+    within('div#tools_quick_list'){click_link 'Les quizzzz'}
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_lien 'Tous les quizzzz'
+    click_link 'Tous les quizzzz'
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_la_balise 'h3', text: 'Questionnaires hors-liste'
+    la_page_a_la_liste 'quizes_hors_liste', class: 'quiz_list'
+  end
+
+  scenario 'Un visiteur quelconque ne peut pas rejoindre un autre quiz que le dernier' do
+    test 'Un visiteur quelconque ne peut pas visiter un autre quiz que le quiz courant'
+
+    curreq = Quiz.get_current_quiz
+    autreq = get_autre_quiz
+    visite_route 'quiz/list'
+    la_page_a_le_lien 'Le tenter', in: "li#quiz-#{autreq.suffix_base}-#{autreq.id}"
+    within("li#quiz-#{autreq.suffix_base}-#{autreq.id}") do
+      click_link 'Le tenter'
+    end
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_napas_pour_soustitre autreq.titre
+    la_page_a_pour_soustitre curreq.titre
+    la_page_a_l_erreur 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
+  end
+
+  scenario 'Un abonné peut rejoindre un autre quiz que le courant' do
+    test 'Un abonné peut rejoindre le quiz qu’il désire'
+    curreq = Quiz.get_current_quiz
+    autreq = get_autre_quiz
+
     benoit.set_subscribed
     identify_benoit
     visite_route 'quiz/list'
-    pending "à implémenter"
+
+    la_page_a_le_lien 'Le tenter', in: "li#quiz-#{autreq.suffix_base}-#{autreq.id}"
+    within("li#quiz-#{autreq.suffix_base}-#{autreq.id}") do
+      click_link 'Le tenter'
+    end
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre autreq.titre
+    la_page_napas_derreur
   end
-  scenario 'Contexte : admin => tous les quiz' do
-    test 'Pour un administrateur, tous les quiz sont affichés, absolument tous'
+
+  scenario "Un visiteur quelconque ne peut pas éditer un questionnaire" do
+    test 'Un visiteur quelconque ne peut pas éditer un questionnaire'
+
+    curq = Quiz.get_current_quiz
+
+    visite_route 'quiz/list'
+
+    la_page_napas_le_lien 'Éditer', in: "li#quiz-#{curq.suffix_base}-#{curq.id}"
+
+  end
+
+  scenario 'Un visiteur quelconque ne peut pas forcer l’édition d’un quiz' do
+    test 'Un visiteur quelconque ne peut pas forcer l’édition d’un quiz'
+    visite_route 'quiz/10/edit?qdbr=biblio'
+    la_page_napas_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre 'Identification'
+  end
+
+  scenario 'Un abonné ne peut pas éditer un questionnaire' do
+    test 'Un abonné ne peut pas éditer un questionnaire'
+
+    curq = Quiz.get_current_quiz
+
+    benoit.set_subscribed
+    identify_benoit
+    visite_route 'quiz/list'
+
+    la_page_napas_le_lien 'Éditer', in: "li#quiz-#{curq.suffix_base}-#{curq.id}"
+
+  end
+
+  scenario 'Un visiteur abonné ne peut pas forcer l’édition d’un quiz' do
+    test 'Un visiteur abonné ne peut pas forcer l’édition d’un quiz'
+    benoit.set_subscribed
+    identify_benoit
+    visite_route 'quiz/10/edit?qdbr=biblio'
+    sleep 1
+    la_page_napas_le_formulaire 'edition_quiz'
+  end
+
+  scenario 'Un administrateur peut éditer un questionnaire' do
+    test 'Un administrateur peut éditer un questionnaire'
+
+    curq = Quiz.get_current_quiz
+
     identify_phil
     visite_route 'quiz/list'
-    pending "à implémenter"
-  end
-  
-  scenario 'Un visiteur quelconque trouve une liste conforme à son niveau' do
-    visite_route "quiz/list"
-    expect(page).to have_css('ul#quizes')
-    expect(page).to have_tag('ul#quizes') do
-      allquiz = site.dbm_table(:cold, 'quiz').select()
-      expect(allquiz).not_to be_empty
 
-      Quiz.allquiz.each do |hq|
-        Quiz.suffix_base= hq.suffix_base
-        with_tag 'li', with:{id: "quiz-#{hq.suffix_base}-#{hq.id}", class: 'li_quiz'} do
-          with_tag 'span', with: {class: 'qtitre'}, text: /#{Regexp.escape hq.titre}/
-          with_tag 'span', with: {class: 'cdate'}, text: hq.created_at.as_human_date(true, false, '')
-          # Le div pour la description
-          unless hq.description.nil?
-            desc = hq.description[0..20]
-            with_tag 'div', with: {class: 'qdescription'}, text: /#{Regexp.escape desc}/
-          end
-          # Le lien pour le tenter
-          with_tag 'a', with: {href: "quiz/#{hq.id}/show?qdbr=#{hq.suffix_base}"}, text: /Le tenter/
-          if hq.data_generales
-            # Dernière date de jeu
-            hqg = hq.data_generales
-            with_tag 'span', with: {class: 'pdate'}, text: hqg[:updated_at].as_human_date(true, false, '')
-            with_tag 'span', with: {class: 'count'}, text: hqg[:count].to_s
-            with_tag 'span', with: {class: 'nmax'}, text: hqg[:note_max].to_f.to_s
-            with_tag 'span', with: {class: 'nmoy'}, text: hqg[:moyenne].to_f.to_s
-            with_tag 'span', with: {class: 'nmin'}, text: hqg[:note_min].to_f.to_s
-          end
-        end
-      end # Fin de boucle sur tous les quiz (avec résultat)
-    end
-  end
-  scenario 'Un visiteur quelconque ne peut pas rejoindre un autre quiz que le dernier' do
-    visite_route 'quiz/list'
-    currentq = Quiz.current
-    # On prend le premier quiz qui n'est pas un quiz courant
-    autreq = nil
-    Quiz.allquiz.each do |hq|
-      if hq.id != currentq.id
-        autreq = hq
-        break
-      end
-    end
-    # On ne peut faire ce test que s'il y a plusieurs quiz
-    unless autreq.nil?
-      expect(page).to have_css("li#quiz-#{autreq.suffix_base}-#{autreq.id} span.qlink")
-      within("li#quiz-#{autreq.suffix_base}-#{autreq.id} span.qlink") do
-        expect(page).to have_link "Le tenter"
-        click_link "Le tenter"
-      end
-      expect(page).to have_content("ce quiz n'est pas le quiz du jour")
-      expect(page).to have_content("vous n'êtes pas abonné")
-      expect(page).to have_content('seuls les abonnés ont accès à tous les quiz')
-    end
+    la_page_a_le_lien 'Éditer', in: "li#quiz-#{curq.suffix_base}-#{curq.id}"
+
   end
 
-  scenario 'Un abonné peut rejoindre un autre quiz que le dernier' do
-    upwd = "monpasseword"
-    u = create_user(password: upwd, subscriber: true)
-    $users_2_destroy << u.id
-    identify mail: u.mail, password: upwd
-    visite_route 'quiz/list'
-    currentq = Quiz.current
-    # On prend le premier quiz qui n'est pas un quiz courant
-    autreq = nil
-    Quiz.allquiz.each do |hq|
-      if hq.id != currentq.id
-        autreq = hq
-        break
-      end
-    end
-    # On ne peut faire ce test que s'il y a plusieurs quiz
-    unless autreq.nil?
-      within("li#quiz-#{autreq.suffix_base}-#{autreq.id} span.qlink") do
-        click_link "Le tenter"
-      end
-      expect(page).to have_tag('form#form_quiz')
-      expect(page).not_to have_content("ce quiz n'est pas le quiz du jour")
-      expect(page).not_to have_content("vous n'êtes pas abonné")
-      expect(page).not_to have_content('seuls les abonnés ont accès à tous les quiz')
-    end
+  scenario 'Un administrateur peut forcer l’édition d’un quiz par la route' do
+    test 'Un administrateur peut forcer l’édition d’un quiz par la route'
+    identify_phil
+    visite_route 'quiz/10/edit?qdbr=biblio'
+    la_page_a_le_formulaire 'edition_quiz'
   end
 
-  scenario "Un administrateur peut éditer le questionnaire" do
-    currentq = Quiz.current
-    # On prend le premier quiz qui n'est pas un quiz courant
-    autreq = nil
-    Quiz.allquiz.each do |hq|
-      if hq.id != currentq.id
-        autreq = hq
-        break
-      end
-    end
-    unless autreq.nil?
-
-      identify_phil
-      visite_route 'quiz/list'
-      expect(page).to have_tag("li#quiz-#{autreq.suffix_base}-#{autreq.id} span.qlink") do
-        with_tag 'a', with: {href: "quiz/#{autreq.id}/edit?qdbr=#{autreq.suffix_base}"}, text: 'Éditer'
-      end
-      within("li#quiz-#{autreq.suffix_base}-#{autreq.id} span.qlink") do
-        click_link "Éditer"
-      end
-      expect(page).to have_tag('form#edition_quiz')
-
-    end
-  end
 end
