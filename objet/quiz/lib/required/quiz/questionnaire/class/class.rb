@@ -38,6 +38,7 @@ class Quiz
             # Le quiz demandé n'exite pas (à cause d'un mauvais identifiant
             # ou d'une base qui ne contient aucun quiz). Dans tous les cas
             # on produit une vraie erreur signalé.
+            debug "QUIZ DEMANDÉ (INTROUVABLE) : #{site.current_route.objet_id}/#{suffix_base.inspect}"
             @error = 'Le quiz demandé n’existe pas. Quiz courant proposé.'
             nil
           elsif wanted_quiz_not_authorised?

@@ -38,7 +38,7 @@ class User
     else
       # On fait la liste des quiz
       results.collect do |hres|
-        href = "quiz/#{hres[:id]}/reshow?qdbr=#{hres[:suffix_base]}"
+        href = "quiz/#{hres[:quiz_id]}/reshow?qdbr=#{hres[:suffix_base]}"
         (quizes[hres[:quiz_id]][:titre] + " - #{hres[:created_at].as_human_date}, #{hres[:note].to_f.to_s}/20".in_span(class: 'tiny')).in_a(href: href).in_li(class: 'quiz')
       end.join('').in_ul(id: 'ul_quizes')
     end

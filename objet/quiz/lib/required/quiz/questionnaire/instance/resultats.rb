@@ -79,7 +79,7 @@ class ::Quiz
     # résultats du questionnaire.
     # `true` pour dire qu'on peut poursuivre et enregistrer ce
     # questionnaire dans la table générale.
-    return true unless user.identified?
+    user.identified? || (return true)
     # Si le même questionnaire vient d'être enregistré, on ne l'enregistre pas
     # à nouveau
     last_five_minutes = NOW - (5*60)

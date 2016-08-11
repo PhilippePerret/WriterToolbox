@@ -26,10 +26,12 @@ alias :identify :go_and_identify
 def identify_phil
   require './data/secret/data_phil'
   go_and_identify DATA_PHIL[:mail], DATA_PHIL[:password]
+  puts "Phil s'identifie"
 end
 def identify_benoit
   require './data/secret/data_benoit'
   go_and_identify DATA_BENOIT[:mail], DATA_BENOIT[:password]
+  puts "Benoit s'identifie"
 end
 
 # Retourne un pseudo aléatoire d'une longeur de 6 à 16 lettres

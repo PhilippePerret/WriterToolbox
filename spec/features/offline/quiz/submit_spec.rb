@@ -194,8 +194,7 @@ feature "Vérification des calculs du quiz" do
 
   scenario 'Quand l’user ne soumet pas toutes les questions justes' do
     visite_route 'quiz/1/show?qdbr=biblio'
-    expect(page).to have_css('h1', text: 'Quizzzz !')
-
+    la_page_a_pour_titre 'Quizzzz !'
 
     # Mauvaise réponses, toutes les autres seront considérées
     # comme vrai, ce qui permet d'ajouter d'autres questions
@@ -266,25 +265,22 @@ feature "Vérification des calculs du quiz" do
 
   scenario 'Un user inscrit enregistre ses résultats' do
     start_time = Time.now.to_i - 1
+
     # Un user inscrit mais non abonné
-    prenom  = UserSpec::random_prenom('F')
-    umail   = 'unmail@yahoo.fr'
-    upwd    = 'sonmotdepasse'
-    uinscrit = create_user(pseudo: prenom, mail: umail, password: upwd, sexe: 'F')
-    $users2destroy << uinscrit.id
+    benoit.set_simple_inscrit
 
     # Au cas où, on détruit tous les questionnaires de cet
     # utilisateur
-    table_resultats_biblio.delete(where: "user_id = #{uinscrit.id}")
+    table_resultats_biblio.delete(where: "user_id = #{benoit.id}")
 
     # On prend le nombre actuel de questionnaires
     count_init = table_resultats_biblio.count
 
     # On identifie l'user
-    identify(mail: umail, password: upwd)
+    identify_benoit
 
     # Il rejoint son profil et ne trouve pas de questionnaires
-    visite_route "user/#{uinscrit.id}/profil"
+    visite_route "user/#{benoit.id}/profil"
     expect(page).to have_tag('fieldset#fs_quizes') do
       shot 'user-in-profil-before-quiz'
       with_tag('p', text: /#{Regexp.escape 'Vous n’avez aucun questionnaire enregistré.'}/)
@@ -294,9 +290,9 @@ feature "Vérification des calculs du quiz" do
 
     # Il rejoint le questionnaire
     visite_route "quiz/1/show?qdbr=biblio"
-    expect(page).to have_tag('h1', text: /Quizzzz/)
+    la_page_a_pour_titre 'Quizzzz !'
 
-    # === On remplit le questionnaire ===
+    # === Benoit remplit le questionnaire ===
     points_max, points_user = remplir_quiz
     expect(page).to have_tag('span', with: {id: 'note_finale'}, text: '20/20')
 
@@ -308,13 +304,13 @@ feature "Vérification des calculs du quiz" do
     # Le résultat a été enregistré avec les bonnes valeurs
     hres = table_resultats_biblio.select(order: 'created_at DESC', limit: 1).first
     expect( hres[:created_at] ) .to be > start_time
-    expect( hres[:user_id] )    .to eq uinscrit.id
+    expect( hres[:user_id] )    .to eq benoit.id
     expect( hres[:quiz_id] )    .to eq 1
     expect( hres[:note] )       .to eq 20.0
 
     # Son questionnaire apparait dans la liste des questionnaires de son
     # profil
-    visite_route "user/#{uinscrit.id}/profil"
+    visite_route "user/#{benoit.id}/profil"
     expect(page).to have_tag('h1', text: 'Votre profil')
     shot 'user-profil-after-quiz'
     expect(page).to have_tag('fieldset', with: {id: 'fs_quizes'}) do
@@ -325,50 +321,45 @@ feature "Vérification des calculs du quiz" do
     # Quand il veut revoir son questionnaire, un message lui dit qu'il ne
     # peut pas le faire, avec un lien pour s'abonner.
     click_link( @dquiz_un[:titre] )
-    expect(page).to have_tag('h1', text: /Quizzzz/)
+    la_page_a_pour_titre 'Quizzzz !'
     shot 'user-in-reshow-quiz'
-    expect(page).to have_content('En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents')
-
+    la_page_a_le_message 'En qualité de simple utilisateur inscrit, vous ne pouvez pas consulter vos quiz précédents'
 
   end
 
   scenario 'Un user abonné enregistre ses résultats et peut les revoir' do
     start_time = Time.now.to_i - 1
-    # Un user inscrit mais non abonné
-    prenom  = UserSpec::random_prenom('F')
-    umail   = 'unsubscriber@yahoo.fr'
-    upwd    = 'lemotdepasse'
-    usubscriber = create_user(pseudo: prenom, mail: umail, password: upwd, subscriber: true)
-    $users2destroy << usubscriber.id
 
-    # Au cas où, on détruit tous les questionnaires de cet
-    # utilisateur
-    table_resultats_biblio.delete(where: "user_id = #{usubscriber.id}")
+    # Un user inscrit mais non abonné
+    benoit.set_subscribed
+
+    # Au cas où, on détruit tous les questionnaires de benoit
+    table_resultats_biblio.delete(where: "user_id = #{benoit.id}")
 
     # On prend le nombre actuel de questionnaires
     count_init = table_resultats_biblio.count
 
-    # On identifie l'user
-    identify(mail: umail, password: upwd)
+    # Benoit s'identifie
+    identify_benoit
 
     # Il rejoint son profil et ne trouve pas de questionnaires
-    visite_route "user/#{usubscriber.id}/profil"
-    expect(page).to have_tag('fieldset#fs_quizes') do
-      shot 'user-in-profil-before-quiz'
-      with_tag('p', text: /#{Regexp.escape 'Vous n’avez aucun questionnaire enregistré.'}/)
-    end
-
-
+    puts "Benoit visite son profil"
+    visite_route "user/#{benoit.id}/profil"
+    la_page_a_la_balise 'p', text: 'Vous n’avez aucun questionnaire enregistré.', in: 'fieldset#fs_quizes',
+      success: 'Sur son profil, Benoit n’a aucun questionnaire enregistré.'
 
     # Il rejoint le questionnaire
+    puts "Benoit rejoint questionnaire #1 de biblio."
     visite_route "quiz/1/show?qdbr=biblio"
-    expect(page).to have_tag('h1', text: /Quizzzz/)
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_napas_derreur
+    shot 'benoit-after-submit-quiz'
 
     # === On remplit le questionnaire ===
     points_max, points_user = remplir_quiz
-    expect(page).to have_tag('span', with: {id: 'note_finale'}, text: '20/20')
+    la_page_a_la_balise 'span', id: 'note_finale', text: '20/20',
+      success: "La page affiche la note de 20/20 pour Benoit."
 
-    shot 'subscriber-after-submit-quiz'
 
     # --- Test ---
     # Son résultat a été enregistré
@@ -376,28 +367,34 @@ feature "Vérification des calculs du quiz" do
     # Le résultat a été enregistré avec les bonnes valeurs
     hres = table_resultats_biblio.select(order: 'created_at DESC', limit: 1).first
     expect( hres[:created_at] ) .to be > start_time
-    expect( hres[:user_id] )    .to eq usubscriber.id
+    expect( hres[:user_id] )    .to eq benoit.id
     expect( hres[:quiz_id] )    .to eq 1
     expect( hres[:note] )       .to eq 20.0
 
     # Son questionnaire apparait dans la liste des questionnaires de son
     # profil
-    visite_route "user/#{usubscriber.id}/profil"
-    expect(page).to have_tag('h1', text: 'Votre profil')
+    puts "Benoit retourne sur son profil"
+    visite_route "user/#{benoit.id}/profil"
+    la_page_a_pour_titre 'Votre profil'
+    la_page_napas_derreur
     shot 'subscriber-profil-after-quiz'
     expect(page).to have_tag('fieldset', with: {id: 'fs_quizes'}) do
       with_tag 'li', with: {class: 'quiz'}
-      with_tag 'a', with: {href: "quiz/#{hres[:id]}/reshow?qdbr=biblio"}, text: /#{Regexp.escape @dquiz_un[:titre]}/
+      with_tag 'a', with: {href: "quiz/#{hres[:quiz_id]}/reshow?qdbr=biblio"}, text: /#{Regexp.escape @dquiz_un[:titre]}/
     end
 
     # Quand il veut revoir son questionnaire, un message lui dit qu'il ne
     # peut pas le faire, avec un lien pour s'abonner.
-    click_link( @dquiz_un[:titre] )
-    expect(page).to have_tag('h1', text: /Quizzzz/)
+    puts "Benoit clique le lien pour voir son questionnaire."
+    within('fieldset#fs_quizes'){click_link( @dquiz_un[:titre] )}
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_napas_derreur
     shot 'user-in-reshow-quiz'
-    expect(page).not_to have_content('En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents')
+    la_page_napas_le_message 'En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents'
 
-    # pending "Implémenter la suite : le ré-affichage du quiz de l'auteur"
-    # NOTE : Un message disant qu'il peut revoir et même refaire son quiz en tant qu'abonné.
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_napas_la_balise 'input', type: 'submit', value: "Soumettre le quiz", in: 'form#form_quiz'
+
+    pending "Il faut tester que les résultats soient sélectionnés (mais pas corrigé pour ne pas faire un questionnaire sans faute facilement)"
   end
 end

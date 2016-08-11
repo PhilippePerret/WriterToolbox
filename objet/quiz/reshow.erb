@@ -4,11 +4,9 @@
 # Seuls les auteurs autorisés peuvent le faire.
 
 %>
-<h1>Quizzzz !</h1>
+<%= Quiz.titre_h1(quiz.titre)%>
 <% if user.authorized? %>
-  <p>
-    Ré-affichage du quiz.
-  </p>
+  <%= quiz.reshow %>
 <% else %>
   <p>
     En qualité de simple <%= user.htype %>, vous ne pouvez pas consulter vos quiz précédents.

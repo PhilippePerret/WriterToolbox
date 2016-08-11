@@ -6,6 +6,26 @@ Méthodes pour construire le quiz
 =end
 class Quiz
 
+  # Réaffiche le questionnaire rempli par l'user courant
+  def reshow
+    # On récupère les réponses précédentes données par l'user
+    @ureponses = table_resultats.select(where: "quiz_id = #{id} AND user_id = #{user.id}", order: 'created_at DESC', limit: 1, colonnes: [:reponses]).first[:reponses]
+    @ureponses = JSON.load(@ureponses).to_sym
+    # Il faut indiquer que c'est un ré-affichage, pour ne pas chercher à
+    # enregistrer le résultat.
+    @is_reshown = true
+    evaluate
+    output
+  end
+
+  # Méthode principale appelée pour afficher le
+  # questionnaire
+  def output
+    page.add_javascript Dir["#{Quiz.folder_lib}/js/user/**/*.js"]
+    page.add_css Dir["#{Quiz.folder_lib}/css/user/**/*.css"]
+    build
+  end
+
   # Méthode principale pour la construction du
   # quiz
   def build

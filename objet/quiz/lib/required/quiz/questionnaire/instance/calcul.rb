@@ -31,11 +31,11 @@ class Quiz
       # On calcule le rapport
       @do_evaluation = true
       report
-      # Enregistrement du résultat :
+      # Enregistrement du résultat (sauf si c'est un reshow) :
       #   - dans la table des résultats pour l'user s'il est identifié
       #   - toujours dans la table général :cold, quiz qui consigne toutes
       #     les notes et toutes les soumissions.
-      save_resultat
+      save_resultat unless @is_reshown
     end
   end
 
@@ -111,7 +111,7 @@ class Quiz
   #   :type           :radio ou :checkbox
   #   :rep_index      L'index de la réponse pour un radio
   #                   Les index des réponses pour un checkbox
-  #   Seront définis plus tard :
+  #   Seront définis plus tard dans le programme :
   #     :better_reps  Index de valeurs positives
   #     :best_rep     Index de la meilleure valeur si plusieurs
   #                   Ou liste des index si plusieurs meilleures
