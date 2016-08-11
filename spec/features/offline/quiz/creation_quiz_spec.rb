@@ -28,53 +28,60 @@ feature "Création d'un quiz" do
   end
 
   scenario "Un non administrateur ne peut pas rejoindre la section de création d'un quiz" do
+    test 'Un non administrateur ne peut pas rejoindre la section de création de quiz'
     visite_route 'quiz/new'
-    expect(page).not_to have_tag('h1', text: 'Quizzzz !')
-    expect(page).not_to have_tag('h2', text: 'Nouveau quiz')
+    la_page_napas_pour_titre 'Quizzzz !'
+    la_page_napas_pour_soustitre 'Nouveau quiz'
   end
 
   scenario 'Un administrateur peut rejoindre la section de création d’un quiz' do
+    test 'Un administrateur peut rejoindre la section de création d’un quiz'
     identify_phil
     visite_route 'quiz/new'
-    expect(page).to have_tag('h1', text: 'Quizzzz !')
-    expect(page).to have_tag('h2', text: 'Nouveau quiz')
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre 'Nouveau quiz'
   end
 
   scenario 'Un administrateur peut créer un nouveau quiz' do
+    test 'Un administrateur peut créer un nouveau quiz et une question'
     identify_phil
     visite_route 'quiz/new'
-    expect(page).to have_link "Nouveau quiz dans la base “Biblio”"
-    click_link "Nouveau quiz dans la base “Biblio”"
-    expect(page).to have_tag('form', with: {id: 'edition_quiz', action: 'quiz//edit'}) do
-      with_tag('input', with: {type: 'hidden', name: 'qdbr', value: 'biblio'})
-    end
-    # On remplit le formulaire avec les données minimales
-    within('form#edition_quiz') do
-      fill_in 'quiz_titre', with: "Nouveau quiz"
-      fill_in 'quiz_groupe', with: 'scenodico'
-      click_button 'Enregistrer'
-    end
-    expect(page).to have_tag('form#edition_quiz')
+    la_page_a_le_lien 'Nouveau quiz dans la base “Test”'
+    click_link "Nouveau quiz dans la base “Test”"
+    la_page_a_le_formulaire 'edition_quiz', action: 'quiz//edit'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'qdbr', value: 'test', in: 'form#edition_quiz'
+
+    data_form = {
+      'quiz_titre'  => {value: 'Nouveau quiz'},
+      'quiz_groupe' => {value: 'test'}
+    }
+    phil.remplit_le_formulaire(page.find('form#edition_quiz')).
+      avec(data_form).
+      et_le_soumet('Enregistrer')
+
+    la_page_a_le_formulaire 'edition_quiz',
+      success: 'Le formulaire d’édition est réaffiché.'
+
     quiz_id = page.find('form#edition_quiz input#quiz_id', visible: false).value
     quiz_id = quiz_id.to_i
+    puts "L'ID du nouveau questionnaire est #{quiz_id}."
 
     # Pour le détruire à la fin
-    $quiz2destroy << {id: quiz_id, suffix_base: 'biblio'}
+    $quiz2destroy << {id: quiz_id, suffix_base: 'test'}
 
-    # Le message de confirmation de création
-    expect(page).to have_notice("Quiz ##{quiz_id} créé avec succès.")
-    # L'action a été correctement réglée
-    expect(page).to have_tag('form#edition_quiz', with: {action: "quiz/#{quiz_id}/edit"})
+    la_page_a_le_message "Quiz ##{quiz_id} créé avec succès."
+    la_page_a_la_balise 'form', id: 'edition_quiz', action: "quiz/#{quiz_id}/edit",
+      success: "Le formulaire a la bonne action pour réenregistrer le quiz."
 
     # Pas encore de questions à ce quiz
     qids = page.find('form#edition_quiz input#quiz_questions_ids').value
     expect(qids).to eq ''
+    success "La formulaire n'a pas encore de questions."
 
     # On crée une première question
-    expect(page).to have_link "Nouvelle question"
+    la_page_a_le_lien 'Nouvelle question', in: 'form#edition_quiz'
     click_link 'Nouvelle question'
-    expect(page).not_to have_css('form#edition_quiz')
-    expect(page).to have_css('form#edition_question_quiz')
+    la_page_a_le_formulaire 'edition_question_quiz'
 
     titre_question = "Une nouvelle question à #{Time.now} ?"
     within('form#edition_question_quiz') do
@@ -96,13 +103,12 @@ feature "Création d'un quiz" do
       click_button 'Enregistrer la question'
     end
 
-    # Le formulaire quiz est affiché
-    expect(page).to have_css('form#edition_quiz')
-    # Le formulaire question est masqué
-    expect(page).not_to have_css('form#edition_question_quiz')
+    la_page_a_la_balise 'form#edition_question_quiz',
+      visible: false,
+      success: "Le formulaire pour les questions est masqué."
 
     # La question a été enregistrée
-    table_questions = site.dbm_table("quiz_biblio", 'questions')
+    table_questions = site.dbm_table("quiz_test", 'questions')
     dquestion = table_questions.select(where: "question = '#{titre_question}'").first
     qid = dquestion[:id]
 
@@ -110,11 +116,13 @@ feature "Création d'un quiz" do
     qids = page.find('form#edition_quiz input#quiz_questions_ids').value
     expect(qids).not_to eq ''
     expect(qids).to eq "#{qid}"
+    success "La question ##{qid} a été enregistrée."
 
-    # La question est déjà enregistrée dans la donnée du qui
-    table_quiz = site.dbm_table("quiz_biblio", 'quiz')
+    # La question est déjà enregistrée dans la donnée du quiz
+    table_quiz = site.dbm_table("quiz_test", 'quiz')
     dquiz = table_quiz.get(quiz_id)
     expect(dquiz[:questions_ids]).to eq "#{qid}"
+    success "La question a été ajouté aux questions du quiz courant."
 
   end
 end

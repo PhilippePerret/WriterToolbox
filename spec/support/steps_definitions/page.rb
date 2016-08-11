@@ -16,6 +16,7 @@
 def options_from_args args
   options ||= Hash.new
   args != nil || ( return options )
+  visible = args.delete(:visible)
   if args.key? :text
     t = args.delete :text
     t.instance_of?(Regexp) || t = /#{Regexp.escape t}/i
@@ -24,6 +25,8 @@ def options_from_args args
   options.merge!(success: args.delete(:success)) if args.key?(:success)
   options.merge!(in: args.delete(:in)) if args.key?(:in)
   options.merge!(with: args)
+  visible.nil? || options.merge!(visible: visible)
+  options
 end
 
 

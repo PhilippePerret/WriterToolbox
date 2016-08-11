@@ -13,10 +13,5 @@ raise_unless_admin
 # questionnaire, soit c'est un nouveau questionnaire
 def quiz
   Quiz.suffix_base != nil || raise('Il faut impérativement spécifier le suffixe de la base, pour éditer ou créer un questionnaire.')
-  if site.route.objet_id.nil?
-    # => Nouveau quiz
-    Quiz.new(nil)
-  else
-    Quiz.new(site.route.objet_id)
-  end
+  Quiz.new(site.current_route.objet_id, Quiz.suffix_base)
 end
