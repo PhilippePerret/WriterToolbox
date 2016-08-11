@@ -39,6 +39,7 @@ class ErrorNotOwner < StandardError; end
 # Barrière anti non-identifié
 # Cf. RefBook > Protection.md
 def raise_unless_identified
+  user.identified? && return
   unless @error_must_identified_done
     # L'erreur qu'on doit faire apparaitre dans la page, pas
     # dans un message flash
@@ -47,6 +48,7 @@ def raise_unless_identified
     @error_must_identified_done = true
   end
 end
+
 # Barrière anti non-administrateur
 # Si l'user n'est pas identifié, on l'envoie plutôt à l'identification
 # Sinon, il rejoint la page d'erreur normale.
