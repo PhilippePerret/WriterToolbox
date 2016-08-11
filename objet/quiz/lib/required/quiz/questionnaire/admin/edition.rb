@@ -8,6 +8,8 @@
 =end
 if user.manitou?
   class ::Quiz
+
+
     # Méthode principale appelée quand on soumet le formulaire des
     # données du quiz
     #
@@ -67,9 +69,11 @@ if user.manitou?
       bit_random  = h.delete(:random) == 'on' ? '1' : '0'
       # Le nombre maximum de questions par formulaire, sur 3 chiffres
       bits_maxq  = (h.delete(:max_questions).nil_if_empty || '0').rjust(3,'-')
+      # Est-ce un quiz hors-liste ?
+      bits_horsliste = h.delete(:hors_liste) == 'on' ? '1' : '0'
 
       # Constition des options
-      @options = "#{@bit_courant}#{bit_random}#{bits_maxq}"
+      @options = "#{@bit_courant}#{bit_random}#{bits_maxq}#{bits_horsliste}"
       h.merge!(options: @options)
       return h # pour la clarté
     end

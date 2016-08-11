@@ -5,3 +5,7 @@ enable_comments
 %>
 <%= Quiz.titre_h1('Tous les quizzzz') %>
 <%= Quiz.as_ul %>
+<% if user.admin? %>
+  <h3>Questionnaires hors-liste</h3>
+  <%= Quiz.hors_liste_as_ul %>
+<% end %>

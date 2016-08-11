@@ -33,6 +33,21 @@ feature "Liste des quiz" do
     expect(page).to have_tag('ul', with: {id: 'quizes'})
 
   end
+
+  scenario 'Seuls les quiz consultables sont affichés' do
+    test 'Pour un visiteur même abonné, la liste n’affiche que les quiz consultables'
+    benoit.set_subscribed
+    identify_benoit
+    visite_route 'quiz/list'
+    pending "à implémenter"
+  end
+  scenario 'Contexte : admin => tous les quiz' do
+    test 'Pour un administrateur, tous les quiz sont affichés, absolument tous'
+    identify_phil
+    visite_route 'quiz/list'
+    pending "à implémenter"
+  end
+  
   scenario 'Un visiteur quelconque trouve une liste conforme à son niveau' do
     visite_route "quiz/list"
     expect(page).to have_css('ul#quizes')

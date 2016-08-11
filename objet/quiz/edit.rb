@@ -12,11 +12,11 @@ raise_unless_admin
 # le quiz courant. Soit edit est appelé avec un id et on édite ce
 # questionnaire, soit c'est un nouveau questionnaire
 def quiz
-  ::Quiz.suffix_base != nil || raise('Il faut impérativement spécifier le suffixe de la base, pour éditer ou créer un questionnaire.')
+  Quiz.suffix_base != nil || raise('Il faut impérativement spécifier le suffixe de la base, pour éditer ou créer un questionnaire.')
   if site.route.objet_id.nil?
     # => Nouveau quiz
-    ::Quiz.new(nil)
+    Quiz.new(nil)
   else
-    ::Quiz.new(site.route.objet_id)
+    Quiz.new(site.route.objet_id)
   end
 end

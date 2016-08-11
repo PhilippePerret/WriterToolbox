@@ -17,6 +17,7 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
 
   scenario "Contexte : aucune donnée et un quiz par défaut" do
     test 'Sans autres données, c’est le quiz par défaut qui s’affiche'
+    
     pending "S'assurer qu'il y ait un quiz courant"
     # TODO Il faut s'assurer qu'il y ait un quiz par défaut
     quiz_id =

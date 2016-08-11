@@ -81,6 +81,8 @@ class Sync
             report "#{nom_chose} ##{rid} actualisé sur la base distante"
             @nombre_synchronisations += 1
             suivi "Le #{nom_chose} ##{rid} local est plus récent => update distant requis"
+          else
+            suivi "Le #{nom_chose} ##{rid} est correct."
           end
         end
 

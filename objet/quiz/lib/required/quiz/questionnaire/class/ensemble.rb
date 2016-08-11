@@ -26,22 +26,34 @@ class ::Quiz
     # Noter que les quiz hors list ne sont pas retournés par cette liste
     # "hors liste" signifie que le 6e bit des options est à 1, il faut le
     # régler manuellement, comme par exemple pour les quiz de test.
-    # 
+    #
     def allquiz
       @allquiz ||= begin
         arr = Array.new
         all_suffixes_quiz.each do |sufbase|
           arr += site.dbm_table("quiz_#{sufbase}", 'quiz').select(colonnes:[]).collect do |row|
             q = new(row[:id], sufbase)
-            if q.hors_liste?
-              nil
-            else
-              q
-            end
+            q.hors_liste? ? nil : q
           end.compact
         end
         arr
       end
     end
+    #/allquiz
+
+    def allquiz_hors_liste
+      @allquiz_hors_liste ||= begin
+        arr = Array.new
+        all_suffixes_quiz.each do |sufbase|
+          arr += site.dbm_table("quiz_#{sufbase}", 'quiz').select(colonnes:[]).collect do |row|
+            q = new(row[:id], sufbase)
+            q.hors_liste? ? q : nil
+          end.compact
+        end
+        arr
+      end
+    end
+    #/allquiz_hors_liste
+
   end #/ << self Quiz
 end #/Quiz

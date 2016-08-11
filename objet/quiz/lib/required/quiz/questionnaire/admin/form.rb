@@ -59,8 +59,9 @@ class ::Quiz
     # quiz)
     liste_groupes = [
       ['', 'Choisir parmi…'],
-      ['scenodico', 'Scénodico'],
-      ['filmodico', "Filmodico"]
+      ['scenodico',   'Scénodico'],
+      ['filmodico',   'Filmodico'],
+      ['autre',       'Autre']
     ]
     onclick = "$('input#quiz_groupe').val(this.value)"
     menu_groupes = liste_groupes.in_select(onchange: onclick)
@@ -104,12 +105,13 @@ class ::Quiz
       tform.field_select('Type', 'type', nil, {values: TYPES, text_before: mess_id}) +
       cb_quiz_courant +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random', random?) +
+      tform.field_checkbox('Ne pas lister (test ou quiz en cours de fabrication)', 'hors_liste', hors_liste?) +
       tform.field_text('', 'max_questions', nombre_max_questions, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
       tform.field_text("Questions (#{questions_ids.count})", 'questions_ids', questions_ids.join(' ')) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
       tform.field_description('Liste des IDs de questions, séparés par des espaces. Noter que s’il y a un nombre maximum de questions définies et que l’ordre est aléatoire, on peut ne pas préciser l’ordre. S’il est défini, on prendra les X questions dans cette liste.') +
       ul_questions +
-      tform.field_textarea('Description', 'description', nil) +
+      tform.field_textarea('Description', 'description', description) +
       tform.field_description('Cette description est destinée à l’utilisateur. Elle sera placée en haut du questionnaire.') +
       tform.submit_button('Enregistrer')
     ).in_form(dform) +
@@ -122,8 +124,10 @@ class ::Quiz
   def line_identifiant_et_bouton
     # Bouton pour afficher le questionnaire
     btn_show = 'Aperçu'.in_a(class: 'btn small', href: "quiz/#{id}/show?qdbr=#{suffix_base}", target: :new)
+    # Bouton pour revenir à la liste des questionnaires
+    btn_list = 'Liste des quiz'.in_a(class: 'btn small', href: 'quiz/list')
     btn_init = 'Init new'.in_a(onclick: "QuizQuestion.init_new()")
-    tform.field_raw('', '', nil, {field: "#{btn_show}"})
+    tform.field_raw('', '', nil, {field: "#{btn_show}#{btn_list}".in_div(class: 'btns')})
   end
 
   # Retourne le div qui contient les questions du questionnaire, avec des

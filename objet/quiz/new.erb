@@ -16,3 +16,11 @@ raise_unless_admin
     <%= "Nouveau quiz dans la base “#{sufbase.capitalize}”".in_a(href: "quiz/edit?qdbr=#{sufbase}").in_p %>
   <% end.join('') %>
 </p>
+<form class="dim2080" action="quiz/new" method="POST">
+  <%= 'creer_new_base_test'.in_hidden( name: 'operation' ) %>
+  <p>
+    Nouvelle base de quiz : <input type="text" class='milong' name="new_base_test_name" id="new_base_test_name" value="">
+      <input type="submit" value="Créer la base" class='small btn' />
+  </p>
+  </div>
+</form>

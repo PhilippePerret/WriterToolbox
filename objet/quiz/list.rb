@@ -18,7 +18,13 @@ class ::Quiz
     def as_ul
       allquiz.collect do |quiz|
         quiz.as_li
-      end.join('').in_ul(id: 'quizes')
+      end.join('').in_ul(id: 'quizes', class: 'quiz_list')
+    end
+
+    def hors_liste_as_ul
+      allquiz_hors_liste.collect do |quiz|
+        quiz.as_li
+      end.join('').in_ul(id: 'quizes_hors_liste', class: 'quiz_list')
     end
 
   end #/<< self

@@ -6,8 +6,6 @@ class ::Quiz
 
   class << self
 
-    attr_reader :error
-
     # Retourne l'instance du questionnaire courant
     #
     # Rappel : le questionnaire courant est le questionnaire
