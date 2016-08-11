@@ -80,14 +80,14 @@ class Quiz
     # autorisé pour l'user courant.
     def wanted_quiz_not_authorised?
       if get_wanted_quiz.current?
-        debug "Le quiz demandé est courant (-> false)"
+        # debug "Le quiz demandé est courant (-> false)"
         return false
       end
       if user.authorized?
-        debug "L'auteur est autorisé (-> false)"
+        # debug "L'auteur est autorisé (-> false)"
         return false
       end
-      debug "Visiteur non autorisé à voir le quiz #{get_wanted_quiz.id}/#{get_wanted_quiz.suffix_base}"
+      # debug "Visiteur non autorisé à voir le quiz #{get_wanted_quiz.id}/#{get_wanted_quiz.suffix_base}"
       @error = 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
       flash 'Questionnaire courant affiché.'
       return true
@@ -137,7 +137,6 @@ class Quiz
       opts = q.options.set_bit(0,1)
       q.set( options: opts )
       q.instance_variable_set('@options', opts)
-      debug "Options de “#{q.titre}” mis à #{opts}"
       site.send_mail_to_admin(
         subject:  'Quiz : forçage du quiz courant',
         formated: true,

@@ -166,7 +166,6 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
   scenario 'Contexte : toutes les données (autres que courant) et un simple inscrit' do
     test 'Avec des données autres que le quiz courant et un simple inscrit, c’est le quiz courant qui s’affiche, avec un message d’erreur.'
     q = mettre_quiz_courant_if_needed
-    puts "Quiz courant : #{q.titre} (##{q.id}/#{q.suffix_base})"
     # On doit trouver un autre quiz que le courant
     autreq = nil
     Quiz.allquiz.each do |qu|
@@ -184,64 +183,77 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     la_page_a_le_message 'Questionnaire courant affiché.'
   end
 
-  # scenario 'Contexte : toutes les données (autres que courant), un abonné' do
-  #   test 'Avec les données et un abonné, le quiz voulu s’affiche.'
-  #
-  #   # On fait de benoit un abonné
-  #   benoit.set_subscribed
-  #
-  #   quiz_id = 1
-  #   # Les données du quiz
-  #   dquiz = table_quiz_biblio.get( quiz_id )
-  #   dqs = table_questions_biblio.select(where: "id IN (#{dquiz[:questions_ids].split(' ').join(', ')})")
-  #   # On en fait un hash pour les récupérer plus facilement
-  #   dquestions = Hash.new
-  #   dqs.each do |dq|
-  #     dquestions.merge!( dq[:id] => dq)
-  #   end
-  #
-  #   identify_benoit
-  #   visite_route "quiz/#{quiz_id}/show?qdbr=biblio"
-  #   la_page_a_pour_titre 'Quizzzz !'
-  #   la_page_a_pour_soustitre dquiz[:titre]
-  #
-  #   # On contrôle que tout est bien affiché
-  #   la_page_a_la_balise 'div', class: 'quiz'
-  #
-  #   # Il doit y avoir un div pour la description du questionnaire
-  #   la_page_a_la_balise 'div', in: 'div.quiz', id: 'quiz_description', text: dquiz[:description],
-  #     success: "la page contient le div de description du quiz"
-  #
-  #   prefname = "q#{dquiz[:id]}r"
-  #   expect(page).to have_tag('form', with: {class: 'quiz'}) do
-  #
-  #     with_tag 'input', with: {type: 'hidden', name: 'quiz[time]'}
-  #
-  #     dquiz[:questions_ids].split(' ').each do |qid|
-  #
-  #       qid = qid.to_i
-  #       dquestion = dquestions[qid]
-  #       class_css_reponses = ['r']
-  #
-  #       # Un DIV pour la question
-  #       with_tag 'div', with: {class: 'question'}
-  #       # Un DIV pour la question proprement dite
-  #       with_tag 'div', with: {class: 'q', id: "q-#{qid}-question"}, text: /#{Regexp.escape dquestion[:question]}/
-  #       # Le UL contenant les réponses
-  #       class_css_reponses << dquestion[:type][2]
-  #       with_tag 'ul', with: {class: class_css_reponses.join(' ')}
-  #       type_checkbox = dquestion[:type][1] == 'c'
-  #       reponses = JSON.parse(dquestion[:reponses])
-  #       expect(reponses).not_to be_empty
-  #       reponses.to_sym.each_with_index do |dreponse, ireponse|
-  #         if type_checkbox
-  #           with_tag 'input', with: {type: 'checkbox', name: "#{prefname}[rep#{qid}_#{ireponse}]"}
-  #         else # type radio
-  #           with_tag 'input', with: {type: 'radio', name: "#{prefname}[rep#{qid}]", value: "#{ireponse}"}
-  #         end
-  #         with_tag 'label', text: /#{Regexp.escape dreponse[:lib]}/
-  #       end
-  #     end # /fin boucle questions
-  #   end
-  # end
+  scenario 'Contexte : toutes les données (autres que courant), un abonné' do
+    test 'Avec les données d’un autre quiz que le courant et un abonné, le quiz voulu s’affiche.'
+
+    # On fait de benoit un abonné
+    benoit.set_subscribed
+
+    # On doit trouver un quiz qui ne soit pas le quiz courant
+    q = mettre_quiz_courant_if_needed
+    # On doit trouver un autre quiz que le courant
+    autreq = nil
+    Quiz.allquiz.each do |qu|
+      if qu.id != q.id
+        autreq = qu; break
+      end
+    end
+    autreq != nil || raise('On aurait dû trouver un autre quiz…')
+
+    # Hash avec en clé l'identifiant de la question et en valeur
+    # l'instance Quiz::Question de la question
+    dquestions = autreq.hquestions
+
+    identify_benoit
+    visite_route "quiz/#{autreq.id}/show?qdbr=#{autreq.suffix_base}"
+
+    # === TEST ===
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre autreq.titre
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: autreq.id.to_s, in: 'form#form_quiz'
+    la_page_napas_derreur
+  end
+
+  scenario 'La page affiche les questions du quiz' do
+    test 'La page affiche bien toutes les questions du quiz courant'
+
+    q = mettre_quiz_courant_if_needed
+
+    visite_route 'quiz/show'
+    puts "Un visiteur quelconque affiche le quiz courant (##{q.id}/#{q.suffix_base})."
+
+    prefname = "q#{q.id}r"
+    la_page_a_le_formulaire('form_quiz')
+    la_page_a_la_balise('input', type: 'hidden', name: 'quiz[time]', in: 'form#form_quiz')
+
+    expect(page).to have_tag('form', with: {class: 'quiz'}) do
+
+      q.hquestions.each do |qid, question|
+
+        class_css_reponses = ['r']
+        # Un DIV pour la question
+        with_tag 'div', with: {class: 'question'}
+        # Un DIV pour la question proprement dite
+        question_str = question.question.formate_balises_propres.strip_tags
+        with_tag 'div', with: {class: 'q', id: "q-#{qid}-question"}, text: /#{Regexp.escape question_str}/
+        # Le UL contenant les réponses
+        class_css_reponses << question.type[2]
+        with_tag 'ul', with: {class: class_css_reponses.join(' ')}
+        type_checkbox = question.type[1] == 'c'
+        reponses = JSON.parse(question.reponses)
+        expect(reponses).not_to be_empty
+        reponses.to_sym.each_with_index do |dreponse, ireponse|
+          if type_checkbox
+            with_tag 'input', with: {type: 'checkbox', name: "#{prefname}[rep#{qid}_#{ireponse}]"}
+          else # type radio
+            with_tag 'input', with: {type: 'radio', name: "#{prefname}[rep#{qid}]", value: "#{ireponse}"}
+          end
+          with_tag 'label', text: /#{Regexp.escape dreponse[:lib]}/
+        end
+      end
+      # /fin de boucle sur les questions
+      success 'Le formulaire du quiz affiche correctement toutes les questions.'
+    end
+  end
 end
