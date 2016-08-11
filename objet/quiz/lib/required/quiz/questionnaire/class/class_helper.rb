@@ -8,7 +8,6 @@ class ::Quiz
 
     # Les onglets
     #
-    # TODO Peut-être les régler plus tard
     def data_onglets
       @data_onglets ||= begin
         dongs = Hash.new
@@ -18,8 +17,8 @@ class ::Quiz
             'Edit quiz courant' => "quiz/#{current.id}/edit?qdbr=#{current.suffix_base}"
             )
         end
-        unless current.id == site.route.objet_id && current.suffix_base == suffix_base
-          dongs.merge!('Quiz courant' => "quiz/#{current.id}/show")
+        unless current.id == site.current_route.objet_id && current.suffix_base == suffix_base
+          dongs.merge!('Quiz courant' => "quiz/show")
         end
         dongs.merge!('Tous les quizzzz' => 'quiz/list')
       end

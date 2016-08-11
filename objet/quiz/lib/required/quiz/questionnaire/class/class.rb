@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
 
   # Les méthodes principales de n'importe quel objet RestSite
   extend MethodesMainObjets
@@ -16,39 +16,55 @@ class ::Quiz
     # les bases.
     #
     def current
-      debug "-> current"
       @current ||= begin
-        debug "-> begin de current"
-        if suffix_base.nil?
-          debug "-> suffix_base est nil"
-          # On essaie d'obtenir ce suffixe en checkant toutes les
-          # bases de données. Si on le trouve, on retourne l'instance
-          # Quiz du questionnaire.
-          # L'erreur sera mise à nil si un quiz est trouvé.
-          @error = 'Suffixe de base non fourni'
-          get_quiz_courant
-        elsif !database_exist?
-          @error = 'Base de données inexistante avec le suffixe fourni'
-          get_quiz_courant
-        else
-          drequest = {
-            where: "SUBSTRING(options,1,1) = '1' ",
-            # where: "options LIKE '1%'",
-            limit: 1,
-            colonnes: []
-          }
-          quiz_courants = table_quiz.select(drequest)
-          if quiz_courants.empty?
-            @error = 'Pas de quiz courant dans cette base de données.'
-            get_quiz_courant
+        q =
+          if suffix_base.nil?
+            # S'il n'y a pas de suffixe de base défini, on prend le
+            # quiz courant (qui, ici, peut être nil)
+            @minor_error = 'Suffixe de base non fourni'
+            nil
+          elsif !database_exist?
+            # Si le prefix fourni ne correspond à aucune base
+            # Noter que dans ce cas-là, il n'y a pas d'erreur mineure, elle
+            # doit être signalée.
+            @error = 'Base de données inexistante avec le suffixe fourni'
+            nil
+          elsif site.current_route.objet_id.nil?
+            # Si l'Identifiant n'est pas fourni, on ne produit pas d'erreur
+            # mais on prend le quiz courant
+            @minor_error = 'Aucun identifiant n’est fourni'
+            nil
+          elsif get_wanted_quiz.nil?
+            # Le quiz demandé n'exite pas (à cause d'un mauvais identifiant
+            # ou d'une base qui ne contient aucun quiz). Dans tous les cas
+            # on produit une vraie erreur signalé.
+            @error = 'Le quiz demandé n’existe pas. Quiz courant proposé.'
+            nil
+          elsif wanted_quiz_not_authorised?
+            # Si le quiz demandé ne peut pas être consulté par l'user
+            # courant, on lui signale par une erreur (c'est un cas tout de
+            # même normal, lorsqu'on vient de la liste des quiz par exemple)
+            # Note : L'erreur @error est définie par la méthode
+            # `wanted_quiz_not_authorised?`
+            nil
           else
-            qid_current = quiz_courants.first[:id]
-            @suffix_base = suffix_base
-            new(qid_current)
+            get_wanted_quiz
           end
+
+        # S'il y a une erreur majeure, il faut l'afficher
+        @error.nil? || ( error @error )
+
+        if q.nil?
+          # Dans le cas où le quiz voulu n'est pas défini, on prend le
+          # quiz courant. Si le quiz courant n'existe pas, on prend le
+          # dernier quiz créé qu'on met en quiz courant.
+          get_current_quiz(forcer = true)
+        else
+          q
         end
       end
       @current != nil || raise('LE QUIZ COURANT NE DEVRAIT JAMAIS POUVOIR ÊTRE NUL')
+      @current.instance_of?(Quiz) || raise('LE QUIZ COURANT DEVRAIT ÊTRE UN INSTANCE QUIZ…')
       @current
     end
 
@@ -58,6 +74,23 @@ class ::Quiz
 
     def database_exist?
       SiteHtml::DBM_TABLE.database_exist?("boite-a-outils_quiz_#{suffix_base}")
+    end
+
+    # Retourne TRUE si le quiz désiré (défini par l'URL) N'est PAS
+    # autorisé pour l'user courant.
+    def wanted_quiz_not_authorised?
+      if get_wanted_quiz.current?
+        debug "Le quiz demandé est courant (-> false)"
+        return false
+      end
+      if user.authorized?
+        debug "L'auteur est autorisé (-> false)"
+        return false
+      end
+      debug "Visiteur non autorisé à voir le quiz #{get_wanted_quiz.id}/#{get_wanted_quiz.suffix_base}"
+      @error = 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
+      flash 'Questionnaire courant affiché.'
+      return true
     end
 
     # Suffix du nom de la base courant
@@ -74,53 +107,52 @@ class ::Quiz
     end
     def suffix_base= value; @suffix_base = value end
 
-    # Méthode qui cherche le quiz courant
-    # Elle retourne soit l'instance du Quiz trouvé, soit nil.
-    # (il est impératif de trouver un de ces deux valeurs seulement)
+    # Le quiz demandé par l'url, en fonction du suffixe de
+    # base et de l'identifiant
     #
-    # +options+
-    #   :but      Si précisé, c'est l'ID qu'il faut écarter de la
-    #             recherche.
-    def get_quiz_courant options = nil
-      debug "-> get_quiz_courant"
-      options ||= Hash.new
-      # On regarde dans ces bases s'il y a un quiz courant. Si c'est le
-      # cas, on le prend.
-      quiz_courant = nil
-      where = "SUBSTRING(options,1,1) = '1'"
-      where += " AND id != #{options[:but]}" if options[:but]
-      drequest = {
-        where: where,
-        limit: 1,
-        order: 'created_at DESC',
-        colonnes: []
-      }
-      all_suffixes_quiz.each do |sufbase|
-        dquiz = site.dbm_table("quiz_#{sufbase}", 'quiz').select(drequest).first
-        dquiz != nil || next
-        quiz_courant = ::Quiz.new(dquiz[:id])
-        @suffix_base = sufbase
-        break
-      end
-
-      # S'il n'y a aucun quiz courant, on signale l'erreur
-      if quiz_courant.nil?
-        debug "quiz_courant est nil"
-        # On fait une dernière tentative en prenant le dernier quiz
-        very_last_quiz
-      else
-        @error = nil
-        quiz_courant
+    def get_wanted_quiz
+      @get_wanted_quiz ||= begin
+        hquiz = table_quiz.get(site.current_route.objet_id)
+        hquiz ? Quiz.new(hquiz[:id], suffix_base) : nil
       end
     end
 
-    # {Quiz} Retourne le tout dernier quiz, sans le mettre en
-    # quiz courant.
-    def very_last_quiz
-      debug "-> very_last_quiz"
-      l = allquiz.sort_by{|q| q.created_at}.last
-      debug "ID : #{l.id} / CLASS: #{l.class}"
-      l
+    # Le quiz courant, s'il est défini
+    #
+    # Le quiz courant se reconnait au fait que son premier bit
+    # d'option est à 1
+    #
+    # +forcer+ Si true, et que le quiz courant n'existe pas, on
+    # met en quiz courant le dernier quiz créé (non hors-liste)
+    # et on prévient l'administration qu'on a dû faire ça (ce qui
+    # ne devrait pas arriver)
+    #
+    def get_current_quiz forcer = false
+      allquiz.each do |iquiz|
+        return iquiz if iquiz.current?
+      end
+      # Si on passe ici, c'est que le quiz courant n'a pas été trouvé
+      forcer || (return nil)
+      q = get_last_quiz
+      opts = q.options.set_bit(0,1)
+      q.set( options: opts )
+      q.instance_variable_set('@options', opts)
+      debug "Options de “#{q.titre}” mis à #{opts}"
+      site.send_mail_to_admin(
+        subject:  'Quiz : forçage du quiz courant',
+        formated: true,
+        message: <<-HTML
+        <p>Phil</p>
+        <p>J'ai dû définir de force le quiz courant, qui n'était pas défini.</p>
+        <p>Quiz mis en quiz courant : ##{q.id} dans #{q.suffix_base} (#{q.titre})</p>
+        HTML
+      )
+      return q
+    end
+
+    # Le tout dernier quiz créé
+    def get_last_quiz
+      allquiz.sort_by{|q|q.created_at}.last
     end
 
   end #/<<self

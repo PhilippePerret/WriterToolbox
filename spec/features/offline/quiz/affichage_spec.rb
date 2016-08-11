@@ -8,6 +8,27 @@
 
 =end
 feature "Test de l'affichage d'un quiz/questionnaire" do
+  before(:all) do
+    site.require_objet 'quiz'
+    @quiz_courant_data = {id: Quiz.current.id, suffix: Quiz.current.suffix_base}
+    puts "Données du quiz courant : #{@quiz_courant_data.inspect}"
+  end
+  after(:all) do
+    # Il faut retirer tous les courants qui ont pu être mis et
+    # remettre les valeurs originales
+    Quiz.allquiz.each do |iquiz|
+      iquiz.current? || next
+      next if iquiz.id == @quiz_courant_data[:id] && iquiz.suffix_base == @quiz_courant_data[:suffix]
+      iquiz.set(options: iquiz.options.set_bit(0, 0))
+      puts "Le quiz #{iquiz.titre} n'est plus en courant"
+    end
+    Quiz.allquiz_hors_liste.each do |iquiz|
+      iquiz.current? || next
+      next if iquiz.id == @quiz_courant_data[:id] && iquiz.suffix_base == @quiz_courant_data[:suffix]
+      iquiz.set(options: iquiz.options.set_bit(0, 0))
+      puts "Le quiz #{iquiz.titre} n'est plus en courant"
+    end
+  end
   def table_quiz_biblio
     @table_quiz_biblio ||= site.dbm_table('quiz_biblio', 'quiz')
   end
@@ -15,123 +36,212 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     @table_questions_biblio ||= site.dbm_table(:quiz_biblio, 'questions')
   end
 
+  # Définit toujours un quiz courant
+  #
+  # RETURN l'instance Quiz du questionnaire.
+  #
+  def mettre_quiz_courant_if_needed
+    Quiz.get_current_quiz(forcer = true)
+  end
+
+  # Inverse de la méthode précédente, cette méthode supprime
+  # le quiz courant pour qu'il n'y en ait plus. Noter que ça
+  # fonctionne aussi s'il y a plusieurs quiz courants.
+  def supprime_quiz_courant
+    while q = Quiz.get_current_quiz
+      opts = q.options.set_bit(0,0)
+      q.set(options: opts)
+      q.instance_variable_set('@options', opts)
+    end
+    Quiz.instance_variable_set('@current', nil)
+    puts "Suppression du quiz par défaut nécessaire"
+  end
+
+
   scenario "Contexte : aucune donnée et un quiz par défaut" do
     test 'Sans autres données, c’est le quiz par défaut qui s’affiche'
-    
-    pending "S'assurer qu'il y ait un quiz courant"
-    # TODO Il faut s'assurer qu'il y ait un quiz par défaut
-    quiz_id =
+    quiz_id = mettre_quiz_courant_if_needed.id
     visite_route 'quiz/show'
     la_page_a_pour_titre 'Quizzzz !'
     la_page_a_le_formulaire "form_quiz"
-    la_page_a_la_balise 'input', type: 'hidden', in: 'form#form_quiz', value: quiz_id.to_s
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: quiz_id.to_s
   end
-  scenario 'Contexte : aucune donnée sans quiz par défaut' do
-    # TODO Supprimer le quiz par défaut
-    test 'Sans donnée et sans quiz par défaut, c’est le dernier fabriqué qui est affiché.'
-    pending 'à implémenter'
 
-    # TODO Vérifier que le dernier fabriqué ait été mis en quiz courant
-    # + envoyer un mail à l'admin pour lui signaler.
+  scenario 'Contexte : un bon suffixe mais un mauvais ID => le quiz courant' do
+    test 'Avec un bon suffixe de base mais un mauvais ID, c’est le quiz courant qui est affiché.'
+    q = mettre_quiz_courant_if_needed
+    visite_route 'quiz/10000000/show?qdbr=biblio'
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_formulaire "form_quiz"
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: q.id.to_s,
+      success: 'L’identifiant du quiz est bien celui du quiz courant'
+    la_page_a_l_erreur 'Le quiz demandé n’existe pas. Quiz courant proposé.'
   end
+
+  scenario 'Contexte : aucune donnée sans quiz par défaut' do
+    test 'Sans donnée et sans quiz par défaut, c’est le dernier quiz fabriqué qui est affiché.'
+    start_time = Time.now.to_i - 1
+    Quiz.get_current_quiz == nil || supprime_quiz_courant
+    last = Quiz.get_last_quiz
+    last_quiz_id      = last.id
+    last_quiz_suffix  = last.suffix_base.nil_if_empty
+    expect(last.current?).to eq false
+    success 'Le dernier quiz n’est pas marqué courant.'
+    visite_route 'quiz/show'
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_formulaire "form_quiz"
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: last.id.to_s,
+      success: 'L’identifiant du quiz est bien celui du dernier quiz'
+    la_page_napas_derreur
+    # On reprend le dernier actualisé
+    last = Quiz.new(last_quiz_id, last_quiz_suffix)
+    expect(last.current?).to eq true
+    success 'Le dernier quiz est maintenant marqué courant.'
+    phil.a_recu_le_mail(
+      subject: 'Quiz : forçage du quiz courant',
+      sent_after:  start_time,
+      message: ["##{last.id}", "#{last.suffix_base}", "#{last.titre}"],
+      success: "Phil a reçu le mail l'avertissant du forçage de quiz courant."
+    )
+  end
+
   scenario 'Contexte : seulement le qdbr et un quiz par défaut' do
     test 'Avec seulement le qdbr, c’est le quiz par défaut qui est affiché'
-    pending "à implémenter"
-    dquiz = table_quiz_biblio.get(where: "options LIKE '1%'")
-    # S'il n'y a aucun quiz en quiz courant, on met le quiz test
-    if dquiz.nil?
-      dquiz = table_quiz_biblio.get(1)
-      table_quiz_biblio.update(1, {options: dquiz[:options].set_bit(0, 1) })
-    end
+    q = mettre_quiz_courant_if_needed
     visite_route 'quiz/show?qdbr=biblio'
     la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_pour_soustitre dquiz[:titre]
+    la_page_a_pour_soustitre q.titre
     la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
   end
-  scenario 'Contexte : seulement le suffixe de base et pas de quiz par défaut' do
-    # TODO: Supprimer le quiz par défaut
-    test 'Sans quiz par défaut et seulement avec le suffixe de base, c’est le dernier fabriqué qui est affiché'
-    pending "à implémenter"
-    la_page_a_pour_titre 'Quizzzz !'
 
-    # TODO Vérifier que le dernier fabriqué ait été mis en quiz courant
-    # + envoyer un mail à l'admin pour lui signaler.
+  scenario 'Contexte : seulement le suffixe de base et pas de quiz par défaut' do
+    start_time = Time.now.to_i - 1
+    test 'Sans quiz par défaut et seulement avec le suffixe de base, c’est le dernier fabriqué qui est affiché'
+    Quiz.get_current_quiz == nil || supprime_quiz_courant
+    last = Quiz.get_last_quiz
+    last_id, last_suffix = [ last.id, last.suffix_base ]
+    visite_route 'quiz/show?qdbr=test'
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_le_formulaire "form_quiz"
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: last_id.to_s,
+      success: 'L’identifiant du quiz est bien celui du dernier quiz'
+    la_page_napas_derreur
+    # On reprend le dernier actualisé
+    last = Quiz.new(last_id, last_suffix)
+    expect(last.current?).to eq true
+    success 'Le dernier quiz est maintenant marqué courant.'
+    phil.a_recu_le_mail(
+      subject: 'Quiz : forçage du quiz courant',
+      sent_after:  start_time,
+      message: ["##{last_id}", "#{last.suffix_base}", "#{last.titre}"],
+      success: "Phil a reçu le mail l'avertissant du forçage de quiz courant."
+    )
   end
 
   scenario 'Contexte : toutes les données du courant et un simple inscrit' do
     test 'Avec les données du quiz courant et un simple inscrit, on affiche le quiz courant.'
-    pending "à implémenter"
+    q = mettre_quiz_courant_if_needed
+    route = "quiz/#{q.id}/show?qdbr=#{q.suffix_base}"
+    visite_route route
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre q.titre
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
   end
 
   scenario 'Contexte : toutes les données du courant et un abonné' do
     test 'Avec les données du quiz courant et un abonné, on affiche le quiz courant.'
-    pending "à implémenter"
+    q = mettre_quiz_courant_if_needed
+    route = "quiz/#{q.id}/show?qdbr=#{q.suffix_base}"
+    benoit.set_subscribed
+    identify_benoit
+    visite_route route
+    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_soustitre q.titre
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
   end
 
   scenario 'Contexte : toutes les données (autres que courant) et un simple inscrit' do
-    test 'Avec les données et un simple inscrit, c’est le quiz courant qui s’affiche'
-    pending "à implémenter"
-  end
-
-  scenario 'Contexte : toutes les données (autres que courant), un abonné' do
-    test 'Avec les données et un abonné, le quiz voulu s’affiche.'
-
-    # On fait de benoit un abonné
-    benoit.set_subscribed
-
-    quiz_id = 1
-    # Les données du quiz
-    dquiz = table_quiz_biblio.get( quiz_id )
-    dqs = table_questions_biblio.select(where: "id IN (#{dquiz[:questions_ids].split(' ').join(', ')})")
-    # On en fait un hash pour les récupérer plus facilement
-    dquestions = Hash.new
-    dqs.each do |dq|
-      dquestions.merge!( dq[:id] => dq)
+    test 'Avec des données autres que le quiz courant et un simple inscrit, c’est le quiz courant qui s’affiche, avec un message d’erreur.'
+    q = mettre_quiz_courant_if_needed
+    puts "Quiz courant : #{q.titre} (##{q.id}/#{q.suffix_base})"
+    # On doit trouver un autre quiz que le courant
+    autreq = nil
+    Quiz.allquiz.each do |qu|
+      if qu.id != q.id
+        autreq = qu; break
+      end
     end
-
-    identify_benoit
-    visite_route "quiz/#{quiz_id}/show?qdbr=biblio"
+    autreq != nil || raise('On aurait dû trouver un autre quiz…')
+    visite_route "quiz/#{autreq.id}/show?qdbr=#{autreq.suffix_base}"
     la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_pour_soustitre dquiz[:titre]
-
-    # On contrôle que tout est bien affiché
-    la_page_a_la_balise 'div', class: 'quiz'
-
-    # Il doit y avoir un div pour la description du questionnaire
-    la_page_a_la_balise 'div', in: 'div.quiz', id: 'quiz_description', text: dquiz[:description],
-      success: "la page contient le div de description du quiz"
-
-    prefname = "q#{dquiz[:id]}r"
-    expect(page).to have_tag('form', with: {class: 'quiz'}) do
-
-      with_tag 'input', with: {type: 'hidden', name: 'quiz[time]'}
-
-      dquiz[:questions_ids].split(' ').each do |qid|
-
-        qid = qid.to_i
-        dquestion = dquestions[qid]
-        class_css_reponses = ['r']
-
-        # Un DIV pour la question
-        with_tag 'div', with: {class: 'question'}
-        # Un DIV pour la question proprement dite
-        with_tag 'div', with: {class: 'q', id: "q-#{qid}-question"}, text: /#{Regexp.escape dquestion[:question]}/
-        # Le UL contenant les réponses
-        class_css_reponses << dquestion[:type][2]
-        with_tag 'ul', with: {class: class_css_reponses.join(' ')}
-        type_checkbox = dquestion[:type][1] == 'c'
-        reponses = JSON.parse(dquestion[:reponses])
-        expect(reponses).not_to be_empty
-        reponses.to_sym.each_with_index do |dreponse, ireponse|
-          if type_checkbox
-            with_tag 'input', with: {type: 'checkbox', name: "#{prefname}[rep#{qid}_#{ireponse}]"}
-          else # type radio
-            with_tag 'input', with: {type: 'radio', name: "#{prefname}[rep#{qid}]", value: "#{ireponse}"}
-          end
-          with_tag 'label', text: /#{Regexp.escape dreponse[:lib]}/
-        end
-      end # /fin boucle questions
-    end
-
+    la_page_a_pour_soustitre q.titre
+    la_page_a_le_formulaire 'form_quiz'
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
+    la_page_a_l_erreur 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
+    la_page_a_le_message 'Questionnaire courant affiché.'
   end
+
+  # scenario 'Contexte : toutes les données (autres que courant), un abonné' do
+  #   test 'Avec les données et un abonné, le quiz voulu s’affiche.'
+  #
+  #   # On fait de benoit un abonné
+  #   benoit.set_subscribed
+  #
+  #   quiz_id = 1
+  #   # Les données du quiz
+  #   dquiz = table_quiz_biblio.get( quiz_id )
+  #   dqs = table_questions_biblio.select(where: "id IN (#{dquiz[:questions_ids].split(' ').join(', ')})")
+  #   # On en fait un hash pour les récupérer plus facilement
+  #   dquestions = Hash.new
+  #   dqs.each do |dq|
+  #     dquestions.merge!( dq[:id] => dq)
+  #   end
+  #
+  #   identify_benoit
+  #   visite_route "quiz/#{quiz_id}/show?qdbr=biblio"
+  #   la_page_a_pour_titre 'Quizzzz !'
+  #   la_page_a_pour_soustitre dquiz[:titre]
+  #
+  #   # On contrôle que tout est bien affiché
+  #   la_page_a_la_balise 'div', class: 'quiz'
+  #
+  #   # Il doit y avoir un div pour la description du questionnaire
+  #   la_page_a_la_balise 'div', in: 'div.quiz', id: 'quiz_description', text: dquiz[:description],
+  #     success: "la page contient le div de description du quiz"
+  #
+  #   prefname = "q#{dquiz[:id]}r"
+  #   expect(page).to have_tag('form', with: {class: 'quiz'}) do
+  #
+  #     with_tag 'input', with: {type: 'hidden', name: 'quiz[time]'}
+  #
+  #     dquiz[:questions_ids].split(' ').each do |qid|
+  #
+  #       qid = qid.to_i
+  #       dquestion = dquestions[qid]
+  #       class_css_reponses = ['r']
+  #
+  #       # Un DIV pour la question
+  #       with_tag 'div', with: {class: 'question'}
+  #       # Un DIV pour la question proprement dite
+  #       with_tag 'div', with: {class: 'q', id: "q-#{qid}-question"}, text: /#{Regexp.escape dquestion[:question]}/
+  #       # Le UL contenant les réponses
+  #       class_css_reponses << dquestion[:type][2]
+  #       with_tag 'ul', with: {class: class_css_reponses.join(' ')}
+  #       type_checkbox = dquestion[:type][1] == 'c'
+  #       reponses = JSON.parse(dquestion[:reponses])
+  #       expect(reponses).not_to be_empty
+  #       reponses.to_sym.each_with_index do |dreponse, ireponse|
+  #         if type_checkbox
+  #           with_tag 'input', with: {type: 'checkbox', name: "#{prefname}[rep#{qid}_#{ireponse}]"}
+  #         else # type radio
+  #           with_tag 'input', with: {type: 'radio', name: "#{prefname}[rep#{qid}]", value: "#{ireponse}"}
+  #         end
+  #         with_tag 'label', text: /#{Regexp.escape dreponse[:lib]}/
+  #       end
+  #     end # /fin boucle questions
+  #   end
+  # end
 end

@@ -407,7 +407,7 @@ class SiteHtml
     # classe existe.
     def instance
       @instance ||= begin
-        if objet_id.nil? || classe.nil? || classe.name == "Admin"
+        if objet_id.nil? || classe.nil? || classe.name == "Admin" || (defined?(classe::NO_INSTANCIATION_BY_URL) && classe::NO_INSTANCIATION_BY_URL)
           nil
         else
           begin

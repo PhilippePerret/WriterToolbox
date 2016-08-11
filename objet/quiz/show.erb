@@ -3,6 +3,8 @@
 
 enable_comments
 %>
-<%= ::Quiz.titre_h1 %>
-<% if user.manitou? %><%= quiz.liens_admin %><% end %>
+<%= Quiz.titre_h1 %>
+<% if user.manitou? %>
+  <%= quiz.liens_admin %>
+<% end %>
 <%= quiz.output %>

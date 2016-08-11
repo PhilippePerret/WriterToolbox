@@ -22,7 +22,8 @@ class Quiz
     @default_options ||= "00--0"
   end
 
-  # 1er bit des options
+  # 1er bit des options, pour savoir si le quiz est le quiz courant
+  #
   def current?
     options[0].to_i == 1
   end

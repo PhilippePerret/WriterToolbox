@@ -1,5 +1,11 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
+
+  # Pour empêcher d'initialiser le quiz à partir de l'url
+  # Si on le permettait, il y aurait une erreur générée du fait que
+  # l'instanciation attend deux arguments et non pas seulement
+  # l'identifiant
+  NO_INSTANCIATION_BY_URL = true
 
   # ID du questionnaire dans la base, donc dans la table 'quiz'
   # de la base de données courante.
@@ -12,7 +18,8 @@ class ::Quiz
   #
   def initialize qid, suffix_base = nil
     @id = qid
-    @suffix_base = suffix_base
+    @suffix_base = suffix_base.nil_if_empty
+    @suffix_base != nil || raise('Impossible d’avoir un suffixe base nil pour initialiser un quiz…')
   end
 
   # Retourne true si le questionnaire existe déjà

@@ -18,7 +18,13 @@ class SiteHtml
   # et, dans ce cas, l'user ne doit pas être défini, il faut
   # donc mettre le mail du site.
   #
+  # On empêche les erreurs récurrentes en mettant une limite aux
+  # passages par cette méthode.
+  #
   def send_mail_to_admin data_mail
+    @nombre_mails_to_admin ||= 0
+    @nombre_mails_to_admin += 1
+    @nombre_mails_to_admin < 4 || return
     expediteur =
       if user && user.instance_of?(User) && user.mail
         user.mail

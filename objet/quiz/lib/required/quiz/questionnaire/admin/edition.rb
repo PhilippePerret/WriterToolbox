@@ -92,6 +92,14 @@ if user.manitou?
       end
       return h
     end
-
   end
-end
+
+  # Méthode qui place le quiz en quiz courant
+  def set_current
+    @options = options.set_bit(0,1)
+    set(options: @options)
+  end
+
+
+end #/Quiz
+# /Si c'est un administrateur
