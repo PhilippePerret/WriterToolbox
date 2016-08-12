@@ -82,6 +82,42 @@ class CRON2
     true
   end
 
+  # Méthode appelée à la toute fin du cron, qui va se charger
+  # d'envoyer absolument les messages s'il y a eu des problèmes
+  def finir
+    log_error = CRON2::Log.logerrorpath
+    contenu_cron_log_error =
+      begin
+        File.open(log_error,'rb'){|f|f.read.force_encoding('utf-8')}
+      rescue Exception => e
+        "Impossible d'avoir le contenu du fichier : #{e.message}"
+      end
+    if File.exist?(log_error)
+      CRONMail.new(
+        subject: 'ERREUR AU COURS DU CRON',
+        message: <<-HTML
+        <p>Une erreur a été rencontrée au cours du dernier Cron.</p>
+        <p>Ce message sera répété tant que le fichier cron_error.log ne sera pas détruit.</p>
+        <p>Contenu du fichier erreur :</p>
+        <pre>#{contenu_cron_log_error}</pre>
+        HTML
+        ).send
+    else
+      CRONMail.new(
+        subject: 'CRON JOB OK',
+        message: <<-HTML
+        <p>Phil, tout s'est bien passé au cours du dernier cron-job.</p>
+        <p>On peut supprimer ce message dans #{__FILE__}</p>
+        HTML
+      ).send
+    end
+  rescue Exception => e
+    CRONMail.new(
+      subject: 'ERREUR FATALE AU COURS DU CRON',
+      message: "<p>IMPOSSIBLE D'ENVOYER LE MAIL D'AVERTISSEMENT : #{e.message}"
+    ).send
+  end
+
 
   # = main =
   #
@@ -138,4 +174,5 @@ end
 cronjob.init
 unless defined?(CRON_FOR_TEST) && CRON_FOR_TEST
   cronjob.run
+  cronjob.finir
 end
