@@ -27,7 +27,7 @@ class Exemple
   end
   def lien_show atitre = nil, options = nil
     atitre ||= "Visualiser l'exemple ##{id}"
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(href: "exemple/#{id}/show?in=unan")
     atitre.in_a(options)
   end

@@ -26,7 +26,7 @@ module DataChecker
 
     def run
       self.ok     = true
-      self.errors = Hash::new
+      self.errors = Hash.new
       objet.epure
       set_value_like_type
       check_objet
@@ -154,7 +154,7 @@ module DataChecker
       datachecker = DataChecker.instance
       datachecker.objet   = self
       datachecker.definition  = checks_definition
-      datachecker.options = options || Hash::new
+      datachecker.options = options || Hash.new
       datachecker.run
     rescue Exception => e
       datachecker.add_error :rescue, e

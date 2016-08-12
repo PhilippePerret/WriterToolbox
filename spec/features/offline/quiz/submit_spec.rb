@@ -268,6 +268,8 @@ feature "Vérification des calculs du quiz" do
 
     # Un user inscrit mais non abonné
     benoit.set_simple_inscrit
+    expect(benoit.subscribed?).to eq false
+    expect(benoit.unanunscript?).to eq false
 
     # Au cas où, on détruit tous les questionnaires de cet
     # utilisateur
@@ -285,8 +287,6 @@ feature "Vérification des calculs du quiz" do
       shot 'user-in-profil-before-quiz'
       with_tag('p', text: /#{Regexp.escape 'Vous n’avez aucun questionnaire enregistré.'}/)
     end
-
-
 
     # Il rejoint le questionnaire
     visite_route "quiz/1/show?qdbr=biblio"
@@ -315,7 +315,7 @@ feature "Vérification des calculs du quiz" do
     shot 'user-profil-after-quiz'
     expect(page).to have_tag('fieldset', with: {id: 'fs_quizes'}) do
       with_tag 'li', with: {class: 'quiz'}
-      with_tag 'a', with: {href: "quiz/#{hres[:id]}/reshow?qdbr=biblio"}, text: /#{Regexp.escape @dquiz_un[:titre]}/
+      with_tag 'a', with: {href: "quiz/#{hres[:quiz_id]}/reshow?qdbr=biblio"}, text: /#{Regexp.escape @dquiz_un[:titre]}/
     end
 
     # Quand il veut revoir son questionnaire, un message lui dit qu'il ne
@@ -323,8 +323,7 @@ feature "Vérification des calculs du quiz" do
     click_link( @dquiz_un[:titre] )
     la_page_a_pour_titre 'Quizzzz !'
     shot 'user-in-reshow-quiz'
-    la_page_a_le_message 'En qualité de simple utilisateur inscrit, vous ne pouvez pas consulter vos quiz précédents'
-
+    la_page_affiche 'En qualité de simple utilisateur inscrit, vous ne pouvez pas consulter vos quiz précédents.'
   end
 
   scenario 'Un user abonné enregistre ses résultats et peut les revoir' do

@@ -47,7 +47,7 @@ class << self
   # La méthode est appelée par l'instanciation d'une suite
   # de tests.
   def init_options
-    @options ||= Hash::new
+    @options ||= Hash.new
     @options.merge!( debug: false ) unless @options.has_key?(:debug)
   end
 

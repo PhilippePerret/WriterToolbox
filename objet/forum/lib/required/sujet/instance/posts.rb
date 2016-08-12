@@ -5,7 +5,7 @@ class Sujet
   # Retourne la liste des posts du sujet
   # (ou exceptionnellement un string UL si as: :ul)
   def posts params = nil
-    params ||= Hash::new
+    params ||= Hash.new
     from_index  = params.delete(:from)  || 0
     for_nombre  = params.delete(:for)   || Forum::Sujet.nombre_by_default
     return_as   = params.delete(:as)    || :instance
@@ -96,7 +96,7 @@ class Sujet
       # Un sujet de type forum, donc avec classement simple par date
       # de création.
 
-      data_request = Hash::new
+      data_request = Hash.new
       data_request.merge!(
         where:    { sujet_id:  id },
         order:    "created_at ASC",

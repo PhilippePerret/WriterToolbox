@@ -17,7 +17,7 @@ class Console
     datacolumns = nil
     data.each do |rowid, rowdata|
       if datacolumns.nil?
-        datacolumns = Hash::new
+        datacolumns = Hash.new
         rowdata.keys.each { |col| datacolumns.merge! col => { max_len: 0, name: col.to_s.freeze } }
       end
       rowdata.each do |col, valcol|

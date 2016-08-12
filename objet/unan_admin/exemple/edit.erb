@@ -12,7 +12,7 @@ page.add_javascript(PATH_MODULE_JS_SNIPPETS)
 # site.require_objet 'unan'
 site.require 'form_tools'
 form.prefix = 'exemple'
-form.objet  = param(:exemple) || Hash::new
+form.objet  = param(:exemple) || Hash.new
 
 onclick = "var f=$('form#form_exemple_edit');f.find('input#operation').val('edit_exemple');f.submit()"
 lien_edit = "Éditer".in_a(onclick:onclick, class:'btn small')

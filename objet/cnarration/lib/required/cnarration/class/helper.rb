@@ -19,7 +19,7 @@ class Cnarration
     end
 
     def data_onglets
-      donglets = Hash::new
+      donglets = Hash.new
       donglets.merge!(DATA_ONGLETS)
       if user.admin?
         donglets.merge!(

@@ -16,7 +16,7 @@ class << self
   #   grade_min:    {Fixnum de 0 à 9}, le grade minimum
   #   admin:
   def create_new_auteur params = nil
-    params ||= Hash::new
+    params ||= Hash.new
     params[:grade_min] ||= 4
     bit2 = params[:grade_min] + rand(9 - params[:grade_min])
     opts = "0#{bit2}"

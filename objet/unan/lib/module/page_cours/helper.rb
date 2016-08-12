@@ -50,7 +50,7 @@ class PageCours
   end
 
   def lien_show titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(show:true, titre:titre)
     link(options)
   end
@@ -61,7 +61,7 @@ class PageCours
   # @usage
   #   page_cours.link(:edit)
   def link options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     onclick = nil
     options[:titre] ||= "#{titre}"
     route = "page_cours/#{id}/" + case true

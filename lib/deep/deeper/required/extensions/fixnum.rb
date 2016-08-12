@@ -109,7 +109,7 @@ class ::Fixnum
   end
 
   def as_duree options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options[:usec] ||= "\""
     options[:umin] ||= "'"
     options[:uhour] ||= "h"

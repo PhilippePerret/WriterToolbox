@@ -91,7 +91,7 @@ module MethodesLinksProgramThings
   end
 
   def liens_edition_for inst, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     (
       "#{inst.class} ##{inst.id} : " +
       inst.lien_edit("[Edit]") +

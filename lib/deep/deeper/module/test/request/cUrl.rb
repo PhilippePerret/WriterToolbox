@@ -130,7 +130,7 @@ class CURL
       # test ou non. Il n'y a pas de propriétaire lorsqu'on
       # utilise ces méthodes depuis les méthodes de support,
       # par exemple.
-      h = owner.nil? ? {} : THash::new(owner)
+      h = owner.nil? ? {} : THash.new(owner)
 
       # Analyse de la première ligne
       http_version, status_code, human_status = http.split(' ')
@@ -264,7 +264,7 @@ class CURL
       else
         datareq = if form_simulation? && request_data[:data].has_key?(:fields)
           # Si les données n'ont pas été préparées
-          h = Hash::new
+          h = Hash.new
           # On prend tous les champs qui définissent une
           # propriété name
           request_data[:data][:fields].each do |k, v|

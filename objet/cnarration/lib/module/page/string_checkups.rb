@@ -17,7 +17,7 @@ class << self
   #   :quiet      Si true, aucun message
   #
   def rechercher_fichier_checkup_with_question options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     ipage = $narration_current_page
     pbook = ipage.livre.folder_semidyn.expanded_path
     grep_cmd = "grep -r -F \"<!-- #{ipage.handler}\.erb -->\" #{pbook}"
@@ -51,7 +51,7 @@ class << self
   #
   REG_QUESTION_CHECKUP = /((?:^)?[^_])CHECKUP\[(.*?)(?:\|(.*?))?\]($)?/o
   def formate_balises_question_checkup_in code, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     output_format = options[:format] || options[:output_format] || :html
     q_indice = 0
 
@@ -104,7 +104,7 @@ class << self
   REG_PRINT_CHECKUP  = /PRINT\\?_CHECKUP(?:\[(.*?)\])?/
   def formate_balises_print_checkup code, options = nil
 
-    options ||= Hash::new
+    options ||= Hash.new
 
     # Le format de sortie pour lequel il faut faire le traitement.
     output_format = options[:format] || options[:output_format] || :html
@@ -180,7 +180,7 @@ class << self
   #
   def ul_questions_checkup questions, groupe = nil, options = nil
     return "" if questions.nil?
-    options ||= Hash::new
+    options ||= Hash.new
     output_format = options[:output_format]
 
     # Liste des fichiers déjà mis en commentaire (ils servent à

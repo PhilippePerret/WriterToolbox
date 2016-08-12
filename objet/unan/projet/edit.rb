@@ -100,7 +100,7 @@ class Projet
     end
 
     def param_data
-      @param_data ||= param(:projet) || Hash::new
+      @param_data ||= param(:projet) || Hash.new
     end
 
   end # << self

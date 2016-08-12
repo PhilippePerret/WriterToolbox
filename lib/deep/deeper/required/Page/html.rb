@@ -48,7 +48,7 @@ class Page
   def helper_bloc_abonnement
     # Quand faut-il l'afficher ou ne pas l'afficher ?
     afficher = true
-    afficher = false if user.admin? || user.suscribed? || user.unanunscript?
+    afficher = false if user.admin? || user.subscribed? || user.unanunscript?
     afficher = afficher &&
     if site.current_route.nil?
       false

@@ -7,7 +7,7 @@
 enable_comments
 %>
 <%= Citation.titre_h1('Recherche') %>
-<% if user.admin? || user.suscribed? %>
+<% if user.admin? || user.subscribed? %>
 <p class='tiny'>En tant qu'abonné<%= user.f_e %>, vous pouvez
   effectuer une recherche dans les citations.</p>
 

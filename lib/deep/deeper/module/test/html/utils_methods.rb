@@ -26,7 +26,7 @@ class HTML
     search_text_in_tags page.css(tag), text, options
   end
   def search_text_in_tags tags, text, options=nil
-    options ||= Hash::new
+    options ||= Hash.new
 
     if debug?
       debug "\n\n-> search_text_in_tags(tags, text=“#{text}”, options=#{options.inspect})"

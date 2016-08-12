@@ -16,10 +16,10 @@ class AbsWork
     def init_map
       @zones ||= begin
         {
-          tasks:  Hash::new,
-          pages:  Hash::new,
-          quiz:   Hash::new,
-          forum:  Hash::new
+          tasks:  Hash.new,
+          pages:  Hash.new,
+          quiz:   Hash.new,
+          forum:  Hash.new
         }
       end
     end

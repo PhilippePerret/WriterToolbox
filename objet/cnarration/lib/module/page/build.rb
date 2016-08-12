@@ -62,7 +62,7 @@ class Page
   # +options+
   #   :quiet      Si TRUE, pas de message flash pour indiquer l'actualisation
   def build options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options[:quiet]    = !!ONLINE unless options.has_key?(:quiet) # toujours silencieux en online
     options[:format] ||= :erb # peut être aussi :latex
     path_semidyn.remove if path_semidyn.exist?

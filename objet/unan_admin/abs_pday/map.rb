@@ -12,7 +12,7 @@ class AbsPDay
   class << self
 
     def init_map
-      @zones ||= Hash::new
+      @zones ||= Hash.new
     end
 
     # La hauteur de la carte des pdays, en fonction des

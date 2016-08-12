@@ -15,7 +15,7 @@ class SujetCible
     # SUJETS_CIBLES) et retourne les données (contenant hname et value)
     def get_cate_by_value value
       @sujets_cibles_by_values ||= begin
-        h = Hash::new
+        h = Hash.new
         SUJETS_CIBLES.each do |cid, cdata|
           h.merge!(cdata[:value] => cdata.merge(id: cid))
         end

@@ -12,7 +12,7 @@ class User
   # Méthode principale ajoutant une autorisation en fonction
   # de args[:type] qui peut avoir la valeur :
   #   :unan             Programme UN AN
-  #   :suscribe         Abonnement normal d'un an
+  #   :subscribe         Abonnement normal d'un an
   #   :icarien_actif    Un icarien actif
   def add_autorisation args
     # Création de l'autorisation

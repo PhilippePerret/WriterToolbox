@@ -5,6 +5,6 @@ enable_comments
 %>
 <%= Cnarration::titre_h1("Livres") %>
 <%= Cnarration::Livre::as_ul %>
-<% unless user.suscribed? %>
+<% unless user.subscribed? %>
   <p class='small italic'>Notez que sans abonnement, vous bénéficiez d'un accès limité à la collection.</p>
 <% end %>

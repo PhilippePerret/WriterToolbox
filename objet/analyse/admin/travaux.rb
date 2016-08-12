@@ -33,7 +33,7 @@ class << self
   # ---------------------------------------------------------------------
   def travail_in_param
     @travail_in_param ||= begin
-      h = param(:w) || Hash::new
+      h = param(:w) || Hash.new
       h[:id] = h[:id].nil_if_empty
       h
     end

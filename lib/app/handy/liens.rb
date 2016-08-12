@@ -88,7 +88,7 @@ class Lien
       options   = titre
       titre     = nil
     end
-    options ||= Hash::new
+    options ||= Hash.new
 
     to = options.delete(:to) || :home
     titre, href = if to == :page
@@ -155,7 +155,7 @@ class Lien
   # Lien vers le filmodico
   # @usage: lien.filmodico("TITRE")
   def filmodico titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     titre ||= options.delete(:titre) || "Filmodico"
     case output_format
     when :latex
@@ -170,7 +170,7 @@ class Lien
   # Liens vers le scénodico
   # @usage: lien.scenodico("TITRE")
   def scenodico titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     titre ||= options.delete(:titre) || "Scénodico"
     case output_format
     when :latex

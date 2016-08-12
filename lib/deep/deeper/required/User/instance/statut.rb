@@ -46,15 +46,19 @@ class User
   # abonné.
   #
   def paiements_ok?
-    return true   if moteur_recherche?
-    return true   if icarien_actif?
+    debug "-> paiements_ok?"
+    return true   if moteur_recherche? || icarien_actif?
     return false  if @id.nil? # Un simple visiteur
-    now = Time.now
-    anprev = Time.new(now.year - 1, now.month, now.day).to_i
-    last_abonnement && last_abonnement > anprev
+    res = begin
+      now = Time.now
+      anprev = Time.new(now.year - 1, now.month, now.day).to_i
+      !!(last_abonnement && last_abonnement > anprev)
+    end
+    debug "[paiements_ok?] res : #{res.inspect}"
+    return res
   end
   alias :paiement_ok? :paiements_ok?
-  alias :suscribed? :paiements_ok?
+  alias :subscribed? :paiements_ok?
 
   # Cette propriété est mise à true lorsque l'user vient de
   # s'inscrire, qu'il devrait confirmer son mail, mais qu'il

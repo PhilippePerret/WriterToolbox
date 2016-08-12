@@ -18,7 +18,7 @@ class << self
   def titre_for_film film_id
     @films_citations ||= begin
       site.require_objet 'filmodico'
-      Hash::new
+      Hash.new
     end
     first_apparition = false
     dtitres = @films_citations[film_id] ||= begin

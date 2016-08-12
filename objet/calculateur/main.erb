@@ -63,7 +63,7 @@ EXPLICATIONS = {
 # ---------------------------------------------------------------------
 %>
 
-<% if user.suscribed? %>
+<% if user.subscribed? %>
   <div class="right small">En tant qu'abonné, <%= user.pseudo %>, vous pouvez utiliser le calculateur de structure.</div>
 <% elsif user.admin? %>
   <!-- Rien -->

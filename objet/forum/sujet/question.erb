@@ -10,7 +10,7 @@
 
 site.require 'form_tools'
 form.prefix = "question"
-form.objet  = param(:question)            || Hash::new
+form.objet  = param(:question)            || Hash.new
 last_route  = param(:question_last_route) || app.session['last_route']
 
 %>

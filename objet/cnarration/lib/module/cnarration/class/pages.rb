@@ -30,7 +30,7 @@ class << self
   # ce paramètre sera mis telle quelle dans le where du select pour
   # trouver les pages.
   def pages params = nil
-    params ||= Hash::new
+    params ||= Hash.new
     params[:as] ||= :array_data
     params[:where] ||= "options LIKE '1%'"
 
@@ -42,7 +42,7 @@ class << self
 
     params[:colonnes] << :livre_id if params[:sorted]
 
-    data_requete = Hash::new
+    data_requete = Hash.new
     data_requete.merge!( where: params.delete(:where) )
     data_requete.merge!( colonnes:params.delete(:colonnes) ) unless params[:colonnes].nil?
     # Si un ordre a été défini, il faut le prendre en compte

@@ -9,7 +9,7 @@ Extension des Hash pour les tests
     Pour l'instanciation d'un hash de test, il faut obligatoirement
     fournir la méthode de test (test-méthode) dans laquelle il est
     utilisé :
-    th = THash::new( test_methode )
+    th = THash.new( test_methode )
     th.merge!(...)
 
 =end
@@ -36,7 +36,7 @@ class THash < Hash
   # Produit un succès si le {THash} contient les données spécifiées
   # dans +hdata+ ou une failure dans le cas contraire
   def has hdata, options=nil, inverse=false
-    options ||= Hash::new
+    options ||= Hash.new
 
     option_evaluate = options.delete(:evaluate)
 

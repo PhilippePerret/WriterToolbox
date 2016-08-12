@@ -36,7 +36,7 @@ class User
   # du dernier message.
   def add_post post_id
     post_id = post_id.id if post_id.instance_of?(Forum::Post)
-    dnew = Hash::new
+    dnew = Hash.new
     # On l'ajoute toujours en dernier message
     dnew.merge!(last_post: {at: NOW, id: post_id}.to_json )
     # On incrémente toujours le nombre de message de l'user
@@ -47,7 +47,7 @@ class User
 
   def remove_post post_id
     post_id = post_id.id if ( post_id.instance_of? Forum::Post )
-    dnew = Hash::new
+    dnew = Hash.new
     @posts_count = posts_count - 1
     dnew.merge!( posts_count:@posts_count )
     if last_post == post_id

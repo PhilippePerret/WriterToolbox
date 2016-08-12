@@ -17,7 +17,7 @@ class User
   def initialize uid = nil
     @id = uid
     # Initialisation de propriétés volatiles utiles
-    @preferences = Hash::new
+    @preferences = Hash.new
   end
 
   def bind; binding() end

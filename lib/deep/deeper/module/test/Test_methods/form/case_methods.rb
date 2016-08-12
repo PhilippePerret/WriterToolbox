@@ -11,7 +11,7 @@ class TestForm < DSLTestMethod
   # (intuitivement) les données définies. Produit une failure
   # dans le cas contraire.
   def exists options=nil
-    opts = options || Hash::new
+    opts = options || Hash.new
     responds # La page doit exister
     [:id, :name, :action].each do |k|
       opts.merge!(k => data_form[k]) if data_form.has_key?(k)
@@ -63,7 +63,7 @@ class TestForm < DSLTestMethod
 
     # Préparation des données (:data) dont curl aura besoin
     # pour simuler la soumission du formulaire
-    data_req = Hash::new
+    data_req = Hash.new
     this_data[:fields].each do |field_id, field_data|
       next unless field_data.has_key?(:name)
       data_req.merge! field_data[:name] => field_data[:value]

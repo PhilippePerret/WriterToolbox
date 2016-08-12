@@ -76,7 +76,7 @@ class Livre
   # On règle les options par défaut avant la
   # compilation.
   def compile_default_options options
-    options ||= Hash::new
+    options ||= Hash.new
     options[:open_pdf] = true unless options.has_key?(:open_pdf)
     @options_suivi_latex = options
     if verbose?

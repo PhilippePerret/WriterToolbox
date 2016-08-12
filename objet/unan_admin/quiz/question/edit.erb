@@ -19,7 +19,7 @@ site.require 'form_tools'
 #   - dans le paramètre `question_id`
 #   - dans la route rest `question/<id>/edit`
 #   - dans le param(:question) édité
-question_id = (site.current_route.objet_id || param(:question_id) || (param(:question)||Hash::new)[:id]).to_i_inn
+question_id = (site.current_route.objet_id || param(:question_id) || (param(:question)||Hash.new)[:id]).to_i_inn
 if question_id != nil
   debug "question_id : #{question_id}"
   iquestion = Unan::Quiz::Question.new(question_id)
@@ -39,7 +39,7 @@ else
 end
 
 form.prefix = "question"
-form.objet  = param(:question) || Hash::new # pour le moment
+form.objet  = param(:question) || Hash.new # pour le moment
 
 %>
 <%

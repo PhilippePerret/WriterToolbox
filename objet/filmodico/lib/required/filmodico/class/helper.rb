@@ -11,7 +11,7 @@ class Filmodico
     def titre; @titre ||= "Le Filmodico".freeze end
 
     def data_onglets
-      donglets = Hash::new
+      donglets = Hash.new
       donglets.merge!(DATA_ONGLETS)
       donglets.merge!("Nouveau" => "filmodico/edit") if user.admin?
       donglets

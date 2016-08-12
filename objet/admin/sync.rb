@@ -34,7 +34,7 @@ class Sync
   # Retourne les mtime des fichiers à checker pour la synchro
   def file_mtimes
     @file_mtimes ||= begin
-      res = Hash::new
+      res = Hash.new
       FILES2SYNC.each do |fid, fdata|
         fpath = fdata[:fpath]
         fpath = "./www/#{fpath}" if ONLINE

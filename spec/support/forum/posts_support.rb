@@ -14,7 +14,7 @@ class << self
   #
   # Return la liste des IDs des nouveaux messages
   def create_posts params
-    params ||= Hash::new
+    params ||= Hash.new
     params[:count] ||= 10
 
     ids_new_posts = Array::new

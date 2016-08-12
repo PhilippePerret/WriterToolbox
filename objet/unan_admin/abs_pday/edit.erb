@@ -8,7 +8,7 @@ site.require 'form_tools'
 form.prefix = 'pday'
 form.objet  = if param(:pday).nil?
   if site.current_route.objet_id.nil?
-    Hash::new
+    Hash.new
   else
     Unan::Program::AbsPDay::new(site.current_route.objet_id).data
   end

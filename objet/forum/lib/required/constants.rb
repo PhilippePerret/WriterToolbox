@@ -36,7 +36,7 @@ class Categorie
     }
   }
 
-  id2sym = Hash::new
+  id2sym = Hash.new
   CATEGORIES.each do |cate_sym, dcate|
     id2sym.merge!(dcate[:id] => cate_sym)
   end

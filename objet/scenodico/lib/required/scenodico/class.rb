@@ -12,7 +12,7 @@ class Scenodico
     # +options+
     #   :with_definition      True si on doit charger la définition (defaut: false)
     def list options = nil
-      options ||= Hash::new
+      options ||= Hash.new
       options
       data_request = {}
       data_request.merge!(order: "mot ASC")

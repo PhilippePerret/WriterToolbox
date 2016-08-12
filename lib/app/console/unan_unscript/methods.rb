@@ -83,7 +83,7 @@ class Console
     total_points_max  = 0  # quand meilleures réponses
     total_points_min  = 0  # quand pires réponses
     total_works_count = 0
-    hdata = Hash::new
+    hdata = Hash.new
     lines = ""
     tab = " "*4 # tabulation entre les données pour l'affichage
     grade_points_courant = nil

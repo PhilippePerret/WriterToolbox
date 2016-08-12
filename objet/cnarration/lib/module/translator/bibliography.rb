@@ -72,7 +72,7 @@ class << self
   # ./
   def livres
     @livres ||= begin
-      hlivres = Hash::new
+      hlivres = Hash.new
       Cnarration::LIVRES.each do |bid, bdata|
         nid = "NarrationID#{bid}"
         hlivres.merge!( nid => bdata.merge(

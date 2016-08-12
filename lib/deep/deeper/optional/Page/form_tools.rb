@@ -130,7 +130,7 @@ class Page
       end
       # Le bouton submit
       def submit_button button_name, options = nil
-        options ||= Hash::new
+        options ||= Hash.new
         (
           (options[:libelle]||"").in_span(class:'libelle') +
           button_name.in_submit(options.merge(class:'btn')).in_span(class:'value')
@@ -345,7 +345,7 @@ class Page
       end
       # Un menu standard pour choisir un pays
       def field_select_pays
-        @options ||= Hash::new
+        @options ||= Hash.new
         @options.merge! values: PAYS_ARR_SELECT
         field_select
       end
@@ -431,7 +431,7 @@ class Page
       # Options par défaut pour n'importe quelle rangée de formulaire
       def options
         @options ||= begin
-          opts = raw_options || Hash::new
+          opts = raw_options || Hash.new
           opts[:libelle_class] ||= ['libelle']
           opts[:libelle_class] << opts[:libelle_width] if opts[:libelle_width]
           opts[:span_libelle_class] = opts.delete(:libelle_class).join(' ')

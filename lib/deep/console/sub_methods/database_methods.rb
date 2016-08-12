@@ -142,7 +142,7 @@ class Console
   #               mais retournés.
   #
   def backup_data_of path, table_name, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     quiet = !!options[:quiet]
     @errors = Array::new
     unless File.exist?(path)

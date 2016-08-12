@@ -16,9 +16,9 @@ class Film
 
     # Si l'analyse n'a besoin d'aucun privilège, elle est
     # toujours visible
-    return true if !need_signedup? && !need_suscribed?
+    return true if !need_signedup? && !need_subscribed?
 
-    return true if need_suscribed? && user.suscribed?
+    return true if need_subscribed? && user.subscribed?
 
     return true if need_signedup? && user.identified?
 
@@ -36,8 +36,8 @@ class Film
     bit_signup == 1
   end
   # BIT 3 À besoin d'être abonné
-  def need_suscribed?
-    bit_suscribed == 1
+  def need_subscribed?
+    bit_subscribed == 1
   end
   # BIT 4 C'est une analyse TM
   def analyse_tm?

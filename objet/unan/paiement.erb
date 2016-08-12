@@ -46,9 +46,9 @@ else
   %><%= Unan::titre_h1("Inscription au programme") %><%
 
   # Si l'user est ABONNÉ au site
-  if user.suscribed?
+  if user.subscribed?
 
-    debug "[paiement.erb] user.suscribed? OUI"
+    debug "[paiement.erb] user.subscribed? OUI"
 
     # On va vérifier le message et le coût de son inscription au
     # programme UN AN UN SCRIT, en sachant que s'il a payé il y a
@@ -63,7 +63,7 @@ else
   # Si l'user est seulement INSCRIT AU SITE
   elsif user.identified?
 
-    debug "[paiement.erb] user.suscribed? NON identified? OUI"
+    debug "[paiement.erb] user.subscribed? NON identified? OUI"
 
     %><p class='small'>Notez qu'avec l'inscription au programme <%= UN_AN_UN_SCRIPT %> vous bénéficiez automatiquement de <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
     <% make_transaction_paiement_unanunscript %>
@@ -72,7 +72,7 @@ else
   # Si l'user n'est NI INSCRIT, NI ABONNÉ
   else
 
-    debug "[paiement.erb] user.suscribed? NON identified? NON"
+    debug "[paiement.erb] user.subscribed? NON identified? NON"
 
       # Dans le cas où l'user n'est pas encore inscrit sur le site,
       # c'est une inscription complète, avec paiement de l'inscription

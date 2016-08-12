@@ -124,7 +124,7 @@ class Hash
   # pas que ça en soit donc peut produire une erreur
   # Note: Seules les clés de premier niveau sont traitées
   def with_key_fixnum
-    new_hash = Hash::new
+    new_hash = Hash.new
     self.each { |k, v| new_hash.merge! k.to_s.to_i => v }
     new_hash
   end

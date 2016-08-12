@@ -24,7 +24,7 @@ class Quiz
     # que les ids à utilisés. En clé, l'identifiant du work et en valeur
     # le hash de ses données, suivant les colonnes demandées à commencer par
     # la colonne :exemples.
-    @resultat_works_of_exemple = Hash::new
+    @resultat_works_of_exemple = Hash.new
 
     res.collect do |hdata|
       @resultat_works_of_exemple.merge!(hdata[:id] => hdata)

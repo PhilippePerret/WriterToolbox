@@ -37,7 +37,7 @@ def liste_pages_narration_hors_programme
 end
 def narration_id_to_page_programme_id
   @narration_id_to_page_programme_id ||= begin
-    h = Hash::new;pages_narration.each do |pcdata|
+    h = Hash.new;pages_narration.each do |pcdata|
       h.merge! pcdata[:narration_id] => pcdata[:id]
     end;h
   end

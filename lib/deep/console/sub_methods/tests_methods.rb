@@ -44,7 +44,7 @@ class Console
     # commande `test` est jouée seule, ces arguments sont vides
     # et il faut jouer le dossier "offline" entier
     where = :offline # Par défaut
-    opts  = Hash::new
+    opts  = Hash.new
     dossier_test, dossier_rspec = if args != ""
 
       dargs = args.split(' ')

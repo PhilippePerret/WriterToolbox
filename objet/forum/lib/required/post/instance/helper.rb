@@ -29,7 +29,7 @@ class Post
   #             :titre    (défaut) Comme un titre pour un listing
   #
   def as_li params = nil
-    params ||= Hash::new
+    params ||= Hash.new
     @numero       = params.delete(:numero)
     return_as     = params.delete(:as)
     full_message  = return_as == :full_message

@@ -33,7 +33,7 @@ if iquiz && iquiz.exist?
   param(:quiz => data_quiz)
 end
 
-form.objet  = param(:quiz) || Hash::new
+form.objet  = param(:quiz) || Hash.new
 %>
 
 <%

@@ -11,7 +11,7 @@ class User
     "utilisa#{f_trice}" +
     ' ' +
     case true
-    when suscribed? then 'abonné' + f_e
+    when subscribed? then 'abonné' + f_e
     when identified? then 'identifié' + f_e
     end
   end

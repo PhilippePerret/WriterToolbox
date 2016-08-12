@@ -96,7 +96,7 @@ class User
   # sauf si +as_real_values+ est true (false par défaut, pour accélérer
   # la méthode, qui est surtout appelée pour `set_vars`)
   def get_vars arr_var_names, as_real_values = false
-    hsaved = Hash::new
+    hsaved = Hash.new
     arr_names = arr_var_names.collect{|n| "'#{n}'"}
     where = "name IN (#{arr_names.join(', ')})"
     saved_vars = table_variables.select(where: where).each do |hvalue|

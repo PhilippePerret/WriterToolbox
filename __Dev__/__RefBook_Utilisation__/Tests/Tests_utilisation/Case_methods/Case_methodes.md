@@ -485,7 +485,7 @@ Les `Hash` peuvent être testés grâce à la classe `THash`.
 
 ~~~ruby
 
-THash::new(<test_method>[ <valeur par défaut>])
+THash.new(<test_method>[ <valeur par défaut>])
 
   <test_method> est soit un test_route, un test_form, un test_base, etc.
 ~~~

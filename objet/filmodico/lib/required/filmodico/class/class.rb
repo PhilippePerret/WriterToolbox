@@ -17,9 +17,9 @@ class Filmodico
     # +options+
     #   :with_resume      Si true, on remonte aussi le résumé dans les données
     def list options = nil
-      options ||= Hash::new
+      options ||= Hash.new
       options
-      data_request = Hash::new
+      data_request = Hash.new
       data_request.merge!(order: "titre ASC")
       colonnes = if options[:as] == :ids
         [:titre] # on charge toujours les titres pour pouvoir les classer

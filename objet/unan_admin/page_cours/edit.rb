@@ -292,7 +292,7 @@ end #/Program
 end #/Unan
 
 def pc # comme "P-age C-cours"
-  return Hash::new if pc_id == :undefined
+  return Hash.new if pc_id == :undefined
   @pc ||= Unan::Program::PageCours::get(pc_id)
 end
 def pc_id

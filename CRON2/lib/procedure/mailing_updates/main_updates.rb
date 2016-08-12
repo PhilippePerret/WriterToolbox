@@ -158,7 +158,7 @@ class CRON2
       def message_souscription_by_user u
         case true
         when u.admin?     then (message_administrateur % {pseudo: u.pseudo})
-        when u.suscribed? then message_remerciement
+        when u.subscribed? then message_remerciement
         else message_sabonner
         end
       end

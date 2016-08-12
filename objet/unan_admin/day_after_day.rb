@@ -124,7 +124,7 @@ class AbsPDay
     @works_per_pday   = Unan::DAD::works_per_pday
     @durees_per_work  = Unan::Program::Work::durees_per_work
 
-    @continuing_works = Hash::new
+    @continuing_works = Hash.new
 
     return @continuing_works if id == 1
 
@@ -175,7 +175,7 @@ class << self
   # Note : La méthode ne doit s'appeler qu'une seule fois
   # @usage :    @durees_per_works ||= Unan::Program::Work::durees_per_work
   def durees_per_work
-    h = Hash::new
+    h = Hash.new
     Unan::table_absolute_works.select(colonnes:[:duree]).each do |wdata|
       h.merge! wdata[:id] => wdata[:duree]
     end

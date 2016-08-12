@@ -11,7 +11,7 @@ class User
   class << self
 
     def get id
-      @instances ||= Hash::new
+      @instances ||= Hash.new
       @instances[id] ||= User::new(id)
     end
 

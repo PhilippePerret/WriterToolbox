@@ -159,7 +159,7 @@ class FileMD
   REG_REF_LINKS = /^\[(.+?)\]\w+(.+?)\w+"(.+?)"$/
   def markdown_code_trim
     @code = path_md.read
-    @link_defs = Hash::new
+    @link_defs = Hash.new
     @code.gsub!(REG_REF_LINKS){
       link_id     = $1.freeze
       link_href   = $2.freeze

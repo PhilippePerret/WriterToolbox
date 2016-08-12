@@ -12,7 +12,7 @@ class Event
   #     note:       Si false, on n'inscrit pas les notes qui existent
   #                 Donc, par défaut, on les inscrit.
   def as_li options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     li = ""
     li << human_time.in_span(class:'h') # li.ev span.h
     if options[:duree]

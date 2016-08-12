@@ -120,7 +120,7 @@ class AbsWork
   # travail.
   def lien_show titre_lien = nil, attrs = nil
     titre_lien ||= self.titre
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     ktype, context, objet_id = ktype_and_context
     attrs.merge!(href: "#{ktype}/#{objet_id}/show?in=#{context}")
     titre_lien.in_a(attrs)

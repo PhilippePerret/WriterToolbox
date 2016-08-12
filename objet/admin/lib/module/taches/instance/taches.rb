@@ -11,7 +11,7 @@ class Taches
   #   :admin_id     Le propriétaire de cette liste.
   #
   def initialize data = nil
-    data ||= Hash::new
+    data ||= Hash.new
     @admin_id = data.delete(:admin_id)
   end
 

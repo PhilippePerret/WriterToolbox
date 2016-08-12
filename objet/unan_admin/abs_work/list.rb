@@ -10,7 +10,7 @@ class AbsWork
   class << self
 
     def list
-      data_request = Hash::new
+      data_request = Hash.new
       data_request.merge!(colonnes: [])
       data_request.merge!(where: where_clause) unless where_clause.nil?
       Unan::table_absolute_works.select(data_request).collect do |h|
@@ -47,7 +47,7 @@ class AbsWork
     # Seulement défini si on utilise le filtre de la page list
     def filter
       @filter ||= begin
-        param(:abs_work_filter) || Hash::new
+        param(:abs_work_filter) || Hash.new
       end
     end
   end # << self

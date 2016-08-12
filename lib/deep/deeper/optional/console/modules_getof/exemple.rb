@@ -24,7 +24,7 @@ class Exemple
     # que les ids à utilisés. En clé, l'identifiant du work et en valeur
     # le hash de ses données, suivant les colonnes demandées à commencer par
     # la colonne :exemples.
-    @resultat_works_of_exemple = Hash::new
+    @resultat_works_of_exemple = Hash.new
 
     # Ci-dessus on peut avoir récupérer aussi bien "121 12 212" pour "12", mais
     # il ne faudrait garder que "12" par exemple. On filtre ci-dessous

@@ -62,7 +62,7 @@ end
 #
 def get_any_user options = nil
 
-  options ||= Hash::new
+  options ||= Hash.new
   ids, where = nil, Array::new
 
   if options[:with_program]

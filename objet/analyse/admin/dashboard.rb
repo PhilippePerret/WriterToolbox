@@ -18,7 +18,7 @@ class Film
 
 
   ORDER_PER_BIT = [0,1,2,3,8,4,5,6,7]
-  horder = Hash::new
+  horder = Hash.new
   ORDER_PER_BIT.each_with_index do |bit, iaff|
     horder.merge!( bit => iaff )
   end

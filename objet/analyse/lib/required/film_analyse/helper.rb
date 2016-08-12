@@ -4,7 +4,7 @@ class FilmAnalyse
 
     def lien_participer titre = nil, options = nil
       titre ||= "participer aux analyses"
-      options ||= Hash::new
+      options ||= Hash.new
       options.merge!(href:'analyse/participer')
       titre.in_a(options)
     end

@@ -35,7 +35,7 @@ class RFile
   #
   # Noter que ces options sont mises dans @options
   def bloc_synchro options = nil
-    @options = options || Hash::new
+    @options = options || Hash.new
     # Cette méthode sert en même temps à construire le bloc
     # de synchro et à traiter la synchro du fichier. C'est
     # l'opération (param(:operation)) qui indique la synchro

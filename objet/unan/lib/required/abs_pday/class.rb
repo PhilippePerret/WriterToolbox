@@ -16,7 +16,7 @@ class AbsPDay
     # en la prenant dans la table des instances déjà créées.
     def get abspday_id
       abspday_id = abspday_id.to_i
-      @instances ||= Hash::new
+      @instances ||= Hash.new
       @instances[abspday_id] ||= new(abspday_id)
     end
 

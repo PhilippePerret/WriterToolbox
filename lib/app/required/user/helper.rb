@@ -7,7 +7,7 @@ class User
     case true
     when admin?         then "administra#{f_trice}"
     when unanunscript?  then "auteur#{f_e} du programme 1A1S"
-    when suscribed?    then "#{hu} abonné#{f_e}"
+    when subscribed?    then "#{hu} abonné#{f_e}"
     when identified?    then "#{hu} inscrit#{f_e}"
     when guest?         then "simple utilisateur"
     end

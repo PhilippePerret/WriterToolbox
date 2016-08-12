@@ -42,7 +42,7 @@ class String
     # d'attributs optionnels +attrs+
     # NOTE: Toutes les valeurs nil sont retirées
     def opened_tag tag, attrs = nil
-      attrs ||= Hash::new
+      attrs ||= Hash.new
       # La propriété :displayed indique si l'élément doit être
       # affiché ou non.
       #  La propriété :mask fait le contraire
@@ -168,7 +168,7 @@ class String
 
   # Ajouter :file => true dans +attrs+ pour une formulaire avec upload fichier
   def in_form     attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     attrs.merge!( method: 'POST' ) unless attrs.has_key?(:method)
     attrs.merge!( 'accept-charset' => "UTF-8") unless attrs.has_key?('accept-charset')
     if attrs.has_key?( :file ) && attrs.delete(:file) == true
@@ -177,12 +177,12 @@ class String
     html_balise 'form', attrs
   end
   def in_option   attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     attrs[:selected] = "SELECTED" if attrs.delete(:selected) === true
     html_balise 'option',   attrs
   end
   def in_input    attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     attrs = attrs.merge( :value => self ) unless self == "" || attrs.has_key?(:value)
     self.class.opened_tag('input', attrs)[0..-2] + " />"
   end
@@ -195,7 +195,7 @@ class String
   end
   # `self' est utilisé comme name, on ajouter "file_" avant pour l'identifiant
   def in_input_file attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     attrs.merge!( type: 'file', value: "" )
     attrs.merge!( name: self ) unless attrs.has_key?( :name )
     unless attrs.has_key?( :id )
@@ -277,7 +277,7 @@ class String
   #
   # Alias : def in_img
   def in_image attrs = nil
-    attrs ||= Hash::new
+    attrs ||= Hash.new
     attrs.merge!( src: self ) unless self == "" || attrs.has_key?(:src)
     legend        = attrs.delete(:legend)
     if legend

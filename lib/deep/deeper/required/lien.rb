@@ -159,7 +159,7 @@ class Lien
 
   # Lien pour s'identifier
   def signin titre = "s'identifier", options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     href = "user/signin"
     href += "?backto=#{CGI::escape(options.delete(:back_to))}" if options.key?(:back_to)
     build href, titre, options
@@ -167,12 +167,11 @@ class Lien
 
 
   def subscribe titre = "s'abonner", options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(query_string:"user[subscribe]=on")
     build "user/paiement", titre, options
   end
-  alias :suscribe :subscribe
-  alias :sabonner :subscribe
+  alias :sabonner   :subscribe
   alias :abonnement :subscribe
 
   # +options+

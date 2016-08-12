@@ -58,7 +58,7 @@ class Page
   # Paramètres CGI (par exemple les données d'un formulaire POST)
   def params_cgi
     @params_cgi ||= begin
-      h = Hash::new
+      h = Hash.new
       cgi.instance_variable_get('@params').keys.each { |key| h.merge!(key.to_sym => cgi[key]) }
       h
     end
@@ -66,14 +66,14 @@ class Page
 
   REG_COMPLEXE_VALUES_CGI = /^(.*?)\[(.*?)\](?:\[(.*?)\])?$/
   def decomplexe_values_cgi
-    @custom_params ||= Hash::new
+    @custom_params ||= Hash.new
     h_decomplexed = decomplexe_hash cgi.params
     @custom_params.merge! h_decomplexed
     @cgi_values_decomplexed = true
   end
 
   def decomplexe_hash h
-    decomplexed = Hash::new
+    decomplexed = Hash.new
     h.each do |k, v|
       # puts "k: #{k.inspect}<br />v: #{v.inspect}".in_div
       if k.match REG_COMPLEXE_VALUES_CGI
@@ -233,7 +233,7 @@ class Page
   # Définit explicitement un paramètre
   def set_param added_params, value
     added_params = {added_params.to_sym => value} unless added_params.class == Hash
-    @custom_params ||= Hash::new
+    @custom_params ||= Hash.new
     @custom_params = @custom_params.merge added_params
   end
 

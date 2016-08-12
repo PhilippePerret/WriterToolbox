@@ -77,7 +77,7 @@ class << self
     # régulière puisse capter le dernier élément de data_str
     data_str = " #{data_str} fin:"
     # Le hash de données qui sera revoyé
-    hdata = Hash::new
+    hdata = Hash.new
     data_str.scan(/ ([a-zA-Z0-9]+)\:(.*?)(?= [a-zA-Z0-9]+\:)/).to_a.each do |paire|
       key, value = paire
       hdata.merge!(key.to_sym => value.strip.freeze)

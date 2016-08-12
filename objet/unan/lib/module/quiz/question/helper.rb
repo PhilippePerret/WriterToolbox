@@ -59,7 +59,7 @@ class Question
       wrongs = Hash.new
       # On fait d'abord un Hash des réponses pour pouvoir les
       # manipuler plus facilement
-      hreponses = Hash::new
+      hreponses = Hash.new
 
       thereps.each do |hr|
         # On met cette réponse dans le hash de données de

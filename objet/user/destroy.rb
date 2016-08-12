@@ -49,7 +49,7 @@ class User
   end
 
   def dkill
-    @dkill ||= param(:destroy) || Hash::new
+    @dkill ||= param(:destroy) || Hash.new
   end
 
   def deconnecte_user

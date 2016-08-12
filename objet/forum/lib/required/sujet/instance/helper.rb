@@ -3,7 +3,7 @@ class Forum
 class Sujet
 
   def lien_write_post titre = "écrire", params = nil
-    params ||= Hash::new
+    params ||= Hash.new
     params.merge!( href: "post/#{id}/create?in=forum&sid=#{id}")
     titre.in_a( params )
   end
@@ -16,7 +16,7 @@ class Sujet
 
   def lien_edit titre = "edit", params = nil
     return "" if user.grade < 7
-    params ||= Hash::new
+    params ||= Hash.new
     params.merge!( href: "sujet/#{id}/edit?in=forum")
     titre.in_a( params )
   end

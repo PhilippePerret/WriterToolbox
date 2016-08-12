@@ -93,11 +93,11 @@ module MethodesMySQL
 
     # Le Hash qui sera retourné, ou pour contenir la
     # données unique à retourner
-    retour = Hash::new
+    retour = Hash.new
 
     # On essaie d'abord de les obtenir dans les données qui
     # ont peut-être été relevées par un get_all
-    @data ||= Hash::new
+    @data ||= Hash.new
     rest_keys = Array::new
     keys.each do |key|
       if @data.key?( key )
@@ -139,7 +139,7 @@ module MethodesMySQL
       end
     # On actualise les variables d'instance et les données
     # déjà consignées dans @data
-    @data ||= Hash::new
+    @data ||= Hash.new
     hdata.each do |k, v|
       instance_variable_set("@#{k}", v)
       @data[k] = v

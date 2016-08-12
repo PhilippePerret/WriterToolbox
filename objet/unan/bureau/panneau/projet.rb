@@ -7,7 +7,7 @@ class Bureau
   # il sera transformé en bit et la propriété sharing sera mise en
   # préférences.
   def save_projet
-    data_projet = Hash::new
+    data_projet = Hash.new
     data_projet.merge!(titre:   dinp[:titre])         unless dinp[:titre].empty?
     data_projet.merge!(resume:  dinp[:resume])        unless dinp[:resume].empty?
     data_projet.merge!(type:    dinp[:type].to_i)     unless dinp[:type].to_i == 0

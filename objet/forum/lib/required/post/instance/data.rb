@@ -65,7 +65,7 @@ class Post
       res.nil? ? 0 : res[:vote].to_i
     end
     def get_votes
-      d = table_vote.get(id, colonnes:[:upvotes, :downvotes, :vote]) || Hash::new
+      d = table_vote.get(id, colonnes:[:upvotes, :downvotes, :vote]) || Hash.new
       @upvotes    = d[:upvotes]   || Array::new
       @downvotes  = d[:downvotes] || Array::new
       @vote       = d[:vote]      || 0

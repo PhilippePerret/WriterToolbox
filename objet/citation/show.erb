@@ -4,7 +4,7 @@
 enable_comments
 %>
 <%
-if user.suscribed? || user.admin?
+if user.subscribed? || user.admin?
   is_consultable = true
 else
   app.session['citations'] ||= []

@@ -20,7 +20,7 @@ module MethodesMainObjets
   #   :onglets_top    Si true, les onglets sont mis au-dessus du sous-
   #                   titre plutôt que tout en bas
   def titre_h1 sous_titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     page.title = titre
     t = titre.in_h1
     t << onglets if options[:onglets_top]

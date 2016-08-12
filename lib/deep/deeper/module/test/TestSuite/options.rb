@@ -5,7 +5,7 @@ class TestSuite
   attr_reader :options
 
   def parse_options
-    @options ||= Hash::new
+    @options ||= Hash.new
     @options.merge!(debug: false) unless @options.has_key?(:debug)
     # debug "SiteHtml::Test::options : #{@options.pretty_inspect}" if debug?
     self.class::options = @options.delete(:options)
@@ -26,7 +26,7 @@ class TestSuite
   #
   # Quelques ajustements sont exécutés si nécessaire.
   def options= hdata
-    @options ||= Hash::new
+    @options ||= Hash.new
     @options.merge! hdata
     regularise_options
   end

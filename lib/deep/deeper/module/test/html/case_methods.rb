@@ -27,7 +27,7 @@ class HTML
     if debug?
       debug "-> SiteHtml::TestSuite::Html#has_tag( tag=#{tag.inspect}, options=#{options.inspect}, inverse=#{inverse.inspect})"
     end
-    options ||= Hash::new
+    options ||= Hash.new
 
     tag_init = tag.freeze
 
@@ -194,7 +194,7 @@ class HTML
   # has_messages?
   # has_not_messages?
   def has_message mess, options = nil, inverse = false
-    options ||= Hash::new
+    options ||= Hash.new
     ok = has_tag?("div#flash div.notice", options.merge!(text: mess))
     # Message supplémentaire indiquant les messages
     # flash affichés dans la page
@@ -222,7 +222,7 @@ class HTML
   end
   # Méthode-?
   def has_message? mess, options = nil, inverse = false
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(evaluate: false)
     has_message(mess, options, inverse)
   end
@@ -271,7 +271,7 @@ class HTML
   # ---------------------------------------------------------------------
 
   def has_error mess, options = nil, inverse = false
-    options ||= Hash::new
+    options ||= Hash.new
 
     options.merge!(text: mess)
 
@@ -314,7 +314,7 @@ class HTML
     evaluate_as_pluriel :has_not_error, arr, options, inverse=true
   end
   def has_error? mess, options = nil, inverse = false
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(evaluate: false)
     has_error(mess, options, inverse)
   end
@@ -332,7 +332,7 @@ class HTML
   end
 
   def has_title titre, niveau=nil, options=nil, inverse=false
-    options ||= Hash::new
+    options ||= Hash.new
 
     titre_init = if titre.instance_of?(Regexp)
       titre.to_s
@@ -364,7 +364,7 @@ class HTML
   end
   # Retourne TRUE si le titre est trouvé
   def has_title? titre, niveau=nil, options=nil, inverse=false
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(evaluate: false)
     has_title(titre, niveau, options, inverse)
   end

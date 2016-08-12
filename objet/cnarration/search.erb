@@ -6,7 +6,7 @@ enable_comments
 %>
 <%= Cnarration::titre_h1("Recherche") %>
 
-<% if user.admin? # || user.suscribed?
+<% if user.admin? # || user.subscribed?
   %>
   <%
     if param(:operation) == 'proceed_search_in_narration'
@@ -16,7 +16,7 @@ enable_comments
   <%= Cnarration::Search::formulaire    %>
   <%= Cnarration::Search::result  %>
 
-<% elsif false == user.suscribed? %>
+<% elsif false == user.subscribed? %>
 <p>
   Désolé, seuls les abonnés à
   <%= site.name %> peuvent faire une recherche dans les pages de la collection narration.

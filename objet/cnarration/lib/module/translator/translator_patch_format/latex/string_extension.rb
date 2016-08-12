@@ -42,7 +42,7 @@ class ::String
 
 
   def formate_balises_films
-    @films_citations ||= Hash::new
+    @films_citations ||= Hash.new
     str = self
     str.gsub!(/FILM\[(.*?)\]/){ traite_film $1.freeze }
     str.gsub!(/film:([a-zA-Z0-9]+)/){ traite_film $1.freeze }

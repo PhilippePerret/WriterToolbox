@@ -9,7 +9,7 @@ class TDM
     attr_reader :by_type
 
     def traite type
-      @by_type ||= Hash::new
+      @by_type ||= Hash.new
       @by_type[type] ||= new(type)
     end
   end # /self FilmAnalyse::TDM

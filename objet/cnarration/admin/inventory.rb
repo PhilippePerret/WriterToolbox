@@ -44,7 +44,7 @@ class << self
     # l'accueil de la collection sur le site, visible par tout
     # visiteur. Principalement, le nombre de pages par livre,
     # en tablant sur 120 pages par livre.
-    @table_per_book = Hash::new
+    @table_per_book = Hash.new
 
     tableau_stats = Array::new
     @rapport_string = Array::new

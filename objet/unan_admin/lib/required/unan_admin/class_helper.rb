@@ -49,7 +49,7 @@ class UnanAdmin
     # Le sujet-cible choisi sera placé dans un champ hidden d'id et de name
     # "<for_id>_value".
     def menu_sujets_cibles options = nil
-      options ||= Hash::new
+      options ||= Hash.new
       options[:id]    ||= 'youpi'
       options[:name]  ||= 'youpi'
 

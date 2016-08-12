@@ -31,7 +31,7 @@ class TestSuite
       @options = opts
       parse_options
     else
-      @options = Hash::new
+      @options = Hash.new
     end
     # Il faut aussi initialiser les options de la class, qui permettent
     # pour le moment de gérer la mise en route et l'arrêt du débuggage

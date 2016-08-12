@@ -6,7 +6,7 @@ class Video
       vid = vid.to_i
       @instances ||= begin
         load_data
-        Hash::new()
+        Hash.new()
       end
       @instances[vid] ||= new(DATA_VIDEOS[vid])
     end

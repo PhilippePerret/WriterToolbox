@@ -7,8 +7,8 @@ class UPage
     # pour la page d'identifiant +page_id+
     def get auteur, page_id
       page_id = page_id.to_i
-      @instances ||= Hash::new
-      @instances[auteur.id] ||= Hash::new
+      @instances ||= Hash.new
+      @instances[auteur.id] ||= Hash.new
       @instances[auteur.id][page_id] ||= new(auteur, page_id)
     end
   end # << self

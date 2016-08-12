@@ -63,12 +63,12 @@ class Search
       nombre_founds:    0,             # Nombre d'occurrences trouvées
       nombre_in_titres: 0,
       nombre_in_textes: 0,
-      founds: Hash::new,
+      founds: Hash.new,
 
       # Tous les résultats, par fichier
       # Clé : ID de la page (dans la table cnarration.db)
       # Valeur : Instance Cnarration::Search::SFile
-      by_file: Hash::new,
+      by_file: Hash.new,
 
       start_time:   Time.now.to_f,
       end_time:     nil,

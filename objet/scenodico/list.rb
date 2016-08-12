@@ -9,7 +9,7 @@ class Scenodico
 
       # On récolte tous les mots pour les mettre dans des panneaux, un
       # panneau par lettre
-      panneaux = Hash::new
+      panneaux = Hash.new
       list(as: :data, colonnes:[:mot]).each do |hmot|
         first_letter = hmot[:letters][0].capitalize
         unless panneaux.key? first_letter

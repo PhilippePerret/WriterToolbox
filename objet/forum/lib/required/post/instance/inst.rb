@@ -45,7 +45,7 @@ class Post
   def upvote
     return error "Vous avez déjà plébiscité ce message." if upvotes.include?(user.id)
     vote
-    data_vote = Hash::new
+    data_vote = Hash.new
     if downvotes.include?(user.id)
       downvotes.delete(user.id)
       data_vote.merge!(downvotes: downvotes)
@@ -59,7 +59,7 @@ class Post
   def downvote
     return error "Vous avez déjà désapprouvé ce message." if downvotes.include?(user.id)
     vote
-    data_vote = Hash::new
+    data_vote = Hash.new
     if upvotes.include?(user.id)
       upvotes.delete(user.id)
       data_vote.merge!(upvotes: upvotes)

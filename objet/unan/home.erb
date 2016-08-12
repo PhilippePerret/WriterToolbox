@@ -12,7 +12,7 @@ end
   case true
   when user.admin?          then partial 'admin'
   when user.unanunscript?   then partial 'auteur_unan'
-  when user.suscribed?      then partial 'suscriber'
+  when user.subscribed?      then partial 'subscriber'
   when user.identified?     then partial 'simple_inscrit'
   else                           partial 'unsigned'
   end

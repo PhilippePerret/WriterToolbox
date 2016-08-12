@@ -24,7 +24,7 @@ class User
   # WARNING : Les +pref_id+ NE DOIVENT PAS être préfixés avec "pref_"
   def set_preferences hpreferences
     # Modifier les clés pour l'enregistrement dans la table `variables`
-    hprefs_def = Hash::new
+    hprefs_def = Hash.new
     hpreferences.each { |k, v| hprefs_def.merge!("pref_#{k}" => v) }
     set_vars hprefs_def
     @preferences.merge!(hpreferences.to_sym)

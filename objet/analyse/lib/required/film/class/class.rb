@@ -8,7 +8,7 @@ class Film
       if film_ref.instance_of?(Fixnum) || film_ref.numeric?
         film_ref = film_ref.to_i
       end
-      @instances ||= Hash::new
+      @instances ||= Hash.new
       @instances[film_ref] || begin
         if film_ref.instance_of?(String)
           fid = get_id_by_film_id( film_ref )

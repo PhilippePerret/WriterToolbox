@@ -39,7 +39,7 @@ class Sujet
     #   for:    Pour ce nombre d'éléments
     #
     def list params = nil
-      params ||= Hash::new
+      params ||= Hash.new
       return_as   = params.delete(:as)    || :id
       for_nombre  = params.delete(:for)   || nombre_by_default
       from_index  = params.delete(:from)  || 0

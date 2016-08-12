@@ -20,7 +20,7 @@ end
 <p class='small'>
   Dans cette section sont exploités des outils informatiques et statistiques originaux et infiniment éclairants pour l'écriture et la narration en général.
 </p>
-<% if user.suscribed? %>
+<% if user.subscribed? %>
   <p>En tant qu'abonné<%= user.f_e %>, vous pouvez consulter l'intégralité des analyses de film, et vous pouvez également <%= participer_aux_analyses %> (et gagner par là-même des points d'abonnement).</p>
 <% elsif user.identified? %>
   <p><strong>Seuls les abonné<%= user.f_e %>s ont accès à toutes les analyses de film</strong> (<%= user.pseudo %>, vous pouvez bien sûr <%= lien.abonnement("vous abonner") %> pour seulement <%= site.tarif_humain %> par an soit à peine <%= site.tarif_par_mois %>).</p>

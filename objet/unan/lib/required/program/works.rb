@@ -23,7 +23,7 @@ class Program
   # (*) Les travaux qui ont un created_at supérieur à NOW sont
   #     des travaux reprogrammés.
   def current_works options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options[:as] ||= :data
     @arr_works ||= self.table_works.select(where:"status < 9 AND created_at < #{NOW + 1} AND program_id = #{self.id}")
 
@@ -44,7 +44,7 @@ class Program
   # éléments du Array qui est retourné (cf. ci-dessus la méthode
   # current_works)
   def ulterieurs_works options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options[:as] ||= :data
     @ulterieurs_works ||= self.table_works.select(where:"created_at > #{NOW} AND program_id = #{self.id}")
 

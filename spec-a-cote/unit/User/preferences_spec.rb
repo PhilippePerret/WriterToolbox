@@ -104,7 +104,7 @@ describe 'Préférences de l’utilisateur' do
     it 'retourne la préférence si elle existe' do
       texte = "Un texte #{Time.now}"
       user.set_preference(:prefget1 => texte)
-      user.instance_variable_set('@preferences', Hash::new)
+      user.instance_variable_set('@preferences', Hash.new)
       expect(user.instance_variable_get('@preferences')).not_to have_key "pref_prefget1"
       expect(user.preference :prefget1).to eq texte
       expect(user.instance_variable_get('@preferences')).to have_key :prefget1
@@ -129,7 +129,7 @@ describe 'Préférences de l’utilisateur' do
       user.set_preferences dataprefs
       all = user.instance_variable_get('@preferences')
       expect(all).to have_key :allprefs_deux
-      user.instance_variable_set('@preferences', Hash::new)
+      user.instance_variable_set('@preferences', Hash.new)
       all = user.instance_variable_get('@preferences')
       expect(all).not_to have_key :allprefs_deux
       # On a bien vidé tout

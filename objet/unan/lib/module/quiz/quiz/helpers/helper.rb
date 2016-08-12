@@ -109,7 +109,7 @@ $(document).ready(function(){Quiz.regle_reponses(quiz_values)})
   # Lien pour afficher le quiz
   def lien_show atitre = nil, options = nil
     atitre ||= self.titre
-    options ||= Hash::new
+    options ||= Hash.new
     href = "quiz/#{id}/show?in=unan"
     href += "&user_id=#{options[:user_id]}" if options[:user_id]
     options.merge!(href: href)

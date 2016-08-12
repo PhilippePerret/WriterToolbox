@@ -70,7 +70,7 @@ class Unan
     alias :confirmation_mail :mail_confirmation
 
     def data
-      @data ||= param(:contact) || Hash::new
+      @data ||= param(:contact) || Hash.new
     end
 
     def captcha

@@ -225,7 +225,7 @@ PROC
 
   def select_request_multi_lines
     @select_request_multi_lines ||= begin
-      options ||= Hash::new
+      options ||= Hash.new
       what  = options[:what] || "*"
       order = options[:order]
       order = " ORDER #{order}" unless order.nil?

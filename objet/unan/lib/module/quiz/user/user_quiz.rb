@@ -21,7 +21,7 @@ class User
   #   quiz_id:          <fixnum>
   def quizes filter = nil
     @all_quizes ||= begin
-      h = Hash::new
+      h = Hash.new
       self.table_quiz.select(where: "program_id = #{program.id}", colonnes:[:id]).each do |dquiz|
         h.merge!( qid => UQuiz::new( self, dquiz[:id] ) )
       end

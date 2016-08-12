@@ -7,7 +7,7 @@ class Filmodico
     def as_panneaux
       # On récolte tous les films pour les mettre dans des panneaux, un
       # panneau par lettre
-      panneaux = Hash::new
+      panneaux = Hash.new
       list(as: :data, colonnes:[:titre]).each do |hfilm|
         first_letter = hfilm[:letters][0].capitalize
         unless panneaux.has_key? first_letter

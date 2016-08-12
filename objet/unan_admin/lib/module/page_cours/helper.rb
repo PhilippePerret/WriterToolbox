@@ -11,13 +11,13 @@ class PageCours
   # end
 
   def lien_edit titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(edit:true, titre:titre)
     link(options)
   end
 
   def lien_delete titre = nil, options = nil
-    options ||= Hash::new
+    options ||= Hash.new
     options.merge!(delete:true, titre:titre)
     link(options)
   end
