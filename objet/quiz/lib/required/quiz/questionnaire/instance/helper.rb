@@ -7,6 +7,7 @@ Méthodes pour construire le quiz
 class Quiz
 
   # Réaffiche le questionnaire rempli par l'user courant
+  #
   def reshow
     # On récupère les réponses précédentes données par l'user
     @ureponses = table_resultats.select(where: "quiz_id = #{id} AND user_id = #{user.id}", order: 'created_at DESC', limit: 1, colonnes: [:reponses]).first[:reponses]
@@ -60,11 +61,13 @@ class Quiz
   # Retourne le code HTML pour le bouton pour soumettre le
   # formulaire ou autre bouton si c'est un résultat
   def bouton_soumission_ou_autre
-    if ureponses.nil?
+    # if ureponses.nil? || @is_reshown
       'Soumettre le quiz'.in_submit(class: 'btn')
-    else
-      'Essayer encore'.in_a(href: "quiz/#{id}/show?qdbr=#{suffix_base}", class: 'btn')
-    end
+    # else
+    #   # À présent, on ne peut plus passer par là normalement, puisqu'on
+    #   # ne réaffiche que les résultats généraux, pas le détail des choix
+    #   'Essayer encore'.in_a(href: "quiz/#{id}/show?qdbr=#{suffix_base}", class: 'btn')
+    # end
   end
 
   # Code HTML pour la description du quiz, si elle existe

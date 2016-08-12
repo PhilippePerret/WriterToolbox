@@ -62,7 +62,7 @@ feature "Création d'un nouveau sujet" do
     dataform = {
       'question_question' => {value: @nouvelle_question}
     }
-    on_remplit_le_formulaire(page.find('form#form_nouveau_sujet')).
+    benoit.remplit_le_formulaire(page.find('form#form_nouveau_sujet')).
       avec(dataform).
       et_le_soumet('Soumettre')
 

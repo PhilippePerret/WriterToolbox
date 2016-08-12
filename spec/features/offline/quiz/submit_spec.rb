@@ -326,7 +326,7 @@ feature "Vérification des calculs du quiz" do
     la_page_affiche 'En qualité de simple utilisateur inscrit, vous ne pouvez pas consulter vos quiz précédents.'
   end
 
-  scenario 'Un user abonné enregistre ses résultats et peut les revoir' do
+  scenario 'Un user abonné enregistre ses résultats et peut revoir son résultat' do
     start_time = Time.now.to_i - 1
 
     # Un user inscrit mais non abonné
@@ -392,8 +392,6 @@ feature "Vérification des calculs du quiz" do
     la_page_napas_le_message 'En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents'
 
     la_page_a_le_formulaire 'form_quiz'
-    la_page_napas_la_balise 'input', type: 'submit', value: "Soumettre le quiz", in: 'form#form_quiz'
-
-    pending "Il faut tester que les résultats soient sélectionnés (mais pas corrigé pour ne pas faire un questionnaire sans faute facilement)"
+    le_formulaire(page.find('form#form_quiz')).a_le_bouton_soumettre('Soumettre le quiz')
   end
 end

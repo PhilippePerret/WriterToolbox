@@ -45,17 +45,13 @@ class User
   # Un icarien actif est toujours considéré comme
   # abonné.
   #
+  # Alias : def subscribed?
   def paiements_ok?
-    debug "-> paiements_ok?"
     return true   if moteur_recherche? || icarien_actif?
     return false  if @id.nil? # Un simple visiteur
-    res = begin
-      now = Time.now
-      anprev = Time.new(now.year - 1, now.month, now.day).to_i
-      !!(last_abonnement && last_abonnement > anprev)
-    end
-    debug "[paiements_ok?] res : #{res.inspect}"
-    return res
+    now = Time.now
+    anprev = Time.new(now.year - 1, now.month, now.day).to_i
+    !!(last_abonnement && last_abonnement > anprev)
   end
   alias :paiement_ok? :paiements_ok?
   alias :subscribed? :paiements_ok?

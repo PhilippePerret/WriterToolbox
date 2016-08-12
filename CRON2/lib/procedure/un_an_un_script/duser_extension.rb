@@ -16,7 +16,11 @@ class DUser
   attr_reader :id
 
   # Pour un auteur du programme UAUS
-  attr_reader :program_id
+  def program_id
+    @program_id ||= begin
+      program.nil? ? nil : program.id
+    end
+  end
 
   # Comme ces modules sont appelés depuis une méthode (run_procedure), on
   # ne peut pas inclure les modules normalement. Il faut le faire en les
@@ -235,7 +239,7 @@ class DUser
   # RETURN l'heure à laquelle l'auteur veut peut-être qu'on
   # lui envoie son rapport.
   def heure_envoi_rapport
-    @heure_envoi_rapport ||= preference(:dayly_mail_hour).to_i
+    @heure_envoi_rapport ||= preference(:dayly_mail_hour)[:value].to_i
   end
 
   # True si le temps du mail est fixé, false dans le cas

@@ -165,7 +165,6 @@ class Lien
     build href, titre, options
   end
 
-
   def subscribe titre = "s'abonner", options = nil
     options ||= Hash.new
     options.merge!(query_string:"user[subscribe]=on")
