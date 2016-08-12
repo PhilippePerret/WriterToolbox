@@ -3,8 +3,11 @@
 # Module pour le traitement des auteurs qui suivent le programme
 # UAUS + quelques petites autres choses sans importance
 #
-class CRON2
+require 'singleton'
 
+class CRON2
+  include Singleton
+  
   include MethodesProcedure
 
   # Mettre à true pour que le rapport journalier qui est envoyé à

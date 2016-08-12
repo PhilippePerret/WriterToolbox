@@ -36,11 +36,11 @@ class Projet
 
   # Instance {User} de l'auteur du projet
   def auteur
-    @auteur ||= User.get(auteur_id)
+    @auteur ||= User.new(auteur_id)
   end
   # Instance {Unan::Program} du programme du projet
   def program
-    @program ||= Unan::Program.get(program_id)
+    @program ||= Unan::Program.new(program_id)
   end
 
   # Nouvelle méthode `set` pour pouvoir fonctionner même avec

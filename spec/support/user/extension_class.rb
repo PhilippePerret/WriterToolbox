@@ -11,9 +11,10 @@ class User
   #   :pday       Le jour auquel on doit passer l'user
   #   :rythme     Le rythme auquel on doit le passer
   #   :retards    La liste des 0-9 pour les retards de chaque jour
+  #   :verbose    Si true, on affiche tout le travail qui est fait
   #
   def set_auteur_unanunscript args = nil
-    test_set_state :unan, self.sexe, args
+    test_set_state :unanunscript, self.sexe, args
   end
 
   def set_simple_inscrit
@@ -54,29 +55,35 @@ class User
     self.signup_program_uaus
 
     args[:pday] ||= 1
+    verbose = !!args[:verbose]
+
+    verbose && puts("\n\nCRÉATION DE L'AUTEUR PROGRAMME UNAN #{pseudo}")
 
     # Faut-il le mettre déjà à un jour-programme particulier ?
     # Noter que s'il faut le passer à un jour particulier, il
     # faut régler sa date de démarrage pour que ça corresponde
     xieme_jour = args[:pday]
-    self.program.current_pday = xieme_jour
+    verbose && puts("Jour-programme choisi : #{xieme_jour}")
     args[:rythme] ||= self.program.rythme
+    verbose && puts("Rythme du programme : #{args[:rythme]}")
     r     = args[:rythme]
     coef  = r.to_f / 5.0
     xieme_jour_reel = (xieme_jour.to_f * coef).to_i
-    puts "#{pseudo} mis au #{xieme_jour}e jour-programme"
+    verbose && puts("#{pseudo} est à son #{xieme_jour_reel}e jour réel")
     demarrage_programme = NOW - xieme_jour_reel
-    puts "Démarrage du programme UN AN mis à #{start_time.as_human_date(true, true, ' ', 'à')}"
+    verbose && puts("Démarrage du programme UN AN mis à #{demarrage_programme.as_human_date(true, true, ' ', 'à')}")
+    args[:retards] ||= '0'*(xieme_jour - 1)
+    verbose && puts("Retards définis : #{args[:retards]}")
     self.program.set(
       created_at:         demarrage_programme,
       updated_at:         NOW,
       rythme:             args[:rythme],
       current_pday:       xieme_jour,
       current_pday_start: NOW - 3.hours,
-      retards:            (args[:retards] || '0'*(xieme_jour - 1)) # Aucun retard
+      retards:            args[:retards] # Aucun retard
       )
 
-    now = Time.now.to_i
+    # Le paiement fait pour acheter le module
     data_paiement = {
       user_id:    self.id,
       objet_id:   '1AN1SCRIPT',
@@ -85,6 +92,20 @@ class User
       created_at:  demarrage_programme
     }
     site.dbm_table(:cold, 'paiements').insert(data_paiement)
+    verbose && puts("Création du paiement pour #{pseudo} (#{Unan.tarif})")
+
+    # Il faut ajouter une autorisation
+    dauto = {
+      user_id:        self.id,
+      start_time:     demarrage_programme,
+      end_time:       demarrage_programme + ((366+365).days),
+      nombre_jours:   366+365,
+      raison:         'UNANUNSCRIPT',
+      created_at:     demarrage_programme,
+      updated_at:     demarrage_programme
+    }
+    User.table_autorisations.insert(dauto)
+    verbose && puts("Création de l'autorisation pour #{pseudo}.")
 
   end
 

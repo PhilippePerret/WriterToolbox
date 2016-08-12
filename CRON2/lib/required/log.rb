@@ -11,7 +11,7 @@ class CRON2
         else
           if options.respond_to?(:backtrace)
             mess = "### #{mess} : #{options.message} (voir le détail dans le fichier cron_error.log)"
-            mess_error = "#{mess} : #{options.message}\n" + options.backtrace.join("\n")
+            mess_error = "#{mess} : #{options.message}\n" + (options.backtrace||Array.new).join("\n")
             is_error = true
           end
         end

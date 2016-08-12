@@ -15,9 +15,9 @@ class Projet
       auteur ||= user
       user_program_id = auteur.program_id
       # Au cas où… mais normalement aucun problème n'a été détecté
-      program_id = Unan::Program::program_id
+      program_id = Unan::Program.program_id
 
-      program = Unan::Program::get(program_id)
+      program = Unan::Program.new(program_id)
       if auteur.instance_of?(User)
 
       end
@@ -34,7 +34,7 @@ class Projet
       require './objet/unan/projet/edit.rb'
       projet_id = create_with data_new_projet
 
-      Unan::Program::get(program_id).set(projet_id: projet_id)
+      Unan::Program.new(program_id).set(projet_id: projet_id)
       # La ligne suivante pose problème quand tous les tests sont en
       # route (mais pas lorsque seule la feuille de test qui teste cette
       # méthode est jouée)

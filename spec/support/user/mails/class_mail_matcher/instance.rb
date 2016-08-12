@@ -35,7 +35,7 @@ class MailMatcher
       inner = dochtml.css('div#message_content').inner_html
       # Et on supprime la signature et la suite si elles existent
       offset = inner.index('<span id="signature"')
-      inner = inner[0..offset-1].strip if offset > 0
+      inner = inner[0..offset-1].strip if offset.to_i > 0
       inner
     else
       message

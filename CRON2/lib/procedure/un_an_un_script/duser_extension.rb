@@ -246,6 +246,7 @@ class DUser
       else
         dpref[:value].to_i
       end
+    end
   end
 
   # True si le temps du mail est fixé, false dans le cas

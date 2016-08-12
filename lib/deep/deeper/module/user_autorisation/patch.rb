@@ -15,7 +15,7 @@ class User
       if dpaie = try_paiement_unan
         dauto = {
           start_time: dpaie[:created_at],
-          end_time:   dpaie[:created_at] + (365 * 2).days,
+          end_time:   dpaie[:created_at] + (365+366).days,
           raison:     "UNANUNSCRIPT"
         }
         true

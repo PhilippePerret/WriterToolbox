@@ -123,6 +123,7 @@ module CurrentPDayClass
   def texte_type faffixe
     SuperFile.new(_("texte/#{faffixe}.erb")).deserb(self)
   end
+
   # Méthode qui reçoit une liste de travaux tels que formée par
   # le module `lists` (c'est-à-dire les listes aworks_unstarted, etc.)
   # et qui retourne un UL contenant les travaux classés par type avec
@@ -150,9 +151,11 @@ module CurrentPDayClass
 
     # La liste des travaux, qu'on va classer par type (page
     # de cours, tâche, etc.)
-    liste_by_type = {}
+    liste_by_type = Hash.new
 
-    liste.each do |hw|
+    (liste || []).each do |hw|
+
+      # debug "hw: #{hw.inspect}"
       # On prend toujours les données du travail absolu
       args = {colonnes: [:titre, :type_w]}
       awork = Unan.table_absolute_works.get(hw[:awork_id], args)
