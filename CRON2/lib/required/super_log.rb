@@ -33,14 +33,15 @@ class CRON2
       def send_superlog_if_required
         # # Remettre cette barrière quand tout fonctionnera
         # return if @superlogs.nil? || @superlogs.empty?
-
-        # On envoie le rapport
-        site.send_mail_to_admin(
-          subject:        "SUPER-LOG CRON2 - #{clocktime}",
-          message:        self.output,
-          formated:       true,
-          force_offline:  true
-        )
+        Dir.chdir(APP_FOLDER) do
+          # On envoie le rapport
+          site.send_mail_to_admin(
+            subject:        "SUPER-LOG CRON2 - #{clocktime}",
+            message:        self.output,
+            formated:       true,
+            force_offline:  true
+          )
+        end
       end
     end #/<< self CRON2::SuperLog
   end #/SuperLog

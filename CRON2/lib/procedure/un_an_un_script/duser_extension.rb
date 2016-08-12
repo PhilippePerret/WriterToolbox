@@ -239,7 +239,13 @@ class DUser
   # RETURN l'heure à laquelle l'auteur veut peut-être qu'on
   # lui envoie son rapport.
   def heure_envoi_rapport
-    @heure_envoi_rapport ||= preference(:dayly_mail_hour)[:value].to_i
+    @heure_envoi_rapport ||= begin
+      dpref = preference(:dayly_mail_hour)
+      if dpref.nil?
+        0
+      else
+        dpref[:value].to_i
+      end
   end
 
   # True si le temps du mail est fixé, false dans le cas
