@@ -3,19 +3,10 @@
   Test du deuxième jour de Benoit
 
 =end
-def log str, opts = nil
-  puts str
-end
-def superlog str
-  puts "Superlog: #{str}"
-end
-class CRON2
-  class Histo
-    def self.add h; end
-  end
-end
+require_relative '_required'
 
 describe 'Deuxième jour du programme UN AN' do
+
   before(:all) do
     remove_all_programs_unan
     benoit.set_auteur_unanunscript(
@@ -23,7 +14,8 @@ describe 'Deuxième jour du programme UN AN' do
       verbose:  true
     )
   end
-  it 'Le cron fait changer le jour-programme de benoit' do
+
+  it 'Le cron fait changer le jour-programme de benoit (avec un travail non démarré)' do
     test 'Le cron fait changer le jour-programme de benoit'
 
     start_time = NOW - 1
@@ -57,9 +49,8 @@ describe 'Deuxième jour du programme UN AN' do
     # sinon les valeurs ne sont pas changées
     programme = Unan::Program.new(ben.program.id)
     expect(programme.current_pday).to eq 2
-    success "Benoit est passé au 2e jour-courant"
+    success "Benoit est passé au 2e jour-courant."
 
-    puts "On va vérifier tout le mail envoyé"
     benoit.a_recu_le_mail(
       sent_after: start_time,
       subject:    "Rapport journalier du #{NOW.as_human_date(true, false, ' ')}",
@@ -67,14 +58,24 @@ describe 'Deuxième jour du programme UN AN' do
     )
     imail = MailMatcher.mails_found.first
     message = imail.message_content #.strip_tags
-    puts "Message : #{message}"
+    # puts "MESSAGE : #{message}"
 
-    le_texte(message).contient('Veuillez trouver ci-dessous le rapport de votre travail sur le programme').
-      et(NOM_PROGRAMME_UNAN).
-      contient_la_balise('span', text: '0', id: 'nombre_points', class: 'points fright').
-      et('span', id: 'jour_programme', text: '2')
+    le_texte(message).
+      contient('Veuillez trouver ci-dessous le rapport de votre travail sur le programme', success: 'Le mail contient la bonne invite.').
+      et(NOM_PROGRAMME_UNAN, success: 'La mail contient le titre du programme.').
+      contient_la_balise('span', text: '0', id: 'nombre_points', class: 'points fright', success: 'Benoit n’a pas de points.').
+      et('span', id: 'jour_reel', text: '2', success: 'On indique à Benoit qu’il est à son 2e jour réel.').
+      et('span', id: 'jour_programme', text: '2', success: 'On indique à Benoit qu’il est à son 2e jour-programme.').
+      et('span', text: 'Notez, Benoite, que vous avez 1 alerte mineure.').
+      et('fieldset', id: 'fs_works_unstarted', success: 'Le mail contient le fieldset des travaux non démarrés.').
+      et('fieldset', id: 'fs_new_works', success: 'Le mail contient le fieldset des nouveaux travaux.').
+      et('fieldset', id: 'fs_liens_utiles')
 
-    # pending "À poursuivre"
+    le_texte(message).
+      contient_la_balise('legend', text: 'Travaux à démarrer (1)', in: 'fieldset#fs_works_unstarted').
+      et('legend', text: 'Nouveaux travaux (4)', in: 'fieldset#fs_new_works').
+      et('legend', text: 'Liens utiles', in: 'fieldset#fs_liens_utiles')
 
   end
+
 end

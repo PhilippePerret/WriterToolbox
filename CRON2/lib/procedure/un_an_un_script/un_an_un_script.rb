@@ -7,7 +7,7 @@ require 'singleton'
 
 class CRON2
   include Singleton
-  
+
   include MethodesProcedure
 
   # Mettre à true pour que le rapport journalier qui est envoyé à
@@ -24,8 +24,9 @@ class CRON2
     # On répète l'opération pour chaque auteur du programme
     auteurs.each do |auteur|
       log "Traitement de l'auteur #{auteur.pseudo}"
-      log "  -Prochaine heure d'envoi : #{auteur.next_pday_start.as_human_date(true, true, ' ')} (#{auteur.next_pday_start})"
+      log "  - Prochaine heure d'envoi : #{auteur.next_pday_start.as_human_date(true, true, ' ')} (#{auteur.next_pday_start})"
       if auteur.send_unan_report?
+        log "  - Il faut envoyer le rapport (<= send_unan_report? true)"
         auteur.current_pday.send_rapport_quotidien
         SEND_RAPPORT_TO_ADMIN && send_rapport_unan_to_admin(auteur)
         CRON2::Histo.add(code: '77201', data: auteur.id)

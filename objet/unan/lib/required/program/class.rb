@@ -28,12 +28,12 @@ class Program
       where << "options LIKE '1%'"
       where << "options NOT LIKE '1_1%'"
       where = where.join(' AND ')
-      hdata = Unan::table_programs.select(where: where, colonnes:[]).first
+      hdata = Unan.table_programs.select(where: where, colonnes:[]).first
       if hdata.nil? # Aucun programme trouvé
-        # debug "hdata est nil, get_current_program_of return NIL"
-        return nil
+        nil
+      else
+        new( hdata[:id] )
       end
-      get( hdata[:id] )
     end
 
   end # << self

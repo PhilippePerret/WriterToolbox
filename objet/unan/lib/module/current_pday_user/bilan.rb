@@ -61,9 +61,7 @@ module CurrentPDayClass
   # Renvoie l'indice du jour réel, en fonction de la date
   # de début du programme.
   def real_day
-    @real_day ||= begin
-      (NOW - program.created_at) / 1.day
-    end
+    @real_day ||= (NOW - program.created_at) / 1.day
   end
 
   # ---------------------------------------------------------------------

@@ -6,12 +6,12 @@
 
     (pour le contenu des listes, cf. CONTENU DES LISTES)
 
-    uwork_undone
+    uworks_undone
     ------------
 
         Liste des travaux inachevés.
 
-    awork_unstarted
+    aworks_unstarted
     ---------------
 
         Liste des travaux qui auraient dû être démarrés au cours

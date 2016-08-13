@@ -70,7 +70,7 @@ class User
     coef  = r.to_f / 5.0
     xieme_jour_reel = (xieme_jour.to_f * coef).to_i
     verbose && puts("#{pseudo} est à son #{xieme_jour_reel}e jour réel")
-    demarrage_programme = NOW - xieme_jour_reel
+    demarrage_programme = NOW - xieme_jour_reel.days
     verbose && puts("Démarrage du programme UN AN mis à #{demarrage_programme.as_human_date(true, true, ' ', 'à')}")
     args[:retards] ||= '0'*(xieme_jour - 1)
     verbose && puts("Retards définis : #{args[:retards]}")

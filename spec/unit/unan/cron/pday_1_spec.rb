@@ -4,7 +4,9 @@
   second jour
 
 =end
-describe 'Cron job, passage au deuxième jour du programme' do
+require_relative '_required'
+
+describe 'Cron job, pour le premier jour' do
   before(:all) do
     benoit.set_auteur_unanunscript(pday: 1, verbose: true)
   end

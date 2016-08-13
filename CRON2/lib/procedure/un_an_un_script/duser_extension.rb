@@ -50,7 +50,7 @@ class DUser
 
   def current_pday
     @current_pday ||= begin
-      CurrentPDay::new(self)
+      CurrentPDay.new(self)
     end
   end
 
@@ -66,16 +66,19 @@ class DUser
 
   # Méthode qui passe le programme au jour suivant
   def passe_programme_au_jour_suivant
+    log "  - current_pday du programme AU DÉBUT de `passe_programme_au_jour_suivant` : #{program.current_pday}"
     Unan.table_programs.set(
-    program.id, {
-      current_pday:       program.current_pday + 1,
-      current_pday_start: next_pday_start,
-      updated_at:         NOW
-      })
+      program.id, {
+        current_pday:       program.current_pday + 1,
+        current_pday_start: next_pday_start,
+        updated_at:         NOW
+        }
+    )
     # pour forcer l'actualisation
     @program      = nil
     @current_pday = nil
-    superlog "#{pseudo} passé au jour-programme #{program.current_pday + 1}"
+    superlog "#{pseudo} passé au jour-programme #{program.current_pday}"
+    log "  - current_pday du programme À LA FIN de `passe_programme_au_jour_suivant` : #{program.current_pday}"
   end
 
   # RETURN true si on doit envoyer le rapport à l'auteur et
