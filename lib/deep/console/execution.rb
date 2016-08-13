@@ -143,6 +143,11 @@ class Console
     when /^liste? (all|toutes) ta(che|sk)s$/
       Taches::show_liste_taches all: true
 
+      # --- CRON ---
+    when 'delete log error cron'
+      require_submethods 'cron'
+      return delete_error_log_cron
+
       # --- BASES DE DONNÉES ---
 
     when /^mysql online$/

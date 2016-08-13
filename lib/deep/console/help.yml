@@ -272,7 +272,9 @@ taches:
     note: |
       Pour obtenir l'identifiant de la tache il suffit de jouer `list taches`.
 
+# ---------------------------------------------------------------------
 # IMAGES
+# ---------------------------------------------------------------------
 images:
   -
     type:         TITLE
@@ -285,6 +287,19 @@ images:
     description:  Crée une balise simple pour l'image de path relatif donné.
     note:         "Le path relatif se calcule à partir du dossier './view/img/'."
 
+# ---------------------------------------------------------------------
+#   CRON
+# ---------------------------------------------------------------------
+cron:
+  -
+    type:         TITLE
+    description:  Cron-job
+  -
+    command:      delete log error cron
+    description:  Détruit le fichier d'erreur
+    note: |
+      Cette destruction est important puisqu'elle permet de ne pas signaler
+      une erreur dans le sur-rapport administration.
 # ---------------------------------------------------------------------
 #   UPDATES (HISTORIQUE DES OPÉRATIONS)
 # ---------------------------------------------------------------------

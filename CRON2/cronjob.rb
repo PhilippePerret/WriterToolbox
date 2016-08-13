@@ -98,6 +98,7 @@ class CRON2
         message: <<-HTML
         <p>Une erreur a été rencontrée au cours du dernier Cron.</p>
         <p>Ce message sera répété tant que le fichier cron_error.log ne sera pas détruit.</p>
+        <p>(pour le détruire, utiliser `delete log error cron` dans la console LOCALE)</p>
         <p>Contenu du fichier erreur :</p>
         <pre>#{contenu_cron_log_error}</pre>
         HTML
