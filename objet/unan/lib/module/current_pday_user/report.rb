@@ -158,7 +158,32 @@ module CurrentPDayClass
       # debug "hw: #{hw.inspect}"
       # On prend toujours les données du travail absolu
       args = {colonnes: [:titre, :type_w]}
-      awork = Unan.table_absolute_works.get(hw[:awork_id], args)
+      if hw[:awork_id] == nil
+        # Une erreur qui se produit suivant au cours du cron-job et qu'il
+        # faut détailler un peu plus
+        mess_err =
+          begin
+            <<-HTML
+            <pre>
+              PROBLÈME TRAITEMENT TRAVAUX (#{self.class}#traite_liste_travaux)
+              Auteur :
+              Type travail traité (ltype) : #{ltype}
+              Donnée de l'élément de liste (hw) : #{hw.inspect}
+            </pre>
+            HTML
+          rescue Exception => e
+            "Impossible de construire le message d'erreur : #{e.message}" +
+            "hw = #{hw.inspect}"
+          end
+        site.send_mail_to_admin(
+          subject: "PROBLÈME DANS LE TRAITEMENT DES TRAVAUX",
+          formated: true,
+          message:  mess_err
+        )
+        next
+      else
+        awork = Unan.table_absolute_works.get(hw[:awork_id], args)
+      end
 
       # On ajoute la propriété :awork qui permettra de retrouver
       # au moins le titre.

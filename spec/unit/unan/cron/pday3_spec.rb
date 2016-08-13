@@ -66,13 +66,15 @@ describe 'Deuxième jour du programme UN AN' do
       success:    "Benoit a reçu le mail journalier"
     )
     imail = MailMatcher.mails_found.first
-    message = imail.message_content.strip_tags
+    message = imail.message_content #.strip_tags
     puts "Message : #{message}"
 
     le_texte(message).contient('Veuillez trouver ci-dessous le rapport de votre travail sur le programme').
-      et(NOM_PROGRAMME_UNAN)
+      et(NOM_PROGRAMME_UNAN).
+      contient_la_balise('span', text: '0', id: 'nombre_points', class: 'points fright').
+      et('span', id: 'jour_programme', text: '2')
 
-    pending "À poursuivre"
+    # pending "À poursuivre"
 
   end
 end
