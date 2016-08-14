@@ -155,7 +155,10 @@ module CurrentPDayClass
 
     (liste || []).each do |hw|
 
-      # debug "hw: #{hw.inspect}"
+      # # TODO À mettre plus tard, si c'est nécessaire, car il me semble
+      # # que :id dans :hw correspond à :awork_id
+      # hw[:awork_id] ||= hw[:id]
+
       # On prend toujours les données du travail absolu
       args = {colonnes: [:titre, :type_w]}
       if hw[:awork_id] == nil
@@ -166,7 +169,7 @@ module CurrentPDayClass
             <<-HTML
             <pre>
               PROBLÈME TRAITEMENT TRAVAUX (#{self.class}#traite_liste_travaux)
-              Auteur :
+              Auteur : #{auteur.pseudo} (##{auteur.id})
               Type travail traité (ltype) : #{ltype}
               Donnée de l'élément de liste (hw) : #{hw.inspect}
             </pre>
