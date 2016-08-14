@@ -28,7 +28,7 @@ class TestString
     if _include? search
       success message_success || "#{string_reponse} contient “#{search_init}”."
     else
-      raise message_failure || "#{string_reponse} ne contient pas “#{search_init}”."
+      raise (message_failure || "#{string_reponse} ne contient pas “#{search_init}”.") + texte_added_on_failure
     end
     return self
   end
@@ -52,7 +52,7 @@ class TestString
     if a_balise?(tagname, args)
       success message_success || "#{string_reponse} contient la balise #{tagname_reponse}."
     else
-      raise message_failure || "#{string_reponse} ne contient pas la balise #{tagname_reponse}."
+      raise (message_failure || "#{string_reponse} ne contient pas la balise #{tagname_reponse}.") + texte_added_on_failure
     end
     return self
   end
@@ -104,10 +104,22 @@ class TestString
     if texte
       texte_init = texte.freeze
       texte.instance_of?(Regexp) || texte = /#{Regexp.escape texte}/
-      ilatag = node.has_css?(c, text: texte)
+      resultat = node.has_css?(c, text: texte)
+      # Si le résultat est false, il faut essayer de donner le contenu textuel
+      # actuel de la balise, si elle existe.
+      # Pour rechercher, il faut impérativement qu'on puisse trouver la balise,
+      # ce qui n'est pas le cas si plusieurs balises existent
+      if !resultat
+        cnode = node.find(c) rescue nil
+        if cnode
+          # On a trouvé une seule balise correspondante
+          @texte_added_on_failure = " (la balise #{c} contient “#{cnode.text}”)."
+        end
+      end
     else
-      ilatag = node.has_css?(c)
+      resultat = node.has_css?(c)
     end
+    return resultat
   end
 
   # ---------------------------------------------------------------------
@@ -150,6 +162,10 @@ class TestString
     tag_attrs.key?(:class) && c << ".#{tag_attrs[:class]}"
     @with_text && c << " avec le texte “#{@with_text}”"
     return c
+  end
+
+  def texte_added_on_failure
+    @texte_added_on_failure || ''
   end
 
   # ---------------------------------------------------------------------

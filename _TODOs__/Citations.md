@@ -1,3 +1,11 @@
+
+# Ajouter :
+
+Rien ne fait mieux écrire que d’écrire sur ce qu’on aime. – paul léautaud
+
+
+# ---------------------------------------------------------------------
+
 > Note : Je rassemble ici les explicitations de citations afin de pouvoir les reprendre s'il y a un problème.
 #351
 <p>Étonnamment, le bon sens semble être dans l'écriture la qualité la moins partagée. La plupart des erreurs, des faiblesses, des écueils de la narration des apprentis-auteurs découle souvent d'un simple manque de bon sens. On ne peut leur en vouloir : il y a tant à gérer parfois, tant de choses à apprendre, tant de choses à prendre en compte, que la faculté de bon sens peut s'en trouver passagèrement altérée.</p>

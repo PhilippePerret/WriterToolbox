@@ -31,6 +31,8 @@ describe 'Pour un 3e jour d’un auteur du programme UNAN' do
       current_pday_start: NOW - 1.day - 3.hours
       )
 
+    # Démarrage de tous les travaux de Benoit pour le jour 2
+    # pour n'afficher aucune erreur de démarrage.
     ben.demarre_ses_travaux :all
 
     # Premières vérifications
@@ -52,7 +54,7 @@ describe 'Pour un 3e jour d’un auteur du programme UNAN' do
     # sinon les valeurs ne sont pas changées
     programme = Unan::Program.new(ben.program.id)
     expect(programme.current_pday).to eq 3
-    success "Benoit est passé au 2e jour-courant."
+    success "Benoit est passé au #{programme.current_pday}e jour-courant."
 
     benoit.a_recu_le_mail(
       sent_after: start_time,
@@ -61,23 +63,23 @@ describe 'Pour un 3e jour d’un auteur du programme UNAN' do
     )
     imail = MailMatcher.mails_found.first
     message = imail.message_content #.strip_tags
+    File.open('./message_rapport.html', 'wb'){|f| f.write message}
     # puts "MESSAGE : #{message}"
 
     le_texte(message).
       contient('Veuillez trouver ci-dessous le rapport de votre travail sur le programme', success: 'Le mail contient la bonne invite.').
       et(NOM_PROGRAMME_UNAN, success: 'La mail contient le titre du programme.').
       contient_la_balise('span', text: '0', id: 'nombre_points', class: 'points fright', success: 'Benoit n’a pas de points.').
-      et('span', id: 'jour_reel', text: '2', success: 'On indique à Benoit qu’il est à son 2e jour réel.').
-      et('span', id: 'jour_programme', text: '2', success: 'On indique à Benoit qu’il est à son 2e jour-programme.').
-      et('span', text: 'Notez, Benoite, que vous avez 1 alerte mineure.').
-      et('fieldset', id: 'fs_works_unstarted', success: 'Le mail contient le fieldset des travaux non démarrés.').
+      et('span', id: 'jour_reel', text: '3', success: 'On indique à Benoit qu’il est à son 3e jour réel.').
+      et('span', id: 'jour_programme', text: '3', success: 'On indique à Benoit qu’il est à son 3e jour-programme.').
       et('fieldset', id: 'fs_new_works', success: 'Le mail contient le fieldset des nouveaux travaux.').
-      et('fieldset', id: 'fs_liens_utiles')
+      et('fieldset', id: 'fs_liens_utiles').
+      ne_contient_pas_la_balise('span', text: 'Notez, Benoite, que vous avez 1 alerte mineure.')
 
     le_texte(message).
-      contient_la_balise('legend', text: 'Travaux à démarrer (1)', in: 'fieldset#fs_works_unstarted').
-      et('legend', text: 'Nouveaux travaux (4)', in: 'fieldset#fs_new_works').
-      et('legend', text: 'Liens utiles', in: 'fieldset#fs_liens_utiles')
+      contient_la_balise('legend', text: 'Nouveaux travaux (3)', in: 'fieldset#fs_new_works').
+      et('legend', text: 'Liens utiles', in: 'fieldset#fs_liens_utiles').
+      ne_contient_pas_la_balise('fieldset', id: 'fs_works_unstarted', success: 'Il n’y a aucun travail à démarrer.')
 
   end
 
