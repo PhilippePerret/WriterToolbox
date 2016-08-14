@@ -22,7 +22,7 @@ class DSLTestMethod
       route_test? || raise(error_no_test_route "nokogiri_html")
       # Je vais essayer avec cUrl quand même pour pouvoir
       # conserver les variables session et cookies
-      request_curl = SiteHtml::TestSuite::Request::CURL::new(self)
+      request_curl = SiteHtml::TestSuite::Request::CURL.new(self)
       request_curl.execute
       request_curl.nokogiri_html
       # open_doc = open(url, nil, curl_request.header[:cookies])

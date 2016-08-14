@@ -91,6 +91,10 @@ class << self
   </tr><tr>
     <td>Mail</td><td><a href="mailto:#{datap[:mail]}">#{datap[:mail]}</a></td>
   </tr>
+  <tr>
+    <td>Raison</td>
+    <td>#{datap[:raison]}</td>
+  </tr>
 </table>
     HTML
   end
@@ -100,5 +104,5 @@ end # FilmAnalyse
 case param(:operation)
 when 'proposer_participation'
   debug "-> FilmAnalyse::proposer_participation"
-  FilmAnalyse::proposer_participation
+  FilmAnalyse.proposer_participation
 end
