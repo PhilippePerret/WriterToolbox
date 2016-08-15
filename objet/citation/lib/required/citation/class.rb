@@ -14,10 +14,14 @@ class << self
   end
 
   def data_onglets
-    @data_onglets ||= {
-      'Recherche' => 'citation/search',
-      'Au hasard' => 'citation/round'
-    }
+    @data_onglets ||= begin
+      h = {
+        'Recherche' => 'citation/search',
+        'Au hasard' => 'citation/round'
+      }
+      user.admin? && h.merge!('[Administration]' => 'citation/admin')
+      h
+    end
   end
 
   def table_citations
