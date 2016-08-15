@@ -5,27 +5,14 @@
 (goto citation/285/edit) La citation 285 de Lévi-Strauss
 (goto citation/228/edit) 228 (doublon)
 
+# Menu
 
-# Autorisations exceptionnelles
+UN AN UN SCRIPT doit être remplacé dans les menus en fonction du statut de l'auteur. Si c'est un roman qu'il développe :
 
-Mettre en place un système qui permette une visite complète exceptionnelle, à l'usage du links analyzer du site :
-Pour certaines pages, comme les fichiers narration, on autorise la lecteur complète de la page, pour la vérifier.
-Pour ce faire, on crée un fichier de nom d'un md5 (online/offline) et on met cette valeur dans l'url pour la variable `autorisation_exceptionnelle`. Quand le site trouve cette variable, elle regarde si le fichier existe et donne l'autorisation exceptionnelle (en détruisant le fichier, qui doit être reconstruit chaque fois)
+  1 An 1 Roman
+  1 roman en 1 an
 
-# OU :
+Sinon
 
-Fonctionner avec une liste d'adresses IP autorisées (./data/secret/authorized_ips) et, lorsque la variable 'authips' est à 1 dans l'url, alors le programme regarde si l'IP de l'utilisateur est dans les IPS courantes et l'autorise (mais sans le loguer).
-
-# Entrée d'une page de Narration en page de cours UN AN
-
-=> On entre une ligne comme :
-
-    unan new page narration <numéro>[ <jour-programme>]
-
-Et tout le reste est automatique :
-
-=> Création du travail (abs work) associé
-=> Ouverture du travail dans le navigateur pour le régler
-=> Création du jour-programme s'il le faut
-=> Ajout du travail au jour-programme
-=> Ouverture du jour-programme pour régler l'ordre des travaux
+  1 An 1 Film
+  1 film en 1 an

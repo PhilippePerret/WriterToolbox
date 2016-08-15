@@ -21,11 +21,12 @@
       # Si le visiteur est identifié
   %>
     <%
-      lien_1a1s = if user.unanunscript?
-        (as_main_link("1 ANNÉE<br>", 'font-size:16pt') + as_main_link("1 SCRIPT<br><br>", 'font-size:16pt')).in_a(id:'lk_unan', style: 'font-size:11pt !important', href:'unan/home')
-      else
-        "1 an, 1 script".in_a(href:'unan/home')
-      end
+      lien_1a1s =
+        if user.unanunscript?
+          user.menu_unan_name.in_a(id:'lk_unan', style: 'font-size:11pt !important', href:'unan/home')
+        else
+          "1 An 1 Film<br>1 An 1 Roman".in_a(href:'unan/home')
+        end
     %>
     <%= lien_1a1s %>
     <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>

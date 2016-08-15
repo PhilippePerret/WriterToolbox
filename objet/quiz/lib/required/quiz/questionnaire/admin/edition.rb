@@ -31,7 +31,7 @@ if user.manitou?
       # Noter qu'il faut écarter le quiz courant, qui vient d'être mis
       # en courant.
       if @must_be_quiz_courant
-        dcurrent = self.class.get_quiz_courant(but: id)
+        dcurrent = self.class.get_current_quiz(but: id)
         if dcurrent.nil?
           # Rien a à faire, il n'y a pas de quiz courant
         else
