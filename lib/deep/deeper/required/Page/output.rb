@@ -19,6 +19,30 @@ class Page
     end
   end
 
+  # Retourne TRUE si l'objet est une collection, pour schema.org,
+  # comme une dictionnaire (scénodico) ou une liste comme filmodico.
+  # Cela a pour effet d'ajouter "itemscope itemtype='http://schema.org/Collecion'"
+  # dans la section de contenu de la page.
+  #
+  # @usage: utiliser page.is_collection pour définir que c'est une
+  # collection.
+  def collection?
+    !!@is_collection
+  end
+  def is_collection value = true
+    debug "-> @is_collection mis à #{value.inspect}"
+    @is_collection = value
+  end
+
+  def ajout_schema_org
+    debug "-> ajout_schema_org, @is_collection = #{@is_collection.inspect}"
+    if collection?
+      ' itemscope itemtype="http://schema.org/Collection"'
+    else
+      ''
+    end
+  end
+
   def head
     @head ||= begin
       with_fonts = true # Mettre ONLINE quand on ne peut pas avoir de connexion

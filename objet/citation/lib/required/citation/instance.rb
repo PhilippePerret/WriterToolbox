@@ -17,17 +17,6 @@ class Citation
   def bitly       ; @bitly        ||= get(:bitly)       end
   def created_at  ; @created_at   ||= get(:created_at)  end
 
-  def output
-    citation.in_div(class: 'big air') +
-    auteur.in_div(class: 'right italic') +
-    source_humaine +
-    boutons_edition +
-    description_if_any
-  rescue Exception => e
-    debug "# IMPOSSIBLE D'AFFICHER LA CITATION ##{id} : #{e.message}"
-    debug e
-    'Malheureusement, il est impossible d’afficher cette citation.'.in_div(class: 'big air')
-  end
 
   # ---------------------------------------------------------------------
   #   Data volatiles

@@ -15,7 +15,12 @@ class Scenodico
         unless panneaux.key? first_letter
           panneaux.merge!(first_letter => Array::new)
         end
-        panneaux[first_letter] << "#{hmot[:mot]}".in_a(href:"scenodico/#{hmot[:id]}/show", target:'_mot_scenodico_', class:'mot')
+        lien_vers_mot =
+          "#{hmot[:mot]}".
+            in_span(itemprop: 'name').
+            in_a(itemprop: 'url', href:"scenodico/#{hmot[:id]}/show", target: :new, class:'mot').
+            in_span(itemtype: 'CreativeWork')
+        panneaux[first_letter] << lien_vers_mot
       end
 
       # On construit les panneaux (seul le premier est affiché)
@@ -25,7 +30,8 @@ class Scenodico
         arr_letter.join.in_section(class:'panneau', id:"panneau_#{letter}", style:(letter == 'A' ? '' : "display:none"))
       end.join
 
-      alphabet.in_div(id:'alphabet') + panneaux.in_div(id:'panneaux_letters')
+      alphabet.in_div(id:'alphabet') +
+      panneaux.in_div(id:'panneaux_letters')
     end
 
   end # /<< self

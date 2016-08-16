@@ -52,6 +52,19 @@ class String
       has_key_visible = attrs.has_key?(:visible)
       isvisible = attrs.delete(:visible)
 
+      # Les balises pour Schema.org
+      # Noter que `itemscope` n'est plus utilie puisqu'il est
+      # ajouté chaque fois que itemtype est défini.
+      if attrs.key?(:itemtype) # Schema.org
+        itemscope = true
+        itemtype  = "http://schema.org/#{attrs[:itemtype]}"
+        attrs[:itemtype] = itemtype
+      else
+        # Item scope peut être employé sans itemtype, par exemple
+        # pour une liste d'employés.
+        itemscope = attrs.delete(:itemscope)
+      end
+
       # Le style peut être fourni par un string ou un Hash
       if attrs[:style].class == Hash
         attrs[:style] = attrs[:style].collect do |prop, value|
@@ -75,13 +88,15 @@ class String
         attrs[:style] += "visibility:#{isvisible ? 'visible' : 'hidden'}"
       end
 
-      attrs = unless attrs.empty?
-        " " + attrs.reject{|k,v| v.nil?}.collect do |k,v|
-          "#{k}=\"#{v}\""
-        end.join(' ')
-      else
-        ""
-      end
+      attrs =
+        unless attrs.empty?
+          " " + attrs.reject{|k,v| v.nil?}.collect do |k,v|
+            "#{k}=\"#{v}\""
+          end.join(' ')
+        else
+          ""
+        end
+      attrs += ' itemscope' if itemscope
       "<#{tag}#{attrs}>"
     end
   end

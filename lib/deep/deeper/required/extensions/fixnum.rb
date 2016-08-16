@@ -15,6 +15,44 @@ class ::Fixnum
   #   Instance
   # ---------------------------------------------------------------------
 
+  # Retourne le nombre de secondes (self) comme une duration respectant
+  # la norme ISO 8601
+  def as_iso_8601
+    htime = self.decompose_as_time
+    iso = "P"
+    htime[:days]    && iso += "#{htime[:days]}D"
+    iso += "T"
+    htime[:hours]   && iso += "#{htime[:hours]}H"
+    htime[:minutes] && iso += "#{htime[:minutes]}M"
+    htime[:seconds] && iso += "#{htime[:seconds]}S"
+    return iso
+  end
+
+  # Retourne le Fixnum qui est un nombre de secondes sous
+  # forme d'un Hash contenant :
+  #   :seconds      Les secondes
+  #   :minutes      Les minutes
+  #   :hours        Les heures
+  #   :days         Les jours
+  def decompose_as_time
+    s = self
+    days  = (s / 1.day).nil_if_zero
+    reste = s % 1.day
+    hours = (reste / 3600).nil_if_zero
+    reste = reste % 3600
+    minutes = (reste / 60).nil_if_zero
+    seconds = (reste % 60).nil_if_zero
+    {days: days, hours: hours, minutes: minutes, seconds: seconds}
+  end
+
+  def nil_if_zero
+    if self == 0
+      nil
+    else
+      self
+    end
+  end
+
   # Par exemple, lorsqu'un argument de fonction peut être
   # un array ou un string, cette méthode permet de ne pas
   # avoir à tester si l'élément est un array ou non.

@@ -3,9 +3,12 @@
 # dictionnaire avec un panneau par lettre.
 
 enable_comments
+
+# On indique que c'est une collection d'objet
+page.is_collection
 %>
-<%= Scenodico::titre_h1("Dictionnaire") %>
-<%= Scenodico::in_panneaux %>
+<%= Scenodico.titre_h1("Dictionnaire") %>
+<%= Scenodico.in_panneaux %>
 <p class='tiny discret' style="margin-top:1em; border-top:1px solid #999">
   Le <strong>Scénodico</strong> contient à l'heure actuelle <strong><%= Scenodico::count %> mots</strong>.
 </p>

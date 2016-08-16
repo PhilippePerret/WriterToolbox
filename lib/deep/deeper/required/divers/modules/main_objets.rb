@@ -22,7 +22,9 @@ module MethodesMainObjets
   def titre_h1 sous_titre = nil, options = nil
     options ||= Hash.new
     page.title = titre
-    t = titre.in_h1
+    datah1 = Hash.new
+    page.collection? && datah1.merge!(itemprop: 'name')
+    t = titre.in_h1(itemprop: 'name')
     t << onglets if options[:onglets_top]
     t << sous_titre.in_h2 unless sous_titre.nil?
     t << onglets unless options[:onglets_top]
