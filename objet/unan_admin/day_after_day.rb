@@ -14,10 +14,11 @@ UnanAdmin::require_module( 'abs_work' )
 
 # Il faut aussi la feuille de style de show.css du work
 page.add_css( Unan::folder + "abs_work/show.css" )
+page.add_css('./objet/unan/bureau/home.css')
 
 # Le "p-day" courant
 def ipday
-  @ipday ||= Unan::Program::AbsPDay::get(param(:pday) || 1)
+  @ipday ||= Unan::Program::AbsPDay.get(param(:pday) || 1)
 end
 
 class Unan

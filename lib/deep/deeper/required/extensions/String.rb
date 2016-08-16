@@ -198,6 +198,10 @@ class String
     self.split('_').collect{|mot| mot.capitalize}.join("")
   end
 
+  def decamelize
+    self.gsub(/(.)([A-Z])/, '\1_\2').downcase
+  end
+
   # Transformer les caractères diacritiques et autres en ASCII
   # simples
   unless defined? DATA_NORMALIZE

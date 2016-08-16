@@ -23,7 +23,7 @@ raise_unless_admin
       <%= ipday.id %><sup><%= ipday.id == 1 ? 'er' : 'e' %></sup> P-Day :
       <%= ipday.titre %>
     </h3>
-    <%  def warning_non_defini; "CE JOUR-PROGRAMME N'EST PAS DÉFINI.".in_span(class:'warning') end %>
+    <%  def warning_non_defini; '(pas de description générale pour ce jour-programme)'.in_span(class:'warning') end %>
     <%= (ipday.description || warning_non_defini).in_div(class:'description') %>
 
     <%
@@ -32,7 +32,7 @@ raise_unless_admin
     works_today = ipday.works(:as_instances)
     %>
     <h4>Nouveaux travaux</h4>
-    <div id="works_OF_pday">
+    <div id="works_OF_pday" class="panneau_onglet">
       <% if works_today.count == 0 %>
         <p class='retrait4'>Aucun nouveau travail aujourd'hui.</p>
       <% else %>
@@ -56,7 +56,7 @@ raise_unless_admin
     acheving  = continuing.select{|wid,wdata| wdata[:reste] == 0}
     poursuing = continuing.reject{|wid,wdata| wdata[:reste] == 0}
     %>
-    <div id="works_ON_pday">
+    <div id="works_ON_pday" class="panneau_onglet">
       <h4>Travaux s'achevant aujourd'hui</h4>
       <% if acheving.count == 0 %>
         <p class='retrait4'>Aucun travail ne s'achève aujourd'hui.</p>
@@ -85,9 +85,9 @@ raise_unless_admin
 <div id="dad_navigation">
   <%=
     (
-      Unan::DAD::lien_works_map +
-      Unan::DAD::lien_pdays_map +
-      Unan::DAD::checkbox_fenetre_fixe
+      Unan::DAD.lien_works_map +
+      Unan::DAD.lien_pdays_map +
+      Unan::DAD.checkbox_fenetre_fixe
     ).in_div(class:'btns fleft small') %>
   <%
   prev_ipday = ipday.id - 1

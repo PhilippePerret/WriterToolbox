@@ -1,0 +1,113 @@
+
+JP 001-027 * PRÉPARATION (1 mois)
+    Cette préparation doit permettre à l'auteur de "s'échauffer".
+
+JP 028-140 * DÉVELOPPEMENT DE L'HISTOIRE
+    Cette première phase de développement — qui en comprend 3 — permet d'établir l'histoire, de la définir assez précisément.
+    [WORK 21] Établissement de la structure
+    [WORK 82] Développement des personnages
+
+    JP 028-084 * BRAINSTORMINGS ET PREMIÈRES ÉBAUCHES
+        Dans cette partie, il va s'agir de préparer le terrain de l'histoire. On va commencer sur la spirale de développement en faisant un tour des documents principaux.
+        JP 028-056 ** BRAINSTORMING [WORK 95]
+            Phase de brainstorming sur le projet, ou plus exactement sur "les" projets possibles.
+            JP 028-041 *** - [WORK 43] TOUR 1 (TR1) Sur tous les documents
+                Pendant 14 jours on va alterner assez rapidement un premier tour sur les différents documents, en comptant deux jours par documents.
+                JP 028-029 **** TR1 Brainstorming STRT
+                    Réfléchir à ce qui peut faire la forme générale et notamment les principaux segments et les scènes-clés.
+                JP 030-031 **** TR1 Brainstorming PERS
+                    Réfléchir aux personnages possibles, pour le moment sans autres indications.
+                JP 032-033 **** TR1 Brainstorming DOCU
+                    x- lister les thèmes sur lequels il va falloir faire de la recherche
+                    x- liste des contacts possibles (forums, connaissances personnelles)
+                    x- Ne pas oublier de mettre en garde contre l'aspect chronophage et hypnotisant de la documentation.
+                JP 034-035 **** TR1 Brainstorming DYNA
+                    x- liste des objectifs et des obstacles possible pour chaque personnage
+                    TODO Un exemple de liste d'objectifs et d'obstacles tel que définit par le travail (tiré de l'histoire sur la soeur et la montagne)
+                    TODO L'exemple de liste d'objectifs avec un film existant (Fight Club peut-être)
+                JP 036-037 **** TR1 Brainstorming THEM
+                    x- Première esquisse des thèmes (page cours propre sur le travail à exécuter [WORK 85][PAGE 45])
+                JP 038-039 **** TR1 Brainstorming ANAF
+                    x- Création du dossier d'analyse [WORK 87]
+                    x- Analyse simple à exécuter. Page de cours propre [WORK 89][PAGE 46].
+                    x- Produire un document d'analyse de film [WORK 88]
+                JP 040-041 **** TR1 Brainstorming PERS
+                    Alors que le premier tour sur les personnages était consacré au protagoniste et à l'antagoniste, ici on va s'intéresser particulièrement aux autres personnages.
+                    x- [WORK 92] Soit on poursuit le travail sur les personnages possibles, soit on prend la liste précédente et on l'affine en :
+                      - supprimant/fusionnant des personnages
+                      - précisant leur rôle précis possible dans l'histoire
+                    TODO: Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
+            JP 042-055 *** - [WORK 93] TOUR 2 (TR2) Sur tous les documents
+                JP 042-043 **** Deux jours pour souffler un peu
+                    On va réserver ces deux jours pour faire un petit point et souffler un peu. Le seul travail sera de remplir des questionnaires par rapport à ce qu'on a fait jusqu'à présent, des vérifications des connaissances, ce genre de choses.
+                JP 044-045 **** TR2 STRT
+                    Deuxième tour sur le document, pour affiner le travail précédent sur la structure.
+                    TODO Voir le travail précis à fournir sur la structure
+                    TODO Produire un exemple de travail sur la structure. Peut-être faire un document qui reprenne le précédent document et qui montre comment changer ce document.
+                JP 046-047 **** TR2 PERS
+                JP 048-049 **** TR2 DOCU
+                JP 050-051 **** TR2 DYNA
+                JP 051-053 **** TR2 THEM
+                JP 054-055 **** TR2 ANAF
+                  Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
+        JP 056-083 ** [WORK 94] PREMIÈRE ÉBAUCHE
+            JP 057-063 *** TR 3 sur la STRT, PERS, DYNA
+                On passe ici deux jours sur chaque document (deux sessions de travail)
+                TODO On doit trouver une particularité pour chaque retour du document. Par exemple, une fois, sur le document du personnage, il faut travailler les relations entre les personnages. Pour la structure, les scènes-clé, les segments, les pics (brainstorming même quand les choses sont bien avancées)
+            JP 064-070 *** TR 3 sur THEM, DOCU, (un troisième)
+            JP 071-077 *** TR 4 sur STRT, PERS, DYNA
+            JP 078-084 *** TR 4 sur THEM, DOCU, (un troisième)
+
+    JP 084-140 * APPROFONDISSEMENT DE L'HISTOIRE
+        Dans l'approfondissement, on passe encore plus de temps sur chaque élément.
+        JP 085-112 ** Premier tour d'approfondissement
+            JP 085-098 *** TR 5 sur STRT et PERS
+            JP 099-112 *** TR 5 sur DYNA et THEM
+        JP 113-140 ** Second tour d'approfondissement
+            JP 113-126 *** TR 6 sur STRT et PERS
+            JP 127-140 *** TR 5 sur DOCU et [autre]
+
+JP 141-294 * PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
+    Cette partie marque la seconde grande partie de développement du scénario ou du manuscrit. Sa production finale sera la première version du scénario ou du manuscrit.
+    JP 141-196 ** RENFORCEMENT DE L'HISTOIRE
+        JP 141-168 *** Premier tour de renforcement
+        JP 169-196 *** Second tour de renforcement
+
+    JP 197-224 ** PREMIÈRE FINALISATION
+        JP 197-210 *** Premier tour de finalisation
+        JP 211-224 *** Second tour de finalisation
+
+    JP 225-252 ** VÉRIFICATIONS PRÉ-SCÉNARIO
+        Ce petit mois de travail va permettre d'affiner une dernière fois les choses et surtout de procéder à toutes les vérifications possibles. Le but est d'arriver au 253e jour avec un plan parfait pour attaquer le scénario ou le manuscrit. Au cours de ce temps, il va aussi s'agir de finaliser toutes les petites choses à achever.
+        TODO Mettre au point tous les questionnaires. Ces questionnaires doivent permettre de vérifier tous les aspects du traitement. Comme je n'aurai pas le temps de finir toutes les questions dans la collection Narration, ça sera l'inverse : ce sont les questions posées ici qui serviront à alimenter la collection.
+
+    JP 253-294 ** V1 DU SCÉNARIO
+        Ici, on va lever un peu le pied par rapport aux pages de cours et autre, pour se concentrer vraiment sur le travail à fournir sur le scénario ou le manuscrit. Les seules pages à faire seront les pages sur la rédaction, les points à voir.
+        JP 253-280 ** Premier jet sans s'arrêter
+            Concrètement ça correspond à écrire 3 pages par jour.
+            TODO Bien faire une page sur le nombre de pages à produire par jour.
+              - Noter que ce nombre de pages dépend du rythme. Peut-être suggérer à l'auteur de réduire ce rythme pour cette partie seulement, afin d'avoir plus de temps.
+              - Bien dire que ce nombre de pages doit absolument respecter les durées définies pour les scènes. On ne doit absolument dépasser, ou alors pas plus d'un dixième de temps.
+            TODO En milieu du temps (JP 266-267), proposer changement de rythme. Dans une page, proposer à l'auteur de ralentir son rythme s'il est en retard sur ce qu'il doit produire. À ce moment-là, il devrait avoir fait la moitié du scénario/manuscrit.
+        JP 281-294 ** Réécriture sur le premier jet
+            TODO Parler dans la première page de la déception possible. Annoncer au tout départ (PDay 281) que l'auteur va devoir lire son premier jet et qu'il peut être déçu (renvoi à la page de cours là-dessus)
+            TODO Proposer de faire lire le scénario par un lecteur automatique. En disant bien que c'est une lecture impitoyable.
+              - Dire aussi qu'il faut régler le débit de voix dès les premières pages pour que ça colle.
+
+JP 295-365 * DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
+    Cette troisième grande phase du développement a pour objectif la deuxième version du scénario ou du manuscrit.
+
+    JP 295-308 ** ANALYSE DE LA PREMIÈRE VERSION
+        TODO Faire les questionnaires qui doivent permettre de faire cette analyse
+        TODO Grosse partie de cours sur ce qu'est l'analyse
+
+    JP 309-336 ** SECONDE FINALISATION DE L'HISTOIRE
+        Peut-être qu'on peut proposer ici d'attaquer directement pour avoir plus de temps s'il n'y a pas beaucoup de choses à re-réfléchir. Normalement, il y a eu suffisamment de préparation pour ne pas avoir trop à faire.
+
+    JP 337-364 ** DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
+        Dans cette séquence, même chose que pour la première version : pas trop de cours, juste des éléments de clarté, par exemple c'est dans cette partie qu'on va chercher à supprimer tous les mots qui ne servent à rien. Surtout dans les dialogues où il ne doit pas y avoir un mot en trop.
+
+    JP 365-365 ** FIN DU PROGRAMME
+        TODO Conclusion sur le parcours accompli
+        TODO Perceptives supplémentaires
+        TODO On parle de l'atelier Icare qui peut permettre de poursuivre autrement.

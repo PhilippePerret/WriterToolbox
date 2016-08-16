@@ -3,6 +3,7 @@
 * [Définition préliminaire](#definitionpremiminaire)
 * [Méthode `get`](#methodegetobligatoire)
 * [Objets dans un contexte (sous-objets)](#objetsdansuncontexte)
+* [Le dossier de l'objet](#ledossierdelobejt)
 
 Voir aussi la partie très concrète avec de nombreux exemples dans [Tous les exemples possibles](Routes.html#touslesexemples).
 
@@ -29,6 +30,8 @@ Et particulièrement dans :
 ## Méthode `get` obligatoire
 
 La méthode de classe `get` est pratique (mais pas obligaoire) pour fonctionner avec les instances par les routes. Elle doit retourner l'instance de la classe.
+
+OBSOLÈTE : on doit abolument éviter la méthode get à présent, qui présente vraiment trop de problèmes pour très peu d'avantages.
 
 Par exemple, si la route est `user/12/profil`, l'instance `SiteHtml::Route` de cette route va tenter d'appeler `User::get(12)` pour obtenir l'instance de l'user #12.
 
@@ -68,3 +71,9 @@ Programmatiquement, cela signifie qu'il faut créer la classe :
 De la même manière, les vues doivent se trouver dans des sous-dossiers. Par exemple, la vue d'édition du message se trouvera dans :
 
     ./objet/forum/message/edit.erb
+
+<a name='ledossierdelobejt'></a>
+
+## Le dossier de l'objet
+
+    <Objets>#folder

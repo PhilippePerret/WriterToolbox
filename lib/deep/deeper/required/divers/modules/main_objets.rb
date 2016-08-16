@@ -73,7 +73,7 @@ module MethodesMainObjets
   end
 
   def folder
-    @folder ||= site.folder_objet + "#{name.to_s.downcase}"
+    @folder ||= site.folder_objet + "#{name.to_s.decamelize}"
   end
 
 end

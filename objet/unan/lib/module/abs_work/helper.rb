@@ -184,11 +184,11 @@ class AbsWork
         [rwork.completed?, rwork.started?, rwork.indice_pday]
       end
     return '' if completed
-    this_pday != nil || raise('Le jour programme ne devrait pas être nil (dans form_pour_marquer_started_or_fini)')
+    # this_pday != nil || raise('Le jour-programme ne devrait pas être nil (dans form_pour_marquer_started_or_fini)')
     if started
-      "Marquer ce travail fini".in_a(href:"work/#{rwork.id}/complete?in=unan/program&cong=taches")
+      'Marquer ce travail fini'.in_a(href:"work/#{rwork.id}/complete?in=unan/program&cong=taches")
     else
-      "Démarrer ce travail".in_a(class:'warning',href:"work/#{id}/start?in=unan/program&cong=taches&wpday=#{this_pday}")
+      'Démarrer ce travail'.in_a(class:'warning',href:"work/#{id}/start?in=unan/program&cong=taches&wpday=#{this_pday}")
     end.in_div(class:'buttons')
   end
 
