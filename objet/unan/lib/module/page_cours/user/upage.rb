@@ -61,7 +61,7 @@ class UPage
 
   # Instance PageCours de la page de référence
   def page_cours
-    @page_cours ||= Unan::Program::PageCours::get(id)
+    @page_cours ||= Unan::Program::PageCours.new(id)
   end
 
   # ---------------------------------------------------------------------

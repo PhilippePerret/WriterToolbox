@@ -53,7 +53,7 @@ class UPage
       resume_page       +
       infos_temporelles +
       boutons_page
-    ).in_div(class:'work page')
+    ).in_div(id: "work-#{id}", class:'work page')
   end
 
   # Donne les informations temporelles sur la page de cours,

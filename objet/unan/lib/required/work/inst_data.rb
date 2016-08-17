@@ -21,7 +21,7 @@ class Work
   # {Unan::Program::AbsWork} Le travail absolu auquel fait référence
   # ce travail d'auteur.
   def abs_work
-    @abs_work ||= Unan::Program::AbsWork::get(abs_work_id)
+    @abs_work ||= Unan::Program::AbsWork.new(abs_work_id)
   end
 
   # ---------------------------------------------------------------------

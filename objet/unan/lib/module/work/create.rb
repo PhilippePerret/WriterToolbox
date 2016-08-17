@@ -90,8 +90,6 @@ class Work
 
       # Pour le type de travail
       awork = Unan::Program::AbsWork.new(awork_id)
-      # Création de l'instance et enregistrement
-      iwork = Unan::Program::Work.new( auteur.program, nil )
       datawok2save = {
         program_id:   progr_id,
         abs_work_id:  awork_id,
@@ -101,8 +99,10 @@ class Work
         created_at:   NOW,
         updated_at:   NOW
       }
-      iwork.program.table_works.insert( datawok2save )
 
+      # Création de l'instance et enregistrement
+      @id = auteur.table_works.insert( datawok2save )
+      iwork = Unan::Program::Work.new( auteur.program, @id )
       return iwork
     end
     # /create_new_work_for_user

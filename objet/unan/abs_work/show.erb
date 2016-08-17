@@ -16,9 +16,9 @@ page.add_css( site.folder_objet+"unan/bureau/home.css")
 %>
 <%
 # On a besoin de la libraire work (pour la méthode `as_card`)
-Unan::require_module 'work'
+Unan.require_module 'work'
 %>
-<%= Unan::titre_h1("Travail (aperçu)") %>
+<%= Unan.titre_h1("Travail (aperçu)") %>
 <%
 # Pour empêcher que tous les éléments propres au work soient
 # affichés dans la carte, comme le temps de démarrage, etc.

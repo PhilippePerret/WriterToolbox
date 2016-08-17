@@ -59,7 +59,7 @@ class AbsWork
   #                 travail effectué.
   #
   def as_card_relative options = nil
-    options ||= {}
+    options ||= Hash.new
     as_recent = !!options[:as_recent]
     (
       nombre_de_points +
