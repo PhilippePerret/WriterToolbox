@@ -7,8 +7,8 @@ class UNANProgramme
   # du programme
   #
   def map_html
-    'La map HTML'
     parse
+    built
   end
 
 

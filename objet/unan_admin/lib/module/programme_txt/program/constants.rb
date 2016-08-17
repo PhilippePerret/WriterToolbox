@@ -2,7 +2,7 @@
 class UNANProgramme
 
   TYPES_DOCUMENTS = {
-    'STRT' => {hname: 'Structure'},
+    'STRT'  => {hname: 'Structure'},
     'DYNA'  => {hname: 'Dynamique'},
     'PERS'  => {hname: 'Personnage'},
     'THEM'  => {hname: 'Thématique'},
@@ -11,13 +11,11 @@ class UNANProgramme
   }
 
   TYPES_TRAVAUX = {
-    'WORK'  => {hname: "Travail absolu"},
-    'PAGE'  => {hname: "Page cours"}
+    'WORK'    => {hname: 'AbsWork',     objet: 'abs_work'},
+    'PAGE'    => {hname: 'Page cours',  objet: 'page_cours'},
+    'EXEMPLE' => {hname: 'Exemple',     objet: 'exemple'},
+    'QUIZ'    => {hname: 'Quiz',        objet: 'quiz'}
   }
 
-  REG_SEGMENT_PDAYS = /JP ([0-9]{3,3})-([0-9]{3,3})/
-  REG_PDAY = /JP ([0-9]{3,3})/
-
-  REG_TRAVAIL = /\[(WORK|PAGE)( [0-9]+)?\]/
 
 end #/UNANProgramme
