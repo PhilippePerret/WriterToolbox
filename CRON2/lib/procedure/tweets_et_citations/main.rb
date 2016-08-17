@@ -195,9 +195,6 @@ class CRON2
           # écrive l'explicitation.
           send_next_citations_to_admin mess_admin
 
-          log "   Les prochaines citations à expliciter sont les citations : " +
-          candidates.collect{|hc| hc[:id]}.join(', ')
-
           citation_id = prochaine[:id]
 
           auteur    = " - #{prochaine[:auteur]}"
@@ -235,9 +232,14 @@ class CRON2
         heure = Time.now.hour
         heure > 3 && heure < 7 || return
         mess_admin =
-          "<p>Prochaines citations à expliciter :</p>"  +
-          '<ul>' + mess_admin.join('') + '</ul>'        +
-          '<p>Les premières seront les premières diffusées.</p>'
+          if mess_admin.empty?
+            '<p>Aucune prochaine citation à expliciter.</p>'+
+            '<p>Mais tu peux <a href="http://localhost/WriterToolbox/citation/admin">trouver des citations sans explications</a>.</p>'
+          else
+            "<p>Prochaines citations à expliciter :</p>"  +
+            '<ul>' + mess_admin.join('') + '</ul>'        +
+            '<p>Les premières seront les premières diffusées.</p>'
+          end
 
         site.send_mail_to_admin(
         message:       mess_admin,
