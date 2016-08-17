@@ -25,8 +25,9 @@ class UPage
     # debug "ID de PDay trouvé : #{apday_id}"
     # On a maintenant toutes les données nécessaires pour créer
     # le travail. On charge le module qui le fait
-    require './objet/unan/lib/module/work/create.rb'
-    iwork = create_new_work_for_user(
+    # require './objet/unan/lib/module/work/create.rb'
+    Unan.require_module 'work'
+    iwork = Unan::Program::Work.create_new_work_for_user(
       user:         auteur,
       abs_work_id:  awork_id,
       indice_pday:  apday_id
