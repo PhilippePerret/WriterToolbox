@@ -8,9 +8,21 @@
 
 =end
 class User
+  include Capybara::DSL
+
   def remplit_le_formulaire(form)
     FormTest.new(form)
   end
+
+  def click_le_lien ref_bouton, options = nil
+    options ||= Hash.new
+    if options.key?(:in)
+      within(options[:in]){ click_link ref_bouton }
+    else
+      click_link(ref_bouton)
+    end
+  end
+  alias :clique_le_lien :click_le_lien
 end
 
 # Retourne l'instance FormTest du formulaire +form+

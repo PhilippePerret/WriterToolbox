@@ -4,6 +4,30 @@
   Méthode `la_page_a_...`
 
 =end
+class TestTag
+  include Capybara::DSL
+
+  attr_reader :jid
+  def initialize jid
+    @jid = jid
+  end
+  def contient_la_balise tagname, args = nil
+    args ||= Hash.new
+    args.key?(:id)    && tagname << "##{args.delete(:id)}"
+    args.key?(:class) && tagname << ".#{args.delete(:class)}"
+    mess_success = args.delete(:success) || "La balise contient #{tagname}"
+    mess_failure = args.delete(:failure) || "La balise devrait contenir #{tagname}"
+    if page.find(jid).has_css?(tagname, args)
+      success mess_success
+    else
+      raise mess_failure
+    end
+  end
+end
+
+def la_balise jid
+  TestTag.new jid
+end
 
 # Pour traiter les arguments qui sont envoyés aux méthodes. Dans ces
 # arguments, tous les attributs peuvent être mis ensemble (:text, :id, etc.)
@@ -195,6 +219,27 @@ def la_page_napas_derreur
     raise "La page ne devrait pas contenir d'erreur, elle contient les messages : #{erreurs}"
   else
     success "La page n’affiche pas de message d'erreur."
+  end
+end
+
+def la_page_a_l_erreur_fatale err, options = nil
+  options ||= Hash.new
+  ajax = options[:ajax] == true
+  options.merge!(text: /#{Regexp.escape err}/)
+  tr = 0; while (tr += 1) < 20
+    page.has_css?('div#flash div.error', options) ? break : (sleep 0.5)
+  end
+  expect(page).to have_tag('div.fatal_error', options)
+  success "La page affiche le message d'erreur fatale “#{err}”."
+end
+
+def la_page_napas_derreur_fatale
+  if page.has_css?('div.fatal_error')
+    idiv = 0; erreurs = Array.new
+    o = page.find('div.fatal_error')
+    raise "La page ne devrait pas avoir rencontré d'erreur, elle a rencontré l'erreur fatale : #{o.text}"
+  else
+    success "La page n'affiche pas d'erreur fatale."
   end
 end
 
