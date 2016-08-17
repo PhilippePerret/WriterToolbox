@@ -6,6 +6,7 @@ class LineProgramme
 
   # La ligne brute, telle que relevée dans le fichier
   attr_reader :raw_line
+  
   # La ligne épurée, telle qu'utilisée dans la map
   attr_reader :line
 

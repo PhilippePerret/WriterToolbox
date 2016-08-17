@@ -1,0 +1,22 @@
+div#programme_map
+  a
+    color       : inherit !important
+    font-style  : inherit !important
+  div.ret
+    margin-left   : 2em
+    font-size     : 0.95em
+    // Les lignes qui ont des items imbriqués
+    &.witems
+      a.linep
+        border-right    : 3px solid blue
+        padding-right   : 4px
+  // Pour marquer le jour-programme ou le segment de jours
+  // programme
+  span.segpday
+    font-family     : Arial
+    font-size       : 10pt
+    display         : inline-block
+    width           : 76px
+    &:before
+      content       :  'jP'
+      margin-right  : 0.2em

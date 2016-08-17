@@ -6,5 +6,6 @@ class LineProgramme
     def << iline
       self.instances << iline
     end
+
   end #/<< self
 end #/LineProgramme

@@ -56,7 +56,7 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
             JP 071-077 TR 4 sur STRT, PERS, DYNA
             JP 078-084 TR 4 sur THEM, DOCU, (un troisième)
 
-    JP 084-140 * APPROFONDISSEMENT DE L'HISTOIRE
+    JP 084-140 APPROFONDISSEMENT DE L'HISTOIRE
         Dans l'approfondissement, on passe encore plus de temps sur chaque élément.
         JP 085-112 Premier tour d'approfondissement
             JP 085-098 TR 5 sur STRT et PERS
@@ -65,7 +65,7 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
             JP 113-126 TR 6 sur STRT et PERS
             JP 127-140 TR 5 sur DOCU et [autre]
 
-JP 141-294 * PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
+JP 141-294 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
     Cette partie marque la seconde grande partie de développement du scénario ou du manuscrit. Sa production finale sera la première version du scénario ou du manuscrit.
     JP 141-196 RENFORCEMENT DE L'HISTOIRE
         JP 141-168 Premier tour de renforcement
@@ -92,7 +92,7 @@ JP 141-294 * PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
             TODO Proposer de faire lire le scénario par un lecteur automatique. En disant bien que c'est une lecture impitoyable.
               - Dire aussi qu'il faut régler le débit de voix dès les premières pages pour que ça colle.
 
-JP 295-365 * DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
+JP 295-365 DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
     Cette troisième grande phase du développement a pour objectif la deuxième version du scénario ou du manuscrit.
 
     JP 295-308 ANALYSE DE LA PREMIÈRE VERSION

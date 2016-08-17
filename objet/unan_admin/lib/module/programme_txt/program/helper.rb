@@ -6,11 +6,7 @@ class UNANProgramme
   # Méthode principale de construction de la map complète
   #
   def built
-    first_line = LineProgramme.instances.first
-
-    first_line.in_div() + 
-    first_line.items do |iline|
-
-    end
+    LineProgramme.instances.first.output.in_div(id: 'programme_map')
   end
+
 end #/UNANProgramme
