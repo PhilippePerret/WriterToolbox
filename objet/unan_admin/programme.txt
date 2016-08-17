@@ -124,12 +124,18 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 88] Produire un document d'analyse de film.
                 JP 040-041 TR1 Brainstorming PERS
                     Alors que le premier tour sur les personnages était consacré au protagoniste et à l'antagoniste, ici on va s'intéresser particulièrement aux autres personnages.
-                    [WORK 92] On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                    [WORK 92] Travail sur les passages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
                     TODO [EXEMPLE] Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
                     TODO [EXEMPLE] Faire un exemple à partir d'un film, peut-être un film “touffu” comme Fight Club ou demi-touffu comme Seven.
+                    [WORK 59] [PAGE 27] La crise (scène-clé)
+                    [WORK 60] [PAGE 28] Le Pivot 2 (scène-clé)
+                    [WORK 61] [PAGE 29] Les tiers-temps
+                    [WORK 62] [PAGE 30] La première action/scène
+                    [WORK 63] [PAGE 31] Le climax (scène-clé)
             JP 042-055 [WORK 93] TOUR 2 (TR2) Sur tous les documents
                 JP 042-043 Deux jours pour souffler un peu
                     On va réserver ces deux jours pour faire un petit point et souffler un peu. Le seul travail sera de remplir des questionnaires par rapport à ce qu'on a fait jusqu'à présent, des vérifications des connaissances, ce genre de choses.
+                    [WORK 86] [QUIZ 10] Évaluation du travail au sein du programme
                 JP 044-045 TR2 STRT
                     Deuxième tour sur le document, pour affiner le travail précédent sur la structure.
                     TODO Voir le travail précis à fournir sur la structure
@@ -140,13 +146,13 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                 JP 051-053 TR2 THEM
                 JP 054-055 TR2 ANAF
                   Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
+                  [WORK 88] Analyse d'un film
+                  [WORK 89] [PAGE 46] Première analyse de film
         JP 056-083 [WORK 94] PREMIÈRE ÉBAUCHE
-            JP 057-063 TR 3 sur la STRT, PERS, DYNA
+            JP 056-069 TR 3 sur la STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 On passe ici deux jours sur chaque document (deux sessions de travail)
                 TODO On doit trouver une particularité pour chaque retour du document. Par exemple, une fois, sur le document du personnage, il faut travailler les relations entre les personnages. Pour la structure, les scènes-clé, les segments, les pics (brainstorming même quand les choses sont bien avancées)
-            JP 064-070 TR 3 sur THEM, DOCU, (un troisième)
-            JP 071-077 TR 4 sur STRT, PERS, DYNA
-            JP 078-084 TR 4 sur THEM, DOCU, (un troisième)
+            JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
 
     JP 084-140 APPROFONDISSEMENT DE L'HISTOIRE
         Dans l'approfondissement, on passe encore plus de temps sur chaque élément.
