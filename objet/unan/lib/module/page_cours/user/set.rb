@@ -48,13 +48,15 @@ class UPage
   # page lue depuis les pages elles-mêmes.
   def set_lue
     self.status= (status | BIT_LUE)
-    auteur.program.work(work_id).set_complete( !points_affected? )
+    uwork = get_uwork
+    uwork.set_complete( !points_affected? )
     points_affected? || set_points_affected
     flash "Page marquée lue."
   end
 
   def set_a_relire
-    auteur.program.work(work_id).set(ended_at: nil, status: 1)
+    uwork = get_uwork
+    uwork.set(ended_at: nil, status: 1)
     self.status= (self.status|BIT_LUE) -  BIT_LUE
     flash "Page re-marquée à lire."
   end
@@ -62,6 +64,24 @@ class UPage
   # ---------------------------------------------------------------------
   #   Sous-méthodes
   # ---------------------------------------------------------------------
+
+  def get_uwork
+    uwork = nil
+    if work_id.nil?
+      # Impossible d'obtenir le travail sur work_id est nil
+      raise "Impossible d'obtenir le travail propre, work_id n'est pas défini."
+    else
+      uwork = auteur.program.work(work_id)
+      if uwork.nil?
+        debug "uwork n'a pas pu être obtenu par `auteur.program.work(#{work_id})', on essaie par la table."
+        uwork = auteur.table_works.get(work_id)
+      end
+    end
+    if uwork.nil?
+      raise "Impossible d'obtenir le travail propre…"
+    end
+    return uwork
+  end
 
   def set_in_tdm
     self.status= (status | BIT_TDM)
