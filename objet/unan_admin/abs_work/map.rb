@@ -1,7 +1,9 @@
 # encoding: UTF-8
 raise_unless_admin
+
 site.require_objet 'unan'
-Unan::require_module 'abs_work'
+Unan.require_module 'abs_work'
+
 class UnanAdmin
 class Program
 class AbsWork
@@ -139,9 +141,9 @@ class AbsWork
   # ce qui devrait suffire.
   FIRST_ROW_BY_TYPES = {
     tasks:  0,
-    pages:  5,
-    quiz:   10,
-    forum:  15
+    pages:  8,
+    quiz:   16,
+    forum:  24
   }
 
   def self.first_row_last_zone
@@ -159,7 +161,7 @@ class AbsWork
     top   = (free_row + FIRST_ROW_BY_TYPES[type_id]) * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
-    displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(id: "awork-#{id}", class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
   end
 
   def type_id

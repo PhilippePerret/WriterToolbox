@@ -1,22 +1,47 @@
 div#programme_map
-  a
+  a.linep
     color       : inherit !important
     font-style  : inherit !important
   div.ret
     margin-left   : 2em
     font-size     : 0.95em
+    // Les travaux
+    span.wks
+      float         : right
+      font-family   : Geneva
+      font-size     : 9.5pt
+      opacity       : 0.5
+      &:hover
+        opacity       : 1
     // Les lignes qui ont des items imbriqués
     &.witems
-      a.linep
-        border-right    : 3px solid blue
-        padding-right   : 4px
+      > a.linep
+        &:after
+          content     : "~"
+          color       : blue
+          margin-left : 0.2em
+  div
+    &.travail, &.description, &.todo
+      &:before
+        margin-right : 0.3em
+  div.travail
+    &:before
+      content   : '⦿'
+  div.description
+    &:before
+      content   : '🔑'
+  div.todo
+    color     : red
+    &:before
+      content   : '🔔'
   // Pour marquer le jour-programme ou le segment de jours
   // programme
   span.segpday
     font-family     : Arial
-    font-size       : 10pt
+    font-size       : 9pt
     display         : inline-block
     width           : 76px
+    font-weight     : bold
     &:before
       content       :  'jP'
       margin-right  : 0.2em

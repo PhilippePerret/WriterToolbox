@@ -1,7 +1,87 @@
 
 JP 001-027 PRÉPARATION (1 mois)
     Cette préparation doit permettre à l'auteur de "s'échauffer".
-
+    JP 001-002 [WORK 8] Régler les information du projet.
+    JP 002-027 [WORK 9]
+        JP 002
+            [WORK 12] Pitch d'une histoire
+            [WORK 10] [PAGE 3] Lecture Recherche et choix de l'histoire
+            [WORK 14] [QUIZ 2] Évaluation du niveau actuel
+        JP 003
+            [WORK 8] [PAGE 26] La structure, qu'est-ce que c'est ?
+            [WORK 27] [PAGE 9] Pourquoi structurer son récit ?
+            [WORK 28] [PAGE 10] Quand faut-il structure son récit ?
+        JP 004
+            [WORK 12] Pitch d'une histoire
+        JP 005
+            [WORK 11] Brainstorming sur l'histoire.
+            [WORK 25] [QUIZ 8] Connaissances sur les Fondamentales
+        JP 006
+            [WORK 12] Pitch d'une histoire
+        JP 007
+            [WORK 11] Brainstorming sur l'histoire.
+            [WORK 19] Retrouver les fondamentales de 4 films
+            [WORK 30] [PAGE 12] Quelle force construit la structure
+            [WORK 31] [PAGE 13] Le Schéma minimal
+            [WORK 32] [PAGE 14] Exemples de schémas minimum
+        JP 008
+            [WORK 12] Pitch d'une histoire
+            [WORK 11] Brainstorming sur l'histoire.
+        JP 009
+            [WORK 12] Pitch d'une histoire
+            [WORK 11] Brainstorming sur l'histoire.
+        JP 010
+            [WORK 12] Pitch d'une histoire
+            [WORK 11] Brainstorming sur l'histoire.
+        JP 011
+            [WORK 12] Pitch d'une histoire
+            [WORK 36] [PAGE 15] Structure stratégique versus structure tactique
+            [WORK 37] [PAGE 16] Structures stratégiques
+            [WORK 38] [PAGE 17] Structures tactiques
+            [WORK 39] [PAGE 18] Structures de genre
+            [WORK 40] [PAGE 19] Dangers et avantages (de chaque type)
+            [WORK 41] [PAGE 20] Mixité des structures
+            [WORK 42] [PAGE 21] Conclusions aux types de structure
+        JP 012
+            [WORK 12] Pitch d'une histoire
+        JP 013
+            [WORK 12] Pitch d'une histoire
+            [WORK 11] Brainstorming sur l'histoire.
+        JP 014
+            [WORK 12] Pitch d'une histoire
+        JP 015
+            [WORK 12] Pitch d'une histoire
+            [WORK 64] [PAGE 32] Introduction à la triade OOC
+            [WORK 65] [PAGE 33] Introduction à l'objectif
+            [WORK 66] [PAGE 34] Exemples d'objectifs
+            [WORK 70] [PAGE 38] Les deux composantes principales du personnage
+        JP 016
+            [WORK 12] Pitch d'une histoire
+        JP 017
+            [WORK 12] Pitch d'une histoire
+        JP 018
+            [WORK 34] Résumé développé d'une histoire précédente
+        JP 019
+            [WORK 67] [PAGE 35] Ne pas confondre objectif et enjeu
+            [WORK 68] [PAGE 36] Ne pas confondre objectif et moyen
+            [WORK 71] [PAGE 39] Le personnage, focal d'émotion
+        JP 020
+            [WORK 12] Pitch d'une histoire
+            [WORK 53] [PAGE 22] Comment choisir son histoire
+        JP 021
+            [WORK 12] Pitch d'une histoire
+        JP 022-023
+            [WORK 35] Résumé à partir d'un fait d'actualité
+        JP 024
+            [WORK 12] Pitch d'une histoire
+        JP 025
+            [WORK 35] Résumé à partir d'un fait d'actualité
+        JP 026
+            [WORK 20] Choix définitif de l'histoire
+            [WORK 73] [PAGE 40] Installation sur l'ordinateur
+        JP 027
+            [WORK 24] [QUIZ 9] Multi-questionnaire pour choisir l'histoire
+            [WORK 76] [PAGE 43] Présentation de la séquence de brainstorming.
 JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
     Cette première phase de développement — qui en comprend 3 — permet d'établir l'histoire, de la définir assez précisément.
     [WORK 21] Établissement de la structure
@@ -9,32 +89,44 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
 
     JP 028-084 BRAINSTORMINGS ET PREMIÈRES ÉBAUCHES
         Dans cette partie, il va s'agir de préparer le terrain de l'histoire. On va commencer sur la spirale de développement en faisant un tour des documents principaux.
-        JP 028-056 BRAINSTORMING [WORK 95]
+        JP 028-055 [WORK 95] BRAINSTORMING
             Phase de brainstorming sur le projet, ou plus exactement sur "les" projets possibles.
             JP 028-041 [WORK 43] TOUR 1 (TR1) Sur tous les documents
                 Pendant 14 jours on va alterner assez rapidement un premier tour sur les différents documents, en comptant deux jours par documents.
+                [WORK 43] Premier tour de développement.
                 JP 028-029 TR1 Brainstorming STRT
                     Réfléchir à ce qui peut faire la forme générale et notamment les principaux segments et les scènes-clés.
-                JP 030-031 TR1 Brainstorming PERS
+                    [WORK 54] Première réflexion sur les scènes-clés.
+                    [WORK 74] [PAGE 41] Document structurel sur les scènes-clés
+                    [WORK 29] [PAGE 11] Difficulté de la structure.
+                    [WORK 55] [PAGE 23] L'incident perturbateur.
+                    [WORK 56] [PAGE 24] L'incident déclencheur.
+                JP 030-031 [WORK 72] TR1 Brainstorming PERS
                     Réfléchir aux personnages possibles, pour le moment sans autres indications.
+                    [WORK 75] [PAGE 42] Création du dossier et fichier sur les personnages.
                 JP 032-033 TR1 Brainstorming DOCU
-                    x- lister les thèmes sur lequels il va falloir faire de la recherche
-                    x- liste des contacts possibles (forums, connaissances personnelles)
-                    x- Ne pas oublier de mettre en garde contre l'aspect chronophage et hypnotisant de la documentation.
+                    [WORK 78] Première liste des sujet.
+                    [WORK 79] Création du document Recherche et documentation
                 JP 034-035 TR1 Brainstorming DYNA
-                    x- liste des objectifs et des obstacles possible pour chaque personnage
-                    TODO Un exemple de liste d'objectifs et d'obstacles tel que définit par le travail (tiré de l'histoire sur la soeur et la montagne)
-                    TODO L'exemple de liste d'objectifs avec un film existant (Fight Club peut-être)
+                    [WORK 81] Premier document sur la dynamique.
+                        Brainstormer sur l'objectif principal de chaque personnage et principalement du protagoniste.
+                    [WORK 80] Création du dossier et du document pour la dynamique.
+                    TODO [EXEMPLE] Un exemple de liste d'objectifs et d'obstacles tel que défini par le travail (tiré de l'histoire sur la soeur et la montagne)
+                    TODO [EXEMPLE] L'exemple de liste d'objectifs avec un film existant (Fight Club peut-être)
                 JP 036-037 TR1 Brainstorming THEM
-                    x- Première esquisse des thèmes (page cours propre sur le travail à exécuter [WORK 85][PAGE 45])
+                    Premier tour (TR1) de brainstorming sur les thèmes et l'aspect thématique du récit.
+                    [WORK 83] Construction du dossier pour la thématique
+                    [WORK 84] Création du premier document thématique
+                    [WORK 85][PAGE 45] Première esquisse des thèmes (page cours propre sur le travail à exécuter
                 JP 038-039 TR1 Brainstorming ANAF
-                    x- Création du dossier d'analyse [WORK 87]
-                    x- Analyse simple à exécuter. Page de cours propre [WORK 89][PAGE 46].
-                    x- Produire un document d'analyse de film [WORK 88]
+                    [WORK 87] Création du dossier d'analyse
+                    [WORK 89][PAGE 46] Analyse simple à exécuter. Page de cours propre.
+                    [WORK 88] Produire un document d'analyse de film.
                 JP 040-041 TR1 Brainstorming PERS
                     Alors que le premier tour sur les personnages était consacré au protagoniste et à l'antagoniste, ici on va s'intéresser particulièrement aux autres personnages.
-                    x- [WORK 92] Soit on poursuit le travail sur les personnages possibles, soit on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
-                    TODO Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
+                    [WORK 92] On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                    TODO [EXEMPLE] Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
+                    TODO [EXEMPLE] Faire un exemple à partir d'un film, peut-être un film “touffu” comme Fight Club ou demi-touffu comme Seven.
             JP 042-055 [WORK 93] TOUR 2 (TR2) Sur tous les documents
                 JP 042-043 Deux jours pour souffler un peu
                     On va réserver ces deux jours pour faire un petit point et souffler un peu. Le seul travail sera de remplir des questionnaires par rapport à ce qu'on a fait jusqu'à présent, des vérifications des connaissances, ce genre de choses.

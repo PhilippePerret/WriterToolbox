@@ -6,4 +6,7 @@
   document HTML du programme complet.
 
 =end
-UnanAdmin.require_module 'programme_txt'
+page.no_left_margin
+page.no_widget_taches
+
+UnanAdmin.require_module 'programme_map'

@@ -1,4 +1,7 @@
 <%
 # Pour l'affichage du programme version programme.txt
 %>
+<div class="right">
+  <%= lien.edit_file((UnanAdmin.folder.expanded_path + '/programme.txt'), titre: 'Ouvrir le fichier data') %>
+</div>
 <%= UNANProgramme.instance.map_html %>

@@ -30,12 +30,10 @@ class Page
     !!@is_collection
   end
   def is_collection value = true
-    debug "-> @is_collection mis à #{value.inspect}"
     @is_collection = value
   end
 
   def ajout_schema_org
-    debug "-> ajout_schema_org, @is_collection = #{@is_collection.inspect}"
     if collection?
       ' itemscope itemtype="http://schema.org/Collection"'
     else
@@ -74,7 +72,7 @@ class Page
   def body
     @body ||= begin
       page.header         +
-      page.left_margin    +
+      (left_margin? ? page.left_margin : '') +
       page.content        +
       page.footer         +
       app.div_flash       +

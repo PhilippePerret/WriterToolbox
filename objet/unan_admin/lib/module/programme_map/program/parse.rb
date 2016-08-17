@@ -6,6 +6,7 @@ class UNANProgramme
   # Méthode principale qui parse le fichier programme.txt
   #
   def parse
+    debug "-> parse"
     @fulldata = Hash.new
     c = Array.new
 
@@ -44,7 +45,7 @@ class UNANProgramme
       iline.analyse
       # ==========================================
 
-      c << "\nNOUVELLE LIGNE (R: #{niveau_retrait}): '#{iline.output}' (type: #{iline.type})"
+      c << "\nNOUVELLE LIGNE (R: #{niveau_retrait}): '#{iline.raw_line}' (type: #{iline.type})"
 
       if iline.retrait > niveau_retrait_courant
         c << "=> (retrait &gt;) Ajout de la ligne à : #{element_courant.line}"
@@ -69,6 +70,7 @@ class UNANProgramme
     debug e
     error 'Un erreur est survenue (regarder le debug)'
   ensure
+    debug "<- parse"
     return c.join("\n").in_pre
   end
   # /parse

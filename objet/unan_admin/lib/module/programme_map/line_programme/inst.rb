@@ -6,15 +6,16 @@ class LineProgramme
 
   # La ligne brute, telle que relevée dans le fichier
   attr_reader :raw_line
-  
+
   # La ligne épurée, telle qu'utilisée dans la map
   attr_reader :line
 
-  # Type de la ligne
-  # Ça peut être un début de segment (:segment), un
-  # travail (:travail), une chose à faire (:todo),
-  # sinon c'est une simple description (:description)
-  attr_reader :type
+  # # Type de la ligne
+  # # Ça peut être un début de segment (:segment), un
+  # # travail (:travail), une chose à faire (:todo),
+  # # sinon c'est une simple description (:description)
+  # Cf la méthode `type' dans analyse.rb
+  # attr_reader :type
 
   # {LineProgramme} Parent de cette ligne programme
   attr_accessor :parent

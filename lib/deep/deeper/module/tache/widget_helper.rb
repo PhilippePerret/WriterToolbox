@@ -28,6 +28,7 @@ class Taches
     # tâche à choisir, comme corriger un bug ou lire par le lecteur.
     #
     def widget
+      page.widget_taches? || (return '')
       (
         "Tâche…".in_span(id:"span_titre") +
         (

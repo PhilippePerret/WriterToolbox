@@ -6,7 +6,7 @@ raise_unless_admin
 #   travaux en fonction de leur départ et de leur durée
 # ---------------------------------------------------------------------
 %>
-<%= Unan::titre_h1("Carte des travaux") %>
+<%= Unan.titre_h1("Carte des travaux") %>
 
 <style type="text/css">
 div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %>px}
@@ -20,7 +20,7 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
 # faciliter l'affichage avec bords, etc.
 %>
 <div id="abs_work_map_container" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH + 24 %>px">
-  <%= Unan::Helper::graduation_jours(day_width:UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH) %>
+  <%= Unan::Helper.graduation_jours(day_width:UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH) %>
   <div id="map_container_tools" class="" style="height:12px">
     <%# On mettra ici les outils et notamment le menu pour changer le zoom de la carte %>
   </div>
@@ -40,7 +40,7 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
     <div class="titre_zone" style="top:<%= top_titre(:pages) %>px">Pages cours</div>
     <div class="titre_zone" style="top:<%= top_titre(:quiz) %>px">Quiz</div>
     <div class="titre_zone" style="top:<%= top_titre(:forum) %>px">Forum</div>
-    <% Unan::Program::AbsPDay::all.each do |pday| %>
+    <% Unan::Program::AbsPDay.all.each do |pday| %>
       <% pday.works(:as_instance).each do |work| %>
         <%= work.in_map( pday.id ) %>
       <% end %>

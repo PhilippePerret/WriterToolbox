@@ -88,9 +88,6 @@ class << self
   def lien_works_map
     "Carte des travaux".in_a(href:'abs_work/map?in=unan_admin', target:'_blank')
   end
-  def lien_pdays_map
-    "Carte des p-days".in_a(href:'abs_pday/map?in=unan_admin', target:'_blank')
-  end
   def checkbox_fenetre_fixe
     "Fenêtre fixe".in_checkbox(checked:true, onchange:"UI.bloquer_la_page(this.checked)",class:'small')
   end

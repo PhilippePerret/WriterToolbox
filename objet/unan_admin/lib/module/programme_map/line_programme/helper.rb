@@ -13,11 +13,18 @@ class LineProgramme
   end
 
   def line_formated
-    (
+    debug "items count : #{items.count.inspect}"
+    c = (
       jours_programme_formated +
-      line +
-      span_travaux
-    ).in_a(onclick: "MapProgramme.toggle(this)", class: 'linep')
+      line
+    )
+    c =
+      if items.count > 0
+        c.in_a(onclick: "MapProgramme.toggle(this)", class: 'linep')
+      else
+        c.in_span(class: 'linep')
+      end
+    span_travaux + c
   end
 
   def div_items
@@ -28,15 +35,18 @@ class LineProgramme
 
   def jours_programme_formated
     pday_deb != nil || (return '')
-    "#{pday_deb.to_i}-#{pday_fin.to_i}".in_span(class: 'segpday')
+    c = pday_deb.to_i.to_s
+    pday_fin.nil? || c << "-#{pday_fin.to_i}"
+    c.in_span(class: 'segpday')
   end
 
   # Class CSS du div principal de l'élément
   def class_css_div
     css = ['linep']
     css << "ret"
-    debug "LINE #{line} : items : #{self.items.count}"
-    items.count > 0 && css << 'witems'
+    if items.count > 0
+      css << 'witems'
+    end
     css << type
     return css.join(' ')
   end
@@ -47,7 +57,7 @@ class LineProgramme
 
   def span_travaux
     travaux.empty? && (return '')
-    " (#{travaux_as_liens})"
+    travaux_as_liens.in_span(class: 'wks')
   end
   def travaux_as_liens
     travaux.collect do |dw|

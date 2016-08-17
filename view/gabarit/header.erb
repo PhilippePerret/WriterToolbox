@@ -35,8 +35,8 @@ if user.unanunscript? && user.preference(:pastille_taches)
 # Si c'est un administrateur qui visite, il faut insérer au besoin
 # le widget pour les tâches (pour ajouter une tâche concernant la
 # page).
-if user.admin?
+if page.widget_taches?
     site.require_module('tache')
 %>
-    <%= ::Admin::Taches::widget %>
+    <%= ::Admin::Taches.widget %>
 <% end %>
