@@ -23,7 +23,7 @@ class UNANProgramme
   include Singleton
 
   def raw_code
-    @raw_code ||= (UnanAdmin.folder + 'programme.txt').read
+    @raw_code ||= (UnanAdmin.folder + 'PROGRAMME.TXT').read
   end
   # /raw_code
 

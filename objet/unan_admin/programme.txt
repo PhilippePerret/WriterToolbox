@@ -1,3 +1,6 @@
+# Pour voir ce programme formaté, se rendre sur le dashboard du
+# programme et choisir le lien Map Text
+#
 
 JP 001-027 PRÉPARATION (1 mois)
     Cette préparation doit permettre à l'auteur de "s'échauffer".

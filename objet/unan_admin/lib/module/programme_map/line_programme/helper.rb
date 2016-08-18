@@ -9,7 +9,20 @@ class LineProgramme
     (
       line_formated +
       div_items
-    ).in_div(class: class_css_div)
+    ).in_div(class: class_css_div, 'data-jp' => data_jp_for_div)
+  end
+
+  # Retourn les données JP (Jour-programme) de la ligne courante, qui
+  # permettra à javascript de n'afficher que les zones voulus
+  # Peut retourner :
+  #   - NIL si aucun jour-programme n'est défini
+  #   - "pday_deb" Le jour-programme si la fin n'est pas définie
+  #   - "pday_deb-pday_fin" si segment programme
+  def data_jp_for_div
+    pday_deb.nil? && pday_fin.nil? && (return nil)
+    d = "#{pday_deb}"
+    pday_fin.nil? || d += "-#{pday_fin}"
+    return d
   end
 
   def line_formated
