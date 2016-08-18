@@ -156,7 +156,7 @@ OFFLINE = !ONLINE;
 #{low_opacities}
 .adminonly{#{user.admin? ? '' : 'display:none;'}}
 #{raw_css_for_app if self.respond_to?(:raw_css_for_app)}
-section#content{left-margin:#{content_left_margin}px;padding-left:#{content_padding_left};}
+section#content{margin-left:#{content_left_margin}px;padding-left:#{content_padding_left};}
 </style>
     CSSS
   end
