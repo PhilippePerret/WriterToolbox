@@ -14,21 +14,25 @@ class Ranking
     # cours des recherches.
     def reset_data
       File.unlink marshal_file if File.exist? marshal_file
+      if File.exist? marshal_file
+        puts "# LE FICHIER MARSHAL N'A PAS PU ÊTRE SUPPRIMÉ"
+      else
+        puts "Le fichier marshal a été détruit."
+      end
+      @data_marshal = Hash.new
     end
 
-
-    # Méthode qui retourne le prochain mot clé à étudier, en fonction
-    # du contenu du fichier Marshal
-    #
-    # Cette méthode est utilisée par le fichier run_spec.rb qui se
-    # charge de la recherche du ranking
-    #
-    def next_keyword
-      @data_marshal = nil # pour forcer la lecture du fichier
+    # Retourne la liste des keywords à traiter
+    def keywords_undone
+      @data_marshal = nil # pour forcer la (re)lecture du fichier
+      dm = data_marshal.dup
+      l = Array.new
       KEYWORDS.each do |kw|
-        data_marshal.key?(kw) || ( return kw )
+        dm.key?(kw) && next
+        l << kw
       end
-      return nil # => on peut arrêter
+      puts "Keywords : #{l.inspect}"
+      return l
     end
 
 
@@ -58,6 +62,7 @@ class Ranking
           Hash.new
         end
       end
+      @data_marshal
     end
   def marshal_file
       @marshal_file ||= begin

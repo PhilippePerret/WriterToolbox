@@ -20,7 +20,7 @@ feature "Page ranking" do
   # On boucle sur les mots-clés tant qu'on doit les traiter.
   # Noter que lorsque tous les mots clés ont été traités et enregistrés
   # dans le fichier Marshal, il n'y a plus rien à traiter.
-  while keyword = Ranking.next_keyword
+  Ranking.keywords_undone. each do |keyword|
 
     scenario "Recherche des meilleures pages du mot “#{keyword}”" do
 
@@ -112,7 +112,7 @@ feature "Page ranking" do
     end
     # /fin du test sur le mot-clé courant
 
-    break # fin pour essai
+    # break # fin pour essai
 
   end
   # / Boucle sur chaque mot-clé

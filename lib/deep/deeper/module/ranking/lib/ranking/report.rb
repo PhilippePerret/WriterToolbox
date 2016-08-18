@@ -9,7 +9,7 @@ class Ranking
   def finalise_resultats
     data_resultats = self.class.data_marshal
     data_resultats.merge!(keyword => self.data_marshal)
-    puts "data_resultats : #{data_resultats.pretty_inspect}"
+    # puts "data_resultats : #{data_resultats.pretty_inspect}"
     File.open(self.class.marshal_file,'wb'){|f| Marshal.dump(data_resultats, f)}
   end
   # Données marshal pour ce ranking (donc ce mot-clé)
@@ -17,7 +17,7 @@ class Ranking
   # qui lit tous les résultats de tous les mots clés.
   def data_marshal
     {
-      keywork:        keyword,
+      keyword:        keyword,
       resultats:      rational_resultats,
       raw_resultats:  resultats
     }
