@@ -21,6 +21,10 @@ class Ranking
       # {Fixnum} Index du lien (depuis le tout premier)
       attr_reader :index
 
+      # {Hash} Les données qui seront utilisées pour l'enregistrement
+      # Voir la méthode
+      # attr_reader :data
+
       # +gpage+   {Rankin::GooglePage} La page google
       # +node+    Nœud Nokogiri::XML::Element
       # +inode+   Index du lien dans la page
@@ -30,6 +34,7 @@ class Ranking
         @google_page  = gpage
         @node         = node
         @index        = inode
+        @data         = Hash.new
       end
 
       def page_index
@@ -79,11 +84,6 @@ class Ranking
         liens = node.find_css('a')
         liens.count > 0 || return
 
-        # if index == google_page.randon_clicked_link
-        #   liens.first.click
-        #   liens.first.driver.execute_script('window.history.back(-1);')
-        #   sleep 2
-        # end
         @href = liens.first['href'].to_s
         offset_http = @href.index('http')
         offset_http != nil || return

@@ -58,7 +58,8 @@ class Ranking
       if File.exist? ofile
         gpage = Ranking::GooglePage.new(self, index_page, ofile, i, keyword)
         gpage.analyze
-        @resultats[:google_pages] << gpage
+        # On enregistre les data de la gpage, pas la gpage elle-même
+        @resultats[:google_pages] << gpage.data
       else
         raise "# Le fichier `#{ofile}` est introuvable…"
       end
@@ -71,14 +72,12 @@ class Ranking
   # = main =
   #
   # Retourne le résultat récolté
-  #
+  # OBSOLÈTE : On laisse un peu de texte, mais maintenant, c'est surtout le
+  # fichier marshal qui contient les résultats.
   def result
     titre = "Mots clés : #{keyword}"
     "#{titre}\n"      +
-    "="*titre.length  + "\n" +
-    resultats[:google_founds].collect do |gfound|
-      "P.#{gfound.page_index}/#{gfound.real_index}. Domaine : #{gfound.domain_url} -- #{gfound.titre_found}"
-    end.join("\n")
+    "="*titre.length  + "\n"
   end
 
 

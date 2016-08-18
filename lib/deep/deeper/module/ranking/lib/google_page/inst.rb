@@ -9,6 +9,8 @@
 class Ranking
   class GooglePage
 
+    include Capybara::DSL
+
     # {Ranking} Instance du ranking courant
     #
     # Répond notamment à la méthode `@resultats` pour mettre les
@@ -28,6 +30,7 @@ class Ranking
     # {String} Le texte recherché, en version humaine
     attr_reader :searched
 
+
     # +path+ Path du fichier contenant le code HTML de la
     # page google
     def initialize rank, page_index, capybara_node #, path, index_start, searched
@@ -46,7 +49,12 @@ class Ranking
         if gf.domain_url == 'http://www.laboiteaoutilsdelauteur.fr'
           @domain_has_been_found = true
         end
-        rank.resultats[:google_founds] << gf
+        # Noter qu'on ne prend que les données du GoogleFound, car
+        # l'instance poserait des problèmes avec les nodes qu'elle
+        # contient et qui n'existent plus après fermeture des pages
+        # Pour voir ce que contient data, cf.
+        #   ./lib/deep/deeper/module/ranking/lib/google_found/data.rb
+        rank.resultats[:google_founds] << gf.data
       end
     end
 
@@ -54,6 +62,14 @@ class Ranking
     # Google qu'un lien est cliqué (avant de revenir sur la page)
     def randon_clicked_link
       @randon_clicked_link ||= 1 + rand(7)
+    end
+
+    # On récupère l'URL courante pour l'appeler à nouveau après
+    # avoir cliqué un lien.
+    def current_window_location
+      @current_window_location ||= begin
+        page.execute_script('return window.location.href')
+      end
     end
 
     def domain_found?
