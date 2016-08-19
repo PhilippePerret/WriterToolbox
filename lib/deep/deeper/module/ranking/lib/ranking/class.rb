@@ -26,8 +26,10 @@ class Ranking
     def keywords_undone
       @data_marshal = nil # pour forcer la (re)lecture du fichier
       dm = data_marshal.dup
+      site.keywords != nil || raise('Pour lancer le ranking, il faut impérativement définir les mot-clés du site dans le fichier config (avec site.keywords)')
+      site.keywords.instance_of?(Array) || raise('site.keywords devrait être une liste de mots-clés.')
       l = Array.new
-      KEYWORDS.each do |kw|
+      site.keywords.each do |kw|
         dm.key?(kw) && next
         l << kw
       end

@@ -17,6 +17,11 @@ class Ranking
         }
       end
 
+      # Le mot-clé qui a généré
+      def keyword
+        @keyword ||= google_page.rank.keyword
+      end
+
     end #/GoogleFound
   end #/GooglePage
 end #/Ranking

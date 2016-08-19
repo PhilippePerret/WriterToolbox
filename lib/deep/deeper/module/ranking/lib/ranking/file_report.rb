@@ -66,9 +66,30 @@ class Ranking
     def div_donnees_generales
       (
         "Date : #{NOW.as_human_date(true, true, '&nbsp;', 'à')}".in_div +
+        div_infos_site_courant +
         "Nombre total de sites : #{nombre_total_sites}".in_div +
         "Nombre sites au-dessus de #{CITATIONS_MINIMUM} citations : #{nombre_sites_minimum_citations}"
       ).in_fieldset(id: 'data_generales')
+    end
+
+    def div_infos_site_courant
+      data_site_courant = all_per_domain[site.domain_url]
+
+
+
+      nombre_citations, index_liens =
+        if data_site_courant.nil?
+          [0, '- aucun -']
+        else
+          # On construit la liste des mots-clés qui contiennent le site,
+          # avec le nombre citations
+          [data_site_courant[:nombre_liens], data_site_courant[:index_liens].join(', ')]
+        end
+      (
+        "Nombre de citations du site courant : #{nombre_citations}".in_div +
+        "Indexes des citations : #{index_liens}".in_div +
+        "Classement par mots-clés"
+      ).in_div(id: 'data_site_courant')
     end
 
     # Le positionnement général de chaque domaine relevé
@@ -101,9 +122,9 @@ class Ranking
           # puts "data_kw[:resultats][:per_domain] : #{data_kw[:resultats][:per_domain].inspect}"
           # break
           sorted = data_kw[:resultats][:per_domain].sort_by{|d,dd| dd[:nombre_liens]}.reverse
-          keyword.in_div(class: 'keywork') +
+          keyword.in_div(class: 'keyword') +
           sorted.collect do |domain, data_domain|
-
+            puts "DATA DOMAIN : #{data_domain.inspect}"
             # On rassemble toutes les citations
             @all_per_domain.key?(domain) || begin
               @nombre_total_sites += 1
