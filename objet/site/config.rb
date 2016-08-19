@@ -66,7 +66,8 @@ site.keywords = [
   'dramaturgie',
   'règles d\'écriture'
 ]
-
+# Pour essayer sur un seul mot-clé :
+# site.keywords = ['écrire un scénario']
 
 
 site.tarif = 6.90

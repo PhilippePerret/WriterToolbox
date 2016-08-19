@@ -41,7 +41,8 @@ feature "Page ranking" do
           index_page += 1
 
           # On pause en attendant de
-          pause = 10 + (rand(200).to_f / 10)
+          # Mettre '10' plutôt que '5' s'il y a des problèmes
+          pause = 5 + (rand(200).to_f / 10)
           sleep pause
 
           # ====================================================== #

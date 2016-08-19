@@ -41,6 +41,7 @@ class Ranking
         per_domain.merge! gfound_data[:domain] => {
           nombre_liens: 0,
           index_liens:  Array.new,
+          keywords:     Array.new,
           founds_data:  Array.new
         }
       end
@@ -48,6 +49,7 @@ class Ranking
       h = per_domain[gfound_data[:domain]]
       h[:nombre_liens] += 1
       h[:index_liens]   << gfound_data[:link_index]
+      h[:keywords]      << gfound_data[:keyword]
       h[:founds_data]   << gfound_data
     end
 

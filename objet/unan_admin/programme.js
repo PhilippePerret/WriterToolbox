@@ -10,13 +10,54 @@ $.extend(window.MapProgramme,{
 
   /**
     * Méthode appelée pour afficher un jour particulier ou un
-    * segment particulier de jour-programme
+    * segment particulier de jour-programme.
+    * Ou autre élément désigné par le contenu de input#jp
     *
     * Noter que ça permet d'afficher des choses qu'on ne peut pas
     * faire "à la main" grâce au système de filtre.
     */
   show_jp: function(){
     var jp_seg = $('input#jp').val();
+
+    switch(jp_seg){
+      case 'TODO', 'todo' :
+        this.show_lines_todo();break;
+      default:
+        this.show_jours_programmes(jp_seg)
+    }
+  },
+
+  /** Méthode qui va afficher dans le plan du programme toutes les
+    * lignes définissant quelque chose à faire.
+    * Ces lignes sont repérées par la classe linep.todo
+    *
+    * Principe : On trouve le ligne puis on ouvre tous ses parents
+    */
+  show_lines_todo: function(){
+    var lines = $('div#programme_map div.linep.todo')
+    var nombre_lines = lines.length;
+    var css;
+    if(nombre_lines){
+      F.show(nombre_lines + " lignes trouvées.");
+      lines.each(function(){
+        var o = $(this);
+        o.show();
+        var dady = o;
+        while(dady = dady.parent()){
+          css = dady.attr('class');
+          if(undefined == css){break}
+          var is_div_items = css.indexOf('items') > -1;
+          var is_div_linep = css.indexOf('linep') > -1;
+          if(is_div_items || is_div_linep){ dady.show()}
+          else{break}
+        }
+      })
+    }else{
+      F.show('Aucune ligne trouvée.')
+    }
+  },
+  show_jours_programmes:function(jp_seg){
+
     jp_seg = jp_seg.split('-');
     var jp_deb = parseInt(jp_seg[0], 10);
     var jp_fin = parseInt(jp_seg[1], 10);

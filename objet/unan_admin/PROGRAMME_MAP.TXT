@@ -179,8 +179,11 @@ JP 141-294 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
     JP 225-252 VÉRIFICATIONS PRÉ-SCÉNARIO
         Ce petit mois de travail va permettre d'affiner une dernière fois les choses et surtout de procéder à toutes les vérifications possibles. Le but est d'arriver au 253e jour avec un plan parfait pour attaquer le scénario ou le manuscrit. Au cours de ce temps, il va aussi s'agir de finaliser toutes les petites choses à achever.
         TODO Mettre au point tous les questionnaires. Ces questionnaires doivent permettre de vérifier tous les aspects du traitement. Comme je n'aurai pas le temps de finir toutes les questions dans la collection Narration, ça sera l'inverse : ce sont les questions posées ici qui serviront à alimenter la collection.
-
-    JP 253-294 V1 DU SCÉNARIO
+        JP 225
+          TODO [WORK] Définir le nombre de pages (roman) ou de minutes (film). Pour le film préciser qu'il vaut mieux partir sur un film d'1h30.
+        JP 252
+          TODO [WORK] Confirmer le nombre de pages (roman) et le nombre de minutes (film).
+    JP 253-294 V1 DU SCÉNARIO/MANUSCRIT
         Ici, on va lever un peu le pied par rapport aux pages de cours et autre, pour se concentrer vraiment sur le travail à fournir sur le scénario ou le manuscrit. Les seules pages à faire seront les pages sur la rédaction, les points à voir.
         JP 253-280 Premier jet sans s'arrêter
             Concrètement ça correspond à écrire 3 pages par jour.

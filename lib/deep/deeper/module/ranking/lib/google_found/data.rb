@@ -13,7 +13,8 @@ class Ranking
           href:         href,
           domain:       domain_url,
           page_index:   page_index,
-          link_index:   real_index
+          link_index:   real_index,
+          keyword:      keyword
         }
       end
 
