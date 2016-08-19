@@ -44,10 +44,23 @@ class SiteHtml
   attr_accessor :local_host
   # {String} Host Distant (p.e. 'www.atelier-icare.net')
   attr_accessor :distant_host
+  # Domaine url (donc avec http:// en amorce)
+  # Sert notamment pour l'analyse du positionnement du site sur
+  # google (ranking)
+  attr_accessor :domain_url
 
   # Serveur SSH pour le site
   attr_accessor :serveur_ssh
   attr_accessor :ssh_server
+
+  # Mots clés
+  # Servent aussi bien à renseigner la balise META de la page
+  # HTML qu'à produire le positionnement du site, par rapport à
+  # ces mots clés, dans Google
+  attr_accessor :keywords
+
+  # Description du site, pour la balise META description
+  attr_accessor :description
 
   # Prix de l'abonnement au site, s'il est unique
   attr_accessor :tarif

@@ -43,6 +43,23 @@ class Page
     ).in_div(class: 'right')
   end
 
+  def balise_meta_description
+    description != '' || (return '')
+    "<meta name=\"description\" content=\"#{self.description}\" />\n"
+  end
+  def description
+    (
+      (site.description || '') +
+      ' ' +
+      (@page_description || '')
+    ).strip
+  end
+  # Définition de la description de la page, hors description générale
+  # du site
+  def description= value
+    @page_description = value
+  end
+
   # RETURN le bloc d'abonnement qui s'affiche lorsque le visiteur n'est pas
   # abonné au site, pour l'encourager à s'y inscrire ou s'y abonner
   def helper_bloc_abonnement

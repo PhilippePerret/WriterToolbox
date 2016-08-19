@@ -39,6 +39,35 @@ site.mail_signature       = "<p>#{site.name}</p>"
 # Host local
 site.local_host   = 'localhost/WriterToolbox'
 site.distant_host = 'www.laboiteaoutilsdelauteur.fr'
+site.domain_url   = "http://#{site.distant_host}"
+
+# Description qui servira pour la balise META
+#
+# On peut affiner cette description par page en ajoutant la définition :
+# page.description = "<description précise de la page>"
+site.description = <<-TEXT
+Site dédié à l'écriture (film, roman, BD, jeux) qui permet grâce à de
+<strong>nombreux outils</strong> d'apprendre à <strong>écrire un roman</strong> ou <strong>écrire un scénario</strong>.
+TEXT
+
+# Les mots-clés du site
+# Cette liste servira pour la recherche de positionnement du site dans les
+# recherches Google (chercher 'Ranking')
+# Note : Il faut absolument que ce soit une liste Array.
+site.keywords = [
+  'écrire',
+  'scénario',
+  'film',
+  'roman',
+  'écrire un scénario',
+  'écrire un roman',
+  'boite à outils de l\'auteur',
+  'analyse de film',
+  'dramaturgie',
+  'règles d\'écriture'
+]
+
+
 
 site.tarif = 6.90
 

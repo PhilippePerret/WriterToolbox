@@ -59,12 +59,13 @@ class Page
 <title>#{page.title}</title>
 <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
 <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
+#{self.balise_meta_description}
 <base href="#{site.base}" />
 #{fonts_google}
-#{page.javascript}
-#{page.css}
-#{page.raw_css}
-#{page.raw_javascript}
+#{self.javascript}
+#{self.css}
+#{self.raw_css}
+#{self.raw_javascript}
       HEAD
     end
   end
@@ -79,4 +80,6 @@ class Page
       page.section_debug
     end
   end
+  # /body
+
 end
