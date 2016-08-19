@@ -13,6 +13,7 @@ class Bureau
     data_projet.merge!(type:    dinp[:type].to_i)     unless dinp[:type].to_i == 0
     data_projet.merge!(sharing: dinp[:pref_sharing].to_i)  unless dinp[:pref_sharing].to_i == 0
     user.projet.set(data_projet)
+    dinp[:nombre_pages] && user.nombre_pages=(dinp[:nombre_pages].to_i)
     flash "Données du projet enregistrées."
   end
 

@@ -24,6 +24,16 @@ dpm = param(:projet) || Hash.new
   <%# TYPE SUPPORT %>
   <%= form.field_select("Type du support", 'type', dpm[:type] || user.projet.type, {values: Unan::Projet::TYPES, warning: (dpm[:type] || user.projet.type).to_i == 0}) %>
 
+  <%
+    # NOMBRE DE PAGES OU DE MINUTES
+    # -----------------------------
+    # Ce choix n'est affiché que si le jour-programme de l'user est suffisant
+    if user.program.current_pday > 100
+      menu_nombre_pages = [60, 90, 100, 120, 140, 150, 200, 250, 300, 350, 400, 500, 600].collect{|nb| [nb, nb]}
+  %>
+    <%= form.field_select("Longueur/durée", 'nombre_pages', (dpm[:nombre_pages] || user.projet.nombre_pages || 90), {values: menu_nombre_pages, text_after: '&nbsp;&nbsp;pages (roman) / minutes (film)'}) %>
+  <% end %>
+
   <%# PARTAGE %>
   <%= bureau.row_form_sharing %>
 
