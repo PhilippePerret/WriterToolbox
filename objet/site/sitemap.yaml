@@ -1,0 +1,57 @@
+-
+  :url:         site/home
+  :lastmod:     false
+  :changefreq:  weekly
+  :priority:    0.5
+# ------- NARRATION ----------
+-
+  :url:         cnarration/home
+  :lastmod:     false
+  :changefreq:  monthly
+  :priority:    0.9
+-
+  :collection:  page/_ID_/show?in=cnarration
+  :from:        1
+  :to:          598
+  :priority:    0.8
+  :changefreq:  never
+
+# ------------- UN AN --------------
+-
+  :url:         unan/home
+  :lastmod:     false
+  :changefreq:  never
+  :priority:    1.0
+
+# ------------- ANALYSES DE FILM ---------
+-
+  :url:         analyse/home
+  :lastmod:     true
+  :changefreq:  monthly
+  :priority:    0.8
+
+# ------------- CITATIONS -----------------
+-
+  :collection:  citation/_ID_/show
+  :from:        1
+  :to:          380
+  :changefreq:  never
+  :priority:    0.4
+
+# -------------- FILMODICO -----------------
+-
+  :collection:  filmodico/_ID_/show
+  :from:        1
+  :to:          255
+  :priority:    0.5
+
+# ----------- TUTORIEL --------------------
+-
+  :method:      tutoriels_videos
+
+# -------------- DIVERS PAGES -------------------
+-
+  :url:         calculateur/main
+  :lastmod:     false
+  :changefreq:  never
+  :priority:    0.3

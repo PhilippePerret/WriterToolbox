@@ -25,6 +25,7 @@ PAYS = {
   'fi'  => "Finlande",
   'fr'  => "France",
   'gr'  => "Grèce",
+  'hk'  => "Hong Kong",
   'hu'  => "Hongrie",
   'fj'  => "Îles Fiji",
   'hi'  => "Inde",
