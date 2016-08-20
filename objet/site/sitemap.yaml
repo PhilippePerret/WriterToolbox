@@ -8,7 +8,19 @@
   :url:         cnarration/home
   :lastmod:     false
   :changefreq:  monthly
-  :priority:    0.9
+  :priority:    0.6
+-
+  :url:         livre/list?in=cnarration
+  :lastmod:     false
+  :changefreq:  never
+  :priority:    0.2
+-
+  :collection:  livre/_ID_/tdm?in=cnarration
+  :from:        1
+  :to:          10
+  :lastmod:     false
+  :changefreq:  monthly
+  :priority:    0.3
 -
   :collection:  page/_ID_/show?in=cnarration
   :from:        1
@@ -22,12 +34,63 @@
   :lastmod:     false
   :changefreq:  never
   :priority:    1.0
+-
+  :url:         aide/overview?in=unan
+  :lastmod:     false
+  :changefreq:  never
+  :priority:    1.0
+-
+  :url:         aide/home?in=unan
+  :lastmod:     false
+  :changefreq:  never
+  :priority:    0.4
 
 # ------------- ANALYSES DE FILM ---------
 -
-  :url:         analyse/home
-  :lastmod:     true
+  :url:         analyse/list
+  :lastmod:     false
   :changefreq:  monthly
+  :priority:    0.6
+-
+  :url:         analyse/home
+  :lastmod:     false
+  :changefreq:  monthly
+  :priority:    0.5
+# - Liste des analyses consultables -
+
+-
+  # Crash
+  :url:         analyse/31/show
+  :lastmod:     2016-05-01
+  :changefreq:  never
+  :priority:    1.0
+
+-
+  # The Firm
+  :url:         analyse/154/show
+  :lastmod:     2016-04-01
+  :changefreq:  never
+  :priority:    1.0
+
+-
+  # Seabiscuit
+  :url:         analyse/128/show
+  :lastmod:     2016-03-01
+  :changefreq:  never
+  :priority:    1.0
+
+-
+  # A.I. Artificial Intelligence
+  :url:         analyse/8/show
+  :lastmod:     2016-02-01
+  :changefreq:  never
+  :priority:    0.9
+
+-
+  # The Client
+  :url:         analyse/147/show
+  :lastmod:     2016-01-01
+  :changefreq:  never
   :priority:    0.8
 
 # ------------- CITATIONS -----------------
@@ -44,6 +107,7 @@
   :from:        1
   :to:          255
   :priority:    0.5
+  :changefreq:  never
 
 # ----------- TUTORIEL --------------------
 -
@@ -55,3 +119,13 @@
   :lastmod:     false
   :changefreq:  never
   :priority:    0.3
+-
+  :url:         quiz/show
+  :lastmod:     2016-08-10
+  :changefreq:  monthly
+  :priority:    0.4
+-
+  :url:         facture/main
+  :lastmod:     2016-02-01
+  :changefreq:  never
+  :priority:    0.2

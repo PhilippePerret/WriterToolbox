@@ -12,7 +12,8 @@ class SiteMap
         @video_loc    = "https://www.youtube.com/embed/#{vdata[:ref]}"
         @video_description = vdata[:description]
         @lastmod      = vdata[:date_inv]
-        balise_video
+        @priority     = vdata[:priority]
+        simple_as_xml
       end.join("\n")
       # /Fin boucle sur chaque vidéo
     end

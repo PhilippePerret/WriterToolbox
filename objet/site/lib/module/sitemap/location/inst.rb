@@ -8,7 +8,7 @@ class SiteMap
     attr_reader :data, :url, :lastmod, :changefreq, :priority
     # Pour une collection d'adresse (par ID)
     attr_reader :collection, :from, :to
-    # Pour une vidéo
+    # Pour une vidéo (:url doit être défini)
     attr_reader :video_title, :video_description, :video_thumbnail, :video_loc
     # Par une méthode dans module/sitemap
     attr_reader :method

@@ -36,10 +36,12 @@ class Video
       ref:          'z8p2_EofjQs',
       type:         :youtube,
       date:         "Mars 2015",
-      date_inv:     "2015-03-01",
       created_at:   1425164400,
       level:        1,
-      description:  "Première vidéo d'un ensemble sur l'écriture de texte et de documents."
+      # Pour sitemap
+      description:  "Première vidéo d'un ensemble sur l'écriture de texte et de documents.",
+      date_inv:     "2015-03-01",
+      priority:     0.9
     },
 
     2 => {
@@ -48,10 +50,12 @@ class Video
       ref:          'XjaO9kcnGOU',
       type:         :youtube,
       date:         "Juillet 2015",
-      date_inv:     "2015-07-01",
       created_at:   1436133600,
       level:        2,
-      description:  "Tout savoir sur les raccourcis-claviers indispensables qu'il faut connaitre pour écrire mieux et plus vite."
+      # Pour sitemap
+      description:  "Tout savoir sur les raccourcis-claviers indispensables qu'il faut connaitre pour écrire mieux et plus vite.",
+      date_inv:     "2015-07-01",
+      priority:     0.6
     }
 
   }

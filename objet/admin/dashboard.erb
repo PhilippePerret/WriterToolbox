@@ -1,13 +1,9 @@
 <%
 # Vue principale pour le tableau de bord d'administration
 raise_unless_admin
-
-    def synchronisation_forum
-	user.manitou? || (return '')
-	"Synchronisation…".in_a(href:'forum/synchro')
-    end
 %>
-<%= Admin::titre_h1 %>
+<%= Admin.titre_h1 %>
+
 <p class='small italic discret'>Bienvenue dans le tableau de bord d'administration du site.</p>
 
 <%
@@ -23,30 +19,13 @@ raise_unless_admin
 
   %>
 	<% if OFFLINE %>
-	    <%=
-	    %>
-	    <%=
-	    (
-		"Forum".in_a(href:'forum/dashboard')
-	    ).in_div(class:'admin_tool')
-	    %>
-	    <%=
-	    (
-		"Analyses".in_a(href: 'admin/dashboard?in=analyse')
-	    ).in_div(class:'admin_tool')
-	    %>
-	    <%=
-	    (
-		"Bitly".in_a(href: 'https://app.bitly.com/bitlinks/1TkHhvC', target: :new)
-	    ).in_div(class:'admin_tool')
-	    %>
-	    <%=
-	    (
-		'Mailing'.in_a(href: 'admin/mailing', target: :new)
-	    ).in_div(class:'admin_tool')
-	    %>
+	    <%= 'Forum'.in_a(href:'forum/dashboard').in_div(class:'admin_tool') %>
+	    <%= 'Analyses'.in_a(href: 'admin/dashboard?in=analyse').in_div(class:'admin_tool') %>
+	    <%= 'Bitly'.in_a(href: 'https://app.bitly.com/bitlinks/1TkHhvC', target: :new).in_div(class:'admin_tool') %>
+	    <%= 'Mailing'.in_a(href: 'admin/mailing', target: :new).in_div(class:'admin_tool') %>
+      <%= 'Sitemap'.in_a(href: 'site/sitemap').in_div(class: 'admin_tool') %>
 	<% end %>
-    </div><%# div#admin_tools %>
+</div><%# /div#admin_tools %>
 
 <%
 end # si user.phil?

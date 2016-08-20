@@ -4,15 +4,25 @@ class SiteMap
 
     def simple_as_xml
       @nombre_urls += 1
-      c = Array.new
-      c << "<url>"
-      c << "  <loc>#{full_url}</loc>"
-      c << "  <priority>#{priority}</priority>"
-      c << balise_last_modification
-      c << balise_frequence_changement
-      c << "</url>"
-      c << balise_video
-      return c.join("\n")
+      c = <<-XML
+  <url>
+    #{balise_loc}
+    #{balise_priority}
+    #{balise_last_modification}
+    #{balise_frequence_changement}
+    #{balise_video}
+  </url>
+      XML
+      c = c.gsub(/\n([ \t]*)\n/, "\n")
+      return c
+    end
+
+    def balise_loc
+      "<loc>#{full_url}</loc>"
+    end
+    def balise_priority
+      priority || (return '')
+      "<priority>#{priority}</priority>"
     end
 
     def balise_last_modification
@@ -24,39 +34,29 @@ class SiteMap
         when true
           File.stat("./objet/#{url}.erb").mtime.strftime("%Y\-%m\-%d")
         end
-      "\n      <lastmod>#{value_lastmod}</lastmod>"
+      "<lastmod>#{value_lastmod}</lastmod>"
     end
     def balise_frequence_changement
       changefreq || (return '')
-      "\n      <changefreq>#{changefreq}</changefreq>"
+      "<changefreq>#{changefreq}</changefreq>"
     end
 
     def balise_video
       video? || (return '')
       <<-XML
       <video:video>
-        <video:content_loc>
-          #{video_loc}
-        </video:content_loc>
-        <video:player_loc allow_embed="yes">
-          #{full_url}
-        </video:player_loc>
+        <video:content_loc>#{video_loc}</video:content_loc>
+        <video:player_loc allow_embed="yes">#{video_loc}</video:player_loc>
         #{balise_thumbnail_video}
         <video:title>#{video_title}</video:title>
-        <video:description>
-          #{video_description}
-        </video:description>
+        <video:description>#{video_description}</video:description>
       </video:video>
       XML
     end
 
     def balise_thumbnail_video
       video_thumbnail || (return '')
-      <<-XML
-      <video:thumbnail_loc>
-        #{video_thumbnail}
-      </video:thumbnail_loc>
-      XML
+      "\n<video:thumbnail_loc>#{video_thumbnail}</video:thumbnail_loc>"
     end
 
   end #/Location
