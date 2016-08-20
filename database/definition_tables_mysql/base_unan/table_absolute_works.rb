@@ -108,7 +108,7 @@ CREATE TABLE absolute_works
     # avec les pages que l'apprenti-auteur doit lire au cours de
     # son programme, elles sont simplement données en aide.
     # Noter également qu'il ne s'agit pas d'ID dans la collection
-    # Narration mais d'ID de pages de cours dans le programme
+    # Narration mais d'ID de pages de cours dans le programme UNAN
     # donc d'instance Unan::Program::PageCours (qui peuvent bien
     # entendu faire référence à des pages de Narration)
     pages_cours_ids VARCHAR(255),

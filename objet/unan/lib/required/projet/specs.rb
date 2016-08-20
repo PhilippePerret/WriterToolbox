@@ -15,6 +15,10 @@ class Projet
     @specs ||= get(:specs)
   end
 
+  def type
+    @type ||= specs[0].to_i
+  end
+  
   def nombre_pages
     @nombre_pages ||= (specs||'').ljust(6,'0')[3..5].to_i.nil_if_zero
   end

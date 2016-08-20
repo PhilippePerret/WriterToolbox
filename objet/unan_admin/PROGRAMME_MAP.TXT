@@ -85,6 +85,7 @@ JP 001-027 PRÉPARATION (1 mois)
         JP 027
             [WORK 24] [QUIZ 9] Multi-questionnaire pour choisir l'histoire
             [WORK 76] [PAGE 43] Présentation de la séquence de brainstorming.
+
 JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
     Cette première phase de développement — qui en comprend 3 — permet d'établir l'histoire, de la définir assez précisément.
     [WORK 21] Établissement de la structure
@@ -183,6 +184,7 @@ JP 141-294 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
           [WORK 97] Définir le nombre de pages (roman) ou de minutes (film). Pour le film préciser qu'il vaut mieux partir sur un film d'1h30.
         JP 252
           [WORK 98] Confirmer le nombre de pages (roman) et le nombre de minutes (film).
+
     JP 253-294 V1 DU SCÉNARIO/MANUSCRIT
         Ici, on va lever un peu le pied par rapport aux pages de cours et autre, pour se concentrer vraiment sur le travail à fournir sur le scénario ou le manuscrit. Les seules pages à faire seront les pages sur la rédaction, les points à voir.
         JP 253-280 PREMIER JET SANS S'ARRÊTER
