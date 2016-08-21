@@ -2,22 +2,16 @@
 # Page pour rejoindre tous les quizes sur le scénodico
 %>
 <%= Scenodico.titre_h1('Quizzz') %>
-<p class="air cadre">
-  Cette page n'est pas encore implémenté. Elle doit affichée la liste des quiz concernant le scénodico.
-</p>
-<%
-=begin
-  En fonction des privilèges du visiteur, il aura accès à certaines choses
-=end
-%>
-
 <%
 # Message sur les privilèges en fonction du visiteur
+# S'il est abonné, il peut voir tous les quiz sur le scénodico, sinon,
+# il ne peut voir que le dernier quiz.
 %>
 <p class="small italic">
   <% if user.authorized? %>
+    <%# Il sera redirigé %>
     En tant qu'auteur autorisé, vous avez accès à tous les quiz du scénodico.
   <% else %>
-    Vous n'êtes pas abonné<%= user.f_e %>, vous n'avez donc accès qu'au <%= 'dernier quiz'.in_a(href: "quiz/show") %>.
+    Vous n'êtes pas abonné<%= user.f_e %>, vous n'avez donc accès qu'au <%= 'dernier quiz'.in_a(href: "quiz/show") %> (qui ne concerne peut-être pas le Scénodico).
   <% end %>
 </p>

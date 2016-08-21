@@ -11,8 +11,7 @@ class Scenodico
     'Dictionnaire'  => 'scenodico/list',
     'Quiz'          => nil,
     'Recherche'     => 'scenodico/search',
-    'Proposer'      => 'scenodico/proposer',
-    'Tous les Quiz'=> 'scenodico/quiz_list'
+    'Proposer'      => 'scenodico/proposer'
   }
 
   class << self
@@ -21,12 +20,18 @@ class Scenodico
 
     def data_onglets
       donglets = DATA_ONGLETS
-      donglets['Quiz'] = route_last_quiz('show')
+      route_quiz = route_last_quiz('show')
+      donglets['Quiz'] = route_quiz
       if user.admin?
         donglets.merge!(
           'Nouveau'     => 'scenodico/edit',
           '[Edit Quiz]' => route_last_quiz('edit')
           )
+      end
+      if site.current_route.route == route_quiz
+        donglets.merge!(
+          'Tous les Quiz'=> 'scenodico/quiz_list'
+        )
       end
       return donglets
     end
