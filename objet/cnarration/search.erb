@@ -1,20 +1,20 @@
 <%
 # Formulaire permettant de faire une recherche sur les pages de
 # la collection Narration
-
+page.description= "Recherche dans toutes les pages des ouvrages de la collection Narration."
 enable_comments
 %>
-<%= Cnarration::titre_h1("Recherche") %>
+<%= Cnarration.titre_h1("Recherche") %>
 
 <% if user.admin? # || user.subscribed?
   %>
   <%
     if param(:operation) == 'proceed_search_in_narration'
-      Cnarration::Search::proceed
+      Cnarration::Search.proceed
     end
   %>
-  <%= Cnarration::Search::formulaire    %>
-  <%= Cnarration::Search::result  %>
+  <%= Cnarration::Search.formulaire    %>
+  <%= Cnarration::Search.result  %>
 
 <% elsif false == user.subscribed? %>
 <p>

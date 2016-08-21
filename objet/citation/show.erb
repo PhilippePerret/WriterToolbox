@@ -1,6 +1,6 @@
 <%
 # Pour l'affichage d'une citation d'auteur
-
+page.description= "Affichez la citation d'un auteur et son explicitation pour mieux la comprendre."
 enable_comments
 %>
 <%
@@ -15,7 +15,7 @@ end
 %>
 <%= Citation.titre_h1 %>
 <% if is_consultable %>
-  <%= Citation::current.output %>
+  <%= Citation.current.output %>
 <% else %>
   <%= lien.bloc_soutien('Pour pouvoir consulter d’autres citations') %>
 <% end %>

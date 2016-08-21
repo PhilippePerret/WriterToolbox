@@ -1,11 +1,11 @@
 <%
 # Vue pour la recherche dans les films
-
+page.title= "Filmodico"
+page.description= "Recherche parmi tous les films du <strong>Filmodico</strong>."
 enable_comments
 %>
-<% page.title = "Filmodico" %>
 
-<%= Filmodico::titre_h1("Recherche") %>
+<%= Filmodico.titre_h1("Recherche") %>
 <%
 site.require 'form_tools'
 form.prefix = "filmsearch"

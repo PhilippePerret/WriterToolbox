@@ -1,6 +1,6 @@
 <%
 # Vue pour la table des matières d'un livre
-
+page.description= "Table des matières d'un livre de la collection Narration."
 enable_comments
 %>
 <%
@@ -8,7 +8,7 @@ def livre
   @livre ||= site.objet
 end
 %>
-<%= Cnarration::titre_h1(livre.titre) %>
+<%= Cnarration.titre_h1(livre.titre) %>
 <% if user.admin? %>
 <div class="tiny right btns">
   <%= 'Smart TdM'.in_a(href: "admin/smart_tdm?in=cnarration&livre_id=#{livre.id}") %>

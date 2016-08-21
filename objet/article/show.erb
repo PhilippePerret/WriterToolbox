@@ -4,7 +4,8 @@
 
 # Autoriser les commentaires
 enable_comments
-
+page.title="Article"
+page.description= "Affichage d'un article du blog de la boite à outils de l'auteur."
 %>
 <%= Article.titre_h1 %>
 <%= Article.new(site.current_route.objet_id).output %>
