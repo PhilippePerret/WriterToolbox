@@ -194,9 +194,6 @@ RSpec.configure do |config|
   # À exécuter à la toute fin des tests
   config.after :suite do
 
-    # SiteHtml.instance.require_module('gel')
-    # SiteHtml::Gel::degel('before-test')
-
     # Si la liste n'est pas vide, on détruit tous les
     # users créés
     unless $users_2_destroy.empty?
@@ -212,7 +209,12 @@ RSpec.configure do |config|
       end.compact
       User.table.delete(where: "id IN (#{$users_2_destroy.join(', ')})")
     end
+
+    # Destruction de tous les commentaires de page qui ont été produits
+    remove_page_comments
+
   end
+  # After suite
 
 
   # Méthode à appeler dans le before(:all) de certains tests pour

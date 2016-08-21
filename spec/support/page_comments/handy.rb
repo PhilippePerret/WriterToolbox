@@ -1,4 +1,11 @@
 
+# Détruire tous les commentaires de page
+#
+# Cette opération est appelée à la fin de la suite des tests
+def remove_page_comments
+  Page::Comments.table.delete
+end
+
 # Créer des commentaires de pages
 #
 # +args+
