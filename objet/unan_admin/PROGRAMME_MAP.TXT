@@ -105,15 +105,17 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 29] [PAGE 11] Difficulté de la structure.
                     [WORK 55] [PAGE 23] L'incident perturbateur.
                     [WORK 56] [PAGE 24] L'incident déclencheur.
-                JP 030-031 [WORK 72] TR1 Brainstorming PERS
-                    Réfléchir aux personnages possibles, pour le moment sans autres indications.
+                JP 030-031 TR1 Brainstorming PERS
+                    [WORK 72] Réfléchir aux personnages principaux, surtout le protagoniste et l'antagoniste.
+                    TODO [EXEMPLE] Exemple de travail sur le protagoniste et l'antagoniste.
                     [WORK 75] [PAGE 42] Création du dossier et fichier sur les personnages.
                 JP 032-033 TR1 Brainstorming DOCU
-                    [WORK 78] Première liste des sujet.
+                    [WORK 78] Première liste des sujets.
                     [WORK 79] Création du document Recherche et documentation
+                    TODO [WORK] Faire un document “Questions.odt” dans lequel on mettra toutes les questions qui se dégageront au cours du travail des jours suivants — et jusque tard — qui relèvent de la documentation. On tentera d'y répondre au cours d'une séance dédiée à ce problème.
                 JP 034-035 TR1 Brainstorming DYNA
                     [WORK 81] Premier document sur la dynamique.
-                        Brainstormer sur l'objectif principal de chaque personnage et principalement du protagoniste.
+                        Brainstormer sur l'objectif principal de chaque personnage et principalement du protagoniste. Recherche générale d'objectif et de conflit.
                     [WORK 80] Création du dossier et du document pour la dynamique.
                     TODO [EXEMPLE] Un exemple de liste d'objectifs et d'obstacles tel que défini par le travail (tiré de l'histoire sur la soeur et la montagne)
                     TODO [EXEMPLE] L'exemple de liste d'objectifs avec un film existant (Fight Club peut-être)
@@ -121,14 +123,14 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     Premier tour (TR1) de brainstorming sur les thèmes et l'aspect thématique du récit.
                     [WORK 83] Construction du dossier pour la thématique
                     [WORK 84] Création du premier document thématique
-                    [WORK 85][PAGE 45] Première esquisse des thèmes (page cours propre sur le travail à exécuter
+                    [WORK 85][PAGE 45] Première esquisse des thèmes (page cours propre)
                 JP 038-039 TR1 Brainstorming ANAF
                     [WORK 87] Création du dossier d'analyse
                     [WORK 89][PAGE 46] Analyse simple à exécuter. Page de cours propre.
                     [WORK 88] Produire un document d'analyse de film.
-                JP 040-041 TR1 Brainstorming PERS
+                JP 040-041 TR1 bis Brainstorming PERS
                     Alors que le premier tour sur les personnages était consacré au protagoniste et à l'antagoniste, ici on va s'intéresser particulièrement aux autres personnages.
-                    [WORK 92] Travail sur les passages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                    TODO [WORK] Faire le travail sur les personnages secondaires (premier travail)
                     TODO [EXEMPLE] Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
                     TODO [EXEMPLE] Faire un exemple à partir d'un film, peut-être un film “touffu” comme Fight Club ou demi-touffu comme Seven.
                     [WORK 59] [PAGE 27] La crise (scène-clé)
@@ -142,12 +144,21 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 86] [QUIZ 10] Évaluation du travail au sein du programme
                 JP 044-045 TR2 STRT
                     Deuxième tour sur le document, pour affiner le travail précédent sur la structure.
-                    TODO Voir le travail précis à fournir sur la structure
-                    TODO Produire un exemple de travail sur la structure. Peut-être faire un document qui reprenne le précédent document et qui montre comment changer ce document.
+                    TODO [WORK] Voir le travail précis à fournir sur la structure
+                    TODO [EXEMPLE] Produire un exemple de travail sur la structure. Peut-être faire un document qui reprenne le précédent document et qui montre comment changer ce document.
                 JP 046-047 TR2 PERS
+                  [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                  TODO [EXEMPLE] Document exemple sur le travail sur les personnages.
                 JP 048-049 TR2 DOCU
+                  TODO [WORK] Travail à partir de la liste des sujets définie au tour précédent sur ce document. Et à partir du document “Questions.odt”. Commencer à tenter de répondre aux questions. Commencer à chercher des données sur internet, dans les livres, ou là où peut se trouver l'information.
+                  TODO [WORK] Commencer à prendre des contacts (sur les forums, sur les mails qu'on peut obtenir) avec des personnes susceptibles de donner des renseignements concrets.
                 JP 050-051 TR2 DYNA
+                  TODO [WORK] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
+                    Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
+                  TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
                 JP 051-053 TR2 THEM
+                  TODO [WORK] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
+                    NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
                 JP 054-055 TR2 ANAF
                   Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
                   [WORK 88] Analyse d'un film
@@ -156,6 +167,18 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
             JP 056-069 TR 3 sur la STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 On passe ici deux jours sur chaque document (deux sessions de travail)
                 TODO On doit trouver une particularité pour chaque retour du document. Par exemple, une fois, sur le document du personnage, il faut travailler les relations entre les personnages. Pour la structure, les scènes-clé, les segments, les pics (brainstorming même quand les choses sont bien avancées)
+                JP 056-057 TR3 analyse de films ANAF
+                  TODO [WORK] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
+                  TODO [EXEMPLE] Exemple travail identique sur au moins un film.
+                JP 058-059 TR3 sur les thèmes THEM
+                  TODO [WORK] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)
+                    TODO Bien préciser que la thèse est souvent ce que l'on pense et qu'il faut savoir, pour le propos, savoir défendre son point de vue contraire, le quelqu'un qui défendrait le point de vue contraire au sien.
+                  TODO [PAGE] Lier à la page sur les thèmes qui développe ce principe de la thèse et l'antithèse.
+                JP 060-061 TR3 sur dynmatique DYNA
+                JP 062-063 TR3 sur la documentation DOCU
+                JP 064-065 TR3 sur les personnages PERS
+                JP 066-067 TR3 sur la structure STRT
+                jp 068-069 TR3bis sur la structure STRT
             JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
 
     JP 084-140 APPROFONDISSEMENT DE L'HISTOIRE
