@@ -3,7 +3,7 @@ class Unan
 class Bureau
 
   # Les valeurs qu'il faut prendre en compte même si elles ne
-  # sont pas définies, ce qui survient lorsque ce sont des
+  # sont pas définies dans les paramètres, ce qui survient lorsque ce sont des
   # cases à cocher décochées. Si elles en sont pas définies, il
   # faut mettre leur valeur à false
   def user_preferences
@@ -42,7 +42,15 @@ class Bureau
           else val
           end
         end
-      user_preferences.merge! key => def_value
+      if key == :rythme
+        # Pour le rythme, il faut l'enregistrer dans la donnée du programme,
+        # pas dans les préférences
+        user.program.set(rythme: def_value)
+      else
+        # Si ce n'est pas le rythme, il faut enregistrer la donnée dans les
+        # préférences de l'auteur
+        user_preferences.merge! key => def_value
+      end
       if key == :fixed_time_mail
         # Si c'est la préférence d'envoi du mail quotidien
         # à heure fixe, il faut mémoriser l'heure choisi
@@ -64,10 +72,13 @@ class Bureau
           user_preferences.merge!( :goto_after_login => '2' )
         end
       end
+      # /IFs en fonction de key
     end
+    # /fin de boucle sur tous les paramètres CGI
     user.set_preferences( user_preferences )
     flash "Préférences enregistrées."
   end
+  # /save_preferences
 
   # Cf. l'explication dans home.rb
   def missing_data
