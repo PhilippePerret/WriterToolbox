@@ -11,6 +11,11 @@ class User
   include Capybara::DSL
 
   def remplit_le_formulaire(form)
+    form =
+      case form
+      when String then page.find("form##{form}")
+      else form
+      end
     FormTest.new(form)
   end
 
@@ -57,7 +62,7 @@ class FormTest
     self
   end
   def et_le_soumet nom_bouton
-    form.click_button(nom_bouton)
+    form.click_button(nom_bouton, match: :first)
   end
   alias :et_clique :et_le_soumet
 
