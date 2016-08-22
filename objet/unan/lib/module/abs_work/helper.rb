@@ -34,13 +34,20 @@ class AbsWork
       end
     end
 
+    # Barrière provisoire
+    # Il arrive que le titre soit false, prévenir l'administrateur
+    if ! titre
+      send_error_to_admin "`titre` est false dans Unan::Program::AbsWork#as_card (#{__FILE__}:#{__LINE__}).\n"+
+        "ID Abs_Work : #{self.id.inspect}"
+    end
+
     # Composition de la carte (attention, c'est la version
     # "absolue", celle qui est affichée pour l'admin ET lorsque le
     # travail est affiché quand il n'est pas encore commencé)
     (
       (
         human_type_w.in_span(class:'type') +
-        titre.in_span
+        (titre||'- Sans titre - ').in_span
       ).in_div(class:'titre') +
       form_pour_marquer_started_or_fini(started = false) +
       div_travail + # avec exemples et pages cours
