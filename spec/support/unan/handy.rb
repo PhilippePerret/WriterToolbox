@@ -8,7 +8,8 @@
 #
 def reset_auteur_unan auteur
   site.require_objet 'unan'
-  auteur.instance_of?(User) || auteur = User.get(auteur)
+  auteur.instance_of?(User) || auteur = User.new(auteur)
+  auteur.program.set(rythme: 5)
   auteur.table_quiz.delete
   auteur.table_works.delete
   auteur.table_pages_cours.delete

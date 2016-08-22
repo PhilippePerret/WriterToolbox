@@ -96,7 +96,7 @@ class SuperFile
   # Déserbe le fichier (si c'est un fichier ERB) et retourne son contenu
   # +bindee+    L'objet bindé à la vue, éventuellement
   #
-  # Il est bon d'implémenter une méthode générale `send_error_to_admin`
+  # Il existe une méthode générale `send_error_to_admin`
   # qui sera appelée en cas d'erreur, pour rapporter cette erreur
   # à l'administrateur.
   #
