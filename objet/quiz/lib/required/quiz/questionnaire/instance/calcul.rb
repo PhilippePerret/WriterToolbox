@@ -6,7 +6,7 @@ class Quiz
   # Méthode principale appelée lorsque l'on clique sur le bouton
   # pour soumettre le quiz
   #
-  # Si la questionnaire a bien été enregistré, elle construit le
+  # Si le questionnaire a bien été enregistré, elle construit le
   # rapport à afficher, avec le résultat et les réponses corrigées.
   #
   # Si c'est un user inscrit (abonné, unanunscript, etc.), on

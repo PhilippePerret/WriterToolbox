@@ -22,7 +22,10 @@ class AbsWork
   #
   def as_card params = nil
     # cas du bureau normal de l'auteur d'un programme UAUS
-    return as_card_relative unless relative_data.nil?
+    unless relative_data.nil?
+      # return 'C’est la carte relative'
+      return as_card_relative
+    end
 
     params ||= Hash.new
     classes_css = ['work']
@@ -89,7 +92,7 @@ class AbsWork
   end
 
   def human_narrative_target
-    @human_narrative_target ||= Unan::SujetCible::new(narrative_target).human_name
+    @human_narrative_target ||= Unan::SujetCible.new(narrative_target).human_name
   end
 
   # Type de résultat au format humain

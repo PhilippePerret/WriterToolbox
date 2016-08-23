@@ -73,9 +73,9 @@ class Bureau
     chose = dname[:sing].downcase
     fini  = dname[:fini]
     arr = auteur.works_recent(type)
-    if type == :quiz
-      debug "Nombre de quiz récents : #{arr.count}"
-    end
+    # if type == :quiz
+    #   debug "Nombre de quiz récents : #{arr.count}"
+    # end
     '<hr />' +
     if arr.count > 0
       "<h4>#{dname[:plur]} récemment #{fini}s</h4>" +

@@ -9,6 +9,10 @@ require 'singleton'
 THIS_FOLDER = File.expand_path(File.dirname(__FILE__))
 APP_FOLDER = FOLDER_APP = File.dirname(THIS_FOLDER)
 
+# Pour envoyer le message qui dit que le cron job est OK (sans autre chose),
+# mettre cette constante à true
+SEND_MAIL_CRON_OK_EVEN_IF_OK = false
+
 class CRON2
   include Singleton
   def init
@@ -103,7 +107,7 @@ class CRON2
         <pre>#{contenu_cron_log_error}</pre>
         HTML
         ).send
-    else
+    elsif SEND_MAIL_CRON_OK_EVEN_IF_OK
       CRONMail.new(
         subject: 'CRON JOB OK',
         message: <<-HTML

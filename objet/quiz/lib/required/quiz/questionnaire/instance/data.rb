@@ -13,6 +13,7 @@ class Quiz
   # ---------------------------------------------------------------------
   def titre       ; @titre        ||= get(:titre)       end
   def groupe      ; @groupe       ||= get(:groupe)      end
+  def type        ; @type         ||= get(:type)        end
   def options     ; @options      ||= get(:options) || default_options end
   def description ; @description  ||= get(:description) end
   def created_at  ; @created_at   ||= get(:created_at)  end

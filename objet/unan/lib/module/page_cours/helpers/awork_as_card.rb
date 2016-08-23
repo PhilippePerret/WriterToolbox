@@ -14,9 +14,8 @@ class Unan
 class Program
 class AbsWork
 
-  # Quel que soit le travail, ce sont ces deux méthodes, `as_card`
-  # et `as_card_relative` qui sont appelées pour retourner le code
-  # des trois modes d'affichage :
+  # Méthodes, `as_card` et `as_card_relative` qui sont appelées
+  # pour retourner le code des trois modes d'affichage d'une page à lire :
   #   - travaux à démarrer (donc ici : page à marquer vue)
   #   - travaux en cours (inachevés)
   #   - travaux récents
@@ -24,6 +23,7 @@ class AbsWork
   def as_card options
     options ||= Hash.new
     options.key?(:auteur) || options.merge!(auteur: user)
+
     upage = User::UPage.new(options[:auteur], item_id)
     upage.output_bureau( self )
   end
