@@ -2,4 +2,4 @@
 
 NOM_PROGRAMME_UNAN  = 'ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN'
 TITRE_PAGE_UNAN     = 'UN FILM/ROMAN EN UN AN'
-SOUS_TITRE_BUREAU   = 'Votre centre de travail'
+UNAN_SOUS_TITRE_BUREAU   = 'Votre centre de travail'

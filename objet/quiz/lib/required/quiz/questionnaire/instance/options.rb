@@ -5,7 +5,17 @@
 
 =end
 class Quiz
-  
+
+  # Pour régler les options de l'extérieur
+  # @usage :
+  #   quiz.no_pre_description = true
+  attr_accessor :no_pre_description
+  attr_accessor :no_post_description
+  # Pour ne pas afficher le message qui donne le résultat par rapport aux
+  # autres tests effectués par d'autres personnes, et permet de gagner des
+  # jours d'abonnement gratuits.
+  attr_accessor :no_message_note_finale
+
   # Valeurs des bits d'options
   OPTIONS = {
     0 => {hname: 'courant', description: '1: quiz courant, 0: pas courant'},
@@ -15,6 +25,16 @@ class Quiz
     4 => {hname: 'Unité du nombre max de questions ou 0', description: nil},
     5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test ou du programme UNAN'}
   }
+
+  def pre_description?
+    !self.no_pre_description
+  end
+  def post_description?
+    !self.no_post_description
+  end
+  def message_note_finale?
+    !self.no_message_note_finale
+  end
 
   # Les options par défaut. Obligatoire pour gérer l'édition
   # correcte d'un nouveau quiz.

@@ -22,9 +22,9 @@ class User
   def click_le_lien ref_bouton, options = nil
     options ||= Hash.new
     if options.key?(:in)
-      within(options[:in]){ click_link ref_bouton }
+      within(options[:in]){ click_link ref_bouton, match: :first }
     else
-      click_link(ref_bouton)
+      click_link(ref_bouton, match: :first)
     end
   end
   alias :clique_le_lien :click_le_lien
@@ -86,6 +86,9 @@ class FormTest
   # ---------------------------------------------------------------------
 
   class Field
+
+    include Capybara::DSL
+
     # Le FormTest du formulaire contenant le champ
     attr_reader :form
     attr_reader :id, :data
@@ -94,7 +97,7 @@ class FormTest
       @id   = field_id
       @data = field_data
     end
-    def page; @page ||= form.page end
+    # def page; @page ||= form.page end
     def type
       @type ||= @data[:type] || :text
     end
@@ -112,10 +115,45 @@ class FormTest
       when :text, :textarea then form.fill_in(ref, with: value)
       when :select    then form.select(value, from: ref)
       when :checkbox  then form.send(value ? :check : :uncheck, ref)
-      when :radio     then form.choose(ref)
+      when :radio     then
+
+        data.key?(:in) || raise('Pour les radio-boutons, il faut impérativement spécifier un container pour scroller jusqu’à lui (on ne peut pas cocher un élément invisible)')
+        # Pour commencer, il faut scroller jusqu'à l'élément qui
+        # contient le radio button
+        page.execute_script("UI.scrollTo('#{data[:in]}',100)")
+        sleep 0.8
+        if data[:id]
+          # Par l'identifiant, c'est le plus sûr
+          rid = data[:id]
+          jid = "input[type=\"radio\"]##{rid}"
+          # container.find(jid).click
+          # container.find('input[type="radio"]').click
+          choose(rid)
+        else
+          # Il peut arriver que des noms soient identiques, dans ce cas-là,
+          # on met une clé '--- X ---' et on met en valeur la référence du
+          # bouton à cocher
+          goodref =
+            if ref.start_with?('---') && ref.end_with?('---')
+              data[:value] || data[:name]
+            else
+              ref
+            end
+          container.choose(goodref)
+        end
       else
         raise "Je ne sais pas encore traiter un champ de type #{type.inspect}."
       end
+    end
+    def container
+      if within
+        form.find(within)
+      else
+        form
+      end
+    end
+    def within
+      @within ||= data[:in]
     end
   end
 

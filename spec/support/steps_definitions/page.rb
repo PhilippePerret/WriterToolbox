@@ -198,15 +198,25 @@ end
 #
 # Note : pour ce test, on attend quelques secondes si c'est en
 # ajax.
+# Note : le message d'erreur peut se trouver soit dans le flash soit
+# dans un div de class warning.
 def la_page_a_l_erreur err, options = nil
   options ||= Hash.new
   ajax = options[:ajax] == true
   options.merge!(text: /#{Regexp.escape err}/)
+  hasflash, haserror = nil, nil
   tr = 0; while (tr += 1) < 20
-    page.has_css?('div#flash div.error', options) ? break : (sleep 1)
+    hasflash = page.has_css?('div#flash div.error', options)
+    haserror = page.has_css?('div.warning', options)
+    ( hasflash || haserror )? break : (sleep 1)
   end
-  expect(page).to have_tag('div#flash div.error', options)
-  success "La page affiche le message d'erreur flash “#{err}”."
+  if hasflash
+    expect(page).to have_tag('div#flash div.error', options)
+    success "La page affiche le message d'erreur flash “#{err}”."
+  else
+    expect(page).to have_tag('div.warning', options)
+    success "La page affiche le message warning “#{err}”."
+  end
 end
 def la_page_napas_derreur
   if page.has_css?('div#flash div.error')

@@ -11,7 +11,7 @@
 <h2>Questionnaire (simulation)</h2>
 <div class="right small"><%= iquiz.lien_edit("Éditer le formulaire") %></div>
 <% if param(:operation) != "bureau_save_quiz" %>
-  <%= iquiz.output_in_container(simulation:true, forcer:true) %>
+  <%= iquiz.output(simulation:true, forcer:true) %>
 <% else %>
   <%= iquiz.resultat_simulation %>
 <% end %>

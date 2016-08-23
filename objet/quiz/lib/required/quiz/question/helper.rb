@@ -136,13 +136,15 @@ class Quiz
         if checkbox?
           libelle.in_checkbox(
             name:     "#{question.quiz.prefix_reponse}[rep#{question.id}_#{index}]",
+            id:       "#{question.quiz.prefix_reponse}_rep#{question.id}_#{index}_",
             checked: selection_user?
           )
         else
           libelle.in_radio(
-            name: "#{question.quiz.prefix_reponse}[rep#{question.id}]",
-            value: index.to_s,
-            checked: selection_user?
+            name:     "#{question.quiz.prefix_reponse}[rep#{question.id}]",
+            id:       "#{question.quiz.prefix_reponse}_rep#{question.id}_#{index}",
+            value:    index.to_s,
+            checked:  selection_user?
             )
         end.in_li(id: "q-#{question.id}-r-#{index}", class: class_reponse)
       end

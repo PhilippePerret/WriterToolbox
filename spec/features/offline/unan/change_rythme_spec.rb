@@ -11,7 +11,7 @@ feature "Changement de rythme" do
     # === TEST ===
     identify_benoit
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
     la_page_napas_la_balise('h3', text: 'Préférences',
       success: 'L’onglet “Préférences” n’est pas affiché.')
     benoit.clique_le_lien('Préférences')
@@ -24,7 +24,7 @@ feature "Changement de rythme" do
 
     # Pour attendre que la page se réaffiche
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
 
     # === VÉRIFICATIONS ===
     # La donnée du programme doit avoir été modifiée dans la table
@@ -43,7 +43,7 @@ feature "Changement de rythme" do
     expect(benoit.program.rythme).to eq 5
 
     identify_benoit
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
 
     benoit.clique_le_lien('État')
     la_page_a_la_balise('h3', text: 'État général du programme')
@@ -61,7 +61,7 @@ feature "Changement de rythme" do
 
     # Pour attendre que la page se réaffiche
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
 
     # === VÉRIFICATIONS ===
     # La donnée du programme doit avoir été modifiée dans la table

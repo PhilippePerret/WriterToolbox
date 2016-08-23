@@ -1,9 +1,13 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
 
   # Enregistre dans la table générale :cold, 'quiz' la soumission de
   # ce questionnaire et enregistre le résultat courant de l'user
   # s'il est identifié
+  #
+  # Si le quiz a déjà été enregistré il y a peu, on ne fait rien et
+  # on signale le problème à l'user.
+  # La méthode RETURN FALSE dans ce cas-là.
   #
   # La méthode est appelée par Quiz#evaluate dans le module calcul.rb
   #
@@ -15,12 +19,19 @@ class ::Quiz
       else
         app.session['last_quiz'] != "#{id}-#{suffix_base}"
       end
-    save_soumission_in_table_generale if save_in_table_generale
+
+    if save_in_table_generale
+      save_soumission_in_table_generale
+    else
+      return false
+    end
 
     # Pour un visiteur non identifié, on mémorise ce quiz effectué
     # pour qu'il ne puisse pas l'enregistrer à nouveau au cours de
     # la même session.
     user.identified? || app.session['last_quiz'] = "#{id}-#{suffix_base}"
+
+    return true
   end
 
   # Enregistrement de la soumission courante dans la table
@@ -85,7 +96,7 @@ class ::Quiz
     last_five_minutes = NOW - (5*60)
     preres = table_resultats.get(where: "user_id = #{user.id} AND quiz_id = #{id} AND created_at > #{last_five_minutes}")
     preres == nil || begin
-      error 'Vous ne pouvez pas réenregistrer ce questionnaire tout de suite…'
+      @error_evaluation = 'Vous ne pouvez pas réenregistrer ce questionnaire tout de suite…'
       return false
     end
 
@@ -100,7 +111,7 @@ class ::Quiz
       else 2
       end
     preres.count < max_records || begin
-      error "En qualité #{user.de_htype}, vous ne pouvez pas enregistrer ce questionnaire plus de #{max_records} fois."
+      @error_evaluation = "En qualité #{user.de_htype}, vous ne pouvez pas enregistrer ce questionnaire plus de #{max_records} fois."
       return false
     end
 
@@ -110,7 +121,7 @@ class ::Quiz
     # On vérifie que les résultats des mêmes quiz soient différents
     preres.each do |hquiz|
       if hquiz[:reponses] == ureponses_json && hquiz[:points] == unombre_points
-        error "Ce quiz a déjà été enregistré avec les mêmes réponses. Je ne l'enregistre pas à nouveau."
+        @error_evaluation = "Ce quiz a déjà été enregistré avec les mêmes réponses. Je ne l'enregistre pas à nouveau."
         return false
       end
     end

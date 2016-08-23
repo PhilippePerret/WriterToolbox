@@ -1,6 +1,9 @@
 # encoding: UTF-8
 class Quiz
 
+  attr_reader :is_reshown
+  attr_reader :error_evaluation
+
   # = main =
   #
   # Méthode principale appelée lorsque l'on clique sur le bouton
@@ -19,23 +22,38 @@ class Quiz
     get_data_generales
 
     if ureponses.nil?
-      @error = :aucune_reponse
+      @error_evaluation = :aucune_reponse
       @report = 'Voyons ! Il faut remplir le quiz, pour obtenir une évaluation !'
       @do_evaluation = false
     elsif pas_toutes_les_reponses?
-      @error = :nombre_reponses_insuffisant
+      @error_evaluation = :nombre_reponses_insuffisant
       @report = 'Il faut répondre à toutes les questions, pour obtenir une évaluation intéressante.'
       @do_evaluation                  = false
       @do_exergue_reponses_manquantes = true
     else
       # On calcule le rapport
+      @error_evaluation = nil
       @do_evaluation = true
-      report
       # Enregistrement du résultat (sauf si c'est un reshow) :
       #   - dans la table des résultats pour l'user s'il est identifié
       #   - toujours dans la table général :cold, quiz qui consigne toutes
       #     les notes et toutes les soumissions.
-      save_resultat unless @is_reshown
+      unless @is_reshown
+        if save_resultat
+          # Les résultats ont été enregistrés normalement, on peut afficher
+          # la note obtenue et le commentaire s'il est demandé.
+          report
+        else
+          # Les résultats n'ont pas été enregistrés, peut-être tout simplement
+          # parce qu'ils l'ont déjà été et qu'ils ne peuvent l'être à nouveau
+          # La note finale ne sera pas affiché. L'erreur a été placée dans
+          # @error_evaluation, on peut l'afficher
+          # Note : le fait de l'avoir placée dans @error_evaluation permet
+          # par exemple au programme UN AN de savoir qu'il ne faut pas
+          # enregistrer à nouveau les points
+          error @error_evaluation
+        end
+      end
     end
   end
 

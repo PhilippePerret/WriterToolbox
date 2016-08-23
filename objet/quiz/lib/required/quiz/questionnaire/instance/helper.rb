@@ -45,7 +45,7 @@ class Quiz
   # Code HTML pour le formulaire du quiz
   def html_form
     f = String.new
-    f << 'evaluate_quiz'.in_hidden(name:'operation')
+    f << form_operation.in_hidden(name:'operation')
     f << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
     # Le temps courant, au cas où, pour voir si le formulaire n'est
     # pas soumis trop vite
@@ -54,20 +54,33 @@ class Quiz
     f << questions_formated
     f << bouton_soumission_ou_autre.in_div(class: 'buttons')
 
-    form_action = "quiz/#{id}/show"
-    f = f.force_encoding('utf-8').in_form(id:"form_quiz", class:'quiz', action: form_action)
+    f = f.force_encoding('utf-8').in_form(id: form_id, class:'quiz', action: form_action)
   end
+
+  # ID du formulaire
+  # Pour le redéfinir : quiz.form_id= <valeur>
+  def form_id; @form_id ||= "form_quiz-#{id}" end
+  def form_id= value; @form_id = value end
+
+  # ACTION du formulaire
+  # Pour le redéfinir : quiz.form_action= <valeur>
+  def form_action; @form_action ||= "quiz/#{id}/show" end
+  def form_action= value; @form_action = value end
+
+  # OPÉRATION du formulaire
+  # Pour la redéfinir : quiz.form_operation= <valeur>
+  def form_operation; @form_operation ||= 'evaluate_quiz' end
+  def form_operation= value; @form_operation = value end
+
+  # Nom du bouton pour soumettre le quiz
+  def form_submit_button; @form_submit_button ||= 'Soumettre le quiz' end
+  def form_submit_button= value; @form_submit_button = value end
 
   # Retourne le code HTML pour le bouton pour soumettre le
   # formulaire ou autre bouton si c'est un résultat
   def bouton_soumission_ou_autre
-    # if ureponses.nil? || @is_reshown
-      'Soumettre le quiz'.in_submit(class: 'btn')
-    # else
-    #   # À présent, on ne peut plus passer par là normalement, puisqu'on
-    #   # ne réaffiche que les résultats généraux, pas le détail des choix
-    #   'Essayer encore'.in_a(href: "quiz/#{id}/show?qdbr=#{suffix_base}", class: 'btn')
-    # end
+    evaluation? && (return '')
+    form_submit_button.in_submit(class: 'btn')
   end
 
   # Code HTML pour la description du quiz, si elle existe
@@ -88,6 +101,7 @@ class Quiz
   end
 
   def avant_description_quiz
+    pre_description? || return
     c = ''
     if data_generales.nil?
       if user.admin?
@@ -110,6 +124,7 @@ class Quiz
   end
 
   def apres_description_quiz
+    post_description? || return
     c = ''
     if user.admin?
       if data_generales.nil?

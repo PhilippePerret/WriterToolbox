@@ -3,7 +3,6 @@
   Extension de la class Unan::Program::AbsWork spécialement
   pour l'onglet QUIZ du bureau de l'auteur
 =end
-site.require_objet 'quiz'
 class Unan
 class Program
 class AbsWork
@@ -64,7 +63,7 @@ class UnanQuiz
       # Questionnaire non démarré => Un cadre pour le démarrer
       form_start_quiz
     else
-      output_in_container
+      output
     end
   end
 
@@ -146,40 +145,40 @@ class UnanQuiz
   # +options+
   #   forcer:       Si true, on force la reconstruction du questionnaire
   #   simulation:   Si true, c'est une simulation
-  def output_in_container options = nil
-    options ||= {}
-    #
-    # # Note : options[:correction] est utilisé pour les simulations
-    # @for_correction = true if options[:correction] == true
-    #
-    # if correction?
-    #   # Correction du questionnaire
-    #   code_corrections_et_commentaires
-    # else
-    #   # Affichage du questionnaire pour remplissage
-    #   form = ''
-    #   form << 'bureau_save_quiz'.in_hidden(name:'operation')
-    #   form << id.in_hidden(name:'quiz[id]', id:"quiz_id-#{id}")
-    #   unless awork.nil?
-    #     # Se produit lorsque l'on édite le formulaire en dehors
-    #     # du travail normal (administration)
-    #     form << awork.id.in_hidden(name: 'quiz[awork_id]', id: 'quiz_awork_id')
-    #     form << awork.pday.in_hidden(name: 'quiz[awork_pday]', id: 'quiz_awork_pday')
-    #   end
-    #   if work != nil
-    #     form << work.id.to_s.in_hidden(name:'quiz[work_id]', id:"quiz_work_id-#{id}")
-    #   end
-    #   form << output(forcer = !!options[:forcer])
-    #   form_action = options[:simulation] ? "quiz/#{id}/simulation?in=unan_admin" : "bureau/home?in=unan&cong=quiz"
-    #   form << bureau.submit_button("Soumettre le questionnaire", {discret: false, tiny: false})
-
-    html = ""
+  #   evaluate      Si true, on évalue le quiz
+  def output options = nil
+    options ||= Hash.new
+    html = String.new
     html << "<h5 class='titre'>#{titre}</h5>"
+    # Action
+    # Noter que c'est dans cette valeur qu'on passe l'UnanQuiz courant
+    quiz.form_action        = "bureau/home?in=unan&cong=quiz&unanquiz=#{id}"
+    quiz.form_operation     = 'bureau_save_quiz'
+    quiz.form_submit_button = 'Soumettre'
+    quiz.no_pre_description =     true
+    quiz.no_post_description=     true
+    quiz.no_message_note_finale=  true
+
+    # === ÉVALUATION DU QUESTIONNAIRE
+    if options[:evaluate]
+      quiz.evaluate
+      unless quiz.is_reshown || quiz.error_evaluation
+        auteur.add_points quiz.unombre_points
+        flash "Nombre de points marqués : #{quiz.unombre_points}"
+      else
+        if quiz.error_evaluation
+          debug "Une erreur est survenue (#{quiz.error_evaluation}), impossible d'enregistrer le nombre de points"
+        else
+          debug "Reshown du questionnaire => pas de points enregistrés."
+        end
+      end
+    end
+
     html << quiz.output
     # html << form.force_encoding('utf-8').in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
     html
   end
-  # /output_in_container
+  # /output
 
   # Travail propre ({Unan::Program::Work}) correspondant
   # à ce questionnaire.

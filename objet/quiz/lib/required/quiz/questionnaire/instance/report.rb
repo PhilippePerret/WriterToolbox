@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
 
   # = main =
   #
@@ -9,7 +9,7 @@ class ::Quiz
   # lors de l'affichage du formulaire
   def resultat
     return '' if @report.nil?
-    if @error
+    if @error_evaluation
       @report.in_div(class: 'warning')
     else
       @report.in_div(class: "quiz_resultat")
@@ -39,6 +39,7 @@ class ::Quiz
   end
 
   def message_note_finale
+    message_note_finale? || (return '')
     @message_note_finale ||= begin
       debug "current_note_max : #{current_note_max.to_f}"
       debug "unote_finale = #{unote_finale.to_f}"

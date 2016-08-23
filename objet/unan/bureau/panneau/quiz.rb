@@ -25,9 +25,15 @@ end #/Unan
 # Pour lancer la sauvegarde des données du questionnaire
 case param(:operation)
 when 'bureau_save_quiz'
+
+  # L'UnanQuiz (propre au programme)
+  unanquiz_id = param(:unanquiz).to_i_inn
+  unanquiz_id != nil || raise('Il faut définir l’ID du UnanQuiz dans les paramètres !')
+  unanquiz = Unan::UnanQuiz.new(unanquiz_id)
+
+  # Le Quiz (l'instance Quiz général, pour tout quiz)
   quiz_id = param(:quiz)[:id].to_i_inn
   quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
-  # quiz = Unan::Quiz::get(quiz_id)
   quiz = Quiz.new(quiz_id, 'unan')
 
   # TODO Les résultats sont enregistrés pour l'auteur dans une rangée
@@ -46,8 +52,8 @@ when 'bureau_save_quiz'
   # Comment ne pas l'enregistrer ? (en fait, je crois qu'il faut le laisser
   # l'enregistrer mais qu'il faut ensuite détruire la donnée ici)
 
-  quiz.evaluate
-  bureau.current_quiz_output = quiz.output
+  bureau.current_quiz_output = unanquiz.output(evaluate: true)
+
 
   # bureau.current_quiz_output =
   #   if quiz.evaluate_and_save( awork_id: awork_id, awork_pday: awork_pday )

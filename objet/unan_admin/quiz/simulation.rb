@@ -74,7 +74,7 @@ class Quiz
       # Note : `code_for_regle_reponses` est invoqué simplement pour montrer
       # en rouge les questions qui n'ont pas été répondues.
       @resultat_simulation =
-        output_in_container(simulation:true, forcer:true) +
+        output +
         code_for_regle_reponses
     end
 

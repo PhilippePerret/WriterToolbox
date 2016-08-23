@@ -14,7 +14,7 @@ feature "Gestion des pages de cours" do
 
     identify_benoit
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
     success "Benoit rejoint son centre de travail"
     # sleep 20
     la_page_a_le_lien 'Cours (4)'
@@ -47,7 +47,7 @@ feature "Gestion des pages de cours" do
     # ---------------------------------------------------------------------
 
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
 
     click_link('Cours (4)')
     la_page_a_la_balise 'h3', text: 'Cours'
@@ -64,7 +64,7 @@ feature "Gestion des pages de cours" do
     la_page_napas_derreur
     la_page_napas_derreur_fatale
     la_page_a_pour_titre TITRE_PAGE_UNAN
-    la_page_a_pour_soustitre SOUS_TITRE_BUREAU
+    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
 
     hwork = benoit.table_works.get(work_id)
     expect(hwork[:ended_at]).not_to eq nil
