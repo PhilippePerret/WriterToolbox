@@ -106,13 +106,13 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 55] [PAGE 23] L'incident perturbateur.
                     [WORK 56] [PAGE 24] L'incident déclencheur.
                 JP 030-031 TR1 Brainstorming PERS
+                    [WORK 75] [PAGE 42] Création du dossier et fichier sur les personnages.
                     [WORK 72] Réfléchir aux personnages principaux, surtout le protagoniste et l'antagoniste.
                     TODO [EXEMPLE] Exemple de travail sur le protagoniste et l'antagoniste.
-                    [WORK 75] [PAGE 42] Création du dossier et fichier sur les personnages.
                 JP 032-033 TR1 Brainstorming DOCU
                     [WORK 78] Première liste des sujets.
                     [WORK 79] Création du document Recherche et documentation
-                    TODO [WORK] Faire un document “Questions.odt” dans lequel on mettra toutes les questions qui se dégageront au cours du travail des jours suivants — et jusque tard — qui relèvent de la documentation. On tentera d'y répondre au cours d'une séance dédiée à ce problème.
+                    [WORK 100] Faire un document “Questions.odt” pour placer toutes les questions de documentation (simple création, à remplir au fil du travail).
                 JP 034-035 TR1 Brainstorming DYNA
                     [WORK 81] Premier document sur la dynamique.
                         Brainstormer sur l'objectif principal de chaque personnage et principalement du protagoniste. Recherche générale d'objectif et de conflit.
@@ -166,9 +166,8 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
         JP 056-083 [WORK 94] PREMIÈRE ÉBAUCHE
             JP 056-069 TR 3 sur la STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 On passe ici deux jours sur chaque document (deux sessions de travail)
-                TODO On doit trouver une particularité pour chaque retour du document. Par exemple, une fois, sur le document du personnage, il faut travailler les relations entre les personnages. Pour la structure, les scènes-clé, les segments, les pics (brainstorming même quand les choses sont bien avancées)
                 JP 056-057 TR3 analyse de films ANAF
-                  TODO [WORK] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
+                  [WORK 101] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
                   TODO [EXEMPLE] Exemple travail identique sur au moins un film.
                 JP 058-059 TR3 sur les thèmes THEM
                   TODO [WORK] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)

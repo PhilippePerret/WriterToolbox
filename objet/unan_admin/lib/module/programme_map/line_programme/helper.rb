@@ -12,7 +12,7 @@ class LineProgramme
     ).in_div(class: class_css_div, 'data-jp' => data_jp_for_div)
   end
 
-  # Retourn les données JP (Jour-programme) de la ligne courante, qui
+  # Retourne les données JP (Jour-programme) de la ligne courante, qui
   # permettra à javascript de n'afficher que les zones voulus
   # Peut retourner :
   #   - NIL si aucun jour-programme n'est défini
@@ -37,7 +37,9 @@ class LineProgramme
       else
         c.in_span(class: 'linep')
       end
-    span_travaux + c
+    pday_as_lien + # seulement si c'est la définition d'un segment/jour
+    span_travaux +
+    c
   end
 
   def div_items
@@ -79,12 +81,19 @@ class LineProgramme
       data_type != nil || raise("Le type #{dw[:type]} est inconnu dans UNANProgramme::TYPES_TRAVAUX.")
       titre, href =
         if wid.nil?
-          ["New #{data_type[:hname]}", "#{data_type[:objet]}/edit?in=unan_admin"]
+          # Pour un nouveau travail, exemple, page, etc.
+          ["NEW #{data_type[:hname]}", "#{data_type[:objet]}/edit?in=unan_admin"]
         else
           ["#{data_type[:hname]} ##{wid}", "#{data_type[:objet]}/#{wid}/edit?in=unan_admin"]
         end
-      titre.in_a(href: href, target: :new)
-    end.pretty_join
+      titre.in_a(href: href, target: :new, class: ['lkedit', (wid.nil? ? 'warning' : nil)].compact.join(' '))
+    end.join('')
     # /liste travaux
+  end
+
+  def pday_as_lien
+    pday_deb != nil || (return '')
+    href = "abs_pday/#{pday_deb}/edit?in=unan_admin"
+    "PDay #{pday_deb.to_i}".in_a(href: href, target: :new, class: 'lkpday lkedit', title: "Éditer le jour-programme ##{pday_deb.to_i}").in_div(class: 'fright')
   end
 end

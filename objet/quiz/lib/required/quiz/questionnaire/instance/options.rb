@@ -5,7 +5,7 @@
 
 =end
 class Quiz
-
+  
   # Valeurs des bits d'options
   OPTIONS = {
     0 => {hname: 'courant', description: '1: quiz courant, 0: pas courant'},
@@ -13,7 +13,7 @@ class Quiz
     2 => {hname: 'Centaine du nombre max de questions ou -', description: nil},
     3 => {hname: 'Dizaine du nombre max de questions ou -', description: nil},
     4 => {hname: 'Unité du nombre max de questions ou 0', description: nil},
-    5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test'}
+    5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test ou du programme UNAN'}
   }
 
   # Les options par défaut. Obligatoire pour gérer l'édition

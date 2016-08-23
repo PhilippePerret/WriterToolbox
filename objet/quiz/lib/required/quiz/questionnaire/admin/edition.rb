@@ -7,7 +7,7 @@
 
 =end
 if user.manitou?
-  class ::Quiz
+  class Quiz
 
 
     # Méthode principale appelée quand on soumet le formulaire des
@@ -92,14 +92,14 @@ if user.manitou?
       end
       return h
     end
-  end
 
-  # Méthode qui place le quiz en quiz courant
-  def set_current
-    @options = options.set_bit(0,1)
-    set(options: @options)
-  end
+    # Méthode qui place le quiz en quiz courant
+    def set_current
+      @options = options.set_bit(0,1)
+      set(options: @options)
+    end
 
+  end #/Quiz
 
-end #/Quiz
+end
 # /Si c'est un administrateur
