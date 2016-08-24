@@ -1,6 +1,15 @@
 # encoding: UTF-8
 class Quiz
 
+  # {Integer} Identifiant de la rangée dans laquelle le résultat
+  # du quiz a été enregistré, pour l'auteur.
+  # Cet identifiant, pour le moment, ne sert que pour le programme
+  # UNAN pour permettre de savoir si le quiz a été fait ou non.
+  # Comme un même quiz peut être soumis plusieurs fois, on a besoin
+  # de cet identifiant, mis dans `item_id` du work de l'auteur, pour
+  # faire l'historique ou reproduire la soumission.
+  attr_reader :resultats_row_id
+
   # Enregistre dans la table générale :cold, 'quiz' la soumission de
   # ce questionnaire et enregistre le résultat courant de l'user
   # s'il est identifié
@@ -135,7 +144,7 @@ class Quiz
       points:       unombre_points,
       created_at:   NOW
     }
-    table_resultats.insert(data_quiz)
+    @resultats_row_id = table_resultats.insert(data_quiz)
   rescue Exception => e
     debug e
     error e.message

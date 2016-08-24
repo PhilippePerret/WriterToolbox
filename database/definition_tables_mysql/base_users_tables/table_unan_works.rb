@@ -17,7 +17,8 @@ CREATE TABLE unan_works_#{user_id}
     # IDentifiant unique et universel d'un travail d'un
     # auteur du programme ÉCRIRE UN FILM/ROMAN EN UN AN
     # Noter que cet identifiant n'est plus le même que l'id
-    # du travail absolu auquel il est associé
+    # du travail absolu auquel il est associé (le même travail
+    # absolu peut avoir plusieurs works auteur)
     id INTEGER AUTO_INCREMENT,
 
     # PROGRAM_ID
@@ -42,6 +43,14 @@ CREATE TABLE unan_works_#{user_id}
     # C'est le PDay du jour où ce travail aurait dû être
     # commencé, même s'il a été "démarré" le lendemain.
     abs_pday INTEGER(4) NOT NULL,
+
+    #  ITEM_ID
+    # ---------
+    # Identifiant d'un élément quelconque qui peut être associé
+    # à ce travail. Inauguré par exemple pour les quiz, pour mémoriser
+    # l'identifiant de la rangée des résultats du quiz dans la table
+    # des quiz de l'auteur.
+    item_id INTEGER,
 
     # STATUS
     # ------

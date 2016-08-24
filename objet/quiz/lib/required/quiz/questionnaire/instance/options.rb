@@ -23,7 +23,8 @@ class Quiz
     2 => {hname: 'Centaine du nombre max de questions ou -', description: nil},
     3 => {hname: 'Dizaine du nombre max de questions ou -', description: nil},
     4 => {hname: 'Unité du nombre max de questions ou 0', description: nil},
-    5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test ou du programme UNAN'}
+    5 => {hname: 'Hors de liste', description: '1: hors des listes — par exemple les quiz de test ou du programme UNAN'},
+    6 => {hname: 'Réutilisable', description: 'Pour le programme UNAN, un test réutilisable permet d’être fait autant de fois qu’on veut, mais ne génère pas de point.'}
   }
 
   def pre_description?
@@ -39,7 +40,7 @@ class Quiz
   # Les options par défaut. Obligatoire pour gérer l'édition
   # correcte d'un nouveau quiz.
   def default_options
-    @default_options ||= "00--0"
+    @default_options ||= "00--000"
   end
 
   # 1er bit des options, pour savoir si le quiz est le quiz courant
@@ -53,6 +54,7 @@ class Quiz
     options[1].to_i == 1
   end
   alias :aleatoire? :random?
+
 
   # Bits 3 à 5 des options ('-' mis pour '0')
   #
@@ -70,5 +72,9 @@ class Quiz
     options[5].to_i == 1
   end
 
+  # 7e bit des options
+  def reusable?
+    options[6].to_i
+  end
 
 end #/Quiz

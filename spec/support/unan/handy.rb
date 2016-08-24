@@ -10,9 +10,11 @@ def reset_auteur_unan auteur
   site.require_objet 'unan'
   auteur.instance_of?(User) || auteur = User.new(auteur)
   auteur.program.set(rythme: 5, points: 0)
-  auteur.table_quiz.delete
   auteur.table_works.delete
   auteur.table_pages_cours.delete
+  # Pour effacer tous les quiz de l'auteur
+  site.dbm_table(:quiz_unan, 'resultats').delete( where: {user_id: auteur.id} )
+
 end
 
 # Crée un auteur pour le programme UNAN

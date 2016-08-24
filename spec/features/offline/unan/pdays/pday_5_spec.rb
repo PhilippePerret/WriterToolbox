@@ -15,6 +15,7 @@ feature "Jour-programme 5" do
   scenario "Au PDay 5, Benoit trouve un quiz qu'il peut remplir et soumettre" do
     test "Benoit trouve un quiz, l'affiche, le remplit et le soumet avec succès"
 
+    start_time = NOW - 1
 
     table_resultats = site.dbm_table(:quiz_unan, 'resultats')
     table_resultats.delete(where: {user_id: benoit.id})
@@ -114,7 +115,12 @@ feature "Jour-programme 5" do
     expect(benoit.program.points).to eq last_res[:points]
     success 'Benoit a des points pour son programme'
 
+    row_id = last_res[:id]
+    hwork = benoit.table_works.select(where: "created_at > #{start_time}").first
 
+    expect(hwork[:item_id]).not_to eq nil
+    expect(hwork[:item_id]).to eq row_id
+    success 'Le work de Benoit a mémorisé l’id de rangée des résultats'
 
 
     # ---------------------------------------------------------------------
@@ -125,7 +131,7 @@ feature "Jour-programme 5" do
     # a été soumis, et que ce n'est pas un quiz réutilisable, il ne faut
     # pas le ré-afficher. Et pour le moment, l'user ne peut pas le
     # retrouver.
-    
+
 
     # Pour afficher le quiz tout frais
     benoit.clique_le_lien 'Revenir à la liste complète'

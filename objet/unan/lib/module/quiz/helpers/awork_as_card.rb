@@ -27,9 +27,6 @@ class UnanQuiz
   # Identifiant du quiz
   attr_reader :id
 
-
-  attr_reader :awork
-
   def initialize qid
     @id = qid
   end
@@ -46,6 +43,8 @@ class UnanQuiz
   # il faut procéder. False dans le cas contraire
   def correction?; @is_correction ||= quiz.evaluation? end
 
+  # Défini par #as_card
+  def awork;        @awork                          end
   def awork_id;     @awork_id     ||= awork.id      end
   def awork_pday;   @awork_pday   ||= awork.pday    end
   def auteur;       @auteur       ||= user          end
@@ -58,27 +57,31 @@ class UnanQuiz
   #   - l'affichage des réponses données au questionnaire
   #
   def as_card awork = nil
+    awork.instance_of?(Unan::Program::AbsWork) || raise('Il faut fournir le travail absolu à la méthode #as_card !')
     @awork = awork
-    if not_started?
-      # Questionnaire non démarré => Un cadre pour le démarrer
-      form_start_quiz
-    else
-      output
-    end
+    debug "-> #as_card (awork.class = #{awork.class})"
+    res =
+      if not_started?
+        # Questionnaire non démarré => Un cadre pour le démarrer
+        form_start_quiz
+      else
+        output
+      end
+    debug "<- #as_card (awork.class = #{awork.class})"
+    return res
   end
 
   def as_recent_card awork = nil
+    awork.instance_of?(Unan::Program::AbsWork) || raise('Il faut fournir le travail absolu à la méthode #as_card !')
     @awork = awork
     form_recent_quiz
   end
 
   def not_started?
-    awid    = awork_id    || awork.id
-    awpday  = awork_pday  || awork.pday
-    awid != nil   || (return !error('Impossible de savoir si le quiz est démarré : pas d’identifiant de work absolu défini.'))
-    awpday != nil || (return !error('Impossible de savoir si le quiz est démarré : pas de jour-programme précisé.'))
+    awork_id != nil   || (return !error('Impossible de savoir si le quiz est démarré : pas d’identifiant de work absolu défini.'))
+    awork_pday != nil || (return !error('Impossible de savoir si le quiz est démarré : pas de jour-programme précisé.'))
     drequest = {
-      where: "abs_work_id = #{awid} AND abs_pday = #{awpday}",
+      where: "abs_work_id = #{awork_id} AND abs_pday = #{awork_pday}",
       colonnes:[]
     }
     auteur.table_works.count(drequest) == 0
@@ -147,12 +150,14 @@ class UnanQuiz
   #   simulation:   Si true, c'est une simulation
   #   evaluate      Si true, on évalue le quiz
   def output options = nil
+    debug "-> #output (awork.class = #{awork.class})"
     options ||= Hash.new
     html = String.new
     html << "<h5 class='titre'>#{titre}</h5>"
     # Action
     # Noter que c'est dans cette valeur qu'on passe l'UnanQuiz courant
-    quiz.form_action        = "bureau/home?in=unan&cong=quiz&unanquiz=#{id}"
+    quiz.form_action        = "bureau/home?in=unan&cong=quiz&awork=#{awork_id}&unanquiz=#{id}"
+    debug "quiz.form_action : #{quiz.form_action}"
     quiz.form_operation     = 'bureau_save_quiz'
     quiz.form_submit_button = 'Soumettre'
     quiz.no_pre_description =     true
@@ -163,8 +168,15 @@ class UnanQuiz
     if options[:evaluate]
       quiz.evaluate
       unless quiz.is_reshown || quiz.error_evaluation
+        # Ajout des points à l'auteur
         auteur.add_points quiz.unombre_points
         flash "Nombre de points marqués : #{quiz.unombre_points}"
+        # Association du work à l'identifiant de rangée de résultat
+        # Pour l'obtenir à nouveau, on pourra faire :
+        #   site.require_objet 'quiz'
+        #   quiz = Quiz.new(<id>, 'unan')
+        #   quiz.table_resultats.get(work.item_id)
+        work.set(item_id: quiz.resultats_row_id)
       else
         if quiz.error_evaluation
           debug "Une erreur est survenue (#{quiz.error_evaluation}), impossible d'enregistrer le nombre de points"
@@ -175,6 +187,7 @@ class UnanQuiz
     end
 
     html << quiz.output
+    debug "<- #output"
     # html << form.force_encoding('utf-8').in_form(id:"form_quiz_#{id}", class:'quiz', action: form_action)
     html
   end

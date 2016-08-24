@@ -39,19 +39,22 @@ class Quiz
       #   - toujours dans la table général :cold, quiz qui consigne toutes
       #     les notes et toutes les soumissions.
       unless @is_reshown
-        if save_resultat
-          # Les résultats ont été enregistrés normalement, on peut afficher
-          # la note obtenue et le commentaire s'il est demandé.
-          report
+        if reusable?
+          # Si c'est un quiz réutilisable (UNAN), on n'enregistre pas de
+          # résultat, on fait simplement un rapport pour indiquer le résultat
+          # obtenu
         else
-          # Les résultats n'ont pas été enregistrés, peut-être tout simplement
-          # parce qu'ils l'ont déjà été et qu'ils ne peuvent l'être à nouveau
-          # La note finale ne sera pas affiché. L'erreur a été placée dans
-          # @error_evaluation, on peut l'afficher
-          # Note : le fait de l'avoir placée dans @error_evaluation permet
-          # par exemple au programme UN AN de savoir qu'il ne faut pas
-          # enregistrer à nouveau les points
-          error @error_evaluation
+          if save_resultat == false
+            # Les résultats n'ont pas été enregistrés, peut-être tout simplement
+            # parce qu'ils l'ont déjà été et qu'ils ne peuvent l'être à nouveau
+            # La note finale ne sera pas affiché. L'erreur a été placée dans
+            # @error_evaluation, on peut l'afficher
+            # Note : le fait de l'avoir placée dans @error_evaluation permet
+            # par exemple au programme UN AN de savoir qu'il ne faut pas
+            # enregistrer à nouveau les points
+            return error(@error_evaluation)
+          end
+          report
         end
       end
     end

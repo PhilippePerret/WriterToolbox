@@ -36,6 +36,10 @@ when 'bureau_save_quiz'
   quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
   quiz = Quiz.new(quiz_id, 'unan')
 
+  awork_id = param(:awork).to_i_inn
+  awork_id != nil || raise('Aucun travail absolu n’est associé à ce questionnaire. Impossible de le traiter.')
+  awork = Unan::Program::AbsWork.new(awork_id)
+
   # TODO Les résultats sont enregistrés pour l'auteur dans une rangée
   # dont il faut récupérer l'ID pour pouvoir associer le quiz de cette
   # date (pday) avec cette rangée (dans le cas où plusieurs même quiz
@@ -52,42 +56,9 @@ when 'bureau_save_quiz'
   # Comment ne pas l'enregistrer ? (en fait, je crois qu'il faut le laisser
   # l'enregistrer mais qu'il faut ensuite détruire la donnée ici)
 
-  bureau.current_quiz_output = unanquiz.output(evaluate: true)
+  # bureau.current_quiz_output = unanquiz.output(evaluate: true)
+  bureau.current_quiz_output = awork.as_card(evaluate: true)
 
-
-  # bureau.current_quiz_output =
-  #   if quiz.evaluate_and_save( awork_id: awork_id, awork_pday: awork_pday )
-  #     quiz.commented_output
-  #   else
-  #     # Étudier et construire le retour en fonction du questionnaire
-  #     # qu'il ait été rempli correctement ou non.
-  #     awork = Unan::Program::AbsWork.new(awork_id, {pday: awork_pday})
-  #     quiz.as_card(awork) + quiz.code_for_regle_reponses
-  #   end
 when 'quiz_reuse'
-  # # L'auteur passe par ici quand il veut recommencer un quiz
-  # # réutilisable (multi?). Pour pouvoir le réutiliser, on
-  # # doit le remettre en questionnaire à faire donc remettre
-  # # le travail correspondant en route.
-  # if param(:qru) == '1' && param(:qid) != nil
-  #   qid = param(:qid).to_i
-  #   # On doit s'assurer d'abord que ça n'est pas un questionnaire
-  #   # normal avec l'auteur qui triche
-  #   q = Unan::Quiz::get(qid)
-  #   if q.multi?
-  #     # => OK
-  #     # Il faut remettre le travail de ce quiz dans la
-  #     # liste des quiz courant de l'auteur
-  #
-  #     # Le travail propre à l'auteur et au questionnaire
-  #     quiz_work     = q.work
-  #     # Son identifiant, qu'on va ajouter aux listes des
-  #     # travaux courants
-  #     quiz_work_id  = quiz_work.id
-  #   else
-  #     error "Vous ne pouvez pas recommencer ce questionnaire, voyons…"
-  #   end
-  # else
-  #   error "Vous ne pouvez pas exécuter cette opération…"
-  # end
+
 end

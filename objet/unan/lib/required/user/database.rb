@@ -22,8 +22,10 @@ class User
   end
 
   # Table des questionnaires
-  def table_quiz
-    @table_quiz ||= site.dbm_table(:users_tables, "unan_quiz_#{id}")
-  end
+  # OBSOLÈTE : Il faut utiliser la classe Quiz, les questionnaires du
+  # programme UNAN sont comme les autres.
+  # def table_quiz
+  #   @table_quiz ||= site.dbm_table(:users_tables, "unan_quiz_#{id}")
+  # end
 
 end
