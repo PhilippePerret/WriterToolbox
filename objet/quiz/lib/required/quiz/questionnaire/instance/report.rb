@@ -7,6 +7,7 @@ class Quiz
   #
   # Ce résultat est contenu dans la variable @report, qui est nulle
   # lors de l'affichage du formulaire
+  #
   def resultat
     return '' if @report.nil?
     if @error_evaluation

@@ -8,10 +8,12 @@ class Program
 class AbsWork
 
   def as_card options = nil
-    if options[:as_recent]
-      UnanQuiz.new(item_id).as_recent_card(self)
+    options ||= Hash.new
+    recent_quiz = !!options.delete(:as_recent)
+    if recent_quiz
+      UnanQuiz.new(item_id).as_recent_card(self, options)
     else
-      UnanQuiz.new(item_id).as_card(self)
+      UnanQuiz.new(item_id).as_card(self, options)
     end
   end
   alias :as_card_relative :as_card
@@ -46,8 +48,21 @@ class UnanQuiz
   # Défini par #as_card
   def awork;        @awork                          end
   def awork_id;     @awork_id     ||= awork.id      end
-  def awork_pday;   @awork_pday   ||= awork.pday    end
   def auteur;       @auteur       ||= user          end
+
+  # Le jour-programme de ce quiz (un même quiz peut être programmé
+  # à des jours-programme différents)
+  # Dans l'ordre, si le travail de l'auteur est défini (work), on le
+  # prend dedans, si le travail
+  def quiz_pday
+    @quiz_pday ||= begin
+      if @work
+        work.pday
+      elsif @awork
+        awork.pday
+      end || param(:pday)
+    end
+  end
 
 
   # Méthode produisant la "carte" du questionnaire pour le
@@ -56,7 +71,7 @@ class UnanQuiz
   #   - le questionnaire lui-même
   #   - l'affichage des réponses données au questionnaire
   #
-  def as_card awork = nil
+  def as_card awork = nil, options = nil
     awork.instance_of?(Unan::Program::AbsWork) || raise('Il faut fournir le travail absolu à la méthode #as_card !')
     @awork = awork
     debug "-> #as_card (awork.class = #{awork.class})"
@@ -65,7 +80,7 @@ class UnanQuiz
         # Questionnaire non démarré => Un cadre pour le démarrer
         form_start_quiz
       else
-        output
+        output(options)
       end
     debug "<- #as_card (awork.class = #{awork.class})"
     return res
@@ -78,10 +93,11 @@ class UnanQuiz
   end
 
   def not_started?
-    awork_id != nil   || (return !error('Impossible de savoir si le quiz est démarré : pas d’identifiant de work absolu défini.'))
-    awork_pday != nil || (return !error('Impossible de savoir si le quiz est démarré : pas de jour-programme précisé.'))
+    awork_id != nil && quiz_pday != nil || (return true)
+    # awork_id != nil  || (return !error('Impossible de savoir si le quiz est démarré : pas d’identifiant de work absolu défini.'))
+    # quiz_pday != nil || (return !error('Impossible de savoir si le quiz est démarré : pas de jour-programme précisé.'))
     drequest = {
-      where: "abs_work_id = #{awork_id} AND abs_pday = #{awork_pday}",
+      where: "abs_work_id = #{awork_id} AND abs_pday = #{quiz_pday}",
       colonnes:[]
     }
     auteur.table_works.count(drequest) == 0
@@ -150,13 +166,13 @@ class UnanQuiz
   #   simulation:   Si true, c'est une simulation
   #   evaluate      Si true, on évalue le quiz
   def output options = nil
-    debug "-> #output (awork.class = #{awork.class})"
+    debug "-> #output (options = #{options.inspect})"
     options ||= Hash.new
     html = String.new
     html << "<h5 class='titre'>#{titre}</h5>"
     # Action
     # Noter que c'est dans cette valeur qu'on passe l'UnanQuiz courant
-    quiz.form_action        = "bureau/home?in=unan&cong=quiz&awork=#{awork_id}&unanquiz=#{id}"
+    quiz.form_action        = "bureau/home?in=unan&cong=quiz&unanquiz=#{id}&work=#{work.id}"
     debug "quiz.form_action : #{quiz.form_action}"
     quiz.form_operation     = 'bureau_save_quiz'
     quiz.form_submit_button = 'Soumettre'
@@ -168,6 +184,9 @@ class UnanQuiz
     if options[:evaluate]
       quiz.evaluate
       unless quiz.is_reshown || quiz.error_evaluation
+        # On peut demander la construction du rapport pour produire
+        # la note finale.
+        quiz.report
         # Ajout des points à l'auteur
         auteur.add_points quiz.unombre_points
         flash "Nombre de points marqués : #{quiz.unombre_points}"
@@ -176,6 +195,7 @@ class UnanQuiz
         #   site.require_objet 'quiz'
         #   quiz = Quiz.new(<id>, 'unan')
         #   quiz.table_resultats.get(work.item_id)
+        debug "quiz.resultats_row_id : #{quiz.resultats_row_id.inspect}"
         work.set(item_id: quiz.resultats_row_id)
       else
         if quiz.error_evaluation
@@ -196,37 +216,38 @@ class UnanQuiz
   # Travail propre ({Unan::Program::Work}) correspondant
   # à ce questionnaire.
   def work
-    @work ||= begin
-      w =
-        if awork.nil? && awork_id.nil?
-          # Se produit lorsque c'est une édition du
-          # quiz ou lorsque le quiz est enregistré pour
-          # la première fois.
-          nil
-        else
-          get_work_of_quiz
-        end
-      # Si le travail n'existe pas, il faut certainement le créer ?
-      if w == nil
-        # ...
-      else
-        w
-      end
-    end
+    @work ||= get_work_of_quiz
   end
 
   # Récupère le Unan::Program::Work du quiz courant
+  #
+  # Définit aussi, si besoin était, le quiz_pday
   def get_work_of_quiz
-    drequest = {
-      where:    {
-        abs_work_id:  awork_id,
-        program_id:   auteur.program.id,
-        abs_pday:     awork_pday
-      },
-      colonnes: Array.new
-    }
-    wid = auteur.table_works.get(drequest)[:id]
-    Unan::Program::Work.new(auteur, wid)
+    wid =
+      if param(:work)
+        debug "-> on prend le work dans param(:work) (#{param(:work)})"
+        param(:work).to_i # => à mettre dans wid
+      else
+        # Tous les travaux correspondant au travail absolu
+        drequest = {
+          program_id: auteur.program.id, abs_work_id: awork_id,
+          colonnes: [], order: 'created_at DESC'
+        }
+        hworks = auteur.table_works.select(drequest)
+
+        # S'il n'y en a qu'un seul, super, c'est celui-là
+        # Sinon, soit on prend celui correspondant au pday demandé, soit
+        # si le pday n'est pas récupérable, on prend le dernier
+        # Notez que cette méthode définira toujours @quiz_pday
+        if hworks.count > 1 && quiz_pday
+          hworks.select{|h| h[:abs_pday] == quiz_pday}[:id]
+        else
+          hworks.first[:id]
+        end
+      end
+    w = Unan::Program::Work.new(auteur, wid)
+    quiz_pday != nil || @quiz_pday = w.pday
+    return w
   end
   #/get_work_of_quiz
 

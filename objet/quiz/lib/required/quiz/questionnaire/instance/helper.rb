@@ -28,7 +28,7 @@ class Quiz
   end
 
   # Méthode principale pour la construction du
-  # quiz
+  # quiz (tout le quiz, avec description, note finale, etc.)
   def build
     options = Hash.new # pour le moment (voir si nécessaire)
 

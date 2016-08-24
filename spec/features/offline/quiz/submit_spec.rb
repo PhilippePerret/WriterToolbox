@@ -66,7 +66,7 @@ feature "Vérification des calculs du quiz" do
     points_user = 0
     bads_ids = hreps[:bads] || Array.new
 
-    within('form#form_quiz') do
+    within('form.quiz') do
       # Définir les identifiants des questions qui seront justes
       # et celles qui seront fausses
       data_questions.each do |qid, qdata|
@@ -146,10 +146,10 @@ feature "Vérification des calculs du quiz" do
   scenario 'Quand l’utilisateur ne soumet aucune réponse' do
     visite_route 'quiz/1/show?qdbr=biblio'
     la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', in: 'form#form_quiz', type: 'submit', value: 'Soumettre le quiz',
+    la_page_a_le_formulaire 'form_quiz-1'
+    la_page_a_la_balise 'input', in: 'form#form_quiz-1', type: 'submit', value: 'Soumettre le quiz',
       success: 'Le quiz possède un bouton pour le soumettre.'
-    within('form#form_quiz') do
+    within('form#form_quiz-1') do
       click_button 'Soumettre le quiz'
     end
     # === Test ===
@@ -159,7 +159,7 @@ feature "Vérification des calculs du quiz" do
   scenario 'Quand l’utilisateur ne soumet pas toutes les réponses' do
     visite_route 'quiz/1/show?qdbr=biblio'
     expect(page).to have_css('h1', text: 'Quizzzz !')
-    within('form#form_quiz') do
+    within('form#form_quiz-1') do
       # On sélectionne une première réponse
       choose('Deuxième réponse de première question')
       click_button 'Soumettre le quiz'
@@ -172,22 +172,27 @@ feature "Vérification des calculs du quiz" do
   scenario 'Quand l’user soumet toutes les réponses justes' do
     visite_route 'quiz/1/show?qdbr=biblio'
     expect(page).to have_css('h1', text: 'Quizzzz !')
-    within('form#form_quiz') do
-      data_questions.each do |qid, qdata|
-        within("div#question-#{qid}") do
-          if qdata[:type] == :radio
-            choose(qdata[:good])
-          else
-            qdata[:good].each do |rep|
-              check(rep)
-            end
-          end
+    data_form = Hash.new
+    data_questions.each do |qid, qdata|
+      case qdata[:good]
+      when Array
+        qdata[:good].each_with_index do |val, ival|
+          data_form.merge!(
+            "--- #{qid}:#{ival} ---" => {value: val, type: qdata[:type], in: "div#question-#{qid}"}
+          )
         end
+      else
+        data_form.merge!(
+          "--- #{qid} ---" => {value: qdata[:good], type: qdata[:type], in: "div#question-#{qid}"}
+        )
       end
-      shot 'before-submit-good-reponses'
-      click_button 'Soumettre le quiz'
     end
+    benoit.remplit_le_formulaire('form_quiz-1').
+      avec(data_form).
+      et_le_soumet('Soumettre le quiz')
 
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
+    shot 'apres-bonne-soumission'
     # La note est 20/20
     expect(page).to have_tag('span', text: '20/20')
   end

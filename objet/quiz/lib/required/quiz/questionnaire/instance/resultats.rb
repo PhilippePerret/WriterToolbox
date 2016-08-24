@@ -94,6 +94,7 @@ class Quiz
   # ou que c'est un enregistrement avec les mêmes points, etc.)
   #
   def save_resultat_user
+    debug "-> save_resultat_user"
     # On s'arrête ici si l'auteur n'est pas identifié. Sinon, on
     # enregistre son résultat, pour lui, dans la table des
     # résultats du questionnaire.

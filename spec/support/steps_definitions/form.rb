@@ -114,7 +114,17 @@ class FormTest
       case type
       when :text, :textarea then form.fill_in(ref, with: value)
       when :select    then form.select(value, from: ref)
-      when :checkbox  then form.send(value ? :check : :uncheck, ref)
+      when :checkbox  then
+        if data[:in]
+          page.execute_script("UI.scrollTo('#{data[:in]}',100)")
+        end
+        goodref =
+          if ref.start_with?('---') && ref.end_with?('---')
+            data[:value] || data[:name]
+          else
+            ref
+          end
+        form.send(value ? :check : :uncheck, goodref)
       when :radio     then
 
         data.key?(:in) || raise('Pour les radio-boutons, il faut impérativement spécifier un container pour scroller jusqu’à lui (on ne peut pas cocher un élément invisible)')

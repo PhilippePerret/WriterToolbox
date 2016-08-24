@@ -109,7 +109,7 @@ feature "Jour-programme 5" do
     last_res = table_resultats.select(limit:1, order: 'created_at DESC').first
     # puts "Dernier résultat : #{last_res.inspect}"
     expect(last_res[:user_id]).to eq benoit.id
-    success 'Un nouveau résultat a été enregistré pour Benoit'
+    success 'Un nouveau résultat de quiz a été enregistré pour Benoit'
 
     expect(benoit.program.points).to be > 0
     expect(benoit.program.points).to eq last_res[:points]

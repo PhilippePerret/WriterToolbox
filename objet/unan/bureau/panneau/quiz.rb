@@ -26,19 +26,27 @@ end #/Unan
 case param(:operation)
 when 'bureau_save_quiz'
 
-  # L'UnanQuiz (propre au programme)
-  unanquiz_id = param(:unanquiz).to_i_inn
-  unanquiz_id != nil || raise('Il faut définir l’ID du UnanQuiz dans les paramètres !')
-  unanquiz = Unan::UnanQuiz.new(unanquiz_id)
+  # # L'UnanQuiz (propre au programme)
+  # unanquiz_id = param(:unanquiz).to_i_inn
+  # unanquiz_id != nil || raise('Il faut définir l’ID du UnanQuiz dans les paramètres !')
+  # unanquiz = Unan::UnanQuiz.new(unanquiz_id)
+  #
+  # # Le Quiz (l'instance Quiz général, pour tout quiz)
+  # quiz_id = param(:quiz)[:id].to_i_inn
+  # quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
+  # quiz = Quiz.new(quiz_id, 'unan')
 
-  # Le Quiz (l'instance Quiz général, pour tout quiz)
-  quiz_id = param(:quiz)[:id].to_i_inn
-  quiz_id != nil || raise('Aucun questionnaire n’a été soumis…')
-  quiz = Quiz.new(quiz_id, 'unan')
+  # Le travail propre de l'auteur associé à ce quiz
+  # C'est la donnée impérative qui permet de tout connaitre, le jour-programme
+  # du quiz, le travail absolu
+  work_id = param(:work).to_i_inn
+  work_id != nil || raise('Aucun travail n’est associé à ce questionnaire. Impossible de l’évaluer')
+  work = Unan::Program::Work.new(bureau.auteur, work_id)
+  debug "Données du travail : #{work.get_all.inspect}"
+  awork = Unan::Program::AbsWork.new(work.abs_work_id)
+  awork.pday= work.abs_pday
 
-  awork_id = param(:awork).to_i_inn
-  awork_id != nil || raise('Aucun travail absolu n’est associé à ce questionnaire. Impossible de le traiter.')
-  awork = Unan::Program::AbsWork.new(awork_id)
+  bureau.current_quiz_output = awork.as_card(evaluate: true)
 
   # TODO Les résultats sont enregistrés pour l'auteur dans une rangée
   # dont il faut récupérer l'ID pour pouvoir associer le quiz de cette
@@ -57,7 +65,7 @@ when 'bureau_save_quiz'
   # l'enregistrer mais qu'il faut ensuite détruire la donnée ici)
 
   # bureau.current_quiz_output = unanquiz.output(evaluate: true)
-  bureau.current_quiz_output = awork.as_card(evaluate: true)
+  # bureau.current_quiz_output = awork.as_card(evaluate: true)
 
 when 'quiz_reuse'
 
