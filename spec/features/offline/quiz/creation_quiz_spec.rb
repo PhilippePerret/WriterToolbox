@@ -30,7 +30,7 @@ feature "Création d'un quiz" do
   scenario "Un non administrateur ne peut pas rejoindre la section de création d'un quiz" do
     test 'Un non administrateur ne peut pas rejoindre la section de création de quiz'
     visite_route 'quiz/new'
-    la_page_napas_pour_titre 'Quizzzz !'
+    la_page_napas_pour_titre QUIZ_MAIN_TITRE
     la_page_napas_pour_soustitre 'Nouveau quiz'
   end
 
@@ -38,7 +38,7 @@ feature "Création d'un quiz" do
     test 'Un administrateur peut rejoindre la section de création d’un quiz'
     identify_phil
     visite_route 'quiz/new'
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre 'Nouveau quiz'
   end
 

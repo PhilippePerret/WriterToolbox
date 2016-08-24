@@ -29,10 +29,10 @@ feature "Liste des quiz" do
     puts "Le visiteur clique le lien 'Les quizzzz'"
 
     # === VÉRIFICATION ===
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_le_lien 'Tous les quizzzz'
     click_link 'Tous les quizzzz'
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre 'Tous les quizzzz'
     la_page_a_la_liste 'quizes', class: 'quiz_list'
     la_page_napas_la_balise 'h3', text: 'Questionnaires hors-liste'
@@ -48,10 +48,10 @@ feature "Liste des quiz" do
     la_page_a_le_lien 'Les quizzzz', in: 'dl',
       success: "Un lien dans la liste complète des outils conduit à la liste des quiz."
     within('div#tools_quick_list'){click_link 'Les quizzzz'}
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_le_lien 'Tous les quizzzz'
     click_link 'Tous les quizzzz'
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_la_balise 'h3', text: 'Questionnaires hors-liste'
     la_page_a_la_liste 'quizes_hors_liste', class: 'quiz_list'
   end
@@ -66,7 +66,7 @@ feature "Liste des quiz" do
     within("li#quiz-#{autreq.suffix_base}-#{autreq.id}") do
       click_link 'Le tenter'
     end
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_napas_pour_soustitre autreq.titre
     la_page_a_pour_soustitre curreq.titre
     la_page_a_l_erreur 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
@@ -85,7 +85,7 @@ feature "Liste des quiz" do
     within("li#quiz-#{autreq.suffix_base}-#{autreq.id}") do
       click_link 'Le tenter'
     end
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre autreq.titre
     la_page_napas_derreur
   end
@@ -104,7 +104,7 @@ feature "Liste des quiz" do
   scenario 'Un visiteur quelconque ne peut pas forcer l’édition d’un quiz' do
     test 'Un visiteur quelconque ne peut pas forcer l’édition d’un quiz'
     visite_route 'quiz/10/edit?qdbr=biblio'
-    la_page_napas_pour_titre 'Quizzzz !'
+    la_page_napas_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_titre 'Identification'
   end
 
