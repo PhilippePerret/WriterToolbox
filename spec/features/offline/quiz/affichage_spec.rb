@@ -58,22 +58,29 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
   end
 
 
+
   scenario "Contexte : aucune donnée et un quiz par défaut" do
     test 'Sans autres données, c’est le quiz par défaut qui s’affiche'
     quiz_id = mettre_quiz_courant_if_needed.id
+    form_id = "form_quiz-#{quiz_id}"
+    form_jid = "form#form_quiz-#{quiz_id}"
     visite_route 'quiz/show'
-    la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_le_formulaire "form_quiz"
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: quiz_id.to_s
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: form_jid, value: quiz_id.to_s
   end
 
   scenario 'Contexte : un bon suffixe mais un mauvais ID => le quiz courant' do
     test 'Avec un bon suffixe de base mais un mauvais ID, c’est le quiz courant qui est affiché.'
     q = mettre_quiz_courant_if_needed
+    quiz_id = q.id
+    form_id = "form_quiz-#{quiz_id}"
+    form_jid = "form#form_quiz-#{quiz_id}"
+
     visite_route 'quiz/10000000/show?qdbr=biblio'
-    la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_le_formulaire "form_quiz"
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: q.id.to_s,
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: form_jid, value: q.id.to_s,
       success: 'L’identifiant du quiz est bien celui du quiz courant'
     la_page_a_l_erreur 'Le quiz demandé n’existe pas. Quiz courant proposé.'
   end
@@ -87,10 +94,14 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     last_quiz_suffix  = last.suffix_base.nil_if_empty
     expect(last.current?).to eq false
     success 'Le dernier quiz n’est pas marqué courant.'
+
+    form_id = "form_quiz-#{last_quiz_id}"
+    form_jid = "form#form_quiz-#{last_quiz_id}"
+
     visite_route 'quiz/show'
-    la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_le_formulaire "form_quiz"
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: last.id.to_s,
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: form_jid, value: last.id.to_s,
       success: 'L’identifiant du quiz est bien celui du dernier quiz'
     la_page_napas_derreur
     # On reprend le dernier actualisé
@@ -108,23 +119,30 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
   scenario 'Contexte : seulement le qdbr et un quiz par défaut' do
     test 'Avec seulement le qdbr, c’est le quiz par défaut qui est affiché'
     q = mettre_quiz_courant_if_needed
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
+
     visite_route 'quiz/show?qdbr=biblio'
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre q.titre
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: form_jid
   end
 
   scenario 'Contexte : seulement le suffixe de base et pas de quiz par défaut' do
     start_time = Time.now.to_i - 1
     test 'Sans quiz par défaut et seulement avec le suffixe de base, c’est le dernier fabriqué qui est affiché'
     Quiz.get_current_quiz == nil || supprime_quiz_courant
-    last = Quiz.get_last_quiz
+    last = q = Quiz.get_last_quiz
     last_id, last_suffix = [ last.id, last.suffix_base ]
+
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
+
     visite_route 'quiz/show?qdbr=test'
-    la_page_a_pour_titre 'Quizzzz !'
-    la_page_a_le_formulaire "form_quiz"
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: 'form#form_quiz', value: last_id.to_s,
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', in: form_jid, value: last_id.to_s,
       success: 'L’identifiant du quiz est bien celui du dernier quiz'
     la_page_napas_derreur
     # On reprend le dernier actualisé
@@ -142,30 +160,38 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
   scenario 'Contexte : toutes les données du courant et un simple inscrit' do
     test 'Avec les données du quiz courant et un simple inscrit, on affiche le quiz courant.'
     q = mettre_quiz_courant_if_needed
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
+
     route = "quiz/#{q.id}/show?qdbr=#{q.suffix_base}"
     visite_route route
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre q.titre
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: form_jid
   end
 
   scenario 'Contexte : toutes les données du courant et un abonné' do
     test 'Avec les données du quiz courant et un abonné, on affiche le quiz courant.'
     q = mettre_quiz_courant_if_needed
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
+
     route = "quiz/#{q.id}/show?qdbr=#{q.suffix_base}"
     benoit.set_subscribed
     identify_benoit
     visite_route route
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre q.titre
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: form_jid
   end
 
   scenario 'Contexte : toutes les données (autres que courant) et un simple inscrit' do
     test 'Avec des données autres que le quiz courant et un simple inscrit, c’est le quiz courant qui s’affiche, avec un message d’erreur.'
     q = mettre_quiz_courant_if_needed
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
     # On doit trouver un autre quiz que le courant
     autreq = nil
     Quiz.allquiz.each do |qu|
@@ -175,10 +201,10 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     end
     autreq != nil || raise('On aurait dû trouver un autre quiz…')
     visite_route "quiz/#{autreq.id}/show?qdbr=#{autreq.suffix_base}"
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre q.titre
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: 'form#form_quiz'
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: q.id.to_s, in: form_jid
     la_page_a_l_erreur 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
     la_page_a_le_message 'Questionnaire courant affiché.'
   end
@@ -191,6 +217,7 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
 
     # On doit trouver un quiz qui ne soit pas le quiz courant
     q = mettre_quiz_courant_if_needed
+
     # On doit trouver un autre quiz que le courant
     autreq = nil
     Quiz.allquiz.each do |qu|
@@ -199,6 +226,8 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
       end
     end
     autreq != nil || raise('On aurait dû trouver un autre quiz…')
+    form_id = "form_quiz-#{autreq.id}"
+    form_jid = "form#form_quiz-#{autreq.id}"
 
     # Hash avec en clé l'identifiant de la question et en valeur
     # l'instance Quiz::Question de la question
@@ -208,10 +237,10 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     visite_route "quiz/#{autreq.id}/show?qdbr=#{autreq.suffix_base}"
 
     # === TEST ===
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_a_pour_soustitre autreq.titre
-    la_page_a_le_formulaire 'form_quiz'
-    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: autreq.id.to_s, in: 'form#form_quiz'
+    la_page_a_le_formulaire form_id
+    la_page_a_la_balise 'input', type: 'hidden', name: 'quiz[id]', value: autreq.id.to_s, in: form_jid
     la_page_napas_derreur
   end
 
@@ -219,13 +248,15 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
     test 'La page affiche bien toutes les questions du quiz courant'
 
     q = mettre_quiz_courant_if_needed
+    form_id = "form_quiz-#{q.id}"
+    form_jid = "form#form_quiz-#{q.id}"
 
     visite_route 'quiz/show'
     puts "Un visiteur quelconque affiche le quiz courant (##{q.id}/#{q.suffix_base})."
 
     prefname = "q#{q.id}r"
-    la_page_a_le_formulaire('form_quiz')
-    la_page_a_la_balise('input', type: 'hidden', name: 'quiz[time]', in: 'form#form_quiz')
+    la_page_a_le_formulaire(form_id)
+    la_page_a_la_balise('input', type: 'hidden', name: 'quiz[time]', in: form_jid)
 
     expect(page).to have_tag('form', with: {class: 'quiz'}) do
 

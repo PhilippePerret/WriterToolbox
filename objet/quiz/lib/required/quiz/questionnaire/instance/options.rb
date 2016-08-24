@@ -74,7 +74,7 @@ class Quiz
 
   # 7e bit des options
   def reusable?
-    options[6].to_i
+    options[6].to_i == 1
   end
 
 end #/Quiz

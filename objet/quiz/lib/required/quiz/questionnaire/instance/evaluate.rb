@@ -16,6 +16,7 @@ class Quiz
   # enregistre son quiz dans la table des résultats.
   #
   def evaluate
+    debug "-> evaluate"
     # Avant d'établir le rapport on met de côté les data générales
     # qui peuvent être enregistrées afin de pouvoir mieux commenter la
     # note obtenue par l'utilisateur
@@ -39,12 +40,16 @@ class Quiz
       #   - toujours dans la table général :cold, quiz qui consigne toutes
       #     les notes et toutes les soumissions.
       unless @is_reshown
+        debug "[evaluate] is_reshown est false"
         if reusable?
+          debug "[evalute] reusable? est vrai => je ne fais rien"
           # Si c'est un quiz réutilisable (UNAN), on n'enregistre pas de
           # résultat, on fait simplement un rapport pour indiquer le résultat
           # obtenu
         else
+          debug "[evaluate] reusable? est false => je sauve le résultat"
           if save_resultat == false
+            debug "[evaluate] save_resultat retourne false, j'affiche l'erreur"
             # Les résultats n'ont pas été enregistrés, peut-être tout simplement
             # parce qu'ils l'ont déjà été et qu'ils ne peuvent l'être à nouveau
             # La note finale ne sera pas affiché. L'erreur a été placée dans
@@ -54,12 +59,14 @@ class Quiz
             # enregistrer à nouveau les points
             return error(@error_evaluation)
           end
-          report
         end
+        debug "[evaluate] --> report pour construire le rapport"
+        report
       end
     end
+    debug "<- evaluate"
   end
-
+  # /evaluate
   # Note maximale et minimale obtenue à ce test (pour commenter
   # la note obtenue par l'user)
   attr_reader :current_note_max, :current_note_min

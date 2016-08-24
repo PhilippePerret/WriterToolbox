@@ -73,6 +73,7 @@ feature "Vérification des calculs du quiz" do
         points_max += qdata[:points]
         as_bad = bads_ids.include?(qid)
         points_user += as_bad ? qdata[:points] : qdata[:points_bad]
+        page.execute_script("UI.scrollTo('div#question-#{qid}',100)")
         within("div#question-#{qid}") do
           if qdata[:type] == :radio
             choose(qdata[as_bad ? :bad : :good])
@@ -193,13 +194,14 @@ feature "Vérification des calculs du quiz" do
 
     la_page_a_pour_titre QUIZ_MAIN_TITRE
     shot 'apres-bonne-soumission'
+
     # La note est 20/20
     expect(page).to have_tag('span', text: '20/20')
   end
 
   scenario 'Quand l’user ne soumet pas toutes les questions justes' do
     visite_route 'quiz/1/show?qdbr=biblio'
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
 
     # Mauvaise réponses, toutes les autres seront considérées
     # comme vrai, ce qui permet d'ajouter d'autres questions
@@ -216,7 +218,7 @@ feature "Vérification des calculs du quiz" do
     expect(page).to have_tag('span', with: {id: 'note_finale'}, text: "#{note}/20")
 
     # Les bonnes réponses doivent être mises en exergue
-    within('form#form_quiz') do
+    within('form#form_quiz-1') do
       data_questions.each do |qid, qdata|
         qoid = "question-#{qid}"
         if qdata[:type] == :radio
@@ -295,7 +297,7 @@ feature "Vérification des calculs du quiz" do
 
     # Il rejoint le questionnaire
     visite_route "quiz/1/show?qdbr=biblio"
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
 
     # === Benoit remplit le questionnaire ===
     points_max, points_user = remplir_quiz
@@ -391,12 +393,11 @@ feature "Vérification des calculs du quiz" do
     # peut pas le faire, avec un lien pour s'abonner.
     puts "Benoit clique le lien pour voir son questionnaire."
     within('fieldset#fs_quizes'){click_link( @dquiz_un[:titre] )}
-    la_page_a_pour_titre 'Quizzzz !'
+    la_page_a_pour_titre QUIZ_MAIN_TITRE
     la_page_napas_derreur
     shot 'user-in-reshow-quiz'
     la_page_napas_le_message 'En qualité de simple utilisatrice inscrite, vous ne pouvez pas consulter vos quiz précédents'
 
-    la_page_a_le_formulaire 'form_quiz'
-    le_formulaire(page.find('form#form_quiz')).a_le_bouton_soumettre('Soumettre le quiz')
+    la_page_a_le_formulaire 'form_quiz-1'
   end
 end

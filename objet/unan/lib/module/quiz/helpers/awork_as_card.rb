@@ -184,9 +184,6 @@ class UnanQuiz
     if options[:evaluate]
       quiz.evaluate
       unless quiz.is_reshown || quiz.error_evaluation
-        # On peut demander la construction du rapport pour produire
-        # la note finale.
-        quiz.report
         # Ajout des points à l'auteur
         auteur.add_points quiz.unombre_points
         flash "Nombre de points marqués : #{quiz.unombre_points}"
