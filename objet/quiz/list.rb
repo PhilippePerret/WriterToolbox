@@ -22,11 +22,26 @@ class ::Quiz
     end
 
     def hors_liste_as_ul
+      current_suffixe = nil
       allquiz_hors_liste.collect do |quiz|
+        if current_suffixe != quiz.suffix_base
+          current_suffixe = quiz.suffix_base.freeze
+          human_titre_for_suffix_base(quiz.suffix_base).in_h4
+        else
+          ''
+        end +
         quiz.as_li
       end.join('').in_ul(id: 'quizes_hors_liste', class: 'quiz_list')
     end
 
+    def human_titre_for_suffix_base suf
+      case suf
+      when 'unan'     then 'Programme UNAN'
+      when 'biblio'   then 'Quiz bibliographiques'
+      when 'test'     then 'Questionnaires test'
+      else "Quiz des #{suf}"
+      end
+    end
   end #/<< self
 
   # ---------------------------------------------------------------------

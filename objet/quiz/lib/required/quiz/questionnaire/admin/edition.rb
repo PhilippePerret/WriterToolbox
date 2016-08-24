@@ -71,9 +71,9 @@ if user.manitou?
       bits_maxq  = (h.delete(:max_questions).nil_if_empty || '0').rjust(3,'-')
       # Est-ce un quiz hors-liste ?
       bits_horsliste = h.delete(:hors_liste) == 'on' ? '1' : '0'
-
+      bits_reusable  = h.delete(:reusable) == 'on' ? '1' : '0'
       # Constition des options
-      @options = "#{@bit_courant}#{bit_random}#{bits_maxq}#{bits_horsliste}"
+      @options = "#{@bit_courant}#{bit_random}#{bits_maxq}#{bits_horsliste}#{bits_reusable}"
       h.merge!(options: @options)
       return h # pour la clarté
     end

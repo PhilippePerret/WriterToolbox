@@ -8,7 +8,7 @@
 site.require 'form_tools'
 alias :tform :form
 
-class ::Quiz
+class Quiz
 
   # {StrintHTML} Retourne le code HTML pour le formulaire d'édition du
   # quiz.
@@ -106,6 +106,8 @@ class ::Quiz
       cb_quiz_courant +
       tform.field_checkbox('Ordre aléatoire pour les questions', 'random', random?) +
       tform.field_checkbox('Ne pas lister (test ou quiz en cours de fabrication)', 'hors_liste', hors_liste?) +
+      tform.field_checkbox('Quiz ré-utilisable', 'reusable', reusable?) +
+      tform.field_description('Pour le moment, seulement utile pour les quiz du programme UNAN, pour des quiz qu’on peut refaire autant qu’on veut.') +
       tform.field_text('', 'max_questions', nombre_max_questions, {class: 'short', placeholder: 'x', text_after: "questions au maximum (pour quiz à ordre aléatoire)"}) +
       tform.field_text("Questions (#{questions_ids.count})", 'questions_ids', questions_ids.join(' ')) +
       tform.field_raw('', '', nil, {field: "#{bouton_new_question}"}) +
