@@ -29,26 +29,26 @@ http = "http://localhost/WriterToolbox"
 
 <fieldset class='tools'>
   <legend>CARTES</legend>
-  <%= "WORKS ****".in_a(href:"abs_work/map?in=unan_admin", class:'larger') %>
-  <%= "Jour par jour".in_a(href:'unan_admin/day_after_day', class:'larger') %>
+  <%= "WORKS ****".in_a(href:"abs_work/map?in=unan_admin", class:'larger', target: :new) %>
+  <%= "Jour par jour".in_a(href:'unan_admin/day_after_day', class:'larger', target: :new) %>
 </fieldset>
 <fieldset class='tools'>
   <legend>CRÉER</legend>
-    <%= "P-DAY".in_a(href:"abs_pday/edit?in=unan_admin", target:'_creation_pday_') %>
-    <%= "WORK".in_a(href:"abs_work/edit?in=unan_admin") %>
-    <%= "PAGE COURS".in_a(href:"page_cours/edit?in=unan_admin", class:'larger') %>
-    <%= "QUIZ".in_a(href:"quiz/edit?in=unan_admin") %>
-    <%= "QUESTION".in_a(href:"question/edit?in=unan_admin/quiz") %>
-    <%= "EXEMPLE".in_a(href:"exemple/edit?in=unan_admin") %>
+    <%= "P-DAY".in_a(href:"abs_pday/edit?in=unan_admin", target: :new) %>
+    <%= "WORK".in_a(href:"abs_work/edit?in=unan_admin", target: :new) %>
+    <%= "PAGE COURS".in_a(href:"page_cours/edit?in=unan_admin", class:'larger', target: :new) %>
+    <%= "QUIZ".in_a(href:"quiz/edit?qdbr=unan", target: :new) %>
+    <%= "QUESTION".in_a(href:"quiz/edit?qdbr=unan", target: :new) %>
+    <%= "EXEMPLE".in_a(href:"exemple/edit?in=unan_admin", target: :new) %>
 </fieldset>
 <fieldset class='tools'>
   <legend>LISTES</legend>
-  <%= "P-Days".in_a(href:'abs_pday/map?in=unan_admin') %>
-  <%= "Works".in_a(href:'abs_work/list?in=unan_admin') %>
-  <%= "Pages cours".in_a(href:'page_cours/list?in=unan_admin', class:'larger') %>
-  <%= "Quiz".in_a(href:'quiz/list?in=unan_admin') %>
-  <%= "Questions".in_a(href:'question/list?in=unan_admin/quiz') %>
-  <%= "Exemples".in_a(href:'exemple/list?in=unan_admin') %>
+  <%= "P-Days".in_a(href:'abs_pday/map?in=unan_admin', target: :new) %>
+  <%= "Works".in_a(href:'abs_work/list?in=unan_admin', target: :new) %>
+  <%= "Pages cours".in_a(href:'page_cours/list?in=unan_admin', class:'larger', target: :new) %>
+  <%= "Quiz".in_a(href:'quiz/list', target: :new) %>
+  <%= "Questions".in_a(href:'question/list?in=quiz&qdbr=unan', target: :new) %>
+  <%= "Exemples".in_a(href:'exemple/list?in=unan_admin', target: :new) %>
 </fieldset>
 <pre>
 RAPPEL DE PROCÉDURE COURANTE
@@ -72,6 +72,9 @@ RAPPEL DE LA CONFIGURATION GÉNÉRAL DU PROGRAMME
   L'année d'un programme est constituée de
   366 P-DAYS (366 "jours-programme"). C'est un p-day qui définit
   chaque jour le travail à accomplir.
+
+  On peut trouver une version texte (MAP TXT ci-dessus) dans le fichier
+  ./objet/unan_admin/PROGRAMME_MAP.TXT
 
   Un PROGRAM est constitué de P-DAYS
   Un P-DAYS  est constitué de WORKS
@@ -140,11 +143,6 @@ RAPPEL DE LA CONFIGURATION GÉNÉRAL DU PROGRAMME
     <legend>Calendrier</legend>
     <li></li>
     <li><a href="<%= http %>/cal/show?in=unan/program">Visualiser le calendrier de travail</a></li>
-  </fieldset>
-  <fieldset class='inline-block'>
-    <legend>Quiz et questionnaires</legend>
-    <li><%= "Liste des QCM".in_a(href:"quiz/list?in=unan_admin") %> </li>
-    <li><%= "Liste des questions".in_a(href:"question/list?in=unan_admin/quiz") %></li>
   </fieldset>
   <fieldset class='inline-block'>
     <legend>Exemples</legend>

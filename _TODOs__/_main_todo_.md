@@ -16,3 +16,19 @@ Sinon
 
   1 An 1 Film
   1 film en 1 an
+
+# ATELIER ET ANAGRAMME
+  <!--
+  Faire un truc sur les mots qu'on peut tirer d'atelier :
+  - atèle
+  - lier
+  - lire
+  - tare
+  - rate
+  - tel
+  - lit
+  - atre
+  - art
+  - rite
+
+   -->
