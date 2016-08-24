@@ -121,38 +121,26 @@ feature "Jour-programme 5" do
     expect(hwork[:item_id]).not_to eq nil
     expect(hwork[:item_id]).to eq row_id
     success 'Le work de Benoit a mémorisé l’id de rangée des résultats'
-
+    expect(hwork[:status]).to eq 9
+    expect(hwork[:ended_at]).not_to eq nil
+    expect(hwork[:ended_at]).to be > start_time
+    success 'Le work de Benoit est marqué achevé'
 
     # ---------------------------------------------------------------------
     # --- Benoit essaie de re-soumettre son quiz ---
     # Il ne peut pas, un message l'en avertit.
 
-    # TODO En fait, s'arranger plutôt pour que lorsque le quiz
-    # a été soumis, et que ce n'est pas un quiz réutilisable, il ne faut
-    # pas le ré-afficher. Et pour le moment, l'user ne peut pas le
-    # retrouver.
-
-
     # Pour afficher le quiz tout frais
     benoit.clique_le_lien 'Revenir à la liste complète'
-
-    benoit.remplit_le_formulaire('form_quiz-8').
-      avec(data_form).
-      et_le_soumet('Soumettre')
-    shot 'benoit-re-soumet-encore-quiz'
-    sleep 1
-    # sleep 30
-
-    # === TEST ===
     la_page_a_le_soustitre UNAN_SOUS_TITRE_BUREAU
 
-    la_page_a_l_erreur('Vous ne pouvez pas réenregistrer ce questionnaire tout de suite…')
-    la_page_napas_la_balise('div', id: 'div_note_finale')
-
-    ben = User.new(benoit.id) # pour être sûr d'avoir un programme frais
-    expect(ben.program.points).to eq last_res[:points]
-    success 'Benoit a toujours le même nombre de points pour son programme'
-
+    la_page_napas_la_balise('form', id: 'form_quiz-8',
+      success: 'Le formulaire n’existe plus.'
+    )
+    la_page_a_la_balise('section', id: 'completed_works',
+      success: 'La page affiche la section des travaux achevés.')
+    la_page_a_la_balise('div', id: 'work-25', in: 'section#completed_works',
+      success: 'Le formulaire est affiché dans la section des travaux achevés.')
 
   end
 end

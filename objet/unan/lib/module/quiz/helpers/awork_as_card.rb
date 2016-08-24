@@ -86,7 +86,7 @@ class UnanQuiz
     return res
   end
 
-  def as_recent_card awork = nil
+  def as_recent_card awork = nil, options = nil
     awork.instance_of?(Unan::Program::AbsWork) || raise('Il faut fournir le travail absolu à la méthode #as_card !')
     @awork = awork
     form_recent_quiz
@@ -165,8 +165,8 @@ class UnanQuiz
   #   forcer:       Si true, on force la reconstruction du questionnaire
   #   simulation:   Si true, c'est une simulation
   #   evaluate      Si true, on évalue le quiz
+  #
   def output options = nil
-    debug "-> #output (options = #{options.inspect})"
     options ||= Hash.new
     html = String.new
     html << "<h5 class='titre'>#{titre}</h5>"
@@ -184,9 +184,8 @@ class UnanQuiz
     if options[:evaluate]
       quiz.evaluate
       unless quiz.is_reshown || quiz.error_evaluation
-        # Ajout des points à l'auteur
-        auteur.add_points quiz.unombre_points
-        flash "Nombre de points marqués : #{quiz.unombre_points}"
+        # On achève le travail, on indiquant le nombre de points
+        work.set_complete( quiz.unombre_points )
         # Association du work à l'identifiant de rangée de résultat
         # Pour l'obtenir à nouveau, on pourra faire :
         #   site.require_objet 'quiz'

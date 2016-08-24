@@ -193,36 +193,40 @@ def create_user options = nil
   # Si l'user doit être inscrit au programme UN AN UN SCRIPT, il
   # faut simuler son inscription au niveau des autorisations
   if subscriber || programme_1a1s
-    if programme_1a1s
-      site.require_objet 'unan'
-      (Unan.folder_modules + 'signup_user.rb').require
-      new_user.signup_program_uaus
-    end
-    data_autorisation = {
-      user_id: new_user.id,
-      raison: (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
-      start_time: now - 3600,
-      end_time:   (now - 3600) + ((programme_1a1s ? 2 : 1) * 365.days),
-      created_at: now - 3600,
-      updated_at: now - 3600,
-      nombre_jours: (2 * 365)
-    }
-    User.table_autorisations.insert(data_autorisation)
-
-    now = Time.now.to_i
-    data_paiement = {
-      user_id:    new_user.id,
-      objet_id:   (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
-      montant:    (programme_1a1s ? Unan.tarif : site.tarif),
-      facture:    'EC-38P44270A51102219',
-      created_at:  now
-    }
-    table_paiements = site.dbm_table(:cold, 'paiements')
-    table_paiements.insert(data_paiement)
+    make_user_subscriber_for new_user, programme_1a1s
   end
 
   return new_user
 
+end
+
+def make_user_subscriber_for new_user, programme_1a1s = false
+  now = Time.now.to_i
+  if programme_1a1s
+    site.require_objet 'unan'
+    (Unan.folder_modules + 'signup_user.rb').require
+    new_user.signup_program_uaus
+  end
+  data_autorisation = {
+    user_id: new_user.id,
+    raison: (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
+    start_time: now - 3600,
+    end_time:   (now - 3600) + ((programme_1a1s ? 2 : 1) * 365.days),
+    created_at: now - 3600,
+    updated_at: now - 3600,
+    nombre_jours: (2 * 365)
+  }
+  User.table_autorisations.insert(data_autorisation)
+
+  data_paiement = {
+    user_id:    new_user.id,
+    objet_id:   (programme_1a1s ? '1AN1SCRIPT' : 'ABONNEMENT'),
+    montant:    (programme_1a1s ? Unan.tarif : site.tarif),
+    facture:    'EC-38P44270A51102219',
+    created_at:  now
+  }
+  table_paiements = site.dbm_table(:cold, 'paiements')
+  table_paiements.insert(data_paiement)
 end
 
 # Détruit des users dans la table offline, sans toucher aux 10

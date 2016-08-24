@@ -41,23 +41,28 @@ class Work
   #   - met les points dans le travail en fonction du retard
   #     éventuel.
   #   - ajoute les points au programme de l'user
-  # +must_add_point+ permet de définir s'il faut ajouter ou non les points
-  # de ce travail. C'est utile par exemple pour les pages de cours,
-  # qu'il suffirait de lire et de remettre à lire en boucle pour ajouter
-  # chaque fois les points de la lecture.
-  # C'est utile aussi pour les questionnaires ré-utilisable (multi?)
-  def set_complete(must_add_point = true)
+  # +points+    Permet de définir explicitement le nombre de points
+  #             à ajouter pour ce travail. Utilisé par les quiz dont
+  #             le nombre de points dépend des réponses.
+  #             Valeurs possibles :
+  #             -----------------
+  #             NIL   On prend le nombre de points du travail absolu
+  #             X     On ajoute X points pour ce travail
+  #             0     On n'ajoute pas de points pour ce travail
+  #
+  def set_complete(added_points = nil)
     dwork = {status: 9, updated_at: NOW, ended_at: NOW}
-    dwork.merge!(points: points_for_travail) if must_add_point
+    added_points ||= points_for_travail
+
+    mess_points = ''
+    if added_points > 0
+      auteur.add_points( added_points )
+      dwork.merge!(points: added_points)
+      mess_points = " (#{added_points} nouveaux points)"
+    end
+
     set(dwork)
-    add_mess_points =
-      if must_add_point && points_for_travail > 0
-        user.add_points( points_for_travail )
-        " (#{abs_work.points} nouveaux points)"
-      else
-        ""
-      end
-    flash "Travail ##{id} terminé#{add_mess_points}."
+    flash "Travail ##{id} terminé#{mess_points}."
   end
 
   # Les points récoltés pour ce travail, en fonction des

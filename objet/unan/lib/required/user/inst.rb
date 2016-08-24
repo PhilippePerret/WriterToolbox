@@ -21,7 +21,7 @@ class User
   end
 
   def add_points nb_points
-    return if nb_points.to_i == 0
+    nb_points.to_i > 0 || return
     tot_pts_programme = points + nb_points
     program.set(:points => tot_pts_programme)
   end

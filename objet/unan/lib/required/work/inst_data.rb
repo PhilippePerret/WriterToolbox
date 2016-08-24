@@ -24,6 +24,13 @@ class Work
     @abs_work ||= Unan::Program::AbsWork.new(abs_work_id)
   end
 
+  # L'auteur qui possède ce travail
+  # Noter que le travail ne contient pas de propriété @user_id,
+  # mais seulement @program_id
+  def auteur
+    @auteur ||= program.auteur
+  end
+
   # ---------------------------------------------------------------------
   #   Raccourcis pour les données du travail absolu
   # ---------------------------------------------------------------------
