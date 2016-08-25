@@ -1,7 +1,7 @@
 # Essai de document pour créer un formulaire de façon manuelle, qui va 
 # être transformé ensuite en vrai questionnaire dans la base de
 # donnée.
-# 
+#
 #+TITLE: Questionnaire fictif dans le mode org-mode d'Emacs
 #+AUTHOR: Philippe Perret
 #+DATE: 3 juillet 2016
