@@ -99,8 +99,9 @@ class Quiz
         # On construit le LI de la réponse et on l'ajoute à la quesiton
         lireponses << Reponse.new(self, hreponse).output
       end
-      # On mélange les réponses
-      lireponses = lireponses.shuffle.shuffle
+      # On mélange les réponses, sauf si on doit les garder
+      # dans l'ordre
+      keep_ordre_reponses? || lireponses = lireponses.shuffle.shuffle
       lireponses.join('').in_ul(class: class_css.join(' '))
     end
 

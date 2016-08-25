@@ -20,7 +20,6 @@ class Quiz
   # principalement :
   #   :action       l'action
   def form
-
     # Vérifications préliminaire
     suffix_base != nil || raise('Il faut fournir le suffix-base du quiz.')
     self.class.database_exist? || raise("La base de données #{database_fullname} est introuvable…")
@@ -61,6 +60,7 @@ class Quiz
       ['', 'Choisir parmi…'],
       ['scenodico',   'Scénodico'],
       ['filmodico',   'Filmodico'],
+      ['unan',        'Programme UNAN'],
       ['autre',       'Autre']
     ]
     onclick = "$('input#quiz_groupe').val(this.value)"
@@ -76,6 +76,7 @@ class Quiz
       # OK
     when String then
       @questions_ids = questions_ids.split(' ')
+      debug "@questions_ids : #{@questions_ids.inspect}"
     else
       raise('Les questions_ids ont un format invalide ' + "(#{questions_ids.class})")
     end
@@ -120,6 +121,7 @@ class Quiz
     Quiz::Question.formulaire_edition_question(self, dform)
 
   end
+  # /form
 
   # Code HTML de la ligne de formulaire contenant l'identifiant
   # du formulaire et les boutons d'édition

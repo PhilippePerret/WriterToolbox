@@ -21,7 +21,8 @@ $.extend(window.QuizQuestion,{
       'question_type_a'
     ];
     var champs_uncheck = [
-      'question_masked'
+      'question_masked',
+      'question_type_o'
     ];
     UI.init_form({
       val:      champs_valeurs,
@@ -81,16 +82,24 @@ $.extend(window.QuizQuestion,{
     qdata.type_f = type.substring(0,1);
     qdata.type_c = type.substring(1,2);
     qdata.type_a = type.substring(2,3);
+    qdata.masked = type.substring(3,4) == '1';
+    qdata.type_o = type.substring(4,5) == '1';
 
     // --- On met toutes les données --
     $(['id', 'question']).each(function(i, k){
       $('form#edition_question_quiz input#question_' + k).val( qdata[k])
     })
+    // TEXTAREA
     $(['question', 'raison', 'indication']).each(function(i, k){
       $('form#edition_question_quiz textarea#question_' + k).val( qdata[k])
     })
+    // MENU SELECT
     $(['type_f', 'type_c', 'type_a']).each(function(i, k){
       $('form#edition_question_quiz select#question_' + k).val( qdata[k])
+    })
+    // CASES À COCHER
+    $(['type_o', 'masked']).each(function(i, k){
+      $('form#edition_question_quiz input#question_' + k)[0].checked = qdata[k];
     })
 
     // $('form#edition_question_quiz input#question_question').

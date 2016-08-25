@@ -17,6 +17,7 @@ class Quiz
       # suffix_base de la classe Quiz, ce qui se fait naturellement en mettant
       # dans les paramètres `qdbr=...`
       def formulaire_edition_question quiz, dform, question = nil
+        debug "-> formulaire_edition_question"
         question ||= new(quiz, nil)
         dform[:id] = 'edition_question_quiz'
         tform.prefix= 'question'
@@ -58,6 +59,7 @@ class Quiz
           champs_reponses +
 
           # TYPE (radio ou checkbox, alignement, type, masqué, etc.)
+          tform.field_checkbox('Conserver l’ordre exact des réponses', 'type_o', question.keep_ordre_reponses?) +
           tform.field_select("Type",      'type_f', question.type_f, {values: ::Quiz::Question::TYPES}) +
           tform.field_select("Choix",     'type_c', question.type_c, {values: [['r', "Un seul choix (radio)"], ['c', "Plusieurs choix (checkboxes)"]]}) +
           tform.field_select("Affichage", 'type_a', question.type_a, {values: [['v', "L'un en dessous de l'autre"], ['h', "En ligne"], ['m', "En menu"]]}) +

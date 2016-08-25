@@ -13,9 +13,12 @@ class Quiz
 
 
     def initialize quiz, qid = nil
+      # debug "-> Quiz::Question#initialize( qid = #{qid.inspect})"
       @quiz = quiz
       @id   = qid.to_i
-      @id > 0 || raise('Impossible d’instancier une question d’identifiant 0.')
+      # Non, @id est nil à la création d'une nouvelle question (plus exactement,
+      # quand on affiche le formulaire complet du quiz)
+      # @id > 0 || error('Impossible d’instancier une question d’identifiant 0.')
     end
 
   end #/Question

@@ -29,5 +29,13 @@ class ::Quiz
       @is_masked ||= type[3].to_i == 1
     end
 
+    # BIT 5 pour savoir s'il faut garder l'ordre des réponses
+    # Par défaut, les réponses sont toujours mélangées, ce qui produit
+    # forcément un affichage aléatoire. Mais parfois, il faut les garder
+    # dans l'ordre.
+    def keep_ordre_reponses?
+      @is_keep_ordre_reponses ||= type[4].to_i == 1
+    end
+
   end #/Question
 end #/Quiz
