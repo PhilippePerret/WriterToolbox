@@ -1,5 +1,8 @@
 # encoding: UTF-8
-class ::Quiz
+=begin
+Noter que ça ne concerne qu'une question dans un quiz, pas en dehors
+=end
+class Quiz
   class Question
 
     # Instance {Quiz} du quiz possédant cette question

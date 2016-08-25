@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
   class Question
 
     # Table contenant toutes les questions dans la base
@@ -11,7 +11,13 @@ class ::Quiz
     alias :table_questions :table
 
     def database_relname
-      @database_relname ||= quiz.database_relname
+      @database_relname ||= begin
+        if quiz.nil? # <= question éditée hors d'un quiz
+          "quiz_#{Quiz.suffix_base}".to_sym
+        else
+          quiz.database_relname
+        end
+      end
     end
 
   end #/Question

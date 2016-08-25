@@ -2,6 +2,24 @@
 # Affichage de toutes les questions d'une base
 %>
 <%= Quiz.titre_h1("Affichage des questions de #{param(:qdbr)}") %>
-<p>
-  [À IMPLÉMENTER]
-</p>
+
+<%
+# ---------------------------------------------------------------------
+#  BOITE DE FILTRE
+# ---------------------------------------------------------------------
+%>
+<fieldset id="fs_filtre">
+  <legend>Filtre des questions</legend>
+  <form id="form_filtre" class="" action="question/list?in=quiz" method="POST">
+    <%= param(:qdbr).in_hidden(name: 'qdbr') %>
+    La question doit contenir le mot <input type="text" name="filtre[mot]" id="filtre_mot" />
+  </form>
+</fieldset>
+<%
+# ---------------------------------------------------------------------
+#   LISTE DES QUESTIONS
+# ---------------------------------------------------------------------
+%>
+<ul id="question_list">
+  <%= QuestionQuiz.selection.collect{ |question| question.as_li }.join %>
+</ul>

@@ -8,7 +8,7 @@
 =end
 if user.manitou?
 
-  class ::Quiz
+  class Quiz
     class Question
       class << self
 
@@ -71,7 +71,7 @@ if user.manitou?
         @data2save ||= begin
           {
             question:     question,
-            groupe:       quiz.groupe,
+            groupe:       groupe,
             reponses:     reponses,
             type:         type_gathered,
             raison:       raison,
@@ -105,6 +105,14 @@ if user.manitou?
         @reponses   = reponses.to_json
         @raison     = data_param[:raison].nil_if_empty
         @indication = data_param[:indication].nil_if_empty
+        # Définition du groupe
+        @groupe =
+          if data_param[:groupe] == 'other'
+            data_param[:other_groupe].nil_if_empty
+          else
+            data_param[:groupe]
+          end
+        @groupe != nil || raise('Il faut impérativement définir le groupe de la question')
       rescue Exception => e
         debug e
         error e.message

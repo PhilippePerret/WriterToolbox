@@ -3,7 +3,7 @@
 site.require 'form_tools'
 alias :tform :form
 
-class ::Quiz
+class Quiz
   class Question
     class << self
 
@@ -11,24 +11,50 @@ class ::Quiz
       #
       # Rappel : pour des questions de facilité, ce formulaire
       # est placé sous le formulaire d'édition du quiz
+      #
+      # Maintenant qu'on peut éditer les questions seules, on peut mettre
+      # +quiz+ à nil. Mais dans ce cas il est impératif de définir le
+      # suffix_base de la classe Quiz, ce qui se fait naturellement en mettant
+      # dans les paramètres `qdbr=...`
       def formulaire_edition_question quiz, dform, question = nil
         question ||= new(quiz, nil)
         dform[:id] = 'edition_question_quiz'
         tform.prefix= 'question'
         form.objet  = param(:question) || Hash.new # pour le moment
+        suffix_base =
+          if quiz.nil?
+            Quiz.suffix_base
+          else
+            quiz_suffix_base
+          end
+
+
         bouton_generate_yaml_file = "Entrer les données à partir d'un fichier YAML".in_a(href:'question/from_yaml?in=unan_admin/quiz')
         lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(QuizQuestion, 'init_new_question')()")
         lien_edit_question    = "Edit".in_a(onclick:"$('input#operation').val('edit_question');$('form#form_question_edit').submit();", class:'small btn')
         lien_destroy_question = "Détruire".in_a(onclick:"$.proxy(QuizQuestion,'on_want_destroy')()", class:'small btn warning')
+        lien_back_to_quiz =
+          if quiz.nil? then ''
+          else
+            'Retour au quiz'.in_a(onclick: 'QuizQuestion.back_to_quiz()', class: 'small').in_div(class: 'right')
+          end
 
+        # Pour le nom du groupe auquel appartient la question (par défaut, c'est le
+        # groupe du quiz, si quiz)
+        values_groupe_name = Quiz.table_questions.select(colonnes:[:groupe]).collect{|h|h[:groupe]}.uniq.sort.collect{|grp| [grp, grp]}
+        values_groupe_name << ['other', "Le nouveau nom :"]
+        field_other_groupe_name = '<input type="text" style="width:200px" name="question[other_groupe]" id="question_other_groupe" placeholder="Nouveau groupe" />'
         (
+
           # On ne met pas tout de suite l'opération pour éviter les erreurs
           ''.in_hidden(name:'operation', id:'operation') +
-          quiz.suffix_base.in_hidden(name: 'qdbr') +
-          # Un lien pour revenir au quiz sans enregistrer la question
-          'Retour au quiz'.in_a(onclick: 'QuizQuestion.back_to_quiz()', class: 'small').in_div(class: 'right') +
+          suffix_base.in_hidden(name: 'qdbr') +
+          # Un lien pour revenir au quiz sans enregistrer la question, si un quiz
+          # est défini
+          lien_back_to_quiz +
           tform.field_text("ID", 'id', nil, {class:'short id_field', text_after: "#{lien_edit_question} #{lien_destroy_question} #{lien_init_question}"}) +
           tform.field_text('Question', 'question', nil, {class:'bold'}) +
+          tform.field_select('Groupe', 'groupe', nil, {values: values_groupe_name, text_after: "#{field_other_groupe_name}"}) +
           champs_reponses +
 
           # TYPE (radio ou checkbox, alignement, type, masqué, etc.)

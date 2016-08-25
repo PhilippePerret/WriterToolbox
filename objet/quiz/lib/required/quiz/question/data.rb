@@ -4,7 +4,7 @@
   Module pour les données (absolutes) de la question.
 
 =end
-class ::Quiz
+class Quiz
   class Question
 
     include MethodesMySQL
@@ -14,6 +14,7 @@ class ::Quiz
     # ---------------------------------------------------------------------
     def question    ; @question   ||= get(:question)    end
     def reponses    ; @reponses   ||= get(:reponses)    end
+    def groupe      ; @groupe     ||= get(:groupe)      end
     def raison      ; @raison     ||= get(:raison)      end
     def indication  ; @indication ||= get(:indication)  end
     def type        ; @type       ||= get(:type) || type_default end

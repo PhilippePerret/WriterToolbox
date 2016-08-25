@@ -175,18 +175,24 @@ $(document).ready(function(){
     $('input#question_question').unbind('keypress', function(ev){return QuizQuestion.onkeypress_champ_question(ev)})
   })
 
-  // On rend la liste des questions sortable pour pouvoir
-  // définir l'ordre
-  $('form#edition_quiz ul#ul_questions').sortable({
-    axis: 'y',
-    update: function(ev, ui){
-      QuizQuestion.reordonne_questions()
-    }
-  })
+  // À faire seulement si le formulaire de l'édition du Quiz
+  // existe, i.e. si on n'est pas en train d'éditer seulement une
+  // question
+  if($('form#edition_quiz').length){
+    // On rend la liste des questions sortable pour pouvoir
+    // définir l'ordre
+    $('form#edition_quiz ul#ul_questions').sortable({
+      axis: 'y',
+      update: function(ev, ui){
+        QuizQuestion.reordonne_questions()
+      }
+    })
 
-  // On ferme le formulaire de la question
-  // Note : on l'avait laissé ouvert pour que les select soient
-  // bien réglés par le javascript, ce qui ne peut pas se faire
-  // lorsque le formulaire est display: none
-  $('form#edition_question_quiz').hide();
+    // On ferme le formulaire de la question
+    // Note : on l'avait laissé ouvert pour que les select soient
+    // bien réglés par le javascript, ce qui ne peut pas se faire
+    // lorsque le formulaire est display: none
+    $('form#edition_question_quiz').hide();
+  }
+
 })

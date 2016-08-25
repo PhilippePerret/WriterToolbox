@@ -72,6 +72,9 @@ class Quiz
     def table_quiz
       @table_quiz ||= site.dbm_table("quiz_#{suffix_base}", 'quiz')
     end
+    def table_questions
+      @table_questions ||= site.dbm_table("quiz_#{suffix_base}", 'questions')
+    end
 
     def database_exist?
       SiteHtml::DBM_TABLE.database_exist?("boite-a-outils_quiz_#{suffix_base}")

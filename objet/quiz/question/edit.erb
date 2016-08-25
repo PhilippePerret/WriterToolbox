@@ -1,0 +1,13 @@
+<%
+# Édition d'une question
+%>
+<%
+param(:question => question.get_all)
+dform = {
+  class:      'dim2080',
+  action:     "question/#{question_id}/edit?in=quiz"
+  }
+formulaire = Quiz::Question.formulaire_edition_question nil, dform, question
+
+%>
+<%= formulaire %>
