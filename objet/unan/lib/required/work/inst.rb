@@ -47,15 +47,24 @@ class Work
   #             Valeurs possibles :
   #             -----------------
   #             NIL   On prend le nombre de points du travail absolu
+  #             True  Idem
   #             X     On ajoute X points pour ce travail
   #             0     On n'ajoute pas de points pour ce travail
+  #             false Idem
   #
   def set_complete(added_points = nil)
     dwork = {status: 9, updated_at: NOW, ended_at: NOW}
-    added_points ||= points_for_travail
+    added_points =
+      if added_points === true || added_points === nil
+        points_for_travail
+      elsif added_points == 0
+        false
+      else
+        added_points
+      end
 
     mess_points = ''
-    if added_points > 0
+    if added_points != false
       auteur.add_points( added_points )
       dwork.merge!(points: added_points)
       mess_points = " (#{added_points} nouveaux points)"

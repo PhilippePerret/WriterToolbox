@@ -76,11 +76,24 @@ class Quiz
   def form_submit_button; @form_submit_button ||= 'Soumettre le quiz' end
   def form_submit_button= value; @form_submit_button = value end
 
+  # Le href pour un bouton recommencer d'un quiz ré-utilisable.
+  # Dans la méthode appelante, doit être défini par :
+  #   quiz.href_button_recommencer= "le/href/..."
+  def href_button_recommencer; @href_button_recommencer ||= site.current_route.route end
+  def href_button_recommencer= value; @href_button_recommencer = value end
+
   # Retourne le code HTML pour le bouton pour soumettre le
   # formulaire ou autre bouton si c'est un résultat
   def bouton_soumission_ou_autre
-    evaluation? && (return '')
-    form_submit_button.in_submit(class: 'btn')
+    if evaluation?
+      if reusable?
+        'Recommencer'.in_a(class: 'btn', href: href_button_recommencer)
+      else
+        ''
+      end
+    else
+      form_submit_button.in_submit(class: 'btn')
+    end
   end
 
   # Code HTML pour la description du quiz, si elle existe

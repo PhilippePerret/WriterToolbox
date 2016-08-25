@@ -42,8 +42,12 @@ end
 
 class FormTest
 
+  include Capybara::DSL
+
   #
   attr_reader :form
+
+  attr_reader :resultat
 
   # Référence au formulaire, par exemple '#identifiant' (meilleure
   # référence)
@@ -51,6 +55,10 @@ class FormTest
   def initialize form, options = nil
     @form     = form
     @options  = options
+  end
+
+  def form_id
+    @form_id ||= form[:id]
   end
 
   # Les données avec lesquelles il faut remplir le formulaire
@@ -61,8 +69,51 @@ class FormTest
     end
     self
   end
+
+
+  # Pour remplir un formulaire QUIZ au hasard
+  #
+  # Pour le moment, ne fonctionne qu'avec des radio-bouton et
+  # pour un QUIZ
+  def au_hasard
+
+    # Pour mettre les résultats qui pourront être récupérés par
+    # .resultat
+    @resultat = Hash.new
+
+    js = <<-JS
+var l = [];
+$("form##{form_id} > div.question").each(function(){l.push($(this).attr('id'))});
+return l;
+    JS
+    liste_questions = page.execute_script("#{js}")
+    liste_questions.count > 0 || raise("Aucune question trouvée dans le formulaire form##{form_id}…")
+
+    # puts "liste_questions : #{liste_questions.inspect}"
+    liste_questions.each do |div_id|
+      # div_id ressemble à 'question-xx'
+      qid = div_id.split('-')[1]
+      nombre_reponses = page.all("div##{div_id} > ul > li").count
+      reponse_choisie = rand(nombre_reponses)
+      @resultat.merge!( qid.to_i => reponse_choisie )
+      li_id = "q-#{qid}-r-#{reponse_choisie}"
+      page.execute_script("UI.scrollTo('div##{div_id} > ul > li##{li_id}', 200)")
+      input_id = "q9r_rep#{qid}_#{reponse_choisie}"
+      input_jid = "div##{div_id} > ul > li##{li_id} input##{input_id}"
+      page.execute_script("$('#{input_jid}')[0].checked = true;")
+    end
+
+    return self
+  end
+  #/ au_hasard
+
   def et_le_soumet nom_bouton
+    # On utilise deux façon de faire pour être sûr que ça fonctionne,
+    # car ça ne fonctionne pas à tous les coups
     form.click_button(nom_bouton, match: :first)
+    sleep 0.5
+    within("form##{form_id}"){click_button(nom_bouton, match: :first)} rescue nil
+    self
   end
   alias :et_clique :et_le_soumet
 

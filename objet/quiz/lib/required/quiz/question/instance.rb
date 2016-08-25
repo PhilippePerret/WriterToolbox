@@ -14,7 +14,8 @@ class Quiz
 
     def initialize quiz, qid = nil
       @quiz = quiz
-      @id   = qid
+      @id   = qid.to_i
+      @id > 0 || raise('Impossible d’instancier une question d’identifiant 0.')
     end
 
   end #/Question

@@ -15,10 +15,10 @@ class Quiz
   # s'il est identifié
   #
   # Si le quiz a déjà été enregistré il y a peu, on ne fait rien et
-  # on signale le problème à l'user.
+  # on signale le "problème" à l'user.
   # La méthode RETURN FALSE dans ce cas-là.
   #
-  # La méthode est appelée par Quiz#evaluate dans le module calcul.rb
+  # La méthode est appelée par Quiz#evaluate dans le module evaluate.rb
   #
   # Noter qu'elle
   def save_resultat

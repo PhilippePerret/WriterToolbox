@@ -110,8 +110,7 @@ class UnanQuiz
   end
   def form_recent_quiz
     (
-      titre_quiz      +
-      boutons_recent_quiz
+      titre_quiz
     ).in_div(id: "work-#{awork.id}", class:'work quiz')
   end
   def titre_quiz
@@ -139,19 +138,6 @@ class UnanQuiz
       'Répondre à ce questionnaire'.in_a(dbouton)
     ).in_div(class:'buttons')
   end
-  def boutons_recent_quiz
-    # TODO : RAJOUTER CE BOUTON LORSQU'ON quiz/show SERA OPÉRATIONNEL
-    return ''
-    dbouton = {
-      class:  'btn small',
-      href:  "quiz/#{id}/show?in=unan&user_id=#{bureau.auteur.id}",
-      target: :new
-    }
-    return (
-      'Revoir ce quiz'.in_a(dbouton)
-    ).in_div(class: 'right') # ne pas mettre .buttons, il serait caché
-  end
-
 
   # = main =
   #
@@ -174,25 +160,31 @@ class UnanQuiz
     # Noter que c'est dans cette valeur qu'on passe l'UnanQuiz courant
     quiz.form_action        = "bureau/home?in=unan&cong=quiz&unanquiz=#{id}&work=#{work.id}"
     debug "quiz.form_action : #{quiz.form_action}"
-    quiz.form_operation     = 'bureau_save_quiz'
-    quiz.form_submit_button = 'Soumettre'
-    quiz.no_pre_description =     true
-    quiz.no_post_description=     true
-    quiz.no_message_note_finale=  true
+    quiz.form_operation           = 'bureau_save_quiz'
+    quiz.form_submit_button       = 'Soumettre'
+    quiz.no_pre_description       = true
+    quiz.no_post_description      = true
+    quiz.no_message_note_finale   = true
+    quiz.href_button_recommencer  = "bureau/home?in=unan&cong=quiz"
 
     # === ÉVALUATION DU QUESTIONNAIRE
     if options[:evaluate]
       quiz.evaluate
       unless quiz.is_reshown || quiz.error_evaluation
-        # On achève le travail, on indiquant le nombre de points
-        work.set_complete( quiz.unombre_points )
-        # Association du work à l'identifiant de rangée de résultat
-        # Pour l'obtenir à nouveau, on pourra faire :
-        #   site.require_objet 'quiz'
-        #   quiz = Quiz.new(<id>, 'unan')
-        #   quiz.table_resultats.get(work.item_id)
-        debug "quiz.resultats_row_id : #{quiz.resultats_row_id.inspect}"
-        work.set(item_id: quiz.resultats_row_id)
+        # On achève le travail, on indiquant le nombre de points, sauf
+        # si c'est un quiz ré-utilisable
+        if quiz.reusable?
+          flash "Aucun point n’est enregistré pour ce questionnaire. Vous pouvez le réutiliser pendant #{awork.duree} jours."
+        else
+          work.set_complete( quiz.unombre_points )
+          # Association du work à l'identifiant de rangée de résultat
+          # Pour l'obtenir à nouveau, on pourra faire :
+          #   site.require_objet 'quiz'
+          #   quiz = Quiz.new(<id>, 'unan')
+          #   quiz.table_resultats.get(work.item_id)
+          debug "quiz.resultats_row_id : #{quiz.resultats_row_id.inspect}"
+          work.set(item_id: quiz.resultats_row_id)
+        end
       else
         if quiz.error_evaluation
           debug "Une erreur est survenue (#{quiz.error_evaluation}), impossible d'enregistrer le nombre de points"
@@ -227,7 +219,7 @@ class UnanQuiz
         # Tous les travaux correspondant au travail absolu
         drequest = {
           program_id: auteur.program.id, abs_work_id: awork_id,
-          colonnes: [], order: 'created_at DESC'
+          order: 'created_at DESC'
         }
         hworks = auteur.table_works.select(drequest)
 
@@ -236,10 +228,10 @@ class UnanQuiz
         # si le pday n'est pas récupérable, on prend le dernier
         # Notez que cette méthode définira toujours @quiz_pday
         if hworks.count > 1 && quiz_pday
-          hworks.select{|h| h[:abs_pday] == quiz_pday}[:id]
+          hworks.select{|h| h[:abs_pday] == quiz_pday}.first
         else
-          hworks.first[:id]
-        end
+          hworks.first
+        end[:id]
       end
     w = Unan::Program::Work.new(auteur, wid)
     quiz_pday != nil || @quiz_pday = w.pday

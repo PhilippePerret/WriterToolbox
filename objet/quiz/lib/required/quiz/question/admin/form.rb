@@ -25,7 +25,7 @@ class Quiz
           if quiz.nil?
             Quiz.suffix_base
           else
-            quiz_suffix_base
+            quiz.suffix_base
           end
 
 
