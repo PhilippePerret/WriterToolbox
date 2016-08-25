@@ -26,9 +26,11 @@ feature "29e jour-programme" do
     expect(hw[:status]).not_to eq 9
     success 'Le travail du quiz du 27e jour est bien marqué inachevé'
 
-    identify_benoit
-    la_page_a_pour_soustitre UNAN_SOUS_TITRE_BUREAU
-    
+    require './CRON2/lib/procedure/un_an_un_script/duser_extension.rb'
+    duser = DUser.new(benoit.id)
+    duser.marque_fini_les_works_avec_reusable_quiz
+    puts "Lancement de la méthode du cron job qui s'occupe de ça"
+
     hw = benoit.table_works.select(where: {abs_work_id: 24}).first
     expect(hw[:status]).to eq 9
     success 'Le travail du quiz du 27e jour a été marqué achevé'

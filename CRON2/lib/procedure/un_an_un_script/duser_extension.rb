@@ -96,10 +96,15 @@ class DUser
   #     pas trop de retards
   def send_unan_report?
     if time_to_send_unan_report?
+      # Un premier travail doit être exécuté : marquer terminés les
+      # travaux (démarrés) concernant des quiz réutilisables qui ont
+      # atteint leur fin
+      marque_fini_les_works_avec_reusable_quiz
+
+      # Si l'auteur a trop de travaux en retard, on lui
+      # envoie un simple mail pour l'informer qu'on ne peut
+      # pas le passer au jour suivant
       if too_many_overruns?
-        # Si l'auteur a trop de travaux en retard, on lui
-        # envoie un simple mail pour l'informer qu'on ne peut
-        # pas le passer au jour suivant
         repousse_pday_start_to_lendemain
         send_mail_too_many_overruns
         return false
@@ -110,6 +115,23 @@ class DUser
       end
     else # Non, il n'est pas encore temps
       false
+    end
+  end
+
+  def marque_fini_les_works_avec_reusable_quiz
+    # On boucle sur tous les travaux non achevés
+    table_works.select(where: "status < 9").each do |hwork|
+      work_id = hwork[:id]
+      hawork = Unan.table_absolute_works.get(hwork[:abs_work_id])
+      next if hwork[:abs_pday] + hawork[:duree] < program_current_pday
+      awork = Unan::Program::AbsWork.new(hawork[:id])
+      awork.quiz? || next
+      # On prend le quiz pour voir s'il est reusable
+      hquiz = site.dbm_table(:quiz_unan, 'quiz').get(awork.item_id, colonnes:[:options])
+      is_reusable = hquiz[:options][6].to_i == 1
+      is_reusable || next
+      table_works.update(work_id, {status: 9, ended_at: NOW, updated_at: NOW})
+      @current_pday = nil # pour forcer la réactualisation au cas où
     end
   end
 
