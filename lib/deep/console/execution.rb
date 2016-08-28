@@ -261,6 +261,8 @@ class Console
       Taches::update_tache found[3].to_i, found[4].freeze
     elsif (found = line.match(/^(?:show|goto|go to|aller) (.*)$/).to_a).count > 0
       ( goto_section found[1].strip )
+    elsif line.strip =~ /^([a-z_]+)\/([0-9]+)\/([a-z_]+)$/
+      ( goto_section line.strip )
     else
       app_execute_as_regular_sentence line
     end
