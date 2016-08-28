@@ -34,6 +34,8 @@ Résumé rapide du code à inscrire&nbsp;:
     FilmAnalyse.build_timeline_scenes(
         data_scenes: <données des scènes (cf. ci-dessous),
         path:        <path du fichier à construire à partir de la racine>
+        OU
+        folder:       <path/du/dossier/pour/fichier_a_construire.htm>
       )
 
 Voir aussi l'[exemple de code complet](#exempledecodecompletconstructiontimelinescenes) ci-dessous.

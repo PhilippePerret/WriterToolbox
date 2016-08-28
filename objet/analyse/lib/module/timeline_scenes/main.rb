@@ -11,6 +11,24 @@ class FilmAnalyse
 
 class << self
 
+  # Construit le code de la timeline à partir des données +args+ et
+  # les enregistre dans un fichier.
+  #
+  # +args+ définit notamment la propriété :data_scenes qui contient
+  # les données des scènes.
+  # args[:data_scenes] est un Array dont chaque élément est un Hash
+  # qui doit définir les propriétés suivantes :
+  #   :time (le temps en seconds) ou :horloge
+  #   :resume {String} ('fin' pour le dernier temps)
+  #   :numero {Fixnum} Numéro de la scène
+  # Propriétés optionnelles
+  #   :duree    La durée en secondes
+  #
+  # Pour définir le fichier, +args+ doit définir :
+  #   Soit la propriété :path du path du fichier 'timeline_scenes.htm'
+  #   Soit la propriété :folder du path du dossier dans lequel mettre
+  #   le fichier 'timeline_scenes.htm'
+  #
   def build_timeline_scenes args
 
     liste_scenes = args[:data_scenes]

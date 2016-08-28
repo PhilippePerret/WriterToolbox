@@ -17,10 +17,9 @@ def log str
 end
 
 
-def table_resultats_unan
-  @table_resultats_unan ||= site.dbm_table(:quiz_unan, 'resultats', online = true)
-end
-def table_works_for uid
-  tb_name = "unan_works_#{uid}"
-  site.dbm_table(:users_tables, tb_name, online = true)
-end
+fpath = '/Users/philippeperret/Library/Mobile Documents/com~apple~CloudDocs/NARRATION/XDIVERS/Films_TM/Rocky/rocky.film'
+
+site.require_objet 'analyse'
+FilmAnalyse.require_module 'timeline_scenes'
+FilmAnalyse.from_tm_to_timeline fpath
+log FilmAnalyse.args_tm.inspect
