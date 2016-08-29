@@ -40,7 +40,7 @@ end
 def options_from_args args
   options ||= Hash.new
   args != nil || ( return options )
-  visible = args.delete(:visible)
+  # visible = args.delete(:visible)
   if args.key? :text
     t = args.delete :text
     t.instance_of?(Regexp) || t = /#{Regexp.escape t}/i
@@ -48,8 +48,9 @@ def options_from_args args
   end
   options.merge!(success: args.delete(:success)) if args.key?(:success)
   options.merge!(in: args.delete(:in)) if args.key?(:in)
+  options.merge!(visible: args.delete(:visible)) if args.key?(:visible)
   options.merge!(with: args)
-  visible.nil? || options.merge!(visible: visible)
+  # visible.nil? || options.merge!(visible: visible)
   options
 end
 
@@ -109,7 +110,7 @@ end
 def la_page_napas_le_lien titre, options = nil
   options = options_from_args(options)
   mess_succ = options[:success] || "La page n'a pas le lien “#{titre}”."
-  options.merge!(text: titre)
+  options.merge!(text: titre, visible: true)
   if options.key? :in
     within(options.delete(:in)){ expect(page).not_to have_tag('a', options) }
   else
@@ -130,10 +131,13 @@ def la_page_a_la_balise tagname, args = nil
 end
 def la_page_napas_la_balise tagname, args = nil
   options = options_from_args(args)
-  mess_succ = options[:success] || "La page ne possède pas la balise #{tagname} (arguments : #{options.inspect})."
+  mess_succ = options.delete(:success) || "La page ne possède pas la balise #{tagname} (arguments : #{options.inspect})."
+  options.merge!(visible: true)
   if options.key? :in
-    within(options.delete(:in)){ expect(page).not_to have_tag(tagname, options) }
+    # within(options.delete(:in)){ expect(page).not_to have_tag(tagname, options) }
+    expect(page.find(options.delete(:in))).not_to have_tag(tagname, options)
   else
+    puts "-> pas là"
     expect(page).not_to have_tag(tagname, options)
   end
   success mess_succ

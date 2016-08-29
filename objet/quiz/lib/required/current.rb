@@ -17,6 +17,4 @@
 #
 def quiz
   @quiz ||= Quiz.current
-  debug "Quiz courant : #{@quiz.id}/#{@quiz.suffix_base} / options : #{@quiz.options}"
-  @quiz
 end

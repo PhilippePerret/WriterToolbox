@@ -96,8 +96,8 @@ class Work
         abs_pday:     pday,
         status:       1,  # pour le marquer démarré
         options:      "#{awork.type_w.rjust(2,'0')}",
-        created_at:   NOW,
-        updated_at:   NOW
+        created_at:   now,
+        updated_at:   now
       }
 
       # Création de l'instance et enregistrement
@@ -106,6 +106,11 @@ class Work
       return iwork
     end
     # /create_new_work_for_user
+
+    # Simplement pour pouvoir définir le now dans les tests
+    # En utilisation normale, c'est le NOW qui est utilisé
+    def now; @now ||= NOW end
+    def now= val; @now = val end
 
   end #/<<self Unan::Program::Work
 

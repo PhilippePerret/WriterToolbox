@@ -53,14 +53,17 @@ class Quiz
     #
     def ureponse
       @ureponse ||= begin
-        urep = (quiz.ureponses || {})[id]
+        ureps = quiz.ureponses || {}
+        urep = ureps[id.to_i]
         urep.nil? || begin
           rindex = urep[:rep_index]
           urep[:rep_index] = [rindex] unless rindex.instance_of?(Array)
         end
+        # debug "ureponse : #{urep.inspect}"
         urep
       end
     end
+
 
   end #/Question
 end #/Quiz

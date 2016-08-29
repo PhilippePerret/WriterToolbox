@@ -9,14 +9,37 @@ class Quiz
   # Réaffiche le questionnaire rempli par l'user courant
   #
   def reshow
-    # On récupère les réponses précédentes données par l'user
-    @ureponses = table_resultats.select(where: "quiz_id = #{id} AND user_id = #{user.id}", order: 'created_at DESC', limit: 1, colonnes: [:reponses]).first[:reponses]
-    @ureponses = JSON.load(@ureponses).to_sym
     # Il faut indiquer que c'est un ré-affichage, pour ne pas chercher à
     # enregistrer le résultat.
     @is_reshown = true
+    # On récupère les réponses précédentes données par l'user
+    get_ureponses
     evaluate
     output
+  end
+
+  # Récupère les réponses de l'user à ce questionnaire.
+  #
+  # Deux façons de les récupérer :
+  #   SOIT On se sert de l'identifiant du quiz et de l'identifiant
+  #   de l'user et on récupère le dernier quiz soumis.
+  #   SOIT Les paramètres définissent explicitement l'identifiant de
+  #   la rangée de résultats (qui est connue quand c'est pour le programme
+  #   UNAN) — Un test est néanmoins effectué pour être certain qu'il s'agit
+  #   du même quiz et du même user pour éviter les attaques
+  def get_ureponses
+    if param(:qresid)
+      hresultat = table_resultats.get(param(:qresid).to_i)
+      hresultat[:quiz_id] == id || raise('Il ne s’agit pas du questionnaire voulu…')
+      hresultat[:user_id] == user.id || raise('Vous êtes en train de vouloir pirater le questionnaire d’un autre…')
+    else
+      hresultat = table_resultats.select(where: "quiz_id = #{id} AND user_id = #{user.id}", order: 'created_at DESC', limit: 1, colonnes: [:reponses]).first
+    end
+    @ureponses = Hash.new
+    JSON.load(hresultat[:reponses]).each do |k, v|
+      @ureponses.merge!(k.to_i => v.to_sym)
+    end
+    # debug "@ureponses : #{@ureponses.inspect}"
   end
 
   # Méthode principale appelée pour afficher le

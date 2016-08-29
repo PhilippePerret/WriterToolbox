@@ -2,4 +2,5 @@
 # Page présentant l'historique des travaux de l'auteur
 %>
 <%= Unan.titre_h1('Historique de travail') %>
+<%= 'Centre de travail'.in_a(href: 'bureau/home?in=unan').in_div(class: 'right')%>
 <%= historique.as_ul %>

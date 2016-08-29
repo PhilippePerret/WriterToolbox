@@ -116,6 +116,9 @@ class User
     # On démarre tous ces travaux
     arr_data.each do |dstart|
       # dstart = [self, awork_id, work_pday]
+      # Pour marquer que le travail a bien été démarré au
+      # moment voulu et non pas maintenant.
+      Unan::Program::Work.now = NOW - dstart[2].days + (rand(6000) * (rand(3) - 1))
       Unan::Program::Work.send(:start_work, *dstart)
     end
 

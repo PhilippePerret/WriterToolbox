@@ -34,18 +34,16 @@ class Quiz
       # On calcule le rapport
       @error_evaluation = nil
       @do_evaluation = true
-      # Enregistrement du résultat (sauf si c'est un reshow) :
-      #   - dans la table des résultats pour l'user s'il est identifié
-      #   - toujours dans la table général :cold, quiz qui consigne toutes
-      #     les notes et toutes les soumissions.
       unless @is_reshown
-        debug "[evaluate] is_reshown est false"
         if reusable?
-          debug "[evalute] reusable? est vrai => je ne fais rien"
           # Si c'est un quiz réutilisable (UNAN), on n'enregistre pas de
           # résultat, on fait simplement un rapport pour indiquer le résultat
           # obtenu
         else
+          # Enregistrement du résultat (sauf si c'est un reshow) :
+          #   - dans la table des résultats pour l'user s'il est identifié
+          #   - toujours dans la table général :cold, quiz qui consigne toutes
+          #     les notes et toutes les soumissions.
           # debug "[evaluate] reusable? est false => je sauve le résultat"
           if save_resultat == false
             # debug "[evaluate] save_resultat retourne false, j'affiche l'erreur"
@@ -63,7 +61,6 @@ class Quiz
         report
       end
     end
-    debug "<- evaluate"
   end
   # /evaluate
   # Note maximale et minimale obtenue à ce test (pour commenter
@@ -82,6 +79,7 @@ class Quiz
   # toutes les réponses.
   def evaluation?
     @do_evaluation = false if @do_evaluation === nil
+    # debug "@do_evaluation = #{@do_evaluation.inspect}"
     @do_evaluation
   end
 

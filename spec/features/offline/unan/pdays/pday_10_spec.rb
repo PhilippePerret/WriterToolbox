@@ -41,5 +41,28 @@ feature "10e jour-programme de Benoit" do
       la_page_a_la_balise('li', id: "li_work-25", class: 'work',
         success: 'La page présente la ligne du travail #25')
 
+      la_page_a_la_balise('a', text: 'voir', in: 'li#li_work-25',
+        success: "L'élément présente un lien “voir” pour afficher toutes les données")
+      # within('li#li_work-25') do
+      #   expect(page).not_to have_css('a', text: "Voir le quiz #8")
+      # end
+      #
+      page.execute_script("UI.scrollTo('li#li_work-25')")
+
+      la_page_a_la_balise('div', class: 'hinfos masked', in: 'li#li_work-25',
+        success: 'Le div des infos cachées N’est PAS visible')
+
+      benoit.clique_le_lien('voir', in: 'li#li_work-25')
+      begin
+        benoit.clique_le_lien('Voir le quiz #8')
+      rescue
+        page.execute_script("$('li#li_work-25 > a[data-id=\"25\"]').click()")
+      end
+      sleep 1
+      
+      la_page_a_pour_titre QUIZ_MAIN_TITRE
+      la_page_a_pour_soustitre 'Les Fondamentales'
+      expect(page).not_to have_css('div#infos_generales')
+      expect(page).not_to have_css('div#quiz_defi')
   end
 end

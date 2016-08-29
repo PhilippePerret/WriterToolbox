@@ -7,7 +7,13 @@
 class Quiz
   class Question
 
-    def evaluation?; @do_evaluation ||= quiz.evaluation? end
+    def evaluation?
+      @do_evaluation ||= begin
+        v = quiz.evaluation?
+        debug "Quiz::Question#evaluation? est #{v.inspect}"
+        v
+      end
+    end
     def exergue_reponses_manquantes?
       @do_exergue_reponses_manquantes || quiz.exergue_reponses_manquantes?
     end
@@ -82,8 +88,8 @@ class Quiz
           if ureponse
             is_good_reponse =
               case ureponse[:type]
-              when :checkbox  then ureponse[:better_reps].include?(irep)
-              when :radio     then ureponse[:good_rep] == irep
+              when :checkbox, 'checkbox'  then ureponse[:better_reps].include?(irep)
+              when :radio, 'radio'        then ureponse[:good_rep] == irep
               end
             type_reponse =
               if is_good_reponse
@@ -93,6 +99,7 @@ class Quiz
               else
                 :bad_notselected
               end
+            # debug "Réponse #{irep} : is_good_reponse est #{is_good_reponse.inspect} / type_reponse = #{type_reponse.inspect}"
             hreponse.merge!(type_reponse: type_reponse)
           end
         end

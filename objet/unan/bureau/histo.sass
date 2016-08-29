@@ -2,6 +2,7 @@ ul#historique
   list-style   : none
   // Une rangée contenant un travail
   li.work
+    margin-bottom     : 1em
     div.div_titre
       span.horloge
         font-size       : 0.85em
@@ -9,10 +10,25 @@ ul#historique
       span.titre
         font-weight     : bold
         font-size       : 1em
+      div.apercu
+        float           : right
+        font-size       : 0.75em
+        opacity         : 0.5
+        &:hover
+          opacity         : 1
+    // Les infos masquées
+    div.hinfos
+      margin-left   : 4em
+      font-size     : 0.8em
+      padding       : 0.5em 0
+      width         : 80%
+      &.masked
+        display   : none
+    // Les infos affichées
     div.infos
       font-size       : 0.8em
       margin-left     : 4em
-      border          : 1px solid #CCC
+      border-bottom   : 1px solid #CCC
       // Temps de départ du travail
       span.wstart
         margin-left   : 0.3em
