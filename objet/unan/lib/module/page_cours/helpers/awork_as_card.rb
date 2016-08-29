@@ -20,10 +20,9 @@ class AbsWork
   #   - travaux en cours (inachevés)
   #   - travaux récents
   #
-  def as_card options
+  def as_card options = nil
     options ||= Hash.new
     options.key?(:auteur) || options.merge!(auteur: user)
-
     upage = User::UPage.new(options[:auteur], item_id)
     upage.output_bureau( self )
   end
@@ -73,9 +72,9 @@ class UPage
       (
         infos_if_admin +
         "#{lien_read}"
-      ).in_div(class:'fright') +
+      ).in_div(class: 'fright') +
       page_cours.titre
-    ).in_div(class:'titre')
+    ).in_div(class: 'titre')
   end
 
   # Description de la page

@@ -34,7 +34,7 @@ feature "Jour-programme 5" do
     la_page_a_la_balise('h3', text: 'Quiz')
     la_page_a_la_balise('h4', text: 'Quiz à remplir')
     la_page_a_la_balise('div', id: 'work-25', in: 'section#works_unstarted',
-      success: 'La section des travaux à démarrer contient le travail #24 correspondant au quiz #9.')
+      success: 'La section des travaux à démarrer contient le travail #25 correspondant au quiz #9.')
     la_page_affiche('Répondre à ce questionnaire', in: 'div#work-25',
       success: 'La section contient un bouton pour marquer ce questionnaire vu (et le démarrer).')
     benoit.clique_le_lien('Répondre à ce questionnaire', in: 'div#work-25')

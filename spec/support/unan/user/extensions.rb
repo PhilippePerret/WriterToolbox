@@ -9,15 +9,60 @@ class User
   #                   Si non défini, on prend :complete_upto
   #   :complete_upto  Marquer les travaux finis jusqu'à ce jour
   #                   Les démarrer au besoin
+  #   :quiz           {Array} Liste de quiz à enregistrer. Chaque valeur doit
+  #                   être un Hash définissant :
+  #                     :pday       Le jour-programme du quiz programme (note : pas
+  #                                 celui où il a été fait)
+  #                     :awork_id   Le travail absolu de ce quiz.
+  #                     :resultats  Les valeurs tirées de TEST_DATA_QUIZ pour les
+  #                                 mettre dans la table résultats. Il faut
+  #                                 renseigner :user_id et :created_at et les
+  #                                 enregistrer dans la table 'resultats'
+  #                                 de la base `boite-a-outils_quiz_unan`
+  #                   On renseigne aussi :item_id du work correspondant au quiz
+  #                   en mettant la valeur de la rangée enregistrée dans la
+  #                   table 'resultats'
+  #
   def set_pday_to index_pday, options = nil
     site.require_objet 'unan'
     created_at = NOW - index_pday * (24 * 3600)
     program.set(created_at: created_at, updated_at: created_at)
     program.current_pday= index_pday
+
+    # Si des options sont définies
     if options != nil && !options.empty?
+
+      # Démarrage de travaux et marquage finis
+      # --------------------------------------
       demarre_ses_travaux   upto: (options[:start_upto] || options[:complete_upto])
       marque_travaux_finis  upto: options[:complete_upto]
+
+      # Quiz
+      # ----
+      if options.key? :quiz
+        options[:quiz].each do |dquiz|
+          awork_id  = dquiz[:awork_id]
+          pday      = dquiz[:pday]
+          resultats = dquiz[:resultats]
+          # On renseigne les données non renseignées
+          resultats.merge!(
+            user_id:    self.id,
+            created_at: created_at + (pday + 1).days
+          )
+          # On enregistre le résultat dans la table
+          res_id = site.dbm_table(:quiz_unan, 'resultats').insert(resultats)
+          # On met l'item_id du travail à res_id
+          tbl = site.dbm_table(:users_tables, "unan_works_#{self.id}")
+          hwork = tbl.get(where: {abs_pday: pday, abs_work_id: awork_id})
+          puts hwork.inspect
+          tbl.update(hwork[:id], { item_id: res_id })
+        end
+      end
+      # /fin s'il y a des quiz
+
     end
+    # /s'il y avait des options
+
   end
 
   # Pour démarrer les travaux de l'utilisateur

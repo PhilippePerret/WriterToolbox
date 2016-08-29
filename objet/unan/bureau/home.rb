@@ -6,7 +6,7 @@ où par :
     bureau.<methode> ...
 =end
 # Beaucoup de formulaires dans ce bureau
-Unan::require_module 'bureau'
+Unan.require_module 'bureau'
 
 unless user.identified? && user.unanunscript?
   # Ça peut arriver par exemple lorsque l'user règle ses préférences
@@ -65,6 +65,13 @@ class Bureau
   def row_form_sharing
     form.field_select("Partage", 'pref_sharing', user.preference(:sharing), {values: Unan::SHARINGS, warning: (user.projet.sharing == 0)}) +
     form.field_description("Définissez ici qui peut suivre votre projet, c'est-à-dire consulter votre parcours, vos points, etc.")
+  end
+
+  # {String} Un lien pour rejoindre l'historique du programme
+  def lien_historique
+    @lien_historique ||= begin
+      'Historique'.in_a(href: 'bureau/histo?in=unan', class: 'cadre').in_div(class: 'small right air')
+    end
   end
 
   # {Return un texte si des données sont manquantes pour la cible ou
