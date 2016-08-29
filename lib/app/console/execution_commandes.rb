@@ -79,6 +79,9 @@ class Console
 
       # --- ANALYSES DE FILM ---
 
+    when /^film tm to timeline/i
+      console.require 'analyses'
+      build_timeline_from_film_tm line.sub(/^film tm to timeline/i,'').strip
     when /^(inventory|etat des lieux|état des lieux) analyses$/
       redirect_to "admin/dashboard?in=analyse"
       return ""

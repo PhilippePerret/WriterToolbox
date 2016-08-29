@@ -301,6 +301,10 @@ analyse:
     description:  |
       Produit un état des lieux des analyses pour voir où en sont les
       analyses en cours, etc.
+
+  -
+    command:        film TM to timeline &lt;/Users/path/to/fichier.film&gt;
+    description:    Prend un film TM et en tire une timeline des scènes.
   -
     command:        (lien|balise) analyse &lt;portion titre&gt;
     description: |

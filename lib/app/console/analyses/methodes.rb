@@ -123,6 +123,16 @@ class Console
     end
   end
 
+  # Prend un fichier de collect TM et en tire une timeline des
+  # scènes à introduire dans une analyse.
+  def build_timeline_from_film_tm fpath
+    site.require_objet 'analyse'
+    FilmAnalyse.require_module 'timeline_scenes'
+    FilmAnalyse.from_tm_to_timeline fpath
+    sub_log 'Timeline des scènes construite'
+    return ''
+  end
+
 end #/Console
 end #/Admin
 end #/SiteHtml
