@@ -53,16 +53,26 @@ feature "10e jour-programme de Benoit" do
         success: 'Le div des infos cachées N’est PAS visible')
 
       benoit.clique_le_lien('voir', in: 'li#li_work-25')
+      ifois = 0
       begin
         benoit.clique_le_lien('Voir le quiz #8')
       rescue
+        while ifois < 5
+          benoit.clique_le_lien('voir', in: 'li#li_work-25')
+          ifois += 0
+          retry
+        end
         page.execute_script("$('li#li_work-25 > a[data-id=\"25\"]').click()")
       end
       sleep 1
-      
+
       la_page_a_pour_titre QUIZ_MAIN_TITRE
       la_page_a_pour_soustitre 'Les Fondamentales'
       expect(page).not_to have_css('div#infos_generales')
       expect(page).not_to have_css('div#quiz_defi')
+      within('form#form_quiz-8') do
+        expect(page).not_to have_tag('input', with: {type: 'submit'})
+      end
+      success 'Le formulaire n’a pas de bouton pour le soumettre à nouveau.'
   end
 end
