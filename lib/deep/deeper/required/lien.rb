@@ -222,6 +222,8 @@ class Lien
       case File.extname(path)
       when '.md'
         "site/open_file?path=#{path}" if user.admin?
+      when '.pdf'
+        "site/open_file?path=#{path}"
       else
         case editor
         when :atom

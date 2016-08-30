@@ -19,6 +19,7 @@ class Tache
   def admin_id    ; @admin_id     ||= get(:admin_id)    end
   def state       ; @state        ||= get(:state)       end
   def description ; @description  ||= get(:description) end
+  def file        ; @file         ||= get(:file)        end
 
   # ---------------------------------------------------------------------
   #   Data volatiles
@@ -68,6 +69,7 @@ class Tache
       tache:        tache,
       admin_id:     admin_id,
       description:  description,
+      file:         file,
       created_at:   created_at,
       state:        9,
       updated_at:   NOW
@@ -88,6 +90,7 @@ class Tache
       admin_id:     data_param[:admin_id].to_i,
       description:  data_param[:description].nil_if_empty,
       echeance:     echeance_from_param,
+      file:         data_param[:file].nil_if_empty,
       state:        1,
       updated_at:   NOW
     }

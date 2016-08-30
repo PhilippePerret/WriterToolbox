@@ -27,7 +27,21 @@ class Tache
 
   def div_tache
     @div_tache ||= begin
-      "#{tache}".in_span(class:'tache')
+      dt = "#{tache}"
+      if file
+        # Soit le path est un chemin d'accès à un fichier, soit c'est
+        # une route. On crée le lien en fonction
+        expath = File.expand_path(file)
+        link =
+          if File.exist? expath
+            lien.edit_file(expath, titre: "ouvrir le fichier associé")
+          else
+            "se rendre à #{file}".in_a(href:file)
+          end
+        dt << " (#{link})"
+      end
+      # /s'il y a un path
+      dt.in_span(class:'tache')
     end
   end
   def div_infos_tache

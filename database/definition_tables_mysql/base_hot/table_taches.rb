@@ -30,6 +30,11 @@ CREATE TABLE taches
     # Elle peut être nil pour une tâche sans échéance particulière
     echeance INTEGER(10),
 
+    #  FILE
+    # ------
+    # Fichier ou route associé à la tâche
+    file VARCHAR(255),
+
     # STATE
     # -----
     # État (status) de la tâche.

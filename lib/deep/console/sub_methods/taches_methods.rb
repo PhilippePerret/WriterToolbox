@@ -54,10 +54,10 @@ class Console
     # +data_str+ envoyées en argument
     def create_tache data_str
       site.require_objet 'admin'
-      ::Admin::require_module 'taches'
-      data_tache = Data::by_semicolon_in data_str
+      ::Admin.require_module 'taches'
+      data_tache = Data.by_semicolon_in data_str
       data_tache.merge!(updated_at: NOW)
-      itache = ::Admin::Taches::Tache::new
+      itache = ::Admin::Taches::Tache.new
       itache.instance_variable_set('@data2save', data_tache)
       itache.data2save_valid? || ( return "Error" )
       # Les données sont valides, on peut enregistrer la tâche
@@ -159,9 +159,9 @@ class Console
       # Format de l'affichage, en fonction du lecteur
       format_ligne =
         if options.key?(:admin)
-          "<div class='small%{css}'>T.%{tid} %{tache}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
+          "<div class='small%{css}'>T.%{tid} %{tache}%{file}</div><div class='right tiny'>Échéance : %{echeance} — %{reste}</div>"
         else
-          "<div class='small%{css}'>T.%{tid} %{tache}</div><div class='right tiny'>Pour : %{owner} - Échéance : %{echeance} — %{reste}</div>"
+          "<div class='small%{css}'>T.%{tid} %{tache}%{file}</div><div class='right tiny'>Pour : %{owner} - Échéance : %{echeance} — %{reste}</div>"
         end
 
       if task_list.count > 0
@@ -193,6 +193,21 @@ class Console
             else
               "aucune"
             end
+          # S'il y a un fichier associé à la tache
+          thefile =
+            if itask.file
+              if File.exist? itask.file
+                # Si file est un fichier
+                nfile = File.basename(itask.file)
+                lien.edit_file(itask.file, titre: " - ouvrir “#{nfile}”")
+              else
+                # Si file est une route
+                " - rejoindre la route #{itask.file}".in_a(href: itask.file)
+              end
+            else
+              ''
+            end
+
           # Pour savoir où ranger la tâche
           reste =
             if itask.echeance
@@ -213,7 +228,7 @@ class Console
             end
 
           t = (
-            format_ligne % {tid: itask.id, tache: itask.tache, echeance: echeance, owner: owner, reste: reste, css: css}
+            format_ligne % {tid: itask.id, tache: itask.tache, file: thefile, echeance: echeance, owner: owner, reste: reste, css: css}
           ).in_div
 
           lt[etat] << t

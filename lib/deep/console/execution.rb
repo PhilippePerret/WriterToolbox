@@ -132,16 +132,16 @@ class Console
       # --- TACHES ---
 
     when /^liste? ta(che|sk)s$/
-      Taches::show_liste_taches
+      Taches.show_liste_taches
     when /^(liste? )?mes taches$/
-      Taches::show_liste_taches( admin: user.id.to_s)
+      Taches.show_liste_taches( admin: user.id.to_s)
     when /^liste? ta(che|sk)s (.+)$/
-      Taches::show_liste_taches( admin: line.split(' ').last )
+      Taches.show_liste_taches( admin: line.split(' ').last )
     when /^synchro(nize|nise)? (taches|tasks)$/
       redirect_to 'admin/sync'
       ""
     when /^liste? (all|toutes) ta(che|sk)s$/
-      Taches::show_liste_taches all: true
+      Taches.show_liste_taches all: true
 
       # --- CRON ---
     when 'delete log error cron'
@@ -256,9 +256,9 @@ class Console
   # On analyse la ligne comme une expression régulière connue
   def execute_as_regular_sentence line
     if (found = line.match(/^(creer|create|new|nouvelle) (tache|task) (.*?)$/).to_a).count > 0
-      Taches::create_tache found[3].freeze
+      Taches.create_tache found[3].freeze
     elsif (found = line.match(/^(update|actualise)r? (tache|task) ([0-9]+) (.*?)$/).to_a).count > 0
-      Taches::update_tache found[3].to_i, found[4].freeze
+      Taches.update_tache found[3].to_i, found[4].freeze
     elsif (found = line.match(/^(?:show|goto|go to|aller) (.*)$/).to_a).count > 0
       ( goto_section found[1].strip )
     elsif line.strip =~ /^([a-z_]+)\/([0-9]+)\/([a-z_]+)$/
@@ -287,9 +287,9 @@ class Console
     when 'help', 'aide'
       ( affiche_aide_for last_word )
     when 'finir tache', 'finir task', 'end task'
-      ( Taches::marquer_tache_finie last_word )
+      ( Taches.marquer_tache_finie last_word )
     when /^(detruire|destroy|kill) (tache|task)/
-      ( Taches::detruire_tache last_word)
+      ( Taches.detruire_tache last_word)
     when 'kramdown'
       ( visualise_document_kramdown last_word )
     when /^(afficher|affiche|show|montre) table/
