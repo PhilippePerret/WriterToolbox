@@ -19,15 +19,28 @@ class CRON2
     # :data         Ce qui est enregistré dans la propriété :data
     # :description  Ce qui est enregistré dans la propriété :description
     #
+    # :full_intitule    Si défini, servira pour l'affichage du rapport de
+    #                   cron pour l'administrateur. Toutes les valeurs templates
+    #                   utilisables se trouvent dans `as_hash` de la définition
+    #                   de l'opération cron, dans ./objet/admin/cron_report.rb
+    #                   Mettre à FALSE pour que l'opération ne soit pas affichée
+    #                   dans le rapport.
     CODES = {
       '00000' => {value: '00000', intitule: 'Opération non définie', hname: 'Non défini'},
-      '31001' => {value: '31001', intitule: 'Mail actualités', hname: 'actualités', data: 'Nombre d’envois', description: 'Mail envoyé'},
-      '31011' => {value: '31011', intitule: 'Erreur envoi mail actualités', hname: 'actualités', data: nil, description: 'Erreur rencontrée'},
-      '11100' => {value: '11100', intitule: 'Nettoyage du site', hname: 'Nettoyage', data: 'Nombre de fichiers détruits', description: nil},
-      '20101' => {value: '20001', intitule: 'Rapport des connexions', hname: 'Connexions', data: nil, description: nil},
-      '25101' => {value: '25101', intitule: 'Envoi d’une citation', hname: 'Citation', data: 'ID de la citation envoyée', description: nil},
-      '26101' => {value: '26101', intitule: 'Envoi d’un tweet permanent', hname: 'Tweet permanent', data: 'IDs des tweets envoyé', description: nil},
-      '77201' => {value: '77201', intitule: 'Rapport quotidien à un auteur UAUS', hname: 'Rapport Unan', data: 'ID de l’auteur', description: nil},
+      '31001' => {value: '31001', intitule: 'Mail actualités', hname: 'actualités', data: 'Nombre d’envois', description: 'Mail envoyé',
+        full_intitule: 'Mail actualités envoyé à %{data} personnes'},
+      '31021' => {value: '31011', intitule: 'Erreur envoi mail actualités', hname: 'actualités', data: nil, description: 'Erreur rencontrée',
+        full_intitule: 'Erreur lors de l’envoi des mails d’actualités : %{description}'},
+      '11100' => {value: '11100', intitule: 'Nettoyage du site', hname: 'Nettoyage', data: 'Nombre de fichiers détruits', description: nil,
+        full_intitule: false},
+      '20101' => {value: '20001', intitule: 'Rapport des connexions', hname: 'Connexions', data: nil, description: nil,
+        full_intitule: 'Établissement du rapport des connexions'},
+      '25101' => {value: '25101', intitule: 'Envoi d’une citation', hname: 'Citation', data: 'ID de la citation envoyée', description: nil,
+        full_intitule: 'Envoi de la citation #%{data}'},
+      '26101' => {value: '26101', intitule: 'Envoi d’un tweet permanent', hname: 'Tweet permanent', data: 'IDs des tweets envoyé', description: nil,
+        full_intitule: 'Tweet permanent #%{data} envoyé à %{hour} heures.'},
+      '77201' => {value: '77201', intitule: 'Rapport quotidien à un auteur UAUS', hname: 'Rapport Unan', data: 'ID de l’auteur', description: nil,
+        full_intitule: 'Rapport UNAN envoyé avec succès à %{user_in_data}'},
       '41300' => {value: '41300', intitule: 'Destruction d’une autorisation (abonnement ou autre)', hname: 'Autorisation', data: 'IDs autorisations détruites', description: nil}
     }
 
@@ -59,9 +72,13 @@ class CRON2
         {bit: 2, value: 2, svalue: :mail},     # un envoi par mail
         {bit: 3, value: 3, svalue: :status, desc: 'Changement de statut'}
       ],
-      [ # bit 3
+      [ # bit 3 (type d'erreur)
+        # METTRE IMPÉRATIVEMENT LE BIT 3 À UNE VALEUR > 0 POUR LES
+        # ERREURS
         {bit: 3, value: 0, svalue: :none},
-        {bit: 3, value: 1, svalue: :error}
+        {bit: 3, value: 1, svalue: :minor_error},
+        {bit: 3, value: 2, svalue: :main_error},
+        {bit: 3, value: 3, svalue: :fatal_error}
       ],
       [ # bit 4
         {bit: 4, value: 0, svalue: :none}
