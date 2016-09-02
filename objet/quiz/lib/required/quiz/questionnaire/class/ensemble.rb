@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ::Quiz
+class Quiz
   class << self
 
     # Tous les suffixes de bases de données dans toutes les
@@ -15,8 +15,8 @@ class ::Quiz
     def all_suffixes_quiz
       @all_suffixes_quiz ||= begin
         SiteHtml::DBM_TABLE.databases.collect do |dbname|
-          dbname.start_with?("#{SiteHtml::DBBASE_PREFIX}quiz_") || (next nil)
-          dbname.sub(/#{Regexp.escape SiteHtml::DBBASE_PREFIX}quiz_/o, '')
+          dbname.start_with?("#{site.prefix_databases}_quiz_") || (next nil)
+          dbname.sub(/#{Regexp.escape site.prefix_databases}_quiz_/o, '')
         end.compact
       end
     end
