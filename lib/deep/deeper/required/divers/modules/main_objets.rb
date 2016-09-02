@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # @usage
-#   extend MethodesMainObjets
+#   extend MethodesMainObjet
 #
 # La classe appelante doit IMPÉRATIVEMENT :
 #   * définir `folder`, le dossier de l'objet dans './objet'
@@ -9,7 +9,7 @@
 #     sauf si la classe minorisée a le même nom que le dossier
 #     p.e. class Cnarration => dossier './objet/cnarration/'
 #
-module MethodesMainObjets
+module MethodesMainObjet
 
   # ---------------------------------------------------------------------
   #   Méthodes d'helper

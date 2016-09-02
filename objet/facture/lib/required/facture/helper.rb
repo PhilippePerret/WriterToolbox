@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Facture
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

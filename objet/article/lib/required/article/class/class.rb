@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Article
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

@@ -72,6 +72,10 @@ site.keywords = [
 
 site.tarif = 6.90
 
+# ---------------------------------------------------------------------
+#   BASES DE DONNÉES
+site.prefix_databases = 'boite-a-outils'
+
 # Compte Facebook
 # ---------------
 # Un lien sera ajouté automatiquement à la signature

@@ -4,7 +4,7 @@ Extention de la class Scenodico - Méthodes d'helper
 =end
 class Scenodico
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   DATA_ONGLETS = {
     'Accueil'       => 'scenodico/home',

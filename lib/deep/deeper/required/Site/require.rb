@@ -26,6 +26,7 @@ class SiteHtml
   # Le dossier module se trouve à l'adresse : './lib/deep/deeper/module/'
   def require_module module_name
     dos = folder_deeper_module + module_name
+    dos.exist? || dos = (folder_lib_objet_site + "module/#{module_name}")
     require_all_in dos
   end
 

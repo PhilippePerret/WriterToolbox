@@ -9,8 +9,11 @@ class SiteHtml
   # Retourne true si la route +route+ est égale à la route
   # courante
   def current_route? route_checked
-    self.current_route.route == route_checked
+    route_checked != '' || route_checked = 'site/home'
+    curroute = self.current_route ? self.current_route.route : 'site/home'
+    curroute == route_checked
   end
+  alias :route? :current_route?
 
   # Un raccourci pour obtenir l'instance courante
   # de la route à l'aide de `site.objet` ou `site.instance`

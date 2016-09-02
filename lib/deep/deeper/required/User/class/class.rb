@@ -6,7 +6,7 @@ Classe
 =end
 class User
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

@@ -12,7 +12,7 @@ Dir['./objet/site/lib/module/sitemap/**/*.rb'].each{|m| require m}
 class SiteMap
   include Singleton
 
-  include MethodesMainObjets
+  include MethodesMainObjet
 
   attr_reader :nombre_total_urls
 

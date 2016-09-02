@@ -2,7 +2,7 @@
 class Quiz
 
   # Les méthodes principales de n'importe quel objet RestSite
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

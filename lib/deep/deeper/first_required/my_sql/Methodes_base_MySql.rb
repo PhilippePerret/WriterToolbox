@@ -62,7 +62,6 @@ module MethodesBaseMySQL
   # online comme en offline.
   #
   def prefix_name
-    @@prefix_name ||= 'boite-a-outils_'
+    @@prefix_name ||= "#{site.prefix_databases}_" # p.e. 'boite-a-outils_'
   end
-
 end

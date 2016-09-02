@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class FilmAnalyse
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

@@ -12,7 +12,7 @@ Pour un programme en particulier, voir la classe Unan::Program
 
 class Unan
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 

@@ -7,7 +7,7 @@
 raise_unless_admin
 
 class UnanAdmin
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 class << self
 
   # # Requiert le dossier +module_name+ qui se trouve dans le dossier

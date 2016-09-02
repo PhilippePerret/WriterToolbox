@@ -65,6 +65,9 @@ class SiteHtml
   # Prix de l'abonnement au site, s'il est unique
   attr_accessor :tarif
 
+  # Préfixe de nom de toutes les bases de données
+  attr_accessor :prefix_databases
+
   # Définition propre à l'application des bits des options de
   # l'user
   attr_accessor :user_options

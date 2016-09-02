@@ -7,14 +7,14 @@ class Cnarration
     "Recherche" => 'cnarration/search'
   }
 
-  extend MethodesMainObjets
+  extend MethodesMainObjet
 
   class << self
 
     def titre_h1 sous_titre = nil
       t = "La Collection Narration".in_h1
       t << sous_titre.in_h2 unless sous_titre.nil?
-      t << onglets # Dans MethodesMainObjets
+      t << onglets # Dans MethodesMainObjet
       t
     end
 

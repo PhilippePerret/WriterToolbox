@@ -5,7 +5,7 @@ Méthodes d'helper pour le forum
 class Forum
   # Rappel : C'est un SINGLETON
 
-  include MethodesMainObjets
+  include MethodesMainObjet
 
   # Pour écrire titre et sous-titre
   # @usage    <%= forum.titre_h1[("<sous titre>")] %>
@@ -15,7 +15,7 @@ class Forum
     params ||= Hash.new
     t = "Le Forum".in_h1
     t << sous_titre.in_h2 unless sous_titre.nil?
-    t << onglets # dans le module MethodesMainObjets
+    t << onglets # dans le module MethodesMainObjet
     # Pour le titre de la fenêtre
     page_title = "Forum"
     page_title += "#{site.title_separator}#{sous_titre}" if sous_titre

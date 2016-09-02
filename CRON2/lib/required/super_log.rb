@@ -31,8 +31,8 @@ class CRON2
 
       # Envoi le message à l'administrateur si c'est nécessaire
       def send_superlog_if_required
-        # # Remettre cette barrière quand tout fonctionnera
-        # return if @superlogs.nil? || @superlogs.empty?
+        # Remettre cette barrière quand tout fonctionnera
+        return if @superlogs.nil? || @superlogs.empty?
         Dir.chdir(APP_FOLDER) do
           # On envoie le rapport
           site.send_mail_to_admin(

@@ -89,6 +89,13 @@ class SiteHtml
     @folder_database ||= get_and_build_folder('./database')
   end
 
+  # ---------------------------------------------------------------------
+  #   Librairie de l'objet 'site'
+  # ---------------------------------------------------------------------
+
+  def folder_lib_objet_site
+    @folder_lib_objet_site ||= folder_objet+'site/lib'
+  end
 
   # ---------------------------------------------------------------------
   #   Vues (hors vue d'objet)

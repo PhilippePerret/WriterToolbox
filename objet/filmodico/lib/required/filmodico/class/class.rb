@@ -3,7 +3,7 @@
 Class Filmodico
 =end
 class Filmodico
-  extend MethodesMainObjets
+  extend MethodesMainObjet
   class << self
 
     # Retourne l'objet Filmodico de référence +film_ref+ qui peut
