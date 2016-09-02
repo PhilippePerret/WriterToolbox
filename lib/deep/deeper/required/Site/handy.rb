@@ -4,6 +4,8 @@ def redirect_to route
   site.redirect_to route
 end
 
+def send_mail_to_admin(data_mail);site.send_mail_to_admin(data_mail)end
+
 # {String} Retourne la route courante en tant que string
 # Attention, ça n'est pas `site.current_route` qui retourne
 # une instance {SiteHtml::Route}.

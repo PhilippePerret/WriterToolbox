@@ -53,6 +53,11 @@ class Lien
     end
   end
 
+  # Lien vers la section de contact du site
+  def contact titre = "Contact", options = nil
+    build('site/contact', titre, options)
+  end
+
   # Retourne les boutons avant et après uniformisés
   #
   # +args+  Doit au moins contenir :

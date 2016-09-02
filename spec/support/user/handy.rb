@@ -50,6 +50,7 @@ def random_pseudo
   end
   return pse
 end
+alias :get_random_pseudo :random_pseudo
 
 # {User} Retourne une instance User prise au hasard sur le site
 #

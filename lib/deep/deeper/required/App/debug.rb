@@ -2,8 +2,13 @@
 class App
 
   # Pour pouvoir utiliser app.debug (rappel : App est un singleton)
-  def debug
-    @debug ||= Debug::new
+  #
+  # +arg+ est ajouté pour pouvoir utiliser la méthode général `debug'
+  # dans cette classe aussi.
+  def debug arg = nil
+    @debug ||= Debug.new
+    arg.nil? || @debug.add(arg)
+    @debug
   end
 
   # ---------------------------------------------------------------------
