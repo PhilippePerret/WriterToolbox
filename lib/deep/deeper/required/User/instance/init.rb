@@ -5,16 +5,6 @@ Si un dossier ./objet/user/lib existe, on le charge toujours
 
 =end
 class User
-  class << self
-
-    def init
-      folder_custom_lib.require if folder_custom_lib.exist?
-    end
-
-    def folder_custom_lib
-      @folder_custom_lib ||= site.folder_objet+'user/lib'
-    end
-  end
 
   # ---------------------------------------------------------------------
   #   Instance
@@ -33,7 +23,7 @@ class User
   #
   # Attention, cela n'a rien à voir (pour le moment) avec le suivi
   # par IP qui enregistre dans la table :hot, connexions_per_ip
-  # 
+  #
   def set_last_connexion
     # On doit toujours avoir une route, car la propriété `route` ne
     # peut pas être nil dans la table.
@@ -55,4 +45,4 @@ class User
     end
   end
 
-end
+end #/User

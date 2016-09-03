@@ -11,7 +11,6 @@ class CRON2
     # On n'enregistre l'historique que s'il y a eu un fichier détruit
     if @files_count > 0
       CRON2::Histo::add(code: '11100', data: @files_count)
-      superlog "#{@files_count} fichiers nettoyés."
     end
   end
 

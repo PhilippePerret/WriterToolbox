@@ -8,6 +8,10 @@
 #
 # Il faut ensuite aller charger le fichier ./safed.log par
 # FTP
+
+# Pour le benchmark
+timein = Time.now.to_f
+
 def main_safed_log mess
   main_ref_log.puts mess
 end
@@ -65,7 +69,6 @@ site.require_gem 'superfile'
 require_folder "./lib/app/handy"
 require_folder "./lib/app/required"
 site.require_config
-require './lib/deep/deeper/output'
 
 # ---------------------------------------------------------------------
 #   Quelques initialisations et vérification
@@ -79,3 +82,6 @@ unless ONLY_REQUIRE
     execute_preambule
   end
 end
+
+app.benchmark('-> required.rb', timein)
+app.benchmark('<- required.rb')

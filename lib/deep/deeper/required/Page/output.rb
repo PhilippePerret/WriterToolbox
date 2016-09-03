@@ -6,13 +6,13 @@ class Page
 
   def output
     unless site.ajax?
-      # Le code final
-      cgi.out{
-        cgi.html {
-          cgi.head{ head } +
-          cgi.body{ body }
-        }
-      }
+      final_code = cgi.html{cgi.head{head}+cgi.body{body}}
+      app.benchmark('CODE HTML FINAL BUILT') rescue nil
+      # Correspond aussi à la fin de la méthode output du site
+      app.benchmark('<- SiteHtml#output')
+      app.benchmark_fin rescue nil
+      cgi.out{final_code}
+      # RIEN NE PEUT PASSER ICI
     else
       # Retour d'une requête ajax
       Ajax::output
