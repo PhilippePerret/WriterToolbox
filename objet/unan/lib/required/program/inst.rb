@@ -20,7 +20,8 @@ class Program
   # Procédure d'abandon du programme
   def abandonne
     opts    = options.split('')
-    opts[2] = 1
+    opts[0] = 0   # programme inactif
+    opts[2] = 1   # programme abandonné
     set(options: opts.join(''))
     user.reset_program
   end

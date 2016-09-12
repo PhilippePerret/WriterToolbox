@@ -81,49 +81,10 @@ feature "Test d'un abonnement à la boite à outils" do
 
     puts "#{pseudo} clique sur le formulaire PayPal et attend…"
     page.find("form##{FORM_PAYPAL_ID}").click
-    sleep 2
-    until page.has_css?('body')
-      puts "J'attends que la page réapparaisse…"
-      sleep 1
-    end
-    sleep 2
 
-    require './data/secret/data_benoit'
+    TPayPal.do_operation_paypal(pseudo: benoit.pseudo, verbose: false)
 
-    puts "#{IL} remplit le formulaire PayPal avec ses données…"
-    code_javascript = <<-JS
-var iframe;
-for(iframe = 0; iframe < 4; ++iframe){
-  if(window.frames[iframe].document.getElementById('email')){break}
-}
-var doc = window.frames[iframe].document;
-doc.getElementById('email').value='#{DATA_BENOIT[:mail]}';
-doc.getElementById('password').value='#{DATA_BENOIT[:password]}';
-doc.getElementById('btnLogin').click();
-    JS
-    page.execute_script(code_javascript.gsub(/\n/,''))
-    puts "#{pseudo} attend de pouvoir confirmer le paiement…"
-    sleep 2
-    until page.has_css?('body')
-      puts "J'attends que la page pour continuer apparaissent…"
-      sleep 1
-    end
-    puts "#{IL} attend 6 secondes"
-    js_attente = "return document.getElementById('continue_abovefold');"
-    while page.execute_script(js_attente) == nil
-      sleep 0.5
-    end
-    puts "Le bouton a été trouvé"
-    sleep 2
-    shot 'page-paypal-continuer'
-    puts "#{pseudo} clique le bouton “Continuer” pour procéder au paiement"
-    require 'timeout'
-    Timeout::timeout(20*60) do
-      # Je hacke un peu... pour essayer d'attendre sans erreur si c'est
-      # trop long.
-      page.execute_script('document.getElementById("continue_abovefold").click()')
-      puts "#{pseudo} attend qu'on revienne de PayPal…"
-    end
+    # Retour de PayPal
     until page.has_css?('section#footer')
       sleep 1
     end

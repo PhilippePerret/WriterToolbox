@@ -110,18 +110,43 @@ class SuperFile
   #                     Si TRUE (défaut), le nom donné à l'instanciation de
   #                     ce superfile est remplacé par le nom du fichier à
   #                     uploader
+  #   :normalize_filename   Si True, et que le nom doit être remplacé par le
+  #                     nom original du fichier, on normalise ce nom original
+  #                     avant de l'appliquer
+  #   :nil_if_empty     Si TRUE (défaut), retourne NIL si le tempfile
+  #                     est vide
+  #
+  # RETURN
+  #     True    En cas de succès
+  #     False   En cas d'échec (avec affichage du message d'erreur)
+  #     Nil     En cas de fichier inexistant ou vide (size = 0)
+  #
   def upload tempfile, options = nil
-    if tempfile.nil? || tempfile == ""
-      return error "Il faut fournir le fichier des données à importer"
+    options ||= Hash.new
+    options.key?(:nil_if_empty) || options.merge!(nil_if_empty: true)
+    options.key?(:change_name)  || options.merge!(change_name:  true)
+    options.key?(:normalize_filename) || options.merge!(normalize_filename: !!options[:change_name])
+
+    if (tempfile.nil? || tempfile == '' || tempfile.size == 0)
+      if options[:nil_if_empty]
+        return nil
+      else
+        raise(NotAUploadedFile)
+      end
     end
-    raise NotAUploadedFile unless tempfile.respond_to? :original_filename
-    options ||= {}
+
+    tempfile.respond_to?(:size) || raise(NotAUploadedFile)
+
+    tempfile.respond_to?(:original_filename) || begin
+      raise NotAUploadedFile
+    end
 
     # Nom du fichier
     # --------------
     # On l'attribue au superfile courant, sauf indication contraire
-    unless options[:change_name] === false
+    if options[:change_name]
       tempfile_name = tempfile.original_filename
+      options[:normalize_filename] && tempfile_name = tempfile_name.as_normalized_filename
       good_path = (dirname + tempfile_name).path
       reset # pour forcer le recalcul des propriétés
       @name = tempfile_name

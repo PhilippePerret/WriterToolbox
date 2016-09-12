@@ -121,13 +121,16 @@ module CurrentPDayClass
     return nil if day < 31 || retard_from_0_to_9 == 0
 
     nombre_retards_egal_ou_sup = 0
-    nombre_retards = program.get(:retards).count
-    retards.split('').each do |r|
+    data_retards = program.get(:retards).split('')
+    nombre_bits_retard = data_retards.count
+    # => 00120005800 etc.
+    #   Chaque jour est un bit de 0 (pas de retard) à 8 (retard max)
+    data_retards.each do |r|
       r = r.to_i
       nombre_retards_egal_ou_sup += 0 if r >= retard_from_0_to_9
     end
 
-    pct_retards_egaux_ou_sup = ((nombre_retards_egal_ou_sup.to_f / nombre_retards) * 100).to_i
+    pct_retards_egaux_ou_sup = ((nombre_retards_egal_ou_sup.to_f / nombre_bits_retard) * 100).to_i
 
     case true
     when pct_retards_egaux_ou_sup < 10  then :accident
@@ -145,15 +148,15 @@ module CurrentPDayClass
   def retard_from_0_to_9
     @retard_from_0_to_9 ||= begin
       case true
-      when nombre_cinqsix > 20 then 9
-      when nombre_cinqsix > 10 then 8
-      when nombre_cinqsix > 0  then 7
+      when nombre_cinqsix > 20      then 9
+      when nombre_cinqsix > 10      then 8
+      when nombre_cinqsix > 0       then 7
       when nombre_trois_quatre > 20 then 6
       when nombre_trois_quatre > 10 then 5
       when nombre_trois_quatre > 0  then 4
-      when nombre_un_deux > 20 then 3
-      when nombre_un_deux > 10 then 2
-      when nombre_un_deux > 0  then 1
+      when nombre_un_deux > 20      then 3
+      when nombre_un_deux > 10      then 2
+      when nombre_un_deux > 0       then 1
       else 0
       end
     end

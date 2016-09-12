@@ -223,6 +223,11 @@ class ::Fixnum
   end
   alias :week :weeks
 
+  def months
+    (30.5 * self * DUREE_JOUR).to_i
+  end
+  alias :month :months
+
   def years
     self * DUREE_JOUR * 365
   end

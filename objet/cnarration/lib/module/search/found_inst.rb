@@ -48,8 +48,9 @@ class Found
     @file_fullpath, num_line, offset = raw_splited[0..2]
     @num_line   = num_line.to_i
     @offset     = offset.to_i
-    @text_line = raw_splited[3..-1].join(':').strip
-    @in_texte  = true
+    @text_line = raw_splited[3..-1] || []
+    @text_line = @text_line.join(':').strip
+    @in_texte  = @text_line != '' # true
   end
 
   # Sortie à afficher pour ce found

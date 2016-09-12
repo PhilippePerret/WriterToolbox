@@ -24,4 +24,11 @@ class User
   end
 
 
+  # Index d'options : 1
+  # -------------------
+  # {Fixnum} Grade forum de l'user (0 à 9)
+  def grade ; @grade ||= get_option(:grade) end
+  def set_grade new_grade ; set_option(:grade, new_grade) end
+
+
 end
