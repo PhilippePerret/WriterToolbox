@@ -41,7 +41,7 @@ class DBM_BASE
     # Méthode appelée par la méthode suffix_name du module
     # MethodesBaseMySQL lorsque @@suffix_name n'est pas défini. Il faut
     # lui renvoyer la valeur de @suffix_name (un seul arobase).
-    def get_suffix_name
+    def _suffix_name
       @suffix_name
     end
 

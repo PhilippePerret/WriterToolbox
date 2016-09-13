@@ -67,10 +67,10 @@ class CRON2
         site.require_module 'twitter'
         if tweet_must_be_sent?
           send_tweet_permanent
-          superlog 'Tweet permanent envoyé.'
+          # superlog 'Tweet permanent envoyé.'
         else
           send_citation
-          superlog 'Citation envoyée.'
+          # superlog 'Citation envoyée.'
         end
       rescue Exception => e
         raise e
@@ -88,6 +88,8 @@ class CRON2
         site.tweet( mess_citation, dont_check_length: true)
         CRON2::Histo.add(code: '25101', data: citation_id, description: "Citation à #{Time.now.hour} heures")
       rescue Exception => e
+        err_mess = e.message + "\n" + e.backtrace.join("\n")
+        CRON2::Histo.add(code: '25121', data: err_mess, description: "Citation à #{Time.now.hour} heures")
         log "Problème en envoyant la citation ##{citation_id}", e
       end
 
@@ -98,6 +100,8 @@ class CRON2
         log "  = Tweet permanent envoyé"
         CRON2::Histo.add(code: '26101', data: tweets_ids.join(','), description: "Tweet Permanent à #{Time.now.hour} heures")
       rescue Exception => e
+        err_mess = e.message + "\n" + e.backtrace.join("\n")
+        CRON2::Histo.add(code: '26121', data: err_mess, description: "Tweet Permanent de #{Time.now.hour} heures")
         log "Problème lors de l'envoi du tweet permanent.", e
       end
 
