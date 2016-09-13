@@ -62,13 +62,17 @@ div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;t
     end
 
     # {StringHTML} Entête du message
-    def header
+    def header options = nil
+      options ||= Hash.new
+      options[:no_header] && (return '')
       header_vue = (site.folder_module_mail + "header.erb")
       header_vue.deserb(site) if header_vue.exist?
     end
 
     # {StringHTML} Pied de page du message
-    def footer
+    def footer options = nil
+      options ||= Hash.new
+      options[:no_footer] && (return '')
       footer_vue = (site.folder_module_mail + "footer.erb")
       footer_vue.deserb(site) if footer_vue.exist?
     end

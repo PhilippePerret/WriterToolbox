@@ -21,6 +21,7 @@ class SiteHtml
   #     :signature        Si FALSE, la signature n'est pas apposée.
   #                       True par défaut
   #     :data             Hash de données à utiliser pour le message
+  #     :no_citation      Si true, n'ajoute pas la citation au mail
   #
   # RETURN True si tout s'est bien passé et l'instance
   # de l'erreur dans le cas contraire.
@@ -130,15 +131,15 @@ module MailModuleMethods
       ).in_div(id:'message_content')
     # Si le body style est défini, on met le code dans un div
     # contenant ce body style.
-    c = c.in_div(style: SiteHtml::Mail.body_style) if SiteHtml::Mail::respond_to?(:body_style)
+    c = c.in_div(style: SiteHtml::Mail.body_style) if SiteHtml::Mail.respond_to?(:body_style)
     return c
   end
 
   def style_tag
     if get_class(:style_tag).nil?
       stag = ""
-      stag << "body{#{SiteHtml::Mail::body_style}}"  if SiteHtml::Mail::respond_to?(:body_style)
-      stag << SiteHtml::Mail::styles_css             if SiteHtml::Mail::respond_to?(:styles_css)
+      stag << "body{#{SiteHtml::Mail.body_style}}"  if SiteHtml::Mail.respond_to?(:body_style)
+      stag << SiteHtml::Mail.styles_css             if SiteHtml::Mail.respond_to?(:styles_css)
       set_class(:style_tag, "<style type='text/css'>#{stag}</style>")
     end
     get_class(:style_tag)
@@ -152,8 +153,9 @@ module MailModuleMethods
 
 
   def header
+    @data[:no_header] && (return '')
     if get_class(:header).nil?
-      set_class(:header, SiteHtml::Mail::respond_to?(:header) ? SiteHtml::Mail.header : "" )
+      set_class(:header, SiteHtml::Mail.respond_to?(:header) ? SiteHtml::Mail.header : "" )
     end
     get_class :header
   end
@@ -172,7 +174,8 @@ module MailModuleMethods
   end
 
   def footer
-    set_class(:footer, SiteHtml::Mail::respond_to?(:footer) ? SiteHtml::Mail::footer : "") if get_class(:footer).nil?
+    @data[:no_footer] && (return '')
+    set_class(:footer, SiteHtml::Mail.respond_to?(:footer) ? SiteHtml::Mail.footer : "") if get_class(:footer).nil?
     get_class :footer
   end
 

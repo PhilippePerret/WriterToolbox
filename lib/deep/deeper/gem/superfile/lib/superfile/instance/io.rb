@@ -121,7 +121,14 @@ class SuperFile
         rescue
           ''
         end
-      "<div class='fatal_error'>PROBLÈME AVEC LA VUE #{path} : #{e.message.gsub(/</,'&lt;')}.</div>#{ajout_avertissement}"
+      # Le message affiché dans la page, en fonction du fait qu'on est
+      # administrateur, online ou non.
+      if user.admin? || OFFLINE
+        "<div class='fatal_error'>PROBLÈME AVEC LA VUE #{path} : #{e.message.gsub(/</,'&lt;')}.</div>#{ajout_avertissement}"
+      else
+        # Message utilisateur lambda
+        "<div class='fatal_error'>HOUPS ! UN PROBLÈME EST SURVENU AVEC CETTE VUE…</div>#{ajout_avertissement}"
+      end
     end
   end
 

@@ -58,7 +58,8 @@ class CRON2
             subject:        "RAPPORT CRON #{NOW.as_human_date(true, true, ' ')}",
             message:        areport,
             formated:       true,
-            force_offline:  true
+            force_offline:  true,
+            no_header:      true
         )
 
         # Si tout s'est bien passé, on peut détruire les fichiers logs
