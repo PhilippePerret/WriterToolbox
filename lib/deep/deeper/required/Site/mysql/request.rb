@@ -252,7 +252,7 @@ DELETE FROM #{dbm_table.name}
       # les valeurs qui devront être bindées
       @prepared_values ||= []
       @prepared_values += where.values
-      'WHERE ' + where.collect { |k, v| "( #{k} = ? )" }.join(' AND ')
+      'WHERE ' + where.collect { |k, v| "#{k} = ?" }.join(' AND ')
     else
       raise 'La clause WHERE doit être définie par un NIL, un String ou un Hash.'
     end

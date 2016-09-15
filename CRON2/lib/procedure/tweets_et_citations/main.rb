@@ -246,10 +246,11 @@ class CRON2
           end
 
         site.send_mail_to_admin(
-        message:       mess_admin,
-        subject:       'Citations à expliciter',
-        force_offline: true,
-        formated:      true
+        message:        mess_admin,
+        subject:        'Citations à expliciter',
+        force_offline:  true,
+        no_header:      true,
+        formated:       true
         )
       rescue Exception => e
         log 'Impossible de transmettre les prochaines citations à expliciter', e
