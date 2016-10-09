@@ -21,7 +21,7 @@ class << self
         menu_apps_destination.in_td +
         liste_boutons_synchro.in_td(class: 'buttons')
       ).in_tr
-    ).in_table.in_form(action: 'admin/synchro_restsite', id: 'form_sync_restsite')
+    ).in_table.in_form(action: 'admin/sync_restsite', id: 'form_sync_restsite')
 
   end
   def menu_apps_source

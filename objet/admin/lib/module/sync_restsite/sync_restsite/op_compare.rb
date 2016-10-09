@@ -24,18 +24,20 @@ class << self
     @liste_paths_traited = Hash.new
 
     # === COMPARAISON ===
-    compare_folder nil
+    ([nil] + app_source.folders_in).each do |d|
+      compare_folder d
+    end
 
     # === Enregistrement du fichier marshal provisoire ===
     # Ce fichier contient toutes les informations sur les
     # désynchronisation.
     @data_synchronisation.empty? || begin
-      desync_file = app_source.path + 'tmp/desync_file'
+      app_source.file_data_marshal.remove if app_source.file_data_marshal.exist?
       h = Hash.new
       @data_synchronisation.each do |relp, isync|
-        h.merge!(relp, isync.data)
+        h.merge!(isync.id => isync.data)
       end
-      desync_file.write Marshal.dump(h)
+      app_source.file_data_marshal.write Marshal.dump(h)
     end
 
   end

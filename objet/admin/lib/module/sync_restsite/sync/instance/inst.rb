@@ -3,6 +3,7 @@ class SyncRestsite
 class Sync
 
   attr_reader :id
+  attr_reader :data
   attr_reader :from
   attr_reader :vers
   attr_reader :sens

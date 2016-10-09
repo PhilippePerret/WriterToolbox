@@ -4,14 +4,39 @@ class << self
 
   # Pour procéder à la synchro
   def output_form_synchronisation
+
     (@data_synchronisation.nil? || @data_synchronisation.empty?) && (return '')
+    # On construit trois parties : une pour les fichiers out-of-date, une
+    # pour les fichiers :unknown de la destination et une pour les fichiers
+    # unknown de la source
+    listes = {
+      :outofdate    => Array.new,
+      :unknown_src  => Array.new,
+      :unknown_dst  => Array.new
+    }
+    @data_synchronisation.each do |from_path, isync|
+      div = isync.div_form
+      case isync.raison
+      when :outofdate then listes[:outofdate] << div
+      when :unknown
+        case isync.sens
+        when :normal    then listes[:unknown_dst]
+        when :inverse   then listes[:unknown_src]
+        end
+      end
+
+    end
+
     'Synchronisations requises'.in_h3 +
     (
-      @data_synchronisation.collect do |from_path, isync|
-        isync.div_form
-      end.join +
+      'Désynchronisés'.in_h4 +
+      listes[:outofdate].join.in_div +
+      "Inexistants sur #{app_destination.name}".in_h4 +
+      listes[:unknown_dst].join.in_div +
+      "Inexistants sur la source #{app_source.name}".in_h4 +
+      listes[:unknown_src].join.in_div +
       'Synchroniser les cochées'.in_submit(class: 'btn').in_div(class: 'buttons')
-    ).in_form(form: 'form_synchronisation')
+    ).in_form(id: 'form_synchronisation', action: 'admin/sync_restsite')
   end
   # Pour le suivi des opération
   def output

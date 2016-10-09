@@ -5,7 +5,7 @@ class << self
 
   def next_id
     @next_id ||= 0
-    next_id += 1
+    @next_id += 1
   end
 
 end #/<< self
