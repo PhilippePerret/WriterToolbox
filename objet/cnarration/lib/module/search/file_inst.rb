@@ -83,11 +83,15 @@ class SFile
     @titre_livre_contient_searched ||= begin
       # On enregistre provisoirement la valeur dans le Hash des
       # données des livres pour ne pas avoir à la recalculer pour
-      # chaque page.
-      unless ::Cnarration::LIVRES[livre_id].has_key?(:contient_search)
-        ::Cnarration::LIVRES[livre_id].merge!( contient_search: (livre_titre.match(search.searched) != nil))
+      # chaque page. Sauf si livre_id est nil
+      if livre_id.nil?
+        'Titre introuvable (livre_id est NIL)'
+      else
+        unless ::Cnarration::LIVRES[livre_id].key?(:contient_search)
+          ::Cnarration::LIVRES[livre_id].merge!( contient_search: (livre_titre.match(search.searched) != nil))
+        end
+        ::Cnarration::LIVRES[livre_id][:contient_search]
       end
-      ::Cnarration::LIVRES[livre_id][:contient_search]
     end
   end
 

@@ -28,7 +28,7 @@ class Citation
   def short_url
     @short_url ||= begin
       self.bitly || begin
-        require './objet/bitly/main.rb'
+        site.require_objet 'bitly'
         rsbitly = RSBitly.new
         rsbitly.long_url = long_url
         rsbitly.short_url # la crée si nécessaire

@@ -1,0 +1,19 @@
+<%
+# Script de synchro de deux applications RESTSITE.
+# Cf le fichier ruby.
+raise_unless_admin
+%>
+<%= Admin.titre_h1('Synchronisation RestSite')%>
+<p class='small italic'>
+  Ce module permet de synchroniser deux applications RestSite, de l'<strong>application source</strong>, qui est l'application la plus à jour, vers l'<strong>application destination</strong> qui est l'application à actualiser (les choses sont moins rigoureuses puisqu'on peut aussi actualiser des fichiers dans l'autre sens si c'est demandé.)
+</p>
+<p class='small italic'>
+  Il faut 1/choisir l'application source et l'application destination ci-dessous, puis 2/ demander à faire la comparaison, 3/ valider ou non la comparaison et 4/ lancer la synchronisation.
+</p>
+<p class='small bold'>
+  La liste des applications se règle manuellement dans le fichier `./objet/admin/synchro_restsite.rb`.
+</p>
+
+<%= SyncRestsite.fieldset_choix_applications %>
+<%= SyncRestsite.output_form_synchronisation %>
+<%= SyncRestsite.output %>

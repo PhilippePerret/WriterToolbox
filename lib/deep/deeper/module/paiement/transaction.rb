@@ -230,7 +230,7 @@ table#facture td{padding: 1px}
   </tr>
   <tr>
     <td>Date</td>
-    <td>#{NOW.to_i.as_human_date}</td>
+    <td>#{NOW.to_i.as_human_date(false, false, ' ')}</td>
   </tr>
   <tr>
     <td>Montant</td>

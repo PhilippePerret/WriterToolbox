@@ -100,7 +100,12 @@ class Found
   attr_writer :page_id
   def page_id
     @page_id ||= begin
-      res = igrep.search.table_pages.select(where:"livre_id = #{livre_id} AND handler = '#{file_handler}'", colonnes:[:titre]).first
+      res =
+        if livre_id.nil? || file_handler.nil?
+          nil
+        else
+          igrep.search.table_pages.select(where:"livre_id = #{livre_id} AND handler = '#{file_handler}'", colonnes:[:titre]).first
+        end
       unless res.nil?
         self.page_titre = res[:titre]
         res[:id]

@@ -28,7 +28,7 @@ class Ope
     attr_reader :message, :success
     attr_accessor :path
     def upload
-      `ssh #{serveur_ssh} "ruby scripts_ssh/folders_up_to.rb '#{File.dirname(path_no_dot)}'"`
+      `ssh #{serveur_ssh} "mkdir -p #{File.dirname(remote_path)}"`
       `scp -p #{real_path} #{serveur_ssh}:#{remote_path}`
       @success = distant_file_exists?
       @message = "Upload du fichier #{path} "

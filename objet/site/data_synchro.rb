@@ -117,6 +117,7 @@ class Synchro
     @base ||= "http://localhost/WriterToolbox/"
   end
 
+  # LE NOM DU DOSSIER DE L'APPLICATION (DERNIER MOT DE base CI-DESSUS)
   def app_name
     @app_name = "WriterToolbox"
   end

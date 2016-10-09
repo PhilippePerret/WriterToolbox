@@ -15,7 +15,7 @@ La synchronisation concerne deux choses :
 
 On peut utiliser le tableau de bord de synchronisation générale et choisir l'item “Synchroniser les fichiers du site”.
 
-On peut aussi de rejoindre la console (depuis la marge gauche) et de taper la ligne de commande :
+On peut aussi rejoindre la console (depuis la marge gauche) et taper la ligne de commande :
 
     > check synchro
 

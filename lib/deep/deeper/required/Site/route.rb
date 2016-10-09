@@ -144,6 +144,13 @@ class SiteHtml
       else rut
       end
 
+    # Pour empêcher les boucles infinies on empêche de
+    # rediriger vers la même route que la route courante
+    if site.current_route
+      site.current_route.route != rut || ( return true )
+    else
+      rut != :home || ( return true )
+    end
 
     # Traitement spécial pour les routes 'user/signin' ou
     # 'user/signup'. Il faut mettre dans le paramètre

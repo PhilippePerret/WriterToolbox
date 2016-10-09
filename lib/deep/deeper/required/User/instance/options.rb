@@ -61,6 +61,11 @@ class User
       when :grade         then [1, '@grade']
       when :confirm_mail  then [2, nil]
       when :destroyed     then [3, nil]
+      when :contact       then [4, nil]
+        # :contact peut avoir différentes valeur en fonction de
+        # l'application, mais il permet de définir comment l'user
+        # veut être contacté par mail (quotidiennement, hebdomadairement,
+        # etc.)
       else
         # Peut-être défini en propre pour l'application courante dans
         # le fichier `./objet/site/config.rb`

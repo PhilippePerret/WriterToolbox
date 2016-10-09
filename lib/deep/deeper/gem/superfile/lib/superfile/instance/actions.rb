@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class SuperFile
 
+  attr_reader :errors
 
   # Construit le dossier
   # (et toute la hiérarchie nécessaire)
@@ -115,13 +116,23 @@ class SuperFile
   #                     avant de l'appliquer
   #   :nil_if_empty     Si TRUE (défaut), retourne NIL si le tempfile
   #                     est vide
+  #   :affixe_max_length    Si défini, l'affixe du nom du fichier, quelle que
+  #                     soit son extension, doit faire cette longueur. Le nom
+  #                     sera raboté en conséquence s'il dépasse et une erreur
+  #                     :affixe_reached_max_length sera produite (pour que la
+  #                     méthode appelante puisse le savoir)
   #
   # RETURN
   #     True    En cas de succès
   #     False   En cas d'échec (avec affichage du message d'erreur)
   #     Nil     En cas de fichier inexistant ou vide (size = 0)
   #
+  # ERREURS
+  #     Elles sont mises dans @errors, un Array qu'on peut tester par :
+  #     if superfile.errors.include?(:<id de l'erreur>)
+  #
   def upload tempfile, options = nil
+    @errors = Array.new
     options ||= Hash.new
     options.key?(:nil_if_empty) || options.merge!(nil_if_empty: true)
     options.key?(:change_name)  || options.merge!(change_name:  true)
@@ -135,33 +146,47 @@ class SuperFile
       end
     end
 
-    tempfile.respond_to?(:size) || raise(NotAUploadedFile)
-
-    tempfile.respond_to?(:original_filename) || begin
-      raise NotAUploadedFile
-    end
+    tempfile.respond_to?(:size)               || (raise NotAUploadedFile)
+    tempfile.respond_to?(:original_filename)  || (raise NotAUploadedFile)
 
     # Nom du fichier
     # --------------
     # On l'attribue au superfile courant, sauf indication contraire
+    tempfile_name = tempfile.original_filename
     if options[:change_name]
-      tempfile_name = tempfile.original_filename
       options[:normalize_filename] && tempfile_name = tempfile_name.as_normalized_filename
       good_path = (dirname + tempfile_name).path
-      reset # pour forcer le recalcul des propriétés
-      @name = tempfile_name
-      @path = good_path
+    else
+      # Sinon, on garde la path original
+      good_path = path
     end
+
+    tempfile_extension = File.extname(tempfile_name)
+    tempfile_affixe = File.basename(tempfile_name, tempfile_extension)
+    if options[:affixe_max_length] && tempfile_affixe.length > options[:affixe_max_length]
+      tempfile_name = tempfile_affixe[0..options[:affixe_max_length]-1] + tempfile_extension
+      good_path = (dirname + tempfile_name).path
+      add_error :affixe_reached_max_length
+    end
+
+    # Pour forcer le recalcul des propriétés après les changements précédents
+    # éventuels
+    reset(all = false) # all = false => pour garder les erreurs
+    @name = tempfile_name
+    @path = good_path
 
     # On écrit le fichier
     # --------------------
     self.write tempfile.read.force_encoding('UTF-8')
 
   rescue NotAUploadedFile => e
+    debug e
     raise ArgumentError, "L'argument envoyé à SuperFile#upload doit être le fichier StringIO. Impossible d'uploader le fichier"
   rescue ArgumentError => e
+    debug e
     raise ArgumentError, "#{e.message} Impossible d'uploader le fichier"
   rescue Exception => e
+    debug e
     error e
   else
     return true
