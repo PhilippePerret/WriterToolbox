@@ -16,19 +16,18 @@ class Cnarration
 
     # {StringHTML} Sortie du code quand c'est une "vraie" page
     # donc pas un titre
+    #
+    # OBSOLÈTE (maintenant, toute la collection est en libre accès)
     # Noter que la page est amputée, en sortie, si l'utilisateur
     # n'est pas abonné, et un message lui est fourni pour qu'il
     # s'abonne.
+    #
     def output_as_page
-      avertissement_relecture =
-        if user.admin? && page_content_by_niveau_developpement.match(/<relecture>/)
-          '<relecture>Attention, ce texte achevé ne demande qu’une relecture des passages qui se trouvent dans cette couleur.</relecture>'.in_div(class: 'cadre air big')
-        else
-          ''
-        end
       if path_semidyn.exist?
         (
-          titre.in_h1 + avertissement_relecture + page_content_by_niveau_developpement
+          titre.in_h1                   +
+          admin_avertissement_relecture +
+          page_content_by_niveau_developpement
         ).in_div(id:'page_cours')
       else
         error 'Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique).'
@@ -38,21 +37,31 @@ class Cnarration
       error e.message
     end
 
+    def admin_avertissement_relecture
+      if user.admin? && page_content_by_niveau_developpement.match(/<relecture>/)
+        '<relecture>Attention, ce texte achevé ne demande qu’une relecture des passages qui se trouvent dans cette couleur.</relecture>'.in_div(class: 'cadre air big')
+      else
+        ''
+      end
+    end
+
     # Si le niveau de développement de la page est insuffisant, on
     # affiche un message de non lecture possible.
     # Le niveau de développement est fixé à 8 pour un lecteur
     # normal et à 6 pour un lecteur du programme UNAN
-    # TODO Quand toutes les pages de narration seront à un bon
-    # niveau on pourra supprimer ça.
+    # (TODO Quand toutes les pages de narration seront à un bon
+    # niveau on pourra supprimer ça.)
     #
     # Noter que ça n'est pas ici qu'on vérifie l'accessibilité de
     # la page. Ici, on regarde juste le niveau de développement par
     # rapport au visiteur pour savoir si on affiche un message de niveau
     # insuffisant ou la page.
     #
+    # OBSOLÈTE (maintenant, toutes les pages sont accessibles)
     # Ci-dessous, le fait d'utiliser @authorization_level plutôt
     # que `!user.admin?` permet d'utiliser l'autorisation par IP avec
     # authips à 1 dans l'url.
+    #
     def page_content_by_niveau_developpement
       full_autorisation = user.admin? || user.authorization_level.to_i > 3
       if developpement < 8 && false == full_autorisation
@@ -76,39 +85,44 @@ class Cnarration
     # de l'user
     def page_content_by_user
       @full_page = path_semidyn.deserb
+
+      # OBSOLÈTE
+      # --------
+      # (maintenant, la collection est en libre accès complet)
       # Si l'user est abonné ou que le texte fait moins de 3000
       # signes, on retourne le texte tel quel
-      debug "Dans page_content_by_user, user.authorized? renvoie #{user.authorized?.inspect}"
-      return (full_page_with_exergue || @full_page) if user.authorized? || @full_page.length < 2500
+      # return (full_page_with_exergue || @full_page) if user.authorized? || @full_page.length < 2500
+      return full_page_with_exergue || @full_page
 
-      # Si l'utilisateur n'est pas abonné, on tronque la page
-      # et on ajoute un message l'invitant à s'abonner.
-      # On a plusieurs moyens de tronquer la page :
-      #   - par la longueur (un tiers)
-      #   - par une longueur maximale si un tiers est trop long
-      #   - par une marque "stop" à un endroit précis
+      # # OBSOLÈTE
+      # # Si l'utilisateur n'est pas abonné, on tronque la page
+      # # et on ajoute un message l'invitant à s'abonner.
+      # # On a plusieurs moyens de tronquer la page :
+      # #   - par la longueur (un tiers)
+      # #   - par une longueur maximale si un tiers est trop long
+      # #   - par une marque "stop" à un endroit précis
+      # #
+      # offset_mark_fin_extrait = @full_page.index('<!-- FIN EXTRAIT -->')
+      # @full_page =
+      #   if offset_mark_fin_extrait != nil
+      #     debug "Mark de fin d'extrait trouvée à #{offset_mark_fin_extrait}"
+      #     @full_page[0..offset_mark_fin_extrait - 1]
+      #   else
+      #     tiers_longueur = (@full_page.length / 3) - 100
+      #     # Si le tiers n'est pas assez long, on l'augmente
+      #     tiers_longueur = case true
+      #                      when tiers_longueur < 1900 then 1900
+      #                      when tiers_longueur > 2500 then 2500
+      #                      else tiers_longueur
+      #                      end
+      #     # On cherche le premier double retour chariot suivant
+      #     offset = @full_page.index("\n\n", tiers_longueur)
+      #     # Si on en trouve pas, on garde 2900
+      #     offset = 1900 if offset.nil?
       #
-      offset_mark_fin_extrait = @full_page.index('<!-- FIN EXTRAIT -->')
-      @full_page =
-        if offset_mark_fin_extrait != nil
-          debug "Mark de fin d'extrait trouvée à #{offset_mark_fin_extrait}"
-          @full_page[0..offset_mark_fin_extrait - 1]
-        else
-          tiers_longueur = (@full_page.length / 3) - 100
-          # Si le tiers n'est pas assez long, on l'augmente
-          tiers_longueur = case true
-                           when tiers_longueur < 1900 then 1900
-                           when tiers_longueur > 2500 then 2500
-                           else tiers_longueur
-                           end
-          # On cherche le premier double retour chariot suivant
-          offset = @full_page.index("\n\n", tiers_longueur)
-          # Si on en trouve pas, on garde 2900
-          offset = 1900 if offset.nil?
-
-          @full_page[0..offset]
-        end
-      return (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
+      #     @full_page[0..offset]
+      #   end
+      # return (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
     end
 
     # Si les paramètres contiennent :xmotex, c'est un mot
@@ -132,43 +146,48 @@ class Cnarration
 
     # Cette méthode est appelée lorsque l'on vient de l'atelier
     # icare (depuis un bureau)
+    #
+    # OBSOLÈTE : la collection est maintenant en accès libre.
+    #
     def encart_icarien
       # Si l'user (icarien) est identifié, on n'a rien besoin de
-      # mettre
-      return '' if user.identified?
-      icarien_cpassword = param(:cpicare)
-      icarien_pseudo    = param(:picare)
-      icarien_id        = param(:idicare)
-      icarien_mail      = param(:micare)
-      icarien_salt      = ''
-      icarien_sexe      = param(:xicare)
-      # L'icarien existe-t-il ?
-      u = User.table_users.get(where: {mail: icarien_mail})
-      if u.nil?
-        # L'icarien n'est pas connu
-        # -------------------------
-        # Puisqu'on ne peut passer par ici que lorsque l'icarien est
-        # actif, on peut créer automatiquement l'icarien
-        icarien_options = "00100000000000000000000000000001"
-        icarien_data = {
-          pseudo:     icarien_pseudo,
-          patronyme:  icarien_pseudo,
-          mail:       icarien_mail,
-          cpassword:  icarien_cpassword,
-          salt:       icarien_salt,
-          options:    icarien_options,
-          sexe:       icarien_sexe,
-          created_at: NOW,
-          updated_at: NOW
-        }
-        User.table_users.insert(icarien_data)
-      else
-        # L'icarien est connu
-        # --------------------
-        # Noter que pour passer par ici, il faut qu'il y ait :fromicare à 1
-        # dans l'URL et cette variable n'existe que si l'icarien est actif.
-      end
-      'En tant qu’icarien actif, il suffit de vous identifier pour pouvoir consulter la page dans son intégralité.'.in_div(id: 'cadre_icarien', class: 'air cadre')
+      # mettre.
+
+      return '' #if user.identified?
+
+      # icarien_cpassword = param(:cpicare)
+      # icarien_pseudo    = param(:picare)
+      # icarien_id        = param(:idicare)
+      # icarien_mail      = param(:micare)
+      # icarien_salt      = ''
+      # icarien_sexe      = param(:xicare)
+      # # L'icarien existe-t-il ?
+      # u = User.table_users.get(where: {mail: icarien_mail})
+      # if u.nil?
+      #   # L'icarien n'est pas connu
+      #   # -------------------------
+      #   # Puisqu'on ne peut passer par ici que lorsque l'icarien est
+      #   # actif, on peut créer automatiquement l'icarien
+      #   icarien_options = "00100000000000000000000000000001"
+      #   icarien_data = {
+      #     pseudo:     icarien_pseudo,
+      #     patronyme:  icarien_pseudo,
+      #     mail:       icarien_mail,
+      #     cpassword:  icarien_cpassword,
+      #     salt:       icarien_salt,
+      #     options:    icarien_options,
+      #     sexe:       icarien_sexe,
+      #     created_at: NOW,
+      #     updated_at: NOW
+      #   }
+      #   User.table_users.insert(icarien_data)
+      # else
+      #   # L'icarien est connu
+      #   # --------------------
+      #   # Noter que pour passer par ici, il faut qu'il y ait :fromicare à 1
+      #   # dans l'URL et cette variable n'existe que si l'icarien est actif.
+      # end
+      # 'En tant qu’icarien actif, il suffit de vous identifier pour pouvoir consulter la page dans son intégralité.'.in_div(id: 'cadre_icarien', class: 'air cadre')
     end
 
     # Le message de page en cours d'écriture et pas encore
@@ -199,31 +218,11 @@ class Cnarration
     def mess_dev_insuffisant_non_authorized
       <<-HTML
 <div class="red air">
-  Cette page est en cours de rédaction et ne peut être consultée même partiellement. Pour la consulter entièrement, vous devez être abonné.
+  Cette page est en cours de rédaction et ne peut être consultée même partiellement.
 </div>
-#{lien.bouton_subscribe}
       HTML
     end
 
-
-    # Le message d'abonnement demandé pour que l'user puisse lire
-    # l'intégralité de la page.
-    def message_abonnement_required
-      @message_abonnement_required ||= begin
-                                         <<-HTML
-<div class='center'>
-  <div class='border air small inline left warning' style="width:60%">
-<p>
-  Veuillez noter qu'<b>une partie seulement de la page</b> est affichée. Seuls les abonnés peuvent consulter les pages de la collection en intégralité.
-</p>
-<p class="right small">
-  #{lien.subscribe("S’ABONNER", type: :arrow_cadre)}
-</p>
-  </div>
-</div>
-        HTML
-      end
-    end
 
     def output_as_sous_chapitre
       (
@@ -312,32 +311,32 @@ class Cnarration
     # Index de la page courante dans la table des matières
     def index_tdm
       @index_tdm ||= begin
-                       tdm_ids.index(id)
-                     end
+        tdm_ids.index(id)
+      end
     end
     def prev_page_id
       @prev_page_id ||= begin
-                          index_prev = index_tdm - 1
-                          if index_prev < 0
-                            nil
-                          else
-                            tdm_ids[index_prev]
-                          end
-                        rescue
-                          nil
-                        end
+        index_prev = index_tdm - 1
+        if index_prev < 0
+          nil
+        else
+          tdm_ids[index_prev]
+        end
+      rescue
+        nil
+      end
     end
     def next_page_id
       @next_page_id ||= begin
-                          index_next = index_tdm + 1
-                          if index_next >= tdm_ids.count
-                            nil
-                          else
-                            tdm_ids[index_next]
-                          end
-                        rescue
-                          nil
-                        end
+        index_next = index_tdm + 1
+        if index_next >= tdm_ids.count
+          nil
+        else
+          tdm_ids[index_next]
+        end
+      rescue
+        nil
+      end
     end
 
   end #/Page

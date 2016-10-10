@@ -3,8 +3,13 @@
 # “ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN”
 %>
 <h1>Tableau de bord UAUS</h1>
-<p>
-  Bienvenue sur le tableau de bord du programme “<%= Unan::PROGNAME_MAJ %>”. Que voulez-vous faire ?
+<p>LES DEUX FICHIERS LES PLUS IMPORTANTS POUR LE DÉVELOPPEMENT DU PROGRAMME SONT :</p>
+<ul>
+  <li><%= 'La Map horizontale'.in_a(href: 'abs_work/map?in=unan_admin', target: :new)%></li>
+  <li><%= 'La programme en TXT'.in_a(href: 'unan_admin/programme', target: :new)%></li>
+</ul>
+<p class='italic tiny'>
+  (Les liens ci-dessus s'ouvrent dans une nouvelle fenêtre)
 </p>
 <%
 http = "http://localhost/WriterToolbox"

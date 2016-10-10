@@ -176,6 +176,10 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                 JP 060-061 TR3 sur dynmatique DYNA
                 JP 062-063 TR3 sur la documentation DOCU
                 JP 064-065 TR3 sur les personnages PERS
+                  [WORK 102] Faire le document "Desirs_personnages" PERS
+                  [WORK 104] Liste des désirs des personnages en fonction des parties PERS
+                  [WORK 103][PAGE 50] Page à lire sur la construction de la cohérence des personnages. PERS
+                  TODO [EXEMPLE] Donner l'exemple de liste complète de désir des deux films en illustration.
                 JP 066-067 TR3 sur la structure STRT
                 jp 068-069 TR3bis sur la structure STRT
             JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
