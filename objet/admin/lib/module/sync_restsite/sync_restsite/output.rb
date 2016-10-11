@@ -6,6 +6,8 @@ class << self
   def output_form_synchronisation
 
     (@data_synchronisation.nil? || @data_synchronisation.empty?) && (return '')
+
+    # debug "@data_synchronisation = #{@data_synchronisation.pretty_inspect}"
     # On construit trois parties : une pour les fichiers out-of-date, une
     # pour les fichiers :unknown de la destination et une pour les fichiers
     # unknown de la source
@@ -20,8 +22,8 @@ class << self
       when :outofdate then listes[:outofdate] << div
       when :unknown
         case isync.sens
-        when :normal    then listes[:unknown_dst]
-        when :inverse   then listes[:unknown_src]
+        when :normal    then listes[:unknown_dst] << div
+        when :inverse   then listes[:unknown_src] << div
         end
       end
 

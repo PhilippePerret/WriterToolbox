@@ -18,12 +18,12 @@ class Sync
   end
 
   def boutons
-    raison == :outofdate || (return '')
-    (
-      'diff'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=diff_files", target: :new) +
-      'sync…'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=sync_files", target: :new)
-    ).in_div(class: 'boutons')
-
+    arr = Array.new
+    if raison == :outofdate
+      arr << 'diff'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=diff_files", target: :new)
+    end
+    arr << 'sync…'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=sync_files", target: :new)
+    arr.join.in_div(class: 'boutons')
   end
   def human_sens
     case sens

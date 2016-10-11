@@ -8,10 +8,10 @@ class SyncRestsite
       folders_out:  [
         '_Dev_', 'CRON', 'database', 'data', 'tmp', 'spec', 'hot',
         'lib/app', 'objet',
+        'view/gabarit',
         'xprev_version'
       ],
       folders_in: [
-        'objet/site', 'objet/admin'
       ],
       files_out: [
         'index.rb',
@@ -31,8 +31,7 @@ class SyncRestsite
         'lib/deep/deeper/required/Site/config.rb',
         'lib/deep/deeper/required/Site/data.rb',
         'lib/deep/deeper/required/Site/handy.rb',
-        'lib/deep/deeper/required/User/class/database.rb',
-        'lib/deep/deeper/required/Site/require.rb'
+        'lib/deep/deeper/required/User/class/database.rb'
       ]
     },
     boa: {
@@ -40,7 +39,8 @@ class SyncRestsite
       path: '/Users/philippeperret/Sites/WriterToolbox',
       folders_out: [
         '_Dev_', 'CRON2', 'database', 'data', 'tmp', 'spec', 'hot',
-        'lib/app', 'objet'
+        'lib/app', 'objet',
+        'view/gabarit'
       ],
       files_out: [
         'index.rb',
@@ -63,11 +63,9 @@ class SyncRestsite
         'lib/deep/deeper/required/Site/config.rb',
         'lib/deep/deeper/required/Site/data.rb',
         'lib/deep/deeper/required/Site/handy.rb',
-        'lib/deep/deeper/required/User/class/database.rb',
-        'lib/deep/deeper/required/Site/require.rb'
+        'lib/deep/deeper/required/User/class/database.rb'
       ],
       folders_in: [
-        'objet/site', 'objet/admin'
       ]
     }
   }

@@ -9,16 +9,15 @@ Méthode pour la gestion des "objets"
 =end
 class SiteHtml
 
-  # alias :top_require :require
-  # def require module_name
-  #   case module_name
-  #   when 'form_tools'
-  #     (folder_lib_optional + 'Page/form_tools.rb').require
-  #   else
-  #     top_require module_name
-  #   end
-  # end
-
+  alias :top_require :require
+  def require module_name
+    case module_name
+    when 'form_tools'
+      (folder_lib_optional + 'Page/form_tools.rb').require
+    else
+      top_require module_name
+    end
+  end
 
   # Requiert tout le dossier lib/required de l'objet de nom
   # +objet_name+. +objet_name+ doit être un nom contenu dans le

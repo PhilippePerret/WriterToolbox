@@ -120,13 +120,17 @@ class << self
         end
       end
     elsif false == src.exist?
+      debug "-> source #{src} n'existe pas"
       @data_synchronisation.key?(dst.path) || begin
+        debug "-> enregistrement de source"
         @report << "    Fichier source inexistant"
         newsync = SyncRestsite::Sync.new(data_sync_dst2src.merge(raison: :unknown))
         @data_synchronisation.merge!(dst.path => newsync)
       end
     elsif false == dst.exist?
+      debug "-> destination #{dst} n'existe pas"
       @data_synchronisation.key?(src.path) || begin
+        debug "-> enregistrement de destination"
         @report << "    Fichier destination inexistant"
         newsync = SyncRestsite::Sync.new(data_sync_src2dst.merge(raison: :unknown))
         @data_synchronisation.merge!(src.path => newsync)

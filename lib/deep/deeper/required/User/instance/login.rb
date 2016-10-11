@@ -54,19 +54,16 @@ class User
     app.benchmark('-> User#login')
 
     # Si le mail n'est pas confirmé
-    if false == mail_confirmed?
-      # Sauf si on passe par ici pour un paiement (retour de PayPal)
-      unless for_paiement?
-        error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
-              ' confirmé votre adresse-mail.' +
-              '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
-              ' qui vous a été transmis par mail après votre inscription. Merci de' +
-              ' vérifier votre boite aux lettres virtuelle.' +
-              '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
-              '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
-        redirect_to 'user/deconnexion'
-        return # Pour ne pas enregistrer de message de bienvenue
-      end
+    if false === mail_confirmed? && created_at < Time.now.to_i - 1.hour
+      error "Désolé #{pseudo}, mais vous ne pouvez pas vous reconnecter avant d’avoir" +
+            ' confirmé votre adresse-mail.' +
+            '<br><br>Cette confirmation se fait grâce à un lien contenu dans le message' +
+            ' qui vous a été transmis par mail après votre inscription. Merci de' +
+            ' vérifier votre boite aux lettres virtuelle.' +
+            '<br><br>Vous n’avez plus ce message ?… Pas de problème :' +
+            '<br><a href="user/new_mail_confirmation">Renvoyer un message de confirmation</a>.'
+      redirect_to 'user/deconnexion'
+      return # Pour ne pas enregistrer de message de bienvenue
     end
 
     proceed_login
