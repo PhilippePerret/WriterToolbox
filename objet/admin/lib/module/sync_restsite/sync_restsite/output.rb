@@ -42,7 +42,7 @@ class << self
   def output
     @report != nil || (return '')
     'Résultat de l’opération'.in_h3 +
-    @report.join("\n").in_pre(class: 'small wrap')
+    @report.join("\n").force_encoding('utf-8').in_pre(class: 'small wrap')
   end
 end #<< self
 end # SyncRestsite

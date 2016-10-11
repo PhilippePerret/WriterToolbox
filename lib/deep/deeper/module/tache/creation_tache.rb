@@ -1,4 +1,4 @@
-# encoding: utf-8
+# encoding: UTF-8
 =begin
 
 Ce module permet d'insérer dans la page, lorsque l'on est administrateur,
@@ -85,8 +85,8 @@ class Taches
         description:  detail, # ajouté parfois au message aussi
         echeance:     echeance_time,
         state:        importance,
-        created_at:   NOW,
-        updated_at:   NOW
+        created_at:   Time.now.to_i,
+        updated_at:   Time.now.to_i
       }
 
       # Une instance de la table contenant toutes les taches
@@ -130,7 +130,7 @@ class Taches
     # type ou de la valeur spécifiée dans le menu échéance
     def echeance_time
       @echeance_time ||= begin
-        NOW + echeance.days
+        Time.now.to_i + echeance.days
       end
     end
 

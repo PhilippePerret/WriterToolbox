@@ -47,7 +47,7 @@ class Update
       @data[:created_at] = Data::date_humaine_to_date_real( @data.delete(:le) )
       debug "@data[:created_at] = #{@data[:created_at].inspect}"
     elsif !@data.key?(:created_at)
-      @data[:created_at] = NOW
+      @data[:created_at] = Time.now.to_i
     end
 
     # L'annonce
@@ -87,7 +87,7 @@ class Update
   def route       ; @route      ||= data[:route]              end
   def annonce     ; @annonce    ||= data[:annonce]            end
   def options     ; @options    ||= data[:options] || ''      end
-  def created_at  ; @created_at ||= data[:created_at] || NOW  end
+  def created_at  ; @created_at ||= data[:created_at] || Time.now.to_i  end
 
   #
   # / fin des données

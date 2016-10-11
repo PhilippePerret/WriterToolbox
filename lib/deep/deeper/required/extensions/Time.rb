@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 NOW_T = Time.now
-NOW   = NOW_T.to_i
+NOW   = Time.now.to_i
 
 require 'singleton'
 class Today < Time

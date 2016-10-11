@@ -65,7 +65,7 @@ class Ranking
     #
     def div_donnees_generales
       (
-        "Date : #{NOW.as_human_date(true, true, '&nbsp;', 'à')}".in_div +
+        "Date : #{Time.now.to_i.as_human_date(true, true, '&nbsp;', 'à')}".in_div +
         div_infos_site_courant +
         "Nombre total de sites : #{nombre_total_sites}".in_div +
         "Nombre sites au-dessus de #{CITATIONS_MINIMUM} citations : #{nombre_sites_minimum_citations}"

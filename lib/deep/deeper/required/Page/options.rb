@@ -8,7 +8,7 @@ class Page
   end
 
   def widget_taches?
-    user.admin? && !(@no_widget_taches == true)
+    user.admin? && !(@no_widget_taches == true || site.display_widget_taches == false)
   end
 
 

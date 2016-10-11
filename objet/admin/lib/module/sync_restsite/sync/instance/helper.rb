@@ -20,7 +20,8 @@ class Sync
   def boutons
     raison == :outofdate || (return '')
     (
-      'diff'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=diff_files", target: :new)
+      'diff'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=diff_files", target: :new) +
+      'sync…'.in_a(href:"admin/#{id}/sync_restsite?app_source=#{app_source.id}&app_destination=#{app_destination.id}&operation=sync_files", target: :new)
     ).in_div(class: 'boutons')
 
   end
@@ -28,7 +29,7 @@ class Sync
     case sens
     when :normal  then "source vers destinat°"
     when :inverse then "destinat° vers source"
-    end
+    end.in_span(class: 'dir')
   end
 
   def human_raison

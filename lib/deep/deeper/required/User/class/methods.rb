@@ -5,7 +5,7 @@ class User
 
     # Identification
     def login
-      unless login_ok?
+      login_ok? || begin
         error "Je ne vous reconnais pas… Voulez-vous bien réessayer ?"
         redirect_to 'user/signin'
       end
@@ -16,18 +16,18 @@ class User
     def login_ok?
       login_data = param(:login)
       if login_data.nil?
-        # Ça arrive quelque chose quand ça tourne trop longtemps
+        # Ça arrive quelquefois quand ça tourne trop longtemps
         # ou autre
         return false
       else
         umail = login_data[:mail]
         upass = login_data[:password]
         res = table_users.select(where: {mail: umail}, colonnes: [:salt, :cpassword, :mail]).first
-        return false if res.nil?
+        res != nil || (return false)
         expected = res[:cpassword]
         compared = Digest::MD5.hexdigest("#{upass}#{umail}#{res[:salt]}")
         ok = expected == compared
-        User.new( res[:id] ).login if ok
+        ok && User.new( res[:id] ).login
         return ok
       end
     end

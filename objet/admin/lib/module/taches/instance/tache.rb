@@ -36,7 +36,7 @@ class Tache
       if echeance.nil?
         nil
       else
-        ( (echeance - NOW) / 1.day ) + 1
+        ( (echeance - Time.now.to_i) / 1.day ) + 1
       end
     end
   end
@@ -45,7 +45,7 @@ class Tache
   #   Méthodes
   # ---------------------------------------------------------------------
   def create
-    @id = table.insert(data2save.merge(created_at:NOW))
+    @id = table.insert(data2save.merge(created_at:Time.now.to_i))
     param(:todo => nil)
     flash "Tache ##{@id} créée avec succès."
   end
@@ -72,7 +72,7 @@ class Tache
       file:         file,
       created_at:   created_at,
       state:        9,
-      updated_at:   NOW
+      updated_at:   Time.now.to_i
     }
     table_cold.insert(data_cold)
     table.delete(id)
@@ -92,7 +92,7 @@ class Tache
       echeance:     echeance_from_param,
       file:         data_param[:file].nil_if_empty,
       state:        1,
-      updated_at:   NOW
+      updated_at:   Time.now.to_i
     }
   end
   def echeance_from_param

@@ -6,7 +6,6 @@ CREATE TABLE comments
     id          INTEGER AUTO_INCREMENT,
     page_id     INTEGER NOT NULL,
     user_id     INTEGER,
-    created_at  INTEGER(10) NOT NULL,
 
     # CLARTE
     # ------
@@ -22,6 +21,11 @@ CREATE TABLE comments
     # -------
     # Commentaire textuel de l'user sur la page
     comment TEXT,
+
+
+    created_at  INTEGER(10) NOT NULL,
+    updated_at  INTEGER(10),
+
 
     PRIMARY KEY (id)
   );

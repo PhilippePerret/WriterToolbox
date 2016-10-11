@@ -81,35 +81,40 @@ class Page
       # ---------------------------------------------------------------------
 
       def field_hidden libelle, prop, selected = nil, options = nil
-        f = Field::new(:hidden, libelle, prop, selected, options)
+        f = Field.new(:hidden, libelle, prop, selected, options)
         f.field_value.in_hidden(name:f.field_name, id:f.field_id)
       end
       def field_select libelle, prop, selected = nil, options = nil
-        Field::new(:select, libelle, prop, selected, options).form_row
+        Field.new(:select, libelle, prop, selected, options).form_row
       end
       def field_select_pays libelle, prop, selected = nil, options = nil
-        Field::new(:select_pays, libelle, prop, selected, options).form_row
+        Field.new(:select_pays, libelle, prop, selected, options).form_row
       end
       alias :field_select_country :field_select_pays
 
       def field_textarea libelle, prop, value = nil, options = nil
-        Field::new(:textarea, libelle, prop, value, options).form_row
+        Field.new(:textarea, libelle, prop, value, options).form_row
       end
 
       # Un input-text
       def field_text libelle, prop, value = nil, options = nil
-        Field::new(:text, libelle, prop, value, options).form_row
+        Field.new(:text, libelle, prop, value, options).form_row
       end
 
       # Un input-checkbox
       def field_checkbox libelle, prop, value = nil, options = nil
-        Field::new(:checkbox, libelle, prop, value, options).form_row
+        Field.new(:checkbox, libelle, prop, value, options).form_row
+      end
+
+      # Un champ pour un fichier
+      def field_file libelle, prop, value = nil, options = nil
+        Field.new(:file, libelle, prop, value, options).form_row
       end
 
       # Quand le code du champ est donné de façon brute
       # Note +options[:field]+ contient le code qui sera mis
       def field_raw libelle, prop, value = nil, options
-        Field::new(:raw, libelle, prop, value, options).form_row
+        Field.new(:raw, libelle, prop, value, options).form_row
       end
 
       # Une simple description du champ, qui sera mise en petit
@@ -205,11 +210,17 @@ class Page
 
         # Valeur qui peut se trouver dans les paramètres, tel
         # quel ou dans un prefix défini
-        param_value = if Page::FormTools::prefix.nil?
-          param(prop.to_sym)
-        else
-          (param(Page::FormTools.prefix)||Hash.new)[prop.to_sym]
-        end.nil_if_empty
+        param_value = begin
+          if Page::FormTools.prefix.nil?
+            param(prop.to_sym)
+          else
+            (param(Page::FormTools.prefix)||Hash.new)[prop.to_sym]
+          end.nil_if_empty
+        rescue Exception => e
+          # Ça peut survenir par exemple lorsque c'est un champ
+          # de type file
+          nil
+        end
 
         # debug "param_value = #{param_value.inspect}"
 
@@ -218,15 +229,18 @@ class Page
         # Valeur qui peut se trouver dans l'objet, si un objet
         # a été déterminé, qui peut être une instance ou un hash
         # Cf. la propriété `objet`
-        objet_value = if Page::FormTools::objet != nil
-          if Page::FormTools::objet_hash?
-            Page::FormTools::objet[prop.to_sym]
-          elsif Page::FormTools::objet.respond_to?(prop.to_sym)
-            Page::FormTools::objet.send(prop.to_sym)
-          else
-            nil
-          end
-        end.nil_if_empty
+        objet_value =
+          if Page::FormTools.objet != nil
+            if Page::FormTools.objet_hash?
+              Page::FormTools.objet[prop.to_sym]
+            elsif Page::FormTools.objet.respond_to?(prop.to_sym)
+              Page::FormTools.objet.send(prop.to_sym)
+            else
+              nil
+            end
+          end.nil_if_empty
+
+        objet_value.instance_of?(String) && objet_value = objet_value.force_encoding('utf-8')
 
         # debug "objet_value = #{objet_value.inspect}"
 
@@ -253,8 +267,8 @@ class Page
       def form_row_css
         (
           "row" +
-          Page::FormTools::exergue_field?(property) +
-          Page::FormTools::error_field?(property) +
+          Page::FormTools.exergue_field?(property) +
+          Page::FormTools.error_field?(property) +
           (row_class || "")
         ).strip
       end
@@ -318,6 +332,9 @@ class Page
       #   type
       # ---------------------------------------------------------------------
 
+      def field_file
+        field_value.to_s.in_input_file( field_attrs )
+      end
       def field_text
         field_value.to_s.in_input_text( field_attrs )
       end

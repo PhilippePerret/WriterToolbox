@@ -18,6 +18,13 @@ class SiteHtml
   end
   alias :url_distante :distant_url
 
+  # L'URL de la boite à outils
+  def url_boa
+    @url_boa ||= 'http://www.laboiteaoutilsdelauteur.fr'
+  end
+  alias :boa_url :url_boa
+
+
   # URL en fonction de où on consulte le site
   def url
     ONLINE ? distant_url : local_url
@@ -44,7 +51,7 @@ class SiteHtml
   # Noter que ça ne sert pas seulement à site
   # @usage    site.get_and_build_folder( path/to/folder )
   def get_and_build_folder sfile
-    sfile = SuperFile::new(sfile) unless sfile.instance_of?(SuperFile)
+    sfile = SuperFile.new(sfile) unless sfile.instance_of?(SuperFile)
     sfile.build unless sfile.exist?
     return sfile
   end
@@ -97,6 +104,7 @@ class SiteHtml
     @folder_lib_objet_site ||= folder_objet+'site/lib'
   end
 
+
   # ---------------------------------------------------------------------
   #   Vues (hors vue d'objet)
   # ---------------------------------------------------------------------
@@ -116,7 +124,7 @@ class SiteHtml
     @folder_deep_view ||= folder_view + 'deep'
   end
   def folder_view
-    @folder_view ||= SuperFile::new('./view')
+    @folder_view ||= SuperFile.new('./view')
   end
 
   # ---------------------------------------------------------------------
@@ -143,7 +151,7 @@ class SiteHtml
     @folder_deeper ||= folder_lib + "deep/deeper"
   end
   def folder_lib
-    @folder_lib ||= SuperFile::new('./lib')
+    @folder_lib ||= SuperFile.new('./lib')
   end
 
   # ---------------------------------------------------------------------
@@ -155,14 +163,22 @@ class SiteHtml
   end
 
   def folder_objet
-    @folder_objet ||= SuperFile::new('./objet')
+    @folder_objet ||= SuperFile.new('./objet')
   end
 
   def folder_tmp
     @folder_tmp ||= begin
-      d = SuperFile::new('./tmp')
+      d = SuperFile.new('./tmp')
       d.build unless d.exist?
       d
     end
   end
+
+  # Dossier principal de l'application
+  # ALIAS def app_folder
+  def folder_app
+    @folder_app ||= SuperFile.new('.')
+  end
+  alias :app_folder :folder_app
+
 end

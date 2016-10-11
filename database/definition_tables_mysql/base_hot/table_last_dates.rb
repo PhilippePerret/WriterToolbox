@@ -12,6 +12,7 @@ CREATE TABLE last_dates
     id INTEGER AUTO_INCREMENT,
     cle VARCHAR(255) NOT NULL,
     time INTEGER(10) NOT NULL,
+    updated_at INTEGER(10),
     PRIMARY KEY (id)
   );
   MYSQL

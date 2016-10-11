@@ -46,7 +46,7 @@ class User
             # Sera calculé après par le patch ci-dessous
             false
           else
-            (authorized_from <= NOW && authorized_upto > (NOW + 30))
+            (authorized_from <= Time.now.to_i && authorized_upto > (Time.now.to_i + 30))
           end
 
         # Patch d'autorisation en attendant que tous les autorisés

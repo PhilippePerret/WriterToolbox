@@ -12,7 +12,6 @@ CREATE TABLE citations
     auteur      VARCHAR(255)      NOT NULL,
     source      VARCHAR(255),
     description TEXT,
-    created_at  INTEGER(10)       NOT NULL,
 
     #  BITLY
     # -------
@@ -26,6 +25,8 @@ CREATE TABLE citations
     # quand on peut la réutiliser ou la réenvoyer sur tweeter
     last_sent INTEGER(10),
 
+    created_at  INTEGER(10)       NOT NULL,
+    updated_at  INTEGER(10),
 
     PRIMARY KEY (id)
   );

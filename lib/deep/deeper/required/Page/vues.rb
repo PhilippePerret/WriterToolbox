@@ -19,20 +19,26 @@ class Page
   # Cette méthode prédéfinit donc `header` et `content`
   def preload
     return if site.ajax?
+    app.benchmark('-> Page#preload')
     header
     footer
     content
     left_margin
     head
     @content = page.error_standard(fatal_error) unless fatal_error.nil?
+    app.benchmark('<- Page#preload')
   rescue Exception => e
     @content = page.error_standard(e)
   end
 
+  # On construit le body avant de l'afficher pour avoir tous
+  # les éléments requis
   def prebuild_body
     return if site.ajax?
+    app.benchmark('-> Page#prebuild_body')
     body
     app.session['last_route'] = route_courante unless site.current_route.nil?
+    app.benchmark('<- Page#prebuild_body')
   end
 
   # {StringHTML} Retourne le code HTML pour l'entête du

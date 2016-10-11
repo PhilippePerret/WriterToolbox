@@ -31,7 +31,7 @@ class Mail
     end
 
     def style_bande_logo
-      @style_bande_logo ||= "div#logo{padding:1em 2em;background-color:#578088;color:white;}"
+      @style_bande_logo ||= "div#logo{font-size:1.7em;font-variant:small-caps;padding:8px 32px;background-color:#578088;color:white;}"
     end
 
     # Style du message, hors de l'entête (header) donc hors bande
@@ -43,10 +43,15 @@ class Mail
     # Style pour la citation d'auteur
     def style_citation
       @style_citation ||= <<-CSS
-div#citation{float:right;font-size:13pt!important;width:45%;margin:4px 4px 1em 1em}
-div#citation a{text-decoration:none;color:inherit;}
-div#citation span#quote_citation{font-style:italic}
-div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;text-variant:small-caps}
+div#citation a, div#citation a:hover, div#citation a:link, div#citation a:visited{
+  text-decoration: none; color: black;
+}
+div#citation span#quote_citation{
+  font-style: italic;
+}
+div#citation span#quote_auteur{
+  display: block; text-align: right; font-size: 0.85em; text-variant: small-caps
+}
       CSS
     end
 
@@ -81,7 +86,7 @@ div#citation span#quote_auteur{display:block;text-align:right;font-size:0.85em;t
     # Permet d'écrire le message dans un tampon pour pouvoir
     # l'analyser au cours du test
     def send_offline hash_data_message_plus
-      hash_data_message_plus.merge!(created_at: NOW)
+      hash_data_message_plus.merge!(created_at: Time.now.to_i)
       # debug "Mail qui aurait été envoyé : "
       # debug hash_data_message_plus.pretty_inspect
       tmp_mail_path.write Marshal.dump(hash_data_message_plus)

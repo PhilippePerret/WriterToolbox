@@ -99,7 +99,7 @@ class String
       attrs += ' itemscope' if itemscope
       "<#{tag}#{attrs}>"
     end
-  end
+  end #<< self
 
 
   # === Construction de balises HTML ===
@@ -263,6 +263,7 @@ class String
   end
   # Le String est le nom du bouton
   def in_submit attrs = nil; "".in_input((attrs||{}).merge :value => self, :type => 'submit') end
+  def in_button attrs = nil; "".in_input((attrs||{}).merge :value => self, :type => 'button') end
 
   ##
   #

@@ -20,7 +20,9 @@ CREATE TABLE connexions_per_ip
     # ROUTE
     # -----
     # La route empruntée pour cette connexion.
-    route VARCHAR(255) NOT NULL
+    route VARCHAR(255) NOT NULL,
+
+    updated_at INTEGER(10)
   );
   MYSQL
 end

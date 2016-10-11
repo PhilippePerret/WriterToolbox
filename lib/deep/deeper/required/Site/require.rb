@@ -9,6 +9,17 @@ Méthode pour la gestion des "objets"
 =end
 class SiteHtml
 
+  # alias :top_require :require
+  # def require module_name
+  #   case module_name
+  #   when 'form_tools'
+  #     (folder_lib_optional + 'Page/form_tools.rb').require
+  #   else
+  #     top_require module_name
+  #   end
+  # end
+
+
   # Requiert tout le dossier lib/required de l'objet de nom
   # +objet_name+. +objet_name+ doit être un nom contenu dans le
   # dossier `./objet`
@@ -24,6 +35,7 @@ class SiteHtml
   # Requiert tout ce qui se trouve dans le dossier module
   # +module_name+, i.e. les modules ruby, css et javascript.
   # Le dossier module se trouve à l'adresse : './lib/deep/deeper/module/'
+  #
   def require_module module_name
     dos = folder_deeper_module + module_name
     dos.exist? || dos = (folder_lib_objet_site + "module/#{module_name}")
@@ -49,7 +61,8 @@ class SiteHtml
   # Si le dossier contient un dossier `first_required`, il est chargé
   # en tout premier lieu.
   def require_all_in dossier, forcer = false
-    dossier = SuperFile::new(dossier) unless dossier.instance_of?(SuperFile)
+    dossier = SuperFile.new(dossier) unless dossier.instance_of?(SuperFile)
+    dossier.exist? || error("Le dossier `#{dossier}' est introuvable. Impossible de le requérir.")
     if forcer
       Dir["#{dossier}/first_required/**/*.rb"].each{|m| load m}
       Dir["#{dossier}/**/*.rb"].each{|m| load m}

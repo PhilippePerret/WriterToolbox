@@ -10,12 +10,12 @@ class Page
       app.benchmark('CODE HTML FINAL BUILT') rescue nil
       # Correspond aussi à la fin de la méthode output du site
       app.benchmark('<- SiteHtml#output')
-      app.benchmark_fin rescue nil
+      app.benchmark_fin #rescue nil
       cgi.out{final_code}
       # RIEN NE PEUT PASSER ICI
     else
       # Retour d'une requête ajax
-      Ajax::output
+      Ajax.output
     end
   end
 
@@ -72,12 +72,16 @@ class Page
 
   def body
     @body ||= begin
-      page.header         +
-      (left_margin? ? page.left_margin : '') +
-      page.content        +
-      page.footer         +
-      app.div_flash       +
-      page.section_debug
+      app.benchmark('-> Page#body')
+      res =
+        page.header         +
+        (left_margin? ? page.left_margin : '') +
+        page.content        +
+        page.footer         +
+        app.div_flash       +
+        page.section_debug
+      app.benchmark('<- Page#body')
+      res
     end
   end
   # /body

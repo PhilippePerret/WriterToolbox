@@ -26,6 +26,8 @@ CREATE TABLE scenodico
     # de scénariste ou un mot pour le site par exemple.
     type_def    INTEGER(1),
 
+    updated_at  INTEGER(10),
+
     PRIMARY KEY (id)
   );
   MYSQL

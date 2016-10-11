@@ -51,6 +51,7 @@ class << self
     end
     if app_destination.folders_out.include?(folder)
       @report << "&lt;-- Dossier destination exclu : #{folder}"
+      return
     end
     folder_src, folder_dst =
       if folder.nil?

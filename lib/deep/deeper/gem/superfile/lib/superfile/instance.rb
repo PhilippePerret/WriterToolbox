@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class SuperFile
-  
+
   def initialize given_path
     @path = case given_path
     when String     then given_path
@@ -10,15 +10,14 @@ class SuperFile
       raise ArgumentError, "SuperFile doit être instancié avec un string (path) ou un array (['path', 'to', 'the', 'file'])"
     end
   end
-  
+
   # Ré-initialise toutes les propriétés
   # NE PAS OUBLIER DE REDÉFINIR @path JUSTE APRÈS
-  def reset
+  def reset reset_all = true
     # @path         = nil
     @dirname          = nil
     @name             = nil
     @expanded_path    = nil
-    @errors           = nil
     @code_html        = nil
     @affixe           = nil
     @extension        = nil
@@ -28,8 +27,11 @@ class SuperFile
     @html_path        = nil
     @zip_path         = nil
     @extension_valid  = nil
+    reset_all && begin
+      @errors           = nil
+    end
   end
-  
+
 end
 
 # Require all instance modules

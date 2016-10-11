@@ -32,6 +32,7 @@ class User
   # l'aide d'un ticket.
   #
   def proceed_login
+    app.benchmark('-> User#proceed_login')
     app.session['user_id'] = id
     # On met l'utilisateur en utilisateur courant
     User::current= self
@@ -41,6 +42,7 @@ class User
     # éléments annexes de l'interface)
     app.session['user_nombre_pages'] = 1
     set(session_id: app.session.session_id)
+    app.benchmark('<- User#proceed_login')
   end
 
   # On connecte l'user et on le redirige vers la
@@ -49,6 +51,7 @@ class User
   # de gérer la transparence de l'interface (il doit disparaitre
   # petit à petit à mesure que l'utilisateur visite les pages)
   def login
+    app.benchmark('-> User#login')
 
     # Si le mail n'est pas confirmé
     if false == mail_confirmed?
@@ -68,12 +71,7 @@ class User
 
     proceed_login
 
-    require './data/secret/known_users.rb'
-    flash( if KNOWN_USERS.key?( id ) && KNOWN_USERS[id][:messages_accueil]!=nil
-      KNOWN_USERS[id][:messages_accueil].shuffle.shuffle.first
-    else
-      'Bienvenue, %s !' % pseudo
-    end)
+    flash 'Bienvenue, %s !' % pseudo
 
     # Si une méthode doit être appelée après le login, on
     # l'appelle.
@@ -89,15 +87,22 @@ class User
       # par défaut par les préférences ou l'application
       self.send(:redirect_after_login)
     end
+    app.benchmark('<- User#login')
     return true
   end
 
   # On déconnecte l'user
   def deconnexion
+    app.benchmark('-> User#deconnexion')
     app.session['pseudo'] = pseudo # Pour s'en souvenir dans le message
-    User::current= nil
+    User.current= nil
     app.session['user_id'] = nil
     set(session_id: nil)
+    # Dans le cas où ce serait l'administrateur qui visite en ayant
+    # pris l'identité d'un icarien.
+    # Noter qu'il faut le faire après avoir tout initialisé ici.
+    app.stop_visit_as
+    app.benchmark('<- User#deconnexion')
   end
 
 end #/User

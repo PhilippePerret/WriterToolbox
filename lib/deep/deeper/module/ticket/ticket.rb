@@ -62,8 +62,8 @@ class Ticket
       id:         id,
       code:       code,
       user_id:    @user_id || user.id,
-      created_at: NOW,
-      updated_at: NOW
+      created_at: Time.now.to_i,
+      updated_at: Time.now.to_i
     }
   end
 
@@ -71,7 +71,7 @@ class Ticket
     @data2save ||= {
       code:         code,
       user_id:      user_id,
-      updated_at:   NOW
+      updated_at:   Time.now.to_i
     }
   end
 

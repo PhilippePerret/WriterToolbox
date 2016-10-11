@@ -45,7 +45,6 @@ class User
     #     permettant notamment de régler l'opacité de l'interface
     def current
       @current ||= begin
-        # debug "-> current (app.session['user_id'] = #{app.session['user_id']})"
         user_id =
           if app.session['user_id'].nil?
             nil

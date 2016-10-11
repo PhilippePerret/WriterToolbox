@@ -49,9 +49,9 @@ module MethodesMySQL
   # utiliser la méthode data=)
   def get_all given_data = nil
     given_data.nil? || error("Il vaut mieux utiliser la méthode `data=` que `get_all(data)` pour transmettre les données à une instance.")
-    @data = given_data # si nil => force la relève
-    dispatch data
-    return data
+    @_data = given_data # si nil => force la relève
+    dispatch _data
+    return _data
   end
 
   # Dispatche les données +hdata+ dans les variables d'instance
@@ -68,14 +68,14 @@ module MethodesMySQL
 
   # Relève toutes les données dans la table
   # Retourne {Hash} des données ou NIL si la donnée n'existe pas
-  def data
-    @data ||= ( id.nil? ? {} : table.get(id) )
+  def _data
+    @_data ||= ( id.nil? ? {} : table.get(id) )
   end
 
   # Méthode permettant de définir les données
   # NOTE : La méthode retourne `self` pour être chainée
   def data= hdata
-    @data = hdata
+    @_data = hdata
     dispatch hdata
     return self
   end
@@ -97,11 +97,11 @@ module MethodesMySQL
 
     # On essaie d'abord de les obtenir dans les données qui
     # ont peut-être été relevées par un get_all
-    @data ||= Hash.new
-    rest_keys = Array::new
+    @_data ||= Hash.new
+    rest_keys = Array.new
     keys.each do |key|
-      if @data.key?( key )
-        retour.merge!( key => @data[key] )
+      if @_data.key?( key )
+        retour.merge!( key => @_data[key] )
       else
         rest_keys << key
       end
@@ -129,27 +129,31 @@ module MethodesMySQL
   # Sauve les données dans la donnée
   # +hdata+ {Hash} des données à sauvegarder
   # Alias def set
-  def save hdata = nil
-    hdata ||= data
+  def set hdata = nil
+    hdata ||= _data
     retour =
       if @id.nil?
         @id = table.insert( hdata )
       else # Update ou Insert
+        # On ajoute toujours, maintenant, la date d'actualisation
+        # Attention, ça peut produire une erreur si la table ne contient
+        # Pas cette colonne…
+        hdata.key?(:updated_at) || hdata.merge!(updated_at: Time.now.to_i)
         table.set( id, hdata )
       end
     # On actualise les variables d'instance et les données
-    # déjà consignées dans @data
-    @data ||= Hash.new
+    # déjà consignées dans @_data
+    @_data ||= Hash.new
     hdata.each do |k, v|
       instance_variable_set("@#{k}", v)
-      @data[k] = v
+      @_data[k] = v
     end
   rescue Exception => e
     error e
   ensure
     return retour
   end
-  alias :set :save
+  alias :save :set
 
   # Détruit la donnée
   # Alias def remove

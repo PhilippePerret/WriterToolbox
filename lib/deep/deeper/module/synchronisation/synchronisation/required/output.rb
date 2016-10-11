@@ -247,11 +247,12 @@ div.row.err {
   def tags_scripts_js fullpath_list, strict = false
     return "" if fullpath_list.nil? || fullpath_list.empty?
     fullpath_list.collect do |path|
-      path = if strict
-        path.sub(/^#{File.expand_path('.')}/,'.')
-      else
-        path
-      end
+      path =
+        if strict
+          path.sub(/^#{File.expand_path('.')}/,'.')
+        else
+          path
+        end
       "<script src='#{path}' type='text/javascript' charset='utf-8'></script>"
     end.join("\n")
   end

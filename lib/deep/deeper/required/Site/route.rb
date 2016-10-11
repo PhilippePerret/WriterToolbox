@@ -41,7 +41,7 @@ class SiteHtml
   # la méthode Page#content_route dans le fichier page/vues.rb
   #
   def execute_route
-    # debug "-> SiteHtml::execute_route"
+    app.benchmark('-> SiteHtml#execute_route')
 
     # Appel ajax avec le paramètre `route` définissant la route
     # à suivre.
@@ -68,7 +68,9 @@ class SiteHtml
     # Si l'utilisateur est identifié, on mémorise sa
     # route et sa date de dernière connexion.
     if user.identified? && !user.moteur_recherche?
+      app.benchmark('--> user.set_last_connexion')
       user.set_last_connexion
+      app.benchmark('<-- user.set_last_connexion')
     end
 
     # Si aucun objet n'est défini dans la route, on peut s'en
@@ -88,20 +90,26 @@ class SiteHtml
     # la méthode va tenter de charger :
     #   - le dossier ./objet/unan/lib/required s'il existe
     #   - le dossier ./objet/unan/program/lib/required s'il existe
+    app.benchmark('--> iroute.load_required')
     iroute.load_required
+    app.benchmark('<-- iroute.load_required')
 
     # On va requérir aussi toutes les choses qui peuvent
     # correspondre à la vue demandée. Par exemple, si la route
     # 'forum/messages' est demandée, on va pouvoir charger les
     # modules ruby 'forum/messages.rb', css 'forum/messages.css'
     # et javascript 'forum/messages.js'.
+    app.benchmark('--> iroute.load_per_vue')
     iroute.load_per_vue
+    app.benchmark('<-- iroute.load_per_vue')
 
     # Ensuite, si une méthode est définie pour un objet
     # (et un contexte) défini, il faut l'appeler. La méthode
     # permet aussi, indirectement, de définir la classe et
     # la sous-classe (si contexte) correspondant à la route
+    app.benchmark('--> iroute.method_call')
     iroute.method_call
+    app.benchmark('<-- iroute.method_call')
 
     # debug "<- SiteHtml::execute_route"
 
@@ -123,7 +131,10 @@ class SiteHtml
   rescue NonFatalError => err
     page.content= page.error_non_fatale(err)
   rescue Exception => e
+    debug e
     page.content= page.error_standard(e)
+  ensure
+    app.benchmark('<- SiteHtml#execute_route')
   end
 
   # Une redirection
@@ -132,25 +143,32 @@ class SiteHtml
   # de la route (__o, __i etc.) et à exécuter la route une nouvelle fois
   #
   def redirect_to rut
-
+    app.benchmark('-> SiteHtml#redirect_to')
     # Premier traitement : les raccourcis
     rut =
       case rut
       when :last_page, :last_route
-        app.session['last_route']
+        app.session['last_route'] || param(:redirect) || :home
       when :signin  then 'user/signin'
       when :signup  then 'user/signup'
       when :home    then :home # cf. ci-dessous
-      else rut
+      else
+        if param(:redirect) then
+          param(:redirect)
+        else
+          rut
+        end
       end
 
-    # Pour empêcher les boucles infinies on empêche de
-    # rediriger vers la même route que la route courante
-    if site.current_route
-      site.current_route.route != rut || ( return true )
-    else
-      rut != :home || ( return true )
+    # Barrière pour empêcher de rediriger vers la page courante lorsqu'il
+    # y a une erreur qui se reproduit 10 fois et ramène à cette redirection.
+    @nombre_redirections ||= 1
+    if site.current_route && rut == site.current_route.route && @nombre_redirections > 10
+      "Redirection corrigée (#{rut}) vers accueil"
+      rut = 'site/home'
     end
+
+    @nombre_redirections += 1
 
     # Traitement spécial pour les routes 'user/signin' ou
     # 'user/signup'. Il faut mettre dans le paramètre
@@ -189,6 +207,7 @@ class SiteHtml
     end
     set_params_route obj, obj_id, meth, cont
     execute_route
+    app.benchmark('<- SiteHtml#redirect_to')
     return false # pour interrompre l'exécution précédente
   end
 
@@ -222,11 +241,6 @@ class SiteHtml
     #   remplacée par une re-direction)
     #
     # ---------------------------------------------------------------------
-
-    # À l'initialisatoin, on ne fait rien
-    def initialize
-      # debug "-> Route::initialize"
-    end
 
     # ---------------------------------------------------------------------
     #   Méthodes utilitaires
@@ -324,8 +338,11 @@ class SiteHtml
     # On n'appelle pas cette méthode si la méthode de l'url
     # est 'new'
     def method_call
-      # debug "-> Route::method_call"
-      return if method_sym == :new
+      method_sym != :new || return
+      # if false #true
+      #   cname = "#{sujet.class.name}" == 'Class' ? sujet.name : sujet.class.name
+      #   debug "sujet.class: #{cname} / method_sym: #{method_sym.inspect}"
+      # end
       sujet.send(method_sym) if method_sym != nil && sujet.respond_to?(method_sym)
     end
 

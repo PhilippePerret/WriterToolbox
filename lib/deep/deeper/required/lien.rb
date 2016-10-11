@@ -2,6 +2,21 @@
 class Lien
   include Singleton
 
+  attr_reader :all_link_to_distant
+
+  # Pour définir que tous les liens doivent être produits
+  # comme des liens distants. Cela permet, par exemple, de ne pas
+  # se soucier d'avoir mis l'argument online: true dans les liens pour
+  # les mails.
+  # Usage :
+  #     lien.all_link_to_distant= true
+  #     ... opération utilisant les liens, par exemple send_mail ...
+  #     lien.all_link_to_distant= nil # réinitialisation
+  #
+  def all_link_to_distant= value
+    @all_link_to_distant = value
+  end
+
   # Pour définir le format de sortie général.
   # Utilisé par l'export en LaTex de la collection Narration
   # Utilisé par la construction du manuel (Markdown) d'utilisation
@@ -26,7 +41,9 @@ class Lien
     type_lien = options.delete(:type)
     is_arrow_cadred = type_lien == :arrow_cadre
 
-    route = "#{site.distant_url}/#{route}" if options.delete(:distant)
+    distant_link = options.delete(:distant) || options.delete(:online) || all_link_to_distant
+
+    distant_link && route = "#{site.distant_url}/#{route}"
     case output_format
     when :latex
       # TODO améliorer les choses ensuite
@@ -51,6 +68,10 @@ class Lien
         titre.in_a(options)
       end
     end
+  end
+
+  def home titre = "Accueil", options = nil
+    build('site/home', titre, options)
   end
 
   # Lien vers la section de contact du site
@@ -105,18 +126,30 @@ class Lien
   # Par défaut, les liens s'ouvrent toujours dans une nouvelle
   # fenêtre.
   #
+  # @usage      lien.aide(xxx[, options])
   # @usage      lien.information(xxx[, options])
-  # +aide_id+ {Fixnum} Identifiant du fichier d'aide, correspondant
-  #           au fichier dans le dossier ./objet/aide/lib/data/texte
-  # +options+ {Hash|String} Options définissant le lien
-  #           OU le texte du lien lui-meême.
+  #
+  # +aide_id+   SI {Fixnum} Identifiant du fichier d'aide, correspondant
+  #             au fichier dans le dossier ./objet/aide/lib/data/texte
+  #             SI {String}, le titre pour rejoindre l'aide du site
+  # +options+   {Hash|String} Options définissant le lien
+  #             OU le texte du lien lui-meême.
+  #     :discret      Si false, le lien d'aide ne sera pas "discret"
+  #                   (true par défaut)
+  #
   def aide aide_id, options = nil
+
+    if aide_id.instance_of?(String)
+      return build( "aide/home", aide_id, options)
+    end
+
     options ||= Hash.new
     options = {titre: options} if options.instance_of?(String)
     options.key?(:titre) || options.merge!(titre: image('pictos/picto_info_dark.png'))
     unless options.key?(:class)
       options[:class] ||= ''
-      options[:class] << ' lkaide discret'
+      options[:class] << ' lkaide'
+      options.delete(:discret) === false || options[:class] << 'discret'
       options[:class] = options[:class].strip
     end
     options.key?(:target) || options[:target] = '_blank'

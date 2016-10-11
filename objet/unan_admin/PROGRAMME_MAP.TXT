@@ -144,8 +144,11 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 86] [QUIZ 10] Évaluation du travail au sein du programme
                 JP 044-045 TR2 STRT
                     Deuxième tour sur le document, pour affiner le travail précédent sur la structure.
-                    TODO [WORK] Voir le travail précis à fournir sur la structure
-                    TODO [EXEMPLE] Produire un exemple de travail sur la structure. Peut-être faire un document qui reprenne le précédent document et qui montre comment changer ce document.
+                    [WORK 105] Reprise du travail sur les scènes-clés, en se concentrant principalement sur les deux pivots.
+                    [WORK 57] [PAGE 25] Lecture de la page sur le Pivot 1
+                    [WORK 60] [PAGE 28] Lecture de la page sur le Pivot 2
+                    [EXEMPLE 10] S'appuyer sur Thelma et Louise pour illustrer le travail sur les pivots.
+                    TODO [EXEMPLE] Un autre exemple avec les illustrations d'histoire.
                 JP 046-047 TR2 PERS
                   [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
                   TODO [EXEMPLE] Document exemple sur le travail sur les personnages.
@@ -183,11 +186,21 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                 JP 066-067 TR3 sur la structure STRT
                 jp 068-069 TR3bis sur la structure STRT
             JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
-
+                JP 070-071 TR4 sur la documentation DOCU
+                JP 072-073 TR4 sur les personnages PERS
+                    [WORK 106] Travail sur l'histoire du point de vue des autres personnages.
+                    TODO [EXEMPLE] Prendre un film connu (Maze Runner ?) et l'écrire du point de vue de chaque personnage principal.
+                    TODO [EXEMPLE] Prendre l'illustration d'un film et écrire du point de vue de chaque personnage, mais en soulignant bien les différences et les raisons des choix (par exemple, à un moment donné, on voit deux personnages diner et on peut penser que l'un a raconté à l'autre une scène non vécue par le premier).
+                JP 074-075 TR4 sur l'analyse de film ANAF
+                JP 076-077 TR4 sur la structure STRT
+                JP 078-079 TR4 sur la thématique THEM
+                JP 080-081 TR4 sur la dynamique DYNA
+                JP 082-083 TR5 sur les personnages PERS
+                    [WORK 107] Cohérence des personnages en s'appuyant sur le travail précédent sur l'histoire du point de vue des autres personnages.
     JP 084-140 APPROFONDISSEMENT DE L'HISTOIRE
         Dans l'approfondissement, on passe encore plus de temps sur chaque élément.
         JP 085-112 Premier tour d'approfondissement
-            JP 085-098 TR 5 sur STRT et PERS
+            JP 085-098 TR 6 sur STRT et PERS
             JP 099-112 TR 5 sur DYNA et THEM
         JP 113-140 Second tour d'approfondissement
             JP 113-126 TR 6 sur STRT et PERS

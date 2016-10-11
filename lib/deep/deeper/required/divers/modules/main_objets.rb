@@ -11,6 +11,12 @@
 #
 module MethodesMainObjet
 
+  # Nom de l'objet
+  # P.e., pour la classe IcModule::IcEtape::IcDocument, retourne 'ic_document'
+  def objet_name
+    @objet_name ||= "#{name.to_s.split('::').last.to_s.decamelize}"
+  end
+
   # ---------------------------------------------------------------------
   #   Méthodes d'helper
   # ---------------------------------------------------------------------
@@ -73,7 +79,7 @@ module MethodesMainObjet
   end
 
   def folder
-    @folder ||= site.folder_objet + "#{name.to_s.decamelize}"
+    @folder ||= site.folder_objet + objet_name
   end
 
 end

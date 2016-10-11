@@ -56,7 +56,7 @@ class Console
       site.require_objet 'admin'
       ::Admin.require_module 'taches'
       data_tache = Data.by_semicolon_in data_str
-      data_tache.merge!(updated_at: NOW)
+      data_tache.merge!(updated_at: Time.now.to_i)
       itache = ::Admin::Taches::Tache.new
       itache.instance_variable_set('@data2save', data_tache)
       itache.data2save_valid? || ( return "Error" )
@@ -102,7 +102,7 @@ class Console
       end
 
       # On peut actualiser la tache
-      htache.merge!(updated_at: NOW)
+      htache.merge!(updated_at: Time.now.to_i)
       itache.set(htache)
 
     rescue Exception => e
@@ -211,7 +211,7 @@ class Console
           # Pour savoir où ranger la tâche
           reste =
             if itask.echeance
-              r = ( (itask.echeance - NOW) / 1.day ) + 1
+              r = ( (itask.echeance - Time.now.to_i) / 1.day ) + 1
               if r == 0
                 etat = :today
                 "doit être finie aujourd'hui".in_span(class:'blue')

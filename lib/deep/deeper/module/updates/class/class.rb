@@ -26,7 +26,7 @@ class Updates
       # debug "-> propositions"
       # On va prendre toutes les actualisations des deux
       # derniers mois
-      ago = NOW - 60.days
+      ago = Time.now.to_i - 60.days
       # debug "   ago : #{ago} (#{Time.at(ago)})"
 
       # On relève les updates des deux derniers mois

@@ -15,7 +15,7 @@ class User
         when :phil    then DATA_PHIL
         when :marion  then DATA_MARION
         end
-      User.new(data_who[:id]).autologin
+      new(data_who[:id]).autologin
     end
 
     def delogin_admin

@@ -16,13 +16,23 @@ class String
 
   end # << self
 
+  # Prend une liste de chiffres séparés par des espaces, p.e. "1 2 65 6"
+  # et retourne une liste d'entier (p.e. [1, 2, 65, 6])
+  def as_list_num_with_spaces
+    if self.nil_if_empty.nil?
+      []
+    else
+      self.split(' ').collect{|n| n.to_i }
+    end
+  end
+
 
   # Changer un bit dans le texte, en l'allongeant si
   # nécessaire
   # TODO Implémenter la méthode set_bit!
   #
   # +ibit+ Indice du bit à modifier
-  # +valbit+ Valeur à donner au bit +ibit+
+  # +valbit+ Valeur à donner au bit +ibit+ (0-start)
   #
   def set_bit ibit, valbit
     opts = self.split('')
@@ -212,7 +222,7 @@ class String
   end
   # ou def normalized
   def normalize
-    self.tr(DATA_NORMALIZE[:from], DATA_NORMALIZE[:to])
+    self.force_encoding('utf-8').tr(DATA_NORMALIZE[:from], DATA_NORMALIZE[:to])
   end
   alias :normalized :normalize
 

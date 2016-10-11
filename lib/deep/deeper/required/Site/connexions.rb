@@ -25,7 +25,7 @@ class SiteHtml
     # Dans tous les autres cas, on enregistre la connexion
     site.dbm_table(:hot, 'connexions_per_ip').insert(
       ip:     ip || 'TEST', # ip nil arrive pendant les tests
-      time:   NOW,
+      time:   Time.now.to_i,
       route:  self.route.to_str
     )
   end

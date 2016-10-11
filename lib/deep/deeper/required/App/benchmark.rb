@@ -47,6 +47,10 @@
 =end
 class App
 
+  # Pour l'écriture du fichier, la largeur du texte pour écrire les
+  # noms des méthodes ("-> ma méthode")
+  LIBELLE_WITH_RETRAIT_SIZE = 54
+
   # Mettre à TRUE pour obtenir le rapport de benchmark, sinon à
   # false
   BENCHMARK_ON = true
@@ -72,6 +76,10 @@ class App
   end
 
   class Benchmark
+
+    RETRAIT_DEBUG = '      | '
+
+
     # {App} L'application
     attr_reader :app
     attr_reader :list
@@ -79,6 +87,7 @@ class App
     def initialize app
       @app  = app
       @list = Array.new
+      App::KEEP_BENCHMARK_LOG || remove_log_file
     end
 
     # Pour ne commencer le rapport de benchmark qu'à
@@ -110,9 +119,12 @@ class App
     end
     # Méthode qui affiche le rapport final dans un fichier
     def report
-      code =  "=== BENCHMARK DU #{NOW.as_human_date(true, true, ' ', 'à')} ===\n"
+      code = ''
+      App::KEEP_BENCHMARK_LOG && code += "\n\n"
+      code +=  "=== BENCHMARK DU #{Time.now.to_i.as_human_date(true, true, ' ', 'à')} ===\n"
       code += "=== Index start : #{start_time} (#{Time.at(start_time)})\n\n"
       current_time = start_time
+      current_retrait = 0
       code +=
         list.collect do |method_name, time|
           time > from_time || next
@@ -121,18 +133,53 @@ class App
           t = time - current_time
           elapsed_time    = ("%.6f" % t).rjust(10)
           current_time = time.to_f
-          method_name.ljust(30) + ' ' + elapsed_time + ' ' + time_from_start
+
+          if method_name.start_with?('<- ')
+            current_retrait -= 1
+            current_retrait >= 0 || current_retrait = 0
+          end
+
+          libelle =
+            if method_name.start_with?('DEBUG:')
+              lines = method_name[6..-1].strip.split("\n")
+              lastline = (RETRAIT_DEBUG + lines.pop.strip).ljust(LIBELLE_WITH_RETRAIT_SIZE)
+              lines =
+                if lines.count > 0
+                  lines.collect do |line|
+                    (RETRAIT_DEBUG + line.strip).ljust(LIBELLE_WITH_RETRAIT_SIZE) + ' - '.rjust(20)
+                  end.join("\n")
+                else '' end
+              lines + "\n" + lastline
+            else
+              '  ' * current_retrait + method_name
+            end
+
+          # Construction de la ligne finale avec le bon retrait
+          method_with_retrait = libelle.ljust(LIBELLE_WITH_RETRAIT_SIZE) + elapsed_time + time_from_start
+
+          if method_name.start_with?('-> ')
+            current_retrait += 1
+          end
+
+          method_with_retrait
         end.compact.join("\n")
-      File.open(logfile,'wb'){|f| f.write code }
+      File.open(logfile, App::KEEP_BENCHMARK_LOG ? 'a' : 'wb'){|f| f.write code }
+    rescue Exception => e
+      code = e.message + e.backtrace.join("\n")
+      File.open(logfile, App::KEEP_BENCHMARK_LOG ? 'a' : 'wb'){|f| f.write code }
     end
+
+    # Destruction du fichier log
+    # L'opération se fait à l'instanciation sauf s'il faut le
+    # conserver
+    def remove_log_file
+      File.unlink(logfile) if File.exist?(logfile)
+    end
+
     # Le fichier qui contiendra le benchmark. Il est détruit à
     # chaque chargement de page si App::KEEP_BENCHMARK_LOG est false
     def logfile
-      @logfile ||= begin
-        f = File.join('.','debug_benchmark.log')
-        App::KEEP_BENCHMARK_LOG && File.unlink(f) if File.exist?(f)
-        f
-      end
+      @logfile ||= File.join('.','debug_benchmark.log')
     end
 
   end #/Benchmark

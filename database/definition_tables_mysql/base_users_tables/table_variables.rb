@@ -38,6 +38,8 @@ CREATE TABLE variables_#{user_id}
     # cf. VARIABLES_TYPES
     type INTEGER(1),
 
+    updated_at INTEGER(10),
+
     PRIMARY KEY (id)
   );
   MYSQL

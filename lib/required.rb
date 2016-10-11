@@ -1,5 +1,8 @@
 # encoding: UTF-8
-
+#
+# Mettre ONLY_REQUIRE à true dans le module appelant pour ne faire
+# que requérir cette librairie, sans lancer le préambule.
+#
 # Méthodes qu'on peut utiliser au chargement (avant que les
 # librairies de débug soient en place) pour laisser des messages
 # de débug.
@@ -8,10 +11,7 @@
 #
 # Il faut ensuite aller charger le fichier ./safed.log par
 # FTP
-
-# Pour le benchmark
 timein = Time.now.to_f
-
 def main_safed_log mess
   main_ref_log.puts mess
 end
@@ -25,11 +25,9 @@ end
 # ONLY_REQUIRE est définie pour essayer de ne faire que
 # charger les modules par le Terminal, sinon on se
 # retrouve avec CGI qui attend des pairs de variable
-unless defined?(ONLY_REQUIRE)
-  ONLY_REQUIRE = false
-end
+defined?(ONLY_REQUIRE) || ONLY_REQUIRE = false
 
-unless defined?(ONLINE)
+defined?(ONLINE) || begin
   ONLINE  = ENV['HTTP_HOST'] != "localhost"
   OFFLINE = !ONLINE
 end
@@ -60,21 +58,24 @@ require 'json'
 
 
 # Le site
-require_folder "./lib/deep/deeper/first_required"
+require_folder './lib/deep/deeper/first_required'
 require_folder './lib/deep/deeper/required/divers'
 require_folder './lib/deep/deeper/required/Site'
-require_folder "./lib/deep/deeper/required"
+require_folder './lib/deep/deeper/required'
 site.require_gem 'superfile'
 # Requérir les librairies propres à l'application
-require_folder "./lib/app/handy"
-require_folder "./lib/app/required"
+require_folder './lib/app/handy'
+require_folder './lib/app/required'
+require_folder './objet/site/lib/required'
 site.require_config
+
+User.init # charge les librairies du dossier objet/user
 
 # ---------------------------------------------------------------------
 #   Quelques initialisations et vérification
 # ---------------------------------------------------------------------
 
-unless ONLY_REQUIRE
+ONLY_REQUIRE || begin
   if site.ajax?
     site.require_module('ajax')
   else
@@ -82,6 +83,5 @@ unless ONLY_REQUIRE
     execute_preambule
   end
 end
-
 app.benchmark('-> required.rb', timein)
 app.benchmark('<- required.rb')

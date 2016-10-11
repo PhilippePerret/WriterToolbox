@@ -16,25 +16,29 @@ class App
   # ---------------------------------------------------------------------
   class Debug
     def initialize
-      @messages = Array::new
+      @messages = Array.new
     end
     def add mess
       case mess
       when String
         # rien à faire
+        message_simple = mess
       else
         if mess.respond_to?(:message)
-          mess = mess.message + "\n\n" + mess.backtrace.join("\n")
+          message_simple = mess.message
+          mess = message_simple + "\n\n" + mess.backtrace.join("\n")
         else
           mess = mess.to_s
         end
       end
-
       mess += "\n"
+
+      app.benchmark("DEBUG: #{message_simple}")
 
       # mess = mess.class.to_s
       @messages << mess
       write mess
+      # raise "J’ÉCRIS LE MESSAGE #{mess}"
     end
     def output
       return "" if @messages.empty?

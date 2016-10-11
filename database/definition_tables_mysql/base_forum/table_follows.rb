@@ -40,6 +40,8 @@ CREATE TABLE follows
     items       BLOB,
     time        INTEGER(10),
 
+    updated_at INTEGER(10),
+    
     PRIMARY KEY (id),
     INDEX idx_user  (user_id),
     INDEX idx_sujet (sujet_id)

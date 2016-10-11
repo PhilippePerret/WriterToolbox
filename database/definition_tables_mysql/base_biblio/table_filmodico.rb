@@ -27,7 +27,7 @@ CREATE TABLE filmodico
     # VARCHAR, ne passerait pas (comme dans le titre du
     # film asiatique : Wò Hǔ Cáng Lóng)
     titre     BLOB  NOT NULL,
-    
+
     titre_fr  VARCHAR(255),
     annee     INTEGER(4)    NOT NULL,
     resume    TEXT          NOT NULL,
@@ -62,6 +62,8 @@ CREATE TABLE filmodico
     # des analyses, etc.
     # Pour le moment cette propriété n'est pas utilisée.
     links BLOB,
+
+    updated_at  INTEGER(10),
 
     PRIMARY KEY (id)
   );

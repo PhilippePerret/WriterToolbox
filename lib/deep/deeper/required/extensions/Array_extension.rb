@@ -9,6 +9,18 @@ class ::Array
     self
   end
 
+  # Pour un Array constitué de Hashs qui contiennent la propriété :id,
+  # on produit un Hash avec cet :id en clé
+  def as_hash_with_id
+    debug "self: #{self.inspect}"
+    self.empty? && (return {})
+    self.first.instance_of?(Hash) || (raise 'Les éléments devraient être des Hash')
+    self.first.key?(:id) || (raise 'Les éléments Hash devraient définir la propriété :id pour être transformé en Hash-id.')
+    htot = Hash.new
+    self.each{ |h| htot.merge!(h[:id] => h) }
+    return htot
+  end
+
   def to_sym
     self.collect do |e|
       case e

@@ -45,8 +45,12 @@ end
 # On s'en sert aussi dans la marge gauche pour reprendre
 # le visuel avec le mot "Outils"
 def main_link( titre, uri = nil, options = nil )
-  options ||= {}
-  options.merge!(href: uri, class:'mainlink')
+  options ||= Hash.new
+  options[:class] = options.key?(:class) ? [options[:class]] : Array.new
+  options[:class] << ['mainlink']
+  site.route?(uri) && options[:class] << 'current'
+  options[:class] = options[:class].join(' ')
+  options.merge!(href: uri)
   as_main_link(titre).in_a(options)
 end
 # +style+ On peut ajouter du contenu pour l'attribut style

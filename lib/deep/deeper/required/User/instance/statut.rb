@@ -76,7 +76,7 @@ class User
     # i.e. tous les gens qui ne paient pas d'abonnement mais
     # peuvent tout voir.
     return false if last_abonnement.nil?
-    last_abonnement > (NOW.to_i - (30.5*nombre_mois).to_i.days)
+    last_abonnement > (Time.now.to_i.to_i - (30.5*nombre_mois).to_i.days)
   end
 
 

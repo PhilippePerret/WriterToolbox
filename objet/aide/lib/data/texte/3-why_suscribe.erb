@@ -7,10 +7,10 @@
   <li>Pourquoi le site a-t-il recours à un abonnement ?</li>
 </ul>
 <p>
-  Pour ce qui est de la première question, les avantages sont nombreux, et peuvent se résumer à une utilisation plus complète du site. Avec l'abonnement de <%= site.tarif_humain %> pour une année, soit <strong><%= site.tarif_humain_par_mois %></strong>, l'<%= lien.outils("intégralité des outils") %> peuvent être utilisés, l'<%= lien.analyses("intégralité des analyses") %> peuvent être consultées, le <%= lien.forum("forum") %> est entièrement ouvert, toutes les pages de la <%= lien.cnarration %> sont lisibles sans restriction, et on peut faire des recherches dans ses pages grâce au <%= lien.cnarration(to: :recherche) %>, etc. Vous disposez donc d'<strong>un plein accès à l'ensemble des ressources du site</strong>.
+  Pour ce qui est de la première question, les avantages sont nombreux, et peuvent se résumer à une utilisation plus complète du site. Avec l'abonnement de <%= site.tarif_humain %> pour une année, soit <strong><%= site.tarif_humain_par_mois %></strong>, l'<%= lien.outils("intégralité des outils") %> peuvent être utilisés, l'<%= lien.analyses("intégralité des analyses") %> peuvent être consultées, le <%= lien.forum("forum") %> est entièrement ouvert, et on peut faire des recherches dans les pages de la <%= lien.cnarration %> grâce au <%= lien.cnarration(to: :recherche) %>, etc. Vous disposez donc d'<strong>un plein accès à l'ensemble des ressources du site</strong>.
 </p>
 <p>
-  Pour ce qui est de la seconde question concernant le recours à cet abonnement — alors que certaines ressources étaient jusque-là gratuites —, il se justifie par le fait que le site, moralement contre le phénomène de prolifération publicitaire, n'en a pas moins besoin de ressources financières pour continuer de pouvoir proposer un contenu utile et de qualité.
+  Pour ce qui est de la seconde question concernant le recours à cet abonnement — alors que certaines ressources étaient jusque-là gratuites —, il se justifie par le fait que le site, moralement contre le phénomène de prolifération publicitaire, n'en a pas moins besoin d'un minimum de ressources financières pour continuer de pouvoir proposer un contenu utile et de qualité.
 </p>
 <% if user.subscribed? %>
   <p>

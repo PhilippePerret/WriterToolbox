@@ -42,6 +42,7 @@ CREATE TABLE updates
     options VARCHAR(32) DEFAULT '000000',
 
     created_at INTEGER(10) NOT NULL,
+    updated_at INTEGER(10),
 
     PRIMARY KEY (id)
   );

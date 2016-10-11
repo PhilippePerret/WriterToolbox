@@ -26,14 +26,19 @@ class SiteHtml
     @is_ajax
   end
 
-
   def output
+    app.benchmark('-> SiteHtml#output')
+      # Note : la fin du benchmark de cette méthode sera mis
+      # dans page.output, car on ne passe pas à la fin de cette
+      # méthode.
     execute_route
     page.preload
     page.prebuild_body
     page.output
+    # On ne passe jamais ici
   rescue Exception => e
     # ERREUR FATALE
+    app.benchmark_fin rescue nil
     m = "<html><head><meta content='text/html; charset=utf-8' http-equiv='Content-type' /></head><body>" +
     "<div style='color:red;padding:2em;font-size:17.2pt'>" +
     "<div>Houps !… Une erreur est malheureusement survenue…</div>" +

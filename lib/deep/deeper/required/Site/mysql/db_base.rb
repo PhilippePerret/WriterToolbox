@@ -1,6 +1,13 @@
 # encoding: UTF-8
-# Dir["./lib/deep/deeper/first_required/my_sql/**/*.rb"].each{|m|require m}
 class SiteHtml
+
+  # Exécute la requête +request+ sur la base de suffixe +sufbase+
+  # NOTES
+  #   * Le nom 'dbm_base' est choisi pour être cohérent avec `dbm_table`
+  def dbm_base_execute sufbase, request
+    DBM_BASE.execute(sufbase, request)
+  end
+
 class DBM_BASE
 
   extend MethodesBaseMySQL
@@ -15,8 +22,9 @@ class DBM_BASE
     #
     # Exécute la requête +request+ sur le base de suffixe +db_suffix+
     #
-    # +db_suffix+   Suffixe ajouté à `boite-a-outil_` pour obtenir
-    #               le nom de la base de données.
+    # +db_suffix+   Suffixe ajouté à `<prefix base>_` pour obtenir
+    #               le nom de la base de données. Le préfixe base peut être
+    #               'icare' ou 'boite-a-outils' par exemple.
     # +request+     La requête SQL, un code qui doit être valide
     # +options+     {Hash} d'options. Peut définir :
     #     :online       True => exécute la requête sur la base distante
@@ -41,9 +49,7 @@ class DBM_BASE
     # Méthode appelée par la méthode suffix_name du module
     # MethodesBaseMySQL lorsque @@suffix_name n'est pas défini. Il faut
     # lui renvoyer la valeur de @suffix_name (un seul arobase).
-    def _suffix_name
-      @suffix_name
-    end
+    def _suffix_name ; @suffix_name end
 
     # = main =
     #

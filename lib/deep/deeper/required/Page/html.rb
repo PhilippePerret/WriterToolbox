@@ -5,11 +5,19 @@ PATH_MODULE_JS_SNIPPETS = File.join('.', 'lib', 'deep', 'deeper', 'js', 'optiona
 
 class Page
 
+  def html_separator height = 20
+    "<div style='clear:both;height:#{height}px'></div>"
+  end
+  alias :separator :html_separator
+  alias :delimitor :html_separator
+  alias :delimiter :html_separator
+
   # RETURN Le code HTML à copier dans la page, qui donne au lecteur
   # un nom de fichier pour nommer son fichier de correction
   # Pour certaines routes comme le scénodico ou le filmodico, donne aussi
   # les codes pour insertion dans Narration ou sur l'atelier Icare
   def helper_filename_lecteur
+    site.afficher_helper_filename_lecteur || (return '')
     route =
       if site.current_route.nil?
         'site/home'
@@ -166,18 +174,19 @@ OFFLINE = !ONLINE;
   # Code CSS à écrire en dur dans la balise <style> de la page
   # html
   def raw_css
-    low_opacities = if user.identified?
-      low_opacity = 1.0 - (0.08 * (app.session['user_nombre_pages'] || 1))
-      low_opacity = 0.14 if low_opacity < 0.14
-      # On ne joue plus sur l'opacité du bandeau supérieur 'section#header'
-      # 'div#chapiteau_logo' se trouve maintenant dans left_margin donc
-      # on n'a pas besoin de le traiter non plus.
-      ['section#left_margin'].collect do |jid|
-        "#{jid}{opacity:#{low_opacity}}"
-      end.join("\n")
-    else
-      ""
-    end
+    low_opacities =
+      if user.identified?
+        low_opacity = 1.0 - (0.08 * (app.session['user_nombre_pages'] || 1))
+        low_opacity = 0.14 if low_opacity < 0.14
+        # On ne joue plus sur l'opacité du bandeau supérieur 'section#header'
+        # 'div#chapiteau_logo' se trouve maintenant dans left_margin donc
+        # on n'a pas besoin de le traiter non plus.
+        ['section#left_margin'].collect do |jid|
+          "#{jid}{opacity:#{low_opacity}}"
+        end.join("\n")
+      else
+        ""
+      end
     low_opacity = user.identified? ? "0.14" : "1"
     low_opacity_header = user.identified? ? "0.5" : "1"
     low_opacity_margin = user.identified? ? "0.14" : "1"

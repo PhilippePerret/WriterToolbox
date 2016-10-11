@@ -44,18 +44,18 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     attr_reader :tables
 
     # Retourne la table (instance {SiteHtml::DBM_TABLE}) de nom
-    # +tablename+ dans la base de type +db_type+ qui peut
+    # +tablename+ dans la base de db_suffix +db_suffix+ qui peut
     # être :hot, :cold, :cnarration, :unan.
     #
     # Trois valeurs possibles pour +force_online+
     # - NIL   Dans ce cas, on regarde dans ONLINE/OFFLINE où on est
     # - FALSE   On force le traitement en local
     # - TRUE    On force le traitement en distant
-    def get db_type, tablename, force_online = nil
+    def get db_suffix, tablename, force_online = nil
       define_is_offline force_online
       @tables ||= {}
-      @tables["#{db_type}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin
-        new(db_type, tablename, force_online).create_if_needed
+      @tables["#{db_suffix}.#{tablename}#{force_online ? '' : '.online'}"] ||= begin
+        new(db_suffix, tablename, force_online).create_if_needed
       end
     end
 
@@ -64,16 +64,16 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     # passe pas par `get` pour récupérer une table.
     def add table
       @tables ||= {}
-      @tables["#{table.type}.#{table.name}"] = table
+      @tables["#{table.db_suffix}.#{table.name}"] = table
     end
 
     # (Pour la construction des tables)
     # {SuperFile} Dossier contenant les schémas des
     # tables des bases de données.
     # Elles sont réparties en deux dossier, :hot ou :cold.
-    def folder_path_schema_tables type = nil
+    def folder_path_schema_tables db_suffix = nil
       @folder_path_schema_tables ||= site.folder_database + 'definition_tables_mysql'
-      type ? @folder_path_schema_tables + "base_#{type}" : @folder_path_schema_tables
+      db_suffix ? @folder_path_schema_tables + "base_#{db_suffix}" : @folder_path_schema_tables
     end
 
     # Retourne true si la base de données +dbname+ existe
@@ -100,27 +100,41 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # ---------------------------------------------------------------------
   #   Instance d'une table de database
   # ---------------------------------------------------------------------
+
+  # Nom de la table
   attr_reader :name
+
   # Pour savoir si c'est une table :hot, :cold, :cnarration,
   # etc.
-  attr_reader :type
+  attr_reader :db_suffix
 
   attr_reader :db_name
 
   # Si True, c'est avec les bases online qu'on travaille
   attr_reader :force_online
 
-  # Instanciation de la table, avec son type (dans :hot
+  # Instanciation de la table, avec son db_suffix (dans :hot
   # ou dans :cold — la base) et son nom +table_name+
   #
   # +force_online+ permet de forcer l'interaction avec
   # la base online (pour la synchronisation par exemple)
   #
-  def initialize type, table_name, force_online = false
+  def initialize db_suffix, table_name, force_online = false
     @name           = table_name
-    @type           = type
+    @db_suffix      = db_suffix
     @force_online   = force_online
-    # debug "@name: #{@name.inspect} / @type: #{@type.inspect} / @force_online: #{@force_online.inspect}"
+    # debug "Dans l'instanciation de la table"
+    # debug "@name: #{@name.inspect} / @db_suffix: #{@db_suffix.inspect} / @force_online: #{@force_online.inspect}"
+    # debug "client_data : #{client_data.inspect}"
+  end
+
+  # On met cette méthode qui auparavant renvoyait le suffix de la
+  # base et a été remplacé par `db_suffix`. Mais on n'est pas sûr
+  # que la méthode `type` ne soit plus utilisée à l'extérieur, donc il
+  # faut conserver cette méthode
+  def type
+    warn 'La méthode `type` ne doit plus être utilisée. Remplacer par `db_suffix`.'
+    db_suffix
   end
 
   # ---------------------------------------------------------------------
@@ -130,7 +144,7 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # (quand il n'existe pas).
   #
   def insert params
-    Request::new(self, params).insert
+    Request.new(self, params).insert
   end
   def select params = nil, options = nil
     Request.new(self, params, options).select
@@ -164,6 +178,13 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
   # / FIN REQUÊTES PRINCIPALES
   # ---------------------------------------------------------------------
 
+  # Redéfinit le prochain ID en prenant le dernier ID en repère
+  def reset_next_id
+    max_id = site.db_execute(db_suffix, "SELECT MAX(id) as max_id FROM #{name};")
+    max_id = (max_id.first[:max_id] || 0) + 1
+    site.db_execute(db_suffix, "ALTER TABLE #{name} AUTO_INCREMENT=#{max_id};")
+  end
+
   # Le client ruby qui permet d'intergagir avec la base de
   # données.
   def client
@@ -172,23 +193,17 @@ class DBM_TABLE # DBM_TABLE pour DataBase Mysql
     end
   end
   def client_data ; self.class.client_data end
-  #   if force_online
-  #     self.class.client_data_online
-  #   else
-  #     self.class.client_data
-  #   end
-  # end
 
   # Nom de la base de données contenant la table.
   # Soit la base :hot soit la base :cold.
   def db_name
-    @db_name ||= "#{self.class.prefix_name}#{type}"
+    @db_name ||= "#{self.class.prefix_name}#{db_suffix}"
   end
 
   # Retourne TRUE si la table existe, FALSE si elle
   # n'existe pas.
   def exists?
-    if self.class.tables.key?("#{type}.#{name}#{force_online ? '' : '.online'}")
+    if self.class.tables.key?("#{db_suffix}.#{name}#{force_online ? '.online' : ''}")
       true
     else
       force_query_existence
@@ -225,7 +240,7 @@ SELECT UPDATE_TIME
   # cas contraire.
   def destroy
     client.query("DROP TABLE IF EXISTS #{name}")
-    self.class.tables.delete("#{type}.#{name}")
+    self.class.tables.delete("#{db_suffix}.#{name}")
     exists? == false
   end
   alias :drop :destroy
@@ -258,10 +273,10 @@ SELECT UPDATE_TIME
   def schema_path
     @schema_path ||= begin
       sp =
-        if type == :users_tables
-          self.class.folder_path_schema_tables(type) + "table_#{prefix_name}.rb"
+        if db_suffix == :users_tables
+          self.class.folder_path_schema_tables(db_suffix) + "table_#{prefix_name}.rb"
         else
-          self.class.folder_path_schema_tables(type) + "table_#{name}.rb"
+          self.class.folder_path_schema_tables(db_suffix) + "table_#{name}.rb"
         end
       sp.exist? || raise("Le schéma de la table (#{sp}) est introuvable…")
       sp
@@ -271,7 +286,7 @@ SELECT UPDATE_TIME
   # qui va renvoyer le code de création de la table.
   def schema_name
     @schema_name ||= begin
-      if type == :users_tables
+      if db_suffix == :users_tables
         "schema_table_#{prefix_name}".to_sym
       else
         "schema_table_#{name}".to_sym
@@ -282,7 +297,7 @@ SELECT UPDATE_TIME
   def code_creation_schema
     @code_creation_schema ||= begin
       schema_path.require
-      if type == :users_tables
+      if db_suffix == :users_tables
         send(schema_name, suffix_name)
       else
         send(schema_name)

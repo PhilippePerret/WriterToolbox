@@ -45,8 +45,8 @@ class Page
             votes_up:     0,
             votes_down:   0,
             options:      '0'*8,
-            created_at:   NOW,
-            updated_at:   NOW
+            created_at:   Time.now.to_i,
+            updated_at:   Time.now.to_i
           }
 
         end
@@ -88,7 +88,7 @@ class Page
       ucheck.pseudo == pseudo || raise('Le pseudo ne correspond pas… Bizarre, bizarre…')
 
       unless user.admin?
-        whereclause = ["user_id = #{user_id}", "route = '#{route}'", "created_at > #{NOW - 1.hour}"].join(' AND ')
+        whereclause = ["user_id = #{user_id}", "route = '#{route}'", "created_at > #{Time.now.to_i - 1.hour}"].join(' AND ')
         dreq = {where: whereclause}
         table.count(dreq) == 0 || raise('Vous devez laisser une heure entre deux commentaires sur la même page.')
       end

@@ -28,7 +28,7 @@ class User
         true
       elsif icarien_actif?
         dauto = {
-          start_time: NOW - 10,
+          start_time: Time.now.to_i - 10,
           end_time:   nil,
           raison:     "ICARIEN ACTIF"
         }
@@ -39,7 +39,7 @@ class User
     end
 
     if autorised && dauto
-      table_autorisations.insert(dauto.merge!(user_id: id, created_at: NOW, updated_at: NOW))
+      table_autorisations.insert(dauto.merge!(user_id: id, created_at: Time.now.to_i, updated_at: Time.now.to_i))
       debug "USER AUTORISÉ : #{pseudo} (##{id}) : #{dauto.inspect}"
       reset_autorisations
     end

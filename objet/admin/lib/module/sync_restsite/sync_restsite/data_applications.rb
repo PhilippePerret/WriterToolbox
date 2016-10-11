@@ -13,7 +13,27 @@ class SyncRestsite
       folders_in: [
         'objet/site', 'objet/admin'
       ],
-      files_out: ['index.rb']
+      files_out: [
+        'index.rb',
+        'lib/deep/deeper/module/paiement/transaction.rb',
+        'lib/preambule.rb',
+        'README.md',
+        'objet/site/config.rb',
+        'objet/admin/dashboard.rb',
+        'objet/admin/lib/module/sync/synchronisation/page_comments.rb',
+        'objet/admin/lib/required/constants.rb',
+        'objet/admin/mailing.rb',
+        'objet/site/home.rb',
+        'objet/site/data_synchro.rb',
+        'objet/site/contact.rb',
+        'lib/deep/deeper/required/User/instance/search_engines.rb',
+        'lib/deep/deeper/required/Page/html.rb',
+        'lib/deep/deeper/required/Site/config.rb',
+        'lib/deep/deeper/required/Site/data.rb',
+        'lib/deep/deeper/required/Site/handy.rb',
+        'lib/deep/deeper/required/User/class/database.rb',
+        'lib/deep/deeper/required/Site/require.rb'
+      ]
     },
     boa: {
       hname: 'Boite à outils',
@@ -24,7 +44,27 @@ class SyncRestsite
       ],
       files_out: [
         'index.rb',
-        'lib/deep/deeper/module/mail/mail.rb'
+        'lib/deep/deeper/module/mail/mail.rb',
+        'lib/deep/deeper/module/paiement/transaction.rb',
+        'lib/deep/deeper/module/synchronisation/synchronisation/required/debug.rb',
+        'lib/preambule.rb',
+        'README.md',
+        'objet/site/config.rb',
+        'objet/admin/dashboard.rb',
+        'objet/admin/lib/required/constants.rb',
+        'objet/admin/mailing.rb',
+        'objet/site/points_abonnement.rb',
+        'objet/site/points_abonnement.erb',
+        'objet/site/home.rb',
+        'objet/site/data_synchro.rb',
+        'objet/site/contact.rb',
+        'lib/deep/deeper/required/User/instance/search_engines.rb',
+        'lib/deep/deeper/required/Page/html.rb',
+        'lib/deep/deeper/required/Site/config.rb',
+        'lib/deep/deeper/required/Site/data.rb',
+        'lib/deep/deeper/required/Site/handy.rb',
+        'lib/deep/deeper/required/User/class/database.rb',
+        'lib/deep/deeper/required/Site/require.rb'
       ],
       folders_in: [
         'objet/site', 'objet/admin'

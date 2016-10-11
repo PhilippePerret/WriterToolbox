@@ -10,6 +10,7 @@ CREATE TABLE categories
     cate_id     VARCHAR(4)    UNIQUE,
     hname       VARCHAR(255)  NOT NULL,
     description TEXT,
+    updated_at  INTEGER(10),
     PRIMARY KEY (id)
   )
   MYSQL

@@ -2,6 +2,13 @@
 
 class ::NilClass
 
+  # En parallèle de la même méthode pour String, dans le cas
+  # où c'est une donnée NIL, ce qui arrive très souvent puisque la
+  # méthode traite des propriétés venant d'une base.
+  def as_list_num_with_spaces
+    []
+  end
+
   # Pour compatibilité quand une valeur est nil
   def in_hidden attrs
     "".in_hidden attrs

@@ -31,6 +31,7 @@ class User
     end
   end
   def mail        ; @mail       ||= get(:mail)          end
+  def cpassword   ; @cpassword  ||= get(:cpassword)     end
   def sexe        ; @sexe       ||= get(:sexe)          end
   def patronyme   ; @patronyme  ||= get(:patronyme)     end
   def options     ; @options    ||= get(:options) || '' end
@@ -39,7 +40,11 @@ class User
   def updated_at  ; @updated_at ||= get(:updated_at)    end
 
 
+  # ---------------------------------------------------------------------
+  #   Données volatiles
+  # ---------------------------------------------------------------------
   def ip
     @ip ||= ENV["REMOTE_ADDR"] || ENV['HTTP_CLIENT_IP'] || ENV["HTTP_X_FORWARDED_FOR"]
   end
+
 end

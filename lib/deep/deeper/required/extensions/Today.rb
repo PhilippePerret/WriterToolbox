@@ -34,7 +34,7 @@ class << self
   alias :d :as_date
 
   def as_human_date options = nil
-    @as_human_date ||= NOW.as_human_date(options)
+    @as_human_date ||= Time.now.to_i.as_human_date(options)
   end
 
   def as_jj_mm_yy delimiteur = " "
@@ -55,7 +55,7 @@ class << self
     @end_as_date ||= Time.new(d.year, d.month, d.day, 23, 59, 59)
   end
   def to_i
-    @to_i ||= NOW
+    @to_i ||= Time.now.to_i
   end
 end #/self
 end #/Today

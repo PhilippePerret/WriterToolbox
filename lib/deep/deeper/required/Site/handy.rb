@@ -45,7 +45,7 @@ def raise_unless_identified
   unless @error_must_identified_done
     # L'erreur qu'on doit faire apparaitre dans la page, pas
     # dans un message flash
-    page.error_in_page 'Vous devez être connu du site pour rejoindre la page demandée. Merci de vous identifier ci-dessous.'
+    page.error_in_page 'Vous devez être icarien ou icarienne pour rejoindre la page demandée. Merci de vous identifier ci-dessous.'
     redirect_to 'user/signin'
     @error_must_identified_done = true
   end
@@ -68,8 +68,15 @@ def raise_unless_admin
 end
 # Barrière anti non quelque chose
 # Cf. RefBook > Protection.md
-def raise_unless condition, error_message = nil
-  raise SectionInterditeError, error_message if false == condition
+def raise_unless condition, error_message = nil, need_identified = false
+  if false == condition
+    if need_identified
+      page.error_in_page 'Merci de vous identifier pour rejoindre la page souhaitée.'
+      redirect_to 'user/signin'
+    else
+      raise SectionInterditeError, error_message
+    end
+  end
 end
 # Cf. RefBook > Protection.md
 def raise_unless_owner message = nil
