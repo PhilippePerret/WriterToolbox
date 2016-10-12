@@ -11,15 +11,18 @@ class DUser
   NOMBRE_MAX_OVERRUNS   = 20
   NOMBRE_MAX_UNSTARTED  = 30
 
+  # NOMBRE de travaux en dépassements et de non démarrés maximum
+  # avant que le rythme de l'auteur soit baissé de 1
+  MAX_OVERRUNS_BEFORE_DECREASE_RYTHME   = 10
+  MAX_UNSTARTED_BEFORE_DECREASE_RYTHME  = 10
+
 
   # ID de l'user, l'auteur du programme UAUS
   attr_reader :id
 
   # Pour un auteur du programme UAUS
   def program_id
-    @program_id ||= begin
-      program.nil? ? nil : program.id
-    end
+    @program_id ||= (program.nil? ? nil : program.id)
   end
 
   # Comme ces modules sont appelés depuis une méthode (run_procedure), on
@@ -48,17 +51,19 @@ class DUser
     site.send_mail( data_mail.merge(to: self.mail) )
   end
 
+  # = main =
+  #
+  # Instance du jour programme courant.
+  #
   def current_pday
-    @current_pday ||= begin
-      CurrentPDay.new(self)
-    end
+    @current_pday ||= CurrentPDay.new(self)
   end
 
+  # Instance du programme de l'user courant
   def program
-    @program ||= begin
-      Unan::Program.get_current_program_of(id)
-    end
+    @program ||= Unan::Program.get_current_program_of(id)
   end
+
   def program_current_pday; program.current_pday              end
   def program_current_pday_start; program.current_pday_start  end
   def program_rythme; @program_rythme ||= program.rythme      end
@@ -67,13 +72,20 @@ class DUser
   # Méthode qui passe le programme au jour suivant
   def passe_programme_au_jour_suivant
     log "  - current_pday du programme AU DÉBUT de `passe_programme_au_jour_suivant` : #{program.current_pday}"
-    Unan.table_programs.set(
-      program.id, {
-        current_pday:       program.current_pday + 1,
-        current_pday_start: next_pday_start,
-        updated_at:         NOW
-        }
-    )
+    # Faut-il changer le rythme à cause des retards
+    # Note : il faut le faire avec de renseigner la données suivante, car
+    # next_pday_start, par exemple, a besoin de connaitre le rythme de
+    # l'auteur.
+    # Le rythme est inchangé s'il n'y a pas trop de retard
+    new_rythme = get_rythme
+    newdata_program = {
+      current_pday:       program.current_pday + 1,
+      current_pday_start: next_pday_start,
+      rythme:             new_rythme,
+      updated_at:         NOW
+    }
+
+    Unan.table_programs.set(program.id, newdata_program)
     # pour forcer l'actualisation
     @program      = nil
     @current_pday = nil
@@ -140,6 +152,27 @@ class DUser
   # Cela dépend des valeurs NOMBRE_MAX_OVERRUNS et NOMBRE_MAX_UNSTARTED
   def too_many_overruns?
     current_pday.nombre_overrun >= NOMBRE_MAX_OVERRUNS || current_pday.nombre_unstarted >= NOMBRE_MAX_UNSTARTED
+  end
+
+  # Retourne le rythme a attribuer en fonction des retards. S'il n'y en
+  # a pas, le rythme reste inchangé.
+  def get_rythme
+    r = program_rythme
+    if need_to_decrease_rythme? && r > 1
+      r -= 1
+    end
+    @program_rythme = r
+    return r
+  end
+
+  # Retourne TRUE s'il faut baisser le rythme de l'auteur à cause de
+  # ses retards.
+  def need_to_decrease_rythme?
+    @need_to_decrease_rythme === nil && begin
+      @need_to_decrease_rythme =
+        current_pday.nombre_overrun >= MAX_OVERRUNS_BEFORE_DECREASE_RYTHME || current_pday.nombre_unstarted >= MAX_UNSTARTED_BEFORE_DECREASE_RYTHME
+    end
+    @need_to_decrease_rythme
   end
 
   # Méthode pour repousser la date de prochain pday start

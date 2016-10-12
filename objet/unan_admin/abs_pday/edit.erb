@@ -10,7 +10,8 @@ form.objet  = if param(:pday).nil?
   if site.current_route.objet_id.nil?
     Hash.new
   else
-    Unan::Program::AbsPDay::new(site.current_route.objet_id).data
+    absday = Unan::Program::AbsPDay.new(site.current_route.objet_id)
+    absday.exist? ? absday.get_all : {id: site.current_route.objet_id}
   end
 else
   if param(:operation) == 'edit_abs_pday'
@@ -18,14 +19,14 @@ else
     # on se sert des méthodes crochets pour récupérer les
     # données et s'en servir dans le formulaire et les liens
     # ci-dessous.
-    Unan::Program::AbsPDay::new(param(:pday)[:id].to_i).data
+    absday = Unan::Program::AbsPDay.new(param(:pday)[:id].to_i)
+    absday.exist? ? absday.get_all : {id: param(:pday)[:id].to_i}
   else
     param(:pday)
   end
 end
 
 if form.objet
-  debug "form.objet : #{form.objet.pretty_inspect}"
   lien_read_pday = "Afficher".in_a(href:"abs_pday/#{form.objet[:id]}", id:'lien_read_pday')
 else
   lien_read_pday = ""

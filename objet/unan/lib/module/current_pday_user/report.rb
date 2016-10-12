@@ -37,6 +37,7 @@ module CurrentPDayClass
   def built_report
     c = ''
     c << message_general
+        # Défini dans ./objet/unan/lib/module/current_pday_user/messages.rb
     c << section_travaux_overrun
     c << section_travaux_unstarted
     c << section_nouveaux_travaux

@@ -157,7 +157,7 @@ class AbsWork
   # {StringHTML} Code HTML du travail sur la carte
   def in_map jour_depart
     @jour_depart = jour_depart
-    get_all # pour charger toutes les données d'un coup
+    get_all # pour charger toutes les données BdD d'un coup
     top   = (free_row + FIRST_ROW_BY_TYPES[type_id]) * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
     # Le code HTML retourné
@@ -168,6 +168,18 @@ class AbsWork
     @type_id ||= Unan::Program::AbsWork::TYPES[type_w][:id_list]
   end
 
+  # On utilise un des users qui suit le programme pour pouvoir déserber
+  # les pages. Si aucun user ne suit le programme, on en crée un
+  def user_unan
+    @user_unan ||= begin
+      hprog = site.dbm_table(:unan, 'programs').select(colonnes: [:auteur_id], order: 'created_at desc', limit: 1).first
+      User.new( hprog[:auteur_id] )
+    end
+  end
+
+  def bind; binding() end
+  def user ; user_unan end
+
   def displayed_infos
     @displayed_infos ||= begin
       itemid = item_id ? "item ID ##{item_id}/" : ''
@@ -175,7 +187,7 @@ class AbsWork
         "#{titre}".in_span(class:'bold') + " [#{itemid}work ##{id}]".in_span(class:'id') +
         ("Type W : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
         "P-Days #{jour_depart} à #{jour_fin}".in_div +
-        ("Travail : ".in_span(class:'libelle') + "#{travail}").in_div(class:'italic') +
+        ("Travail : ".in_span(class:'libelle') + "#{travail.deserb(self.bind)}").in_div(class:'italic') +
         ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
       ).in_div(class:'infos')
     end
@@ -200,15 +212,15 @@ class AbsWork
     @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def free_row
-    @free_row ||= UnanAdmin::Program::AbsWork::free_top_zone_for(left, width, type_id)
+    @free_row ||= UnanAdmin::Program::AbsWork.free_top_zone_for(left, width, type_id)
   end
 
   def memorize_zone
-    UnanAdmin::Program::AbsWork::memorize_zone(left, width, free_row, type_id)
+    UnanAdmin::Program::AbsWork.memorize_zone(left, width, free_row, type_id)
   end
 
 end # /AbsWork
 end # /Program
 end # /Unan
 
-UnanAdmin::Program::AbsWork::init_map
+UnanAdmin::Program::AbsWork.init_map

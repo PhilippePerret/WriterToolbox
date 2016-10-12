@@ -113,6 +113,8 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 78] Première liste des sujets.
                     [WORK 79] Création du document Recherche et documentation
                     [WORK 100] Faire un document “Questions.odt” pour placer toutes les questions de documentation (simple création, à remplir au fil du travail).
+                    [WORK 112] Début de la longue période où il faut marquer toutes les questions qui se posent.
+                    TODO [EXEMPLE] Exemple de liste de question à laquelle on peut aboutir (varier les questions et leur type)
                 JP 034-035 TR1 Brainstorming DYNA
                     [WORK 81] Premier document sur la dynamique.
                         Brainstormer sur l'objectif principal de chaque personnage et principalement du protagoniste. Recherche générale d'objectif et de conflit.
@@ -150,43 +152,47 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [EXEMPLE 10] S'appuyer sur Thelma et Louise pour illustrer le travail sur les pivots.
                     TODO [EXEMPLE] Un autre exemple avec les illustrations d'histoire.
                 JP 046-047 TR2 PERS
-                  [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
-                  TODO [EXEMPLE] Document exemple sur le travail sur les personnages.
+                    [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                    TODO [EXEMPLE] Document exemple sur le travail sur les personnages.
                 JP 048-049 TR2 DOCU
-                  TODO [WORK] Travail à partir de la liste des sujets définie au tour précédent sur ce document. Et à partir du document “Questions.odt”. Commencer à tenter de répondre aux questions. Commencer à chercher des données sur internet, dans les livres, ou là où peut se trouver l'information.
-                  TODO [WORK] Commencer à prendre des contacts (sur les forums, sur les mails qu'on peut obtenir) avec des personnes susceptibles de donner des renseignements concrets.
+                    [WORK 110] Document court de présentation du projet à destination des personne intéressante pour la documentation.
+                    [EXEMPLE 11] Court document de présentation de projet, sous forme de message.
+                    [WORK 108] Travail à partir de la liste des sujets définie au tour précédent sur ce document. Et à partir du document “Questions.odt”. Commencer à tenter de répondre aux questions. Commencer à chercher des données sur internet, dans les livres, ou là où peut se trouver l'information.
+                    [WORK 109] Commencer à prendre des contacts (sur les forums, sur les mails qu'on peut obtenir) avec des personnes susceptibles de donner des renseignements concrets.
                 JP 050-051 TR2 DYNA
-                  TODO [WORK] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
-                    Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
-                  TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
+                    TODO [WORK] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
+                        Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
+                    TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
                 JP 051-053 TR2 THEM
-                  TODO [WORK] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
-                    NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
+                    TODO [WORK] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
+                        NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
                 JP 054-055 TR2 ANAF
-                  Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
-                  [WORK 88] Analyse d'un film
-                  [WORK 89] [PAGE 46] Première analyse de film
+                    Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
+                    [WORK 88] Analyse d'un film
+                    [WORK 89] [PAGE 46] Première analyse de film
         JP 056-083 [WORK 94] PREMIÈRE ÉBAUCHE
             JP 056-069 TR 3 sur la STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 On passe ici deux jours sur chaque document (deux sessions de travail)
                 JP 056-057 TR3 analyse de films ANAF
-                  [WORK 101] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
-                  TODO [EXEMPLE] Exemple travail identique sur au moins un film.
+                    [WORK 101] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
+                    TODO [EXEMPLE] Exemple travail identique sur au moins un film.
                 JP 058-059 TR3 sur les thèmes THEM
-                  TODO [WORK] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)
-                    TODO Bien préciser que la thèse est souvent ce que l'on pense et qu'il faut savoir, pour le propos, savoir défendre son point de vue contraire, le quelqu'un qui défendrait le point de vue contraire au sien.
-                  TODO [PAGE] Lier à la page sur les thèmes qui développe ce principe de la thèse et l'antithèse.
+                    TODO [WORK] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)
+                        TODO Bien préciser que la thèse est souvent ce que l'on pense et qu'il faut savoir, pour le propos, savoir défendre son point de vue contraire, le quelqu'un qui défendrait le point de vue contraire au sien.
+                    TODO [PAGE] Lier à la page sur les thèmes qui développe ce principe de la thèse et l'antithèse.
                 JP 060-061 TR3 sur dynmatique DYNA
                 JP 062-063 TR3 sur la documentation DOCU
+                    [WORK 111] Rendez-vous avec des personnes contactées lors des prises de contact précédentes ou achèvement des travaux interrompus à cause de rendez-vous au cours des jours précédents.
                 JP 064-065 TR3 sur les personnages PERS
-                  [WORK 102] Faire le document "Desirs_personnages" PERS
-                  [WORK 104] Liste des désirs des personnages en fonction des parties PERS
-                  [WORK 103][PAGE 50] Page à lire sur la construction de la cohérence des personnages. PERS
-                  TODO [EXEMPLE] Donner l'exemple de liste complète de désir des deux films en illustration.
+                    [WORK 102] Faire le document "Desirs_personnages" PERS
+                    [WORK 104] Liste des désirs des personnages en fonction des parties PERS
+                    [WORK 103][PAGE 50] Page à lire sur la construction de la cohérence des personnages. PERS
+                    TODO [EXEMPLE] Donner l'exemple de liste complète de désir des deux films en illustration.
                 JP 066-067 TR3 sur la structure STRT
                 jp 068-069 TR3bis sur la structure STRT
             JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 JP 070-071 TR4 sur la documentation DOCU
+                    TODO [WORK] Prendre la liste des questions de documentation et tenter d'y répondre exhaustivement (note : certaines ont déjà dû être répondu lors de la documentation "in vivo")
                 JP 072-073 TR4 sur les personnages PERS
                     [WORK 106] Travail sur l'histoire du point de vue des autres personnages.
                     TODO [EXEMPLE] Prendre un film connu (Maze Runner ?) et l'écrire du point de vue de chaque personnage principal.

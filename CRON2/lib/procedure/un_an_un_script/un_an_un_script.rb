@@ -48,9 +48,7 @@ class CRON2
   # Retourne la liste (Array) des instances DUser des auteurs qui
   # suivent le programme UAUS
   def auteurs
-    @auteurs ||= begin
-      programmes.collect{|hp| DUser.new(hp[:auteur_id])}
-    end
+    @auteurs ||= programmes.collect{|hp| DUser.new(hp[:auteur_id])}
   end
 
   # Retourne la liste des programmes courant

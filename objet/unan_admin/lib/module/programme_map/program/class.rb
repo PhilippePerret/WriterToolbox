@@ -23,8 +23,12 @@ class UNANProgramme
   include Singleton
 
   def raw_code
-    @raw_code ||= (UnanAdmin.folder + 'PROGRAMME_MAP.TXT').read
+    @raw_code ||= programme_map_file.read
   end
   # /raw_code
+
+  def programme_map_file
+    @programme_map_file ||= UnanAdmin.folder + 'PROGRAMME_MAP.TXT'
+  end
 
 end

@@ -6,7 +6,6 @@ class UNANProgramme
   # Méthode principale qui parse le fichier programme.txt
   #
   def parse
-    debug "-> parse"
     @fulldata = Hash.new
     c = Array.new
 
@@ -16,13 +15,14 @@ class UNANProgramme
     # bas sur l'existence ou non d'un élément parent)
     iline = LineProgramme.new(
       retrait: 0,
-      raw_line: "JP 001-366 LE PROGRAMME UNAN"
+      raw_line: "JP 001-366 LE PROGRAMME UNAN",
+      index: 0
     )
     iline.analyse
     niveau_retrait_courant  = 0
     element_courant         = iline
 
-    raw_code.split("\n").each do |line|
+    raw_code.split("\n").each_with_index do |line, index|
       line.strip != '' || next
       line.start_with?('#') && next
 
@@ -40,7 +40,8 @@ class UNANProgramme
       # === Création de l'instance et analyse ===
       iline = LineProgramme.new(
         retrait:    niveau_retrait,
-        raw_line:   line
+        raw_line:   line,
+        index:      index + 1
       )
       iline.analyse
       # ==========================================

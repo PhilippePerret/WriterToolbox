@@ -88,7 +88,13 @@ module CurrentPDayClass
   #
   def message_general
     mess = data_messages[retard_from_0_to_9][stade_programme]
-    # L'ajout du message de fréquence
+
+    # Un message pour informer que son rythme a été abaissé si c'est
+    # nécessaire de le faire à cause des retards.
+    auteur.need_to_decrease_rythme? && mess += message_changement_rythme
+
+    # L'ajout du message de fréquence. Ce message humain dépend de
+    # la fréquence des retards de l'user.
     frequence_retard.nil? || mess += data_messages[frequence_retard][stade_programme]
 
     # On retourne le message après avoir corrigé certaines
@@ -100,6 +106,12 @@ module CurrentPDayClass
 
   end
 
+  # Message ajouté au mail lorsque trop de retards sont constatés
+  def message_changement_rythme
+    (
+      "Pour vous permettre de rattraper votre retard, nous nous sommes permis de ramener votre rythme à #{auteur.program_rythme}."
+    ).in_p
+  end
   # Retourne la couleur en fonction du retard général
   # Cette couleur sera appliquée au message général.
   def color_per_retard

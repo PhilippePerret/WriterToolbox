@@ -26,7 +26,7 @@ class LineProgramme
   end
 
   def line_formated
-    debug "items count : #{items.count.inspect}"
+    # debug "items count : #{items.count.inspect}"
     c = (
       jours_programme_formated +
       line
@@ -37,9 +37,17 @@ class LineProgramme
       else
         c.in_span(class: 'linep')
       end
+
+
+    lien_show_in_file +
     pday_as_lien + # seulement si c'est la définition d'un segment/jour
     span_travaux +
     c
+  end
+
+  # Le lien pour afficher la ligne dans le fichier PROGRAMME_MAP.TXT
+  def lien_show_in_file
+    '→o'.in_a(href: "atm://open?url=file://#{UNANProgramme.instance.programme_map_file.expanded_path}&line=#{index}", target: :new, class: 'fright')
   end
 
   def div_items

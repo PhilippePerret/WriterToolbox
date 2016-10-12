@@ -1,6 +1,10 @@
 # encoding: UTF-8
 class LineProgramme
 
+  # Numéro de ligne dans le fichier PROGRAMME_MAP.TXT, pour
+  # l'afficher rapidement.
+  attr_reader :index
+
   # Retrait de la ligne
   attr_reader :retrait
 

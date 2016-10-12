@@ -8,7 +8,7 @@ même au-delà.
 
 =end
 site.require_objet 'unan'
-site.require_module 'page_cours'
+Unan.require_module 'page_cours'
 
 class Unan
 class Program
