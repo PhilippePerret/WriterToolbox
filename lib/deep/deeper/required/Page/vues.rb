@@ -46,36 +46,49 @@ class Page
   # view/deep/gabarit/header.erb
   def header
     @header ||= begin
+      app.benchmark('-> Page#header')
       vue = Vue.new('header', site.folder_custom_gabarit)
-      vue.output
+      res = vue.output
+      app.benchmark('<- Page#header')
     rescue Exception => e
       self.fatal_error = e
       "[PROBLÈME D'HEADER : #{e.message}]"
+    else
+      return res
     end
   end
 
   def footer
     @footer ||= begin
+      app.benchmark('-> Page#footer')
       vue = Vue.new('footer', site.folder_custom_gabarit)
-      if vue.exist?
-        vue.output
-      else
-        ""
-      end
+      res =
+        if vue.exist?
+          vue.output
+        else
+          ""
+        end
+      app.benchmark('<- Page#footer')
     rescue Exception => e
       self.fatal_error = e
       "[PROBLÈME DE FOOTER : #{e.message}]"
+    else
+      return res
     end
   end
 
   def content
     @content ||= begin
-      (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
-    rescue Exception => e
-      self.fatal_error = e
-      "[PROBLÈME DE CONTENT : #{e.message}]"
+      app.benchmark('-> Page#content')
+      res = (site.folder_gabarit + 'page_content.erb').deserb( site.objet_binded.respond_to?(:bind) ? site.objet_binded : nil )
+      app.benchmark('<- Page#content')
+      res
     end
+  rescue Exception => e
+    self.fatal_error = e
+    "[PROBLÈME DE CONTENT : #{e.message}]"
   end
+
   # Définir le contenu à l'aide de `page.content = ...`
   # Pour le moment, seulement utilisé pour les protections de sections
   # et de modules
@@ -88,17 +101,30 @@ class Page
 
   def left_margin
     @left_margin ||= begin
-      Vue.new('left_margin', site.folder_custom_gabarit).output
+      app.benchmark('-> Page#left_margin')
+      res = Vue.new('left_margin', site.folder_custom_gabarit).output
+      app.benchmark('<- Page#left_margin')
     rescue Exception => e
       self.fatal_error = e
       "[PROBLÈME DE LEFT-MARGIN : #{e.message}]"
+    else
+      return res
     end
   end
 
   # Page d'accueil (quand aucune route n'est définie ou que la
   # route n'a pas de vue)
   def home
-    (site.folder_view + 'home.erb').deserb( site )
+    app.benchmark('-> Page#home')
+    home_file = site.folder_objet+'site/home.erb'
+    res =
+      if home_file.exist?
+        page.view('home.erb', site.folder_objet+'site', site)
+      else
+        ""
+      end
+    app.benchmark('<- Page#home')
+    return res
   end
 
   # Si une route est définie, contenant au moins 'objet' et 'method'

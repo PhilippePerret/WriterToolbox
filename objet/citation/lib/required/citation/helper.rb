@@ -23,7 +23,6 @@ class Citation
   end
   def div_source_humaine
     s = source_humaine
-    debug "source : #{source}"
     s.sub!(/([0-9]{4,4})/){ "<span itemprop=\"datePublished\">#{$1}</span>"}
     return s
   end

@@ -24,7 +24,7 @@ class Tdm
   # C'est la méthode qui est appelée quand on se rend sur
   # la table des matières du livre.
   def as_ul
-    if data.nil?
+    if get_all.nil?
       "Pas de table des matières pour le moment."
     else
       pages_ids.collect do |page_id|
@@ -76,7 +76,7 @@ class Tdm
   end
 
   def table
-    @table ||= Cnarration::table_tdms
+    @table ||= Cnarration.table_tdms
   end
 end #/Tdm
 end #/Livre

@@ -13,15 +13,18 @@ class SiteHtml
   # Section des dernières actualités, en bas de la page
   # d'accueil.
   def section_hot_news
-    (
-
-      bloc_actualite_if_any(:narration)  +
-      bloc_actualite_if_any(:analyses)   +
-      bloc_actualite_if_any(:videos) +
-      bloc_actualite_if_any(:unan_unscript)+
-      bloc_actualite_if_any(:forum) +
-      bloc_actualite_if_any(:divers)
-    ).in_section(id:'hot_news')
+    app.benchmark('-> SiteHtml#section_hot_news')
+    res =
+      (
+        bloc_actualite_if_any(:narration)     +
+        bloc_actualite_if_any(:analyses)      +
+        bloc_actualite_if_any(:videos)        +
+        bloc_actualite_if_any(:unan_unscript) +
+        bloc_actualite_if_any(:forum)         +
+        bloc_actualite_if_any(:divers)
+      ).in_section(id:'hot_news')
+    app.benchmark('<- SiteHtml#section_hot_news')
+    return res
   end
 
   # ---------------------------------------------------------------------
@@ -29,7 +32,10 @@ class SiteHtml
   # ---------------------------------------------------------------------
 
   def bloc_actualite_if_any actu_id
-    send("bloc_actualite_#{actu_id}".to_sym).in_div(class:'blocactu')
+    app.benchmark("-> SiteHtml#bloc_actualite_#{actu_id}")
+    res = send("bloc_actualite_#{actu_id}".to_sym).in_div(class:'blocactu')
+    app.benchmark("<- SiteHtml#bloc_actualite_#{actu_id}")
+    return res
   end
 
   # ---------------------------------------------------------------------
@@ -126,9 +132,9 @@ class SiteHtml
 
     # On prend les trois dernières et on les retourne
     # pour les mettre dans la fenêtre
-    d.sort_by{ |k, v| k }[0..2].collect{ |k, actu| actu }.join('')
-
+    d.sort_by{ |k, v| k }.reverse[0..2].collect{ |k, actu| actu }.join('')
   end
+
   def unan_dernieres_inscriptions
     request_data = {
       order: 'created_at DESC',
@@ -140,7 +146,8 @@ class SiteHtml
       uid = hdata[:auteur_id]
       pid = hdata[:projet_id]
       created_at = hdata[:created_at]
-      upseudo = User.get(uid).pseudo
+      u = User.new(uid)
+      upseudo = u.pseudo
       # TODO: Pour le moment, on n'indique pas la date
       # "#{DOIGT}Inscription #{upseudo} #{as_small_date created_at}"
       data.merge! created_at => "#{DOIGT}Inscription de #{upseudo}".in_div(class:'actu')
@@ -154,13 +161,11 @@ class SiteHtml
       colonnes: [:id, :auteur_id, :projet_id, :updated_at]
     }
     data = Hash.new
-    site.dbm_table(:unan, 'programs').select(request_data).each do |hdata|
+    site.dbm_table(:unan, 'programs').select(request_data).reverse.each do |hdata|
       uid         = hdata[:auteur_id]
       pid         = hdata[:projet_id]
       updated_at  = hdata[:updated_at]
-      upseudo = User.get(uid).pseudo
-      # TODO: Pour le moment on n'indique pas la date, on le
-      # fera lorsqu'il y aura pas mal d'auteurs en travail
+      upseudo = User.new(uid).pseudo
       data.merge! updated_at => "#{DOIGT}Projet de #{upseudo} #{as_small_date updated_at}".in_div(class:'actu')
     end
     return data

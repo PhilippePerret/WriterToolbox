@@ -7,7 +7,10 @@ Module de construction du code complet de la page d'accueil
 class SiteHtml
 
   def build_home_page_content
-    file_home_page_content.write home_page_content_code
+    app.benchmark('-> SiteHtml#build_home_page_content')
+    res = file_home_page_content.write( home_page_content_code )
+    app.benchmark('<- SiteHtml#build_home_page_content')
+    return res
   end
 
   def home_page_content_code
@@ -31,6 +34,7 @@ class SiteHtml
 
   # Voir le fichier ./hot/spotlight.rb qui définit SPOTLIGHT
   def section_spotlight
+    app.benchmark('[Building home]-> SiteHtml#section_spotlight')
     require './hot/spotlight'
     lien_spotlight = SPOTLIGHT[:title].in_a(href:SPOTLIGHT[:href]).in_div(id: 'main_thing')
     image =
@@ -38,12 +42,12 @@ class SiteHtml
         src = "view/img/#{SPOTLIGHT[:img]}"
         "<img src='#{src}' style='float:left;margin-right:8px;' />"
       else '' end
-    (
-    # '<hr>' +
-      # "#{FLASH} #{FLASH} #{FLASH} &nbsp;COUP DE PROJECTEUR&nbsp; #{FLASH} #{FLASH} #{FLASH}".in_div(class:'bold tiny') +
-      #{DOIGT_WHITE}
-      "#{image}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
-    ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
+    res =
+      (
+        "#{image}#{SPOTLIGHT[:before]}#{lien_spotlight}#{SPOTLIGHT[:after]} ".in_div
+      ).in_section(id:'home_spotlight', onclick:"document.location.href='#{SPOTLIGHT[:href]}'")
+    app.benchmark('[Building home]<- SiteHtml#section_spotlight')
+    return res
   end
 
   def image_accueil
@@ -80,32 +84,39 @@ class SiteHtml
   end
 
   def cadre_independance_flottant
+    app.benchmark('[Building home]-> SiteHtml#cadre_independance_flottant')
     signup_link = 'S’INSCRIRE'.in_a(id:'btn_signup',href:"user/signup", class:'btn')
     subscribe_link =
       'S’ABONNER'.in_a(id:'btn_subscribe', href:"user/paiement", class:'btn')
       #{signup_link}
-    <<-HTML
-    <div id="cadre_independance">
-    <p><strong>Soutenez le site</strong> pour qu'il continue de proposer un
-       contenu de qualité en vous abonnant pour #{site.tarif_humain} / an.
-    </p>
-    #{subscribe_link}
-    </div>
-    HTML
+    res = <<-HTML
+      <div id="cadre_independance">
+      <p><strong>Soutenez le site</strong> pour qu'il continue de proposer un
+         contenu de qualité en vous abonnant pour #{site.tarif_humain} / an.
+      </p>
+      #{subscribe_link}
+      </div>
+      HTML
+    app.benchmark('[Building home]<- SiteHtml#cadre_independance_flottant')
+    return res
   end
 
   # Cadre pour contenir les liens vers facebook et
   # twitter
   def cadre_reseaux_sociaux
-    <<-HTML
+    app.benchmark('[Building home]-> SiteHtml#cadre_reseaux_sociaux')
+    res = <<-HTML
 <div id="cadre_reseaux_sociaux">
   #{picto_facebook}
   #{picto_twitter}
 </div>
     HTML
+    app.benchmark('[Building home]<- SiteHtml#cadre_reseaux_sociaux')
+    return res
   end
   def picto_facebook
-    <<-HTML
+    app.benchmark('[Building home]-> SiteHtml#picto_facebook')
+    res = <<-HTML
     <div
       class="fb-like"
       data-href="https://www.facebook.com/laboiteaoutilsdelauteur"
@@ -116,9 +127,12 @@ class SiteHtml
       style="margin:0"
       >Facebook</div>
     HTML
+    app.benchmark('[Building home]<- SiteHtml#picto_facebook')
+    return res
   end
   def picto_twitter
-    <<-HTML
+    app.benchmark('[Building home]-> SiteHtml#picto_twitter')
+    res = <<-HTML
     <div style="margin:0"><a
       id="twitter-button"
       class="twitter-share-button"
@@ -126,10 +140,13 @@ class SiteHtml
       data-size='medium'
       >Tweet</a></div>
     HTML
+    app.benchmark('[Building home]<- SiteHtml#picto_twitter')
+    return res
   end
 
   def message_inscription_footer
-    <<-HTML
+    app.benchmark('[Building home]-> SiteHtml#message_inscription_footer')
+    res = <<-HTML
 <p class='tiny'>Si vous êtes déjà inscrit, vous pouvez
 #{lien.signin("vous identifier", class:'greencharte bold')} grâce au
 lien de la marge gauche. Si vous n'êtes pas inscrit, alors…
@@ -138,6 +155,8 @@ qu'attendez-vous pour
 ? :-)
 </p>
     HTML
+    app.benchmark('[Building home]<- SiteHtml#message_inscription_footer')
+    return res
   end
 
 end #/SiteHtml

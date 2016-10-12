@@ -43,31 +43,36 @@ class Page
 
   def head
     @head ||= begin
+      app.benchmark('-> Page#head')
       with_fonts = true # Mettre ONLINE quand on ne peut pas avoir de connexion
-      fonts_google = if with_fonts
-        <<-FONTS
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-        <!--[if lt IE 9]>
-        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        FONTS
-      else
-        ""
-      end
-      <<-HEAD
-<meta content="text/html; charset=utf-8" http-equiv="Content-type">
-<title>#{page.title}</title>
-<link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
-<link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
-#{self.balise_meta_description}
-<base href="#{site.base}" />
-#{fonts_google}
-#{self.javascript}
-#{self.css}
-#{self.raw_css}
-#{self.raw_javascript}
-      HEAD
+      fonts_google =
+        if with_fonts
+          <<-FONTS
+          <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+          <!--[if lt IE 9]>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+          <![endif]-->
+          FONTS
+        else
+          ""
+        end
+      head_built = <<-HEAD
+  <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+  <title>#{page.title}</title>
+  <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
+  <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
+  #{self.balise_meta_description}
+  <base href="#{site.base}" />
+  #{fonts_google}
+  #{self.javascript}
+  #{self.css}
+  #{self.raw_css}
+  #{self.raw_javascript}
+        HEAD
+      app.benchmark('<- Page#head')
+      head_built
     end
+    #/head
   end
 
   def body
