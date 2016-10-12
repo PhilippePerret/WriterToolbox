@@ -23,13 +23,14 @@ class Cnarration
     # s'abonne.
     #
     def output_as_page
-      if path_semidyn.exist?
+      if user.admin? || path_semidyn.exist?
         (
           titre.in_h1                   +
           admin_avertissement_relecture +
           page_content_by_niveau_developpement
         ).in_div(id:'page_cours')
       else
+        debug "Page semi-automatique introuvable : `#{path_semidyn}'"
         error 'Un problème a dû survenir, je ne trouve pas la page à afficher (semi-dynamique).'
       end
     rescue Exception => e

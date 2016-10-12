@@ -163,6 +163,7 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     TODO [WORK] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
                         Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
                     TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
+                    [WORK 113] [PAGE 51] L'inversion de polarité
                 JP 051-053 TR2 THEM
                     TODO [WORK] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
                         NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
