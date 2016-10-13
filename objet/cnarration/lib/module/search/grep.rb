@@ -64,7 +64,7 @@ class Grep
         # Il faut instancier un nouveau fichier de recherche
         # Rappel : Un fichier de recherche (ou de found) est
         # directement lié à un fichier narration.
-        ifile = ::Cnarration::Search::SFile::new(search, page_id)
+        ifile = ::Cnarration::Search::SFile.new(search, page_id)
         ifile.page_titre    = ifound.page_titre
         ifile.livre_id      = ifound.livre_id
         ifile.relative_path = ifound.relative_path
@@ -137,7 +137,7 @@ class Grep
       options_min << 'w' if search.whole_word?
       options_min = options_min.join("")
       cmd << "-#{options_min} "
-      cmd << "#{grep_searched} "
+      cmd << "#{grep_searched.inspect} "
       cmd << "\"#{fullpath_cnarration_folder}\""
       cmd
     end

@@ -97,11 +97,11 @@ class SFile
 
 
   def occurrences_in_textes
-    return "" if founds_in_textes.count == 0
+    return '' if founds_in_textes.count == 0
     founds_in_textes.collect { |ifound| ifound.output(true) }.join("")
   end
   def occurrences_in_titres
-    return "" if founds_in_titres.count == 0
+    return '' if founds_in_titres.count == 0
     founds_in_titres.collect { |ifound| ifound.output(false) }.join('')
   end
 
@@ -128,6 +128,8 @@ class SFile
   end
   def livre_titre
     @livre_titre ||= ::Cnarration::LIVRES[livre_id][:hname]
+  rescue Exception => e
+    "Livre inconnu d'ID `#{livre_id.inspect}' (livre_id)"
   end
 
 end #/GFile
