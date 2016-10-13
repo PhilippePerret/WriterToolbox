@@ -15,4 +15,9 @@ end
   <%= "Éditer la TdM".in_a(href:"livre/#{livre.id}/edit?in=cnarration") %>
 </div>
 <% end %>
-<%= livre.tdm.as_ul %>
+<div itemscope itemtype="http://schema.org/Article">
+  <%= livre.tdm.as_ul %>
+  <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Philippe Perret">
+  </span>
+</div>

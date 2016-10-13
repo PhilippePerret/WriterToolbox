@@ -32,7 +32,7 @@ class Tdm
         ispage = dpage[:options][0].to_i == 1
         nivdev = dpage[:options][1].to_i(11)
         # debug "Niveau de développement page ##{page_id} : #{nivdev}"
-        titre = dpage[:titre]
+        titre = dpage[:titre].in_span(itemprop: 'name')
         # Une page de la collection
         if ispage
           mark_dev_insuffisant =
@@ -47,9 +47,9 @@ class Tdm
             titre + mark_dev_insuffisant
             ).in_a(class: (nivdev < 8 ? 'discret' : ''), href:"page/#{page_id}/show?in=cnarration", title:"Page ##{page_id}")
         elsif user.admin?
-          titre = titre.in_a(href:"page/#{page_id}/edit?in=cnarration", title:"Titre ##{page_id}")
+          titre = titre.in_a(itemprop: 'url', href:"page/#{page_id}/edit?in=cnarration", title:"Titre ##{page_id}")
         end
-        titre.in_li(class: "niv#{dpage[:options][0]}")
+        titre.in_li(class: "niv#{dpage[:options][0]}",  itemtype: "http://schema.org/Article")
       end.join.in_ul(class: 'tdm livre_tdm')
     end
   end
