@@ -11,14 +11,21 @@ def ipage
   @ipage ||= site.objet
 end
 %>
-<%= Cnarration.titre_h1 ipage.livre.titre %>
-<% if param(:fromicare) == '1' %><%= ipage.encart_icarien %><% end %>
-<%= ipage.liens_edition_if_admin %>
-<%= ipage.boutons_navigation(:top) %>
-<%= ipage.output %>
-<%= ipage.boutons_navigation(:bottom) %>
-<%= ipage.permanent_link %>
-<%= ipage.bloc_evaluation if ipage.page? %>
-<div class="tiny center air">
-  ©2004-2016 Philippe Perret Toute reproduction interdite sans autorisation
-</div>
+<% if ipage.exist? %>
+  <%= Cnarration.titre_h1 ipage.livre.titre %>
+  <% if param(:fromicare) == '1' %><%= ipage.encart_icarien %><% end %>
+  <%= ipage.liens_edition_if_admin %>
+  <%= ipage.boutons_navigation(:top) %>
+  <%= ipage.output %>
+  <%= ipage.boutons_navigation(:bottom) %>
+  <%= ipage.permanent_link %>
+  <%= ipage.bloc_evaluation if ipage.page? %>
+  <div class="tiny center air">
+    ©2004-2016 Philippe Perret Toute reproduction interdite sans autorisation
+  </div>
+<% else %>
+<%= Cnarration.titre_h1('Page inexistante') %>
+<p class="big air red">
+  Vous tentez d'atteindre une page qui n'existe pas ou pas encore dans la collection Narration.
+</p>
+<% end %>
