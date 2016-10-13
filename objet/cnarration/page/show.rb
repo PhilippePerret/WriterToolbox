@@ -68,7 +68,7 @@ class Cnarration
       if developpement < 8 && false == full_autorisation
         message_niveau_developpement_insuffisant
       else
-        if false == path_semidyn.exist? || out_of_date?
+        if !path_semidyn.exist? || out_of_date?
           # La page semi-dynamique n'est pas encore construite, il
           # faut la construire. Pour ça, on utilise kramdown.
           Cnarration::require_module 'page'
