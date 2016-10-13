@@ -55,7 +55,7 @@ class << self
     }
 
     site.require_module 'pastille'
-    ipastille = SiteHtml::Pastille::new
+    ipastille = SiteHtml::Pastille.new()
     ipastille.set data_pastille
     ipastille.output
 

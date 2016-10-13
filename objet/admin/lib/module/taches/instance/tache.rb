@@ -69,7 +69,7 @@ class Tache
       tache:        tache,
       admin_id:     admin_id,
       description:  description,
-      file:         file,
+      file:         file.nil_if_empty,
       created_at:   created_at,
       state:        9,
       updated_at:   Time.now.to_i

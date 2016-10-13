@@ -28,7 +28,7 @@ class Tache
   def div_tache
     @div_tache ||= begin
       dt = "#{tache}"
-      if file
+      if file != nil
         # Soit le path est un chemin d'accès à un fichier, soit c'est
         # une route. On crée le lien en fonction
         expath = File.expand_path(file)

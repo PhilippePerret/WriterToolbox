@@ -26,6 +26,7 @@ raise_unless_admin
       <%= 'Sitemap'.in_a(href: 'site/sitemap').in_div(class: 'admin_tool') %>
       <%= 'Cron Report'.in_a(href: 'admin/cron_report', target: :new).in_div(class: 'admin_tool')%>
       <%= 'Synchro RestSite'.in_a(href: 'admin/sync_restsite', target: :new).in_div(class: 'admin_tool')%>
+      <%= 'DATABASES'.in_a(href: 'database/edit', target: :new).in_div(class: 'admin_tool')%>
 	<% end %>
 </div><%# /div#admin_tools %>
 
