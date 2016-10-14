@@ -19,9 +19,15 @@ class Page
         # On corrige le commentaire avant de l'enregistrer
         new_com.formate_comment
         if new_com.create
-          flash "Merci #{user.pseudo} pour votre commentaire. Il sera validé très prochainement."
-          # On envoie le mail d'information à l'administration
-          new_com.avertissement_administration
+          message_merci =
+            if user.admin?
+              "Votre commentaire a été enregistré, #{user.pseudo} (et directement validé puisque vous être administrateur)."
+            else
+              # On envoie le mail d'information à l'administration
+              new_com.avertissement_administration
+              "Merci #{user.pseudo} pour votre commentaire. Il sera validé très prochainement."
+            end
+          flash message_merci
           # Pour forcer le recalcul, au cas où
           reset
           # Pour empêcher d'afficher le formulaire
@@ -44,7 +50,7 @@ class Page
             comment:      comment_purified(dcom),
             votes_up:     0,
             votes_down:   0,
-            options:      '0'*8,
+            options:      options_comments,
             created_at:   Time.now.to_i,
             updated_at:   Time.now.to_i
           }
@@ -58,6 +64,12 @@ class Page
         cp = dcom[:comment].nil_if_empty
         cp != nil || (return nil) # sera traité plus tard
         return cp
+      end
+
+      # Les options, en fonction du fait que c'est un quidam ou
+      # un administrateur qui dépose le commentaire
+      def options_comments
+        user.admin? ? '10000000' : '00000000'
       end
     end #/<<self
 
@@ -101,6 +113,8 @@ class Page
 
     # Le ticket qui permettra à l'administrateur
     # de valider directement le commentaire.
+    # Note : sauf si c'est un commentaire administrateur qui répond à
+    # un commentaire de visiteur.
     def ticket
       @ticket ||= begin
         ticket_code = "User.autologin_admin(:phil);Page::Comments.valider_comment(#{id});User.delogin_admin"
