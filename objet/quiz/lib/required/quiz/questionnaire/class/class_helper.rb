@@ -17,6 +17,11 @@ class ::Quiz
             'Edit quiz courant' => "quiz/#{current.id}/edit?qdbr=#{current.suffix_base}"
             )
         end
+        if user.admin?
+          dongs.merge!(
+            'Résultats' => 'quiz/resultats'
+          )
+        end
         unless current.id == site.current_route.objet_id && current.suffix_base == suffix_base
           dongs.merge!('Quiz courant' => "quiz/show")
         end
