@@ -16,6 +16,12 @@ class DUser
   MAX_OVERRUNS_BEFORE_DECREASE_RYTHME   = 10
   MAX_UNSTARTED_BEFORE_DECREASE_RYTHME  = 10
 
+  # Liste des périodes où il faut imposer à l'auteur de rester au
+  # rythme normal pour suivre efficacement le programme
+  PERIODES_RYTHME_NORMAL = [
+    {first: 28, last: 69}
+  ]
+
 
   # ID de l'user, l'auteur du programme UAUS
   attr_reader :id
@@ -156,13 +162,56 @@ class DUser
 
   # Retourne le rythme a attribuer en fonction des retards. S'il n'y en
   # a pas, le rythme reste inchangé.
+  # Ou en fonction de la période, qui peut être une période à rythme
+  # déterminé.
+  #
   def get_rythme
     r = program_rythme
-    if need_to_decrease_rythme? && r > 1
+    if rythme_periode_moyen_required?
+      r = 5
+    elsif r > 1 && need_to_decrease_rythme?
       r -= 1
     end
     @program_rythme = r
     return r
+  end
+
+  # Retourne true s'il faut ramener le rythme au rythme moyen
+  #
+  def rythme_periode_moyen_required?
+    @rythme_moyen_is_required === nil && begin
+      @rythme_moyen_is_required = program_rythme > 5 && periode_rythme_normal?
+    end
+    @rythme_moyen_is_required
+  end
+
+  # Retourne true si le jour courant se trouve dans une période où le
+  # rythme à adopter est le rythme moyen.
+  # Si le rythme de l'auteur est supérieur à 5, on doit le ramener
+  # à 5.
+  def periode_rythme_normal?
+    PERIODES_RYTHME_NORMAL.each do |hperiode|
+      if program_current_pday >= hperiode[:first] && program_current_pday <= hperiode[:last]
+        return true
+      end
+    end
+    return false
+  end
+
+  # Retourne TRUE si c'est la fin d'une période de rythme moyen (pour
+  # informer l'auteur qu'il peut ré-accélérer son programme)
+  def fin_periode_rythme_moyen?
+    @is_fin_periode_rythme_moyen === nil && begin
+      is_true = false
+      PERIODES_RYTHME_NORMAL.each do |hperiode|
+        if program_current_pday == hperiode[:last] + 1
+          is_true = true
+          break
+        end
+      end
+      is_true
+    end
+    @is_fin_periode_rythme_moyen
   end
 
   # Retourne TRUE s'il faut baisser le rythme de l'auteur à cause de

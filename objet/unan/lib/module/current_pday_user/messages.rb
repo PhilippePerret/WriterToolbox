@@ -89,9 +89,24 @@ module CurrentPDayClass
   def message_general
     mess = data_messages[retard_from_0_to_9][stade_programme]
 
-    # Un message pour informer que son rythme a été abaissé si c'est
-    # nécessaire de le faire à cause des retards.
-    auteur.need_to_decrease_rythme? && mess += message_changement_rythme
+    mess +=
+      if auteur.need_to_decrease_rythme?
+        # Un message pour informer que son rythme a été abaissé si c'est
+        # nécessaire de le faire à cause des retards.
+        message_changement_rythme
+      elsif auteur.rythme_periode_moyen_required?
+        # Un message pour informe l'auteur que son rythme a dû être ramené
+        # au rythme moyen car c'est une période qui doit être absolument
+        # abordée à ce rythme
+        message_periode_rythme_moyen
+      elsif auteur.fin_periode_rythme_moyen?
+        # Un message pour informer l'auteur que son rythme peut être
+        # remis à plus vite car on est arrivé à une fin de période de rythme
+        # moyen requis
+        message_fin_periode_rythme_moyen
+      else
+        ''
+      end
 
     # L'ajout du message de fréquence. Ce message humain dépend de
     # la fréquence des retards de l'user.
@@ -112,6 +127,20 @@ module CurrentPDayClass
       "Pour vous permettre de rattraper votre retard, nous nous sommes permis de ramener votre rythme à #{auteur.program_rythme}."
     ).in_p
   end
+
+  def message_periode_rythme_moyen
+    (
+      "Vous êtes rentré#{auteur.f_e} dans une zone de développement où le rythme moyen doit absolument être adopté. Votre rythme est maintenu à 5 au cours de cette période. "+
+      'Un prochain message vous informera de la fin de cette période.'
+    ).in_p
+  end
+
+  def message_fin_periode_rythme_moyen
+    (
+      "Vous sortez d'une zone de développement en rythme moyen. Vous pouvez adopter à nouveau un rythme plus soutenu (si c'était le cas)."
+    ).in_p
+  end
+
   # Retourne la couleur en fonction du retard général
   # Cette couleur sera appliquée au message général.
   def color_per_retard
