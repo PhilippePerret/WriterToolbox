@@ -45,9 +45,8 @@ class Console
         end
       else
         # En dernier recours on tente de le traiter comme une route
-        if section_name.match(/^([a-z_]+)\/([0-9]+\/)?(([a-z_]+))$/)
-          debug "section name : #{section_name.inspect}"
-          sub_log "<a href='#{section_name}'>S'y rendre</a>"
+        if section_name.match(/^([a-z_]+)\/([0-9]+\/)?(([a-z_]+))(\?in=([a-z_]+))?$/)
+          sub_log "<a href='#{section_name}' target='_blank'>S'y rendre</a>"
           return nil
         else
           error "La section `#{section_name}` est inconnue où je ne sais pas comment m'y rendre."

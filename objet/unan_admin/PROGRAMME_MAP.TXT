@@ -132,7 +132,7 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 88] Produire un document d'analyse de film.
                 JP 040-041 TR1 bis Brainstorming PERS
                     Alors que le premier tour sur les personnages était consacré au protagoniste et à l'antagoniste, ici on va s'intéresser particulièrement aux autres personnages.
-                    TODO [WORK] Faire le travail sur les personnages secondaires (premier travail)
+                    [WORK 114] Faire le travail sur les personnages secondaires (premier travail)
                     TODO [EXEMPLE] Faire un document exemple en reprenant la liste des personnages qui peuvent être créés pour l'histoire illustrative.
                     TODO [EXEMPLE] Faire un exemple à partir d'un film, peut-être un film “touffu” comme Fight Club ou demi-touffu comme Seven.
                     [WORK 59] [PAGE 27] La crise (scène-clé)
@@ -153,14 +153,14 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     TODO [EXEMPLE] Un autre exemple avec les illustrations d'histoire.
                 JP 046-047 TR2 PERS
                     [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
-                    TODO [EXEMPLE] Document exemple sur le travail sur les personnages.
+                    TODO [EXEMPLE] Document exemple sur le travail sur les personnages secondaire.
                 JP 048-049 TR2 DOCU
                     [WORK 110] Document court de présentation du projet à destination des personne intéressante pour la documentation.
                     [EXEMPLE 11] Court document de présentation de projet, sous forme de message.
                     [WORK 108] Travail à partir de la liste des sujets définie au tour précédent sur ce document. Et à partir du document “Questions.odt”. Commencer à tenter de répondre aux questions. Commencer à chercher des données sur internet, dans les livres, ou là où peut se trouver l'information.
                     [WORK 109] Commencer à prendre des contacts (sur les forums, sur les mails qu'on peut obtenir) avec des personnes susceptibles de donner des renseignements concrets.
                 JP 050-051 TR2 DYNA
-                    TODO [WORK] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
+                    [WORK 115] Reprendre la liste des objectifs, obstacles et conflits précédents et tenter en même temps 1/ de les affiner et 2/ de les développer
                         Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
                     TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
                     [WORK 113] [PAGE 51] L'inversion de polarité
