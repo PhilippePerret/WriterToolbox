@@ -17,15 +17,15 @@ class Page
   # Le lien pour éditer le texte n'est présent que si c'est vraiment
   # une page, pas un titre de chapitre/sous-chapitre
   def liens_edition_if_admin
-    return "" unless OFFLINE && user.admin?
+    OFFLINE && user.admin? || (return '')
     (
       lien_edit_text + lien_edit_data + lien_give_code
     ).in_div(class:'btns fright small')
   end
 
   def lien_edit_text
-    return "" unless page?
-    lien.edit_file( fullpath, { titre:"[Edit text]" })
+    page? || (return '')
+    lien.edit_text(fullpath, titre: '[Edit text]')
   end
 
   def lien_edit_data

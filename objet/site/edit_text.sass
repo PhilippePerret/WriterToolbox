@@ -3,7 +3,25 @@ body
   padding : 0 !important
 section#content
   margin    : 0 !important
-  padding   : 1em !important
+  padding   : 0 1em 1em !important
+  > div
+    margin-left     : 0
+  // La bande supérieure, contenant notamment le path
+  // du fichier édité
+  div#bande_superieure
+    font-size     : 8.2pt
+    input#folder_path
+      width         : 550px
+      text-align    : right
+    input#file_name
+      width         : 150px
+      text-align    : left
+
+  // Les boutons d'édition sur la droite de la fenêtre,
+  // avec notamment les menus pour choisir police et hauteur
+  // de ligne.
+  // Noter que le bouton Enregistrer en se trouve pas
+  // dans cette colonne.
   div#boutons_edition
     position      : fixed
     top           : 1em
@@ -30,8 +48,9 @@ section#content
       width               : 90%
       font-family         : 'Lucida Console'
       border              : 1px solid #EFEFEF
-      padding             : 1em
-    input[type="submit"]
+      padding             : 0.5em
+      text-align          : justify
+    input[type="submit"], input[type="button"]
       position    : fixed
       right       : 1em
       bottom      : 1em
@@ -39,3 +58,14 @@ section#content
 textarea, input[type="text"]
   &, &:active, &:focus
     background-color    : white !important
+
+// Pour le message flash
+div#flash
+  position    : fixed
+  bottom      : 0 !important
+  top         : unset
+  left        : 1em
+  width       : 80%
+  margin      : 0
+  padding     : 0
+  font-size   : 9.6pt

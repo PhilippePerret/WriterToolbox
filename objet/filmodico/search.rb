@@ -76,8 +76,8 @@ class Filmodico
       @params ||= param(:filmsearch)
     end
 
-    def sought     ; @sought ||= params[:sought].nil_if_empty end
-    def in_titre?  ; @search_in_titre   ||= params[:in_titre] == 'on'   end
+    def sought     ; @sought            ||= params[:sought].nil_if_empty end
+    def in_titre?  ; @search_in_titre   ||= params[:in_titre]  == 'on'  end
     def in_resume? ; @search_in_resume  ||= params[:in_resume] == 'on'  end
     def in_people? ; @search_in_people  ||= params[:in_people] == 'on'  end
 

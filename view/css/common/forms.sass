@@ -30,7 +30,7 @@ select, select option
     color               : white
   &.inline
     border              : 1px solid #CCC
-input[type="submit"].btn, a.btn
+input[type="submit"].btn, input[type="button"].btn, a.btn
   font-family         : Arial
   font-size           : inherit
   background-color    : #207E1E !important
@@ -39,8 +39,8 @@ input[type="submit"].btn, a.btn
   letter-spacing      : 1.6px
   &.warning
     background-color    : #CF0000 !important
-  
-input[type="submit"].btn
+
+input[type="submit"].btn, input[type="button"].btn
   &.tiny
     font-size       : 10.8pt
     padding         : 0.3em 1.2em
@@ -113,7 +113,7 @@ form, div
         // input[type="text"], textarea, input[type="password"]
         //   width       : 91%
 form
-  
+
   // Pour mettre des champs en exergue.
   // Il y a deux types d'exergue : l'exergue d'erreur (rouge) et
   // l'exergue simple (bleu)
@@ -124,36 +124,36 @@ form
     &.error
       background-color      : #ffefef
       border                : 1px solid #FFA4A4
-    
-      
+
+
   // Pour séparer deux rangées row avec une ligne
   div.separator
     border-bottom         : 1px solid
     margin                : 1em 0
     width                 : 80%
-     
+
   // Form de class 'small
   &.small
-    input[type="submit"]
+    input[type="submit"], input[type="button"]
       padding             : 0.2em 0.9em
-  
-  
+
+
   div.buttons
     margin-top          : 1em
     text-align          : right
     padding             : 0 1.7em
-    
-    input[type="submit"]
+
+    input[type="submit"], input[type="button"]
       font-size           : inherit
-    
+
   div.row
     margin-top        : 0.7em
     &.description
       margin-top        : 0
-      
+
     select
       padding           : 0 0.6em
-      
+
     span.libelle
       display           : inline-block
       font-size         : 14.8pt
@@ -163,13 +163,13 @@ form
 
     span.value
       display           : inline-block
-      
+
       span + span
         margin-left       : 0.5em
-        
+
       input[type="text"], input[type="password"]
         width             : 95%
-      
+
       textarea
         min-height        : 160px
         padding           : 8px
@@ -184,7 +184,7 @@ form
         line-height       : 1.2em !important
         &:hover
           opacity            : 1
-        
+
 input[type="text"], input[type="password"]
   &.short
     width           : 60px !important
@@ -197,24 +197,24 @@ input[type="text"], input[type="password"]
     text-align      : left !important
   + span
     margin-left       : 0.5em
-    
 
-span 
+
+span
   + input[type="text"], + select
     margin-right      : 0.5em
-    
+
 // Un label de checkbox doit se trouver éloigné de la case à cocher
 input[type="checkbox"] + label, input[type="radio"] + label
   margin-left       : 0.5em
   vertical-align    : middle
-  
+
 // Dans un formulaire, un row.description doit réagir au survol
 // de la souris de son élément précédent
 form
   div.row:hover + div.row.description
     span.value
       opacity : 1
-      
+
 // Pour mettre en exergue le champs contenant l'id
 // @usage class='id_field'
 input[type="text"].id_field

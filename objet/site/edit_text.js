@@ -10,7 +10,7 @@ $.extend(window.EditText,{
     $('div#div_pastille_taches').hide();
     $('div#hrefs').hide();
     this.textarea.css({
-      height : (window.innerHeight - 40)+'px'
+      height : (window.innerHeight - 100)+'px'
     })
   },
 
@@ -91,6 +91,13 @@ $.extend(window.EditText,{
   onchoose_filmodico:function(link){
     $('input#filmodico').val(link);
     $('input#filmodico').focus();
+  },
+
+  // Méthode principale pour enregistrer le texte. Ça l'envoie par
+  // ajax, en espérant qu'on atteigne pas la limite.
+  // On vérifie quand même
+  on_save_text:function(){
+    Ajax.submit_form('form_edit_text')
   }
 
 
@@ -98,4 +105,5 @@ $.extend(window.EditText,{
 $(document).ready(function(){
   EditText.textarea = $('textarea#file_content');
   EditText.set_interface();
+  UI.prepare_champs_easy_edit(tous=true)
 })

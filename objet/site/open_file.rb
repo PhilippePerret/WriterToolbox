@@ -34,17 +34,15 @@ if File.exist? path
     cmd = "/Applications/Preview.app/Contents/MacOs/Preview \"#{path}\""
   else
     app = param(:app) || "TextMate"
-    # cmd = "open -a #{app} \"#{path}\""
+    cmd = "open -a #{app} \"#{path}\""
     # Fonctionne, mais avec une nouvelle instance :
-    cmd = "/Applications/#{app}.app/Contents/MacOS/#{app} open \"#{path}\""
+    # cmd = "/Applications/#{app}.app/Contents/MacOS/#{app} open \"#{path}\""
     # cmd = "mate \"#{path}\""
   end
   debug "Command (sera appelée en sudo avec le mot de passe): #{cmd}"
-  # On exécute la commande
-  require './data/secret/su_data'
-  # full_cmd = "echo '#{SU_DATA[:password]}' | sudo -S -u philippeperret #{cmd} 2>&1"
+  # On exécute la commande et on inscrit son résultat
+  # Noter que ça ne fonctionne pas toujours, bizarrement.
   full_cmd = cmd
-  debug "full cmd : #{full_cmd}"
   debug `#{full_cmd}`
   # flash "Ouverture de #{path} dans #{app}"
 else
