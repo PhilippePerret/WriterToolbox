@@ -18,9 +18,4 @@ Il s'agit ici plutôt des articles sur facebook ou autres annonces, pas forcéme
 
 ## Articles accueil
 
-* Ce que font les producteurs pour ne pas avoir à vous payer
-  * Vous faire rêver
-  * Vous promettre la lune
-  * La solution ?
-
 * Les dix commandements pour être certain de ne pas arriver au bout de son scéranio/manuscrit

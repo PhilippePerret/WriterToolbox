@@ -66,7 +66,7 @@ class Page
       ajouts_fields +
       bitlink_field +
       filename.in_input(id: 'page_route_as_filename', class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px')
-    ).in_div(class: 'right')
+    ).in_div(id: 'hrefs', class: 'right')
   end
 
   def balise_meta_description

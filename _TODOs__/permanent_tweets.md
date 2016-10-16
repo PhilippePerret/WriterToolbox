@@ -15,6 +15,17 @@ quand OK et faire lien bitly)
 
 ## Pages déjà ajoutées
 
+Dans une histoire, tout est affaire d'illusion : http://bit.ly/2aRvnfh
+
+Trois dimensions suffisent à produire l'illusion d'une personne réelle : http://bit.ly/2aRvnfh
+
+Le lecteur a toujours raison http://bit.ly/2eegKUZ
+
+Symptôme, diagnostic et prescription, les trois phases indispensables de l'analyse de texte http://bit.ly/2eegKUZ
+
+La seule manière saine d'analyser ses textes et ceux des autres http://bit.ly/2eegKUZ
+
+
 Et si l'on se rafraichissait la mémoire avec une vue d'ensemble du #PFA ?! http://bit.ly/28Wc1RZ
 
 Comment bien choisir son histoire ?… http://bit.ly/290D8i5

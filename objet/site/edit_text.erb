@@ -1,0 +1,15 @@
+<%
+# Pour l'édition du fichier param(:path)
+#
+%>
+<div id="boutons_edition">
+  <%= menu_police %>
+  <%= menu_line_height %>
+  <%= champs_scenodico %>
+  <%= champs_filmodico %>
+</div>
+<form id="form_edit_text" action="site/edit_text" method="POST" charset="utf-8">
+  <%= (param(:path) || param(:file)[:path]).in_hidden(name: 'file[path]') %>
+  <%= file.content.in_textarea(name: 'file[content]', id: 'file_content') %>
+  <%= 'Enregistrer'.in_submit(class: 'btn').in_div(class: 'buttons') %>
+</form>

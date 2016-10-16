@@ -34,11 +34,18 @@ if File.exist? path
     cmd = "/Applications/Preview.app/Contents/MacOs/Preview \"#{path}\""
   else
     app = param(:app) || "TextMate"
-    cmd = "open -a #{app} \"#{path}\""
+    # cmd = "open -a #{app} \"#{path}\""
+    # Fonctionne, mais avec une nouvelle instance :
+    cmd = "/Applications/#{app}.app/Contents/MacOS/#{app} open \"#{path}\""
+    # cmd = "mate \"#{path}\""
   end
-  debug "Command: #{cmd}"
+  debug "Command (sera appelée en sudo avec le mot de passe): #{cmd}"
   # On exécute la commande
-  debug `#{cmd} 2>&1`
+  require './data/secret/su_data'
+  # full_cmd = "echo '#{SU_DATA[:password]}' | sudo -S -u philippeperret #{cmd} 2>&1"
+  full_cmd = cmd
+  debug "full cmd : #{full_cmd}"
+  debug `#{full_cmd}`
   # flash "Ouverture de #{path} dans #{app}"
 else
   error "La page #{path} est introuvable. Impossible de l'ouvrir."

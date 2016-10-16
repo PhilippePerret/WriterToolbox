@@ -6,14 +6,13 @@ class Filmodico
     #
     # Méthode qui procède à la recherche demandée
     def proceed_search
-      search = Search::instance
+      search = Search.instance
       search.proceed
       @found = search.found
     end
 
     def resultat_recherche
-      return "" if @found.nil?
-      @found
+      @found.nil? ? '' : @found
     end
 
   end #/<< self (Filmodico)
@@ -32,13 +31,13 @@ class Filmodico
 
       # Si une recherche par le texte doit être faite
       films_ids = nil
-      where_clause = Array::new
+      where_clause = Array.new
       if sought
-        keys = Array::new
+        keys = Array.new
         keys += ["titre", "titre_fr"] if in_titre?
         keys << "resume" if in_resume?
         keys += ['realisateur', 'auteurs', 'producteurs', 'acteurs'] if in_people?
-        where_clause << "(" + (keys.collect { |k| "#{k} LIKE \"%#{sought}%\"" }.join(' OR ')) + ")"
+        where_clause << "(" + (keys.collect { |k| "(#{k} LIKE \"%#{sought}%\" OR #{k} LIKE \"%#{sought.capitalize}%\")" }.join(' OR ')) + ")"
       end
 
       if after?
@@ -51,20 +50,27 @@ class Filmodico
       films_ids = nil
       unless where_clause.empty?
         where_clause = where_clause.join(' AND ')
-        debug "where_clause: #{where_clause.inspect}"
-        hfilms = Filmodico.table_filmodico.select(where: where_clause, colonnes:[:titre, :realisateur, :annee], nocase: true)
+        hfilms = Filmodico.table_filmodico.select(where: where_clause, colonnes:[:titre, :realisateur, :annee, :film_id])
       end
 
-      @found = unless hfilms.nil? || hfilms.empty?
-        "Nombre de films trouvés : <strong>#{hfilms.count}</strong>" +
-        hfilms.collect do |hfilm|
-          hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_blank').in_li
-        end.join.in_ul
+      if site.ajax?
+        # Si c'est une requête ajax
+        menu_films = ([['','Choisir…']]+(hfilms||[]).collect{|hfilm| ["FILM[#{hfilm[:film_id]}]", hfilm[:titre]]}).in_select(id: 'choose_filmodico', onchange:'_ONCHANGE_')
+        Ajax << {films: hfilms, menu_films: menu_films}
       else
-        "Aucun film trouvé répondant à vos critères de recherche."
+        # Si c'est une requête "normale"
+        @found =
+          unless hfilms.nil? || hfilms.empty?
+            "Nombre de films trouvés : <strong>#{hfilms.count}</strong>" +
+            hfilms.collect do |hfilm|
+              hfilm[:titre].in_a(href:"filmodico/#{hfilm[:id]}/show", target:'_blank').in_li
+            end.join.in_ul
+          else
+            "Aucun film trouvé répondant à vos critères de recherche."
+          end
       end
-
     end
+    # /proceed
 
     def params
       @params ||= param(:filmsearch)

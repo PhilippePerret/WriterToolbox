@@ -14,6 +14,17 @@ $.extend(window.Cnarration,{
     return true
   },
 
+  on_edit_text:function(lien){
+    if (this.page_id == ""){
+      F.error("Il faut indiquer l'ID de la page dont le texte doit être édité.");
+      this.field_id.focus();
+      return false
+    }
+    var href = "page/" + this.page_id + "/edit_text?in=cnarration"
+    $(lien).attr('href', href);
+    return true
+  },
+
   on_submit_form:function(){
     this.field_operation.val("save_page");
     return true

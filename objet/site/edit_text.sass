@@ -1,0 +1,41 @@
+body
+  margin  : 0 !important
+  padding : 0 !important
+section#content
+  margin    : 0 !important
+  padding   : 1em !important
+  div#boutons_edition
+    position      : fixed
+    top           : 1em
+    right         : 1em
+    width         : 240px
+    text-align    : -moz-right
+    &, *
+      font-size       : 12pt
+    select, input[type="text"]
+      display       : block
+      width         : 98%
+      max-width     : 98%
+    input[type="button"]
+      display       : block
+      margin-top    : 8px
+    // Les Div contenant les champs pour rechercher dans le
+    // scénodico ou le filmodico
+    div.biblio
+      padding   : 4px
+      border    : 1px solid #999
+      margin    : 4px
+  form#form_edit_text
+    textarea#file_content
+      width               : 90%
+      font-family         : 'Lucida Console'
+      border              : 1px solid #EFEFEF
+      padding             : 1em
+    input[type="submit"]
+      position    : fixed
+      right       : 1em
+      bottom      : 1em
+
+textarea, input[type="text"]
+  &, &:active, &:focus
+    background-color    : white !important

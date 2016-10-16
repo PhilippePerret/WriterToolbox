@@ -78,7 +78,7 @@ class SiteHtml
     # Noter qu'on doit le faire ici , après `set_last_connexion`
     # pour que la dernière connexion de l'user soit prise en
     # compte même lorsque __o n'est pas défini.
-    return if param(:__o).nil?
+    param(:__o) != nil || return
 
     # La méthode qui va charger tout ce qui est défini par rapport
     # à la route donnée. Par exemple, si la route est "tool/list",
@@ -187,7 +187,8 @@ class SiteHtml
 
     # On reset complètement les valeurs __o etc. qui
     # définissent les routes.
-    set_params_route
+    # OBSOLÈTE, normalement : fait juste après
+    # set_params_route
 
 
     # debug "rut après premier traitement : #{rut}"
@@ -264,9 +265,6 @@ class SiteHtml
       all_folders_lib_required.each do |dossier|
         next if dossier.nil? || false == dossier.exist?
         site.require_all_in dossier
-        # dossier.require
-        # page.add_css        Dir["#{dossier}/**/*.css"]
-        # page.add_javascript Dir["#{dossier}/**/*.js"]
       end
     end
 

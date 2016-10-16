@@ -27,9 +27,11 @@ class Page
     return "" unless page?
     lien.edit_file( fullpath, { titre:"[Edit text]" })
   end
+
   def lien_edit_data
     "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration")
   end
+
   def lien_give_code
     tit = titre.gsub(/'/,'’')
     ref_simple      = "#{id}|#{tit}"

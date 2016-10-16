@@ -1,5 +1,6 @@
 # Ajax
 
+* [Savoir qu'on est en Ajax dans le code ryby](#savoirquonestenajax)
 * [Envoi d'une requête](#envoidunerequetee)
 * [Propriétés définissables](#proprietesdefinissables)
 * [Renvoi de données aux programmes](#renvoiededonnees)
@@ -7,6 +8,12 @@
 * [Erreurs de retour](#erreurderetour)
 * [Auto-sélection du contenu des champs de texte quand focus](#autoselectquandfocus)
 
+
+<a name='savoirquonestenajax'></a>
+
+## Savoir qu'on est en Ajax dans le code ryby
+
+Pour savoir qu'on est en ajax dans le code ruby, il suffit d'interroger `site.ajax?`.
 
 <a name='envoidunerequetee'></a>
 

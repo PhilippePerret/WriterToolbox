@@ -28,6 +28,7 @@ end
 <%
 
 bouton_edit = "Édit".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_edit_by_id', this)();return true;")
+bouton_text = "Texte".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_edit_text', this)();return true;", target: :new)
 bouton_show = "Show".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_show', this)()")
 bouton_init = "Init new".in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'reset_all')();return false")
 
@@ -75,7 +76,7 @@ values_priorites_traitement = [
   <%= 'edit_page'.in_hidden(name:'operation', id:'operation') %>
 
   <%# ID de la page %>
-  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit}#{bouton_show}#{bouton_init}".in_span(class:'btns')}) %>
+  <%= form.field_text("ID", 'id', nil, {class:'short', text_after:"#{bouton_edit}#{bouton_text}#{bouton_show}#{bouton_init}".in_span(class:'btns')}) %>
 
   <%# LIVRE %>
   <%= form.field_raw("Livre", 'livre_id', nil, {field: menu_books, text_after: boutons_books}) %>

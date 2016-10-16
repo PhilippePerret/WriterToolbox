@@ -28,11 +28,19 @@ class Scenodico
       end
 
       # On s'arrête là, et c'est la vue, en appelant `resultat_recherche`,
-      # qui demandera la construction du résultat.
+      # qui demandera la construction du résultat. Sauf si on est en ajax,
+      # dans lequel cas il faut renvoyer les résultats
+      if site.ajax?
+        # On fabrique un menu pour en choisir un
+        # L'application qui utilise ce moyen doit définir le '_ONCHANGE_' du
+        # menu ci-dessous.
+        menu_mots = ([['', 'Choisir…']]+@found.collect{|hmot|["MOT[#{hmot[:id]}|#{hmot[:mot].downcase}]", hmot[:mot]]}).in_select(id:'scenodico_found', onchange:'_ONCHANGE_')
+        Ajax << {mots: @found, menu_mots: menu_mots}
+      end
     end
 
     def resultat_recherche
-      return "" if @found.nil?
+      @found != nil || (return '')
       if @found.count > 0
         t = String::new
         t << "Nombre de mots trouvés : #{@found.count.to_s.in_span(class:'bold')}".in_div
@@ -76,8 +84,8 @@ class Scenodico
 
 
     def check_param_search_or_raise
-      raise "Il faut fournir le texte à rechercher !" if text_searched.nil?
-      raise "Il faut indiquer où faire la recherche, dans le mot ou la définition, ou les deux !" if !in_mot? && !in_definition?
+      text_searched != nil || raise( "Il faut fournir le texte à rechercher !")
+      in_mot? || in_definition? || raise( "Il faut indiquer où faire la recherche, dans le mot ou la définition, ou les deux !")
     rescue Exception => e
       debug e
       error e.message
