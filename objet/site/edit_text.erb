@@ -16,6 +16,6 @@ raise_unless_admin
   <%= 'save_edited_text'.in_hidden(name:'operation') %>
   <%= 'site/edit_text'.in_hidden(name:'route') %>
   <%= (param(:path) || param(:file)[:path]).in_hidden(name: 'file[path]') %>
-  <%= file.content.in_textarea(name: 'file[content]', id: 'file_content') %>
+  <%= file.content.in_textarea(name: 'file[content]', id: 'file_content', onchange: "window.set_modified(true)") %>
   <%= 'Enregistrer'.in_button(class: 'btn', onclick:"$.proxy(EditText,'on_save_text')()").in_div(class: 'buttons') %>
 </form>
