@@ -9,9 +9,13 @@ de la table des matières.
 def livre
   @livre ||= Cnarration::Livre.new(site.current_route.objet_id)
 end
-# La nouvelle liste de pages et titres du livre dans l'ordre
+
+# {String} La nouvelle liste de pages et titres du livre dans l'ordre
 def liste_ids
   @liste_ids ||= param(:ids).split('-').join(',')
+end
+def old_liste_ids
+  @old_liste_ids ||= livre.tdm.pages_ids
 end
 
 def tdm_exist?
@@ -27,7 +31,23 @@ def data_tdm
 end
 # flash "Liste : #{data_tdm.inspect}"
 if tdm_exist?
-  Cnarration::table_tdms.update( livre.id, data_tdm )
+  # Quand la table des matières existe, il faut faire une autre
+  # opération qui consiste à retirer la définition de @livre_id pour
+  # les pages éventuellement retirées.
+  checkedstring = ",#{liste_ids},"
+  pages_out = Array.new
+  pages_old = Array.new
+  old_liste_ids.each do |pid|
+    if checkedstring.index(",#{pid},")
+      pages_old << pid
+    else
+      pages_out << pid
+    end
+  end
+  pages_out.each do |pid|
+    Cnarration.table_pages.update(pid, {livre_id: nil})
+  end
+  Cnarration.table_tdms.update( livre.id, data_tdm )
   flash "Table des matières du livre ##{livre.id} actualisée."
 else
   Cnarration.table_tdms.insert( data_tdm.merge(id: livre.id) )

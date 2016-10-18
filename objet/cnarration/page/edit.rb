@@ -23,6 +23,11 @@ class Page
       new().save
     end
 
+    def destroy_page
+      Cnarration.require_module 'destroy'
+      new(site.current_route.objet_id).destroy
+    end
+
     def page_id
       @page_id ||= param(:epage)[:id].nil_if_empty.to_i_inn
     end
@@ -102,8 +107,19 @@ class Page
     end
   end
 
+  # ID du livre
+  #
+  # Mais attention, pour la destruction par exemple, on doit conserver
+  # la méthode originale.
+  #
   def livre_id
-    @livre_id ||= data_params[:livre_id].to_i # 0 si aucun
+    @livre_id ||= begin
+      if data_params
+        data_params[:livre_id].to_i # 0 si aucun
+      else
+        get(:livre_id)
+      end
+    end
   end
 
   # ---------------------------------------------------------------------
@@ -190,4 +206,6 @@ when 'edit_page'
   Cnarration::Page.edit_page
 when 'save_page'
   Cnarration::Page.save_page
+when 'kill_page'
+  Cnarration::Page.destroy_page
 end

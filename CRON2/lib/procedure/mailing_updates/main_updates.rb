@@ -16,6 +16,7 @@ class CRON2
     include MethodesProcedure
 
     class << self
+
       def send_mail
         # Pas d'annonce si ça n'est pas l'heure (minuit)
         Time.now.hour == 0 || return
@@ -83,10 +84,11 @@ class CRON2
         # Pour pouvoir enregistrer le dernier
         # message dans l'historique.
         message_final = nil
-        # On envoie le mail à tous les destinataires
-        #
-        user_list =
-        destinataires.collect do |u_id|
+
+        # On envoie le mail à tous les destinataires en récupérant la
+        # liste des users contactas (dans user_list, liste de pseudos)
+        user_list = Array.new
+        destinataires.each do |u_id|
           u = User.new(u_id)
           pref_mail = u.preference(:mail_updates)
 
@@ -119,8 +121,9 @@ class CRON2
             formated: true
           )
 
-          u.pseudo # pour la collecte des pseudos contactés
-        end.compact
+          # pour la collecte des pseudos contactés
+          user_list << u.pseudo
+        end
 
         log "   = Mails actualité envoyés à #{user_list.count} utilisateurs : #{user_list.join(', ')}."
         log "   = Envoi des mails d'actualité OK"
@@ -134,6 +137,7 @@ class CRON2
       else
         true
       end
+      #/annonce_last_updates
 
       # Le message final complet, en fonction de l'user et de ses
       # préférences mail
@@ -221,49 +225,45 @@ class CRON2
       #   :date   qui est mise à true
       #
       def build_liste_updates liste_updates, options = nil
-        options ||= {}
+        options ||= Hash.new
 
         # Le template du temps/date en fonction du fait qu'il
         # faut ou non le jour
-        format_time =
-        if options[:date]
-          "%d %m - %H:%M"
-        else
-          "%H:%M"
-        end
+        format_time = '%d %m - %H:%M'
 
         '<ul id="last_updates" class="small">' +
         liste_updates.collect do |hupdate|
           heure = Time.at(hupdate[:created_at]).strftime(format_time)
-          degre = (hupdate[:options]||"")[0].to_i
-          degre = "#{degre}/9"
+          # degre = (hupdate[:options]||"")[0].to_i
+          # degre = "#{degre}/9"
+          degre = ''
           route =
-          if hupdate[:route]
-            r = "href='#{http}/#{hupdate[:route]}'"
-            " <a #{r}>-&gt; voir</a>"
-          else
-            ""
-          end
+            if hupdate[:route]
+              r = "href='#{http}/#{hupdate[:route]}'"
+              " <a #{r}>-&gt; voir</a>"
+            else
+              ''
+            end
 
           # Note : Même si c'est un inscrit on l'affiche
           mark_for_subscribers =
-          if hupdate[:annonce] > 1
-            "<span style='color:green'>[Abonnés]</span> "
-          else
-            ""
-          end
+            if hupdate[:annonce] > 1
+              "<span style='color:green'>[Abonnés]</span> "
+            else
+              ""
+            end
 
-          '<li>'+
-          "<span>#{heure}</span> : " +
-          "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
-          " <span class='tiny'>(catégorie : #{hupdate[:type]} — importance : #{degre})</span>" +
+          '<li>' +
+            "<span>#{heure}</span> : " +
+            "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
+            " <span class='tiny'>(catégorie : #{hupdate[:type]} — importance : #{degre})</span>" +
           '</li>'
         end.join('') + '</ul>'
       end
 
       def message_remerciement
         <<-HTML
-        <p class="small">Un grand merci à vous de soutenir le site par votre abonnement !</p>
+        <p class="small">Un grand merci à vous, %{pseudo}, pour votre soutien !</p>
         HTML
       end
       def message_sabonner
@@ -303,30 +303,43 @@ class CRON2
         end
       end
 
-      # Retourne les updates de +from+ (compris) à +to+ (non compris)
+      # Retourne les updates soit du jour si +for_week+ est
+      # false, soit de la semaine.
+      #
+      # Note : c'est le 2e et 3e bit des options qui indiquent si
+      # les actualités ont déjà été envoyées.
+      #
+      # Retourne un Hash de données d'actualités.
+      #
       def get_updates for_week
         # -> MYSQL UPDATES
-        where = []
+        where = Array.new
         # On ne fait plus de filtre par degré d'importance, mais
         # seulement si l'update doit être annoncée ou non.
         # where << "CAST(SUBSTRING(options,1,1) AS UNSIGNED) > 6"
         where << "annonce > 0"
+
+        # Le bit 2 (quotidient) et 3 (hebdomadaire) indiquent si
+        # l'actualité a été envoyée.
         if for_week
           where << "SUBSTRING(options,3,1) != 1"
         else
           where << "SUBSTRING(options,2,1) != 1"
         end
-        # On n'annonce jamais les actualités de plus
-        # d'un mois
+
+        # Par prudence, on n'annonce jamais les actualités
+        # de plus d'un mois
         a_month_ago = NOW - 4.weeks
+
         where << "created_at > #{a_month_ago}"
 
         where = where.join(' AND ')
         table_updates.select(where: where, order: 'created_at ASC, type')
       rescue Exception => e
         error_log e
-        []
+        Array.new
       end
+      # /get_updates
 
       # = main =
       #
@@ -343,17 +356,24 @@ class CRON2
         # les méthodes. De cette façon, on ne traite que ce qui a réellement
         # été traité/renseigné avant
         (@last_updates || []).each do |dactu|
-          table_updates.update(dactu[:id], {options: dactu[:options].set_bit(1, 1) })
+          table_updates.update(dactu[:id], {
+            options: dactu[:options].set_bit(1, 1),
+            updated_at: Time.now.to_i
+            })
           nombre_marqued += 1
         end
 
         (@last_week_updates || []).each do |dactu|
-          table_updates.update(dactu[:id], {options: dactu[:options].set_bit(2, 1) })
+          table_updates.update(dactu[:id], {
+            options: dactu[:options].set_bit(2, 1),
+            updated_at: Time.now.to_i
+            })
           nombre_marqued += 1
         end
 
         log "   = Updates marquées annoncées (#{nombre_marqued})"
-
+      rescue Exception => e
+        log "  # Les updates n'ont pas pu être marquées annoncées : #{e.message}"
       end
 
       # La table contenant toutes les updates

@@ -164,9 +164,10 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                         Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
                     TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
                     [WORK 113] [PAGE 51] L'inversion de polarité
-                JP 051-053 TR2 THEM
-                    TODO [WORK] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
+                JP 052-053 TR2 THEM
+                    [WORK 116] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
                         NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
+                    [WORK 117][PAGE 52] Page collection #544 sur le thème qui est un souffle pour le développement de l'histoire autant que pour son auteur.
                 JP 054-055 TR2 ANAF
                     Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
                     [WORK 88] Analyse d'un film

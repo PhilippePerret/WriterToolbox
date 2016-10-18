@@ -30,6 +30,18 @@ $.extend(window.Cnarration,{
     return true
   },
 
+  on_destroy:function(lien){
+    if(false == confirm(this.confirmation_destruction_page)){return}
+    if (this.page_id == ""){
+      F.error("Il faut indiquer l'ID de la page à montrer.");
+      this.field_id.focus();return false
+    }
+    var href = "page/" + this.page_id + "/edit?in=cnarration&operation=kill_page"
+    $(lien).attr('href', href);
+    return true;
+  },
+  confirmation_destruction_page: "Êtes-vous certain de vouloir DÉTRUIRE DÉFINITIVEMENT cette page ?\n\nLes fichiers seront détruits, la page sera supprimée de sa table des matières et\nde la base de données.\n\nLA PAGE N’EXISTERA PLUS sous aucune forme que ce soit.",
+
   on_show:function(lien){
     if (this.page_id == ""){
       F.error("Il faut indiquer l'ID de la page à montrer.");
@@ -38,7 +50,7 @@ $.extend(window.Cnarration,{
     }
     var href = "page/" + this.page_id + "/show?in=cnarration"
     $(lien).attr('href', href);
-    return true
+    return true;
   },
 
   // Méthode appelée lorsqu'un livre est choisi

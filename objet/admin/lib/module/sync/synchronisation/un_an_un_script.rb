@@ -36,9 +36,8 @@ class UAUS
       'absolute_pdays',
       'absolute_works',
       'exemples',
-      'pages_cours',
-      'questions',
-      'quiz'
+      'messages_type',
+      'pages_cours'
     ].each do |table_name|
       @table_name = table_name
       reset
