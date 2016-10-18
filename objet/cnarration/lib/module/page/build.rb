@@ -30,14 +30,14 @@ class SuperFile
     # qui contient/iennent les questions de ce fichier
     # pour forcer leur actualisation
     if code.match(/[^_]CHECKUP/)
-      code = String::formate_balises_question_checkup_in code
-      String::rechercher_fichier_checkup_with_question
+      code = String.formate_balises_question_checkup_in code
+      String.rechercher_fichier_checkup_with_question
     end
 
     # Si c'est un fichier qui doit écrire les
     # questions de checkup
     if code.match("PRINT_CHECKUP")
-      code = String::formate_balises_print_checkup code, options
+      code = String.formate_balises_print_checkup code, options
     end
 
     return code

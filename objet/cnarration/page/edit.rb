@@ -124,25 +124,36 @@ class Page
 
   # ---------------------------------------------------------------------
   #   Définition des options
+  #
+  # Noter que les méthodes surclassent les méthodes originales et qu'il
+  # faut donc garder quand même le comportement des méthods originales
   # ---------------------------------------------------------------------
   def options
     @options ||= "#{type}#{nivdev}#{enligne}#{priorite}"
   end
   # Options, Bit 1
   def type
-    @type ||= data_params[:type].to_i
+    @type ||= begin
+      data_params ? data_params[:type].to_i : (get(:options)||'')[0].to_i
+    end
   end
   # Options, Bit 2
   def nivdev
-    data_params[:nivdev]
+    @nivdev ||= begin
+      data_params ? data_params[:nivdev] : (get(:options)||'')[1]
+    end
   end
   # Options, Bit 3
   def enligne
-    data_params[:enligne].to_i
+    @enligne||= begin
+      data_params ? data_params[:enligne].to_i : (get(:options)||'')[2].to_i
+    end
   end
   # Priorité de traitement, Bit 4
   def priorite
-    data_params[:priorite]
+    @priorite ||= begin
+      data_params ? data_params[:priorite] : (get(:options)||'')[3]
+    end
   end
   # / fin définition options
   # ---------------------------------------------------------------------

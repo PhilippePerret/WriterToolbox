@@ -31,22 +31,26 @@ def data_tdm
 end
 # flash "Liste : #{data_tdm.inspect}"
 if tdm_exist?
-  # Quand la table des matières existe, il faut faire une autre
-  # opération qui consiste à retirer la définition de @livre_id pour
-  # les pages éventuellement retirées.
-  checkedstring = ",#{liste_ids},"
-  pages_out = Array.new
-  pages_old = Array.new
-  old_liste_ids.each do |pid|
-    if checkedstring.index(",#{pid},")
-      pages_old << pid
-    else
-      pages_out << pid
-    end
-  end
-  pages_out.each do |pid|
-    Cnarration.table_pages.update(pid, {livre_id: nil})
-  end
+  # # Quand la table des matières existe, il faut faire une autre
+  # # opération qui consiste à retirer la définition de @livre_id pour
+  # # les pages éventuellement retirées.
+  # # NON : il ne faut pas retirer le 'livre_id' de la page, pour qu'elle
+  # # reste associée au livre. Car on peut vouloir la remettre plus tard
+  # # De plus, si elle est retirée complètement du livre, elle disparait
+  # # des radars.
+  # checkedstring = ",#{liste_ids},"
+  # pages_out = Array.new
+  # pages_old = Array.new
+  # old_liste_ids.each do |pid|
+  #   if checkedstring.index(",#{pid},")
+  #     pages_old << pid
+  #   else
+  #     pages_out << pid
+  #   end
+  # end
+  # pages_out.each do |pid|
+  #   Cnarration.table_pages.update(pid, {livre_id: nil})
+  # end
   Cnarration.table_tdms.update( livre.id, data_tdm )
   flash "Table des matières du livre ##{livre.id} actualisée."
 else
