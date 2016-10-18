@@ -248,6 +248,7 @@ class << self
     end.join.in_div(id:"cnarration_inventory", style:"line-height:1em")
 
     code = "<h4>Nombre de pages en développement par livre</h4>" +
+            avertissement_valeurs_aberrantes +
             styles_css_graphiques_pages +
             code
     (Cnarration::folder+"cnarration_inventory.html").write code
@@ -329,6 +330,10 @@ div.bookrang span.pages {
 </style>
 
     EOD
+  end
+
+  def avertissement_valeurs_aberrantes
+    'Pour l’explication de certaines valeurs aberrantes, cf. sous les graphiques.'.in_div(class: 'tiny right italic', style:'margin-bottom:2em')
   end
 
   # Reçoit un nombre quelconque et un nombre max et retourne le

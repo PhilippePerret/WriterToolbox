@@ -10,17 +10,11 @@ site.require_objet 'unan'
 %>
 
 <p>
-  Cette section est le <span class='bold'>WORK IN PROGRESS</span> de la conception de la <strong>COLLECTION NARRATION</strong>, le cours de dramaturgie et d'écriture de <%= 'Philippe Perret'.in_a(href: 'site/phil', class: 'people') %>.
+  Cette section est le <span class='bold'>WORK IN PROGRESS</span> <sup>(*)</sup> de la conception de la <strong>COLLECTION NARRATION</strong>, le cours de dramaturgie et d'écriture de <%= 'Philippe Perret'.in_a(href: 'site/phil', class: 'people') %> prochainement publié en version papier.
 </p>
-<p><span class='warning'>“Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration.</span></p>
-
-
+<p class='small'><sup>(*)</sup> “Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration et même interagir avec cette conception en donnant votre avis sur les pages.</p>
 
 <%= Cnarration::dernier_inventaire %>
-
-
-
-<p>Vous pouvez même y participer en donnant votre avis sur les pages.</p>
 
 <p class="small">
   Ce “work in progress” explique certaines valeurs qui peuvent paraitre aberrantes, comme un nombre de pages supérieur au nombre de pages de total. Au moment où j'écris cet avertissement, l'ouvrage sur la structure indique “135/120”. Il faut comprendre le premier chiffre comme le nombre actuel de pages et le second comme le nombre de pages du livre final — des pages seront fatalement supprimées ou raccourcies, c'est la dure loi de l'édition ;-).
