@@ -62,9 +62,21 @@ class CNarration
     report "Nombre de rangées locales   : #{loc_rows.count}"
     report "Nombre de rangées distantes : #{dis_rows.count}"
 
-    # Boucle sur chaque page locale
-    # Note : Puisque les pages ne peuvent être que créées localement,
-    # il est inutile de vérifier les pages distantes.
+    # Boucle sur chaque donnée de page distante.
+    # Puisque les pages de la collection ne peuvent se créer et se
+    # détruire que localement, toute rangée de la table distante qui
+    # n'existe pas en local est une page détruite et qu'il faut détruire
+    # en distant.
+    dis_rows.each do |pid, dis_data|
+      loc_data = loc_rows[pid]
+      loc_data.nil? || next
+      dis_table.delete(pid)
+      report "DESTRUCTION de la rangée de la page distante ##{pid} (“#{dis_data[:titre]}”)"
+    end
+
+    # Boucle sur chaque donnée de page locale qui doit être actualisée
+    # ou créée en distante.
+    #
     loc_rows.each do |pid, loc_data|
       dis_data = dis_rows[pid]
 
