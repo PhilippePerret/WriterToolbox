@@ -7,10 +7,7 @@ raise_unless_admin
   <%= file.folder.in_input_text(id: 'folder_path')%>/<%= file.name.in_input_text(id: 'file_name')%>
 </div>
 <div id="boutons_edition">
-  <%= menu_police %>
-  <%= menu_line_height %>
-  <%= champs_scenodico %>
-  <%= champs_filmodico %>
+  <%= boite_interaction %>
 </div>
 <form id="form_edit_text" action="site/edit_text" method="POST" charset="utf-8">
   <%= 'save_edited_text'.in_hidden(name:'operation') %>

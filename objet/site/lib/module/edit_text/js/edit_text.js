@@ -18,6 +18,9 @@ $.extend(window.EditText,{
   onchange_police:function(police){
     this.textarea.css('font-family', police);
   },
+  onchange_fontsize:function(size){
+    this.textarea.css('font-size', size+'pt')
+  },
   onchange_lineheight:function(height){
     this.textarea.css('line-height', height+'em')
   },
@@ -95,7 +98,7 @@ $.extend(window.EditText,{
   },
 
   // Méthode principale pour enregistrer le texte. Ça l'envoie par
-  // ajax, en espérant qu'on atteigne pas la limite.
+  // ajax, en espérant qu'on n'atteigne pas la limite.
   // On vérifie quand même
   on_save_text:function(rajax){
     if(undefined == rajax){
@@ -125,14 +128,3 @@ window.text_modified = false ;
 window.set_modified = function(value){
   window.text_modified = !!value;
 }
-
-
-$(document).ready(function(){
-  EditText.textarea = $('textarea#file_content');
-  EditText.set_interface();
-  UI.prepare_champs_easy_edit(tous=true);
-  // Pour vérifier que le code a bien été enregistré avant de
-  // fermer la page.
-	window.onbeforeunload = $.proxy(EditText,'before_quit');
-
-})

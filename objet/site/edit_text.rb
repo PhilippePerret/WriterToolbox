@@ -1,47 +1,14 @@
 # encoding: UTF-8
 raise_unless_admin
 
+site.require_module 'edit_text'
+
 # Pour les snippets
 page.add_javascript(PATH_MODULE_JS_SNIPPETS)
-
-# ---------------------------------------------------------------------
-#   Méthodes d'helper
-# ---------------------------------------------------------------------
-def menu_police
-  [
-    'Lucida Console', 'Georgia', 'Arial', 'serif', 'monospace'
-  ].collect{|p| [p,p]}.in_select(id:'police', name:'police',
-    onchange:"$.proxy(EditText,'onchange_police',this.value)()")
-end
-def menu_line_height
-  {
-    '1'   => 'Serré',
-    '1.2' => 'Normal',
-    '1.4' => 'Écarté',
-    '1.7' => 'Très écarté'
-  }.collect{|k,v|[k,v]}.in_select(id:'line_height', name:'line_height',
-    onchange: "$.proxy(EditText,'onchange_lineheight',this.value)()",
-    selected: '1.2'
-  )
-end
-
-# Champ pour chercher un mot du scénodico
-def champs_scenodico
-  (
-    ''.in_input_text(name:'scenodico', id:'scenodico', placeholder: "Scénodico") +
-    'Chercher'.in_button(onclick: "$.proxy(EditText,'cherche_scenodico')()")
-  ).in_div(id:'div_scenodico', class: 'biblio')
-end
-
-def champs_filmodico
-  (
-    ''.in_input_text(name:'filmodico', id:'filmodico', placeholder: "Filmodico") +
-    'Chercher'.in_button(onclick: "$.proxy(EditText,'cherche_filmodico')()")
-  ).in_div(id:'div_filmodico', class: 'biblio')
-end
-# ---------------------------------------------------------------------
-# /fin des méthodes d'helper
-# ---------------------------------------------------------------------
+# Pour les snippets de Narration ou d'un document normal
+# Noter qu'ils ne seront activés que si la CB "Snippets Narration"
+# est cochée
+page.add_javascript('./objet/cnarration/lib/module/snippets/pages.js')
 
 class EditFile
 
