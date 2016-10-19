@@ -92,30 +92,46 @@ class CNarration
         report "CRÉATION de la page (ou titre) DISTANT : #{loc_data.inspect}"
       elsif loc_data != dis_data
         # Données différentes
-        # Si c'est le niveau de développement qui a changé, il faut
-        # updater le niveau le plus bas.
-        # Si c'est une autre donnée qui a changé, il faut prendre
-        # l'updated_at pour voir la plus récente (et signaler quand même
-        # un problème si c'est en online que la modification est la plus
-        # récente, ce qui ne devrait pas vraiment arriver)
-        if loc_data[:options][1] != dis_data[:options][1]
-          debug "NIV DEV DIFFÉRENT (#{loc_data[:options]} / #{dis_data[:options]})"
-          # NIVEAU DE DÉVELOPPEMENT DIFFÉRENT
-          loc_data = update_niveau_developpement(pid, loc_data, dis_data)
-          debug "loc_data après : #{loc_data.inspect}"
-          @nombre_synchronisations += 1
-        end
+        # # Si c'est le niveau de développement qui a changé, il faut
+        # # updater le niveau le plus bas.
+        # # OBSOLÈTE (on se sert maintenant exclusivement de la date
+        # # d'actualisation)
+        # #
+        # # Si c'est une autre donnée qui a changé, il faut prendre
+        # # l'updated_at pour voir la plus récente (et signaler quand même
+        # # un problème si c'est en online que la modification est la plus
+        # # récente, ce qui ne devrait pas vraiment arriver)
+        # if loc_data[:options][1] != dis_data[:options][1]
+        #   debug "NIV DEV DIFFÉRENT (#{loc_data[:options]} / #{dis_data[:options]})"
+        #   # NIVEAU DE DÉVELOPPEMENT DIFFÉRENT
+        #   loc_data = update_niveau_developpement(pid, loc_data, dis_data)
+        #   debug "loc_data après : #{loc_data.inspect}"
+        #   @nombre_synchronisations += 1
+        # end
         # Autre donnée différente. Dans ce cas, on prend
         # la date de dernière modification pour savoir quelle
         # donnée doit être actualisée
-        loc_plus_jeune          = loc_data[:udpated_at].to_i > dis_data[:updated_at].to_i
-        loc_priorite_plus_jeune = loc_data[:options].length > dis_data[:options].length
-        if loc_plus_jeune || loc_priorite_plus_jeune
-          # OK => actualisation de la donnée distante
-          debug "dis_table actualisée pour ##{loc_data[:id]}"
-          dis_table.update(pid, loc_data)
-          @nombre_synchronisations += 1
+        if loc_data[:updated_at] != dis_data[:updated_at]
+          if loc_data[:updated_at] > dis_data[:updated_at]
+            # Actualisation de la donnée distante
+            dis_table.update(pid, loc_data)
+            @nombre_synchronisations += 1
+            report "Actualisation de la donnée DISTANTE de la page ##{pid}"
+          else
+            # Actualisation de la donnée LOCALE
+            loc_table.update(pid, dis_data)
+            @nombre_synchronisations += 1
+            report "Actualisation de la donnée LOCALE de la page ##{pid}"
+          end
         end
+        # loc_plus_jeune          = loc_data[:udpated_at].to_i > dis_data[:updated_at].to_i
+        # loc_priorite_plus_jeune = loc_data[:options].length > dis_data[:options].length
+        # if loc_plus_jeune || loc_priorite_plus_jeune
+        #   # OK => actualisation de la donnée distante
+        #   debug "dis_table actualisée pour ##{loc_data[:id]}"
+        #   dis_table.update(pid, loc_data)
+        #   @nombre_synchronisations += 1
+        # end
         #   # Actualisation de la donnée locale, mais attention,
         #   # c'est bizarre puisqu'on ne devrait pas modifier les
         #   # données en distant.
