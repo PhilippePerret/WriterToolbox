@@ -34,9 +34,12 @@ class Film
   def options       ; @options      ||= get(:options)||"" end
   def sym           ; @sym          ||= get(:sym)         end
 
+  # Exécute la méthode super mais définit aussi @titre.
+  # Il faut retourner quand même toutes les données
   def get_all
     super
     @titre = @titre.force_encoding('utf-8')
+    return @_data
   end
 
 end #/Film

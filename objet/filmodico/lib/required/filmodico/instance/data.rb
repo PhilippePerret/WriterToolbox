@@ -22,6 +22,7 @@ class Filmodico
 
   # On doit surclasser la méthode get_all pour traiter les
   # valeurs spéciales.
+  # Mais la méthode doit quand même retourner tous les données
   def get_all
     super
     @realisateur  = dejson_people(@realisateur)
@@ -31,6 +32,7 @@ class Filmodico
     @musique      = dejson_people(@musique)
     @pays = (@pays || "").split(' ')
     @titre = @titre.force_encoding('utf-8')
+    return @_data
   end
   def dejson_people raw
     return [] if raw.nil_if_empty.nil?

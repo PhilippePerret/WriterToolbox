@@ -19,7 +19,8 @@ if param(:film).nil?
   if film.nil?
     param(:film => Hash.new)
   else
-    Filmodico::prepare_edition_film(film.data)
+    # Filmodico::prepare_edition_film(film.data)
+    Filmodico.prepare_edition_film(film.get_all)
   end
 end
 
