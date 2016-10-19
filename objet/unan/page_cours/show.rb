@@ -67,13 +67,13 @@ class PageCours
     extend MethodesBuildPageSemiDynamique
     build_page_semi_dynamique
   end
-  
+
 end #/PageCours
 end #/Program
 end #/Unan
 
 def page_cours
-  @page_cours ||= Unan::Program::PageCours::get(site.current_route.objet_id)
+  @page_cours ||= Unan::Program::PageCours.get(site.current_route.objet_id)
 end
 
 class User

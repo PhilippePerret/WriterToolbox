@@ -15,7 +15,7 @@ class Program
     end
     page_handler = page_handler.to_sym if page_handler.instance_of?(String)
     raise ArgumentError, "Unan::Program#page_cours attend en argument un Symbol ou un String" unless page_handler.instance_of?(Symbol)
-    PageCours::new(page_handler).self_if_exists_or_raise
+    PageCours.new(page_handler).self_if_exists_or_raise
   end
 
   class PageCours
@@ -45,7 +45,8 @@ class Program
 
     # Retourne toutes les données
     # NOTE Surclasse la méthode du module MethodesMySQL car on
-    # peut utiliser ici l'ID ou le handler.
+    # peut utiliser ici l'ID ou le handler. OBSOLÈTE, c'est _data
+    # qui est utilisé maintenant.
     def data
       @data ||= begin
         if handler != nil
@@ -59,7 +60,7 @@ class Program
     end
 
     def table
-      @table ||= self.class::table_pages_cours
+      @table ||= self.class.table_pages_cours
     end
 
   end #/PageCours

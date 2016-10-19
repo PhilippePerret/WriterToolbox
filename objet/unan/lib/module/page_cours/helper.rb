@@ -19,12 +19,16 @@ class PageCours
   # de son type (extension)
   #
   def read
+    if user.admin?
+      lien_edit_page_cours = "Éditer la page cours UNAN ##{id}".in_a(href: "page_cours/#{id}/edit?in=unan_admin", target: :new)
+      flash "Administrateur, cette page du programme UNAN redirige vers une page de la collection.<br>#{lien_edit_page_cours}"
+    end
     if narration?
       # Pour une page-cours faisant référence à un titre ou
       # une page narration
       redirect_to "page/#{narration_id}/show?in=cnarration"
       site.require_objet 'cnarration'
-      npage = Cnarration::Page::get(narration_id)
+      npage = Cnarration::Page.get(narration_id)
       site.instance_variable_set("@objet", npage)
       return Vue.new('cnarration/page/show.erb').output
 
