@@ -51,7 +51,7 @@ class AbsWork
   #
   # Ces méthodes ont été ajoutées pour simplifier le travail sur les
   # quiz
-  def pday= value; @pday = value end
+  def pday= value; @pday = value  end
   def pday; @pday ||= indice_pday end
 
   # {Unan::Program::AbsWork::RelatifWork} Le travail relatif, s'il existe.

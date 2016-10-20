@@ -1,8 +1,8 @@
 # encoding: UTF-8
 raise_unless_admin
 
-Unan::require_module 'abs_work'
-UnanAdmin::require_module 'abs_work'
+Unan.require_module 'abs_work'
+UnanAdmin.require_module 'abs_work'
 
 class Unan
 class Program
@@ -12,15 +12,15 @@ class AbsWork
     def list
       data_request = Hash.new
       data_request.merge!(colonnes: [])
-      data_request.merge!(where: where_clause) unless where_clause.nil?
-      Unan::table_absolute_works.select(data_request).collect do |h|
+      where_clause.nil? || data_request.merge!(where: where_clause)
+      Unan.table_absolute_works.select(data_request).collect do |h|
         get(h[:id])
       end
     end
 
     def where_clause
       @where_clause ||= begin
-        where_clause = Array::new
+        where_clause = Array.new
         if filter.has_key?(:titre_contents)
           where_clause << "titre LIKE '%#{filter[:titre_contents]}%'"
         end

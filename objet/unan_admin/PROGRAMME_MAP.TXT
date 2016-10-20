@@ -94,7 +94,7 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
     JP 028-084 BRAINSTORMINGS ET PREMIÈRES ÉBAUCHES
         Dans cette partie, il va s'agir de préparer le terrain de l'histoire. On va commencer sur la spirale de développement en faisant un tour des documents principaux.
         JP 028-055 [WORK 95] BRAINSTORMING
-            Phase de brainstorming sur le projet, ou plus exactement sur "les" projets possibles.
+            Phase de brainstorming sur le projet.
             JP 028-041 [WORK 43] TOUR 1 (TR1) Sur tous les documents
                 Pendant 14 jours on va alterner assez rapidement un premier tour sur les différents documents, en comptant deux jours par documents.
                 [WORK 43] Premier tour de développement.
@@ -151,8 +151,14 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 60] [PAGE 28] Lecture de la page sur le Pivot 2
                     [EXEMPLE 10] S'appuyer sur Thelma et Louise pour illustrer le travail sur les pivots.
                     TODO [EXEMPLE] Un autre exemple avec les illustrations d'histoire.
-                JP 046-047 TR2 PERS
+                JP 046-047 TR2 PERS FOND
                     [WORK 92] Travail sur les personnages secondaires. On poursuit le travail sur les personnages possibles, et on prend la liste précédente et on l'affine en : 1/ supprimant/fusionnant des personnages 2/ précisant leur rôle précis possible dans l'histoire
+                    [WORK 118] Premier travail sur les fondamentales.
+                        Les pages à lire sont les suivantes :
+                        [PAGE 53] [WORK 119] Généralité sur les 5 fondamentales
+                            Note : le travail n'est pas utilisé ci-dessus : la page de cours est mise directement dans le travail #118.
+                        [PAGE 54] Description et utilisation de la première fondamentale
+                        [PAGE 55] Description et utilisation de la cinquième fondamentale
                     TODO [EXEMPLE] Document exemple sur le travail sur les personnages secondaire.
                 JP 048-049 TR2 DOCU
                     [WORK 110] Document court de présentation du projet à destination des personne intéressante pour la documentation.

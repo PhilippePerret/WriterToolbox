@@ -21,19 +21,7 @@ site.require_objet 'unan'
 </p>
 
 <p class='small'>
-  Cette collection est un ensemble d'ouvrages consacrés à la narration dont chaque volume se concentre sur un domaine particulier (les personnages, la structure, les documents de travail, etc.). Conçue et rédigée par <strong>Philippe Perret</strong>, elle est le produit d'une réflexion pédagogique et d'un accompagnement de très nombreux auteurs durant plus de <%= Time.now.year - 1996 %> ans, notamment au sein de l'<%= "Atelier ICARE".in_a(target:'_blank', href:"http://www.atelier-icare.net") %> dont sont issus <%= "auteurs professionnels, films, romans, livres pour la jeunesse et autres Bandes-dessinées".in_a(target:'_blank', href:"http://www.atelier-icare.net/overview?ovw=reussites") %>.
-</p>
-<p>
-  Pour des raisons éditoriales (*), cette collection nécessite <%= lien.subscribe "d'être abonné#{user.f_e} au site" %> pour pouvoir être consultée intégralement. Une consultation partielle est possible si <%= lien.signup "vous êtes inscrit#{user.f_e}" %>.
-</p>
-<p>
-  <% if user.subscribed? || user.unanunscript? %>
-    En tant qu'abonné<%= user.f_e %>, vous avez accès à l'intégralité de la collection.
-  <% elsif user.identified? %>
-    En tant que simple inscrit<%= user.f_e %> au site, vous avez accès à une consultation limitée de la collection. N'hésitez pas à <%= lien.subscribe "vous abonner pour #{site.tarif_humain}/an" %> (soit <%= site.tarif_humain_par_mois %>) pour profiter pleinement de la collection.
-  <% else %>
-    Vous devez <%= lien.signup "vous inscrire" %> pour consulter partiellement la collection ou <%= lien.subscribe "vous abonner" %> pour bénéficier d'un accès complet, pour <%= site.tarif_humain %> par an, soit seulement <%= site.tarif_humain_par_mois %>.
-  <% end %>
+  Cette collection est un ensemble d'ouvrages consacrés à la narration dont chaque volume se concentre sur un domaine particulier (les personnages, la structure, les documents de travail, etc.). Conçue et rédigée par <strong>Philippe Perret</strong>, elle est le produit d'une réflexion pédagogique et d'un accompagnement de très nombreux auteurs durant plus de <%= Time.now.year - 1996 %> ans, notamment au sein de l'<%= "Atelier ICARE".in_a(target:'_blank', href:"http://www.atelier-icare.net") %> dont sont issus <%= "auteurs professionnels, films, romans, livres pour la jeunesse et autres bandes-dessinées".in_a(target:'_blank', href:"http://www.atelier-icare.net/overview?ovw=reussites") %>.
 </p>
 <p class='small'>
   (*) La <em>Collection Narration</em> est en cours d'édition et les premiers ouvrages seront publiés prochainement sous forme de livre-papier.
@@ -43,6 +31,6 @@ site.require_objet 'unan'
 <h3>Une approche pédagogique originale</h3>
 
 <p>S'il ne fallait retenir qu'un seul élément distinguant la collection Narration des autres approches pédagogiques intéressantes, ce serait le fait qu'elle procède résolument de l'<em>acte d'écriture</em> et non pas de l'<em>analyse</em>. En effet, même si cela peut surprendre, les autres ouvrages fondamentaux traitant de narration, de dramaturgie, d'écriture, découlent le plus souvent d'une démarche <em>analytique</em>&nbsp;: on y apprend que telle ou telle œuvre est construite ainsi, que tel ou tel personnage est fréquent dans les histoires, on y apprend qu'il existe tel ou tel genre de récit, etc. La pensée est  foncièrement <em>analytique</em>. C'est ce qui en fait l'intérêt mais c'est également ce qui en marque les limites et explique le fait que très souvent, les lecteurs sortent de ces ouvrages en pensant savoir écrire, mais dès qu'ils s'y <em>mettent vraiment</em>, ils découvrent qu'ils ne savent rien en vérité sur cet art.</p>
-<p>La philosophie qui anime la collection Narration est radicalement différente. Elle n'aborde pas les œuvres sous l'angle de l'analyse —&nbsp;sauf en de rares occasions&nbsp;— elle les aborde sous l'angle de leur création en tant qu'œuvre narrative, cherchant à en tirer ce qu'elles peuvent nous apprendre sur l'acte de concevoir un récit. C'est ainsi que la collection Narration se soucie toujours de savoir comment l'on peut produire une histoire, un personnage, comment l'on peut exploiter une thématique, comment l'on peut mettre en œuvre des émotions, etc. Même l'ouvrage sur l'analyse de film n'adopte pas une approche analytique —&nbsp;un comble diront certains&nbsp;— , mais oriente au contraire résolument le travail d'analyse vers l'écriture et les bienfaits que l'analyse peut lui prodiguer.</p>
+<p>La philosophie qui anime la collection Narration est radicalement différente. Elle n'aborde pas les œuvres sous l'angle de l'analyse —&nbsp;sauf en de rares occasions&nbsp;— elle les aborde sous l'angle de leur création en tant qu'œuvre narrative, cherchant à en tirer ce qu'elles peuvent nous apprendre sur l'acte de concevoir un récit. C'est ainsi que la collection Narration se soucie toujours de savoir comment l'on peut produire une histoire, un personnage, comment l'on peut exploiter une thématique, comment l'on peut mettre en œuvre des émotions, etc. Même l'ouvrage sur l'analyse de film n'adopte pas une approche analytique — un comble diront certains —, mais oriente au contraire résolument le travail d'analyse vers l'écriture et les bienfaits que l'analyse peut lui prodiguer.</p>
 
 </section>

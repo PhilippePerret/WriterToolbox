@@ -40,7 +40,7 @@ class Cnarration
 
     def admin_avertissement_relecture
       if user.admin? && page_content_by_niveau_developpement.match(/<relecture>/)
-        '<relecture>Attention, ce texte achevé ne demande qu’une relecture des passages qui se trouvent dans cette couleur.</relecture>'.in_div(class: 'cadre air big')
+        '<relecture>Attention, soit ce texte est achevé et demande une relecture des seuls passages qui se trouvent dans cette couleur, soit il est à relire mais contient de nouveaux passages ou des passages modifiés de façon conséquente, qui sont repérés par cette couleur.</relecture>'.in_div(class: 'cadre air big')
       else
         ''
       end
@@ -64,21 +64,23 @@ class Cnarration
     # authips à 1 dans l'url.
     #
     def page_content_by_niveau_developpement
-      full_autorisation = user.admin? || user.authorization_level.to_i > 3
-      if developpement < 8 && false == full_autorisation
-        message_niveau_developpement_insuffisant
-      else
-        if !path_semidyn.exist? || out_of_date?
-          # La page semi-dynamique n'est pas encore construite, il
-          # faut la construire. Pour ça, on utilise kramdown.
-          Cnarration::require_module 'page'
-          build
-        end
-        if developpement < 8
-          'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air', style: 'margin-bottom:4em;')
+      @page_content_by_niveau_developpement ||= begin
+        full_autorisation = user.admin? || user.authorization_level.to_i > 3
+        if developpement < 8 && false == full_autorisation
+          message_niveau_developpement_insuffisant
         else
-          ''
-        end + page_content_by_user
+          if !path_semidyn.exist? || out_of_date?
+            # La page semi-dynamique n'est pas encore construite, il
+            # faut la construire. Pour ça, on utilise kramdown.
+            Cnarration.require_module 'page'
+            build
+          end
+          if developpement < 8
+            'Noter que cette page ne se présente pas encore dans sa version définitive.'.in_div(class: 'red air', style: 'margin-bottom:4em;')
+          else
+            ''
+          end + page_content_by_user
+        end
       end
     end
 
