@@ -7,18 +7,19 @@ Pour consulter le programme UN AN jour après jour
 
 # Il faut charger tous les modules du programme normal
 site.require_objet 'unan'
-Unan::require_module 'abs_pday'
-Unan::require_module 'abs_work' # WORK !!! NOT PDAY
-UnanAdmin::require_module( 'abs_pday' )
-UnanAdmin::require_module( 'abs_work' )
+Unan.require_module 'abs_pday'
+Unan.require_module 'abs_work' # WORK !!! NOT PDAY
+UnanAdmin.require_module 'abs_pday'
+UnanAdmin.require_module 'abs_work'
 
 # Il faut aussi la feuille de style de show.css du work
-page.add_css( Unan::folder + "abs_work/show.css" )
+page.add_css( Unan.folder + "abs_work/show.css" )
 page.add_css('./objet/unan/bureau/home.css')
 
-# Le "p-day" courant
-def ipday
-  @ipday ||= Unan::Program::AbsPDay.get(param(:pday) || 1)
+# Le "p-day" courant (jour-programme)
+# Instance Unan::Program::AbsPDay
+def pday_courant
+  @pday_courant ||= Unan::Program::AbsPDay.new(param(:pday) || 1)
 end
 
 class Unan
@@ -32,11 +33,11 @@ class << self
 
   def total_points_upto
     totpoints_hier = 0
-    (1..(ipday.id - 1)).each do |ij|
+    (1..(pday_courant.id - 1)).each do |ij|
       totpoints_hier += points_of(ij)
     end
     sitoutreussi = "(si tout réussit)".in_span(style:"font-size:0.75em")
-    pointsdujour = points_of(ipday.id)
+    pointsdujour = points_of(pday_courant.id)
     totpoints = (totpoints_hier + pointsdujour).to_s.in_span(class:'bold')
     pointsdujour = pointsdujour == 0 ? "#{pointsdujour} points".in_span(class:'warning bold') : "#{pointsdujour} points"
     "Total des points #{sitoutreussi} : #{totpoints} = #{totpoints_hier} + #{pointsdujour} ce jour."
@@ -49,11 +50,6 @@ class << self
         h.merge! wdata[:id] => wdata[:points].to_i
       end; h
     end
-
-    # if ij == 1
-    #   debug "@works_per_pday : #{@works_per_pday.inspect}"
-    #   debug "@points_per_work : #{@points_per_work.inspect}"
-    # end
 
     # Pour calculer le nombre de points max gagnés au cours
     # du jour +ij+
@@ -186,7 +182,7 @@ end #/Work
 class AbsPDay
 
   def edit_buttons
-    return "" unless user.admin?
+    user.admin? || (return '')
     (
       lien_edit("[Edit P-Day #{id}]")
     ).in_div(class:'fright tiny')

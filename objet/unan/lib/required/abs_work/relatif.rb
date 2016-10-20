@@ -52,12 +52,12 @@ class AbsWork
   # Ces méthodes ont été ajoutées pour simplifier le travail sur les
   # quiz
   def pday= value; @pday = value  end
-  def pday; @pday ||= indice_pday end
+  def pday; @pday ||= rwork.indice_pday end
 
   # {Unan::Program::AbsWork::RelatifWork} Le travail relatif, s'il existe.
   def rwork
     @rwork ||= begin
-      RelatifWork::new(self, relative_data || {user_id: user.id, work_id: nil})
+      RelatifWork.new(self, relative_data || {user_id: user.id, work_id: nil})
     end
   end
 
