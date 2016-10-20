@@ -19,6 +19,16 @@ class Page
     @content ||= path.read
   end
 
+  # Le lien Bitly pour la page
+  def bitlink
+    @bitlink ||= begin
+      site.require_objet 'bitly'
+      b = RSBitly.new
+      b.long_url = "#{site.distant_url}/page/#{id}/show?in=cnarration"
+      b.short_url
+    end
+  end
+
   # Le type symbole de la page, :page, :chapitre ou :sous_chapitre
   def stype
     @stype ||= [nil, :page, :sous_chapitre, :chapitre][type]

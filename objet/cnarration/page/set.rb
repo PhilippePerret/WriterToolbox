@@ -1,7 +1,7 @@
 # encoding: UTF-8
 =begin
-Module administrateur permettant de modifier les données
-d'une page par l'url
+  Module administrateur permettant de modifier les données
+  d'une page par l'url
 =end
 
 # Seul un administrateur peut atteindre ce module
@@ -9,7 +9,7 @@ raise_unless_admin
 
 property  = param(:prop)
 value     = param(:val)
-page      = Cnarration::Page::new(site.current_route.objet_id.to_i)
+page      = Cnarration::Page.new(site.current_route.objet_id.to_i)
 
 # flash "Je dois mettre la propriété #{property} à la valeur #{value} pour la page #{page.titre}"
 

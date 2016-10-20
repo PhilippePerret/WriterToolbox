@@ -2,7 +2,7 @@
 # Vue pour enregistrer une page
 raise_unless_admin
 %>
-<%= Cnarration::titre_h1("Page (édition)") %>
+<%= Cnarration.titre_h1("Page (édition)") %>
 <% if ONLINE %>
   <p class='air warning'>Les pages de la collection ne peuvent s'éditer qu'en local.</p>
 <% else %>
@@ -32,6 +32,18 @@ bouton_text = 'Texte'     .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, '
 bouton_show = 'Show'      .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_show', this)()")
 bouton_init = 'Init new'  .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'reset_all')();return false")
 bouton_kill = 'Détruit'   .in_a(class: 'btn tiny warning', onclick:"$.proxy(Cnarration,'on_destroy',this)()")
+
+# Bouton permettant de faire une annonce d'actualité, lorsque la page
+# est achevée. Cela envoie aussi un tweet sur la chaine.
+# En fait, c'est un checkbox pour permet de faire ces annonces quand on
+# enregistre les données de la page en développement achevée
+bouton_annonce_update =
+  if epage
+    'Annonce update type'.in_checkbox(name: 'epage[annonce_update]')
+  else
+    ''
+  end
+
 # Premier chiffre des `options`
 values_type_select = [
   ['1', "Page"],
@@ -97,7 +109,8 @@ values_priorites_traitement = [
   <%= form.field_textarea("Description", 'description') %>
 
   <%# NIVEAU DÉVELOPPEMENT (bit 2 des options) %>
-  <%= form.field_select("Développement", 'nivdev', nil, {values: values_niveau_developpement_select}) %>
+  <%= form.field_select("Développement", 'nivdev', nil, {values: values_niveau_developpement_select, text_after: bouton_annonce_update}) %>
+  <%= form.field_description('Le bouton “Annonce update type” permet de faire une annonce d’actualisation qui se retrouvera sur la page d’accueil ainsi que dans le mail des actualités. Envoi également d’un tweet.')%>
   <%= form.field_select('Traitement', 'priorite', nil, {values: values_priorites_traitement, text_before: 'Traitement'}) %>
   <%= form.submit_button("Enregistrer", onclick:"$.proxy(Cnarration,'on_submit_form')()") %>
 </form>

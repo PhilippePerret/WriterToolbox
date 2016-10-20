@@ -20,7 +20,7 @@ class Page
 
     # Sauve la page courante et retourne l'instance
     def save_page
-      new().save
+      new.save
     end
 
     def destroy_page
@@ -78,6 +78,11 @@ class Page
       flash "Fichier créé<br />"+("(dans #{path})".in_span(class:'tiny')) + "."
     end
 
+    # ANNONCE UPDATE ET TWIT
+    # Si la page nécessite une annonce d'actualité , on la crée et
+    # on produit un twit pour l'annoncer également.
+    annonce_update_required? && annonce_update_et_twit
+
     # Si les Identifiants de pages et titres avaient été mis en
     # session (pour accélérer le calcul des pages avant/après) alors
     # il faut initialiser cette variable pour qu'elle tienne compte
@@ -98,6 +103,34 @@ class Page
     }
   end
   def new? ; @is_new_page end
+
+  # Return true si la case à cocher "Annonce update" est cochée dans le
+  # formulaire.
+  def annonce_update_required?
+    !!@annonce_update_is_required
+  end
+
+  # Pour procéder à l'annonce d'actualité (nouvelle page) et
+  # envoyer un twit pour annoncer la nouvelle page achevée
+  def annonce_update_et_twit
+    # Pour faire une annonce de nouvelle page (accueil + mail d'actu)
+    data_update = {
+      message:      "Nouvelle page Narration : #{titre}",
+      annonce:      1,
+      type:         'narration',
+      route:        "narration/#{id}/show",
+      degre:        5,
+      created_at:   Time.now.to_i,
+      updated_at:   Time.now.to_i
+    }
+    # debug "data update : #{data_update.pretty_inspect}"
+    site.new_update data_update
+    flash "Annonce de nouvelle actualité créée pour la page Narration ##{id}."
+    site.require_module 'twitter'
+    site.tweet "Nouvelle page Narration : #{titre} #{bitlink}"
+    flash "Tweet d'annonce de la pgae ##{id} envoyé (#{bitlink})"
+  end
+
 
   # Resetter la liste des IDs de pages et titres en
   # session si elle existe.
@@ -188,11 +221,13 @@ class Page
       if new?
         # Si c'est une nouvelle page il faut s'assurer que ce handler est
         # unique
-        if Cnarration::table_pages.count(where: "handler = '#{@handler}'") > 0
+        if Cnarration.table_pages.count(where: "handler = '#{@handler}'") > 0
           raise "Ce handler (path du fichier) est déjà employé… Impossible de l'utiliser pour une nouvelle page."
         end
       end
     end
+
+    @annonce_update_is_required = data_params[:annonce_update] == 'on'
 
     @description = data_params[:description].purified.nil_if_empty
 

@@ -256,7 +256,7 @@ class CRON2
           '<li>' +
             "<span>#{heure}</span> : " +
             "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
-            " <span class='tiny'>(catégorie : #{hupdate[:type]} — importance : #{degre})</span>" +
+            " <span class='tiny'>(catégorie : #{hupdate[:type]})</span>" +
           '</li>'
         end.join('') + '</ul>'
       end
@@ -322,16 +322,16 @@ class CRON2
         # Le bit 2 (quotidient) et 3 (hebdomadaire) indiquent si
         # l'actualité a été envoyée.
         if for_week
-          where << "SUBSTRING(options,3,1) != 1"
+          where << "SUBSTRING(options,3,1) != '1'"
         else
-          where << "SUBSTRING(options,2,1) != 1"
+          where << "SUBSTRING(options,2,1) != '1'"
         end
 
         # Par prudence, on n'annonce jamais les actualités
-        # de plus d'un mois
-        a_month_ago = NOW - 4.weeks
+        # de plus de trois jours
+        three_days_ago = NOW - 3.days
 
-        where << "created_at > #{a_month_ago}"
+        where << "created_at > #{three_days_ago}"
 
         where = where.join(' AND ')
         table_updates.select(where: where, order: 'created_at ASC, type')

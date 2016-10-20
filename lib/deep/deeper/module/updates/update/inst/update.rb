@@ -68,13 +68,13 @@ class Update
 
     # Le degré de l'importance
     if @data.key? :degre
-      @data[:options] ||= ""
-      @data[:options][0] = @data[:degre]
+      @data[:options] ||= ''
+      @data[:options][0] = @data[:degre].to_s
       @options = @data[:options]
     end
 
 
-    debug "@data après correction : #{@data.inspect}"
+    # debug "@data après correction : #{@data.inspect}"
   end
 
   # ---------------------------------------------------------------------
