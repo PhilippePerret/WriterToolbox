@@ -29,9 +29,9 @@ end
 
 bouton_edit = 'Édit'      .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_edit_by_id', this)();return true;")
 bouton_text = 'Texte'     .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_edit_text', this)();return true;", target: :new)
-bouton_show = 'Show'      .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_show', this)()")
+bouton_show = 'Show'      .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'on_show', this)()", target: :new)
 bouton_init = 'Init new'  .in_a(class:'btn tiny', onclick:"$.proxy(Cnarration, 'reset_all')();return false")
-bouton_kill = 'Détruit'   .in_a(class: 'btn tiny warning', onclick:"$.proxy(Cnarration,'on_destroy',this)()")
+bouton_kill = 'Détruire'  .in_a(class: 'btn tiny warning', onclick:"$.proxy(Cnarration,'on_destroy',this)()")
 
 # Bouton permettant de faire une annonce d'actualité, lorsque la page
 # est achevée. Cela envoie aussi un tweet sur la chaine.

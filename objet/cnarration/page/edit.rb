@@ -128,7 +128,7 @@ class Page
     flash "Annonce de nouvelle actualité créée pour la page Narration ##{id}."
     site.require_module 'twitter'
     site.tweet "Nouvelle page Narration : #{titre} #{bitlink}"
-    flash "Tweet d'annonce de la pgae ##{id} envoyé (#{bitlink})"
+    flash "Tweet d'annonce de la page ##{id} envoyé (#{bitlink})"
   end
 
 
