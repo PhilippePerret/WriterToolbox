@@ -254,7 +254,10 @@ class AbsWork
       ""
     end
     (
-      travail + item_link + div_exemples + div_pages_cours
+      travail.in_div(class:'travail') +
+      item_link                       +
+      div_exemples    +
+      div_pages_cours
     ).in_div(class:'details')
   end
 

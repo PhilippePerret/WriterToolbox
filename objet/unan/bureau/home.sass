@@ -90,12 +90,23 @@ div.panneau_onglet
         color         : #777
     div.details
       padding           : 0.5em
+
+      // Affichage du travail
+      div.travail
+        margin          : 2em 1em !important
+        font-size       : 1.15em
+        // Les paragraphes dans l'intitulé du travail
+        > p, > div
+          margin          : 1em 0 0 0 !important
+
       &, *
         font-size         : 12.2pt
       > span
         margin-right      : 0.5em
       span.info
         text-align      : left
+        display         : block
+        margin-bottom   : 1em
     div.dates
       font-size         : 0.85em
       color             : black
