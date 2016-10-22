@@ -161,10 +161,10 @@ class CRON2
       # à voir dans la table des autorisations.
       def message_souscription_by_user u
         case true
-        when u.admin?     then (message_administrateur % {pseudo: u.pseudo})
-        when u.subscribed? then message_remerciement
+        when u.admin?       then message_administrateur
+        when u.subscribed?  then message_remerciement
         else message_sabonner
-        end
+        end % {pseudo: u.pseudo}
       end
 
       # Le message template
