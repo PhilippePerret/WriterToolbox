@@ -31,7 +31,7 @@ class AbsWork
     # Sert à définir le style css dans map.erb pour le div
     # de la map
     def map_height
-      @map_height ||= (Unan::Program::AbsWork::first_row_last_zone + @zones[:forum].count) * (MAP_DAY_HEIGHT + 2)
+      @map_height ||= (Unan::Program::AbsWork.first_row_last_zone + @zones[:forum].count) * (MAP_DAY_HEIGHT + 2)
     end
 
     # {Fixnum} Retourne une hauteur (un cran) libre où peut
@@ -160,8 +160,10 @@ class AbsWork
     get_all # pour charger toutes les données BdD d'un coup
     top   = (free_row + FIRST_ROW_BY_TYPES[type_id]) * (UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT + 2)
     memorize_zone
-    # Le code HTML retourné
-    displayed_infos.in_a(href:"abs_work/#{id}/edit?in=unan_admin", target:"_new").in_div(id: "awork-#{id}", class:'work', style:"top:#{top}px;left:#{left}px;width:#{width}px")
+    # Le code HTML retourné, qui contient le span pour le titre
+    # sur la map et le code (caché) pour les informations complètes
+    # sur le travail.
+    displayed_infos.in_div(id: "awork-#{id}-#{jour_depart}", class:'work', 'data-id' => "#{id}-#{jour_depart}", style:"top:#{top}px;left:#{left}px;width:#{width}px")
   end
 
   def type_id
@@ -182,15 +184,66 @@ class AbsWork
 
   def displayed_infos
     @displayed_infos ||= begin
-      itemid = item_id ? "item ID ##{item_id}/" : ''
+      titre.in_span(class:'titre') +
       (
-        "#{titre}".in_span(class:'bold') + " [#{itemid}work ##{id}]".in_span(class:'id') +
-        ("Type W : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
+        (
+          'x'.in_a(class:'btn_close', onclick: "$.proxy(MapWorks,'close_work','#{id}-#{jour_depart}')()")
+        ).in_div +
+        work_id_with_liens +
+        work_item_id_with_liens +
+        ("Type : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
         "P-Days #{jour_depart} à #{jour_fin}".in_div +
-        ("Travail : ".in_span(class:'libelle') + "#{travail.deserb(self.bind)}").in_div(class:'italic') +
-        ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
-      ).in_div(class:'infos')
+        div_pages_cours +
+        div_travail
+      ).in_div(class: 'details')
+      # ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
     end
+  end
+
+  def work_id_with_liens
+    lien_editer   = 'éditer'.in_a(href: "abs_work/#{id}/edit?in=unan_admin", target: :new)
+    lien_afficher = 'afficher'.in_a(href: "abs_work/#{id}/show?in=unan", target: :new)
+    "WORK ##{id} (#{lien_editer}#{lien_afficher})".in_span(class:'id')
+  end
+  def work_item_id_with_liens
+    item_id != nil || (return '')
+    "ITEM_ID ##{item_id}".in_span(class: 'item_id')
+  end
+
+  def div_travail
+    ("Travail : ".in_span(class:'libelle') + "#{travail.deserb(self.bind)}").in_div(class:'italic')
+  end
+
+  # Si le travail définit des pages cours, on les indique avec un lien
+  # pour les afficher.
+  def div_pages_cours
+    has_pages_cours? || (return '')
+    # La marque pour indiquer que le travail est associé à des
+    # pages de cours (qui ne seront pas affichées en tant que travaux puisque
+    # seuls les travaux qui consistent en la lecture de page de cours sont
+    # affichés.)
+    mark_has_pages_cours = has_pages_cours? ? ''.in_span(class:'markpg') : ''
+    pids = self.pages_cours_ids
+    pids.instance_of?(Array) || pids = pids.as_list_num_with_spaces
+    (
+      mark_has_pages_cours +
+      "Pages de cours associées (#{pids.count}) : " +
+      pids.collect do |pid|
+        lien_page_cours(pid)
+      end.join(', ')
+    ).in_div(class: 'dv_pgc')
+  end
+  def lien_page_cours pcid
+    "##{pcid} (" +
+    'voir'.in_a(href: "page_cours/#{pcid}/show?in=unan", target: :new) +
+    'edit'.in_a(href: "page_cours/#{pcid}/edit?in=unan_admin", target: :new) +
+    ')'
+  end
+
+  # Retourne true si le travail contient des pages de cours
+  def has_pages_cours?
+    @has_pages_cours === nil && @has_pages_cours = !pages_cours_ids.empty?
+    @has_pages_cours
   end
 
   # Le jour de départ et de fin du travail.
@@ -209,7 +262,7 @@ class AbsWork
     @left ||= (jour_depart - 1) * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
   end
   def width
-    @width ||= duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH
+    @width ||= (duree * UnanAdmin::Program::AbsWork::MAP_DAY_WIDTH) - 6
   end
   def free_row
     @free_row ||= UnanAdmin::Program::AbsWork.free_top_zone_for(left, width, type_id)

@@ -36,7 +36,6 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
   %>
   <div id="abs_work_map" style="width:<%= UnanAdmin::Program::AbsWork::MAP_WIDTH %>px">
     <div class="titre_zone" style="top:<%= top_titre(:tasks) %>px">Travaux</div>
-    <div class="titre_zone" style="top:<%= top_titre(:tasks) %>px">Travaux</div>
     <div class="titre_zone" style="top:<%= top_titre(:pages) %>px">Pages cours</div>
     <div class="titre_zone" style="top:<%= top_titre(:quiz) %>px">Quiz</div>
     <div class="titre_zone" style="top:<%= top_titre(:forum) %>px">Forum</div>
@@ -46,12 +45,14 @@ div#abs_work_map div.work{top: <%= UnanAdmin::Program::AbsWork::MAP_DAY_HEIGHT %
       <% end %>
     <% end %>
   </div>
+  <%# Pour remplacer le work déployé %>
+  <div id="work_shadow" style="display:none"></div>
 </div><%# Le conteneur %>
 <%
 # Pour afficher les infos du travail survolé
 %>
-<div id="overview_infos_work"></div>
+<div id="overview_infos_work" style="z-index:10"></div>
 
 <style type="text/css">
-div#abs_work_map{height:<%= UnanAdmin::Program::AbsWork::map_height%>px}
+div#abs_work_map{height:<%= UnanAdmin::Program::AbsWork.map_height%>px}
 </style>

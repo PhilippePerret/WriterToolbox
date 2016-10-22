@@ -208,7 +208,7 @@ class PageCours
             tit = case pagen.stype
             when :page then ""
             when :chapitre, :sous_chapitre then "#{pagen.htype.capitalize} "
-            end + "“#{pagen.titre}”" + "<span class='tiny'> (collection Narration)</span>"
+            end + "#{pagen.titre}" + " <span class='tiny'>(collection Narration)</span>"
             @data_page[:titre]    = "#{tit}"
           end
 

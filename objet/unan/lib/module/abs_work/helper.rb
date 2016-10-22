@@ -157,16 +157,17 @@ class AbsWork
   # Retourne la section DIV contenant les suggestions de
   # lecture (pages cours) s'il y en a
   def suggestions_lectures
-    return "" if pages_cours_ids.empty?
+    return '' if pages_cours_ids.empty?
     where = "id IN (#{pages_cours_ids.join(',')})"
-    hpagescours = {}
+    hpagescours = Array.new
     Unan.table_pages_cours.select(where: where, colonnes:[:titre]).each do |hpage|
       hpagescours.merge! hpage[:id] => hpage
     end
-    listepages = pages_cours_ids.collect do |pcid|
-      titre = hpagescours[pcid][:titre]
-      "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
-    end.pretty_join.in_span
+    listepages =
+      pages_cours_ids.collect do |pcid|
+        titre = hpagescours[pcid][:titre]
+        "#{DOIGT}#{titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
+      end.pretty_join.in_span
 
     s = pages_cours_ids.count > 1 ? 's' : ''
     (
@@ -261,7 +262,7 @@ class AbsWork
   # à placer dans la carte du work. Chaque exemple est un lien
   # permettant de l'afficher.
   def div_exemples
-    return "" if exemples_ids.empty?
+    return '' if exemples_ids.empty?
 
     (
       "Exemples :".in_span(class:'libelle') +
@@ -278,13 +279,13 @@ class AbsWork
   # mais les pages suggérées, souvent des pages Narration, en
   # rapport avec le travail courant.
   def div_pages_cours
-    return "" if pages_cours_ids.empty?
+    return '' if pages_cours_ids.empty?
     (
-      "Suggestion de lecture : ".in_span(class:'libelle') +
+      'Suggestions de lecture : '.in_span(class:'libelle') +
       pages_cours_ids.collect do |pcid|
-        pagec = Unan::Program::PageCours::get(pcid)
-        "#{pagec.titre}".in_a(href:"page_cours/#{pcid}/show?in=unan")
-      end.pretty_join
+        pagec = Unan::Program::PageCours.get(pcid)
+        pagec.titre.in_a(href:"page_cours/#{pcid}/show?in=unan").in_li
+      end.join.in_ul
     ).in_span(class:'info block')
   end
 
@@ -317,9 +318,9 @@ class AbsWork
     end.join
   end
   def buttons_edit
-    return "" unless user.admin?
+    user.admin? || (return '')
     (
-      lien_edit("[Edit Work##{id}]")
+      "[Edit Work##{id}]".in_a(href: "abs_work/#{id}/edit?in=unan_admin")
     ).in_div(class:'right tiny')
   end
 

@@ -33,7 +33,7 @@ class << self
 
   def total_points_upto
     totpoints_hier = 0
-    (1..(pday_courant.id - 1)).each do |ij|
+    (1..(pday_courant.id.to_i - 1)).each do |ij|
       totpoints_hier += points_of(ij)
     end
     sitoutreussi = "(si tout réussit)".in_span(style:"font-size:0.75em")
@@ -120,13 +120,13 @@ class AbsPDay
 
     @continuing_works = Hash.new
 
-    return @continuing_works if id == 1
+    return @continuing_works if id.to_i == 1
 
     # On boucle sur tous les jours avant le jour courant
     # debug "Recherche des travaux perdurant sur le jour #{id}"
-    (1..(id-1)).each do |ij|
+    (1..(id.to_i-1)).each do |ij|
       debug "Test du jour #{ij}"
-      diff_jours = (id - ij).freeze
+      diff_jours = (id.to_i - ij).freeze
       # debug "   Différence de jours avec le jour #{id} : #{diff_jours}"
       ij_works = @works_per_pday[ij] || []
       next if ij_works.empty?
@@ -170,7 +170,7 @@ class << self
   # @usage :    @durees_per_works ||= Unan::Program::Work::durees_per_work
   def durees_per_work
     h = Hash.new
-    Unan::table_absolute_works.select(colonnes:[:duree]).each do |wdata|
+    Unan.table_absolute_works.select(colonnes:[:duree]).each do |wdata|
       h.merge! wdata[:id] => wdata[:duree]
     end
     return h

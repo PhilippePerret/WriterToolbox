@@ -1,6 +1,6 @@
 body
   margin    : 0
-  
+
 // On règle ici les éléments principaux pour ne pas avoir
 // à le faire par javascript
 section#header, section#footer, form#taches_widget, section#debug, section#left_margin
@@ -40,7 +40,12 @@ div#abs_work_map_container
       background-color  : white
       z-index           : 100
 
-    div.work
+    // Le div contenant le travail
+    // work_shadow est un div affiché à la place du div.work lorsqu'il
+    // est déployé
+    div#work_shadow
+      background-color    : blue !important
+    div.work, div#work_shadow
       position          : absolute
       height            : 20px
       border            : 1px solid
@@ -51,29 +56,68 @@ div#abs_work_map_container
       text-align        : left
       z-index           : 1
       padding-left      : 4px
-      &.selected
-        background-color    : #00A
-        color               : white
-        border-color        : #00A
-      span.id
-        display         : none
-        margin-right    : 0.4em
       &:hover
         background-color  : #EEEEFF
+      // Pour la marque indiquant que le travail possède ses propres
+      // pages de cours.
+      span.markpg
+        position    : absolute
+        top         : 0
+        right       : 0px
+        width       : 6px
+        height      : 20px
+        background-color  : green
+      // Quand le div.work est dans la ligne de temps, on n'affiche
+      // pas ses détails
+      div.detail
+        display   : none
+      // Quand le travail est cliqué dans la map horizontale, on
+      // l'affiche complètement en bas de la fenêtre
       &.collapsed
-        overflow          : visible
+        position          : fixed
+        bottom            : 0  !important
+        left              : 2em !important
+        overflow          : auto
         background-color  : white
         opacity           : 1
         z-index           : 10
         font-size         : 12pt
         height            : auto
+        max-height        : 260px
         line-height       : 17pt
         width             : auto
-        min-width         : 400px
-        div.infos
-          padding           : 12px !important
+        min-width         : 480px
+        max-width         : 680px
+        padding           : 3em
+        a.btn_close
+          position          : absolute
+          right             : 4px
+          top               : 4px
+          padding           : 0px 6px 2px
+          background-color  : green
+          color             : white !important
+        // On laisse toujours de l'air à côté des span et des <a>
+        span, a
+          margin   : 0 0.15em
+        span.id
+          border      : 1px solid #999
+          padding     : 1px 8px 3px
+          float       : right
+        // Le titre en gras quand le div.work est déployé
+        span.markpg
+          position          : relative
+          left              : unset
+          top               : 4px
+          display           : inline-block
+          width             : 16px
+        span.titre
+          font-weight   : bold
+        // Quand le div.work est ouvert, on affiche tous ses détails
+        div.detail
+          display     : block
+          padding     : 12px !important
           span.id
-            display     : inline
+            margin-right    : 0.4em
       a
         color         : inherit !important
 
@@ -98,3 +142,6 @@ div#overview_infos_work
       margin-right    : 0.4em
     a
       color           : black
+    div.dv_pgc
+      float     :   right
+      font-size :   0.82em
