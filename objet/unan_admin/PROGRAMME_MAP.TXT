@@ -185,10 +185,12 @@ JP 028-140 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 101] Travail d'analyse sur la dynamique de trois films. Choisir trois films, si possible des films déjà vus, et faire la liste précise de tous les objectifs, tous les obstacles et tous les conflits rencontrés.
                     TODO [EXEMPLE] Exemple travail identique sur au moins un film.
                 JP 058-059 TR3 sur les thèmes THEM
-                    TODO [WORK] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)
-                        TODO Bien préciser que la thèse est souvent ce que l'on pense et qu'il faut savoir, pour le propos, savoir défendre son point de vue contraire, le quelqu'un qui défendrait le point de vue contraire au sien.
-                    TODO [PAGE] Lier à la page sur les thèmes qui développe ce principe de la thèse et l'antithèse.
+                    [WORK 120] Affirmation du propos. Essayer de supprimer la nuance, forcer le discours, le trancher. Pourquoi ? Pour permettre de développement une antithèse forte, ce qui fera l'objet du travail ici. Donc : 1/ affirmer les propos tenus sur les 2/3 thèmes forts qui se sont dégagés et 2/ commencer à développer l'antithèse (savoir dire le contraire de ce qu'on pense)
+                        Bien préciser que la thèse est souvent ce que l'on pense et qu'il faut savoir, pour le propos, savoir défendre son point de vue contraire, le quelqu'un qui défendrait le point de vue contraire au sien.
+                    [WORK 121] [PAGE 56] [NARRATION 470] Lier à la page sur les thèmes qui développe ce principe de la thèse et l'antithèse.
                 JP 060-061 TR3 sur dynmatique DYNA
+                    [WORK 122] Faire l'analyse et l'affinement des obstacles (crescendo de conflit). Jouer sur les caractéristiques permanentes et provisoires des personnages pour gérer ce crescendo.
+                    [WORK 123] [PAGE 57] [NARRATION 122] Sur le crescendo de conflit
                 JP 062-063 TR3 sur la documentation DOCU
                     [WORK 111] Rendez-vous avec des personnes contactées lors des prises de contact précédentes ou achèvement des travaux interrompus à cause de rendez-vous au cours des jours précédents.
                 JP 064-065 TR3 sur les personnages PERS

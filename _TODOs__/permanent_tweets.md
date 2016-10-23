@@ -2,18 +2,19 @@
 
 # À TRAITER
 
-# Page 54
-Trois dimensions suffisent à produire l’illusion d’une personne réelle. http://bit.ly/2aRvnfh
-
-Dans une histoire, tout est affaire d’illusion : http://bit.ly/2aRvnfh
 
 
-# Page 334
-“Ça n'est pas à l'auteur de décider de la fonction d'un évènement.”
-quand OK et faire lien bitly)
 
 
 ## Pages déjà ajoutées
+
+[102] Méprise : un obstacle plus grand ne présage pas, en soi, d’une difficulté plus grande http://bit.ly/2c18gdZ
+
+Dans une histoire, tout est affaire d’illusion : http://bit.ly/2aRvnfh
+
+Trois dimensions suffisent à produire l’illusion d’une personne réelle. http://bit.ly/2aRvnfh
+
+Ça n'est pas à l'auteur de décider de la fonction d'un évènement. http://bit.ly/2eueedq
 
 Dans une histoire, tout est affaire d'illusion : http://bit.ly/2aRvnfh
 
