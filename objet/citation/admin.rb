@@ -20,5 +20,24 @@ class Citation
       }
       table_citations.select(drequest)
     end
+
+    # Pour lister le nombre de citations par auteurs
+    def nombre_citations_par_auteur
+      request = "SELECT auteur, COUNT(auteur) as nombre_citations FROM citations GROUP BY auteur ORDER BY nombre_citations DESC;"
+
+      'Classement des auteurs par nombre de citations'.in_h3 +
+      site.dbm_base_execute(:cold, request).collect do |hauteur|
+        auteur = hauteur[:auteur]
+        auteur.match(/ dit /) && begin
+          auteur = auteur.split(' dit ').last
+        end
+        auteur.length <= 30 || begin
+          auteur = auteur[0..29] + ' […]'
+        end
+        auteur = auteur.ljust(34)
+        nombre = hauteur[:nombre_citations].to_s.rjust(4)
+        "#{auteur} #{nombre}"
+      end.join("\n").in_pre
+    end
   end #/<< self
 end #/Citation

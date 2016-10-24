@@ -1,6 +1,7 @@
 # Bases de données
 
 * [Introduction](#introductionbasededonnees)
+* [Soumettre une requête à une base (sans passer par la table)](#soumettreunerequetedansunebase)
 * [Récupérer n'importe quelle table (ou la créer)](#getanytableorcreate)
 * [Exemple complet d'utilisation dans le programme](#exemplecompletdutilisation)
 * [Définition d'une table](#definitiondunetable)
@@ -20,6 +21,19 @@ Les tables de ces bases de données doivent être définies dans le dossier :
 
     ./database/table_definitions_mysql/
 
+
+<a name='soumettreunerequetedansunebase'></a>
+
+## Soumettre une requête à une base (sans passer par la table)
+
+Utiliser le code :
+
+~~~ruby
+
+  request = "... requête MySQL valide ..."
+  resultat = site.dbm_base_execute(<suffixe base>, request)
+
+~~~
 
 <a name='getanytableorcreate'></a>
 
