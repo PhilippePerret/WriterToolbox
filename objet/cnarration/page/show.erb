@@ -13,7 +13,6 @@ end
 %>
 <% if ipage.exist? %>
   <%= Cnarration.titre_h1 ipage.livre.titre %>
-  <% if param(:fromicare) == '1' %><%= ipage.encart_icarien %><% end %>
   <%= ipage.liens_edition_if_admin %>
   <%= ipage.boutons_navigation(:top) %>
   <%= ipage.output %>

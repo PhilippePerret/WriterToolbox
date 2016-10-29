@@ -36,6 +36,7 @@ class ::String
   #               si le code vient d'un SuperFile. Dans ce cas, ce
   #               possesseur peut déterminer des méthodes supplémentaires
   #               de traitement
+  #     :folder_image   Le dossier des images
   #     :pre_code Du code markdown à ajouter avant le code
   #
   def kramdown options = nil
@@ -110,6 +111,7 @@ class ::String
     # suivante, car la suivante traite aussi les balises
     # IMAGE mais de façon plus générale (et sans pouvoir
     # définir des sous-dossiers).
+    debug "JE PASSE PAR ICI AVEC options[:folder_image] = #{options[:folder_image].inspect}"
     code = code.formate_balises_images(options[:folder_image]) if self.respond_to?(:formate_balises_images)
 
     # Si une méthode formate_balises_propres existe, il
@@ -230,12 +232,11 @@ class SuperFile
 
     # On doit produire un code ERB
     options[:output_format] ||= :erb
-    options[:folder_image] = folder.to_s
 
     options.merge!(
       owner:        self,
       # Pour trouver un dossier image, if any
-      folder_image: folder.to_s
+      folder_image: folder_image # folder.to_s
     )
 
     code = self.read.gsub(/\r\n?/, "\n").chomp

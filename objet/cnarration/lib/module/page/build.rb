@@ -48,10 +48,24 @@ class SuperFile
   # collection Narration (mais peut fonctionner pour tout autre
   # fichier SuperFile)
   def formate_balises_images_in code
-    code.formate_balises_images(folder.to_s)
+    code.formate_balises_images(folder_image)
   end
 
-
+  def folder_image
+    # Le dossier de l'image. Pour la recherche des images dans
+    # Narration, ce dossier permet d'atteindre le dossier à différent
+    # endroits.
+    dossier_image = folder.to_s
+    is_narration = !!dossier_image.match(/\/cnarration\//)
+    dossier_image =
+      case is_narration
+      when true
+        dossier_image.sub(/^(.*\/cnarration\/)/, '').split('/').first
+      when false  then dossier_image
+      end
+    debug "folder_image = #{dossier_image.inspect}"
+    return dossier_image
+  end
 end #/SuperFile
 
 class Cnarration

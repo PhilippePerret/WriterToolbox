@@ -53,12 +53,13 @@ class String
   # +subfolder+ {String} Un nom de dossier qui peut être transmis
   # parfois pour indiquer un dossier narration ou un dossier
   # d'analyse.
+  #
   def formate_balises_images subfolder = nil
     return self unless self.match(/IMAGE\[/)
     self.gsub!(/IMAGE\[(.+?)\]/){
       path, title, legend, expfolder = $1.split('|')
-      imgpath = String::seek_image_path_of( path, subfolder || expfolder)
-      title  = title.gsub(/'/, "’") unless title.nil?
+      imgpath = String.seek_image_path_of( path, subfolder || expfolder)
+      title.nil? || title = title.gsub(/'/, "’")
       if imgpath != nil
 
         # La légend, if any
@@ -66,11 +67,12 @@ class String
         #   1. être nil   => Rien
         #   2. être ""    => On prend le titre comme légende
         #   3. être définie comme telle
-        legend = case legend
-        when "="          then title
-        when nil, "null"  then nil
-        else legend
-        end
+        legend =
+          case legend
+          when "="          then title
+          when nil, "null"  then nil
+          else legend
+          end
         legend = legend.nil? ? "" : "<div class='img_legend'>#{legend}</div>"
 
 
@@ -78,13 +80,14 @@ class String
 
         # Si `title` se termine par '%', c'est une taille
         # à prendre en compte
-        unless (rs = title.scan(/ ?([0-9]{1,3})%$/)).empty?
-          taille  = rs.first.first.to_i
-          attrs.merge!(style: "width:#{taille}%")
-          # Ce qu'il reste du titre
-          title   = title.sub(/ ?([0-9]{1,3})%$/, '').strip
+        title == nil || begin
+          unless (rs = title.scan(/ ?([0-9]{1,3})%$/)).empty?
+            taille  = rs.first.first.to_i
+            attrs.merge!(style: "width:#{taille}%")
+            # Ce qu'il reste du titre
+            title   = title.sub(/ ?([0-9]{1,3})%$/, '').strip
+          end
         end
-
         # Soit title est un titre alternatif (qui pourra
         # servir de légende si légende non définie) ou bien
         # c'est un indicateur de position de l'image.
@@ -205,6 +208,13 @@ class String
   #     Le `folder` doit alors être fourni en 2nd argument
   #
   def self.seek_image_path_of relpath, folder = nil
+    debug "\n* RECHERCHE IMAGE *\n* relpath: #{relpath.inspect}\n* folder: #{folder.inspect}"
+    extensions =
+      if File.extname(relpath) == ''
+        ['.png','.jpg', '.gif']
+      else
+        ['']
+      end
     [
       '',
       './view/img/',
@@ -215,8 +225,15 @@ class String
       "./data/analyse/#{folder}/img/",
       "#{folder}" # narration ou autre
     ].each do |prefix_path|
-      goodpath = "#{prefix_path}#{relpath}"
-      return goodpath if File.exist? goodpath
+      goodaffixe = "#{prefix_path}#{relpath}"
+      extensions.each do |ext|
+        goodpath = "#{goodaffixe}#{ext}"
+        File.exist?(goodpath) && begin
+          debug "BON PATH IMAGE : #{goodpath}"
+          return goodpath
+        end
+        debug "Mauvais path Image : #{goodpath}"
+      end
     end
     return nil
   end

@@ -88,51 +88,14 @@ class Cnarration
     # de l'user
     def page_content_by_user
       @full_page = path_semidyn.deserb
-
-      # OBSOLÈTE
-      # --------
-      # (maintenant, la collection est en libre accès complet)
-      # Si l'user est abonné ou que le texte fait moins de 3000
-      # signes, on retourne le texte tel quel
-      # return (full_page_with_exergue || @full_page) if user.authorized? || @full_page.length < 2500
       return full_page_with_exergue || @full_page
-
-      # # OBSOLÈTE
-      # # Si l'utilisateur n'est pas abonné, on tronque la page
-      # # et on ajoute un message l'invitant à s'abonner.
-      # # On a plusieurs moyens de tronquer la page :
-      # #   - par la longueur (un tiers)
-      # #   - par une longueur maximale si un tiers est trop long
-      # #   - par une marque "stop" à un endroit précis
-      # #
-      # offset_mark_fin_extrait = @full_page.index('<!-- FIN EXTRAIT -->')
-      # @full_page =
-      #   if offset_mark_fin_extrait != nil
-      #     debug "Mark de fin d'extrait trouvée à #{offset_mark_fin_extrait}"
-      #     @full_page[0..offset_mark_fin_extrait - 1]
-      #   else
-      #     tiers_longueur = (@full_page.length / 3) - 100
-      #     # Si le tiers n'est pas assez long, on l'augmente
-      #     tiers_longueur = case true
-      #                      when tiers_longueur < 1900 then 1900
-      #                      when tiers_longueur > 2500 then 2500
-      #                      else tiers_longueur
-      #                      end
-      #     # On cherche le premier double retour chariot suivant
-      #     offset = @full_page.index("\n\n", tiers_longueur)
-      #     # Si on en trouve pas, on garde 2900
-      #     offset = 1900 if offset.nil?
-      #
-      #     @full_page[0..offset]
-      #   end
-      # return (full_page_with_exergue || @full_page) + " […]" + message_abonnement_required
     end
 
     # Si les paramètres contiennent :xmotex, c'est un mot
     # à mettre en exergue dans la page. Sinon, on retourne
     # le texte normal de la page normalement
     def full_page_with_exergue
-      return false if param(:xmotex).nil?
+      param(:xmotex) != nil || (return false)
       is_regular    = param(:xreg)    == '1'
       is_whole_word = param(:xww)     == '1'
       is_exact      = param(:xexact)  == '1'
@@ -145,52 +108,6 @@ class Cnarration
         reg
       end
       @full_page.with_exergue( reg )
-    end
-
-    # Cette méthode est appelée lorsque l'on vient de l'atelier
-    # icare (depuis un bureau)
-    #
-    # OBSOLÈTE : la collection est maintenant en accès libre.
-    #
-    def encart_icarien
-      # Si l'user (icarien) est identifié, on n'a rien besoin de
-      # mettre.
-
-      return '' #if user.identified?
-
-      # icarien_cpassword = param(:cpicare)
-      # icarien_pseudo    = param(:picare)
-      # icarien_id        = param(:idicare)
-      # icarien_mail      = param(:micare)
-      # icarien_salt      = ''
-      # icarien_sexe      = param(:xicare)
-      # # L'icarien existe-t-il ?
-      # u = User.table_users.get(where: {mail: icarien_mail})
-      # if u.nil?
-      #   # L'icarien n'est pas connu
-      #   # -------------------------
-      #   # Puisqu'on ne peut passer par ici que lorsque l'icarien est
-      #   # actif, on peut créer automatiquement l'icarien
-      #   icarien_options = "00100000000000000000000000000001"
-      #   icarien_data = {
-      #     pseudo:     icarien_pseudo,
-      #     patronyme:  icarien_pseudo,
-      #     mail:       icarien_mail,
-      #     cpassword:  icarien_cpassword,
-      #     salt:       icarien_salt,
-      #     options:    icarien_options,
-      #     sexe:       icarien_sexe,
-      #     created_at: NOW,
-      #     updated_at: NOW
-      #   }
-      #   User.table_users.insert(icarien_data)
-      # else
-      #   # L'icarien est connu
-      #   # --------------------
-      #   # Noter que pour passer par ici, il faut qu'il y ait :fromicare à 1
-      #   # dans l'URL et cette variable n'existe que si l'icarien est actif.
-      # end
-      # 'En tant qu’icarien actif, il suffit de vous identifier pour pouvoir consulter la page dans son intégralité.'.in_div(id: 'cadre_icarien', class: 'air cadre')
     end
 
     # Le message de page en cours d'écriture et pas encore
