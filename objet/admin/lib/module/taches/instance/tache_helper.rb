@@ -36,7 +36,7 @@ class Tache
           if File.exist? expath
             lien.edit_file(expath, titre: "ouvrir le fichier associé")
           else
-            "se rendre à #{file}".in_a(href:file)
+            "se rendre à #{file}".in_a(href:file, target: :new)
           end
         dt << " (#{link})"
       end
