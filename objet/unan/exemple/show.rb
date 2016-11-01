@@ -24,7 +24,7 @@ class Exemple
   end
 
   def div_titre
-    titre.in_div(class:'titre')
+    titre.formate_balises_propres.in_div(class:'titre')
   end
   def div_notes
     return "" if notes.empty?
