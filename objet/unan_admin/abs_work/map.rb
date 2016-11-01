@@ -194,6 +194,7 @@ class AbsWork
         ("Type : ".in_span(class:'libelle') + "#{human_type_w}").in_div +
         "P-Days #{jour_depart} à #{jour_fin}".in_div +
         div_pages_cours +
+        div_work_exemples +
         div_travail
       ).in_div(class: 'details')
       # ("Résultat : ".in_span(class:'libelle') + "#{resultat}").in_div(class:'italic')
@@ -214,6 +215,31 @@ class AbsWork
     ("Travail : ".in_span(class:'libelle') + "#{travail.deserb(self.bind)}").in_div(class:'italic')
   end
 
+  def div_work_exemples
+    has_work_exemples? || (return '')
+    mark_has_work_exemple = ''.in_span(class:'markex')
+    eids = self.exemples_ids
+    eids.instance_of?(Array) || eids = eids.as_list_num_with_spaces
+    (
+      mark_has_work_exemple +
+      "Exemples associés (#{eids.count}) : " +
+      eids.collect do |eid|
+        lien_work_exemple(eid)
+      end.join(', ')
+    ).in_div(class: 'dv_pgc')
+  end
+  def lien_work_exemple eid
+    "##{eid} (" +
+    'voir'.in_a(href: "exemple/#{eid}/show?in=unan", target: :new) +
+    'edit'.in_a(href: "exemple/#{eid}/edit?in=unan_admin", target: :new) +
+    ')'
+  end
+  # Retourne true si le travail contient des pages de cours
+  def has_work_exemples?
+    @has_work_exemples === nil && @has_work_exemples = !exemples_ids.empty?
+    @has_work_exemples
+  end
+
   # Si le travail définit des pages cours, on les indique avec un lien
   # pour les afficher.
   def div_pages_cours
@@ -222,7 +248,7 @@ class AbsWork
     # pages de cours (qui ne seront pas affichées en tant que travaux puisque
     # seuls les travaux qui consistent en la lecture de page de cours sont
     # affichés.)
-    mark_has_pages_cours = has_pages_cours? ? ''.in_span(class:'markpg') : ''
+    mark_has_pages_cours = ''.in_span(class:'markpg')
     pids = self.pages_cours_ids
     pids.instance_of?(Array) || pids = pids.as_list_num_with_spaces
     (

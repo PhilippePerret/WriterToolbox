@@ -58,15 +58,26 @@ div#abs_work_map_container
       padding-left      : 4px
       &:hover
         background-color  : #EEEEFF
+
+      // Pour les marques indiquant la présence de pages de cours,
+      // d'exemples, etc. dans les travaux absolus
+      // NOTE : Plus bas, il faut ajouter le nouveau span si on en
+      // ajoute un.
+      span.markpg, span.markex
+        position    : absolute
+        top         : 0
+        width       : 6px
+        height      : 20px
       // Pour la marque indiquant que le travail possède ses propres
       // pages de cours.
       span.markpg
-        position    : absolute
-        top         : 0
         right       : 0px
-        width       : 6px
-        height      : 20px
         background-color  : green
+      // Pour la marque indiquant que le travail possède des exemples
+      span.markex
+        right       : 6px
+        background-color  : purple
+
       // Quand le div.work est dans la ligne de temps, on n'affiche
       // pas ses détails
       div.detail
@@ -104,7 +115,9 @@ div#abs_work_map_container
           padding     : 1px 8px 3px
           float       : right
         // Le titre en gras quand le div.work est déployé
-        span.markpg
+        // Les marques pour indiquer la présence de pages de cours,
+        // d'exemple, ne doit plus être placé au même endroit.
+        span.markpg, span.markex
           position          : relative
           left              : unset
           top               : 4px
