@@ -17,6 +17,7 @@ class String
 
     # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
 
+    str = str.formate_balises_include
     str = str.formate_balises_references
     str = str.formate_balises_images
     str = str.formate_balises_mots
@@ -33,6 +34,24 @@ class String
 
       # debug "STRING APRÈS = #{str.gsub(/</,'&lt;').inspect}"
     return str
+  end
+
+  # Formate les balises INCLUDE qui permettent d'inclure des
+  # fichiers dans d'autres fichiers.
+  # @usage
+  #   INCLUDE[path/relatif/to/file.ext]
+  def formate_balises_include
+    str = self
+    str.gsub!(/INCLUDE\[(.*?)\]/){
+      sfile = SuperFile.new($1.split('/'))
+      if sfile.exist?
+        "\n\n" + sfile.read + "\n\n"
+      else
+        # TODO Ici, alerte administrateur
+        "INSERTION FICHIER INTROUVABLE : #{sfile.path}"
+      end
+    }
+    str
   end
 
   def formate_balises_references
@@ -107,7 +126,7 @@ class String
               " alt=\"Image : #{title}\""
             end
           attrs = attrs.collect { |attr, val| "#{attr}=\"#{val}\"" }.join(' ')
-          img_tag = "<img src='#{imgpath}'#{title} #{attrs} />"
+          img_tag = "<img src=\"#{imgpath}\"#{title} #{attrs} />"
           "<center class='image'><div class='image'>#{img_tag}</div>#{legend}</center>"
         end
       else

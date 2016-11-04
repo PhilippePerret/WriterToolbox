@@ -23,7 +23,8 @@ CREATE TABLE exemples
     #  CONTENT
     # ---------
     # Le contenu proprement dit de l'exemple, donc
-    # l'exemple lui-même.
+    # l'exemple lui-même. Peut contenir simplement un texte introductif
+    # à une page d'analyse de film.
     content TEXT NOT NULL,
 
     #  WORK_ID
@@ -43,13 +44,14 @@ CREATE TABLE exemples
     # --------
     # La source de l'exemple, expliqué de façon littéraire, mais
     # pas trop longue. Pour expliquer si ça vient d'un livre,
-    # d'un exemple personnel, etc.
+    # d'un exemple personnel, des analyses, etc.
     source VARCHAR(1000),
 
     # SOURCE_TYPE
     # -----------------
     # Suite de bits définissant le type de la source
-    # BIT 1 : 0:indéfini, 1:film, 2:livre, 3:perso, 9:autre
+    # BIT 1 : 0:indéfini, 1:perso, 2:film, 3:série, etc.
+    # (cf. TYPE_SOURCE dans ./objet/unan_admin/lib/module/exemple/constants.rb)
     # BIT 2-5 : Année de la source
     # BIT 6-7 : Pays de la source ("fr" = français, "us" = USA, etc.)
     source_type VARCHAR(16) DEFAULT '0000000',

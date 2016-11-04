@@ -1,6 +1,7 @@
 # Divers
 
 * [Balise title de page](#titledepage)
+* [Inclusion d'un autre fichier (INCLUDE)](#inclureautrefichier)
 
 <a name='titledepage'></a>
 
@@ -27,3 +28,19 @@ Noter que le séparateur peut être défini dans le confier de configuration par
     site.title_separator = " | " # mettre un autre caractère si nécessaire
 
 Noter qu'il n'y aura pas d'espaces ajoutés.
+
+<a name='inclureautrefichier'></a>
+
+## Inclusion d'un autre fichier
+
+La borne `INCLUDE` permet d'inclure n'importe quel fichier dans un texte qui doit être traité par `formate_balises_speciales` (c'est-à-dire à peu près tous les textes).
+
+@syntax
+
+~~~ruby
+
+  INCLUDE[path/to/file/with/extension.ext]
+
+~~~
+
+Noter qu'il n'y a pas de `./` en début de path, mais que c'est un chemin relatif depuis la racine du site.

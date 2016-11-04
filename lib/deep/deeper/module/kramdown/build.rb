@@ -111,7 +111,6 @@ class ::String
     # suivante, car la suivante traite aussi les balises
     # IMAGE mais de façon plus générale (et sans pouvoir
     # définir des sous-dossiers).
-    debug "JE PASSE PAR ICI AVEC options[:folder_image] = #{options[:folder_image].inspect}"
     code = code.formate_balises_images(options[:folder_image]) if self.respond_to?(:formate_balises_images)
 
     # Si une méthode formate_balises_propres existe, il
