@@ -6,9 +6,6 @@
   Ce module est appelé par la méthode show.rb qui affiche les films
   d'analyse MYE.
 
-  TODO Construire un fichier HTML qui ne sera pas construit
-  chaque fois.
-
 =end
 
 
@@ -21,7 +18,7 @@ class Film
 
   # Constructeur d'une analyse de film MYE
   #
-  # Noter que cette construction ne peut être fait que par un
+  # Noter que cette construction ne peut être faite que par un
   # administrateur ou un analyste.
   # Elle produit un code pour l'admin avec des liens d'édition
   # et un autre code pour l'user sans ces liens.

@@ -8,7 +8,9 @@ class Film
   def proceed_create
 
     # On prend toutes les données du film Filmodico
-    data_filmodico = FilmAnalyse::table_filmodico.get( id )
+    data_filmodico = FilmAnalyse.table_filmodico.get(id)
+
+    debug "data_filmodico : #{data_filmodico.inspect}"
 
     # Le sym du film (utilisé par exemple comme affixe pour les
     # film TM)
@@ -16,10 +18,12 @@ class Film
       @sym = data_filmodico[:titre].as_normalized_filename.downcase
     end
 
-    director = data_filmodico[:realisateur].collect do |hpeople|
-      "#{hpeople[:prenom]} #{hpeople[:nom]}".strip
-    end
-    director = director.pretty_join
+    director =
+      JSON.parse(data_filmodico[:realisateur]).to_sym.collect do |hpeople|
+        hpeople.instance_of?(Hash) || hpeople = JSON.parse(hpeople).to_sym
+        debug "hpeople = #{hpeople.inspect}"
+        "#{hpeople[:prenom]} #{hpeople[:nom]}".strip
+      end.pretty_join
 
     data2create = {
       id:           id, # forcément défini, c'est celui du Filmodico
@@ -33,9 +37,9 @@ class Film
       created_at:   NOW
     }
 
-    FilmAnalyse::table_films.insert( data2create )
+    FilmAnalyse.table_films.insert( data2create )
 
-    debug "=== Film ##{id} créé avec succès (#{titre})"
+    debug "=== Film ##{id} créé avec succès (#{data_filmodico[:titre]})"
   rescue Exception => e
     debug e
     error e.message

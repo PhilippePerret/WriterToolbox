@@ -9,9 +9,9 @@ class Film
   # Par défaut, l'affichage ressemble à celui-ci :
   #     TITRE ([TITRE_FR_ITALIC, ]RÉALISATEUR, ANNÉE)
   def intitule options = nil
-    t = titre.in_span(class:'titre')
-    par = Array::new
-    par << titre_fr.in_span(class:'italic') unless titre_fr.to_s == ""
+    t = titre.force_encoding('utf-8').in_span(class:'titre')
+    par = Array.new
+    par << titre_fr.in_span(class:'italic') unless titre_fr.to_s == ''
     par << realisateur
     par << annee
     par = "(#{par.join(', ')})".in_span(class:'tiny discret')

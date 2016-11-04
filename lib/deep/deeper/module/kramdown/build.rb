@@ -232,10 +232,20 @@ class SuperFile
     # On doit produire un code ERB
     options[:output_format] ||= :erb
 
+    # Le dossier contenant les images
+    # Soit une méthode existe (extension de la classe SuperFile, comme
+    # pour la collection Narration), soit on prend le dossier du fichier
+    dossier_des_images =
+      if self.respond_to?(:folder_image)
+        folder_image
+      else
+        folder.to_s
+      end
+
     options.merge!(
       owner:        self,
       # Pour trouver un dossier image, if any
-      folder_image: folder_image # folder.to_s
+      folder_image: dossier_des_images
     )
 
     code = self.read.gsub(/\r\n?/, "\n").chomp

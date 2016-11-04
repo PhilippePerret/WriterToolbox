@@ -74,8 +74,15 @@ class Film
   end
 
   def set_data dfilm
-    debug "dfilm: #{dfilm.pretty_inspect}"
-    dfilm.each { |k, v| instance_variable_set("@#{k}", v) }
+    case dfilm
+    when NilClass
+      error "dfilm est nil dans FilmAnalyse::Film.set_data, je ne peux pas dispatcher les valeurs."
+    when Hash
+      debug "dfilm: #{dfilm.pretty_inspect}"
+      dfilm.each { |k, v| instance_variable_set("@#{k}", v) }
+    else
+      raise "dfilm est de class #{dfilm.class} au lieu d'être un Hash, dans FilmAnalyse::Film.set_data, je ne peux pas dispatcher les valeurs."
+    end
   end
 
 end # /Film

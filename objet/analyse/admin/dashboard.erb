@@ -30,16 +30,19 @@ raise_unless_admin
   # Il s'agit de deux boutons (suivant l'état du film qui est un troisième
   # bouton) permettant de modifier l'état.
   indexfilm = 0
-  FilmAnalyse::table_filmodico.select(order:"titre ASC", colonnes:[:titre, :titre_fr, :annee]).each do |fid, fdata|
+  FilmAnalyse.table_filmodico.select(order:"titre ASC", colonnes:[:titre, :titre_fr, :annee]).each do |fdata|
     indexfilm += 1
 
-    ifilm = FilmAnalyse::Film::new(fid)
+    # Identifiant du film, par exemple `Her2014`
+    fid = fdata[:id]
+
+    ifilm = FilmAnalyse::Film.new(fid)
 
     # Si le film vient d'être créé sur le Filmodico, il n'existe peut-être
     # pas encore dans les films analysés. Il faut donc l'enregistrer,
     # avec le même identifiant pour qu'il y ait une jointure entre les
     # deux tables.
-    ifilm.create if ifilm.exist? == false
+    ifilm.exist? || ifilm.create
 
     ifilm.set_data fdata
   %>
@@ -100,7 +103,7 @@ raise_unless_admin
         <td>Mettre à "oui" s'il faut être abonné au site pour pouvoir lire l'analyse.</td>
       </tr>
       <tr>
-        <td class='bold'>Type TM&nbsp;&nbsp;</td>
+        <td class='bold'>Type</td>
         <td>Mettre à "oui" si l'analyse est de type TM, c'est-à-dire TextMate dernière version ou si le film est analysé dans les deux types.</td>
       </tr>
       <tr>

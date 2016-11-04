@@ -13,7 +13,7 @@ class Film
   # Création du film s'il existe dans le Filmodico mais pas
   # dans les analyses.
   def create
-    FilmAnalyse::require_module('film')
+    FilmAnalyse.require_module('film')
     proceed_create
   end
 

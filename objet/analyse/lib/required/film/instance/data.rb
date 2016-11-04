@@ -16,14 +16,11 @@ class Film
   #      on le définit directement pour ne pas avoir à le
   #      rechercher.
   attr_writer :film_id
-  def film_id
-    @film_id ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:film_id])[:film_id]
-  end
-  def duree
-    @duree ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:duree])[:duree]
-  end
-  def auteurs
-    @auteurs  ||= FilmAnalyse::table_filmodico.get(id, colonnes:[:auteurs])[:auteurs]
+  def film_id   ; @film_id  ||= filmodico_data[:film_id]  end
+  def duree     ; @duree    ||= filmodico_data[:duree]    end
+  def auteurs   ; @auteurs  ||= filmodico_data[:auteurs]  end
+  def filmodico_data
+    @filmodico_data ||= FilmAnalyse.table_filmodico.get(id)
   end
 
   def titre         ; @titre        ||= get(:titre).force_encoding('utf-8') end
