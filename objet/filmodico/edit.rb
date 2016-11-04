@@ -67,25 +67,25 @@ class Filmodico
     if is_new?
       # debug "data2save: #{data2save.pretty_inspect}"
       # Table FILMODICO
-      @id = Filmodico::table_filmodico.insert(data2save)
+      @id = Filmodico.table_filmodico.insert(data2save)
       # Table ANALYSE
       data2save_analyse.merge!(id: @id, created_at: NOW)
-      Filmodico::table_films_analyses.insert(data2save_analyse)
+      Filmodico.table_films_analyses.insert(data2save_analyse)
       # Pour l'affichage
       param(:film => param(:film).merge(id: @id, film_id: @film_id))
     else
-      Filmodico::table_filmodico.update(id, data2save)
+      Filmodico.table_filmodico.update(id, data2save)
       danalyse = data2save_analyse
       # Il faut remettre le sym et les options si le film
       # existe déjà dans la table des analyses.
-      dfilm = Filmodico::table_films_analyses.get(id)
+      dfilm = Filmodico.table_films_analyses.get(id)
       unless dfilm.nil?
         data2save_analyse.merge!(options: dfilm[:options])
         if data2save_analyse[:sym].nil_if_empty == nil
           data2save_analyse.merge!(sym: dfilm[:sym])
         end
       end
-      Filmodico::table_films_analyses.update(id, data2save_analyse)
+      Filmodico.table_films_analyses.update(id, data2save_analyse)
     end
     # Transmettre l'affiche si nécessaire
     upload_affiche_if_needed unless ONLINE
@@ -93,6 +93,18 @@ class Filmodico
   def is_new? ; @is_new == true end
 
   def data2save
+    # Parmi les people, seule la donnée musique n'est pas obligatoire,
+    # donc elle peut être nulle. Il ne faut pas, dans ce cas, la jsonner,
+    # sinon c'est 'null' qui serait enregistré dans la table et qui poserait
+    # problème (on ne peut pas déjsonner 'null'… ce qui est stupide, mais
+    # que voulez-vous…)
+    data_musique = @musique.nil_if_empty
+    data_musique =
+      if data_musique.nil?
+        nil
+      else
+        data_musique.to_json
+      end
     @data2save ||= {
       titre:            @titre,
       titre_fr:         @titre_fr,
@@ -105,12 +117,14 @@ class Filmodico
       realisateur:      @realisateur.to_json,
       auteurs:          @auteurs.to_json,
       producteurs:      @producteurs.to_json,
-      musique:          @musique.to_json,
-      acteurs:          @acteurs.to_json
+      musique:          data_musique,
+      acteurs:          @acteurs.to_json,
+      updated_at:       Time.now.to_i
     }
-    debug "@data2save : #{@data2save.pretty_inspect}"
+    # debug "@data2save : #{@data2save.pretty_inspect}"
     @data2save
   end
+
   def data2save_analyse
     @data2save_analyse ||= {
       titre:        titre,
@@ -120,7 +134,7 @@ class Filmodico
       sym:          @sym,
       # options:      "00000000",
       realisateur:  @realisateur_analyse,
-      updated_at:   NOW
+      updated_at:   Time.now.to_i
     }
   end
 
