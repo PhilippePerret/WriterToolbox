@@ -159,7 +159,7 @@ class AbsWork
   def suggestions_lectures
     return '' if pages_cours_ids.empty?
     where = "id IN (#{pages_cours_ids.join(',')})"
-    hpagescours = Array.new
+    hpagescours = Hash.new
     Unan.table_pages_cours.select(where: where, colonnes:[:titre]).each do |hpage|
       hpagescours.merge! hpage[:id] => hpage
     end
