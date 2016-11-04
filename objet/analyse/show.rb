@@ -2,7 +2,7 @@
 
 page.title = "Analyses de films"
 
-def film; @film ||= FilmAnalyse::Film::current end
+def film; @film ||= FilmAnalyse::Film.current end
 
 class FilmAnalyse
 # Spécialement pour l'affichage de cette page
@@ -15,7 +15,7 @@ class << self
   def output
     titre_page =
       if film.analyse_tm? && !film.analyse_mye?
-        ""
+        ''
       else
         FilmAnalyse.titre_h1( film.titre, {onglets_top: true} )
       end
@@ -28,16 +28,38 @@ class << self
       message_film_non_consultable_par_user +
       fiche_film
     elsif film.analyse_tm? && !film.analyse_mye?
-      # Analyse de film de type "TM"
-      # output_as_analyse_tm
+      # === ANALYSE DE TYPE TM ===
       FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
       output_as_analyse_tm
-    elsif film.analyse_mye?
+    elsif film.analyse_mye? && !film.analyse_tm?
+      # === ANALYSE SEULEMENT MYE ===
       fiche_film +
       output_as_analyse_mye
     else
-      "Analyse mixte"
+      # === ANALYSE MIXTE (*) ===
+      # (*) c'est-à-dire une analyse qui comporte des fichiers MYE et
+      # une analyse TM. Dans ce cas, on affiche :
+      #   - un texte indiquant la mixité de l'analyse
+      #   - la fiche du film
+      #   - un lien pour voir l'analyse TM dans une autre fenêtre
+      #   - les fichiers de l'analyse MYE
+      warning_analyse_mixte   +
+      fiche_film              +
+      lien_open_analyse_tm    +
+      output_as_analyse_mye
     end
+  end
+
+  # L'alerte placée au-dessus d'une analyse "mixte" c'est-à-dire avec
+  # un fichier TM et des fichiers MYE.
+  def warning_analyse_mixte
+    'Analyse “mixte” contenant le fichier complexe d’analyse TM à ouvrir dans une nouvelle fenêtre (cf. le lien ci-dessous) ainsi que les fichiers d’analyse MYE sur cette page.'.in_p(class: 'small')
+  end
+
+  # Le lien pour ouvrir l'analyse TM lorsqu'il s'agit d'une analyse
+  # "mixte", avec fichier TM et fichiers MYE.
+  def lien_open_analyse_tm
+    "Ouvrir l'analyse TM du film <strong>#{film.titre}</strong>".in_a(href: film.html_file.to_s, target: :new, class: 'cadre').in_p(class: 'air center')
   end
 
   # Retourne le code HTML de la fiche du film pour
@@ -51,10 +73,8 @@ class << self
 
   def output_as_analyse_tm
     if film.html_file.exist?
-      (
-        'Les analyse de type “TM” nécessitent une largeur complète, elles s’ouvrent donc dans une autre fenêtre.<br><br>' +
-        "Ouvrir l'analyse de #{film.titre}".in_a(href: film.html_file.to_s, target: :new, class: 'cadre')
-      ).in_p
+      'Les analyse de type “TM” nécessitent une largeur complète, elles s’ouvrent donc dans une autre fenêtre.'.in_p +
+      lien_open_analyse_tm
     else
       # <= FILM TM INTROUVABLE
       "Désolé, cette analyse du film “#{film.titre}” est actuellement introuvable…".in_div(class:'air warning') +
