@@ -14,13 +14,10 @@ class AnalyseBuild
       error "Le fichier des données de scènes n'existe pas. Impossible de construire un évènemencier."
       return
     end
-    debug "data_scenes : #{data_scenes.pretty_inspect}"
+    debug "data des scenes : #{scenes.pretty_inspect}"
+    flash 'La construction de l’évènemencier n’est pas encore implémentée.'
   end
 
 
-
-  def data_scenes
-    @data_scenes ||= Marshal.load(scenes_file.read)
-  end
 
 end

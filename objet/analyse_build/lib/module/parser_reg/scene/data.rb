@@ -13,7 +13,8 @@ class Scene
       lieu:       lieu,
       decor:      decor,
       resume:     resume,
-      brins_ids:  brins_ids
+      brins_ids:  brins_ids,
+      notes:      notes
     }
   end
 
@@ -52,11 +53,16 @@ class Scene
   end
 
   def brins_ids
-    @brins_ids != nil || begin
-      parse_first_line
-      @brins_ids = (@brins_ids || '').split(' ').collect{|n| n.to_i}
-    end
+    @brins_ids != nil || parse_first_line
     @brins_ids
+  end
+
+  # Les notes, c'est-à-dire les lignes suivant la première ligne
+  # d'infos. Chaque note est un Hash définissant ses valeurs, la
+  # liste des notes est un Hash avec en clé l'indice de la note
+  # s'il est défini
+  def notes
+    @notes != nil || parse_notes
   end
 
 

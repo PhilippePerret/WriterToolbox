@@ -1,6 +1,25 @@
 <% raise_unless user.analyste? || user.admin? %>
 <%= AnalyseBuild.titre_h1("Traitement de “#{chantier.film.titre}”") %>
 
+
+<%
+
+  if param(:operation) == 'define_brins'
+    # On passe ici quand c'est la définition des brins qui est demandée.
+    #
+    # Ça consiste soit à enregistrer les brins définis soit à la définir.
+    # Les définir consiste à entrer les scènes dans chaque brin.
+    # L'idéal serait d'avoir deux modes possibles : un mode où on déplace
+    # les brins dans les scènes et un mode où on déplace les scènes dans les
+    # brins.
+    # Comme le premier est le plus logique, on le prend. Ça fonctionne grâce
+    # à jQuery en faisant des scènes des containers possibles.
+%>
+  <%= chantier.scenes_as_list_containers %>
+
+
+<% else %>
+
 <h3>Fichiers du dossier : </h3>
 <% chantier.files.each do |file| %>
   <%= file.as_line_item %>
@@ -10,24 +29,30 @@
   route_et_operation = "analyse_build/#{film.id}/treate?operation"
 
   # Si le fichier SCENES.msh existe, on peut construire un évènemencier
-  bouton_build_evenemencier =
-    if chantier.scenes_file.exist?
+  if chantier.scenes_file.exist?
+    bouton_parser_fichiers = ''
+    bouton_build_evenemencier =
       'Construire l’évènemencier'.in_a(href: "#{route_et_operation}=build_evenemencier", class: 'small btn')
-    else
-      ''
-    end
+    bouton_build_brins =
+      'Construire les brins'.in_a(href: "#{route_et_operation}=build_brins", class: 'small btn')
+    bouton_define_brins =
+      'Définir les brins'.in_a(href: "#{route_et_operation}=define_brins", class: 'small btn')
+  else
+      bouton_build_evenemencier = bouton_build_brins = bouton_define_brins = ''
+      bouton_parser_fichiers =
+        'Parser les fichiers'.in_a(href:"#{route_et_operation}=parser_chantier", class: 'small btn')
+  end
 
-  # Le bouton pour parser les fichiers déposés, si le dossier existe
-  # seulement
-  bouton_parser_fichiers =
-    if chantier.folder_depot.exist?
-      'Parser les fichiers'.in_a(href:"#{route_et_operation}=parser_chantier", class: 'small btn')
-    else
-      ''
-    end
 
  (
-  bouton_parser_fichiers +
-  bouton_build_evenemencier
+  bouton_parser_fichiers    +
+  bouton_build_evenemencier +
+  bouton_define_brins       +
+  bouton_build_brins
+
  ).in_div(class: 'right btns')
+%>
+
+<%
+end # / si ça n'est pas la définition des brins
 %>

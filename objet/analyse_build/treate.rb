@@ -21,4 +21,10 @@ when 'parser_chantier'
 when 'build_evenemencier'
   AnalyseBuild.require_module 'build_events'
   chantier.build_events
+when 'build_brins'
+  AnalyseBuild.require_module 'build_brins'
+  chantier.build_brins
+when 'define_brins'
+  AnalyseBuild.require_module 'define_brins'
+  chantier.define_brins
 end

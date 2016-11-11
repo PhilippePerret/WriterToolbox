@@ -7,6 +7,10 @@
 class AnalyseBuild
 class Film
 class Brin
+  attr_reader :film
+
+  # Le code brut dans le fichier (toutes les lignes)
+  attr_reader :code
 
   def initialize film, code
     @film = film
