@@ -27,7 +27,11 @@ class File
   # Marshal
   def to_marshal
     dmarshal = Array.new
+    # Si ce sont les scènes, il faut leur fournir un identifiant
+    id_for_scene = 0
     things.each do |thing|
+      id_for_scene += 1
+      type == :scene && thing.id = id_for_scene
       dmarshal << thing.all_data
     end
     marshal_file.write Marshal.dump(dmarshal)

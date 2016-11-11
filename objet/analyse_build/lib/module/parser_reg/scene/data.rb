@@ -3,10 +3,15 @@ class AnalyseBuild
 class Film
 class Scene
 
+  # Identifiant de la scène (donc son numéro)
+  # Il sera attribué lors de l'enregistrement.
+  attr_accessor :id
+
   # Toutes les données sous forme de Hash qui doivent être enregistrées
   # dans le fichier Marshal
   def all_data
     {
+      id:         id,
       horloge:    horloge,
       time:       time,
       effet:      effet,

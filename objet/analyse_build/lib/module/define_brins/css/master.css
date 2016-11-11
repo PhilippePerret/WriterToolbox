@@ -1,1 +1,1 @@
-div#scenes{height:400px;overflow:scroll}div#scenes div.scene{font-size:11pt;white-space:nowrap}
+div#scenes{height:400px;overflow:scroll}div#scenes div.scene{font-size:14.5pt;line-height:1.3em;margin-bottom:1em}div#scenes div.scene.hovered{background-color:#009;color:#fff}div#scenes div.scene span.span_brins{float:right;font-weight:bold;font-family:Arial,Helvetica}div#brins{height:200px;overflow:scroll}div.brin{font-size:11pt;color:purple;line-height:1.3em;text-align:right}

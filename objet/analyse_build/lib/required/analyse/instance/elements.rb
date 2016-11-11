@@ -15,4 +15,24 @@ class AnalyseBuild
     end
   end
 
+  def brins
+    @brins ||= begin
+      if brins_file.exist?
+        Marshal.load(brins_file.read)
+      else
+        Array.new
+      end
+    end
+  end
+
+  def personnages
+    @personnages ||= begin
+      if personnages_file.exist?
+        Marshal.load(personnages_file.read)
+      else
+        Array.new
+      end
+    end
+  end
+
 end #/AnalyseBuild
