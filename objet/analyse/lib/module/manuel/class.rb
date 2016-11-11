@@ -24,7 +24,7 @@ class Manuel
     # Ce code contient le code de la page d'aide surmonté d'un lien
     # pour revenir à la table des matières.
     def page of, relpath
-      Page::new(relpath, of).output
+      Page.new(relpath, of).output
     end
 
     # Affichage de la table des matières propre à +of+ qui peut

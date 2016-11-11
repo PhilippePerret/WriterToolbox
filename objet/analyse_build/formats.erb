@@ -1,0 +1,112 @@
+<%
+# Cette page décrit les différents formats de fichier possibles
+%>
+<%= AnalyseBuild.titre_h1('Formats de fichier')%>
+
+<h3>Fichier collecte</h3>
+
+<h4>Format TM (TextMate)</h4>
+
+<p>C'est le format automatique si vous utilisez le bundle TextMate ou la collecte sur le site (pas encore implémentée). Il suffit alors de taper `s<%=TAB%>` pour créer une nouvelle scène et remplir les champs qui s'affichent.
+</p>
+
+<h4>Format collecte normale</h4>
+
+<p>Dans le “format de collecte normale”, la première ligne contient toutes les informations indispensables de la scène, séparées par des tabulations.
+</p>
+
+<pre>
+  HORLOGE<%=TAB%>LIEU. EFFET<%=TAB%>DÉCOR<%=TAB%>RÉSUMÉ<%=TAB%>BRINS
+</pre>
+
+<p>
+  Chaque scène doit être séparée par un double retour chariot et doit commencer par la ligne d'information ci-dessus.
+</p>
+<pre>
+  &lt;UNE SCÈNE><%=RETURN%>
+  <%=RETURN%>
+  &lt;UNE AUTRE SCÈNE><%=RETURN%>
+  <%=RETURN%>
+  &lt;AUTRE SCÈNE><%=RETURN%>
+  &lt;Une note sous la scène><%=RETURN%>
+  &lt;Une autre note sous la scène><%=RETURN%>
+  <%=RETURN%>
+  &lt;AUTRE SCÈNE><%=RETURN%>
+</pre>
+<p>
+  L'HORLOGE utilise des séparateurs deux points. Les heures ne sont pas obligatoires.
+</p>
+<p>
+  Le LIEU doit être choisi parmi "INT.", "EXT.", "NOIR", "INT./EXT.".
+</p>
+<p>
+  L'EFFET doit être choisi parmi 'JOUR', 'NUIT', 'MATIN', 'SOIR', 'NOIR'. Tous les autres effets seront considérés comme des erreurs.
+</p>
+<p>
+  Si possible, les DÉCORS devront être exacts lorsqu'il s'agit d'une scène dans un même lieu. Si `BUREAU DE DAVID` est utilisé pour une scène, une autre scène dans le bureau de david devra porter le même décor, ne pas utiliser `BUREAU DAVID`. Cela permet de rassembler automatiquement les décors identiques.
+</p>
+<p>
+  La donnée <strong>BRINS</strong> est une suite d'identifiants de brins séparés par des espaces. Par exemple `1 45 65`. Les brins doivent être définis dans un fichier séparé qui doit être fourni <i>avant</i> le fichier de collecte. Si un fichier brin existe déjà, il sera écrasé et remplacé par le nouveau fichier. Voir ci-dessous les formats pour le fichier des brins.
+</p>
+<p>
+  Toutes les lignes suivant la première ligne d'information — qui suffit à définir une scène — sont considérées comme des notes. Si elles commencent par des parenthèses contenant un chiffre, elles font référence à une note dans le résumé ou dans une autre note :
+</p>
+<pre>
+  1:12<%=TAB%>INT. JOUR<%=TAB%>BUREAU<%=TAB%>AUDREY rentre chez elle (1)<%=TAB%>12 3<%=RETURN%>
+  (1) Elle est vêtue très simplement (2). Elle est mouillée.<%=RETURN%>
+  (2) Contrairement aux autres fois.<%=RETURN%>
+</pre>
+
+<h4>Format collecte YAML</h4>
+<p>Ce format n'est pas encore utilisé.</p>
+
+
+<h3>Fichier des personnages</h3>
+<h4>Format TextMate (TM)</h4>
+<p>
+  C'est le format généré avec le bundle TextMate. Il suffit de taper `perso<%=TAB%>` dans le fichier des personnages et un paragraphe se formate pour un nouveau personnage. Il suffit de remplir les différentes rubriques.
+</p>
+
+<h3>Fichier des Brins</h3>
+
+<h4>Format TextMate</h4>
+<p>
+  C'est le format généré avec le bundle TextMate. Il suffit de taper `brin<%=TAB%>` et un paragraphe se formate pour un nouveau brin.
+</p>
+
+<h4>Format simple</h4>
+<p>
+  Le format simple consiste en un simple fichier où l'on trouve l'identifiant du brin sur une ligne, suivi de la description du brin (titre) suivi de la description plus précise du brin.
+</p>
+<p>
+  Chaque définition de brin doit être séparée par un double retour à la ligne.
+</p>
+<pre>
+  &lt;IDENTIFIANT NUMÉRIQUE><%= RETURN %>
+  &lt;TITRE DU BRIN><%= RETURN %>
+  <%= RETURN %>
+  &lt;AUTEUR IDENTIFIANT><%= RETURN %>
+  &lt;TITRE AUTRE BRIN><%= RETURN %>
+  <%= RETURN %>
+</pre>
+<p>
+  Par exemple :
+</p>
+<pre>
+  1<%= RETURN %>
+  Premier brin sur le premier personnage<%= RETURN %>
+  <%= RETURN %>
+  3<%= RETURN %>
+  Autre brin, pas forcément dans l'ordre.<%= RETURN %>
+  Une description plus précise de ce brin.
+  Avec autant de retour-chariot que l'on veut, s'il n'y en a qu'un.
+  <%= RETURN %>
+  2<%= RETURN %>
+  Le brin suivant.<%= RETURN %>
+  <%= RETURN %>
+</pre>
+
+<h4>Format YAML</h4>
+<p>
+  Le format YAML n'est pas encore utilisé pour les brins.
+</p>

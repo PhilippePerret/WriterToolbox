@@ -5,26 +5,30 @@ class FilmAnalyse
     # Les onglets communs à toutes les pages qui font
     # appel à `titre_h1`
     def data_onglets
-      @data_onglets ||= {
-        "Accueil"     => 'analyse/home',
-        "Analyses"    => 'analyse/list',
-        "Participer"  => 'analyse/participer',
+      @data_onglets ||= begin
+        h = {
+        'Accueil'     => 'analyse/home',
+        'Analyses'    => 'analyse/list',
         # "Grades"      => 'analyse/grades',
-        "Aide"        => 'manuel/home?in=analyse'
-      }
+        'Dépôt'       => 'analyse_build/depot',
+        'Aide'        => 'manuel/home?in=analyse'
+        }
+        user.analyste? || user.admin? || h.merge!('Participer' => 'analyse/participer')
+        h
+      end
     end
   end # << self
 
   class Travail
 
     DATA_CIBLES = {
-      1 => {hname:"Le film en général", action:"du film en général"},
-      2 => {hname:"Le fichier de collecte", action:"du fichier de collecte"},
-      3 => {hname:"Un fichier Markdown (texte d'analyse)", action:" du fichier Markdown"},
-      4 => {hname:"Un fichier YAML (liste d'éléments)", action:"du fichier"},
-      5 => {hname:"Un évènemencier", action:"de l'évènemencier"},
-      8 => {hname:"Une image/un graphique", action:"de l'image/graphique"},
-      9 => {hname:"Autre document", action:"du document"}
+      1 => {hname:'Le film en général', action:"du film en général"},
+      2 => {hname:'Le fichier de collecte', action:"du fichier de collecte"},
+      3 => {hname:'Un fichier Markdown (texte d’analyse)', action:" du fichier Markdown"},
+      4 => {hname:'Un fichier YAML (liste d’éléments)', action:'du fichier'},
+      5 => {hname:'Un évènemencier', action:'de l’évènemencier'},
+      8 => {hname:'Une image/un graphique', action:'de l’image/graphique'},
+      9 => {hname:'Autre document', action:'du document'}
 
     }
 

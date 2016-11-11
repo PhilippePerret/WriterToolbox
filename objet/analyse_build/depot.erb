@@ -1,0 +1,10 @@
+<%
+# Section permettant à un analyse de déposer un fichier d'analyse
+%>
+<%= AnalyseBuild.titre_h1('Dépôt d’analyse')%>
+
+<% if user.admin? || user.analyste? %>
+  <%= Analyse::Depot.output_as_analyste %>
+<% else %>
+  <%= Analyse::Depot.output_as_common_user %>
+<% end %>
