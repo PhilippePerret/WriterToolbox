@@ -179,25 +179,7 @@ class CRON2
               hcit[:last_sent] += 1
               tbl_citations.update( cid, { last_sent: hcit[:last_sent] })
             end
-
-            # On ajoute cette citation aux citations à m'envoyer,
-            # mais seulement si elles n'ont pas déjà d'explicitation
-            if hcit.key? :description
-              if hcit[:description].to_s.length == 0
-                mess_admin << "<li>" +
-                "<a href='http://localhost/WriterToolbox/citation/#{cid}/edit'>" +
-                "Citation ##{cid}" +
-                "</a> [#{hcit[:last_sent]}] : #{hcit[:citation]}" +
-                "</li>"
-              end
-            else
-              superlog('Il faut régler le problème des descriptions de citations : la clé :description n’est pas connue.', error: true)
-            end
           end
-
-          # On doit me transmettre les candidates pour que j'en
-          # écrive l'explicitation.
-          send_next_citations_to_admin mess_admin
 
           citation_id = prochaine[:id]
 
@@ -226,34 +208,6 @@ class CRON2
           # ---------------------------------------
           [full_citation, citation_id]
         end
-      end
-
-      # Méthode qui envoie les prochaines citations à
-      # l'administrateur, pour explicitation
-      #
-      # On le fait qu'entre 4 heures et 6 heures du matin
-      def send_next_citations_to_admin mess_admin
-        heure = Time.now.hour
-        heure > 3 && heure < 7 || return
-        mess_admin =
-          if mess_admin.empty?
-            '<p>Aucune prochaine citation à expliciter.</p>'+
-            '<p>Mais tu peux <a href="http://localhost/WriterToolbox/citation/admin">trouver des citations sans explications</a>.</p>'
-          else
-            "<p>Prochaines citations à expliciter :</p>"  +
-            '<ul>' + mess_admin.join('') + '</ul>'        +
-            '<p>Les premières seront les premières diffusées.</p>'
-          end
-
-        site.send_mail_to_admin(
-        message:        mess_admin,
-        subject:        'Citations à expliciter',
-        force_offline:  true,
-        no_header:      true,
-        formated:       true
-        )
-      rescue Exception => e
-        log 'Impossible de transmettre les prochaines citations à expliciter', e
       end
 
       # RETURN true si un envoi doit être fait, citation ou tweet
