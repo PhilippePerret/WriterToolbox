@@ -4,14 +4,10 @@ class Film
 class Scene
 
   def parse_first_line
-    @horloge,
-    @lieu_effet,
-    @decor,
-    @resume,
-    @brins_ids = first_line.split("\t")
-    @lieu, @effet = @lieu_effet.split(' ')
+    @horloge, @lieu_effet, @decor, @resume, @brins_ids = first_line.split("\t")
     horloge_to_time
     explode_brins
+    explode_lieu_effet
   end
 
   # Transforme l'horloge en temps
@@ -22,6 +18,11 @@ class Scene
 
   def explode_brins
     @brins_ids = (@brins_ids || '').split(' ').collect{|n| n.to_i}
+    debug "@brins_ids = #{@brins_ids.inspect}"
+  end
+
+  def explode_lieu_effet
+    @lieu, @effet = @lieu_effet.split(' ')
   end
 
 

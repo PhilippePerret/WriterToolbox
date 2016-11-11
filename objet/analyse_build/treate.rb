@@ -25,6 +25,11 @@ when 'build_brins'
   AnalyseBuild.require_module 'build_brins'
   chantier.build_brins
 when 'define_brins'
+  # Définition des brins (MAIS PAS ENREGISTREMENT)
   AnalyseBuild.require_module 'define_brins'
   chantier.define_brins
+when 'set_define_brins'
+  # Enregistrement des brins
+  AnalyseBuild.require_module 'save_brins'
+  chantier.save_brins_of_scenes
 end
