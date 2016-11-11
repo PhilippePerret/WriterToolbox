@@ -1,16 +1,33 @@
 <% raise_unless user.analyste? || user.admin? %>
-<%
-def chantier
-  @chantier ||= site.current_route.instance
-end
-def film
-  @film ||= chantier.film
-end
-
-%>
 <%= AnalyseBuild.titre_h1("Traitement de “#{chantier.film.titre}”") %>
 
 <h3>Fichiers du dossier : </h3>
 <% chantier.files.each do |file| %>
-  <%= "#{file.name} (fichier de #{file.htype}s)".in_div %>
+  <%= file.as_line_item %>
 <% end %>
+
+<%=
+  route_et_operation = "analyse_build/#{film.id}/treate?operation"
+
+  # Si le fichier SCENES.msh existe, on peut construire un évènemencier
+  bouton_build_evenemencier =
+    if chantier.scenes_file.exist?
+      'Construire l’évènemencier'.in_a(href: "#{route_et_operation}=build_evenemencier", class: 'small btn')
+    else
+      ''
+    end
+
+  # Le bouton pour parser les fichiers déposés, si le dossier existe
+  # seulement
+  bouton_parser_fichiers =
+    if chantier.folder_depot.exist?
+      'Parser les fichiers'.in_a(href:"#{route_et_operation}=parser_chantier", class: 'small btn')
+    else
+      ''
+    end
+
+ (
+  bouton_parser_fichiers +
+  bouton_build_evenemencier
+ ).in_div(class: 'right btns')
+%>

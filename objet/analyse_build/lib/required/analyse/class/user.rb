@@ -13,7 +13,7 @@ class << self
     @user_analyses_tmp ||= begin
       site.require_objet 'filmodico'
       Dir["#{user_folder_tmp}/*"].collect do |p|
-        Filmodico.new(File.basename(p).to_i)
+        Filmodico.new(::File.basename(p).to_i)
       end
     end
   end

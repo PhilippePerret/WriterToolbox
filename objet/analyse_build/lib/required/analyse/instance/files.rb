@@ -12,18 +12,10 @@ class AnalyseBuild
       arr = Array.new
       Dir["#{folder_depot}/*"].each do |p|
         ::File.extname(p) != '.data' || next
-        arr << AnalyseBuild::File.new(p)
+        arr << AnalyseBuild::File.new(self, p)
       end
       arr
     end
   end
 
-  # Le dossier des fichiers déposés par l'user
-  def folder_depot
-    @folder_depot ||= folder + 'depot'
-  end
-  # Le dossier principal du chantier
-  def folder
-    @folder ||= AnalyseBuild.user_folder_tmp + "#{film.id}"
-  end
-end
+end #/AnalyseBuild

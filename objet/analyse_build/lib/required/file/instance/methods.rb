@@ -7,12 +7,12 @@
 class AnalyseBuild
 class File
 
-  attr_reader :chantier
-  attr_reader :path
-
-  def initialize chantier, path
-    @chantier = chantier
-    @path     = path
+  # Pour parser le fichier
+  #
+  def parse
+    # Il faut charger le module en fonction du type du fichier
+    AnalyseBuild.require_module "parser_#{format}"
+    _parse
   end
 
 

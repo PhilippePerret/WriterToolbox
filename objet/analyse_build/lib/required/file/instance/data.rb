@@ -42,9 +42,21 @@ class File
     end
   end
 
-
-  def data_file
-    @data_file ||= SuperFile.new(path + '.data')
+  # Format du fichier, qui peut être :reg, :tm ou :yaml
+  #
+  # Ce format détermine le parseur à utiliser, en permettant de
+  # définir le dossier dans les modules ("parser_<format>")
+  def format
+    @format ||= ftype.split('_').last.to_sym
+  end
+  def hformat
+    @hformat ||= begin
+      case format
+      when :reg   then 'normal (régulier)'
+      when :tm    then 'textmate (bundle)'
+      when :yaml  then 'YAML'
+      end
+    end
   end
 
 end #/File
