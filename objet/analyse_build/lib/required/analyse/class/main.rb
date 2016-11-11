@@ -1,4 +1,8 @@
 # encoding: UTF-8
+
+site.require_objet 'analyse'
+site.require_objet 'filmodico'
+
 class AnalyseBuild
 
   extend MethodesMainObjet

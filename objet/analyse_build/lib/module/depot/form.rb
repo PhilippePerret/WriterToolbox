@@ -12,7 +12,8 @@ class << self
       menu_type_fichier       +
       champ_identifiant_film  +
       bouton_soumettre
-    ).in_form(id: 'depot_fichier', action: 'analyse_build/depot').
+    ).
+      in_form(id: 'depot_fichier', action: 'analyse_build/depot', file: true).
       in_fieldset(legend: 'Dépôt de fichier d’analyse') +
       explications.in_div(class: 'small')
   end
@@ -21,7 +22,7 @@ class << self
   def menu_type_fichier
     (
       'Type du fichier : ' +
-      TYPES_FICHIER.in_select(id: 'type_fichier', name: 'depot[type_fichier]') +
+      TYPES_FICHIER.in_select(id: 'type_fichier', name: 'depot[ftype]', selected: data_depot[:ftype]) +
       ' (1)'.in_span(class: 'small')
     ).in_p
   end
@@ -35,7 +36,7 @@ class << self
   def champ_identifiant_film
     (
       'Identifiant du film ' +
-      ''.in_input_text(name: 'depot[film]', id: 'depot_film') +
+      data_depot[:film].to_s.in_input_text(name: 'depot[film]', id: 'depot_film') +
       ' (2)'.in_span(class: 'small')
     ).in_p
   end

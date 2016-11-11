@@ -8,6 +8,7 @@
 * [Définir un préfix pour NAME et ID](#definirunprefixpourlesnameetid)
 * [Mise en exergue des champs](#mettreneexerguedeschamps)
 * [Définition de l'objet édité ou du hash de données](#definitiondunobjet)
+* [Fichier à uploader](#fichierauploader)
 
 <a name='dimensionsdeuxcolonnes'></a>
 
@@ -167,3 +168,54 @@ On peut définir l'objet du formulaire par :
     form.objet = <l'objet>
 
 … où l'objet est soit un `Hash` de données (dont les clés sont les clés des champs) soit un objet, une instance, qui possède des méthodes-propriétés pour les champs définis.
+
+
+<a name='fichierauploader'></a>
+
+## Fichier à uploader
+
+On peut utiliser la class `SuperFile` pour gérer les fichiers à uploader.
+
+Dans le formulaire, on définit le name à donner au fichier, puis on l'envoie en premier argument de la méthode `#upload` du superfile.
+
+### Exemple concret
+
+Soit le formulaire :
+
+~~~html
+
+  <form action="mon/action" enctype="multiform/data">
+    <input type="file" name="mon_fichier_uploaded" />
+    <input type="submit" value="Upload" />
+  </form>
+~~~
+
+Dans le programme qui reçoit le traitement du formulaire, il suffit de faire :
+
+~~~ruby
+
+  # On crée un superfile avec un nom quelconque puisque le nom du fichier
+  # original prendra la place de l'autre
+  sf = SuperFile.new('path/to/the/uploaded/file.ext')
+
+  # On télécharge le fichier
+  sf.upload(param(:mon_fichier_uploaded))
+
+  # That's all, folks!
+  # Le fichier se trouve maintenant à l'endroit voulu.
+
+~~~
+
+Des options peuvent être transmises en second argument de la méthode `#upload` :
+
+    change_name   Si false, ne change pas le nom défini à l'initialisation du
+                  super file. Par défaut, c'est true, donc change le nom.
+
+    normalize_filename
+                  Si true, le nom original du fichier est normalisé pour ne
+                  pas avoir de caractères spéciaux ni d'espaces.
+                  Defaut : false, le nom n'est pas normalisé
+
+    nil_if_empty
+                  Si true (défaut), la méthode retourne nil s'il n'y avait
+                  pas de fichier transmis ou qu'il est vide.

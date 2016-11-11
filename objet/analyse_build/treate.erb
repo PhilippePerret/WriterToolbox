@@ -1,0 +1,16 @@
+<% raise_unless user.analyste? || user.admin? %>
+<%
+def chantier
+  @chantier ||= site.current_route.instance
+end
+def film
+  @film ||= chantier.film
+end
+
+%>
+<%= AnalyseBuild.titre_h1("Traitement de “#{chantier.film.titre}”") %>
+
+<h3>Fichiers du dossier : </h3>
+<% chantier.files.each do |file| %>
+  <%= "#{file.name} (fichier de #{file.htype}s)".in_div %>
+<% end %>

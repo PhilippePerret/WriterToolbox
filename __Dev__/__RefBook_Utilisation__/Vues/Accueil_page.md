@@ -1,5 +1,7 @@
 # Page d'accueil
 
+* [Toute dernières actualités](#toutedernieresactualites)
+
 La page d'accueil est construite par les fichiers :
 
     ./objet/site/home.erb
@@ -10,7 +12,6 @@ Et surtout par les fichiers du dossier :
 
     ./objet/site/lib/module/home_page
 
-* [Toute dernières actualités](#toutedernieresactualites)
 <a name='toutedernieresactualites'></a>
 
 ## Toute dernières actualités
@@ -18,4 +19,3 @@ Et surtout par les fichiers du dossier :
 Les toute dernières actualités sont consignées dans le fichier :
 
     ./hot/last_actualites.rb
-

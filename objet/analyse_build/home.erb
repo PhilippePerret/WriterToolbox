@@ -1,9 +1,25 @@
+<% raise_unless user.analyste? || user.admin? %>
 <%
 # Accueil de la section du chantier d'analyse
 %>
 <h1>Chantier des analyses de film</h1>
 <h2>Accueil</h2>
+<%= 'Déposer un fichier'.in_a(href: 'analyse_build/depot') %>
 
-<ul>
-  <li><%= 'Déposer un fichier'.in_a(href: 'analyse_build/depot') %></li>
-</ul>
+<%# --------------------------------------------------------------------- %>
+<%
+=begin
+
+  Si un dossier d'utilisateur existe, on regarde si on peut lui proposer
+  de faire quelque chose, par exemple de parser des fichiers d'analyse.
+
+=end
+%>
+<% if AnalyseBuild.user_folder_tmp.exist? %>
+  <p>
+    Votre dossier d'analyse temporaire courant contient les films suivants. Cliquez le titre du film que vous voulez traiter.
+  </p>
+  <% AnalyseBuild.user_films_tmp.each do |film| %>
+    <%= film.titre.in_a(href: "analyse_build/#{film.id}/treate").in_div %>
+  <% end %>
+<% end %>
