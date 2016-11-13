@@ -54,5 +54,29 @@
 %>
 
 <%
+# ---------------------------------------------------------------------
+#
+# Les fichiers construits (ils se trouvent dans le dossier temporaire
+# de l'utilisateur qui charge les données)
+# 
+%>
+<h3>Fichiers construits</h3>
+
+<ul class="tdm">
+  <% if chantier.brins_html_file.exist? %>
+    <%= 'Brins'.in_a(href: "#{site.current_route.route}#fichier_brins")%>
+  <% end %>
+
+</ul>
+
+
+<% if chantier.brins_html_file.exist? %>
+  <a name="fichier_brins"></a>
+  <h4>Fichier Brins</h4>
+  <%= chantier.brins_html_file.read %>
+<% end %>
+
+
+<%
 end # / si ça n'est pas la définition des brins
 %>

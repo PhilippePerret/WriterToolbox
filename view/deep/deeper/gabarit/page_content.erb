@@ -54,3 +54,10 @@ contenu_de_la_page = page.content_route || page.home
   <%= page.comments if page.comments? && Page::Comments.display_formulaire? %>
 
 </section>
+
+<%
+# Un bouton pour afficher/masquer la marge gauche
+%>
+<% if user.admin? %>
+  <%= 'Masquer marge'.in_a(id: 'btn_mask_marge', onclick: 'UI.toggle_left_margin()') %>
+<% end %>

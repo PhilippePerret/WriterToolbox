@@ -5,11 +5,33 @@ class AnalyseBuild
   def scenes_file
     @scenes_file ||= folder + 'SCENES.msh'
   end
+  # Fichier HTML contenant le listing des scènes
+  # Correspond à l'évènemencier
+  def scenes_html_file
+    @scenes_html_file ||= folder + 'scenes.html'
+  end
+
+  # Fichier Marshal contenant les données des brins
   def brins_file
     @brins_file ||= folder + 'BRINS.msh'
   end
+  # Fichier HTML contenant le listing des brins avec leurs scènes
+  def brins_html_file
+    @brins_html_file ||= folder + 'brins.html'
+  end
+
+  # Fichier Marshal contenant les données des Personnages
   def personnages_file
     @personnages_file ||= folder + 'PERSONNAGES.msh'
+  end
+  # Fichier HTML contenant la liste des personnages
+  # Pour le moment, ne contient que ça, mais à l'avenir, on pourrait
+  # avoir les scènes et les brins
+  def personnages_html_file
+    @personnages_html_file ||= folder + 'personnages.html'
+  end
+  def data_file
+    @data_file ||= folder + 'FDATA.msh'
   end
 
   # Le dossier des fichiers déposés par l'user

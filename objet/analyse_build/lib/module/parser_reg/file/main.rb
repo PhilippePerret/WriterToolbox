@@ -25,6 +25,7 @@ class File
 
   # Parse le fichier et enregistre toutes ses données dans un fichier
   # Marshal
+  # + dans le fichier général du film contenant toutes les données
   def to_marshal
     dmarshal = Array.new
     # Si ce sont les scènes, il faut leur fournir un identifiant
@@ -34,7 +35,14 @@ class File
       type == :scene && thing.id = id_for_scene
       dmarshal << thing.all_data
     end
-    marshal_file.write Marshal.dump(dmarshal)
+
+    # On sauve les éléments de ce type
+    # --------------------------------
+    # Noter qu'ils seront également sauvés dans le fichier général
+    # contenant toutes les données du film et plus.
+    chantier.instance_variable_set("@#{type}s", dmarshal)
+    chantier.send("save_#{type}s".to_sym)
+
   end
 
   # La liste des things (chose), instances en fonction du type

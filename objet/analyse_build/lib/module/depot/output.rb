@@ -8,7 +8,9 @@ class << self
   # analyste
   def output_as_analyste
     <<-HTML
-    <p>Bienvenue dans la section des dépôts, #{user.pseudo}.</p>
+    <p>
+      Déposez tous vos fichiers d'analyses, puis <b>rejoignez l'accueil pour les traiter</b>.
+    </p>
     #{formulaire_depot_fichier}
     HTML
   end

@@ -16,7 +16,7 @@ class AnalyseBuild
     # S'il y a eu des changements, il faut les enregistrer dans le
     # fichier marshal, et il faut aussi proposer de refaire le fichier de
     # données déposées.
-    scenes_file.write( Marshal.dump(scenes) )
+    save_scenes
   end
 
 end #/AnalyseBuild
