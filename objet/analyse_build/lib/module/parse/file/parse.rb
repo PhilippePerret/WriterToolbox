@@ -13,11 +13,7 @@ class File
   # + dans le fichier général du film contenant toutes les données
   def to_marshal
     dmarshal = Array.new
-    # Si ce sont les scènes, il faut leur fournir un identifiant
-    id_for_scene = 0
     things.each do |thing|
-      id_for_scene += 1
-      type == :scene && thing.id = id_for_scene
       dmarshal << thing.all_data
     end
 
@@ -32,6 +28,10 @@ class File
 
   # La liste des things (chose), instances en fonction du type contenu
   # du fichier.
+  #
+  # Noter que c'est lors de leur initialisation qu'on procède à leur
+  # parsing.
+  # 
   def things
     @things ||= begin
       code.strip.split("\n\n").collect do |p|

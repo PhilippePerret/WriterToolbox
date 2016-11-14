@@ -17,7 +17,6 @@ class Brin
     @titre != nil || raise("Il faut impérativement définir le titre du Brin ##{@id}.")
 
     @description = lines[2..-1].join("\n").nil_if_empty
-
   end
 
 

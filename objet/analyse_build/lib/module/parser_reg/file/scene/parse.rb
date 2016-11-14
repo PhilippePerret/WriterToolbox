@@ -11,6 +11,8 @@ class Scene
   # Méthode principale qui parse la scène, appelée à l'instanciation
   #
   def parse
+    debug "Parse de la scène ##{numero}"
+    debug " brins : #{brins.inspect}"
     parse_first_line
     parse_lines
   end

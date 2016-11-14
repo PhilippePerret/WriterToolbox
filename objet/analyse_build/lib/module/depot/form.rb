@@ -14,9 +14,9 @@ class << self
     (
       'deposer_fichier'.in_hidden(name:'operation') +
       champ_identifiant_film  +
-      fields_depot_fichier(:scenes).in_fieldset(legend: 'Collecte des scènes') +
-      fields_depot_fichier(:personnages).in_fieldset(legend: 'Personnages') +
-      fields_depot_fichier(:brins).in_fieldset(legend: 'Brins') +
+      fields_depot_fichier(:scenes).in_fieldset(legend: 'Collecte des scènes'.in_span(class: 'bold')) +
+      fields_depot_fichier(:personnages).in_fieldset(legend: 'Personnages'.in_span(class: 'bold')) +
+      fields_depot_fichier(:brins).in_fieldset(legend: 'Brins'.in_span(class: 'bold')) +
       bouton_soumettre
     ).
       in_form(id: 'depot_fichiers', action: 'analyse_build/depot', file: true) +
@@ -58,7 +58,7 @@ class << self
 
   def bouton_soumettre
     (
-      'Déposer le fichier'.in_submit
+      'Déposer les fichiers'.in_submit
     ).in_div(class: 'buttons right')
   end
 

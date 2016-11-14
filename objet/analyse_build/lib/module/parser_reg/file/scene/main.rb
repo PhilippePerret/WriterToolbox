@@ -10,8 +10,9 @@ class Scene
   attr_reader :code
 
   def initialize film, code
-    @film = film
-    @code = code
+    @film   = film
+    @code   = code
+    @numero = self.class.numero_courant
     # On parse la scène dès son instanciation
     parse
   end

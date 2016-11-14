@@ -1,8 +1,10 @@
 # encoding: UTF-8
 module ModuleParseRelatifs
 
-  # Relatifs
-  attr_reader :brins, :personnages, :notes, :scenes
+  def brins       ; @brins        ||= Array.new end
+  def personnages ; @personnages  ||= Array.new end
+  def notes       ; @notes        ||= Array.new end
+  def scenes      ; @scenes       ||= Array.new end
 
   # Méthodes qui traite les marques qui suivent le texte du paragraphe
   # Ces marques contiennent les relations aux relatifs. Par exemple,
@@ -28,12 +30,6 @@ module ModuleParseRelatifs
   #
   def parse_relatifs
 
-    # Les listes qui vont être incrémentées
-    @brins        = Array.new
-    @personnages  = Array.new
-    @notes        = Array.new
-    @scenes       = Array.new
-
     marques = @liste_relatifs
     marques = marques.nil_if_empty
     marques != nil || (return false)
@@ -43,10 +39,10 @@ module ModuleParseRelatifs
       marque_id = marque[1..-1].to_i
       if marque_id > 0
         case lettre1
-        when 'B'  then @brins << marque_id
-        when 'N'  then @notes << marque_id
-        when 'P'  then @personnages << marque_id
-        when 'S'  then @scenes << marque_id
+        when 'B'  then brins << marque_id
+        when 'N'  then notes << marque_id
+        when 'P'  then personnages << marque_id
+        when 'S'  then scenes << marque_id
         else
           @errors << {who: self, error: "Identifiant de marque inconnu : #{marque}"}
         end

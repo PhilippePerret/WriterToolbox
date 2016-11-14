@@ -8,12 +8,9 @@ class AnalyseBuild
 class Film
 class Personnage
 
-  def initialize film, code
-    @film = film
-    @code = code
-    parse
+  def parse
+    raise 'Le parsing des fichiers personnage n’est pas encore implémenté'
   end
-
 end #/Personnage
 end #/Film
 end #/AnalyseBuild
