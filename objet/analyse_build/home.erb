@@ -4,7 +4,7 @@
 %>
 <h1>Chantier des analyses de film</h1>
 <h2>Accueil</h2>
-<%= 'Déposer un fichier'.in_a(href: 'analyse_build/depot') %>
+<%= 'Dépôt de fichiers'.in_a(href: 'analyse_build/depot', class: 'cadre').in_div(class: 'center') %>
 
 <%# --------------------------------------------------------------------- %>
 <%
@@ -16,7 +16,8 @@
 =end
 %>
 <% if AnalyseBuild.user_folder_tmp.exist? %>
-  <p>
+  <h3>Fichiers déposés</h3>
+  <p class='small italic'>
     Votre dossier d'analyse temporaire courant contient les films suivants. Cliquez le titre du film que vous voulez traiter.
   </p>
   <% AnalyseBuild.user_films_tmp.each do |film| %>

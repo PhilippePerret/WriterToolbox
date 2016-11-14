@@ -2,6 +2,13 @@
 class AnalyseBuild
 class << self
 
+  # Chantier courant. Il peut être soi défini par le dépot
+  # courant de fichiers soit par l'url.
+  attr_writer :current
+  def current
+    @current ||= site.current_route.instance
+  end
+
   # Liste des films de l'user qui possèdent des fichiers temporaires
   # d'analyse.
   # RETURN Une liste d'instance Filmodico

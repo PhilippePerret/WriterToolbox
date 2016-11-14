@@ -20,7 +20,7 @@
 
 <% else %>
 
-<h3>Fichiers du dossier : </h3>
+<h3>Fichiers déposés</h3>
 <% chantier.files.each do |file| %>
   <%= file.as_line_item %>
 <% end %>
@@ -31,6 +31,8 @@
   # Si le fichier SCENES.msh existe, on peut construire un évènemencier
   if chantier.scenes_file.exist?
     bouton_parser_fichiers = ''
+    bouton_reparser_fichiers =
+      'Reparser les fichiers'.in_a(href:"#{route_et_operation}=reparser_chantier", class: 'small btn')
     bouton_build_evenemencier =
       'Construire l’évènemencier'.in_a(href: "#{route_et_operation}=build_evenemencier", class: 'small btn')
     bouton_build_brins =
@@ -38,13 +40,15 @@
     bouton_define_brins =
       'Définir les brins'.in_a(href: "#{route_et_operation}=define_brins", class: 'small btn')
   else
-      bouton_build_evenemencier = bouton_build_brins = bouton_define_brins = ''
+      bouton_build_evenemencier = bouton_build_brins = bouton_define_brins =
+      bouton_reparser_fichiers = ''
       bouton_parser_fichiers =
         'Parser les fichiers'.in_a(href:"#{route_et_operation}=parser_chantier", class: 'small btn')
   end
 
 
  (
+  bouton_reparser_fichiers  +
   bouton_parser_fichiers    +
   bouton_build_evenemencier +
   bouton_define_brins       +
@@ -58,7 +62,7 @@
 #
 # Les fichiers construits (ils se trouvent dans le dossier temporaire
 # de l'utilisateur qui charge les données)
-# 
+#
 %>
 <h3>Fichiers construits</h3>
 

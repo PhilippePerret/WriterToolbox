@@ -12,15 +12,21 @@ class Scene
   def initialize film, code
     @film = film
     @code = code
+    # On parse la scène dès son instanciation
+    parse
   end
 
   # La première scène, qui contient les informations principales
   # de la scène
   def first_line
-    @first_line ||= lines[0]
+    @first_line ||= lines.shift
   end
 
-  # Les lignes de la scène
+  # Les paragraphes de la scène, mais en lignes brutes, avant
+  # traitement. On les appelle alors des lignes.
+  #
+  # Noter que la première ligne, la ligne d'info, est retirée
+  # de cette liste dès qu'on l'invoque.
   def lines
     @lines ||= code.strip.split("\n")
   end

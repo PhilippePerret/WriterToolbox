@@ -15,8 +15,8 @@ class AnalyseBuild
 
     def data_onglets
       {
-        'Accueil' => 'analyse_build/home',
-        'Déposer' => 'analyse_build/depot'
+        'Accueil'     => 'analyse_build/home',
+        'Déposer'     => 'analyse_build/depot'
       }
     end
 

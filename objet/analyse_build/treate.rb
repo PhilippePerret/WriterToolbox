@@ -18,6 +18,8 @@ end
 case param(:operation)
 when 'parser_chantier'
   chantier.parse
+when 'reparser_chantier'
+  chantier.reparse
 when 'build_evenemencier'
   AnalyseBuild.require_module 'build_events'
   chantier.build_events

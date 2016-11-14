@@ -8,6 +8,7 @@ class AnalyseBuild
 class Film
 class Brin
 
+  attr_reader :id, :titre, :description
 
   # Toutes les données sous forme de Hash qui doivent être enregistrées
   # dans le fichier Marshal des brins
@@ -15,21 +16,6 @@ class Brin
     {
       id: id, titre: titre, description: description
     }
-  end
-
-  def id
-    @id != nil || parse
-    @id
-  end
-
-  def titre
-    @titre != nil || parse
-    @titre
-  end
-
-  def description
-    @description != nil || parse
-    @description
   end
 
 end #/Brin

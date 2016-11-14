@@ -1,26 +1,11 @@
 # encoding: UTF-8
-=begin
-
-  Module principal de parsing du fichier de collecte des scènes
-
-=end
 class AnalyseBuild
 class File
 
-  # Parser le fichier en fonction de son type
-  # Le parser consiste à relever ses données et à créer un fichier Marshal
-  # de toutes les données, pour en faire ensuite d'autres choses.
-  #
-  # C'est la méthode qui procède réellement au parsing, elle est appelée
-  # par la méthode #parse de AnalyseBuild::File
-  #
-  def _parse
+  # Parse le fichier d'analyse en fonction de son type
+  def parse
+    AnalyseBuild.require_module "parser_#{ftype}"
     to_marshal
-    case type
-    when :brin        then flash "Je parse le fichier des brins"
-    when :personnage  then flash "Je parse le fichier des personnages"
-    when :scene       then flash "Je parse le fichier des scènes"
-    end
   end
 
   # Parse le fichier et enregistre toutes ses données dans un fichier
@@ -45,7 +30,8 @@ class File
 
   end
 
-  # La liste des things (chose), instances en fonction du type
+  # La liste des things (chose), instances en fonction du type contenu
+  # du fichier.
   def things
     @things ||= begin
       code.strip.split("\n\n").collect do |p|

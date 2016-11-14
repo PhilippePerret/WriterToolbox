@@ -3,33 +3,48 @@ class Analyse
 class Depot
 class << self
 
-  # Retourne le code pour déposer un fichier d'analyse quelconque, une
-  # collecte, un fichier de brins, de personnages, etc.
-  def formulaire_depot_fichier
+  # Formulaire pour déposer tous les fichiers d'une analyse, fichier
+  # collecte de scène, fichier brins, personnages, etc.
+  # Pour chaque fichier on définit son format, entre :
+  #   TM      Le format des analyses TextMate
+  #   Simple  Le format simple avec un ligne pour information
+  #   Yaml    Le format YAML, pas encore utilisé
+  #
+  def formulaire_depot_fichiers
     (
       'deposer_fichier'.in_hidden(name:'operation') +
-      champ_input_fichier     +
-      menu_type_fichier       +
       champ_identifiant_film  +
+      fields_depot_fichier(:scenes).in_fieldset(legend: 'Collecte des scènes') +
+      fields_depot_fichier(:personnages).in_fieldset(legend: 'Personnages') +
+      fields_depot_fichier(:brins).in_fieldset(legend: 'Brins') +
       bouton_soumettre
     ).
-      in_form(id: 'depot_fichier', action: 'analyse_build/depot', file: true).
-      in_fieldset(legend: 'Dépôt de fichier d’analyse') +
+      in_form(id: 'depot_fichiers', action: 'analyse_build/depot', file: true) +
       explications.in_div(class: 'small')
   end
 
+  # Retourne le code pour déposer un fichier d'analyse quelconque, une
+  # collecte, un fichier de brins, de personnages, etc.
+  def fields_depot_fichier(type)
+    (
+      champ_input_fichier(type)     +
+      menu_type_fichier(type)
+    )
+  end
 
-  def menu_type_fichier
+
+  def menu_type_fichier(type)
+    # debug "data_depot : #{data_depot.inspect}"
     (
       'Type du fichier : ' +
-      TYPES_FICHIER.in_select(id: 'type_fichier', name: 'depot[ftype]', selected: data_depot[:ftype]) +
+      TYPES_FICHIER.in_select(id: 'type_fichier', name: "depot[#{type}][ftype]", selected: data_depot[type][:ftype]) +
       ' (1)'.in_span(class: 'small')
     ).in_p
   end
 
-  def champ_input_fichier
+  def champ_input_fichier(type)
     (
-      ''.in_input_file(name: 'depot[fichier]')
+      ''.in_input_file(name: "depot[#{type}][fichier]")
     ).in_p
   end
 
@@ -54,11 +69,7 @@ class << self
       (1) Bien définir le type du fichier pour qu'il soit parsé correctement. Vous pouvez trouver l'explication des formats dans le manuel ou sur #{lien_explication_formats}.
     </p>
     <p>
-      (2) Vous pouvez indiquer le film de plusieurs façons : <ol>
-        <li>avec l'identifiant numérique (afficher sa fiche dans le filmodico et relever le numéro dans l'URL entre `filmodico` et `show`. Par exemple, si l'url est `filmodico/23/show`, l'identifiant du film est 23),</li>
-        <li>avec l'identifiant TITRE+ANNÉE, par exemple `Her2013`,</li>
-        <li>en fournissant un nouveau nom si le film n'est pas encore dans le filmodico. Mais pour ce faire, vous devez avoir le grade d'un super analyste.</li>
-      </ol>
+      (2) C'est l'identifiant numérique du film. Pour l'obtenir, il suffit d'afficher sa fiche dans le filmodico et de relever le numéro dans l'URL entre `filmodico` et `show`. Par exemple, si l'url est `filmodico/23/show`, l'identifiant du film est 23).
     </p>
     HTML
   end

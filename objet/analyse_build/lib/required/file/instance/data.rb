@@ -15,19 +15,25 @@ class File
     @data ||= JSON.parse(data_file.read).to_sym
   end
 
+  # Format du fichier
   # Le file type du fichier, qui détermine comment il devra être
   # lu et compris pour être parsé.
+  # Les valeurs possibles sont :
+  #   :tm
+  #   :reg
+  #   :yaml
+  #
   def ftype
-    @ftype || data[:ftype]
+    @ftype || data[:ftype].to_sym
   end
+  alias :format :ftype
 
   def type
     @type ||= begin
-      w1ftype = ftype.split('_').first
-      case w1ftype
-      when 'brins'    then :brin
-      when 'persos'   then :personnage
-      when 'collect'  then :scene
+      case name
+      when 'brins.txt'        then :brin
+      when 'personnages.txt'  then :personnage
+      when 'scenes.txt'       then :scene
       end
     end
   end
@@ -42,13 +48,6 @@ class File
     end
   end
 
-  # Format du fichier, qui peut être :reg, :tm ou :yaml
-  #
-  # Ce format détermine le parseur à utiliser, en permettant de
-  # définir le dossier dans les modules ("parser_<format>")
-  def format
-    @format ||= ftype.split('_').last.to_sym
-  end
   def hformat
     @hformat ||= begin
       case format

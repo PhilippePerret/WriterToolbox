@@ -15,6 +15,14 @@ class File
     _parse
   end
 
+  # Pour reparser le fichier
+  # Ça consiste à détruire les fichiers marshal et à reparser
+  # le fichier
+  def reparse
+    Dir["#{chantier.folder}/*.msh"].each{|p| File.unlink(p)}
+    parse
+  end
+
 
 end #/File
 end #/AnalyseBuild

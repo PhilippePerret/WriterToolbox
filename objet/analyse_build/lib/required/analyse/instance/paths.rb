@@ -1,6 +1,16 @@
 # encoding: UTF-8
 class AnalyseBuild
 
+  def scenes_depot_file
+    @scenes_depot_file ||= folder_depot + 'scenes.txt'
+  end
+  def brins_depot_file
+    @brins_depot_file ||= folder_depot + 'brins.txt'
+  end
+  def personnages_depot_file
+    @personnages_depot_file ||= folder_depot + 'personnages.txt'
+  end
+  
   # Fichier Marshal contenant les données des scènes
   def scenes_file
     @scenes_file ||= folder + 'SCENES.msh'
