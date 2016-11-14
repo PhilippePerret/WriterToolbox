@@ -20,6 +20,8 @@ when 'deposer_fichier'
   Analyse::Depot.submit_file
   AnalyseBuild.require_module 'parse'
   chantier.parse
+  AnalyseBuild.require_module 'developpe_data'
+  chantier.developpe_data
   AnalyseBuild.require_module 'build'
-  chantier.build_fichiers
+  chantier.build_all_fichiers
 end

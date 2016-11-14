@@ -18,7 +18,7 @@ class Scene
   attr_reader :resume
 
   attr_reader :data_paragraphes
-  attr_reader :notes
+  attr_reader :data_notes
 
 
 end #/Scene

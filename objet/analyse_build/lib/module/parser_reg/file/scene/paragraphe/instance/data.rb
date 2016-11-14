@@ -11,6 +11,7 @@ class Paragraphe
   # marshal.
   def all_data
     {
+      id:           id,
       texte:        texte,
       brins:        brins,
       personnages:  personnages,

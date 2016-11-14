@@ -17,6 +17,7 @@ class Scene
       brins:              brins.uniq,
       personnages:        personnages.uniq,
       notes:              notes.uniq,
+      data_notes:         data_notes,
       data_paragraphes:   data_paragraphes
     }
   end
@@ -38,7 +39,7 @@ class Scene
   def add_scenes scs
     scs.each{|sid| scenes << sid}
   end
-  
+
 end #/Scene
 end #/Film
 end #/AnalyseBuild

@@ -7,6 +7,7 @@
 class AnalyseBuild
 class Film
 class Brin
+  
   attr_reader :film
 
   # Le code brut dans le fichier (toutes les lignes)

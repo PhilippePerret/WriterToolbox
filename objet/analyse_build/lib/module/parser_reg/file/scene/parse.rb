@@ -11,8 +11,6 @@ class Scene
   # Méthode principale qui parse la scène, appelée à l'instanciation
   #
   def parse
-    debug "Parse de la scène ##{numero}"
-    debug " brins : #{brins.inspect}"
     parse_first_line
     parse_lines
   end
@@ -78,7 +76,7 @@ class Scene
         paras << Paragraphe.new(self, line).all_data
       end
     end
-    @notes              = hnotes
+    @data_notes         = hnotes
     @data_paragraphes   = paras
   end
 

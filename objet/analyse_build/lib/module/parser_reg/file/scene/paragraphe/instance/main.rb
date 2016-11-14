@@ -15,6 +15,7 @@ class Paragraphe
     @scene  = scene
     @code   = code
     @errors = Array.new
+    @id     = "#{scene.numero}-#{self.class.new_id}"
     # On parse immédiatement le paragraphe
     self.parse
   end
