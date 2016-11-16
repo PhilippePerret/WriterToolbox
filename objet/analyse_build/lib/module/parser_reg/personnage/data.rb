@@ -8,12 +8,14 @@ class AnalyseBuild
 class Film
 class Personnage
 
+  attr_reader :id
+  attr_reader :patronyme, :prenom, :nom, :pseudo, :fonction
 
   # Toutes les données sous forme de Hash qui doivent être enregistrées
   # dans le fichier Marshal
   def all_data
     {
-      id: id,
+      id:         id,
       patronyme:  patronyme,
       prenom:     prenom,
       nom:        nom,

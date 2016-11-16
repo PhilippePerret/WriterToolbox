@@ -10,8 +10,17 @@ class AnalyseBuild
   # enregistrées dans le fichier marshal FDATA.
   #
   def build_all_fichiers
+    suivi '* Construction de tous les fichiers possibles…'
 
-    flash 'Construction de tous les fichiers analyse à implémenter.'
+    # Construction les différents types dévènemencier si le fichier
+    # de collecte des scènes a été fourni
+    collect_scenes_provided? && build_events
+
+    # Construction des brins si le fichier de collecte des brins a été
+    # fournir
+    collect_brins_provided? && build_brins
+
+    flash 'Construction opérée avec succès.'
   end
   # /build_all_fichiers
 

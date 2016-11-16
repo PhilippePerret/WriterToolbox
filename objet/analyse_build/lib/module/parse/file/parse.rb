@@ -6,6 +6,11 @@ class File
   def parse
     AnalyseBuild.require_module "parser_#{ftype}"
     to_marshal
+  rescue Exception => e
+    debug e
+    error "Erreur au cours du parse général : #{e.message}"
+  else
+    true # pour poursuivre
   end
 
   # Parse le fichier et enregistre toutes ses données dans un fichier
@@ -31,7 +36,7 @@ class File
   #
   # Noter que c'est lors de leur initialisation qu'on procède à leur
   # parsing.
-  # 
+  #
   def things
     @things ||= begin
       code.strip.split("\n\n").collect do |p|

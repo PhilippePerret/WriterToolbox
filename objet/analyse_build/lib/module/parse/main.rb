@@ -7,7 +7,9 @@ class AnalyseBuild
   # chargés.
   #
   def parse
+    suivi '* Parsing des fichiers transmis…'
     [:personnages, :brins, :scenes].each do |type|
+      suivi "** Parsing du fichier de type #{type}…"
       sf = self.send("#{type}_depot_file".to_sym)
       if sf.exist?
         File.new(self, sf.path).parse

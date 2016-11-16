@@ -9,7 +9,7 @@ class Film
 class Personnage
 
   def parse
-    raise 'Le parsing des fichiers personnage n’est pas encore implémenté'
+    error 'Le parsing des fichiers personnage n’est pas encore implémenté'
   end
 end #/Personnage
 end #/Film

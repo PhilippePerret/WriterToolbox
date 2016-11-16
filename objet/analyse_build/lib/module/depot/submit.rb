@@ -15,24 +15,33 @@ class << self
   # type donné pour le fichier et autres informations utiles.
   #
   def submit_file
-
     # On va déterminer l'identifiant du film. On doit toujour obtenir un
     # nombre, même lorsque c'est soit la valeur minuscule qui est donnée
     # soit l'identifiant avec année.
     idfilm = data_depot[:film].to_i_inn
     idfilm != nil || begin
       error 'Il faut impérativement définir l’identifiant du film.'
-      return
+      return false
     end
 
     site.require_objet 'filmodico'
     film_id = Filmodico.new(idfilm).id rescue begin
       error "Impossible de trouver le film désigné par `#{idfilm}`…"
-      return
+      return false
     end
 
     # On met ce chantier en chantier courant
     AnalyseBuild.current = AnalyseBuild.new(film_id)
+    AnalyseBuild.current.suivi "* Dépôt des fichiers…"
+
+    # Le dossier du film doit être détruit avant le travail
+    # si la case à cocher le demande.
+    # Noter que c'est seulement le dossier de l'user, pas un dossier
+    # général du film. De toute façon, aucune modification ne peut être
+    # faite sur une donnée générale.
+    if param(:detruire_dossier_film) == 'on'
+      AnalyseBuild.current.folder.exist? && AnalyseBuild.current.folder.remove
+    end
 
     # On boucle sur les trois types de fichier qui ont pu être
     # soumis
@@ -48,6 +57,8 @@ class << self
       res = sf.upload(data_depot[type][:fichier], options)
       res != nil || next
 
+      AnalyseBuild.current.suivi "** Dépôt du fichier de type #{type}"
+
       # On crée aussi un fichier de data qui permet de consigner les
       # informations sur le fichier, notamment pour savoir ce qu'il est,
       # un fichier de collecte, de brins, de personnages, etc.
@@ -62,6 +73,11 @@ class << self
     end
     # /boucle sur les types de fichier possible
 
+  rescue Exception => e
+    debug e
+    error "Une erreur est survenue au cours de la soumission : #{e.message}"
+  else
+    return true
   end
 
   # Les données du formulaire de dépôt d'un fichier
@@ -73,10 +89,10 @@ class << self
 
   def data_depot_defaut
     {
-      film_id: nil,
-      scenes: Hash.new,
-      personnages: Hash.new,
-      brins: Hash.new
+      film_id:      nil,
+      scenes:       Hash.new,
+      personnages:  Hash.new,
+      brins:        Hash.new
     }
   end
 

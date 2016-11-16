@@ -13,6 +13,7 @@ class << self
   def formulaire_depot_fichiers
     (
       'deposer_fichier'.in_hidden(name:'operation') +
+      checkbox_detruire_folder_film +
       champ_identifiant_film  +
       fields_depot_fichier(:scenes).in_fieldset(legend: 'Collecte des scènes'.in_span(class: 'bold')) +
       fields_depot_fichier(:personnages).in_fieldset(legend: 'Personnages'.in_span(class: 'bold')) +
@@ -21,6 +22,10 @@ class << self
     ).
       in_form(id: 'depot_fichiers', action: 'analyse_build/depot', file: true) +
       explications.in_div(class: 'small')
+  end
+
+  def checkbox_detruire_folder_film
+    'Détruire votre dossier du film s’il existe'.in_checkbox(name: 'detruire_dossier_film', id: 'detruire_dossier_film')
   end
 
   # Retourne le code pour déposer un fichier d'analyse quelconque, une
@@ -58,7 +63,7 @@ class << self
 
   def bouton_soumettre
     (
-      'Déposer les fichiers'.in_submit
+      'Déposer et traiter les fichiers'.in_submit
     ).in_div(class: 'buttons right')
   end
 

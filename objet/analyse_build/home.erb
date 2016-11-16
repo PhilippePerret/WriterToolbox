@@ -1,6 +1,11 @@
 <% raise_unless user.analyste? || user.admin? %>
 <%
 # Accueil de la section du chantier d'analyse
+
+page.title = "Chantier analyses"
+page.description= "Chantier des analyses de films, pour traiter les fichiers de collecte des analystes."
+enable_comments
+
 %>
 <h1>Chantier des analyses de film</h1>
 <h2>Accueil</h2>

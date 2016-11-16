@@ -6,7 +6,7 @@ class << self
   # courant de fichiers soit par l'url.
   attr_writer :current
   def current
-    @current ||= site.current_route.instance
+    @current ||= site.current_route.instance || AnalyseBuild.new
   end
 
   # Liste des films de l'user qui possèdent des fichiers temporaires

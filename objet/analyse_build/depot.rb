@@ -15,13 +15,23 @@ def film
   @film ||= chantier.film
 end
 
+# Méthode principale qui dépose et traite les fichiers
+# de collecte.
+#
+# Ce code a été mis dans une fonction pour pouvoir ressortir
+# plus facilement (avec le return)
+# 
+def depose_et_traite_fichiers
+  Analyse::Depot.submit_file || return
+  AnalyseBuild.require_module 'parse'
+  chantier.parse || return
+  AnalyseBuild.require_module 'developpe_data'
+  chantier.developpe_data || return
+  AnalyseBuild.require_module 'build'
+  chantier.build_all_fichiers || return
+end
+
 case param(:operation)
 when 'deposer_fichier'
-  Analyse::Depot.submit_file
-  AnalyseBuild.require_module 'parse'
-  chantier.parse
-  AnalyseBuild.require_module 'developpe_data'
-  chantier.developpe_data
-  AnalyseBuild.require_module 'build'
-  chantier.build_all_fichiers
+  depose_et_traite_fichiers
 end

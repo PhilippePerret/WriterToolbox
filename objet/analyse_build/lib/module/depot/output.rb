@@ -7,13 +7,7 @@ class << self
   # Sortie affichée si le visiteur est un administrateur ou un
   # analyste
   def output_as_analyste
-    rejoignez_laccueil = 'rejoignez l’accueil'.in_a(href: 'analyse_build/home')
-    <<-HTML
-    <p>
-      Déposez tous vos fichiers d'analyses, puis <b class='cadre'>rejoignez l'accueil pour les traiter</b>.
-    </p>
-    #{formulaire_depot_fichiers}
-    HTML
+    formulaire_depot_fichiers
   end
   # /output_as_analyste
 

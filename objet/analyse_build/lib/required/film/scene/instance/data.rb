@@ -19,6 +19,8 @@ class Scene
 
   attr_reader :data_paragraphes
   attr_reader :data_notes
+  # attr_reader :brins # ne surtout pas mettre ça, ça rentrerait en
+  # conflit avec le module du parsing des brins
 
 
 end #/Scene
