@@ -12,6 +12,9 @@ class Brin
   # Les données du brin, enregistrées dans le fichier Marshal
   attr_reader :data
 
+  attr_reader :titre
+  attr_reader :para_or_scene_ids
+
   # Instanciation du brin
   #
   # Cette méthode écrase la méthode d'initialisation courante, par exemple
@@ -22,7 +25,7 @@ class Brin
     @data = data
     data.each{|k,v|instance_variable_set("@#{k}",v)}
   end
-  
+
 
 end #/Brin
 end #/Film

@@ -4,6 +4,10 @@
   Module permettant le dépot d'une analyse, de ses fichiers
 
 =end
+
+# Note : en fait, tous les modules de dépôt, parsing, construction,
+# seront appelés les uns après les autres pour procéder au traitement
+# complet des fichiers fournis.
 AnalyseBuild.require_module 'depot'
 
 def chantier
@@ -20,7 +24,7 @@ end
 #
 # Ce code a été mis dans une fonction pour pouvoir ressortir
 # plus facilement (avec le return)
-# 
+#
 def depose_et_traite_fichiers
   Analyse::Depot.submit_file || return
   AnalyseBuild.require_module 'parse'
@@ -34,4 +38,7 @@ end
 case param(:operation)
 when 'deposer_fichier'
   depose_et_traite_fichiers
+when 'rebuild_fichiers'
+  AnalyseBuild.require_module 'build'
+  chantier.build_all_fichiers
 end

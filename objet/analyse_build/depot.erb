@@ -12,8 +12,18 @@ enable_comments
 <% if user.admin? || user.analyste? %>
   <%= Analyse::Depot.output_as_analyste %>
   <%= chantier.suivi %>
-  <%# L'ÉVÈNEMENCIER S'IL EXISTE %>
+  <%
+    # LES ÉVÈNEMENCIERS S'ILS EXISTENT
+    #
+    # Note : à partir du moment où ce fichier existe, c'est que les
+    # données ont été parsées avec succès. On peut donc afficher un
+    # bouton qui servira juste à reconstruire les fichiers.
+    # Ce bouton est utile pour l'implémentation du programme, pour
+    # faire les tests.
+  %>
   <% if chantier.scenes_html_file.exist? %>
+    <%# Bouton pour reconstruire les fichiers (cf. ci-dessus) %>
+    <%= chantier.bouton_rebuild_all_fichiers %>
     <h3>Évènemencier complet</h3>
     <%= chantier.scenes_html_file.read %>
   <% end %>

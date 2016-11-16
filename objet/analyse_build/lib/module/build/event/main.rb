@@ -30,7 +30,7 @@ class AnalyseBuild
     suivi '** Construction du chemin de fer…'
     code =
       balise_styles('chemin_de_fer') +
-      listing_scenes_as_event.in_div(class: 'events')
+      listing_scenes_as_chemin_de_fer.in_div(class: 'chemin_de_fer')
 
     scenes_html_file.append code
   end
@@ -44,7 +44,9 @@ class AnalyseBuild
     '</style>'
   end
 
-
+  # ---------------------------------------------------------------------
+  #   Les méthodes de construction des évènemenciers et similaires
+  # ---------------------------------------------------------------------
   # Listing des évènements pour l'évènemencier
   def listing_scenes_as_event
     scenes_as_instance.collect do |scene|
@@ -52,10 +54,13 @@ class AnalyseBuild
     end.join("\n")
   end
 
-  def scenes_as_instance
-    @data_scenes ||= Marshal.load(scenes_file.read)
-    @data_scenes.collect do |dscene|
-      AnalyseBuild::Film::Scene.new(dscene)
-    end
+  def listing_scenes_as_chemin_de_fer
+    scenes_as_instance.collect do |scene|
+      scene.as_chemin_de_fer
+    end.join("\n")
   end
+
+  # /fin de méthodes de construction des évènemenciers
+  # ---------------------------------------------------------------------
+  
 end
