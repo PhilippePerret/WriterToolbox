@@ -77,7 +77,7 @@ class AnalyseBuild
         end
       end
 
-      # Traitement des paragraphe de la scène.
+      # Traitement des paragraphes de la scène.
       # Si ces paragraphes appartiennent à des brins, on
       # les ajoute à ces brins
       unless dparagraphes.empty?

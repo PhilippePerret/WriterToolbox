@@ -21,6 +21,11 @@ class Scene
     ).in_div(class: 'scene')
   end
 
+  # La scène pour un affichage dans un brin
+  def as_brin_event
+    "#{full_resume}"
+  end
+
   # Intitulé de la scène
   def intitule
     @intitule ||= begin
@@ -33,6 +38,7 @@ class Scene
       ].join(' ')
     end
   end
+
 
   # Le résumé de la scène
   # On prend soi celui qui est défini en première ligne soit la compilation
@@ -48,6 +54,8 @@ class Scene
       end
     end
   end
+  # /full_resume
+
 end #/Scene
 end #/Film
 end #/AnalyseBuild

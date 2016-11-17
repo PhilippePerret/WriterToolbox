@@ -21,17 +21,24 @@ class AnalyseBuild
     end
   end
 
+
+  # Retourne un Hash contenant en clé le numéro de la scène (qui
+  # sert d'identifiant) et en valeur son instance AnalyseBuild::Film::Scene
+  # 
   def hash_scenes_as_instances
     @hash_scenes_as_instances ||= begin
       h = Hash.new
       scenes_as_instance.each do |sc|
-        h.merge!(sc.id => sc)
+        h.merge!(sc.numero => sc)
       end
       h
     end
   end
 
 
+  # Retourne un Hash contenant en clé l'identifiant du paragraphe
+  # et en valeur l'instance AnalyseBuild::Film::Scene::Paragraphe
+  #
   def hash_paragraphes_as_instances
     @hash_paragraphes_as_instances ||= begin
       h = Hash.new

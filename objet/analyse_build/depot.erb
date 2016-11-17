@@ -4,7 +4,7 @@
 
 page.title = "Chantier analyses : dépôt"
 page.description= "Chantier des analyses de films, pour traiter les fichiers de collecte des analystes."
-enable_comments
+# enable_comments
 
 %>
 <%= AnalyseBuild.titre_h1('Dépôt d’analyse')%>
@@ -12,6 +12,13 @@ enable_comments
 <% if user.admin? || user.analyste? %>
   <%= Analyse::Depot.output_as_analyste %>
   <%= chantier.suivi %>
+  <%
+    # ---------------------------------------------------------------------
+    #
+    #   AFFICHAGE DES FICHIERS S'ILS EXISTENT
+    #
+    # ---------------------------------------------------------------------
+  %>
   <%
     # LES ÉVÈNEMENCIERS S'ILS EXISTENT
     #
@@ -23,9 +30,20 @@ enable_comments
   %>
   <% if chantier.scenes_html_file.exist? %>
     <%# Bouton pour reconstruire les fichiers (cf. ci-dessus) %>
-    <%= chantier.bouton_rebuild_all_fichiers %>
+    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'btns') %>
     <h3>Évènemencier complet</h3>
     <%= chantier.scenes_html_file.read %>
+  <% end %>
+  <%
+    # LES BRINS S'ILS EXISTENT
+    #
+    # Note : lire la note ci-dessus
+    #
+  %>
+  <% if chantier.brins_html_file.exist? %>
+    <%# Bouton pour reconstruire les fichiers (cf. ci-dessus) %>
+    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'btns') %>
+    <%= chantier.brins_html_file.read %>
   <% end %>
 <% else %>
   <%= Analyse::Depot.output_as_common_user %>

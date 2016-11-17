@@ -17,15 +17,19 @@ class Brin
         # soit un String ("numéro scène:id de paragraphe")
         case psid
         when Fixnum
+          # Une scène
           element = chantier.scene(psid)
-          "Scène #{psid}"
         when String
+          # Un paragraphe de scène
           element = chantier.paragraphe(psid)
-          "Paragraphe #{psid}"
-        end.in_div(class:'ev')
-      end.join('').in_div(class: 'brin_events')
-    titre.in_div(class:'brin_titre') +
-    liste_events
+        end
+        element.as_brin_event.in_li(class:'bev')
+      end.join('')
+
+    (
+      titre.in_div(class:'brin_titre') +
+      liste_events.in_ul(class: 'brin_events')
+    ).in_div(class: 'simple_brin')
   end
 
 end #/Brin

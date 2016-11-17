@@ -13,7 +13,11 @@ class AnalyseBuild
   #   Les fichiers de chaque brin. Plusieurs versions sont possibles.
   #
   def build_brins
-    suivi "** Construction des brins"
+    suivi "* Construction des brins"
+    brins_html_file.exist? && brins_html_file.remove
+
+    build_brins_simples
+
   rescue Exception => e
     debug e
     error "Erreur lors de la construction des brins : #{e.message}"
@@ -25,14 +29,22 @@ class AnalyseBuild
   #   Méthodes de constructions de chaque brin
   # ---------------------------------------------------------------------
 
-  # On construit chaque brin en prenant simplement la scène à laquelle
-  # appartient le paragraphe (ou la scène).
+  # On construit chaque brin simplement, en prenant les paragraphes qui
+  # appartiennent au brin ou le résumé de la scène si c'est toute la scène.
+  # On l'enregistre dans un fichier.
   def build_brins_simples
+    suivi "** Construction des brins simples"
     listing_simple_all_brins =
       brins_as_instances.collect do |brin|
         brin.as_simple_list
       end.join('')
-    
+
+    code =
+      'Brins simples'.in_h3           +
+      balise_styles('brins_simples')  +
+      listing_simple_all_brins
+
+    brins_html_file.append code
   end
 
   # ---------------------------------------------------------------------

@@ -26,6 +26,6 @@ enable_comments
     Votre dossier d'analyse temporaire courant contient les films suivants. Cliquez le titre du film que vous voulez traiter.
   </p>
   <% AnalyseBuild.user_films_tmp.each do |film| %>
-    <%= film.titre.in_a(href: "analyse_build/#{film.id}/treate").in_div %>
+    <%= film.titre.in_a(href: "analyse_build/#{film.id}/depot").in_div %>
   <% end %>
 <% end %>
