@@ -22,6 +22,9 @@ class Scene
     end
   end
 
+  def left
+    @left ||= chantier.film.left_of(time)
+  end
 end #/Scene
 end #/Film
 end #/AnalyseBuild

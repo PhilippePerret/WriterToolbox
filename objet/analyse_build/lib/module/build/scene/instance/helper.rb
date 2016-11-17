@@ -15,16 +15,21 @@ class Scene
   # Retourne la scène pour un chemin de fer
   def as_chemin_de_fer
     (
+      "#{horloge}"    .in_span(class: 'horloge') +
       "#{numero}."    .in_span(class: 'numero') +
-      full_resume     .in_span(class: 'resume') +
-      "(#{horloge})"  .in_span(class: 'horloge')
+      full_resume     .in_span(class: 'resume')
     ).in_div(class: 'scene')
   end
 
   # La scène pour un affichage dans un brin
   def as_brin_event
-    "#{full_resume}"
+    "#{full_resume}#{human_infos}#{bloc_timeline}"
   end
+
+  def bloc_timeline
+    ''.in_div(class:'btm', style: "left:#{left}px")
+  end
+
 
   # Intitulé de la scène
   def intitule
@@ -39,22 +44,11 @@ class Scene
     end
   end
 
-
-  # Le résumé de la scène
-  # On prend soi celui qui est défini en première ligne soit la compilation
-  # de tous les paragraphes.
-  def full_resume
-    @full_resume ||= begin
-      if resume.nil?
-        data_paragraphes.collect do |dparagraphe|
-          dparagraphe[:texte]
-        end.join(' ')
-      else
-        resume
-      end
-    end
+  # Information sur la scène, ajoutées par exemple à la fin
+  # du résumé écrit comme un évènement dans un séquencier ou un brin
+  def human_infos
+    " (#{horloge}, scène #{numero})".in_span(class: 'infos')
   end
-  # /full_resume
 
 end #/Scene
 end #/Film

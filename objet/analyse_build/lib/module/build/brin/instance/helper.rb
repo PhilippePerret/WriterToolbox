@@ -28,8 +28,13 @@ class Brin
 
     (
       titre.in_div(class:'brin_titre') +
-      liste_events.in_ul(class: 'brin_events')
+      (timeline + liste_events).in_ul(class: 'brin_events')
     ).in_div(class: 'simple_brin')
+  end
+
+  # Code HTML de la ligne de temps du brin
+  def timeline
+    ''.in_div(class: 'timeline', style: "left:#{Filmodico::TIMELINE_LEFT}px;width:#{Filmodico::TIMELINE_WIDTH}px")
   end
 
 end #/Brin

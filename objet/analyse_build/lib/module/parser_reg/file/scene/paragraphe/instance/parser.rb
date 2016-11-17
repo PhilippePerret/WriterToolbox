@@ -18,24 +18,16 @@ class Paragraphe
   # brins, de personnages, etc.
   #     <TEXTE> [TAB <MARQUES>]
   #
+  # Note : on n'ajoute plus les relatifs à la scène. Par exemple, si le
+  # paragraphe est associé à un brin, on n'ajoute plus ce brin à la scène,
+  # sinon, tous les paragraphes de la scène se retrouveraient associés au
+  # brin.
+  # 
   def parse
     @texte, @liste_relatifs = code.strip.split("\t")
-    parse_relatifs && add_elements_to_scene
+    parse_relatifs
       # Note : la méthode parse_relatifs se trouve dans le module
       # _first/parse_relatifs_module
-  end
-
-
-  # Méthode qui ajoute les éléments relevés à la scène du
-  # paragraphe.
-  #
-  # Noter qu'on ne le fait que si des éléments ont été trouvés
-  #
-  def add_elements_to_scene
-    brins.empty?        || scene.add_brins(brins)
-    notes.empty?        || scene.add_notes(notes)
-    personnages.empty?  || scene.add_personnages(personnages)
-    scenes.empty?       || scene.add_scenes(scenes)
   end
 
 end #/Paragraphe

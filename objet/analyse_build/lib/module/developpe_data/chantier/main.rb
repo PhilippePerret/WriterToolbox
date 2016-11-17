@@ -62,7 +62,7 @@ class AnalyseBuild
       # scène, ce sont les brins définis sur une ligne seule, avec tous les
       # relatifs.
       # Dans ce cas, tous les paragraphes de la scène sont associés à ce
-      # brin. Si la scène n'a pas de paragraphe, son numéro est entré dans
+      # brin. Si la scène n'a pas de paragraphes, son numéro est entré dans
       # la liste des identifiants.
       unless data_scene[:brins].empty?
         data_scene[:brins].each do |bid|

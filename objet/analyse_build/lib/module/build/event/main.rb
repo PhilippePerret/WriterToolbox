@@ -17,9 +17,10 @@ class AnalyseBuild
   end
 
   def build_event
-    suivi '** Construction de l’évènemencier…'
+    suivi '** Construction des évènemenciers…'
 
     code =
+      'Séquencier'.in_h4 +
       balise_styles('events') +
       listing_scenes_as_event.in_div(class: 'events')
 
@@ -29,6 +30,7 @@ class AnalyseBuild
   def build_chemin_de_fer
     suivi '** Construction du chemin de fer…'
     code =
+      'Chemin de fer'.in_h4 +
       balise_styles('chemin_de_fer') +
       listing_scenes_as_chemin_de_fer.in_div(class: 'chemin_de_fer')
 
