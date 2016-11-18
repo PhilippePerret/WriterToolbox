@@ -18,9 +18,9 @@ class AnalyseBuild
         'Accueil'     => 'analyse_build/home',
         'Déposer'     => 'analyse_build/depot'
       }
-      if current
-        ongs.merge!('Définir brins' => "analyse_build/#{film.id}/define_brins")
-      end
+      # if current && current.film_id
+      #   ongs.merge!('Définir brins' => "analyse_build/#{film.id}/define_brins")
+      # end
     end
 
   end #<<self

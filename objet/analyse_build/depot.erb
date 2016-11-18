@@ -28,9 +28,9 @@ page.description= "Chantier des analyses de films, pour traiter les fichiers de 
     # Ce bouton est utile pour l'implémentation du programme, pour
     # faire les tests.
   %>
-  <% if chantier.scenes_html_file.exist? %>
+  <% if chantier.film? && chantier.scenes_html_file.exist? %>
     <%# Bouton pour reconstruire les fichiers (cf. ci-dessus) %>
-    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'btns') %>
+    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'right') %>
     <h3>Évènemencier complet</h3>
     <%= chantier.scenes_html_file.read %>
   <% end %>
@@ -40,9 +40,9 @@ page.description= "Chantier des analyses de films, pour traiter les fichiers de 
     # Note : lire la note ci-dessus
     #
   %>
-  <% if chantier.brins_html_file.exist? %>
+  <% if chantier.film? && chantier.brins_html_file.exist? %>
     <%# Bouton pour reconstruire les fichiers (cf. ci-dessus) %>
-    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'btns') %>
+    <%= chantier.bouton_rebuild_all_fichiers.in_div(class: 'right') %>
     <%= chantier.brins_html_file.read %>
   <% end %>
 <% else %>

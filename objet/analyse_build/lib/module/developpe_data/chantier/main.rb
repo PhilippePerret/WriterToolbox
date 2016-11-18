@@ -79,13 +79,18 @@ class AnalyseBuild
       # la liste des identifiants.
       unless data_scene[:brins].empty?
         data_scene[:brins].each do |bid|
-          if dparagraphes.empty?
-            # Quand il n'y a pas de paragraphe
-            hbrins[bid][:para_or_scene_ids] << data_scene[:numero]
-          else
-            dparagraphes.each do |dparagraphe|
-              hbrins[bid][:para_or_scene_ids] << dparagraphe[:id]
+          if hbrins.key?(bid)
+            if dparagraphes.empty?
+              # Quand il n'y a pas de paragraphe
+              hbrins[bid][:para_or_scene_ids] << data_scene[:numero]
+            else
+              dparagraphes.each do |dparagraphe|
+                hbrins[bid][:para_or_scene_ids] << dparagraphe[:id]
+              end
             end
+          else
+            # Référence à un brin inconnu
+            error "Le brin ##{bid} est inconnu (la scène #{data_scene[:numero]} à #{data_scene[:horloge]} y fait référence)."
           end
         end
       end

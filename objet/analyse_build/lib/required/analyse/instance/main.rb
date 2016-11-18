@@ -14,7 +14,13 @@ class AnalyseBuild
   end
 
   def film
-    @film ||= Filmodico.new(film_id)
+    @film ||= begin
+      if film_id.nil?
+        nil
+      else
+        Filmodico.new(film_id)
+      end
+    end
   end
 
   # Identifiant du film
@@ -26,7 +32,13 @@ class AnalyseBuild
 
   # Les données enregistrées dans le fichier FDATA.msh
   def marshal_data
-    @marshal_data ||= Marshal.load(data_file.read)
+    @marshal_data ||= begin
+      if data_file.exist?
+        Marshal.load(data_file.read)
+      else
+        Hash.new
+      end
+    end
   end
 
 end#/AnalyseBuild
