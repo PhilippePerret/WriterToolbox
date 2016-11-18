@@ -5,6 +5,7 @@
   l'user courant.
 
 =end
+AnalyseBuild.require_module 'define_brins'
 
 def chantier
   @chantier ||= site.current_route.instance
@@ -18,10 +19,8 @@ end
 case param(:operation)
 when 'set_define_brins'
   # Enregistrement des brins
-  AnalyseBuild.require_module 'save_brins'
   chantier.save_brins_of_scenes
 else
   # Définition des brins (MAIS PAS ENREGISTREMENT)
-  AnalyseBuild.require_module 'define_brins'
   chantier.define_brins
 end

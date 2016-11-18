@@ -4,36 +4,44 @@ window.Scenes = {
   // scènes qui affichent la liste des brins.
   collapsed: {},
 
-  update_scene_if_collapsed:function(scene_id){
+  /**
+    * Actualisation de la liste des brins de la scène ou du paragraphe
+    * lorsqu'il ou elle est déployé
+    */
+  update_scene_if_collapsed:function(sceneparag_id){
     var my = Scenes;
-    var oscene = $("div#"+scene_id) ;
-    if(my.collapsed[scene_id]){
-      delete my.collapsed[scene_id];
-      oscene.find('div.brins').remove();
-      my.toggle(null, oscene);
+    var osceneparag = $("div#"+sceneparag_id) ;
+    if(my.collapsed[sceneparag_id]){
+      delete my.collapsed[sceneparag_id];
+      osceneparag.find('div.brins').remove();
+      my.toggle(null, osceneparag);
     }
   },
 
-  toggle:function(ev, oscene){
-    // console.log(oscene);
+  /**
+    * Ouverture ou fermeture du paragraphe
+    */
+  toggle:function(ev, osceneparag){
+    // console.log(osceneparag);
     var my = Scenes;
-    if(undefined == oscene){oscene = $(this)}
-    var scene_id = oscene.attr('id');
-    if(my.collapsed[scene_id]){
+    if(undefined == osceneparag){osceneparag = $(this)}
+    var sceneparag_id = osceneparag.attr('id');
 
-      // On doit fermer la scène
+    if(my.collapsed[sceneparag_id]){
 
-      delete my.collapsed[scene_id];
-      oscene.find('div.brins').remove();
+      // On doit fermer la scène ou le paragraphe
+
+      delete my.collapsed[sceneparag_id];
+      osceneparag.find('div.brins').remove();
 
     }else{
 
-      // On doit ouvrir la scène pour montrer tous les brins
+      // On doit ouvrir la scène ou le paragraphe pour montrer tous les brins
 
-      var brins = $('input#'+scene_id+'-brins').val();
+      var brins = $('input#'+sceneparag_id+'-brins').val();
       brins = brins.split(' ');
-      oscene.append('<div class="brins"></div>');
-      var div_brins = oscene.find('div.brins');
+      osceneparag.append('<div class="brins"></div>');
+      var div_brins = osceneparag.find('div.brins');
       for(var bi in brins){
         brin_id = brins[bi];
         var clone = $('div#brin-'+brin_id).clone();
@@ -42,7 +50,7 @@ window.Scenes = {
         clone.attr('style', '');
         div_brins.append(clone);
       }
-      my.collapsed[scene_id] = true;
+      my.collapsed[sceneparag_id] = true;
     }
   }
 }
@@ -60,15 +68,15 @@ $(document).ready(function(){
     revert: true // pour qu'il revienne après le déplacement
   })
 
-  $('div.scene').click(Scenes.toggle)
-  $('div.scene').droppable({
+  $('div.contbrins').click(Scenes.toggle)
+  $('div.contbrins').droppable({
     accept: '.brin',
     hoverClass: 'hovered',
     drop:function(ev, ui){
       // La div de la scène
-      var oscene = $(this);
+      var osceneparag = $(this);
       // L'identifiant de la scène
-      var scene_div_id = oscene.attr('id') ;
+      var scene_div_id = osceneparag.attr('id') ;
       // Le div du brin qu'on vient de glisser sur la scène
       var obrin = ui.draggable;
       // Le champ hidden de la scène, qui consigne les brins

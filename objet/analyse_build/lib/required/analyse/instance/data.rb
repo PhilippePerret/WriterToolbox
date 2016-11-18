@@ -71,7 +71,8 @@ class AnalyseBuild
       if brins_file.exist?
         Marshal.load(brins_file.read)
       else
-        Array.new
+        Hash.new # attention, il peut y avoir une erreur, car au début c'est
+                 # un Array
       end
     end
   end

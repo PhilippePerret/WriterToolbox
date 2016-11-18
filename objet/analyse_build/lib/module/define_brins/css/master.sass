@@ -8,12 +8,15 @@ div#brins
     line-height : 1.3em
     text-align  : left
 
-div#scenes
+div#scenes_et_paragraphes
   height    : 400px
   overflow  : scroll
+  padding-right : 2em
 
   div.scene
     font-size     : 14.5pt
+
+  div.scene, div.parag
     line-height   : 1.3em
     margin-bottom : 1em
     &.hovered
@@ -24,6 +27,13 @@ div#scenes
       font-weight   : bold
       font-family   : Arial, Helvetica
       margin-left   : 20px
+  // Paragraphes
+  div.parag
+    font-size     : 13pt
+    margin-left   : 4em
+
+  // Scènes et paragraphes
+  div.scene, div.parag
     // Quand on affiche les brins
     div.brins
       margin-left   : 4em

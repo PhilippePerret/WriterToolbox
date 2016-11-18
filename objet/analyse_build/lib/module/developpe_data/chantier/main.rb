@@ -8,9 +8,9 @@ class AnalyseBuild
   #
   def developpe_data
     suivi '* Développement de toutes les données…'
-    @data_brins   = brins_file.exist?   ? Marshal.load(brins_file.read) : Hash.new
-    @data_scenes  = scenes_file.exist?  ? Marshal.load(scenes_file.read)  : Hash.new
-    @data_personnages = personnages_file.exist? ? Marshal.load(personnages_file.read) : Hash.new
+    @data_brins   = brins_file.exist?   ? Marshal.load(brins_file.read) : Array.new
+    @data_scenes  = scenes_file.exist?  ? Marshal.load(scenes_file.read)  : Array.new
+    @data_personnages = personnages_file.exist? ? Marshal.load(personnages_file.read) : Array.new
     debug "\n\n\n@data_brins : #{@data_brins.inspect}"
     debug "\n\n\n@data_scenes : #{@data_scenes.inspect}"
     debug "\n\n\n@data_personnages : #{@data_personnages.inspect}"
@@ -42,6 +42,19 @@ class AnalyseBuild
   def set_paragraphes_of_brins
 
     suivi '** Ajout des paragraphes et scènes aux brins…'
+
+    # On doit prendre les données des brins si la méthode n'est pas
+    # appelée par `developpe_data` ci-dessus mais après la définition
+    # des brins.
+    # Mais attention car dans ce cas, la données des brins doit être
+    # un Hash avec en clé l'identifiant du brin. Il suffit donc de prendre
+    # les values de ce hash.
+    @data_brins ||= begin
+      d = Marshal.load(brins_file.read)
+      d.instance_of?(Hash) && d = d.values
+      d.instance_of?(Array) || raise('La liste des brins devrait être un Array…')
+      d
+    end
 
     # On prépare un hash avec en clé l'identifiant du brin et en
     # valeur ses données. On ajoute à cette données la propriété
@@ -97,7 +110,7 @@ class AnalyseBuild
     end
 
 
-    debug "\n\n\nhbrins à la fin : #{hbrins.pretty_inspect}"
+    # debug "\n\n\nhbrins à la fin : #{hbrins.pretty_inspect}"
 
     # Enregistrement des nouvelles données
     brins_file.write(Marshal.dump(hbrins))
