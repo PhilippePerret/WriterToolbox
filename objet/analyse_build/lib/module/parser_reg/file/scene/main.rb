@@ -3,7 +3,7 @@ class AnalyseBuild
 class Film
 class Scene
 
-  # L'instance Filmodico du film de la scène
+  # L'instance {Filmodico} du film de la scène
   attr_reader :film
 
   # Le code de la scène tel que défini dans le fichier

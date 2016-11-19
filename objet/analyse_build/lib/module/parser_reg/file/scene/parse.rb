@@ -22,9 +22,21 @@ class Scene
   end
 
   # Transforme l'horloge en temps
+  # Mais la méthode fait bien plus puisqu'elle corrige aussi le temps en
+  # fonction du temps de départ du film pour qu'il parte vraiment à 0:00
+  #
   def horloge_to_time
     sec, mns, hrs = @horloge.split(':').reverse
     @time = sec.to_i + mns.to_i * 60 + hrs.to_i * 3600
+    # debug "Horloge et time initial : #{@horloge} / #{@time}"
+    if film.start_time.nil?
+      film.start_time = @time.to_i
+      @time = 0
+    else
+      @time -= film.start_time
+    end
+    @horloge = @time.as_horloge
+    # debug "Horloge et time après correction : #{@horloge} / #{@time}"
   end
 
   def explode_lieu_effet
