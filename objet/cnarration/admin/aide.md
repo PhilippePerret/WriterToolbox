@@ -1,5 +1,7 @@
 # Aide pour la collection Narration
 
+> Si ce document est modifié, il faut l'ouvrir dans Mou et produire la version HTML.
+
 * [Les livres de la collection](#leslivresnarration)
   * [Estimation du nombre de pages et autres valeurs](#estimationdunombredepagesetautres)
 * [Les Pages narration](#lespagesnarration)
@@ -11,6 +13,7 @@
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Référence vers autre page](#placerunereferenceaautrepage)
+  * [Indiquer des portions en relecture](#portionsrelecture)
   * [Textes types](#lestextestypes)
   * [Images](#utilisationduneimage)
 * [Sortie des livres de la collection](#sortiedulivrenarration)
@@ -92,6 +95,29 @@ Noter qu'on peut facilement obtenir l'ID de la page/titre en affichant la table 
 ## Les Textes
 
 [Aide Kramdown](http://kramdown.gettalong.org)
+
+
+<a name='portionsrelecture'></a>
+
+## Indiquer des portions en relecture
+
+Lorsqu'une page a été entièrement corrigée et que du texte est ajouté ou modifier, on peut mettre ce texte entre balises `RELECTURE_ ... _RELECTURE` pour que lui seul soit relu et corrigé.
+
+~~~
+
+  RELECTURE_
+
+  Le passage qui doit être relu et corrigé.
+
+  Il peut faire autant de lignes que voulu.
+
+  _RELECTURE
+
+~~~
+
+Note : penser à modifier le niveau de développement du fichier pour qu'il soit indiqué en lecture pour les correcteurs.
+
+> Des balises HTML `&lt;relecture>` ne sont pas utilisées, car la portion de texte ne serait plus corrigée par le module kramdown et donc le texte ne serait plus mis en forme (kramdown penserait que c'est un texte déjà formaté).
 
 <a name='lestextestypes'></a>
 

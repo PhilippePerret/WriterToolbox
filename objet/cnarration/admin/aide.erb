@@ -2,12 +2,15 @@
 # Aide pour l'administration
 raise_unless_admin
 %>
-<%= Cnarration::titre_h1("Aide administration") %>
-<%=
-  site.require_module 'kramdown'
-  SuperFile::new('./objet/cnarration/admin/aide.md').kramdown
+<%= Cnarration.titre_h1("Aide administration") %>
+<%
+  fullpath = File.expand_path('./objet/cnarration/admin/aide.html')
+  `open "#{fullpath}"`
 %>
 
+<div class="warning big air">
+  Le fichier d'aide HTML a été ouvert dans une autre fenêtre. Pour actualiser ce fichier, ouvrir le fichier `objet/cnarration/admin/aide.md` dans Mou et produire la version HTML.
+</div>
 
 <h4>Balises spéciales</h4>
 <p>
