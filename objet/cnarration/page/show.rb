@@ -39,8 +39,8 @@ class Cnarration
     end
 
     def admin_avertissement_relecture
-      if user.admin? && page_content_by_niveau_developpement.match(/<relecture>/)
-        '<relecture>Attention, soit ce texte est achevé et demande une relecture des seuls passages qui se trouvent dans cette couleur, soit il est à relire mais contient de nouveaux passages ou des passages modifiés de façon conséquente, qui sont repérés par cette couleur.</relecture>'.in_div(class: 'cadre air big')
+      if user.admin? && page_content_by_niveau_developpement.match(/<section class="relecture">/)
+        'Attention, soit ce texte est achevé et demande une relecture des seuls <section class="relecture" style="display:inline"><span>passages qui se trouvent dans cette couleur</span></section>, soit il est à relire mais contient de nouveaux passages ou des passages modifiés de façon conséquente, qui sont repérés par cette couleur.'.in_section(class: 'cadre air warning')
       else
         ''
       end

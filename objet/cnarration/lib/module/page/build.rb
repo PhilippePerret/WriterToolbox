@@ -91,6 +91,12 @@ class Page
 
     # *** CONSTRUCTION DE LA PAGE ***
     path.kramdown( in_file: path_semidyn.to_s, output_format: options[:format] )
+    # Certaines balises peuvent être transformées à la fin. C'est le cas
+    # par exemple des balises de relecture (RELECTURE_ ... _RELECTURE) qui doivent
+    # être traités après. Si on les remplaçait immédiatement par des balises
+    # html <relecture>...</relecture> le code à l'intérieur ne serait pas
+    # kramdownisé.
+    correction_last_balises_in_semidyn
 
     # ré-initialiser ces variables pour éviter tout
     # problème.
@@ -100,5 +106,15 @@ class Page
     flash "Page actualisée." unless options[:quiet]
   end
 
+  # Ultime corrections, quand le fichier a été entièrement mis en
+  # forme (cf. les explications, ci-dessus, à l'appel de la méthode)
+  def correction_last_balises_in_semidyn
+    code = path_semidyn.read
+    if code.scan(/RELECTURE_/)
+      code.gsub!(/RELECTURE_/,'<section class="relecture">')
+      code.gsub!(/_RELECTURE/, '</section>')
+    end
+    path_semidyn.write code
+  end
 end #/Page
 end #/Cnarration
