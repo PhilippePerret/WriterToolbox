@@ -18,6 +18,7 @@ class String
     # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
 
     str = str.formate_balises_include
+    str = str.formate_mises_en_forme_propres
     str = str.formate_balises_references
     str = str.formate_balises_images
     str = str.formate_balises_mots
@@ -52,6 +53,38 @@ class String
       end
     }
     str
+  end
+
+
+  def formate_mises_en_forme_propres
+
+    str = self
+
+    # Le format pour mettre une sorte de note de marge, avec un texte
+    # réduit à droite. Ce format est défini par des ++ (au moins 2)
+    str = str.gsub(/^(.*?) (\+\++) (.*?)$/){
+      note_marge  = $1
+      les_plus    = $2
+      texte       = $3
+      css = {2 => 'vingt', 3 => 'vingtcinq', 4 => 'trente', 5 => 'trentecinq'}[les_plus.length]
+
+      # Puisque le code sera mise entre balises DIV, il ne sera
+      # pas corrigé par kramdown. Il faut donc le faire ici, suivant
+      # le code du fichier.
+      texte = texte.formate_balises_propres
+      texte =
+        if texte.match(/<%/)
+          texte.deserb
+        else
+          texte.kramdown
+        end
+      (
+        note_marge.strip.in_div(class: 'notemarge') +
+        texte.strip
+      ).in_div(class: "mg #{css}")
+    }
+
+    return str
   end
 
   def formate_balises_references

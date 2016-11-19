@@ -7,6 +7,7 @@
   * [Rendre un texte/élément plus discret](#rendreuntexteplusdiscret)
   * [Style spécial pour l'administrateur](#stylespecialadminonly)
 * [Mise en forme de SECTIONs/DIVs](#miseenformedesectionsdetexte)
+  * [Effet de note dans une marge](#effetnotedansmarge)
   * [Double colonnes](#doublecolonnes)
   * [Dimensionnement par la classe](#dimensionnementparlaclasse)
   * [Données tabulaires](#donneestabulaires)
@@ -112,6 +113,36 @@ Noter que cette discrétion joue sur l'opacité et que le texte sera rendu plus 
 <a name='miseenformedesectionsdetexte'></a>
 
 ## Mise en forme de section/divisions
+
+<a name='effetnotedansmarge'></a>
+
+## Effet de note dans une marge
+
+Utiliser des + (au moins 2) pour simuler l'effet d'une note dans une marge. Ça poussera le texte dans une colonne à droite et placera le premier texte comme une note dans la marge gauche (mais pas la vraie marge gauche, plutôt dans une colonne gauche)
+
+~~~
+    note ++ texte
+~~~
+
+Produira à peu près :
+
+~~~
+      Latius iam disseminata licentia onerosus bonis omnibus
+      Caesar nullum post haec adhibens modum orientis latera
+      cuncta vexabat nec honoratis parcens nec urbium primatibus
+      nec plebeiis.
+
+      note  Le texte à côté de la marge qui s'aligne
+            bien pour laisser la note toute seule
+
+      Illud autem non dubitatur quod cum esset aliquando virtutum
+      omnium domicilium Roma, ingenuos advenas plerique nobilium,
+      ut Homerici bacarum suavitate Lotophagi, humanitatis multi-
+      formibus officiis retentabant.
+
+~~~
+
+On peut mettre de 2 (petite marge) à 5 (grande marge) signe “+” pour obtenir différents tailles de textes et de marge.
 
 <a name='doublecolonnes'></a>
 

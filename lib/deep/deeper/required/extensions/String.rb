@@ -162,7 +162,7 @@ class String
   end
 
   def deserb bindee = nil
-    ERB::new(self).result(bindee)
+    ERB.new(self).result(bindee)
   end
 
   ##

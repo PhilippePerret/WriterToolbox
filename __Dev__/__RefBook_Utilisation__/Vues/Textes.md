@@ -60,6 +60,7 @@ Noter que la méthode va mettre dans la variable `@iterations_motex` du string r
 On peut transformer n'importe quel texte au format Markdown à l'aide de la méthode :
 
         String#markdown
+        String#kramdown
 
 Par exemple :
 
