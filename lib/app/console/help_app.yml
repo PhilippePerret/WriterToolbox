@@ -111,6 +111,10 @@ narration:
     type:           TITLE
     description:    Collection Narration
   -
+    command:        livres narration
+    description: |
+      Rejoint la page affichant les livres de la collection narration.
+  -
     command:        smart tdms narration
     description: |
       Affiche les tables des matières en version intelligente.

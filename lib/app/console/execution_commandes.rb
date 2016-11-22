@@ -45,9 +45,12 @@ class Console
 
       # --- NARRATION ---
 
+    when /^(livres|books) narration$/
+      redirect_to 'livre/list?in=cnarration'
+      return ''
     when /^smart tdms? narration$/
       redirect_to 'admin/smart_tdm?in=cnarration'
-      return ""
+      return ''
     when /^narration (sortie|output|export) latex(.*?)$/
       console.require 'narration'
       sortie_latex line.sub(/^narration (sortie|output|export) latex/,'')
