@@ -25,7 +25,7 @@ class << self
   end
 
   def table_citations
-    @table_citations ||= site.dbm_table(:cold, 'citations')
+    @table_citations ||= site.dbm_table(:biblio, 'citations')
   end
   alias :table :table_citations
 
