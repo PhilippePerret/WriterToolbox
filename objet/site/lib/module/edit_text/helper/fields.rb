@@ -1,12 +1,18 @@
 # encoding: UTF-8
 def boite_interaction
-  menu_police       +
-  menu_font_size    +
-  menu_line_height  +
-  champs_scenodico  +
-  champs_filmodico  +
-  champs_options    +
-  menu_checkup_groups
+  menu_police         +
+  menu_font_size      +
+  menu_line_height    +
+  champs_scenodico    +
+  champs_filmodico    +
+  champs_options      +
+  menu_checkup_groups +
+  aide_narration        #  seulement si page Narration
+end
+
+def narration?
+  @is_narration = param(:snippets_narration) == 'on' if @is_narration === nil
+  @is_narration
 end
 
 def menu_police
@@ -18,9 +24,9 @@ end
 def menu_line_height
   {
     '1'   => 'Serré',
-    '1.2' => 'Normal',
-    '1.4' => 'Écarté',
-    '1.7' => 'Très écarté'
+    '1.3' => 'Normal',
+    '1.7' => 'Écarté',
+    '2.3' => 'Très écarté'
   }.collect{|k,v|[k,v]}.in_select(id:'line_height', name:'line_height',
     onchange: "$.proxy(EditText,'onchange_lineheight',this.value)()",
     selected: '1.2'
@@ -55,7 +61,17 @@ def checkbox_snippets_markdown
   'Snippets Markdown'.in_checkbox(id:'snippets_markdown', name:'snippets_markdown', onchange: "$.proxy(EditText,'oncheck_snippets_markdown',this.checked)()")
 end
 def checkbox_snippets_narration
-  'Snippets Narration'.in_checkbox(id:'snippets_narration', name:'snippets_narration', onchange:"$.proxy(EditText,'oncheck_snippets_narration',this.checked)()")
+  'Snippets Narration'.in_checkbox(checked: narration?, id:'snippets_narration', name:'snippets_narration', onchange:"$.proxy(EditText,'oncheck_snippets_narration',this.checked)()")
+end
+
+def aide_narration
+  narration? || (return '')
+  (
+    'Balises spéciales'.in_legend +
+    'Only admin'.in_a(onclick: "balise('adminonly')", class: 'block') +
+    'Relecture'.in_a(onclick: "balise('RELECTURE_[RC][RC]', '[RC][RC]_RELECTURE', true)", class: 'block')+
+    'Text only on web'.in_a(onclick: "balise('webonly')", class: 'block')
+  ).in_fieldset(class:'left')
 end
 
 def menu_checkup_groups

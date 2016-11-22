@@ -26,10 +26,10 @@ class Translator
     # Le contenu du fichier
     @content = content
 
-    # On supprimer les textes entre balises <only_online> qui
+    # On supprimer les textes entre balises <webonly> qui
     # permettent d'indiquer du texte qui ne doit se trouver que
     # dans la version en ligne du site
-    @content.gsub!(/<(only_online|online_only)>(.*?)<\/(only_online|online_only)>/o,'')
+    @content.gsub!(/<webonly>(.*?)<\/webonly>/o,'')
 
     # Il faut évaluer tous les code ERB contenu dans les documents.
     # Il faut le faire en deux temps. Dans un premier temps, au cours

@@ -14,5 +14,5 @@ def ipage
   @ipage ||= Cnarration::Page.new(site.current_route.objet_id)
 end
 param(path: ipage.fullpath)
+param(snippets_narration: 'on')
 redirect_to "site/edit_text"
-# redirect_to "site/open_file?path=#{ipage.fullpath}"

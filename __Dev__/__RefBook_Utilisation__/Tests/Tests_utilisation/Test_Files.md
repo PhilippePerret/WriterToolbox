@@ -58,4 +58,3 @@ only_offline
 
 only_online
     # Le test ne sera joué que si on teste en online (distant)
-    

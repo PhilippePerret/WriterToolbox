@@ -25,7 +25,7 @@ class Page
 
   def lien_edit_text
     page? || (return '')
-    lien.edit_text(fullpath, titre: '[Edit text]')
+    '[Edit text]'.in_a(href: "page/#{id}/edit_text?in=cnarration")
   end
 
   def lien_edit_data

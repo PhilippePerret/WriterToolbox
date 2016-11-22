@@ -10,9 +10,9 @@
 
 On peut indiquer des textes à ne pas afficher dans la version papier (donc LaTex) de la collection en les mettant entre balises :
 
-    <online_only>
+    <webonly>
       Texte qui ne sera pas exporté en LaTex et donc pas imprimé.
-    </online_only>
+    </webonly>
 
 <a name='limitedelextraitpournonabonneds'></a>
 

@@ -124,6 +124,34 @@ $.extend(window.EditText,{
 
 });
 
+/** Place des balises dans le textarea au niveau du curseur
+  *
+  * Si seule +balin+ est définie, c'est l'intérieur d'une balise BAL qui
+  * sera utilisée de cette façon : <BAL>... sélection ...</BAL>
+  *
+  * Si balin et balout sont définis, ils correspondent à l'entrée et la
+  * sortie (il vaut mieux éviter, car c'est contraire au XML, sauf si
+  * strict est true).
+  *
+  * Si +strict+ est true, on n'ajoute pas de < et > autour de +balin+ et
+  * +balout+.
+  *
+  * Utiliser "[RC]" avec strict= true pour ajouter des retours chariot.
+  *
+  */
+function balise(balin, balout, strict){
+  if(undefined == balout){balout = balin}
+  if(undefined == strict){strict = false}
+  if(strict == false){
+    balin   = '<' + balin + '>';
+    balout  = '</'+balout + '>';
+  }else{
+    balin = balin.replace(/\[RC\]/g, "\n");
+    balout = balout.replace(/\[RC\]/g, "\n");
+  }
+  Selection.set('textarea#file_content', balin + '_$_' + balout)
+}
+
 window.text_modified = false ;
 window.set_modified = function(value){
   window.text_modified = !!value;

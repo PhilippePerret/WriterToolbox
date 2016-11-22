@@ -10,7 +10,7 @@ class TestFile
   def verbose?  ; @verbose  end
   def quiet?    ; @quiet    end
 
-  def only_online
+  def webonly
     SiteHtml::TestSuite.online? || raise( NotRunOnline )
   end
   def only_offline
