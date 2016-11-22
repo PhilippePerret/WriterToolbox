@@ -117,7 +117,7 @@ class Citations
   end
 
   # Pour les méthodes commune de synchro (module_sync_methods)
-  def db_suffix   ; @db_suffix ||= :cold end
+  def db_suffix   ; @db_suffix  ||= :biblio end
   def table_name  ; @table_name ||= 'citations' end
 
 end #/Citations
