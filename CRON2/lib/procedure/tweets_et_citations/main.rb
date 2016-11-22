@@ -109,17 +109,19 @@ class CRON2
       # MÉTHODES FONCTIONNELLES
       # ------------------------------------------------------------
 
+      def table_citations
+        @table_citations ||= site.dbm_table(:biblio, 'citations', online = true)
+      end
+
       # RETURN la citation qui doit être envoyée
       def citation_to_send
         @citation_to_send ||= begin
           # On choisit un nombre (ID) de citation au hasard
-          tbl_citations = site.dbm_table(:cold, 'citations', online = true)
-
           # On récupère les citations qui sont
           # prévues pour diffusion (dont je dois faire l'explicitation
           # avant envoi)
           where = 'last_sent > 0 AND last_sent < 11'
-          prochaines = tbl_citations.select(
+          prochaines = table_citations.select(
             where: where,
             order: 'last_sent ASC',
             colonnes: [:citation, :auteur, :bitly, :last_sent, :description]
@@ -143,7 +145,7 @@ class CRON2
 
           nombre_candidates_voulues = 10 - nombre_prochaines
 
-          all_candidates = tbl_citations.select(
+          all_candidates = table_citations.select(
             where:    nil,
             order:    'last_sent ASC',
             limit:    40 + nombre_candidates_voulues,
@@ -177,7 +179,7 @@ class CRON2
             cid = hcit[:id]
             if hcit[:last_sent] < 10
               hcit[:last_sent] += 1
-              tbl_citations.update( cid, { last_sent: hcit[:last_sent] })
+              table_citations.update( cid, { last_sent: hcit[:last_sent] })
             end
           end
 
@@ -189,7 +191,7 @@ class CRON2
 
           # On indique la date d'envoi de cette dernière
           # citation
-          tbl_citations.update(citation_id, { last_sent: Time.now.to_i })
+          table_citations.update(citation_id, { last_sent: Time.now.to_i })
 
           # Citation finale
           citation_init = citation.dup
