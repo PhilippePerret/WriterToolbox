@@ -5,6 +5,11 @@ require 'net/smtp'
 
 class SiteHtml
 
+  # Table des citations
+  def table_citations
+    @table_citations ||= dbm_table(:biblio, 'citations')
+  end
+  
   # Envoi d'un mail
   # @usage
   #   site.send_mail({

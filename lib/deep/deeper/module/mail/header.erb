@@ -19,7 +19,7 @@
   %>
   <%
     Mail.instance_variable_get('@citation_courante') || begin
-      candidates = site.dbm_table(:cold, 'citations').select(
+      candidates = site.table_citations.select(
         limit:    10,
         offset:   11, # pour passer les "prochaines"
         order:    'last_sent ASC',
