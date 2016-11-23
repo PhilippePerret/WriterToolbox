@@ -81,6 +81,7 @@ class Filmodico
 
   # Le ou les réalisateurs, au format humain
   def hrealisateur  ; realisateur.as_people_list(false, 'director') end
+  alias :director :hrealisateur
   def hproducteurs  ; producteurs.as_people_list(false, 'producer') end
   def hauteurs      ; auteurs.as_people_list(false, 'author')       end
   def hcomposers    ; musique.as_people_list(false, 'musicBy')      end

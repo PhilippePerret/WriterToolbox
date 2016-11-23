@@ -18,7 +18,15 @@ class Scene
   def parse_first_line
     @horloge, @lieu_effet, @decor, @resume = first_line.split("\t")
     horloge_to_time
-    explode_lieu_effet
+    # Cas spécial où c'est la ligne de fin
+    if ['FIN', 'END', 'THE END'].include?( @lieu_effet.upcase )
+      @lieu = @effet = nil
+      @resume = "FIN"
+      flash "La durée est : #{@time.inspect}"
+      AnalyseBuild.current_film_duree = @time
+    else
+      explode_lieu_effet
+    end
   end
 
   # Transforme l'horloge en temps
@@ -31,7 +39,7 @@ class Scene
     # debug "Horloge et time initial : #{@horloge} / #{@time}"
     if film.start_time.nil?
       film.start_time = @time.to_i
-      @time = 0
+      @time  = 0
     else
       @time -= film.start_time
     end

@@ -25,7 +25,8 @@ class << self
     end
 
     site.require_objet 'filmodico'
-    film_id = Filmodico.new(idfilm).id rescue begin
+    filmo   = Filmodico.new(idfilm)
+    film_id = filmo.id rescue begin
       error "Impossible de trouver le film désigné par `#{idfilm}`…"
       return false
     end
@@ -43,6 +44,8 @@ class << self
       AnalyseBuild.current.folder.exist? && AnalyseBuild.current.folder.remove
     end
 
+    # === PARSE DES TROIS TYPES DE FICHIER ===
+    #
     # On boucle sur les trois types de fichier qui ont pu être
     # soumis
     [:scenes, :personnages, :brins].each do |type|
@@ -72,6 +75,28 @@ class << self
       data_file_path.write(data_file.to_json)
     end
     # /boucle sur les types de fichier possible
+
+    # === DONNÉES DU FILM ===
+    #
+    # On crée le fichier des données du film (FILM.msh) ou on lit les données
+    # déja enregistrées si le fichier existe déjà
+    data_film =
+      if chantier.data_film_file.exist?
+        Marshal.load(data_film_file.read)
+      else
+        data_film = {
+          id:         film_id,
+          titre:      filmo.titre,
+          director:   filmo.director,
+          created_at: Time.now.to_i
+        }
+      end
+
+    # On enregistre les nouvelles données ou les données actualisées.
+    chantier.data_film_file.write Marshal.dump(data_film.merge(
+      duree:      AnalyseBuild.current_film_duree,
+      updated_at: Time.now.to_i
+      ))
 
   rescue Exception => e
     debug e

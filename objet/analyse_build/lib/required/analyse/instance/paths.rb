@@ -10,7 +10,7 @@ class AnalyseBuild
   def personnages_depot_file
     @personnages_depot_file ||= folder_depot + 'personnages.txt'
   end
-  
+
   # Fichier Marshal contenant les données des scènes
   def scenes_file
     @scenes_file ||= folder + 'SCENES.msh'
@@ -42,6 +42,10 @@ class AnalyseBuild
   end
   def data_file
     @data_file ||= folder + 'FDATA.msh'
+  end
+
+  def data_film_file
+    @data_film_file ||= folder + 'FILM.msh'
   end
 
   # Le dossier des fichiers déposés par l'user

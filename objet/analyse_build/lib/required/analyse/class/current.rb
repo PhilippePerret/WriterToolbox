@@ -2,6 +2,14 @@
 class AnalyseBuild
 class << self
 
+  # Pour pouvoir définir la durée du film courant au cours du parsing
+  # du fichier de collecte
+  # Rappel : on marque la fin du film par :
+  #   x:xx:xx ->| FIN
+  # ou : 
+  #   x:xx:xx ->| END
+  attr_accessor :current_film_duree
+
   # Chantier courant. Il peut être soi défini par le dépot
   # courant de fichiers soit par l'url.
   attr_writer :current

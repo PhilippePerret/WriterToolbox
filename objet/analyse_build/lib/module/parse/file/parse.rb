@@ -1,4 +1,11 @@
 # encoding: UTF-8
+=begin
+
+  Module principal qui parse n'importe quel type de fichier et transforme
+  ses données en Hash pour pouvoir les enregistrer dans un fichier au
+  format Marshal.
+
+=end
 class AnalyseBuild
 class File
 
