@@ -37,7 +37,7 @@ class AnalyseBuild
     hidden_file_id = "scene-#{scene_id}-brins"
     (
       hscene[:brins].join(' ').in_span(id:"scene-#{scene_id}-spanbrins", class:'span_brins')+
-      hscene[:resume] +
+      (hscene[:resume] || '') +
       hscene[:brins].join(' ').in_hidden(id: hidden_file_id, name: hidden_file_id)
     ).in_div(class: 'scene contbrins', id: "scene-#{scene_id}")
   end

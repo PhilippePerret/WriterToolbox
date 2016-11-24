@@ -41,7 +41,7 @@ class AnalyseBuild
     # fichier marshal, et il faut aussi proposer de refaire le fichier de
     # données déposées.
     scenes_file.write( Marshal.dump(scenes) )
-    flahs "Nouvelles données scènes & paragraphes enregistrées."
+    flash "Nouvelles données scènes & paragraphes enregistrées."
 
     # Il faut également actualiser les données des brins développées
     AnalyseBuild.require_module 'developpe_data'
