@@ -60,12 +60,12 @@ class Page
 
     # ENREGISTREMENT DANS LA TABLE
     if new?
-      @id = Cnarration::table_pages.insert(data2save.merge(created_at: NOW))
+      @id = Cnarration.table_pages.insert(data2save.merge(created_at: NOW))
       param(:epage => param(:epage).merge(id: @id))
       flash "Page ##{@id} créée avec succès."
     else
       debug "options : #{options.inspect}"
-      Cnarration::table_pages.update(id, data2save)
+      Cnarration.table_pages.update(id, data2save)
       flash "Page ##{id} updatée."
     end
 

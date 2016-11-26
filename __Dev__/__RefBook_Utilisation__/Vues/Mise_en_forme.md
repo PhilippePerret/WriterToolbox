@@ -224,7 +224,7 @@ Par exemple :
 
 Il existe plusieurs classes de listes intéressantes :
 
-### Pour isoler la liste, la mettre ne relief dans la page
+### Pour isoler la liste, la mettre en relief dans la page
 
     ul.free
     ol.free
@@ -240,6 +240,23 @@ Il existe plusieurs classes de listes intéressantes :
       li.resultat       # Pour décrire le résultat (moins visible)
 
       li.main_action    # Pour mettre en exergue l'action principale
+
+      li.action         # Pour l'action simple
+
+#### En utilisant le style de document `Procedure`
+
+~~~
+
+DOC/procedure
+
+main_action: l'action principale
+action: L'action simple
+action: L'autre action simple
+resultat: Le résultat obtenu.
+
+/DOC
+
+~~~
 
 ### Listes de description
 

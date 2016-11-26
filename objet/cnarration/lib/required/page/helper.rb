@@ -25,11 +25,11 @@ class Page
 
   def lien_edit_text
     page? || (return '')
-    '[Edit text]'.in_a(href: "page/#{id}/edit_text?in=cnarration")
+    '[Edit text]'.in_a(href: "page/#{id}/edit_text?in=cnarration", target: :new)
   end
 
   def lien_edit_data
-    "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration")
+    "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration", target: :new)
   end
 
   def lien_give_code

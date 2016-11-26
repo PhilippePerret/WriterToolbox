@@ -52,7 +52,7 @@ window.define_snippets_documents_narration=function(){
 
   Snippets.set_scopes_to(
     [{
-      'doc': {replace:"\nDOC/events,scenario,synopsis,brut plain,rapport\n\n$0\n/Légende du document\n/DOC\n"},
+      'doc': {replace:"\nDOC/events,scenario,synopsis,brut plain,rapport,procedure\n\n$0\n/Légende du document\n/DOC\n"},
       'p':    {replace:'personnage:|$0|'},
       'todo': {replace:"<adminonly>\nTODO: $0\n</adminonly>\n"},
       'q':    {replace:"CHECKUP[$1|$0]\n", func: window.liste_groupes_checkup_questions}

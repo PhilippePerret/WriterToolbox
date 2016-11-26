@@ -103,7 +103,7 @@ class ::String
     # Si le code contient "\nDOC/" c'est que des documents sont
     # définis dans le code, on les traite avant tout autre
     # traitement
-    code = code.mef_document if code.match(/\nDOC\//)
+    code.match(/\nDOC\//) && code = code.mef_document
 
     # Si une méthode de traitement des images existe,
     # il faut l'appeler.

@@ -75,6 +75,8 @@ class MEFDocument
         @codet.traite_as_events_html
       elsif scenario?
         @codet.traite_as_script_per_format(:html)
+      elsif procedure?
+        @codet.traite_as_procedure_per_format(:html)
       else
         lines.collect{ |l| l.traite_as_line_of_document_per_format }.join('')
       end
@@ -159,6 +161,9 @@ class MEFDocument
     end
   end
 
+  def procedure?
+    @is_procedure ||= classes.include?('procedure')
+  end
   def scenario?
     @is_scenario ||= classes.include?('scenario')
   end
@@ -237,6 +242,25 @@ class ::String
   # Pour la compatibilité avec les autres formats
   def traite_as_document_content_latex
     self
+  end
+
+  # Traite le string comme le contenu d'une procédure
+  def traite_as_procedure_per_format output_format
+    self.split("\n").collect do |line|
+      line != '' || begin
+        next '<div>&nbsp;</div>'
+      end
+      sline = line.split(':')
+      css  = sline.shift.strip
+      line = sline.join(':').strip
+      next nil if line.nil?
+      case output_format
+      when :html
+        line.traite_as_markdown_per_format.in_div(class:css)
+      when :latex
+        line.traite_as_markdown_per_format.in_command_latex("procedure#{css.camelize}")
+      end
+    end.compact.join('')
   end
 
   # Traite le string comme le contenu d'un scénario

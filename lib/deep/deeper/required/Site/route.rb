@@ -6,6 +6,15 @@ Méthodes propres au traitement de la route
 =end
 class SiteHtml
 
+  # {SiteHtml::Route} Instance de la route courante
+  attr_reader :current_route
+
+  # Returne true si la route courante conduit à la page
+  # d'accueil (au moment où la méthode est utilisée)
+  def home?
+    @is_home ||= (current_route.to_s == '' || current_route == 'site/home')
+  end
+
   # Retourne true si la route +route+ est égale à la route
   # courante
   def current_route? route_checked
@@ -22,8 +31,6 @@ class SiteHtml
   end
   alias :instance :objet
 
-  # {SiteHtml::Route} Instance de la route courante
-  attr_reader :current_route
 
   def route
     @route ||= SiteHtml::Route.new

@@ -40,4 +40,10 @@ $(document).ready(function(){
   // Quand on focus sur la page, on doit focusser dans le
   // champ de texte principal contenant le texte de la page
   window.onfocus = function(){EditText.textarea[0].focus()}
+
+  // Si la case à cocher Narration est cochée (parce qu'on vient de la 
+  // collect) alors il faut charger les snippets narration.
+  if($('input#snippets_narration')[0].checked){
+    EditText.oncheck_snippets_narration(true);
+  }
 })

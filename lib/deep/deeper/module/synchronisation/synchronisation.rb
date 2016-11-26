@@ -12,12 +12,14 @@ UTILISATION
     Runner simplement ce script.
 
 =end
+require 'timeout'
+
 MODE_SERVEUR = false unless defined?(MODE_SERVEUR)
 
 require_relative 'synchronisation/required'
 
 
-isynchro = Synchro::new
+isynchro = Synchro.new
 
 if MODE_SERVEUR
   ##
@@ -26,13 +28,17 @@ if MODE_SERVEUR
   ## Le programme passe par ici quand le script est joué sur le serveur
   ## pour récupérer les informations des fichiers sur le serveur.
   ##
-  isynchro.check_folders
-  # On écrit le résultat en sortie pour qu'il soit transmis en
-  # local.
-  puts Marshal::dump( isynchro.result )
+  Timeout.timeout(nil) do
+    isynchro.check_folders
+    # On écrit le résultat en sortie pour qu'il soit transmis en
+    # local.
+    puts Marshal.dump( isynchro.result )
+  end
 else
   ##
   ## OFFLINE
   ##
-  isynchro.check_synchro
+  Timeout.timeout(nil) do
+    isynchro.check_synchro
+  end
 end
