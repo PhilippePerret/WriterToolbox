@@ -243,19 +243,19 @@ Il existe plusieurs classes de listes intéressantes :
 
       li.action         # Pour l'action simple
 
-#### En utilisant le style de document `Procedure`
+En document :
 
 ~~~
 
-DOC/procedure
+  DOC/procedure
 
-main_action: l'action principale
-action: L'action simple
-action: L'autre action simple
-resultat: Le résultat obtenu.
+    main_action:  ... L'action principale à exécuter ...
+    main_note:    ... Une note sur l'action principale ...
+    action:       ... Action à exécuter ...
+    note:         ... Note sur action ...
+    resultat:     ... Le résultat produit par l'action ...
 
-/DOC
-
+  /DOC
 ~~~
 
 ### Listes de description

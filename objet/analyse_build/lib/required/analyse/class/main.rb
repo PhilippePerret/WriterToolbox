@@ -16,11 +16,12 @@ class AnalyseBuild
     def data_onglets
       ongs = {
         'Accueil'     => 'analyse_build/home',
-        'Déposer'     => 'analyse_build/depot'
+        'Déposer'     => 'analyse_build/depot',
+        'Extraire'    => 'analyse_build/extract'
       }
-      # if current && current.film_id
-      #   ongs.merge!('Définir brins' => "analyse_build/#{film.id}/define_brins")
-      # end
+      if current.film?
+        ongs.merge!('Définir brins' => "analyse_build/#{current.film.id}/define_brins")
+      end
     end
 
   end #<<self

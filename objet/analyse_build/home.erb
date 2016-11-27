@@ -9,7 +9,11 @@ enable_comments
 %>
 <h1>Chantier des analyses de film</h1>
 <h2>Accueil</h2>
-<%= 'Dépôt de fichiers'.in_a(href: 'analyse_build/depot', class: 'cadre').in_div(class: 'center') %>
+<%=
+  (
+    'Dépôt de fichiers'.in_a(href: 'analyse_build/depot', class: 'cadre') +
+    'Extraction'.in_a(href: 'analyse_build/extract', class: 'cadre')
+  ).in_div(class: 'center') %>
 
 <%# --------------------------------------------------------------------- %>
 <%
