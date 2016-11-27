@@ -6,7 +6,7 @@ class << self
   def liste_films_current_user link_attrs = nil
     user_films_tmp.collect do |filmo|
       link_attrs.each do |k, v|
-        link_attrs[k] = v % {id: filmo.id}
+        link_attrs[k] = v % {id: filmo.id, user_id: filmo.analystes.first.id}
       end
       filmo.titre.in_a(link_attrs).in_li
     end.join.in_ul(class: 'ul_films')
@@ -17,7 +17,7 @@ class << self
     other_user_films_tmp.collect do |filmo|
       analystes = filmo.analystes.collect{|u| u.pseudo}.pretty_join
       link_attrs.each do |k, v|
-        link_attrs[k] = v % {id: filmo.id}
+        link_attrs[k] = v % {id: filmo.id, user_id: filmo.analystes.first.id}
       end
       "#{filmo.titre} (#{analystes})".in_a(link_attrs).in_li
     end.join.in_ul(class: 'ul_films')

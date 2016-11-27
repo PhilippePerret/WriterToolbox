@@ -22,6 +22,8 @@ class AnalyseBuild
       if current.film?
         ongs.merge!('Définir brins' => "analyse_build/#{current.film.id}/define_brins")
       end
+
+      return ongs
     end
 
   end #<<self

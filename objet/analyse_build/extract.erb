@@ -3,9 +3,9 @@
 raise_unless user.analyste? || user.admin?
 
 %>
-<%=AnalyseBuild.titre_h1('Extraction')%>
+<%= AnalyseBuild.titre_h1('Extraction') %>
 <% if chantier.film? %>
-  <%=AnalyseBuild.output_when_film_chantier%>
+  <%= AnalyseBuild.output_when_film_chantier %>
 <% else %>
-  <%=AnalyseBuild.output_when_no_chantier%>
+  <%= AnalyseBuild.output_when_no_chantier %>
 <% end %>
