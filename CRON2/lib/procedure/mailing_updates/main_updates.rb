@@ -231,7 +231,7 @@ class CRON2
         # faut ou non le jour
         format_time = '%d %m - %H:%M'
 
-        '<ul id="last_updates" class="small" style="list-style:none;margin-left:1em;">' +
+        '<ul id="last_updates" class="small" style="list-style:none;margin-left:0em;">' +
         liste_updates.collect do |hupdate|
           heure = Time.at(hupdate[:created_at]).strftime(format_time)
           # degre = (hupdate[:options]||"")[0].to_i
@@ -253,9 +253,11 @@ class CRON2
               ""
             end
 
-          '<li>' +
-            "<span class='tiny'>#{heure}</span> " +
-            "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
+          '<li style="margin-bottom: 8px">' +
+            "<div class='tiny'>#{heure}</div> " +
+            '<div>' +
+              "<span>#{mark_for_subscribers}#{hupdate[:message]}</span>#{route}" +
+            '</div>' +
             " <span class='tiny'>(catégorie : #{hupdate[:type]})</span>" +
           '</li>'
         end.join('') + '</ul>'
