@@ -4,7 +4,7 @@ class Thing
 
   DATA_THINGS = {
     evenemencier: {hname: 'Evènemencier'},
-    cheminfer:    {hname: 'Chemin de fer'},
+    chemindefer:  {hname: 'Chemin de fer'},
     sequencier:   {hname: 'Séquencier'},
     brin:         {hname: 'Brin'}
   }
