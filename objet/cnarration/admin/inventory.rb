@@ -344,6 +344,7 @@ div.bookrang span.pages {
     # Il faut que max * coef = 50
     # Donc que coef = 50.0 / max
     nb = max > 50 ? ( nb_init * (50.0 / max) ).to_i : nb_init
+    nb > 0 || nb = 1
     "#{'•' * nb} #{nb_init}"
   end
 

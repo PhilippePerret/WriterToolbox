@@ -41,7 +41,7 @@ class Console
       else (redirect_to "scenodico/edit"); "" end
     when /^(état des lieux|etat des lieux|inventory) narration$/
       redirect_to "admin/inventory?in=cnarration"
-      return ""
+      return ''
 
       # --- NARRATION ---
 
