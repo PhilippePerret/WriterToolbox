@@ -26,7 +26,7 @@ class Livre
       "--- DÉLIMITEUR FIN---".in_li('data-id' => "0")
     else
       pages_et_titres_out_tdm.collect do |pid, ipage|
-        ipage.titre.in_li('data-id' => pid, class:"niv#{ipage.type}")
+        "#{ipage.titre} [##{pid}]".in_li('data-id' => pid, class:"niv#{ipage.type}")
       end.join
     end
     items.in_ul(id:'pages_et_titres_out', class:'livre_tdm')
