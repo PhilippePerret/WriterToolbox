@@ -60,7 +60,7 @@ class RFile
       rfile_path          = param(:synchro_rfile_path)
       rfile_serveur       = param(:synchro_serveur_ssh)
       rfile_distant_path  = param(:synchro_rfile_path_distant)
-      autre_rfile = RFile::new( rfile_path )
+      autre_rfile = RFile.new( rfile_path )
       if rfile_serveur != serveur_ssh
         autre_rfile.instance_variable_set('@serveur_ssh', rfile_serveur)
         # debug "Serveur SSH modifié"
@@ -74,7 +74,7 @@ class RFile
       return autre_rfile.message
     when 'synchro_download_distant_rfile_local_file'
       rfile_path = param(:synchro_rfile_path)
-      autre_rfile = RFile::new( rfile_path )
+      autre_rfile = RFile.new( rfile_path )
       autre_rfile.distant.download
       return autre_rfile.message
     else
@@ -84,24 +84,43 @@ class RFile
     @options[:action] ||= route_courante
 
     verbose = !!@options[:verbose]
-    return "" if synchronized? && !verbose
+    files_are_synchronized = (mtime == distant.mtime)
+    # debug "--- remote-sync ---"
+    # debug "verbose est #{verbose.inspect}"
+    # debug "files_are_synchronized est #{files_are_synchronized.inspect}"
+    # debug "(mtime =         #{mtime})"
+    # debug "(distant.mtime = #{distant.mtime})"
+    if files_are_synchronized
+      if verbose
+        return "Les deux fichiers online/offline `#{path}` sont synchronisés."
+      else
+        return ''
+      end
+    end
 
     update_required = nil
-    c = ""
+
+    c = ''
+
+    verbose && c << "Fichier `#{path}`."
     # - Check existence des fichiers -
     if exist? == false && distant.exist? == false
       raise "Ni le fichier local #{path} ni le fichier distant n'existent, impossible de les synchroniser…"
     end
     if exist?
-      c << "Le fichier <strong>local</strong> existe.".in_div.freeze
-      c << "Dernière modification : #{mtime.as_human_date(true, true)}".in_div.freeze
+      if verbose
+        c << "Le fichier <strong>local</strong> existe.".in_div.freeze
+        c << "Dernière modification : #{mtime.as_human_date(true, true)}".in_div.freeze
+      end
     else
       update_required = :distant_to_local
       c << "Le fichier <span class='bold'>local</span> n'existe pas.".in_span(class:'warning').in_div
     end
     if distant.exist?
-      c << "Le fichier <strong>distant</strong> existe.".in_div.freeze
-      c << "Dernière modification : #{distant.mtime.as_human_date(true, true)}".in_div.freeze
+      if verbose
+        c << "Le fichier <strong>distant</strong> existe.".in_div.freeze
+        c << "Dernière modification : #{distant.mtime.as_human_date(true, true)}".in_div.freeze
+      end
     else
       update_required = :local_to_distant
       c << "Le fichier <span class='bold'>distant</span> n'existe pas.".in_span(class:'warning').in_div
@@ -110,7 +129,7 @@ class RFile
     # - Check de la date des fichiers s'ils existent tous les deux
     if update_required.nil?
       if mtime == distant.mtime
-        return "" unless verbose
+        verbose || (return '')
       elsif mtime > distant.mtime
         update_required = :local_to_distant
       else
@@ -118,30 +137,32 @@ class RFile
       end
     end
 
+    # debug "update_required : #{update_required.inspect}"
     # ---------------------------------------------------------------------
 
-    btns = if options[:buttons].nil?
-      case update_required
-      when :local_to_distant
-        upload_form
-      when :distant_to_local
-        download_form
+    btns =
+      if options[:buttons].nil?
+        case update_required
+        when :local_to_distant
+          upload_form
+        when :distant_to_local
+          download_form
+        else
+          verbose || ( return '' )
+          "Les deux fichiers sont synchronisés."
+        end
       else
-        return "" unless verbose
-        "Les deux fichiers sont synchronisés."
+        case options[:buttons]
+        when :both
+          upload_form + download_form
+        when :upload
+          upload_form
+        when :download
+          download_form
+        end
       end
-    else
-      case options[:buttons]
-      when :both
-        upload_form + download_form
-      when :upload
-        upload_form
-      when :download
-        download_form
-      end
-    end
 
-    c << btns.in_div(class:'right')
+    c << btns.in_div( class:'right' )
 
     # Il peut y avoir plusieurs champs de synchronisation, il faut
     # donc ré-initialiser cette valeur pour ne pas lancer la synchro
@@ -152,7 +173,7 @@ class RFile
     # s'il y a plusieurs synchros à faire.
     param(:operation => nil)
 
-    return c
+    return c.in_fieldset(legend: 'Remote-sync')
   end
 
   def upload_form
@@ -162,19 +183,20 @@ class RFile
     synchro_form :download
   end
   def synchro_form sens
-    ope = case sens
-    when :upload
-      "synchro_upload_local_rfile_to_distant_file"
-    when :download
-      "synchro_download_distant_rfile_local_file"
-    end
-    form_id = "form_synchro_#{RFile::new_iform}"
+    ope =
+      case sens
+      when :upload
+        "synchro_upload_local_rfile_to_distant_file"
+      when :download
+        "synchro_download_distant_rfile_local_file"
+      end
+    form_id = "form_synchro_#{RFile.new_iform}"
     (
       ope.in_hidden(name:'operation', id:'operation') +
       path.in_hidden(name:'synchro_rfile_path', id:'synchro_rfile_path') +
       serveur_ssh.in_hidden(name:'synchro_serveur_ssh', id:'synchro_serveur_ssh') +
       distant.path.in_hidden(name:'synchro_rfile_path_distant', id:'synchro_rfile_path_distant') +
-      image("pictos/#{sens}.png", class:'btn', onclick:"$('form##{form_id}').submit()")
+      image("pictos/#{sens}.png", alt: "SYNCHRONISER #{sens}", class:'btn', onclick:"$('form##{form_id}').submit()")
     ).in_form(id:form_id, action:options[:action], class:'inline')
   end
 

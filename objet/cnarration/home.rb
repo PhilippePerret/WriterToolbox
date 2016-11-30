@@ -3,7 +3,7 @@ class Cnarration
 class << self
 
   def dernier_inventaire
-    SuperFile::new(_('cnarration_inventory.html')).read
+    inventory_file.read
   end
 
 end #/<< self

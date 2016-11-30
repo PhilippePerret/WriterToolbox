@@ -111,7 +111,7 @@ class << self
         # Boucle sur chaque livre
         arr_book.each do |hpage|
           @rapport_string << "  - #{dbook[:folder]}/#{hpage[:handler]}"
-          ipage = Cnarration::Page::get(hpage[:id])
+          ipage = Cnarration::Page.get(hpage[:id])
           nb_pgs_moy = ipage.nombre_pages_1750
 
           # On mémorise, par livre et par niveau de développement,
@@ -251,7 +251,7 @@ class << self
             avertissement_valeurs_aberrantes +
             styles_css_graphiques_pages +
             code
-    (Cnarration::folder+"cnarration_inventory.html").write code
+    inventory_file.write code
   end
 
   # Produit et écrit le graphe de l'état actuel de la collection
@@ -296,7 +296,7 @@ class << self
     #
     code = "<h4>Nombre de pages achevées par livre</h4>"+
             code
-    (Cnarration::folder+"cnarration_inventory.html").append code
+    inventory_file.append code
   end
 
   def styles_css_graphiques_pages
@@ -404,7 +404,7 @@ div.bookrang span.pages {
       hbooks = {}
       pages.each do |hpage|
         livre_id = hpage[:livre_id].to_i
-        hbooks.merge!(livre_id => Array::new) unless hbooks.key?(livre_id)
+        hbooks.merge!(livre_id => Array.new) unless hbooks.key?(livre_id)
         hbooks[livre_id] << hpage
       end
       hbooks
@@ -414,19 +414,19 @@ div.bookrang span.pages {
   # Array des pages (seulement des pages) où chaque élément est
   # un hash de toutes les données de la page.
   def pages
-    @pages ||= Cnarration::table_pages.select(where: "options LIKE '1%'")
+    @pages ||= Cnarration.table_pages.select(where: "options LIKE '1%'")
   end
 
   def chapitres
-    @chapitres ||= Cnarration::table_pages.select(where: "options LIKE '3%'")
+    @chapitres ||= Cnarration.table_pages.select(where: "options LIKE '3%'")
   end
 
   def sous_chapitres
-    @sous_chapitres ||= Cnarration::table_pages.select(where:"options LIKE '2%'")
+    @sous_chapitres ||= Cnarration.table_pages.select(where:"options LIKE '2%'")
   end
 
   def textes_types
-    @textes_types ||=  Cnarration::table_pages.select(where:"options LIKE '5%'")
+    @textes_types ||=  Cnarration.table_pages.select(where:"options LIKE '5%'")
   end
 
 end #/<< self

@@ -35,10 +35,7 @@ Dans une page, il suffit d'indiquer :
     ...
 
     <% site.require_module 'remote_file' %>
-    <%=
-        RFile::new("./to/mon/fichier.ext").
-        bloc_synchro(verbose: true)
-    %>
+    <%=RFile.new("./to/mon/fichier.ext").bloc_synchro(verbose: true)%>
 
 Ce code :
 
@@ -58,4 +55,4 @@ La méthode `bloc_synchro` peut comporter les paramètres suivants :
                   Par défaut, la méthode prend la route courante, donc c'est
                   le même fichier qui est sollicité pour traiter la synchro.
                   Si un autre fichier est invoqué, il faut s'assurer qu'il
-                  contient bien le même code RFile::new... cf. plus haut.
+                  contient bien le même code RFile.new... cf. plus haut.
