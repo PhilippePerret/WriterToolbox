@@ -2,14 +2,14 @@
 section#content.narration
   font-size   : 13.8pt !important
   text-align  : justify !important
-  
+
   h1.book_title
     padding-top     : 1em
     font-size       : 3.4em
-  
+
   h2, h3, h4
     margin-left     : 0
-    
+
   // Div des boutons de navigation vers la page avant et la page
   // après
   div.btnsnav
@@ -25,13 +25,13 @@ section#content.narration
 section#content
   font-family   : "Open Sans",Tahoma,Arial
   font-size     : 15.9pt
-  
-  
+
+
   div#page_titre, div#page_cours
     width         : 820px
     margin        : 3em 0 2em 1em
     border        : 1px solid #ccc
-  
+
   // La page contenant les titres de chapitre et de
   // sous-chapitre
   div#page_titre
@@ -50,19 +50,19 @@ section#content
       text-align    : left
       padding       : 6px 0 8px 12px
       border-left   : 12px solid #578088
-      
+
   // Une page de cours normale donc de texte, pas un
   // titre de chapitre ou de sous-chapitre
   div#page_cours
-    padding       : 2.7em 2em 3em   
+    padding       : 2.7em 2em 3em
     h1
       margin-bottom     : 2em
       color             : #303030 !important
       line-height       : 1.1em
-    
+
     h3
       font-size      : 1.4em
-    
+
     // Les exergues amenées par "> "
     > blockquote
       > p
@@ -74,12 +74,12 @@ section#content
     > pre
       margin-left       : 2em
       // On supprime tout padding pour le mettre à une valeur
-      // fixe qui laisse de la place. Attention, ça pourrait 
+      // fixe qui laisse de la place. Attention, ça pourrait
       // interférer avec d'autres choses.
       padding           : 50px !important
       code
         white-space       : pre-wrap
-        
+
     // Termes techniques
     tt
       font-family     : "Courier New"
@@ -101,7 +101,7 @@ section#content
     margin-left     : 15em
     &.iso
       display: block
-  
+
   div#bloc_evaluation
     display       : inline-block
     text-align    : left
@@ -118,9 +118,16 @@ section#content
       textarea
         width         : 96% !important
         height        : 100px
-      
+
+// Pour empêcher d'imprimer les pages
+// TODO : Mais il faudra pouvoir le désactiver pour faire un PDF
 @media print
-  * 
+  *
     display : none
     background-color  : black
     color             : black
+
+// En version web, les textes entre balises paperonly doivent
+// être supprimées.
+paperonly
+  display     : none

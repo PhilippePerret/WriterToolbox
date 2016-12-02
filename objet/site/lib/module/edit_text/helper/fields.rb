@@ -70,7 +70,8 @@ def aide_narration
     'Balises spéciales'.in_legend +
     'Only admin'.in_a(onclick: "balise('adminonly')", class: 'block') +
     'Relecture'.in_a(onclick: "balise('RELECTURE_[RC][RC]', '[RC][RC]_RELECTURE', true)", class: 'block')+
-    'Text only on web'.in_a(onclick: "balise('webonly')", class: 'block')
+    'Text only on WEB'.in_a(onclick: "balise('webonly')", class: 'block')
+    'Text only on PAPER'.in_a(onclick: "balise('paperonly')", class: 'block')
   ).in_fieldset(class:'left')
 end
 

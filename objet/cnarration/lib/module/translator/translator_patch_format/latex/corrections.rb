@@ -26,10 +26,20 @@ class Translator
     # Le contenu du fichier
     @content = content
 
-    # On supprimer les textes entre balises <webonly> qui
+    # On supprime les textes entre balises <webonly> qui
     # permettent d'indiquer du texte qui ne doit se trouver que
     # dans la version en ligne du site
     @content.gsub!(/<webonly>(.*?)<\/webonly>/o,'')
+
+    # On supprime les balises paperonly mais en gardant le
+    # texte à l'intérieur.
+    # Noter qu'il faut le faire ici pour travailler plus tard les
+    # mises en forme. Par exemple, on peut avoir :
+    #   `<paperonly>: http://www.sacd.fr</paperonly>` qui définit
+    # une ligne d'une table de description qui commence par ":" et qui
+    # ne serait pas traité si la balise `paperonly` était conservée.
+    @content.gsub!(/<paperonly>(.*?)<\/paperonly>/o,'\1')
+
 
     # Il faut évaluer tous les code ERB contenu dans les documents.
     # Il faut le faire en deux temps. Dans un premier temps, au cours

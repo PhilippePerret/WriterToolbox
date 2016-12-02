@@ -38,16 +38,16 @@ class Console
 
   def ouvrir_fichier_texte_page_narration page_ref
     pages = pages_narration_from_page_ref page_ref
-    return "" if pages.nil?
+    return '' if pages.nil?
 
     site.require_objet 'cnarration'
     if pages.count == 1
-      ipage = Cnarration::Page::get(pages.first[:id])
+      ipage = Cnarration::Page.get(pages.first[:id])
       `open -a #{site.markdown_application} "#{ipage.fullpath}"`
     else
       sub_log(pages.collect do |hpage|
-        ipage = Cnarration::Page::get(hpage[:id])
-        hpage[:titre].in_a(target: :new,href:"site/open_file?path=#{CGI::escape ipage.fullpath}").in_li
+        ipage = Cnarration::Page.get(hpage[:id])
+        hpage[:titre].in_a(target: :new,href:"site/open_file?path=#{CGI.escape ipage.fullpath}").in_li
       end.join.in_ul(class:'tdm'))
     end
 
