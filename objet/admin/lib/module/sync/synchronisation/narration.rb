@@ -187,7 +187,12 @@ class TDMNarration
     loc_rows.each do |rid, loc_data|
       dis_data = dis_rows[rid]
       # suivi "#{loc_data.inspect} / #{dis_data.inspect}"
-      if loc_data != dis_data
+      if dis_data.nil?
+        # Une table des matières inexistante, c'est-à-dire
+        # un nouveau livre initié
+        dis_table.insert(loc_data)
+        nombre_synchronisations += 1
+      elsif loc_data != dis_data
         if dis_data[:updated_at] > loc_data[:updated_at]
           dis_data.delete(:id)
           loc_table.update(rid, dis_data)

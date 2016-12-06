@@ -40,7 +40,17 @@ class SuperFile
       code = String.formate_balises_print_checkup code, options
     end
 
+    # Traitement des exemples insérés depuis le livre des
+    # exemples (balises EXEMPLE)
+    if code.match('EXEMPLE')
+      code = code.formate_balises_exemples
+    end
+
     return code
+  end
+
+  def formate_balises_exemples
+
   end
 
 

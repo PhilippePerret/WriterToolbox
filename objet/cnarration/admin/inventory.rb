@@ -269,7 +269,14 @@ class << self
       nombre_pages_achevees = 0
       nombre_files_acheves  = 0
 
-      (8..10).each do |niveau|
+      # (8..10).each do |niveau|
+      #   data_niveau_x = bdata[:pages_per_niveau][niveau]
+      #   data_niveau_x != nil || next
+      #   nombre_pages_achevees += data_niveau_x[:nombre_pages]
+      #   nombre_files_acheves  += data_niveau_x[:files].count
+      # end
+
+      (10..10).each do |niveau|
         data_niveau_x = bdata[:pages_per_niveau][niveau]
         data_niveau_x != nil || next
         nombre_pages_achevees += data_niveau_x[:nombre_pages]

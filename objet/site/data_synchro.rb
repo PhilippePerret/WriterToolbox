@@ -51,12 +51,6 @@ class Synchro
   def app_ignored_files
     [
       # Ici la liste des paths de fichiers à ignorer
-      "./database/data/forum.db",
-      "./database/data/analyse.db",
-      './database/data/filmodico.db',
-      './database/data/scenodico.db',
-      './database/data/cnarration.db',
-      './database/data/cnarration_hot.db',
       './objet/site/home.html'
     ]
   end
@@ -87,7 +81,6 @@ class Synchro
   def folders_2_check
     {
       'CRON2'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
-      'CRON/lib'  => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'lib'       => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'objet'     => { extensions: COMMON_EXTENSIONS, dir: :l2s},
       'view'      => { extensions: COMMON_EXTENSIONS, dir: :l2s},
@@ -99,11 +92,6 @@ class Synchro
   end
   def files_2_check
     {
-      './CRON/hour_cron.rb' => {dir: :both}
-    #   './database/filmodico.db'   => {dir: :both},
-    #   './database/cnarration.db'  => {dir: :both},
-    #   './database/scenodico.db'   => {dir: :both},
-    #   './'
     }
   end
 end

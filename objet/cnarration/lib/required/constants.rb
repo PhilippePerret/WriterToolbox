@@ -54,6 +54,7 @@ class Cnarration
     dialogue:           9,
     documents:          5,
     dynamique:          3,
+    exemples:           11,
     personnages:        2,
     procedes:           7,
     structure:          1,

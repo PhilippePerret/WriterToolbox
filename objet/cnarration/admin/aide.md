@@ -13,6 +13,7 @@
   * [Notes types notes de bas de page](#notesdebasdepage)
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
+  * [Les exemples du livre exemples](#lesexemplesdulivreexemples)
   * [Référence vers autre page](#placerunereferenceaautrepage)
   * [Indiquer des portions en relecture](#portionsrelecture)
   * [Textes types](#lestextestypes)
@@ -133,6 +134,22 @@ Pour les insérer il suffit d'utiliser :
     Cnarration::texte_type "path/relatif/to/file.md"
 
 Le chemin relatif se calcule depuis le dossier `./data/unan/texte_type/cnarration/`.
+
+<a name='lesexemplesdulivreexemples'></a>
+
+## Les exemples du livre exemples
+
+Les exemples du livre exemples peuvent être utilisés n'importe où dans les différents ouvrages. Cela a été inauguré par exemple avec le synopsis de Thelma et Louise.
+
+Pour faire référence à un exemple et insérer son texte dans la page, il suffit d'utiliser la balise `EXEMPLE` avec en paramètre l'adresse relative depuis le dossier `./data/unan/pages_semidyn/cnarration/exemples/_textes_/`.
+
+Par exemple, justement pour le synopsis de Thelma & Louise :
+
+~~~
+
+EXEMPLE[synopsis/Thelma_et_Louise_v1.md]
+
+~~~
 
 <a name='placerunereferenceaautrepage'></a>
 
