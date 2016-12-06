@@ -39,7 +39,10 @@ class Cnarration
       stitre: "Apprendre à écrire le meilleur dialogue possible, efficace, riche et cohérent."},
     10  => {id:10,  hname: "L'Analyse de films", nbp_expected: 100, folder:'analyse',
       short_hname: "Analyses",
-      stitre:"Apprendre à tirer le maximum de sa vision des films."}
+      stitre:"Apprendre à tirer le maximum de sa vision des films."},
+    11  => {id:11,  hname: "Livre d'exemples", nbp_expected: 100, folder:'exemples',
+      short_hname: "Exemples",
+      stitre:"Recueil d'exemples et d'illustrations de tous les travaux à accomplir par l'auteur."}
   }
 
   # Symbole du livre vers son ID

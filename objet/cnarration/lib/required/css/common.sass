@@ -1,4 +1,4 @@
-// Pour les styles quand le fichier est placé sur Icare  
+// Pour les styles quand le fichier est placé sur Icare
 div#panneaux_tdms
   width         : 1200px !important
   min-width     : 1200px !important
@@ -17,7 +17,7 @@ div#panneaux_tdms
     padding       : 10px
     font-size     : 0.75em
     line-height   : 1.3em
-    
+
   div#panneau_in_tdm
     float         : left
 
@@ -51,9 +51,18 @@ ul.livre_tdm
   li.niv3
     font-size       : 1.4em
     margin-left     : 0
-    
+
 // Styles des textes
 span.livre
   font-variant      : small-caps
   font-family       : "Times New Roman"
   font-size         : 1.2em
+// Une page (= un fichier) de la collection en référence,
+// pour le lien
+span.page, span.page *
+  font-family       : "Times New Roman"
+  font-size         : 1.2em
+  &:before
+    content   : "« "
+  &:after
+    content   : " »"

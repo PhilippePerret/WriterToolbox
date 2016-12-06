@@ -103,11 +103,12 @@ class Lien
         # Il faut rechercher le titre dans la table des pages
         hpage[:titre]
       end
+      titre = "<span class='page'>#{titre}</span>"
       if options[:from_book] != livre_id
         # C'est un lien pour un autre livre, il faut donc indiquer
         # le titre du livre
         titre_livre = Cnarration::LIVRES[livre_id][:hname]
-        titre += " (in “#{titre_livre}”)"
+        titre += " dans <span class='livre'>#{titre_livre}</span>"
       end
       [titre, "page/#{pid}/show?in=cnarration"]
     else

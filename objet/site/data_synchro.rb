@@ -64,7 +64,7 @@ class Synchro
     # Les dossiers doivent OBLIGATOIREMENT se terminer par "/"
     [
       './lib/deep/deeper/module/synchronisation/',
-      './LOCAL_CRON/',
+      './local_cron/',
       './view/img/CHANTIER',
       './lib/deep/deeper/module/links_analyzer/output/routes_msh/'
     ]
