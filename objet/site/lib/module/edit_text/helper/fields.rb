@@ -68,9 +68,10 @@ def aide_narration
   narration? || (return '')
   (
     'Balises spéciales'.in_legend +
+    'AIDE'.in_a(href: 'admin/aide?in=cnarration', target: :new) +
     'Only admin'.in_a(onclick: "balise('adminonly')", class: 'block') +
-    'Relecture'.in_a(onclick: "balise('RELECTURE_[RC][RC]', '[RC][RC]_RELECTURE', true)", class: 'block')+
-    'Text only on WEB'.in_a(onclick: "balise('webonly')", class: 'block')
+    'Relecture'.in_a(onclick: "balise('RELECTURE_[RC][RC]', '[RC][RC]_RELECTURE', true)", class: 'block') +
+    'Text only on WEB'.in_a(onclick: "balise('webonly')", class: 'block') +
     'Text only on PAPER'.in_a(onclick: "balise('paperonly')", class: 'block')
   ).in_fieldset(class:'left')
 end

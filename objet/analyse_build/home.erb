@@ -1,6 +1,7 @@
-<% raise_unless user.analyste? || user.admin? %>
 <%
 # Accueil de la section du chantier d'analyse
+
+AnalyseBuild.require_module 'depot'
 
 page.title = "Chantier analyses"
 page.description= "Chantier des analyses de films, pour traiter les fichiers de collecte des analystes."
@@ -9,13 +10,14 @@ enable_comments
 %>
 <h1>Chantier des analyses de film</h1>
 <h2>Accueil</h2>
-<%=
-  (
-    'Dépôt de fichiers'.in_a(href: 'analyse_build/depot', class: 'cadre') +
-    'Extraction'.in_a(href: 'analyse_build/extract', class: 'cadre')
-  ).in_div(class: 'center') %>
+<% if user.analyste? || user.admin? %>
+  <%=
+    (
+      'Dépôt de fichiers'.in_a(href: 'analyse_build/depot', class: 'cadre') +
+      'Extraction'.in_a(href: 'analyse_build/extract', class: 'cadre')
+    ).in_div(class: 'center') %>
 
-<%# --------------------------------------------------------------------- %>
+  <%# --------------------------------------------------------------------- %>
 <%
 =begin
 
@@ -24,12 +26,16 @@ enable_comments
 
 =end
 %>
-<% if AnalyseBuild.user_folder_tmp.exist? %>
-  <h3>Fichiers déposés</h3>
-  <p class='small italic'>
-    Votre dossier d'analyse temporaire courant contient les films suivants. Cliquez le titre du film que vous voulez traiter.
-  </p>
-  <% AnalyseBuild.user_films_tmp.each do |film| %>
-    <%= film.titre.in_a(href: "analyse_build/#{film.id}/depot").in_div %>
+  <% if AnalyseBuild.user_folder_tmp.exist? %>
+    <h3>Fichiers déposés</h3>
+    <p class='small italic'>
+      Votre dossier d'analyse temporaire courant contient les films suivants. Cliquez le titre du film que vous voulez traiter.
+    </p>
+    <% AnalyseBuild.user_films_tmp.each do |film| %>
+      <%= film.titre.in_a(href: "analyse_build/#{film.id}/depot").in_div %>
+    <% end %>
   <% end %>
+
+<% else %>
+  <%= Analyse::Depot.output_as_common_user %>
 <% end %>

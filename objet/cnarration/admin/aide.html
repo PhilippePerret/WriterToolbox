@@ -308,6 +308,8 @@ sup {
 <body>
 <h1>Aide pour la collection Narration</h1>
 
+<blockquote><p>Si ce document est modifié, il faut l'ouvrir dans Mou et produire la version HTML.</p></blockquote>
+
 <ul>
 <li><a href="#leslivresnarration">Les livres de la collection</a>
 
@@ -327,6 +329,7 @@ sup {
 
 <ul>
 <li><a href="#obtenirbalisesverschoses">Obtenir des balises vers film, livre, mot, etc.</a></li>
+<li><a href="#notesdebasdepage">Notes types notes de bas de page</a></li>
 <li><a href="#environnementsdocuments">Les environnements documents</a></li>
 <li><a href="#listedequestionspourcheckup">Liste des questions des CHECKUPS</a></li>
 <li><a href="#placerunereferenceaautrepage">Référence vers autre page</a></li>
@@ -512,6 +515,50 @@ REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
 <pre><code>balise page &lt;portion du titre&gt;
 </code></pre>
 
+<p><a name='notesdebasdepage'></a></p>
+
+<h2>Notes types notes de bas de page</h2>
+
+<p>On peut insérer des notes dans le texte en se servant des double-crochets. On insère la balise <code>{{ID}}</code> à l'endroit où l'on doit trouver le renvoi de note et l'on définit la note à l'aide de <code>{{ID: NOTE}}</code> à l'intérieur de deux balises <code>&lt;!-- NOTES --&gt;</code> et <code>&lt;!-- /NOTES --&gt;</code>.</p>
+
+<p>Attention, ces marques doivent être respectées scrupuleusement.</p>
+
+<p>Exemple :</p>
+
+<pre><code>
+  Le texte avec une note {{2}} pour voir si ça marche.
+
+  Un second paragraphe et une autre note {{1}} qui n'est pas indicé
+  dans le bon ordre {{3}}.
+
+  &lt;!-- NOTES --&gt;
+  {{3: Une troisième note. Peu importe qu'elle soit ici.}}
+  {{2: La définition de la note 2.}}
+  {{1: La définition de la note 1.}}
+  &lt;!-- /NOTES --&gt;
+</code></pre>
+
+<p>Ce code produira le texte :</p>
+
+<hr />
+
+<p>Le texte avec la note<sup class='small'>1</sup> pour voir si ça marche.</p>
+
+<p>Un second paragraphe et une autre note<sup class='small'>2</sup> qui n'est pas indicé
+dans le bon ordre<sup class='small'>3</sup>.</p>
+
+<div style="border:1px solid #777;width:50%"></div>
+
+
+<p>  1   La définition de la note 2.<br>
+  2   La définition de la note 1.<br>
+  3   Une troisième note. Peu importe qu'elle soit ici.</p>
+
+<div style="border:1px solid #777;width:50%"></div>
+
+
+<hr />
+
 <p><a name='environnementsdocuments'></a></p>
 
 <h3>Les environnements documents</h3>
@@ -534,6 +581,7 @@ REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
 synopsis    Synopsis ou document général.
 raw         Document brut (pre)
 rapport     Type rapport
+procedure   Type pour l'aide (cf. dans l'aide générale)
 scenario    Scénario
             On peut alors commencer les lignes par des :
             &lt;LETTRE&gt;:&lt;texte&gt;

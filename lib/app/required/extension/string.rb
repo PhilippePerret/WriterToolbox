@@ -19,6 +19,8 @@ class String
 
     str = str.formate_balises_include
     str = str.formate_mises_en_forme_propres
+    str = str.mef_document
+    str = str.formate_balises_notes
     str = str.formate_balises_references
     str = str.formate_balises_images
     str = str.formate_balises_mots
@@ -83,6 +85,80 @@ class String
         texte.strip
       ).in_div(class: "mg #{css}")
     }
+
+    return str
+  end
+
+
+  # Formatage des notes
+  # Cf. le mode d'emploi (narration) pour le détail de l'utilisation.
+  # Résumé : les notes doivent être formatées de cette façon :
+  #     Texte avec note {{1}}
+  #     <!-- NOTES -->
+  #     {{1: Ceci est la première note}}
+  #     <!-- /NOTES -->
+  # Peu importe l'ordre des numéros, ils seront toujours remplacés par
+  # des numéros incrémentés.
+  #
+  def formate_balises_notes
+
+    # Il ne faut procéder au formatage que s'il y a des notes
+    self =~ /\{\{([0-9]+)\}\}/ || (return self)
+
+    str = self
+    # Pour conserver la correspondance entre l'ID de note attribué au
+    # cours de la rédaction et l'INDEX attribué ici pour avoir un ordre
+    # incrémentiel (alors que les ID ne se trouvent pas forcément dans
+    # l'ordre du document)
+    # C'est un Array avec en clé l'ID donné à la rédaction et en valeur
+    # un Hash contenant {:id, :index}
+    liste_notes = Hash.new
+
+    # Pour incrémenter régulièrement les index de note
+    inote = 0
+
+    # Remplacement des renvois aux notes et collecte
+    # des notes
+    #
+    str.gsub!(/ ?\{\{([0-9]+)\}\}/){
+      # L'identifiant attribué dans le document
+      id_note = $1.freeze
+
+      if liste_notes.key?(id_note)
+        index_note = liste_notes[id_note][:index]
+      else
+        # L'index réel pour que les notes soient dans l'ordre
+        inote += 1
+        index_note = inote.freeze
+        liste_notes.merge!(id_note => {id: id_note, index: index_note})
+      end
+      "<sup class='note_renvoi'>#{index_note}</sup>"
+    }
+
+    # On classe la liste des notes
+    liste_notes = liste_notes.sort_by{|idnote, dnote| dnote[:index]}
+    # debug "liste_notes : #{liste_notes.inspect}"
+
+    # Recherche des blocs `<!-- NOTES -->`...`<!-- /NOTES -->`
+    # pour traiter les notes. Ce bloc doit forcément être présent, qui
+    # contient la définition des notes.
+    if str =~ /<\!-- NOTES -->/ && str =~ /<\!-- \/NOTES -->/
+      str.gsub!(/<\!-- NOTES -->(.*?)<\!-- \/NOTES -->/m){
+        def_notes = $1.strip.freeze
+        notes_sorted = String.new
+        liste_notes.each do |idnote, dnote|
+          if def_notes =~ /\{\{#{idnote}:/
+            def_note = def_notes.match(/\{\{#{idnote}:(.*?)\}\}/).to_a[1].strip
+            notes_sorted << "#{dnote[:index]}   #{def_note}".in_div(class: 'small')
+          end
+        end
+
+        # On remplace le bloc par la liste des notes classées
+        notes_sorted.in_div(class: 'bloc_notes')
+      }
+    else
+      raise 'Des notes sont présentes dans cette page, il faut impérativement définir la définition de ces notes entre la balise `&lt;!-- NOTES -->` et la balise `&lt;!-- /NOTES -->`.'
+    end
 
     return str
   end

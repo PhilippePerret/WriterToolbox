@@ -352,13 +352,14 @@ div.bookrang span.pages {
   # développement
   def pages_par_niveau_developpement
     pages_per_niveau.sort_by{|n, a| n}.collect do |niveau, arr|
-      "Page niveau #{niveau} (#{niveau_humain(niveau)})".in_h4 +
+      ul_id = "ul_pages_niveaux_#{niveau}"
+      "Page niveau #{niveau} (#{niveau_humain(niveau)})".in_a(onclick: "$('ul##{ul_id}').toggle()").in_h4 +
       arr.collect do |hpage|
         (
           div_boutons(hpage) +
           "[#{hpage[:id]}] #{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
         ).in_li(class:'hover')
-      end.join.in_ul
+      end.join.in_ul(id: ul_id, display: false)
     end.join
   end
 

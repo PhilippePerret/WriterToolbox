@@ -173,7 +173,9 @@ class App
     # L'opération se fait à l'instanciation sauf s'il faut le
     # conserver
     def remove_log_file
-      File.unlink(logfile) if File.exist?(logfile)
+      if File.exist?(logfile)
+        File.unlink(logfile) rescue nil
+      end
     end
 
     # Le fichier qui contiendra le benchmark. Il est détruit à

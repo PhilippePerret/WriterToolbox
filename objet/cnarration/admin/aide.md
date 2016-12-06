@@ -10,6 +10,7 @@
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
   * [Obtenir des balises vers film, livre, mot, etc.](#obtenirbalisesverschoses)
+  * [Notes types notes de bas de page](#notesdebasdepage)
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Référence vers autre page](#placerunereferenceaautrepage)
@@ -178,6 +179,53 @@ Pour obtenir ces balises à insérer dans les textes, utiliser la console avec l
 
     balise page <portion du titre>
 
+
+<a name='notesdebasdepage'></a>
+
+## Notes types notes de bas de page
+
+On peut insérer des notes dans le texte en se servant des double-crochets. On insère la balise `{{ID}}` à l'endroit où l'on doit trouver le renvoi de note et l'on définit la note à l'aide de `{{ID: NOTE}}` à l'intérieur de deux balises `<!-- NOTES -->` et `<!-- /NOTES -->`.
+
+Attention, ces marques doivent être respectées scrupuleusement.
+
+Exemple :
+
+~~~
+
+  Le texte avec une note {{2}} pour voir si ça marche.
+
+  Un second paragraphe et une autre note {{1}} qui n'est pas indicé
+  dans le bon ordre {{3}}.
+
+  <!-- NOTES -->
+  {{3: Une troisième note. Peu importe qu'elle soit ici.}}
+  {{2: La définition de la note 2.}}
+  {{1: La définition de la note 1.}}
+  <!-- /NOTES -->
+
+~~~
+
+Ce code produira le texte :
+
+---
+
+Le texte avec la note<sup class='small'>1</sup> pour voir si ça marche.
+
+Un second paragraphe et une autre note<sup class='small'>2</sup> qui n'est pas indicé
+dans le bon ordre<sup class='small'>3</sup>.
+
+<div style="border:1px solid #777;width:50%"></div>
+
+  1   La définition de la note 2.<br>
+  2   La définition de la note 1.<br>
+  3   Une troisième note. Peu importe qu'elle soit ici.
+
+<div style="border:1px solid #777;width:50%"></div>
+
+
+
+---
+
 <a name='environnementsdocuments'></a>
 
 ### Les environnements documents
@@ -199,6 +247,7 @@ On trouve comme type de document :
     synopsis    Synopsis ou document général.
     raw         Document brut (pre)
     rapport     Type rapport
+    procedure   Type pour l'aide (cf. dans l'aide générale)
     scenario    Scénario
                 On peut alors commencer les lignes par des :
                 <LETTRE>:<texte>

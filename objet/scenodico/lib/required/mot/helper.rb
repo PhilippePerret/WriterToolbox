@@ -7,9 +7,16 @@ class Mot
   end
 
   def formate str
-    return "" if str.nil?
+    return '' if str.nil?
+    site.require_module 'kramdown'
     str = str.purified
     str = str.formate_balises_propres
+
+    # Je ne transforme pas avec kramdown parce que tous les paragraphes
+    # qui commencerait pas `<mot>:` serait considérés comme des paragraphes
+    # stylés pas `<mot>`
+    # str = str.kramdown
+    
     str = str.split("\n").collect{|p| p.in_p}.join
     return str
   end

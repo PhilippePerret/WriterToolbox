@@ -188,6 +188,27 @@ class ::String
   CROCHETO  = "ltxLTXCROxtl "
   CROCHETF  = " ltxLTXCRFxtl"
 
+
+  # = main =
+  #
+  # Méthode principale appelée pour mettre en forme des documents
+  # dans les textes.
+  #
+  def mef_document output_format = :html
+    return self unless self.match(/\nDOC\//)
+    require 'kramdown'
+    str = self.gsub(/\r/,'')
+    if ("#{str}\n").match(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m)
+    end
+    str =
+      ("#{str}\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
+        classes_css = $1.freeze
+        doc_content = $2.freeze
+        MEFDocument.new(doc_content, classes_css).output(output_format)
+      }
+    return str
+  end
+
   # Dans l'export de la collection Narration vers Latex, on doit
   # transformer les documents avant de kramdowner le code. Or, si
   # les environnements des documents ne sont pas traités avant le
@@ -218,19 +239,6 @@ class ::String
     str.gsub(/#{ANTISLASH}/o, '\\').gsub(/#{CROCHETO}/o,'{').gsub(/#{CROCHETF}/o,'}')
   end
 
-  def mef_document output_format = :html
-    return self unless self.match(/\nDOC\//)
-    str = self.gsub(/\r/,'')
-    if ("#{str}\n").match(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m)
-    end
-    str =
-      ("#{str}\n").gsub(/\nDOC\/(.*?)\n(.*?)\/DOC\n/m){
-        classes_css = $1.freeze
-        doc_content = $2.freeze
-        MEFDocument.new(doc_content, classes_css).output(output_format)
-      }
-    return str
-  end
 
   # Pour traiter le contenu avec une sortie HTML
   def traite_as_document_content_html
@@ -322,7 +330,7 @@ class ::String
   def traite_as_markdown_per_format
     # self.gsub(/\*\*(.+?)\*\*/, '<strong>\1</strong>').
     # gsub(/\*(.+?)\*/, '<em>\1</em>')
-    res = Kramdown::Document.new(self.strip, {hard_wrap: false}).send("to_#{@output_format || 'html'}".to_sym)
+    res = ::Kramdown::Document.new(self.strip, {hard_wrap: false}).send("to_#{@output_format || 'html'}".to_sym)
     case @output_format
     when :latex
       res.strip.sub(/^\\par\{(.*?)\}$/,'\1')
@@ -331,7 +339,9 @@ class ::String
     end
   rescue Exception => e
     debug e
-    error "Impossible de traiter markdown per format : #{e.message}"
+    if OFFLINE
+      error "Impossible de traiter markdown per format : #{e.message}"
+    end
     self
   end
 
@@ -384,4 +394,4 @@ class ::String
     end # / :latex ou :html
   end
 
-end
+end #/String

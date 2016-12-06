@@ -115,7 +115,7 @@ class Page
   def annonce_update_et_twit
     # Pour faire une annonce de nouvelle page (accueil + mail d'actu)
     data_update = {
-      message:      "Nouvelle page Narration : <strong>#{titre}</strong>",
+      message:      "Nouvelle page Narration<br><strong>#{titre}</strong>",
       annonce:      1,
       type:         'narration',
       route:        "narration/#{id}/show",

@@ -115,6 +115,7 @@ class Grep
 
   # Ligne de commande pour rechercher +searched+ dans tous
   # les textes de la collection.
+  #
   def command_line
     @command_line ||= begin
       cmd = "grep "
@@ -137,7 +138,8 @@ class Grep
       options_min << 'w' if search.whole_word?
       options_min = options_min.join("")
       cmd << "-#{options_min} "
-      cmd << "#{grep_searched.inspect} "
+      # cmd << "#{grep_searched.inspect} "
+      cmd << "\"#{grep_searched}\" "
       cmd << "\"#{fullpath_cnarration_folder}\""
       cmd
     end

@@ -4,9 +4,13 @@ class SiteHtml
   # Requérir un gem dans le dossier .gems (qui se trouve
   # hors de la racine du site, en local comme sur alwaysdata)
   def require_gem gem_name, version = nil
-    FakeGem::new(gem_name, version).require_gem
+    FakeGem.new(gem_name, version).require_gem
+    return true
   rescue Exception => e
-    error "Impossible de requérir le gem #{gem_name} (version #{version}) : #{e.message}"
+    if OFFLINE
+      error "Impossible de requérir le gem #{gem_name} (version #{version}) : #{e.message}"
+    end
+    return false
   end
 
   # Pour requérir un gem dans le dossier ./lib/deep/deeper/gem

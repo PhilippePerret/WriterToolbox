@@ -2,4 +2,4 @@
 
 # Requérir le dossier qui contient tous les modules de
 # recherche.
-Cnarration::require_module 'search'
+Cnarration.require_module 'search'
