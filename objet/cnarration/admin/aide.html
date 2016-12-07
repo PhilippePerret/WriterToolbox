@@ -337,6 +337,7 @@ sup {
 <li><a href="#portionsrelecture">Indiquer des portions en relecture</a></li>
 <li><a href="#lestextestypes">Textes types</a></li>
 <li><a href="#utilisationduneimage">Images</a></li>
+<li><a href="#evaluationdecoderuby">Évaludation de CODE RUBY</a></li>
 </ul>
 </li>
 <li><a href="#sortiedulivrenarration">Sortie des livres de la collection</a>
@@ -732,6 +733,40 @@ PRINT_CHECKUP
 </code></pre>
 
 <p>Il sera ajouter en légende.</p>
+
+<p><a name='evaluationdecoderuby'></a></p>
+
+<h2>Évaludation de CODE RUBY</h2>
+
+<p>Il faut bien comprendre que les balises <code>&lt;%= ... %&gt;</code> ne servent pas à évaluer du code ruby <em>au cours de la fabrication</em> mais que ce code est conservé tel quel dans la page dynamique. Ils servent, par exemple, typiquement, à gérer un lecteur ou une lectrice (féminisation).</p>
+
+<p>Pour évaluer du code ruby <em>au moment de la fabrication de la page</em>, il faut insérer ce code entre les balises <code>RUBY_</code> et <code>_RUBY</code>.</p>
+
+<p>Par exemple :</p>
+
+<pre><code>
+  Il y a RUBY_ (3 - 1) _RUBY façons de mettre un&lt;%= user.f_e %&gt; espace.
+</code></pre>
+
+<p>Produira dans la page dynamique ERB :</p>
+
+<pre><code>
+  Il ya 2  façons de mettre un&lt;%= user.f_e %&gt; espace.
+</code></pre>
+
+<p>Ce qui affichera, pour une lectrice :</p>
+
+<pre><code>
+  Il ya 2 façons de mettre une espace.
+</code></pre>
+
+<p>… et pour un lecteur :</p>
+
+<pre><code>
+  Il ya 2 façons de mettre un espace.
+</code></pre>
+
+<hr />
 
 <p><a name='sortiedulivrenarration'></a></p>
 

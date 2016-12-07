@@ -18,6 +18,7 @@
   * [Indiquer des portions en relecture](#portionsrelecture)
   * [Textes types](#lestextestypes)
   * [Images](#utilisationduneimage)
+  * [Évaludation de CODE RUBY](#evaluationdecoderuby)
 * [Sortie des livres de la collection](#sortiedulivrenarration)
   * [Sortie LaTex de la collection](#sortielatexcollection)
 
@@ -386,6 +387,50 @@ On peut préciser le titre alternatif par :
     IMAGE[image|Mon titre alternatif]
 
 Il sera ajouter en légende.
+
+
+<a name='evaluationdecoderuby'></a>
+
+## Évaludation de CODE RUBY
+
+Il faut bien comprendre que les balises `<%= ... %>` ne servent pas à évaluer du code ruby *au cours de la fabrication* mais que ce code est conservé tel quel dans la page dynamique. Ils servent, par exemple, typiquement, à gérer un lecteur ou une lectrice (féminisation).
+
+Pour évaluer du code ruby *au moment de la fabrication de la page*, il faut insérer ce code entre les balises `RUBY_` et `_RUBY`.
+
+Par exemple :
+
+~~~
+
+  Il y a RUBY_ (3 - 1) _RUBY façons de mettre un<%= user.f_e %> espace.
+
+~~~
+
+Produira dans la page dynamique ERB :
+
+~~~
+
+  Il ya 2  façons de mettre un<%= user.f_e %> espace.
+
+~~~
+
+Ce qui affichera, pour une lectrice :
+
+~~~
+
+  Il ya 2 façons de mettre une espace.
+
+~~~
+
+… et pour un lecteur :
+
+~~~
+
+  Il ya 2 façons de mettre un espace.
+
+~~~
+
+
+---------------------------------------------------------------------
 
 <a name='sortiedulivrenarration'></a>
 
