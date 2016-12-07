@@ -18,6 +18,9 @@ class String
     # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
 
     str = str.formate_balises_include
+    str = str.formate_balises_exemples
+    # File.open('pour_voir.txt', 'wb').write str
+    str = str.evaluate_codes_ruby
     str = str.formate_mises_en_forme_propres
     str = str.mef_document
     str = str.formate_balises_notes
@@ -89,6 +92,63 @@ class String
     return str
   end
 
+
+  # Insertion des exemples (balises EXEMPLE)
+  #
+  # Elles fonctionnent comme les inclusions, sauf que le paramètre
+  # est un chemin relatif depuis le dossier :
+  #   ./data/unan/page_cours/cnarration/exemples/_textes_/
+  # ou
+  #   ./data/unan/page_semidyn/cnarration/exemples/_textes_/
+  #
+  # La méthode est appelée par le fichier :
+  #   ./objet/cnarration/lib/module/page/build.rb
+  def formate_balises_exemples
+    str = self
+    str.gsub!(/EXEMPLE\[(.*?)\]/){
+      rel_path = $1.freeze
+      path_in_cours   = self.class.folder_textes_exemples_in_cours + rel_path
+      path_in_semidyn = self.class.folder_textes_exemples_in_semidyn + rel_path
+      temp_line = "<adminonly>#{'Éditer l’exemple ci-dessous'.in_a(href: "site/edit_text?path=%s", target: :new)}</adminonly>\n"
+
+      if path_in_cours.exist?
+        (temp_line % [CGI.escape(path_in_cours.to_s)]) +
+        path_in_cours.read
+      elsif path_in_semidyn.exist?
+        (temp_line % [CGI.escape(path_in_semidyn.to_s)]) +
+        path_in_semidyn.read
+      else
+        error "Un fichier exemple introuvable : #{rel_path}" +
+        "(recherché dans #{path_in_cours} et #{path_in_semidyn})".in_div(class: 'small')
+        "[ERREUR DE FICHIER EXEMPLE INCONNU : #{rel_path}]"
+      end#.gsub(/\r/,'')
+
+    }
+    str
+  end
+
+  class << self
+    def folder_textes_exemples_in_cours
+      @folder_textes_exemples_in_cours ||= SuperFile.new('./data/unan/pages_cours/cnarration/exemples/_textes_')
+    end
+    def folder_textes_exemples_in_semidyn
+      @folder_textes_exemples_in_semidyn ||= SuperFile.new('./data/unan/pages_semidyn/cnarration/exemples/_textes_')
+    end
+  end
+
+  # Évalue le code situé entre balise RUBY_ et _RUBY
+  #
+  # Par mesure de prudence, cette opération n'est possible qu'en
+  # offline
+  def evaluate_codes_ruby
+    OFFLINE || (return self)
+    str = self
+    str.gsub!(/RUBY_(.*?)_RUBY/m){
+      code_ruby = $1.strip
+      eval(code_ruby)
+    }
+    return str
+  end
 
   # Formatage des notes
   # Cf. le mode d'emploi (narration) pour le détail de l'utilisation.

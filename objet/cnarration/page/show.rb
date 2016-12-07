@@ -69,9 +69,12 @@ class Cnarration
         if developpement < 8 && false == full_autorisation
           message_niveau_developpement_insuffisant
         else
+          #
+          # CONSTRUCTION DE LA PAGE SI NÉCESSAIRE
+          #
           if !path_semidyn.exist? || out_of_date?
             # La page semi-dynamique n'est pas encore construite, il
-            # faut la construire. Pour ça, on utilise kramdown.
+            # faut la construire.
             Cnarration.require_module 'page'
             build
           end
@@ -88,7 +91,13 @@ class Cnarration
     # de l'user
     def page_content_by_user
       @full_page = path_semidyn.deserb
-      return full_page_with_exergue || @full_page
+      contentbyuser = full_page_with_exergue || @full_page
+      user.admin? || begin
+        # Traitement pour un user qui n'est pas un administrateur
+        # On supprime toutes les balises réservées à l'administrateur
+        contentbyuser.gsub!(/<adminonly>(.*?)<\/adminonly>/m,'')
+      end
+      return contentbyuser
     end
 
     # Si les paramètres contiennent :xmotex, c'est un mot

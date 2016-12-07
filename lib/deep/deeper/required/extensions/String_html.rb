@@ -164,6 +164,11 @@ class String
         end
         attrs[:href] = href
       end
+    elsif attrs.key?(:anchor) || attrs.key?(:ancre)
+      # C'est un lien vers une ancre, il faut ajouter la route courante
+      ancre = attrs.delete(:anchor) || attrs.delete(:ancre)
+      ancre.start_with?('#') || ancre = "##{ancre}"
+      attrs.merge!( :href => "#{site.current_route.route}#{ancre}" )
     else
       attrs.merge!( :href => 'javascript:void(0)' )
     end
