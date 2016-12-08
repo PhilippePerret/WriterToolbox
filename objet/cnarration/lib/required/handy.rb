@@ -16,3 +16,4 @@ def goto_ancre(ancre, options = nil)
   '<onlyweb> (' + options[:titre].in_a(anchor: ancre) + ')</onlyweb>'
 end
 alias :voir_ancre :goto_ancre
+alias :ancre_vers :goto_ancre

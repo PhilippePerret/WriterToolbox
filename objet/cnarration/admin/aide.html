@@ -329,6 +329,7 @@ sup {
 
 <ul>
 <li><a href="#obtenirbalisesverschoses">Obtenir des balises vers film, livre, mot, etc.</a></li>
+<li><a href="#lienversancre">Lien vers ancre dans fichier</a></li>
 <li><a href="#notesdebasdepage">Notes types notes de bas de page</a></li>
 <li><a href="#environnementsdocuments">Les environnements documents</a></li>
 <li><a href="#listedequestionspourcheckup">Liste des questions des CHECKUPS</a></li>
@@ -530,6 +531,26 @@ REF[page_id|ancre|titre]    # Avec l'ancre, le titre est OBLIGATOIRE
 
 <pre><code>balise page &lt;portion du titre&gt;
 </code></pre>
+
+<p><a name='lienversancre'></a></p>
+
+<h2>Lien vers ancre dans fichier</h2>
+
+<p>Bizarrement, les liens <code>#ancre</code> ne fonctionnent pas seuls (certainement à cause de la transformation de l'url dans le fichier htaccess). Il faut impérativement ajouter la route du fichier courant.</p>
+
+<p>Pour ce faire, on peut utiliser la méthode ruby <code>goto_ancre</code> (ou <code>ancre_vers</code> ou <code>voir_ancre</code>) en indiquant en premier paramètre l'ancre (sans dièse). En deuxième argument, on peut mettre un hash d'options avec notamment <code>:titre</code> pour définir explicitement le titre. Par défaut, ce sera un doigt et "voir".</p>
+
+<p>Dans les pages narration, il faut utiliser :</p>
+
+<pre><code>
+RUBY_ ancre_vers('mon_ancre') _RUBY
+
+RUBY_ goto_ancre('mon_ancre', {titre: "aller à l'ancre"}) _RUBY
+
+RUBY_ voir_ancre('mon_ancre') _RUBY
+</code></pre>
+
+<p>Le code produit n'est affiché que dans la version HTML de la collection, pas dans les livres à imprimer.</p>
 
 <p><a name='notesdebasdepage'></a></p>
 

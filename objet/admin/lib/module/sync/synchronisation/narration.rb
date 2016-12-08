@@ -117,6 +117,13 @@ class CNarration
   def synchronize_fichiers
     report "* Synchronisation des fichiers physiques"
     sync_files loc_cnarration_folder, dis_cnarration_folder
+    report "  - Synchronisation des pages dynamiques OK"
+    # TODO Lorsque le connection sera bonne à nouveau on pourra aussi
+    # synchroniser les fichiers bruts de travail (md)
+    nb = detruire_fichiers_backup
+    report "  - Destruction des fichiers .backup de construction OK (#{nb})"
+    sync_files loc_cnarration_raw_folder, dis_cnarration_raw_folder
+    report "  - Synchronisation des pages brutes de travail OK"
     report "= Synchronisation des fichiers physiques OK"
   end
 
@@ -124,12 +131,16 @@ class CNarration
   #   SOUS-MÉTHODES DE SYNCHRONISATION
   # ---------------------------------------------------------------------
 
-  # Actualisation d'un fichier ERB distant
-  #
-  def upload_narration_file relpath
-    loc_fullpath = "#{loc_cnarration_folder}/#{relpath}"
-    dis_fullpath = "#{dis_cnarration_folder}/#{relpath}"
-    retour = upload_file loc_fullpath, dis_fullpath
+  # # Actualisation d'un fichier ERB distant
+  # #
+  # def upload_narration_file relpath
+  #   loc_fullpath = "#{loc_cnarration_folder}/#{relpath}"
+  #   dis_fullpath = "#{dis_cnarration_folder}/#{relpath}"
+  #   retour = upload_file loc_fullpath, dis_fullpath
+  # end
+
+  def detruire_fichiers_backup
+    Dir["#{loc_cnarration_raw_folder}/**/*.backup"].each{|f|File.unlink(f)}.count
   end
 
   # Dossier narration local
@@ -140,6 +151,14 @@ class CNarration
   # Dossier narration distant
   def dis_cnarration_folder
     @dis_cnarration_folder ||= './www/data/unan/pages_semidyn/cnarration'
+  end
+
+  # Dossier local des pages non formatées
+  def loc_cnarration_raw_folder
+    @loc_cnarration_raw_folder ||= './data/unan/pages_cours/cnarration'
+  end
+  def dis_cnarration_raw_folder
+    @dis_cnarration_raw_folder ||= './www/data/unan/pages_cours/cnarration'
   end
 
   # ---------------------------------------------------------------------

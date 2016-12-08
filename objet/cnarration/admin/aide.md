@@ -10,6 +10,7 @@
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
   * [Obtenir des balises vers film, livre, mot, etc.](#obtenirbalisesverschoses)
+  * [Lien vers ancre dans fichier](#lienversancre)
   * [Notes types notes de bas de page](#notesdebasdepage)
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
@@ -196,6 +197,30 @@ Pour obtenir ces balises à insérer dans les textes, utiliser la console avec l
 @syntaxe pour une page de la collection
 
     balise page <portion du titre>
+
+
+
+<a name='lienversancre'></a>
+
+## Lien vers ancre dans fichier
+
+Bizarrement, les liens `#ancre` ne fonctionnent pas seuls (certainement à cause de la transformation de l'url dans le fichier htaccess). Il faut impérativement ajouter la route du fichier courant.
+
+Pour ce faire, on peut utiliser la méthode ruby `goto_ancre` (ou `ancre_vers` ou `voir_ancre`) en indiquant en premier paramètre l'ancre (sans dièse). En deuxième argument, on peut mettre un hash d'options avec notamment `:titre` pour définir explicitement le titre. Par défaut, ce sera un doigt et "voir".
+
+Dans les pages narration, il faut utiliser :
+
+~~~
+
+RUBY_ ancre_vers('mon_ancre') _RUBY
+
+RUBY_ goto_ancre('mon_ancre', {titre: "aller à l'ancre"}) _RUBY
+
+RUBY_ voir_ancre('mon_ancre') _RUBY
+
+~~~
+
+Le code produit n'est affiché que dans la version HTML de la collection, pas dans les livres à imprimer.
 
 
 <a name='notesdebasdepage'></a>

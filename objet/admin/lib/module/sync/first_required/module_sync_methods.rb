@@ -233,6 +233,7 @@ STDOUT.write Marshal::dump(res)
     File.exist?(locpath) || raise("Le fichier local `#{locpath}` est introuvable, impossible de l'uploader…")
     dis_folder = File.dirname(dispath)
     cmd_mdir = "ssh #{serveur_ssh} mkdir -p #{dis_folder}"
+    `#{cmd_mdir}`
     cmd_scp = "scp -pv '#{locpath}' #{serveur_ssh}:#{dispath}"
     `#{cmd_scp}`
   end
