@@ -7,6 +7,9 @@ la collection au niveau des pages principalement.
 Note : À la fin de ce fichier on étend la classe Cnarration::Page
 pour lui ajouter les méthodes statistiques (nombre de pages, etc.)
 =end
+
+Cnarration.require_module 'pages_par_niveau'
+
 class Cnarration
 class << self
 
@@ -370,57 +373,6 @@ div.bookrang span.pages {
     "#{'•' * nb} #{nb_init}"
   end
 
-  # Retourne le code pour l'affichage des pages par niveau de
-  # développement
-  def pages_par_niveau_developpement
-    pages_per_niveau.sort_by{|n, a| n}.collect do |niveau, arr|
-      ul_id = "ul_pages_niveaux_#{niveau}"
-      "Page niveau #{niveau} (#{niveau_humain(niveau)})".in_a(onclick: "$('ul##{ul_id}').toggle()").in_h4 +
-      arr.collect do |hpage|
-        (
-          div_boutons(hpage) +
-          "[#{hpage[:id]}] #{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
-        ).in_li(class:'hover')
-      end.join.in_ul(id: ul_id, display: false)
-    end.join
-  end
-
-  def div_boutons hpage
-    (
-      "text".in_a(href:"page/#{hpage[:id]}/show?in=cnarration", target:"_blank") +
-      "data".in_a(href:"page/#{hpage[:id]}/edit?in=cnarration", target:"_blank")
-    ).in_span(class:'btns fright small')
-  end
-
-  # Niveau humain de développement
-  def niveau_humain niveau
-    niveau = niveau.to_s(11)
-    niv = niveau.to_s == "a" ? "a" : niveau.to_i
-    Cnarration::NIVEAUX_DEVELOPPEMENT[niv][:hname]
-  rescue Exception => e
-    "Cnarration::NIVEAUX_DEVELOPPEMENT ne connait pas le niveau #{niveau.inspect}…"
-  end
-
-  # Titre humain du livre
-  # +livre_id+ {Fixnum} ID du livre
-  def livre_humain livre_id
-    Cnarration::LIVRES[livre_id][:hname]
-  end
-
-  # Retourne un Hash des pages classées par niveau, avec en
-  # clé le niveau (de 0 à 'a') et en valeur un Array des
-  # Hash des données de la page.
-  def pages_per_niveau
-    @pages_per_niveau ||= begin
-      h = {}
-      pages.each do |hpage|
-        niveau = hpage[:options][1].to_i(11)
-        h.merge!(niveau => Array::new) unless h.key?(niveau)
-        h[niveau] << hpage
-      end
-      h
-    end
-  end
 
   def pages_per_book
     @pages_per_book ||= begin
@@ -432,24 +384,6 @@ div.bookrang span.pages {
       end
       hbooks
     end
-  end
-
-  # Array des pages (seulement des pages) où chaque élément est
-  # un hash de toutes les données de la page.
-  def pages
-    @pages ||= Cnarration.table_pages.select(where: "options LIKE '1%'")
-  end
-
-  def chapitres
-    @chapitres ||= Cnarration.table_pages.select(where: "options LIKE '3%'")
-  end
-
-  def sous_chapitres
-    @sous_chapitres ||= Cnarration.table_pages.select(where:"options LIKE '2%'")
-  end
-
-  def textes_types
-    @textes_types ||=  Cnarration.table_pages.select(where:"options LIKE '5%'")
   end
 
 end #/<< self

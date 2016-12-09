@@ -336,6 +336,7 @@ sup {
 <li><a href="#lesexemplesdulivreexemples">Les exemples du livre exemples</a></li>
 <li><a href="#placerunereferenceaautrepage">Référence vers autre page</a></li>
 <li><a href="#portionsrelecture">Indiquer des portions en relecture</a></li>
+<li><a href="#insererunecitation">Insérer une citation dans le texte</a></li>
 <li><a href="#lestextestypes">Textes types</a></li>
 <li><a href="#utilisationduneimage">Images</a></li>
 <li><a href="#evaluationdecoderuby">Évaludation de CODE RUBY</a></li>
@@ -449,7 +450,15 @@ Optionnellement on peut ajouter :
 
 <p>Note : penser à modifier le niveau de développement du fichier pour qu'il soit indiqué en lecture pour les correcteurs.</p>
 
-<blockquote><p>Des balises HTML <code>&amp;lt;relecture&gt;</code> ne sont pas utilisées, car la portion de texte ne serait plus corrigée par le module kramdown et donc le texte ne serait plus mis en forme (kramdown penserait que c'est un texte déjà formaté).</p></blockquote>
+<blockquote><p>Des balises HTML <code>&lt;relecture&gt;</code> ne sont pas utilisées, car la portion de texte ne serait plus corrigée par le module kramdown et donc le texte ne serait plus mis en forme (kramdown penserait que c'est un texte déjà formaté).</p></blockquote>
+
+<p><a name='insererunecitation'></a></p>
+
+<h2>Insérer une citation dans le texte</h2>
+
+<pre><code>
+&gt;&gt; "&lt;la citation&gt;" Prénom NomAuteur
+</code></pre>
 
 <p><a name='lestextestypes'></a></p>
 

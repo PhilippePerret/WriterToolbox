@@ -17,6 +17,7 @@
   * [Les exemples du livre exemples](#lesexemplesdulivreexemples)
   * [Référence vers autre page](#placerunereferenceaautrepage)
   * [Indiquer des portions en relecture](#portionsrelecture)
+  * [Insérer une citation dans le texte](#insererunecitation)
   * [Textes types](#lestextestypes)
   * [Images](#utilisationduneimage)
   * [Évaludation de CODE RUBY](#evaluationdecoderuby)
@@ -121,7 +122,18 @@ Lorsqu'une page a été entièrement corrigée et que du texte est ajouté ou mo
 
 Note : penser à modifier le niveau de développement du fichier pour qu'il soit indiqué en lecture pour les correcteurs.
 
-> Des balises HTML `&lt;relecture>` ne sont pas utilisées, car la portion de texte ne serait plus corrigée par le module kramdown et donc le texte ne serait plus mis en forme (kramdown penserait que c'est un texte déjà formaté).
+> Des balises HTML `<relecture>` ne sont pas utilisées, car la portion de texte ne serait plus corrigée par le module kramdown et donc le texte ne serait plus mis en forme (kramdown penserait que c'est un texte déjà formaté).
+
+<a name='insererunecitation'></a>
+
+## Insérer une citation dans le texte
+
+~~~
+
+>> "<la citation>" Prénom NomAuteur
+
+~~~
+
 
 <a name='lestextestypes'></a>
 

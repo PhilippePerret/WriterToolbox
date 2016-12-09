@@ -6,6 +6,8 @@
 #
 raise_unless_admin
 
+Cnarration.require_module 'smart_tdm'
+
 param(:livre_id) || param(livre_id: 1)
 
 require './objet/cnarration/lib/required/constants.rb'
