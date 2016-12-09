@@ -3,6 +3,7 @@ def boite_interaction
   menu_police         +
   menu_font_size      +
   menu_line_height    +
+  menu_themes         +
   champs_scenodico    +
   champs_filmodico    +
   champs_options      +
@@ -25,18 +26,25 @@ def menu_line_height
   {
     '1'   => 'Serré',
     '1.3' => 'Normal',
-    '1.7' => 'Écarté',
+    '1.7' => 'Écarté', # si changé, il faut modifier ready dans interaction.js
     '2.3' => 'Très écarté'
   }.collect{|k,v|[k,v]}.in_select(id:'line_height', name:'line_height',
-    onchange: "$.proxy(EditText,'onchange_lineheight',this.value)()",
-    selected: '1.2'
-  )
+    onchange: "$.proxy(EditText,'onchange_lineheight',this.value)()")
 end
 def menu_font_size
   ['11','12', '13','14','14.5','15','15.5','16','16.5','17','17.5','18','18.5','19','20','21'
   ].collect{|k|[k,k]}.in_select(id:'font_size', name: 'font_size',
-  onchange: "$.proxy(EditText,'onchange_fontsize',this.value)()",
-  selected: '17')
+  onchange: "$.proxy(EditText,'onchange_fontsize',this.value)()")
+end
+
+def menu_themes
+  [
+    ['normal',        'Thème Normal'],
+    ['inverse',       'Thème Inverse'],
+    ['inverse_blue',  'Blue thème'],
+    ['blue_print',    'Thème blue-print']
+  ].in_select(id: 'theme', name:'theme',
+  onchange: "$.proxy(EditText,'onchange_theme',this.value)()")
 end
 
 # Champ pour chercher un mot du scénodico

@@ -41,9 +41,16 @@ $(document).ready(function(){
   // champ de texte principal contenant le texte de la page
   window.onfocus = function(){EditText.textarea[0].focus()}
 
-  // Si la case à cocher Narration est cochée (parce qu'on vient de la 
+  // Si la case à cocher Narration est cochée (parce qu'on vient de la
   // collect) alors il faut charger les snippets narration.
   if($('input#snippets_narration')[0].checked){
     EditText.oncheck_snippets_narration(true);
   }
+
+  // // Réglages par défaut de l'interface
+  EditText.onchange_police('serif');
+  EditText.onchange_lineheight('1.7');
+  EditText.onchange_fontsize('18.5');
+  EditText.onchange_theme('normal');
+
 })

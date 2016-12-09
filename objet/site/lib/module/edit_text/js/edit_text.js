@@ -16,13 +16,48 @@ $.extend(window.EditText,{
   },
 
   onchange_police:function(police){
+    $('select#police').val(police);
     this.textarea.css('font-family', police);
   },
   onchange_fontsize:function(size){
+    $('select#font_size').val(size);
     this.textarea.css('font-size', size+'pt')
   },
   onchange_lineheight:function(height){
+    $('select#line_height').val(height);
     this.textarea.css('line-height', height+'em')
+  },
+
+  THEMES:{
+    normal:   {bg_color: 'FFF', font_color: '000', spacing: '0px'},
+    inverse:  {bg_color: '000', font_color: 'FFF', spacing: '1.1px'},
+    blue_print: {bg_color: '00008a', font_color: 'FFF', spacing: '1.1px'},
+    inverse_blue: {bg_color: 'FFF', font_color: '00008a', spacing: '0px'}
+  },
+  onchange_theme:function(theme){
+    $('select#theme').val(theme);
+    var dtheme = this.THEMES[theme];
+    var style = this.textarea.attr('style') || '';
+    console.log("styles init = "+style);
+    var styles = style.split(';');
+    var styles_epured = [];
+    for(var i in styles){
+      var dstyle = styles[i].split(':');
+      if(!dstyle[1]){continue}
+      var style_prop  = dstyle[0].trim();
+      var style_val   = dstyle[1].trim();
+      if(style_prop == 'background-color'){continue}
+      else if(style_prop == 'color'){continue}
+      else if(style_prop == 'letter-spacing'){continue}
+      styles_epured.push(style_prop + ':' + style_val);
+    }
+    styles_epured.push('background-color:#' + dtheme.bg_color+'!important');
+    styles_epured.push('color:#'+dtheme.font_color+'!important');
+    styles_epured.push('letter-spacing:'+dtheme.spacing+'!important');
+
+    styles_epured = styles_epured.join(';');
+    console.log("styles_epured = "+styles_epured);
+    this.textarea.attr('style', styles_epured);
   },
 
   // Pour chercher un mot
@@ -156,3 +191,12 @@ window.text_modified = false ;
 window.set_modified = function(value){
   window.text_modified = !!value;
 }
+
+
+$(document).ready(function(){
+
+  // // Réglages par défaut de l'interface
+  // EditText.onchange_lineheight('1.7');
+  // EditText.onchange_fontsize('17');
+
+})
