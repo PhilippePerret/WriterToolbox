@@ -112,6 +112,12 @@ class << self
         arr_book.each do |hpage|
           @rapport_string << "  - #{dbook[:folder]}/#{hpage[:handler]}"
           ipage = Cnarration::Page.get(hpage[:id])
+
+          # ==================================
+          # C'est ici qu'on prend le nombre de
+          # pages moyen du fichier.
+          # Cf. aussi plus bas.
+          # ==================================
           nb_pgs_moy = ipage.nombre_pages_1750
 
           # On mémorise, par livre et par niveau de développement,
@@ -134,8 +140,17 @@ class << self
             # C'est une page qui doit être affichée dans la
             # version papier de la collection.
             nombre_fichiers_papier += 1
+
+
+            # ===========================
+            # C'est ici qu'on prend le
+            # nombre de page mini et maxi
+            # Cf. aussi plus haut.
+            # ===========================
             max = ipage.nombre_pages_1500
             min = ipage.nombre_pages_2000
+
+
             moy = nb_pgs_moy
             nombre_pages_max      += max
             nombre_pages_min      += min
@@ -439,7 +454,15 @@ div.bookrang span.pages {
 
 end #/<< self
 
+
 class Page
+
+  # ---------------------------------------------------------------------
+  #
+  #   Méthodes permettant de calculer le nombre de pages/signes, etc.
+  #   de chaque fichier de la collection Narration.
+  #
+  # ---------------------------------------------------------------------
 
   # {Float} Nombre de pages pour le fichier, à la virgule près
   # pour un format SRPS dense
@@ -461,9 +484,108 @@ class Page
 
   # Pour le calcul de pages suivant le format
   def nombre_pages signes_per_page = 1500
-    @content_stripped ||= content.strip_tags
+    @content_stripped ||= begin
+      # content.strip_tags
+      cont_stripped = contenu_deserbed
+      if id == 629 # fiches structure (avec des images)
+        debug "Page #629\n"+
+              "---------\n"+
+              "Contenu initial : #{cont_stripped.gsub(/</,'&lt;')}"
+      end
+
+      # TRAITEMENT DES IMAGES
+      # ---------------------
+      # Si la page contient des images, il faut estimer la place que
+      # ces images occuperait dans la page.
+      @nombre_pages_pour_images = 0.0
+      if cont_stripped.match(/<img/)
+        debug "LA PAGE ##{id} CONTIENT DES IMAGES"
+        cont_stripped.scan(/<img(.*?)src=\"(.*?)\"(.*?)\/>/).to_a.each do |arr_found|
+          rienavant, img_relpath, rienapres = arr_found
+          @nombre_pages_pour_images += nombre_pages_pour_image(img_relpath)
+        end
+      end
+
+
+      cont_stripped = cont_stripped.strip_tags
+      cont_stripped = cont_stripped.gsub(/\r/,'').gsub(/\n\n\n+/, "\n\n")
+      # if id == 635 # exemples de fondamentales
+      #   debug "Page ##{id}\n"+
+      #         "Longueur strippé : #{cont_stripped.length}\n"+
+      #         "Contenu strippé :\n#{cont_stripped.gsub(/</,'&lt;')}"
+      # end
+      if id == 629 # fiches structure (avec des images)
+        debug "Longueur strippé : #{cont_stripped.length}\n"+
+              "Contenu strippé :\n#{cont_stripped.gsub(/</,'&lt;')}"
+      end
+      cont_stripped
+    end
+
     @content_length   ||= @content_stripped.length.to_f
-    @content_length.to_f / signes_per_page
+    (@content_length.to_f / signes_per_page) + @nombre_pages_pour_images
+  end
+
+  # Retourne le nombre de pages occupées par l'image
+  # de chemin relatif +relpath+.
+  # Ce nombre est un flottant pour pouvoir bien sûr tenir compte du
+  # fait qu'une image n'occupe qu'une partie de la page.
+  #
+  # En cas d'erreur, la méthode retourne 0
+  #
+  # Pour les images en dessous de 30px on retourne aussi 0.
+  #
+  def nombre_pages_pour_image relpath
+    # debug "- IMG #{relpath}"
+
+    # Récupération de la taille de l'image (quelconque) avec
+    # la commande sips.
+    cmd_img_size = "sips -g pixelWidth -g pixelHeight \"#{relpath}\""
+    res = `#{cmd_img_size}`
+    rien, width_str, height_str = res.strip.split("\n")
+    width_str = width_str.split(':').last.strip
+    height_str = height_str.split(':').last.strip
+
+    width   = width_str.to_i
+    height  = height_str.to_i
+
+    # debug "  Dimensions de l'image : #{width} x #{height}"
+
+    # Calcul de la hauteur relative
+    # -----------------------------
+    # On va chercher la hauteur relative (rel_h) en fonction de la
+    # largeur de l'image sur la base de :
+    # Taille en pixel d'une page A5 avec marges de 20mm : 308 x 482
+    #
+    rel_h =
+      if width > 308
+        # x * width = 308 => x = 308 / width
+        # => rel_h = height * x
+        # => rel_h = height * (308 / width)
+        height * (308.0 / width)
+      else
+        height
+      end
+
+    # debug "Hauteur relative : #{rel_h}"
+
+    # On ne traite qu'une hauteur minimum, sinon on ne compte
+    # rien comme page ajoutée.
+    rel_h > 30 || ( return 0 )
+
+    # Calcul de la proportion de page occupée
+    # ---------------------------------------
+    # Une page fait 482 pixels efficace en hauteur. On renvoie la proportion
+    # que ça représente pour l'image courante.
+    prop = rel_h.to_f / 482
+
+    # debug "  Proportion de page occupée par l'image : #{prop}"
+
+    return prop
+
+  rescue Exception => e
+    debug e
+    error "Une erreur est survenue en calculant la proportion de page occupée par l'image #{relpath} : #{e.message}"
+    return 0.0
   end
 
   # Nombre de signes dans le fichier semi-dynamique à
@@ -471,13 +593,30 @@ class Page
   #
   # Si le fichier semi-dynamique n'existe pas encore, on
   # le construit.
+  #
+  # On deserbe le fichier semi-dynamique avant de compter son
+  # nombre de signes.
+  #
   def nombre_signes
-    @nombre_signes ||= begin
-      unless path_semidyn.exist?
+    @nombre_signes ||= contenu_deserbed.nombre_signes
+  end
+
+  # Le contenu du fichier, déserbé
+  #
+  # Le fichier est construit s'il n'existe pas
+  #
+  def contenu_deserbed
+    @contenu_deserbed ||= begin
+      path_semidyn.exist? || begin
         Cnarration.require_module 'page'
         build(quiet: true)
       end
-      path_semidyn.read.nombre_signes
+      # if id == 635
+      #   debug "Page #635"
+      #   debug "path_semidyn.read  =\n#{path_semidyn.read.gsub(/</,'&lt;')}"
+      #   debug "path_semidyn.deserb =\n#{path_semidyn.deserb.gsub(/</,'&lt;')}"
+      # end
+      path_semidyn.deserb
     end
   end
 
