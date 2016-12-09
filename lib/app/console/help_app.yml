@@ -115,6 +115,10 @@ narration:
     description: |
       Rejoint la page affichant les livres de la collection narration.
   -
+    command:        dashboard narration
+    description: |
+      Permet de rejoindre le tableau de bord de la collection Narration.
+  -
     command:        smart tdms narration
     description: |
       Affiche les tables des matières en version intelligente.

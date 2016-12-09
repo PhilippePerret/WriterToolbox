@@ -44,7 +44,9 @@ class Console
       return ''
 
       # --- NARRATION ---
-
+    when /^(dashboard|tableau de bord) narration$/
+      redirect_to 'admin/dashboard?in=cnarration'
+      return ''
     when /^(livres|books) narration$/
       redirect_to 'livre/list?in=cnarration'
       return ''
