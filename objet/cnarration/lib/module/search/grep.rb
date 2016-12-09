@@ -147,7 +147,7 @@ class Grep
 
   # Raccourci : l'expression à trouver
   def searched
-    @searched ||= search.searched
+    @searched ||= search.searched.gsub(/'/,'’')
   end
 
   # Expression à mettre dans la commande grep pour rechercher dans

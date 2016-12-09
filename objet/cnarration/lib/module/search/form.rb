@@ -19,7 +19,7 @@ class Search
         form.field_checkbox("Chercher dans les textes", :search_in_texte) +
         form.field_checkbox("Recherche par expression régulière", :regular_search) +
         form.field_checkbox("Rechercher l'expression exacte (min/maj)", :search_exact) +
-        form.field_checkbox("Rechercher les mots entiers", :search_whole_word) +
+        form.field_checkbox("Rechercher le mot entier", :search_whole_word) +
         form.submit_button("Chercher")
       ).in_form(id:'search_form', action: "cnarration/search", class:'dim3070', display: current_search.nil?)
     end

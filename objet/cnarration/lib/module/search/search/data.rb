@@ -15,7 +15,7 @@ class Search
   # le texte des titres ou des textes (cf. class Found).
   def reg_searched
     @reg_searched ||= begin
-      str = regular? ? searched : Regexp::escape(searched)
+      str = (regular? ? searched : Regexp.escape(searched)).gsub(/'/,'[\'’]')
       exact? ? (whole_word? ? /\b#{str}\b/ : /#{str}/) : (whole_word? ? /\b#{str}\b/i : /#{str}/i)
     end
   end
@@ -28,7 +28,7 @@ class Search
     @search_in_textes
   end
   alias :in_pages? :in_textes?
-  
+
   def regular?
     @regular_search = ( data[:regular_search] == 'on' || whole_word? ) if @regular_search === nil
     @regular_search

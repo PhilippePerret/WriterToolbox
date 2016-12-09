@@ -6,7 +6,7 @@ class Search
   #
   # Code complet affiché en guise de résultat de recherche
   def output
-    o = String::new
+    o = String.new
     o << "<hr>"
     o << result[:summary]
     o << div_informations_numeraires
@@ -23,7 +23,7 @@ class Search
   # nombre de résultats trouvés, la durée de la recherche,
   # etc.
   def div_informations_numeraires
-    div = Array::new
+    div = Array.new
     # Nombres d'occurrencces
     nbf = result[:nombre_founds]
     s   = nbf > 1 ? 's' : ''
