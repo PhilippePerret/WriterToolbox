@@ -35,6 +35,7 @@ class Filmodico
       report '  = Synchronisation du FILMODICO OPÉRÉE AVEC SUCCÈS'
     end
   rescue Exception => e
+    debug e
     error e.message
     false
   else
@@ -54,6 +55,7 @@ class Filmodico
     # fiche qui a été supprimée (suite à un problème, par exemple, on
     # peut détruire la fiche online)
     loc_rows.each do |fid, loc_data|
+      @fid = fid # pour le débug en cas d'erreur
       dis_data = dis_rows[fid]
       if dis_data.nil?
         # => Il faut la créer
@@ -67,6 +69,9 @@ class Filmodico
 
     # Les cas les plus fréquents : nouvelle fiche en online
     dis_rows.each do |fid, dis_data|
+
+      @fid = fid # pour le débug en cas d'erreur
+
       loc_data = loc_rows[fid]
 
       if loc_data.nil?
@@ -92,6 +97,10 @@ class Filmodico
       end
     end
     report "  = Synchronisation des fiches OK"
+  rescue Exception => e
+    debug "### ERREUR AVEC DONNÉE FILMODICO ##{@fid}"
+    debug e
+    report "  ### Erreur au cours de la synchronisation des films avec la donnée ##{@fid} : #{e.message} (voir le détail dans le débug)".in_span(class: 'warning')
   end
 
   # Synchronisation des affiches
@@ -101,6 +110,9 @@ class Filmodico
     dis_affiches_folder = './www/view/img/affiches'
     sync_files loc_affiches_folder, dis_affiches_folder
     report "  = Synchronisation des affiches OK"
+  rescue Exception => e
+    debug e
+    report "  # Erreur au cours de la synchronisation des affiches : #{e.message} (voir le débug pour le détail)".in_span(class: 'warning')
   end
 
   # Il faut également synchroniser la table des film
@@ -110,6 +122,8 @@ class Filmodico
     self.table_name = "films_analyses"
 
     dis_rows.each do |fid, dis_fdata|
+
+      @fid = fid # pour le débug en cas d'erreur
 
       loc_fdata = loc_rows[fid]
 
@@ -156,6 +170,10 @@ class Filmodico
       end
     end
     report "  * Table 'films_analyses' synchronisée"
+  rescue Exception => e
+    debug "### ERREUR AVEC DONNÉE FILMS ANALYSES ##{@fid}"
+    debug e
+    report "  # Erreur au cours de la synchronisation des films analyse avec la donnée ID ##{@fid} : #{e.message} (voir le débug pour le détail).".in_span(class: 'warning')
   end
 
   def db_suffix ; @db_suffix ||= :biblio        end
