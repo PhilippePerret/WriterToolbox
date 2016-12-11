@@ -33,6 +33,7 @@ class EditFile
 
   # Sauvegarde le nouveau texte
   def save
+    raise_unless_admin
     backup
     taille_init = content.length
     spath.write new_content
