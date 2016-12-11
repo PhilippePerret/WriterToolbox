@@ -67,6 +67,7 @@ class Cnarration
   NIVEAUX_DEVELOPPEMENT = {
     0 => {hname:"Niveau indéfini"},
     1 => {hname:"Création de la page"},
+    2 => {hname:"Amorce de la page"},
     3 => {hname:"Esquisse"},
     4 => {hname:"Développée"},
     5 => {hname:"Presque achevée"},

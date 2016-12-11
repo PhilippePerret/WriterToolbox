@@ -39,7 +39,20 @@ class << self
     coef_max_fichier = 80.0 / max_fichiers
 
     # On construit l'affichage
-    @pages_par_niveau_sorted.collect do |niveau, arr|
+    affichage = String.new
+    iniveau = -1
+    @pages_par_niveau_sorted.each do |niveau, arr|
+
+      iniveau += 1
+
+      # debug "iniveau = #{iniveau} / niveau = #{niveau}::#{niveau.class}"
+      # Un niveau sans page
+      while iniveau != niveau
+        affichage << "#{'0'.in_span(class: 'fright small')}Niveau #{iniveau} : #{niveau_humain(iniveau)}".
+          in_h4(style: 'color:#999;font-style:italic;font-weight:normal;')
+        iniveau += 1
+        # debug "iniveau = #{iniveau} / niveau = #{niveau}::#{niveau.class}"
+      end
 
       data_niveau = data_per_niveau[niveau]
       nombre_fichiers = data_niveau[:nombre]
@@ -48,14 +61,17 @@ class << self
 
       curseur = ("#{nombre_fichiers} " + '•'*nombre_points).in_span(class: 'fright small')
       ul_id = "ul_pages_niveaux_#{niveau}"
-      "#{curseur}Niveau #{niveau} : #{niveau_humain(niveau)}".in_a(onclick: "$('ul##{ul_id}').toggle()").in_h4 +
-      arr.collect do |hpage|
-        (
-          div_boutons(hpage) +
-          "[#{hpage[:id]}] #{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
-        ).in_li(class:'hover')
-      end.join.in_ul(id: ul_id, display: false)
-    end.join
+
+      affichage +=
+        "#{curseur}Niveau #{niveau} : #{niveau_humain(niveau)}".in_a(onclick: "$('ul##{ul_id}').toggle()").in_h4 +
+        arr.collect do |hpage|
+          (
+            div_boutons(hpage) +
+            "[#{hpage[:id]}] #{hpage[:titre]} (#{livre_humain hpage[:livre_id]})"
+          ).in_li(class:'hover')
+        end.join.in_ul(id: ul_id, display: false)
+    end
+    return affichage
   end
 
   def div_boutons hpage
@@ -68,9 +84,10 @@ class << self
   # Niveau humain de développement
   def niveau_humain niveau
     niveau = niveau.to_s(11)
-    niv = niveau.to_s == "a" ? "a" : niveau.to_i
+    niv = niveau.to_s == 'a' ? 'a' : niveau.to_i
     Cnarration::NIVEAUX_DEVELOPPEMENT[niv][:hname]
   rescue Exception => e
+    debug e
     "Cnarration::NIVEAUX_DEVELOPPEMENT ne connait pas le niveau #{niveau.inspect}…"
   end
 
