@@ -166,6 +166,11 @@ class String
     self =~ /\{\{([0-9]+)\}\}/ || (return self)
 
     str = self
+
+    str.gsub!(/\{\{([0-9]+)\}\}\{\{([0-9]+)\}\}/){
+      "{{#{$1}}}<sup class='virgule'>,</sup>{{#{$2}}}"
+    }
+
     # Pour conserver la correspondance entre l'ID de note attribué au
     # cours de la rédaction et l'INDEX attribué ici pour avoir un ordre
     # incrémentiel (alors que les ID ne se trouvent pas forcément dans
