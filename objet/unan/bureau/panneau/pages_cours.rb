@@ -1,6 +1,6 @@
 # encoding: UTF-8
 raise_unless user.unanunscript?
-Unan::require_module 'page_cours'
+Unan.require_module 'page_cours'
 
 class Unan
 class Bureau

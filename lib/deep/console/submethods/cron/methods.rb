@@ -20,8 +20,8 @@ class Console
     # On récupère le fichier
     path = File.expand_path("./CRON2/cron_error.log")
     File.unlink path if File.exist? path
-    `scp #{serveur_ssh}:./data/CRON2/cron_error.log '#{path}'`
-    cmd = "ssh #{serveur_ssh} 'rm ./data/CRON2/cron_error.log 2>&1'"
+    `scp #{serveur_ssh}:./www/CRON2/cron_error.log '#{path}'`
+    cmd = "ssh #{serveur_ssh} 'rm ./www/CRON2/cron_error.log 2>&1'"
     return `#{cmd}`
   end
 

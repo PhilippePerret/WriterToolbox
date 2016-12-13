@@ -76,7 +76,9 @@ class AbsWork
   end
 
   def data_type_w
-    @data_type_w ||= TYPES[type_w]
+    @data_type_w ||= begin
+      TYPES[type_w]
+    end
   end
 
   # Le type de liste, :pages, :quiz, etc.

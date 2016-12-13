@@ -139,7 +139,7 @@ class User
   # ce module consacré à la création.
   # Cela renvoie l'ID, en tout cas si tout a bien fonctionné.
   def save_all_data
-    @id = User::table_users.insert(data_to_save)
+    @id = User.table_users.insert(data_to_save)
   end
 
   # Les données inégrales à sauver

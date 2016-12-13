@@ -17,7 +17,7 @@
 <h4>Projet</h4>
 
 <%# RYTHME DU PROGRAMME %>
-  <%= form.field_select("Rythme", 'pref_rythme', user.preference(:rythme), { values:Unan::Program::RYTHMES }) %>
+  <%= form.field_select("Rythme", 'pref_rythme', user.program.rythme, { values:Unan::Program::RYTHMES }) %>
   <%= form.field_description("Le rythme déterminera la durée totale de votre apprentissage et de votre développement. Vous ne devriez avoir à modifier cette valeur que si vous vous apercevez que la démarche générale est trop rapide pour vous ou trop lente.") %>
 <%= bureau.submit_button %>
 <hr />

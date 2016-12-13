@@ -100,14 +100,24 @@ class AbsWork
     # ---------------------------------------------------------------------
     #   Données du abs_work (raccourcis)
     # ---------------------------------------------------------------------
-    def duree       ; @duree      ||= abs_work.duree end
+    def duree
+      @duree      ||= begin
+        if abs_work.nil?
+          error "Le travail absolu est nil…"
+          1
+        else
+          debug "abs_work : #{abs_work.id}"
+          abs_work.duree || 1
+        end
+      end
+    end
     def coef_duree  ; @coef_duree ||= auteur.program.coefficient_duree end
 
     # ---------------------------------------------------------------------
     #   Données volatiles
     # ---------------------------------------------------------------------
     def auteur
-      @auteur ||= User.get(user_id)
+      @auteur ||= User.new(user_id)
     end
     # Program de ce travail relatif
     def program
@@ -206,11 +216,11 @@ class AbsWork
     end
 
     # {Fixnum} Nombre de jours de dépassement ou
-    # NIL s'il n'y a pas de dépassement
+    # 0 ou nombre négatif s'il n'y a pas de dépassement
     def depassement
       @depassement ||= begin
         if work_relatif?
-          diff_jours - duree
+          (diff_jours - duree) rescue 0
         else
           '- Non défini -'
         end

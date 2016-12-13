@@ -58,7 +58,14 @@ class Bureau
     chose = dname[:sing].downcase
     arr = auteur.works_undone(type)
     if arr.count > 0
-      arr.collect{ |awork| awork.as_card(auteur: bureau.auteur) }.join('')
+      debug "awork count : #{arr.count}"
+      arr.collect do |awork|
+        awork.id > 0 || begin
+          debug "Un awork d'ID 0 de classe #{awork.class} pour #{user.id} (#{user.pseudo})"
+          next nil
+        end
+        awork.as_card(auteur: bureau.auteur)
+      end.compact.join('')
     else
       "<p class='small discret'>Vous n’avez aucun#{e} #{chose} courant#{e}.</p>"
     end.in_section(id: 'current_works')
@@ -79,7 +86,13 @@ class Bureau
     '<hr />' +
     if arr.count > 0
       "<h4>#{dname[:plur]} récemment #{fini}s</h4>" +
-      arr.collect{ |awork| awork.as_card_relative(auteur: bureau.auteur, as_recent: true) }.join('')
+      arr.collect do |awork|
+        awork.id > 0 || begin
+          debug "Un awork d'ID 0 de classe #{awork.class} pour #{user.id} (#{user.pseudo})"
+          next nil
+        end
+        awork.as_card_relative(auteur: bureau.auteur, as_recent: true)
+      end.compact.join('')
     else
       "<p class='small discret'>Aucun#{e} #{chose} récent#{e} n'a été #{fini}.</p>"
     end.in_section(id: 'completed_works')
