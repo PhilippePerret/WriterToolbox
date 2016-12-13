@@ -79,7 +79,7 @@ $.extend(window.EditText,{
         // Un seul résultat
         // ----------------
         mot   = rajax.mots[0];
-        lien  = "MOT["+mot.id+"|"+mot.mot.lowerCase()+"]";
+        lien  = "MOT["+mot.id+"|"+mot.mot.toLowerCase()+"]";
         $('input#scenodico').val(lien).focus();
       }else{
         // Plusieurs résultats
