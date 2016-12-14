@@ -1,0 +1,14 @@
+<%= Cnarration.titre_h1('Dernières pages')%>
+<div class="small italic discret">
+  Cette page présente la liste des dernières pages de la collection Narration achevées.
+</div>
+<% if user.identified? %>
+  <div class="small italic discret">
+    Puisque vous êtes identifié<%= user.f_e%>, cette page met en exergue les pages achevées depuis votre dernière connexion.
+  </div>
+<% else %>
+  <div class="small italic">
+    Si vous étiez identifié(e) vous pourriez voir la liste précise des nouvelles pages depuis votre dernière connexion.
+  </div>
+<% end %>
+<%= Cnarration.liste_des_dernieres_pages %>

@@ -3,10 +3,11 @@ def schema_table_narration
   <<-MYSQL
 CREATE TABLE narration
   (
-    id          INTEGER     AUTO_INCREMENT,
-    livre_id    INTEGER(2),
-    created_at  INTEGER(10) NOT NULL,
-    updated_at  INTEGER(10) NOT NULL,
+    id            INTEGER     AUTO_INCREMENT,
+    livre_id      INTEGER(2),
+    created_at    INTEGER(10) NOT NULL,
+    updated_at    INTEGER(10) NOT NULL,
+    completed_at  INTEGER(10),
 
     # HANDLER
     # -------
