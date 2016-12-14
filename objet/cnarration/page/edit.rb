@@ -53,10 +53,22 @@ class Page
   #
   # RETURN L'instance de la page (self)
   def save
-    @id = self.class::page_id
+    @id = self.class.page_id
     @is_new_page = (@id == nil)
 
     check_param_or_raise || return
+
+
+    # LES DONNÉES À SAUVEGARDER
+    # On les calcule ici pour pouvoir les ajuster ci-dessous
+    data2save
+
+    # SI C'EST UNE PAGE MARQUÉE ACHEVÉE et qu'elle n'a pas encore
+    # été marquée completed_at, on définit sa date d'achèvement
+    if page? && nivdev == 'a' && completed_at.nil?
+      @data2save.merge!(completed_at: Time.now.to_i)
+      flash "Page passée à achevée. Utiliser la section “Dernières pages” pour faire des annonces."
+    end
 
     # ENREGISTREMENT DANS LA TABLE
     if new?

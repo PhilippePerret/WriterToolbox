@@ -62,15 +62,10 @@ class << self
         end
       else
         'En vous inscrivant, vous pourrez connaitre vos nouvelles pages non lues.'
-      end.in_div(class: 'small italic cadre')
+      end.in_div(class: 'small italic cadre', style:'margin-bottom:2em')
 
     les_last_pages.each do |hpage|
 
-      # Si on atteint la dernière page non lue
-      if required_delimitation_last_connexion && hpage[:completed_at] > last_date_connexion
-        required_delimitation_last_connexion = false
-        liste_last_pages << '-'*20 + 'Dernière connexion' + '-'*20
-      end
 
       ipage = Cnarration::Page.new(hpage[:id])
 
@@ -78,8 +73,15 @@ class << self
         ipage.span_date_completed +
         ipage.liens_edition_if_admin +
         ipage.titre.in_a(href: "page/#{ipage.id}/show?in=cnarration") +
-        " (#{ipage.livre.titre})".in_span(class: 'small')
+        ipage.titre_livre_in_span
       ).in_li(class: 'lipage')
+
+      # Si on atteint la dernière page non lue
+      if required_delimitation_last_connexion && hpage[:completed_at] > last_date_connexion
+        required_delimitation_last_connexion = false
+        liste_last_pages << ('-'*20 + ' Dernière connexion ' + '-'*20).in_span(class: 'red small italic')
+      end
+
     end
 
     liste_last_pages.join('').in_ul(id: 'last_pages', style: 'list-style:none;')
@@ -91,6 +93,10 @@ end #/<< self
   class Page
     def span_date_completed
       (completed_at.as_human_date(false, false)).in_span(class: 'date')
+    end
+    def titre_livre_in_span
+      lien_livre = livre.titre.in_a(href: "livre/#{livre_id}/tdm?in=cnarration")
+      " (#{lien_livre})".in_span(class: 'small')
     end
   end
 end #/ Cnarration
