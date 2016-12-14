@@ -18,7 +18,7 @@ class Livre
     end
 
     def sous_titre_livre sous_titre
-      return "" if sous_titre.nil?
+      return '' if sous_titre.nil?
       sous_titre
     end
 

@@ -20,16 +20,16 @@ class Page
     OFFLINE && user.admin? || (return '')
     (
       lien_edit_text + lien_edit_data + lien_give_code
-    ).in_div(class:'btns fright small')
+    ).in_div(class:'btns fright small btns_admin')
   end
 
   def lien_edit_text
     page? || (return '')
-    '[Edit text]'.in_a(href: "page/#{id}/edit_text?in=cnarration", target: :new)
+    '[Texte]'.in_a(href: "page/#{id}/edit_text?in=cnarration", target: :new)
   end
 
   def lien_edit_data
-    "[Edit data]".in_a(href:"page/#{id}/edit?in=cnarration", target: :new)
+    "[Data]".in_a(href:"page/#{id}/edit?in=cnarration", target: :new)
   end
 
   def lien_give_code

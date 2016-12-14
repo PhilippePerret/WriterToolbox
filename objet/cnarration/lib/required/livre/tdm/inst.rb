@@ -64,7 +64,7 @@ class Tdm
         colonnes: [:titre, :handler, :options]
       }
       hpages = {}
-      Cnarration::table_pages.select(drequest).each do |dpage|
+      Cnarration.table_pages.select(drequest).each do |dpage|
         hpages.merge! dpage[:id] => dpage
       end
       hpages

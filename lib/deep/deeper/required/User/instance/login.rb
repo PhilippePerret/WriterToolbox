@@ -34,8 +34,9 @@ class User
   def proceed_login
     app.benchmark('-> User#proceed_login')
     app.session['user_id'] = id
+    app.session['date_last_connexion'] = last_connexion
     # On met l'utilisateur en utilisateur courant
-    User::current= self
+    User.current= self
     # reset_user_current
     # Variable session permettant de savoir combien de pages a
     # déjà visité l'utilisateur (pour baisser l'opacité des
@@ -94,6 +95,7 @@ class User
     app.session['pseudo'] = pseudo # Pour s'en souvenir dans le message
     User.current= nil
     app.session['user_id'] = nil
+    app.session['date_last_connexion'] = nil
     set(session_id: nil)
     # Dans le cas où ce serait l'administrateur qui visite en ayant
     # pris l'identité d'un icarien.
