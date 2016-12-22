@@ -313,7 +313,22 @@ class DUser
       end
 
       # Calcul du début du prochain jour
-      (pday_start + 1.day.to_f * (5.0 / rythme)).to_i
+      @first_try = true
+      begin
+        (pday_start + 1.day.to_f * (5.0 / rythme)).to_i
+      rescue Exception => e
+        debug e
+        unless pday_start.instance_of?(Fixnum)
+          raise "pday_start devrait être un nombre, c'est un #{pday_start.class}"
+        end
+        unless rythme.instance_of?(Fixnum)
+          superlog "# ERREUR avec rythme pour #{pseudo}. Égal à #{rythme.inspect}::#{rythme.class}. Je le mets à 5 "
+          rythme = 5
+        end
+        @first_try || raise("# Impossible de calculer le départ du prochain jour.")
+        @first_try = false
+        retry
+      end
     end
   end
   # ---------------------------------------------------------------------

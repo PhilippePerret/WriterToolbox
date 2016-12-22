@@ -34,8 +34,6 @@ class << self
         nil
       end
 
-    debug "last_date_connexion = #{last_date_connexion}::#{last_date_connexion.class}  : #{last_date_connexion.as_human_date(true, true)}"
-    debug "Maintenant          = #{Time.now.to_i}"
     clause = {
       where: 'completed_at IS NOT NULL',
       order: 'completed_at DESC',
@@ -55,10 +53,14 @@ class << self
 
     liste_last_pages <<
       if user.identified?
-        if first_date_last_page < last_date_connexion
-          'Aucune page n’a été terminée depuis votre dernière connexion.'
+        if last_date_connexion.nil?
+          'Lorsque vous vous reconnecterez, vous verrez les nouvelles pages.'
         else
-          'Les nouvelles pages non lues se trouvent au-dessus de la marque de votre dernière connexion.'
+          if first_date_last_page < last_date_connexion
+            'Aucune page n’a été terminée depuis votre dernière connexion.'
+          else
+            'Les nouvelles pages non lues se trouvent au-dessus de la marque de votre dernière connexion.'
+          end
         end
       else
         'En vous inscrivant, vous pourrez connaitre vos nouvelles pages non lues.'

@@ -2,10 +2,18 @@
 # Définition de l'entête du site
 %>
 <section id="header">
+
+  <div id="div_network">
+    <%= page.twitter_url %>
+    <%= page.facebook_share_button %>
+    <%= page.facebook_like_button %>
+  </div>
+
     <img id="logo_long"
 	 src="./view/img/logo/laptop.jpg"
 	 alt="" />
     <span id="site_title"><a href=""><%= site.logo_title %></a></span>
+
 </section>
 <%
 # Insertion de la pastille indiquant les tâches à exécuter

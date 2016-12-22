@@ -165,8 +165,11 @@ OFFLINE = !ONLINE;
     allcss += page.added_css unless page.added_css.nil?
     # app.debug.add "allcss: #{allcss.inspect}"
     # Fabrication de tous les liens pour les feuilles de style
+    #
+    # Modifier le "v=xxxxxx" ci-dessous pour forcer un rechargement
+    # côté client.
     allcss.collect do |css_path|
-      "<link charset='utf-8' href='#{css_path}' rel='stylesheet' type='text/css' />"
+      "<link charset='utf-8' href='#{css_path}?v=161222' rel='stylesheet' type='text/css' />"
     end.join("\n")
 
   end
