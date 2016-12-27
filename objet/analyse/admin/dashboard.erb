@@ -46,7 +46,9 @@ raise_unless_admin
 
     ifilm.set_data fdata
   %>
-    <%= ifilm.as_admin_li %>
+    <%=
+      ifilm.as_admin_li
+      %>
   <%
   end # Fin de boucle sur tous les films du scénodico
   %>
@@ -76,6 +78,17 @@ raise_unless_admin
   Un film doit remplir toutes les conditions pour être affiché.
 </div>
 </fieldset>
+
+<h3>Ajouter un film analysé</h3>
+<div class="small italic">
+  <!-- 111001 -->
+  Pour ajouter un film analysé, il faut modifier ces options (les mettre au minimum à 111001). Indiquer ci-dessous l'identifiant du film à ajouter.
+</div>
+<form action="admin/dashboard?in=analyse" method="POST", class="right">
+  <input type="hidden" name="operation" value="add_film_analyzed">
+  <input type="text" name="film_id" value="" class="short">
+  <input type="submit" class="btn tiny" value="Ajouter">
+</form>
 
 <h3>Explications</h3>
 <p>

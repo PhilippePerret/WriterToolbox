@@ -10,8 +10,10 @@ class Film
     options[x].to_i
   end
 
+  # 111001
+
   # BIT 1 (analysé)
-  # Mis à 1 si le film eset analysé
+  # Mis à 1 si le film est analysé
   def bit_analyzed; @bit_analyzed ||= gbit(0) end
   # BIT 2 (signup)
   # Est mis à 1 si l'user a besoin d'être inscrit

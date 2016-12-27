@@ -2,6 +2,33 @@
 class FilmAnalyse
 class Film
 
+  # ---------------------------------------------------------------------
+  #   Méthodes de CLASSE
+  # ---------------------------------------------------------------------
+
+  class << self
+
+    # = main =
+    #
+    # Méthode appelée pour ajouter un film analysé
+    def add_film_analyzed
+      film_id = param(:film_id).to_i
+      film_id > 0 || raise('Il faut donner l’identifiant du film à analyser')
+      ifilm = FilmAnalyse::Film.new(film_id)
+      false == ifilm.analyzed? || raise('Ce film est déjà analysé.')
+      ifilm.set(options: '111001')
+      flash "Le film est maintenant marqué comme analysé. Il faut régler ses options dans la liste ci-dessous."
+    rescue Exception => e
+      debug e
+      error e.message
+    end
+
+  end
+
+  # ---------------------------------------------------------------------
+  #   Méthodes d'INSTANCE
+  # ---------------------------------------------------------------------
+
   # Méthode d'helper qui produit la ligne LI pour l'affichage
   # du film.
   def as_admin_li
@@ -12,7 +39,7 @@ class Film
       'id'            => "film-#{id}",
       'class'         => "film",
       'data-id'       => "#{id}",
-      'data-options'  => options.ljust(8,'0')
+      'data-options'  => options.ljust(9,'0')
       )
   end
 
@@ -31,7 +58,7 @@ class Film
     # d'affichage que celui des bit. Par exemple, le bit 8,
     # qui correspond à analyse complète/simple note se met
     # dans le listing après
-    allboutons = Array::new
+    allboutons = Array.new
 
     # Le dernier chiffre du rang doit correspondre au
     # dernier bit défini dans les :options du film
@@ -67,7 +94,7 @@ class Film
     btn_name.in_a(id:"btn_bit1-#{id}", onclick: "$.proxy(Analyse,'set_analyzed', #{id})()" )
   end
   def bouton_kill
-    ""
+    ''
   end
   def bouton_accessibilite
     [["1", "abonnés"]].in_select(name:'', selected: options[0].to_i)
@@ -78,7 +105,7 @@ class Film
     when NilClass
       error "dfilm est nil dans FilmAnalyse::Film.set_data, je ne peux pas dispatcher les valeurs."
     when Hash
-      debug "dfilm: #{dfilm.pretty_inspect}"
+      # debug "dfilm: #{dfilm.pretty_inspect}"
       dfilm.each { |k, v| instance_variable_set("@#{k}", v) }
     else
       raise "dfilm est de class #{dfilm.class} au lieu d'être un Hash, dans FilmAnalyse::Film.set_data, je ne peux pas dispatcher les valeurs."
@@ -87,3 +114,9 @@ class Film
 
 end # /Film
 end # /FilmAnalyse
+
+
+case param(:operation)
+when 'add_film_analyzed'
+  FilmAnalyse::Film.add_film_analyzed
+end
