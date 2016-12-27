@@ -65,16 +65,16 @@ class Cnarration
   }
 
   NIVEAUX_DEVELOPPEMENT = {
-    0 => {hname:"Niveau indéfini"},
-    1 => {hname:"Création de la page"},
-    2 => {hname:"Amorce de la page"},
-    3 => {hname:"Esquisse"},
-    4 => {hname:"Développée"},
-    5 => {hname:"Presque achevée"},
-    6 => {hname:"À lire par le lecteur"},
-    7 => {hname:"À corriger par le rédacteur"},
-    8 => {hname:"Relecture finale"},
-    9 => {hname:"Correction finale"},
-    'a' => {hname:"Achevée"},
+    0   => {hname:  'Niveau indéfini'},
+    1   => {hname:  'Création de la page'},
+    2   => {hname:  'Amorce de la page'},
+    3   => {hname:  'Esquisse'},
+    4   => {hname:  'Développée'},
+    5   => {hname:  'Doit être achevée'},
+    6   => {hname:  'À lire par le lecteur'},
+    7   => {hname:  'À corriger par le rédacteur'},
+    8   => {hname:  'Relecture finale'},
+    9   => {hname:  'Correction finale'},
+    'a' => {hname:  'Achevée'}
   }
 end #/Cnarration

@@ -115,12 +115,13 @@ class << self
     # Il faut peut être ajouter l'explication sur les
     # checkups
     if code.match(/EXPLICATION\\?_CHECKUPS?/)
-      explication_checkup = case output_format
-      when :html, :erb
-        Cnarration::texte_type("explication_checkups.html", options)
-      when :latex
-        Cnarration::texte_type("explication_checkups.tex", options)
-      end
+      explication_checkup =
+        case output_format
+        when :html, :erb
+          Cnarration.texte_type("explication_checkups.html", options)
+        when :latex
+          Cnarration.texte_type("explication_checkups.tex", options)
+        end
       code.sub!(/EXPLICATION\\?_CHECKUPS?/, explication_checkup)
     end
 
@@ -142,7 +143,7 @@ class << self
         # Pour la marque PRINT_CHECKUP seule, sans argument
         # (on met toutes les questions)
         # @table_checkup.collect do |grp, arr_question|
-        allq = String::new
+        allq = String.new
         while grp_and_arr = @table_checkup.shift
           grp, arr_question = grp_and_arr
           allq << ul_questions_checkup(arr_question, grp)
@@ -179,7 +180,7 @@ class << self
   #     {String} Optionnellement, le nom du groupe
   #
   def ul_questions_checkup questions, groupe = nil, options = nil
-    return "" if questions.nil?
+    return '' if questions.nil?
     options ||= Hash.new
     output_format = options[:output_format]
 
@@ -194,30 +195,38 @@ class << self
       # La marque pour savoir que le fichier de la question est
       # utilisé ici et que s'il a été modifié il faut modifier aussi
       # ce fichier
-      mark_file = unless @files_checkups_traited.key?(hquestion[:file])
-        @files_checkups_traited.merge!(hquestion[:file] => true)
-        "<!-- #{hquestion[:file]} -->"
-      else
-        ""
-      end
+      mark_file =
+        unless @files_checkups_traited.key?(hquestion[:file])
+          @files_checkups_traited.merge!(hquestion[:file] => true)
+          "<!-- #{hquestion[:file]} -->"
+        else
+          ''
+        end
 
-      lien_vers_question = case output_format
-      when :latex
-        " (\\cpageref{#{hquestion[:id]}})"
-      else # :html
-        # Le lien pour rejoindre la question dans son fichier
-        lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
-        " (#{lien_vers_question})"
-      end
+      lien_vers_question =
+        case output_format
+        when :latex
+          " (\\cpageref{#{hquestion[:id]}})"
+        else # :html
+          # Le lien pour rejoindre la question dans son fichier
+          lien_vers_question = "-&gt;&nbsp;revoir".in_a(href:"page/#{hquestion[:pid]}/show?in=cnarration##{hquestion[:id]}", target:"_blank")
+          " (#{lien_vers_question})"
+        end
+
+      # On formate la question (qui peut contenir du code ERB, markdown, etc.)
+      #
+      # Attention : ici, il faut que ça convienne à du html et à du
+      # latex
+      laquestion = hquestion[:question].deserb
 
       # Mise en forme de la question affichée dans le checkup
       case output_format
       when :latex
-        "\\item #{hquestion[:question]} #{lien_vers_question}"
+        "\\item #{laquestion} #{lien_vers_question}"
       else
         (
-          hquestion[:question] +
-          mark_file +
+          laquestion +
+          mark_file  +
           lien_vers_question
         ).in_li(id: hquestion[:id])
       end
