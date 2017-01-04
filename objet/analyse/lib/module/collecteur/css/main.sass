@@ -1,0 +1,106 @@
+
+
+textarea
+  font-size : 14pt
+  &#collector
+    width       : 680px
+    height      : 300px
+
+
+div#collector_tools
+  position      : fixed
+  width         : 100%
+  bottom        : 0px
+  left          : 0px
+  height        : 38px
+  background-color  : #222
+  color         : white
+  padding       : 4px 40px
+
+  input, a
+    margin-left   : 1em
+
+  // L'horloge
+  span#horloge
+    display       : inline-block
+    width         : 140px
+    font-family   : Courier
+    font-size     : 25pt
+    text-align    : center
+    margin-right  : 1em
+
+  // Le bouton "START"
+  input#bouton_start
+    width       : 100px
+
+  // Le champ pour entrer le temps de démarrage
+  input#start_time
+    width       : 80px
+    text-align  : center
+
+// Le div de l'aide, qui peut être soit placé en flux normal dans la
+// page soit fixé pour le voir
+div#aide
+  z-index   : 100
+  .visible_when_fixed
+    display : none
+  &.fixed
+    position    : fixed
+    top         : 0px
+    left        : 100px
+    background-color  : #EEE
+    padding     : 2em
+    max-height  : calc(70%)
+    height      : calc(70%)
+    overflow    : scroll
+    font-size   : 0.9em
+    width       : 800px
+    .visible_when_fixed
+      display : block
+
+// Textarea et div pour les éléments (personnages, brins, etc.)
+textarea.data_field, div.panneau_items
+  position    : fixed
+  right       : 1em
+  top         : 1em
+  width       : 300px
+  height      : 300px
+  padding     : 0.5em
+
+// Les champs de données
+textarea.data_field
+  font-size    : 10.2pt
+
+// Le panneau des personnages
+div.panneau_items
+  background-color    : #777
+  z-index             : 50
+  overflow            : scroll
+  ul.liste_items
+    list-style    : none
+    margin        : 0
+    padding       : 0
+    li
+      text-align    : left
+      font-size     : 0.8em
+      a
+        color         : #DDD
+        font-size     : 0.8em
+
+table.raccourcis
+  border-spacing      : 1px
+  border-collapse     : collapse
+  font-size           : 0.85em
+  &, th, td
+    border              : 1px solid #c7c7c7
+
+
+div#aide_tdm
+  div.tdm_level1
+    font-weight   : bold
+  div.tdm_level2
+    margin-left   : 1em
+  div.tdm_level3
+    margin-left   : 2em
+  div.tdm_level4
+    margin-left   : 3em

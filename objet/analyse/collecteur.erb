@@ -1,7 +1,30 @@
 <%
 # Collecte en ligne
+=begin
+
+TODO
+
+  * Pouvoir insérer les brins et les utiliser (CTRL + B)
+  * Pouvoir se déplacer de prop en prop dans le champ collecte comme dans le
+    champ personnages.
+
+=end
  %>
-<%= FilmAnalyse.titre_h1("Outil de collecte en ligne") %>
-<p>
-  [Bientôt, ici, l'éditeur de collecte en ligne pour les analyses]
-</p>
+<%=FilmAnalyse.titre_h1('Outil de collecte en ligne')%>
+
+<%= FilmAnalyse::Collector.ui %>
+
+<%
+# ---------------------------------------------------------------------
+#
+#     AIDE
+#
+# ---------------------------------------------------------------------
+
+%>
+<hr>
+<div class="small">
+  <code>CTRL + A</code> : Aide
+</div>
+
+<%= FilmAnalyse::Collector.aide %>
