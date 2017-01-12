@@ -14,7 +14,7 @@ class User
   include CurrentPDayClass
   def current_pday
     @current_pday ||= begin
-      CurrentPDay::new(self)
+      CurrentPDay.new(self)
     end
   end
   # Pour forcer le recalcul du jour-programme courant (et ses

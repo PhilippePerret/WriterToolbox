@@ -89,7 +89,7 @@ class User
     return true
   end
 
-  # On déconnecte l'user
+  # On déconnecte l'user et on le redirige vers l'accueil
   def deconnexion
     app.benchmark('-> User#deconnexion')
     app.session['pseudo'] = pseudo # Pour s'en souvenir dans le message
@@ -101,6 +101,7 @@ class User
     # pris l'identité d'un icarien.
     # Noter qu'il faut le faire après avoir tout initialisé ici.
     app.stop_visit_as
+    redirect_to :home
     app.benchmark('<- User#deconnexion')
   end
 

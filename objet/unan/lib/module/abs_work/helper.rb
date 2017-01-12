@@ -116,8 +116,16 @@ class AbsWork
       c << ("Destinataire".in_span(class:'libelle')+destina.in_span).in_span
     end
     if bit_res_exigence > 0
-      exigence  = Unan::NIVEAU_DEVELOPPEMENT[bit_res_exigence][1]
-      c << ("Niveau de développement attendu".in_span(class:'libelle') + exigence.in_span).in_span
+      if bit_res_exigence < 10
+        exigence  = Unan::NIVEAU_DEVELOPPEMENT[bit_res_exigence][1]
+        c << ("Niveau de développement attendu".in_span(class:'libelle') + exigence.in_span).in_span
+      else
+        # ERREUR
+        send_error_to_admin(
+          from: "Méthode `Unan::Program::AbsWork#human_type_resultat` : bit_res_exigence ne devrait pas pouvoir être > 9.",
+          extra: "User : #{user.infos_unan}"
+        )
+      end
     end
     return c
   end

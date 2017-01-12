@@ -21,7 +21,7 @@ class Quiz
     # Code HTML d'affichage de la question
     # Retourne le DIV contenant la question
     #
-    # Son style peut varier si c'est une affichage de résultat
+    # Son style peut varier si c'est un affichage de résultat
     #
     # Rappels :
     #   evaluation?
@@ -43,7 +43,28 @@ class Quiz
     end
 
     def question_formated
-      @question_formated ||= question.formate_balises_propres
+      @question_formated ||= begin
+        if question != nil
+          question.formate_balises_propres
+        else
+          # Problème grave de question absente
+          # ----------------------------------
+          # On essaie de construire les données extra
+          extra_data =
+            begin
+              "ID quiz (dans la table quiz) : #{quiz.id} / ID question : #{id}"
+            rescue Exception => e
+              "Impossible de définir les données extra (id de la question, etc) : #{e.message}."
+            end
+          send_error_to_admin(
+            exception: nil,
+            from: 'Question Quiz non définie dans #question_formated',
+            file: 'objet/quiz/lib/required/quiz/question/helper.rb',
+            extra: extra_data
+          )
+          "PROBLÈME QUESTION ##{id} (le problème a été signalé à l'administration)"
+        end
+      end
     end
 
     # La classe générale de la question en fonction des réponses

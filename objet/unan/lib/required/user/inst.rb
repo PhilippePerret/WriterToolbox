@@ -6,10 +6,28 @@ require 'json'
 
 class User
 
+  # Pour le débuggage on peut obtenir grâce à cette méthode
+  # des informations sur l'auteur courant qui rencontre une
+  # erreur
+  def infos_unan
+    inf = String.new
+    inf << "User ##{id} (#{pseudo}) | "
+    inf << "Projet ##{projet_id} (#{projet.titre}) | "
+    inf << "Programme ##{program.id} | "
+    inf << "Rythme #{program.rythme} | "
+    inf << "PDay #{program.current_pday}"
+  rescue Exception => e
+    debug e
+    inf << "# ERREUR : #{e.message}"
+  ensure
+    return inf
+  end
+
+
   # {Unan::Projet} Le projet courant de l'user, ou nil
   def projet
     @projet ||= begin
-      Unan::Projet::get_current_projet_of( self.id )
+      Unan::Projet.get_current_projet_of( self.id )
     end
   end
   def projet_id; @projet_id ||= projet.id end
@@ -37,14 +55,14 @@ class User
     program.instance_of?(Unan::Program)
   end
 
-  # Le dossier data de l'user dans ./database/data/unan/user/<id>/
-  # Note : ce dossier n'est pas à confondre avec le dossier `folder`
-  # de l'user, dossier général, qui se trouve dans `./database/data/user/<id>`
-  def folder_data
-    @folder_data ||= begin
-      d = site.folder_db + "unan/user/#{id}"
-      d.build unless d.exist?
-      d
-    end
-  end
+  # # Le dossier data de l'user dans ./database/data/unan/user/<id>/
+  # # Note : ce dossier n'est pas à confondre avec le dossier `folder`
+  # # de l'user, dossier général, qui se trouve dans `./database/data/user/<id>`
+  # def folder_data
+  #   @folder_data ||= begin
+  #     d = site.folder_db + "unan/user/#{id}"
+  #     d.build unless d.exist?
+  #     d
+  #   end
+  # end
 end

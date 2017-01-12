@@ -1,7 +1,7 @@
 # Mail à l'administration
 
 * [Envoi d'un mail à l'administration](#envoyermailaadministration)
-* [Envoi d'un mail en cas d'erreur](#envoimailencasderreur)
+* [Envoi d'un mail d'erreur à l'administration](#envoimailencasderreur)
 
 
 <a name='envoyermailaadministration'></a>
@@ -42,5 +42,8 @@ Pour envoyer un mail en cas d'erreur, on peut utiliser la méthode :
     :url              Optionnellement, et si connue, l'url d'erreur
     :file             Optionnellement, et si connu, le fichier pour lequel
                       s'est produite l'erreur.
+    :extra            {String} Autres données, sous forme de string
 
 La méthode ajoute l'user qui a rencontré l'erreur s'il existe.
+
+Si c'est le programme UNAN, on peut ajouter dans `:extra` : "#{user.infos_unan}" qui ajoute toutes les informations UNAN concernant l'user courant, son programme, son étape, etc.
