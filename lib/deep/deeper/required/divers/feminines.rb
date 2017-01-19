@@ -97,7 +97,11 @@ module ModuleFeminines
   end
 
   def f_egve # bref/brève
-    @f_rice ||= (feminine? ? 'ève' : 'ef')
+    @f_egve ||= (feminine? ? 'ève' : 'ef')
+  end
+
+  def f_seche # sec/seche
+    @f_seche ||= (feminine? ? 'sèche' : 'sec')
   end
 
 end

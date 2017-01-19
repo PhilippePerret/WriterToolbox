@@ -26,7 +26,7 @@ class Citation
       request = "SELECT auteur, COUNT(auteur) as nombre_citations FROM citations GROUP BY auteur ORDER BY nombre_citations DESC;"
 
       'Classement des auteurs par nombre de citations'.in_h3 +
-      site.dbm_base_execute(:cold, request).collect do |hauteur|
+      site.dbm_base_execute(:biblio, request).collect do |hauteur|
         auteur = hauteur[:auteur]
         auteur.match(/ dit /) && begin
           auteur = auteur.split(' dit ').last

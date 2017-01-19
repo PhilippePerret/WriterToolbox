@@ -39,6 +39,9 @@ class Lien
   def livre_lanalyse_de_films
     link_livre_id Cnarration::SYM2ID[:analyse]
   end
+  def livre_exemples
+    link_livre_id Cnarration::SYM2ID[:exemples]
+  end
 
   def link_livre_id livre_id, titre = nil
     dlivre = Cnarration::LIVRES[livre_id]
