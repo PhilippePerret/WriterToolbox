@@ -27,8 +27,14 @@ def send_error_to_admin args
 
   message, backtrace =
     case args[:exception]
-    when String then [args[:exception], '']
-    else [args[:exception].message, "BACKTRACE \n" + args[:exception].backtrace.join("\n")]
+    when NilClass then ['Erreur non précisée', '']
+    when String   then [args[:exception], '']
+    else
+      if args[:exception].respond_to?(:backtrace)
+        [ args[:exception].message, "BACKTRACE \n" + args[:exception].backtrace.join("\n")]
+      else
+        [ args[:exception].inspect, '' ]
+      end
     end
 
 

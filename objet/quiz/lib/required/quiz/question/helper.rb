@@ -57,8 +57,8 @@ class Quiz
               "Impossible de définir les données extra (id de la question, etc) : #{e.message}."
             end
           send_error_to_admin(
-            exception: nil,
-            from: 'Question Quiz non définie dans #question_formated',
+            exception: 'Question Quiz non définie dans #question_formated',
+            from: __FILE__,
             file: 'objet/quiz/lib/required/quiz/question/helper.rb',
             extra: extra_data
           )

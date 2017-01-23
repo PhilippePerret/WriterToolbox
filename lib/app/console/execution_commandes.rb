@@ -21,7 +21,10 @@ class Console
     when /^new citation$/
       redirect_to 'citation/edit'
       return ''
-
+    when /^edit citation ([0-9]{1,4})$/
+      citation_id  = line.strip.match(/^edit citation ([0-9]{1,4})$/).to_a[1]
+      redirect_to "citation/#{citation_id}/edit"
+      return ''
       # --- FILMODICO ---
 
     when /liste? films/

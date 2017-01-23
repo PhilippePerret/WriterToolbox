@@ -271,6 +271,9 @@ citations:
     description: |
       Pour créer une nouvelle citation.
   -
+    command:      edit citation &lt;id&gt;
+    description:  Édite la citation voulue.
+  -
     command:      goto citation/&lt;ID&gt;/show
     description: |
       Pour afficher la citation d'identifiant ID

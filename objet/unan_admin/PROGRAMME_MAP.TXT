@@ -170,10 +170,13 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                         Note : dire de bien s'appuyer sur le travail précédent pour trouver de nouvelles idées, de nouveaux développements.
                     TODO [EXEMPLE] Donner un exemple de document sur les objectifs affinés et développés.
                     [WORK 113] [PAGE 51] L'inversion de polarité
+                    [WORK 129] [PAGE 58] Définition de l'enjeu
                 JP 052-053 TR2 THEM
                     [WORK 116] On poursuit le travail sur les thèmes ici, en se concentrant sur ses propres avis sur les sujets abordés. Donner pour chaque thème, chaque sujet, son avis personnel, en tentant d'êter précis et honnête.
                         NOTE Préciser qu'on continue de lister les sujets si d'autres sont apparus.
-                    [WORK 117][PAGE 52] Page collection #544 sur le thème qui est un souffle pour le développement de l'histoire autant que pour son auteur.
+                    [WORK 117] [PAGE 52] Page collection #544 sur le thème qui est un souffle pour le développement de l'histoire autant que pour son auteur.
+                    [WORK 130] [PAGE 59] Brainstorming sur les thèmes
+                    [WORK 131] [PAGE 60] Hiérarchisation des thèmes
                 JP 054-055 TR2 ANAF
                     Ici, on va simplement reprendre le même travail que pour les jours 38-39, mais sur un autre film.
                     [WORK 88] Analyse d'un film
@@ -235,15 +238,31 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
         Dans l'approfondissement, on passe encore plus de temps sur chaque élément.
         JP 084-111 Premier tour d'approfondissement
             JP 084-097 TR 6 sur STRT et PERS
+                [WORK 45] 6e tour sur structure et personnages.
+                JP 084-090 TR 6 sur STRT
+                    [WORK 134] 1er tour d'approfondissement sur structure
+                        - Fiche de la structure (PFA).
+                    TODO [WORK] faire la fiche structure du récit
+                    TODO [EXEMPLE] Renvoyer aux exemples de fiches contenues dans le recueil.
+                JP 091-097 TR 6 sur PERS
+                    [WORK 135] 1er tour d'approfondissement des personnages
+                        Description générale du travail qui va devoir être exécuté.
+                    [WORK 133] Travail sur l'agenda des personnages.
+                    [WORK 132][PAGE 61] Sur l'agenda des personnages.
+                    TODO [EXEMPLE] Renvoyer aux exemples d'agenda des personnages.
             JP 098-111 TR 5 sur DYNA et THEM
         JP 112-139 Second tour d'approfondissement
-            JP 112-125 TR 6 sur STRT et PERS
+            JP 112-125 TR 7 sur STRT et PERS
             JP 126-139 TR 5 sur DOCU et [autre]
 
 JP 140-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
     Cette partie marque la seconde grande partie de développement du scénario ou du manuscrit. Sa production finale sera la première version du scénario ou du manuscrit.
     JP 141-196 RENFORCEMENT DE L'HISTOIRE
         JP 141-168 Premier tour de renforcement
+            JP 141-154
+            JP 154-169
+                [WORK 136] Une dizaine de scènes dans le format final.
+                TODO [EXEMPLE] Exemples divers dans les principaux formats (voir si je peux en obtenir en BD et théâtre).
         JP 169-196 Second tour de renforcement
 
     JP 196-223 PREMIÈRE FINALISATION
