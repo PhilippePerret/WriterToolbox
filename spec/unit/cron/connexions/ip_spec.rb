@@ -2,6 +2,7 @@
 =end
 def new_connexion_for instance_ip, route = nil, temps = nil
   icon = Connexions::Connexion.new(route || route_au_hasard, temps || time_au_hasard, instance_ip.ip)
+  instance_ip.add_connexion(icon)
 end
 ROUTES_HASARD = [
   'filmodico/home',
@@ -52,7 +53,7 @@ describe 'Connexions::IP' do
       instip = Connexions::IP.new('127.0.0.1')
       expect(instip.nombre_connexions).to eq 0
       (1..5).each do |nombre|
-        instip.add_connexion(new_connexion_for(instip))
+        new_connexion_for(instip)
         expect(instip.nombre_connexions).to eq nombre
       end
     end
@@ -107,7 +108,24 @@ describe 'Connexions::IP' do
     end
   end
 
-  describe 'Méthode #search_engine?' do
+  describe '#particulier?' do
+    it 'répond' do
+      expect(ip).to respond_to :particulier?
+    end
+    it 'retourne true si c’est un particulier' do
+      ip = Connexions::IP.new('127.0.0.1')
+      expect(ip).to be_particulier
+    end
+    it 'retourne false si c’est le test' do
+      ip = Connexions::IP.new('TEST')
+      expect(ip).not_to be_particulier
+    end
+    it 'retourne false si c’est un moteur de recherche' do
+      ip = Connexions::IP.new('17.0.0.0') # Apple
+      expect(ip).not_to be_particulier
+    end
+  end
+  describe '#search_engine?' do
     it 'répond' do
       expect(ip).to respond_to :search_engine?
     end
@@ -121,7 +139,7 @@ describe 'Connexions::IP' do
     end
   end
 
-  describe 'Méthode #search_engine' do
+  describe '#search_engine' do
     it 'répond' do
       expect(ip).to respond_to :search_engine
     end
@@ -136,6 +154,42 @@ describe 'Connexions::IP' do
       expect(se).to be_instance_of Connexions::SearchEngine
       expect(se.name).to eq 'Apple'
       expect(se.id).to eq 33
+    end
+  end
+
+  describe '#routes' do
+    it 'répond' do
+      expect(ip).to respond_to :routes
+    end
+    it 'retourne la liste des routes' do
+      expect(ip.nombre_connexions).to eq 0
+      expect(ip.nombre_routes).to eq 0
+      new_connexion_for(ip, 'filmodico/home')
+      expect(ip.routes).to include 'filmodico/home'
+      expect(ip.nombre_routes).to eq 1
+      new_connexion_for(ip, 'scenodico/home')
+      expect(ip.routes).to include 'scenodico/home'
+      expect(ip.nombre_routes).to eq 2
+    end
+    it 'retourne seulement des routes uniques' do
+      expect(ip.nombre_connexions).to eq 0
+      expect(ip.nombre_routes).to eq 0
+      new_connexion_for(ip, 'filmodico/home')
+      expect(ip.routes).to include 'filmodico/home'
+      new_connexion_for(ip, 'filmodico/home')
+      new_connexion_for(ip, 'filmodico/home', Time.now.to_i - 1000)
+      expect(ip.routes.count).to eq 1
+      expect(ip.routes).to eq ['filmodico/home']
+    end
+  end
+  describe '#nombre_routes' do
+    it 'répond' do
+      expect(ip).to respond_to :nombre_routes
+    end
+    it 'retourne le nombre de routes' do
+      expect(ip.nombre_connexions).to eq 0
+      new_connexion_for(ip, 'filmodico/home')
+      expect(ip.nombre_routes).to eq 1
     end
   end
 end

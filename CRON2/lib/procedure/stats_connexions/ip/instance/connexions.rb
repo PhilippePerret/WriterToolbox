@@ -24,5 +24,14 @@ class IP
     @connexions.count
   end
 
+
+  # Permet de définir le temps de fin de la dernière connexion
+  # enregistrée.
+  def set_end_time_last_connexion_to end_time
+    if nombre_connexions > 0
+      connexions.last.end_time = end_time
+    end
+  end
+
 end #/IP
 end #/Connexions

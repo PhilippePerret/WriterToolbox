@@ -45,7 +45,7 @@ describe 'Rapport de connexions' do
     it ' définit le nombre d’IPS différentes' do
       nombre_ips = Connexions::Connexion.select.collect{|h|h[:ip]}.uniq
       nombre_ips = nombre_ips.reject{|ip|ip == 'TEST'}.count
-      expect(report).to include "<span class='libelle'>Nombre d’IPs</span><span class='value'>#{nombre_ips}</span>"
+      expect(report).to include "<span class='libelle'>Nombre total d’IPs</span><span class='value'>#{nombre_ips}</span>"
     end
 
     def nombre_search_engines_and_particuliers
