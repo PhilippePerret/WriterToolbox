@@ -23,10 +23,6 @@ class << self
   # Retourne TRUE si la liste des moteurs de recherche
   # contient l'IP +searched_ip+. False dans le cas contraire
   #
-  # TODO
-  #   NON ! ICI, IL FAUT FAIRE D'ABORD LA LISTE DE TOUTES LES
-  #   INSTANCE DE MOTEUR DE RECHERCHE, ET RENVOYER L'INSTANCE
-  #   SI ELLE EXISTE DÉJÀ.
   def get_search_engine_with_ip searched_ip
     SEARCH_ENGINES_IPS_LIST.each do |human_id, data_ip|
       data_ip[:ips].each do |reg_ip|

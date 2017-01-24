@@ -81,6 +81,31 @@ describe 'Connexions::IP' do
       expect(ip).to respond_to :end_time
     end
   end
+  describe '#duree_connexion' do
+    it 'répond' do
+      expect(ip).to respond_to :duree_connexion
+    end
+    it 'retourne la durée de connexion en nombre de secondes' do
+      ip.instance_variable_set('@start_time', 10)
+      ip.instance_variable_set('@end_time', 100)
+      expect(ip.duree_connexion).to eq 90
+    end
+  end
+  describe '#human_duree_connexion' do
+    it 'répond' do
+      expect(ip).to respond_to :human_duree_connexion
+    end
+    it 'retourne la durée humaine de connexion de l’IP' do
+      ip.instance_variable_set('@start_time', 10)
+      ip.instance_variable_set('@end_time', 100)
+      expect(ip.human_duree_connexion).to eq '1\'30"'
+      ip.instance_variable_set('@start_time', 10)
+      ip.instance_variable_set('@end_time', 3600 + 100)
+      ip.instance_variable_set('@duree_connexion', nil)
+      ip.instance_variable_set('@human_duree_connexion', nil)
+      expect(ip.human_duree_connexion).to eq '1h01\'30"'
+    end
+  end
 
   describe 'Méthode #search_engine?' do
     it 'répond' do
@@ -96,7 +121,7 @@ describe 'Connexions::IP' do
     end
   end
 
-  describe 'Méthode #search_engine_name' do
+  describe 'Méthode #search_engine' do
     it 'répond' do
       expect(ip).to respond_to :search_engine
     end

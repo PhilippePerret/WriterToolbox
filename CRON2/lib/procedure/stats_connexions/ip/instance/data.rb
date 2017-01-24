@@ -29,7 +29,7 @@ class IP
   def start_time
     @start_time ||= begin
       st = connexions.first.time
-      connexions.each { |con| con.time < st || st = con.time }
+      connexions.each { |con| con.time > st || st = con.time }
       st
     end
   end
@@ -38,9 +38,13 @@ class IP
   def end_time
     @end_time ||= begin
       et = connexions.first.time
-      connexions.each { |con| con.time > et || et = con.time }
+      connexions.each { |con| con.time < et || et = con.time }
       et
     end
+  end
+
+  def duree_connexion
+    @duree_connexion ||= end_time - start_time
   end
 
 

@@ -6,6 +6,25 @@ describe 'Connexions::Connexion' do
     Dir['./CRON2/lib/procedure/stats_connexions/**/*.rb'].each{|m| require m}
   end
 
+  # ::init_analyse
+  describe '::init_analyse' do
+    it 'répond' do
+      expect(Connexions::Connexion).to respond_to :init_analyse
+    end
+    it 'reset le tableau des résultats' do
+      Connexions::Connexion.analyse # pour renseigner les résultats
+      res = Connexions::Connexion.resultats_analyse
+      expect(res[:time]).not_to eq nil
+      expect(res[:per_ip]).not_to be_empty
+      expect(res[:per_route]).not_to be_empty
+      Connexions::Connexion.init_analyse
+      res2 = Connexions::Connexion.resultats_analyse
+      expect(res2[:time]).to eq nil
+      expect(res2[:per_ip]).to be_empty
+      expect(res2[:per_route]).to be_empty
+    end
+  end
+
   # ::analyse
   describe 'Méthode ::analyse' do
     it 'répond' do
@@ -15,12 +34,14 @@ describe 'Connexions::Connexion' do
       uptime = Time.now.to_i
       Connexions::Connexion.init
       expect(Connexions::Connexion.resultats_analyse).to eq nil
+      # On procède à l'analyse
       Connexions::Connexion.analyse
       res = Connexions::Connexion.resultats_analyse
       expect(res).not_to eq nil
       expect(res).to have_key :time
       expect(res).to have_key :per_ip
       expect(res).to have_key :per_route
+      expect(res).to have_key :parcours
 
       # On doit trouver chaque IP en clé de la table :per_ip,
       # sauf TEST
@@ -35,13 +56,6 @@ describe 'Connexions::Connexion' do
         expect(res[:per_route]).to have_key conn[:route]
       end
 
-    end
-  end
-
-  # ::report
-  describe 'Méthode ::report' do
-    it 'répond' do
-      expect(Connexions::Connexion).to respond_to :report
     end
   end
 end

@@ -31,6 +31,10 @@ class IP
     end
   end
 
+  def human_duree_connexion
+    @human_duree_connexion ||= duree_connexion.as_duree
+  end
+
 
 end #/IP
 end #/Connexions

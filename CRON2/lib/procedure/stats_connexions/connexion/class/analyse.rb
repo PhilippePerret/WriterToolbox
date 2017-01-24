@@ -10,18 +10,17 @@ class << self
   # {Hash} Tableau contenant tous les résultats de l'analyse
   # des connexions.
   attr_reader :resultats_analyse
-
+  alias :resultats :resultats_analyse
   # = main =
   #
   # Méthode principale procédant à l'analyse des connexions
   #
   def analyse
     uptime = Time.now.to_i
-    @resultats_analyse = {
-      time:       uptime,
-      per_ip:     Hash.new,
-      per_route:  Hash.new
-    }
+    init_analyse
+    @resultats_analyse[:time] = uptime
+
+    # On passe en revue toutes les connexions
     list_upto(uptime).each do |iconnexion|
       iconnexion.ip != 'TEST' || next
 
@@ -48,6 +47,14 @@ class << self
       @resultats_analyse[:per_route][iconnexion.route].add_connexion(iconnexion)
 
     end
+  end
+  def init_analyse
+    @resultats_analyse = {
+      time:       nil,
+      per_ip:     Hash.new,
+      per_route:  Hash.new,
+      parcours:   Array.new
+    }
   end
 
   # Initialisation avant l'analyse

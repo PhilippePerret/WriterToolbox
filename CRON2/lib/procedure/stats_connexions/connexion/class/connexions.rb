@@ -13,10 +13,10 @@ class << self
   # Retourne la liste des connexions dans la table
   # 'connexions_per_ip' sous la forme d'une liste de Hash
   def get_in_table upto = Time.now.to_i
-    whereclause = {
+    request = {
       where: "time < #{upto}"
     }
-    site.dbm_table(:hot, 'connexions_per_ip').select(whereclause)
+    select(request)
   end
 end #/<< self
 end #/Connexion
