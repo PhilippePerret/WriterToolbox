@@ -103,7 +103,7 @@ class CRON2
     # n'est à consigner.
     #
     def has_connexions?
-        report[:by_ip].count > 0
+        report[:by_ip2017].count > 0
     end
     def build_message_admin
         titre = "Rapport #{ONLINE ? 'ONLINE' : 'OFFLINE'} des connexions du #{Time.now}"

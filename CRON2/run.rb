@@ -15,21 +15,21 @@ SEND_RFLOG_TO_ADMIN = false
 # pouvoir mémoriser les choses générales que le message principal
 # devra renvoyer.
 class MCron
-  class << self
-    def add_message mess
-      @messages ||= []
-      @messages << mess
-    end
-    def messages_formated format = :html
-      return nil if @messages.nil?
-      delimiteur =
+class << self
+  def add_message mess
+    @messages ||= []
+    @messages << mess
+  end
+  def messages_formated format = :html
+    return nil if @messages.nil?
+    delimiteur =
       case format
       when :html then '<br>'
       when :plain then "\n"
       end
-      @messages.join(delimiteur)
-    end
-  end # << self
+    @messages.join(delimiteur)
+  end
+end # << self
 end #/MCron
 
 # On évite toute incertitude sur le lancement
@@ -104,9 +104,9 @@ if SEND_RFLOG_TO_ADMIN
     # On essaie l'envoi par les messages mémorisés, pas par ceux
     # enregistrés dans le fichier
     site.send_mail_to_admin(
-    subject: "CRONJOB DU #{Time.now} - Messages mémorisés",
-    message: MCron.messages_formated(:html),
-    formated: true
+      subject: "CRONJOB DU #{Time.now} - Messages mémorisés",
+      message: MCron.messages_formated(:html),
+      formated: true
     )
   rescue Exception => e
   end

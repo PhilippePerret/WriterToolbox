@@ -22,7 +22,7 @@ class IP
   #
   def human_name longueur = nil
     @human_name ||= begin
-      ip
+      ip # TODO Traiter
     end
     if longueur.nil?
       @human_name

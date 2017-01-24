@@ -1,14 +1,14 @@
 # encoding: UTF-8
 =begin
 
-  Instance Connexions::IP
-  -----------------------
-  Pour le traitement d'un IP en particulier
+  Instance Connexions::Route
+  ---------------------------
+  Pour le traitement d'une route en particulier
   Méthodes gérant les connexions
 
 =end
 class Connexions
-class IP
+class Route
 
   # Ajoute une instance Connexions::Connexion à la liste
   # des connexions de l'ip
@@ -18,11 +18,5 @@ class IP
     @connexions << iconnexion
   end
 
-  # Retourne le nombre de connexions de cette IP au site
-  def nombre_connexions
-    @connexions ||= Array.new
-    @connexions.count
-  end
-
-end #/IP
+end #/Route
 end #/Connexions
