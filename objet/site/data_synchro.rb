@@ -51,7 +51,8 @@ class Synchro
   def app_ignored_files
     [
       # Ici la liste des paths de fichiers à ignorer
-      './objet/site/home.html'
+      './objet/site/home.html',
+      './CRON2/rapport_connexions.html'
     ]
   end
   def app_ignored_folders
@@ -59,7 +60,8 @@ class Synchro
     [
       './lib/deep/deeper/module/synchronisation/',
       './local_cron/',
-      './view/img/CHANTIER',
+      './CRON2/rapports_connexions/',
+      './view/img/CHANTIER/',
       './lib/deep/deeper/module/links_analyzer/output/routes_msh/'
     ]
   end

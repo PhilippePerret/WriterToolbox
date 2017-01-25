@@ -23,7 +23,6 @@ class AbsWork
   def as_card params = nil
     # cas du bureau normal de l'auteur d'un programme UAUS
     unless relative_data.nil?
-      # return 'C’est la carte relative'
       return as_card_relative
     end
 
@@ -54,6 +53,7 @@ class AbsWork
       ).in_div(class:'titre') +
       form_pour_marquer_started_or_fini(started = false) +
       div_travail + # avec exemples et pages cours
+      span_resultat +
       autres_infos_travail(params[:from]) +
       buttons_edit
     ).in_div(id: "work-#{id}", class:classes_css.join(' '))
@@ -238,11 +238,11 @@ class AbsWork
     ("Type".in_span(class:'libelle') + human_type_w.in_span).in_span
   end
   def span_resultat
-    return "" if resultat.empty?
-    c = ""
-    c << ("Résultat".in_span(class:'libelle') + resultat).in_span
-    c << human_type_resultat
-    return c
+    return '' if resultat.empty?
+    c = ''
+    c << 'Résultat'.in_span(class:'libelle') +
+    c << (resultat + human_type_resultat).in_div(class:'retrait2')
+    return c.in_div(class:'retrait4 cadre', style:'margin-bottom:4em')
   end
 
   # ---------------------------------------------------------------------

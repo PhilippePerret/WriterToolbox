@@ -1,4 +1,4 @@
-Le résultat ne semble pas être inscrit dans l'affichage du travail.
+* Faire l'agenda des personnages en exemple.
 
 WORK 137 (BRINS)
   - Dire de faire un document appelé "BRINS-<DATE INVERSE>" (en respectant les capitales)

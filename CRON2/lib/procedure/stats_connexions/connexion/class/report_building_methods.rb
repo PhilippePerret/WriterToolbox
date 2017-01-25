@@ -168,22 +168,36 @@ class << self
       s << div_user.in_div(class: 'user_div')
     end
 
-    # Moyenne du temps de connexion
-    duree_moy = (duree_totale_all_users / nombre_more_one_route).as_horloge
+    if nombre_more_one_route > 0
+      # Moyenne du temps de connexion
+      duree_moy = (duree_totale_all_users / nombre_more_one_route).as_horloge
 
-    # Pour connaitre la durée min et max de connexion
-    plus_long_user = per_user_restants.first
-    duree_max = plus_long_user.duree_connexion
-    duree_max_nb_routes = plus_long_user.nombre_routes
-    plus_court_user = per_user_restants.last
-    duree_min = plus_court_user.duree_connexion
-    duree_min_nb_routes = plus_court_user.nombre_routes
+      # Pour connaitre la durée min et max de connexion
+      plus_long_user = per_user_restants.first
+      duree_max = plus_long_user.duree_connexion
+      duree_max_nb_routes = plus_long_user.nombre_routes
+      plus_court_user = per_user_restants.last
+      duree_min = plus_court_user.duree_connexion
+      duree_min_nb_routes = plus_court_user.nombre_routes
 
+      duree_max = duree_max.as_horloge
+      duree_min = duree_min.as_horloge
+      duree_max_nb_routes = " (#{duree_max_nb_routes} routes)"
+      duree_min_nb_routes = " (#{duree_min_nb_routes} routes)"
+    else
+      duree_moy = '---'
+      duree_max = '---'
+      duree_min = '---'
+      duree_max_nb_routes = ''
+      duree_min_nb_routes = ''
+    end
+
+    
     stats_particuliers =
       resline('Nombre de particuliers (routes > 1)', nombre_more_one_route) +
       resline('Durée moyenne de connexion', duree_moy) +
-      resline('Connexion la plus longue', "#{duree_max.as_horloge} (#{duree_max_nb_routes} routes)") +
-      resline('Connexion la plus courte', "#{duree_min.as_horloge} (#{duree_min_nb_routes} routes)")
+      resline('Connexion la plus longue', "#{duree_max}#{duree_max_nb_routes}") +
+      resline('Connexion la plus courte', "#{duree_min}#{duree_min_nb_routes}")
 
 
     return stats_particuliers.in_fieldset + s

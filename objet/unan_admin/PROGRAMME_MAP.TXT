@@ -222,6 +222,7 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                         [EXEMPLE 12] Exemple d'analyse de caractéristiques dans The Maze Runner
                         [EXEMPLE 13] Exemple d'analyse des caractéristiques avec Dancer in the Dark
                 JP 076-079 TR4 sur la structure STRT
+                    [WORK 138] Création du document BRINS-/DATE INVERSE/.odt pour recevoir les brins.
                     [WORK 137] 4 jours de travail sur les brins. Établissement de tous les brins du récit. TRAVAIL TRÈS IMPORTANT.
                     TODO [EXEMPLE] Exemple donné pour le travail précédent.
                 JP 080-081 TR4 sur la dynamique DYNA

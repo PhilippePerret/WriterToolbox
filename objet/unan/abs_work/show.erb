@@ -18,7 +18,7 @@ page.add_css( site.folder_objet+"unan/bureau/home.css")
 # On a besoin de la libraire abs_work (pour la méthode `as_card`)
 Unan.require_module 'abs_work'
 %>
-<%= Unan.titre_h1("Travail (aperçu)") %>
+<%= Unan.titre_h1('Travail (aperçu)') %>
 <%
 # Pour empêcher que tous les éléments propres au work soient
 # affichés dans la carte, comme le temps de démarrage, etc.
@@ -29,7 +29,7 @@ class Unan::Program::Work
 end
 def iwork
   @iwork ||= begin
-    benoit = User::get(3)
+    benoit = User.get(3)
     abs_work_id = site.current_route.objet_id
     w = Unan::Program::Work.new(benoit.program, abs_work_id)
     w.instance_variable_set('@abs_work_id', abs_work_id)
