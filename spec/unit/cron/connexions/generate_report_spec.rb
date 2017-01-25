@@ -1,6 +1,7 @@
 =begin
 
 Ce fichier ne sert pour le moment qu'à générer le rapport
+(et à voir, par conséquent, s'il est produit sans erreur)
 
 =end
 describe 'Génération du rapport de connexions' do

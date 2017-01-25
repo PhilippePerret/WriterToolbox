@@ -1,3 +1,11 @@
+Le résultat ne semble pas être inscrit dans l'affichage du travail.
+
+WORK 137 (BRINS)
+  - Dire de faire un document appelé "BRINS-<DATE INVERSE>" (en respectant les capitales)
+  - Dire comment organiser le document, avec plusieurs options. Faire des exemples sur la collection Narration. Les utiliser dans le programme.
+
+PROGRAMMATION
+  Pouvoir, depuis le dashboard, rejoindre une partie qui se servira de PROGRAMME_MAP pour montrer la progression d'un thème de développement, par exemple, la structure. Ce programme relèvera et affichera dans la map tous les travaux et autres relevant de la structure, pour qu'on puisse voir comment elle est travaillée d'un bout à l'autre du programme.
 WORK
     Dire de se faire un cercle de premiers lecteurs (utilisés pour les premières lectures)
     Dire de se faire un cercle de seconds lecteurs  (note : donc moins utilisés)

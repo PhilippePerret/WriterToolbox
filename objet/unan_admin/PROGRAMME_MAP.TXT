@@ -161,7 +161,7 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                         [PAGE 55] Description et utilisation de la cinquième fondamentale
                     TODO [EXEMPLE] Document exemple sur le travail sur les personnages secondaire.
                 JP 048-049 TR2 DOCU
-                    [WORK 110] Document court de présentation du projet à destination des personne intéressante pour la documentation.
+                    [WORK 110] Document court de présentation du projet à destination des personnes intéressantes pour la documentation.
                     [EXEMPLE 11] Court document de présentation de projet, sous forme de message.
                     [WORK 108] Travail à partir de la liste des sujets définie au tour précédent sur ce document. Et à partir du document “Questions.odt”. Commencer à tenter de répondre aux questions. Commencer à chercher des données sur internet, dans les livres, ou là où peut se trouver l'information.
                     [WORK 109] Commencer à prendre des contacts (sur les forums, sur les mails qu'on peut obtenir) avec des personnes susceptibles de donner des renseignements concrets.
@@ -207,8 +207,6 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                         [PAGE 12] Page narration sur la structure qui doit s'appuyer sur l'émotion.
                             Cette page a déjà été utilisée avant.
                     [WORK 125] Travail sur la relation entre la structure et le travail sur les OOC du récit.
-                        [PAGE 57] Page narration sur le crescendo de conflit.
-                            Cette page a déjà été certainement utilisée avant.
                     TODO [EXEMPLE] Exemple de document complet présentant les évolutions du travail, avec la transformation des scènes-clés pour qu'elles découlent d'émotion et l'insertion des obstacles dans la structure.
             JP 070-083 [WORK 96] TR 4 sur STRT, PERS, DYNA, THEM, DOCU, (un dernier)
                 JP 070-071 TR4 sur la documentation DOCU
@@ -222,12 +220,9 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                 JP 074-075 TR4 sur l'analyse de film ANAF
                     [WORK 128] Travail d'analyse sur les caractéristiques de personnages, comment elles sont installées et comment elles sont exploitées.
                         [EXEMPLE 12] Exemple d'analyse de caractéristiques dans The Maze Runner
-                        TODO [EXEMPLE] Exemple d'analyse des caractéristiques avec Dancer in the Dark
-                JP 076-077 TR4 sur la structure STRT
-                    TODO [WORK] Travail sur la structure
-                    TODO [EXEMPLE] Exemple donné pour le travail précédent.
-                JP 078-079 TR4 sur la thématique THEM
-                    TODO [WORK] Travail sur les thèmes (peut-être un mélange entre personnage et thème)
+                        [EXEMPLE 13] Exemple d'analyse des caractéristiques avec Dancer in the Dark
+                JP 076-079 TR4 sur la structure STRT
+                    [WORK 137] 4 jours de travail sur les brins. Établissement de tous les brins du récit. TRAVAIL TRÈS IMPORTANT.
                     TODO [EXEMPLE] Exemple donné pour le travail précédent.
                 JP 080-081 TR4 sur la dynamique DYNA
                     TODO [WORK] Travail sur la dynamique
@@ -250,6 +245,8 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 133] Travail sur l'agenda des personnages.
                     [WORK 132][PAGE 61] Sur l'agenda des personnages.
                     TODO [EXEMPLE] Renvoyer aux exemples d'agenda des personnages.
+                    TODO [WORK] Travail sur les thèmes et les personnages, comment l'un et l'autre sont liés et développés.
+                    TODO [EXEMPLE] Exemple donné pour le travail précédent.
             JP 098-111 TR 5 sur DYNA et THEM
         JP 112-139 Second tour d'approfondissement
             JP 112-125 TR 7 sur STRT et PERS
