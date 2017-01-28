@@ -106,19 +106,20 @@ class AbsWork
     bit_res_destina   = type_resultat[1].to_i
     bit_res_exigence  = type_resultat[2].to_i
 
-    c = ""
+    c = String.new
     if bit_res_support > 0
       support   = Unan::SUPPORTS_RESULTAT[bit_res_support][1]
-      c << ("Support".in_span(class:'libelle') + support.in_span).in_span
+      c << ('Support'.in_span(class:'libelle') + support.in_span).in_span
     end
     if bit_res_destina > 0
+      debug "bit_res_destina : #{bit_res_destina}"
       destina   = Unan::DESTINATAIRES[bit_res_destina][1]
-      c << ("Destinataire".in_span(class:'libelle')+destina.in_span).in_span
+      c << ('Destinataire'.in_span(class:'libelle')+destina.in_span).in_span
     end
     if bit_res_exigence > 0
       if bit_res_exigence < 10
         exigence  = Unan::NIVEAU_DEVELOPPEMENT[bit_res_exigence][1]
-        c << ("Niveau de développement attendu".in_span(class:'libelle') + exigence.in_span).in_span
+        c << ('Niveau de développement attendu'.in_span(class:'libelle') + exigence.in_span).in_span
       else
         # ERREUR
         send_error_to_admin(

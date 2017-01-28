@@ -12,7 +12,7 @@ class CRON2
   # de façon assez sale. Maintenant, il faut le mettre ici et le régler
   # ici.
   #
-  FREQUENCE_RAPPORT_CONNEXIONS = :one_an_hour # :twice_a_day
+  FREQUENCE_RAPPORT_CONNEXIONS = :twice_a_day # :one_an_hour
 
   # = main =
   #

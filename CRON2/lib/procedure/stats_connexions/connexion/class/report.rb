@@ -80,16 +80,17 @@ class << self
   # Note : cette méthode n'est appelée qu'en ONLINE
   def send_report
     res = site.send_mail(
-      to:         site.mail,
-      from:       site.mail,
-      subject:    'Rapport de connexions',
-      message:    report,
-      formated:   true
+      to:           site.mail,
+      from:         site.mail,
+      subject:      'Rapport de connexions',
+      message:      report,
+      no_citation:  true,
+      formated:     true
     )
     if res === true
         CRON2::Histo.add(code: '20101')
     else
-      mess_err = ["# ERREUR EN TRANSMETTANT LE RAPPORT :"]
+      mess_err = ['# ERREUR EN TRANSMETTANT LE RAPPORT :']
       mess_err << res.message
       mess_err += res.backtrace
       mess_err = "    " + mess_err.join("\n    ")
@@ -124,14 +125,15 @@ class << self
     else
       # COPIER-COLLER EN OFFLINE LE CODE TRADUIT
       <<-CSS
-body{font-size:16.1pt}.fright{float:right}.small{font-size:.82em}.italic{font-style:italic}.explication{font-size:.92em;font-style:italic;margin-bottom:2em;margin-left:2em;color:#777;width:420px}.duree{font-family:courier;font-size:.7em}fieldset{width:540px;margin:0 0 2em 0}div.dataline{min-width:600px}div.dataline.mleft{margin-left:2em}div.dataline span.libelle{display:inline-block;width:400px}div.dataline span.value{display:inline-block;width:200px}div.user_div span.ip_user,div.user_div span.nombre_routes_user,div.user_div span.duree_connexion{display:inline-block}div.user_div span.ip_user{font-weight:bold;width:200px}div.user_div span.nombre_routes_user{width:100px}div.user_div span.duree_connexion{width:180px}div.user_div ul.user_routes_list li.user_route{margin-left:4em;font-size:14pt;width:420px;clear:both}div.user_div ul.user_routes_list li.user_route span.duree{float:right}ul#statistiques_route{width:420px}div.statistiques_ensemble div.data_ensemble{width:420px}div.statistiques_ensemble div.data_ensemble span.ensemble_name{font-weight:bold;display:inline-block;width:200px}div.statistiques_ensemble div.data_ensemble span.ensemble_nombre_routes{display:inline-block;width:120px}
+body{font-size:15.1pt;width:640px}.fright{float:right}.small{font-size:.82em}.italic{font-style:italic}.explication{font-size:.92em;font-style:italic;margin-bottom:2em;margin-left:2em;color:#777;width:420px}.duree{font-family:courier;font-size:.8em}fieldset{width:540px;margin:0 0 2em 0}div.dataline{min-width:600px}div.dataline.mleft{margin-left:2em}div.dataline span.libelle{display:inline-block;width:400px}div.dataline span.value{display:inline-block;width:200px}div.user_div span.ip_user,div.user_div span.nombre_routes_user,div.user_div span.duree_connexion{display:inline-block}div.user_div span.ip_user{font-weight:bold;width:200px}div.user_div span.nombre_routes_user{width:100px}div.user_div span.duree_connexion{width:180px}div.user_div ul.user_routes_list li.user_route{margin-left:4em;font-size:1em;width:420px;clear:both}div.user_div ul.user_routes_list li.user_route span.duree{float:right}ul#statistiques_route{width:420px}div.statistiques_ensemble div.data_ensemble{width:420px}div.statistiques_ensemble div.data_ensemble span.ensemble_name{font-weight:bold;display:inline-block;width:200px}div.statistiques_ensemble div.data_ensemble span.ensemble_nombre_routes{display:inline-block;width:120px}
       CSS
     end
   end
   def styles_sass
     <<-SASS
 body
-  font-size     : 16.1pt
+  font-size     : 15.1pt
+  width         : 640px
 .fright
   float         : right
 .small
@@ -147,7 +149,7 @@ body
   width         : 420px
 .duree
   font-family   : courier
-  font-size     : 0.7em
+  font-size     : 0.8em
 fieldset
   width         : 540px
   margin        : 0 0 2em 0
@@ -175,7 +177,7 @@ div.user_div
   ul.user_routes_list
     li.user_route
       margin-left     : 4em
-      font-size       : 14pt
+      font-size       : 1em
       width           : 420px
       clear           : both
       span.duree
