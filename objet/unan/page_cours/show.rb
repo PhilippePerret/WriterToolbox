@@ -87,6 +87,8 @@ class User
     # où sont consignées ses informations)
     upage = User::UPage.get(self, ipage.id)
     upage.add_lecture
-    upage.set_lue unless upage.lue?
+    # Soit la page est déjà marquée lue, soit il faut la marquer
+    # à lire.
+    upage.lue? || upage.set_lue
   end
 end #/User

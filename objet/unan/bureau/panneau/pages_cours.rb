@@ -25,6 +25,7 @@ when 'markvue'
   bureau.auteur.reset_current_pday
   flash "Page marquée vue, vous pouvez à présent la lire."
 when 'marklue'
+  debug "Je dois marquer la page ##{upage.id} comme lue"
   upage.set_lue
   # upage = User::UPage.new(bureau.auteur, param(:pid).to_i)
   bureau.auteur.reset_current_pday

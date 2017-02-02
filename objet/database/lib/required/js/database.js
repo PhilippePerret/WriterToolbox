@@ -68,7 +68,7 @@ $.extend(window.Database,{
       menu.html('');
       for(var i=0,len=tables.length;i<len;++i){
         var table = tables[i];
-        menu.append('<option value="'+table+'">'+table+'</option>')
+        menu.append('<option value="'+table+'" title="'+table+'">'+table+'</option>')
       }
       this.hide_outils_table();
     }

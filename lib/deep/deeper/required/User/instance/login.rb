@@ -69,7 +69,14 @@ class User
 
     proceed_login
 
-    flash 'Bienvenue, %s !' % pseudo
+    # Parfois, le message s'affiche plusieurs fois, j'utilise
+    # cette tentative pour essayer de l'empêcher
+    if @bienvenue_already_given
+      return
+    else
+      flash 'Bienvenue, %s !' % pseudo
+      @bienvenue_already_given = true
+    end
 
     # Si une méthode doit être appelée après le login, on
     # l'appelle.

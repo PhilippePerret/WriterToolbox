@@ -17,10 +17,10 @@ class UPage
 
   # Retourne true si la page a été marquée vue
   def vue?      ; exist? ? (status & BIT_VUE > 0) : false  end
-  def not_vue?  ; false == vue?         end
+  def not_vue?  ; !vue? end
   # Retourne true si la page a été marquée lue
   def lue?      ; exist? ? (status & BIT_LUE > 0) : false  end
-  def not_lue?  ; false == lue?         end
+  def not_lue?  ; !lue? end
   # Retourne true si la page se trouve dans la table des
   # matières de l'auteur
   def tdm?      ; exist? ? (status & BIT_TDM > 0) : false end

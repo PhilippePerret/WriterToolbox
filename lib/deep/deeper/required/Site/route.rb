@@ -200,7 +200,7 @@ class SiteHtml
 
     # Si rut commence par 'http' il faut retirer l'adresse
     # Note : cela se produit avec le programme UNAN
-    rut.start_with?('http') && rut.sub!(/#{site.url}\//,'')
+    rut.to_s.start_with?('http') && rut.sub!(/#{site.url}\//,'')
 
     # debug "rut après premier traitement : #{rut}"
 

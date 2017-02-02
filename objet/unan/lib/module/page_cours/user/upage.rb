@@ -68,11 +68,21 @@ class UPage
   #   Méthodes
   # ---------------------------------------------------------------------
   def add_lecture
-    debug "UPage#add_lecture"
-    debug "exist? #{exist?.inspect}"
-    create unless exist?
-    debug "exist? #{exist?.inspect}"
-    set(lectures: (lectures << NOW) )
+    exist? || create
+    lects = lectures || Array.new
+    if lects.instance_of?(Array)
+      lects << Time.now.to_i
+      debug "Données lectures pour la page ##{id} : #{lects.inspect}"
+      set(lectures: lects )
+    else
+      # Signaler le problème à l'administrateur
+      send_mail_to_admin(
+        subject:      'Erreur sur le programme UNAN',
+        message:      "<p>Impossible d'ajouter une lecture à la page #{id} : `lectures` devrait être un array, mais il est égal à #{lectures.inspect}::#{lectures.class}</p>",
+        formated:     true,
+        no_citation:  true
+      ) rescue nil
+    end
   end
 
   # L'auteur peut ajouter un commentaire personnel sur la page
