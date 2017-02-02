@@ -20,11 +20,15 @@ class AbsWork
   #   - travaux en cours (inachevés)
   #   - travaux récents
   #
+  # +options+ peut prendre les mêmes valeurs que pour la méthode
+  # `as_card_relative` avec notamment :as_recent qui est true si
+  # c'est pour l'affichage d'une page récemment lue.
+  #
   def as_card options = nil
     options ||= Hash.new
     options.key?(:auteur) || options.merge!(auteur: user)
     upage = User::UPage.new(options[:auteur], item_id)
-    upage.output_bureau( self )
+    upage.output_bureau(self, options)
   end
   # La carte relative est identique à la carte normale,
   # c'est à l'intérieur de la construction qu'on fait
@@ -45,13 +49,15 @@ class UPage
   # Affichage de la page de cours pour le bureau. C'est juste un
   # résumé de la page, avec un lien pour la voir entièrement et
   # des boutons pour la marquer vue, lue et terminée.
-  def output_bureau awork
+  def output_bureau awork, options = nil
+    options ||= Hash.new
+    as_recent = !!options[:as_recent]
     @awork = awork
     (
       titre_page        +
       resume_page       +
-      infos_temporelles +
-      boutons_page
+      (as_recent ? '' : infos_temporelles) +
+      (as_recent ? '' : boutons_page)
     ).in_div(id: "work-#{id}", class:'work page')
   end
 

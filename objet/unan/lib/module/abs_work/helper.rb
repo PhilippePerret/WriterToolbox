@@ -66,7 +66,8 @@ class AbsWork
   #
   # +options+
   #   :as_recent    Si TRUE, c'est pour un affichage comme
-  #                 travail effectué.
+  #                 travail effectué. Dans ce cas, on n'affiche pas
+  #                 la boite d'échéant.
   #
   def as_card_relative options = nil
     options ||= Hash.new
