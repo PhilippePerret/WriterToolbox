@@ -58,10 +58,8 @@ class Bureau
     chose = dname[:sing].downcase
     arr = auteur.works_undone(type)
     if arr.count > 0
-      debug "awork count : #{arr.count}"
       arr.collect do |awork|
         awork.id > 0 || begin
-          debug "Un awork d'ID 0 de classe #{awork.class} pour #{user.id} (#{user.pseudo})"
           next nil
         end
         awork.as_card(auteur: bureau.auteur)
@@ -88,7 +86,6 @@ class Bureau
       "<h4>#{dname[:plur]} récemment #{fini}s</h4>" +
       arr.collect do |awork|
         awork.id > 0 || begin
-          debug "Un awork d'ID 0 de classe #{awork.class} pour #{user.id} (#{user.pseudo})"
           next nil
         end
         awork.as_card_relative(auteur: bureau.auteur, as_recent: true)
@@ -100,9 +97,6 @@ class Bureau
 
   # /Fin des sections principales
   # ---------------------------------------------------------------------
-
-
-
 
 end #/Bureau
 end #/Unan

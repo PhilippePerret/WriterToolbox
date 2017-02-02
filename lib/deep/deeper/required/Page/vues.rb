@@ -37,7 +37,10 @@ class Page
     return if site.ajax?
     app.benchmark('-> Page#prebuild_body')
     body
-    app.session['last_route'] = route_courante unless site.current_route.nil?
+    site.current_route.nil? || begin
+      app.session['last_route'] = route_courante
+      debug "[Page#prebuild_body] app.session['last_route'] mis à #{app.session['last_route'].inspect}"
+    end
     app.benchmark('<- Page#prebuild_body')
   end
 

@@ -90,7 +90,7 @@ class Page
   def route_courante
     site.url +
     if site.current_route
-      site.current_route.route
+      "/#{site.current_route.route}"
     else
       ''
     end

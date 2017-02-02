@@ -226,8 +226,13 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 137] 4 jours de travail sur les brins. Établissement de tous les brins du récit. TRAVAIL TRÈS IMPORTANT.
                     TODO [EXEMPLE] Exemple donné pour le travail précédent.
                 JP 080-081 TR4 sur la dynamique DYNA
-                    TODO [WORK] Travail sur la dynamique
-                    TODO [EXEMPLE] Exemple de travail.
+                    [WORK 139] Éclaircissement des objectifs, motivation, enjeu et moyens.
+                    TODO [EXEMPLE] Exemple de travail sur film.
+                    TODO [EXEMPLE] Exemple de travail sur film.
+                    TODO [WORK][PAGE] Page sur Objectif
+                    TODO [WORK][PAGE] Page sur enjeu
+                    TODO [WORK][PAGE] Page sur motivation
+                    TODO [WORK][PAGE] Page sur moyen
                 JP 082-083 TR5 sur les personnages PERS
                     [WORK 107] Cohérence des personnages en s'appuyant sur le travail précédent sur l'histoire du point de vue des autres personnages.
     JP 084-139 APPROFONDISSEMENT DE L'HISTOIRE

@@ -25,7 +25,14 @@ class User
   # de l'user.
   # Note : Pour l'enregistrement de plusieurs variables en même temps,
   # utiliser la méthode `set_vars` ci-dessous.
-  def set_var var_name, var_value = nil
+  #
+  # Pour +options+, cf. N
+  def set_var var_name, var_value = nil, options = nil
+
+    options ||= Hash.new
+    options.key?(:unan) || options.merge!(unan: false)
+    vars_table = options[:unan] ? table_variables_unan : table_variables
+
     # Enregistrement de plusieurs variables d'un coup
     if var_name.instance_of?(Hash)
       if var_name.count > 1
@@ -45,11 +52,11 @@ class User
     h2save = var_real_to_hash2save( var_value )
 
     # Création ou update de la variable
-    if table_variables.count(where:{name: var_name}) == 0
+    if vars_table.count(where:{name: var_name}) == 0
       h2save.merge!(name: var_name)
-      table_variables.insert(h2save)
+      vars_table.insert(h2save)
     else
-      table_variables.set( {where:{name: var_name}}, h2save )
+      vars_table.set( {where:{name: var_name}}, h2save )
     end
   end
 
@@ -95,11 +102,15 @@ class User
   # NOTE IMPORTANTE : Les données (valeur de la clé) sont brutes,
   # sauf si +as_real_values+ est true (false par défaut, pour accélérer
   # la méthode, qui est surtout appelée pour `set_vars`)
-  def get_vars arr_var_names, as_real_values = false
+  def get_vars arr_var_names, as_real_values = false, options = nil
+    options ||= Hash.new
+    options.key?(:unan) || options.merge!(unan: false)
+    vars_table = options[:unan] ? table_variables_unan : table_variables
+
     hsaved = Hash.new
     arr_names = arr_var_names.collect{|n| "'#{n}'"}
     where = "name IN (#{arr_names.join(', ')})"
-    saved_vars = table_variables.select(where: where).each do |hvalue|
+    saved_vars = vars_table.select(where: where).each do |hvalue|
       # hvalue => {:id, :name, :value, :type}
       hsaved.merge!(hvalue[:name] => hvalue)
     end
@@ -116,21 +127,31 @@ class User
   # suis revenu à ça, même si c'est plus long. Noter que ça ne
   # posera jamais trop de problèmes puisqu'on a affaire à une
   # table qui ne concerne que l'user courant.
-  def set_vars hdata
+  def set_vars hdata, options = nil
     hdata.each do |var_name, var_value|
-      set_var(var_name, var_value)
+      set_var(var_name, var_value, options)
     end
   end
 
   # Récupérer la valeur de la variable `var_name` (qui peut avoir
   # n'importe quel type, String ou Symbol, mais sera toujours
   # recherché en String dans la table)
+  #
   # +default_value+ est la valeur par défaut qui sera retournée
   # si la valeur est nil. Noter que pour une valeur booléenne
   # false, il ne faut pas remplacer par la valeur par défaut,
   # sinon ça serait fait chaque fois qu'elle est fausse
-  def get_var var_name, default_value = nil
-    h = table_variables.get(where:{name: var_name.to_s})
+  #
+  # Options permet de définir, notamment, si on doit rechercher
+  # la variable dans la table pour le programme UNAN ou non
+  # (options[:unan] = true)
+  #
+  def get_var var_name, default_value = nil, options = nil
+    options ||= Hash.new
+    options.key?(:unan) || options.merge!(unan: false)
+    vars_table = options[:unan] ? table_variables_unan : table_variables
+
+    h = vars_table.get(where:{name: var_name.to_s})
     return default_value if h.nil?
     real_value = var_value_to_real( h )
     return real_value if h[:type] == 7

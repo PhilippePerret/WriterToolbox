@@ -5,6 +5,10 @@ class UPage
 
   # La méthode pour marquer une page vue est spéciale dans le
   # sens où elle doit :
+  #   - modifier le status de la page, c'est-à-dire, mettre
+  #     sa propriété `status` à la valeur voulue
+  #     Les valeurs sont définies dans :
+  #       ./objet/unan/lib/module/page_cours/user/state.rb
   #   - créer l'instance work qui la concerne (car marquer une page
   #     de cours "vue" correspond à démarrer le travail)
   def set_vue

@@ -112,7 +112,6 @@ class AbsWork
       c << ('Support'.in_span(class:'libelle') + support.in_span).in_span
     end
     if bit_res_destina > 0
-      debug "bit_res_destina : #{bit_res_destina}"
       destina   = Unan::DESTINATAIRES[bit_res_destina][1]
       c << ('Destinataire'.in_span(class:'libelle')+destina.in_span).in_span
     end

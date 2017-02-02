@@ -151,10 +151,16 @@ class SiteHtml
   #
   def redirect_to rut
     app.benchmark('-> SiteHtml#redirect_to')
+
+    # debug "[redirect_to] Redirection demandée : #{rut.inspect}"
+
     # Premier traitement : les raccourcis
     rut =
       case rut
-      when :last_page, :last_route
+      when :last_page, :last_route, :back
+        # debug "Dans redirect_to :"
+        # debug "app.session['last_route'] = #{app.session['last_route'].inspect}"
+        # debug "param(:redirect) = #{param(:redirect).inspect}"
         app.session['last_route'] || param(:redirect) || :home
       when :signin  then 'user/signin'
       when :signup  then 'user/signup'
@@ -192,13 +198,13 @@ class SiteHtml
       route_courante.nil? || debug("param(:backto) mis à #{route_courante.inspect}")
     end
 
-    # On reset complètement les valeurs __o etc. qui
-    # définissent les routes.
-    # OBSOLÈTE, normalement : fait juste après
-    # set_params_route
-
+    # Si rut commence par 'http' il faut retirer l'adresse
+    # Note : cela se produit avec le programme UNAN
+    rut.start_with?('http') && rut.sub!(/#{site.url}\//,'')
 
     # debug "rut après premier traitement : #{rut}"
+
+    # debug "[redirect_to] rut après traitement (sauf :home) : #{rut.inspect}"
 
     # Traitement réel de la route
     begin
@@ -214,6 +220,9 @@ class SiteHtml
       obj, obj_id, meth, cont = nil, nil, nil, nil
     end
     set_params_route obj, obj_id, meth, cont
+
+    # debug "[redirect_to] Exécution de la route obj:#{obj.inspect}, obj_id:#{obj_id.inspect}, meth:#{meth.inspect}, cont:#{cont.inspect}"
+
     execute_route
     app.benchmark('<- SiteHtml#redirect_to')
     return false # pour interrompre l'exécution précédente

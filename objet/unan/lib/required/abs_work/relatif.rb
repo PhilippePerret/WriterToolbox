@@ -325,10 +325,11 @@ class AbsWork
       end_h   = end_h.in_span(class: css.join(' '))
       "Il a débuté le #{start_h}<br>Il #{@doit} être achevé le #{end_h}."
     end
+
     def message_jours_restants_or_depassement
       @message_jours_restants_or_depassement ||= begin
         if depassement?
-          "Vous êtes en dépassement de <span class='exbig'>#{depassement.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
+          "Vous êtes en dépassement de <span class='exbig'>#{depassement.days.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
         else
           (
             'Reste'.in_span(class:'libelle va_bottom', style: 'margin-right:1em !important') +

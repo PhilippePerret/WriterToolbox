@@ -191,7 +191,7 @@ Dans ce cas, il faut utiliser le fait que l'instanciation se fait, dans la route
     class UnanAmin
       class Quiz
         def self.get quiz_id
-          Unan::Quiz::new(quiz_id)  # => Instance Unan::Quiz au lieu
+          Unan::Quiz.new(quiz_id)  # => Instance Unan::Quiz au lieu
                                     #    de UnanAdmin::Quiz
         end
       end
@@ -221,7 +221,7 @@ Mais il n'est pas indispensable que cette classe soit définie.
 
 Par exemple, une simple vue peut être appelée, sans aucune définition de classe, par :
 
-    chosesansclasse/savue
+    chosesansclasse/sauve
 
 … si le fichier suivant existe, c'est lui qui sera affiché :
 
