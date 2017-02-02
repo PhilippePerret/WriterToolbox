@@ -10,10 +10,19 @@ class PageCours
 
   # = main =
   #
-  # Méthode appelée (indirectement) par la fenêtre show.erb.
-  # Indirectement mais c'est la méthode principale, et elle
-  # est utilisée aussi bien pour les fichier Narration que
-  # pour les fichiers purement du programme UN AN.
+  # Méthode appelée par la fenêtre show.erb pour afficher
+  # une page de la collection Narration, quand elle est
+  # lue par une page de cours du programme UNAN.
+  #
+  # Elle peut être appelée soit directement, s'il s'agit d'une
+  # page de la collection narration, soit indirectement si
+  # c'est une page de cours (après avoir passé par la méthode
+  # `output`)
+  #
+  # La méthode ajoute une lecture à la page de cours.
+  # Mais noter qu'elle ne doit pas la marquer lue pour autant,
+  # une page pouvant être lue par fragment ou relue pendant plusieurs
+  # jours avant d'être marquée explicitement "lue" par l'apprenti.
   #
   # {String} Retourne le code HTML de la page en fonction
   # de son type (extension)
@@ -23,6 +32,15 @@ class PageCours
       lien_edit_page_cours = "Éditer la page cours UNAN ##{id}".in_a(href: "page_cours/#{id}/edit?in=unan_admin", target: :new)
       flash "Administrateur, cette page du programme UNAN redirige vers une page de la collection.<br>#{lien_edit_page_cours}"
     end
+
+    # Pour ajouter une lecture à la page
+    # Mais on s'assure que l'user courant suivent bien le programme
+    # car il peut s'agir d'un administrateur contrôlant la page ou
+    # visitant comme un autre user
+    user.unanunscript? && begin
+      User::UPage.new(user, self.id).add_lecture
+    end
+
     if narration?
       # Pour une page-cours faisant référence à un titre ou
       # une page narration

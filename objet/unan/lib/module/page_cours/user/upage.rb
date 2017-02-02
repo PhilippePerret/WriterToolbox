@@ -50,8 +50,12 @@ class UPage
   def lectures
     @lectures   ||= begin
       lecs = get(:lectures).nil_if_empty
-      lecs = '[]' if lecs == '0' # une erreur
-      JSON.parse(lecs || "[]", symbolize_names: true)
+      lecs != '0' || lecs = nil # une erreur
+      if lecs.nil?
+        Array.new
+      else
+        lecs.as_list_num_with_spaces
+      end
     end
   end
 
@@ -68,13 +72,13 @@ class UPage
   #   Méthodes
   # ---------------------------------------------------------------------
   def add_lecture
+    debug "-> add_lecture"
     exist? || create
-    lects = lectures || Array.new
+    lects = lectures
     if lects.instance_of?(Array)
       lects << Time.now.to_i
-      debug "Données lectures pour la page ##{id} : #{lects.inspect}"
-      set(lectures: lects )
-    else
+      set(lectures: lects.join(' ') )
+  else
       # Signaler le problème à l'administrateur
       send_mail_to_admin(
         subject:      'Erreur sur le programme UNAN',

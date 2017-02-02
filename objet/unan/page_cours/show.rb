@@ -6,7 +6,7 @@ Méthodes pour l'affichage de la page
 =end
 raise_unless user.unanunscript? || user.admin?
 
-Unan::require_module 'page_cours'
+Unan.require_module 'page_cours'
 
 class Unan
 class Program
@@ -27,15 +27,14 @@ class PageCours
     # Peut-être faut-il reconstruire la page, si elle a été
     # modifié dans un éditeur externe.
     rebuild_page_cours if page_out_of_date?
-    # Si c'est vraiment un auteur du programme qui visite, on
-    # lui enregistre cette lecture.
-    user_init_id != nil || user.add_lecture_page_cours(self)
+
     # Enfin, on peut renvoyer le texte de la page et son
     # titre pour affichage.
     titre.in_h2 + read.formate_balises_propres
+
   rescue Exception => e
     debug e
-    "[IMPOSSIBLE D'AFFICHER LA PAGE ##{id} - Elle ne semble pas exister (lire le débug)]"
+    "[IMPOSSIBLE D'AFFICHER LA PAGE : ##{id} : #{OFFLINE ? e.message : ''}]"
   ensure
     # On remet l'utilisateur initial (pour construire l'affichage courant
     # de la page, lorsque c'était un administrateur qui visitait la page
@@ -75,20 +74,3 @@ end #/Unan
 def page_cours
   @page_cours ||= Unan::Program::PageCours.get(site.current_route.objet_id)
 end
-
-class User
-  # Ajoute une lecture pour la page +ipage+ {Unan::Program::PageCours}
-  def add_lecture_page_cours ipage
-    # L'auteur n'a pas forcément d'enregistrement pour cette page,
-    # mais la méthode `add_lecture` le vérifie et crée la page s'il
-    # le faut (note : on parle bien du record pour l'user, pas de la
-    # page elle-même, qui doit exister. Mais pour chaque page de cours,
-    # on fait un enregistrement propre à l'user dans sa table 'pages_cours'
-    # où sont consignées ses informations)
-    upage = User::UPage.get(self, ipage.id)
-    upage.add_lecture
-    # Soit la page est déjà marquée lue, soit il faut la marquer
-    # à lire.
-    upage.lue? || upage.set_lue
-  end
-end #/User

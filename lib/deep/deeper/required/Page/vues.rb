@@ -39,7 +39,7 @@ class Page
     body
     site.current_route.nil? || begin
       app.session['last_route'] = route_courante
-      debug "[Page#prebuild_body] app.session['last_route'] mis à #{app.session['last_route'].inspect}"
+      # debug "[Page#prebuild_body] app.session['last_route'] mis à #{app.session['last_route'].inspect}"
     end
     app.benchmark('<- Page#prebuild_body')
   end

@@ -3,11 +3,20 @@
 #
 %>
 <% if page_cours.narration? %>
-  <%= page_cours.read %>
+  <%=
+
+    page_cours.read
+
+    %>
 <% else %>
   <%= Unan.titre_h1 %>
   <% if user.admin? || OFFLINE %>
     <%= page_cours.link(titre:"[Admin: Éditer page ##{page_cours.id}]", edit: true).in_div(class:'small fright right') %>
   <% end %>
-  <%= page_cours.output %>
+
+  <%=
+
+    page_cours.output
+
+    %>
 <% end %>
