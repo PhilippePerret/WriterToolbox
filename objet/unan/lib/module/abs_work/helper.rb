@@ -53,7 +53,7 @@ class AbsWork
       ).in_div(class:'titre') +
       form_pour_marquer_started_or_fini(started = false) +
       div_travail + # avec exemples et pages cours
-      span_resultat +
+      div_resultat +
       autres_infos_travail(params[:from]) +
       buttons_edit
     ).in_div(id: "work-#{id}", class:classes_css.join(' '))
@@ -108,18 +108,18 @@ class AbsWork
     bit_res_exigence  = type_resultat[2].to_i
 
     c = String.new
-    if bit_res_support > 0
-      support   = Unan::SUPPORTS_RESULTAT[bit_res_support][1]
-      c << ('Support'.in_span(class:'libelle') + support.in_span).in_span
-    end
     if bit_res_destina > 0
       destina   = Unan::DESTINATAIRES[bit_res_destina][1]
-      c << ('Destinataire'.in_span(class:'libelle')+destina.in_span).in_span
+      c << ('Destinataire : '.in_span(class:'libelle')+destina.in_span).in_span
+    end
+    if bit_res_support > 0
+      support   = Unan::SUPPORTS_RESULTAT[bit_res_support][1]
+      c << ('support : '.in_span(class:'libelle') + support.in_span).in_span
     end
     if bit_res_exigence > 0
       if bit_res_exigence < 10
         exigence  = Unan::NIVEAU_DEVELOPPEMENT[bit_res_exigence][1]
-        c << ('Niveau de développement attendu'.in_span(class:'libelle') + exigence.in_span).in_span
+        c << ('développement : '.in_span(class:'libelle') + exigence.in_span).in_span
       else
         # ERREUR
         send_error_to_admin(
@@ -128,7 +128,7 @@ class AbsWork
         )
       end
     end
-    return c
+    return c.in_div
   end
 
   # ---------------------------------------------------------------------
@@ -214,35 +214,31 @@ class AbsWork
 
   # Les détails de la tâche
   #
-  # TODO C'est certainement ici qu'il faudra traiter le fait
-  # qu'un travail peut être une lecture de page de la collection
-  # narration. OU REVENIR EN ARRIÈRE et créer vraiment une page
-  # de cours quand c'est une page de la collection Narration,
-  # pour qu'elle apparaisse à côté.
   def details_tache
     return '' if rwork.completed?
     (
-      span_type_tache +
-      span_resultat
+      div_type_tache +
+      div_resultat
     ).in_div(class:'details')
   end
 
   # Retourne la section contenant les exemples s'ils existent
   def section_exemples
-    return "" if exemples.empty?
+    return '' if exemples.empty?
     exemples_ids.collect do |eid|
       "Exemple ##{eid}".in_a(href:"exemple/#{eid}/show?in=unan", target:'_exemple_work_').in_span
     end.join.in_div(class:'exemples')
   end
 
-  def span_type_tache
-    ("Type".in_span(class:'libelle') + human_type_w.in_span).in_span
+  def div_type_tache
+    ('Type : '.in_span(class:'libelle') + human_type_w.in_span).in_div(class: 'petit_air_autour')
   end
-  def span_resultat
+  def div_resultat
     return '' if resultat.empty?
-    c = ''
-    c << 'Résultat'.in_span(class:'libelle') +
-    c << (resultat + human_type_resultat).in_div(class:'retrait2')
+    c = String.new
+    c << 'Résultat attendu'.in_span(class:'libelle')
+    c << resultat.in_div(class:'petit_air_autour retrait4')
+    c << human_type_resultat
     return c.in_div(class:'retrait4 cadre', style:'margin-bottom:4em')
   end
 
@@ -253,14 +249,14 @@ class AbsWork
   def div_travail
     item_link = if item_id
       chose, human_chose = case true
-      when page_cours?  then ['page_cours', "la page de cours"]
-      when quiz?        then ['quiz', "le questionnaire"]
-      when forum?       then ['forum', "le message forum"]
-      else ['task', "tâche"]
+      when page_cours?  then ['page_cours', 'la page de cours']
+      when quiz?        then ['quiz', 'le questionnaire']
+      when forum?       then ['forum', 'le message forum']
+      else ['task', 'tâche']
       end
       " (voir #{human_chose} ##{item_id})".in_a(href:"#{chose}/#{item_id}/show?in=unan", target:"_show_#{chose}_")
     else
-      ""
+      ''
     end
     (
       travail.in_div(class:'travail') +
@@ -277,7 +273,7 @@ class AbsWork
     return '' if exemples_ids.empty?
 
     (
-      "Exemples :".in_span(class:'libelle') +
+      'Exemples :'.in_span(class:'libelle') +
       exemples_ids.collect do |exid|
         "Exemple ##{exid}".in_a(href:"exemple/#{exid}/show?in=unan")
       end.pretty_join
@@ -305,9 +301,9 @@ class AbsWork
   def autres_infos_travail from = nil
     s_duree = duree > 1 ? "s" : ""
     first_infos = [
-      ["Type projet", type_projet[:hname],      nil],
-      ["Sujet",       human_narrative_target,   nil],
-      ["Points",      points,                   nil]
+      ['Type projet', type_projet[:hname],      nil],
+      ['sujet',       human_narrative_target,   nil],
+      ['points',      points,                   nil]
     ].collect do |libelle, valeur, unite|
       ("#{libelle} :".in_span(class:'libelle') + "#{valeur}#{unite}").in_span(class:'info')
     end.compact.join
@@ -319,14 +315,21 @@ class AbsWork
   end
   # +from+ Cf. l'explication dans la méthode principale `as_card`
   def infos_durees_travail from = nil
-    s_duree = duree > 1 ? "s" : ""
-    pars = [["Durée", duree, "&nbsp;p-jour#{s_duree}"]]
-    unless from.nil?
-      pars << ["PDays travaillés", from , ""]
-      pars << ["PDays restant", duree - from, ""]
+    pars = Array.new
+    s_duree = duree > 1 ? 's' : ''
+    if user.program && user.program.rythme != 5
+      duree_reelle = user.program.pduree2rduree(duree)
+      pars << ['durée', duree, "&nbsp;jr#{s_duree}-programme"]
+      pars << ['durée réelle', duree_reelle]
+    else
+      pars << ['durée', duree, "&nbsp;jour#{s_duree}"]
+    end
+    from.nil? || begin
+      pars << ['pdays travaillés', from ]
+      pars << ['pdays restant', duree - from]
     end
     pars.collect do |libelle, valeur, unite|
-      ("#{libelle} :".in_span(class:'libelle') + "#{valeur}#{unite}").in_span(class:'info')
+      ("#{libelle} : ".in_span(class:'libelle') + "#{valeur}#{unite || ''}").in_span(class:'info')
     end.join
   end
   def buttons_edit

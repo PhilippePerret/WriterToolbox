@@ -1,5 +1,6 @@
 * Poursuivre les travaux jour 80
-* Faire l'agenda des personnages en exemple.
+* Pour le jour 87, faire l'étape où on essaie d'approfondir la structure de façon générale.
+* Voir où mettre création des styles pour faire le scénier du projet. Note : ça doit être une grosse étape à bien marquer pour dire qu'on aborde un document très important qui sera le guide de voyage du projet.
 
 WORK 137 (BRINS)
   - Dire de faire un document appelé "BRINS-<DATE INVERSE>" (en respectant les capitales)

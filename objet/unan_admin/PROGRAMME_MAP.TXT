@@ -91,7 +91,7 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
     [WORK 21] Établissement de la structure
     [WORK 82] Développement des personnages
 
-    JP 028-084 BRAINSTORMINGS ET PREMIÈRES ÉBAUCHES
+    JP 028-083 BRAINSTORMINGS ET PREMIÈRES ÉBAUCHES
         Dans cette partie, il va s'agir de préparer le terrain de l'histoire. On va commencer sur la spirale de développement en faisant un tour des documents principaux.
         JP 028-055 [WORK 95] BRAINSTORMING
             Phase de brainstorming sur le projet.
@@ -245,6 +245,10 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                         - Fiche de la structure (PFA).
                     TODO [WORK] faire la fiche structure du récit
                     TODO [EXEMPLE] Renvoyer aux exemples de fiches contenues dans le recueil.
+                    JP 084-087
+                        [WORK 140] Relecture complète de tous les documents pour faire du propre.
+                        [WORK 141] Création d'une todo liste.
+                        TODO [EXEMPLE] Exemple de todo liste.
                 JP 091-097 TR 6 sur PERS
                     [WORK 135] 1er tour d'approfondissement des personnages
                         Description générale du travail qui va devoir être exécuté.

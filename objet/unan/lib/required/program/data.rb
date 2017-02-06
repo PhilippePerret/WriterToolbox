@@ -53,12 +53,6 @@ class Program
   # ---------------------------------------------------------------------
   def auteur        ; @auteur ||= User.get(auteur_id)  end
 
-  # Coefficient de durée du jour-programme du programme courant
-  # @usage : On MULTIPLIE la durée réelle par ce nombre pour
-  # obtenir la durée-programme.
-  #     DURÉE_PROGRAMME = DURÉE_RÉELLE * coefficient_duree
-  # =>  DURÉE_RÉELLE    = DURÉE_PROGRAMME.to_f / coefficient_duree
-  def coefficient_duree ; @coefficient_duree ||= 5.0 / rythme end
 
 end # /Program
 end # /Unan

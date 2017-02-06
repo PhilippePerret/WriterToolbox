@@ -83,14 +83,6 @@ class ::Fixnum
     self.to_f.as_tarif
   end
 
-  # Retourne le nombre comme une durée en jours,
-  # avec "jour(s) à la fin"
-  def as_jours
-    nombre_jours = self / DUREE_JOUR
-    s = nombre_jours > 1 ? "s" : ""
-    "#{nombre_jours} jour#{s}"
-  end
-  alias :as_jour :as_jours
 
   # Méthode qui retourne le temps en jours (et heures) s'il
   # fait plus d'un jour et en heures dans le cas contraire
@@ -148,15 +140,40 @@ class ::Fixnum
 
   def as_duree options = nil
     options ||= Hash.new
-    options[:usec] ||= "\""
-    options[:umin] ||= "'"
-    options[:uhour] ||= "h"
-    options[:ujour] = "jour" unless options.has_key?(:ujour)
+    options[:usec] ||= '"'
+    options[:umin] ||= '\''
+    options[:uhour] ||= 'h'
+    options.key?(:ujour) || options[:ujour] = 'jour'
     self.s2h(options)
   end
 
+  # Retourne le nombre comme une durée en jours,
+  # avec "jour(s) à la fin" et peut-être une indication de la
+  # portion de jour.
+  def as_jours with_hours = true
+    nombre_jours = self / DUREE_JOUR
+    reste = self % DUREE_JOUR
+    ajout_heures = ''
+    if with_hours
+      nombre_heures = reste / 3600
+      nombre_heures == 0 || begin
+        ajout_heures = "#{nombre_heures} hr"
+        nombre_heures > 1 && ajout_heures += 's'
+      end
+    end
+    if nombre_jours > 0
+      s = nombre_jours > 1 ? 's' : ''
+      ajout_heures == '' || ajout_heures = ",&nbsp;#{ajout_heures}"
+      "#{nombre_jours}&nbsp;jr#{s}#{ajout_heures}"
+    else
+      ajout_heures
+    end
+  end
+  alias :as_jour :as_jours
+
+
   def as_horloge
-    self.s2h(usec: "", umin: ":", uhour: ":", hour_required: true)
+    self.s2h(usec: '', umin: ':', uhour: ':', hour_required: true)
   end
 
   # +options+
