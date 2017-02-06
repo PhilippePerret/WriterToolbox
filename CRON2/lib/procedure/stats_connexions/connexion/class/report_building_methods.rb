@@ -162,7 +162,7 @@ class << self
       div_user << dip.routes.sort_by{|iroute| - iroute.duree_reelle}.collect do |iroute|
         (
           iroute.duree_reelle.as_horloge.in_span(class: 'duree') +
-          iroute.route
+          iroute.linked_route
         ).in_li(class: 'user_route')
       end.join.in_ul(class: 'user_routes_list')
       s << div_user.in_div(class: 'user_div')
@@ -192,7 +192,7 @@ class << self
       duree_min_nb_routes = ''
     end
 
-    
+
     stats_particuliers =
       resline('Nombre de particuliers (routes > 1)', nombre_more_one_route) +
       resline('Durée moyenne de connexion', duree_moy) +
@@ -218,6 +218,8 @@ class << self
         dip.particulier? || next
         dip.routes.each do |iroute|
           # Est-ce que cette route fait partie d'un ensemble ?
+          # (un "ensemble", c'est la collection Narration, ou
+          # le scénodico, etc.)
           if iroute.ensemble != nil
             @per_ensemble.key?(iroute.ensemble) || begin
               @per_ensemble.merge!(iroute.ensemble => {duree: 0, routes: Array.new})
@@ -225,10 +227,10 @@ class << self
           end
           @routes.key?(iroute.route) || begin
             # Une route pas encore connue
-            @routes.merge!(iroute.route => 0)
+            @routes.merge!(iroute.route => {iroute: iroute, duree: 0})
           end
           # On ajoute la durée à cette route
-          @routes[iroute.route] += iroute.duree_reelle
+          @routes[iroute.route][:duree] += iroute.duree_reelle
           if iroute.ensemble != nil
             @per_ensemble[iroute.ensemble][:routes] << iroute.route
           end
@@ -237,10 +239,12 @@ class << self
 
       # On bouche maintenant sur toutes les routes
       s <<
-        @routes.sort_by{|r, d| - d}.collect do |route, duree|
+        @routes.sort_by{|r, h| - h[:duree]}.collect do |route, hdata|
+          iroute = hdata[:iroute]
+          duree  = hdata[:duree]
           (
             duree.as_horloge.in_span(class: 'duree fright') +
-            route.in_span(class: 'route')
+            iroute.linked_route.in_span(class: 'route')
           ).in_li(class: 'liroute')
         end.join.in_ul(id: 'statistiques_route')
 
@@ -255,7 +259,7 @@ class << self
     # On commence par calculer la durée de chaque ensemble
     @per_ensemble.each do |ensemble_id, densemble|
       densemble[:routes].each do |route|
-        densemble[:duree] += @routes[route]
+        densemble[:duree] += @routes[route][:duree]
       end
     end
 

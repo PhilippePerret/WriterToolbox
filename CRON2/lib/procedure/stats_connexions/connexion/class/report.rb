@@ -44,9 +44,9 @@ class << self
   # Méthode principale de construction du rapport de connexions
   def build_report
     @report = String.new
+    report_multi_connexions # connexions > 1, hors search engine
     report_statistiques_generales
     report_statistiques_ensembles
-    report_multi_connexions # connexions > 1, hors search engine
     report_statistiques_routes
   end
 
@@ -83,7 +83,7 @@ class << self
       to:           site.mail,
       from:         site.mail,
       subject:      'Rapport de connexions',
-      message:      report,
+      message:      "<iframe srcdoc=\"#{report.gsub(/"/,'\\"')}\"></iframe>",
       no_citation:  true,
       formated:     true
     )
