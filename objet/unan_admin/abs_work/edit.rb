@@ -194,7 +194,28 @@ class AbsWork
 
       # Si le parent est défini, il doit exister
       if data[:parent] != nil
-        raise "Le travail-parent ##{data[:parent]} doit absolument exister." unless Unan::Program::AbsWork::exist?( data[:parent] )
+        Unan::Program::AbsWork::exist?( data[:parent] ) || raise("Le travail-parent ##{data[:parent]} doit absolument exister.")
+      end
+
+      # Si l'item_id est défini, il doit être unique
+      if data[:item_id] != nil
+        request = {
+          where: "item_id IS NOT NULL",
+          colonnes:[:item_id]
+        }
+        Unan.table_absolute_works.select(request).each do |hw|
+          hw[:item_id] == data[:item_id] || next
+          # Si c'est le même travail que celui qu'on est en train
+          # de traiter, on s'en retourne
+          hw[:id] == data[:id] && next
+          # Si on passe ici, c'est qu'un item_id identique a été trouvé
+          # TODO Pour le lien ci-dessous, ça pourra poser des problèmes
+          # lorsque item_id sera utilisé pour autre chose que des pages
+          # de cours.
+          linked_item = "##{data[:item_id]}".in_a(href: "page_cours/#{data[:item_id]}/edit?in=unan_admin", target: :new)
+          linked_work = "##{hw[:id]}".in_a(href:"abs_work/#{hw[:id]}/edit?in=unan_admin", target: :new)
+          raise "L'item_id ##{linked_item} est déjà employé par le travail #{linked_work}. Il ne peut pas être employé pour celui-ci."
+        end
       end
     rescue Exception => e
       error e.message
