@@ -51,14 +51,26 @@ class << self
   end
 
   # Finalisation du rapport, i.e. entête complet HTML
+  #
+  # Noter que ça n'est pas le rapport qui est envoyé par mail,
+  # c'est celui qui est enregistré dans le fichier et qui
+  # permet notamment de vérifier le rapport en offline.
+  attr_reader :report_html
   def finalise_report
+
+    # On ajoute les styles
     @report = <<-HTML
+<style type="text/css">#{styles_css}</style>
+<section id="rapport">#{report}</section>
+    HTML
+
+    # On met dans un gabarit HTML entier.
+    @report_html = <<-HTML
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>RAPPORT CONNEXIONS - #{Time.now}</title>
-    <style type="text/css">#{styles_css}</style>
   </head>
   <body>#{@report}</body>
 </html>
@@ -72,7 +84,7 @@ class << self
 
   # Enregistre le rapport dans un fichier
   def save_report
-    report_path.write report
+    report_path.write report_html
   end
 
   # Envoi le rapport à l'administration
@@ -83,7 +95,7 @@ class << self
       to:           site.mail,
       from:         site.mail,
       subject:      'Rapport de connexions',
-      message:      "<iframe srcdoc=\"#{report.gsub(/"/,'\\"')}\"></iframe>",
+      message:      report,
       no_citation:  true,
       formated:     true
     )
@@ -131,9 +143,11 @@ body{font-size:15.1pt;width:640px}.fright{float:right}.small{font-size:.82em}.it
   end
   def styles_sass
     <<-SASS
-body
-  font-size     : 15.1pt
+section#rapport
   width         : 640px
+section#rapport, section#rapport *
+  font-size     : 15.1pt
+
 .fright
   float         : right
 .small
