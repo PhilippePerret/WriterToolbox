@@ -328,13 +328,19 @@ sup {
 <li><a href="#lestextes">Les Textes</a>
 
 <ul>
+<li>Lien et références
+
+<ul>
+<li><a href="#referenceversautrelivre">Référence à un autre livre (sans page)</a></li>
+<li><a href="#placerunereferenceaautrepage">Référence vers autre page</a></li>
 <li><a href="#obtenirbalisesverschoses">Obtenir des balises vers film, livre, mot, etc.</a></li>
 <li><a href="#lienversancre">Lien vers ancre dans fichier</a></li>
+</ul>
+</li>
 <li><a href="#notesdebasdepage">Notes types notes de bas de page</a></li>
 <li><a href="#environnementsdocuments">Les environnements documents</a></li>
 <li><a href="#listedequestionspourcheckup">Liste des questions des CHECKUPS</a></li>
 <li><a href="#lesexemplesdulivreexemples">Les exemples du livre exemples</a></li>
-<li><a href="#placerunereferenceaautrepage">Référence vers autre page</a></li>
 <li><a href="#portionsrelecture">Indiquer des portions en relecture</a></li>
 <li><a href="#insererunecitation">Insérer une citation dans le texte</a></li>
 <li><a href="#lestextestypes">Textes types</a></li>
@@ -488,6 +494,37 @@ Optionnellement on peut ajouter :
 
 <pre><code>
 EXEMPLE[synopsis/Thelma_et_Louise_v1.md]
+</code></pre>
+
+<p><a name='referenceversautrelivre'></a></p>
+
+<h2>Référence à un autre livre (sans page)</h2>
+
+<p>Quand on doit faire référence à un livre sans mentionner une page particulière, on peut utiliser les raccourcis :</p>
+
+<pre><code>
+  &lt;%= lien.livre_&amp;lt;id du livre&amp;gt;
+</code></pre>
+
+<p>La liste des livres est la suivante :</p>
+
+<pre><code>
+  lien.livre_structure
+  lien.livre_personnages
+  lien.livre_dynamique
+  lien.livre_thematique
+  lien.livre_documents
+  lien.livre_auteur       lien.livre_travail_auteur
+  lien.livre_procedes
+  lien.livre_concepts
+  lien.livre_analyse
+  lien.livre_exemples
+</code></pre>
+
+<p>On peut modifier le titre par défaut en le donnant en premier argument :</p>
+
+<pre><code>
+  &lt;%= lien.livre_exemples('Des exemples de documents') %&gt;
 </code></pre>
 
 <p><a name='placerunereferenceaautrepage'></a></p>

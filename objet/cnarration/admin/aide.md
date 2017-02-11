@@ -9,13 +9,15 @@
   * [Check des pages “out” des TDMs](#checkdespagesout)
   * [Création d'une nouvelle page](#creationdunenouvellepage)
 * [Les Textes](#lestextes)
-  * [Obtenir des balises vers film, livre, mot, etc.](#obtenirbalisesverschoses)
-  * [Lien vers ancre dans fichier](#lienversancre)
+  * Lien et références
+    * [Référence à un autre livre (sans page)](#referenceversautrelivre)
+    * [Référence vers autre page](#placerunereferenceaautrepage)
+    * [Obtenir des balises vers film, livre, mot, etc.](#obtenirbalisesverschoses)
+    * [Lien vers ancre dans fichier](#lienversancre)
   * [Notes types notes de bas de page](#notesdebasdepage)
   * [Les environnements documents](#environnementsdocuments)
   * [Liste des questions des CHECKUPS](#listedequestionspourcheckup)
   * [Les exemples du livre exemples](#lesexemplesdulivreexemples)
-  * [Référence vers autre page](#placerunereferenceaautrepage)
   * [Indiquer des portions en relecture](#portionsrelecture)
   * [Insérer une citation dans le texte](#insererunecitation)
   * [Textes types](#lestextestypes)
@@ -162,6 +164,43 @@ Par exemple, justement pour le synopsis de Thelma & Louise :
 ~~~
 
 EXEMPLE[synopsis/Thelma_et_Louise_v1.md]
+
+~~~
+
+<a name='referenceversautrelivre'></a>
+
+## Référence à un autre livre (sans page)
+
+Quand on doit faire référence à un livre sans mentionner une page particulière, on peut utiliser les raccourcis :
+
+~~~
+
+  <%= lien.livre_&lt;id du livre&gt;
+
+~~~
+
+La liste des livres est la suivante :
+
+~~~
+
+  lien.livre_structure
+  lien.livre_personnages
+  lien.livre_dynamique
+  lien.livre_thematique
+  lien.livre_documents
+  lien.livre_auteur       lien.livre_travail_auteur
+  lien.livre_procedes
+  lien.livre_concepts
+  lien.livre_analyse
+  lien.livre_exemples
+
+~~~
+
+On peut modifier le titre par défaut en le donnant en premier argument :
+
+~~~
+
+  <%= lien.livre_exemples('Des exemples de documents') %>
 
 ~~~
 
