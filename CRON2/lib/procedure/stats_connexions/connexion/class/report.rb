@@ -133,13 +133,33 @@ class << self
     if OFFLINE
       require 'sass'
       data_compilation = { line_comments: false, syntax: :sass, style: :compressed }
-      return Sass.compile( styles_sass, data_compilation )
-    else
-      # COPIER-COLLER EN OFFLINE LE CODE TRADUIT
-      <<-CSS
-body{font-size:15.1pt;width:640px}.fright{float:right}.small{font-size:.82em}.italic{font-style:italic}.explication{font-size:.92em;font-style:italic;margin-bottom:2em;margin-left:2em;color:#777;width:420px}.duree{font-family:courier;font-size:.8em}fieldset{width:540px;margin:0 0 2em 0}div.dataline{min-width:600px}div.dataline.mleft{margin-left:2em}div.dataline span.libelle{display:inline-block;width:400px}div.dataline span.value{display:inline-block;width:200px}div.user_div span.ip_user,div.user_div span.nombre_routes_user,div.user_div span.duree_connexion{display:inline-block}div.user_div span.ip_user{font-weight:bold;width:200px}div.user_div span.nombre_routes_user{width:100px}div.user_div span.duree_connexion{width:180px}div.user_div ul.user_routes_list li.user_route{margin-left:4em;font-size:1em;width:420px;clear:both}div.user_div ul.user_routes_list li.user_route span.duree{float:right}ul#statistiques_route{width:420px}div.statistiques_ensemble div.data_ensemble{width:420px}div.statistiques_ensemble div.data_ensemble span.ensemble_name{font-weight:bold;display:inline-block;width:200px}div.statistiques_ensemble div.data_ensemble span.ensemble_nombre_routes{display:inline-block;width:120px}
+      code_css = Sass.compile( styles_sass, data_compilation )
+      styles_css_file.write <<-CSS
+/*
+ *
+ * Ce code est généré automatiquement en lançant le fichier
+ * test ./spec/unit/cron/connexions/generate_report_spec.rb
+ *
+ * Pour modifier ce code, modifier le code SASS plus bas.
+ *
+ * Ce fichier doit être actualisé ONLINE après modification
+ * en local.
+ */
+#{code_css}
       CSS
+      return code_css
+    else
+      if styles_css_file.exist?
+        styles_css_file.read
+      else
+        <<-CSS
+body{font-size:15.1pt;width:640px}.fright{float:right}.small{font-size:.82em}.italic{font-style:italic}.explication{font-size:.92em;font-style:italic;margin-bottom:2em;margin-left:2em;color:#777;width:420px}.duree{font-family:courier;font-size:.8em}fieldset{width:540px;margin:0 0 2em 0}div.dataline{min-width:600px}div.dataline.mleft{margin-left:2em}div.dataline span.libelle{display:inline-block;width:400px}div.dataline span.value{display:inline-block;width:200px}div.user_div span.ip_user,div.user_div span.nombre_routes_user,div.user_div span.duree_connexion{display:inline-block}div.user_div span.ip_user{font-weight:bold;width:200px}div.user_div span.nombre_routes_user{width:100px}div.user_div span.duree_connexion{width:180px}div.user_div ul.user_routes_list li.user_route{margin-left:4em;font-size:1em;width:420px;clear:both}div.user_div ul.user_routes_list li.user_route span.duree{float:right}ul#statistiques_route{width:420px}div.statistiques_ensemble div.data_ensemble{width:420px}div.statistiques_ensemble div.data_ensemble span.ensemble_name{font-weight:bold;display:inline-block;width:200px}div.statistiques_ensemble div.data_ensemble span.ensemble_nombre_routes{display:inline-block;width:120px}
+        CSS
+      end
     end
+  end
+  def styles_css_file
+    @styles_css_file ||= SuperFile.new("#{THIS_FOLDER}lib/procedure/stats_connexions/connexion/class/report.css")
   end
   def styles_sass
     <<-SASS
