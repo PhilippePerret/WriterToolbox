@@ -10,7 +10,7 @@ class Work
   def abs_work_id ; @abs_work_id  ||= get(:abs_work_id) end
   def abs_pday    ; @abs_pday     ||= get(:abs_pday)    end
   def status      ; @status       ||= get(:status)||0   end
-  def options     ; @options      ||= get(:options)||"" end
+  def options     ; @options      ||= get(:options)||'' end
   def ended_at    ; @ended_at     ||= get(:ended_at)    end
   def created_at  ; @created_at   ||= get(:created_at)  end
   def updated_at  ; @updated_at   ||= get(:updated_at)  end

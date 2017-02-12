@@ -75,7 +75,7 @@ class AbsWork
     (
       nombre_de_points +
       "#{titre}".in_div(class:'titre')      +
-      "#{travail}".in_div(class:'travail')  +
+      "#{travail_formated}".in_div(class:'travail')  +
       (as_recent ? '' : rwork.div_echeance)                    +
       (as_recent ? '' : form_pour_marquer_started_or_fini)     +
       details_tache                         +
@@ -246,6 +246,11 @@ class AbsWork
   #   Méthodes d'helper pour `as_card`
   # ---------------------------------------------------------------------
 
+  # ATTENTION !!! Cette méthode ne sert absolument pas à afficher
+  # la carte pour l'auteur UNAN. Elle sert pour l'administration.
+  # Pour voir la carte affichée pour l'auteur, voir la méthode
+  # `as_card_relative`
+  # 
   def div_travail
     item_link = if item_id
       chose, human_chose = case true
@@ -258,12 +263,17 @@ class AbsWork
     else
       ''
     end
+
     (
-      travail.in_div(class:'travail') +
+      travail_formated.in_div(class:'travail') +
       item_link                       +
       div_exemples    +
       div_pages_cours
     ).in_div(class:'details')
+  end
+
+  def travail_formated
+    @travail_formated ||= travail.formate_balises_propres
   end
 
   # Retourne le code HTML pour le div contenant les exemples,

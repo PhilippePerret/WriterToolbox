@@ -160,13 +160,14 @@ class AbsWork
       @duree_secondes_real ||= duree_secondes.as_real_duree(coef_duree)
     end
 
-    # {Fixnum} Timestamp (secondes) du démarrage du travail (pas pris
-    # dans la donnée Work mais pris par rapport aux indices de
-    # jour-programme et au jour-programme de l'user)
+    # {Fixnum} Timestamp (secondes) du démarrage du travail
+    # Pris vraiment dans le created_at de la donnée work, car
+    # ne fonctionnait pas, avant, avec le Today.start etc.
     def started_at
       @started_at ||= begin
         if work_relatif?
-          (Today.start - diff_jours_real.days)
+          # (Today.start - diff_jours_real.days)
+          work.created_at
         else
           '- Non défini -'
         end
