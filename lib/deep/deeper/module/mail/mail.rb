@@ -9,7 +9,7 @@ class SiteHtml
   def table_citations
     @table_citations ||= dbm_table(:biblio, 'citations')
   end
-  
+
   # Envoi d'un mail
   # @usage
   #   site.send_mail({
@@ -60,7 +60,7 @@ module MailModuleMethods
       when FalseClass, TrueClass, Fixnum then v
       else
         v = v.strip if v.respond_to?(:strip)
-        v == "" ? nil : v
+        v == '' ? nil : v
       end
       instance_variable_set("@#{k}", v)
     end unless data.nil?
@@ -160,7 +160,7 @@ module MailModuleMethods
   def header
     @data[:no_header] && (return '')
     if get_class(:header).nil?
-      set_class(:header, SiteHtml::Mail.respond_to?(:header) ? SiteHtml::Mail.header : "" )
+      set_class(:header, SiteHtml::Mail.respond_to?(:header) ? SiteHtml::Mail.header : '' )
     end
     get_class :header
   end
@@ -173,7 +173,7 @@ module MailModuleMethods
   end
 
   def signature
-    return "" if @signature === false # in data
+    return '' if @signature === false # in data
     set_class(:signature, (site.mail_signature ? site.mail_signature.in_span(id:'signature') : "")) if get_class(:signature).nil?
     get_class :signature
   end

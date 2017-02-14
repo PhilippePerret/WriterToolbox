@@ -1,5 +1,10 @@
 <%
 # Entête des messages mail
+#
+# Attention, si no_citation est utilisé en options des mails,
+# ce n'est pas cette vue qui est utilisée pour construire
+# l'entête des mails (cf. lib/deep/deeper/module/mail/custom.rb
+# et sa méthode `header`)
 %>
 <div id="logo"><%= site.name %></div>
 <%

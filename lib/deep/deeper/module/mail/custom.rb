@@ -67,11 +67,25 @@ div#citation span#quote_auteur{
     end
 
     # {StringHTML} Entête du message
+    #
+    # ATTENTION Pour le moment, deux comportements différents en
+    # fonction du fait qu'on veut une citation où qu'on n'en
+    # veuille pas. Si on veut une citation, c'est la vue hearder.erb
+    # qui est utilisée, et déserbée. Si on n'en veut pas, on ne
+    # renvoie qu'un div#logo avec le nom du site.
+    # Cela est nécessaire car pour le moment c'est le site qui est
+    # bindée à la vue header.erb, pas cette class Mail. Donc l'option
+    # no_citation n'est pas connue.
+    #
     def header options = nil
       options ||= Hash.new
       options[:no_header] && (return '')
-      header_vue = (site.folder_module_mail + "header.erb")
-      header_vue.deserb(site) if header_vue.exist?
+      if options[:no_citation]
+        "<div id=\"logo\">#{site.name}</div>"
+      else
+        header_vue = (site.folder_module_mail + "header.erb")
+        header_vue.deserb(site) if header_vue.exist?
+      end
     end
 
     # {StringHTML} Pied de page du message

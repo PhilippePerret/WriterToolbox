@@ -1,8 +1,34 @@
 # Mails
 
+* [Options pour les mails](#optionspourlesmails)
 * [Envoi d'un mail à partir du site normal](#envoidunmaildepuislesite)
 * [Envoi d'un mail hors du site normal (cron, etc.)](#envoidunmailhorsistenormal)
 * [Gabarit pour les mails](#gabaritpourlesmails)
+
+<a name='optionspourlesmails'></a>
+
+## Options pour les mails
+
+~~~
+
+formated            Si true, le message est considéré comme formaté
+                    donc déjà au format HTML.
+
+no_citation         Si true, pas de citation ajoutée au mail
+
+no_footer           Si true, aucun pied de page n'est ajouté. Ce pied de
+                    page contient en général les adresses du site.
+                    
+signature           Si false, la signature n'est pas apposée. Elle doit être
+                    dans le message lui-même.
+
+no_header_subject   Si true, on n'ajoute pas le préfixe pour le sujet
+                    du message.
+
+force_offline       Si true, on envoie le mail vraiment même si on est
+                    en local.
+
+~~~
 
 <a name='envoidunmaildepuislesite'></a>
 

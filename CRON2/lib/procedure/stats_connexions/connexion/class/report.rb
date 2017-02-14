@@ -97,6 +97,7 @@ class << self
       subject:      'Rapport de connexions',
       message:      report,
       no_citation:  true,
+      no_header:    true,
       formated:     true
     )
     if res === true
@@ -159,14 +160,17 @@ class << self
     end
   end
   def styles_css_file
-    @styles_css_file ||= SuperFile.new("#{THIS_FOLDER}lib/procedure/stats_connexions/connexion/class/report.css")
+    @styles_css_file ||= begin
+      thisfolder = File.expand_path(File.dirname(__FILE__))
+      SuperFile.new("#{thisfolder}/report.css")
+    end
   end
   def styles_sass
     <<-SASS
 section#rapport
   width         : 640px
 section#rapport, section#rapport *
-  font-size     : 11px
+  font-size     : 12.1px
 
 .fright
   float         : right
