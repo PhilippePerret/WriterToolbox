@@ -258,7 +258,7 @@ class AbsWork
     # Retourne TRUE si le travail est en dépassement
     def depassement?
       @is_depassement ||= begin
-        depassement > 0
+        depassement.floor > 0
       end
     end
 
@@ -291,9 +291,9 @@ class AbsWork
     # sa date de début et de fin, si l'échéance est dépassée, etc.
     def div_echeance
       return '' if completed? || false == work_relatif?
-      mess_duree, css = message_duree_travail
-      mess_echeance   = message_echeance_travail( css )
-      mess_reste_jours = message_jours_restants_or_depassement
+      mess_duree, css   = message_duree_travail
+      mess_echeance     = message_echeance_travail( css )
+      mess_reste_jours  = message_jours_restants_or_depassement
       (
         mess_reste_jours      +
         mess_duree.in_div     +
@@ -303,12 +303,13 @@ class AbsWork
 
     def message_duree_travail
       css  = ['exbig']
-      @doit, avez = if depassement?
-        css << "warning"
-        ["aurait dû", "aviez"]
-      else
-        ["doit", "avez"]
-      end
+      @doit, avez =
+        if depassement?
+          css << "warning"
+          ["aurait dû", "aviez"]
+        else
+          ["doit", "avez"]
+        end
       mess = "Ce travail #{@doit} être accompli en #{duree_secondes_real.as_jours}."
       [mess, css]
     end
