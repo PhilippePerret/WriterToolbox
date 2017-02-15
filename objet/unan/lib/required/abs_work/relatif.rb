@@ -106,7 +106,6 @@ class AbsWork
           error "Le travail absolu est nil…"
           1
         else
-          debug "abs_work : #{abs_work.id}"
           abs_work.duree || 1
         end
       end
@@ -187,6 +186,22 @@ class AbsWork
       end
     end
 
+    # Le nombre de jours restants renvoyant une donnée
+    # complètement absurde, on calcule maintenant le nombre
+    # de jours restants par rapport à la vraie date de
+    # démarrage et la vraie date de fin attendue
+    def reste_jours_from_real_times
+      @reste_secondes_from_real_times ||= begin
+        if work_relatif?
+          jrs = (expected_at - Time.now.to_i)/1.day
+          s = jrs > 1 ? 's' : ''
+          "#{jrs} jour#{s}"
+        else
+          '- Non défini -'
+        end
+      end
+    end
+
     # {Fixnum} Nombre de jour-programme de différence
     # entre le début du travail et le jour-programme
     # courant (qui peut être aujourd'hui).
@@ -200,6 +215,7 @@ class AbsWork
     def diff_jours
       @diff_jours ||= begin
         if work_relatif?
+          # debug "[diff_jours awork ##{abs_work.id} « #{abs_work.titre} »]\nauteur_pday = #{auteur_pday}\nindice_pday = #{indice_pday}\ndiff_jours = #{auteur_pday - indice_pday}"
           auteur_pday - indice_pday
         else
           '- Non défini -'
@@ -221,6 +237,7 @@ class AbsWork
     def depassement
       @depassement ||= begin
         if work_relatif?
+          # debug "[depassement awork ##{abs_work.id}]\ndiff_jours = #{diff_jours}\nduree = #{duree}\n=> depassement = #{diff_jours - duree}"
           (diff_jours - duree) rescue 0
         else
           '- Non défini -'
@@ -238,12 +255,15 @@ class AbsWork
     end
     # {Fixnum} Nombre de jours restants (inverse
     # du dépassement)
+    # RENVOIE UN RÉSULTAT FAUX
     def reste
       @reste ||= - depassement
     end
+    # RENVOIE UN RÉSULTAT FAUX
     def reste_real
       @reste_real ||= reste.as_real_duree(coef_duree)
     end
+    # RENVOIE UN RÉSULTAT FAUX
     def human_reste
       @human_reste ||= begin
         s = reste > 1 ? 's' : ''
@@ -271,7 +291,7 @@ class AbsWork
     # Un travail est considéré comme démarré s'il possède
     # un identifiant
     def started?
-      debug "started? = #{(work_id!=nil).inspect}"
+      # debug "started? = #{(work_id!=nil).inspect}"
       work_id != nil
     end
 
@@ -330,12 +350,13 @@ class AbsWork
 
     def message_jours_restants_or_depassement
       @message_jours_restants_or_depassement ||= begin
+        # debug "reste_jours_from_real_times : #{reste_jours_from_real_times.inspect}"
         if depassement?
           "Vous êtes en dépassement de <span class='exbig'>#{depassement.days.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
         else
           (
             'Reste'.in_span(class:'libelle va_bottom', style: 'margin-right:1em !important') +
-            human_reste.in_span(class:'mark_fort')
+            reste_jours_from_real_times.in_span(class:'mark_fort')
           ).in_span(class:'fright', style:'margin-top:4px;display:inline-block;margin-left:1em;vertical-align:middle')
         end
 
