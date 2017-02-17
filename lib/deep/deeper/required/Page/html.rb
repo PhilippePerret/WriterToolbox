@@ -107,7 +107,7 @@ class Page
     afficher || (return '')
     (
       (
-        lien.subscribe('S’ABONNER !', {class: 'darkgreen btn'}) +
+        lien.subscribe('SOUTENIR !', {class: 'darkgreen btn'}) +
         '<br>' +
         lien.aide(3, {titre: 'En savoir plus…', class: nil, style:'margin-top:7px;display:block'})
       ).in_div(class: 'fright center', style: 'margin-left: 2em') +
