@@ -38,6 +38,7 @@ class AbsWork
   #   :indice_pday          Indice du jour où le travail a démarré
   #   :indice_current_pday  Indice du jour de travail courant
   #   :work_id              ID du travail relatif
+  #
   attr_reader :relative_data
   def set_relative_data h
     @relative_data = h
@@ -84,7 +85,6 @@ class AbsWork
 # Coefficient durée : #{coef_duree}<br>
 # Jour-programme courant : #{auteur.program.current_pday}<br>
 # Indice PDay du travail : #{indice_pday}<br>
-# Différence : #{diff_jours} / #{diff_jours_real}
 # </div>
 #       CODE
     end
@@ -100,6 +100,9 @@ class AbsWork
     # ---------------------------------------------------------------------
     #   Données du abs_work (raccourcis)
     # ---------------------------------------------------------------------
+
+    # Durée en nombre de jours-programme du travail
+    #
     def duree
       @duree      ||= begin
         if abs_work.nil?
@@ -146,141 +149,89 @@ class AbsWork
       @auteur_pday ||= auteur.program.current_pday
     end
 
-    # Durée réelle en jours
-    def duree_real
-      @duree_real ||= duree.as_real_duree(coef_duree)
-    end
-    # Durée absolue en secondes
-    def duree_secondes
-      @duree_secondes ||= duree.days
-    end
+    # Durée réelle du travail en nombre de jours en fonction du
+    # rythme adopté par l'auteur.
+    def duree_real      ; @duree_real ||= duree.as_real_duree(coef_duree) end
+    # Durée absolue du travail en secondes
+    def duree_secondes  ; @duree_secondes ||= duree.days  end
     # Durée réelle en secondes
-    def duree_secondes_real
-      @duree_secondes_real ||= duree_secondes.as_real_duree(coef_duree)
-    end
+    def duree_secondes_real; @dursecreal ||= duree_secondes.as_real_duree(coef_duree) end
 
     # {Fixnum} Timestamp (secondes) du démarrage du travail
-    # Pris vraiment dans le created_at de la donnée work, car
-    # ne fonctionnait pas, avant, avec le Today.start etc.
+    # Il a été enregistré (dans created_at du work) au moment où
+    # l'auteur cliquait sur « Démarrer ce travail »
     def started_at
-      @started_at ||= begin
-        if work_relatif?
-          # (Today.start - diff_jours_real.days)
-          work.created_at
-        else
-          '- Non défini -'
-        end
-      end
+      @started_at ||= (work_relatif? ? work.created_at : '- Non défini -')
     end
 
     # {Fixnum} Timestamp (en secondes) de la fin attendue du travail
     # Noter que c'est le temps réel, en tenant compte du rythme
     # du programme de l'auteur.
+    # C'est donc la date (secondes) du démarrage du travail à laquelle
+    # on ajoute la durée réelle en secondes.
     def expected_at
       @expected_at ||= begin
-        if work_relatif?
-          (started_at + duree_secondes_real)
-        else
-          '- Non défini -'
-        end
+        work_relatif? ? (started_at + duree_secondes_real) : '- Non défini -'
       end
     end
 
-    # Le nombre de jours restants renvoyant une donnée
-    # complètement absurde, on calcule maintenant le nombre
-    # de jours restants par rapport à la vraie date de
-    # démarrage et la vraie date de fin attendue
-    def reste_jours_from_real_times
-      @reste_secondes_from_real_times ||= begin
-        if work_relatif?
-          jrs = (expected_at - Time.now.to_i)/1.day
-          s = jrs > 1 ? 's' : ''
-          "#{jrs} jour#{s}"
-        else
-          '- Non défini -'
-        end
-      end
+    # ---------------------------------------------------------------------
+    #   Nouvelles méthodes pour calculer les dépassements justes
+    # ---------------------------------------------------------------------
+
+    # Nombre de secondes de différence entre le temps courant et
+    # l'échéance du travail.
+    # Note : Si ce nombre est positif, le travail n'est pas en dépassement,
+    # si ce nombre est strictement négatif, le travail est en dépassement (en
+    # vérité, il faut qu'il soit en dépassement d'une heure)
+    def real_diff_secondes
+      @real_diff_secondes ||= expected_at - Time.now.to_i
+    end
+    # Le nombre de jours de différences (négatif si le travail
+    # est en dépassement)
+    def real_diff_jours
+      @real_diff_jours ||= (real_diff_secondes.to_f / 1.day).floor
     end
 
-    # {Fixnum} Nombre de jour-programme de différence
-    # entre le début du travail et le jour-programme
-    # courant (qui peut être aujourd'hui).
-    # Le travail est en dépassement si cette différence
-    # de jour est supérieure à la durée du travail.
-    #
-    # Noter qu'il s'agit du nombre de jours-programme,
-    # pas du nombre de jours réels. Pour avoir le nombre
-    # de jours réels, utiliser la données `diff_jours_real`
-    #
-    def diff_jours
-      @diff_jours ||= begin
-        if work_relatif?
-          # debug "[diff_jours awork ##{abs_work.id} « #{abs_work.titre} »]\nauteur_pday = #{auteur_pday}\nindice_pday = #{indice_pday}\ndiff_jours = #{auteur_pday - indice_pday}"
-          auteur_pday - indice_pday
-        else
-          '- Non défini -'
-        end
-      end
-    end
-    def diff_jours_real
-      @diff_jours_real ||= begin
-        if work_relatif?
-          diff_jours.as_real_duree(coef_duree)
-        else
-          '- Non défini -'
-        end
-      end
+    # Retourne true si le travail est en dépassement d'une heure
+    def depassement?
+      real_diff_secondes < 0
     end
 
-    # {Fixnum} Nombre de jours de dépassement ou
-    # 0 ou nombre négatif s'il n'y a pas de dépassement
+    # Retourne le nombre de jours de dépassement ou nil s'il n'y en
+    # a pas.
+    # ATTENTION : c'est un nombre POSITIF car si c'est un dépassement,
+    # real_diff_jours est toujours négatif.
     def depassement
-      @depassement ||= begin
-        if work_relatif?
-          # debug "[depassement awork ##{abs_work.id}]\ndiff_jours = #{diff_jours}\nduree = #{duree}\n=> depassement = #{diff_jours - duree}"
-          (diff_jours - duree) rescue 0
-        else
-          '- Non défini -'
-        end
-      end
-    end
-    def depassement_real
-      @depassement_real ||= depassement_real.as_real_duree(coef_duree)
+      @depassement ||= (depassement? ? - real_diff_jours : nil)
     end
     def human_depassement
       @human_depassement ||= begin
-        s = depassement_real > 1 ? 's' : ''
-        "#{depassement_real} jour#{s}"
+        if work_relatif?
+          s = depassement > 1 ? 's' : ''
+          "#{depassement} jour#{s}"
+        else
+          '- Non défini -'
+        end
       end
     end
-    # {Fixnum} Nombre de jours restants (inverse
-    # du dépassement)
-    # RENVOIE UN RÉSULTAT FAUX
+    # Retourne le nombre de jours restant ou nil si on est en
+    # dépassement
     def reste
-      @reste ||= - depassement
+      @reste ||= ( depassement? ? nil : real_diff_jours )
     end
-    # RENVOIE UN RÉSULTAT FAUX
-    def reste_real
-      @reste_real ||= reste.as_real_duree(coef_duree)
-    end
-    # RENVOIE UN RÉSULTAT FAUX
+    # La même donnée au format humain
     def human_reste
       @human_reste ||= begin
-        s = reste > 1 ? 's' : ''
-        "#{reste_real} jour#{s}"
+        if work_relatif?
+          s = reste > 1 ? 's' : ''
+          "#{reste} jour#{s}"
+        else
+          '- Non défini -'
+        end
       end
     end
 
-    # ---------------------------------------------------------------------
-    #   Méthodes d'état
-    # ---------------------------------------------------------------------
-
-    # Retourne TRUE si le travail est en dépassement
-    def depassement?
-      @is_depassement ||= begin
-        depassement.floor > 0
-      end
-    end
 
     # Pour le moment, on ne peut pas savoir si le travail a
     # été achevé, donc on le compte comme non achevé
@@ -350,13 +301,12 @@ class AbsWork
 
     def message_jours_restants_or_depassement
       @message_jours_restants_or_depassement ||= begin
-        # debug "reste_jours_from_real_times : #{reste_jours_from_real_times.inspect}"
         if depassement?
-          "Vous êtes en dépassement de <span class='exbig'>#{depassement.days.as_jours}</span>.".in_div(class:'warning').in_div(class:'depassement')
+          "Vous êtes en dépassement de <span class='exbig'>#{human_depassement}</span>.".in_div(class:'warning').in_div(class:'depassement')
         else
           (
             'Reste'.in_span(class:'libelle va_bottom', style: 'margin-right:1em !important') +
-            reste_jours_from_real_times.in_span(class:'mark_fort')
+            human_reste.in_span(class:'mark_fort')
           ).in_span(class:'fright', style:'margin-top:4px;display:inline-block;margin-left:1em;vertical-align:middle')
         end
 
