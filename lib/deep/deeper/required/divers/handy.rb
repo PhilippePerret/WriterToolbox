@@ -12,7 +12,7 @@
 #   Peut être soit simplement l'erreur elle-même, soit un Hash
 #   contenant :
 #   :exception      L'erreur complète rencontrée, avec #message et
-#                   # backtrace
+#                   # backtrace, ou un message d'erreur
 #   :url            L'url, if any.
 #   :file           Le path du fichier qui a posé problème, if any
 #   :from           La provenance de l'erreur, même si elle peut

@@ -8,7 +8,31 @@ class Program
   #     DURÉE_RÉELLE = DURÉE_PROGRAMME * coefficient_duree
   # =>  DURÉE_PROGRAMME    = DURÉE_RÉELLE.to_f / coefficient_duree
   # (NON : c'est le contraire : )
-  def coefficient_duree ; @coefficient_duree ||= 5.0 / rythme end
+  def coefficient_duree
+    @coefficient_duree ||= begin
+      # Parfois, `rythme` est false, on essaie de l'obtenir autrement
+      if rythme === false
+        send_error_to_admin(
+          exception: "`rythme` est false, dans Unan::Program#coefficient_duree. J'essaie de le récupérer à nouveau ou de le mettre à 5.",
+          extra:      "Program ID ##{id}"
+        )
+        @rythme =
+          begin
+            request = {
+              where:      {id: self.id},
+              colonnes:   [:rythme]
+            }
+            Unan.table_programs.select(request)[:rythme] || 5
+          rescue Exception => e
+            send_error_to_admin(exception: e)
+            5
+          end
+        5.0 / @rythme
+      else
+        5.0 / rythme
+      end
+    end
+  end
 
   # Méthode d'helper permettant de passer d'une durée
   # programme à une durée réelle.

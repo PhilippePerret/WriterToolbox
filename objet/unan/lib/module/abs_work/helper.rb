@@ -234,6 +234,16 @@ class AbsWork
     ('Type : '.in_span(class:'libelle') + human_type_w.in_span).in_div(class: 'petit_air_autour')
   end
   def div_resultat
+    # Pour gérer l'erreur quand resultat est false et qu'il ne
+    # connait donc pas la méthode empty?
+    if resultat === false
+      send_error_to_admin(
+        exception:  "`resultat` est false dans Unan::Program::AbsWork#div_resultat",
+        extra:      "AbsWork ID : #{id.inspect} / work ID : #{rwork.id.inspect}",
+        from:       "#{__FILE__}:#{__LINE__}"
+      ) rescue nil
+      return ''
+    end
     return '' if resultat.empty?
     c = String.new
     c << 'Résultat attendu'.in_span(class:'libelle')
@@ -250,7 +260,7 @@ class AbsWork
   # la carte pour l'auteur UNAN. Elle sert pour l'administration.
   # Pour voir la carte affichée pour l'auteur, voir la méthode
   # `as_card_relative`
-  # 
+  #
   def div_travail
     item_link = if item_id
       chose, human_chose = case true
