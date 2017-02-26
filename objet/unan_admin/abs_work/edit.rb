@@ -197,8 +197,18 @@ class AbsWork
         Unan::Program::AbsWork::exist?( data[:parent] ) || raise("Le travail-parent ##{data[:parent]} doit absolument exister.")
       end
 
-      # Si l'item_id est défini, il doit être unique
-      if data[:item_id] != nil
+      # Si l'item_id est défini, et qu'il concerne une page
+      # de cours à lire/relire, il doit être unique
+      item_id_defined   = data[:item_id] != nil
+      data_typew = Unan::Program::AbsWork::TYPES[data[:type_w]]
+      est_page_de_cours =
+        if data_typew.nil?
+          false
+        else
+          data_typew[:id_list] == :pages
+        end
+
+      if item_id_defined && est_page_de_cours
         request = {
           where: "item_id IS NOT NULL",
           colonnes:[:item_id]

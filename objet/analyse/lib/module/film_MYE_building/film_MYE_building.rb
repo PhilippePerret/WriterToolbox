@@ -136,7 +136,7 @@ class Film
         fincipit +
         fintroduction +
         (
-          '<ADMIN>' + box_edition(fdata) + '</ADMIN>' +
+          box_edition(fdata) +
           case sfile.extension
           when 'md'   then sfile.as_kramdown
           when 'yaml' then sfile.as_yaml
@@ -182,7 +182,11 @@ class Film
     html_mye_file.write whole_code_file_user
 
     # On retourne le code pour l'administrateur
-    return whole_code_file
+    if user.admin?
+      return whole_code_file
+    else
+      return whole_code_file_user
+    end
   end
 
 
@@ -204,7 +208,7 @@ class Film
       clips << "'Mail': 'ALINK[#{absolute_url},#{titre_complet}]'"
       clips = "{#{clips.join(',')}}"
       box = "&lt;lien&gt;".in_a(onclick:"UI.clip(#{clips})").in_div(class:'fright small')
-      "<!-- ADMIN -->#{box}#{tout}<!-- /ADMIN -->"
+      "<ADMIN>#{box}#{tout}</ADMIN>"
     }
   end
 
@@ -238,12 +242,12 @@ class Film
     btns += "&lt;lien&gt;".in_a(onclick:"UI.clip({#{clips.join(', ')}})")
 
     # On construit la boite et on la renvoie
-    btns.in_div(class:'small right btns')
+    '<ADMIN>' + btns.in_div(class:'small right btns') + '</ADMIN>'
   end
 
   def require_module_evc_if_needed
     return if @module_evc_loaded
-    FilmAnalyse::require_module 'evc'
+    FilmAnalyse.require_module 'evc'
     @module_evc_loaded = true
   end
 

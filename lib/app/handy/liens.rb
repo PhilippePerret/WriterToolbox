@@ -280,12 +280,14 @@ class Lien
   # Cf. l'adresse ci-dessous.
   #
   def livre titre, ref = nil
-    if titre.nil_if_empty.nil?
-      unless defined?(Cnarration)
+    debug "titre : #{titre.inspect}"
+    debug "ref : #{ref.inspect}"
+    if titre.nil_if_empty.nil? || ref != nil
+      defined?(Cnarration) || begin
         require './objet/cnarration/lib/required/bibliographie.rb'
       end
       hlivre  = Cnarration::BIBLIOGRAPHIE[ref]
-      titre   = hlivre[:titre]
+      titre   ||= hlivre[:titre]
     end
     case output_format
     when :latex
