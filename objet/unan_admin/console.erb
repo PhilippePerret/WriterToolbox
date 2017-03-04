@@ -1,5 +1,5 @@
 <%
-# Une console pour le programme UN AN 
+# Une console pour le programme UN AN
 
 # Réservé aux grands manitous
 raise_unless_admin
@@ -14,11 +14,21 @@ raise_unless_admin
 # ---------------- RETOUR ---------------
 %>
 <%= console.output %>
-<%
-# ---------------- AIDES ----------------
-%>
+
+
 <hr/>
-<pre class="small">
-  <b>new page narration &lt;page-id>[ &lt;jour-programme>]</b>
-        Ajoute une page de cours pour une page narration
-</pre>
+<dl class="small">
+  <%
+  # ---------------- AIDES ----------------
+  %>
+
+  <dt>check auteurs</dt>
+  <dd>Procède à un check des auteurs et notamment à vérifier que les starts soient bien réglés en fonction des changements de rythme.</dd>
+  <dt>check auteur &lt;référence auteur&gt;</dt>
+
+  <dd>Procède au check seulement pour cet auteur.</dd>
+  <dd>La référence peut se faire par l'ID ou par le pseudonyme.</dd>
+
+  <dt>new page narration &lt;page-id>[ &lt;jour-programme>]</dt>
+  <dd>Ajoute une page de cours pour une page narration au programme, pour le jour-programme voulu.</dd>
+</dl>

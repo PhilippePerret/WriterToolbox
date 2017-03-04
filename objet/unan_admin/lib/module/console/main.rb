@@ -16,6 +16,21 @@ class Console
       args = code.sub(/^new page narration /, '').strip
       pid, pday = args.split(' ')
       require_procedure('new_page_narration', {page_id: pid, pday: pday})
+    when /^check auteurs?(.*)$/
+      c = code.dup
+      options = Hash.new
+      if c.match(/--repare$/)
+        options.merge!(repare: true)
+        c = c.sub(/--repare$/,'').strip
+        flash "Réparation demandée."
+      end
+      debug "c = #{c.inspect}"
+      if c != 'check auteurs'
+        ref_auteur = c.sub(/^check auteur /, '').strip
+        options.merge!(ref_auteur: ref_auteur)
+      end
+
+      require_procedure('check_auteurs', options)
     end
   end
 

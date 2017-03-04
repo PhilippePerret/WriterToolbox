@@ -43,7 +43,8 @@
 
   Que doit faire ce bilan ? Il doit permettre d'établir le mail
   quotidien qui sera envoyé à l'auteur pour lui dire où il en
-  est.
+  est. Il permet également de traiter la pastille qui indique
+  où en est l'auteur en nombre de travaux, de dépassements, etc.
 
   Ce mail lui signale :
 
@@ -242,9 +243,14 @@ module CurrentPDayClass
     # On ne garde des travaux absolus que ceux qui n'ont pas
     # été terminés. Noter qu'on ne peut pas utiliser
     # uworks_undone qui ne contient que les travaux démarrés
+    #
     aworks_until_today.each do |haw|
       # debug "[decompose_travaux]---"
       # debug "--- haw: #{haw.inspect}"
+
+      # Note :
+      #   `haw` signifie `Hash de Absolute Work`
+      #
 
       # Si c'est un travail du jour (qu'il soit démarré ou
       # non), on l'enregistre dans la liste des nouveaux
@@ -257,13 +263,24 @@ module CurrentPDayClass
       # On exclue les travaux terminés
       wkey = "#{haw[:id]}-#{haw[:pday]}"
       reste = (haw[:pday] + haw[:duree]) - day
+
+      # DÉBUG
+      mess_debug = <<-EOT
+AbsWork #{haw[:id]} ---------------- courant : #{day}
+  pday  : #{haw[:pday]}
+  duree : #{haw[:duree]} jours
+  wkey  : #{wkey}
+      EOT
+      # /DEBUG
+
       if auworks_done_ids.key?( wkey )
         # Un travail terminé
         # Inutile de le consigner dans @uworks_done puisque
         # cette liste a du être établie justement pour définir
         # le hash auworks_done_ids utilisé ici.
-        # debug "    Terminé"
+        mess_debug << "  TERMINÉ"
       elsif auworks_undone_ids.key?( wkey )
+        mess_debug << "  reste : #{reste} #{reste < 0 ? '!#!' : ''}"
         uwork_id = auworks_undone_ids[wkey][:uwork_id]
         # Un travail non terminé
         if reste < 0
@@ -278,6 +295,8 @@ module CurrentPDayClass
           # debug "    À poursuivre"
         end
       else
+        mess_debug << "  NON DÉMARRÉ !#!"
+        mess_debug << "\n  reste : #{reste} #{reste < 0 ? '!#!' : ''}"
         # C'est un travail non démarré, soit un travail
         # du jour soit un travail qui aurait dû être
         # démarré avant.
@@ -287,6 +306,9 @@ module CurrentPDayClass
           @aworks_unstarted << haw.merge(since: day - haw[:pday])
         end
       end
+
+      # DEBUG
+      # debug "#{mess_debug}\n"
     end
 
   end
