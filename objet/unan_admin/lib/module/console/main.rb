@@ -80,3 +80,7 @@ class Console
     @folder_procedure ||= UnanAdmin.folder_modules + 'console_procedure'
   end
 end
+
+def console
+  @console ||= Console.instance
+end

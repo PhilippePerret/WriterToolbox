@@ -22,10 +22,11 @@ raise_unless_admin
   # ---------------- AIDES ----------------
   %>
 
-  <dt>check auteurs</dt>
+  <dt>check auteurs[ --repare]</dt>
   <dd>Procède à un check des auteurs et notamment à vérifier que les starts soient bien réglés en fonction des changements de rythme.</dd>
-  <dt>check auteur &lt;référence auteur&gt;</dt>
+  <dd>Si `--repare` est ajouté, les réparations sont exécutées. Mais il est conseillé de lancer d'abord le check sans réparation pour voir les réparations qui pourront être faites.</dd>
 
+  <dt>check auteur &lt;référence auteur&gt;</dt>
   <dd>Procède au check seulement pour cet auteur.</dd>
   <dd>La référence peut se faire par l'ID ou par le pseudonyme.</dd>
 

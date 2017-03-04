@@ -1,5 +1,13 @@
 # encoding: UTF-8
 #
+
+# Pour le check des dates de démarrage des travaux
+# Cf. Console::Auteur ci-dessous dans le code
+# 
+Dir["./objet/unan_admin/lib/module/console/**/*.rb"].each{|m| require m}
+require './objet/unan_admin/lib/module/console_procedure/check_auteurs.rb'
+
+
 # Dans le cron, on ne sert pas de la class User, mais je ne sais même plus pourquoi
 # car ce serait possible, en distant.
 #
@@ -92,10 +100,23 @@ class DUser
     }
 
     Unan.table_programs.set(program.id, newdata_program)
+
+    # PROCÉDURE de vérification de la date de démarrage des
+    # travaux quand le rythme a changé. Il doit correspondre à
+    # la bonne date.
+    # Cela est également utile lorsque l'auteur a démarré son
+    # travail en retard
+    begin
+      Console::Auteur.new(id).check(and_repare = true)
+      ajouter_reparation = ""
+    rescue Exception => e
+      ajouter_reparation = " # Problème au cours de la réparation des dates de démarrage des travaux : #{e.message}"
+    end
+
     # pour forcer l'actualisation
     @program      = nil
     @current_pday = nil
-    superlog "#{pseudo} passé au jour-programme #{program.current_pday}"
+    superlog "#{pseudo} passé au jour-programme #{program.current_pday}#{ajouter_reparation}"
     log "  - current_pday du programme À LA FIN de `passe_programme_au_jour_suivant` : #{program.current_pday}"
   end
 

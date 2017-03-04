@@ -156,8 +156,6 @@ class Console
           # démarrera un travail en retard. TODO Que faut-il faire ?
           # Dans l'idéal, on ne doit pas tenir compte de ce retard, le
           # démarrage devrait toujours se faire en temps et en heure.
-          # TODO C'est ici qu'il faut modifier la date de démarrage
-          # du travail.
           m "Il y a une différence de #{diff_jours} jours. Il faut corriger cette date".in_div(class:'red bold')
           if and_repare
             uwork.set(created_at: real_started_date)
