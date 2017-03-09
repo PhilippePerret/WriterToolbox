@@ -217,14 +217,14 @@ class AbsWork
           hw[:item_id] == data[:item_id] || next
           # Si c'est le même travail que celui qu'on est en train
           # de traiter, on s'en retourne
-          hw[:id] == data[:id] && next
+          hw[:id].to_i == data[:id].to_i && next
           # Si on passe ici, c'est qu'un item_id identique a été trouvé
           # TODO Pour le lien ci-dessous, ça pourra poser des problèmes
           # lorsque item_id sera utilisé pour autre chose que des pages
           # de cours.
           linked_item = "##{data[:item_id]}".in_a(href: "page_cours/#{data[:item_id]}/edit?in=unan_admin", target: :new)
           linked_work = "##{hw[:id]}".in_a(href:"abs_work/#{hw[:id]}/edit?in=unan_admin", target: :new)
-          raise "L'item_id ##{linked_item} est déjà employé par le travail #{linked_work}. Il ne peut pas être employé pour celui-ci."
+          raise "Problème avec le travail ##{data[:id]} : l'item_id ##{linked_item} est déjà employé par le travail #{linked_work}. Il ne peut pas être employé pour celui-ci."
         end
       end
     rescue Exception => e

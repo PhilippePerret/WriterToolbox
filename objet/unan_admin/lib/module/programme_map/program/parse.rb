@@ -3,7 +3,7 @@ class UNANProgramme
 
   # = main =
   #
-  # Méthode principale qui parse le fichier programme.txt
+  # Méthode principale qui parse le fichier PROGRAMME_MAP.TXT
   #
   def parse
     @fulldata = Hash.new
@@ -22,7 +22,12 @@ class UNANProgramme
     niveau_retrait_courant  = 0
     element_courant         = iline
 
+    line_number = nil # pour le débug
+
     raw_code.split("\n").each_with_index do |line, index|
+
+      line_number = index + 1
+
       line.strip != '' || next
       line.start_with?('#') && next
 
@@ -69,7 +74,7 @@ class UNANProgramme
 
   rescue Exception => e
     debug e
-    error 'Un erreur est survenue (regarder le debug)'
+    error "Un erreur est survenue avec la ligne #{line_number} (regarder le debug) : #{e.message}"
   ensure
     debug "<- parse"
     return c.join("\n").in_pre

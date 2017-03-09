@@ -97,7 +97,7 @@ class Console
     end
     # Création du travail absolu
     def create_absolute_work
-      titre = '%s<span class="tiny"> (collection Narration)</span>' % titre_page
+      titre = '%s <span class=\'tiny\'>(collection Narration)</span>' % titre_page
       data_work = {
         titre:            titre,
         type_w:           20,

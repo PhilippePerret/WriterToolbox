@@ -11,7 +11,7 @@ JP 001-027 PRÉPARATION (1 mois)
             [WORK 10] [PAGE 3] Lecture Recherche et choix de l'histoire
             [WORK 14] [QUIZ 2] Évaluation du niveau actuel
         JP 003
-            [WORK 8] [PAGE 26] La structure, qu'est-ce que c'est ?
+            [WORK 8] [PAGE 26] La structure, qu'est-ce que c'est ? STRT
             [WORK 27] [PAGE 9] Pourquoi structurer son récit ?
             [WORK 28] [PAGE 10] Quand faut-il structure son récit ?
         JP 004
@@ -230,7 +230,8 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     TODO [EXEMPLE] Exemple de travail sur film.
                     TODO [EXEMPLE] Exemple de travail sur film.
                     TODO [WORK][PAGE] Page sur Objectif
-                    TODO [WORK][PAGE] Page sur enjeu
+                    [WORK 142][PAGE 62] Page sur la définition de l'enjeu (N: #91)
+                    [WORK 143][PAGE 63] Page La hauteur de l'enjeu (N: #93)
                     TODO [WORK][PAGE] Page sur motivation
                     TODO [WORK][PAGE] Page sur moyen
                 JP 082-083 TR5 sur les personnages PERS
@@ -243,12 +244,13 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                 JP 084-090 TR 6 sur STRT
                     [WORK 134] 1er tour d'approfondissement sur structure
                         - Fiche de la structure (PFA).
-                    TODO [WORK] faire la fiche structure du récit
-                    TODO [EXEMPLE] Renvoyer aux exemples de fiches contenues dans le recueil.
                     JP 084-087
                         [WORK 140] Relecture complète de tous les documents pour faire du propre.
                         [WORK 141] Création d'une todo liste.
                         TODO [EXEMPLE] Exemple de todo liste.
+                    JP 088-090
+                        [WORK 144] Faire la fiche structure du récit (en fait, les deux fiches, pour chacune des deux intrigues).
+                        [WORK 145][PAGE 64] Exemples de fiches contenues dans le recueil.
                 JP 091-097 TR 6 sur PERS
                     [WORK 135] 1er tour d'approfondissement des personnages
                         Description générale du travail qui va devoir être exécuté.

@@ -1,5 +1,7 @@
+* Pouvoir faire une recherche sur un des aspects de l'élaboration du projet, à partir des thèmes STRT, DYNA, etc.
+  - Pouvoir faire aussi une recherche par mots.
+  Note : ça consiste à parser le fichier avec un filtre (cf. la méthode parse)
 * Poursuivre les travaux jour 80
-* Pour le jour 87, faire l'étape où on essaie d'approfondir la structure de façon générale.
 * Voir où mettre création des styles pour faire le scénier du projet. Note : ça doit être une grosse étape à bien marquer pour dire qu'on aborde un document très important qui sera le guide de voyage du projet.
 
 WORK 137 (BRINS)
