@@ -61,7 +61,7 @@ class AbsWork
       elsif Unan::table_absolute_works.count(where:"id = #{wid}") == 0
         error "L'abs-work d'ID ##{wid} n'existe pas."
       else
-        form.objet = full_data_for( Unan::Program::AbsWork::new(wid).get_all )
+        form.objet = full_data_for( Unan::Program::AbsWork.new(wid).get_all )
       end
     end
 
@@ -72,48 +72,62 @@ class AbsWork
     # est 'destroy_abs_work'
     def destroy
       wid = param(:work)[:id].to_i
-      nombre = Unan::table_absolute_works.count(where:"id = #{wid}")
+      nombre = Unan.table_absolute_works.count(where:"id = #{wid}")
       if nombre == 0
         error "La donnée abs-work d'ID ##{wid} n'existe pas. Impossible de la détruire."
       else
-        Unan::table_absolute_works.delete(wid)
+        Unan.table_absolute_works.delete(wid)
         flash "Destruction de l'abs-work #{wid} OK"
       end
     end
 
     # = main =
     #
-    # Sauvegarde de l'abswork. Méthode appelée en bas de ce
-    # module lorsque l'opération est "save_abs_work"
+    # Sauvegarde de l'abswork. Méthode appelée lorsque l'opération
+    # est "save_abs_work"
+    #
     def save
-      debug "-> AbsWork.save"
-      # On vérifie la validité des données ou on s'en retourne
+      app.benchmark "-> AbsWork.save"
       check_data_abs_work || return
-
       save_data || return
-
       flash "Work ##{data[:id]} enregistré."
-      debug "<- AbsWork.save"
+      app.benchmark "<- AbsWork.save"
     end
 
     def save_data
-      debug "-> AbsWork.save_data"
-      # debug data_to_save.pretty_inspect
+      app.benchmark "-> AbsWork.save_data"
+
+      # debug "\n#{'-'*70}\nDATA TO SAVE:\n#{data_to_save.pretty_inspect}\n#{'-'*70}\n"
+      # return # EMPÊCHE L'ENREGISTREMENT DE LA DONNÉE
+
+      # ATTENTION : si, ici, `data_to_save` semble mal défini, c'est
+      # peut-être que la méthode-propriété est appelée en début de
+      # chaine (pour le débug) et ne se redéfinit pas une fois les
+      # valeurs entrées. Il convient alors de supprimer cet appel de
+      # débug ou d'ajouter `@data_to_save = nil` après l'appel.
       if data_to_save[:id]
-        Unan::table_absolute_works.set(data_to_save[:id], data_to_save)
+        # === ACTUALISATION DU TRAVAIL ===
+        Unan.table_absolute_works.set(data_to_save[:id], data_to_save)
       else
-        data[:id] = Unan::table_absolute_works.insert(data_to_save)
-        param(:work => data)
+        # === CRÉATION DU TRAVAIL ===
+        data[:id] = Unan.table_absolute_works.insert(data_to_save)
+        @data_to_save[:id] = data[:id]
+        # Pour que les données soient correctement ré-affichées dans
+        # le formulaire
+        form.objet = full_data_for( Unan::Program::AbsWork.new(data[:id]).get_all )
       end
     rescue Exception => e
       debug e
+      app.benchmark '<- save_data (ERREUR)'
       error e.message
     else
+      app.benchmark '<- save_data'
       return true
     end
 
     def data_to_save
       @data_to_save ||= begin
+        debug "-> définition complète de `@data_to_save`"
         dts = {
           titre:            data[:titre],
           type_w:           data[:type_w],
@@ -135,8 +149,8 @@ class AbsWork
         else
           dts.merge!(id: data[:id].to_i_inn)
         end
-        debug "\n\nDATA FINALES À SAUVER :\n#{dts.pretty_inspect}\n\n"
-        debug "(On met ces data finales dans param(:work))"
+        # debug "\n\nDATA FINALES À SAUVER :\n#{dts.pretty_inspect}\n\n"
+        # debug "(On met ces data finales dans param(:work))"
         param(:work => dts)
         dts
       end
@@ -190,15 +204,19 @@ class AbsWork
           derr[:err_message].in_div
         end.join)
       end
-      data = retour.objet
+      self.data= retour.objet
 
       # Si le parent est défini, il doit exister
       if data[:parent] != nil
-        Unan::Program::AbsWork::exist?( data[:parent] ) || raise("Le travail-parent ##{data[:parent]} doit absolument exister.")
+        Unan::Program::AbsWork.exist?( data[:parent] ) || raise("Le travail-parent ##{data[:parent]} doit absolument exister.")
       end
 
       # Si l'item_id est défini, et qu'il concerne une page
-      # de cours à lire/relire, il doit être unique
+      # de cours à lire/relire, il doit être unique. Car une
+      # page de cours à lire ne peut être utilisée que par
+      # un unique travail, suite à certaines erreurs et notamment
+      # le fait que le travail ne soit plus enregistrés différemment
+      # en fonction de son jour-programme.
       item_id_defined   = data[:item_id] != nil
       data_typew = Unan::Program::AbsWork::TYPES[data[:type_w]]
       est_page_de_cours =
@@ -236,13 +254,11 @@ class AbsWork
       return true # pour poursuivre
     end
 
+    def data= value; @data = value end
     def data
       @data ||= begin
         d = param(:work)
-        # Quelques corrections
-        if d[:points].empty?
-          d[:points] = 0 # correspond à : prendre valeur par exemple du quiz
-        end
+        d[:points] = 0 if d[:points].empty? # correspond à : prendre valeur par exemple du quiz
         d
       end
     end
@@ -255,9 +271,9 @@ end #/UnanAdmin
 
 case param(:operation)
 when "edit_abs_work"
-  UnanAdmin::Program::AbsWork::edit_other
+  UnanAdmin::Program::AbsWork.edit_other
 when "save_abs_work"
-  UnanAdmin::Program::AbsWork::save
+  UnanAdmin::Program::AbsWork.save
 when "destroy_abs_work"
-  UnanAdmin::Program::AbsWork::destroy
+  UnanAdmin::Program::AbsWork.destroy
 end

@@ -37,7 +37,7 @@ module DataChecker
     # = main check =
     # La méthode principale qui gère le check des valeurs
     # Noter que lorsqu'on passe par ici, les valeurs ont été épurées
-    # et mises dans leur type défini par la `checks`
+    # et mises dans leur type défini.
     def check_objet
       definition.each do |prop, dcheck|
         dcheck[:hname] ||= prop.inspect
@@ -47,12 +47,12 @@ module DataChecker
     end
 
     DATA_ERREURS = {
-      10000 => "%{hname} doit être définie.",
-      20001 => "%{hname} devrait avoir une longueur minimum de %{expected} (la longueur est de %{actual}).",
-      20002 => "%{hname} devrait être supérieur ou égal à %{expected} (sa valeur est de %{actual}).",
-      20011 => "%{hname} devrait avoir une longueur maximale de %{expected} (la longueur est de %{actual}).",
-      20012 => "%{hname} devrait être inférieur ou égal à %{expected} (sa valeur est de %{actual}).",
-      30000 => "Le mail “%{actual}” est invalide."
+      10000 => '%{hname} doit être définie.',
+      20001 => '%{hname} devrait avoir une longueur minimum de %{expected} (la longueur est de %{actual}).',
+      20002 => '%{hname} devrait être supérieur ou égal à %{expected} (sa valeur est de %{actual}).',
+      20011 => '%{hname} devrait avoir une longueur maximale de %{expected} (la longueur est de %{actual}).',
+      20012 => '%{hname} devrait être inférieur ou égal à %{expected} (sa valeur est de %{actual}).',
+      30000 => 'Le mail “%{actual}” est invalide.'
     }
 
     # Check de la propriété +prop+ par le hash +dcheck+
@@ -119,21 +119,27 @@ module DataChecker
     # ---------------------------------------------------------------------
 
     # Transforme les valeurs suivant le type défini
+    #
+    # Par exemple, puisqu'on vient souvent d'un formulaire,
+    # les entiers sont des strings. Ici, on transforme ces
+    # strings en entier, conformément à la définition des
+    # données.
     def set_value_like_type
       objet.each do |prop, value|
         next if value.nil? # rien à faire si la valeur est nil
         next if definition[prop].nil? # propriété non définie
         type = definition[prop][:type]
         next if type.nil? # type non défini
-        value = case type
-        when :mail then
-          definition[prop][:type] = :string
-          definition[prop][:mail] = true
-          value
-        when :fixnum, :bignum then value.to_i
-        when :float  then value.to_f
-        else value
-        end
+        value =
+          case type
+          when :mail then
+            definition[prop][:type] = :string
+            definition[prop][:mail] = true
+            value
+          when :fixnum, :bignum then value.to_i
+          when :float  then value.to_f
+          else value
+          end
         objet[prop] = value
       end
     end
