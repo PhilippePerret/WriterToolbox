@@ -58,7 +58,10 @@ class Bureau
     chose = dname[:sing].downcase
     arr = auteur.works_undone(type)
     if arr.count > 0
-      arr.collect do |awork|
+      # Liste des travaux à faire, classer par nombre de jours
+      # d'échéance
+      arr.sort_by{|aw| aw.rwork.expected_at}.collect do |awork|
+      # arr.collect do |awork|
         awork.id > 0 || begin
           next nil
         end

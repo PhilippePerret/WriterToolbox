@@ -11,7 +11,7 @@ Ce travail doit être contenu sous forme de liste dans la variable
 `travaux_ids` qui est renseignée à mesure que l'auteur avance dans
 les jours et qu'il exécute des travaux.
 =end
-Unan::require_module 'abs_work'
+Unan.require_module 'abs_work'
 
 class Unan
 class Bureau
