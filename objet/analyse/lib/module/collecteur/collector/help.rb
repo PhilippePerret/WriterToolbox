@@ -30,10 +30,10 @@ TDM
 
 * On règle le champ “départ” ci-dessous au temps actuel du film,
 * on met en route le film tout en cliquant sur le bouton START ci-dessous,
-* on tape <code>CTRL + S</code> quand commence une nouvelle scène,
+* on tape <code>CTRL + S</code> (`CTRL+CMD+S` sur mac) quand commence une nouvelle scène,
 * on écrit son résumé, sa fonction et son synopsis,
 * on tape <code>CTRL + H</code> pour ajouter une “horloge” dans la scène, ou <code>CTRL + N</code> pour une note, etc.,
-* on retape <code>CTRL + S</code> quand arrive une nouvelle scène,
+* on retape <code>CTRL + S</code> (`CTRL+CMD+S` sur mac) quand arrive une nouvelle scène,
 * on poursuit jusqu'à la fin,
 * on arrête le temps en cliquant sur le bouton STOP ci-dessous,
 * on affine le texte,
@@ -63,7 +63,7 @@ Mise en route synchronisée du film et de l'analyse
 : Rappel : dans les analyses, on connait le temps de départ (le “zéro absolu du film”) d'après le temps de la toute première scène (même si elle est avant le générique).
 
 Création de la première scène
-: Dès que la première scène commence, on tape <code>CTRL + S</code> (“S” comme “Scène” bien sûr).
+: Dès que la première scène commence, on tape <code>CTRL + S</code> (`CTRL+CMD+S` sur mac) (“S” comme “Scène” bien sûr).
 : Ce raccourci crée une marque de scène avec le temps actuel dans le film.
 : Le curseur se place au niveau du synopsis de la scène.
 
