@@ -7,7 +7,7 @@ class << self
   # collecte de scène, fichier brins, personnages, etc.
   # Pour chaque fichier on définit son format, entre :
   #   TM      Le format des analyses TextMate
-  #   Simple  Le format simple avec un ligne pour information
+  #   Simple  Le format simple avec une ligne pour information
   #   Yaml    Le format YAML, pas encore utilisé
   #
   def formulaire_depot_fichiers
@@ -64,7 +64,7 @@ class << self
   def bouton_soumettre
     (
       'Déposer et traiter les fichiers'.in_submit
-    ).in_div(class: 'buttons right')
+    ).in_div(class: 'buttons right', onclick: "return CheckFormulaireDepot()")
   end
 
   def explications
