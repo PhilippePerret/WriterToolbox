@@ -15,8 +15,21 @@ class Scene
     parse_lines
   end
 
+  # Retourne le délimiteur de la première ligne, soit
+  # une tabulation, soit une espace.
+  def delimiter_first_line
+    first_line.match(/\t/) ? "\t" : " "
+  end
+
+  REG_FIRST_LINE_SCENE =
+    /^((?:[0-9]:)?(?:[0-9]?[0-9]:[0-9]?[0-9])) (EXT\.|INT\.|NOIR)(?: ?\/ ?(EXT\.|INT\.|NOIR))? (JOUR|NUIT|MATIN|SOIR|NOIR)(?: ?\/ ?(JOUR|NUIT|MATIN|SOIR|NOIR))? (.*?)(?: ?\/ ?(.*?))?$/
   def parse_first_line
-    @horloge, @lieu_effet, @decor, @resume = first_line.split("\t")
+    if delimiter_first_line == "\t"
+      @horloge, @lieu_effet, @decor, @resume = first_line.split("\t")
+    else
+      @horloge, @lieu, @lieu_alt, @effet, @effet_alt, @decor, @decor_alt =
+        first_line.match(REG_FIRST_LINE_SCENE).to_a
+    end
     horloge_to_time
     # Cas spécial où c'est la ligne de fin
     if ['FIN', 'END', 'THE END'].include?( @lieu_effet.upcase )
@@ -66,11 +79,12 @@ class Scene
     lines.each do |line|
       line = line.strip
       is_note = !!(line =~ /^\([0-9]+\) /)
-      is_relatifs = !!(line =~ /^(B|N|P|S)[0-9]/)
+      is_relatifs = !!(line =~ /^(B|N|P|S)([0-9]+) /i)
 
       # On reconnait les notes au fait que ce sont des lignes qui
       # commencent par "(<nombre>) ". Si ce ne sont pas des notes,
-      # ce sont des paragraphes.
+      # ce sont des paragraphes ou la dernière ligne avec des
+      # marques de relatifs (principalement les brins)
       if is_note
         #
         # Traitement d'une note
@@ -93,6 +107,7 @@ class Scene
         @liste_relatifs = line
         parse_relatifs
       else
+        # Un paragraphe normal de la scène
         paras << Paragraphe.new(self, line).all_data
       end
     end

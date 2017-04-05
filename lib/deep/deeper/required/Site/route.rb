@@ -455,7 +455,12 @@ class SiteHtml
             class_method = classe.respond_to?(:get) ? :get : :new
             classe.send( class_method, objet_id )
           rescue Exception => e
-            error "Impossible d'instancier l'objet avec #{classe}::#{class_method}, malheureusement : #{e.message}"
+            # IL n'existe pas toujours de méthode new
+            # Cette erreur arrive lorsqu'une adresse comme ça existe :
+            #   mon_objet/12/methode
+            # à partir du moment où 12 est spécifié, on essaie d'appeler
+            #   MonObjet.new(12)
+            # Mais si MonObjet est par exemple une classe
             nil
           end
         end

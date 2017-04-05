@@ -38,7 +38,7 @@ module ModuleParseRelatifs
       lettre1 = marque[0]
       marque_id = marque[1..-1].to_i
       if marque_id > 0
-        case lettre1
+        case lettre1.upcase
         when 'B'  then brins << marque_id
         when 'N'  then notes << marque_id
         when 'P'  then personnages << marque_id

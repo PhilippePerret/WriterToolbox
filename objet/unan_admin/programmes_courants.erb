@@ -1,0 +1,28 @@
+<%raise_unless_admin%>
+<%
+# Cette page présente la liste des programmes courants et permet
+# certaines opérations comme par exemple la mise en pause.
+%>
+<%
+
+# Traitement de l'opération
+#
+# Note : le bloc de code est placé ici car il faut que toute
+# les librairies aient été chargées pour que ça fonctionne.
+case param(:op)
+when 'mettre_en_pause'
+  UnanAdmin.mettre_en_pause(current_program)
+when 'sortir_de_pause'
+  UnanAdmin.sortir_de_pause(current_program)
+end
+
+%>
+<h2>Programmes en cours</h2>
+<ul class="programs">
+  <%= UnanAdmin.programmes_en_cours{|prog|prog.as_admin_line}%>
+</ul>
+
+<h2>Programmes en pause</h2>
+<ul class='programs'>
+  <%= UnanAdmin.programmes_en_pause{|prog|prog.as_admin_line} %>
+</ul>
