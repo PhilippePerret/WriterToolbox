@@ -66,6 +66,15 @@ CREATE TABLE programs
     # peut aller de 0 (aucun retard) à 8 (trop de gros retards)
     retards VARCHAR(370),
 
+    # PAUSES
+    # ------
+    # Les pauses. C'est un Array de Hash dont chaque élément
+    # contient {:start, :end}. Lorsque le programme est en pause
+    # (options commençant par '01'), le dernier élément de :pauses
+    # définit :start mais pas :end :
+    #   {start: 012569875, end: nil}
+    pauses BLOB,
+
     # CREATED_AT
     # ----------
     # Timestamp de la création du programme

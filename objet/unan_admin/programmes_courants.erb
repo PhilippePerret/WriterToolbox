@@ -19,10 +19,12 @@ end
 %>
 <h2>Programmes en cours</h2>
 <ul class="programs">
+  <%= UnanAdmin.first_line_listing %>
   <%= UnanAdmin.programmes_en_cours{|prog|prog.as_admin_line}%>
 </ul>
 
 <h2>Programmes en pause</h2>
 <ul class='programs'>
+  <%= UnanAdmin.first_line_listing %>
   <%= UnanAdmin.programmes_en_pause{|prog|prog.as_admin_line} %>
 </ul>

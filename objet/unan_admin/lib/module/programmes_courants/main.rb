@@ -1,6 +1,15 @@
 class UnanAdmin
 class << self
 
+  # Première ligne du listing avec les libellés
+  def first_line_listing
+    (
+      'Pseudo'.in_span(class: 'pseudo') +
+      'PDay'.in_span(class: 'cpday') +
+      'Pauses'.in_span(class: 'pausedur')
+    ).in_li(class: 'program libelles')
+  end
+
   # Retourne la liste des programmes courant
   def programmes_en_cours &block
     if block_given?

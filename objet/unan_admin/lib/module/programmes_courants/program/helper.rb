@@ -2,6 +2,7 @@
 class Unan
 class Program
 
+
   # = main =
   #
   # Méthode principale pour afficher la ligne d'aministration
@@ -11,7 +12,8 @@ class Program
     (
       buttons_administration +
       span_pseudo +
-      span_current_pday
+      span_current_pday +
+      span_duree_pause
     ).in_li(class: 'program')
   end
 
@@ -20,6 +22,9 @@ class Program
   end
   def span_current_pday
     "#{current_pday}".in_span(class: 'cpday')
+  end
+  def span_duree_pause
+    "#{pause_duration}".in_span(class: 'pausedur')
   end
 
   # Les boutons pour administrer le programme
@@ -30,10 +35,10 @@ class Program
   end
 
   def bouton_pause
-    'mettre en pause'.in_a(href: "unan_admin/#{id}/programmes_courants?op=mettre_en_pause", class: 'btn mini')
+    'Pause'.in_a(href: "unan_admin/#{id}/programmes_courants?op=mettre_en_pause", class: 'btn mini')
   end
   def bouton_unpause
-    'sortir de pause'.in_a(href: "unan_admin/#{id}/programmes_courants?op=sortir_de_pause", class: 'btn mini')
+    'Restart'.in_a(href: "unan_admin/#{id}/programmes_courants?op=sortir_de_pause", class: 'btn mini')
   end
 
 end#/Program
