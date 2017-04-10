@@ -1,4 +1,7 @@
 # encoding: UTF-8
+#
+# COPIÉES DANS COLLECTE
+#
 class AnalyseBuild
 
   FEUILLES_DE_STYLES = [

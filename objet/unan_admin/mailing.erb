@@ -3,11 +3,19 @@
 # suivent le programme UN AN.
 # Il est donc réservé à l'administrateur.
 raise_unless_admin
+
+UnanAdmin.require_module 'mailing'
 # Ce formulaire permet :
 #   - d'envoyer un message à TOUS les auteurs suivant le programme
 #   - d'envoyer un MESSAGE TYPE à un auteur en particulier
 #   - d'envoyer un message personnel à un auteur
 #   - d'enregistrer un nouveau message type.
+
+case param(:operation)
+when 'soumettre_contact_form'
+  UnanAdmin::Contact.submit
+end
+
 %>
 <%= UnanAdmin.titre_h1('Formulaire de contact')%>
 <%

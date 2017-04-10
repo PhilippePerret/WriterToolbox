@@ -3,6 +3,13 @@
 
 # Réservé aux grands manitous
 raise_unless_admin
+
+UnanAdmin.require_module 'console'
+
+if param(:console)
+  console.run
+end
+
 %>
 <form id="form_console" class="" action="unan_admin/console" method="POST">
   <textarea id="console" name="console"><%= param(:console) %></textarea>

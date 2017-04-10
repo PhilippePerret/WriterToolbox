@@ -263,8 +263,3 @@ end #/ << self
   end
 end #/Contact
 end #/UnanAdmin
-
-case param(:operation)
-when 'soumettre_contact_form'
-  UnanAdmin::Contact.submit
-end

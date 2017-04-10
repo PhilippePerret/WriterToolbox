@@ -1,3 +1,7 @@
+<%
+raise_unless_admin
+UnanAdmin.require_module 'controles'
+%>
 <%= UnanAdmin.titre_h1('Controles')%>
 <% UnanAdmin::Control.run %>
 <%= UnanAdmin::Control.output %>

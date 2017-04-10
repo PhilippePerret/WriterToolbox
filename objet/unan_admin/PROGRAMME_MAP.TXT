@@ -263,10 +263,19 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                             - exploitation de la période de l'action
             JP 098-111 TR 5 sur DYNA, DOCU et THEM
                 JP 098-099 TR 5 sur DOCU
-                    [WORK] Répondre aux questions de documentation en suspend
+                    [WORK 146] Répondre aux questions de documentation en suspend
                         - Si aucune questions ne subsiste, prendre ces deux jours pour se « promener » dans les sujets abordés.
-                JP 099-101 TR 7 sur PERS et THEM
-                      TODO [WORK] Travail sur les thèmes et les personnages, comment l'un et l'autre sont liés et développés.
+                JP 100-101 TR 7 sur PERS et THEM
+                    [WORK 149] Travail d'analyse sur les thèmes et les personnages, comment l'un et l'autre sont liés et développés dans le récit.
+                JP 102-103 (suite) TR 7 sur PERS et THEM
+                    [WORK 150] Analyse des films au niveau des thèmes et des personnages.
+                    [EXEMPLE] Exemple d'analyse de rapport dans trois films.
+                JP 104-105 (suite) TR 7 sur PERS et THEM
+                    [WORK 151] Retravailler le rapport entre les thèmes et les personnages dans le récit.
+                JP 106-107
+                    TODO [WORK]
+                JP 108-109
+                JP 110-111
         JP 112-139 Second tour d'approfondissement
             JP 112-125 TR 7 sur STRT et PERS
             JP 126-139 TR 6 sur DOCU et [autre]

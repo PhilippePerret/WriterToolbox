@@ -256,8 +256,8 @@ RSpec.configure do |config|
   alias :reset_variables_forum :reset_forum_variables
 
   def reset_variables_unanunscript
-    Unan::instance_variables.each{|k|Unan::remove_instance_variable(k)}
-    Unan::Program::instance_variables.each{|k|Unan::Program::remove_instance_variable(k)}
+    Unan.instance_variables.each{|k|Unan.remove_instance_variable(k)}
+    Unan::Program.instance_variables.each{|k|Unan::Program.remove_instance_variable(k)}
   end
 
   #  Titre d'un test

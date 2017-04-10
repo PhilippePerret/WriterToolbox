@@ -1,5 +1,10 @@
 <%
 # Pour l'affichage du programme version programme.txt
+
+page.no_left_margin
+page.no_widget_taches
+UnanAdmin.require_module 'programme_map'
+
 %>
 <div class="right">
   <%= lien.edit_file((UnanAdmin.folder.expanded_path + '/PROGRAMME_MAP.TXT'), titre: 'Ouvrir le fichier data') %>
