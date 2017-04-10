@@ -81,6 +81,7 @@ class String
         if texte.match(/<%/)
           texte.deserb
         else
+          texte.respond_to?(:kramdown) || site.require_module('kramdown')
           texte.kramdown
         end
       (

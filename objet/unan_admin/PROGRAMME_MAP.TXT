@@ -266,18 +266,24 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 146] Répondre aux questions de documentation en suspend
                         - Si aucune questions ne subsiste, prendre ces deux jours pour se « promener » dans les sujets abordés.
                 JP 100-101 TR 7 sur PERS et THEM
-                    [WORK 149] Travail d'analyse sur les thèmes et les personnages, comment l'un et l'autre sont liés et développés dans le récit.
+                    [WORK 149] Travail d'analyse sur les thèmes et les personnages, comment l'un et l'autre sont liés et développés dans le récit. ANAF
+                    TODO [EXEMPLE] Exemple d'un travail d'analyse du rapport entre personnages et thèmes dans les histoires en illustration.
                 JP 102-103 (suite) TR 7 sur PERS et THEM
                     [WORK 150] Analyse des films au niveau des thèmes et des personnages.
-                    [EXEMPLE] Exemple d'analyse de rapport dans trois films.
+                    TODO [EXEMPLE] Exemple d'analyse de rapport dans trois films.
                 JP 104-105 (suite) TR 7 sur PERS et THEM
                     [WORK 151] Retravailler le rapport entre les thèmes et les personnages dans le récit.
-                JP 106-107
-                    TODO [WORK]
-                JP 108-109
-                JP 110-111
+                    TODO [EXEMPLE] Exemple de retravail par rapport aux histoires en illustration.
+                JP 106-107 TR 5 sur DYNA
+                    [WORK 152] Faire la liste exhaustive de tous les obstacles rencontrés par le protagoniste.
+                    TODO [EXEMPLE] Exemple de la liste exhaustive des obstacles de l'objectif principal.
+                JP 108-109 (suite) TR 5 sur DYNA
+                    [WORK 153] Faire la liste exhaustive de tous les obstacles rencontrés par le protagoniste de trois films. ANAF
+                JP 110-111  (suite) TR 5 sur DYNA
+                    [WORK 154] Brainstormer sur les obstacles possibles auxquels on n'aurait pas encore pensé.
         JP 112-139 Second tour d'approfondissement
             JP 112-125 TR 7 sur STRT et PERS
+                TODO [WORK] Apprendre à se servir des feuilles de style dans son traitement de texte.
             JP 126-139 TR 6 sur DOCU et [autre]
 
 JP 141-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT

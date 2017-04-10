@@ -1,12 +1,14 @@
 <%
 # Vue du tableau de bord de l'administration du programme
 # “ÉCRIRE UN FILM, ÉCRIRE UN ROMAN, EN UN AN”
+UnanAdmin.require_module 'dashboard'
 %>
 <h1>Tableau de bord UAUS</h1>
 <p>LES DEUX FICHIERS LES PLUS IMPORTANTS POUR LE DÉVELOPPEMENT DU PROGRAMME SONT :</p>
 <ul>
-  <li><%= 'La Map horizontale'.in_a(href: 'abs_work/map?in=unan_admin', target: :new)%></li>
-  <li><%= 'La programme en TXT'.in_a(href: 'unan_admin/programme', target: :new)%></li>
+  <li><%='La Map horizontale'.in_a(href: 'abs_work/map?in=unan_admin', target: :new)%></li>
+  <li><%='La programme en TXT'.in_a(href: 'unan_admin/programme', target: :new)%></li>
+  <li><%='Aide du formatage des documents'.in_a(href:'unan_admin/aide_formatage', target: :new, class:'tiny')%></li>
 </ul>
 <p class='italic tiny'>
   (Les liens ci-dessus s'ouvrent dans une nouvelle fenêtre)
@@ -15,7 +17,7 @@
 http = "http://localhost/WriterToolbox"
 %>
 <div class="small right btns">
-  <%= 'Programmes courants'.in_a(href: 'unan_admin/programmes_courants', target: :new)%>
+  <%='Programmes courants'.in_a(href: 'unan_admin/programmes_courants', target: :new)%>
   <span>|</span>
   <%= 'MAP TXT'.in_a(href: 'unan_admin/programme', target: :new)%>
   <span>|</span>

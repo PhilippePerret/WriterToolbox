@@ -104,7 +104,7 @@ class MEFDocument
         when /^- / then line[2..-1].strip.in_command_latex('evt')
         else line.in_command_latex('par')
         end
-      end.join("")
+      end.join('')
     elsif scenario?
       @codet.traite_as_script_per_format(:latex)
     else
@@ -123,7 +123,7 @@ class MEFDocument
   end
 
   def in_section
-    @grand_titre = (@grand_titre.nil? ? "" : @grand_titre.in_h1)
+    @grand_titre = (@grand_titre.nil? ? '' : @grand_titre.in_h1)
     (@grand_titre + @codet).in_section(class:classes.join(' ')).gsub(/\n/,'')
   end
   def legend
@@ -363,13 +363,14 @@ class ::String
         # tabulation.
         retrait = self.match(/^((?:  |\t)+)/).to_a[1].gsub(/  /,"\t").length
         "#{self.strip.traite_as_markdown_per_format}, #{retrait}".in_command_latex("retrait")
-      when ""
+      when ''
         "#{ANTISLASH}medskip"
       else
         "#{self.traite_as_markdown_per_format}"
       end
 
     else
+
       # Tout autre format que :latex, donc :html
       case self
       when /^(#+) /
@@ -388,7 +389,15 @@ class ::String
       when ""
         "&nbsp;".in_div(class:'p')
       else
-        self.traite_as_markdown_per_format.in_div(class:'p')
+        self.traite_as_markdown_per_format
+        # On met dans un paragraphe, mais seulement si le paraagraphe
+        # n'est pas un titre
+        # debug "Je passe ici avec #{self.inspect}"
+        if self.match(/^<h[0-6]/) || self.match(/^<(p|div)/)
+          self
+        else
+          self.in_div(class:'p')
+        end
       end
 
     end # / :latex ou :html

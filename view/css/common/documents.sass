@@ -12,6 +12,30 @@ section.document
   &:not(.tiny, .small)
     font-size         : 14.2pt
 
+  // Définitions générales de tous les titres
+  // Note : ils peuvent être redéfinis plus bas par des
+  //        conditions spéciales.
+  h1,h2,h3,h4,h5,h6
+    text-align        : left
+    font-style        : normal !important
+    opacity           : 1 !important
+    margin-top        : 0 !important
+    margin-bottom     : 0 !important
+  h1,h2
+    padding-top       : 2em
+    padding-bottom    : 0.75em
+  h3,h4,h5,h6
+    padding-top       : 1em
+    padding-bottom    : 0.3em
+
+  // Définition générale des paragraphes
+  // Note : ils peuvent être redéfinis plus bas par
+  //        des conditions spéciales.
+  p, div.p
+    margin-top        : 0.1em
+    margin-bottom     : 0.1em
+    margin-left       : 0em
+
 pre.document.brut
   line-height       : 1.1em !important
   padding           : 3.5em !important
@@ -26,12 +50,12 @@ pre.document.brut
     font-size       : 9.99pt
   &.tiny
     font-size       : 9pt
-  h1, h2, h3, h4, h5
-    margin-bottom     : 0 !important
-  h1, h2
-    margin-top    : 0 !important
-  h3, h4, h5
-    margin-top    : 1em !important
+  // h1, h2, h3, h4, h5
+  //   margin-bottom     : 0 !important
+  // h1, h2
+  //   margin-top    : 0 !important
+  // h3, h4, h5
+  //   margin-top    : 1em !important
 
 section.document, pre.document
   margin-top        : 2em
@@ -50,31 +74,32 @@ section.document
     font-family       : courier
     font-size         : 0.95em
 
-  h1, h2, h3
-    text-align      : left
+    h1
+      margin          : 2.5em 0 2em !important
+    h2
+      margin          : 0.7em 0 0.5em !important
+    h3
+      margin          : 0.5em 0 0.3em !important
+    h4
+      margin          : 0.5em 0 0.3em !important
+
   h1
     font-size       : 1.5em !important
-    margin          : 2.5em 0 2em !important
 
   h2
-    font-size       : 1.3em !important
-    margin          : 0.7em 0 0.5em !important
+    font-size       : 1.4em !important
     color           : black !important
 
   h3
-    font-size       : 1.1em !important
+    font-size       : 1.25em !important
     font-weight     : bold !important
-    margin          : 0.5em 0 0.3em !important
     color           : black !important
 
   h4
-    font-size       : 1em !important
+    font-size       : 1.1em !important
     font-weight     : bold !important
-    margin          : 0.5em 0 0.3em !important
     color           : black !important
 
-  p, div.p
-    margin-left     : 0em
   p, div
     &.rtt1
       margin-left       : 1.5em

@@ -1,4 +1,11 @@
-* Poursuivre les travaux jour 80
+* [BUG] Voir pourquoi les div se décalent dans la map horizontale
+  voir autour du jour 98
+* Trouver des pages à lire pour les thèmes, les personnages et les
+  obstacles pour les jours 100 à 112
+
+
+* Poursuivre les travaux du jour 80
+
 * Voir où mettre création des styles pour faire le scénier du projet. Note : ça doit être une grosse étape à bien marquer pour dire qu'on aborde un document très important qui sera le guide de voyage du projet.
 
 WORK 137 (BRINS)
