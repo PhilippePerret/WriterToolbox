@@ -114,10 +114,10 @@ class String
 
       if path_in_cours.exist?
         (temp_line % [CGI.escape(path_in_cours.to_s)]) +
-        path_in_cours.read
+        formate_exemple_in_path(path_in_cours)
       elsif path_in_semidyn.exist?
         (temp_line % [CGI.escape(path_in_semidyn.to_s)]) +
-        path_in_semidyn.read
+        formate_exemple_in_path(path_in_semidyn)
       else
         error "Un fichier exemple introuvable : #{rel_path}" +
         "(recherché dans #{path_in_cours} et #{path_in_semidyn})".in_div(class: 'small')
@@ -126,6 +126,61 @@ class String
 
     }
     str
+  end
+
+  # Pour formater les exemples avec Kramdown, il faut les
+  # traiter de façon particulière, pour ne pas transformer
+  # les parties des notes et les marques `DOC/`. On ne peut
+  # pas se contenter d'utiliser la méthode String#kramdown
+  def formate_exemple_in_path superfile
+    str = superfile.read
+    ibalise = 0
+    hbalises = Hash.new
+    while true
+      found = str.match(/^DOC\/(.*?)$/)
+      if found
+        tout = found.to_a.first
+        ibalise += 1
+        str.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
+        hbalises.merge!(ibalise => "#{tout}\n")
+      else
+        break
+      end
+    end
+    # Les légendes et la marque de fin de document
+    while true
+      found = str.match(/^\/(.*?)$/)
+      if found
+        tout = found.to_a.first
+        ibalise += 1
+        str.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
+        hbalises.merge!(ibalise => "\n#{tout}")
+      else
+        break
+      end
+    end
+    
+    # # DEBUG
+    # debug "\n\nSTR APRÈS BALISAGE :\n#{str.inspect.gsub(/</,'&lt;')}"
+    # # /DEBUG
+
+    # On peut transformer le texte de markdown vers html
+    str = str.kramdown
+
+    # # DEBUG
+    # debug "\n\nSTR APRÈS KRAMDOWN:\n#{str.inspect.gsub(/</,'&lt;')}"
+    # # /DEBUG
+
+    # On remet les balises en place
+    hbalises.each do |ibalise, balcontent|
+      str.gsub!(/<p>:::BALISE#{ibalise}:::<\/p>/, balcontent)
+    end
+
+    # # DEBUG
+    # debug "\n\nSTR APRÈS REBALISAGE:\n#{str.inspect.gsub(/</,'&lt;')}"
+    # # /DEBUG
+
+    return str
   end
 
   class << self
@@ -141,6 +196,7 @@ class String
   #
   # Par mesure de prudence, cette opération n'est possible qu'en
   # offline
+  #
   def evaluate_codes_ruby
     OFFLINE || (return self)
     str = self
