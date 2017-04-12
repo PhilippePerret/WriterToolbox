@@ -123,7 +123,6 @@ class String
         "(recherché dans #{path_in_cours} et #{path_in_semidyn})".in_div(class: 'small')
         "[ERREUR DE FICHIER EXEMPLE INCONNU : #{rel_path}]"
       end#.gsub(/\r/,'')
-
     }
     str
   end
@@ -134,8 +133,8 @@ class String
   # pas se contenter d'utiliser la méthode String#kramdown
   def formate_exemple_in_path superfile
     str = superfile.read
-    ibalise = 0
-    hbalises = Hash.new
+    ibalise   = 0
+    hbalises  = Hash.new
     while true
       found = str.match(/^DOC\/(.*?)$/)
       if found
@@ -159,7 +158,7 @@ class String
         break
       end
     end
-    
+
     # # DEBUG
     # debug "\n\nSTR APRÈS BALISAGE :\n#{str.inspect.gsub(/</,'&lt;')}"
     # # /DEBUG
