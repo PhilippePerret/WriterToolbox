@@ -15,11 +15,16 @@ class String
   def formate_balises_propres
     str = self
 
-    # debug "STRING AVANT = #{str.gsub(/</,'&lt;').inspect}"
+    p = 'pour_voir.txt'
+    File.unlink(p) if File.exist?(p)
+
+    File.open(p, 'wb'){|f| f.write "AU DÉPART\n\n#{str}"}
 
     str = str.formate_balises_include
     str = str.formate_balises_exemples
-    # File.open('pour_voir.txt', 'wb').write str
+
+    File.open('pour_voir.txt', 'a'){|f| f.write "\n\nAPRÈS CORRECTION\n\n#{str}"}
+
     str = str.evaluate_codes_ruby
     str = str.formate_mises_en_forme_propres
     str = str.mef_document
@@ -122,7 +127,7 @@ class String
         error "Un fichier exemple introuvable : #{rel_path}" +
         "(recherché dans #{path_in_cours} et #{path_in_semidyn})".in_div(class: 'small')
         "[ERREUR DE FICHIER EXEMPLE INCONNU : #{rel_path}]"
-      end#.gsub(/\r/,'')
+      end.gsub(/\r/,'')
     }
     str
   end
@@ -131,55 +136,68 @@ class String
   # traiter de façon particulière, pour ne pas transformer
   # les parties des notes et les marques `DOC/`. On ne peut
   # pas se contenter d'utiliser la méthode String#kramdown
+  #
+  # ÇA FOIRE COMPLÈTEMENT LE TRUC, DONC JE ME CONTENTE DE
+  # CORRIGER "MANUELLEMENT" QUELS TRUCS MARKDOWN
+  #
   def formate_exemple_in_path superfile
-    str = superfile.read
-    ibalise   = 0
-    hbalises  = Hash.new
-    while true
-      found = str.match(/^DOC\/(.*?)$/)
-      if found
-        tout = found.to_a.first
-        ibalise += 1
-        str.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
-        hbalises.merge!(ibalise => "#{tout}\n")
-      else
-        break
-      end
-    end
-    # Les légendes et la marque de fin de document
-    while true
-      found = str.match(/^\/(.*?)$/)
-      if found
-        tout = found.to_a.first
-        ibalise += 1
-        str.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
-        hbalises.merge!(ibalise => "\n#{tout}")
-      else
-        break
-      end
-    end
+    sfstr = superfile.read.gsub(/\r/,'')
+    sfstr.gsub!(/\*\*(.*?)\*\*/, '<strong>\1</strong>')
+    sfstr.gsub!(/\*(.*?)\*/, '<em>\1</em>')
+    return sfstr
+
+    # ibalise   = 0
+    # hbalises  = Hash.new
+    # while true
+    #   found = sfstr.match(/^DOC\/(.*?)$/)
+    #   if found
+    #     tout = found.to_a.first
+    #     ibalise += 1
+    #     sfstr.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
+    #     hbalises.merge!(ibalise => "#{tout}\n")
+    #   else
+    #     break
+    #   end
+    # end
+    # # Les légendes et la marque de fin de document
+    # while true
+    #   found = sfstr.match(/^\/(.*?)$/)
+    #   if found
+    #     tout = found.to_a.first
+    #     ibalise += 1
+    #     sfstr.gsub!(/#{Regexp.escape tout}/, "\n\n:::BALISE#{ibalise}:::\n\n")
+    #     hbalises.merge!(ibalise => "\n#{tout}")
+    #   else
+    #     break
+    #   end
+    # end
 
     # # DEBUG
-    # debug "\n\nSTR APRÈS BALISAGE :\n#{str.inspect.gsub(/</,'&lt;')}"
+    # debug "\n\nSTR APRÈS BALISAGE :\n#{sfstr.inspect.gsub(/</,'&lt;')}"
     # # /DEBUG
 
-    # On peut transformer le texte de markdown vers html
-    str = str.kramdown
+    # ÇA FOIRE AVEC :
+    # sfstr = sfstr.kramdown
+    # ÇA FOIRE AUSSI AVEC :
+    # sfstr = Kramdown::Document.new(sfstr).to_html
+
 
     # # DEBUG
-    # debug "\n\nSTR APRÈS KRAMDOWN:\n#{str.inspect.gsub(/</,'&lt;')}"
+    # debug "\n\nSTR APRÈS KRAMDOWN:\n#{sfstr.inspect.gsub(/</,'&lt;')}"
     # # /DEBUG
-
-    # On remet les balises en place
-    hbalises.each do |ibalise, balcontent|
-      str.gsub!(/<p>:::BALISE#{ibalise}:::<\/p>/, balcontent)
-    end
-
+    #
+    # # On remet les balises en place
+    # hbalises.each do |ibalise, balcontent|
+    #   sfstr.gsub!(/<p>:::BALISE#{ibalise}:::<\/p>/, "\n#{balcontent}\n")
+    # end
+    #
+    # sfstr.gsub!(/\n\n+/,"\n\n")
+    #
     # # DEBUG
-    # debug "\n\nSTR APRÈS REBALISAGE:\n#{str.inspect.gsub(/</,'&lt;')}"
+    # debug "\n\nSTR APRÈS REBALISAGE:\n#{sfstr.gsub(/</,'&lt;')}"
     # # /DEBUG
-
-    return str
+    #
+    # return sfstr
   end
 
   class << self
