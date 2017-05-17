@@ -8,27 +8,22 @@ class Video
     case id
     when 1, 2
       <<-HTML
-      Cette vidéo fait partie d'un ensemble de screencasts de l'<a href='http://www.atelier-icare.net' target='_new'><strong>atelier Icare</strong></a> dont Phil, concepteur et pédagogue de cette Boite à outils, est l'auteur.
+      Cette vidéo fait partie d'un ensemble de screencasts de l'<a href='http://www.atelier-icare.net' target='_new'><strong>atelier Icare</strong></a> dont <a href="site/phil">Philippe Perret</a>, concepteur et pédagogue de cette Boite à outils, est l'auteur.
+      HTML
+    when 3, 4
+      <<-HTML
+      Cette vidéo fait partie d'un ensemble de tutoriels sur la mise en forme des documents dans LibreOffice, proposés à l'<a href='http://www.atelier-icare.net' target='_new'><strong>atelier Icare</strong></a> et dont <a href="site/phil">Philippe Perret</a>, concepteur et pédagogue de cette Boite à outils, est l'auteur.
       HTML
     else
       ""
     end
   end
 
-  # Valeurs possible pour level:
+  # Valeurs possible pour +level+:
   #   1:      Tout le monde
   #   2:      Seulement les inscrits
   #   3:      Seulement les abonnés
   DATA_VIDEOS = {
-
-    # 3 => {
-    #   id:     3
-    #   titre:  "Écriture organique (seconde partie)",
-    #   ref:    '',
-    #   type:   :youtube,
-    #   date:   "",
-    #   level:  3
-    # },
 
     1 => {
       id:           1,
@@ -38,6 +33,7 @@ class Video
       date:         "Mars 2015",
       created_at:   1425164400,
       level:        1,
+      next:         nil, # ID de vidéo suivante (si suite de vidéo)
       # Pour sitemap
       description:  "Première vidéo d'un ensemble sur l'écriture de texte et de documents.",
       date_inv:     "2015-03-01",
@@ -52,10 +48,43 @@ class Video
       date:         "Juillet 2015",
       created_at:   1436133600,
       level:        2,
+      next:         nil, # ID de vidéo suivante, si suite
       # Pour sitemap
       description:  "Tout savoir sur les raccourcis-claviers indispensables qu'il faut connaitre pour écrire mieux et plus vite.",
       date_inv:     "2015-07-01",
       priority:     0.6
+    },
+
+    3 => {
+      id:           3,
+      titre:        "Mise en forme des documents avec les styles dans LibreOffice 1/3",
+      ref:          'iLttkbFeWt4',
+      type:         :youtube,
+      date:         "Mai 2017",
+      created_at:   1494799200,
+      level:        1,
+      previous:     nil,
+      next:         4, # ID de vidéo suivante
+      # Pour sitemap
+      description:  "Suite de plusieurs tutoriels sur l'utilisation des styles dans les traitements de texte pour obtenir facilement les meilleurs documents.",
+      date_inv:     "2017-05-15",
+      priority:     0.7
+    },
+
+    4 => {
+      id:           4,
+      titre:        "Mise en forme des documents avec les styles dans LibreOffice 2/3",
+      ref:          'sB213Mcg15I',
+      type:         :youtube,
+      date:         "Mai 2017",
+      created_at:   1494885600,
+      level:        1,
+      previous:     3,
+      next:         nil, # TODO Mettre la troisième quand elle sera prête
+      # Pour sitemap
+      description:  "Suite de plusieurs tutoriels sur l'utilisation des styles dans les traitements de texte pour obtenir facilement les meilleurs documents.",
+      date_inv:     "2017-05-16",
+      priority:     0.9
     }
 
   }

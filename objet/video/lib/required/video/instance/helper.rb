@@ -1,28 +1,14 @@
 # encoding: UTF-8
+# encoding: UTF-8
 class Video
-
-  FRAME_WIDTH   = 560
-  FRAME_HEIGHT  = 315
-
-  attr_reader :id
-  attr_reader :titre
-  attr_reader :date     # "Mois. Année"
-  attr_reader :ref      # :youtube
-  attr_reader :level    # 1:seulement abonnés, 2:tous
-
-  # +data+
-  #   ref:    Référence de la vidéo (video_id sur youtube)
-  #   type:   Type (:youtube par défaut)
-  def initialize data
-    data.each{|k,v|instance_variable_set("@#{k}", v)}
-  end
 
   # Sortie de la vidéo, c'est-à-dire son code d'incrustation dans
   # la page, en fonction du type de la vidéo (youtube par défaut)
   def output
     titre.in_h2 +
     description.in_div(class:'italic small') +
-    self.send("frame_#{type}".to_sym).in_div(class: 'center air')
+    self.send("frame_#{type}".to_sym).in_div(class: 'center air') +
+    liens_vers_next_and_previous
   end
 
   # {StringHTML} Retourne la vidéo comme lien pour visualisation
@@ -56,8 +42,20 @@ class Video
     HTML
   end
 
-  def type
-    @type ||= :youtube
+  def liens_vers_next_and_previous
+    (
+      lien_vers_precedente.in_span(class:'fleft', style: 'vertical-align:middle') +
+      lien_vers_suivante.in_span(class:'fright', style: 'vertical-align:middle')  +
+      '&nbsp;'.in_span
+    ).in_div(class: 'small air')
+  end
+  def lien_vers_precedente
+    self.previous || (return '&nbsp;')
+    ('◀︎ Vidéo précédente').in_a(href:"video/#{self.previous}/show")
+  end
+  def lien_vers_suivante
+    self.next || (return '&nbsp;')
+    ('Vidéo suivante ▶︎').in_a(href:"video/#{self.next}/show")
   end
 
 end #/Video
