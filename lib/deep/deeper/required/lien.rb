@@ -269,6 +269,7 @@ class Lien
     titre   = options.delete(:titre) || "Ouvrir"
     line    = options.delete(:line)
 
+    path = File.expand_path(path)
     url =
       case File.extname(path)
       when '.md'

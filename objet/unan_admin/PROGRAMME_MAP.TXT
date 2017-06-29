@@ -283,9 +283,33 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 154] Brainstormer sur les obstacles possibles auxquels on n'aurait pas encore pensé.
         JP 112-139 Second tour d'approfondissement
             JP 112-125 TR 7 sur STRT et PERS
-                TODO [WORK] Apprendre à se servir des feuilles de style dans son traitement de texte.
-            JP 126-139 TR 6 sur DOCU et [autre]
-
+                JP 112-113
+                    [WORK 155] Apprendre à se servir des feuilles de style dans son traitement de texte.
+                    [WORK 156] Reprendre plusieurs de ses documents et les mettre en forme grâce aux styles.
+                        Note : le travail se fait sur 4 jours.
+                JP 114-117 7e tour sur la structure STRT
+                    [WORK 157] Appliquer la technique du « et si… le contraire » sur la structure.
+                JP 118-121 7e tour sur les personnages PERS DIAL
+                    [WORK 158] Travailler sur le dialogue des scènes dialoguées, pour trouver le ton et découvrir les personnages.
+                    [WORK 159][PAGE 65] Le sous-texte, page #573 de la Collection Narration
+                JP 122-125 8e tour sur la structure STRT
+                    [WORK 160] Reprise, poursuite et validation de l'application de la technique du « et si…le contraire » appliqué à la structure.
+                        Il s'agit maintenant de valider les choix et de les incorporer à la structure générale.
+            JP 126-139 TR 6 sur DOCU et ANAF
+                JP 126-127 TR 6 DOCU ANAF
+                    [WORK 161] Parachever la documentation sur le sujet en trouvant les réponses aux dernières questions
+                    [WORK 162] Choisir 2 films (si possible un par jour) et les étudier du point de vue de la documentation (comment la documentation est utilisée)
+                        Dire tout de suite qu'on poursuivra ce travail sur plusieurs jours ensuite avec d'autres films.
+                    TODO [EXEMPLE] Montrer l'exemple de cette documentation et de son utilisation sur un film.
+                JP 128-129 (suite TR6 DOCU)
+                    [WORK 163] Étudier l'utilisation de la documentation dans le projet. Où est-elle utilisée et comment ? Y en a-t-il assez ? N'y en a-t-il pas trop ?
+                        Note : ce travail s'étale sur quatre jours.
+                    TODO [EXEMPLE] Montrer comment on utilise la documentation dans les illustrations.
+                    [WORK 164] Faire le travail d'analyse que le travail #162 sur deux autres films, avec les mêmes contraintes mais deux films ne retraçant pas des évènements historiques.
+                JP 130-133
+                    TODO [WORK] Poursuivre le travail #161
+                JP 134-137
+                JP 138-139
 JP 141-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
     Cette partie marque la seconde grande partie de développement du scénario ou du manuscrit. Sa production finale sera la première version du scénario ou du manuscrit.
     JP 141-252 PRÉPARATION DE L'ÉCRITURE DU SCÉNARIO OU DU MANUSCRIT

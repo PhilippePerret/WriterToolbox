@@ -110,7 +110,7 @@ class AbsWork
     c = String.new
     if bit_res_destina > 0
       destina   = Unan::DESTINATAIRES[bit_res_destina][1]
-      c << ('Destinataire : '.in_span(class:'libelle')+destina.in_span).in_span
+      c << ('destinataire : '.in_span(class:'libelle')+destina.in_span).in_span
     end
     if bit_res_support > 0
       support   = Unan::SUPPORTS_RESULTAT[bit_res_support][1]
@@ -321,7 +321,7 @@ class AbsWork
   def autres_infos_travail from = nil
     s_duree = duree > 1 ? "s" : ""
     first_infos = [
-      ['Type projet', type_projet[:hname],      nil],
+      ['type projet', type_projet[:hname],      nil],
       ['sujet',       human_narrative_target,   nil],
       ['points',      points,                   nil]
     ].collect do |libelle, valeur, unite|

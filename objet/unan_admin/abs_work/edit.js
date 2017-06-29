@@ -11,6 +11,13 @@ $.extend(window.AbsWork,{
   // Initialisation du formulaire (pour nouveau travail)
   init_new:function(){
     window.location.href = 'abs_work/edit?in=unan_admin';
+  },
+
+  // Affichage du travail courant
+  show: function(){
+    var id = $('input#work_id').val();
+    window.open('./abs_work/'+id+'/show?in=unan', 'affichage_travail');
+    return false;
   }
 
 });

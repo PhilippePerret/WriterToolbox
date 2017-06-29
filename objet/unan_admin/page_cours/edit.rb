@@ -274,7 +274,7 @@ class PageCours
     end
 
     def open_page
-      ipage = Unan::Program::PageCours::get(page_id)
+      ipage = Unan::Program::PageCours.get(page_id)
       debug "Page ##{ipage.id}"
       path = File.expand_path(ipage.fullpath.to_s)
       dirn = File.dirname(path)
@@ -293,7 +293,7 @@ end #/Unan
 
 def pc # comme "P-age C-cours"
   return Hash.new if pc_id == :undefined
-  @pc ||= Unan::Program::PageCours::get(pc_id)
+  @pc ||= Unan::Program::PageCours.get(pc_id)
 end
 def pc_id
   @pc_id ||= begin

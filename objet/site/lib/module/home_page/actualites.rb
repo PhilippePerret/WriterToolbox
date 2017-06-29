@@ -182,7 +182,7 @@ class SiteHtml
 
   def derniers_tutoriels_videos
     require './objet/video/DATA_VIDEOS.rb'
-    Video::DATA_VIDEOS.sort_by{|vid, vdata| vdata[:created_at]}[0..2].collect do |vid, vdata|
+    Video::DATA_VIDEOS.sort_by{|vid, vdata| vdata[:created_at]}[0..2].reverse.collect do |vid, vdata|
       title = "Visualiser le tutoriel vidéo  “#{vdata[:titre]}” conçu le #{vdata[:created_at].as_human_date(true, false, ' ')}."
       "#{DOIGT}#{vdata[:titre]}".in_a(href:"video/#{vid}/show", target:"_blank", title:title.strip_tags).in_div(class:'actu')
     end.join('')

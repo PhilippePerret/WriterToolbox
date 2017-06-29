@@ -20,7 +20,8 @@ class SiteHtml
       #cadre_reseaux_sociaux
     ).in_div(class:'fright', style:'margin-top:20px') +
     incipit +
-    image_accueil +
+    # image_accueil +
+    video_accueil +
     '<div style="clear:both"></div>' +
     extrait_last_blog_post +
     section_hot_news +
@@ -52,6 +53,10 @@ class SiteHtml
 
   def image_accueil
     image('divers/logo.png', id:'homeimage', width:"340px").in_div(class:'center')
+  end
+
+  def video_accueil
+    '<iframe width="560" height="315" src="https://www.youtube.com/embed/xpozls2yMkk" frameborder="0" allowfullscreen></iframe>'
   end
 
   # ---------------------------------------------------------------------

@@ -81,6 +81,7 @@ end
 
 # Le lien pour éditer le work défini dans le champ ID
 lien_to_edit_abswork = "éditer".in_a(class: 'small btn', onclick:"$('form#form_edit_work_unan input#operation').val('edit_abs_work');$('form#form_edit_work_unan textarea#work_travail').val('');$('form#form_edit_work_unan').submit();")
+lien_to_show_abswork = "afficher".in_a(href:'#', class: 'small btn', onclick:"try{$.proxy(AbsWork,'show')()}catch(erreur){alert(erreur)};return false;")
 
 # Le lien pour détruire le travail courant
 lien_to_destroy_current = "détruire".in_a(class:'small btn warning', onclick:"if(confirm('Es-tu CERTAIN de vouloir détruire DÉFINITIVEMENT ce travail ?'+RETURN+RETURN+'S’il est utilisé dans des p-days, de graves problèmes risquent de survenir.')){$('form#form_edit_work_unan input#operation').val('destroy_abs_work');$('form#form_edit_work_unan').submit();}")
@@ -132,7 +133,7 @@ form.error_fields   = errfields unless errfields.empty?
   <%= (param(:exfields)||"").in_hidden(name:'exfields', id:'exfields') %>
 
   <%# id %>
-  <%= form.field_text('Numéro/ID', 'id', nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current} #{lien_to_init_new}".in_span(class:'small')}) %>
+  <%= form.field_text('Numéro/ID', 'id', nil, {class: 'short id_field', text_after: "#{lien_to_edit_abswork} #{lien_to_destroy_current} #{lien_to_show_abswork} #{lien_to_init_new}".in_span(class:'small')}) %>
   <%= form.field_description("Numéro de 1 à 9999. Si aucun numéro n'est fourni, ce sera un nouveau travail enregistré.") %>
 
   <%# titre %>
@@ -146,7 +147,7 @@ form.error_fields   = errfields unless errfields.empty?
   <%= form.field_select("Type Projet", 'typeP', data[:typeP], {values: UnanAdmin::types_projets_for_select}) %>
   <%# type (bit 1-2) %>
   <%= form.field_select("Type travail", 'type_w', data[:type_w], {values: Unan::Program::AbsWork::types_for_select, onchange:"on_change_type_general_travail(this.value)"}) %>
-  <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans ./data/unan/data/listes.rb") %>
+  <%= form.field_description("Premier paramètre pour la donnée “type” qui fonctionne par bit (avec données suivantes).<br />Ajout de valeurs dans #{lien.edit_file('./data/unan/data/listes.rb', titre: './data/unan/data/listes.rb')} ") %>
 
   <%
     # Item ID
@@ -190,7 +191,7 @@ form.error_fields   = errfields unless errfields.empty?
 
   <%# type (bit 3-4) %>
   <%= form.field_select("Sujet cible", 'narrative_target', nil, {values: sujets_cibles_as_select}) %>
-  <%= form.field_description("AKA “Narrative target”. Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier `./data/unan/data/sujets_cibles.rb` (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
+  <%= form.field_description("AKA “Narrative target”. Pour ajouter de nouvelles valeurs de sujets ci-dessus, éditer le fichier #{lien.edit_file('./data/unan/data/sujets_cibles.rb', titre: './data/unan/data/sujets_cibles.rb')} (recharger la page pour actualiser le menu et trouver la nouvelle valeur).") %>
 
   <%# Parent %>
   <%= form.field_text("Travail parent", 'parent', nil,{class:'short', text_after:" (ID du travail parent)"}) %>

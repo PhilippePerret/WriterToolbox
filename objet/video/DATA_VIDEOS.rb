@@ -80,10 +80,25 @@ class Video
       created_at:   1494885600,
       level:        1,
       previous:     3,
-      next:         nil, # TODO Mettre la troisième quand elle sera prête
+      next:         5,
       # Pour sitemap
       description:  "Suite de plusieurs tutoriels sur l'utilisation des styles dans les traitements de texte pour obtenir facilement les meilleurs documents.",
       date_inv:     "2017-05-16",
+      priority:     0.9
+    },
+    5 => {
+      id:           5,
+      titre:        "Mise en forme des documents avec les styles dans LibreOffice 3/3",
+      ref:          'CZt60oPHmUQ',
+      type:         :youtube,
+      date:         "Mai 2017",
+      created_at:   1496060242,
+      level:        1,
+      previous:     4,
+      next:         nil, # TODO Mettre la troisième quand elle sera prête
+      # Pour sitemap
+      description:  "Suite de plusieurs tutoriels sur l'utilisation des styles dans les traitements de texte pour obtenir facilement les meilleurs documents.",
+      date_inv:     "2017-05-29",
       priority:     0.9
     }
 
