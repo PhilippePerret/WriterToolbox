@@ -1,7 +1,11 @@
 AU DÉPART
 
-<p>Cet <em>euphorisme</em> <span class='small'>(*)</span> de Claude Lelouch donne une juste idée de ce qu'est un scénario de film.</p><p>D'un côté, il n'est <em>qu'un</em> plan de l'œuvre — comme peut l'être aussi, quand on connait la musique, une partition — mais de l'autre il doit être aussi précis qu'une carte routière pour conduire le spectateur ou le réalisateur là où l'auteur le désire <span class='small'>(**)<span>.</p><p>On trouvera au fil des pages de la <%=lien.narration%> les explications détaillées concernant ces deux aspects.</p><p class='small'>(*) Néologisme de Grégoire Lacroix composé d'après “aphorisme euphorique”.</p><p class='small'>(**) On pourra se faire la réflexion que cet aphorisme ne correspond pas tout à fait au cinéma de Lelouch, un cinéma, <em>prétend-il</em>, basé sur l'improvisation et l'imprévu. En réalité, quand on l'a vu travailler, on sait que ça n'est pas aussi vrai qu'il veut bien le dire, et que ce mensonge bien pardonnable se révèle dans cette citation.</p>
+<p>Pendant que vous continuez à renseigner votre scénier et le document de description des scènes, créez des styles pour mettre en forme de façon agréable ces documents.</p>
+
+<p>Vous pouvez apprendre à créer et manipuler des styles <a href="video/3/show">en consultant les trois vidéos</a> spécialement dédiées à cette création.</p>
 
 APRÈS CORRECTION
 
-<p>Cet <em>euphorisme</em> <span class='small'>(*)</span> de Claude Lelouch donne une juste idée de ce qu'est un scénario de film.</p><p>D'un côté, il n'est <em>qu'un</em> plan de l'œuvre — comme peut l'être aussi, quand on connait la musique, une partition — mais de l'autre il doit être aussi précis qu'une carte routière pour conduire le spectateur ou le réalisateur là où l'auteur le désire <span class='small'>(**)<span>.</p><p>On trouvera au fil des pages de la <%=lien.narration%> les explications détaillées concernant ces deux aspects.</p><p class='small'>(*) Néologisme de Grégoire Lacroix composé d'après “aphorisme euphorique”.</p><p class='small'>(**) On pourra se faire la réflexion que cet aphorisme ne correspond pas tout à fait au cinéma de Lelouch, un cinéma, <em>prétend-il</em>, basé sur l'improvisation et l'imprévu. En réalité, quand on l'a vu travailler, on sait que ça n'est pas aussi vrai qu'il veut bien le dire, et que ce mensonge bien pardonnable se révèle dans cette citation.</p>
+<p>Pendant que vous continuez à renseigner votre scénier et le document de description des scènes, créez des styles pour mettre en forme de façon agréable ces documents.</p>
+
+<p>Vous pouvez apprendre à créer et manipuler des styles <a href="video/3/show">en consultant les trois vidéos</a> spécialement dédiées à cette création.</p>

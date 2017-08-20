@@ -301,15 +301,15 @@ JP 028-139 DÉVELOPPEMENT DE L'HISTOIRE
                     [WORK 162] Choisir 2 films (si possible un par jour) et les étudier du point de vue de la documentation (comment la documentation est utilisée)
                         Dire tout de suite qu'on poursuivra ce travail sur plusieurs jours ensuite avec d'autres films.
                     TODO [EXEMPLE] Montrer l'exemple de cette documentation et de son utilisation sur un film.
-                JP 128-129 (suite TR6 DOCU)
+                JP 128-131 (suite TR6 DOCU)
                     [WORK 163] Étudier l'utilisation de la documentation dans le projet. Où est-elle utilisée et comment ? Y en a-t-il assez ? N'y en a-t-il pas trop ?
                         Note : ce travail s'étale sur quatre jours.
                     TODO [EXEMPLE] Montrer comment on utilise la documentation dans les illustrations.
-                    [WORK 164] Faire le travail d'analyse que le travail #162 sur deux autres films, avec les mêmes contraintes mais deux films ne retraçant pas des évènements historiques.
-                JP 130-133
-                    TODO [WORK] Poursuivre le travail #161
-                JP 134-137
-                JP 138-139
+                    [WORK 164] Faire le même travail d'analyse que le travail #162 sur deux autres films, avec les mêmes contraintes mais deux films ne retraçant pas des évènements historiques.
+                JP 132-133
+                    [WORK 165] Poursuivre le travail #161 sur la documentation, pour répondre à toutes les questions.
+                JP 134-140
+                    [WORK 166] 7 jours de repos.
 JP 141-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
     Cette partie marque la seconde grande partie de développement du scénario ou du manuscrit. Sa production finale sera la première version du scénario ou du manuscrit.
     JP 141-252 PRÉPARATION DE L'ÉCRITURE DU SCÉNARIO OU DU MANUSCRIT
@@ -318,9 +318,13 @@ JP 141-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
         JP 141-196 RENFORCEMENT DE L'HISTOIRE
             JP 141-168 Premier tour de renforcement
                 JP 141-154
-                    JP 141-143
-                        TODO [WORK] Création des feuilles de styles pour le scénier.
-                        TODO [WORK] Mise en place du scénier (les titres de grandes parties, les scènes-clés, etc.)
+                    JP 141-146
+                        JP 141-142
+                            [WORK 167] Création du document contenant le scénier.
+                            [WORK 168] Création du document contenant les notes/descriptions des évènements.
+                        JP 143-144
+                            [WORK 170] Création des feuilles de styles pour le scénier et le document des notes.
+                        [WORK 169] Mise en place du scénier (les titres de grandes parties, les scènes-clés, etc.)
                 JP 155-169
                     [WORK 136] Une dizaine de scènes dans le format final.
                     TODO [EXEMPLE] Exemples divers dans les principaux formats (voir si je peux en obtenir en BD et théâtre).

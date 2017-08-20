@@ -32,13 +32,13 @@ page.description= "Description du programme ÉCRIRE UN ROMAN, ÉCRIRE UN FILM, E
 
 <h4>Combien ça coûte ?</h4>
 <p>
-  Le tarif unique de ce programme est de <strong><%= Unan::tarif_humain %> pour le cyle complet du programme d'un an</strong>.
+  Le tarif unique de ce programme est de <strong><%= Unan::tarif_humain %> pour le cycle complet du programme d'un an</strong>.
 </p>
 <p class='small'>
   Ce tarif n'est possible qu'en raison du nombre d'auteurs qui le suivent ou le suivront. Notez qu'il comprend également <strong>un abonnement de deux ans au site</strong> qui permet d'utiliser pendant ce temps tous les autres outils proposés.
 </p>
 <p>
-  À ce prix peut s'ajouter ponctuellement <em>et seulement si l'auteur le désire</em> des analyses commentées de ses documents dont le tarif fluctue en fonction du lecteur-commentateur sollicité (et parfois de la taille des-dits documents).
+  À ce prix peut s'ajouter ponctuellement, et seulement si l'auteur le désire, des analyses commentées de ses documents dont le tarif fluctue en fonction du lecteur-commentateur sollicité (et parfois de la taille desdits documents).
 </p>
 <p class='small'>
   L'auteur peut en effet faire appel à des lecteurs plus ou moins chevronnés du forum, et les tarifs sont alors purement symboliques (de 1€ pour les moins expérimentés des lecteurs à 5€ pour les plus expérimentés). Cette rétribution ne vise qu'à responsabiliser auteur et lecteur.
@@ -60,7 +60,7 @@ page.description= "Description du programme ÉCRIRE UN ROMAN, ÉCRIRE UN FILM, E
   Bien que ce programme vise à développer l'autonomie complète de l'auteur ou de l'auteure, vous pouvez recevoir sur le site des avis tout au long de votre programme par le biais du <a href="forum/home" target="_new">forum privé</a> que fréquentent des auteurs amateurs et professionnels.
 </p>
 <p>
-  Vous l'aurez compris, vous n'êtes donc plus du tout seul ou seule en suivant ce programme ! :-)
+  Vous l'aurez compris, vous n'êtes donc plus du tout seul<%= user.f_e %> en suivant ce programme ! :-)
 </p>
 
 <h4>Pas assez clair ?</h4>
@@ -70,5 +70,5 @@ page.description= "Description du programme ÉCRIRE UN ROMAN, ÉCRIRE UN FILM, E
 
 <h4>À vos marques…</h4>
 <p>
-  Vous vous sentez prêt ou prête à vous lancer ?… Alors n'attendez plus et <a href="unan/paiement" class='bold'>inscrivez-vous</a> de ce pas au programme “<%= Unan::PROGNAME_MAJ %>” ! :-D
+  Vous vous sentez prêt<%= user.f_e %> à vous lancer ?… Alors n'attendez plus et <a href="unan/paiement" class='bold'>inscrivez-vous</a> de ce pas au programme “<%= Unan::PROGNAME_MAJ %>” ! :-D
 </p>

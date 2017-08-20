@@ -4,7 +4,7 @@
 <h1>Vous êtes inscrit<%= site.user_prov.f_e %> !</h1>
 <p><%= site.user_prov.pseudo %>, heureux de vous compter parmi les utilisateurs de <em>La Boite à Outils de L'Auteur</em>.</p>
 <p>N'oubliez pas de confirmer votre mail pour que votre inscription soit tout à fait prise en compte, grâce au message que vous allez recevoir incessamment sous peu.</p>
-<p>Pour pouvoir profiter de tous les outils du site, vous pouvez ensuite <a href="user/<%= user.id %>/paiement">vous abonner pour un an</a>, pour seulement <%= site.tarif_humain(true) %>.</p>
+<p>Pour pouvoir profiter de tous les outils du site, vous pouvez ensuite <a id="link_to_abonnement" href="user/<%= site.user_prov.id %>/paiement">vous abonner pour un an</a>, pour seulement <%= site.tarif_humain(true) %>.</p>
 <p>
-  N'hésitez pas non plus à vous lancer dans l'aventure exceptionnelle du <%= "PROGRAMME #{Unan::PROGNAME_MAJ}".in_a(href:"voerview/home?in=unan/aide") %> pour développer votre projet de film ou de roman.
+  N'hésitez pas non plus à vous lancer dans l'aventure exceptionnelle du <%= lien.unanunscript(nil, {id: 'link_to_prog_uaus'}) %> pour développer votre projet de film ou de roman.
 </p>

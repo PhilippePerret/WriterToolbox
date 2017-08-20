@@ -18,65 +18,48 @@
 # require 'rspec-steps'
 # require 'rspec-steps/monkeypatching'
 
-# require 'capybara/rspec'
+require 'selenium-webdriver'
+require 'capybara/rspec'
+Capybara.javascript_driver  = :selenium
+Capybara.default_driver     = :selenium
+
+
 # Pour les tests avec have_tag etc.
 require 'rspec-html-matchers'
 
 
-require 'capybara/rspec'
-require 'capybara-webkit'
-
-# Capybara.javascript_driver = :webkit
-# Capybara.javascript_driver = :webkit
-Capybara.javascript_driver  = :selenium
-Capybara.default_driver     = :selenium
-
-# Pour Chrome
-# Le seul problème avec Chrome est qu'on ne peut pas
-# screenshoter toute la page, mais seulement la vue
-# du port actuelle (taille fenêtre)
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+def require_folder folder
+  Dir["#{folder}/**/*.rb"].each{ |m| require m }
 end
 
-# Capybara.default_driver = :safari
-# Capybara.register_driver :safari do |app|
-# options = {
-# :js_errors => false,
-# :timeout => 360,
-# :debug => false,
-# :inspector => false,
-# }
-# Capybara::Selenium::Driver.new(app, :browser => :safari)
-# end
+# require './lib/required'
 
-# Firefox plante
-# Capybara.default_driver = :firefox
-# Capybara.register_driver :firefox do |app|
-#   options = {
-#   :js_errors => true,
-#   :timeout => 360,
-#   :debug => false,
-#   :inspector => false,
-#   }
-#   Capybara::Selenium::Driver.new(app, :browser => :firefox)
-# end
-
-
-# On requiert tout ce que requiert l'index du site
-# Mais est-ce vraiment bien, considérant tout ce qui est indiqué ci-dessus ?
-ONLINE  = false
-OFFLINE = true
-require './lib/required'
-
-require_folder './spec/support'
+require_folder './spec/support/_required'
 
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
 
-  # Pour les tests have_tag etc.
+
+  # Charge le support pour les bases de données
+  def require_db_support
+    require_folder './spec/support/db'
+  end
+
+  # Charge le support pour les tests d'intégration
+  def require_integration_support
+    require_folder './spec/support/integration'
+  end
+
+  # La fenêtre ouverte par capybara
+  def resize_window
+    page.driver.browser.manage.window.resize_to(1300, 5000)
+    page.driver.browser.manage.window.maximize
+  end
+
+  # # Pour les tests have_tag etc.
   config.include RSpecHtmlMatchers
+
 
   # config.include ModuleFormLikeStepDefinition
 
@@ -123,6 +106,7 @@ RSpec.configure do |config|
   # This setting enables warnings. It's recommended, but in some cases may
   # be too noisy due to issues in dependencies.
   config.warnings = true
+=end
 
   # Many RSpec users commonly either run the entire suite or an individual
   # file, and it's useful to allow more verbose output when running an
@@ -134,6 +118,7 @@ RSpec.configure do |config|
     config.default_formatter = 'doc'
   end
 
+=begin
   # Print the 10 slowest examples and example groups at the
   # end of the spec run, to help surface which specs are running
   # particularly slow.
@@ -161,231 +146,19 @@ RSpec.configure do |config|
 
   config.before :suite do
 
-    remove_mails
-
+    # On vide le dossier des screenshots
     empty_screenshot_folder
-
-    File.unlink('./debug.log') if File.exist?('./debug.log')
-
-    # On prend le temps de départ qui permettra de savoir les choses
-    # qui ont été créées au cours des tests et pourront être
-    # supprimées à la fin de la suite de tests
-    @start_suite_time = Time.now.to_i
-
-    # Un Array contenant les instances ou les identifiants des
-    # users qu'il faudra détruire à la fin des tests.
-    # On peut y mettre indifféremment des Identifiants (Fixnum),
-    # des instances user ({User}) ou des Hash de données (contenant
-    # au moins :id)
-    $users_2_destroy = Array.new
-
-    # On fait un gel du site actuel pour pouvoir le remettre
-    # ensuite.
-    # SiteHtml.instance.require_module('gel')
-    # SiteHtml::Gel::gel('before-test')
 
   end
 
   # À faire avant chaque module de test (donc chaque fichier)
   config.before :all do
-    User.current = nil
+
   end
 
   # À exécuter à la toute fin des tests
   config.after :suite do
 
-    # Si la liste n'est pas vide, on détruit tous les
-    # users créés
-    unless $users_2_destroy.empty?
-      # On transforme la liste en liste d'identifiants
-      $users_2_destroy.collect! do |ref_u|
-        case ref_u
-        when Hash   then ref_u[:id]
-        when User   then ref_u.id
-        when Fixnum then ref_u
-        else
-          nil
-        end
-      end.compact
-      User.table.delete(where: "id IN (#{$users_2_destroy.join(', ')})")
-    end
-
-    # Destruction de tous les commentaires de page qui ont été produits
-    remove_page_comments
-
-  end
-  # After suite
-
-
-  # Méthode à appeler dans le before(:all) de certains tests pour
-  # tout ré-initialiser
-  def reset_all_variables
-
-    if defined?(User)
-      User::instance_variables.each do |iv|
-        User.remove_instance_variable(iv)
-      end
-    end
-    if defined?(site)
-      site.instance_variables.each{|k|site.instance_variable_set(k,nil)}
-      @site = nil
-    end
-
-    if defined?(Unan)
-      Unan.instance_variables.each { |k| Unan.remove_instance_variable k }
-      if defined?(Unan::Program)
-        Unan::Program.instance_variables.each { |k| Unan::Program.remove_instance_variable k }
-      end
-      if defined?(Unan::Projet)
-        Unan::Projet.instance_variables.each { |k| Unan::Projet.remove_instance_variable k }
-      end
-    end
-    # @site   = nil
-    # @forum  = nil
-  end
-
-  # NE PAS L'UTILISER DANS reset_all_variables, car ça a justement été
-  # mis à part pour ne pas l'utiliser avec
-  def reset_forum_variables
-    return unless defined?(Forum)
-    Object.send(:remove_const, 'Forum')
-    site.require_objet('forum', forcer = true)
-    forum.instance_variables.each{|k|forum.remove_instance_variable(k)} rescue nil
-    # Forum.instance_variables.each{|k|Forum.remove_instance_variable(k)}
-  end
-  alias :reset_variables_forum :reset_forum_variables
-
-  def reset_variables_unanunscript
-    Unan.instance_variables.each{|k|Unan.remove_instance_variable(k)}
-    Unan::Program.instance_variables.each{|k|Unan::Program.remove_instance_variable(k)}
-  end
-
-  #  Titre d'un test
-  # -----------------
-  def test titre
-    verbose? || return
-    puts "\e[1m\e[4;30m#{titre}\e[0m"
-  end
-  def success message
-    verbose? || return
-    puts "\e[32m#{message}\e[0m"
-    sleep 0.1
-  end
-
-  # Détermine s'il faut afficher les messages principalement
-  # des 'steps définitions' façon rspec (pas cucumber)
-  def verbose?
-    # Pour le moment, je mets toujours à true, mais ensuite il
-    # faudra pouvoir le régler autrement.
-    true
-  end
-
-  def require_folder folder
-    Dir["#{folder}/**/*.rb"].each{ |m| require m }
-  end
-
-  # Pour définir la route dans les tests unitaires
-  #
-  # +route+ peut être formée avec un contexte :
-  #   objet/objet_id/method?in=context
-  #
-  def set_route route
-    reg = /([a-zA-Z_]+)(?:\/([0-9]+))?\/([a-zA-Z_]+)(?:\?in=([a-zA-Z_]+))?/
-    droute = route.match(reg).to_a
-    site.send(:set_params_route, *droute[1..-1])
-    site.execute_route
-  end
-
-
-  # Pour catcher les messages débug
-  def debug str
-    str =
-      case str
-      when String then str.strip
-      when Fixnum, Float then str
-      when Hash, Array then str.pretty_inspect
-      else
-        if str.respond_to?(:message)
-          str.message + "\n" + str.backtrace.join("\n")
-        else
-          str.inspect
-        end
-      end
-    puts "DBG: #{str}\n"
-  rescue Exception => e
-    # ne rien faire
-  end
-  # Pour catcher les messages log (par exemple pour le cron)
-  def log str
-    puts "LOG: #{str.to_s.strip}"
-  end
-
-  def degel gel_name
-    site.require_module('gel')
-    SiteHtml::Gel::degel gel_name
-  end
-  def gel gel_name
-    site.require_module('gel')
-    SiteHtml::Gel::gel gel_name
-  end
-
-
-
-  # ---------------------------------------------------------------------
-  #   Concernant la navigation (features)
-  # ---------------------------------------------------------------------
-
-  def offline?
-    @is_offline = OFFLINE if @is_offline === nil
-    @is_offline
-  end
-  def online?; !offline? end
-  def set_offline value = true
-    @is_offline = value
-  end
-  def set_online value = true
-    @is_offline = !value
-  end
-
-  # Pour pouvoir utiliser `visit home`
-  def home
-    @home ||= "#{site.local_url}"
-  end
-  def home_online
-    @home_online ||= "#{site.distant_url}"
-  end
-
-  # @usage visit_home dans feature/scenario
-  #         visite_home online: true
-  def visit_home options = nil
-    options ||= {}
-    options[:online] ||= false
-    visit (options[:online] ? home_online : home)
-    resize_window
-  end
-
-  def visit_route route, options = nil
-    options ||= {}
-    visit (options[:online] ? home_online : home) + '/' + route
-    resize_window
-  end
-  alias :visite_route :visit_route
-
-  # La fenêtre ouverte par capybara
-  def resize_window
-    # page.driver.browser.manage.window.resize_to(1300, 600)
-    # page.driver.browser.manage.window.resize_to('100%', '100%')
-    # page.driver.browser.manage.window.maximize
-    # page.driver.browser.manage.window(50)
-    page.driver.browser.manage.window.resize_to(1300, 5000)
-    page.driver.browser.manage.window.maximize
-
-    # Tentatives (vaines) pour mettre Chrome en premier plan
-    #
-    # puts page.driver.browser.methods.join("\n")
-    # page.driver.browser.manage.window.display
-    # puts page.methods.join("\n")
-    # page.switch_to_window(page.windows[0])
   end
 
   # ---------------------------------------------------------------------

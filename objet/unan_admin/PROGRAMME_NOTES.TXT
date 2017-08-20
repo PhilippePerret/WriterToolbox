@@ -1,8 +1,6 @@
-* [BUG] Voir pourquoi les div se décalent dans la map horizontale
-  voir autour du jour 98
+
 * Trouver des pages à lire pour les thèmes, les personnages et les
   obstacles pour les jours 100 à 112
-
 
 * Poursuivre les travaux du jour 80
 

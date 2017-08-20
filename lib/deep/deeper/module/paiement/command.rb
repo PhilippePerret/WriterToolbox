@@ -127,9 +127,9 @@ class Paiement
     end
 
     # Raccourcis de classe
-    def sandbox?; self.class::sandbox? end
+    def sandbox?; self.class.sandbox? end
     # URL du NVP de Paypal
-    def url_paypal_nvp; @url_paypal_nvp ||= self.class::url_paypal_nvp end
+    def url_paypal_nvp; @url_paypal_nvp ||= self.class.url_paypal_nvp end
 
     # Ajout systématique des paramètres d'authentification
     # Note : Fait à l'instanciation

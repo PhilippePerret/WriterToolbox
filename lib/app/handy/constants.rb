@@ -4,6 +4,6 @@
 Constantes raccourcis
 
 =end
-ESPACE_FINE = "<this />"
+ESPACE_FINE = "<thin></thin>"
 
 UN_AN_UN_SCRIPT = "UN#{ESPACE_FINE}AN#{ESPACE_FINE}UN#{ESPACE_FINE}SCRIPT"

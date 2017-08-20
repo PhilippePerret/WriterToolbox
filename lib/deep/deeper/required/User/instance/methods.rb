@@ -12,11 +12,12 @@ class User
   # dans `User#app_remove` qui sera appelé avant la destruction de l'user
   # dans la table général des users.
   #
-  # Noter que ça ne détruit pas vraiment les données, mais que ça
-  # marque simplement l'user détruit (4e bit des options)
+  # Noter que maintenant ça détruit vraiment l'auteur dans la base de
+  # données.
   def remove
-    self.app_remove if self.respond_to?( :app_remove )
-    set_option(:destroyed, 1)
+    self.respond_to?( :app_remove ) && self.app_remove
+    # set_option(:destroyed, 1)
+    User.table_users.delete({id: self.id})
   end
 
 end

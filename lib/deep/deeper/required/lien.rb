@@ -60,7 +60,7 @@ class Lien
       end
     else
       options.merge!(href: route)
-      options.key?(:target) || options.merge!(target:'_blank')
+      options.key?(:target) || options.merge!(target:'_self')
       if is_arrow_cadred
         titre = titre.in_span(class:'cadre')
         "#{ARROW}#{titre}".in_a(options)

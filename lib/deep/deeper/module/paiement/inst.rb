@@ -21,7 +21,7 @@ class SiteHtml
     def bind; binding() end
 
     def sandbox?
-      @is_sandbox ||= self.class::sandbox?
+      @is_sandbox ||= self.class.sandbox?
     end
 
     ##
@@ -124,7 +124,7 @@ class SiteHtml
       @params_authentify ||= begin
         account = PAYPAL[sandbox? ? :sandbox_account : :live_account]
         {
-          'USER'      => CGI::escape( account[:username] ),
+          'USER'      => CGI.escape( account[:username] ),
           'PWD'       => account[:password],
           'SIGNATURE' => account[:signature],
           'VERSION'   => "119"

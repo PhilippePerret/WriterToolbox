@@ -90,7 +90,7 @@ class Paiement
 
     raise "Il faut fournir le montant du paiement (:montant)" if montant.nil?
 
-    command = Command::new(self, "Initialisation du paiement")
+    command = Command.new(self, "Initialisation du paiement")
     # On ajoute les "données clés" que sont la devise, les
     # URL OK et Cancel etc.
     command << data_key

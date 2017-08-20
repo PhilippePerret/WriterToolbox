@@ -16,6 +16,16 @@
     MailMatcher::mails_found
     # => Array de hash des données des mails
 
+  * Pour obtenir tous les mails
+
+    MailMatcher::all_mails
+    # => Array de hash des données des mails
+
+  * Pour obtenir les mails qui ne satisfaisaient pas la recherche
+
+    MailMatcher::bad_mails
+    # => Array de hash des données des mails
+
 =end
 class MailMatcher
   class << self
@@ -63,14 +73,14 @@ class MailMatcher
     end
 
 
-    # Dossier contenant les données des mails qui
+    # PATH du dossier contenant les données des mails qui
     # sont envoyés
     #
     def folder_mails_temp
       @folder_mails_temp ||= begin
-        d = site.folder_tmp + 'mails'
-        d.build unless d.exist?
-        d
+        dpath = File.expand_path('./tmp/mails')
+        `mkdir -p "#{dpath}"`
+        dpath
       end
     end
 

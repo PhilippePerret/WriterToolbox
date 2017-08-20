@@ -1,5 +1,7 @@
 # TODO list
 
+* À la destruction de l'user, il faut aussi détruire sa table 'variables_<user id>'. Là, il s'agit bien de **détruire** la table, pas une rangée.
+
 Utiliser plutôt les tâches mais ce fichier permet de détailler des choses.
 
 * [Connexion directe de Icare vers BOA](#connexionicaretoboa)

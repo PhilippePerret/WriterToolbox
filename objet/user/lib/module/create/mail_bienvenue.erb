@@ -4,13 +4,11 @@
 # Il est envoyé forcément avant le paiement même si l'user va
 # s'abonner au site.
 %>
-<p>
-  <%= pseudo %>, bienvenue sur <%= site.name %> !
-</p>
-<p>
-  Vous vous êtes inscrit<%= f_e %> avec le mail : <%= mail %>.
-</p>
-<p>Cette inscription sur la <%= site.name %> vous offre un accès plus profond au site.</p>
+<p><%= pseudo %>, bienvenue sur <%= site.name %>&nbsp;!</p>
+
+<p>Vous vous êtes inscrit<%= f_e %> avec le mail&nbsp;: <%= mail %>.</p>
+
+<p>Cette inscription sur <%= site.name %> vous offre un accès plus profond au site.</p>
 <p>
   Si vous avez la moindre question, n'hésitez pas à la poser <%= lien.forum "sur le forum" %>.
 </p>

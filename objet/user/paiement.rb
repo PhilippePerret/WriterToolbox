@@ -10,7 +10,7 @@
 # on login provisoirement l'user pour qu'il puisse procéder à son
 # paiement et c'est seulement après qu'on lui demande de confirmer
 # son mail.
-unless user.identified?
+unless user.identified? || site.user_prov
   redirect_to 'user/signup'
 else
   site.require_module 'paiement'

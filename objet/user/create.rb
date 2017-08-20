@@ -32,11 +32,12 @@ class User
     def create pour_unanunscript = false
       newuser = User.new
       if newuser.create
+        newuser.login
         if param(:user) && param(:user)[:subscribe] == 'on'
           # Pour passer outre la confirmation du mail, on
           # doit préciser que l'user procède à son paiement
           app.session['for_paiement'] = "1"
-          newuser.login
+          # newuser.login # avant ICI
           if pour_unanunscript
             # => Page de paiement du programme UN AN
             redirect_to 'unan/paiement'
@@ -169,18 +170,18 @@ class User
   def data_valides?
     # Validité du PSEUDO
     @pseudo = form_data[:pseudo].nil_if_empty
-    ! @pseudo.nil? || raise( "Il faut fournir le pseudo." )
+    ! @pseudo.nil? || raise( "Il faut fournir votre pseudo." )
     ! pseudo_exist?(@pseudo) || raise("Ce pseudo est déjà utilisé, merci d'en choisir un autre")
-    @pseudo.length < 40 || raise("Le pseudo doit faire moins de 40 caractères.")
-    @pseudo.length >= 3 || raise("Le pseudo doit faire au moins 3 caractères.")
+    @pseudo.length < 40 || raise("Ce pseudo est trop long. Il doit faire moins de 40 caractères.")
+    @pseudo.length >= 3 || raise("Ce pseudo est trop court. Il doit faire au moins 3 caractères.")
 
-    reste = @pseudo.gsub(/[a-zA-Z_\-]/,'')
-    reste == "" || raise("Le pseudo ne doit comporter que des lettres, traits plats et tirets. Il comporte les caractères interdits : #{reste.split.pretty_join}")
+    reste = @pseudo.gsub(/[a-zA-Z0-9_\-]/,'')
+    reste == "" || raise("Ce pseudo est invalide. Il ne doit comporter que des lettres, chiffres, traits plats et tirets. Il comporte les caractères interdits : #{reste.split.pretty_join}")
     # Validité du patronyme
     @patronyme = form_data[:patronyme].nil_if_empty
-    raise "Il faut fournir le patronyme." if @patronyme.nil?
-    raise "Le patronyme ne doit pas faire plus de 255 caractères." if @patronyme.length > 255
-    raise "Le patronyme ne doit pas faire moins de 3 caractères." if @patronyme.length < 3
+    raise "Il faut fournir votre patronyme." if @patronyme.nil?
+    raise "Le patronyme est trop long. Il ne doit pas faire plus de 255 caractères." if @patronyme.length > 255
+    raise "Le patronyme est trop court. Il ne doit pas faire moins de 3 caractères." if @patronyme.length < 3
 
     # Validité du mail
     @mail = form_data[:mail].nil_if_empty

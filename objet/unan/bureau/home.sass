@@ -57,6 +57,7 @@ div.panneau_onglet
       margin-left   : 1em
       margin-right  : 4px !important
 
+  // Le div contenant tout le travail a accomplir.
   div.work
     padding           : 1em
     border            : 1px solid #CCC
@@ -64,6 +65,47 @@ div.panneau_onglet
     font-size         : 0.9em
     background-color  : #DDF7DC
     margin-bottom     : 1em
+
+    // Le titre principal du travail
+    div.titre
+      margin-bottom     : 1em
+      font-weight       : bold
+      font-size         : 1.2em
+      // Pour le type de travail dans les tâches
+      span.type
+        float         : right
+        font-weight   : normal
+        font-size     : 0.85em
+        font-style    : italic
+        color         : #777
+
+    // Les titres à l'intérieur du travail
+    h1, h2, h3, h4
+      font-weight     : normal !important
+      font-style      : normal !important
+      color           : #578088 !important
+      letter-spacing  : 2.3px !important
+      text-shadow     : none !important
+      font-variant    : small-caps !important
+      opacity         : 1 !important
+    h1
+      font-size     : 1.6em !important
+      margin-top    : 2em !important
+      margin-bottom : 1em !important
+    h2
+      font-size     : 1.35em !important
+      margin-top    : 1.8em !important
+      margin-bottom : 0.8em !important
+    h3
+      font-size     : 1.2em !important
+      margin-top    : 1.6em !important
+      margin-bottom : 0.6em !important
+    h4
+      font-size     : 1em !important
+      font-weight   : bold !important
+      margin-top    : 1.4em !important
+      margin-bottom : 0.4em !important
+
     a, a:hover, a:link, a:visited
       &.inwork
         color             : white
@@ -76,18 +118,7 @@ div.panneau_onglet
       font-size       : 13pt
       font-style      : italic
       float           : right
-    div.titre
-      margin-bottom     : 1em
-      font-weight       : bold
-      font-size         : 1.1em
 
-      // Pour le type de travail dans les tâches
-      span.type
-        float         : right
-        font-weight   : normal
-        font-size     : 0.85em
-        font-style    : italic
-        color         : #777
     div.details
       padding           : 0.5em
 

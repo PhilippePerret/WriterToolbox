@@ -78,6 +78,9 @@ class User
   end
 
   # Destruction des programmes UN AN
+  #
+  # BUG On atteind cette méthode même si l'utilisateur n'a pas
+  #     de programme courant.
   def destroy_programmes_unan
     debug "  * Destruction des programmes & projets UAUS"
     # On charge tout ce qui concerne Unan, on en aura
@@ -88,14 +91,14 @@ class User
     nombre_paiements = User.table_paiements.count(where:where)
     User.table_paiements.delete(where:where)
 
-    # Destruction de son dossier dans database/data/unan/user
-    with_dossier_db = self.folder_data.exist? ? "détruit" : "inexistant"
-    self.folder_data.remove if self.folder_data.exist?
-
-    # Destruction de ses programmes dans la table
+    # Destruction de ses programmes dans la table s'il en a
     where = "auteur_id = #{self.id} AND options LIKE '1%'"
     data_program = Unan::table_programs.get(where: where)
 
+    data_program != nil || begin
+      debug "  = L'auteur #{self.id} ne suit pas de programme UAUS."
+      return
+    end
     # Modification des options
     opts = data_program[:options]
     opts[0] = '0' # bit inactif

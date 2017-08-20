@@ -25,7 +25,7 @@ CREATE TABLE variables_#{user_id}
     # NAME
     # ----
     # Nom de la variable
-    name VARCHAR(200) UNIQUE,
+    name VARCHAR(200),
 
     # VALUE
     # -----
