@@ -355,10 +355,31 @@ JP 141-293 PREMIÈRE VERSION DU SCÉNARIO/DU MANUSCRIT
             TODO Proposer de faire lire le scénario par un lecteur automatique. En disant bien que c'est une lecture impitoyable.
               - Dire aussi qu'il faut régler le débit de voix dès les premières pages pour que ça colle.
 
-JP 294-365 DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
+JP 295-366 DEUXIÈME VERSION DU SCÉNARIO/MANUSCRIT
     Cette troisième grande phase du développement a pour objectif la deuxième version du scénario ou du manuscrit.
 
-    JP 294-307 ANALYSE DE LA PREMIÈRE VERSION
+    JP 295-308 ANALYSE DE LA PREMIÈRE VERSION DU MANUSCRIPT
+        JP 295-296 ANALYSE DES ACTES
+            TODO [WORK] Analyse de la conformité des actes
+                - note sur le fait que pour un roman, les dimensions sont un peu différentes (expo et dénouement plus courts)
+        TODO [WORK] Analyse de la conformité du paradigme de Field
+            - analyse de l'existence de chaque scène-clé
+            - chaque scène-clé est-elle valide ? sans forcer/imposer sa fonction
+            TODO [PAGE] La page qui explique qu'on ne doit pas coller d'étiquette.
+        TODO [WORK] Analyse de la conformité du protagoniste
+            - c'est lui qui doit agir au maximum
+            - c'est lui qui doit se sortir des situations difficiles. L'aide extérieure ne doit pas tout faire, elle doit même en faire le minimum
+        TODO [WORK] Analyse de la conformité des Fondamentales
+            - l'histoire doit correspondre à ce qu'elles définissent, notamment au niveau du concept et de la conclusion
+        TODO [WORK] Analyse de la conformité au niveau des conflits/obstacles
+            - liste de TOUS les OBSTACLES qu'on trouve dans le document (en pensant au conflit qu'il génère, pour le personnage ou pour le spectateur)
+            - y en a-t-il assez ? Chercher toutes les possibilités d'obstacles et de conflit supplémentaire
+            - Si le parcours du personnage est trop facile, trouver d'autres obstacles ou renforcer les obstacles présents.
+
+        TODO [WORK] Analyse de la conformité au niveau de la clarté
+            - Pour un scénario : début de chaque scène doit présenter le lieu et le temps
+        TODO [WORK] Analyse de la conformité au niveau de l'émotion
+            - Reprendre chaque scène et vérifier que l'humeur ou l'émotion de chaque personnage, pas seulement du protagoniste, soit parfaitement définie (claire dans la tête de l'auteur), parfaitement claire (claire sur le papier), parfaitement jouée (la scène en découle)
         TODO Faire les questionnaires qui doivent permettre de faire cette analyse
         TODO Grosse partie de cours sur ce qu'est l'analyse
 

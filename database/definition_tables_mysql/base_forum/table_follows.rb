@@ -25,6 +25,12 @@ Table contenant 3 CHOSES DISTINCTES en même temps :
   - Les informations de notification par sujet
     Reconnue par : user_id défini, sujet_id défini
 
+  Complètement abandonné pour la version 2.0, puisqu'il suffit de
+  faire `WHERE sujet_id = <id sujet>` pour obtenir tous les suiveurs
+  et `WHERE user_id = <id user>` pour obtenir tous les sujets suivis
+  par un user.
+  De la même manière, l'id est inutile.
+
   C'est la méthode `<sujet>.add_follower` qui permet d'ajouter
   un follower.
   C'est la méthode `<sujet>.remove_follower` qui permet de supprimer
@@ -41,7 +47,7 @@ CREATE TABLE follows
     time        INTEGER(10),
 
     updated_at INTEGER(10),
-    
+
     PRIMARY KEY (id),
     INDEX idx_user  (user_id),
     INDEX idx_sujet (sujet_id)

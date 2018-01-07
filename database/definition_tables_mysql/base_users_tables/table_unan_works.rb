@@ -64,6 +64,8 @@ CREATE TABLE unan_works_#{user_id}
     # BIT 1-2 Type du travail
     #         Pour ne pas avoir à charger le travail absolu
     #         pour connaitre le type du travail.
+    #         Pour la version 2.0 de la boite, voir impérativement
+    #         le nouveau contenu.
     options VARCHAR(32) DEFAULT '',
 
     # POINTS

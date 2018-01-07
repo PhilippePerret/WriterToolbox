@@ -26,19 +26,14 @@ CREATE TABLE updates
     # cf. TYPES dans ./objet/site/lib/module/updates/contantes.rb
     type VARCHAR(20),
 
-    # ANNONCE
-    # -------
-    # Détermine s'il faut annoncer l'actualisation dans les
-    # mails d'actualité
-    # 0 : Pas d'annonce
-    # 1 : Annonce d'une fonction pour les inscrits
-    # 2 : Annonce d'une fonction poru les abonnés (mais même les
-    #     inscrits la reçoivent)
-    annonce INTEGER(1),
-
     #  OPTIONS
     # ---------
-    # Pas encore utilisé
+    # TODO: RÉDUIRE À 16 COLONNES
+    # Bit 1 : Annonce (0: pas d'annonce, 1: Annonce pour les inscrits,
+    # 2: annonce pour les abonnés, 3: annonce pour les auteurs UNAN)
+    # 4: annonce aux analystes
+    # 9: annonce seulement sur la page d'accueil
+    # Si > 0, l'actualité est annoncé sur la page d'accueil
     options VARCHAR(32) DEFAULT '000000',
 
     created_at INTEGER(10) NOT NULL,

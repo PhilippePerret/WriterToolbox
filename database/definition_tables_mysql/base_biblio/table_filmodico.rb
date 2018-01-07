@@ -63,6 +63,7 @@ CREATE TABLE filmodico
     # Pour le moment cette propriété n'est pas utilisée.
     links BLOB,
 
+    created_at  INTEGER(10),
     updated_at  INTEGER(10),
 
     PRIMARY KEY (id)

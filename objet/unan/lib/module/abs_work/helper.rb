@@ -275,9 +275,9 @@ class AbsWork
     end
 
     (
-      travail_formated.in_div(class:'travail') +
-      item_link                       +
-      div_exemples    +
+      travail_formated.in_div(class:'travail')  +
+      item_link                                 +
+      div_exemples                              +
       div_pages_cours
     ).in_div(class:'details')
   end

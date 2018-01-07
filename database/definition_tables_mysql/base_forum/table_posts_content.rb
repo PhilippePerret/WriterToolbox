@@ -9,6 +9,8 @@ def schema_table_posts_content
 CREATE TABLE posts_content
   (
     id          INTEGER,
+    # Ajouté pour la version 2.0 :
+    created_at  INTEGER(10),
     updated_at  INTEGER(10),
     content     TEXT        NOT NULL,
 

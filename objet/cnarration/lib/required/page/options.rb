@@ -59,5 +59,9 @@ class Page
     @priorite ||= options[3].to_i
   end
 
+  # Dans la nouvelle version du BOA, les bits 9,10,11 servent à
+  # consigner l'ID du chapitre et les bit 12,13,14 servent à
+  # consigner l'ID du sous-chapitre, en base 36
+
 end #/Page
 end #/Cnarration

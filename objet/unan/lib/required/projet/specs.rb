@@ -7,9 +7,9 @@
 class Unan
 class Projet
 
-  # Bit 1   Type du projet (Unan::Projet::TYPES)
-  # Bit 2   - pour développement ultérieur -
-  # Bit 3   - pour développement ultérieur -
+  # Bit 1   Type du projet (Unan::Projet::TYPES) -- 2.0 : actif/inactif
+  # Bit 2   - pour développement ultérieur -          |   type
+  # Bit 3   - pour développement ultérieur -          |   partage
   # Bit 4-5-6   Nombre pages
   def specs ; @specs  ||= get(:specs)   end
   def type  ; @type   ||= specs[0].to_i end

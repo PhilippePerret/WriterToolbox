@@ -93,13 +93,13 @@ class Synchro
 
 
   def open_result
-    app.benchmark('-> Synchro#open_result')
+    # app.benchmark('-> Synchro#open_result')
     app_path = File.expand_path(".")
     sync_path = File.expand_path(folder.to_s)
     rel_path = sync_path.sub(/^#{app_path}\//,'')
     fin_path = "#{base}/#{rel_path}/output/#{name_html_file}"
     `open -a Firefox "#{fin_path}"`
-    app.benchmark('<- Synchro#open_result')
+    # app.benchmark('<- Synchro#open_result')
   end
 
   ##
@@ -189,7 +189,7 @@ class Synchro
   # fichier HTML
   #
   def output
-    @output ||= Synchro::Output::new(self)
+    @output ||= Synchro::Output.new(self)
   end
 
   ##

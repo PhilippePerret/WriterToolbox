@@ -11,7 +11,7 @@
 
 <a name='savoirquonestenajax'></a>
 
-## Savoir qu'on est en Ajax dans le code ryby
+## Savoir qu'on est en Ajax dans le code ruby
 
 Pour savoir qu'on est en ajax dans le code ruby, il suffit d'interroger `site.ajax?`.
 

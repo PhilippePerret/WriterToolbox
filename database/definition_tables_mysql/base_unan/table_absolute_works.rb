@@ -30,12 +30,16 @@ CREATE TABLE absolute_works
     # pour le type du travail.
     #   BIT 1   Mis à 1 si l'item_id est une page de la collection
     #           narration.
+    #           NON Ce système ne semble pas être utilisé. item_id doit
+    #           toujours être un ID de page de cours UNAN, qui détermine
+    #           lui-même si c'est narration ou autre
+    #
     #   BIT 2   Inutilisé
     #   BIT 3-4 (narrative_target) Cible principal du travail, à savoir:
     #     1:structure, 2:personnage, 3:dialogue, 4:thematique etc. (ces
     #     nombres sont donnés en pure illustration et ne correspondent
     #     pas à une réalité — cf. le document "Narrative Target")
-    #   BIT 5-6   (typeP) Le type de projet, entre roman, film, etc.
+    #   BIT 5 et BIT 6   (typeP) Le type de projet, entre roman, film, etc.
     #     qui peut être visé par ce travail. Ça change principalement
     #     au niveau des termes, par exemple on parlera de "scénario"
     #     pour des films et des BD et de "manuscrit" pour des livres.

@@ -15,15 +15,14 @@ class String
   def formate_balises_propres
     str = self
 
-    p = 'pour_voir.txt'
-    File.unlink(p) if File.exist?(p)
-
-    File.open(p, 'wb'){|f| f.write "AU DÉPART\n\n#{str}"}
+    # p = 'pour_voir.txt'
+    # File.unlink(p) if File.exist?(p)
+    # File.open(p, 'wb'){|f| f.write "AU DÉPART\n\n#{str}"}
 
     str = str.formate_balises_include
     str = str.formate_balises_exemples
 
-    File.open('pour_voir.txt', 'a'){|f| f.write "\n\nAPRÈS CORRECTION\n\n#{str}"}
+    # File.open(p, 'a'){|f| f.write "\n\nAPRÈS CORRECTION\n\n#{str}"}
 
     str = str.evaluate_codes_ruby
     str = str.formate_mises_en_forme_propres

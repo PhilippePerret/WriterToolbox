@@ -12,14 +12,14 @@ CREATE TABLE sujets
 
     # CATEGORIE
     # ---------
-    #  La catégorie de ce sujet.
-    # Cf. ?
-    categorie INTEGER(2) NOT NULL,
+    # OBSOLÈTE : Supprimé dans la version 2.0
+    # Correspond aux bit 3 et 4 des options (2..3)
 
     #  OPTIONS
     # ---------
     # Cf. ./objet/forum/lib/required/sujet/instance/options.rb
-    options VARCHAR(32) DEFAULT '00000000',
+    # OBSOLÈTE DANS VERSION 2.0  => specs
+    options VARCHAR(16) DEFAULT '00000000',
 
     # LAST_POST_ID
     # ------------

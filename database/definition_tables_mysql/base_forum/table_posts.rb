@@ -7,11 +7,6 @@ CREATE TABLE posts
     user_id     INTEGER     NOT NULL,
     sujet_id    INTEGER     NOT NULL,
     created_at  INTEGER(10) NOT NULL,
-
-    # UPDATED_AT
-    # ----------
-    # Contrairement aux autres données, celle-ci n'est
-    # définie que si le message a été modifié.
     updated_at  INTEGER(10),
 
     # PARENT_ID
@@ -23,7 +18,7 @@ CREATE TABLE posts
     # OPTIONS
     # -------
     # BIT 1 : 0 = non validé, 1 = validé
-    options VARCHAR(32) DEFAULT '00000000',
+    options VARCHAR(16) DEFAULT '00000000',
 
     # VALIDED_BY
     # ----------

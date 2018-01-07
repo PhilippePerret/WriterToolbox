@@ -14,27 +14,19 @@ class << self
   # RETURN True si l'identification est réussie
   #
   def login_ok?
-    debug "-> login_ok?"
     login_data = param(:login)
-    debug "login_data : #{login_data.inspect}"
     if login_data.nil?
       # Ça arrive quelquefois quand ça tourne trop longtemps
       # ou autre
-      debug "login_data est nil…"
       return false
     else
       umail = login_data[:mail]
       upass = login_data[:password]
       res = table_users.select(where: {mail: umail}, colonnes: [:salt, :cpassword, :mail]).first
-      debug "Retour table users : #{res.inspect}"
       res != nil || (return false)
       expected = res[:cpassword]
       compared = Digest::MD5.hexdigest("#{upass}#{umail}#{res[:salt]}")
-      debug "Comparaison mot de passe crypté :"
-      debug "expected: #{expected}"
-      debug "compared: #{compared}"
       ok = expected == compared
-      debug "C'est bon ? #{ok.inspect} (user ID ##{res[:id]})"
       ok && User.new( res[:id] ).login
       return ok
     end

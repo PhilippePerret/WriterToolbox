@@ -28,6 +28,9 @@ CREATE TABLE scenodico
 
     updated_at  INTEGER(10),
 
+    # AJOUTÉ DANS LA VERSION 2 :
+    created_at INTEGER(10),
+
     PRIMARY KEY (id)
   );
   MYSQL

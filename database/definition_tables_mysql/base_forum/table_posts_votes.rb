@@ -10,12 +10,14 @@ CREATE TABLE posts_votes
   (
     # ID du post
     id          INTEGER,
+    # Ajouté pour la version 2.0 :
+    created_at  INTEGER(10),
     updated_at  INTEGER(10),
 
     #  VOTE
     # ------
-    # Valeur actuelle du vote. Suitant le type du sujet (?),
-    # ça produit un résultat différent (?)
+    # Valeur actuelle du vote. Suitant le type du sujet (Type S),
+    # ça produit un résultat différent (classement des posts ou non)
     vote  INTEGER(8) DEFAULT 0,
 
     # UPVOTES

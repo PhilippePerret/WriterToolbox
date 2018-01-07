@@ -10,7 +10,7 @@ CREATE TABLE films_analyses
   (
     id INTEGER AUTO_INCREMENT,
 
-    titre       BLOB NOT NULL,
+    titre       BLOB NOT NULL, # DÉTRUIT
     titre_fr    VARCHAR(255),
     annee       INTEGER(4),
     created_at  INTEGER(10),
