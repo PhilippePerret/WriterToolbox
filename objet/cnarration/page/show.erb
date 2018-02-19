@@ -4,27 +4,12 @@
 # Note importante : cette page peut être abordée par un
 # icarien depuis son bureau.
 page.description="Affichage d'une page de la collection Narration."
-enable_comments
 %>
 <%
 def ipage
   @ipage ||= site.objet
 end
+
 %>
-<% if ipage.exist? %>
-  <%= Cnarration.titre_h1 ipage.livre.titre %>
-  <%= ipage.liens_edition_if_admin %>
-  <%= ipage.boutons_navigation(:top) %>
-  <%= ipage.output %>
-  <%= ipage.boutons_navigation(:bottom) %>
-  <%= ipage.permanent_link %>
-  <%= ipage.bloc_evaluation if ipage.page? %>
-  <div class="tiny center air">
-    ©2004-2016 Philippe Perret Toute reproduction interdite sans autorisation
-  </div>
-<% else %>
-<%= Cnarration.titre_h1('Page inexistante') %>
-<p class="big air red">
-  Vous tentez d'atteindre une page qui n'existe pas ou pas encore dans la collection Narration.
-</p>
-<% end %>
+<p>Cette page se trouve maintenant sur le site Scénariopole :</p>
+<p class="cadre big air"> <a href="http://www.scenariopole.fr/narration/page/<%=ipage.id%>">Lire la page sur Scénariopole</a>.</p>

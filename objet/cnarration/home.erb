@@ -2,35 +2,10 @@
 # Accueil de la collection Narration
 
 page.description= "Accueil de la collection Narration, présentation et état de développement des divers livres."
-enable_comments
 %>
 <%= Cnarration.titre_h1 %>
-<%
-site.require_objet 'unan'
-%>
 
-<p>
-  Cette section est le <span class='bold'>WORK IN PROGRESS</span> <sup>(*)</sup> de la conception de la <strong>COLLECTION NARRATION</strong>, le cours de dramaturgie et d'écriture de <%= 'Philippe Perret'.in_a(href: 'site/phil', class: 'people') %> prochainement publié en version papier.
+<p>La collection Narration se trouve à présent sur le site <a href="http://www.scenariopole.fr">Scénariopole</a> :</p>
+<p class="cadre big air">
+  <a href="http://www.scenariopole.fr/narration">Narration sur Scénariopole</a>
 </p>
-<p class='small'><sup>(*)</sup> “Work in progress” signifie que les <%= Cnarration::LIVRES.count %> ouvrages de la collection sont <span class='bold'>en cours de conception</span> et que vous pouvez suivre jour après jour leur élaboration et même interagir avec cette conception en donnant votre avis sur les pages.</p>
-
-<%= Cnarration::dernier_inventaire %>
-
-<p class="small">
-  Ce “work in progress” explique certaines valeurs qui peuvent paraitre aberrantes, comme un nombre de pages supérieur au nombre total de pages. Au moment où j'écris cet avertissement, l'ouvrage sur la structure indique “135/120”. Il faut comprendre le premier chiffre comme le nombre actuel de pages et le second comme le nombre de pages du livre final — des pages seront fatalement supprimées ou raccourcies, c'est la dure loi de l'édition ;-).
-</p>
-
-<p class='small'>
-  Cette collection est un ensemble d'ouvrages consacrés à la narration dont chaque volume se concentre sur un domaine particulier (les personnages, la structure, les documents de travail, etc.). Conçue et rédigée par <strong>Philippe Perret</strong>, elle est le produit d'une réflexion pédagogique et d'un accompagnement de très nombreux auteurs durant plus de <%= Time.now.year - 1996 %> ans, notamment au sein de l'<%= "Atelier ICARE".in_a(target:'_blank', href:"http://www.atelier-icare.net") %> dont sont issus <%= "auteurs professionnels, films, romans, livres pour la jeunesse et autres bandes-dessinées".in_a(target:'_blank', href:"http://www.atelier-icare.net/overview?ovw=reussites") %>.
-</p>
-<p class='small'>
-  (*) La <em>Collection Narration</em> est en cours d'édition et les premiers ouvrages seront publiés prochainement sous forme de livre-papier.
-</p>
-
-<section style="margin:0 2em;font-size:0.85em;background-color:#EEE;padding:2em">
-<h3>Une approche pédagogique originale</h3>
-
-<p>S'il ne fallait retenir qu'un seul élément distinguant la collection Narration des autres approches pédagogiques intéressantes, ce serait le fait qu'elle procède résolument de l'<em>acte d'écriture</em> et non pas de l'<em>analyse</em>. En effet, même si cela peut surprendre, les autres ouvrages fondamentaux traitant de narration, de dramaturgie, d'écriture, découlent le plus souvent d'une démarche <em>analytique</em>&nbsp;: on y apprend que telle ou telle œuvre est construite ainsi, que tel ou tel personnage est fréquent dans les histoires, on y apprend qu'il existe tel ou tel genre de récit, etc. La pensée est  foncièrement <em>analytique</em>. C'est ce qui en fait l'intérêt mais c'est également ce qui en marque les limites et explique le fait que très souvent, les lecteurs sortent de ces ouvrages en pensant savoir écrire, mais dès qu'ils s'y <em>mettent vraiment</em>, ils découvrent qu'ils ne savent rien en vérité sur cet art.</p>
-<p>La philosophie qui anime la collection Narration est radicalement différente. Elle n'aborde pas les œuvres sous l'angle de l'analyse —&nbsp;sauf en de rares occasions&nbsp;— elle les aborde sous l'angle de leur création en tant qu'œuvre narrative, cherchant à en tirer ce qu'elles peuvent nous apprendre sur l'acte de concevoir un récit. C'est ainsi que la collection Narration se soucie toujours de savoir comment l'on peut produire une histoire, un personnage, comment l'on peut exploiter une thématique, comment l'on peut mettre en œuvre des émotions, etc. Même l'ouvrage sur l'analyse de film n'adopte pas une approche analytique — un comble diront certains —, mais oriente au contraire résolument le travail d'analyse vers l'écriture et les bienfaits que l'analyse peut lui prodiguer.</p>
-
-</section>

@@ -1,7 +1,6 @@
 <%
 # Vue pour la table des matières d'un livre
 page.description= "Table des matières d'un livre de la collection Narration."
-enable_comments
 %>
 <%
 def livre
@@ -9,15 +8,7 @@ def livre
 end
 %>
 <%= Cnarration.titre_h1(livre.titre) %>
-<% if user.admin? %>
-<div class="tiny right btns">
-  <%= 'Smart TdM'.in_a(href: "admin/smart_tdm?in=cnarration&livre_id=#{livre.id}") %>
-  <%= "Éditer la TdM".in_a(href:"livre/#{livre.id}/edit?in=cnarration") %>
-</div>
-<% end %>
-<div itemscope itemtype="http://schema.org/Article">
-  <%= livre.tdm.as_ul %>
-  <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Philippe Perret">
-  </span>
-</div>
+<p>La collection Narration se trouve à présent sur le site <a href="http://www.scenariopole.fr">Scénariopole</a> :</p>
+<p class="cadre big air">
+  <a href="http://www.scenariopole.fr/narration/livre/<%=livre.id%>"> Voir le livre sur Scénariopole</a>
+</p>
