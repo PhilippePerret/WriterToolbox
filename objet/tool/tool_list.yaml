@@ -1,13 +1,13 @@
 ---
-unan:
-  name:       <%= Unan::PROGNAME_MAJ %> (programme)
-  shortname:  <%= Unan::PROGNAME_MINI_MAJ %>
-  folder:     unan
-  home:       'unan/home'
-  description: |
-    Ce programme unique en son genre permet à tout auteur, expérimenté ou non, de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée génératrice jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
-    Ce programme spécial nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût complet de #{Unan::tarif_humain} pour une année (#{Unan::tarif_humain_par_mois}). Noter que l'inscription à ce programme d'apprentissage et de développement donne accès à tous les autres outils du site pendant deux ans.
-
+# unan:
+#   name:       <%= Unan::PROGNAME_MAJ %> (programme)
+#   shortname:  <%= Unan::PROGNAME_MINI_MAJ %>
+#   folder:     unan
+#   home:       'unan/home'
+#   description: |
+#     Ce programme unique en son genre permet à tout auteur, expérimenté ou non, de mener à bien l'écriture d'un film ou d'un roman, depuis l'idée génératrice jusqu'au scénario ou manuscrit définitif, tout en abordant de façon approfondie l'art de la narration (l'art de raconter des histoires).
+#     Ce programme spécial nécessite une <a href="unan/paiement">inscription séparée</a> et possède son propre coût complet de #{Unan::tarif_humain} pour une année (#{Unan::tarif_humain_par_mois}). Noter que l'inscription à ce programme d'apprentissage et de développement donne accès à tous les autres outils du site pendant deux ans.
+#
 cnarration:
   name:       La collection Narration
   folder:     cnarration

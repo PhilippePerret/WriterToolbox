@@ -3,76 +3,8 @@
 #
 # C'est notamment dans ce panneau qu'on définit le rythme de travail
 %>
-<% if missing_data.nil_if_empty %>
-  <span class="warning small">Des données sont manquantes pour les préférences. Merci de les renseigner (<%= missing_data %>).</span>
-<% end %>
-<form id="preferences" class="dim2080" action="bureau/home?in=unan&cong=preferences" method="POST">
+<%= Unan::titre_h1 %>
 
-
-  <%# OPÉRATION %>
-  <%= "bureau_save_preferences".in_hidden(name:'operation') %>
-
-  <%= bureau.submit_button %>
-<hr />
-<h4>Projet</h4>
-
-<%# RYTHME DU PROGRAMME %>
-  <%= form.field_select("Rythme", 'pref_rythme', user.program.rythme, { values:Unan::Program::RYTHMES }) %>
-  <%= form.field_description("Le rythme déterminera la durée totale de votre apprentissage et de votre développement. Vous ne devriez avoir à modifier cette valeur que si vous vous apercevez que la démarche générale est trop rapide pour vous ou trop lente.") %>
-<%= bureau.submit_button %>
-<hr />
-
-<%
-# ---------------------------------------------------------------------
-%>
-<h4>Notifications</h4>
-
-
-  <%= form.field_checkbox("Récapitulatif journalier", 'pref_daily_summary', user.preference(:daily_summary)) %>
-  <%= form.field_description("Si vous cochez cette case, un mail vous sera envoyé quotidiemment pour faire un point sur votre avancée. Dans le cas contraire, vous ne recevrez un mail que lorsqu'en cas de nouveau travail à fournir.") %>
-
-  <%
-  # MENU DE L'HEURE DE L'ENVOI DU MAIL
-  # ----------------------------------
-  visu, heure =
-    if user.preference(:fixed_time_mail)
-      [true, user.preference(:dayly_mail_hour)]
-    else
-      [false, 4]
-    end
-  menu_heure_fixed_time =
-    (
-      (4..14).in_select(selected: heure, id: 'dayly_mail_hour', name: 'dayly_mail_hour', class: 'inline') +
-      ' heures'
-    ).in_span(id: 'span_fixed_time', visible: visu)
-
-  lien_explication_rythme_moyen_pour_heure_fixe = lien.aide(7, titre: 'voir pourquoi')
-  %>
-  <%= form.field_checkbox("Envoyer le mail quotidien à", 'pref_fixed_time_mail', user.preference(:fixed_time_mail), {onchange: 'Prefs.on_check_fixed_time(this)', text_after: menu_heure_fixed_time}) %>
-  <%= form.field_description("Si cette option est décochée, vous recevez le mail à l'heure de votre inscription au programme. Si elle est cochée, vous choisissez l'heure pour recevoir votre rapport quotidien. Notez que ça n'est valable que si vous êtes en “rytme moyen” (#{lien_explication_rythme_moyen_pour_heure_fixe}).") %>
-  <%= form.field_checkbox("Pastille taches dans l'entête de page", 'pref_pastille_taches', user.preference(:pastille_taches)) %>
-  <%= form.field_description("Si vous cochez cette case, une pastille indiquant le nombre de tâches à exécuter s'affichera toujours en haut à droite de votre fenêtre. En cliquant dessus, vous pourrez rejoindre votre bureau à tout moment.") %>
-<%= bureau.submit_button %>
-<hr />
-
-<%
-# ---------------------------------------------------------------------
-%>
-<h4>Navigation</h4>
-
-  <%= form.field_checkbox("Rejoindre ce bureau après identification", "pref_bureau_after_login", user.preference(:bureau_after_login)) %>
-
-
-<%= bureau.submit_button %>
-<hr />
-
-<%
-# ---------------------------------------------------------------------
-%>
-
-<h4>Partage</h4>
-
-    <%= bureau.row_form_sharing %>
-
-<%= bureau.submit_button %>
-</form>
+<p style="line-height:1.9em;font-size:15.8pt">
+  Le programme <strong><%= Unan::PROGNAME_MAJ %></strong> n’est plus en service.
+</p>

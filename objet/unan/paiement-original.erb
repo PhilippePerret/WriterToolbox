@@ -1,0 +1,93 @@
+<%
+# Vue pour le paiement de l'inscription au programme UN AN
+#
+# NOTE : C'est le module `paiement.rb` au même niveau que ce fichier
+# qui appelle la méthode `make_transaction` qui permet de procéder
+# au paiement du programme.
+
+enable_comments
+%>
+<%
+
+# Si l'utilisateur est INSCRIT AU PROGRAMME 1 AN 1 SCRIPT
+if user.unanunscript?
+
+  debug "[paiement.erb] user.unanunscript? OUI"
+
+  # Si l'utilisateur vient juste de souscrire au programme
+  # UN AN, on lui fait un accueil chaleureux
+  # NOTE C'est celui qui est est contenu dans on_ok.erb, qu'on
+  # peut obtenir par site.paiement.output
+
+  if user.just_subscribe_unanunscript?
+
+    debug "[paiement.erb] user.just_subscribe_unanunscript? OUI"
+
+    %><%= site.paiement.output %><%
+
+  else
+
+    debug "[paiement.erb] user.just_subscribe_unanunscript? NON"
+
+    # Si l'user ne vient pas juste de s'inscrire au programme, mais
+    # est inscrit depuis un bon bout de temps
+
+    %>
+    <%= Unan::titre_h1("Inscription au programme") %>
+    <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p><%
+
+  end
+
+# Si l'user N'EST PAS ENCORE INSCRIT au programme 1 an 1 script
+else
+
+  debug "[paiement.erb] user.unanunscript? NON"
+
+  %><%= Unan::titre_h1("Inscription au programme") %><%
+
+  # Si l'user est ABONNÉ au site
+  if user.subscribed?
+
+    debug "[paiement.erb] user.subscribed? OUI"
+
+    # On va vérifier le message et le coût de son inscription au
+    # programme UN AN UN SCRIT, en sachant que s'il a payé il y a
+    # moins de 6 mois, son abonnement au site est déduit de son
+    # inscription au programme.
+
+    %><%=
+      user.check_abonnement +
+      site.paiement.output
+    %><%
+
+  # Si l'user est seulement INSCRIT AU SITE
+  elsif user.identified?
+
+    debug "[paiement.erb] user.subscribed? NON identified? OUI"
+
+    %><p class='small'>Notez qu'avec l'inscription au programme <%= UN_AN_UN_SCRIPT %> vous bénéficiez automatiquement de <strong>deux ans d'abonnement</strong> au site pour une utilisation complète de <a href="tool/list" target="_new">tous les outils</a>.</p>
+    <% make_transaction_paiement_unanunscript %>
+    <%= site.paiement.output %><%
+
+  # Si l'user n'est NI INSCRIT, NI ABONNÉ
+  else
+
+    debug "[paiement.erb] user.subscribed? NON identified? NON"
+
+      # Dans le cas où l'user n'est pas encore inscrit sur le site,
+      # c'est une inscription complète, avec paiement de l'inscription
+      # entière au programme.
+      # On doit donc trouver le formulaire d'inscription et le bouton de
+      # paiement paypal, ou alors le formulaire d'inscription qui renverra
+      # vers le paiment paypal en fin de processus. Donc un renvoi ici par
+      # la route "user/paiement?in=unan"
+
+    %><p class='small'>L'inscription au programme “<%= Unan::PROGNAME_DIM_MAJ %>” vous abonne aussi pendant deux ans au site et vous offre donc un accès complet à tous les autres outils. Merci de bien vouloir remplir le formulaire ci-dessous afin de mieux vous faire connaitre à nous.</p>
+    <%=
+      page.view('user/signup')
+    %><%
+  end
+  %>
+<%
+end
+%>

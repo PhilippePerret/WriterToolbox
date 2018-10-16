@@ -1,12 +1,8 @@
 <%
 # Note : C'est le programme qui est bindé à cette vue
 %>
-<% if bureau.pday < 20 %>
-  <p class='small right'>
-    Retrouvez dans votre bureau, chaque jour, le travail que vous avez à accomplir.
-  </p>
-<% end %>
+<%= Unan::titre_h1 %>
 
-<%= bureau.section_unstarted_works(:task) %>
-<%= bureau.section_undone_works(:task) %>
-<%= bureau.section_recent_works(:task) %>
+<p style="line-height:1.9em;font-size:15.8pt">
+  Le programme <strong><%= Unan::PROGNAME_MAJ %></strong> n’est plus en service.
+</p>

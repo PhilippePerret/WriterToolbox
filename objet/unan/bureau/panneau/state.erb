@@ -1,47 +1,8 @@
 <%
 # Panneau de l'état général
 %>
+<%= Unan::titre_h1 %>
 
-<div id="div_mark_pday_points">
-  <span class="libelle mark_pday">Jour-programme</span>
-  <span class="value mark_fort" id="mark_pday"><%=
-    nb = user.program.current_pday
-    er = nb == 1 ? 'er' : 'e'
-    "#{nb}<sup>#{er}</sup>"
-    %></span>
-    <span class="libelle mark_points">Points</span>
-    <span class="value mark_fort" id="mark_points"><%= user.program.points %></span>
-</div>
-
-
-<div class="dim3070">
-  <div class="row">
-    <span class="libelle">Programme débuté le</span>
-    <span class="value"><%= user.program.created_at.as_human_date %></span>
-  </div>
-  <div class="row">
-    <span class="libelle">Fin approximative</span>
-    <span class="value"><%= user.program.fin_approximative(:human) %></span>
-  </div>
-  <div class="row">
-    <span class="libelle">Rythme</span>
-    <span class="value">
-      Rythme <%= user.program.rythme_humain %>
-    </span>
-  </div>
-  <div class="row">
-    <span class="libelle"></span>
-    <span class="value small">(vous pouvez le modifier dans le <%= bureau.lien_preferences('panneau des préférences') %>)</span>
-  </div>
-  <div class="row">
-    <span class="libelle">Jour réel courant</span>
-    <span class="value"><%= user.program.nombre_jour_reels_from_start(:human) %></span>
-  </div>
-  <div class="row">
-    <span class="libelle">Jours-programme</span>
-    <span class="value"><%= user.program.current_pday_humain %>, reste <%= user.program.nombre_pdays_restants(:human) %></span>
-  </div>
-</div>
-<div class="air right">
-  <%= "Abandonner le programme".in_a(class:'discret btn small warning', href:"program/stop?in=unan&conf=0") %>
-</div>
+<p style="line-height:1.9em;font-size:15.8pt">
+  Le programme <strong><%= Unan::PROGNAME_MAJ %></strong> n’est plus en service.
+</p>

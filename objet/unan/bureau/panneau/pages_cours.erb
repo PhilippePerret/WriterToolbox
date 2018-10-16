@@ -8,10 +8,8 @@
 #           ou mise de côté pour lecture                          (status 3)
 #
 %>
-<% if bureau.pday < 20 %>
-  <p class='small right italic'>Retrouvez ici toutes les pages de cours à lire.</p>
-<% end %>
+<%= Unan::titre_h1 %>
 
-<%= bureau.section_unstarted_works(:page) %>
-<%= bureau.section_undone_works(:page) %>
-<%= bureau.section_recent_works(:page) %>
+<p style="line-height:1.9em;font-size:15.8pt">
+  Le programme <strong><%= Unan::PROGNAME_MAJ %></strong> n’est plus en service.
+</p>
