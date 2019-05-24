@@ -30,6 +30,15 @@ class User
     end
   end
 
+  def end_abonnement
+    @end_abonnement ||= begin
+      if @id != nil && User::table_autorisations.exists?
+        la = User::table_autorisations.select(where:"user_id = #{id} AND ( raison = 'ABONNEMENT' OR raison = 'UNANUNSCRIPT' )", order: "created_at DESC", limit:1, colonnes:[:end_time]).first
+        la[:end_time] unless la.nil?
+      end
+    end
+  end
+
 
   # {Float} Retourne le tarif à payer pour l'user en fonction du
   # fait qu'il est abonné ou non au site (writer's toolbox) depuis
