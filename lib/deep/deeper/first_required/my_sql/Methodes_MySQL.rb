@@ -60,9 +60,9 @@ module MethodesMySQL
     when Hash
       hdata.each { |k, v| instance_variable_set( "@#{k}", v ) }
     when NilClass
-      raise 'Les données à dispatcher sont vides.'
+      raise "Les données à dispatcher sont vides pour l'instance id:#{id}, class:#{self.class}."
     else
-      raise "Impossible de dispatcher un ensemble de données de type #{hdata.class}…"
+      raise "Impossible de dispatcher un ensemble de données de type #{hdata.class} (instance id:#{id}, class:#{self.class})…"
     end
   end
 
