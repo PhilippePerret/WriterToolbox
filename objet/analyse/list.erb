@@ -14,21 +14,6 @@ page.description = "Liste de tous les films analysés dans la section des analys
 enable_comments
 %>
 <%= FilmAnalyse::titre_h1("Liste des analyses") %>
-<p class='small italic'>
-  <% if user.subscribed? || user.real_analyste? || user.admin? %>
-  En tant qu'<%=
-  case true
-  when user.subscribed?     then "abonné"
-  when user.real_analyste?  then "analyste"
-  when user.admin?          then "administrateur"
-  end
-  %> vous avez un accès complet aux analyses de films.
-  <% elsif user.identified? %>
-  En tant que simple inscrit, vous avez un accès limité aux analyses de film. Pour un accès complet, merci de <%= lien.subscribe("vous abonner") %>.
-  <% else %>
-  En tant que simple visiteur, votre accès aux analyses de films est limité à quelques films seulement. Pour un accès supérieur, merci de <%= lien.signup("#{DOIGT}vous inscrire") %> et pour <strong>un accès complet aux analyses</strong> merci de <%= lien.subscribe("#{DOIGT}soutenir le site en vous abonnant") %>.
-  <% end %>
-</p>
 
 <div class="two_columns small">
   <div class="left_column">
@@ -55,14 +40,14 @@ enable_comments
 <div class="two_columns small">
   <div class="left_column">
     <%
-      films_en_cours = FilmAnalyse::TDM::traite( :en_cours )
+      films_en_cours = FilmAnalyse::TDM.traite( :en_cours )
       s = films_en_cours.count > 1 ? "s" : ""
     %>
     <h4><%= films_en_cours.count %> analyse<%= s %> en cours</h4>
     <%= films_en_cours.as_ul %>
   </div>
   <div class="right_column">
-    <% films_inacheves = FilmAnalyse::TDM::traite :inacheves %>
+    <% films_inacheves = FilmAnalyse::TDM.traite :inacheves %>
     <h4><%= films_inacheves.count %> analyses en projet</h4>
     <%= films_inacheves.as_ul %>
   </div>
