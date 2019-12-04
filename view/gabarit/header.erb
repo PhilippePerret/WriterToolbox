@@ -1,36 +1,88 @@
 <%
 # Définition de l'entête du site
 
-# TODO Remplacé par l'entête de scénariopole
+# Remplacé par l'entête de scénariopole
+
+# Pour produire un lien simple, à partir du href et
+# du titre, avec optionnellement une class CSS
+def simple_link href, titre = nil, css = nil
+  css = css ? " class=\"#{css}\"" : ''
+  "<a href=\"#{href}\"#{css}>#{titre || href}</a>"
+end
+alias :link :simple_link
+
+
+def titre_in_logo
+  @titre_in_logo ||= define_titre_in_logo(:boa)
+end
+
+def define_titre_in_logo pour = nil, site
+  <<-HTML
+  <h1 class="scenariopole #{pour}">
+    <div class="scenariopole"><a href="" title="Retour à l’accueil">scenariopole</a></div>
+    <div class="top_links">#{
+      simple_link('', 'accueil')
+    }#{
+      simple_link('narration', 'narration')
+    }#{
+      simple_link('outils','outils')
+    }#{
+      simple_link('aide','aide')
+    }</div>
+  </h1>
+  HTML
+end
+
+def up_tools
+  <<-HTML
+  <div id="up_tools">#{
+    simple_link('outils', 'OUTILS')}#{
+    simple_link('user/profil', 'PROFIL')}#{
+    simple_link('aide', 'AIDE')
+    }</div>
+  HTML
+end
+
+def lien_signout params = nil
+  params ||= Hash.new
+  params[:titre] ||= "Se déconnecter"
+  "<a href=\"user/signout\" class=\"link_signout\">#{params[:titre]}</a>"
+end
+
+def button_signin # un formulaire, maintenant
+ <<-HTML
+  <form id="signin_link_form" class="none" method="POST" action="user/signin">
+    <input type="submit" class="link" value="s’identifier" />
+    <input type="checkbox" name="goback" id="cb_goback" />
+    <label for="cb_goback" class="tiny">puis revenir</label>
+    <input type="hidden" name="goback_route" value="#{site.full_route}" />
+  </form>
+ HTML
+end
+
 %>
-<section id="header" class="small"><%= logo %></section>
+<section id="header" class="small">
 
+  <div id="top_buttons">
 
+    <% if user.identified? %>
+       <%= lien_signout(titre:'se déconnecter') %>
+       <%= link('user/profil', 'espace perso') %>
+    <% else %>
+       <%=
+          link('user/signup','s’inscrire')%><%=
+          site.uri.start_with?('user/signin') ? '' : button_signin
+       %>
+    <% end %>
 
+    <% if user.admin?  %>
+      <%=link('admin', 'administrer')%>
+    <% end  %>
+  </div>
 
+  <%= titre_in_logo %>
 
-
-
-
-
-
-
-
-
-
-
-<%
-# Insertion de la pastille indiquant les tâches à exécuter
-# si c'est un administrateur et que les options le réclament.
-# La valeur `display_taches_for_administrator` est défini
-    # dans le fichier config  : ./objet/site/config.rb
-    if site.display_taches_for_administrator && user.admin? %>
-    <%=
-    site.require_objet 'admin'
-    ::Admin::require_module 'taches'
-    ::Admin::Taches::pastille_taches_administrator
-    %>
-<% end %>
+</section>
 
 <%
 # Si c'est un administrateur qui visite, il faut insérer au besoin

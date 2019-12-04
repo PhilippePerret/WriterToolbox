@@ -3,24 +3,6 @@
 NOW_T = Time.now
 NOW   = Time.now.to_i
 
-require 'singleton'
-class Today < Time
-  include Singleton
-  def date
-    @date ||= Time.now
-  end
-  def timestamp
-    @timestamp ||= date.to_i
-  end
-  def start
-    @start ||= Time::new(date.year, date.month, date.day, 0, 0, 0).to_i
-  end
-  def end
-    @end ||= start + 3600 * 24
-  end
-end
-def today; @today ||= Today.instance end
-
 class Time
   MOIS = {
     0 => "janvier",

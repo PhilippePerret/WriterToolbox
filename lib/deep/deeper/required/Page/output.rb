@@ -59,8 +59,7 @@ class Page
       head_built = <<-HEAD
   <meta content="text/html; charset=utf-8" http-equiv="Content-type">
   <title>#{page.title}</title>
-  <base href="http://www.scenariopole/BOA/" />
-  #{balise_meta_facebook}
+  <base href="#{site.url}/" />
   <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
   <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
   #{self.balise_meta_description}
@@ -74,17 +73,6 @@ class Page
       head_built
     end
     #/head
-  end
-
-  def balise_meta_facebook
-    return ''
-#     <<-HTML
-# <meta property="og:url"           content="#{route_courante}" />
-# <meta property="og:type"          content="website" />
-# <meta property="og:title"         content="La Boite à Outils de l'Auteur" />
-# <meta property="og:description"   content="Your description" />
-# <meta property="og:image"         content="http://www.laboiteaoutilsdelauteur.fr/view/img/logo/reseaux/like.png" />
-#     HTML
   end
 
   def route_courante

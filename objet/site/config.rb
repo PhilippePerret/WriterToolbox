@@ -14,8 +14,8 @@ HOME = "/Users/philippeperret"
 
 # Désignation officielle du site, par exemple pour les
 # factures ou autre mail officiel
-site.official_designation = "La Boite à Outils de l'Auteur" # "Writer's Toolbox"
-site.name                 = "La Boite à Outils de l'Auteur"
+site.official_designation = "Scénariopole" # "Writer's Toolbox"
+site.name                 = "Scénariopole"
 # Pour donner un nom différent dans la balise <title>
 # Si non défini, c'est la valeur de site.name qui sera prise
 # et PASSÉE EN CAPITALES
@@ -28,17 +28,17 @@ site.name                 = "La Boite à Outils de l'Auteur"
 site.title_prefix     = "BOA"
 site.title_separator  = " | "
 TINY_CAR = '<span style="font-size:9.1pt;color:#97c0c8">%s</span>'
-site.logo_title = "#{TINY_CAR % 'LA'} BOITE #{TINY_CAR % 'À'} OUTILS #{TINY_CAR % 'DE L’'}AUTEUR".in_span(style:'color:#b7e0e8')
+site.logo_title = "Scénariopole"
 
 # Le mail pour le paramètre `:to` de l'envoi de mail notamment, ou
 # pour écrire les infos à propos du site
-site.mail                 = "phil@laboiteaoutilsdelauteur.fr"
-site.mail_before_subject  = "La Boite à Outils de l'Auteur — "
+site.mail                 = "phil@scenariopole.fr"
+site.mail_before_subject  = "SCENARIOPOLE — "
 site.mail_signature       = "<p>#{site.name}</p>"
 
 # Host local
-site.local_host   = 'localhost/WriterToolbox'
-site.distant_host = 'www.laboiteaoutilsdelauteur.fr'
+site.local_host   = 'localhost/scenariopole/BOA'
+site.distant_host = 'www.scenariopole.fr/BOA'
 site.domain_url   = "http://#{site.distant_host}"
 
 # Description qui servira pour la balise META
@@ -74,19 +74,19 @@ site.tarif = 6.90
 
 # ---------------------------------------------------------------------
 #   BASES DE DONNÉES
-site.prefix_databases = 'boite-a-outils'
+site.prefix_databases = 'scenariopole_boa'
 
 # Compte Facebook
 # ---------------
 # Un lien sera ajouté automatiquement à la signature
 # des mails si le compte est défini.
-site.facebook = 'laboiteaoutilsdelauteur'
+site.facebook = 'scenariopole'
 
 # Compte Twitter
 # --------------
 # Un lien sera ajouté automatiquement à la signature
 # des mails si le compte est défini.
-site.twitter = 'b_outils_auteur'
+site.twitter = 'ScenarioPole'
 
 # # Si on est en anglais :
 # site.separateur_decimal = "."
@@ -117,7 +117,7 @@ site.default_editor = :atom
 # qui serait utilisée.
 site.markdown_application = "TextMate" # "Mou"
 
-site.serveur_ssh = "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
+site.serveur_ssh = "scenariopole@ssh-scenariopole.alwaysdata.net"
 
 # ---------------------------------------------------------------------
 # ADMINISTRATION
@@ -127,12 +127,12 @@ site.serveur_ssh = "boite-a-outils@ssh-boite-a-outils.alwaysdata.net"
 # accomplir.
 # Cette pastille est insérée dans la page :
 #   ./view/gabarit/header.erb
-site.display_taches_for_administrator = true
+site.display_taches_for_administrator = false
 
 # Si cette option est true, une pastille en haut à droite de
 # la page indiquera à l'user les tâches qu'il a à accomplir
 # si l'application le nécessite et le gère.
-site.display_taches_for_user = true
+site.display_taches_for_user = false
 
 # Détermine les alertes administration lors du login d'un
 # utilisateur. Les valeurs peuvent être :
@@ -148,7 +148,7 @@ site.display_taches_for_user = true
 #     Résumé hebdomadaire des connexions de la semaine
 # :one_a_month / :une_par_mois
 #     Résumé mensuel des connexions du mois
-site.alert_apres_login = :twice_a_day
+site.alert_apres_login = :une_par_mois
 
 # ---------------------------------------------------------------------
 # TESTS
