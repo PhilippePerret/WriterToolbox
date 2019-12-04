@@ -4,43 +4,5 @@
 # Note : Elle n'est visible que lorsque l'utilisateur est identifié
 %>
 <section id="left_margin">
-  <div id="main_left_links" class="left" style="margin-bottom:3em">
-    <%= main_link('BOITE', '', {title: "Pour rejoindre l’accueil du site."}) %>
-    <%= main_link('OUTILS', 'tool/list', {title:"Pour rejoindre la liste de tous les outils d'écriture."}) %>
-    <%=
-      link_profil = user.identified? ? "user/#{user.id}/profil" : 'user/noprofil'
-      main_link('AUTEUR', link_profil, {title:"Pour rejoindre votre profil si vous êtes inscrit(e) sur le site."}) %>
-  </div>
 
-  <% if false == user.identified? %>
-    <%= "".in_div(class:'air') %>
-    <%= "S'identifier".in_a(href:'user/signin', style:'letter-spacing:2.2px', back_to: route_courante) %>
-    <%= "S'inscrire".in_a(href:'user/signup', style:'letter-spacing:3.3px') %>
-    <%= image('pictos/no_pub_30.png').in_div(style:'margin:40px 0')%>
-  <%
-    else
-      # Si le visiteur est identifié
-  %>
-    <%
-      lien_1a1s =
-        if user.unanunscript?
-          user.menu_unan_name.in_a(id:'lk_unan', style: 'font-size:11pt !important', href:'unan/home')
-        else
-          "1 An 1 Film<br>1 An 1 Roman".in_a(href:'unan/home')
-        end
-    %>
-    <%= lien_1a1s %>
-    <%= "Déconnexion".in_a(href:"user/#{user.id}/deconnexion") %>
-
-    <% if user.admin? %>
-      <hr />
-      <% if user.manitou? %>
-        <%= lien.console("Console", target:nil) %>
-        <%= 'SYNC'.in_a(href: 'admin/sync') %>
-      <% end %>
-
-      <a href="admin/dashboard">Dashboard</a>
-      <a href="unan_admin/dashboard">Tableau de bord 1A1S</a>
-    <% end %>
-  <% end %>
 </section>

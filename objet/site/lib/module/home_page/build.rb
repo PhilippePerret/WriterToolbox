@@ -25,7 +25,6 @@ class SiteHtml
     '<div style="clear:both"></div>' +
     extrait_last_blog_post +
     section_hot_news +
-    message_inscription_footer
   end
 
 
@@ -103,64 +102,6 @@ class SiteHtml
       </div>
       HTML
     app.benchmark('[Building home]<- SiteHtml#cadre_independance_flottant')
-    return res
-  end
-
-#   # Cadre pour contenir les liens vers facebook et
-#   # twitter OBSOLÈTE
-#   def cadre_reseaux_sociaux
-#     app.benchmark('[Building home]-> SiteHtml#cadre_reseaux_sociaux')
-#     res = <<-HTML
-# <div id="cadre_reseaux_sociaux">
-#   #{picto_facebook}
-#   #{picto_twitter}
-# </div>
-#     HTML
-#     app.benchmark('[Building home]<- SiteHtml#cadre_reseaux_sociaux')
-#     return res
-#   end
-  # def picto_facebook
-  #   app.benchmark('[Building home]-> SiteHtml#picto_facebook')
-  #   res = <<-HTML
-  #   <div
-  #     class="fb-like"
-  #     data-href="https://www.facebook.com/laboiteaoutilsdelauteur"
-  #     data-layout="button"
-  #     data-action="like"
-  #     data-show-faces="false"
-  #     data-share="true"
-  #     style="margin:0"
-  #     >Facebook</div>
-  #   HTML
-  #   app.benchmark('[Building home]<- SiteHtml#picto_facebook')
-  #   return res
-  # end
-  # def picto_twitter
-  #   app.benchmark('[Building home]-> SiteHtml#picto_twitter')
-  #   res = <<-HTML
-  #   <div style="margin:0"><a
-  #     id="twitter-button"
-  #     class="twitter-share-button"
-  #     href="https://twitter.com/intent/tweet"
-  #     data-size='medium'
-  #     >Tweet</a></div>
-  #   HTML
-  #   app.benchmark('[Building home]<- SiteHtml#picto_twitter')
-  #   return res
-  # end
-
-  def message_inscription_footer
-    app.benchmark('[Building home]-> SiteHtml#message_inscription_footer')
-    res = <<-HTML
-<p class='tiny'>Si vous êtes déjà inscrit, vous pouvez
-#{lien.signin("vous identifier", class:'greencharte bold')} grâce au
-lien de la marge gauche. Si vous n'êtes pas inscrit, alors…
-qu'attendez-vous pour
-#{lien.subscribe("vous inscrire gratuitement", class:'greencharte bold')} 
-? :-)
-</p>
-    HTML
-    app.benchmark('[Building home]<- SiteHtml#message_inscription_footer')
     return res
   end
 
