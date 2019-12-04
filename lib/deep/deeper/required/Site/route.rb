@@ -9,6 +9,16 @@ class SiteHtml
   # {SiteHtml::Route} Instance de la route courante
   attr_reader :current_route
 
+  # La "route" complète, avec paramètres s'ils existent
+  # @alias def full_route
+  def uri
+    uri = ENV['REQUEST_URI'].split('/')
+    uri.shift
+    site.offline? && uri.shift
+    return uri.join('/')
+  end
+  alias :full_route :uri
+
   # Returne true si la route courante conduit à la page
   # d'accueil (au moment où la méthode est utilisée)
   def home?

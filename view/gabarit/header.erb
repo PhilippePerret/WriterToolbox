@@ -83,13 +83,3 @@ end
   <%= titre_in_logo %>
 
 </section>
-
-<%
-# Si c'est un administrateur qui visite, il faut insérer au besoin
-# le widget pour les tâches (pour ajouter une tâche concernant la
-# page).
-if page.widget_taches?
-    site.require_module('tache')
-%>
-    <%= ::Admin::Taches.widget %>
-<% end %>
