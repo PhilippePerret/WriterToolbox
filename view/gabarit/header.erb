@@ -21,13 +21,13 @@ def define_titre_in_logo pour = nil, site
   <h1 class="scenariopole #{pour}">
     <div class="scenariopole"><a href="" title="Retour à l’accueil">scenariopole</a></div>
     <div class="top_links">#{
-      simple_link('', 'accueil')
+      simple_link('../', 'accueil')
     }#{
-      simple_link('narration', 'narration')
+      simple_link('../narration', 'narration')
     }#{
-      simple_link('outils','outils')
+      simple_link('../outils','outils')
     }#{
-      simple_link('aide','aide')
+      simple_link('../aide','aide')
     }</div>
   </h1>
   HTML
@@ -36,9 +36,9 @@ end
 def up_tools
   <<-HTML
   <div id="up_tools">#{
-    simple_link('outils', 'OUTILS')}#{
-    simple_link('user/profil', 'PROFIL')}#{
-    simple_link('aide', 'AIDE')
+    simple_link('../outils', 'OUTILS')}#{
+    simple_link('../user/profil', 'PROFIL')}#{
+    simple_link('../aide', 'AIDE')
     }</div>
   HTML
 end
@@ -46,7 +46,7 @@ end
 def lien_signout params = nil
   params ||= Hash.new
   params[:titre] ||= "Se déconnecter"
-  "<a href=\"user/signout\" class=\"link_signout\">#{params[:titre]}</a>"
+  "<a href=\"../user/signout\" class=\"link_signout\">#{params[:titre]}</a>"
 end
 
 def button_signin # un formulaire, maintenant
@@ -67,10 +67,10 @@ end
 
     <% if user.identified? %>
        <%= lien_signout(titre:'se déconnecter') %>
-       <%= link('user/profil', 'espace perso') %>
+       <%= link('../user/profil', 'espace perso') %>
     <% else %>
        <%=
-          link('user/signup','s’inscrire')%><%=
+          link('../user/signup','s’inscrire')%><%=
           site.uri.start_with?('user/signin') ? '' : button_signin
        %>
     <% end %>
