@@ -14,8 +14,4 @@ else
 end
 %>
 <%= Citation.titre_h1 %>
-<% if is_consultable %>
-  <%= Citation.current.output %>
-<% else %>
-  <%= lien.bloc_soutien('Pour pouvoir consulter d’autres citations') %>
-<% end %>
+<%= Citation.current.output %>

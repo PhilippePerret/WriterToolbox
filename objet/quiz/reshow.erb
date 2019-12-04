@@ -5,14 +5,4 @@
 
 %>
 <%= Quiz.titre_h1(quiz.titre)%>
-<% if user.authorized? %>
-  <%= quiz.reshow %>
-<% else %>
-  <p>
-    En qualité de simple <%= user.htype %>, vous ne pouvez pas consulter vos quiz précédents.
-  </p>
-  <p>
-    Pour le faire, vous devez être abonné<%= user.f_e %>.
-  </p>
-  <%= lien.bouton_subscribe %>
-<% end %>
+<%= quiz.reshow %>

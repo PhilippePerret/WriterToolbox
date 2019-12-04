@@ -13,34 +13,6 @@ Rappel : c'est un singleton, on appelle les méthodes par :
 =end
 class Lien
 
-  # Pour écrire dans la page un texte un plus explicatif sur
-  # les raisons de s'abonner au site. On indique simplement en
-  # amorce le texte qui correspond à la page. Par exemple, dans
-  # la section Citations, un non abonné ne peut consulter que
-  # 5 citations. À la sixième, il trouve le texte "Pour consulter
-  # d'autre citation, merci de soutenir le travail de la boite à
-  # outils etc.". Le texte à partir de ", merci de soutinir" est
-  # fourni ici.
-  def bloc_soutien amorce
-    (
-      '<img src="./view/img/mascotte/mascotte-50pc.png" style="float:left;margin-right:1em;margin-bottom:1em;" />' +
-      "#{amorce}, merci de soutenir les efforts et le travail de #{site.name} en vous abonnant ! ;-)<br>Cela représente une petite somme pour vous, mais c'est d'une aide infinie et préciseuse pour nous !" +
-      bouton_subscribe(align: :right, visible: true, filled: true).in_div(class: 'big air')
-    ).in_div(style: 'font-weight: bold;padding:3em 4em 0em 1em;width:70%;margin-left:10%;font-size:14pt;', class: 'cadre air')
-  end
-
-  # Lien vers le programme ÉCRIRE UN FILM/ROMAN EN UN AN
-  def unanunscript titre = nil, options = nil
-    titre ||= "programme #{UN_AN_UN_SCRIPT}"
-    build('unan/home', titre, options)
-  end
-  # Lien vers l'inscription au programme ÉCRIRE UN FILM/ROMAN EN UN AN
-  def unanunscript_subscribe titre = nil, options = nil
-    titre ||= "S'inscrire au programme #{UN_AN_UN_SCRIPT}"
-    build("unan/paiement", titre, options)
-  end
-  alias :subscribe_unanunscript :unanunscript_subscribe
-
   # Lien vers la partie analyse de films
   # @usage : <%= lien.analyses %> ou <%= lien.analyses_de_films %>
   def analyses_de_films titre = "analyses de films", options = nil
@@ -62,66 +34,6 @@ class Lien
   def outils titre = "liste des outils", options = nil
     build("tool/list", titre, options)
   end
-
-  LIENS_CNARRATION = {
-    home:       ["Collection Narration", 'cnarration/home'],
-    recherche:  ["Formulaire de recherche dans les pages", "cnarration/search"],
-    livres:     ["Tous les livres", 'livre/tdm?in=cnarration'],
-    books:      ["Tous les livres", 'livre/tdm?in=cnarration'],
-    page:       ["Une page", '']
-  }
-  # Pour atteindre la collection Narration.
-  # En utilisant options[:at] on peut définir une sous-rubrique
-  # +options+
-  #   :to       Pour envoyer dans une partie particulière (cf.
-  #             LIENS_CNARRATION ci-dessus)
-  #   :id       ID de la page si    :to = page
-  #   :titre    TITRE de la page si :to = page. S'il n'est pas fourni,
-  #             il est recherché dans la table.
-  #             Si la page se trouve dans un autre livre que le livre
-  #             de la page courante (:from_livre), alors le livre est
-  #             ajouté au titre à afficher.
-  #   :ancre    Une ancre éventuelle
-  #   :from_book  ID du livre pour lequel le lien est créé.
-  def cnarration titre = nil, options = nil
-    if titre.instance_of? Hash
-      options   = titre
-      titre     = nil
-    end
-    options ||= Hash.new
-
-    to = options.delete(:to) || :home
-    titre, href = if to == :page
-      # ID de la page
-      pid   = options[:id]
-      site.require_objet 'cnarration'
-      hpage = Cnarration::table_pages.get(pid, colonnes:[:titre, :livre_id])
-      raise "La page ##{pid.inspect} est introuvable" if hpage.nil?
-      livre_id = hpage[:livre_id]
-      # ID du livre
-      titre = options[:titre].nil_if_empty || begin
-        # Il faut rechercher le titre dans la table des pages
-        hpage[:titre]
-      end
-      titre = "<span class='page'>#{titre}</span>"
-      if options[:from_book] != livre_id
-        # C'est un lien pour un autre livre, il faut donc indiquer
-        # le titre du livre
-        titre_livre = Cnarration::LIVRES[livre_id][:hname]
-        titre += " dans <span class='livre'>#{titre_livre}</span>"
-      end
-      [titre, "page/#{pid}/show?in=cnarration"]
-    else
-      LIENS_CNARRATION[ to ]
-    end
-    build(href, titre, options)
-  rescue Exception => e
-    debug e
-    error e.message
-    "#{titre.inspect}"
-  end
-  alias :collection_narration :cnarration
-  alias :narration :cnarration
 
   def forum titre = "forum", options = nil
     build('forum/home', titre, options)

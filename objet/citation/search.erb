@@ -7,48 +7,32 @@ page.description= "Recherche de texte ou d'auteur parmi les citations d'auteurs.
 enable_comments
 %>
 <%= Citation.titre_h1('Recherche') %>
-<% if user.admin? || user.subscribed? %>
-<p class='tiny'>En tant qu'abonné<%= user.f_e %>, vous pouvez
-  effectuer une recherche dans les citations.</p>
+<%
+# ---------------------------------------------------------------------
+#   FORMULAIRE DE RECHERCHE
+# ---------------------------------------------------------------------
+%>
+<%
+  site.require 'form_tools'
+  form.prefix = 'squote'
+%>
+<form class="dim2080" action="citation/search" method="POST">
+  <%= 'search_citations'.in_hidden(name: 'operation') %>
+  <%= form.field_text('Chercher', 'searched') %>
+  <%= form.field_checkbox('Parmi les noms d’auteur', 'in_auteur') %>
+  <%= form.field_checkbox('Dans la citation', 'in_citation') %>
+  <%= form.field_checkbox('Dans la source', 'in_source') %>
+  <%= form.field_checkbox('Dans l’explicitation', 'in_explicitation') %>
+  <%= form.field_checkbox('Tous les mots (séparés par des espaces)', 'all_words') %>
+  <%= form.field_description('Si cette case est cochée, tous les mots doivent être trouvés. Sinon, au moins un.') %>
+  <%= form.submit_button('Chercher').in_div(class: 'buttons') %>
+</form>
 
-  <%
-  # ---------------------------------------------------------------------
-  #   FORMULAIRE DE RECHERCHE
-  # ---------------------------------------------------------------------
-  %>
-  <%
-    site.require 'form_tools'
-    form.prefix = 'squote'
-  %>
-  <form class="dim2080" action="citation/search" method="POST">
-    <%= 'search_citations'.in_hidden(name: 'operation') %>
-    <%= form.field_text('Chercher', 'searched') %>
-    <%= form.field_checkbox('Parmi les noms d’auteur', 'in_auteur') %>
-    <%= form.field_checkbox('Dans la citation', 'in_citation') %>
-    <%= form.field_checkbox('Dans la source', 'in_source') %>
-    <%= form.field_checkbox('Dans l’explicitation', 'in_explicitation') %>
-    <%= form.field_checkbox('Tous les mots (séparés par des espaces)', 'all_words') %>
-    <%= form.field_description('Si cette case est cochée, tous les mots doivent être trouvés. Sinon, au moins un.') %>
-    <%= form.submit_button('Chercher').in_div(class: 'buttons') %>
-  </form>
-
-  <%
-  # ---------------------------------------------------------------------
-  #   LISTE DES CITATIONS TROUVÉES
-  # ---------------------------------------------------------------------
-  %>
-  <% if param(:operation) == 'search_citations' %>
-    <%= Citation::Search.resultat %>
-  <% end %>
-
-<% else %>
-  <%
-  # ---------------------------------------------------------------------
-  # Visiteur non abonné
-  %>
-  <p class='red'>
-    Je suis désolé mais seuls les abonnés peuvent procéder à une recherche
-    dans la liste des citations.
-  </p>
-  <%= lien.bouton_subscribe %>
+<%
+# ---------------------------------------------------------------------
+#   LISTE DES CITATIONS TROUVÉES
+# ---------------------------------------------------------------------
+%>
+<% if param(:operation) == 'search_citations' %>
+  <%= Citation::Search.resultat %>
 <% end %>
