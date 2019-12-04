@@ -1,20 +1,24 @@
 <%
 # Définition de l'entête du site
+
+# TODO Remplacé par l'entête de scénariopole
 %>
-<section id="header">
+<section id="header" class="small"><%= logo %></section>
 
-  <div id="div_network">
-    <%= page.twitter_button %>
-    <%= page.facebook_like_button %>
-    <%= page.facebook_share_button %>
-  </div>
 
-    <img id="logo_long"
-	 src="./view/img/logo/laptop.jpg"
-	 alt="" />
-    <span id="site_title"><a href=""><%= site.logo_title %></a></span>
 
-</section>
+
+
+
+
+
+
+
+
+
+
+
+
 <%
 # Insertion de la pastille indiquant les tâches à exécuter
 # si c'est un administrateur et que les options le réclament.
@@ -26,17 +30,6 @@
     ::Admin::require_module 'taches'
     ::Admin::Taches::pastille_taches_administrator
     %>
-<% end %>
-
-<%
-# Insertion de la pastille indiquant à un user suivant le
-# programme UN AN UN SCRIPT qui veut qu'on lui indique
-# toujours en entête le nombre de tâches qu'il a à
-# exécuter.
-if user.unanunscript? && user.preference(:pastille_taches)
-    require './objet/unan/lib/module/standalone/pastille_taches.rb'
-%>
-    <%= user.set_pastille_taches %>
 <% end %>
 
 <%

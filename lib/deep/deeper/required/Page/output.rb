@@ -59,7 +59,7 @@ class Page
       head_built = <<-HEAD
   <meta content="text/html; charset=utf-8" http-equiv="Content-type">
   <title>#{page.title}</title>
-  <base href="#{site.base}" />
+  <base href="http://www.scenariopole/BOA/" />
   #{balise_meta_facebook}
   <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
   <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
