@@ -6,7 +6,7 @@
   POUR ÉVITER LES ERREURS D'ENCODAGE EN UNICODE
 =end
 require 'sass'
-Dir["../**/*.sass"].each do |src_path|
+Dir["./**/*.sass"].each do |src_path|
   folder = File.dirname( src_path )
   css_path = File.join(folder, File.basename(src_path, File.extname(src_path)) + '.css')
   if false == File.exist?(css_path) || File.stat(css_path).mtime < File.stat(src_path).mtime
