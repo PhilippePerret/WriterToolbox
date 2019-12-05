@@ -6,7 +6,7 @@ page.description= "Chantier des analyses de films, pour traiter les fichiers de 
 # enable_comments
 
 %>
-<%= AnalyseBuild.titre_h1('Dépôt d’analyse')%>
+<%= AnalyseBuild.titre_h2('Dépôt d’analyse')%>
 
 <% if user.admin? || user.analyste? %>
   <%= Analyse::Depot.output_as_analyste %>

@@ -44,11 +44,11 @@ class Page
   def head
     @head ||= begin
       app.benchmark('-> Page#head')
-      with_fonts = true # Mettre ONLINE quand on ne peut pas avoir de connexion
+      # <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
       fonts_google =
-        if with_fonts
+        if true # Mettre ONLINE quand on ne peut pas avoir de connexion
           <<-FONTS
-          <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+          <link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
           <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
           <![endif]-->
@@ -62,7 +62,6 @@ class Page
   <base href="#{site.url}/" />
   <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
   <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
   #{self.balise_meta_description}
   #{fonts_google}
   #{self.javascript}

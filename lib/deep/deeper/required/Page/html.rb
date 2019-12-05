@@ -86,7 +86,7 @@ class Page
     @page_description = value
   end
 
-  # Définit le titre à affiche dans la fenêtre et dans
+  # Définit le titre à afficher dans la fenêtre et dans
   # l'historique du navigateur
   # Pour le définir dans une section, il faut utiliser
   # page.title = "<le titre>"

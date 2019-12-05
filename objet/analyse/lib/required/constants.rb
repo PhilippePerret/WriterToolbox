@@ -2,6 +2,11 @@
 
 class FilmAnalyse
   class << self
+
+    def titre
+      @titre ||= "Les Analyses de films".freeze
+    end
+
     # Les onglets communs à toutes les pages qui font
     # appel à `titre_h1`
     def data_onglets

@@ -3,7 +3,7 @@
 page.description= "Liste de tous les quiz conçus jusqu'à aujourd'hui. Testez votre niveau en écriture et en cinéma !"
 enable_comments
 %>
-<%= Quiz.titre_h1('Tous les quizzzz') %>
+<%= Quiz.titre_h2('Tous les quizzzz') %>
 <%= Quiz.as_ul %>
 <% if user.admin? %>
   <h3>Questionnaires hors-liste</h3>

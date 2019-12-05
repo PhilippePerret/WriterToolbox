@@ -10,7 +10,7 @@ form.objet  = sujet
 raise_unless user.id == sujet.creator_id || user.grade > 6
 
 %>
-<%= forum.titre_h1("Sujet/question (édition/création)", {onglets: true}) %>
+<%= forum.titre_h2("Sujet/question (édition/création)", {onglets: true}) %>
 
 <form class="dim2080" action="sujet/<%= sujet.id %>/edit?in=forum" method="POST">
 

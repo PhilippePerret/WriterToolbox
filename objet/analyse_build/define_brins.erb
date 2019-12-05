@@ -1,4 +1,4 @@
 <% raise_unless user.analyste? || user.admin? %>
-<%= AnalyseBuild.titre_h1("Définition des brins") %>
+<%= AnalyseBuild.titre_h2("Définition des brins") %>
 
 <%= chantier.form_define_brins %>

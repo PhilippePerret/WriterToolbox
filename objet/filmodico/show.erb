@@ -15,6 +15,6 @@ film.get_all
 %>
 <%=
   titre = (user.admin? ? ("[##{film.id}]".in_span(class:'tiny', style:'vertical-align:super')+" ") : "") + film.titre
-  ( Filmodico::titre_h1 titre )
+  ( Filmodico::titre_h2 titre )
 %>
 <%= film.as_card %>

@@ -33,7 +33,7 @@ if user.unanunscript?
     # est inscrit depuis un bon bout de temps
 
     %>
-    <%= Unan::titre_h1("Inscription au programme") %>
+    <%= Unan::titre_h2("Inscription au programme") %>
     <p>Vous êtes déjà inscrit<%= f_e %> à ce programme, vous ne devriez pas avoir à repasser par ici ;-)…</p><%
 
   end
@@ -43,7 +43,7 @@ else
 
   debug "[paiement.erb] user.unanunscript? NON"
 
-  %><%= Unan::titre_h1("Inscription au programme") %><%
+  %><%= Unan::titre_h2("Inscription au programme") %><%
 
   # Si l'user est ABONNÉ au site
   if user.subscribed?

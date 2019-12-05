@@ -2,7 +2,7 @@
 # Page décrivant le fonctionnement de la collection Narration
 raise_unless_admin
 %>
-<%= Cnarration::titre_h1("Fonctionnement") %>
+<%= Cnarration::titre_h2("Fonctionnement") %>
 <%=
   site.require_module 'kramdown'
   SuperFile::new('./objet/cnarration/admin/fonctionnement.md').kramdown

@@ -1,6 +1,7 @@
 <%
 # Page principale et accueil des analyses de film
 
+# Pour le titre de la fenêtre et le <head>
 page.title = "Analyses films"
 page.description= "Section des analyses de films. Toutes les analyses de films sont rassemblées dans cette section de la boite à outils."
 enable_comments
@@ -12,7 +13,7 @@ def participer_aux_analyses
   FilmAnalyse::lien_participer( "participer aux analyses", {class:'border'})
 end
 %>
-<%= FilmAnalyse::titre_h1 %>
+<%= FilmAnalyse.titre_h2 %>
 
 <p>
   Section du site consacrée aux <%= "Analyses de films".in_a(href:"analyse/list", class:'border') %>

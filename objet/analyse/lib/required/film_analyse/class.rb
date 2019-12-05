@@ -5,7 +5,6 @@ class FilmAnalyse
 
   class << self
 
-    def titre; @titre ||= "Les Analyses de films".freeze end
 
   end # << self
 end #/FilmAnalyse

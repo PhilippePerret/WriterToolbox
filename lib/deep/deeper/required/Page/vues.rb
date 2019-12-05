@@ -103,16 +103,17 @@ class Page
   end
 
   def left_margin
-    @left_margin ||= begin
-      app.benchmark('-> Page#left_margin')
-      res = Vue.new('left_margin', site.folder_custom_gabarit).output
-      app.benchmark('<- Page#left_margin')
-    rescue Exception => e
-      self.fatal_error = e
-      "[PROBLÈME DE LEFT-MARGIN : #{e.message}]"
-    else
-      return res
-    end
+    @left_margin || ''
+    # @left_margin ||= begin
+    #   app.benchmark('-> Page#left_margin')
+    #   res = Vue.new('left_margin', site.folder_custom_gabarit).output
+    #   app.benchmark('<- Page#left_margin')
+    # rescue Exception => e
+    #   self.fatal_error = e
+    #   "[PROBLÈME DE LEFT-MARGIN : #{e.message}]"
+    # else
+    #   return res
+    # end
   end
 
   # Page d'accueil (quand aucune route n'est définie ou que la
@@ -146,8 +147,7 @@ class Page
           (site.folder_deeper_view + 'page/error_unknown_route.erb').deserb()
         end
       else
-        # L'accueil
-        nil
+        nil # => L'accueil
       end
     rescue Exception => e
       self.fatal_error = e
@@ -198,7 +198,7 @@ class Page
     end
     arr_js = [arr_js] unless arr_js.nil? || arr_js.instance_of?(Array)
     return if arr_js.nil? || arr_js.empty?
-    @added_javascript ||= Array::new
+    @added_javascript ||= []
     @added_javascript += arr_js
     # debug "@added_javascript: #{@added_javascript.inspect}"
   end

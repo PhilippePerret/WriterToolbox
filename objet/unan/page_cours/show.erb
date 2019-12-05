@@ -9,7 +9,7 @@
 
     %>
 <% else %>
-  <%= Unan.titre_h1 %>
+  <%= Unan.titre_h2 %>
   <% if user.admin? || OFFLINE %>
     <%= page_cours.link(titre:"[Admin: Éditer page ##{page_cours.id}]", edit: true).in_div(class:'small fright right') %>
   <% end %>

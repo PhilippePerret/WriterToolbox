@@ -3,7 +3,7 @@
 raise_unless user.analyste? || user.admin?
 
 %>
-<%= AnalyseBuild.titre_h1('Extraction') %>
+<%= AnalyseBuild.titre_h2('Extraction') %>
 <% if chantier.film? %>
   <%= AnalyseBuild.output_when_film_chantier %>
   <%# Dans ./objet/analyse_build/lib/module/extraction/chantier/class/helper.rb %>

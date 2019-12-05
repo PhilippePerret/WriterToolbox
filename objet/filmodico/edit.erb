@@ -3,7 +3,7 @@
 raise_unless_admin
 %>
 <% page.title = "Filmodico" %>
-<%= Filmodico::titre_h1("Édition de film") %>
+<%= Filmodico::titre_h2("Édition de film") %>
 <% if OFFLINE %>
   <p class='air warning'>L'édition des fiches de films ne se fait qu'en ONLINE</p>
   <%= 'Éditer le film en online'.in_a(href: "#{site.distant_url}/filmodico/#{site.route.objet_id}/edit") %>

@@ -2,7 +2,7 @@
 # Vue pour lire un message
 imess = site.objet
 %>
-<%= forum.titre_h1("Lecteur de message") %>
+<%= forum.titre_h2("Lecteur de message") %>
 <% if imess.valid? || user.admin? %>
   <ul id="posts"><%= imess.as_li(as: :full_message) %></ul>
 <% else %>

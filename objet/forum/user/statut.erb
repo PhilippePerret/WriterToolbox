@@ -2,7 +2,7 @@
 # Vue pour modifier le statut d'un membre
 raise_unless_admin
 %>
-<%= forum.titre_h1("Gestion des membres") %>
+<%= forum.titre_h2("Gestion des membres") %>
 <%
 if site.current_route.objet_id && param(:v)
   u = User::get(site.current_route.objet_id)
