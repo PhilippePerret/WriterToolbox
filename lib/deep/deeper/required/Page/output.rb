@@ -62,6 +62,7 @@ class Page
   <base href="#{site.url}/" />
   <link rel="shortcut icon" href="view/img/favicon.ico?" type="image/x-icon">
   <link rel="icon" href="view/img/favicon.ico?" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
   #{self.balise_meta_description}
   #{fonts_google}
   #{self.javascript}

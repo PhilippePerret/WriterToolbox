@@ -165,15 +165,11 @@ OFFLINE = !ONLINE;
     low_opacity_margin = user.identified? ? "0.14" : "1"
     # low_opacity_margin = user.identified? ? "0.352" : "1"
 
-    content_left_margin   = left_margin? ? '134' : '10'
-    content_padding_left  = left_margin? ? '4em' : '0'
-
     <<-CSSS
 <style type="text/css">
 #{low_opacities}
 .adminonly{#{user.admin? ? '' : 'display:none;'}}
 #{raw_css_for_app if self.respond_to?(:raw_css_for_app)}
-section#content{margin-left:#{content_left_margin}px;padding-left:#{content_padding_left};}
 </style>
     CSSS
   end
