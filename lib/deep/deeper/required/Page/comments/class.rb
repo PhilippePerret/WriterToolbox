@@ -18,7 +18,8 @@ class Page
       # La vue se trouve dans ./view/deep/deeper/gabarit/comments.erb
       #
       def comments
-        Vue.new('comments', site.folder_gabarit).output
+        return '' # On n'affiche plus la possibilité de commentaires
+        # Vue.new('comments', site.folder_gabarit).output
       end
 
       # = main =
