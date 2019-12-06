@@ -1,4 +1,0 @@
-writeFilmBefore
-premieresImpressions
-voirSansAnalyser
-derouleGeneralAnalyse

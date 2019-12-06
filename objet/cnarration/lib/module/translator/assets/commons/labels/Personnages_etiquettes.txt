@@ -1,5 +1,0 @@
-FonctionnaireRecit
-MotivationsProtagoniste
-BatonsDansRouesDuProtagoniste
-ParticulariteProtagoniste
-MotivationsPersonnages

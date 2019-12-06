@@ -1,1 +1,0 @@
-Attention, ne pas empêcher la lecture des fichiers de ce module par un `raise_unless_admin` ou autre car il est utilisé en temps normal pour actualiser la page lorsqu'un auteur du programme affiche une page qui a besoin d'être actualisée.
