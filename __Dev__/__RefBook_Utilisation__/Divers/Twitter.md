@@ -54,7 +54,7 @@ La console reconnait alors un lien permanent et l'enregistre dans la table des l
 
 ### Table des Tweets permanents
 
-Cette table s'appelle `permanent_tweets` et est consignée dans la base `boite-a-outils_cold`.
+Cette table s'appelle `permanent_tweets` et est consignée dans la base `scenariopole_cold`.
 
 Cette table n'est pas synchronisée car on ne peut envoyer des tweets permanent qu'en online.
 

@@ -58,7 +58,7 @@ class Quiz
     # Affichage du questionnaire pour remplissage
     # Le code complet retourné
     (
-      "<h2 class='titre'>#{titre}</h2>" +
+      "<h3 class='titre'>#{titre}</h3>" +
       resultat          + # seulement après soumission
       div_introduction  + # description, etc.
       html_form
@@ -147,9 +147,8 @@ class Quiz
       if data_generales[:note_max] < 20
         best_note = "#{data_generales[:note_max].to_f}/20"
         c << (
-              "Serez-vous capable de battre la meilleure note obtenue ? #{best_note.in_span(id: 'best_note')}" +
-              ' (et gagner un mois d’abonnement gratuit au site ;-))'.in_span(class: 'small')
-              ).in_div
+              "Serez-vous capable de battre la meilleure note obtenue ? #{best_note.in_span(id: 'best_note')}"
+            ).in_div
       end
     end
     return c.in_div(id: 'quiz_defi')

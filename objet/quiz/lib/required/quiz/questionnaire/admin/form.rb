@@ -60,7 +60,6 @@ class Quiz
       ['', 'Choisir parmi…'],
       ['scenodico',   'Scénodico'],
       ['filmodico',   'Filmodico'],
-      ['unan',        'Programme UNAN'],
       ['autre',       'Autre']
     ]
     onclick = "$('input#quiz_groupe').val(this.value)"

@@ -7,7 +7,7 @@
 
 ## Modifier la fréquence du Cron-job
 
-        $> ssh boite-a-outils@ssh-boite-a-outils.alwaysdata.net
+        $> ssh scenariopole@ssh-scenariopole.alwaysdata.net
         ssh> crontab -e
         nano> ...modifier le cron tab ...
 

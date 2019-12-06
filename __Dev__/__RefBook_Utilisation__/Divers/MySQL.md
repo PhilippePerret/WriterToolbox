@@ -60,7 +60,7 @@ Exemples :
     site.db_execute(:forum, 'SELECT * FROM posts WHERE created_at > ?', {values: [NOW - 3600]})
     # => Liste des posts ayant été créés dans l'heure passée.
 
-`prefixe base` est la fin du nom de la base, après le `boite-a-outils_`. Au jour d'aujourd'hui on peut trouver :
+`prefixe base` est la fin du nom de la base, après le `scenariopole_`. Au jour d'aujourd'hui on peut trouver :
 
     hot           Par exemple pour les users, les connexions, etc.
     cold          Par exemple pour les citations, les tweets permanents

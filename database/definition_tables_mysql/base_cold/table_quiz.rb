@@ -15,7 +15,7 @@ CREATE TABLE quiz
     # SUFFIX_BASE
     # -----------
     # Suffixe de la base du questionnaire, par exemple 'biblio' pour
-    # la base `boite-a-outils_quiz_biblio`
+    # la base `scenariopole_boa_quiz_biblio`
     # C'est dans cette base qu'on trouve le `quiz_id` ci-dessous
     suffix_base VARCHAR(100) NOT NULL,
 

@@ -31,6 +31,9 @@ class Quiz
         arr = Array.new
         all_suffixes_quiz.each do |sufbase|
           arr += site.dbm_table("quiz_#{sufbase}", 'quiz').select(colonnes:[]).collect do |row|
+            # Si ce n'est pas l'administrateur, on ne prend que les
+            # quiz à partir de l'identifiant 10
+            row[:id] < 10 && !user.admin? && next
             q = new(row[:id], sufbase)
             q.hors_liste? ? nil : q
           end.compact
@@ -45,6 +48,9 @@ class Quiz
         arr = Array.new
         all_suffixes_quiz.each do |sufbase|
           arr += site.dbm_table("quiz_#{sufbase}", 'quiz').select(colonnes:[]).collect do |row|
+            # Si ce n'est pas l'administrateur, on ne prend que les
+            # quiz à partir de l'identifiant 10
+            row[:id] < 10 && !user.admin? && next
             q = new(row[:id], sufbase)
             q.hors_liste? ? q : nil
           end.compact

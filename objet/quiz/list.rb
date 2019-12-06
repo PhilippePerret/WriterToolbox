@@ -36,7 +36,6 @@ class ::Quiz
 
     def human_titre_for_suffix_base suf
       case suf
-      when 'unan'     then 'Programme UNAN'
       when 'biblio'   then 'Quiz bibliographiques'
       when 'test'     then 'Questionnaires test'
       else "Quiz des #{suf}"

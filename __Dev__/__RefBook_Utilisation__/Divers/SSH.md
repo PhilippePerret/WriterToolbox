@@ -29,7 +29,7 @@ Noter que pour l'activer dans le terminal, un raccourci a été créé (dans `~/
 
 Serveur :
 
-    ssh-boite-a-outils.alwaysdata.net
+    ssh-scenariopole.alwaysdata.net
 
 User :
 
@@ -37,7 +37,7 @@ User :
 
 Complète :
 
-    boite-a-outils@ssh-boite-a-outils.alwaysdata.net
+    scenariopole@ssh-scenariopole.alwaysdata.net
 
 <a name='requiregempropre'></a>
 
@@ -47,5 +47,5 @@ Peut-être OBSOLÈTE depuis que je charge vraiment les gems.
 
 Pour utiliser `require 'sqlite3'` dans un code SSH ruby ou tout autre appel d'un gem, il faut impérativement utiliser, malheureusement :
 
-    $: << '/home/boite-a-outils/.gems/gems/sqlite3-1.3.10/lib'
+    $: << '/home/scenariopole/.gems/gems/sqlite3-1.3.10/lib'
     require 'sqlite3'

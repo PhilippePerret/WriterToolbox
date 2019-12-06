@@ -47,7 +47,7 @@ class Quiz
     @database_relname ||= "quiz_#{suffix_base}"
   end
   def database_fullname
-    @database_fullname ||= "boite-a-outils_#{database_relname}"
+    @database_fullname ||= "scenariopole_boa_#{database_relname}"
   end
 
 
@@ -156,7 +156,7 @@ class Quiz
   def create_database_online
     require './data/secret/api_alwaysdata'
     url = 'https://api.alwaysdata.com/v1/database/'
-    datacmd = '{"encoding": "utf8", "name": "' + database_fullname + '", "type": "MYSQL", "permissions": {"118479": "NONE", "118479_phil": "FULL", "118479_user": "READONLY"}}'
+    datacmd = '{"encoding": "utf8", "name": "' + database_fullname + '", "type": "MYSQL", "permissions": {"146379": "FULL"}}'
     cmd = "CURL --basic --user #{AD_API[:api_key]}: #{url} --request POST --data '#{datacmd}'"
     debug "CMD : #{cmd}"
     res = `#{cmd} 2>&1`

@@ -77,7 +77,7 @@ class Quiz
     end
 
     def database_exist?
-      SiteHtml::DBM_TABLE.database_exist?("boite-a-outils_quiz_#{suffix_base}")
+      SiteHtml::DBM_TABLE.database_exist?("scenariopole_boa_quiz_#{suffix_base}")
     end
 
     # Retourne TRUE si le quiz désiré (défini par l'URL) N'est PAS
@@ -85,16 +85,13 @@ class Quiz
     def wanted_quiz_not_authorised?
       if get_wanted_quiz.current?
         # debug "Le quiz demandé est courant (-> false)"
+        flash 'Questionnaire courant affiché.'
         return false
       end
-      if user.authorized?
+      if true # n'importe qui aujourd'hui user.authorized?
         # debug "L'auteur est autorisé (-> false)"
         return false
       end
-      # debug "Visiteur non autorisé à voir le quiz #{get_wanted_quiz.id}/#{get_wanted_quiz.suffix_base}"
-      @error = 'Seuls les abonnés peuvent exécuter le questionnaire demandé.'
-      flash 'Questionnaire courant affiché.'
-      return true
     end
 
     # Suffix du nom de la base courant
