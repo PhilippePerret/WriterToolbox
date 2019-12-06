@@ -8,8 +8,7 @@ page.description= "Chantier des analyses de films, pour traiter les fichiers de 
 enable_comments
 
 %>
-<h1>Chantier des analyses de film</h1>
-<h2>Accueil</h2>
+<%= AnalyseBuild.titre_h2('Accueil') %>
 <% if user.analyste? || user.admin? %>
   <%=
     (

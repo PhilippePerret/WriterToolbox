@@ -10,18 +10,23 @@ class AnalyseBuild
   class << self
 
     def titre
-      @titre ||= 'Chantier d’analyse'
+      @titre ||= 'L’usine à analyse'
     end
 
     def data_onglets
       ongs = {
         'Accueil'     => 'analyse_build/home',
-        'Déposer'     => 'analyse_build/depot',
-        'Extraire'    => 'analyse_build/extract'
+        'Déposer'     => 'analyse_build/depot'
       }
+      if user.analyste?
+        ongs.merge!('Extraire' => 'analyse_build/extract')
+      else
+        ongs.merge!('Participer' => "analyse/participer")
+      end
       if current.film?
         ongs.merge!('Définir brins' => "analyse_build/#{current.film.id}/define_brins")
       end
+      ongs.merge!('Aide' => 'analyse/aide')
 
       return ongs
     end

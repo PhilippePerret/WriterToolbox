@@ -15,10 +15,10 @@ class FilmAnalyse
         'Accueil'     => 'analyse/home',
         'Analyses'    => 'analyse/list',
         # "Grades"      => 'analyse/grades',
-        'Dépôt'       => 'analyse_build/home',
-        'Aide'        => 'manuel/home?in=analyse'
+        'Dépôt'       => 'analyse_build/home'
         }
         user.analyste? || user.admin? || h.merge!('Participer' => 'analyse/participer')
+        h.merge!('Aide' => 'manuel/home?in=analyse')
         h
       end
     end
