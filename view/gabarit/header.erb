@@ -1,6 +1,5 @@
 <%
 # Définition de l'entête du site
-
 # Remplacé par l'entête de scénariopole
 
 # Pour produire un lien simple, à partir du href et
@@ -67,16 +66,16 @@ end
 
     <% if user.identified? %>
        <%= lien_signout(titre:'se déconnecter') %>
-       <%= link('../user/profil', 'espace perso') %>
+       <%= simple_link('../user/profil', 'espace perso') %>
     <% else %>
        <%=
-          link('../user/signup','s’inscrire')%><%=
+          simple_link('../user/signup','s’inscrire')%><%=
           site.uri.start_with?('user/signin') ? '' : button_signin
        %>
     <% end %>
 
     <% if user.admin?  %>
-      <%=link('admin', 'administrer')%>
+      <%=simple_link('admin', 'administrer')%>
     <% end  %>
   </div>
 

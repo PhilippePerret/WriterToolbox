@@ -47,7 +47,7 @@ class Video
       type:         :youtube,
       date:         "Juillet 2015",
       created_at:   1436133600,
-      level:        2,
+      level:        1,
       next:         nil, # ID de vidéo suivante, si suite
       # Pour sitemap
       description:  "Tout savoir sur les raccourcis-claviers indispensables qu'il faut connaitre pour écrire mieux et plus vite.",
