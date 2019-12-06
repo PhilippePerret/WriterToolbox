@@ -2,7 +2,7 @@
 class Admin
   class << self
 
-    def titre_h1 sous_titre = nil
+    def titre_h2 sous_titre = nil
       t = "Tableau de bord".in_h1
       t << onglets
       t << sous_titre.in_h2 unless sous_titre.nil?

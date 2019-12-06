@@ -45,8 +45,8 @@ class Unan
 
     # Permet d'écrire le titre "Un An Un Script" de façon
     # correcte, avec un sous-titre (h2) s'il est défini
-    def titre_h1 sous_titre = nil
-      @titre_h1 ||= begin
+    def titre_h2 sous_titre = nil
+      @titre_h2 ||= begin
         page_title = Unan::PROGNAME_MINI_MAJ
         page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
         page.title = page_title
@@ -54,9 +54,9 @@ class Unan
         titre.in_a(href:"unan/home").in_h1
       end
       if sous_titre
-        @titre_h1 + sous_titre.in_h2
+        @titre_h2 + sous_titre.in_h2
       else
-        @titre_h1
+        @titre_h2
       end
     end
 

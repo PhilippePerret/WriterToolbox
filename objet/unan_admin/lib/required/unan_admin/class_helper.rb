@@ -4,8 +4,8 @@ class UnanAdmin
 
   class << self
 
-    # @usage : UnanAdmin::titre_h1(sous_titre_optionnel)
-    def titre_h1 sous_titre = nil
+    # @usage : UnanAdmin::titre_h2(sous_titre_optionnel)
+    def titre_h2 sous_titre = nil
       page_title = "1A1S Admin"
       page_title += "#{site.title_separator}#{sous_titre}" if sous_titre
       page.title = page_title

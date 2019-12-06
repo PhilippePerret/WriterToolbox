@@ -17,19 +17,19 @@ class << self
       if film.analyse_tm? && !film.analyse_mye?
         ''
       else
-        FilmAnalyse.titre_h1( film.titre, {onglets_top: true} )
+        FilmAnalyse.titre_h2( film.titre, {onglets_top: true} )
       end
 
     titre_page +
     if !film.exist?
       message_film_doesnt_exist
     elsif !film.consultable?
-      (titre_page == '' ? FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) : '') +
+      (titre_page == '' ? FilmAnalyse.titre_h2( film.titre, {onglets_top: true} ) : '') +
       message_film_non_consultable_par_user +
       fiche_film
     elsif film.analyse_tm? && !film.analyse_mye?
       # === ANALYSE DE TYPE TM ===
-      FilmAnalyse.titre_h1( film.titre, {onglets_top: true} ) +
+      FilmAnalyse.titre_h2( film.titre, {onglets_top: true} ) +
       output_as_analyse_tm
     elsif film.analyse_mye? && !film.analyse_tm?
       # === ANALYSE SEULEMENT MYE ===

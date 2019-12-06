@@ -8,10 +8,10 @@ class Forum
   include MethodesMainObjet
 
   # Pour écrire titre et sous-titre
-  # @usage    <%= forum.titre_h1[("<sous titre>")] %>
+  # @usage    <%= forum.titre_h2[("<sous titre>")] %>
   # +params+
   #     :onglets      Si true, on place les onglets sous le titre
-  def titre_h1 sous_titre = nil, params = nil
+  def titre_h2 sous_titre = nil, params = nil
     params ||= Hash.new
     t = "Le Forum".in_h1
     t << sous_titre.in_h2 unless sous_titre.nil?

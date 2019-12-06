@@ -8,7 +8,7 @@ class FilmAnalyse
     end
 
     # Les onglets communs à toutes les pages qui font
-    # appel à `titre_h1`
+    # appel à `titre_h2`
     def data_onglets
       @data_onglets ||= begin
         h = {
