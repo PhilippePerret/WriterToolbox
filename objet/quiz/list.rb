@@ -24,23 +24,10 @@ class ::Quiz
     def hors_liste_as_ul
       current_suffixe = nil
       allquiz_hors_liste.collect do |quiz|
-        if current_suffixe != quiz.suffix_base
-          current_suffixe = quiz.suffix_base.freeze
-          human_titre_for_suffix_base(quiz.suffix_base).in_h4
-        else
-          ''
-        end +
         quiz.as_li
       end.join('').in_ul(id: 'quizes_hors_liste', class: 'quiz_list')
     end
 
-    def human_titre_for_suffix_base suf
-      case suf
-      when 'biblio'   then 'Quiz bibliographiques'
-      when 'test'     then 'Questionnaires test'
-      else "Quiz des #{suf}"
-      end
-    end
   end #/<< self
 
   # ---------------------------------------------------------------------
@@ -59,7 +46,7 @@ class ::Quiz
         span_note_max +
         span_note_min
       ).in_div(class: 'qinfos')
-    ).in_li(id: "quiz-#{suffix_base}-#{id}", class: 'li_quiz')
+    ).in_li(id: "quiz-#{id}", class: 'li_quiz')
   end
 
   def span_boutons
@@ -69,11 +56,11 @@ class ::Quiz
     ).in_span(class: 'qlink btns')
   end
   def span_bouton_try
-    'Le tenter'.in_a(href: "quiz/#{id}/show?qdbr=#{suffix_base}", class: 'tiny btn discret')
+    'Le tenter'.in_a(href: "quiz/#{id}/show", class: 'tiny btn discret')
   end
   def span_bouton_edit
     user.admin? || (return '')
-    'Éditer'.in_a(href: "quiz/#{id}/edit?qdbr=#{suffix_base}", class: 'tiny btn discret')
+    'Éditer'.in_a(href: "quiz/#{id}/edit", class: 'tiny btn discret')
   end
   def hdate_creation
     cdate =

@@ -11,25 +11,10 @@ class Quiz
     # Rappel : le questionnaire courant est le questionnaire
     # qui a '1' en premier bit d'options.
     #
-    # Si la base n'est pas définie (par suffix_base, avec dqbr en
-    # paramètre) alors on cherche le premier quiz courant dans toutes
-    # les bases.
-    #
     def current
       @current ||= begin
         q =
-          if suffix_base.nil?
-            # S'il n'y a pas de suffixe de base défini, on prend le
-            # quiz courant (qui, ici, peut être nil)
-            @minor_error = 'Suffixe de base non fourni'
-            nil
-          elsif !database_exist?
-            # Si le prefix fourni ne correspond à aucune base
-            # Noter que dans ce cas-là, il n'y a pas d'erreur mineure, elle
-            # doit être signalée.
-            @error = 'Base de données inexistante avec le suffixe fourni'
-            nil
-          elsif site.current_route.objet_id.nil?
+          if site.current_route.objet_id.nil?
             # Si l'Identifiant n'est pas fourni, on ne produit pas d'erreur
             # mais on prend le quiz courant
             @minor_error = 'Aucun identifiant n’est fourni'
@@ -38,7 +23,7 @@ class Quiz
             # Le quiz demandé n'exite pas (à cause d'un mauvais identifiant
             # ou d'une base qui ne contient aucun quiz). Dans tous les cas
             # on produit une vraie erreur signalé.
-            debug "QUIZ DEMANDÉ (INTROUVABLE) : #{site.current_route.objet_id}/#{suffix_base.inspect}"
+            debug "QUIZ DEMANDÉ (INTROUVABLE) : #{site.current_route.objet_id}"
             @error = 'Le quiz demandé n’existe pas. Quiz courant proposé.'
             nil
           elsif wanted_quiz_not_authorised?
@@ -70,14 +55,10 @@ class Quiz
     end
 
     def table_quiz
-      @table_quiz ||= site.dbm_table("quiz_#{suffix_base}", 'quiz')
+      @table_quiz ||= site.dbm_table(:quiz, 'quiz')
     end
     def table_questions
-      @table_questions ||= site.dbm_table("quiz_#{suffix_base}", 'questions')
-    end
-
-    def database_exist?
-      SiteHtml::DBM_TABLE.database_exist?("scenariopole_boa_quiz_#{suffix_base}")
+      @table_questions ||= site.dbm_table(:quiz, 'questions')
     end
 
     # Retourne TRUE si le quiz désiré (défini par l'URL) N'est PAS
@@ -94,27 +75,13 @@ class Quiz
       end
     end
 
-    # Suffix du nom de la base courant
-    # {String ou Nil}
-    #
-    # IL est contenu dans la variable qdbr (qui signifie "q" pour "quiz",
-    # "db" pour "database" et "r" pour relname, le nom relatif, sans 'quiz'
-    # et sans la racine des bases de données — 'boite-a-outils' pour le BOA)
-    #
-    # Il peut être défini explicitement par les test avec
-    # Quiz.suffix_base=
-    def suffix_base
-      @suffix_base ||= param(:qdbr).nil_if_empty
-    end
-    def suffix_base= value; @suffix_base = value end
-
     # Le quiz demandé par l'url, en fonction du suffixe de
     # base et de l'identifiant
     #
     def get_wanted_quiz
       @get_wanted_quiz ||= begin
         hquiz = table_quiz.get(site.current_route.objet_id)
-        hquiz ? Quiz.new(hquiz[:id], suffix_base) : nil
+        hquiz ? Quiz.new(hquiz[:id]) : nil
       end
     end
 
@@ -144,7 +111,7 @@ class Quiz
         message: <<-HTML
         <p>Phil</p>
         <p>J'ai dû définir de force le quiz courant, qui n'était pas défini.</p>
-        <p>Quiz mis en quiz courant : ##{q.id} dans #{q.suffix_base} (#{q.titre})</p>
+        <p>Quiz mis en quiz courant : ##{q.id} dans (#{q.titre})</p>
         HTML
       )
       return q

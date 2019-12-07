@@ -14,21 +14,12 @@ class Quiz
       #
       # Maintenant qu'on peut éditer les questions seules, on peut mettre
       # +quiz+ à nil. Mais dans ce cas il est impératif de définir le
-      # suffix_base de la classe Quiz, ce qui se fait naturellement en mettant
-      # dans les paramètres `qdbr=...`
       def formulaire_edition_question quiz, dform, question = nil
         debug "-> formulaire_edition_question"
         question ||= new(quiz, nil)
         dform[:id] = 'edition_question_quiz'
         tform.prefix= 'question'
         form.objet  = param(:question) || Hash.new # pour le moment
-        suffix_base =
-          if quiz.nil?
-            Quiz.suffix_base
-          else
-            quiz.suffix_base
-          end
-
 
         bouton_generate_yaml_file = "Entrer les données à partir d'un fichier YAML".in_a(href:'question/from_yaml?in=unan_admin/quiz')
         lien_init_question    = "Init new".in_a(class:'btn small', onclick:"$.proxy(QuizQuestion, 'init_new_question')()")
@@ -49,7 +40,6 @@ class Quiz
 
           # On ne met pas tout de suite l'opération pour éviter les erreurs
           ''.in_hidden(name:'operation', id:'operation') +
-          suffix_base.in_hidden(name: 'qdbr') +
           # Un lien pour revenir au quiz sans enregistrer la question, si un quiz
           # est défini
           lien_back_to_quiz +

@@ -50,7 +50,7 @@ class Quiz
         # mais seulement s'il n'en a pas déjà obtenu par le biais de ce
         # formulaire ou par le biais d'autres formulaire
 
-        raison_jours = "QUIZ #{suffix_base} #{id}"
+        raison_jours = "QUIZ #{id}"
 
         # On doit déterminer si l'user peut bénéficier des jours gratuits
         can_have_jours = begin

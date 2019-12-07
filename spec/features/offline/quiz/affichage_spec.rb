@@ -105,7 +105,7 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
       success: 'L’identifiant du quiz est bien celui du dernier quiz'
     la_page_napas_derreur
     # On reprend le dernier actualisé
-    last = Quiz.new(last_quiz_id, last_quiz_suffix)
+    last = Quiz.new(last_quiz_id)
     expect(last.current?).to eq true
     success 'Le dernier quiz est maintenant marqué courant.'
     phil.a_recu_le_mail(
@@ -146,7 +146,7 @@ feature "Test de l'affichage d'un quiz/questionnaire" do
       success: 'L’identifiant du quiz est bien celui du dernier quiz'
     la_page_napas_derreur
     # On reprend le dernier actualisé
-    last = Quiz.new(last_id, last_suffix)
+    last = Quiz.new(last_id)
     expect(last.current?).to eq true
     success 'Le dernier quiz est maintenant marqué courant.'
     phil.a_recu_le_mail(

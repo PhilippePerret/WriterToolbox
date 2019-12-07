@@ -58,7 +58,6 @@ $.extend(window.QuizQuestion,{
       route:    'quiz/ajax',
       want:     'question',
       id:       qid,
-      database_relname: db_relname,
       onreturn: $.proxy(QuizQuestion,'edit_poursuivre')
     })
   },

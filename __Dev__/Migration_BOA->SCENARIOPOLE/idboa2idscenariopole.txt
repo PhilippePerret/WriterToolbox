@@ -1,0 +1,43 @@
+
+=== TABLE DE CORRESPONDANCE DES IDS ===
+
+   Phil                 1    -> 1
+   Benoite              2    -> 2
+   Marion               3    -> 3
+   Madem                257  -> 26
+   Jena                 258  -> 6
+   SugarKane            259  -> 27
+   Jerome               260  -> 4
+   Travis               261  -> 28
+   Pitrechevalier       262  -> 29
+   Papillon             263  -> 30
+   Cyrille              264  -> 5
+   Triskell             269  -> 31
+   Loustick             271  -> 32
+   Fsiprod              282  -> 33
+   Natacha              286  -> 34
+   Guimik               288  -> 35
+   Kura                 293  -> 36
+   Scheherazade         296  -> 37
+   Jeanmike             300  -> 38
+   Julien               303  -> 39
+   LaBiche              304  -> 40
+   Annec                308  -> 41
+   Acadine              309  -> 42
+   Cyril                312  -> 43
+   Seigie               314  -> 44
+   Azelma               315  -> 45
+   KerViolette          316  -> 46
+   Histviv              319  -> 47
+   Corbeks              321  -> 48
+   Mattclayne           325  -> 49
+   Mino                 329  -> 50
+   Jicee                333  -> 51
+   Berenger             334  -> 52
+   Filmophile           335  -> 53
+   PHIPHI               336  -> 11
+   Dorian               337  -> 24
+   Lilie                338  -> 56
+   Wadi                 340  -> 57
+   JulienB              341  -> 58
+   Eskimo               342  -> 59

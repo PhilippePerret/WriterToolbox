@@ -73,7 +73,6 @@ class Quiz
     # Le temps courant, au cas où, pour voir si le formulaire n'est
     # pas soumis trop vite
     f << NOW.in_hidden(name: 'quiz[time]')
-    f << suffix_base.in_hidden(name: 'qdbr', id: 'qdbr')
     f << questions_formated
     f << bouton_soumission_ou_autre.in_div(class: 'buttons')
 

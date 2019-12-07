@@ -26,7 +26,7 @@ class Quiz
       if user.identified?
         save_resultat_user
       else
-        app.session['last_quiz'] != "#{id}-#{suffix_base}"
+        app.session['last_quiz'] != "#{id}"
       end
 
     if save_in_table_generale
@@ -38,7 +38,7 @@ class Quiz
     # Pour un visiteur non identifié, on mémorise ce quiz effectué
     # pour qu'il ne puisse pas l'enregistrer à nouveau au cours de
     # la même session.
-    user.identified? || app.session['last_quiz'] = "#{id}-#{suffix_base}"
+    user.identified? || app.session['last_quiz'] = "#{id}"
 
     return true
   end
@@ -48,7 +48,7 @@ class Quiz
   def save_soumission_in_table_generale
     tbl_quiz = site.dbm_table(:cold, 'quiz')
     drequest = {
-      where: "quiz_id = #{id} AND suffix_base = '#{suffix_base}'",
+      where: "quiz_id = #{id}",
       colonne: [:moyenne, :note_min, :note_max, :count]
     }
     dupdate = tbl_quiz.select(drequest).first
@@ -59,7 +59,7 @@ class Quiz
     # données dedans
     if is_first_record
       dupdate = {
-          quiz_id: id, suffix_base: suffix_base,
+          quiz_id: id,
           count: 0,
           note_min: 20.0, note_max: 0.0,
           moyenne: 0,

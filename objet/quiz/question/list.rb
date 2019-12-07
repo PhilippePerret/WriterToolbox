@@ -69,7 +69,7 @@ class QuestionQuiz
   end
   def boutons_editions
     (
-      '[edit]'.in_a(href: "question/#{id}/edit?in=quiz&qdbr=#{Quiz.suffix_base}", target: :new)
+      '[edit]'.in_a(href: "question/#{id}/edit?in=quiz", target: :new)
     ).in_span(class: 'btns')
   end
 

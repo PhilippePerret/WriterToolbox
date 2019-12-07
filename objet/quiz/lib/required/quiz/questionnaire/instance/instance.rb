@@ -12,14 +12,9 @@ class Quiz
   attr_reader :id
 
   # +qid+ Identifiant du quiz dans sa base de données.
-  # +suffix_base+ permet de le définir explicitement à l'instanciation,
-  # par exemple lorsqu'il y a une liste de quiz provenant de différentes
-  # bases.
   #
-  def initialize qid, suffix_base = nil
+  def initialize qid
     @id = qid
-    @suffix_base = suffix_base.nil_if_empty
-    @suffix_base != nil || raise('Impossible d’avoir un suffixe base nil pour initialiser un quiz…')
   end
 
   # Retourne true si le questionnaire existe déjà

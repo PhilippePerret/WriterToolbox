@@ -6,19 +6,9 @@ class Quiz
     # de données du questionnaire auquel appartient cette
     # question
     def table
-      @table ||= site.dbm_table(database_relname, 'questions')
+      @table ||= site.dbm_table(:quiz, 'questions')
     end
     alias :table_questions :table
-
-    def database_relname
-      @database_relname ||= begin
-        if quiz.nil? # <= question éditée hors d'un quiz
-          "quiz_#{Quiz.suffix_base}".to_sym
-        else
-          quiz.database_relname
-        end
-      end
-    end
 
   end #/Question
 end #/Quiz

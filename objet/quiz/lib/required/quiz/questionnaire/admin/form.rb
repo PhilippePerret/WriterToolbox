@@ -20,10 +20,6 @@ class Quiz
   # principalement :
   #   :action       l'action
   def form
-    # Vérifications préliminaire
-    suffix_base != nil || raise('Il faut fournir le suffix-base du quiz.')
-    self.class.database_exist? || raise("La base de données #{database_fullname} est introuvable…")
-
     # Actions à accomplir, par exemple la sauvegarde
     # du questionnaire ou d'une question
     case param(:operation)
@@ -49,7 +45,6 @@ class Quiz
 
     tform.prefix= 'quiz'
 
-    # debug "suffix_base : #{suffix_base.inspect}"
     # debug "ID quiz : #{id.inspect}"
     # debug "DATA QUIZ : #{get_all.pretty_inspect}"
 
@@ -97,7 +92,6 @@ class Quiz
       # du quiz
       (id || '').in_hidden(name:'quiz[id]', id: 'quiz_id') +
       'save_data_quiz'.in_hidden(name: 'operation') +
-      suffix_base.in_hidden(name: 'qdbr') +
       line_identifiant_et_bouton +
       tform.field_text('Titre', 'titre', titre) +
       tform.field_text('Groupe', 'groupe', groupe, {class: 'medium', text_after: menu_groupes}) +
@@ -126,7 +120,7 @@ class Quiz
   # du formulaire et les boutons d'édition
   def line_identifiant_et_bouton
     # Bouton pour afficher le questionnaire
-    btn_show = 'Aperçu'.in_a(class: 'btn small', href: "quiz/#{id}/show?qdbr=#{suffix_base}", target: :new)
+    btn_show = 'Aperçu'.in_a(class: 'btn small', href: "quiz/#{id}/show", target: :new)
     # Bouton pour revenir à la liste des questionnaires
     btn_list = 'Liste des quiz'.in_a(class: 'btn small', href: 'quiz/list')
     btn_init = 'Init new'.in_a(onclick: "QuizQuestion.init_new()")
@@ -143,7 +137,7 @@ class Quiz
       qid = dquestion[:id]
       (
         (
-          'edit'.in_a(class: 'tiny', onclick: "QuizQuestion.edit(this)", 'data-qid' => qid, 'data-quiz' => database_relname) +
+          'edit'.in_a(class: 'tiny', onclick: "QuizQuestion.edit(this)", 'data-qid' => qid) +
           'sup'.in_a(class: 'tiny', onclick: "$('li#li-q-#{qid}').remove();QuizQuestion.reordonne_questions()")
         ).in_div(class: 'btns fright tiny') +
         dquestion[:question].in_span
