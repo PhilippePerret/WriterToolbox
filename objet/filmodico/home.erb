@@ -1,4 +1,7 @@
 <%
+
+COLLECTION_NARRATION = "<a href=\"../narration\">Collection NARRATION</a>"
+
 # Accueil de la section Filmodico
 page.title = "Filmodico"
 page.description= "Accueil du dictionnaire des films utilisés sur la boite à outils de l'auteur."
@@ -9,7 +12,7 @@ enable_comments
 <p class='exergue'>
   Bienvenue dans le <strong>Filmodico</strong>, le <%= "Dictionnaire des films".in_a(href:"filmodico/list", class:'border') %>
 </p>
-<p>Les films présentés dans ce dictionnaire sont utilisés sur <%= site.name %> dans les <%= lien.analyses_films %> ou la <%= lien.collection_narration %>.</p>
+<p>Les films présentés dans ce dictionnaire sont utilisés sur <%= site.name %> dans les <%= lien.analyses_films %> ou la <%= COLLECTION_NARRATION %>.</p>
 <p>
   Utilisez l'onglet <%= "Recherche de film".in_a(href:"filmodico/search", class:'border') %> pour retrouver un film en particulier.
 </p>
