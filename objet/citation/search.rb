@@ -34,8 +34,7 @@ class << self
   # citations, etc.)
   def resultats_chiffred
     (
-      "Nombre de citations : #{Citation.table.count} " +
-      "/ correspondant aux critères : #{founds.count}"
+      "Nombre de citations correspondant aux critères : #{founds.count} / #{Citation.table.count}"
     ).in_div(class: 'small discret')
   end
 
@@ -87,7 +86,7 @@ class << self
     @in_quote         = dquote[:in_citation]      == 'on'
     @in_source        = dquote[:in_source]        == 'on'
     @in_explicitation = dquote[:in_explicitation] == 'on'
-    @in_auteur || @in_quote || @in_source || @in_explicitation || raise('Il faut indiquer dans quoi chercher le texte ! :-)')
+    @in_auteur || @in_quote || @in_source || @in_explicitation || @in_quote = true
 
     @all_words = dquote[:all_words] == 'on'
   rescue Exception => e

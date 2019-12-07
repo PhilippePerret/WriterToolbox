@@ -15,16 +15,19 @@ enable_comments
 <%
   site.require 'form_tools'
   form.prefix = 'squote'
+  withResultat = param(:operation) == 'search_citations'
+  debug "withResultat = #{withResultat}"
 %>
-<form class="dim2080" action="citation/search" method="POST">
+<%= "Autre recherche".in_a(href:'citation/search', class: "#{withResultat ? '' : 'noDisplay'}").in_div(class:'right') %>
+<form class="dim2080<%= withResultat ? ' noDisplay' : '' %>" action="citation/search" method="POST">
   <%= 'search_citations'.in_hidden(name: 'operation') %>
   <%= form.field_text('Chercher', 'searched') %>
   <%= form.field_checkbox('Parmi les noms d’auteur', 'in_auteur') %>
   <%= form.field_checkbox('Dans la citation', 'in_citation') %>
   <%= form.field_checkbox('Dans la source', 'in_source') %>
   <%= form.field_checkbox('Dans l’explicitation', 'in_explicitation') %>
-  <%= form.field_checkbox('Tous les mots (séparés par des espaces)', 'all_words') %>
-  <%= form.field_description('Si cette case est cochée, tous les mots doivent être trouvés. Sinon, au moins un.') %>
+  <%= form.field_checkbox('Trouver tous les mots', 'all_words') %>
+  <%= form.field_description('Si cette case est cochée, tous les mots (séparés par des espaces) doivent être trouvés. Sinon, au moins un.') %>
   <%= form.submit_button('Chercher').in_div(class: 'buttons') %>
 </form>
 
