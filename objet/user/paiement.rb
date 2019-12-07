@@ -11,7 +11,7 @@
 # paiement et c'est seulement après qu'on lui demande de confirmer
 # son mail.
 unless user.identified? || site.user_prov
-  redirect_to 'user/signup'
+  redirect_to BOA.rel_signup_path
 else
   site.require_module 'paiement'
 

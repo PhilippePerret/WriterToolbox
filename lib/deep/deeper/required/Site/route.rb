@@ -4,6 +4,26 @@ Class SiteHtml
 --------------
 Méthodes propres au traitement de la route
 =end
+
+# Pour les correctifs avec l'insertion de BOA dans SCENARIOPOLE
+class BOA
+  class << self
+    def rel_profil_path
+      @rel_profil_path ||= '../user/profil'
+    end
+    def rel_home_path
+      @rel_home_path ||= '../site/home'
+    end
+    def rel_signin_path
+      @rel_signin_path ||= '../user/signin'
+    end
+    def rel_signup_path
+      @rel_signup_path ||= '../user/signup'
+    end
+  end
+end
+
+
 class SiteHtml
 
   # {SiteHtml::Route} Instance de la route courante
@@ -172,8 +192,8 @@ class SiteHtml
         # debug "app.session['last_route'] = #{app.session['last_route'].inspect}"
         # debug "param(:redirect) = #{param(:redirect).inspect}"
         app.session['last_route'] || param(:redirect) || :home
-      when :signin  then 'user/signin'
-      when :signup  then 'user/signup'
+      when :signin  then BOA.rel_signin_path
+      when :signup  then BOA.rel_signup_path
       when :home    then :home # cf. ci-dessous
       else
         if param(:redirect) then
@@ -197,7 +217,7 @@ class SiteHtml
     # 'user/signup'. Il faut mettre dans le paramètre
     # backto la route actuelle pour y renvoyer l'user
     # après son identification réussie.
-    if rut == 'user/signin'
+    if rut.end_with?('user/signin')
       route_courante =
         if site.current_route.nil?
           nil
@@ -277,7 +297,7 @@ class SiteHtml
     # string et toujours retourner une valeur, même lorsqu'aucune
     # route n'est définie
     def to_str
-      route.nil_if_empty || "site/home"
+      route.nil_if_empty || BOA.rel_home_path
     end
 
     # Méthode qui charge, les choses utiles en fonction de la route demandée.

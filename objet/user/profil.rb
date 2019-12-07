@@ -7,7 +7,7 @@
 
 =end
 unless user.identified?
-  redirect_to 'user/signin'
+  redirect_to BOA.rel_signin_path
 end
 
 

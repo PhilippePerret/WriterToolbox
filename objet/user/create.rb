@@ -122,11 +122,9 @@ class User
       debug "  = Données invalides"
 
       # Les données sont invalides, on doit rediriger vers
-      # la page du formulaire d'inscription (user/signup)
       # Il y a peut-être un contexte, comme lorsque l'on crée
       # l'user pour un programme UN AN.
-      # redirect_to 'user/signup'
-      redirection = "user/signup"
+      redirection = BOA.rel_signup_path
       unless site.current_route.context.nil?
         redirection += "?in=#{site.current_route.context}"
       end

@@ -1,6 +1,6 @@
 ### Où aller après l’identification
 
-Si vous êtes [inscrit](user/signup) ou [abonné](user/signup?user[subscribe]=on) au site, vous pouvez régler dans votre profil la *route* à emprunter juste après votre identification.
+Si vous êtes [inscrit](../user/signup) ou [abonné](../user/signup?user[subscribe]=on) au site, vous pouvez régler dans votre profil la *route* à emprunter juste après votre identification.
 
     NOTE : Vous pouvez rejoindre votre PROFIL, après votre
            identification, en cliquant sur “AUTEUR” dans la

@@ -89,7 +89,7 @@ class SiteHtml
 
   def cadre_independance_flottant
     app.benchmark('[Building home]-> SiteHtml#cadre_independance_flottant')
-    signup_link = 'S’INSCRIRE'.in_a(id:'btn_signup',href:"user/signup", class:'btn')
+    signup_link = 'S’INSCRIRE'.in_a(id:'btn_signup',href:BOA.rel_signup_path, class:'btn')
     subscribe_link =
       'S’ABONNER'.in_a(id:'btn_subscribe', href:"user/paiement", class:'btn')
       #{signup_link}

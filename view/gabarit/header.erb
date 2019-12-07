@@ -50,7 +50,7 @@ end
 
 def button_signin # un formulaire, maintenant
  <<-HTML
-  <form id="signin_link_form" class="none" method="POST" action="user/signin">
+  <form id="signin_link_form" class="none" method="POST" action="#{BOA.rel_signin_path}">
     <input type="submit" class="link" value="s’identifier" />
     <input type="checkbox" name="goback" id="cb_goback" />
     <label for="cb_goback" class="tiny">puis revenir</label>
@@ -66,10 +66,10 @@ end
 
     <% if user.identified? %>
        <%= lien_signout(titre:'se déconnecter') %>
-       <%= simple_link('../user/profil', 'espace perso') %>
+       <%= simple_link(BOA.rel_profil_path, 'espace perso') %>
     <% else %>
        <%=
-          simple_link('../user/signup','s’inscrire')%><%=
+          simple_link(BOA.rel_signup_path,'s’inscrire')%><%=
           site.uri.start_with?('user/signin') ? '' : button_signin
        %>
     <% end %>

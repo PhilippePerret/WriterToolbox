@@ -47,12 +47,7 @@ class User
   #
   # Alias : def subscribed?
   def paiements_ok?
-    return true   if moteur_recherche? || icarien_actif?
-    return false  if @id.nil? # Un simple visiteur
-    # now = Time.now
-    # anprev = Time.new(now.year, now.month, now.day).to_i
-    # !!(last_abonnement && last_abonnement > anprev)
-    !!(end_abonnement > Time.now.to_i)
+    return true
   end
   alias :paiement_ok? :paiements_ok?
   alias :subscribed? :paiements_ok?

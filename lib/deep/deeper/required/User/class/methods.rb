@@ -7,7 +7,7 @@ class << self
   def login
     login_ok? || begin
       error "Je ne vous reconnais pas… Voulez-vous bien réessayer ?"
-      redirect_to 'user/signin'
+      redirect_to BOA.rel_signin_path
     end
   end
 

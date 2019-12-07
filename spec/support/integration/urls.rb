@@ -24,10 +24,10 @@ def home_page
   test_base_url
 end
 def signup_page
-  test_base_url + 'user/signup'
+  test_base_url + BOA.rel_signup_path
 end
 def signin_page
-  test_base_url + 'user/signin'
+  test_base_url + BOA.rel_signin_path
 end
 
 

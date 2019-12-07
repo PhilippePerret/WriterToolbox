@@ -34,7 +34,7 @@ describe 'Section commentaires de la page' do
     end
     it 'contient un lien pour s’inscrire' do
       expect(code).to have_tag('section#page_comments') do
-        with_tag 'a', with: {href: 'user/signup'}
+        with_tag 'a', with: {href: BOA.rel_signup_path}
       end
     end
   end

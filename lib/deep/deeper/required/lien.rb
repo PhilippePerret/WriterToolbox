@@ -191,14 +191,14 @@ class Lien
 
   # Lien pour s'inscrire sur le site
   def signup titre = "s'inscrire", options = nil
-    build "../user/signup", titre, options
+    build BOA.rel_signup_path, titre, options
   end
   alias :inscription :signup
 
   # Lien pour s'identifier
   def signin titre = "s'identifier", options = nil
     options ||= Hash.new
-    href = "../user/signin"
+    href = BOA.rel_signin_path
     href += "?backto=#{CGI::escape(options.delete(:back_to))}" if options.key?(:back_to)
     build href, titre, options
   end

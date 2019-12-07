@@ -79,21 +79,6 @@ Permet de tester la soumission d'un formulaire.
     end
 
 Noter que puisque cette méthode de test hérite des méthodes de test de la route, on peut aussi bien tester la validité du formulaire en lui-même — en tant qu'objet DOM — que son efficacité lorsqu'on le soumet avec des données valides ou non.
-
-Mais noter qu'il peut s'agir de deux routes différentes. Par exemple, pour un `RestSite` classique, on utilise la route `user/signin` pour atteindre le formulaire d'identification tandis qu'on utilise la route `user/login` pour identifier l'user en soumettant ce questionnaire. Donc on aura :
-
-    test_form "user/signin", data_form do
-      # Test de la conformité du formulaire affiché
-      # La donnée +data_form+ permet de voir les champs à tester
-    end
-
-    test_form "user/login", data_form do
-      # Test du résultat du login, c'est-à-dire du contenu de la page
-      # et autre effet après soumission du formulaire avec les données
-      # contenues dans +data_form+
-
-    end
-
 ---------------------------------------------------------------------
 
 <a name='rendretestmethodenonfatale'></a>

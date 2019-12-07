@@ -17,7 +17,7 @@ test_route "" do
   html.has_tags(['section#hot_news', ['section#hot_news div.blocactu', {count:6}]])
 
   html.has_tags([
-    ['a', {text:"S'inscrire",   href:"user/signup", strict:true}],
-    ['a', {text:"S'identifier", href:"user/signin", strict:true}]
+    ['a', {text:"S'inscrire",   href:BOA.rel_signup_path, strict:true}],
+    ['a', {text:"S'identifier", href:BOA.rel_signin_path, strict:true}]
     ])
 end
