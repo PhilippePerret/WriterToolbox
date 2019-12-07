@@ -12,62 +12,6 @@ class Page
   alias :delimitor :html_separator
   alias :delimiter :html_separator
 
-  # RETURN Le code HTML à copier dans la page, qui donne au lecteur
-  # un nom de fichier pour nommer son fichier de correction
-  # Pour certaines routes comme le scénodico ou le filmodico, donne aussi
-  # les codes pour insertion dans Narration ou sur l'atelier Icare
-  def helper_filename_lecteur
-    site.afficher_helper_filename_lecteur || (return '')
-    route =
-      if site.current_route.nil?
-        'site/home'
-      else
-        site.current_route.route
-      end
-    # On ne fait rien pour toutes les routes qui commencent
-    # par 'admin'
-    return '' if route.split('/').first == 'admin'
-
-    ajouts_fields =
-      case route
-      when /filmodico\/[0-9]+\/show/
-        site.require_objet 'filmodico'
-        film = Filmodico.new(site.current_route.objet_id)
-        'Icare : '.in_span(class:'tiny')+"FILM[#{film.id}|#{film.titre}]".in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width:124px') +
-        ' Narration : '.in_span(class:'tiny')+"FILM[#{film.film_id}]".in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width:124px')
-      when /scenodico\/[0-9]+\/show/
-        site.require_objet 'scenodico'
-        mot = Scenodico::Mot.new(site.current_route.objet_id)
-        "MOT[#{mot.id}|#{mot.mot.downcase}]".in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width:160px')
-      else
-        ''
-      end
-
-    # Le lien Bitly vers la page, le crée si nécessaire
-    if OFFLINE
-      begin
-        site.require_objet 'bitly'
-        b = RSBitly.new
-        b.long_url = "#{site.distant_url}/#{route}"
-        bitlink = b.short_url # => le lien bitly
-        bitlink_field = bitlink.in_input(id: 'page_bitlink', class: 'tiny center discret', onfocus: 'this.select()', style: 'width: 200px')
-      rescue
-        bitlink_field = ''
-      end
-    else
-      bitlink_field = ''
-    end
-
-    # Il arrive qu'on ne puisse pas obtenir l'user suivant à
-    # une erreur. Donc
-    mpseudo = user.pseudo.downcase rescue 'nopseudo'
-    filename = route.gsub(/[\/\?\&=]/,'_') + '_by_' + mpseudo
-    (
-      ajouts_fields +
-      bitlink_field +
-      filename.in_input(id: 'page_route_as_filename', class: 'tiny center discret', onfocus:'this.select()', style: 'width: 200px')
-    ).in_div(id: 'hrefs', class: 'right')
-  end
 
   def balise_meta_description
     description != '' || (return '')

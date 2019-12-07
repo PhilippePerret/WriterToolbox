@@ -3,7 +3,7 @@ class FilmAnalyse
 class << self
 
   def table_travaux
-    @table_travaux ||= site.dbm_table(:biblio, 'travaux_analyses')
+    @table_travaux ||= site.dbm_table(:boa_biblio, 'travaux_analyses')
   end
 end # << self
 end #/FilmAnalyse

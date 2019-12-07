@@ -74,7 +74,8 @@ site.tarif = 6.90
 
 # ---------------------------------------------------------------------
 #   BASES DE DONNÉES
-site.prefix_databases = 'scenariopole_boa'
+site.prefix_databases = 'scenariopole'
+# site.prefix_databases = 'scenariopole_boa'
 
 # Compte Facebook
 # ---------------
@@ -98,14 +99,6 @@ site.user_options = {
   analyse:  [17, '@analyste_level'],
   icarien:  [31, '@is_icarien']
 }
-
-
-# Pour afficher les champs de saisie qui donne les noms de fichier
-# pour le correcteur du site
-site.afficher_helper_filename_lecteur = true
-
-# Affichage du widget des taches
-site.display_widget_taches = true
 
 # Soit :textmate, soit :atom, l'éditeur à utiliser
 # quand on a recours à `lien.edit_file <path>`

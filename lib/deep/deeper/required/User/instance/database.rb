@@ -8,7 +8,7 @@ class User
 
   # Table COMMUNE de tous les users
   def table_users
-    @table_users ||= self.class::table_users
+    @table_users ||= self.class.table_users
   end
   alias :table :table_users
 
@@ -16,8 +16,10 @@ class User
   # Noter que c'est une méthode d'instance
   # Cf. le fichier `inst_variables.rb`
   def table_variables
-    # @table_variables ||= create_table_unless_exists('variables')
-    @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
+    # @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
+    @table_variables ||= begin
+      SiteHtml::DBM_TABLE.new('scenariopole_users_tables', "variables_#{id}")
+    end
   end
 
 end #/User

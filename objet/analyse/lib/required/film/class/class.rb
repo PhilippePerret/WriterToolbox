@@ -29,7 +29,7 @@ class Film
     # son ID fixnum, cette méthode permet de le récupérer
     # par
     def get_id_by_film_id film_id
-      fid = FilmAnalyse::table_filmodico.select(where:"film_id = '#{film_id}'", colonnes:[]).keys.first
+      fid = FilmAnalyse.table_filmodico.select(where:"film_id = '#{film_id}'", colonnes:[]).keys.first
       raise "Film inconnu : #{film_ref}" if fid.nil?
       return fid
     end

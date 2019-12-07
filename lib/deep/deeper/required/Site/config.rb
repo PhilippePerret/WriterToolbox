@@ -78,9 +78,6 @@ class SiteHtml
   # Éditeur de fichier Markdown
   attr_accessor :markdown_application
 
-  # Cf. l'explication dans le fichier site/config.rb
-  attr_accessor :afficher_helper_filename_lecteur
-
   # Affichage des tâches pour un administrateur
   attr_accessor :display_taches_for_administrator
 

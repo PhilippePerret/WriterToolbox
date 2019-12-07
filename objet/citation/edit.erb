@@ -1,0 +1,51 @@
+<%
+# Pour éditer la citation
+#
+raise_unless_admin
+
+# Pour les SNIPPETS
+page.add_javascript(PATH_MODULE_JS_SNIPPETS)
+%>
+<%= Citation.titre_h2('Édition citation') %>
+
+<% if ONLINE %>
+
+<p class='warning air cadre'>
+  L'édition des citations ne peut se faire qu'en offline.
+</p>
+
+<% else %>
+<%
+site.require 'form_tools'
+form.prefix = 'citation'
+form.objet  =
+  if site.current_route.objet_id == nil
+    nil
+  else
+    Citation.current
+  end
+%>
+<%
+bouton_show = 'voir'.in_a(class: 'btn tiny', onclick: "return $.proxy(Citation,'show_citation', this)()", target: '_blank')
+%>
+<form id="citation_edit" class="dim2080" action="citation/edit" method="POST">
+  <%= 'save_citation'.in_hidden(name: 'operation') %>
+  <%= form.field_text('ID', 'id', nil, {class: 'short', text_after: bouton_show}) %>
+  <%= form.field_textarea('Citation', 'citation') %>
+  <%= form.field_text('Auteur', 'auteur') %>
+  <%= form.field_text('Source', 'source') %>
+  <%= form.field_textarea('Explication', 'description', nil, {style:'height:420px;width:660px'}) %>
+  <%= form.field_description('Ce champ, <strong>qui contient du code HTML</strong>, permet d’expliciter la citation, c’est la plus-value du site.') %>
+  <%= form.field_text('Bitly', 'bitly') %>
+  <%= form.field_description('Ce lien bitly sera calculé si nécessaire.') %>
+  <%= form.submit_button('Enregistrer') %>
+</form>
+
+<%
+# Pour avoir un aperçu immédiat de la description/explicitation
+# de la citation.
+%>
+<div id="overview_description" style="width:28em;margin-left:6em">
+
+</div>
+<% end # si offline %>

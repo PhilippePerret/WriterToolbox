@@ -134,7 +134,7 @@ class Film
     # boutons et des liens d'édition) et une version pour l'user
     # final.
     if user.admin? || !html_mye_file.exist?
-      FilmAnalyse::require_module 'film_MYE_building'
+      FilmAnalyse.require_module 'film_MYE_building'
       self.build_analyse_display
     else
       debug "* Chargement du fichier HTML pour l'user de l'analyse de #{titre}"

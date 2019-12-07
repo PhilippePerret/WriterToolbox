@@ -51,7 +51,7 @@ class TDM
       when :en_cours  then "1____1%"
       when :inacheves then "1____0_0%"
       end
-      FilmAnalyse::table_films.select(where:"options LIKE '#{flag}'", order:"annee DESC")
+      FilmAnalyse.table_films.select(where:"options LIKE '#{flag}'", order:"annee DESC")
     end
   end
 

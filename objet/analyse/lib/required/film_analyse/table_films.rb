@@ -8,7 +8,8 @@ class FilmAnalyse
     # {BdD::Table} La table contenant les informations minimales sur
     # les films.
     def table_films
-      @table_films ||= site.dbm_table(:biblio, 'films_analyses')
+      @table_films ||= site.dbm_table(:boa_biblio, 'films_analyses')
+      # @table_films ||= site.dbm_table(:biblio, 'films_analyses')
     end
 
     # {SiteHtml::DBM_TABLE} La table contenant les films du Filmodico
