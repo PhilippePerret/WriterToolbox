@@ -13,7 +13,7 @@ class FilmAnalyse
       @data_onglets ||= begin
         h = {
         'Accueil'     => 'analyse/home',
-        'Analyses'    => 'analyse/list',
+        'Liste'    => 'analyse/list',
         # "Grades"      => 'analyse/grades',
         'Dépôt'       => 'analyse_build/home'
         }
