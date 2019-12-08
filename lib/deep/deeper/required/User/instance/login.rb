@@ -35,6 +35,7 @@ class User
     app.benchmark('-> User#proceed_login')
     app.session['user_id'] = id
     app.session['date_last_connexion'] = last_connexion
+    debug "-> User#proceed_login (app.session['user_id'] = #{app.session['user_id']})"
     # On met l'utilisateur en utilisateur courant
     User.current= self
     # reset_user_current

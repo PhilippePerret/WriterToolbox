@@ -18,7 +18,8 @@ class User
   def table_variables
     # @table_variables ||= site.dbm_table(:users_tables, "variables_#{id}")
     @table_variables ||= begin
-      SiteHtml::DBM_TABLE.new('scenariopole_users_tables', "variables_#{id}")
+      # SiteHtml::DBM_TABLE.new('scenariopole_users_tables', "variables_#{id}")
+      SiteHtml::DBM_TABLE.new(:users_tables, "variables_#{id}")
     end
   end
 

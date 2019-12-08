@@ -4,7 +4,6 @@ class Film
   class << self
 
     def get film_ref
-      debug "film_ref = #{film_ref.inspect}::#{film_ref.class}"
       if film_ref.instance_of?(Fixnum) || film_ref.numeric?
         film_ref = film_ref.to_i
       end

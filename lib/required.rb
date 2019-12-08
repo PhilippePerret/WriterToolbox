@@ -49,13 +49,10 @@ if ONLINE
   end
 end
 
-
-
 # On peut maintenant requérir tous les gems
 require 'singleton'
 require 'mysql2'
 require 'json'
-
 
 # Le site
 require_folder './lib/deep/deeper/first_required'
@@ -70,6 +67,17 @@ require_folder './objet/site/lib/required'
 site.require_config
 
 User.init # charge les librairies du dossier objet/user
+
+if param(:uid)
+  debug "-- param :uid -- défini (#{param(:uid).inspect}) => mise en session"
+  debug "Est-il identique à #{app.session['user_id'].inspect} ?"
+  if app.session['user_id'] == param(:uid)
+    debug "Identique à app.session['user_id'] => je le mémorise"
+    app.session['boa_user_id'] = param(:uid)
+    User.current = User.get(param(:uid).to_i)
+    debug "J'ai mis en user courant #{user.pseudo} ##{user.id}"
+  end
+end
 
 # ---------------------------------------------------------------------
 #   Quelques initialisations et vérification

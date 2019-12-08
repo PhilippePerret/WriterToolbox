@@ -1,6 +1,6 @@
 <%
 # Vue pour le débuggage de l'application courante
 %>
-<section id="debug" style="<%= user.admin? || OFFLINE %>">
+<section id="debug" class="<%= (user.admin? || OFFLINE) ? 'visible' : 'noDisplay' %>">
   <pre><%= app.debug.output %></pre>
 </section>

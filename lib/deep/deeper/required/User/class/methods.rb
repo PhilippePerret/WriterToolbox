@@ -14,6 +14,7 @@ class << self
   # RETURN True si l'identification est réussie
   #
   def login_ok?
+    debug "-> login_ok?"
     login_data = param(:login)
     if login_data.nil?
       # Ça arrive quelquefois quand ça tourne trop longtemps

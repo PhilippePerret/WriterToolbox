@@ -11,7 +11,7 @@ class User
   class << self
 
     def get id
-      @instances ||= Hash.new
+      @instances ||= {}
       @instances[id] ||= User::new(id)
     end
 
@@ -45,8 +45,12 @@ class User
     #     permettant notamment de régler l'opacité de l'interface
     def current
       @current ||= begin
+        debug "Au début de User::current, app.session['user_id'] / app.session['boa_user_id'] = #{app.session['user_id']} / #{app.session['boa_user_id']}"
         user_id =
-          if app.session['user_id'].nil?
+          if ( param(:uid) )
+            debug "user_id défini par param(:uid)"
+            param(:uid).to_i
+          elsif app.session['user_id'].nil?
             nil
           else
             app.session['user_id'].to_i
@@ -55,7 +59,13 @@ class User
         # l'user courant
         curuser = User.new(user_id)
 
-        user_id && curuser.incremente_nombre_pages
+        curuser && begin
+          app.session['user_id'] = user_id
+          app.session['boa_user_id'] = user_id
+          curuser.incremente_nombre_pages
+        end
+
+        debug "À la fin de User::current, app.session['user_id'] / app.session['boa_user_id'] = #{app.session['user_id']} / #{app.session['boa_user_id']}"
 
         # Pour le mettre dans @current
         curuser

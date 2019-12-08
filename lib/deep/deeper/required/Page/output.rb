@@ -6,11 +6,13 @@ class Page
 
   def output
     unless site.ajax?
+      debug "Juste avant cgi.html, app.session['user_id']/app.session['boa_user_id'] = #{app.session['user_id']} / #{app.session['boa_user_id']}"
       final_code = cgi.html{cgi.head{head}+cgi.body{body}}
       app.benchmark('CODE HTML FINAL BUILT') rescue nil
       # Correspond aussi à la fin de la méthode output du site
       app.benchmark('<- SiteHtml#output')
       app.benchmark_fin #rescue nil
+      debug "Juste avant cgi.out, app.session['user_id'] = #{app.session['user_id']}"
       cgi.out{final_code}
       # RIEN NE PEUT PASSER ICI
     else
