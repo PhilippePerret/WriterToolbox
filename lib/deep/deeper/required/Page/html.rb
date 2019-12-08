@@ -49,7 +49,7 @@ class Page
   end
 
   def javascript
-    alljs = Array::new
+    alljs = []
     alljs += Dir["./lib/deep/deeper/js/first_required/**/*.js"]
     alljs += Dir["./lib/deep/deeper/js/required/**/*.js"]
     # Propres à l'application
@@ -59,7 +59,8 @@ class Page
     # debug "page.added_javascript: #{added_javascript.inspect}"
     # Fabrication de toutes les balises qui chargent les scripts
     alljs.collect do |js_path|
-      "<script charset='utf-8' type='text/javascript' src='#{js_path}'></script>"
+      "<script charset='utf-8' type='text/javascript' src='BOA/#{js_path}'></script>"
+      # "<script charset='utf-8' type='text/javascript' src='#{js_path}'></script>"
     end.join("\n")
   end
 
@@ -83,7 +84,8 @@ OFFLINE = !ONLINE;
     # Modifier le "v=xxxxxx" ci-dessous pour forcer un rechargement
     # côté client.
     allcss.collect do |css_path|
-      "<link charset='utf-8' href='#{css_path}?v=161222' rel='stylesheet' type='text/css' />"
+      # "<link charset='utf-8' href='#{css_path}?v=161222' rel='stylesheet' type='text/css' />"
+      "<link charset='utf-8' href='BOA/#{css_path}?v=191208' rel='stylesheet' type='text/css' />"
     end.join("\n")
 
   end

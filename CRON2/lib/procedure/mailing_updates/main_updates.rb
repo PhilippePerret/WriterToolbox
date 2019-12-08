@@ -71,7 +71,7 @@ class CRON2
       end
 
       def http
-        @http ||= "http://www.laboiteaoutilsdelauteur.fr"
+        @http ||= "http://www.scenariopole.fr"
       end
 
       # = main =

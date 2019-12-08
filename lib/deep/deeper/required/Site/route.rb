@@ -8,18 +8,33 @@ Méthodes propres au traitement de la route
 # Pour les correctifs avec l'insertion de BOA dans SCENARIOPOLE
 class BOA
   class << self
+    def link
+      "BOA/#{rel}"
+    end
     def rel_profil_path
-      @rel_profil_path ||= '../user/profil'
+      @rel_profil_path ||= './user/profil'
     end
     def rel_home_path
-      @rel_home_path ||= '../site/home'
+      @rel_home_path ||= './site/home'
     end
     def rel_signin_path
-      @rel_signin_path ||= '../user/signin'
+      @rel_signin_path ||= './user/signin'
     end
     def rel_signup_path
-      @rel_signup_path ||= '../user/signup'
+      @rel_signup_path ||= './user/signup'
     end
+    # def rel_profil_path
+    #   @rel_profil_path ||= '../user/profil'
+    # end
+    # def rel_home_path
+    #   @rel_home_path ||= '../site/home'
+    # end
+    # def rel_signin_path
+    #   @rel_signin_path ||= '../user/signin'
+    # end
+    # def rel_signup_path
+    #   @rel_signup_path ||= '../user/signup'
+    # end
   end
 end
 

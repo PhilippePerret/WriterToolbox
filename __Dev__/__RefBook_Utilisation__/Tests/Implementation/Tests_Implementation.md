@@ -51,9 +51,9 @@ Cette aide `cUrl` doit permettre de rédiger de nouveaux tests.
         Fichier uploadé :
         curl -F "web=@index.html;type=text/html" example.com
 
-        req = 'curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"'
+        req = 'curl -I "http://www.scenariopole.fr/bad/one.htm"'
 
-        res = `curl -I "http://www.laboiteaoutilsdelauteur.fr/bad/one.htm"`
+        res = `curl -I "http://www.scenariopole.fr/bad/one.htm"`
 
 
 <a name='gestionmethodeplurielle'></a>

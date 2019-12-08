@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class ::Array
+class Array
 
   # Sert pour obtenir facilement un array lorsque l'on veut
   # obtenir un array depuis un string, un fixnum, etc. ou un

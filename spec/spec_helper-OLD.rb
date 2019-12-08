@@ -349,7 +349,7 @@ RSpec.configure do |config|
         table_users.insert({
           id: 1,
           pseudo:     'Phil',
-          mail:       'phil@laboiteaoutilsdelauteur.fr',
+          mail:       'phil@scenariopole.fr',
           patronyme:  'Philippe Perret',
           cpassword:  'f8249542b30c37e5021db2d02a86bb44',
           salt:       'marion',

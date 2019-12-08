@@ -52,10 +52,10 @@ describe 'Formatage des messages de commentaires de pages' do
 
   describe 'les liens internets' do
     before(:all) do
-      @com = new_comment({comment: "C'est un [url]www.atelier-icare.net[/url]\n\nUn autre par [url='http://www.laboiteaoutilsdelauteur.fr'][u]La boite[/u][/url]."})
+      @com = new_comment({comment: "C'est un [url]www.atelier-icare.net[/url]\n\nUn autre par [url='http://www.scenariopole.fr'][u]La boite[/u][/url]."})
     end
     it 'sont transformés en balises <a>' do
-      expect(comf).to eq '<p>C\'est un <a href="http://www.atelier-icare.net">www.atelier-icare.net</a></p><p>Un autre par <a href="http://www.laboiteaoutilsdelauteur.fr"><u>La boite</u></a>.</p>'
+      expect(comf).to eq '<p>C\'est un <a href="http://www.atelier-icare.net">www.atelier-icare.net</a></p><p>Un autre par <a href="http://www.scenariopole.fr"><u>La boite</u></a>.</p>'
     end
   end
 end

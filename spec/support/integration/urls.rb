@@ -39,5 +39,5 @@ end
 
 def test_base_url
   'http://' +
-  (test_offline? ? 'localhost/WriterToolbox/' : 'www.laboiteaoutilsdelauteur.fr/')
+  (test_offline? ? 'localhost/WriterToolbox/' : 'www.scenariopole.fr/')
 end

@@ -32,7 +32,7 @@ class Page
   end
 
   def facebook_like_button
-    href = "https://www.facebook.com/laboiteaoutilsdelauteur"
+    href = "https://www.facebook.com/scenariopole"
     img = image('logo/reseaux/like.png')
     img.in_a(href: href, target: :new, class: 'network_button')
   end

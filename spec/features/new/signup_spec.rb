@@ -105,13 +105,13 @@ feature "Un utilisateur quelconque" do
       subject: 'Merci de confirmer votre mail',
       message: [
         "Merci de bien vouloir confirmer votre adresse-mail",
-        "<p><a href=\"http://www.laboiteaoutilsdelauteur.fr\?tckid=#{hticket[:id]}\">Confirmation de votre mail</a></p>"
+        "<p><a href=\"http://www.scenariopole.fr\?tckid=#{hticket[:id]}\">Confirmation de votre mail</a></p>"
       ],
       success: "  Un mail de demande de confirmation de mail a été envoyé à l'utilisateur"
       })
 
     # Vérification du mail d'information à l'administration
-    admin = User.new({mail: 'phil@laboiteaoutilsdelauteur.fr', pseudo:'Phil', id: 1})
+    admin = User.new({mail: 'phil@scenariopole.fr', pseudo:'Phil', id: 1})
     admin.a_recu_le_mail({
       subject: "Nouvelle inscription",
       message: [
@@ -158,7 +158,7 @@ feature "Un visiteur quelconque ne peut pas s'inscrire…" do
     expect(page).to have_tag('div.error', text: /Le patronyme est trop court/)
   end
   scenario 'avec un mail existant' do
-    try_signup_with_data( data_new_user(mail: 'phil@laboiteaoutilsdelauteur.fr'))
+    try_signup_with_data( data_new_user(mail: 'phil@scenariopole.fr'))
     expect(page).to have_tag('div.error', text: /Ce mail existe déjà/)
   end
   scenario 'avec une confirmation de mail invalide' do

@@ -68,7 +68,7 @@ end
 MAILS_TEMP = <<-EOM
 <p>Bonjour %{pseudo},</p>
 
-<p>Ce message pour vous annoncer que le site <a href="http://www.laboiteaoutilsdelauteur.fr" style="text-decoration:none;">La Boite à Outils de l'Auteur</a> a maintenant été intégré au site <a href="http://www.scenariopole.fr" style="text-decoration:none;">Scenariopole</a> !</p>
+<p>Ce message pour vous annoncer que le site <a href="http://www.scenariopole.fr" style="text-decoration:none;">La Boite à Outils de l'Auteur</a> a maintenant été intégré au site <a href="http://www.scenariopole.fr" style="text-decoration:none;">Scenariopole</a> !</p>
 
 <p>Votre inscription a été transférée sur le nouveau site, vous n'avez donc rien à faire.</p>
 

@@ -141,7 +141,7 @@ class Filmodico
   # Télécharge l'affiche sur le serveur distant si
   # nécessaire.
   def upload_affiche_if_needed
-    plocal = "./view/img/affiches/#{@film_id}.jpg"
+    plocal = "./img/affiches/#{@film_id}.jpg"
     path_local = SuperFile::new( plocal )
     if path_local.exist?
       site.require_module 'remote_file'

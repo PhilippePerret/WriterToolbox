@@ -106,7 +106,7 @@ SHOW_ROUTES_ON_TESTING = false
 # Pour essayer une unique route, par exemple une route qui pose problème
 # Mais penser qu'il faut indiquer ici la route de la page qui contient
 # le lien qui pose problème, pas le lien lui-même.
-# Par exemple, en créant ce test, la route http://www.laboiteaoutilsdelauteur.fr
+# Par exemple, en créant ce test, la route http://www.scenariopole.fr
 # posait problème — oui, je sais, un comble — mais c'est la page
 # scenodico/251/show qui la contenait, donc c'est elle qu'il fallait que
 # je mette en seule page à tester

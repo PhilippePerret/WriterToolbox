@@ -35,7 +35,7 @@ Par exemple, pour obtenir un lien vers l'inscription :
 
 @produit
 
-*(L'url réelle — laboiteaoutilsdelauteur.fr — a été volontairement raccourcie pour l'exemple)*
+*(L'url réelle — scenariopole.fr — a été volontairement raccourcie pour l'exemple)*
 
     #   Si lien.output_format = :html (défaut)
     #   => <a href='http://wwww.boa.fr/site/home'

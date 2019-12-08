@@ -122,7 +122,7 @@ test_user get(:new_user_id) do
     sent_after: start_time - 1
   )
   # Deuxième mail lui demandant de confirmer son mail
-  lien_confirmation = "<a href=\"http://www.laboiteaoutilsdelauteur.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
+  lien_confirmation = "<a href=\"http://www.scenariopole.fr?tckid=#{ticket_id}\">Confirmation de votre mail</a>"
   has_mail(
     subject: 'Merci de confirmer votre mail',
     message: [

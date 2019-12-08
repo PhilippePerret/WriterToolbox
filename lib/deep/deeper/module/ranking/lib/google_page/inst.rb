@@ -46,7 +46,7 @@ class Ranking
         gf = GoogleFound.new(self, node, inode)
         gf.analyze
         gf.valide? || next
-        if gf.domain_url == 'http://www.laboiteaoutilsdelauteur.fr'
+        if gf.domain_url == 'http://www.scenariopole.fr'
           @domain_has_been_found = true
         end
         # Noter qu'on ne prend que les données du GoogleFound, car

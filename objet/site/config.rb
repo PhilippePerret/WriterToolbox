@@ -37,8 +37,10 @@ site.mail_before_subject  = "SCENARIOPOLE — "
 site.mail_signature       = "<p>#{site.name}</p>"
 
 # Host local
-site.local_host   = 'localhost/scenariopole/BOA'
-site.distant_host = 'www.scenariopole.fr/BOA'
+# site.local_host   = 'localhost/scenariopole/BOA'
+# site.distant_host = 'www.scenariopole.fr/BOA'
+site.local_host   = 'localhost/scenariopole'
+site.distant_host = 'www.scenariopole.fr'
 site.domain_url   = "http://#{site.distant_host}"
 
 # Description qui servira pour la balise META

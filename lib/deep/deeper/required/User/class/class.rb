@@ -45,12 +45,9 @@ class User
     #     permettant notamment de régler l'opacité de l'interface
     def current
       @current ||= begin
-        debug "Au début de User::current, app.session['user_id'] / app.session['boa_user_id'] = #{app.session['user_id']} / #{app.session['boa_user_id']}"
+        debug "Au début de User::current, app.session['user_id'] #{app.session['user_id']}"
         user_id =
-          if ( param(:uid) )
-            debug "user_id défini par param(:uid)"
-            param(:uid).to_i
-          elsif app.session['user_id'].nil?
+          if app.session['user_id'].nil?
             nil
           else
             app.session['user_id'].to_i
@@ -61,11 +58,10 @@ class User
 
         curuser && begin
           app.session['user_id'] = user_id
-          app.session['boa_user_id'] = user_id
           curuser.incremente_nombre_pages
         end
 
-        debug "À la fin de User::current, app.session['user_id'] / app.session['boa_user_id'] = #{app.session['user_id']} / #{app.session['boa_user_id']}"
+        debug "À la fin de User::current, app.session['user_id'] = #{app.session['user_id']}"
 
         # Pour le mettre dans @current
         curuser

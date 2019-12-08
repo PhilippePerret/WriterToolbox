@@ -7,7 +7,7 @@ feature "Connection en ONLINE" do
   scenario "Phil peut rejoindre le site distant et se logguer" do
     require './data/secret/data_phil'
     phil = DATA_PHIL
-    visit 'http://www.laboiteaoutilsdelauteur.fr'
+    visit 'http://www.scenariopole.fr'
     click_link('S\'identifier')
     expect(page).to have_css('form#form_user_login')
     within('form#form_user_login') do
@@ -41,7 +41,7 @@ feature "Connection en ONLINE" do
   scenario 'Marion (administratrice) peut se connecter' do
     require './data/secret/data_marion'
     marion = DATA_MARION
-    visit 'http://www.laboiteaoutilsdelauteur.fr'
+    visit 'http://www.scenariopole.fr'
     click_link('S\'identifier')
     expect(page).to have_css('form#form_user_login')
     within('form#form_user_login') do
@@ -76,7 +76,7 @@ feature "Connection en ONLINE" do
   scenario 'Benoit (simple inscrit) peut se connecter' do
     require './data/secret/data_benoit'
     benoit = DATA_BENOIT
-    visit 'http://www.laboiteaoutilsdelauteur.fr'
+    visit 'http://www.scenariopole.fr'
     click_link('S\'identifier')
     expect(page).to have_css('form#form_user_login')
     within('form#form_user_login') do

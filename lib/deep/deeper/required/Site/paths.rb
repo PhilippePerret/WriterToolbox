@@ -20,7 +20,7 @@ class SiteHtml
 
   # L'URL de la boite à outils
   def url_boa
-    @url_boa ||= 'http://www.laboiteaoutilsdelauteur.fr'
+    @url_boa ||= 'http://www.scenariopole.fr'
   end
   alias :boa_url :url_boa
 

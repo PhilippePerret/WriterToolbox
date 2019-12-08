@@ -35,7 +35,7 @@ class TestedPage
   def entete_http?
     !!route.match(/^https?:\/\//)
   end
-  # Retourne TRUE si la route commence par http://www.laboiteaoutilsdelauteur.fr
+  # Retourne TRUE si la route commence par http://www.scenariopole.fr
   def full_url_base?
     !!route.start_with?(self.class::BASE_URL)
   end

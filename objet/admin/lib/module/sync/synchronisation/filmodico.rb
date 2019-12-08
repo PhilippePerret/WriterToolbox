@@ -106,8 +106,8 @@ class Filmodico
   # Synchronisation des affiches
   def synchronize_affiches
     report "  * Synchronisation des affiches"
-    loc_affiches_folder = './view/img/affiches'
-    dis_affiches_folder = './www/view/img/affiches'
+    loc_affiches_folder = './img/affiches'
+    dis_affiches_folder = './img/affiches'
     sync_files loc_affiches_folder, dis_affiches_folder
     report "  = Synchronisation des affiches OK"
   rescue Exception => e

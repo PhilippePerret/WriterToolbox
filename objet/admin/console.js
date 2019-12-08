@@ -3,7 +3,7 @@ if(undefined==window.RSConsole){window.RSConsole = {}}
 $.extend(window.RSConsole, {
 
   Snippets: {
-    'URL': {replace:"http://www.laboiteaoutilsdelauteur.fr"},
+    'URL': {replace:"http://www.scenariopole.fr"},
     'tache': {replace:"new tache pour:Phil le:$1 tache: $2 state: $3 file: $4"},
     'update':{replace:'update message:$1 le:$2 route:$3 type:$4 annonce:$5 degre:$6'}
   },
@@ -19,7 +19,7 @@ $.extend(window.RSConsole, {
 
   last_word_is_a_shortcut:function(lword){
     return {
-      'URL': "http://www.laboiteaoutilsdelauteur.fr"
+      'URL': "http://www.scenariopole.fr"
     }[lword]
   },
 
