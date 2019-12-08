@@ -21,9 +21,6 @@ class User
   # À l'initialisation de l'user (en fait, au chargement de
   # la page), on enregistre toujours sa dernière connexion.
   #
-  # Attention, cela n'a rien à voir (pour le moment) avec le suivi
-  # par IP qui enregistre dans la table :hot, connexions_per_ip
-  #
   def set_last_connexion
     # On doit toujours avoir une route, car la propriété `route` ne
     # peut pas être nil dans la table.

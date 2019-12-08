@@ -11,23 +11,6 @@ def div_row libelle, value, options = nil
     value.in_span(class:'value')
   ).in_div(options)
 end
-def mark_subscribed
-  return OUI if subscribed?
-  "#{NON} #{lien.subscribe('(S’abonner)', class:'small')}"
-end
-def mark_unanunscript
-  return OUI if unanunscript?
-  "#{NON} #{lien.subscribe_unanunscript('(S’inscrire)', class:'small')}"
-end
-def info_unan
-  @info_unan ||= lien.aide(6, class:'fright')
-end
-def mark_forum
-  @mark_forum ||= lien.aide(5, class:'fright')
-end
-def why_subscribe
-  @why_subscribe ||= lien.aide(3, class:'fright')
-end
 def lien_modifier_mdp
   @lien_modifier_mdp ||= 'Modifier le mot de passe'.in_a(href:'user/change_mdp')
 end
@@ -43,41 +26,10 @@ end
     <%= div_row('Grade site', "Administra#{f_trice} de niveau #{get_option(:admin)}") %>
   <% elsif user.icarien_actif? %>
     <%= div_row('Icarien actif', "En tant qu'<strong>icarien actif</strong>, vous avez un accès complet au site.") %>
-  <% else %>
-    <%= div_row('Abonné'        , why_subscribe + mark_subscribed) %>
-  <% end %>
-  <% unless user.manitou? %>
-    <%= div_row('Un an un script', info_unan + mark_unanunscript ) %>
   <% end %>
   <%= div_row('Mot de passe', lien_modifier_mdp) %>
   <%= div_row('Session ID'    , session_id, {class:'small'} ) %>
 </div>
-
-<%
-# ---------------------------------------------------------------------
-#   FORUM
-# ---------------------------------------------------------------------
-%>
-<h3>Forum</h3>
-<fieldset id="forum">
-  <legend>Forum</legend>
-  <p>Vous n'avez aucun message en attente.</p>
-  <p>Vous n'avez aucune question en attente.</p>
-</fieldset>
-
-<%
-# ---------------------------------------------------------------------
-#   UN AN UN SCRIPT
-# ---------------------------------------------------------------------
-%>
-<fieldset id="unanunscript">
-  <legend>Programme <%= UN_AN_UN_SCRIPT %></legend>
-  <% if unanunscript? %>
-    <%= "→ Rejoindre votre centre de travail".in_a(href:'bureau/home?in=unan').in_div(class:'right') %>
-  <% else %>
-    <p>Vous ne suivez pas le <%= lien.unanunscript %>.</p>
-  <% end %>
-</fieldset>
 
 <%
 # ---------------------------------------------------------------------

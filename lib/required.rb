@@ -9,6 +9,8 @@
 #
 # @usage      main_safed_log <message>
 #
+
+
 # Il faut ensuite aller charger le fichier ./safed.log par
 # FTP
 timein = Time.now.to_f
@@ -67,17 +69,6 @@ require_folder './objet/site/lib/required'
 site.require_config
 
 User.init # charge les librairies du dossier objet/user
-
-if param(:uid)
-  debug "-- param :uid -- défini (#{param(:uid).inspect}) => mise en session"
-  debug "Est-il identique à #{app.session['user_id'].inspect} ?"
-  if app.session['user_id'] == param(:uid)
-    debug "Identique à app.session['user_id'] => je le mémorise"
-    app.session['boa_user_id'] = param(:uid)
-    User.current = User.get(param(:uid).to_i)
-    debug "J'ai mis en user courant #{user.pseudo} ##{user.id}"
-  end
-end
 
 # ---------------------------------------------------------------------
 #   Quelques initialisations et vérification

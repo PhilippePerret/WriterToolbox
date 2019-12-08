@@ -6,8 +6,6 @@ class User
     hu = "utilisa#{f_trice}"
     case true
     when admin?         then "administra#{f_trice}"
-    when unanunscript?  then "auteur#{f_e} du programme 1A1S"
-    when subscribed?    then "#{hu} abonné#{f_e}"
     when identified?    then "#{hu} inscrit#{f_e}"
     when guest?         then "simple utilisateur"
     end

@@ -12,8 +12,45 @@ class Page
       # Correspond aussi à la fin de la méthode output du site
       app.benchmark('<- SiteHtml#output')
       app.benchmark_fin #rescue nil
-      debug "Juste avant cgi.out, app.session['user_id'] = #{app.session['user_id']}"
-      cgi.out{final_code}
+
+      # Pour CGI::out
+      data_cgiout = {}
+
+      if user.identified?
+        debug "User ##{user.id} identifié (#{user.pseudo})"
+        sessionId = app.session.session_id
+        now = Time.now.to_i
+        route = site.full_route # contre self.full_route sur SCENARIOPOLE
+        # INSERT INTO table (id, name, age) VALUES(1, "A", 19) ON DUPLICATE KEY UPDATE
+        # name="A", age=19
+        query = "INSERT INTO `sessions`"+
+                " (session_id, user_id, ip_address, route, created_at)"+
+                " VALUES (?, ?, ?, ?, ?)"+
+                " ON DUPLICATE KEY UPDATE route = ?, created_at = ?, ip_address = ?"
+        values = [
+            sessionId, user.id, user.ip, route, now,
+            route, now, user.ip
+          ]
+        # Soumettre la requête
+        site.db.use_db('hot')
+        site.db.execute(query, values)
+
+        userCookie = CGI::Cookie.new(
+          "name"      => "sessionid",
+          "value"     => sessionId,
+          "expires"   => Time.now + 3600
+        )
+
+        data_cgiout.merge!(
+          "cookie" => userCookie
+        )
+
+        debug "--- Enregistrement de la connexion côté BOA ---"
+      else
+        debug "--- User non identifié, pas d'enregistrement de connexion côté BOA ---"
+      end
+
+      cgi.out(data_cgiout){final_code}
       # RIEN NE PEUT PASSER ICI
     else
       # Retour d'une requête ajax

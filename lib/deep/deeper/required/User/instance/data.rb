@@ -44,7 +44,7 @@ class User
   #   Données volatiles
   # ---------------------------------------------------------------------
   def ip
-    @ip ||= ENV["REMOTE_ADDR"] || ENV['HTTP_CLIENT_IP'] || ENV["HTTP_X_FORWARDED_FOR"]
+    @ip ||= ENV["REMOTE_ADDR"] || ENV['HTTP_CLIENT_IP'] || ENV["HTTP_X_FORWARDED_FOR"] || ENV["X_FORWARDED_FOR"]
   end
 
 end

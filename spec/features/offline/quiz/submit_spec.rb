@@ -275,8 +275,6 @@ feature "Vérification des calculs du quiz" do
 
     # Un user inscrit mais non abonné
     benoit.set_simple_inscrit
-    expect(benoit.subscribed?).to eq false
-    expect(benoit.unanunscript?).to eq false
 
     # Au cas où, on détruit tous les questionnaires de cet
     # utilisateur
